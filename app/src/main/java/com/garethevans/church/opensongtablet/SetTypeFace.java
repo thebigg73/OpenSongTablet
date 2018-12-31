@@ -6,9 +6,9 @@ import android.net.Uri;
 
 class SetTypeFace {
 
-    public static void setTypeface(Context c) {
+    public static void setTypeface(Context c, Preferences preferences) {
         // Set up the custom font (if it has been set)
-        FullscreenActivity.customfont = setCustomFont(c, FullscreenActivity.customfontname);
+        FullscreenActivity.customfont = setCustomFont(c, preferences, FullscreenActivity.customfontname);
 
         switch (FullscreenActivity.mylyricsfontnum) {
             case 1:
@@ -206,10 +206,10 @@ class SetTypeFace {
 
     }
 
-    static Typeface setCustomFont(Context c, String ff) {
+    static Typeface setCustomFont(Context c, Preferences preferences, String ff) {
         Typeface tf = FullscreenActivity.typeface0;
         StorageAccess storageAccess = new StorageAccess();
-        Uri uri = storageAccess.getUriForItem(c,"Fonts","",ff);
+        Uri uri = storageAccess.getUriForItem(c, preferences, "Fonts", "", ff);
         if (storageAccess.uriExists(c,uri) && (ff.endsWith(".ttf") || ff.endsWith(".otf"))) {
             tf = Typeface.createFromFile(uri.getPath());
         } else {

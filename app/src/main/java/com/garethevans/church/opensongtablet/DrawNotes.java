@@ -17,9 +17,10 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-//import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+
+//import java.io.File;
 
 public class DrawNotes extends View {
 
@@ -252,7 +253,7 @@ public class DrawNotes extends View {
     }
 
     public int getSavedPaintColor() {
-        int c = 0xFFFFFF00;
+        int c = 0;
         if (FullscreenActivity.drawingTool.equals("pen")) {
             switch (FullscreenActivity.drawingPenColor) {
                 case "black":
@@ -264,6 +265,7 @@ public class DrawNotes extends View {
                     break;
 
                 case "yellow":
+                default:
                     c = 0xFFFFFF00;
                     break;
 
@@ -335,8 +337,10 @@ public class DrawNotes extends View {
             StorageAccess storageAccess = new StorageAccess();
             InputStream inputStream = storageAccess.getInputStream(c, uri);
             Bitmap bitmap = BitmapFactory.decodeStream(inputStream,null,options);
-            canvasBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-            bitmap.recycle();
+            if (bitmap != null) {
+                canvasBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                bitmap.recycle();
+            }
             //drawCanvas = new Canvas(canvasBitmap);
             imageloaded = true;
 

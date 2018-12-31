@@ -7,7 +7,7 @@ import java.io.OutputStream;
 
 class CustomSlide {
 
-    void addCustomSlide(Context c) {
+    void addCustomSlide(Context c, Preferences preferences) {
         String templocator,folder;
 
         // Get rid of illegal characters
@@ -63,7 +63,7 @@ class CustomSlide {
         FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&", "&amp;");
 
         StorageAccess storageAccess = new StorageAccess();
-        Uri uri = storageAccess.getUriForItem(c,folder,"_cache",filetitle);
+        Uri uri = storageAccess.getUriForItem(c, preferences, folder, "_cache", filetitle);
         // Now write the modified item
         OutputStream outputStream = storageAccess.getOutputStream(c,uri);
         storageAccess.writeFileFromString(FullscreenActivity.mynewXML,outputStream);
@@ -72,7 +72,7 @@ class CustomSlide {
         // If this is to be a reusable custom slide - not in the _cache folder
         if (FullscreenActivity.customreusable) {
             // Now write the modified item
-            Uri uriReusable = storageAccess.getUriForItem(c,folder,"",filetitle);
+            Uri uriReusable = storageAccess.getUriForItem(c, preferences, folder, "", filetitle);
             OutputStream outputStreamReusable = storageAccess.getOutputStream(c,uriReusable);
             storageAccess.writeFileFromString(FullscreenActivity.mynewXML,outputStreamReusable);
             FullscreenActivity.customreusable = false;

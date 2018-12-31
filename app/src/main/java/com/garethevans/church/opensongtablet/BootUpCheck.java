@@ -17,7 +17,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
@@ -45,9 +44,10 @@ import lib.folderpicker.FolderPicker;
 public class BootUpCheck extends AppCompatActivity {
 
     // Declare helper classes:
-    Preferences mPreferences;
+    Preferences preferences;
     StorageAccess storageAccess;
     IndexSongs indexSongs;
+    FullscreenActivity fullscreenActivity;
 
     // Declare views
     ProgressBar progressBar;
@@ -69,17 +69,18 @@ public class BootUpCheck extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Load the helper classes (preferences)
-        mPreferences = new Preferences();
+        preferences = new Preferences();
         storageAccess = new StorageAccess();
         indexSongs = new IndexSongs();
+        fullscreenActivity = new FullscreenActivity();
 
         // This will do one of 2 things - it will either show the splash screen or the welcome screen
         // To determine which one, we need to check the storage is set and is valid
         // The last version used must be the same or greater than the current app version
 
         // Load up all of the preferences and the user specified storage location if it exists
-        storagePath = storageAccess.getStoragePreference(BootUpCheck.this);
-        uriTree = storageAccess.homeFolder(BootUpCheck.this);
+        storagePath = storageAccess.getStoragePreference(BootUpCheck.this, preferences);
+        uriTree = storageAccess.homeFolder(BootUpCheck.this, preferences);
         showCurrentStorage(uriTree);
 
         // Check we have the required storage permission
@@ -87,9 +88,6 @@ public class BootUpCheck extends AppCompatActivity {
 
         // Determine the last used version and what version the app is now
         skiptoapp = versionCheck();
-
-        //TODO
-        skiptoapp = false;
 
         if (checkStorageIsValid() && storageGranted && skiptoapp) {
             Log.d("d","Ready to go straight to the app");
@@ -349,6 +347,7 @@ public class BootUpCheck extends AppCompatActivity {
         if (storageGranted) {
             Intent intent;
             if (storageAccess.lollipopOrLater()) {
+                Log.d("d", "uriTree=" + uriTree);
                 intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
                 intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
                 intent.putExtra("android.content.extra.FANCY", true);
@@ -403,9 +402,9 @@ public class BootUpCheck extends AppCompatActivity {
             // Save the location
             if (uriTree!=null) {
                 FullscreenActivity.uriTree = uriTree;
-                mPreferences.setMyPreferenceString(this, "uriTree", uriTree.toString());
+                preferences.setMyPreferenceString(this, "uriTree", uriTree.toString());
             } else {
-                mPreferences.setMyPreferenceString(this, "uriTree", "");
+                preferences.setMyPreferenceString(this, "uriTree", "");
             }
 
             // Update the storage text
@@ -422,15 +421,14 @@ public class BootUpCheck extends AppCompatActivity {
 
         if (uriTree!=null) {
             DocumentFile df = storageAccess.documentFileFromRootUri(BootUpCheck.this, uriTree,
-                    storageAccess.getStoragePreference(BootUpCheck.this));
+                    storageAccess.getStoragePreference(BootUpCheck.this, preferences));
             return df != null && df.canWrite();
         }
         return false;
     }
     boolean versionCheck() {
         // Do this as a separate thread
-        mPreferences = new Preferences();
-        lastUsedVersion = mPreferences.getMyPreferenceInt(BootUpCheck.this,"showSplashVersion",0);
+        lastUsedVersion = preferences.getMyPreferenceInt(BootUpCheck.this, "lastUsedVersion", 0);
         PackageInfo pInfo;
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -441,7 +439,7 @@ public class BootUpCheck extends AppCompatActivity {
             thisVersion = 0;
             versionCode = "";
         }
-        Log.d("d","lastUsedVersion (showSplashVersion)="+lastUsedVersion);
+        Log.d("d", "lastUsedVersion =" + lastUsedVersion);
         Log.d("d","thisversion="+thisVersion);
         return lastUsedVersion >= thisVersion;
     }
@@ -473,149 +471,151 @@ public class BootUpCheck extends AppCompatActivity {
         final ProgressBar progressBarHorizontal = findViewById(R.id.progressBarHorizontal);
         tv.setVisibility(View.VISIBLE);
         tv.setText("");
-        progressBarHorizontal.setVisibility(View.GONE);
+        progressBarHorizontal.setVisibility(View.INVISIBLE);
 
         // Do this as a separate thread
-        new Thread(new Runnable() {
-            String message;
-            @Override
-            public void run() {
-                Looper.prepare();
-                // Check if the folders exist, if not, create them
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        message = getString(R.string.storage_check);
-                        tv.setText(message);
-                    }
-                });
-                final String progress = storageAccess.createOrCheckRootFolders(BootUpCheck.this);
-                foldersok = !progress.contains("Error");
+        GoToSongs goToSongsAsync = new GoToSongs(progressBarHorizontal, tv);
+        goToSongsAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
 
-                if (foldersok) {
-                    // Load up all of the preferences into FullscreenActivity (static variables)
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            message = getString(R.string.load_preferences);
-                            tv.setText(message);
-                        }
-                    });
-                    FullscreenActivity fullscreenActivity = new FullscreenActivity();
-                    fullscreenActivity.mainSetterOfVariables(BootUpCheck.this);
+    @SuppressLint("StaticFieldLeak")
+    private class GoToSongs extends AsyncTask<Object, String, String> {
 
-                    // Search for the user's songs
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            message = getString(R.string.initialisesongs_start).replace("-","").trim();
-                            tv.setText(message);
-                        }
-                    });
-                    try {
-                        storageAccess.listSongs(BootUpCheck.this);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+        ProgressBar hProgressBar;
+        TextView textView;
+        int numSongs;
+        int currentSongNum;
+        String currentSongName, message;
+        boolean settingProgressBarUp = false;
+        Intent intent;
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Show how many songs have been found and display this to the user
-                            // This will remain as until the current folder is build
-                            int numsongs = FullscreenActivity.songIds.size();
-                            String result = getString(R.string.processing) + " " + numsongs + "\n" + getString(R.string.wait);
-                            tv.setText(result);
-                        }
-                    });
+        GoToSongs(ProgressBar pb, TextView tv) {
+            hProgressBar = pb;
+            textView = tv;
+        }
 
-                    try {
-                        indexSongs.initialiseIndexStuff();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+        @Override
+        protected void onPreExecute() {
+        }
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Change the progress bar to horizontal
-                            progressBarHorizontal.setMax(FullscreenActivity.songIds.size());
-                            progressBarHorizontal.setVisibility(View.VISIBLE);
-                            for (int l=0; l<FullscreenActivity.songIds.size(); l++) {
-                                progressBarHorizontal.setProgress(l);
-                                message = FullscreenActivity.songIds.get(l);
-                                if (message.contains("/OpenSong/Songs/")) {
-                                    message = message.substring(message.lastIndexOf("OpenSong/Songs/")+15);
-                                }
-                                tv.setText(message);
-                                indexSongs.doIndexThis(BootUpCheck.this, storageAccess, l);
-                            }
-                            progressBarHorizontal.setVisibility(View.GONE);
-                        }
-                    });
+        @Override
+        protected String doInBackground(Object... objects) {
 
-                    indexSongs.completeLog();
-                    indexSongs.getSongDetailsFromIndex();
+            // Check if the folders exist, if not, create them
+            message = getString(R.string.storage_check);
+            publishProgress("setmessage");
+            final String progress = storageAccess.createOrCheckRootFolders(BootUpCheck.this, preferences);
+            foldersok = !progress.contains("Error");
+            Log.d("d", "progress=" + progress);
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            message = tv.getText().toString() + "\n" + getString(R.string.success);
-                            tv.setText(message);
-                        }
-                    });
-                    // Decide on where we are going and set the intent to launch it
-                    Intent intent = new Intent();
+            if (foldersok) {
+                // Load up all of the preferences into FullscreenActivity (static variables)
+                message = getString(R.string.load_preferences);
+                publishProgress("setmessage");
+                fullscreenActivity.mainSetterOfVariables(BootUpCheck.this, preferences);
 
-                    switch (FullscreenActivity.whichMode) {
-                        case "Performance":
-                        case "Stage":
-                        default:
-                            intent.setClass(BootUpCheck.this, StageMode.class);
-                            break;
-
-                        case "Presentation":
-                            intent.setClass(BootUpCheck.this, PresenterMode.class);
-                            break;
-
-                    }
-                    // Now save the appropriate variables and then start the intent
-                    // Set the current version
-                    mPreferences.setMyPreferenceInt(BootUpCheck.this, "showSplashVersion", thisVersion);
-                    Preferences.savePreferences();
-
-                    //startActivity(intent);
-                    //finish();
-
-                    // For now, just stay here
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            tv.setVisibility(View.GONE);
-                            showLoadingBar(true);
-                        }
-                    });
-                } else {
-                    // Show the progressBar if we were on the BootUpCheck screen
-                    if (progressBar!=null) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                showLoadingBar(true);
-                                tv.setVisibility(View.GONE);
-                            }
-                        });
-
-                    } else {
-                        // There was a problem with the folders, so restart the app!
-                        Intent intent = new Intent();
-                        intent.setClass(BootUpCheck.this, BootUpCheck.class);
-                        startActivity(intent);
-                        finish();
-                    }
+                // Search for the user's songs
+                message = getString(R.string.initialisesongs_start).replace("-", "").trim();
+                publishProgress("setmessage");
+                try {
+                    storageAccess.listSongs(BootUpCheck.this, preferences);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+
+                // Show how many songs have been found and display this to the user
+                // This will remain as until the current folder is build
+                numSongs = FullscreenActivity.songIds.size();
+                settingProgressBarUp = true;
+                message = numSongs + " " + getString(R.string.processing) + "\n" + getString(R.string.wait);
+                publishProgress("setupprogressbar");
+
+                try {
+                    indexSongs.initialiseIndexStuff();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                for (currentSongNum = 0; currentSongNum < numSongs; currentSongNum++) {
+                    currentSongName = FullscreenActivity.songIds.get(currentSongNum);
+                    if (currentSongName.contains("OpenSong/Songs/")) {
+                        currentSongName = currentSongName.substring(currentSongName.lastIndexOf("OpenSong/Songs/") + 15);
+                    }
+                    message = currentSongName + "\n(" + currentSongNum + "/" + numSongs + ")";
+                    publishProgress(currentSongName);
+                    indexSongs.doIndexThis(BootUpCheck.this, storageAccess, currentSongNum);
+                }
+
+                indexSongs.completeLog();
+                indexSongs.getSongDetailsFromIndex();
+
+                // Finished indexing
+                message = getString(R.string.success);
+                publishProgress("setmessage");
+
+                // Decide on where we are going and set the intent to launch it
+                intent = new Intent();
+
+                switch (FullscreenActivity.whichMode) {
+                    case "Performance":
+                    case "Stage":
+                    default:
+                        intent.setClass(BootUpCheck.this, StageMode.class);
+                        break;
+
+                    case "Presentation":
+                        intent.setClass(BootUpCheck.this, PresenterMode.class);
+                        break;
+                }
+
+            } else {
+                // There was a problem with the folders, so restart the app!
+                Log.d("d", "problem with folders");
+                Intent intent = new Intent();
+                intent.setClass(BootUpCheck.this, BootUpCheck.class);
+                startActivity(intent);
+                finish();
             }
-        }).start();
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... string) {
+            if (settingProgressBarUp) {
+                settingProgressBarUp = false;
+                hProgressBar.setVisibility(View.VISIBLE);
+                hProgressBar.setMax(numSongs);
+            }
+            if (currentSongNum > 0) {
+                hProgressBar.setProgress(currentSongNum);
+            }
+            textView.setText(message);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            try {
+                // Now save the appropriate variables and then start the intent
+                // Set the current version
+                preferences.setMyPreferenceInt(BootUpCheck.this, "lastUsedVersion", thisVersion);
+                Preferences.savePreferences();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Show the progressBar if we were on the BootUpCheck screen
+            if (progressBar != null) {
+                showLoadingBar(true);
+            }
+
+            startActivity(intent);
+            finish();
+
+            // For now, just stay here
+            //progressBar.setVisibility(View.GONE);
+            //showLoadingBar(true);
+        }
     }
 
     public void startSearch() {
@@ -723,7 +723,9 @@ public class BootUpCheck extends AppCompatActivity {
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                             if (changed) {
                                 if (position>0) {
-                                    uriTree = Uri.parse(locations.get(position));
+                                    File f = new File(locations.get(position));
+                                    uriTree = Uri.fromFile(f);
+                                    Log.d("d", "uriTree=" + uriTree);
                                     chooseStorageButton.performClick();
                                 }
                             } else {
@@ -743,4 +745,5 @@ public class BootUpCheck extends AppCompatActivity {
             }
         }
     }
+
 }

@@ -56,7 +56,7 @@ class PadFunctions {
         return result;
     }
 
-    static boolean isPadValid(Context c) {
+    static boolean isPadValid(Context c, Preferences preferences) {
         // If we are using auto, key needs to be set
         // If we are using audio file link, it needs to exist
         // If we are set to OFF then nope!
@@ -68,7 +68,7 @@ class PadFunctions {
         } else if (FullscreenActivity.mPadFile.equals(c.getResources().getString(R.string.link_audio)) &&
                 !FullscreenActivity.mLinkAudio.isEmpty() && !FullscreenActivity.mLinkAudio.equals("")) {
             StorageAccess storageAccess = new StorageAccess();
-            Uri uri = storageAccess.fixLocalisedUri(c,FullscreenActivity.mLinkAudio);
+            Uri uri = storageAccess.fixLocalisedUri(c, preferences, FullscreenActivity.mLinkAudio);
             Log.d("d","uri="+uri);
             isvalid = storageAccess.uriExists(c,uri);
         } else if (!FullscreenActivity.mKey.isEmpty()){

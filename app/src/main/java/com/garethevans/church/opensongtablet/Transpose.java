@@ -74,7 +74,7 @@ class Transpose {
     private static boolean usesflats;
     private static boolean capousesflats;
 
-    static void doTranspose(Context c) {
+    static void doTranspose(Context c, Preferences preferences) {
 
         try {
             // Go through each line and change each chord to $..$
@@ -179,7 +179,7 @@ class Transpose {
             FullscreenActivity.mLyrics = FullscreenActivity.transposedLyrics;
 
             PopUpEditSongFragment.prepareSongXML();
-            PopUpEditSongFragment.justSaveSongXML(c);
+            PopUpEditSongFragment.justSaveSongXML(c, preferences);
 
             FullscreenActivity.transposedLyrics = null;
             FullscreenActivity.transposedLyrics = "";

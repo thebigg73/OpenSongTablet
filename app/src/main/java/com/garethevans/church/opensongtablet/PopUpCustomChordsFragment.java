@@ -95,6 +95,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
             string6_f5, string5_f5, string4_f5, string3_f5, string2_f5, string1_f5;
 
     StorageAccess storageAccess;
+    Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -130,6 +131,9 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
+
+        storageAccess = new StorageAccess();
+        preferences = new Preferences();
 
         // Initialise the views
         stringtop = getActivity().getResources().getDrawable(R.drawable.string_top);
@@ -1650,7 +1654,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
             //No instrument set
             FullscreenActivity.myToastMessage = getResources().getString(R.string.customchords_noinstrument);
             ShowToast.showToast(getActivity());
-        } else if (customNameToSave==null || customNameToSave.equals("") || customNameToSave.isEmpty()) {
+        } else if (customNameToSave.equals("") || customNameToSave.isEmpty()) {
             //No chordname set
             FullscreenActivity.myToastMessage = getResources().getString(R.string.customchords_nochordname);
             ShowToast.showToast(getActivity());
@@ -1673,7 +1677,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
 
     public void doSave() {
         // Add the custom chord code to the xml
-        Uri uri = storageAccess.getUriForItem(getActivity(),"Songs", FullscreenActivity.whichSongFolder,
+        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.whichSongFolder,
                 FullscreenActivity.songfilename);
         OutputStream outputStream = storageAccess.getOutputStream(getActivity(),uri);
         storageAccess.writeFileFromString(FullscreenActivity.mynewXML,outputStream);

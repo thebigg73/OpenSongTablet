@@ -97,13 +97,13 @@ class AutoScrollFunctions {
         }
     }
 
-    static void getAudioLength(Context c) {
+    static void getAudioLength(Context c, Preferences preferences) {
         MediaPlayer mediafile = new MediaPlayer();
 
         // Ultimately these should be stored as strings that get parsed as Uris
         StorageAccess storageAccess = new StorageAccess();
         String audiofile = FullscreenActivity.mLinkAudio;
-        Uri uri = storageAccess.fixLocalisedUri(c,audiofile);
+        Uri uri = storageAccess.fixLocalisedUri(c, preferences, audiofile);
 
         if (uri!=null && storageAccess.uriExists(c,uri)) {
             try {

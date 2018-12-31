@@ -39,6 +39,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
     String foundTempo = "";
     String foundTimeSig = "";
     StorageAccess storageAccess;
+    Preferences preferences;
 
     public interface MyInterface {
         void refreshAll();
@@ -196,7 +197,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         FullscreenActivity.songfilename = FullscreenActivity.songfilename.replace(".PDF","_from_pdf");
         try {
             if (mListener!=null) {
-                PopUpEditSongFragment.justSaveSongXML(getActivity());
+                PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
                 FullscreenActivity.myToastMessage = "";
                 mListener.refreshAll();
                 dismiss();
@@ -213,7 +214,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         StringBuilder parsedText= new StringBuilder();
 
         try {
-            Uri uri = storageAccess.getUriForItem(getActivity(),"Songs",FullscreenActivity.whichSongFolder,
+            Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.whichSongFolder,
                     FullscreenActivity.songfilename);
             InputStream inputStream = storageAccess.getInputStream(getActivity(),uri);
             PdfReader reader = new PdfReader(inputStream);

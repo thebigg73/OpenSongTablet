@@ -14,8 +14,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.IOException;
-
 public class PopUpPresentationOrderFragment extends DialogFragment {
 
     static PopUpPresentationOrderFragment newInstance() {
@@ -30,6 +28,8 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
 
     private MyInterface mListener;
     StorageAccess storageAccess;
+    ListSongFiles listSongFiles;
+    Preferences preferences;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -97,6 +97,8 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
         });
 
         storageAccess = new StorageAccess();
+        preferences = new Preferences();
+        listSongFiles = new ListSongFiles();
 
         // Define the views
         root_buttonshere = V.findViewById(R.id.songsectionstoadd);
@@ -158,9 +160,9 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
     public void doSave() {
         FullscreenActivity.mPresentation = m_mPresentation.getText().toString().trim();
         PopUpEditSongFragment.prepareSongXML();
-        PopUpEditSongFragment.justSaveSongXML(getActivity());
+        PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
         try {
-            LoadXML.loadXML(getActivity(), storageAccess);
+            LoadXML.loadXML(getActivity(), preferences, listSongFiles, storageAccess);
         } catch (Exception e) {
             e.printStackTrace();
         }

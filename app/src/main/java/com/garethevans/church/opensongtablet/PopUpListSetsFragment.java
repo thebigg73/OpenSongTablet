@@ -19,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -53,6 +52,8 @@ public class PopUpListSetsFragment extends DialogFragment {
 
     StorageAccess storageAccess;
     SetActions setActions;
+    Preferences preferences;
+    ListSongFiles listSongFiles;
 
     public interface MyInterface {
         void refreshAll();
@@ -122,6 +123,8 @@ public class PopUpListSetsFragment extends DialogFragment {
                 // Initialise the helper classes
                 storageAccess = new StorageAccess();
                 setActions = new SetActions();
+                preferences = new Preferences();
+                listSongFiles = new ListSongFiles();
 
                 // Prepare the toast message using the title.  It is cleared if cancel is clicked
                 FullscreenActivity.myToastMessage = myTitle + " : " + getActivity().getResources().getString(R.string.ok);
@@ -600,79 +603,6 @@ public class PopUpListSetsFragment extends DialogFragment {
         }
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private class FetchDataTask extends AsyncTask<String,Integer,String> {
-
-        @Override
-        public void onPreExecute() {
-            // Check the directories and clear them of prior content
-            setActions.emptyCacheDirectories(getActivity(), storageAccess);
-            FullscreenActivity.mySet = "";
-            FullscreenActivity.mSet = null;
-            FullscreenActivity.myParsedSet = null;
-        }
-
-        @Override
-        protected String doInBackground(String... args) {
-            // Now users can load multiple sets and merge them, we need to load each one it turn
-            // We then add the items to a temp string 'allsongsinset'
-            // Once we have loaded them all, we replace the mySet field.
-
-            StringBuilder allsongsinset = new StringBuilder();
-
-            // Split the string by "%_%" - last item will be empty as each set added ends with this
-            String[] tempsets = FullscreenActivity.setnamechosen.split("%_%");
-
-            for (String tempfile:tempsets) {
-                if (tempfile!=null && !tempfile.equals("") && !tempfile.isEmpty()) {
-                    try {
-                        FullscreenActivity.settoload = tempfile;
-                        setActions.loadASet(getActivity(),storageAccess);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    allsongsinset.append(FullscreenActivity.mySet);
-                }
-            }
-
-            // Add all the songs of combined sets back to the mySet
-            FullscreenActivity.mySet = allsongsinset.toString();
-
-            // Reset the options menu
-            setActions.prepareSetList();
-            setActions.indexSongInSet();
-
-            return "LOADED";
-        }
-
-        @Override
-        protected void onCancelled(String result) {
-            Log.d("dataTask","onCancelled");
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            FullscreenActivity.setView = true;
-
-            if (result.equals("LOADED") && !dataTask.isCancelled()) {
-                // Get the set first item
-                setActions.prepareFirstItem(getActivity(),storageAccess);
-
-                // Save the new set to the preferences
-                Preferences.savePreferences();
-
-                // Tell the listener to do something
-                mListener.refreshAll();
-                FullscreenActivity.whattodo = "editset";
-                mListener.openFragment();
-                FullscreenActivity.abort = false;
-                //Close this dialog
-                dismiss();
-            }
-            prog.dismiss();
-        }
-    }
-
     void doSaveSet() {
         // Save the set into the settoload name
         FullscreenActivity.settoload = setListName.getText().toString().trim();
@@ -687,7 +617,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         }
 
         // Popup the are you sure alert into another dialog fragment
-        Uri newsetname = storageAccess.getUriForItem(getActivity(),"Sets","",
+        Uri newsetname = storageAccess.getUriForItem(getActivity(), preferences, "Sets", "",
                 FullscreenActivity.settoload);
 
         // New structure, only give the are you sure prompt if the set name already exists.
@@ -727,9 +657,9 @@ public class PopUpListSetsFragment extends DialogFragment {
             newsetname = newcat_spinner + "__" + newsettitle;
         }
 
-        Uri oldsetfile = storageAccess.getUriForItem(getActivity(), "Sets", "",
+        Uri oldsetfile = storageAccess.getUriForItem(getActivity(), preferences, "Sets", "",
                 FullscreenActivity.setnamechosen);
-        Uri newsetfile = storageAccess.getUriForItem(getActivity(), "Sets", "",
+        Uri newsetfile = storageAccess.getUriForItem(getActivity(), preferences, "Sets", "",
                 newsetname);
 
         boolean exists = storageAccess.uriExists(getActivity(), newsetfile);
@@ -752,6 +682,79 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         setListName.setText("");
         FullscreenActivity.setnamechosen = "";
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class FetchDataTask extends AsyncTask<String, Integer, String> {
+
+        @Override
+        public void onPreExecute() {
+            // Check the directories and clear them of prior content
+            setActions.emptyCacheDirectories(getActivity(), preferences, storageAccess);
+            FullscreenActivity.mySet = "";
+            FullscreenActivity.mSet = null;
+            FullscreenActivity.myParsedSet = null;
+        }
+
+        @Override
+        protected String doInBackground(String... args) {
+            // Now users can load multiple sets and merge them, we need to load each one it turn
+            // We then add the items to a temp string 'allsongsinset'
+            // Once we have loaded them all, we replace the mySet field.
+
+            StringBuilder allsongsinset = new StringBuilder();
+
+            // Split the string by "%_%" - last item will be empty as each set added ends with this
+            String[] tempsets = FullscreenActivity.setnamechosen.split("%_%");
+
+            for (String tempfile : tempsets) {
+                if (tempfile != null && !tempfile.equals("") && !tempfile.isEmpty()) {
+                    try {
+                        FullscreenActivity.settoload = tempfile;
+                        setActions.loadASet(getActivity(), preferences, storageAccess);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    allsongsinset.append(FullscreenActivity.mySet);
+                }
+            }
+
+            // Add all the songs of combined sets back to the mySet
+            FullscreenActivity.mySet = allsongsinset.toString();
+
+            // Reset the options menu
+            setActions.prepareSetList();
+            setActions.indexSongInSet();
+
+            return "LOADED";
+        }
+
+        @Override
+        protected void onCancelled(String result) {
+            Log.d("dataTask", "onCancelled");
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            FullscreenActivity.setView = true;
+
+            if (result.equals("LOADED") && !dataTask.isCancelled()) {
+                // Get the set first item
+                setActions.prepareFirstItem(getActivity(), listSongFiles, storageAccess);
+
+                // Save the new set to the preferences
+                Preferences.savePreferences();
+
+                // Tell the listener to do something
+                mListener.refreshAll();
+                FullscreenActivity.whattodo = "editset";
+                mListener.openFragment();
+                FullscreenActivity.abort = false;
+                //Close this dialog
+                dismiss();
+            }
+            prog.dismiss();
+        }
     }
 
     void doExportSet() {

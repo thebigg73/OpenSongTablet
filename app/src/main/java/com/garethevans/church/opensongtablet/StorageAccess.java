@@ -57,16 +57,15 @@ class StorageAccess {
 
 
     // These are used primarily on start up to initialise stuff
-    String getStoragePreference(Context c) {
-        Preferences preferences = new Preferences();
+    String getStoragePreference(Context c, Preferences preferences) {
         return preferences.getMyPreferenceString(c, "uriTree", null);
     }
 
-    Uri homeFolder(Context c) {
+    Uri homeFolder(Context c, Preferences preferences) {
         // The user specified a storage folder when they started the app
         // However, this might not be the OpenSong folder, but the folder containing it
         // This function is called once when the app starts
-        String uriTree = getStoragePreference(c);
+        String uriTree = getStoragePreference(c, preferences);
         Uri uri;
 
         try {
@@ -95,14 +94,14 @@ class StorageAccess {
         return uri;
     }
 
-    private DocumentFile getAppFolderDocumentFile(Context c) {
+    private DocumentFile getAppFolderDocumentFile(Context c, Preferences preferences) {
         // This simply gets a documentfile location for the OpenSongApp folder
         // It is then saved to FullscreenActivity.
         // FullscreenActivity.uriTree is already valid and set
 
-        String uriTree = getStoragePreference(c);
+        String uriTree = getStoragePreference(c, preferences);
         //Make sure FullscreenActivity.uriTree is set
-        homeFolder(c);
+        homeFolder(c, preferences);
         FullscreenActivity.appHome = null;
         DocumentFile df = documentFileFromRootUri(c, FullscreenActivity.uriTree, uriTree);
 
@@ -126,10 +125,10 @@ class StorageAccess {
         return FullscreenActivity.appHome;
     }
 
-    String createOrCheckRootFolders(Context c) {
+    String createOrCheckRootFolders(Context c, Preferences preferences) {
         try {
             // The OpenSong folder
-            DocumentFile root_df = getAppFolderDocumentFile(c);
+            DocumentFile root_df = getAppFolderDocumentFile(c, preferences);
 
             // Go through each folder and check or create the folder
             for (String folder : rootFolders) {
@@ -216,10 +215,10 @@ class StorageAccess {
         return Uri.fromFile(f);
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private Uri getUriFromPath(Context c, String folder, String subfolder, String filename) {
+    private Uri getUriFromPath(Context c, Preferences preferences, String folder, String subfolder, String filename) {
         // Use the appHome uri
         if (FullscreenActivity.appHome==null) {
-            FullscreenActivity.appHome = getAppFolderDocumentFile(c);
+            FullscreenActivity.appHome = getAppFolderDocumentFile(c, preferences);
         }
 
         Uri uri = FullscreenActivity.appHome.getUri();
@@ -466,29 +465,6 @@ class StorageAccess {
     }
 
 
-/*
-    void createUri(Context c, Uri uri) {
-        if (lollipopOrLater()) {
-            createUri_SAF(c,uri);
-        } else {
-            createUri_File(c,uri);
-        }
-    }
-    private void createUri_SAF(Context c, Uri uri) {
-        if (uri!=null) {
-            String filename = uri.getLastPathSegment();
-            DocumentFile df = DocumentFile.fromTreeUri(c, uri);
-            DocumentFile df_parent = df.getParentFile();
-            df_parent.createFile(null, filename);
-        }
-    }
-    private void createUri_File(Context c, Uri uri) {
-        if (uri!=null) {
-            File f = new File(uri.getPath());
-        }
-    }
-*/
-
 
     // Used to decide on the best storage method (using tree or not)
     //TODO
@@ -500,20 +476,20 @@ class StorageAccess {
 
     // This builds an index of all the songs on the device
     @SuppressLint("NewApi")
-    void listSongs(Context c) {
+    void listSongs(Context c, Preferences preferences) {
         try {
             // Decide if we are using storage access framework or not
             if (lollipopOrLater()) {
-                listSongs_SAF(c);
+                listSongs_SAF(c, preferences);
             } else {
-                listSongs_File(c);
+                listSongs_File(c, preferences);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void listSongs_SAF(Context c) {
+    private void listSongs_SAF(Context c, Preferences preferences) {
         // This gets all songs (including any subfolders)
         FullscreenActivity.songIds = new ArrayList<>();
         FullscreenActivity.songIds.clear();
@@ -521,7 +497,7 @@ class StorageAccess {
         FullscreenActivity.folderIds.clear();
 
         if (FullscreenActivity.appHome==null) {
-            FullscreenActivity.appHome = getAppFolderDocumentFile(c);
+            FullscreenActivity.appHome = getAppFolderDocumentFile(c, preferences);
         }
         DocumentFile df_songs = FullscreenActivity.appHome.findFile("Songs");
         Uri uri = df_songs.getUri();
@@ -566,7 +542,7 @@ class StorageAccess {
             }
         }
 
-        getSongFolderNames(c);
+        getSongFolderNames(c, preferences);
 
         // Remove everything before the actual songs folder
         ArrayList<String> tempfolders = new ArrayList<>();
@@ -583,7 +559,8 @@ class StorageAccess {
         FullscreenActivity.folderIds.clear();
         FullscreenActivity.folderIds = tempfolders;
     }
-    private void listSongs_File(Context c) {
+
+    private void listSongs_File(Context c, Preferences preferences) {
         // We must be using an older version of Android, so stick with File access
         FullscreenActivity.songIds = new ArrayList<>();  // These will be the file locations
         FullscreenActivity.folderIds = new ArrayList<>();
@@ -611,15 +588,15 @@ class StorageAccess {
             }
         }
         Log.d("StorageAccess","folderIds.size()="+FullscreenActivity.folderIds.size());
-        getSongFolderNames(c);
+        getSongFolderNames(c, preferences);
     }
 
-    private void getSongFolderNames(Context c) {
+    private void getSongFolderNames(Context c, Preferences preferences) {
         // Use the folderIds to get the song folders found
         ArrayList<String> folders = new ArrayList<>();
         folders.clear();
         FullscreenActivity.mSongFolderNames = null;
-        String bittoremove = getUriForItem(c,"Songs",FullscreenActivity.whichSongFolder,"").getPath() + "/";
+        String bittoremove = getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder, "").getPath() + "/";
         for (String s:FullscreenActivity.folderIds) {
             folders.add(s.replace(bittoremove, ""));
         }
@@ -657,17 +634,17 @@ class StorageAccess {
     }
 
     // Here are all the file accesses used in the app!!!
-    Uri getUriForItem(Context c, String folder, String subfolder, String filename) {
+    Uri getUriForItem(Context c, Preferences preferences, String folder, String subfolder, String filename) {
         String[] fixedfolders = fixFoldersAndFiles(c, folder, subfolder, filename);
         if (lollipopOrLater()) {
-            return getUriForItem_SAF(c, fixedfolders[0], fixedfolders[1], fixedfolders[2]);
+            return getUriForItem_SAF(c, preferences, fixedfolders[0], fixedfolders[1], fixedfolders[2]);
         } else {
             return getUriForItem_File(c, fixedfolders[0], fixedfolders[1], fixedfolders[2]);
         }
     }
     @SuppressLint("NewApi")
-    private Uri getUriForItem_SAF(Context c, String folder, String subfolder, String filename) {
-        return getUriFromPath(c, folder, subfolder, filename);
+    private Uri getUriForItem_SAF(Context c, Preferences preferences, String folder, String subfolder, String filename) {
+        return getUriFromPath(c, preferences, folder, subfolder, filename);
     }
     private Uri getUriForItem_File(Context c, String folder, String subfolder, String filename) {
         return getUriFromFilePath(c, folder, subfolder, filename);
@@ -733,17 +710,18 @@ class StorageAccess {
         return returnvals;
     }
 
-    boolean createFile(Context c, String mimeType, String folder, String subfolder, String filename) {
+    boolean createFile(Context c, Preferences preferences, String mimeType, String folder, String subfolder, String filename) {
         String[] fixedfolders = fixFoldersAndFiles(c, folder, subfolder, filename);
         if (lollipopOrLater()) {
-            return createFile_SAF(c, mimeType, fixedfolders[0], fixedfolders[1], fixedfolders[2]);
+            return createFile_SAF(c, preferences, mimeType, fixedfolders[0], fixedfolders[1], fixedfolders[2]);
         } else {
             return createFile_File(fixedfolders[0], fixedfolders[1], fixedfolders[2]);
         }
     }
-    private boolean createFile_SAF(Context c, String mimeType, String folder, String subfolder, String filename) {
+
+    private boolean createFile_SAF(Context c, Preferences preferences, String mimeType, String folder, String subfolder, String filename) {
         if (FullscreenActivity.appHome==null) {
-            FullscreenActivity.appHome = getAppFolderDocumentFile(c);
+            FullscreenActivity.appHome = getAppFolderDocumentFile(c, preferences);
         }
         DocumentFile df = FullscreenActivity.appHome;
         DocumentFile df_parent;
@@ -920,13 +898,13 @@ class StorageAccess {
         }
     }
 
-    Uri fixLocalisedUri(Context c, String uriString) {
+    Uri fixLocalisedUri(Context c, Preferences preferences, String uriString) {
         // This checks for localised filenames first and fixes the Uri
         if (uriString.startsWith("../OpenSong/Media/")) {
             // Remove this and get the proper location
             uriString = uriString.replace("../OpenSong/Media/","");
             // Now get the actual uri
-            return getUriForItem(c,"Media","",uriString);
+            return getUriForItem(c, preferences, "Media", "", uriString);
         } else {
             return Uri.parse(uriString);
         }
@@ -1020,7 +998,7 @@ class StorageAccess {
         return al;
     }
 
-    void extractZipFile(Context c, Uri zipUri, String folder, String subfolder, ArrayList<String> zipfolders) {
+    void extractZipFile(Context c, Preferences preferences, Uri zipUri, String folder, String subfolder, ArrayList<String> zipfolders) {
         // This bit could be slow, so it will likely be called in an async task
         ZipInputStream zis = null;
         try {
@@ -1043,8 +1021,8 @@ class StorageAccess {
                 }
 
                 if (oktoimportthisone) {
-                    createFile(c, null, folder, subfolder, ze.getName());
-                    Uri newUri = getUriForItem(c, folder, subfolder, ze.getName());
+                    createFile(c, preferences, null, folder, subfolder, ze.getName());
+                    Uri newUri = getUriForItem(c, preferences, folder, subfolder, ze.getName());
                     OutputStream outputStream = getOutputStream(c, newUri);
 
                     try {
@@ -1071,19 +1049,20 @@ class StorageAccess {
             }
         }
     }
-    String extractOnSongZipFile(Context c, Uri zipUri) {
+
+    String extractOnSongZipFile(Context c, Preferences preferences, Uri zipUri) {
 
         // This bit will take a while, so will be called in an async task
         String message = c.getResources().getString(R.string.success);
 
         // Remove any existing sqlite3 files
-        Uri dbfile = getUriForItem(c,"","","OnSong.Backup.sqlite3");
+        Uri dbfile = getUriForItem(c, preferences, "", "", "OnSong.Backup.sqlite3");
 
         if (uriExists(c,dbfile)) {
             deleteFile(c,dbfile);
         }
 
-        createFile(c,null,"Songs","OnSong","");
+        createFile(c, preferences, null, "Songs", "OnSong", "");
 
         InputStream is;
         ZipArchiveInputStream zis;
@@ -1106,10 +1085,10 @@ class StorageAccess {
 
                     OutputStream out;
                     if (filename.equals("OnSong.Backup.sqlite3") || filename.equals("OnSong.sqlite3")) {
-                        Uri outuri = getUriForItem(c,"","","OnSong.Backup.sqlite3");
+                        Uri outuri = getUriForItem(c, preferences, "", "", "OnSong.Backup.sqlite3");
                         out = getOutputStream(c,outuri);
                     } else {
-                        Uri outuri = getUriForItem(c, "Songs","OnSong",filename);
+                        Uri outuri = getUriForItem(c, preferences, "Songs", "OnSong", filename);
                         out = getOutputStream(c,outuri);
                     }
 
@@ -1169,7 +1148,7 @@ class StorageAccess {
 
                     try {
                         // Now write the modified song
-                        Uri newsong = getUriForItem(c,"Songs","OnSong",str_title+".onsong");
+                        Uri newsong = getUriForItem(c, preferences, "Songs", "OnSong", str_title + ".onsong");
                         OutputStream overWrite = getOutputStream(c,newsong);
                         writeFileFromString(str_content,overWrite);
                     } catch (Exception e) {
@@ -1331,12 +1310,12 @@ class StorageAccess {
         }
     }
 
-    void wipeFolder(Context c, String folder, String subfolder) {
-        Uri uri = getUriForItem(c,folder,subfolder,"");
+    void wipeFolder(Context c, Preferences preferences, String folder, String subfolder) {
+        Uri uri = getUriForItem(c, preferences, folder, subfolder, "");
         // Delete the contents of this folder
         deleteFile(c,uri);
         // Recreate it (now empty)
-        createFile(c, DocumentsContract.Document.MIME_TYPE_DIR,folder,subfolder,"");
+        createFile(c, preferences, DocumentsContract.Document.MIME_TYPE_DIR, folder, subfolder, "");
     }
 
     boolean isXML(Uri uri) {

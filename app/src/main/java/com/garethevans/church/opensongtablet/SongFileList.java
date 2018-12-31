@@ -2,14 +2,11 @@ package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.Build;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.function.UnaryOperator;
 
 // File created by James on 10/22/17.
 
@@ -28,12 +25,13 @@ final class SongFileList {
         currentFileList = new ArrayList<>();
     }
 
-    String[] getSongFileListasArray(Context c, StorageAccess storageAccess) {
-        fileList(c, storageAccess);
-        return currentFileList.toArray(new String[currentFileList.size()]).clone();
+    String[] getSongFileListasArray(Context c, Preferences preferences, StorageAccess storageAccess) {
+        fileList(c, preferences, storageAccess);
+        //return currentFileList.toArray(new String[currentFileList.size()]).clone();
+        return currentFileList.toArray(new String[0]).clone();
     }
 
-    private void fileList(Context c, StorageAccess storageAccess) {
+    private void fileList(Context c, Preferences preferences, StorageAccess storageAccess) {
         currentFileList.clear();
         // Filter out items in this folder
 
@@ -45,7 +43,7 @@ final class SongFileList {
         ArrayList<String> songs_found = new ArrayList<>();
 
         for (String item:filesinfolder) {
-            Uri uri = storageAccess.getUriForItem(c, "Songs",FullscreenActivity.whichSongFolder,item);
+            Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder, item);
             if (!storageAccess.uriIsFile(c,uri)) {
                 folders_found.add(uri.getLastPathSegment());
             } else {

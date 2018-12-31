@@ -64,6 +64,9 @@ public class PopUpImportExternalFile extends DialogFragment {
     // Helper classes
     Bible bibleC;
     StorageAccess storageAccess;
+    Preferences preferences;
+    SongFolders songFolders;
+    ListSongFiles listSongFiles;
     ImportOnSongBackup import_os;
 
     // Folder variables
@@ -115,6 +118,9 @@ public class PopUpImportExternalFile extends DialogFragment {
 
         bibleC = new Bible();
         storageAccess = new StorageAccess();
+        preferences = new Preferences();
+        songFolders = new SongFolders();
+        listSongFiles = new ListSongFiles();
 
         V = inflater.inflate(R.layout.popup_importexternalfile, container, false);
 
@@ -237,7 +243,7 @@ public class PopUpImportExternalFile extends DialogFragment {
             folderlist = new ArrayList<>();
             folderlist.add(getActivity().getString(R.string.options_set));
         } else {
-            ListSongFiles.getAllSongFolders(getActivity(), storageAccess);
+            songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
             folderlist = new ArrayList<>(Arrays.asList(FullscreenActivity.mSongFolderNames));
             if (what.contains("onsong") && !folderlist.contains("OnSong")) {
                 folderlist.add(0, "OnSong");
@@ -327,7 +333,7 @@ public class PopUpImportExternalFile extends DialogFragment {
                 "</song>";
 
         // Write the file
-        Uri scripturefile = storageAccess.getUriForItem(getActivity(),"Scripture","","YouVersion");
+        Uri scripturefile = storageAccess.getUriForItem(getActivity(), preferences, "Scripture", "", "YouVersion");
         OutputStream outputStream = storageAccess.getOutputStream(getActivity(),scripturefile);
         storageAccess.writeFileFromString(text,outputStream);
         completedImport("YouVersion","../Scripture");
@@ -353,7 +359,7 @@ public class PopUpImportExternalFile extends DialogFragment {
     }
 
     void copyFile(String folder, String subfolder, String filename) {
-        Uri newfile = storageAccess.getUriForItem(getActivity(),folder,subfolder,filename);
+        Uri newfile = storageAccess.getUriForItem(getActivity(), preferences, folder, subfolder, filename);
         if (storageAccess.uriExists(getActivity(),newfile) || overwrite) {
             InputStream inputStream = storageAccess.getInputStream(getActivity(), FullscreenActivity.file_uri);
             OutputStream outputStream = storageAccess.getOutputStream(getActivity(), newfile);
@@ -370,9 +376,8 @@ public class PopUpImportExternalFile extends DialogFragment {
     void completedImport(String song, String subfolder) {
         FullscreenActivity.songfilename = song;
         FullscreenActivity.whichSongFolder = subfolder;
-        storageAccess.listSongs(getActivity());
-        ListSongFiles.getAllSongFiles(getActivity(), storageAccess);
-        ListSongFiles.getAllSongFiles(getActivity(), storageAccess);
+        storageAccess.listSongs(getActivity(), preferences);
+        listSongFiles.getAllSongFiles(getActivity(), storageAccess);
         if (mListener!=null) {
             mListener.refreshAll();
         }
@@ -391,7 +396,7 @@ public class PopUpImportExternalFile extends DialogFragment {
 
         @Override
         protected String doInBackground(String... params) {
-            return storageAccess.extractOnSongZipFile(getActivity(),FullscreenActivity.file_uri);
+            return storageAccess.extractOnSongZipFile(getActivity(), preferences, FullscreenActivity.file_uri);
         }
 
         @Override

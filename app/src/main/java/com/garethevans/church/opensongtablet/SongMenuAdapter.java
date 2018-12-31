@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -37,16 +36,17 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
     Context context;
     String[] songs;
     private ArrayList<SongMenuViewItems> songList;
+    Preferences preferences;
     ViewHolder viewHolder;
     // sparse boolean array for checking the state of the items
     private SparseBooleanArray itemStateArray = new SparseBooleanArray();
 
     @SuppressLint("UseSparseArrays")
-    SongMenuAdapter(Context context, ArrayList<SongMenuViewItems> songList) {
+    SongMenuAdapter(Context context, Preferences p, ArrayList<SongMenuViewItems> songList) {
         //super(context, R.layout.songlistitem, songList);
         this.context = context;
         this.songList = songList;
-
+        preferences = p;
         songs = new String[songList.size()];
         this.songs = new String[songList.size()];
         for (int w=0;w<songList.size();w++) {
@@ -138,16 +138,25 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                 // Get the values for this song
                 final SongMenuViewItems song = songList.get(position);
                 final String item_filename = song.getFilename();
-                final String item_title = song.getTitle();
                 String item_author = song.getAuthor();
                 String item_key = song.getKey();
-                boolean item_isinset = song.getInSet();
+                String temp_title;
+                if (item_filename.startsWith("/") && item_filename.endsWith("/")) {
+                    // This is a directory
+                    temp_title = item_filename.replace("/", "");
+                    item_author = "";
+                    item_key = context.getString(R.string.songsinfolder);
 
+                } else {
+                    temp_title = song.getTitle();
+                }
+
+                final String item_title = temp_title;
+                boolean item_isinset = song.getInSet();
 
                 // Get the listener ready for item actions (press and long press items)
                 final Context c = convertView.getContext();
                 mListener = (MyInterface) parent.getContext();
-
 
                 // Hide the empty stuff
                 if (item_author.equals("")) {
@@ -155,6 +164,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                 } else {
                     viewHolder.lblListItemAuthor.setVisibility(View.VISIBLE);
                 }
+
 
                 boolean isdirectory = false;
                 // If this is a directory - hide and disable the checkbox
@@ -248,9 +258,9 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                                     if (FullscreenActivity.ccli_automatic) {
                                         // Now we need to get the song info quickly to log it correctly
                                         // as this might not be the song loaded
-                                        String[] vals = LoadXML.getCCLILogInfo(c, FullscreenActivity.whichSongFolder, item_filename);
+                                        String[] vals = LoadXML.getCCLILogInfo(c, preferences, FullscreenActivity.whichSongFolder, item_filename);
                                         if (vals.length == 4 && vals[0] != null && vals[1] != null && vals[2] != null && vals[3] != null) {
-                                            PopUpCCLIFragment.addUsageEntryToLog(c,FullscreenActivity.whichSongFolder + "/" + item_filename,
+                                            PopUpCCLIFragment.addUsageEntryToLog(c, preferences, FullscreenActivity.whichSongFolder + "/" + item_filename,
                                                     vals[0], vals[1], vals[2], vals[3], "6"); // Printed
                                         }
                                     }

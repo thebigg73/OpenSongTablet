@@ -71,6 +71,8 @@ public class PopUpRandomSongFragment extends DialogFragment {
     boolean songisvalid = false;
     boolean iserror = false;
     StorageAccess storageAccess;
+    Preferences preferences;
+    SongFolders songFolders;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -93,6 +95,8 @@ public class PopUpRandomSongFragment extends DialogFragment {
         saveMe.setVisibility(View.GONE);
 
         storageAccess = new StorageAccess();
+        preferences = new Preferences();
+        songFolders = new SongFolders();
 
         // Initialise the views
         foundSong_Button = V.findViewById(R.id.foundSong_Button);
@@ -103,7 +107,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
 
         // Update the song folders
         FullscreenActivity.songfilelist = new SongFileList();
-        ListSongFiles.getAllSongFolders(getActivity(),storageAccess);
+        songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
 
         // Try to generate the file folders available to choose from and highlight the ones already specified
         generateFolderList();

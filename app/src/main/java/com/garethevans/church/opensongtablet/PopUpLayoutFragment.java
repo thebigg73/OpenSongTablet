@@ -116,7 +116,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
         identifyViews(V);
 
-        SetTypeFace.setTypeface(getActivity());
+        SetTypeFace.setTypeface(getActivity(), preferences);
 
         prepareViews();
 
@@ -563,7 +563,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 */
     public void setButtonBackground(ImageView v, String background) {
 
-        Uri uri = storageAccess.getUriForItem(getActivity(),"Backgrounds","",background);
+        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Backgrounds", "", background);
         if (storageAccess.uriExists(getActivity(),uri)) {
             v.setBackgroundColor(0x00000000);
             RequestOptions myOptions = new RequestOptions()

@@ -74,6 +74,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     boolean downloadcomplete = false;
     TextSongConvert textSongConvert;
     StorageAccess storageAccess;
+    Preferences preferences;
+    SongFolders songFolders;
     Uri downloadedFile;
 
     static PopUpFindNewSongsFragment newInstance() {
@@ -162,6 +164,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         textSongConvert = new TextSongConvert();
         storageAccess = new StorageAccess();
+        preferences = new Preferences();
+        songFolders = new SongFolders();
 
         // Initialise the views
         searchtext_LinearLayout = V.findViewById(R.id.searchtext_LinearLayout);
@@ -1517,7 +1521,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
 
         // Get the uri for the new file
-        Uri uri_newfile = storageAccess.getUriForItem(getActivity(),"Songs",whatfolderselected,nameoffile);
+        Uri uri_newfile = storageAccess.getUriForItem(getActivity(), preferences, "Songs", whatfolderselected, nameoffile);
         Uri uri_newpdffile;
 
         // Get the outputstream
@@ -1529,7 +1533,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         // Get the song select pdf file stuff
         if (FullscreenActivity.whattodo.equals("songselect") && downloadcomplete) {
-            uri_newpdffile = storageAccess.getUriForItem(getActivity(), "Songs", whatfolderselected, nameofpdffile);
+            uri_newpdffile = storageAccess.getUriForItem(getActivity(), preferences, "Songs", whatfolderselected, nameofpdffile);
             outputStreamPDF = storageAccess.getOutputStream(getActivity(),uri_newpdffile);
             inputStream = storageAccess.getInputStream(getActivity(),downloadedFile);
         }
@@ -1556,7 +1560,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         // If we are autologging CCLI information
         if (FullscreenActivity.ccli_automatic) {
-            PopUpCCLIFragment.addUsageEntryToLog(getActivity(),FullscreenActivity.whichSongFolder+"/"+FullscreenActivity.songfilename,
+            PopUpCCLIFragment.addUsageEntryToLog(getActivity(), preferences, FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
                     FullscreenActivity.songfilename, "",
                     "", "", "1"); // Created
         }
@@ -1564,9 +1568,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         Preferences.savePreferences();
 
         // Rebuild the song list
-        storageAccess.listSongs(getActivity());
+        storageAccess.listSongs(getActivity(), preferences);
         ListSongFiles listSongFiles = new ListSongFiles();
-        listSongFiles.songUrisInFolder(getActivity());
+        listSongFiles.songUrisInFolder(getActivity(), preferences);
 
         if (mListener != null) {
             mListener.loadSong();
@@ -1686,7 +1690,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         @Override
         protected String doInBackground(Object... objects) {
             try {
-                ListSongFiles.getAllSongFolders(getActivity(),storageAccess);
+                songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -84,6 +84,7 @@ public class PopUpPadFragment extends DialogFragment {
     Button start_stop_padplay;
     String text;
     boolean validpad;
+    Preferences preferences;
 
     AsyncTask<Object,Void,String> set_pad;
 
@@ -112,6 +113,8 @@ public class PopUpPadFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         mListener.pageButtonAlpha("pad");
+
+        preferences = new Preferences();
 
         View V = inflater.inflate(R.layout.popup_page_pad, container, false);
 
@@ -197,7 +200,7 @@ public class PopUpPadFragment extends DialogFragment {
 
     public void doSave() {
         PopUpEditSongFragment.prepareSongXML();
-        PopUpEditSongFragment.justSaveSongXML(getActivity());
+        PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
         Preferences.savePreferences();
         mListener.loadSong();
         dismiss();
@@ -215,36 +218,29 @@ public class PopUpPadFragment extends DialogFragment {
         public void onNothingSelected(AdapterView<?> parent) {}
     }
 
-    private class popupPad_fileListener implements AdapterView.OnItemSelectedListener {
+    private void startenabled() {
+        validpad = false;
+        StorageAccess storageAccess = new StorageAccess();
+        Uri uri = storageAccess.fixLocalisedUri(getActivity(), preferences, FullscreenActivity.mLinkAudio);
+        Log.d("d", "uri=" + uri);
+        boolean isvalid = storageAccess.uriExists(getActivity(), uri);
 
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view,
-                                   int position, long id) {
-            if (position == 1) {
-                if (FullscreenActivity.mLinkAudio != null &&
-                        (FullscreenActivity.mLinkAudio.isEmpty() || FullscreenActivity.mLinkAudio.equals(""))) {
-                    FullscreenActivity.mPadFile = getResources().getString(R.string.link_audio);
-                    //popupPad_file.setSelection(0);
-                    FullscreenActivity.myToastMessage = getResources().getString(R.string.notset);
-                    ShowToast.showToast(getActivity());
-                    // Try opening the link file popup to get the user to set one
-                    if (mListener!=null) {
-                        FullscreenActivity.whattodo = "page_links";
-                        mListener.openFragment();
-                        //dismiss();
-                    }
-                } else {
-                    FullscreenActivity.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
-                }
-            } else {
-                FullscreenActivity.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
-            }
-            PopUpEditSongFragment.prepareSongXML();
-            PopUpEditSongFragment.justSaveSongXML(getActivity());
+        if (popupPad_file.getSelectedItemPosition() == 0 && popupPad_key.getSelectedItemPosition() > 0) {
+            validpad = true;
+        } else if (popupPad_file.getSelectedItemPosition() == 0 && popupPad_key.getSelectedItemPosition() < 1) {
+            text = getResources().getString(R.string.pad_choose_key);
+            validpad = false;
+
+        } else if (popupPad_file.getSelectedItemPosition() == 1 && isvalid) {
+            validpad = true;
+        } else if (popupPad_file.getSelectedItemPosition() == 1 && !isvalid) {
+            validpad = false;
+            text = getResources().getString(R.string.link_audio) + " - " + getResources().getString(R.string.notset);
+
+        } else if (popupPad_file.getSelectedItemPosition() == 2) {
+            validpad = false;
+            text = getResources().getString(R.string.notset);
         }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {}
     }
 
     private class popupPad_volumeListener implements SeekBar.OnSeekBarChangeListener {
@@ -374,28 +370,36 @@ public class PopUpPadFragment extends DialogFragment {
         }
     }
 
-    private void startenabled() {
-        validpad = false;
-        StorageAccess storageAccess = new StorageAccess();
-        Uri uri = storageAccess.fixLocalisedUri(getActivity(),FullscreenActivity.mLinkAudio);
-        Log.d("d","uri="+uri);
-        boolean isvalid = storageAccess.uriExists(getActivity(),uri);
+    private class popupPad_fileListener implements AdapterView.OnItemSelectedListener {
 
-        if (popupPad_file.getSelectedItemPosition() == 0 && popupPad_key.getSelectedItemPosition() > 0) {
-            validpad = true;
-        } else if (popupPad_file.getSelectedItemPosition() == 0 && popupPad_key.getSelectedItemPosition() < 1) {
-            text = getResources().getString(R.string.pad_choose_key);
-            validpad = false;
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view,
+                                   int position, long id) {
+            if (position == 1) {
+                if (FullscreenActivity.mLinkAudio != null &&
+                        (FullscreenActivity.mLinkAudio.isEmpty() || FullscreenActivity.mLinkAudio.equals(""))) {
+                    FullscreenActivity.mPadFile = getResources().getString(R.string.link_audio);
+                    //popupPad_file.setSelection(0);
+                    FullscreenActivity.myToastMessage = getResources().getString(R.string.notset);
+                    ShowToast.showToast(getActivity());
+                    // Try opening the link file popup to get the user to set one
+                    if (mListener != null) {
+                        FullscreenActivity.whattodo = "page_links";
+                        mListener.openFragment();
+                        //dismiss();
+                    }
+                } else {
+                    FullscreenActivity.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
+                }
+            } else {
+                FullscreenActivity.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
+            }
+            PopUpEditSongFragment.prepareSongXML();
+            PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+        }
 
-        } else if (popupPad_file.getSelectedItemPosition() == 1 && isvalid) {
-            validpad = true;
-        } else if (popupPad_file.getSelectedItemPosition() == 1 && !isvalid) {
-            validpad = false;
-            text = getResources().getString(R.string.link_audio) + " - " + getResources().getString(R.string.notset);
-
-        } else if (popupPad_file.getSelectedItemPosition() == 2) {
-            validpad = false;
-            text = getResources().getString(R.string.notset);
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
         }
     }
 

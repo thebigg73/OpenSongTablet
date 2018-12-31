@@ -24,16 +24,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 public class PopUpImportExportOSBFragment extends DialogFragment {
@@ -93,6 +90,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
     SwitchCompat overwrite;
     StorageAccess storageAccess;
     ExportPreparer exportPreparer;
+    Preferences preferences;
     ProgressBar progressBar;
     String error;
     ArrayList<DocumentFile> documentFolders;
@@ -122,6 +120,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_importexportosb, container, false);
 
         storageAccess = new StorageAccess();
+        preferences = new Preferences();
         error = getActivity().getResources().getString(R.string.backup_error);
 
         TextView title = V.findViewById(R.id.dialogtitle);
@@ -238,7 +237,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                exportPreparer.createSelectedOSB(getActivity(),selectednote, storageAccess);
+                exportPreparer.createSelectedOSB(getActivity(), preferences, selectednote, storageAccess);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -417,7 +416,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                 ZipEntry ze;
 
                 // Create a reference to the main songs folder
-                Uri main_uri = storageAccess.getUriForItem(getActivity(),"Songs","","");
+                Uri main_uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", "", "");
                 createdfolders.add("MAIN");
                 documentFolders.add(DocumentFile.fromSingleUri(getActivity(),main_uri));
 
@@ -444,8 +443,8 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                         // If not, add it
                         if (ze.isDirectory()) {
                             if (!createdfolders.contains(ze.getName())) {
-                                Uri folder_uri = storageAccess.getUriForItem(getActivity(),"Songs","",ze.getName());
-                                storageAccess.createFile(getActivity(), null, "Songs", ze.getName(), "");
+                                Uri folder_uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", "", ze.getName());
+                                storageAccess.createFile(getActivity(), preferences, null, "Songs", ze.getName(), "");
                                 createdfolders.add(ze.getName());
                                 documentFolders.add(DocumentFile.fromSingleUri(getActivity(),folder_uri));
                                 publishProgress(numfile + "&&_" + ze.getName());
@@ -455,7 +454,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                         // If this is a file, check if it exists, if not, create it
                         if (!ze.isDirectory()) {
                             // Get a uri for the song
-                            Uri file_uri = storageAccess.getUriForItem(getActivity(),"Songs","",ze.getName());
+                            Uri file_uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", "", ze.getName());
 
                             publishProgress(numfile + "&&_" + ze.getName());
 
@@ -475,7 +474,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                                         justcreated = true;
                                     } else {
                                         // The long way...
-                                        storageAccess.createFile(getActivity(),null, "Songs","",ze.getName());
+                                        storageAccess.createFile(getActivity(), preferences, null, "Songs", "", ze.getName());
                                         justcreated = true;
                                     }
                                 } else {

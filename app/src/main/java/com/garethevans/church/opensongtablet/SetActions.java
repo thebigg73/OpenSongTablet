@@ -88,7 +88,8 @@ public class SetActions {
         }
         return filtered;
     }
-    void loadASet(Context c, StorageAccess storageAccess) throws XmlPullParserException, IOException {
+
+    void loadASet(Context c, Preferences preferences, StorageAccess storageAccess) throws XmlPullParserException, IOException {
 
         FullscreenActivity.mySetXML = "";
         FullscreenActivity.myParsedSet = null;
@@ -97,7 +98,7 @@ public class SetActions {
         FullscreenActivity.mySet = "";
 
         // Empty the _cache folders
-        emptyCacheDirectories(c,storageAccess);
+        emptyCacheDirectories(c, preferences, storageAccess);
 
 
         FullscreenActivity.lastSetName = FullscreenActivity.settoload;
@@ -105,7 +106,7 @@ public class SetActions {
         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
         factory.setNamespaceAware(true);
         xpp = factory.newPullParser();
-        Uri uri = storageAccess.getUriForItem(c,"Sets","",FullscreenActivity.settoload);
+        Uri uri = storageAccess.getUriForItem(c, preferences, "Sets", "", FullscreenActivity.settoload);
         String utf = storageAccess.getUTFEncoding(c,uri);
         InputStream inputStream = storageAccess.getInputStream(c,uri);
         xpp.setInput(inputStream, utf);
@@ -123,15 +124,15 @@ public class SetActions {
                             break;
                         case "scripture":
                             // Get Scripture
-                            getScripture(c, storageAccess);
+                            getScripture(c, preferences, storageAccess);
                             break;
                         case "custom":
                             // Get Custom (Note or slide or variation)
-                            getCustom(c, storageAccess);
+                            getCustom(c, preferences, storageAccess);
                             break;
                         case "image":
                             // Get the Image(s)
-                            getImage(c, storageAccess);
+                            getImage(c, preferences, storageAccess);
                             break;
                     }
                 }
@@ -277,11 +278,11 @@ public class SetActions {
         FullscreenActivity.whichDirection = "R2L";
     }
 
-    void saveSetMessage(Context c, StorageAccess storageAccess) {
+    void saveSetMessage(Context c, Preferences preferences, ListSongFiles listSongFiles, StorageAccess storageAccess) {
         FullscreenActivity.whattodo = "";
         if (FullscreenActivity.mSetList!=null && FullscreenActivity.mSetList.length>0) {
             CreateNewSet createNewSet = new CreateNewSet();
-            if (!createNewSet.doCreation(c, storageAccess)) {
+            if (!createNewSet.doCreation(c, preferences, listSongFiles, storageAccess)) {
                 FullscreenActivity.myToastMessage = c.getString(R.string.error_notset);
             }
         } else if (FullscreenActivity.mSetList!=null) {
@@ -308,13 +309,13 @@ public class SetActions {
                 c.getString(R.string.ok);
     }
 
-    void deleteSet(Context c, StorageAccess storageAccess) {
+    void deleteSet(Context c, Preferences preferences, StorageAccess storageAccess) {
         String[] tempsets = FullscreenActivity.setnamechosen.split("%_%");
         FullscreenActivity.myToastMessage = "";
         StringBuilder message = new StringBuilder();
         for (String tempfile:tempsets) {
             if (tempfile!=null && !tempfile.equals("") && !tempfile.isEmpty()) {
-                Uri uri = storageAccess.getUriForItem(c,"Sets","",tempfile);
+                Uri uri = storageAccess.getUriForItem(c, preferences, "Sets", "", tempfile);
                 if (storageAccess.deleteFile(c,uri)) {
                     message.append(tempfile).append(", ");
                 }
@@ -418,15 +419,15 @@ public class SetActions {
         return false;
     }
 
-    void emptyCacheDirectories(Context c, StorageAccess storageAccess) {
-        storageAccess.wipeFolder(c, "Scripture","_cache");
-        storageAccess.wipeFolder(c, "Slides","_cache");
-        storageAccess.wipeFolder(c, "Notes","_cache");
-        storageAccess.wipeFolder(c, "Images","_cache");
-        storageAccess.wipeFolder(c, "Variations","_cache");
+    void emptyCacheDirectories(Context c, Preferences preferences, StorageAccess storageAccess) {
+        storageAccess.wipeFolder(c, preferences, "Scripture", "_cache");
+        storageAccess.wipeFolder(c, preferences, "Slides", "_cache");
+        storageAccess.wipeFolder(c, preferences, "Notes", "_cache");
+        storageAccess.wipeFolder(c, preferences, "Images", "_cache");
+        storageAccess.wipeFolder(c, preferences, "Variations", "_cache");
     }
 
-    private void writeTempSlide(String where, String what, Context c, StorageAccess storageAccess) throws IOException {
+    private void writeTempSlide(String where, String what, Context c, Preferences preferences, StorageAccess storageAccess) throws IOException {
         // Fix the custom name so there are no illegal characters
         what = what.replaceAll("[|?*<\":>+\\[\\]']", " ");
         String set_item;
@@ -456,7 +457,7 @@ public class SetActions {
             setprefix  = "$**_**" + c.getResources().getString(R.string.note) + "/";
         }
 
-        Uri uri = storageAccess.getUriForItem(c,foldername,subfoldername,what);
+        Uri uri = storageAccess.getUriForItem(c, preferences, foldername, subfoldername, what);
         OutputStream outputStream = storageAccess.getOutputStream(c, uri);
         set_item = setprefix + what + "_**$";
 
@@ -522,7 +523,7 @@ public class SetActions {
 
     }
 
-    private void getScripture(Context c, StorageAccess storageAccess) throws IOException, XmlPullParserException {
+    private void getScripture(Context c, Preferences preferences, StorageAccess storageAccess) throws IOException, XmlPullParserException {
         // Ok parse this bit seperately.  Initialise the values
         String scripture_title = "";
         String scripture_translation = "";
@@ -643,12 +644,12 @@ public class SetActions {
         key_line = "";
         hymn_number = "";
 
-        writeTempSlide(c.getResources().getString(R.string.scripture), scripture_title,c,storageAccess);
+        writeTempSlide(c.getResources().getString(R.string.scripture), scripture_title, c, preferences, storageAccess);
 
         xpp.nextTag();
      }
 
-    private void getCustom(Context c, StorageAccess storageAccess) throws IOException, XmlPullParserException {
+    private void getCustom(Context c, Preferences preferences, StorageAccess storageAccess) throws IOException, XmlPullParserException {
         // Ok parse this bit seperately.  Could be a note or a slide or a variation
         // Notes have # Note # - in the name
         // Variations have # Variation # - in the name
@@ -728,11 +729,11 @@ public class SetActions {
         lyrics = custom_text.toString();
         hymn_number = "";
 
-        writeTempSlide(noteorslide, custom_name,c,storageAccess);
+        writeTempSlide(noteorslide, custom_name, c, preferences, storageAccess);
 
     }
 
-    private void getImage(Context c, StorageAccess storageAccess) throws IOException, XmlPullParserException {
+    private void getImage(Context c, Preferences preferences, StorageAccess storageAccess) throws IOException, XmlPullParserException {
         // Ok parse this bit separately.  This could have multiple images
         String image_name = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
         String image_seconds = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "seconds"));
@@ -804,7 +805,7 @@ public class SetActions {
                                 image_title = new StringBuilder(c.getResources().getString(R.string.image));
                             }
 
-                            Uri uri = storageAccess.getUriForItem(c, "Images", "_cache",
+                            Uri uri = storageAccess.getUriForItem(c, preferences, "Images", "_cache",
                                     image_title.toString() + imagenums + image_type);
                             OutputStream outputStream = storageAccess.getOutputStream(c, uri);
                             byte[] decodedString = Base64.decode(image_content, Base64.DEFAULT);
@@ -843,7 +844,7 @@ public class SetActions {
         hymn_number = hymn_number_imagecode.toString();
         key_line = image_notes;
         lyrics = slide_image_titles.toString().trim();
-        writeTempSlide(c.getResources().getString(R.string.image),title,c,storageAccess);
+        writeTempSlide(c.getResources().getString(R.string.image), title, c, preferences, storageAccess);
     }
 
     private String fixNull(String s) {
@@ -853,7 +854,7 @@ public class SetActions {
         return s;
     }
 
-    void prepareFirstItem(Context c, StorageAccess storageAccess) {
+    void prepareFirstItem(Context c, ListSongFiles listSongFiles, StorageAccess storageAccess) {
         // If we have just loaded a set, and it isn't empty,  load the first item
         if (FullscreenActivity.mSetList.length>0) {
             FullscreenActivity.whatsongforsetwork = FullscreenActivity.mSetList[0];
@@ -866,7 +867,7 @@ public class SetActions {
             getSongFileAndFolder(c);
 
             // Match the song folder
-            ListSongFiles.getAllSongFiles(c,storageAccess);
+            listSongFiles.getAllSongFiles(c, storageAccess);
 
             // Get the index of the song in the current set
             indexSongInSet();
@@ -952,7 +953,7 @@ public class SetActions {
         }
     }
 
-    void doMoveInSet(Context c, StorageAccess storageAccess) {
+    void doMoveInSet(Context c, ListSongFiles listSongFiles, StorageAccess storageAccess) {
         mListener = (MyInterface) c;
 
         boolean justmovingsections = false;
@@ -1012,7 +1013,7 @@ public class SetActions {
             Preferences.savePreferences();
 
             // Match the song folder
-            ListSongFiles.getAllSongFiles(c, storageAccess);
+            listSongFiles.getAllSongFiles(c, storageAccess);
 
             FullscreenActivity.setMoveDirection = "";
             mListener.loadSong();

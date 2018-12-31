@@ -32,9 +32,10 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.cast.CastPresentation;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 
-//import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+
+//import java.io.File;
 
 public class PresentationService extends CastRemoteDisplayLocalService {
 
@@ -171,6 +172,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         static Uri vidUri;
 
         static StorageAccess storageAccess;
+        static Preferences preferences;
 
         //static File img1File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage1);
         //static File img2File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage2);
@@ -210,66 +212,58 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         @SuppressLint("StaticFieldLeak")
         static Context c;
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.cast_screen);
-            storageAccess = new StorageAccess();
-
-            pageHolder                   = findViewById(R.id.pageHolder);
-            projectedPage_RelativeLayout = findViewById(R.id.projectedPage_RelativeLayout);
-            projected_LinearLayout       = findViewById(R.id.projected_LinearLayout);
-            projected_ImageView          = findViewById(R.id.projected_ImageView);
-            projected_BackgroundImage    = findViewById(R.id.projected_BackgroundImage);
-            projected_TextureView        = findViewById(R.id.projected_TextureView);
-            projected_Logo               = findViewById(R.id.projected_Logo);
-            songinfo_TextView            = findViewById(R.id.songinfo_TextView);
-            presentermode_bottombit      = findViewById(R.id.presentermode_bottombit);
-            presentermode_title          = findViewById(R.id.presentermode_title);
-            presentermode_author         = findViewById(R.id.presentermode_author);
-            presentermode_copyright      = findViewById(R.id.presentermode_copyright);
-            presentermode_alert          = findViewById(R.id.presentermode_alert);
-            bottom_infobar               = findViewById(R.id.bottom_infobar);
-            col1_1                       = findViewById(R.id.col1_1);
-            col1_2                       = findViewById(R.id.col1_2);
-            col2_2                       = findViewById(R.id.col2_2);
-            col1_3                       = findViewById(R.id.col1_3);
-            col2_3                       = findViewById(R.id.col2_3);
-            col3_3                       = findViewById(R.id.col3_3);
-
-            c = projectedPage_RelativeLayout.getContext();
-
-            // Set up the custom background animations (to base on final alpha)
-            prepareBackgroundAnimations();
-
-            // Set the default background image
-            setDefaultBackgroundImage();
-
-            // Based on the mode we are in, hide the appropriate stuff at the bottom of the page
-            matchPresentationToMode();
-
-            // Change margins
-            changeMargins();
-
-            // Decide on screen sizes
-            getScreenSizes();
-
-            // Set up the logo
-            setUpLogo();
-
-            // Prepare the display after 2 secs (a chance for stuff to be measured and show the logo
-            Handler h = new Handler();
-            h.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (!FullscreenActivity.whichMode.equals("Presentation")) {
-                        normalStartUp();
-                    } else {
-                        // Switch to the user background and logo
-                        presenterStartUp();
-                    }
+        // The logo stuff
+        @SuppressWarnings("deprecation")
+        static void setUpLogo() {
+            // If the customLogo doesn't exist, use the default one
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            int imgwidth = 1024;
+            int imgheight = 500;
+            float xscale;
+            float yscale;
+            boolean usingcustom = false;
+            Uri customLogo = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.customLogo);
+            if (storageAccess.uriExists(c, customLogo)) {
+                InputStream inputStream = storageAccess.getInputStream(c, customLogo);
+                // Get the sizes of the custom logo
+                BitmapFactory.decodeStream(inputStream, null, options);
+                imgwidth = options.outWidth;
+                imgheight = options.outHeight;
+                if (imgwidth > 0 && imgheight > 0) {
+                    usingcustom = true;
                 }
-            },2000);
+            }
+
+            xscale = ((float) availableWidth_1col * FullscreenActivity.customLogoSize) / (float) imgwidth;
+            yscale = ((float) availableScreenHeight * FullscreenActivity.customLogoSize) / (float) imgheight;
+
+            if (xscale > yscale) {
+                xscale = yscale;
+            }
+
+            int logowidth = (int) ((float) imgwidth * xscale);
+            int logoheight = (int) ((float) imgheight * xscale);
+
+            RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(logowidth, logoheight);
+            rlp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+            projected_Logo.setLayoutParams(rlp);
+
+            if (usingcustom) {
+                RequestOptions myOptions = new RequestOptions()
+                        .fitCenter()
+                        .override(logowidth, logoheight);
+                Glide.with(c).load(customLogo).apply(myOptions).into(projected_Logo);
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    projected_Logo.setImageDrawable(c.getResources().getDrawable(R.drawable.ost_logo, c.getTheme()));
+                } else {
+                    projected_Logo.setImageDrawable(c.getResources().getDrawable(R.drawable.ost_logo));
+                }
+            }
+            if (PresenterMode.logoButton_isSelected) {
+                projected_Logo.startAnimation(logo_fadein);
+            }
         }
 
         // Setup some default stuff
@@ -362,58 +356,66 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             availableWidth_3col = (int) ((float)availableScreenWidth / 3.0f) - (padding*4);
         }
 
-        // The logo stuff
-        @SuppressWarnings("deprecation")
-        static void setUpLogo() {
-            // If the customLogo doesn't exist, use the default one
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            int imgwidth = 1024;
-            int imgheight = 500;
-            float xscale;
-            float yscale;
-            boolean usingcustom = false;
-            Uri customLogo = storageAccess.getUriForItem(c,"Backgrounds","",FullscreenActivity.customLogo);
-            if (storageAccess.uriExists(c,customLogo)) {
-                InputStream inputStream = storageAccess.getInputStream(c, customLogo);
-                // Get the sizes of the custom logo
-                BitmapFactory.decodeStream(inputStream,null,options);
-                imgwidth = options.outWidth;
-                imgheight = options.outHeight;
-                if (imgwidth>0 && imgheight>0) {
-                    usingcustom = true;
-                }
+        // Change background images/videos
+        static void fixBackground() {
+            img1Uri = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.backgroundImage1);
+            img2Uri = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.backgroundImage2);
+            vid1Uri = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.backgroundVideo1);
+            vid2Uri = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.backgroundVideo2);
+
+            // Decide if user is using video or image for background
+            switch (FullscreenActivity.backgroundTypeToUse) {
+                case "image":
+                    projected_BackgroundImage.setVisibility(View.VISIBLE);
+                    projected_TextureView.setVisibility(View.INVISIBLE);
+                    if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
+                        mMediaPlayer.pause();
+                    }
+                    if (FullscreenActivity.backgroundToUse.equals("img1")) {
+                        imgUri = img1Uri;
+                    } else {
+                        imgUri = img2Uri;
+                    }
+
+                    if (storageAccess.uriExists(c, imgUri)) {
+                        if (imgUri != null && imgUri.getLastPathSegment() != null && imgUri.getLastPathSegment().contains("ost_bg.png")) {
+                            projected_BackgroundImage.setImageDrawable(defimage);
+                        } else {
+                            RequestOptions myOptions = new RequestOptions()
+                                    .centerCrop();
+                            Glide.with(c).load(imgUri).apply(myOptions).into(projected_BackgroundImage);
+                        }
+                        projected_BackgroundImage.setVisibility(View.VISIBLE);
+                    }
+                    break;
+                case "video":
+                    projected_BackgroundImage.setVisibility(View.INVISIBLE);
+                    projected_TextureView.setVisibility(View.VISIBLE);
+
+                    if (FullscreenActivity.backgroundToUse.equals("vid1")) {
+                        vidUri = vid1Uri;
+                    } else {
+                        vidUri = vid2Uri;
+                    }
+                    try {
+                        Log.d("d", "Trying to load video background");
+                        reloadVideo();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    myBitmap = null;
+                    dr = null;
+                    projected_BackgroundImage.setImageDrawable(null);
+                    projected_BackgroundImage.setVisibility(View.GONE);
+                    break;
+                default:
+                    myBitmap = null;
+                    dr = null;
+                    projected_BackgroundImage.setImageDrawable(null);
+                    projected_BackgroundImage.setVisibility(View.GONE);
+                    break;
             }
-
-            xscale = ((float) availableWidth_1col * FullscreenActivity.customLogoSize) / (float) imgwidth;
-            yscale = ((float) availableScreenHeight * FullscreenActivity.customLogoSize) / (float) imgheight;
-
-            if (xscale>yscale) {
-                xscale = yscale;
-            }
-
-            int logowidth  = (int) ((float)imgwidth  * xscale);
-            int logoheight = (int) ((float)imgheight * xscale);
-
-            RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(logowidth,logoheight);
-            rlp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-            projected_Logo.setLayoutParams(rlp);
-
-            if (usingcustom) {
-                RequestOptions myOptions = new RequestOptions()
-                        .fitCenter()
-                        .override(logowidth,logoheight);
-                Glide.with(c).load(customLogo).apply(myOptions).into(projected_Logo);
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    projected_Logo.setImageDrawable(c.getResources().getDrawable(R.drawable.ost_logo,c.getTheme()));
-                } else {
-                    projected_Logo.setImageDrawable(c.getResources().getDrawable(R.drawable.ost_logo));
-                }
-            }
-            if (PresenterMode.logoButton_isSelected) {
-                projected_Logo.startAnimation(logo_fadein);
-            }
+            updateAlpha();
         }
         static void showLogo() {
             // Animate out the lyrics if they were visible and animate in the logo
@@ -595,66 +597,13 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             }, FullscreenActivity.presoTransitionTime);
         }
 
-        // Change background images/videos
-        static void fixBackground() {
-            img1Uri = storageAccess.getUriForItem(c,"Backgrounds","",FullscreenActivity.backgroundImage1);
-            img2Uri = storageAccess.getUriForItem(c,"Backgrounds","",FullscreenActivity.backgroundImage2);
-            vid1Uri = storageAccess.getUriForItem(c,"Backgrounds","",FullscreenActivity.backgroundVideo1);
-            vid2Uri = storageAccess.getUriForItem(c,"Backgrounds","",FullscreenActivity.backgroundVideo2);
-
-            // Decide if user is using video or image for background
-            switch (FullscreenActivity.backgroundTypeToUse) {
-                case "image":
-                    projected_BackgroundImage.setVisibility(View.VISIBLE);
-                    projected_TextureView.setVisibility(View.INVISIBLE);
-                    if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
-                        mMediaPlayer.pause();
-                    }
-                    if (FullscreenActivity.backgroundToUse.equals("img1")) {
-                        imgUri = img1Uri;
-                    } else {
-                        imgUri = img2Uri;
-                    }
-
-                    if (storageAccess.uriExists(c,imgUri)) {
-                        if (imgUri.getLastPathSegment().contains("ost_bg.png")) {
-                            projected_BackgroundImage.setImageDrawable(defimage);
-                        } else {
-                            RequestOptions myOptions = new RequestOptions()
-                                    .centerCrop();
-                            Glide.with(c).load(imgUri).apply(myOptions).into(projected_BackgroundImage);
-                        }
-                        projected_BackgroundImage.setVisibility(View.VISIBLE);
-                    }
-                    break;
-                case "video":
-                    projected_BackgroundImage.setVisibility(View.INVISIBLE);
-                    projected_TextureView.setVisibility(View.VISIBLE);
-
-                    if (FullscreenActivity.backgroundToUse.equals("vid1")) {
-                        vidUri = vid1Uri;
-                    } else {
-                        vidUri = vid2Uri;
-                    }
-                    try {
-                        Log.d("d","Trying to load video background");
-                        reloadVideo();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    myBitmap = null;
-                    dr = null;
-                    projected_BackgroundImage.setImageDrawable(null);
-                    projected_BackgroundImage.setVisibility(View.GONE);
-                    break;
-                default:
-                    myBitmap = null;
-                    dr = null;
-                    projected_BackgroundImage.setImageDrawable(null);
-                    projected_BackgroundImage.setVisibility(View.GONE);
-                    break;
-            }
-            updateAlpha();
+        static void doPDFPage() {
+            Bitmap bmp = ProcessSong.createPDFPage(c, preferences, storageAccess, availableScreenWidth, availableScreenHeight, "Y");
+            projected_ImageView.setVisibility(View.GONE);
+            projected_ImageView.setBackgroundColor(0xffffffff);
+            projected_ImageView.setImageBitmap(bmp);
+            projected_ImageView.setVisibility(View.VISIBLE);
+            animateIn();
         }
 
 
@@ -728,13 +677,67 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             tv.startAnimation(in);
         }
 
-        static void doPDFPage() {
-            Bitmap bmp = ProcessSong.createPDFPage(c, storageAccess, availableScreenWidth, availableScreenHeight, "Y");
-            projected_ImageView.setVisibility(View.GONE);
-            projected_ImageView.setBackgroundColor(0xffffffff);
-            projected_ImageView.setImageBitmap(bmp);
-            projected_ImageView.setVisibility(View.VISIBLE);
-            animateIn();
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.cast_screen);
+            storageAccess = new StorageAccess();
+            preferences = new Preferences();
+
+            pageHolder = findViewById(R.id.pageHolder);
+            projectedPage_RelativeLayout = findViewById(R.id.projectedPage_RelativeLayout);
+            projected_LinearLayout = findViewById(R.id.projected_LinearLayout);
+            projected_ImageView = findViewById(R.id.projected_ImageView);
+            projected_BackgroundImage = findViewById(R.id.projected_BackgroundImage);
+            projected_TextureView = findViewById(R.id.projected_TextureView);
+            projected_Logo = findViewById(R.id.projected_Logo);
+            songinfo_TextView = findViewById(R.id.songinfo_TextView);
+            presentermode_bottombit = findViewById(R.id.presentermode_bottombit);
+            presentermode_title = findViewById(R.id.presentermode_title);
+            presentermode_author = findViewById(R.id.presentermode_author);
+            presentermode_copyright = findViewById(R.id.presentermode_copyright);
+            presentermode_alert = findViewById(R.id.presentermode_alert);
+            bottom_infobar = findViewById(R.id.bottom_infobar);
+            col1_1 = findViewById(R.id.col1_1);
+            col1_2 = findViewById(R.id.col1_2);
+            col2_2 = findViewById(R.id.col2_2);
+            col1_3 = findViewById(R.id.col1_3);
+            col2_3 = findViewById(R.id.col2_3);
+            col3_3 = findViewById(R.id.col3_3);
+
+            c = projectedPage_RelativeLayout.getContext();
+
+            // Set up the custom background animations (to base on final alpha)
+            prepareBackgroundAnimations();
+
+            // Set the default background image
+            setDefaultBackgroundImage();
+
+            // Based on the mode we are in, hide the appropriate stuff at the bottom of the page
+            matchPresentationToMode();
+
+            // Change margins
+            changeMargins();
+
+            // Decide on screen sizes
+            getScreenSizes();
+
+            // Set up the logo
+            setUpLogo();
+
+            // Prepare the display after 2 secs (a chance for stuff to be measured and show the logo
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!FullscreenActivity.whichMode.equals("Presentation")) {
+                        normalStartUp();
+                    } else {
+                        // Switch to the user background and logo
+                        presenterStartUp();
+                    }
+                }
+            }, 2000);
         }
         static void doImagePage() {
             projected_ImageView.setVisibility(View.GONE);

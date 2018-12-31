@@ -40,7 +40,7 @@ class ExportPreparer {
     private Backup_Create_Selected backup_create_selected;
     private ZipOutputStream outSelected;
 
-    Intent exportSet(Context c, StorageAccess storageAccess) {
+    Intent exportSet(Context c, Preferences preferences, StorageAccess storageAccess) {
         String nicename = FullscreenActivity.settoload;
         Uri texturi = null;
         Uri desktopuri = null;
@@ -48,7 +48,7 @@ class ExportPreparer {
         Uri seturi;
 
         // Read in the set
-        setParser(c,storageAccess);
+        setParser(c, preferences, storageAccess);
 
         if (FullscreenActivity.settoload.contains("__")) {
             String[] bits = FullscreenActivity.settoload.split("__");
@@ -125,9 +125,9 @@ class ExportPreparer {
                 boolean isimage = false;
                 String s = songtoload.getLastPathSegment();
 
-                if (s.endsWith(".jpg") || s.endsWith(".JPG") || s.endsWith(".jpeg") || s.endsWith(".JPEG") ||
+                if (s != null && (s.endsWith(".jpg") || s.endsWith(".JPG") || s.endsWith(".jpeg") || s.endsWith(".JPEG") ||
                         s.endsWith(".gif") || s.endsWith(".GIF") || s.endsWith(".png") || s.endsWith(".PNG") ||
-                        s.endsWith(".bmp") || s.endsWith(".BMP")) {
+                        s.endsWith(".bmp") || s.endsWith(".BMP"))) {
                     isimage = true;
                 }
 
@@ -156,7 +156,7 @@ class ExportPreparer {
         return emailIntent;
     }
 
-    Intent exportSong(Context c, Bitmap bmp, StorageAccess storageAccess) {
+    Intent exportSong(Context c, Preferences preferences, Bitmap bmp, StorageAccess storageAccess) {
         // Prepare the appropriate attachments
         String emailcontent = "";
         Uri text = null;
@@ -169,7 +169,7 @@ class ExportPreparer {
         Bitmap pdfbmp = bmp.copy(bmp.getConfig(),true);
 
         // Prepare the song uri and input stream
-        Uri uriinput = storageAccess.getUriForItem(c,"Song",FullscreenActivity.whichSongFolder,
+        Uri uriinput = storageAccess.getUriForItem(c, preferences, "Song", FullscreenActivity.whichSongFolder,
                 FullscreenActivity.songfilename);
         InputStream inputStream = storageAccess.getInputStream(c,uriinput);
 
@@ -178,7 +178,7 @@ class ExportPreparer {
 
         emailcontent += exportText_String;
         if (FullscreenActivity.exportText) {
-            text = storageAccess.getUriForItem(c,"Export","",
+            text = storageAccess.getUriForItem(c, preferences, "Export", "",
                     FullscreenActivity.songfilename+".txt");
             OutputStream outputStream = storageAccess.getOutputStream(c,text);
             storageAccess.writeFileFromString(exportText_String,outputStream);
@@ -186,7 +186,7 @@ class ExportPreparer {
 
         if (FullscreenActivity.exportOpenSongApp) {
             // Prepare an ost version of the song.
-            ost = storageAccess.getUriForItem(c,"Export","",
+            ost = storageAccess.getUriForItem(c, preferences, "Export", "",
                     FullscreenActivity.songfilename+".ost");
             OutputStream outputStream = storageAccess.getOutputStream(c,ost);
             storageAccess.copyFile(inputStream,outputStream);
@@ -194,7 +194,7 @@ class ExportPreparer {
 
         if (FullscreenActivity.exportDesktop) {
             // Prepare a desktop version of the song.
-            desktop = storageAccess.getUriForItem(c,"Export","",
+            desktop = storageAccess.getUriForItem(c, preferences, "Export", "",
                     FullscreenActivity.songfilename);
             OutputStream outputStream = storageAccess.getOutputStream(c,desktop);
             storageAccess.copyFile(inputStream,outputStream);
@@ -203,7 +203,7 @@ class ExportPreparer {
         if (FullscreenActivity.exportChordPro) {
             // Prepare a chordpro version of the song.
             String exportChordPro_String = prepareChordProFile(c);
-            chopro = storageAccess.getUriForItem(c,"Export","",
+            chopro = storageAccess.getUriForItem(c, preferences, "Export", "",
                     FullscreenActivity.songfilename+".chopro");
             OutputStream outputStream = storageAccess.getOutputStream(c,chopro);
             storageAccess.writeFileFromString(exportChordPro_String,outputStream);
@@ -212,7 +212,7 @@ class ExportPreparer {
         if (FullscreenActivity.exportOnSong) {
             // Prepare an onsong version of the song.
             String exportOnSong_String = prepareOnSongFile(c);
-            onsong = storageAccess.getUriForItem(c,"Export","",
+            onsong = storageAccess.getUriForItem(c, preferences, "Export", "",
                     FullscreenActivity.songfilename+".onsong");
             OutputStream outputStream = storageAccess.getOutputStream(c,onsong);
             storageAccess.writeFileFromString(exportOnSong_String,outputStream);
@@ -220,7 +220,7 @@ class ExportPreparer {
 
         if (FullscreenActivity.exportImage) {
             // Prepare an image/png version of the song.
-            image = storageAccess.getUriForItem(c,"Export","",
+            image = storageAccess.getUriForItem(c, preferences, "Export", "",
                     FullscreenActivity.songfilename+".png");
             OutputStream outputStream = storageAccess.getOutputStream(c,image);
             storageAccess.writeImage(outputStream,bmp, Bitmap.CompressFormat.PNG);
@@ -228,7 +228,7 @@ class ExportPreparer {
 
         if (FullscreenActivity.exportPDF) {
             // Prepare a pdf version of the song.
-            pdf = storageAccess.getUriForItem(c,"Export","",
+            pdf = storageAccess.getUriForItem(c, preferences, "Export", "",
                     FullscreenActivity.songfilename+".pdf");
             makePDF(c,pdfbmp,pdf,storageAccess);
         }
@@ -256,7 +256,7 @@ class ExportPreparer {
         return emailIntent;
     }
 
-    Intent exportActivityLog(Context c, StorageAccess storageAccess) {
+    Intent exportActivityLog(Context c, Preferences preferences, StorageAccess storageAccess) {
         String title = c.getString(R.string.app_name) + ": " + c.getString(R.string.edit_song_ccli);
         String subject = title + " - " + c.getString(R.string.ccli_view);
         String text = c.getString(R.string.ccli_church) + ": " + FullscreenActivity.ccli_church + "\n";
@@ -264,10 +264,10 @@ class ExportPreparer {
         Intent emailIntent = setEmailIntent(subject,title,text);
 
         // Add the attachments
-        Uri uri = storageAccess.getUriForItem(c,"Settings","","ActivityLog.xml");
+        Uri uri = storageAccess.getUriForItem(c, preferences, "Settings", "", "ActivityLog.xml");
         ArrayList<Uri> uris = new ArrayList<>();
         if (!storageAccess.uriExists(c,uri)) {
-            PopUpCCLIFragment.createBlankXML(c);
+            PopUpCCLIFragment.createBlankXML(c, preferences);
         }
         // Add the uri
         uris.add(uri);
@@ -311,7 +311,7 @@ class ExportPreparer {
         return uris;
     }
 
-    private void setParser(Context c, StorageAccess storageAccess) {
+    private void setParser(Context c, Preferences preferences, StorageAccess storageAccess) {
         StringBuilder sb = new StringBuilder();
 
         FullscreenActivity.exportsetfilenames.clear();
@@ -321,7 +321,7 @@ class ExportPreparer {
 
 		// First up, load the set
 
-        Uri seturi = storageAccess.getUriForItem(c,"Sets","",FullscreenActivity.settoload);
+        Uri seturi = storageAccess.getUriForItem(c, preferences, "Sets", "", FullscreenActivity.settoload);
         InputStream inputStream = storageAccess.getInputStream(c,seturi);
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
@@ -335,7 +335,7 @@ class ExportPreparer {
                     if (xpp.getName().equals("slide_group")) {
                         switch (xpp.getAttributeValue(null, "type")) {
                             case "song":
-                                Uri songuri = storageAccess.getUriForItem(c,"Songs",
+                                Uri songuri = storageAccess.getUriForItem(c, preferences, "Songs",
                                         LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "path")),
                                         LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name")));
                                 String thisline;
@@ -554,52 +554,16 @@ class ExportPreparer {
         }
     }
 
-    void createSelectedOSB(Context c, String selected, StorageAccess storageAccess) {
+    void createSelectedOSB(Context c, Preferences preferences, String selected, StorageAccess storageAccess) {
         folderstoexport = selected;
         if (backup_create_selected!=null) {
             backup_create_selected.cancel(true);
         }
-        backup_create_selected = new Backup_Create_Selected(c,storageAccess);
+        backup_create_selected = new Backup_Create_Selected(c, preferences, storageAccess);
         backup_create_selected.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
-    @SuppressLint("StaticFieldLeak")
-    private class Backup_Create_Selected extends AsyncTask<String, Void, String> {
-        Context c;
-        Intent emailIntent;
-        StorageAccess storageAccess;
 
-        Backup_Create_Selected(Context context, StorageAccess sA) {
-            c = context;
-            storageAccess = sA;
-        }
-        @Override
-        protected String doInBackground(String... strings) {
-            return makeBackupZipSelected(c,storageAccess);
-        }
-
-        boolean cancelled = false;
-        @Override
-        protected void onCancelled() {
-            cancelled = true;
-        }
-
-        @Override
-        public void onPostExecute(String s) {
-            if (!cancelled) {
-                try {
-                    Uri uri = storageAccess.getUriForItem(c,"","",s);
-                    FullscreenActivity.myToastMessage = c.getString(R.string.backup_success);
-                    ShowToast.showToast(c);
-                    emailIntent = exportBackup(c, uri);
-                    ((Activity)c).startActivityForResult(Intent.createChooser(emailIntent, c.getString(R.string.backup_info)), 12345);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private String makeBackupZipSelected(Context c, StorageAccess storageAccess) {
+    private String makeBackupZipSelected(Context c, Preferences preferences, StorageAccess storageAccess) {
         // Get the date for the file
         Calendar cal = Calendar.getInstance();
         System.out.println("Current time => " + cal.getTime());
@@ -607,11 +571,12 @@ class ExportPreparer {
         SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd", FullscreenActivity.locale);
         String formattedDate = df.format(cal.getTime());
         String backup = "OpenSongBackup_" + formattedDate + ".osb";
-        zipDirSelected(c,backup,storageAccess);
+        zipDirSelected(c, preferences, backup, storageAccess);
         return backup;
     }
-    private void zipDirSelected(Context c, String zipFileName, StorageAccess storageAccess) {
-        Uri uri = storageAccess.getUriForItem(c,"","",zipFileName);
+
+    private void zipDirSelected(Context c, Preferences preferences, String zipFileName, StorageAccess storageAccess) {
+        Uri uri = storageAccess.getUriForItem(c, preferences, "", "", zipFileName);
         OutputStream outputStream = storageAccess.getOutputStream(c,uri);
         try {
             outSelected = new ZipOutputStream(outputStream);
@@ -622,7 +587,7 @@ class ExportPreparer {
                 if (!whichfolders[i].equals("")) {
                     whichfolders[i] = whichfolders[i].replace("%__", "");
                     whichfolders[i] = whichfolders[i].replace("__%", "");
-                    addDirSelected(c,whichfolders[i],storageAccess);
+                    addDirSelected(c, preferences, whichfolders[i], storageAccess);
                 }
             }
             outSelected.close();
@@ -630,12 +595,13 @@ class ExportPreparer {
             e.printStackTrace();
         }
     }
+
     //TODO not sure if subfolders (e.g. Band/Temp/Inner are added to the zipfile
-    private void addDirSelected(Context c, String subfolder, StorageAccess storageAccess) {
+    private void addDirSelected(Context c, Preferences preferences, String subfolder, StorageAccess storageAccess) {
         ArrayList<String> files = storageAccess.listFilesInFolder(c,"Songs",subfolder);
         byte[] tmpBuf = new byte[1024];
         for (String s:files) {
-            Uri uri = storageAccess.getUriForItem(c,"Songs",subfolder,s);
+            Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", subfolder, s);
             if (storageAccess.uriIsFile(c,uri)) {
                 try {
                     InputStream inputStream = storageAccess.getInputStream(c, uri);
@@ -652,6 +618,47 @@ class ExportPreparer {
                     }
                     outSelected.closeEntry();
                     inputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class Backup_Create_Selected extends AsyncTask<String, Void, String> {
+        Context c;
+        Intent emailIntent;
+        StorageAccess storageAccess;
+        Preferences preferences;
+
+        Backup_Create_Selected(Context context, Preferences p, StorageAccess sA) {
+            c = context;
+            storageAccess = sA;
+            preferences = p;
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            return makeBackupZipSelected(c, preferences, storageAccess);
+        }
+
+        boolean cancelled = false;
+
+        @Override
+        protected void onCancelled() {
+            cancelled = true;
+        }
+
+        @Override
+        public void onPostExecute(String s) {
+            if (!cancelled) {
+                try {
+                    Uri uri = storageAccess.getUriForItem(c, preferences, "", "", s);
+                    FullscreenActivity.myToastMessage = c.getString(R.string.backup_success);
+                    ShowToast.showToast(c);
+                    emailIntent = exportBackup(c, uri);
+                    ((Activity) c).startActivityForResult(Intent.createChooser(emailIntent, c.getString(R.string.backup_info)), 12345);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

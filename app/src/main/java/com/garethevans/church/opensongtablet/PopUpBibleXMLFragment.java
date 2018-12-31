@@ -33,6 +33,7 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -115,6 +116,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     int selectedItem;
 
     StorageAccess storageAccess;
+    Preferences preferences;
     Bible bibleC;
     boolean includeVersNums = false;
 
@@ -125,6 +127,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
 
         storageAccess = new StorageAccess();
+        preferences = new Preferences();
         bibleC = new Bible();
 
         V = inflater.inflate(R.layout.popup_biblexml, container, false);
@@ -340,7 +343,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                 });
 
                 // Get the bible Uri
-                bibleFile = storageAccess.getUriForItem(getActivity(), "OpenSong Scripture", "", selectedBible);
+                bibleFile = storageAccess.getUriForItem(getActivity(), preferences, "OpenSong Scripture", "", selectedBible);
 
                 if (biblechanged) {
                     FullscreenActivity.bibleFile = selectedBible;
@@ -751,7 +754,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     public void extractTheZipFile(Uri newuri) {
         // Unzip the file
         StorageAccess storageAccess = new StorageAccess();
-        storageAccess.extractZipFile(getActivity(),newuri,"OpenSong Scripture","",null);
+        storageAccess.extractZipFile(getActivity(), preferences, newuri, "OpenSong Scripture", "", null);
     }
 
     public void deleteTheZipFile(Uri newuri) {

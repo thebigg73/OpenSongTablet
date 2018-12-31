@@ -28,6 +28,8 @@ public class PopUpChooseFolderFragment extends DialogFragment {
 
     private MyInterface mListener;
     StorageAccess storageAccess;
+    Preferences preferences;
+    SongFolders songFolders;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -87,6 +89,8 @@ public class PopUpChooseFolderFragment extends DialogFragment {
         lv = V.findViewById(R.id.songfolders_ListView);
 
         storageAccess = new StorageAccess();
+        preferences = new Preferences();
+        songFolders = new SongFolders();
 
         // Update the song folders
         FullscreenActivity.songfilelist = new SongFileList();
@@ -95,8 +99,7 @@ public class PopUpChooseFolderFragment extends DialogFragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ListSongFiles.getAllSongFolders(getActivity(),storageAccess);
-
+                songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

@@ -311,7 +311,7 @@ public class OptionMenuListeners extends Activity {
         }
     }
 
-    static void optionListeners(View v, Context c) {
+    static void optionListeners(View v, Context c, Preferences preferences) {
 
         // Decide which listeners we need based on the menu
         switch (FullscreenActivity.whichOptionMenu) {
@@ -329,7 +329,7 @@ public class OptionMenuListeners extends Activity {
                 break;
 
             case "CHORDS":
-                chordOptionListener(v,c);
+                chordOptionListener(v, c, preferences);
                 break;
 
             case "DISPLAY":
@@ -341,7 +341,7 @@ public class OptionMenuListeners extends Activity {
                 break;
 
             case "STORAGE":
-                storageOptionListener(v,c);
+                storageOptionListener(v, c, preferences);
                 break;
 
             case "CONNECT":
@@ -377,7 +377,7 @@ public class OptionMenuListeners extends Activity {
                 break;
 
             case "OTHER":
-                otherOptionListener(v,c);
+                otherOptionListener(v, c, preferences);
                 break;
         }
     }
@@ -1076,7 +1076,7 @@ public class OptionMenuListeners extends Activity {
 
     }
 
-    private static void chordOptionListener(View v, final Context c) {
+    private static void chordOptionListener(View v, final Context c, final Preferences preferences) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -1192,7 +1192,7 @@ public class OptionMenuListeners extends Activity {
                     FullscreenActivity.switchsharpsflats = true;
                     Transpose.checkChordFormat();
                     try {
-                        Transpose.doTranspose(c);
+                        Transpose.doTranspose(c, preferences);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1223,7 +1223,7 @@ public class OptionMenuListeners extends Activity {
                     FullscreenActivity.switchsharpsflats = true;
                     Transpose.checkChordFormat();
                     try {
-                        Transpose.doTranspose(c);
+                        Transpose.doTranspose(c, preferences);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1352,7 +1352,7 @@ public class OptionMenuListeners extends Activity {
                     FullscreenActivity.transposeDirection = "0";
                     Transpose.checkChordFormat();
                     try {
-                        Transpose.doTranspose(c);
+                        Transpose.doTranspose(c, preferences);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1713,7 +1713,7 @@ public class OptionMenuListeners extends Activity {
 
     }
 
-    private static void storageOptionListener(View v, final Context c) {
+    private static void storageOptionListener(View v, final Context c, final Preferences preferences) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -1780,6 +1780,7 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
+                    preferences.setMyPreferenceInt(c, "lastUsedVersion", 0);
                     mListener.closeMyDrawers("option");
                     mListener.splashScreen();
                 }
@@ -1812,9 +1813,6 @@ public class OptionMenuListeners extends Activity {
         storageExportOSBButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*FullscreenActivity.myToastMessage = c.getResources().getString(R.string.wait);
-                ShowToast.showToast(c);
-                ExportPreparer.createOpenSongBackup(c);*/
                 if (mListener!=null) {
                     FullscreenActivity.whattodo = "exportosb";
                     mListener.closeMyDrawers("option");
@@ -2778,7 +2776,7 @@ public class OptionMenuListeners extends Activity {
         });
     }
 
-    private static void otherOptionListener(View v, final Context c) {
+    private static void otherOptionListener(View v, final Context c, final Preferences preferences) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -2859,6 +2857,7 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
+                    preferences.setMyPreferenceInt(c, "lastUsedVersion", 0);
                     mListener.closeMyDrawers("option");
                     mListener.splashScreen();
                 }

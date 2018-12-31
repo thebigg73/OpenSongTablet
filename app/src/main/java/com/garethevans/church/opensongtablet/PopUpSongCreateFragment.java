@@ -33,6 +33,9 @@ public class PopUpSongCreateFragment extends DialogFragment {
     private MyInterface mListener;
     AsyncTask<Object, Void, String> getfolders;
     StorageAccess storageAccess;
+    Preferences preferences;
+    SongFolders songFolders;
+    ListSongFiles listSongFiles;
     SongXML songXML;
 
     static PopUpSongCreateFragment newInstance() {
@@ -107,6 +110,9 @@ public class PopUpSongCreateFragment extends DialogFragment {
         });
 
         storageAccess = new StorageAccess();
+        preferences = new Preferences();
+        songFolders = new SongFolders();
+        listSongFiles = new ListSongFiles();
         songXML = new SongXML();
 
         // Initialise the views
@@ -157,7 +163,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
     public void doSave() {
         // Get the variables
         String tempNewSong = newSongNameEditText.getText().toString().trim();
-        Uri to = storageAccess.getUriForItem(getActivity(),FullscreenActivity.newFolder,"",
+        Uri to = storageAccess.getUriForItem(getActivity(), preferences, FullscreenActivity.newFolder, "",
                 tempNewSong);
 
         if (FullscreenActivity.whattodo.equals("savecameraimage")) {
@@ -233,15 +239,15 @@ public class PopUpSongCreateFragment extends DialogFragment {
                 }
 
                 // Save the file
-                storageAccess.createFile(getActivity(), null,"Songs",FullscreenActivity.whichSongFolder,FullscreenActivity.songfilename);
-                Uri uri = storageAccess.getUriForItem(getActivity(),"Songs",FullscreenActivity.whichSongFolder,
+                storageAccess.createFile(getActivity(), preferences, null, "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+                Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.whichSongFolder,
                         FullscreenActivity.songfilename);
                 OutputStream outputStream = storageAccess.getOutputStream(getActivity(),uri);
                 storageAccess.writeFileFromString(FullscreenActivity.mynewXML,outputStream);
 
                 // Load the XML up into memory
                 try {
-                    LoadXML.loadXML(getActivity(),storageAccess);
+                    LoadXML.loadXML(getActivity(), preferences, listSongFiles, storageAccess);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -254,7 +260,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
                 // If we are autologging CCLI information
                 if (FullscreenActivity.ccli_automatic) {
-                    PopUpCCLIFragment.addUsageEntryToLog(getActivity(),FullscreenActivity.whichSongFolder+"/"+FullscreenActivity.songfilename,
+                    PopUpCCLIFragment.addUsageEntryToLog(getActivity(), preferences, FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
                             FullscreenActivity.songfilename, "",
                             "", "", "1"); // Created
                 }
@@ -272,7 +278,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
     private class GetFolders extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
-            ListSongFiles.getAllSongFolders(getActivity(),storageAccess);
+            songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
             return null;
         }
 

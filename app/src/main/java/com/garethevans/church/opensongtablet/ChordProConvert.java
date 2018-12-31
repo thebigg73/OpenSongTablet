@@ -2,12 +2,13 @@ package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import android.net.Uri;
+
 import java.io.OutputStream;
 import java.util.ArrayList;
 
 class ChordProConvert {
 
-    boolean doExtract(Context c) {
+    boolean doExtract(Context c, Preferences preferences) {
 
         // This is called when a ChordPro format song has been loaded.
         // This tries to extract the relevant stuff and reformat the
@@ -279,26 +280,26 @@ class ChordProConvert {
 
         // Now write the modified song
         StorageAccess storageAccess = new StorageAccess();
-        Uri uri = storageAccess.getUriForItem(c,"Songs", FullscreenActivity.whichSongFolder,newSongTitle);
+        Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder, newSongTitle);
         OutputStream outputStream = storageAccess.getOutputStream(c, uri);
         if (storageAccess.writeFileFromString(FullscreenActivity.myXML,outputStream)) {
             // Writing was successful, so delete the original
-            Uri originalfile = storageAccess.getUriForItem(c,"Songs", FullscreenActivity.whichSongFolder,FullscreenActivity.songfilename);
+            Uri originalfile = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
             storageAccess.deleteFile(c,originalfile);
         }
 
         FullscreenActivity.songfilename = newSongTitle;
 
         // Rebuild the song list
-        storageAccess.listSongs(c);
+        storageAccess.listSongs(c, preferences);
         ListSongFiles listSongFiles = new ListSongFiles();
-        listSongFiles.songUrisInFolder(c);
+        listSongFiles.songUrisInFolder(c, preferences);
 
         // Load the songs
-        ListSongFiles.getAllSongFiles(c,storageAccess);
+        listSongFiles.getAllSongFiles(c, storageAccess);
 
         // Get the song indexes
-        ListSongFiles.getCurrentSongIndex();
+        listSongFiles.getCurrentSongIndex();
         Preferences.savePreferences();
 
         // Prepare the app to fix the song menu with the new file

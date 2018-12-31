@@ -78,6 +78,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
     }
 
     WebView abcWebView;
+    Preferences preferences;
 
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
@@ -111,6 +112,8 @@ public class PopUpABCNotationFragment extends DialogFragment {
                 doSave();
             }
         });
+
+        preferences = new Preferences();
 
         // Initialise the views
         abcWebView = V.findViewById(R.id.abcWebView);
@@ -237,7 +240,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
                     FullscreenActivity.mLyrics = ABCPlaceHolder + "\n\n" + FullscreenActivity.mLyrics;
                 }*/
                 PopUpEditSongFragment.prepareSongXML();
-                PopUpEditSongFragment.justSaveSongXML(getActivity());
+                PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
                 try {
                     /*if (mListener!=null) {
                         mListener.refreshAll();

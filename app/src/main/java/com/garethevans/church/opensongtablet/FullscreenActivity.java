@@ -444,69 +444,23 @@ public class FullscreenActivity extends AppCompatActivity {
     //public static RefWatcher refWatcher;
 
     StorageAccess storageAccess;
+    SongFolders songFolders;
+    Preferences preferences;
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // Load up the preferences
-        loadPreferences(FullscreenActivity.this);
-
-        // Fix and set some variables
-        fixAndSet(FullscreenActivity.this);
-
-        // If we have an intent or a whattodo starting with importfile, retain this
-        if (getIntent()!=null) {
-            dealWithIntent(getIntent());
-        }
-
-        // Check song was loaded last time (if appropriate)
-        checkSongLoadedLastTime();
-
-        // Set the locale
-        setTheLocale(FullscreenActivity.this);
-
-        // Get the song folders
-        storageAccess = new StorageAccess();
-        ListSongFiles.getAllSongFolders(FullscreenActivity.this,storageAccess);
-
-        // Test for NFC capability
-        testForNFC();
-
-        // Initialise typefaces
-        initialiseTypefaces(FullscreenActivity.this);
-
-        // Set up the user preferences for page colours and fonts
-        SetUpColours.colours();
-        SetTypeFace.setTypeface(FullscreenActivity.this);
-
-        // If whichMode is Presentation, open that app instead
-        switch (whichMode) {
-            case "Presentation":
-                Intent performmode = new Intent();
-                performmode.setClass(FullscreenActivity.this, PresenterMode.class);
-                startActivity(performmode);
-                finish();
-                break;
-            case "Stage": {
-                Intent stagemode = new Intent();
-                stagemode.setClass(FullscreenActivity.this, StageMode.class);
-                startActivity(stagemode);
-                finish();
-                break;
+    public static void restart(Context context) {
+        try {
+            Intent mStartActivity = new Intent(context, BootUpCheck.class);
+            int mPendingIntentId = 123456;
+            PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId, mStartActivity,
+                    PendingIntent.FLAG_CANCEL_CURRENT);
+            AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            if (mgr != null) {
+                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+                System.exit(0);
             }
-            case "Performance":
-            default: {
-                Intent stagemode = new Intent();
-                stagemode.setClass(FullscreenActivity.this, StageMode.class);
-                startActivity(stagemode);
-                finish();
-                break;
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        finish();
     }
 
     @Override
@@ -613,12 +567,16 @@ public class FullscreenActivity extends AppCompatActivity {
         }
     }
 
-    void mainSetterOfVariables(Context c) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        preferences = new Preferences();
         // Load up the preferences
-        loadPreferences(c);
+        loadPreferences(FullscreenActivity.this);
 
         // Fix and set some variables
-        fixAndSet(c);
+        fixAndSet(FullscreenActivity.this);
 
         // If we have an intent or a whattodo starting with importfile, retain this
         if (getIntent()!=null) {
@@ -629,28 +587,50 @@ public class FullscreenActivity extends AppCompatActivity {
         checkSongLoadedLastTime();
 
         // Set the locale
-        setTheLocale(c);
+        setTheLocale(FullscreenActivity.this);
 
         // Get the song folders
-        //storageAccess = new StorageAccess();
-        //ListSongFiles.getAllSongFolders(c,storageAccess);
+        storageAccess = new StorageAccess();
+        songFolders = new SongFolders();
+
+        songFolders.prepareSongFolders(FullscreenActivity.this, storageAccess, preferences);
 
         // Test for NFC capability
         testForNFC();
 
         // Initialise typefaces
-        initialiseTypefaces(c);
+        initialiseTypefaces(FullscreenActivity.this);
 
         // Set up the user preferences for page colours and fonts
         SetUpColours.colours();
-        SetTypeFace.setTypeface(c);
+        SetTypeFace.setTypeface(FullscreenActivity.this, preferences);
 
-        Preferences preferences = new Preferences();
-        String uriTree_string = preferences.getMyPreferenceString(c, "uriTree", null);
-        if (uriTree_string!=null) {
-            uriTree = Uri.parse(uriTree_string);
+        // If whichMode is Presentation, open that app instead
+        switch (whichMode) {
+            case "Presentation":
+                Intent performmode = new Intent();
+                performmode.setClass(FullscreenActivity.this, PresenterMode.class);
+                startActivity(performmode);
+                finish();
+                break;
+            case "Stage": {
+                Intent stagemode = new Intent();
+                stagemode.setClass(FullscreenActivity.this, StageMode.class);
+                startActivity(stagemode);
+                finish();
+                break;
+            }
+            case "Performance":
+            default: {
+                Intent stagemode = new Intent();
+                stagemode.setClass(FullscreenActivity.this, StageMode.class);
+                startActivity(stagemode);
+                finish();
+                break;
+            }
         }
-        Log.d("d","From FullscreenActivity FullscreenActivity.uriTree="+uriTree);
+
+        finish();
     }
 
     void loadPreferences(Context c) {
@@ -752,15 +732,42 @@ public class FullscreenActivity extends AppCompatActivity {
         typeface12i = Typeface.createFromAsset(c.getAssets(), "fonts/Roboto-MediumItalic.ttf");
     }
 
-    public static void restart(Context context) {
-        Intent mStartActivity = new Intent(context, BootUpCheck.class);
-        int mPendingIntentId = 123456;
-        PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId, mStartActivity,
-                PendingIntent.FLAG_CANCEL_CURRENT);
-        AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        if (mgr!=null) {
-            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
-            System.exit(0);
+    void mainSetterOfVariables(Context c, Preferences preferences) {
+        // Load up the preferences
+        loadPreferences(c);
+
+        // Fix and set some variables
+        fixAndSet(c);
+
+        // If we have an intent or a whattodo starting with importfile, retain this
+        if (getIntent() != null) {
+            dealWithIntent(getIntent());
         }
+
+        // Check song was loaded last time (if appropriate)
+        checkSongLoadedLastTime();
+
+        // Set the locale
+        setTheLocale(c);
+
+        // Get the song folders
+        //storageAccess = new StorageAccess();
+        //ListSongFiles.getAllSongFolders(c,storageAccess);
+
+        // Test for NFC capability
+        testForNFC();
+
+        // Initialise typefaces
+        initialiseTypefaces(c);
+
+        // Set up the user preferences for page colours and fonts
+        SetUpColours.colours();
+        SetTypeFace.setTypeface(c, preferences);
+
+        String uriTree_string = preferences.getMyPreferenceString(c, "uriTree", null);
+        if (uriTree_string != null) {
+            uriTree = Uri.parse(uriTree_string);
+        }
+        Log.d("d", "From FullscreenActivity FullscreenActivity.uriTree=" + uriTree);
     }
 }

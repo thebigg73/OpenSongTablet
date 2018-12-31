@@ -29,15 +29,22 @@ public class SongMenuListeners extends Activity {
             @Override
             public void onClick(View v) {
                 FullscreenActivity.pdfPageCurrent = 0;
+                Log.d("d", "position=" + i);
+                Log.d("d", "filename=" + FullscreenActivity.songDetails[i][0]);
+                Log.d("d", "author=" + FullscreenActivity.songDetails[i][1]);
+                Log.d("d", "key=" + FullscreenActivity.songDetails[i][2]);
+
                 try {
-                    if (FullscreenActivity.mSongFileNames.length > i) {
+                    if (FullscreenActivity.songDetails.length > i) {
                         if (FullscreenActivity.songDetails[i][2].equals(c.getString(R.string.songsinfolder))) {
-                            Log.d("SongMenuListener","Song folder");
                             String s = FullscreenActivity.songDetails[i][0];
-                            Log.d("SongMenuListener","s="+s);
                             if (s.startsWith("/")) {
                                 s = s.replaceFirst("/", "");
                             }
+                            if (s.endsWith("/")) {
+                                s = s.substring(0, s.lastIndexOf("/"));
+                            }
+
                             FullscreenActivity.whichSongFolder = s;
                             mListener.prepareSongMenu();
                         } else {

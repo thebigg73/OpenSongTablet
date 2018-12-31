@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
@@ -106,11 +105,9 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         scale = (int) ((FullscreenActivity.menuSize * 100.0f)) + "%";
         scalemenu_SeekBar.setProgress(pos);
         scalemenu_TextView.setText(scale);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            gesturesMenuSwipeButton.setChecked(FullscreenActivity.swipeForMenus);
-            showSetTickBoxInSongMenu.setChecked(FullscreenActivity.showSetTickBoxInSongMenu);
-            showAlphabetInSongMenu.setChecked(FullscreenActivity.showAlphabeticalIndexInSongMenu);
-        }
+        gesturesMenuSwipeButton.setChecked(FullscreenActivity.swipeForMenus);
+        showSetTickBoxInSongMenu.setChecked(FullscreenActivity.showSetTickBoxInSongMenu);
+        showAlphabetInSongMenu.setChecked(FullscreenActivity.showAlphabeticalIndexInSongMenu);
         assignVisibility(alphabeticalSizeGroup, FullscreenActivity.showAlphabeticalIndexInSongMenu);
         alphabeticalSize_SeekBar.setProgress(textSizeFloatToInt(FullscreenActivity.alphabeticalSize));
         String s = ((int) FullscreenActivity.alphabeticalSize) + "sp";

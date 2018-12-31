@@ -1885,7 +1885,7 @@ public class ProcessSong extends Activity {
             } else {
                 String[] splitcurr;
                 // If a section has LATERSPLITHERE in it, we need to fix it for the chords we need to extract the chords
-                if (currsections[z].contains("%%LATERSPLITHERE%%")) {
+                if (currsections[z] != null && currsections[z].contains("%%LATERSPLITHERE%%")) {
                     String[] tempsection = currsections[z].split("\n");
                     for (int line = 0; line < tempsection.length; line++) {
                         // Go through each line and look for %%LATERSPLITHERE%%
@@ -2574,7 +2574,7 @@ public class ProcessSong extends Activity {
         return tl;
     }
 
-    static Bitmap createPDFPage(Context c, StorageAccess storageAccess, int pagewidth, int pageheight, String scale) {
+    static Bitmap createPDFPage(Context c, Preferences preferences, StorageAccess storageAccess, int pagewidth, int pageheight, String scale) {
         String tempsongtitle = FullscreenActivity.songfilename.replace(".pdf", "");
         tempsongtitle = tempsongtitle.replace(".PDF", "");
         FullscreenActivity.mTitle = tempsongtitle;
@@ -2583,7 +2583,7 @@ public class ProcessSong extends Activity {
         // This only works for post Lollipop devices
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-            Uri uri = storageAccess.getUriForItem(c,"Songs",FullscreenActivity.whichSongFolder,FullscreenActivity.songfilename);
+            Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
 
             // FileDescriptor for file, it allows you to close file when you are done with it
             ParcelFileDescriptor mFileDescriptor = null;
@@ -2865,13 +2865,13 @@ public class ProcessSong extends Activity {
         }
     }
 
-    static void addExtraInfo(Context c) {
+    static void addExtraInfo(Context c, Preferences preferences) {
         String nextinset = "";
         if (FullscreenActivity.setView) {
             // Get the index in the set
             try {
                 if (!FullscreenActivity.nextSongInSet.equals("")) {
-                    FullscreenActivity.nextSongKeyInSet = LoadXML.grabNextSongInSetKey(c, FullscreenActivity.nextSongInSet);
+                    FullscreenActivity.nextSongKeyInSet = LoadXML.grabNextSongInSetKey(c, preferences, FullscreenActivity.nextSongInSet);
                     nextinset = ";__" + c.getString(R.string.next) + ": " + FullscreenActivity.nextSongInSet;
                     if (!FullscreenActivity.nextSongKeyInSet.equals("")) {
                         nextinset = nextinset + " (" + FullscreenActivity.nextSongKeyInSet + ")";
@@ -3004,7 +3004,7 @@ public class ProcessSong extends Activity {
     }
 
     // The stuff for the highlighter notes
-    static Uri getHighlightFile(Context c) {
+    static Uri getHighlightFile(Context c, Preferences preferences) {
         String layout;
         String highlighterfile;
         if (c.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -3029,7 +3029,7 @@ public class ProcessSong extends Activity {
 
         // This file may or may not exist
         StorageAccess storageAccess = new StorageAccess();
-        return storageAccess.getUriForItem(c,"Highlighter","",highlighterfile);
+        return storageAccess.getUriForItem(c, preferences, "Highlighter", "", highlighterfile);
     }
 
 }

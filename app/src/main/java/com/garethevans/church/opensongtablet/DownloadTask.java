@@ -22,6 +22,7 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
     private String address;
     private String filename;
     StorageAccess storageAccess;
+    Preferences preferences;
     @SuppressLint("StaticFieldLeak")
     private Context c;
     private Uri uri;
@@ -42,6 +43,7 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
                     break;
             }
             storageAccess = new StorageAccess();
+            preferences = new Preferences();
         }
 
         @Override
@@ -69,13 +71,13 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
                 input = connection.getInputStream();
                 if (input!=null) {
 
-                    uri = storageAccess.getUriForItem(c, "", "", filename);
+                    uri = storageAccess.getUriForItem(c, preferences, "", "", filename);
                     Log.d("d","uri = "+uri);
                     Log.d("d","uriExists()="+storageAccess.uriExists(c,uri));
                     if (storageAccess.lollipopOrLater() && !storageAccess.uriExists(c, uri)) {
-                        storageAccess.createFile(c, null, "", "", filename);
+                        storageAccess.createFile(c, preferences, null, "", "", filename);
                         Log.d("d","Trying to create");
-                        uri = storageAccess.getUriForItem(c, "", "", filename);
+                        uri = storageAccess.getUriForItem(c, preferences, "", "", filename);
                         Log.d("d","uriExitst = "+storageAccess.uriExists(c,uri));
                     }
                     outputStream = storageAccess.getOutputStream(c, uri);

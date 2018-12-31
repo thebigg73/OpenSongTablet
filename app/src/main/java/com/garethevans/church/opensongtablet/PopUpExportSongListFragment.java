@@ -27,6 +27,8 @@ public class PopUpExportSongListFragment extends DialogFragment {
 
     ListView songDirectoy_ListView;
     StorageAccess storageAccess;
+    Preferences preferences;
+    SongFolders songFolders;
 
     @Override
     public void onStart() {
@@ -73,11 +75,14 @@ public class PopUpExportSongListFragment extends DialogFragment {
         });
 
         storageAccess = new StorageAccess();
+        preferences = new Preferences();
+        songFolders = new SongFolders();
+
 
         songDirectoy_ListView = V.findViewById(R.id.songDirectoy_ListView);
 
         // Prepare a list of the song directories
-        ListSongFiles.getAllSongFolders(getActivity(), storageAccess);
+        songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, FullscreenActivity.mSongFolderNames);
         songDirectoy_ListView.setAdapter(adapter);

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 class CreateNewSet {
 
-    boolean doCreation(Context c, StorageAccess storageAccess) {
+    boolean doCreation(Context c, Preferences preferences, ListSongFiles listSongFiles, StorageAccess storageAccess) {
 
         // Keep the current song and directory aside for now
         String tempsongfilename = FullscreenActivity.songfilename;
@@ -81,7 +81,7 @@ class CreateNewSet {
                     FullscreenActivity.whichSongFolder = "../Scripture/_cache";
                     FullscreenActivity.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML(c,storageAccess);
+                        LoadXML.loadXML(c, preferences, listSongFiles, storageAccess);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -131,7 +131,7 @@ class CreateNewSet {
                     FullscreenActivity.whichSongFolder = "../Slides/_cache";
                     FullscreenActivity.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML(c, storageAccess);
+                        LoadXML.loadXML(c, preferences, listSongFiles, storageAccess);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -185,7 +185,7 @@ class CreateNewSet {
                     FullscreenActivity.whichSongFolder = "../Notes/_cache";
                     FullscreenActivity.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML(c, storageAccess);
+                        LoadXML.loadXML(c, preferences, listSongFiles, storageAccess);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -221,7 +221,7 @@ class CreateNewSet {
                     FullscreenActivity.whichSongFolder = "../Variations";
                     FullscreenActivity.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML(c, storageAccess);
+                        LoadXML.loadXML(c, preferences, listSongFiles, storageAccess);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -302,7 +302,7 @@ class CreateNewSet {
                     FullscreenActivity.whichSongFolder = "../Images/_cache";
                     FullscreenActivity.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML(c, storageAccess);
+                        LoadXML.loadXML(c, preferences, listSongFiles, storageAccess);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -363,9 +363,9 @@ class CreateNewSet {
 
             sb.append("</slide_groups>\n</set>");
 
-            FullscreenActivity.newSetContents = sb.toString();
+            FullscreenActivity.newSetContents = FullscreenActivity.newSetContents + sb.toString();
             // Write the string to the file
-            Uri uri = storageAccess.getUriForItem(c,"Sets","",FullscreenActivity.settoload);
+            Uri uri = storageAccess.getUriForItem(c, preferences, "Sets", "", FullscreenActivity.settoload);
             OutputStream outputStream = storageAccess.getOutputStream(c,uri);
             if (storageAccess.writeFileFromString(FullscreenActivity.newSetContents,outputStream)) {
                 FullscreenActivity.myToastMessage = "yes";
@@ -381,7 +381,7 @@ class CreateNewSet {
             FullscreenActivity.songfilename = tempsongfilename;
             FullscreenActivity.whichSongFolder = tempdir;
             try {
-                LoadXML.loadXML(c, storageAccess);
+                LoadXML.loadXML(c, preferences, listSongFiles, storageAccess);
             } catch (Exception e) {
                 e.printStackTrace();
             }

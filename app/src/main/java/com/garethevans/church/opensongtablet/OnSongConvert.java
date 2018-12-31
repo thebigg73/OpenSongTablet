@@ -22,7 +22,8 @@ class OnSongConvert {
 
     static String message = "";
     private static boolean isbatch = false;
-	boolean doExtract(Context c) {
+
+    boolean doExtract(Context c, Preferences preferences) {
 
 		// This is called when a OnSong format song has been loaded.
 		// This tries to extract the relevant stuff and reformat the
@@ -802,11 +803,11 @@ class OnSongConvert {
         // Now write the modified song
         StorageAccess storageAccess = new StorageAccess();
         String newfilename = newSongTitle.replace("/","_");   // incase filename has path separator
-        Uri uri = storageAccess.getUriForItem(c,"Songs", FullscreenActivity.whichSongFolder,newfilename);
+        Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder, newfilename);
         OutputStream outputStream = storageAccess.getOutputStream(c, uri);
         if (storageAccess.writeFileFromString(FullscreenActivity.myXML,outputStream)) {
             // Writing was successful, so delete the original
-            Uri originalfile = storageAccess.getUriForItem(c,"Songs", FullscreenActivity.whichSongFolder,FullscreenActivity.songfilename);
+            Uri originalfile = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
             storageAccess.deleteFile(c,originalfile);
         }
 
@@ -816,15 +817,15 @@ class OnSongConvert {
         if (!isbatch) {
 
 			// Rebuild the song list
-			storageAccess.listSongs(c);
+            storageAccess.listSongs(c, preferences);
 			ListSongFiles listSongFiles = new ListSongFiles();
-			listSongFiles.songUrisInFolder(c);
+            listSongFiles.songUrisInFolder(c, preferences);
 
             // Load the songs
-            ListSongFiles.getAllSongFiles(c,storageAccess);
+            listSongFiles.getAllSongFiles(c, storageAccess);
 
             // Get the song indexes
-            ListSongFiles.getCurrentSongIndex();
+            listSongFiles.getCurrentSongIndex();
             Preferences.savePreferences();
             // Prepare the app to fix the song menu with the new file
             FullscreenActivity.converting = true;
@@ -841,6 +842,7 @@ class OnSongConvert {
     private class DoBatchConvert extends AsyncTask<String, Void, String> {
 
 		StorageAccess storageAccess;
+        Preferences preferences;
 
         @SuppressLint("StaticFieldLeak")
         Context context;
@@ -849,6 +851,7 @@ class OnSongConvert {
             context = c;
             mListener = (MyInterface) c;
             storageAccess = new StorageAccess();
+            preferences = new Preferences();
         }
 
         @Override
@@ -871,17 +874,17 @@ class OnSongConvert {
 				StringBuilder sb = new StringBuilder();
 				FullscreenActivity.whichSongFolder = "OnSong";
 				// Check if the OnSongFolder exists
-                storageAccess.createFile(context, DocumentsContract.Document.MIME_TYPE_DIR,"Songs","OnSong","");
+                storageAccess.createFile(context, preferences, DocumentsContract.Document.MIME_TYPE_DIR, "Songs", "OnSong", "");
                 ArrayList<String> allfiles= storageAccess.listFilesInFolder(context,"Songs","OnSong");
 					for (String thisfile : allfiles) {
-                        Uri uri = storageAccess.getUriForItem(context,"Songs","OnSong",thisfile);
+                        Uri uri = storageAccess.getUriForItem(context, preferences, "Songs", "OnSong", thisfile);
                         if (thisfile.endsWith(".onsong")) {
 							FullscreenActivity.songfilename = thisfile;
 							try {
 							    InputStream inputStream = storageAccess.getInputStream(context, uri);
 								FullscreenActivity.myXML = storageAccess.readTextFileToString(inputStream);
 
-								if (!doExtract(context)) {
+                                if (!doExtract(context, preferences)) {
 									Log.d("d","Problem extracting OnSong");
 								}
 							} catch (Exception e) {

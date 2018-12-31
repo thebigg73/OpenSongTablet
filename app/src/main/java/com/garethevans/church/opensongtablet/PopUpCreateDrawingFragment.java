@@ -99,6 +99,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
     int isgone = View.GONE;
 
     StorageAccess storageAccess;
+    Preferences preferences;
     Uri uri;
 
     @Override
@@ -128,6 +129,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         });
 
         storageAccess = new StorageAccess();
+        preferences = new Preferences();
 
         // Initialise the views
         drawView = V.findViewById(R.id.drawView);
@@ -283,7 +285,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
     public void setHighlighterFile() {
         // If this file already exists, load it up!
-        uri = ProcessSong.getHighlightFile(getActivity());
+        uri = ProcessSong.getHighlightFile(getActivity(), preferences);
         if (storageAccess.uriExists(getActivity(),uri)) {
             drawView.loadImage(getActivity(),uri);
         }
@@ -519,7 +521,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
             if (FullscreenActivity.saveHighlight) {
                 FullscreenActivity.highlightOn = true;
                 drawView.setDrawingCacheEnabled(true);
-                newUri = ProcessSong.getHighlightFile(getActivity());
+                newUri = ProcessSong.getHighlightFile(getActivity(), preferences);
                 try {
                     bmp = drawView.getDrawingCache();
                 } catch (Exception e) {

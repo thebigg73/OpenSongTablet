@@ -61,6 +61,7 @@ public class PopUpFontsFragment extends DialogFragment {
     TableLayout songPreview;
     SwitchCompat trimlines_SwitchCompat, trimsections_SwitchCompat, hideBox_SwitchCompat;
     StorageAccess storageAccess;
+    Preferences preferences;
 
     @Override
     public void onStart() {
@@ -107,6 +108,8 @@ public class PopUpFontsFragment extends DialogFragment {
             }
         });
 
+        preferences = new Preferences();
+
         // Initialise the views
         lyricsFontSpinner = V.findViewById(R.id.lyricsFontSpinner);
         chordsFontSpinner = V.findViewById(R.id.chordsFontSpinner);
@@ -133,7 +136,7 @@ public class PopUpFontsFragment extends DialogFragment {
         trimsections_SwitchCompat = V.findViewById(R.id.trimsections_SwitchCompat);
 
         // Set up the typefaces
-        SetTypeFace.setTypeface(getActivity());
+        SetTypeFace.setTypeface(getActivity(), preferences);
 
         // Set the lyrics and chord font preview to what they should look like
         headingPreview.setTextSize(12*FullscreenActivity.headingfontscalesize);
@@ -198,8 +201,8 @@ public class PopUpFontsFragment extends DialogFragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 FullscreenActivity.customfontname = choose_customfonts.getItem(i);
-                FullscreenActivity.customfont = SetTypeFace.setCustomFont(getActivity(), choose_customfonts.getItem(i));
-                SetTypeFace.setTypeface(getActivity());
+                FullscreenActivity.customfont = SetTypeFace.setCustomFont(getActivity(), preferences, choose_customfonts.getItem(i));
+                SetTypeFace.setTypeface(getActivity(), preferences);
                 Preferences.savePreferences();
             }
 
@@ -239,7 +242,7 @@ public class PopUpFontsFragment extends DialogFragment {
                 temp_mypresofontnum = position;
                 FullscreenActivity.mypresofontnum = position;
                 Preferences.savePreferences();
-                SetTypeFace.setTypeface(getActivity());
+                SetTypeFace.setTypeface(getActivity(), preferences);
                 if (mListener!=null) {
                     mListener.refreshSecondaryDisplay("all");
                 }
@@ -256,7 +259,7 @@ public class PopUpFontsFragment extends DialogFragment {
                 temp_mypresoinfofontnum = position;
                 FullscreenActivity.mypresoinfofontnum = position;
                 Preferences.savePreferences();
-                SetTypeFace.setTypeface(getActivity());
+                SetTypeFace.setTypeface(getActivity(), preferences);
                 if (mListener!=null) {
                     mListener.refreshSecondaryDisplay("all");
                 }

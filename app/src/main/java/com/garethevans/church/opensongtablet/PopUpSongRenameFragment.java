@@ -34,6 +34,8 @@ public class PopUpSongRenameFragment extends DialogFragment {
     String oldsongname;
     AsyncTask<Object, Void, String> getfolders;
     StorageAccess storageAccess;
+    Preferences preferences;
+    SongFolders songFolders;
 
     public interface MyInterface {
         void refreshAll();
@@ -106,6 +108,8 @@ public class PopUpSongRenameFragment extends DialogFragment {
         });
 
         storageAccess = new StorageAccess();
+        songFolders = new SongFolders();
+        preferences = new Preferences();
 
         // Initialise the views
         newFolderSpinner = V.findViewById(R.id.newFolderSpinner);
@@ -158,9 +162,11 @@ public class PopUpSongRenameFragment extends DialogFragment {
             }
         }
 
-        StorageAccess storageAccess = new StorageAccess();
-        Uri from = storageAccess.getUriForItem(getActivity(),"Songs",tempOldFolder,oldsongname);
-        Uri to   = storageAccess.getUriForItem(getActivity(),"Songs",tempNewFolder,tempNewSong);
+        storageAccess = new StorageAccess();
+        preferences = new Preferences();
+
+        Uri from = storageAccess.getUriForItem(getActivity(), preferences, "Songs", tempOldFolder, oldsongname);
+        Uri to = storageAccess.getUriForItem(getActivity(), preferences, "Songs", tempNewFolder, tempNewSong);
 
         if (!storageAccess.uriExists(getActivity(),to)) {
             try {
@@ -182,9 +188,9 @@ public class PopUpSongRenameFragment extends DialogFragment {
                 Preferences.savePreferences();
 
                 // Rebuild the song list
-                storageAccess.listSongs(getActivity());
+                storageAccess.listSongs(getActivity(), preferences);
                 ListSongFiles listSongFiles = new ListSongFiles();
-                listSongFiles.songUrisInFolder(getActivity());
+                listSongFiles.songUrisInFolder(getActivity(), preferences);
 
                 mListener.refreshAll();
 
@@ -204,7 +210,7 @@ public class PopUpSongRenameFragment extends DialogFragment {
     private class GetFolders extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
-            ListSongFiles.getAllSongFolders(getActivity(),storageAccess);
+            songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
             return null;
         }
 

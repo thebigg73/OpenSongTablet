@@ -240,13 +240,13 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
 
             for (int d = 0; d < FullscreenActivity.search_database.size(); d++) {
                 String[] songbits = FullscreenActivity.search_database.get(d).split("_%%%_");
-                mFileName.add(d, songbits[0].trim());
-                mFolder.add(d, songbits[1].trim());
+                mFolder.add(d, songbits[0].trim());
+                mFileName.add(d, songbits[1].trim());
                 mTitle.add(d, songbits[2].trim());
                 mAuthor.add(d, songbits[3].trim());
-                mShortLyrics.add(d, songbits[4].trim());
-                mTheme.add(d, songbits[5].trim());
-                mKey.add(d, songbits[6].trim());
+                mKey.add(d, songbits[4].trim());
+                mShortLyrics.add(d, songbits[5].trim());
+                mTheme.add(d, songbits[6].trim());
                 mHymnNumber.add(d, songbits[7].trim());
             }
 

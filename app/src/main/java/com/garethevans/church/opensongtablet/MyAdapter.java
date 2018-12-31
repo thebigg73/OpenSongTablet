@@ -16,10 +16,12 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
 
     private List<SetItemInfo> setList;
     Context c;
+    Preferences preferences;
 
-    MyAdapter(List<SetItemInfo> setList, Context context) {
+    MyAdapter(List<SetItemInfo> setList, Context context, Preferences p) {
         this.setList = setList;
         c = context;
+        preferences = p;
     }
 
     @Override
@@ -118,7 +120,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
                 }
 
                 if (FullscreenActivity.whattodo.equals("setitemvariation")) {
-                    PopUpSetViewNew.makeVariation(c);
+                    PopUpSetViewNew.makeVariation(c, preferences);
 
                 } else {
                     PopUpSetViewNew.loadSong();

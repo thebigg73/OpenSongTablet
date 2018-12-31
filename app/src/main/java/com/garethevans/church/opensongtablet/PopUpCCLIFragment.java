@@ -64,12 +64,6 @@ public class PopUpCCLIFragment extends DialogFragment {
         super.onAttach(activity);
     }
 
-    /*@Override
-    public void onDetach() {
-        mListener = null;
-        super.onDetach();
-    }*/
-
     @Override
     public void onStart() {
         super.onStart();
@@ -92,77 +86,16 @@ public class PopUpCCLIFragment extends DialogFragment {
     ArrayList<String> action;
     //static File activitylogfile;
     StorageAccess storageAccess;
+    Preferences preferences;
     Uri uri;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            this.dismiss();
-        }
-        if (getDialog()==null) {
-            dismiss();
-        }
-
-        getDialog().setCanceledOnTouchOutside(true);
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        View V = inflater.inflate(R.layout.popup_ccli, container, false);
-
-        // Set the title based on the whattodo
-
-        title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.edit_song_ccli));
-        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                doSave();
-            }
-        });
-        saveMe = V.findViewById(R.id.saveMe);
-
-        // Set the log file
-        storageAccess = new StorageAccess();
-        uri = storageAccess.getUriForItem(getActivity(),"Settings","","ActivityLog.xml");
-
-        // Initialise the views
-        churchNameTextView = V.findViewById(R.id.churchNameTextView);
-        churchNameEditText = V.findViewById(R.id.churchNameEditText);
-        licenceTextView = V.findViewById(R.id.licenceTextView);
-        licenceEditText = V.findViewById(R.id.licenceEditText);
-        logTextView = V.findViewById(R.id.logTextView);
-        logWebView = V.findViewById(R.id.logWebView);
-        resetText = V.findViewById(R.id.resetText);
-        logWebView.getSettings().setBuiltInZoomControls(true);
-        logWebView.getSettings().setDisplayZoomControls(false);
-        logWebView.clearCache(true);
-        logWebView.setInitialScale(100);
-
-        // Set up the views required
-        switch (FullscreenActivity.whattodo) {
-            case "ccli_church":
-                setupChurchName();
-                break;
-
-            case "ccli_licence":
-                setupLicence();
-                break;
-
-            case "ccli_view":
-                setupLog();
-                break;
-
-            case "ccli_reset":
-                setupReset();
-                break;
-        }
-        Dialog dialog = getDialog();
-        if (dialog!=null && getActivity()!=null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog);
-        }
-        return V;
+    public static boolean createBlankXML(Context c, Preferences preferences) {
+        String blankXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "  <log></log>\n";
+        StorageAccess storageAccess = new StorageAccess();
+        Uri uri = storageAccess.getUriForItem(c, preferences, "Settings", "", "ActivityLog.xml");
+        OutputStream outputStream = storageAccess.getOutputStream(c, uri);
+        return storageAccess.writeFileFromString(blankXML, outputStream);
     }
 
     public void setupChurchName() {
@@ -210,29 +143,19 @@ public class PopUpCCLIFragment extends DialogFragment {
         saveMe.setVisibility(View.GONE);
     }
 
-    public void setupReset() {
-        title.setText(getActivity().getResources().getString(R.string.areyousure));
-        // Show what we want and hide what we don't
-        setviewvisiblities(View.GONE, View.GONE, View.GONE, View.VISIBLE);
-
-        // Set up the default values
-        // Set up save/tick listener
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (createBlankXML(getActivity())) {
-                    FullscreenActivity.myToastMessage = getString(R.string.ok);
-                } else {
-                    FullscreenActivity.myToastMessage = getString(R.string.error);
-                }
-                ShowToast.showToast(getActivity());
-                try {
-                    dismiss();
-                } catch (Exception e) {
-                    Log.d("d", "Error closing the fragment");
-                }
-            }
-        });
+    public static void addUsageEntryToLog(Context c, Preferences preferences, String fname, String song,
+                                          String author, String copyright, String ccli, String usage) {
+        // Do this as an async task
+        StorageAccess storageAccess = new StorageAccess();
+        // Check if the log exists or if we need to create it
+        boolean created = storageAccess.createFile(c, preferences, "null", "Settings", "", "ActivityLog.xml");
+        Uri uri = storageAccess.getUriForItem(c, preferences, "Settings", "", "ActivityLog.xml");
+        if (created) {
+            createBlankXML(c, preferences);
+        }
+        InputStream inputStream = storageAccess.getInputStream(c, uri);
+        AddUsageEntryToLog add_usage = new AddUsageEntryToLog(uri, inputStream, fname, song, author, copyright, ccli, usage);
+        add_usage.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public void setviewvisiblities(int church, int licence, int log, int reset) {
@@ -245,33 +168,76 @@ public class PopUpCCLIFragment extends DialogFragment {
         resetText.setVisibility(reset);
     }
 
-    public void buildTable(Context c) {
-        StorageAccess storageAccess = new StorageAccess();
-        // Info is stored in ActivityLog.xml file inside Settings folder
-
-        // <Entry1>
-        // <Date>2016-11-28</Date>
-        // <Time>20:29:02</Time>
-        // <Description>1</Description>
-        // <FileName>( Main )/Early on one Christmas morn</FileName>
-        // <title>Early on one Christmas morn</title>
-        // <author/>
-        // <ccli/>
-        // <HasChords>false</HasChords></Entry1>
-
-        // Run this as an async task
-
-        // Check if the Log file exists and if not, create it
-        boolean exists = storageAccess.createFile(c,null, "Settings", "", "ActivityLog.xml");
-        Uri uri = storageAccess.getUriForItem(c,"Settings","","ActivityLog.xml");
-        InputStream inputStream = storageAccess.getInputStream(c, uri);
-        OutputStream outputStream = storageAccess.getOutputStream(c,uri);
-        if (!exists) { // Create a blank file
-            createBlankXML(c);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            this.dismiss();
         }
-        String actfilesize = getLogFileSize(c,uri);
-        BuildTable do_buildTable = new BuildTable(uri, inputStream, outputStream, actfilesize);
-        do_buildTable.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        if (getDialog()==null) {
+            dismiss();
+        }
+
+        getDialog().setCanceledOnTouchOutside(true);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        View V = inflater.inflate(R.layout.popup_ccli, container, false);
+
+        // Set the title based on the whattodo
+
+        title = V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.edit_song_ccli));
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                doSave();
+            }
+        });
+        saveMe = V.findViewById(R.id.saveMe);
+
+        // Set the log file
+        storageAccess = new StorageAccess();
+        preferences = new Preferences();
+        uri = storageAccess.getUriForItem(getActivity(), preferences, "Settings", "", "ActivityLog.xml");
+
+        // Initialise the views
+        churchNameTextView = V.findViewById(R.id.churchNameTextView);
+        churchNameEditText = V.findViewById(R.id.churchNameEditText);
+        licenceTextView = V.findViewById(R.id.licenceTextView);
+        licenceEditText = V.findViewById(R.id.licenceEditText);
+        logTextView = V.findViewById(R.id.logTextView);
+        logWebView = V.findViewById(R.id.logWebView);
+        resetText = V.findViewById(R.id.resetText);
+        logWebView.getSettings().setBuiltInZoomControls(true);
+        logWebView.getSettings().setDisplayZoomControls(false);
+        logWebView.clearCache(true);
+        logWebView.setInitialScale(100);
+
+        // Set up the views required
+        switch (FullscreenActivity.whattodo) {
+            case "ccli_church":
+                setupChurchName();
+                break;
+
+            case "ccli_licence":
+                setupLicence();
+                break;
+
+            case "ccli_view":
+                setupLog();
+                break;
+
+            case "ccli_reset":
+                setupReset();
+                break;
+        }
+        Dialog dialog = getDialog();
+        if (dialog!=null && getActivity()!=null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog);
+        }
+        return V;
     }
     public static String getLogFileSize(Context c, Uri uri) {
         StorageAccess storageAccess = new StorageAccess();
@@ -412,13 +378,29 @@ public class PopUpCCLIFragment extends DialogFragment {
         }
     }
 
-    public static boolean createBlankXML(Context c) {
-        String blankXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "  <log></log>\n";
-        StorageAccess storageAccess = new StorageAccess();
-        Uri uri = storageAccess.getUriForItem(c,"Settings","","ActivityLog.xml");
-        OutputStream outputStream = storageAccess.getOutputStream(c, uri);
-        return storageAccess.writeFileFromString(blankXML,outputStream);
+    public void setupReset() {
+        title.setText(getActivity().getResources().getString(R.string.areyousure));
+        // Show what we want and hide what we don't
+        setviewvisiblities(View.GONE, View.GONE, View.GONE, View.VISIBLE);
+
+        // Set up the default values
+        // Set up save/tick listener
+        saveMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (createBlankXML(getActivity(), preferences)) {
+                    FullscreenActivity.myToastMessage = getString(R.string.ok);
+                } else {
+                    FullscreenActivity.myToastMessage = getString(R.string.error);
+                }
+                ShowToast.showToast(getActivity());
+                try {
+                    dismiss();
+                } catch (Exception e) {
+                    Log.d("d", "Error closing the fragment");
+                }
+            }
+        });
     }
 
     @Override
@@ -430,20 +412,33 @@ public class PopUpCCLIFragment extends DialogFragment {
         }
     }
 
-    public static void addUsageEntryToLog(Context c, String fname, String song,
-                                          String author, String copyright, String ccli, String usage) {
-        // Do this as an async task
+    public void buildTable(Context c) {
         StorageAccess storageAccess = new StorageAccess();
-        // Check if the log exists or if we need to create it
-        boolean created = storageAccess.createFile(c,"null","Settings","","ActivityLog.xml");
-        Uri uri = storageAccess.getUriForItem(c,"Settings","","ActivityLog.xml");
-        if (created) {
-            createBlankXML(c);
-        }
-        InputStream inputStream = storageAccess.getInputStream(c,uri);
-        AddUsageEntryToLog add_usage = new AddUsageEntryToLog(uri, inputStream, fname, song, author, copyright, ccli, usage);
-        add_usage.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        // Info is stored in ActivityLog.xml file inside Settings folder
 
+        // <Entry1>
+        // <Date>2016-11-28</Date>
+        // <Time>20:29:02</Time>
+        // <Description>1</Description>
+        // <FileName>( Main )/Early on one Christmas morn</FileName>
+        // <title>Early on one Christmas morn</title>
+        // <author/>
+        // <ccli/>
+        // <HasChords>false</HasChords></Entry1>
+
+        // Run this as an async task
+
+        // Check if the Log file exists and if not, create it
+        boolean exists = storageAccess.createFile(c, preferences, null, "Settings", "", "ActivityLog.xml");
+        Uri uri = storageAccess.getUriForItem(c, preferences, "Settings", "", "ActivityLog.xml");
+        InputStream inputStream = storageAccess.getInputStream(c, uri);
+        OutputStream outputStream = storageAccess.getOutputStream(c, uri);
+        if (!exists) { // Create a blank file
+            createBlankXML(c, preferences);
+        }
+        String actfilesize = getLogFileSize(c, uri);
+        BuildTable do_buildTable = new BuildTable(uri, inputStream, outputStream, actfilesize);
+        do_buildTable.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private static class AddUsageEntryToLog extends AsyncTask<Object, Void, String> {

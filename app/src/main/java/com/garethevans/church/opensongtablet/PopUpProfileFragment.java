@@ -61,6 +61,7 @@ public class PopUpProfileFragment extends DialogFragment {
     }
 
     StorageAccess storageAccess;
+    Preferences preferences;
     String[] foundFiles;
     Collator coll;
     ScrollView profile_overview;
@@ -110,6 +111,7 @@ public class PopUpProfileFragment extends DialogFragment {
         saveMe.setVisibility(View.GONE);
 
         storageAccess = new StorageAccess();
+        preferences = new Preferences();
 
         // Initialise the views
         profile_overview = V.findViewById(R.id.profile_overview);
@@ -158,7 +160,7 @@ public class PopUpProfileFragment extends DialogFragment {
                 String contents = prepareProfile();
                 name = profileName_EditText.getText().toString();
                 if (!name.equals("")) {
-                    Uri uri = storageAccess.getUriForItem(getActivity(),"Profiles","",name);
+                    Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Profiles", "", name);
                     OutputStream outputStream = storageAccess.getOutputStream(getActivity(), uri);
                     storageAccess.writeFileFromString(contents,outputStream);
                     FullscreenActivity.myToastMessage = getString(R.string.ok);
@@ -269,7 +271,7 @@ public class PopUpProfileFragment extends DialogFragment {
         XmlPullParser xpp;
         xpp = factory.newPullParser();
 
-        Uri uri = storageAccess.getUriForItem(getActivity(),"Profiles","",file);
+        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Profiles", "", file);
         InputStream inputStream = storageAccess.getInputStream(getActivity(),uri);
         xpp.setInput(inputStream,null);
 
@@ -1472,13 +1474,15 @@ public class PopUpProfileFragment extends DialogFragment {
     }
 
     public int getIntegerValue(String s, int def) {
-        int integer = def;
+        int integer;
         if (s!=null && !s.equals("")) {
             try {
                 integer = Integer.parseInt(s);
             } catch (Exception e) {
                 integer = def;
             }
+        } else {
+            integer = def;
         }
         return integer;
     }
