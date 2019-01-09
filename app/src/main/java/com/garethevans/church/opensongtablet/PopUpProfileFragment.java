@@ -21,6 +21,10 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.garethevans.church.opensongtablet.core.AppContext;
+import com.garethevans.church.opensongtablet.core.bean.BeanXmlLegacyMapper;
+import com.garethevans.church.opensongtablet.core.config.AppConfig;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -316,6 +320,7 @@ public class PopUpProfileFragment extends DialogFragment {
         int eventType;
         eventType = xpp.getEventType();
 
+        AppConfig config = AppContext.get().getConfig();
         while (eventType != XmlPullParser.END_DOCUMENT) {
             if (eventType == XmlPullParser.START_TAG) {
                 switch (xpp.getName()) {
@@ -1324,24 +1329,8 @@ public class PopUpProfileFragment extends DialogFragment {
                         FullscreenActivity.showAlphabeticalIndexInSongMenu = getBooleanValue(xpp.nextText(), true);
 
                         break;
-                    case "showCapoAsNumerals":
-                        FullscreenActivity.showCapoAsNumerals = getBooleanValue(xpp.nextText(), false);
-
-                        break;
-                    case "showCapoChords":
-                        FullscreenActivity.showCapoChords = getBooleanValue(xpp.nextText(), true);
-
-                        break;
                     case "showLyrics":
                         FullscreenActivity.showLyrics = getBooleanValue(xpp.nextText(), true);
-
-                        break;
-                    case "showNativeAndCapoChords":
-                        FullscreenActivity.showNativeAndCapoChords = getBooleanValue(xpp.nextText(), true);
-
-                        break;
-                    case "showChords":
-                        FullscreenActivity.showChords = getBooleanValue(xpp.nextText(), true);
 
                         break;
                     case "showNextInSet":
@@ -1489,6 +1478,8 @@ public class PopUpProfileFragment extends DialogFragment {
                         FullscreenActivity.ymargin_presentation = getIntegerValue(xpp.nextText(), 25);
 
                         break;
+                    default:
+                        config.setValue(xpp.getName(), xpp.nextText());
                 }
 
             }
@@ -1840,10 +1831,6 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <scrollDistance>" + FullscreenActivity.scrollDistance + "</scrollDistance>\n";
         text += "  <scrollSpeed>" + FullscreenActivity.scrollSpeed + "</scrollSpeed>\n";
         text += "  <showAlphabeticalIndexInSongMenu>" + FullscreenActivity.showAlphabeticalIndexInSongMenu + "</showAlphabeticalIndexInSongMenu>\n";
-        text += "  <showCapoAsNumerals>" + FullscreenActivity.showCapoAsNumerals + "</showCapoAsNumerals>\n";
-        text += "  <showCapoChords>" + FullscreenActivity.showCapoChords + "</showCapoChords>\n";
-        text += "  <showChords>" + FullscreenActivity.showChords + "</showChords>\n";
-        text += "  <showNativeAndCapoChords>" + FullscreenActivity.showNativeAndCapoChords + "</showNativeAndCapoChords>\n";
         text += "  <showNextInSet>" + FullscreenActivity.showNextInSet + "</showNextInSet>\n";
         text += "  <showLyrics>" + FullscreenActivity.showLyrics + "</showLyrics>\n";
         text += "  <showSetTickBoxInSongMenu>" + FullscreenActivity.showSetTickBoxInSongMenu + "</showSetTickBoxInSongMenu>\n";
@@ -1881,6 +1868,10 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <whichSongFolder>" + FullscreenActivity.whichSongFolder + "</whichSongFolder>\n";
         text += "  <xmargin_presentation>" + FullscreenActivity.xmargin_presentation + "</xmargin_presentation>\n";
         text += "  <ymargin_presentation>" + FullscreenActivity.visualmetronome + "</ymargin_presentation>\n";
+        StringBuilder fragment = new StringBuilder(512);
+        AppConfig config = AppContext.get().getConfig();
+        new BeanXmlLegacyMapper(config).saveXml(fragment, config, "  ", "  ");
+        text += fragment.toString();
         text += "</myprofile>";
         return text;
     }

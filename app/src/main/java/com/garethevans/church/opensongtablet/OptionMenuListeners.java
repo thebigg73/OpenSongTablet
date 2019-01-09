@@ -19,11 +19,14 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.garethevans.church.opensongtablet.core.AppContext;
+import com.garethevans.church.opensongtablet.core.config.ChordConfig;
 import com.peak.salut.Callbacks.SalutCallback;
 import com.peak.salut.Callbacks.SalutDeviceCallback;
 import com.peak.salut.SalutDevice;
 
 import java.io.File;
+import java.io.IOException;
 
 public class OptionMenuListeners extends Activity {
 
@@ -1084,8 +1087,9 @@ public class OptionMenuListeners extends Activity {
         chordsFormatButton.setText(c.getString(R.string.options_options_chordformat).toUpperCase(FullscreenActivity.locale));
         chordsConvertButton.setText(c.getString(R.string.options_song_convert).toUpperCase(FullscreenActivity.locale));
 
+        final ChordConfig chordConfig = AppContext.get().getConfig().getChord();
         // Set the switches up based on preferences
-        if (FullscreenActivity.showChords) {
+        if (chordConfig.showChords.get()) {
             chordsToggleSwitch.setChecked(true);
         } else {
             chordsToggleSwitch.setChecked(false);
@@ -1104,20 +1108,20 @@ public class OptionMenuListeners extends Activity {
         } else {
             chordsLyricsToggleSwitch.setChecked(false);
         }
-        boolean capochordsbuttonenabled = FullscreenActivity.showChords;
-        chordsCapoToggleSwitch.setChecked(FullscreenActivity.showCapoChords);
+        boolean capochordsbuttonenabled = chordConfig.showChords.get();
+        chordsCapoToggleSwitch.setChecked(chordConfig.showCapoChords.get());
         chordsCapoToggleSwitch.setEnabled(capochordsbuttonenabled);
         if (!capochordsbuttonenabled) {
             chordsCapoToggleSwitch.setAlpha(0.4f);
         }
 
-        boolean nativeandcapobuttonenabled = FullscreenActivity.showChords && capochordsbuttonenabled;
-        chordsNativeAndCapoToggleSwitch.setChecked(FullscreenActivity.showNativeAndCapoChords);
+        boolean nativeandcapobuttonenabled = chordConfig.showChords.get() && capochordsbuttonenabled;
+        chordsNativeAndCapoToggleSwitch.setChecked(chordConfig.showNativeAndCapoChords.get());
         chordsNativeAndCapoToggleSwitch.setEnabled(nativeandcapobuttonenabled);
         if (!nativeandcapobuttonenabled) {
             chordsNativeAndCapoToggleSwitch.setAlpha(0.4f);
         }
-        capoAsNumeralsToggleSwitch.setChecked(FullscreenActivity.showCapoAsNumerals);
+        capoAsNumeralsToggleSwitch.setChecked(chordConfig.showCapoAsNumerals.get());
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -1211,7 +1215,7 @@ public class OptionMenuListeners extends Activity {
         chordsToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.showChords = b;
+                chordConfig.showChords.set(b);
                 chordsCapoToggleSwitch.setEnabled(b);
                 if (!b) {
                     chordsCapoToggleSwitch.setAlpha(0.4f);
@@ -1219,7 +1223,7 @@ public class OptionMenuListeners extends Activity {
                     chordsCapoToggleSwitch.setAlpha(1.0f);
                 }
 
-                boolean nativeandcapobuttonenabled = FullscreenActivity.showCapoChords && b;
+                boolean nativeandcapobuttonenabled = chordConfig.showCapoChords.get() && b;
                 chordsNativeAndCapoToggleSwitch.setEnabled(nativeandcapobuttonenabled);
                 if (!nativeandcapobuttonenabled) {
                     chordsNativeAndCapoToggleSwitch.setAlpha(0.4f);
@@ -1248,8 +1252,8 @@ public class OptionMenuListeners extends Activity {
         chordsCapoToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.showCapoChords = b;
-                boolean nativeandcapobuttonenabled = FullscreenActivity.showChords && b;
+                chordConfig.showCapoChords.set(b);
+                boolean nativeandcapobuttonenabled = chordConfig.showChords.get() && b;
                 chordsNativeAndCapoToggleSwitch.setEnabled(nativeandcapobuttonenabled);
                 if (!nativeandcapobuttonenabled) {
                     chordsNativeAndCapoToggleSwitch.setAlpha(0.4f);
@@ -1266,7 +1270,7 @@ public class OptionMenuListeners extends Activity {
         chordsNativeAndCapoToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.showNativeAndCapoChords = b;
+                chordConfig.showNativeAndCapoChords.set(b);
                 Preferences.savePreferences();
                 if (mListener!=null) {
                     mListener.loadSong();
@@ -1277,7 +1281,7 @@ public class OptionMenuListeners extends Activity {
         capoAsNumeralsToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.showCapoAsNumerals = b;
+                chordConfig.showCapoAsNumerals.set(b);
                 Preferences.savePreferences();
                 if (mListener!=null) {
                     mListener.loadSong();

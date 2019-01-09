@@ -198,8 +198,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             transposeStyle = "sharps", transposedLyrics = "";
     public static int transposeTimes = 1;
     public static float capoFontSizeInfoBar;
-    public static boolean showChords, showLyrics, showCapo, showCapoChords, showNativeAndCapoChords,
-            switchsharpsflats = false, showCapoAsNumerals = false, convertchords = false;
+    public static boolean showLyrics, showCapo, switchsharpsflats = false, convertchords = false;
 
     // PopUp window size and alpha
     public static float popupAlpha_Set = 0.6f, popupDim_Set = 0.7f, popupScale_Set = 0.8f,

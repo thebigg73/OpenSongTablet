@@ -77,6 +77,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.garethevans.church.opensongtablet.core.AppContext;
+import com.garethevans.church.opensongtablet.core.config.AppConfig;
+import com.garethevans.church.opensongtablet.core.config.ChordConfig;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
@@ -2293,6 +2296,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     public void customButtonAction(String s) {
+        AppConfig config = AppContext.get().getConfig();
         switch (s) {
             case "":
             default:
@@ -2326,13 +2330,13 @@ public class StageMode extends AppCompatActivity implements
                 break;
 
             case "showchords":
-                FullscreenActivity.showChords = !FullscreenActivity.showChords;
+                config.getChord().showChords.toggle();
                 Preferences.savePreferences();
                 loadSong();
                 break;
 
             case "showcapo":
-                FullscreenActivity.showCapoChords = !FullscreenActivity.showCapoChords;
+                config.getChord().showCapoChords.toggle();
                 Preferences.savePreferences();
                 loadSong();
                 break;
@@ -3915,7 +3919,8 @@ public class StageMode extends AppCompatActivity implements
             capoinfonewkey.setVisibility(View.GONE);
         }
 
-        if (bothempty || !FullscreenActivity.showCapoChords || !FullscreenActivity.showChords) {
+        ChordConfig chordConfig = AppContext.get().getConfig().getChord();
+        if (bothempty || !chordConfig.showCapoChords.get() || !chordConfig.showChords.get()) {
             capoInfo.setVisibility(View.GONE);
         } else {
             capoInfo.setVisibility(View.VISIBLE);
@@ -6912,13 +6917,13 @@ public class StageMode extends AppCompatActivity implements
                 break;
 
             case "showchords":
-                FullscreenActivity.showChords = !FullscreenActivity.showChords;
+                AppContext.get().getConfig().getChord().showChords.toggle();
                 Preferences.savePreferences();
                 refreshAll();
                 break;
 
             case "showcapo":
-                FullscreenActivity.showCapoChords = !FullscreenActivity.showCapoChords;
+                AppContext.get().getConfig().getChord().showCapoChords.toggle();
                 Preferences.savePreferences();
                 refreshAll();
                 break;

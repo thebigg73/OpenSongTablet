@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -25,12 +24,16 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.garethevans.church.opensongtablet.core.AppContext;
+import com.garethevans.church.opensongtablet.core.config.AppConfig;
+import com.garethevans.church.opensongtablet.core.config.ChordConfig;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ProcessSong extends Activity {
+public class ProcessSong {
 
     static String parseLyrics(String myLyrics, Context c) {
         myLyrics = myLyrics.replace("]\n\n","]\n");
@@ -159,6 +162,8 @@ public class ProcessSong extends Activity {
     static String removeUnderScores(String myLyrics, Context c) {
         // Go through the lines and remove underscores if the line isn't an image location
         // Split the lyrics into a line by line array so we can fix individual lines
+        AppConfig config = AppContext.get().getConfig();
+        ChordConfig chordConfig = config.getChord();
         String[] lineLyrics = myLyrics.split("\n");
         StringBuilder myLyricsBuilder = new StringBuilder();
         for (int l = 0; l<lineLyrics.length; l++) {
@@ -169,7 +174,7 @@ public class ProcessSong extends Activity {
                     if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
                         lineLyrics[l] = lineLyrics[l].replace("_", "");
                     } else if ((FullscreenActivity.whichMode.equals("Stage") || FullscreenActivity.whichMode.equals("Performance")) &&
-                            !FullscreenActivity.showChords) {
+                            !chordConfig.showChords.get()) {
                         lineLyrics[l] = lineLyrics[l].replace("_", "");
                     } else {
                         lineLyrics[l] = lineLyrics[l].replace("_", " ");
@@ -179,7 +184,7 @@ public class ProcessSong extends Activity {
                     if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
                         lineLyrics[l] = lineLyrics[l].replace("_", "");
                     } else if ((FullscreenActivity.whichMode.equals("Stage") || FullscreenActivity.whichMode.equals("Performance")) &&
-                            !FullscreenActivity.showChords) {
+                            !chordConfig.showChords.get()) {
                         lineLyrics[l] = lineLyrics[l].replace("_", "");
                     } else {
                         lineLyrics[l] = lineLyrics[l].replace("_", " ");
@@ -724,10 +729,12 @@ public class ProcessSong extends Activity {
         // Replace unwanted symbols
         // Split into lines
         //string = string.replace("|", "\n");
+        AppConfig config = AppContext.get().getConfig();
+        ChordConfig chordConfig = config.getChord();
         if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
             string = string.replace("_", "");
         } else if ((FullscreenActivity.whichMode.equals("Stage") || FullscreenActivity.whichMode.equals("Performance")) &&
-                !FullscreenActivity.showChords) {
+                !chordConfig.showChords.get()) {
             string = string.replace("_", "");
         } else {
             string = string.replace("_", " ");
@@ -1046,6 +1053,7 @@ public class ProcessSong extends Activity {
 
     @SuppressWarnings("deprecation")
     private static TableRow lyriclinetoTableRow(Context c, String[] lyrics, float fontsize) {
+        AppConfig config = AppContext.get().getConfig();
         TableRow lyricrow = new TableRow(c);
         if (FullscreenActivity.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout &&
                 !FullscreenActivity.presoShowChords) {
@@ -1074,7 +1082,7 @@ public class ProcessSong extends Activity {
                 if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
                     bit = bit.replace("_", "");
                 } else if ((FullscreenActivity.whichMode.equals("Stage") || FullscreenActivity.whichMode.equals("Performance")) &&
-                        !FullscreenActivity.showChords) {
+                        !config.getChord().showChords.get()) {
                     bit = bit.replace("_", "");
                 } else {
                     bit = bit.replace("_", " ");
@@ -1182,6 +1190,7 @@ public class ProcessSong extends Activity {
     }
 
     private static TableRow commentlinetoTableRow(Context c, String[] comment, float fontsize, boolean tab) {
+        AppConfig config = AppContext.get().getConfig();
         TableRow commentrow = new TableRow(c);
         commentrow.setLayoutParams(tablelayout_params());
         commentrow.setPadding(0, -(int) ((float) FullscreenActivity.linespacing / fontsize), 0, 0);
@@ -1196,7 +1205,7 @@ public class ProcessSong extends Activity {
                 if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
                     bit = bit.replace("_", "");
                 } else if ((FullscreenActivity.whichMode.equals("Stage") || FullscreenActivity.whichMode.equals("Performance")) &&
-                        !FullscreenActivity.showChords) {
+                        !config.getChord().showChords.get()) {
                     bit = bit.replace("_", "");
                 } else {
                     bit = bit.replace("_", " ");
@@ -2054,7 +2063,7 @@ public class ProcessSong extends Activity {
                 mcapo = -1;
             }
             if (mcapo>0) {
-                if (FullscreenActivity.showCapoAsNumerals) {
+                if (AppContext.get().getConfig().getChord().showCapoAsNumerals.get()) {
                     s = numberToNumeral(mcapo);
                 } else {
                     s = "" + mcapo;
@@ -2239,6 +2248,8 @@ public class ProcessSong extends Activity {
     @SuppressWarnings("all")
     public static LinearLayout songSectionView(Context c, int x, float fontsize, boolean projected) {
 
+        AppConfig config = AppContext.get().getConfig();
+        ChordConfig chordConfig = config.getChord();
         final LinearLayout ll = new LinearLayout(c);
 
         ll.setLayoutParams(linearlayout_params());
@@ -2266,10 +2277,10 @@ public class ProcessSong extends Activity {
         if (projected) {
             showchords = FullscreenActivity.presoShowChords;
         } else {
-            showchords = FullscreenActivity.showChords;
+            showchords = chordConfig.showChords.get();
         }
-        boolean showcapochords = FullscreenActivity.showCapoChords;
-        boolean shownativeandcapochords = FullscreenActivity.showNativeAndCapoChords;
+        boolean showcapochords = chordConfig.showCapoChords.get();
+        boolean shownativeandcapochords = chordConfig.showNativeAndCapoChords.get();
         boolean transposablechordformat = !FullscreenActivity.oldchordformat.equals("4") && !FullscreenActivity.oldchordformat.equals("5");
 
         // Decide if capo chords are valid and should be shown
@@ -2434,14 +2445,16 @@ public class ProcessSong extends Activity {
             linenums = whattoprocess.length;
         }
 
+        AppConfig config = AppContext.get().getConfig();
+        ChordConfig chordConfig = config.getChord();
         String mCapo = FullscreenActivity.mCapo;
         if (mCapo==null || mCapo.isEmpty() || mCapo.equals("")) {
             mCapo = "0";
         }
         int mcapo = Integer.parseInt(mCapo);
         boolean showchordspreso = FullscreenActivity.presoShowChords;
-        boolean showcapochords = FullscreenActivity.showCapoChords;
-        boolean shownativeandcapochords = FullscreenActivity.showNativeAndCapoChords;
+        boolean showcapochords = chordConfig.showCapoChords.get();
+        boolean shownativeandcapochords = chordConfig.showNativeAndCapoChords.get();
         boolean transposablechordformat = !FullscreenActivity.oldchordformat.equals("4") && !FullscreenActivity.oldchordformat.equals("5");
 
         // Decide if capo chords are valid and should be shown

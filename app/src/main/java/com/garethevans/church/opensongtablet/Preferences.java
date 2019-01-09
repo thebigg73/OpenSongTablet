@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -9,11 +8,15 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.view.Gravity;
 
+import com.garethevans.church.opensongtablet.core.AppContext;
+import com.garethevans.church.opensongtablet.core.bean.BeanPreferencesMapper;
+import com.garethevans.church.opensongtablet.core.config.AppConfig;
+
 import java.util.Locale;
 
 import static com.garethevans.church.opensongtablet.FullscreenActivity.myPreferences;
 
-public class Preferences extends Activity {
+public class Preferences {
 
     // Set the default colours here
     static int default_metronomeColor = 0xffaa1212;
@@ -98,6 +101,8 @@ public class Preferences extends Activity {
         // Load up the user preferences
         // Set to blank if not used before
         try {
+            AppConfig config = AppContext.get().getConfig();
+            new BeanPreferencesMapper(config, myPreferences).load();
             FullscreenActivity.ab_titleSize = myPreferences.getFloat("ab_titleSize", 13.0f);
             FullscreenActivity.ab_authorSize = myPreferences.getFloat("ab_authorSize", 11.0f);
             FullscreenActivity.alphabeticalSize = myPreferences.getFloat("alphabeticalSize", 14.0f);
@@ -385,13 +390,10 @@ public class Preferences extends Activity {
             FullscreenActivity.quickLaunchButton_3 = myPreferences.getString("quickLaunchButton_3", "");
             FullscreenActivity.quickLaunchButton_4 = myPreferences.getString("quickLaunchButton_4", "");
             FullscreenActivity.randomFolders = myPreferences.getString("randomFolders", "");
-            FullscreenActivity.showCapoAsNumerals = myPreferences.getBoolean("showCapoAsNumerals", false);
             FullscreenActivity.scrollDistance = myPreferences.getFloat("scrollDistance", 0.6f);
             FullscreenActivity.scrollSpeed = myPreferences.getInt("scrollSpeed", 1500);
             FullscreenActivity.showAlphabeticalIndexInSongMenu = myPreferences.getBoolean("showAlphabeticalIndexInSongMenu", true);
-            FullscreenActivity.showCapoChords = myPreferences.getBoolean("showCapoChords", true);
             FullscreenActivity.showLyrics = myPreferences.getBoolean("showLyrics", true);
-            FullscreenActivity.showNativeAndCapoChords = myPreferences.getBoolean("showNativeAndCapoChords", true);
             FullscreenActivity.showNextInSet = myPreferences.getString("showNextInSet", "bottom");
             FullscreenActivity.showSetTickBoxInSongMenu = myPreferences.getBoolean("showSetTickBoxInSongMenu", true);
             FullscreenActivity.showSplashVersion = myPreferences.getInt("showSplashVersion", FullscreenActivity.version);
@@ -460,11 +462,6 @@ public class Preferences extends Activity {
             } catch (Exception e) {
                 FullscreenActivity.presoTitleSize = 14.0f;
             }
-            try {
-                FullscreenActivity.showChords = myPreferences.getBoolean("showChords", true);
-            } catch (Exception e) {
-                FullscreenActivity.showChords = true;
-            }
 
         } catch (Exception e) {
             // Error loading the preferences
@@ -479,6 +476,8 @@ public class Preferences extends Activity {
 
         try {
             SharedPreferences.Editor editor = myPreferences.edit();
+            AppConfig config = AppContext.get().getConfig();
+            new BeanPreferencesMapper(config, myPreferences).save(config, editor);
 
             editor.putFloat("ab_titleSize", FullscreenActivity.ab_titleSize);
             editor.putFloat("ab_authorSize", FullscreenActivity.ab_authorSize);
@@ -764,11 +763,7 @@ public class Preferences extends Activity {
             editor.putFloat("scrollDistance", FullscreenActivity.scrollDistance);
             editor.putInt("scrollSpeed", FullscreenActivity.scrollSpeed);
             editor.putBoolean("showAlphabeticalIndexInSongMenu",FullscreenActivity.showAlphabeticalIndexInSongMenu);
-            editor.putBoolean("showCapoAsNumerals",FullscreenActivity.showCapoAsNumerals);
-            editor.putBoolean("showCapoChords", FullscreenActivity.showCapoChords);
-            editor.putBoolean("showChords", FullscreenActivity.showChords);
             editor.putBoolean("showLyrics", FullscreenActivity.showLyrics);
-            editor.putBoolean("showNativeAndCapoChords", FullscreenActivity.showNativeAndCapoChords);
             editor.putString("showNextInSet", FullscreenActivity.showNextInSet);
             editor.putBoolean("showSetTickBoxInSongMenu",FullscreenActivity.showSetTickBoxInSongMenu);
             editor.putInt("showSplashVersion", FullscreenActivity.showSplashVersion);

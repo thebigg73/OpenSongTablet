@@ -11,6 +11,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 
+import com.garethevans.church.opensongtablet.core.AppContext;
+import com.garethevans.church.opensongtablet.core.config.AppConfig;
+import com.garethevans.church.opensongtablet.core.config.ChordConfig;
+
 public class PopUpGroupedPageButtonsFragment extends DialogFragment {
 
     static PopUpGroupedPageButtonsFragment newInstance() {
@@ -300,6 +304,8 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
     }
 
     public void customButtonAction(String s) {
+        AppConfig config = AppContext.get().getConfig();
+        ChordConfig chordConfig = config.getChord();
         switch (s) {
             case "":
             default:
@@ -320,7 +326,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
                 break;
 
             case "showchords":
-                FullscreenActivity.showChords = !FullscreenActivity.showChords;
+                chordConfig.showChords.toggle();
                 saveSongAndLoadIt();
                 break;
 
