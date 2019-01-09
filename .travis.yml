@@ -1,0 +1,11 @@
+anguage: android
+jdk: oraclejdk8
+android:
+  components:
+    - build-tools-26.0.2
+    - android-26
+script: ./gradlew test
+notifications:
+  email:
+# put your mail or a mailing-list here, I do not want to reveal your personal data
+    - joerg.hohwiller@googlemail.com
