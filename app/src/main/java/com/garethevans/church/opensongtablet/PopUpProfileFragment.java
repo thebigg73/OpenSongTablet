@@ -161,6 +161,11 @@ public class PopUpProfileFragment extends DialogFragment {
                 name = profileName_EditText.getText().toString();
                 if (!name.equals("")) {
                     Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Profiles", "", name);
+
+                    // Check the uri exists for the outputstream to be valid
+                    storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
+                            "Profiles", "", name);
+
                     OutputStream outputStream = storageAccess.getOutputStream(getActivity(), uri);
                     storageAccess.writeFileFromString(contents,outputStream);
                     FullscreenActivity.myToastMessage = getString(R.string.ok);
@@ -220,7 +225,7 @@ public class PopUpProfileFragment extends DialogFragment {
     }
 
     public void setupProfileList() {
-        ArrayList<String> tempFoundFiles = storageAccess.listFilesInFolder(getActivity(),"Profiles","");
+        ArrayList<String> tempFoundFiles = storageAccess.listFilesInFolder(getActivity(), preferences, "Profiles", "");
 
         // Sort the array list alphabetically by locale rules
         // Add locale sort

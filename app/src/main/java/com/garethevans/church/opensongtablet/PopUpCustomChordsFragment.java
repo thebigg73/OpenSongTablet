@@ -1679,6 +1679,11 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         // Add the custom chord code to the xml
         Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.whichSongFolder,
                 FullscreenActivity.songfilename);
+
+        // Check the uri exists for the outputstream to be valid
+        storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
+                "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+
         OutputStream outputStream = storageAccess.getOutputStream(getActivity(),uri);
         storageAccess.writeFileFromString(FullscreenActivity.mynewXML,outputStream);
     }

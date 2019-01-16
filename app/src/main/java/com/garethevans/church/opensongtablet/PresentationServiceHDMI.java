@@ -784,7 +784,7 @@ class PresentationServiceHDMI extends Presentation
         protected void onPostExecute(String s) {
             try {
                 if (!cancelled) {
-                    test1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection, 12.0f);
+                    test1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection, 12.0f, storageAccess);
                     col1_1.addView(test1_1);
 
                     // Now premeasure the view
@@ -860,7 +860,8 @@ class PresentationServiceHDMI extends Presentation
         protected void onPostExecute(String s) {
             try {
                 if (!cancelled) {
-                    lyrics1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection, ProcessSong.getProjectedFontSize(scale));
+                    lyrics1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection,
+                            ProcessSong.getProjectedFontSize(scale), storageAccess);
                     LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(availableWidth_1col, LinearLayout.LayoutParams.WRAP_CONTENT);
                     llp1_1.setMargins(0, 0, 0, 0);
                     lyrics1_1.setLayoutParams(llp1_1);
@@ -928,7 +929,7 @@ class PresentationServiceHDMI extends Presentation
         protected void onPostExecute(String s) {
             try {
                 if (!cancelled) {
-                    test1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection, 12.0f);
+                    test1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection, 12.0f, storageAccess);
                     col1_1.addView(test1_1);
 
                     // Now premeasure the view
@@ -1004,7 +1005,8 @@ class PresentationServiceHDMI extends Presentation
         protected void onPostExecute(String s) {
             try {
                 if (!cancelled) {
-                    lyrics1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection, ProcessSong.getProjectedFontSize(scale));
+                    lyrics1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection,
+                            ProcessSong.getProjectedFontSize(scale), storageAccess);
                     LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(availableWidth_1col, LinearLayout.LayoutParams.WRAP_CONTENT);
                     llp1_1.setMargins(0, 0, 0, 0);
                     lyrics1_1.setLayoutParams(llp1_1);
@@ -1196,25 +1198,25 @@ class PresentationServiceHDMI extends Presentation
                     // Go through each section
                     for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
 
-                        test1_1 = ProcessSong.projectedSectionView(context, x, 12.0f);
+                        test1_1 = ProcessSong.projectedSectionView(context, x, 12.0f, storageAccess);
                         col1_1.addView(test1_1);
 
                         if (x < FullscreenActivity.halfsplit_section) {
-                            test1_2 = ProcessSong.projectedSectionView(context, x, 12.0f);
+                            test1_2 = ProcessSong.projectedSectionView(context, x, 12.0f, storageAccess);
                             col1_2.addView(test1_2);
                         } else {
-                            test2_2 = ProcessSong.projectedSectionView(context, x, 12.0f);
+                            test2_2 = ProcessSong.projectedSectionView(context, x, 12.0f, storageAccess);
                             col2_2.addView(test2_2);
                         }
 
                         if (x < FullscreenActivity.thirdsplit_section) {
-                            test1_3 = ProcessSong.projectedSectionView(context, x, 12.0f);
+                            test1_3 = ProcessSong.projectedSectionView(context, x, 12.0f, storageAccess);
                             col1_3.addView(test1_3);
                         } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
-                            test2_3 = ProcessSong.projectedSectionView(context, x, 12.0f);
+                            test2_3 = ProcessSong.projectedSectionView(context, x, 12.0f, storageAccess);
                             col2_3.addView(test2_3);
                         } else {
-                            test3_3 = ProcessSong.projectedSectionView(context, x, 12.0f);
+                            test3_3 = ProcessSong.projectedSectionView(context, x, 12.0f, storageAccess);
                             col3_3.addView(test3_3);
                         }
                     }
@@ -1303,7 +1305,7 @@ class PresentationServiceHDMI extends Presentation
                     // Prepare the new views to add to 1,2 and 3 colums ready for measuring
                     // Go through each section
                     for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
-                        lyrics1_1 = ProcessSong.projectedSectionView(context, x, fontsize1_1);
+                        lyrics1_1 = ProcessSong.projectedSectionView(context, x, fontsize1_1, storageAccess);
                         LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(availableWidth_1col, LinearLayout.LayoutParams.WRAP_CONTENT);
                         llp1_1.setMargins(0, 0, 0, 0);
                         lyrics1_1.setLayoutParams(llp1_1);
@@ -1388,14 +1390,14 @@ class PresentationServiceHDMI extends Presentation
                     for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
 
                         if (x < FullscreenActivity.halfsplit_section) {
-                            lyrics1_2 = ProcessSong.projectedSectionView(context, x, fontsize1_2);
+                            lyrics1_2 = ProcessSong.projectedSectionView(context, x, fontsize1_2, storageAccess);
                             LinearLayout.LayoutParams llp1_2 = new LinearLayout.LayoutParams(availableWidth_2col, LinearLayout.LayoutParams.WRAP_CONTENT);
                             llp1_2.setMargins(0, 0, 0, 0);
                             lyrics1_2.setLayoutParams(llp1_2);
                             lyrics1_2.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
                             box1_2.addView(lyrics1_2);
                         } else {
-                            lyrics2_2 = ProcessSong.projectedSectionView(context, x, fontsize2_2);
+                            lyrics2_2 = ProcessSong.projectedSectionView(context, x, fontsize2_2, storageAccess);
                             LinearLayout.LayoutParams llp2_2 = new LinearLayout.LayoutParams(availableWidth_2col, LinearLayout.LayoutParams.WRAP_CONTENT);
                             llp2_2.setMargins(0, 0, 0, 0);
                             lyrics2_2.setLayoutParams(llp2_2);
@@ -1492,21 +1494,21 @@ class PresentationServiceHDMI extends Presentation
                     // Add the song sections...
                     for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
                         if (x < FullscreenActivity.thirdsplit_section) {
-                            lyrics1_3 = ProcessSong.projectedSectionView(context, x, fontsize1_3);
+                            lyrics1_3 = ProcessSong.projectedSectionView(context, x, fontsize1_3, storageAccess);
                             LinearLayout.LayoutParams llp1_3 = new LinearLayout.LayoutParams(availableWidth_3col, LinearLayout.LayoutParams.WRAP_CONTENT);
                             llp1_3.setMargins(0, 0, 0, 0);
                             lyrics1_3.setLayoutParams(llp1_3);
                             lyrics1_3.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
                             box1_3.addView(lyrics1_3);
                         } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
-                            lyrics2_3 = ProcessSong.projectedSectionView(context, x, fontsize2_3);
+                            lyrics2_3 = ProcessSong.projectedSectionView(context, x, fontsize2_3, storageAccess);
                             LinearLayout.LayoutParams llp2_3 = new LinearLayout.LayoutParams(availableWidth_3col, LinearLayout.LayoutParams.WRAP_CONTENT);
                             llp2_3.setMargins(0, 0, 0, 0);
                             lyrics2_3.setLayoutParams(llp2_3);
                             lyrics2_3.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
                             box2_3.addView(lyrics2_3);
                         } else {
-                            lyrics3_3 = ProcessSong.projectedSectionView(context, x, fontsize3_3);
+                            lyrics3_3 = ProcessSong.projectedSectionView(context, x, fontsize3_3, storageAccess);
                             LinearLayout.LayoutParams llp3_3 = new LinearLayout.LayoutParams(availableWidth_3col, LinearLayout.LayoutParams.WRAP_CONTENT);
                             llp3_3.setMargins(0, 0, 0, 0);
                             lyrics3_3.setLayoutParams(llp3_3);

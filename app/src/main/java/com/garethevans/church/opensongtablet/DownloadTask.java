@@ -1,11 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
 // This class is used to download my versions of the Church and Band songs as .osb files
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -72,14 +72,10 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
                 if (input!=null) {
 
                     uri = storageAccess.getUriForItem(c, preferences, "", "", filename);
-                    Log.d("d","uri = "+uri);
-                    Log.d("d","uriExists()="+storageAccess.uriExists(c,uri));
-                    if (storageAccess.lollipopOrLater() && !storageAccess.uriExists(c, uri)) {
-                        storageAccess.createFile(c, preferences, null, "", "", filename);
-                        Log.d("d","Trying to create");
-                        uri = storageAccess.getUriForItem(c, preferences, "", "", filename);
-                        Log.d("d","uriExitst = "+storageAccess.uriExists(c,uri));
-                    }
+
+                    // Check the uri exists for the outputstream to be valid
+                    storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "", "", filename);
+
                     outputStream = storageAccess.getOutputStream(c, uri);
 
                     byte data[] = new byte[4096];

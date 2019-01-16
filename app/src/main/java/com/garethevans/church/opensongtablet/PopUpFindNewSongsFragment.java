@@ -1524,6 +1524,10 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         Uri uri_newfile = storageAccess.getUriForItem(getActivity(), preferences, "Songs", whatfolderselected, nameoffile);
         Uri uri_newpdffile;
 
+        // Check the uri exists for the outputstream to be valid
+        storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri_newfile, null,
+                "Songs", whatfolderselected, nameoffile);
+
         // Get the outputstream
         OutputStream outputStream = storageAccess.getOutputStream(getActivity(),uri_newfile);
         OutputStream outputStreamPDF = null;
@@ -1534,6 +1538,11 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         // Get the song select pdf file stuff
         if (FullscreenActivity.whattodo.equals("songselect") && downloadcomplete) {
             uri_newpdffile = storageAccess.getUriForItem(getActivity(), preferences, "Songs", whatfolderselected, nameofpdffile);
+
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri_newpdffile, null,
+                    "Songs", whatfolderselected, nameofpdffile);
+
             outputStreamPDF = storageAccess.getOutputStream(getActivity(),uri_newpdffile);
             inputStream = storageAccess.getInputStream(getActivity(),downloadedFile);
         }

@@ -42,14 +42,19 @@ class ExportPreparer {
 
     Intent exportSet(Context c, Preferences preferences, StorageAccess storageAccess) {
         String nicename = FullscreenActivity.settoload;
+
+        // This is the actual set file
+        Uri seturi = storageAccess.getFileProviderUri(c, preferences, "Sets", "", FullscreenActivity.settoload);
+
+        // These get set later if the user wants them
         Uri texturi = null;
         Uri desktopuri = null;
-        Uri ostsuri;
-        Uri seturi;
+        Uri ostsuri = null;
 
         // Read in the set
         setParser(c, preferences, storageAccess);
 
+        // Make the set name nicer (add the category in brackets)
         if (FullscreenActivity.settoload.contains("__")) {
             String[] bits = FullscreenActivity.settoload.split("__");
             String category = "";
@@ -63,38 +68,45 @@ class ExportPreparer {
             nicename = name + category;
         }
 
+        // Prepare the email intent
         Intent emailIntent = setEmailIntent(nicename,nicename,nicename + "\n\n" + FullscreenActivity.emailtext);
 
-        seturi = storageAccess.getFileProviderUri(c,"Sets","",FullscreenActivity.settoload);
-        ostsuri = storageAccess.getFileProviderUri(c,"Export","",FullscreenActivity.settoload+".osts");
-        //seturi = storageAccess.getUriForItem(c,"Sets","",FullscreenActivity.settoload);
-        //ostsuri = storageAccess.getUriForItem(c,"Export","",FullscreenActivity.settoload+".osts");
-
+        // If the user has requested to attach a .txt version of the set
         if (FullscreenActivity.exportText) {
-            texturi = storageAccess.getFileProviderUri(c,"Export","",
+            texturi = storageAccess.getFileProviderUri(c, preferences, "Export", "",
                     FullscreenActivity.settoload+".txt");
-            /*texturi = storageAccess.getUriForItem(c,"Export","",
-                    FullscreenActivity.settoload+".txt");*/
+
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, texturi, null, "Export", "", FullscreenActivity.settoload + ".txt");
+
+            // Write the set text file
             OutputStream outputStream = storageAccess.getOutputStream(c,texturi);
             storageAccess.writeFileFromString(FullscreenActivity.emailtext,outputStream);
         }
 
+        // Reset the text version of the set
         FullscreenActivity.emailtext = "";
 
+        // If the user wants to attach the normal set (desktop file) without and xml extenstion, set the uri
         if (FullscreenActivity.exportDesktop) {
-            desktopuri = storageAccess.getFileProviderUri(c,"Sets","",
-                    FullscreenActivity.settoload);
-            /*desktopuri = storageAccess.getUriForItem(c,"Sets","",
-                    FullscreenActivity.settoload);*/
+            desktopuri = seturi;
         }
 
+        // If the user wants to add the OpenSongApp version of the set (same as desktop with .osts extension)
         if (FullscreenActivity.exportOpenSongAppSet) {
             // Copy the set file to an .osts file
             InputStream inputStream = storageAccess.getInputStream(c,seturi);
+
+            ostsuri = storageAccess.getFileProviderUri(c, preferences, "Export", "", FullscreenActivity.settoload + ".osts");
+
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, ostsuri, null, "Export", "", FullscreenActivity.settoload + ".osts");
+
             OutputStream outputStream = storageAccess.getOutputStream(c,ostsuri);
             storageAccess.copyFile(inputStream,outputStream);
         }
 
+        // Add the uris for each file requested
         ArrayList<Uri> uris = new ArrayList<>();
         if (texturi!=null) {
             uris.add(texturi);
@@ -106,21 +118,17 @@ class ExportPreparer {
             uris.add(desktopuri);
         }
 
-        // Go through each song in the set and attach them
-        // Also try to attach a copy of the song ending in .ost, as long as they aren't images
+        Log.d("ExportPreparer", "exportOpenSongAppSet=" + FullscreenActivity.exportOpenSongAppSet + "  ostsuri=" + ostsuri);
+
+        // Go through each song in the set and attach them (assuming they exist!)
+        // Also try to attach a copy of the song ending in .ost, as long as they aren't images if the user requested that
         if (FullscreenActivity.exportOpenSongApp) {
             for (int q = 0; q < FullscreenActivity.exportsetfilenames.size(); q++) {
                 // Remove any subfolder from the exportsetfilenames_ost.get(q)
                 String tempsong_ost = FullscreenActivity.exportsetfilenames_ost.get(q);
-                tempsong_ost = tempsong_ost.substring(tempsong_ost.indexOf("/") + 1);
-                Uri songtoload = storageAccess.getFileProviderUri(c,"Songs","",
+                tempsong_ost = tempsong_ost.substring(tempsong_ost.lastIndexOf("/") + 1);
+                Uri songtoload = storageAccess.getFileProviderUri(c, preferences, "Songs", "",
                         FullscreenActivity.exportsetfilenames.get(q));
-                Uri ostsongcopy = storageAccess.getFileProviderUri(c,"Notes","_cache",
-                        tempsong_ost+".ost");
-                /*Uri songtoload = storageAccess.getUriForItem(c,"Songs","",
-                        FullscreenActivity.exportsetfilenames.get(q));
-                Uri ostsongcopy = storageAccess.getUriForItem(c,"Notes","_cache",
-                        tempsong_ost+".ost");*/
 
                 boolean isimage = false;
                 String s = songtoload.getLastPathSegment();
@@ -134,20 +142,29 @@ class ExportPreparer {
                 // Copy the song
                 if (storageAccess.uriExists(c,songtoload) && !isimage) {
                     InputStream inputStream = storageAccess.getInputStream(c,songtoload);
-                    OutputStream outputStream = storageAccess.getOutputStream(c,ostsongcopy);
-                    storageAccess.copyFile(inputStream,outputStream);
-                    uris.add(ostsongcopy);
+
+                    if (inputStream != null) {
+                        Uri ostsongcopy = storageAccess.getFileProviderUri(c, preferences, "Notes", "_cache",
+                                tempsong_ost + ".ost");
+
+                        // Check the uri exists for the outputstream to be valid
+                        storageAccess.lollipopCreateFileForOutputStream(c, preferences, ostsongcopy, null, "Notes", "_cache", tempsong_ost + ".ost");
+
+                        OutputStream outputStream = storageAccess.getOutputStream(c, ostsongcopy);
+                        storageAccess.copyFile(inputStream, outputStream);
+                        uris.add(ostsongcopy);
+                    }
                 }
             }
         }
 
-        // Add the standard song file (desktop version)
+        // Add the standard song file (desktop version) - if it exists
         if (FullscreenActivity.exportDesktop) {
             for (int q = 0; q < FullscreenActivity.exportsetfilenames.size(); q++) {
-                Uri uri = storageAccess.getFileProviderUri(c,"Songs","",FullscreenActivity.exportsetfilenames.get(q));
-                /*Uri uri = storageAccess.getUriForItem(c,"Songs","",FullscreenActivity.exportsetfilenames.get(q));
-                */
-                uris.add(uri);
+                Uri uri = storageAccess.getFileProviderUri(c, preferences, "Songs", "", FullscreenActivity.exportsetfilenames.get(q));
+                if (storageAccess.uriExists(c, uri)) {
+                    uris.add(uri);
+                }
             }
         }
 
@@ -180,6 +197,10 @@ class ExportPreparer {
         if (FullscreenActivity.exportText) {
             text = storageAccess.getUriForItem(c, preferences, "Export", "",
                     FullscreenActivity.songfilename+".txt");
+
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, text, null, "Export", "", FullscreenActivity.songfilename + ".txt");
+
             OutputStream outputStream = storageAccess.getOutputStream(c,text);
             storageAccess.writeFileFromString(exportText_String,outputStream);
         }
@@ -188,6 +209,10 @@ class ExportPreparer {
             // Prepare an ost version of the song.
             ost = storageAccess.getUriForItem(c, preferences, "Export", "",
                     FullscreenActivity.songfilename+".ost");
+
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, ost, null, "Export", "", FullscreenActivity.songfilename + ".ost");
+
             OutputStream outputStream = storageAccess.getOutputStream(c,ost);
             storageAccess.copyFile(inputStream,outputStream);
         }
@@ -196,6 +221,10 @@ class ExportPreparer {
             // Prepare a desktop version of the song.
             desktop = storageAccess.getUriForItem(c, preferences, "Export", "",
                     FullscreenActivity.songfilename);
+
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, desktop, null, "Export", "", FullscreenActivity.songfilename);
+
             OutputStream outputStream = storageAccess.getOutputStream(c,desktop);
             storageAccess.copyFile(inputStream,outputStream);
         }
@@ -205,6 +234,10 @@ class ExportPreparer {
             String exportChordPro_String = prepareChordProFile(c);
             chopro = storageAccess.getUriForItem(c, preferences, "Export", "",
                     FullscreenActivity.songfilename+".chopro");
+
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, chopro, null, "Export", "", FullscreenActivity.songfilename + ".chopro");
+
             OutputStream outputStream = storageAccess.getOutputStream(c,chopro);
             storageAccess.writeFileFromString(exportChordPro_String,outputStream);
         }
@@ -214,6 +247,10 @@ class ExportPreparer {
             String exportOnSong_String = prepareOnSongFile(c);
             onsong = storageAccess.getUriForItem(c, preferences, "Export", "",
                     FullscreenActivity.songfilename+".onsong");
+
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, onsong, null, "Export", "", FullscreenActivity.songfilename + ".onsong");
+
             OutputStream outputStream = storageAccess.getOutputStream(c,onsong);
             storageAccess.writeFileFromString(exportOnSong_String,outputStream);
         }
@@ -222,6 +259,10 @@ class ExportPreparer {
             // Prepare an image/png version of the song.
             image = storageAccess.getUriForItem(c, preferences, "Export", "",
                     FullscreenActivity.songfilename+".png");
+
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, image, null, "Export", "", FullscreenActivity.songfilename + ".png");
+
             OutputStream outputStream = storageAccess.getOutputStream(c,image);
             storageAccess.writeImage(outputStream,bmp, Bitmap.CompressFormat.PNG);
         }
@@ -419,7 +460,7 @@ class ExportPreparer {
                 try {
                     eventType = xpp.next();
                 } catch (Exception e) {
-                    Log.d("d","Error moving to the next tag");
+                    Log.d("ExportPreparer", "Error moving to the next tag");
                 }
             }
         } catch (Exception e) {
@@ -577,6 +618,10 @@ class ExportPreparer {
 
     private void zipDirSelected(Context c, Preferences preferences, String zipFileName, StorageAccess storageAccess) {
         Uri uri = storageAccess.getUriForItem(c, preferences, "", "", zipFileName);
+
+        // Check the uri exists for the outputstream to be valid
+        storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "", "", zipFileName);
+
         OutputStream outputStream = storageAccess.getOutputStream(c,uri);
         try {
             outSelected = new ZipOutputStream(outputStream);
@@ -598,7 +643,7 @@ class ExportPreparer {
 
     //TODO not sure if subfolders (e.g. Band/Temp/Inner are added to the zipfile
     private void addDirSelected(Context c, Preferences preferences, String subfolder, StorageAccess storageAccess) {
-        ArrayList<String> files = storageAccess.listFilesInFolder(c,"Songs",subfolder);
+        ArrayList<String> files = storageAccess.listFilesInFolder(c, preferences, "Songs", subfolder);
         byte[] tmpBuf = new byte[1024];
         for (String s:files) {
             Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", subfolder, s);

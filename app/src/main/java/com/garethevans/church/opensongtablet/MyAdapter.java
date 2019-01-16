@@ -96,7 +96,6 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
                 } else {
                     FullscreenActivity.whatsongforsetwork = "$**_" + songfolder + "/" + songname + "_**$";
                 }
-                //FullscreenActivity.whatsongforsetwork = songname;
                 FullscreenActivity.whichSongFolder = songfolder;
                 FullscreenActivity.indexSongInSet = item;
                 FullscreenActivity.nextSongInSet = "";
@@ -140,23 +139,6 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
                 from(viewGroup.getContext()).
                 inflate(R.layout.recycler_row, viewGroup, false);
 
-        //RelativeLayout card = (RelativeLayout) itemView.findViewById(R.id.cardview_layout);
-        //card.setPadding(8,8,8,8);
-        //card.setBackgroundResource(R.drawable.section_box);
-        //GradientDrawable drawable = (GradientDrawable) card.getBackground();
-        //drawable.setColor(card.getContext().getResources().getColor(R.color.dark));
-        //drawable.setStroke(2, 0xffffffff); // set stroke width and stroke color
-        //drawable.setCornerRadius(FullscreenActivity.padding);
-
-        //TextView title = (TextView) itemView.findViewById(R.id.cardview_songtitle);
-        //title.setTextColor(FullscreenActivity.lyricsTextColor);
-
-        //TextView item = (TextView) itemView.findViewById(R.id.cardview_item);
-        //item.setTextColor(FullscreenActivity.lyricsTextColor);
-
-        //TextView folder = (TextView) itemView.findViewById(R.id.cardview_folder);
-        //folder.setTextColor(FullscreenActivity.lyricsTextColor);
-
         return new SetItemViewHolder(itemView);
     }
 
@@ -165,7 +147,6 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
         TextView vItem;
         TextView vSongTitle;
         TextView vSongFolder;
-        //protected ImageView vIcon;
         FloatingActionButton vIcon;
         RelativeLayout vCard;
 
@@ -176,7 +157,6 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
             vSongTitle = v.findViewById(R.id.cardview_songtitle);
             vSongFolder = v.findViewById(R.id.cardview_folder);
             vIcon = v.findViewById(R.id.cardview_icon);
-            //vIcon = (ImageView)  v.findViewById(R.id.cardview_icon);
         }
     }
 
@@ -187,6 +167,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
             Collections.swap(FullscreenActivity.mTempSetList, firstPosition, secondPosition);
             Collections.swap(PopUpSetViewNew.mSongName, firstPosition, secondPosition);
             Collections.swap(PopUpSetViewNew.mFolderName, firstPosition, secondPosition);
+            FullscreenActivity.setchanged = true;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -199,6 +180,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
             FullscreenActivity.mTempSetList.remove(position);
             PopUpSetViewNew.mSongName.remove(position);
             PopUpSetViewNew.mFolderName.remove(position);
+            FullscreenActivity.setchanged = true;
         } catch (Exception e) {
             e.printStackTrace();
         }

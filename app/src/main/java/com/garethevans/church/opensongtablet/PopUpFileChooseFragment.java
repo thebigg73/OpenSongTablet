@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -14,8 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.common.util.ArrayUtils;
-
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +25,7 @@ public class PopUpFileChooseFragment extends DialogFragment {
     static ArrayList<String> tempFoundFiles;
     static String[] foundFiles;
     StorageAccess storageAccess;
+    Preferences preferences;
 
     static PopUpFileChooseFragment newInstance() {
         PopUpFileChooseFragment frag;
@@ -81,6 +81,7 @@ public class PopUpFileChooseFragment extends DialogFragment {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -92,6 +93,7 @@ public class PopUpFileChooseFragment extends DialogFragment {
         location = V.findViewById(R.id.location);
 
         storageAccess = new StorageAccess();
+        preferences = new Preferences();
 
         // Decide on the title of the file chooser
         if (PresenterMode.whatBackgroundLoaded!=null) {
@@ -138,21 +140,21 @@ public class PopUpFileChooseFragment extends DialogFragment {
             case "customnote":
                 myTitle = getResources().getString(R.string.options_set_load) + " - " + getResources().getString(R.string.note);
                 filechecks = null;
-                location.setText(FullscreenActivity.dircustomnotes.toString());
+                location.setText("OpenSong/Notes/");
                 listnotes();
                 break;
 
             case "customslide":
                 myTitle = getResources().getString(R.string.options_set_load) + " - " + getResources().getString(R.string.slide);
                 filechecks = null;
-                location.setText(FullscreenActivity.dircustomslides.toString());
+                location.setText("OpenSong/Slides/");
                 listslides();
                 break;
 
             case "customimage":
                 myTitle = getResources().getString(R.string.options_set_load) + " - " + getResources().getString(R.string.image_slide);
                 filechecks = null;
-                location.setText(FullscreenActivity.dircustomimages.toString());
+                location.setText("OpenSong/Images/");
                 listimageslides();
                 break;
 
@@ -254,27 +256,27 @@ public class PopUpFileChooseFragment extends DialogFragment {
     }
 
     public void listimageslides() {
-        filesfound = storageAccess.listFilesInFolder(getActivity(),"Images","");
+        filesfound = storageAccess.listFilesInFolder(getActivity(), preferences, "Images", "");
         processfilelist();
     }
 
     public void listslides() {
-        filesfound = storageAccess.listFilesInFolder(getActivity(),"Slides","");
+        filesfound = storageAccess.listFilesInFolder(getActivity(), preferences, "Slides", "");
         processfilelist();
     }
 
     public void listscriptures() {
-        filesfound = storageAccess.listFilesInFolder(getActivity(),"Scripture","");
+        filesfound = storageAccess.listFilesInFolder(getActivity(), preferences, "Scripture", "");
         processfilelist();
     }
 
     public void listnotes() {
-        filesfound = storageAccess.listFilesInFolder(getActivity(),"Notes","");
+        filesfound = storageAccess.listFilesInFolder(getActivity(), preferences, "Notes", "");
         processfilelist();
     }
 
     public void listvidsandimages() {
-        filesfound = storageAccess.listFilesInFolder(getActivity(),"Backgrounds","");
+        filesfound = storageAccess.listFilesInFolder(getActivity(), preferences, "Backgrounds", "");
         processfilelist();
     }
 

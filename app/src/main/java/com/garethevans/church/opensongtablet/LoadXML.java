@@ -51,6 +51,7 @@ public class LoadXML extends Activity {
 
         // Get the android version
         String filetype = "SONG";
+        isxml = true;
         if (FullscreenActivity.songfilename.toLowerCase().endsWith(".pdf")) {
             FullscreenActivity.isPDF = true;
             filetype = "PDF";
@@ -71,18 +72,23 @@ public class LoadXML extends Activity {
             isxml = false;
         }
 
+        String where = "Songs";
+        String folder = FullscreenActivity.whichSongFolder;
+        if (FullscreenActivity.whichSongFolder.startsWith("../")) {
+            folder = folder.replace("../", "");
+            where = "";
+        }
         // Determine the file encoding
-        Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder,
+        Uri uri = storageAccess.getUriForItem(c, preferences, where, folder,
                 FullscreenActivity.songfilename);
         if (filetype.equals("SONG") && !FullscreenActivity.songfilename.equals("Welcome to OpenSongApp")) {
             utf = storageAccess.getUTFEncoding(c,uri);
         }
 
-        // if (androidapi > 20 || !filetype.equals("PDF") && (!filetype.equals("DOC") && (!filetype.equals("IMG")))) {
         if (!filetype.equals("PDF") && !filetype.equals("DOC") && (!filetype.equals("IMG"))) {
 
             // Initialise all the xml tags a song should have
-            initialiseSongTags();
+            initialiseSongTags(c);
 
             // Try to read the file as an xml file, if it isn't, then read it in as text
             isxml = true;
@@ -92,36 +98,43 @@ public class LoadXML extends Activity {
                     grabOpenSongXML(c, preferences);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.d("d", "Error performing grabOpenSongXML()");
+                    Log.d("LoadXML", "Error performing grabOpenSongXML()");
                     FullscreenActivity.thissong_scale = "W";
+                    FullscreenActivity.myXML = "<title>Welcome to OpenSongApp</title>\n<author></author>\n<lyrics>"
+                            + c.getResources().getString(R.string.songdoesntexist) + "\n\n" + "</lyrics>";
+                    FullscreenActivity.myLyrics = c.getResources().getString(R.string.songdoesntexist) + "\n\n";
+                    FullscreenActivity.mLyrics = c.getResources().getString(R.string.songdoesntexist) + "\n\n";
                     isxml = false;
                 }
             } else {
+                Log.d("LoadXML", "Didn't load");
                 FullscreenActivity.myXML = "<title>Welcome to OpenSongApp</title>\n<author></author>\n<lyrics>"
                         + c.getResources().getString(R.string.songdoesntexist) + "\n\n" + "</lyrics>";
+                FullscreenActivity.myLyrics = c.getResources().getString(R.string.songdoesntexist) + "\n\n";
+                FullscreenActivity.mLyrics = c.getResources().getString(R.string.songdoesntexist) + "\n\n";
                 FullscreenActivity.myLyrics = "ERROR!";
             }
 
             if (isxml && !FullscreenActivity.myLyrics.equals("ERROR!")) {
                 // Song was loaded correctly and was xml format
                 Preferences.loadSongSuccess();
+            } else {
+                Log.d("LoadXML", "Song wasn't loaded");
             }
 
             PopUpEditSongFragment.prepareSongXML();
             FullscreenActivity.myXML = FullscreenActivity.mynewXML;
 
-            if (FullscreenActivity.mLyrics==null ||
-                    FullscreenActivity.mLyrics.isEmpty() ||
-                    FullscreenActivity.mLyrics.equals("")) {
+            if (FullscreenActivity.mLyrics == null || FullscreenActivity.mLyrics.isEmpty()) {
                 isxml = false;
             }
 
             // If the file hasn't been read properly, or mLyrics is empty, read it in as a text file
             if (!isxml) {
-
+                Log.d("LoadXML", "not xml");
                 try {
                     //NEW
-                    uri = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder,
+                    uri = storageAccess.getUriForItem(c, preferences, where, folder,
                             FullscreenActivity.songfilename);
                     InputStream inputStream = storageAccess.getInputStream(c, uri);
                     InputStreamReader streamReader = new InputStreamReader(inputStream);
@@ -138,8 +151,9 @@ public class LoadXML extends Activity {
                     Preferences.loadSongSuccess();
 
                 } catch (java.io.FileNotFoundException e) {
+                    e.printStackTrace();
                     // file doesn't exist
-                    FullscreenActivity.myXML = "<title>Love everlasting</title>\n<author></author>\n<lyrics>"
+                    FullscreenActivity.myXML = "<title>Welcome to OpenSongApp</title>\n<author>Gareth Evans</author>\n<lyrics>"
                             + c.getResources().getString(R.string.songdoesntexist) + "\n\n" + "</lyrics>";
                     FullscreenActivity.myLyrics = "ERROR!";
                 }
@@ -149,15 +163,15 @@ public class LoadXML extends Activity {
                     // Run the OnSongConvert script
                     OnSongConvert onSongConvert = new OnSongConvert();
                     if (!onSongConvert.doExtract(c, preferences)) {
-                        Log.d("d","Problem converting OnSong");
+                        Log.d("LoadXML", "Problem converting OnSong");
                     }
-                    listSongFiles.getAllSongFiles(c, storageAccess);
+                    listSongFiles.getAllSongFiles(c, preferences, storageAccess);
 
                     // Now read in the proper OpenSong xml file
                     try {
                         grabOpenSongXML(c, preferences);
                     } catch (Exception e) {
-                        Log.d("d","Error performing grabOpenSongXML()");
+                        Log.d("LoadXML", "Error performing grabOpenSongXML()");
                     }
                   // If the song is usr format - try to import it
                 } else if (FullscreenActivity.songfilename.contains(".usr")
@@ -167,14 +181,14 @@ public class LoadXML extends Activity {
                     // Run the UsrConvert script
                     UsrConvert usrConvert = new UsrConvert();
                     if (!usrConvert.doExtract(c, preferences)) {
-                        Log.d("d","Problem extracting usr file");
+                        Log.d("LoadXML", "Problem extracting usr file");
                     }
 
                     // Now read in the proper OpenSong xml file
                     try {
                         grabOpenSongXML(c, preferences);
                     } catch (Exception e) {
-                        Log.d("d","Error performing grabOpenSongXML()");
+                        Log.d("LoadXML", "Error performing grabOpenSongXML()");
                     }
                   // If the song is in ChordPro format - try to import it
                 } else if (FullscreenActivity.myXML.contains("{title") ||
@@ -193,15 +207,14 @@ public class LoadXML extends Activity {
                     // Run the ChordProConvert script
                     ChordProConvert chordProConvert = new ChordProConvert();
                     if (!chordProConvert.doExtract(c, preferences)) {
-                        Log.d("d","Problem extracting chordpro");
+                        Log.d("LoadXML", "Problem extracting chordpro");
                     }
 
                     // Now read in the proper OpenSong xml file
                     try {
                         grabOpenSongXML(c, preferences);
-
                     } catch (Exception e) {
-                        Log.d("d","Error performing grabOpenSongXML()");
+                        Log.d("LoadXML", "Error performing grabOpenSongXML()");
                     }
                 }
             }
@@ -266,7 +279,7 @@ public class LoadXML extends Activity {
                 FullscreenActivity.isSlide = false;
             }
             // Initialise the variables
-            initialiseSongTags();
+            initialiseSongTags(c);
         }
 
         String loc = "";
@@ -328,7 +341,7 @@ public class LoadXML extends Activity {
         try {
             loadXML(c, preferences, listSongFiles, storageAccess);
         } catch (Exception e) {
-            Log.d("d","Error performing loadXML()");
+            Log.d("LoadXML", "Error performing loadXML()");
         }
 
         // Put the values in
@@ -353,7 +366,7 @@ public class LoadXML extends Activity {
         FullscreenActivity.mLyrics = temp_mLyrics;
     }
 
-    static void initialiseSongTags() {
+    static void initialiseSongTags(Context c) {
         FullscreenActivity.mTitle = FullscreenActivity.songfilename;
         FullscreenActivity.mAuthor = "";
         FullscreenActivity.mCopyright = "";
@@ -379,8 +392,8 @@ public class LoadXML extends Activity {
         FullscreenActivity.mMidiIndex = "";
         FullscreenActivity.mPitch = "";
         FullscreenActivity.mRestrictions = "";
-        //FullscreenActivity.mLyrics = "";
-        FullscreenActivity.mLyrics = templyrics;
+        FullscreenActivity.myLyrics = c.getString(R.string.user_guide_lyrics);
+        FullscreenActivity.myLyrics = c.getString(R.string.user_guide_lyrics);
         FullscreenActivity.mNotes = "";
         FullscreenActivity.mStyle = "";
         FullscreenActivity.mLinkedSongs = "";
@@ -405,23 +418,27 @@ public class LoadXML extends Activity {
         xpp = factory.newPullParser();
 
         // Just in case use the Welcome to OpenSongApp file
-        initialiseSongTags();
+        initialiseSongTags(c);
 
         // Get the uri and stream of the file
         StorageAccess storageAccess = new StorageAccess();
-        Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder,
+
+        String where = "Songs";
+        String folder = FullscreenActivity.whichSongFolder;
+        if (FullscreenActivity.whichSongFolder.startsWith("../")) {
+            folder = folder.replace("../", "");
+            where = "";
+        }
+
+        Uri uri = storageAccess.getUriForItem(c, preferences, where, folder,
                 FullscreenActivity.songfilename);
+
         InputStream inputStream = storageAccess.getInputStream(c,uri);
         InputStreamReader lineReader = new InputStreamReader(inputStream);
         BufferedReader buffreader = new BufferedReader(lineReader);
 
-        //ORIGINAL
-        //FullscreenActivity.file = FullscreenActivity.file.getAbsoluteFile();
-        //InputStream inputStream = new FileInputStream(FullscreenActivity.file);
-        //InputStreamReader lineReader = new InputStreamReader(inputStream);
-        //BufferedReader buffreader = new BufferedReader(lineReader);
-
         isxml = false;
+        utf = "UTF-8";
 
         String line;
         try {
@@ -438,11 +455,8 @@ public class LoadXML extends Activity {
                 }
             }
         } catch (Exception e) {
-            Log.d("d","No encoding included in line 1");
-            e.printStackTrace();
             utf = "UTF-8";
         }
-
 
         // Keep a note of this encoding incase we resave the song!
         FullscreenActivity.mEncoding = utf;
@@ -463,6 +477,7 @@ public class LoadXML extends Activity {
                             FullscreenActivity.mAuthor = parseFromHTMLEntities(xpp.nextText());
                             isxml=true;
                         } catch (Exception e) {
+                            e.printStackTrace();
                             // Try to read in the xml
                             FullscreenActivity.mAuthor = fixXML(c, preferences, "author");
                         }
@@ -483,8 +498,10 @@ public class LoadXML extends Activity {
                     case "lyrics":
                         try {
                             FullscreenActivity.mLyrics = ProcessSong.fixStartOfLines(parseFromHTMLEntities(xpp.nextText()));
+                            FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
                         } catch (Exception e) {
                             // Try to read in the xml
+                            e.printStackTrace();
                             FullscreenActivity.mLyrics = fixXML(c, preferences, "lyrics");
                         }
                         break;
@@ -599,17 +616,18 @@ public class LoadXML extends Activity {
             try {
                 eventType = xpp.next();
             } catch (Exception e) {
-                Log.d("d","Not xml so exiting");
+                Log.d("LoadXML", "Not xml so exiting");
+                e.printStackTrace();
                 eventType = XmlPullParser.END_DOCUMENT;
             }
         }
 
-        if (FullscreenActivity.mLyrics.equals("")) {
+        if (FullscreenActivity.songfilename.equals("Welcome to OpenSongApp")) {
             FullscreenActivity.mTitle = "Welcome to OpenSongApp";
             FullscreenActivity.mAuthor = "Gareth Evans";
             FullscreenActivity.mLinkWeb = "http://www.opensongapp.com";
-            FullscreenActivity.mLyrics = templyrics;
-            FullscreenActivity.myLyrics = templyrics;
+            FullscreenActivity.myLyrics = c.getString(R.string.user_guide_lyrics);
+            FullscreenActivity.myLyrics = c.getString(R.string.user_guide_lyrics);
         }
 
         // If we really have to load extra stuff, lets do it as an asynctask
@@ -625,10 +643,6 @@ public class LoadXML extends Activity {
         StorageAccess storageAccess = new StorageAccess();
 
         String[] vals = new String[4];
-        vals[0] = ""; // Song title
-        vals[1] = ""; // Author
-        vals[2] = ""; // Copyright
-        vals[3] = ""; // CCLI
 
         // Get the android version
         boolean fileisxml = true;
@@ -742,12 +756,8 @@ public class LoadXML extends Activity {
 
     static boolean validReadableFile(Context c, StorageAccess storageAccess, Uri uri) {
         boolean isvalid = false;
-        // Get length of file in bytes
-        long filesize = storageAccess.getFileSizeFromUri(c, uri);
-        // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
-        filesize = filesize / 1024;
-        // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
-        filesize = filesize / 1024;
+        // Get length of file in Kb
+        float filesize = storageAccess.getFileSizeFromUri(c, uri);
         String filename = FullscreenActivity.songfilename;
         if (filename.endsWith(".txt") || filename.endsWith(".TXT") ||
                 filename.endsWith(".onsong") || filename.endsWith(".ONSONG") ||
@@ -755,9 +765,9 @@ public class LoadXML extends Activity {
                 filename.endsWith(".chopro") || filename.endsWith(".CHOPRO") ||
                 filename.endsWith(".chordpro") || filename.endsWith(".CHORDPRO") ||
                 filename.endsWith(".usr") || filename.endsWith(".USR") ||
-                filename.endsWith(".pro") || filename.endsWith(".pro")) {
+                filename.endsWith(".pro") || filename.endsWith(".PRO")) {
             isvalid = true;
-        } else if (filesize<2) {
+        } else if (filesize < 2000) {
             // Less than 2Mb
             isvalid = true;
         }
@@ -817,7 +827,6 @@ public class LoadXML extends Activity {
         }
     }
 
-
     static String getTempFileLocation(Context c, String folder, String file) {
         String where = folder + "/" + file;
         if (folder.equals(FullscreenActivity.mainfoldername)) {
@@ -836,8 +845,7 @@ public class LoadXML extends Activity {
         return where;
     }
 
-    static String grabNextSongInSetKey(Context c, Preferences preferences, String nextsong) {
-        StorageAccess storageAccess = new StorageAccess();
+    static String grabNextSongInSetKey(Context c, Preferences preferences, StorageAccess storageAccess, String nextsong) {
         String nextkey = "";
 
         // Get the android version
@@ -869,34 +877,34 @@ public class LoadXML extends Activity {
         try {
             if (nextisxml && nextutf != null && !nextutf.equals("")) {
                 // Extract all of the key bits of the song
-                XmlPullParserFactory factory;
-                factory = XmlPullParserFactory.newInstance();
-
+                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(true);
-                XmlPullParser xpp;
-                xpp = factory.newPullParser();
+                XmlPullParser xpp = factory.newPullParser();
 
                 nextkey = "";
 
                 InputStream inputStream = storageAccess.getInputStream(c, uri);
-                xpp.setInput(inputStream, nextutf);
+                if (inputStream != null) {
+                    xpp.setInput(inputStream, nextutf);
 
-                int eventType;
-                eventType = xpp.getEventType();
-                while (eventType != XmlPullParser.END_DOCUMENT) {
-                    if (eventType == XmlPullParser.START_TAG) {
-                        if (xpp.getName().equals("key")) {
-                            nextkey = parseFromHTMLEntities(xpp.nextText());
+                    int eventType;
+                    eventType = xpp.getEventType();
+                    while (eventType != XmlPullParser.END_DOCUMENT) {
+                        if (eventType == XmlPullParser.START_TAG) {
+                            if (xpp.getName().equals("key")) {
+                                nextkey = parseFromHTMLEntities(xpp.nextText());
+                            }
                         }
-                    }
-                    try {
-                        eventType = xpp.next();
-                    } catch (Exception e) {
-                        //Ooops!
+                        try {
+                            eventType = xpp.next();
+                        } catch (Exception e) {
+                            //Ooops!
+                        }
                     }
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             // Ooops
         }
 
@@ -920,110 +928,6 @@ public class LoadXML extends Activity {
 
         return tofix;
     }
-
-    private static String templyrics = "[Intro]\n" +
-            " Welcome to OpenSongApp!\n" +
-            " This is a test page to show you some of the features of the app.\n" +
-            " The app contains 2 modes -\n" +
-            ";• Performance Mode - use your Android device as a song book on stage\n" +
-            ";• Presentation Mode - hook up to a projector and displaying lyrics\n" +
-            "\n" +
-            "[Menus]\n" +
-            " The left hand slide out menu - lists all folders and songs.\n" +
-            " The right hand slide out menu - all options/settings.\n" +
-            " The taskbar menu - access different modes, menus or features.\n" +
-            " The page icons let you access special song features:\n" +
-            ";Backing track, auto scroll, metronome, chords, notes, links, etc.\n" +
-            "\n" +
-            "[Get help with all of the cool features...]\n" +
-            " To find out all of the app features and how to use them,\n" +
-            " please check out the online help pages.\n" +
-            " Use the link in the options menu under the 'Other' category -\n" +
-            " http://www.opensongapp.com\n" +
-            " You can also click on the link icon page button.\n" +
-            "\n" +
-            "[Adding songs]\n" +
-            " You can manually enter/create any song you like\n" +
-            " The app only comes with this 'song' by default due to copyright.\n" +
-            " You can also import songs from other services:\n" +
-            ";• Desktop OpenSong - I highly recommend syncing using Dropbox\n" +
-            ";• OnSong files\n" +
-            ";• ChordPro files\n" +
-            ";• Ultimate Guitar website (using the import feature)\n" +
-            ";• Chordie website (using the import feature)\n" +
-            ";• SongSelect .usr files\n" +
-            " Songs are stored in OpenSong format (XML files without the .xml etension)\n" +
-            "\n" +
-            " Songs are stored on your device in the /OpenSong/Songs folder.\n" +
-            " This location is found at the storage location you chose\n" +
-            " when you first ran the app.  Check out the 'Storage' category\n" +
-            " of the options menu to see where this is.\n" +
-            "\n" +
-            "[Edit the song]\n" +
-            " Click on the song title in the menu bar to see a song preview.\n" +
-            " This also allows you to quickly edit the song\n" +
-            "\n" +
-            "[Chords at work]\n" +
-            " This song has been set as having a key of G.\n" +
-            " You can also set capo display options easily\n" +
-            ".G     D      Em           C      G         G7\n" +
-            " Chord lines (above) start with a full stop/period (.)\n" +
-            ".C       Em            D      G\n" +
-            " You can transpose the chords easily.\n" +
-            " This is done from the chords category in the options menu\n" +
-            " Nashville, European and Do Ré Mi chords are understood\n" +
-            "\n" +
-            "[Scaling]\n" +
-            " By default OpenSongApp scales a song to fit the page.\n" +
-            " You can change the auto scale options in the right hand menu\n" +
-            "\n" +
-            "[Sets]\n" +
-            " Add songs to sets by long pressing on them in the song menu\n" +
-            "\n" +
-            "[Customising]\n" +
-            " You can customise colours, themes,fonts, gestures, pedals, etc.\n" +
-            " These customisations can be saved as user profiles.\n" +
-            " Check out the categories in the right hand options menu.\n" +
-            "\n" +
-            "\n" +
-            "\n" +
-            "HERE IS AN EXAMPLE OF HOW A SONG WOULD LOOK\n" +
-            "\n" +
-            "\n" +
-            "\n" +
-            "[V1]\n" +
-            ".G2                D/F#\n" +
-            " Love everlasting, love without measure,\n" +
-            ".Em7                 D       \n" +
-            " Full of compassion, righteous and pure;\n" +
-            ".C     G/B             Am7   C/D      D\n" +
-            " Is my Saviour's love, is my Father's heart.\n" +
-            "\n" +
-            "[V2]\n" +
-            ".G2                   D/F#\n" +
-            " Loved by the Father, saved by the Son,\n" +
-            ".Em7                 D           \n" +
-            " Born of His Spirit, washed in the blood;\n" +
-            ".C          G/B             Am7        C/D      D\n" +
-            " This is my Saviour's love, this is my Father's heart.\n" +
-            "\n" +
-            "[B]\n" +
-            ".Em            Cmaj7 Em                Cmaj7\n" +
-            " Your love for me,   it reaches to the heavens,\n" +
-            ".Em              Cmaj7             Bm7\n" +
-            " Let my love for You just grow and grow !    \n" +
-            ".Em            Cmaj7 Em                Cmaj7\n" +
-            " Your love for me,   it reaches to the heavens,\n" +
-            ".Em              Cmaj7             D  D/F#\n" +
-            " Let my love for You just grow and grow !    \n" +
-            "\n" +
-            "[V3]\n" +
-            ".G2                       D/F#\n" +
-            " Love sent from heaven, received in our hearts,\n" +
-            ".Em7                      D               \n" +
-            " Loving each other, since Christ first loved us;\n" +
-            ".C          G/B             Am7        C/D      D  \n" +
-            " Sharing my Saviour's love, showing my Father's heart.";
 
     @SuppressLint("StaticFieldLeak")
     private static class SideTask extends AsyncTask<String, Void, String> {
@@ -1050,7 +954,7 @@ public class LoadXML extends Activity {
                     full_text = "";
                 }
             } catch (Exception e) {
-                Log.d("d", "Error reading text file");
+                Log.d("LoadXML", "Error reading text file");
                 full_text = "";
             }
 
@@ -1080,4 +984,5 @@ public class LoadXML extends Activity {
             }
         }
     }
+
 }

@@ -3,11 +3,10 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.CursorLoader;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -15,11 +14,10 @@ import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.text.Html;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -42,8 +40,13 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class PopUpCustomSlideFragment extends DialogFragment {
 
@@ -135,130 +138,20 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         }
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+    public static void addScripture() {
 
-        storageAccess = new StorageAccess();
-        bibleC = new Bible();
-        V = inflater.inflate(R.layout.popup_customslidecreator, container, false);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        initialiseTheViews();
-                        grabVerse_Button.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                searchBible_progressBar.setVisibility(View.VISIBLE);
-                                bibleGateway_WebView.setVisibility(View.GONE);
-                                grabVerse_Button.setVisibility(View.GONE);
-                                bibleC.grabBibleText(getActivity().getApplicationContext(), bibleGateway_WebView.getUrl());
-                            }
-                        });
-
-                        localBibleFile.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                FullscreenActivity.whattodo = "localbible";
-                                if (mListener!=null) {
-                                    try {
-                                        mListener.openFragment();
-                                        dismiss();
-                                    } catch (Exception e) {
-                                        Log.d("d","Error opening local bible");
-                                    }
-                                }
-                            }
-                        });
-                        searchBibleGateway_Button.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                searchBible_progressBar.setVisibility(View.VISIBLE);
-                                setUpWebView();
-                                searchBible();
-                            }
-                        });
-
-                        if (FullscreenActivity.whattodo.contains("customreusable_")) {
-                            updateFields();
-                        } else {
-                            // By default we want to make a brief note/placeholder
-                            noteRadioButton.setChecked(true);
-                            FullscreenActivity.whattodo = "customnote";
-                            slideRadioButton.setChecked(false);
-                            imageRadioButton.setChecked(false);
-                            scriptureRadioButton.setChecked(false);
-                            saveReusableCheckBox.setChecked(false);
-                            switchViewToNote();
-                        }
-
-                        // Set button listeners
-                        addPageButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (whattype.equals("slide")) {
-                                    String newText = slideContentEditText.getText().toString().trim() + "\n---\n";
-                                    newText = newText.trim() + "\n";
-                                    slideContentEditText.setText(newText);
-                                } else if (whattype.equals("image")) {
-                                    // Call file browser
-                                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                                    i.setType("image/*");
-                                    try {
-                                        startActivityForResult(i, 0);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        FullscreenActivity.myToastMessage = getResources().getString(R.string.no_filemanager);
-                                        ShowToast.showToast(getActivity());
-                                        try {
-                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.estrongs.android.pop")));
-                                        } catch (Exception anfe) {
-                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.estrongs.android.pop")));
-                                        }
-                                    }
-
-                                }
-                            }
-                        });
-
-                        loadReusableButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                // This reopens the choose backgrounds popupFragment
-                                dismiss();
-                                DialogFragment newFragment = PopUpFileChooseFragment.newInstance();
-                                newFragment.show(getFragmentManager(), "dialog");
-                            }
-                        });
-                        customRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                                if (noteRadioButton.isChecked()) {
-                                    switchViewToNote();
-                                } else if (slideRadioButton.isChecked()) {
-                                    switchViewToSlide();
-                                } else if (scriptureRadioButton.isChecked()) {
-                                    switchViewToScripture();
-                                } else {
-                                    switchViewToImage();
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-        }).start();
-
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-
-        return V;
+        /*if (FullscreenActivity.scripture_title!=null &&
+                !FullscreenActivity.scripture_title.equals("") &&
+                FullscreenActivity.scripture_verse!=null &&
+                !FullscreenActivity.scripture_verse.equals("")) {
+            searchBible_progressBar.setVisibility(View.GONE);
+            grabVerse_Button.setVisibility(View.GONE);
+            slideTitleEditText.setText(FullscreenActivity.scripture_title);
+            slideContentEditText.setText(FullscreenActivity.scripture_verse);
+            reusable_LinearLayout.setVisibility(View.GONE);
+            searchBible_LinearLayout.setVisibility(View.GONE);
+            slideDetails_RelativeLayout.setVisibility(View.VISIBLE);
+        }*/
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -387,83 +280,131 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             Log.d("d","Error updating fields");
         }
     }
-    @SuppressLint("StaticFieldLeak")
-    private class UpdateFields extends AsyncTask<Object, Void, String> {
 
-        @Override
-        protected String doInBackground(Object... objects) {
-            return null;
-        }
+    @SuppressLint("SetJavaScriptEnabled")
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getDialog().setCanceledOnTouchOutside(true);
 
-        @Override
-        protected void onPostExecute(String s) {
-            switch (FullscreenActivity.whattodo) {
-                case "customreusable_note":
-                    // Fill in the details
-                    noteRadioButton.setChecked(true);
-                    slideRadioButton.setChecked(false);
-                    imageRadioButton.setChecked(false);
-                    scriptureRadioButton.setChecked(false);
-                    switchViewToNote();
-                    slideTitleEditText.setText(FullscreenActivity.customslide_title);
-                    slideContentEditText.setText(FullscreenActivity.customslide_content);
-                    break;
-                case "customreusable_scripture":
-                    // Fill in the details
-                    noteRadioButton.setChecked(false);
-                    slideRadioButton.setChecked(false);
-                    imageRadioButton.setChecked(false);
-                    scriptureRadioButton.setChecked(true);
-                    switchViewToScripture();
-                    slideTitleEditText.setText(FullscreenActivity.customslide_title);
-                    slideContentEditText.setText(FullscreenActivity.customslide_content);
-                    if (FullscreenActivity.scripture_title!=null && FullscreenActivity.scripture_title!=null &&
-                            FullscreenActivity.scripture_verse!=null && FullscreenActivity.scripture_verse!=null) {
-                        slideTitleEditText.setText(FullscreenActivity.scripture_verse);
-                        slideContentEditText.setText(FullscreenActivity.scripture_verse);
-                        addScripture();
+        storageAccess = new StorageAccess();
+        bibleC = new Bible();
+        V = inflater.inflate(R.layout.popup_customslidecreator, container, false);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initialiseTheViews();
+                        grabVerse_Button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                searchBible_progressBar.setVisibility(View.VISIBLE);
+                                bibleGateway_WebView.setVisibility(View.GONE);
+                                grabVerse_Button.setVisibility(View.GONE);
+                                grabBibleText(getActivity().getApplicationContext(), bibleGateway_WebView.getUrl());
+                            }
+                        });
+
+                        localBibleFile.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                FullscreenActivity.whattodo = "localbible";
+                                if (mListener != null) {
+                                    try {
+                                        mListener.openFragment();
+                                        dismiss();
+                                    } catch (Exception e) {
+                                        Log.d("d", "Error opening local bible");
+                                    }
+                                }
+                            }
+                        });
+                        searchBibleGateway_Button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                searchBible_progressBar.setVisibility(View.VISIBLE);
+                                setUpWebView();
+                                searchBible();
+                            }
+                        });
+
+                        if (FullscreenActivity.whattodo.contains("customreusable_")) {
+                            updateFields();
+                        } else {
+                            // By default we want to make a brief note/placeholder
+                            noteRadioButton.setChecked(true);
+                            FullscreenActivity.whattodo = "customnote";
+                            slideRadioButton.setChecked(false);
+                            imageRadioButton.setChecked(false);
+                            scriptureRadioButton.setChecked(false);
+                            saveReusableCheckBox.setChecked(false);
+                            switchViewToNote();
+                        }
+
+                        // Set button listeners
+                        addPageButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (whattype.equals("slide")) {
+                                    String newText = slideContentEditText.getText().toString().trim() + "\n---\n";
+                                    newText = newText.trim() + "\n";
+                                    slideContentEditText.setText(newText);
+                                } else if (whattype.equals("image")) {
+                                    // Call file browser
+                                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+                                    i.setType("image/*");
+                                    try {
+                                        startActivityForResult(i, 0);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        FullscreenActivity.myToastMessage = getResources().getString(R.string.no_filemanager);
+                                        ShowToast.showToast(getActivity());
+                                        try {
+                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.estrongs.android.pop")));
+                                        } catch (Exception anfe) {
+                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.estrongs.android.pop")));
+                                        }
+                                    }
+
+                                }
+                            }
+                        });
+
+                        loadReusableButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // This reopens the choose backgrounds popupFragment
+                                dismiss();
+                                DialogFragment newFragment = PopUpFileChooseFragment.newInstance();
+                                newFragment.show(getFragmentManager(), "dialog");
+                            }
+                        });
+                        customRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                                if (noteRadioButton.isChecked()) {
+                                    switchViewToNote();
+                                } else if (slideRadioButton.isChecked()) {
+                                    switchViewToSlide();
+                                } else if (scriptureRadioButton.isChecked()) {
+                                    switchViewToScripture();
+                                } else {
+                                    switchViewToImage();
+                                }
+                            }
+                        });
                     }
-                    break;
-                case "customreusable_slide":
-                    // Fill in the details
-                    noteRadioButton.setChecked(false);
-                    slideRadioButton.setChecked(true);
-                    imageRadioButton.setChecked(false);
-                    scriptureRadioButton.setChecked(false);
-                    switchViewToSlide();
-                    slideTitleEditText.setText(FullscreenActivity.customslide_title);
-                    slideContentEditText.setText(FullscreenActivity.customslide_content);
-                    timeEditText.setText(FullscreenActivity.customimage_time);
-                    if (FullscreenActivity.customimage_loop.equals("true")) {
-                        loopCheckBox.setChecked(true);
-                    } else {
-                        loopCheckBox.setChecked(false);
-                    }
-                    break;
-                case "customreusable_image":
-                    // Fill in the details
-                    noteRadioButton.setChecked(false);
-                    slideRadioButton.setChecked(false);
-                    imageRadioButton.setChecked(true);
-                    scriptureRadioButton.setChecked(false);
-                    switchViewToImage();
-                    slideTitleEditText.setText(FullscreenActivity.customslide_title);
-                    slideContentEditText.setText("");
-                    timeEditText.setText(FullscreenActivity.customimage_time);
-                    if (FullscreenActivity.customimage_loop.equals("true")) {
-                        loopCheckBox.setChecked(true);
-                    } else {
-                        loopCheckBox.setChecked(false);
-                    }
-                    // Now parse the list of images...
-                    String imgs[] = FullscreenActivity.customimage_list.split("\n");
-                    slideImageTable.removeAllViews();
-                    for (String img : imgs) {
-                        addRow(img);
-                    }
-                    break;
+                });
             }
-        }
+        }).start();
+
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
+
+        return V;
     }
 
     public void switchViewToNote() {
@@ -543,98 +484,16 @@ public class PopUpCustomSlideFragment extends DialogFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        Log.d("onActivityResult","requestCode="+requestCode);
-        Log.d("onActivityResult","resultCode="+resultCode);
-        Log.d("onActivityResult","intent="+intent);
-
         if (intent!=null) {
             Uri uri = intent.getData();
             Log.d("onActivityResult","uri="+uri);
-            String fullpath;
-            if (Build.VERSION.SDK_INT >= 19) {
-                fullpath = getRealPathFromURI_API19(uri);
-            } else {
-                fullpath = getRealPathFromURI_API11to18(uri);
-            }
-            /*Cursor cursor = null;
-            String fullpath = uri.toString();
-            try {
-                String[] proj = { MediaStore.Images.Media.DATA };
-                cursor = getActivity().getContentResolver().query(uri,  proj, null, null, null);
-                int column_index;
-                if (cursor != null) {
-                    column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                    try {
-                        cursor.moveToFirst();
-                        fullpath = cursor.getString(column_index);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
-            }*/
 
             if (requestCode==0) {
                 // Create a new row in the table
                 // Each row has the file name, an image thumbnail and a delete button
-                if (fullpath!=null && uri!=null) {
-                    fullpath = uri.getLastPathSegment();
-                    Log.d("d","fullpath="+fullpath);
-                }
-                addRow(fullpath);
+                addRow(uri);
             }
         }
-    }
-
-    @SuppressLint("NewApi")
-    public String getRealPathFromURI_API19(Uri uri){
-        String filePath = "";
-        String wholeID = DocumentsContract.getDocumentId(uri);
-
-        // Split at colon, use second item in the array
-        String id = wholeID.split(":")[1];
-
-        String[] column = { MediaStore.Images.Media.DATA };
-
-        // where id is equal to
-        String sel = MediaStore.Images.Media._ID + "=?";
-
-        Cursor cursor = getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                column, sel, new String[]{ id }, null);
-
-        if (cursor!=null) {
-            int columnIndex = cursor.getColumnIndex(column[0]);
-
-            if (cursor.moveToFirst()) {
-                filePath = cursor.getString(columnIndex);
-            }
-            cursor.close();
-        }
-        return filePath;
-    }
-
-
-    @SuppressLint("NewApi")
-    public String getRealPathFromURI_API11to18(Uri contentUri) {
-        String[] proj = { MediaStore.Images.Media.DATA };
-        String result = null;
-
-        CursorLoader cursorLoader = new CursorLoader(
-                getActivity(),
-                contentUri, proj, null, null, null);
-        Cursor cursor = cursorLoader.loadInBackground();
-
-        if(cursor != null){
-            int column_index =
-                    cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            result = cursor.getString(column_index);
-        }
-        return result;
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -664,70 +523,143 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     }
 
     @SuppressWarnings("deprecation")
-    public void addRow(String fullpath) {
-        try {
-            TableRow row = new TableRow(getActivity());
-            TableLayout.LayoutParams layoutRow = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
-            row.setLayoutParams(layoutRow);
-            row.setHorizontalGravity(Gravity.CENTER_HORIZONTAL);
-            row.setTag(fullpath);
-            TextView filename = new TextView(getActivity());
-            filename.setText(fullpath);
-            filename.setTextSize(0.0f); // Make it take up no space (user doesn't need to see it).
-            filename.setVisibility(View.GONE);
-            ImageView thumbnail = new ImageView(getActivity());
-            Bitmap ThumbImage;
-            Resources res = getResources();
-            BitmapDrawable bd;
-            Uri uri = Uri.parse(fullpath);
-            if (!storageAccess.uriExists(getActivity(),uri)) {
-                Drawable notfound = getResources().getDrawable(R.drawable.notfound);
-                thumbnail.setImageDrawable(notfound);
-            } else {
-                InputStream inputStream = storageAccess.getInputStream(getActivity(), uri);
-                ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeStream(inputStream), 200, 150);
-                bd = new BitmapDrawable(res, ThumbImage);
-                thumbnail.setImageDrawable(bd);
-            }
-            thumbnail.setBackgroundDrawable(getResources().getDrawable(R.drawable.presenter_box_black));
-            thumbnail.setMaxWidth(200);
-            thumbnail.setMaxHeight(150);
-            TableRow.LayoutParams layoutImage = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-            layoutImage.width = 200;
-            layoutImage.height = 150;
-            thumbnail.setLayoutParams(layoutImage);
-            ImageButton delete = new ImageButton(getActivity());
-            delete.setImageDrawable(getResources().getDrawable(R.drawable.ic_delete_white_36dp));
-            delete.setTag(fullpath + "_delete");
-            delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String rowtag = v.getTag().toString();
-                    rowtag = rowtag.replace("_delete", "");
-                    try {
-                        if (getView() != null) {
-                            slideImageTable.removeView(getView().findViewWithTag(rowtag));
-                        }
-                    } catch (Exception e) {
-                        // oh well
-                        Log.d("error", "No table row with this tag");
-                    }
+    public void addRow(Uri uri) {
+        if (uri != null && uri.getPath() != null) {
+            try {
+                // Prepare the tag - use the file name and base 64 encode it to make it safe
+                byte[] data = uri.getPath().getBytes(StandardCharsets.UTF_8);
+                String tag = Base64.encodeToString(data, Base64.DEFAULT);
+                TableRow row = new TableRow(getActivity());
+                TableLayout.LayoutParams layoutRow = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
+                row.setLayoutParams(layoutRow);
+                row.setHorizontalGravity(Gravity.CENTER_HORIZONTAL);
+                row.setTag(tag);
+                Log.d("d", "row.getId()=" + row.getId() + "  row.getTag=" + row.getTag());
+                TextView filename = new TextView(getActivity());
+                filename.setText(uri.toString());
+                filename.setTextSize(0.0f); // Make it take up no space (user doesn't need to see it).
+                filename.setVisibility(View.GONE);
+                ImageView thumbnail = new ImageView(getActivity());
+                Bitmap ThumbImage;
+                Resources res = getResources();
+                BitmapDrawable bd;
+
+                if (!storageAccess.uriExists(getActivity(), uri)) {
+                    Drawable notfound = getResources().getDrawable(R.drawable.notfound);
+                    thumbnail.setImageDrawable(notfound);
+                } else {
+                    InputStream inputStream = storageAccess.getInputStream(getActivity(), uri);
+                    ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeStream(inputStream), 200, 150);
+                    bd = new BitmapDrawable(res, ThumbImage);
+                    thumbnail.setImageDrawable(bd);
                 }
-            });
-            row.addView(filename);
-            row.addView(thumbnail);
-            row.addView(delete);
-            slideImageTable.addView(row);
-        } catch (Exception e) {
-            e.printStackTrace();
+                thumbnail.setBackgroundDrawable(getResources().getDrawable(R.drawable.presenter_box_black));
+                thumbnail.setMaxWidth(200);
+                thumbnail.setMaxHeight(150);
+                TableRow.LayoutParams layoutImage = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+                layoutImage.width = 200;
+                layoutImage.height = 150;
+                thumbnail.setLayoutParams(layoutImage);
+                ImageButton delete = new ImageButton(getActivity());
+                delete.setImageDrawable(getResources().getDrawable(R.drawable.ic_delete_white_36dp));
+                delete.setTag(tag + "_delete");
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String rowtag = v.getTag().toString();
+                        rowtag = rowtag.replace("_delete", "");
+                        try {
+                            if (getView() != null) {
+                                TableRow tr = getView().findViewWithTag(rowtag);
+                                Log.d("d", "tr.getId()=" + tr.getId() + "  tr.getTag=" + tr.getTag());
+                                Log.d("d", "v.getId()=" + v.getId() + "  v.getTag=" + v.getTag());
+                                slideImageTable.removeView(tr);
+                                Log.d("PopUpCustomSlide", "Trying to remove row with tag " + rowtag);
+                            }
+                        } catch (Exception e) {
+                            // oh well
+                            Log.d("error", "No table row with this tag");
+                        }
+                    }
+                });
+                row.addView(filename);
+                row.addView(thumbnail);
+                row.addView(delete);
+                slideImageTable.addView(row);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public static void addScripture() {
-        if (FullscreenActivity.scripture_title!=null &&
-                !FullscreenActivity.scripture_title.equals("") &&
-                FullscreenActivity.scripture_verse!=null &&
-                !FullscreenActivity.scripture_verse.equals("")) {
+    void grabBibleText(Context c, String weblink) {
+        StringBuilder sb = new StringBuilder();
+        URL url;
+        HttpURLConnection urlConnection = null;
+        try {
+            url = new URL(weblink);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            InputStream in = urlConnection.getInputStream();
+            BufferedReader buffer = new BufferedReader(new InputStreamReader(in));
+            String s;
+            while ((s = buffer.readLine()) != null) {
+                sb.append("\n").append(s);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        String scripture;
+        String scripture_title = "";
+
+        // TEST THE FULLY EXTRACTED SCRIPTURE (FULLER THAN HEADER)
+        String result = sb.toString();
+        String newbit = sb.toString();
+
+        // Find the start and end of the scripture bit
+        int startoffull = newbit.indexOf("<sup class=\"versenum\">");
+        int endoffull = newbit.indexOf("<div class=\"crossrefs hidden\">");
+
+        if (endoffull > startoffull && startoffull > 0) {
+            newbit = newbit.substring(startoffull, endoffull);
+        } else {
+            FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
+            ShowToast.showToast(c);
+        }
+
+        newbit = Html.fromHtml(newbit).toString();
+        newbit = newbit.replace("<p>", "");
+        newbit = newbit.replace("</p>", "");
+        //Now look to see if the webcontent has the desired text in it
+        if (result.contains("og:description")) {
+
+            // Get the title
+            int title_startpos = result.indexOf("<meta name=\"twitter:title\" content=\"") + 36;
+            int title_endpos = result.indexOf("\" />", title_startpos);
+
+            try {
+                scripture_title = result.substring(title_startpos, title_endpos);
+            } catch (Exception e) {
+                Log.d("Bible", "Error getting scripture title");
+                FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
+                ShowToast.showToast(c);
+            }
+
+            // Make the scripture more readable by making a line break at the start of the word after 40 chars
+            // First split the scripture into an array of words
+            //String[] scripturewords = scripture.split(" ");
+
+            scripture = bibleC.shortenTheLines(newbit, 40, 6);
+
+            // Send these back to the popupcustomslide creator window
+            FullscreenActivity.scripture_title = scripture_title;
+            FullscreenActivity.scripture_verse = scripture;
+
+            // Try to update the views sent
             searchBible_progressBar.setVisibility(View.GONE);
             grabVerse_Button.setVisibility(View.GONE);
             slideTitleEditText.setText(FullscreenActivity.scripture_title);
@@ -735,6 +667,93 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             reusable_LinearLayout.setVisibility(View.GONE);
             searchBible_LinearLayout.setVisibility(View.GONE);
             slideDetails_RelativeLayout.setVisibility(View.VISIBLE);
+            //PopUpCustomSlideFragment.addScripture();
+
+        } else {
+            FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
+            ShowToast.showToast(c);
+        }
+
+        /*DownloadWebTextTask task = new DownloadWebTextTask(c);
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,weblink);*/
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class UpdateFields extends AsyncTask<Object, Void, String> {
+
+        @Override
+        protected String doInBackground(Object... objects) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            switch (FullscreenActivity.whattodo) {
+                case "customreusable_note":
+                    // Fill in the details
+                    noteRadioButton.setChecked(true);
+                    slideRadioButton.setChecked(false);
+                    imageRadioButton.setChecked(false);
+                    scriptureRadioButton.setChecked(false);
+                    switchViewToNote();
+                    slideTitleEditText.setText(FullscreenActivity.customslide_title);
+                    slideContentEditText.setText(FullscreenActivity.customslide_content);
+                    break;
+                case "customreusable_scripture":
+                    // Fill in the details
+                    noteRadioButton.setChecked(false);
+                    slideRadioButton.setChecked(false);
+                    imageRadioButton.setChecked(false);
+                    scriptureRadioButton.setChecked(true);
+                    switchViewToScripture();
+                    slideTitleEditText.setText(FullscreenActivity.customslide_title);
+                    slideContentEditText.setText(FullscreenActivity.customslide_content);
+                    if (FullscreenActivity.scripture_title != null && FullscreenActivity.scripture_verse != null) {
+                        slideTitleEditText.setText(FullscreenActivity.scripture_verse);
+                        slideContentEditText.setText(FullscreenActivity.scripture_verse);
+                        addScripture();
+                    }
+                    break;
+                case "customreusable_slide":
+                    // Fill in the details
+                    noteRadioButton.setChecked(false);
+                    slideRadioButton.setChecked(true);
+                    imageRadioButton.setChecked(false);
+                    scriptureRadioButton.setChecked(false);
+                    switchViewToSlide();
+                    slideTitleEditText.setText(FullscreenActivity.customslide_title);
+                    slideContentEditText.setText(FullscreenActivity.customslide_content);
+                    timeEditText.setText(FullscreenActivity.customimage_time);
+                    if (FullscreenActivity.customimage_loop.equals("true")) {
+                        loopCheckBox.setChecked(true);
+                    } else {
+                        loopCheckBox.setChecked(false);
+                    }
+                    break;
+                case "customreusable_image":
+                    // Fill in the details
+                    noteRadioButton.setChecked(false);
+                    slideRadioButton.setChecked(false);
+                    imageRadioButton.setChecked(true);
+                    scriptureRadioButton.setChecked(false);
+                    switchViewToImage();
+                    slideTitleEditText.setText(FullscreenActivity.customslide_title);
+                    slideContentEditText.setText("");
+                    timeEditText.setText(FullscreenActivity.customimage_time);
+                    if (FullscreenActivity.customimage_loop.equals("true")) {
+                        loopCheckBox.setChecked(true);
+                    } else {
+                        loopCheckBox.setChecked(false);
+                    }
+                    // Now parse the list of images...
+                    String imgs[] = FullscreenActivity.customimage_list.split("\n");
+                    slideImageTable.removeAllViews();
+                    for (String img : imgs) {
+                        Uri uri = Uri.parse(img);
+                        addRow(uri);
+                    }
+                    break;
+            }
         }
     }
 

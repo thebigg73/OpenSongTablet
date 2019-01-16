@@ -163,8 +163,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
     public void doSave() {
         // Get the variables
         String tempNewSong = newSongNameEditText.getText().toString().trim();
-        Uri to = storageAccess.getUriForItem(getActivity(), preferences, FullscreenActivity.newFolder, "",
-                tempNewSong);
+        Uri to = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.newFolder, tempNewSong);
 
         if (FullscreenActivity.whattodo.equals("savecameraimage")) {
             Uri from = Uri.parse(FullscreenActivity.mCurrentPhotoPath);
@@ -182,6 +181,12 @@ public class PopUpSongCreateFragment extends DialogFragment {
             }
 
             InputStream inputStream = storageAccess.getInputStream(getActivity(),from);
+
+
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, to, null,
+                    "Songs", FullscreenActivity.newFolder, FullscreenActivity.songfilename);
+
             OutputStream outputStream = storageAccess.getOutputStream(getActivity(),to);
 
             // Copy the image file and then remove the original (don't need to keep it in the media folder)
@@ -242,6 +247,11 @@ public class PopUpSongCreateFragment extends DialogFragment {
                 storageAccess.createFile(getActivity(), preferences, null, "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
                 Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.whichSongFolder,
                         FullscreenActivity.songfilename);
+
+                // Check the uri exists for the outputstream to be valid
+                storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
+                        "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+
                 OutputStream outputStream = storageAccess.getOutputStream(getActivity(),uri);
                 storageAccess.writeFileFromString(FullscreenActivity.mynewXML,outputStream);
 

@@ -272,13 +272,18 @@ public class StageMode extends AppCompatActivity implements
     Preferences preferences;
     LoadXML loadXML;
     ListSongFiles listSongFiles;
+    SongXML songXML;
+    ChordProConvert chordProConvert;
+    OnSongConvert onSongConvert;
+    UsrConvert usrConvert;
+    TextSongConvert textSongConvert;
 
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d("d", "Welcome to Stage Mode");
+        Log.d("StageMode", "Welcome to Stage Mode");
         FullscreenActivity.mContext = StageMode.this;
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
@@ -293,6 +298,11 @@ public class StageMode extends AppCompatActivity implements
         preferences = new Preferences();
         loadXML = new LoadXML();
         listSongFiles = new ListSongFiles();
+        songXML = new SongXML();
+        chordProConvert = new ChordProConvert();
+        onSongConvert = new OnSongConvert();
+        usrConvert = new UsrConvert();
+        textSongConvert = new TextSongConvert();
 
         checkStorage();
         //Preferences.savePreferences();
@@ -1003,13 +1013,13 @@ public class StageMode extends AppCompatActivity implements
         try {
             mMediaRouter.removeCallback(mMediaRouterCallback);
         } catch (Exception e) {
-            Log.d("d", "Problem removing mediaroutercallback");
+            Log.d("StageMode", "Problem removing mediaroutercallback");
         }
         if (br!=null) {
             try {
                 StageMode.this.unregisterReceiver(br);
             } catch (Exception e) {
-                Log.d("d","No need to close battery monitor");
+                Log.d("StageMode", "No need to close battery monitor");
             }
         }
 
@@ -1041,7 +1051,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 StageMode.this.unregisterReceiver(br);
             } catch (Exception e) {
-                Log.d("d","Battery monitor not registered anymore");
+                Log.d("StageMode", "Battery monitor not registered anymore");
             }
         }
         tryCancelAsyncTasks();
@@ -1174,7 +1184,7 @@ public class StageMode extends AppCompatActivity implements
         } else {
             myXML = "";
         }
-        Log.d("d","Message being sent=\n"+myXML);
+        Log.d("StageMode", "Message being sent=\n" + myXML);
         mySongMessage = new SalutMessage();
         mySongMessage.description = myXML;
         holdBeforeSendingXML();
@@ -1231,7 +1241,6 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void loadSong() {
         // Check for set song
-        Log.d("d", "Trying to load song");
         FullscreenActivity.setView = setActions.isSongInSet(StageMode.this);
 
         // Sort the text size and colour of the info stuff
@@ -1241,8 +1250,17 @@ public class StageMode extends AppCompatActivity implements
 
         // Set the focus
         // Don't do this for a blacklisted filetype (application, video, audio)
-        Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", FullscreenActivity.whichSongFolder,
+        String where = "Songs";
+        String folder = FullscreenActivity.whichSongFolder;
+
+        // Watch out for custom items
+        if (FullscreenActivity.whichSongFolder.startsWith("../")) {
+            where = "";
+            folder = folder.replace("../", "");
+        }
+        Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, where, folder,
                 FullscreenActivity.songfilename);
+
         if (!storageAccess.checkFileExtensionValid(uri) && !storageAccess.determineFileTypeByExtension()) {
             FullscreenActivity.myToastMessage = getResources().getString(R.string.file_type_unknown);
             ShowToast.showToast(StageMode.this);
@@ -1323,7 +1341,7 @@ public class StageMode extends AppCompatActivity implements
                         glideimage.setImageDrawable(null);
 
                     } catch (Exception e) {
-                        Log.d("d", "error updating the views");
+                        Log.d("StageMode", "error updating the views");
                     }
                     // Load the song
                     doCancelAsyncTask(loadsong_async);
@@ -1455,7 +1473,14 @@ public class StageMode extends AppCompatActivity implements
 
     public boolean shouldHighlightsBeShown() {
         // This is the check before animating in the highlight notes.
-        Uri uri = ProcessSong.getHighlightFile(StageMode.this, preferences);
+        String highlightfilename = ProcessSong.getHighlighterName(StageMode.this);
+        String where = "Songs";
+        String folder = FullscreenActivity.whichSongFolder;
+        if (FullscreenActivity.whichSongFolder.startsWith("../")) {
+            where = "";
+            folder = folder.replace("../", "");
+        }
+        Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, where, folder, highlightfilename);
         return (FullscreenActivity.highlightOn || FullscreenActivity.toggleAutoHighlight) &&
                 storageAccess.uriExists(StageMode.this, uri) && FullscreenActivity.whichMode.equals("Performance");
     }
@@ -1663,7 +1688,7 @@ public class StageMode extends AppCompatActivity implements
                     FullscreenActivity.whattodo = "drawnotes";
                     openFragment();
                 } else {
-                    Log.d("d","screenshot is null");
+                    Log.d("StageMode", "screenshot is null");
                 }
                 return true;
             }
@@ -1688,7 +1713,7 @@ public class StageMode extends AppCompatActivity implements
                     FullscreenActivity.whattodo = "drawnotes";
                     openFragment();
                 } else {
-                    Log.d("d","screenshot is null");
+                    Log.d("StageMode", "screenshot is null");
                 }
                 return true;
             }
@@ -2733,7 +2758,8 @@ public class StageMode extends AppCompatActivity implements
                 FullscreenActivity.highlightOn = false;
                 highlightNotes.setVisibility(View.GONE);
             } else if (FullscreenActivity.thissong_scale.equals("Y")) {
-                Uri uri = ProcessSong.getHighlightFile(StageMode.this, preferences);
+                String hname = ProcessSong.getHighlighterName(StageMode.this);
+                Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Highlighter", "", hname);
                 if (storageAccess.uriExists(StageMode.this, uri)) {
                     // Load the image in if it exists and then show it
                     BitmapFactory.Options options = new BitmapFactory.Options();
@@ -2791,7 +2817,7 @@ public class StageMode extends AppCompatActivity implements
                                                     }
                                                     highlightNotes.setLayoutParams(rlp2);
                                                     highlightNotes.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                                    Log.d("d", "Image size set on second pass");
+                                                    Log.d("StageMode", "Image size set on second pass");
                                                 }
                                             }
                                         });
@@ -2819,7 +2845,7 @@ public class StageMode extends AppCompatActivity implements
 
                     } catch (OutOfMemoryError | Exception e) {
                         e.printStackTrace();
-                        Log.d("d", "Oops - error, likely too big an image!");
+                        Log.d("StageMode", "Oops - error, likely too big an image!");
                     }
                     FullscreenActivity.highlightOn = true;
                 } else {
@@ -2830,7 +2856,7 @@ public class StageMode extends AppCompatActivity implements
                             FullscreenActivity.whattodo = "drawnotes";
                             openFragment();
                         } else {
-                            Log.d("d", "screenshot is null");
+                            Log.d("StageMode", "screenshot is null");
                         }
                     }
                     FullscreenActivity.highlightOn = false;
@@ -3185,7 +3211,7 @@ public class StageMode extends AppCompatActivity implements
                 try {
                     if (!FullscreenActivity.dirreceived.exists()) {
                         if (!FullscreenActivity.dirreceived.mkdirs()) {
-                            Log.d("d", "Couldn't make directory");
+                            Log.d("StageMode", "Couldn't make directory");
                         }
                     }
                     FullscreenActivity.file = new File(FullscreenActivity.dirreceived, "ReceivedSong");
@@ -3252,7 +3278,7 @@ public class StageMode extends AppCompatActivity implements
                 try {
                     android.os.Process.killProcess(android.os.Process.myPid());
                 } catch (Exception e) {
-                    Log.d("d", "Couldn't close the application!");
+                    Log.d("StageMode", "Couldn't close the application!");
                 }
                 break;
 
@@ -3533,65 +3559,59 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
-    @SuppressLint("StaticFieldLeak")
-    private class CreatePerformanceView1Col extends AsyncTask<Object, Void, String> {
 
-        LinearLayout songbit = new LinearLayout(StageMode.this);
-        LinearLayout column1_1 = new LinearLayout(StageMode.this);
-        RelativeLayout boxbit1_1 = new RelativeLayout(StageMode.this);
-
-        @Override
-        protected void onPreExecute() {
-            try {
-                // We know how many columns we are using, so lets go for it.
-                column1_1 = ProcessSong.preparePerformanceColumnView(StageMode.this);
-                songbit = ProcessSong.preparePerformanceSongBitView(StageMode.this, true); // true for horizontal
-                boxbit1_1 = ProcessSong.preparePerformanceBoxView(StageMode.this, 0, FullscreenActivity.padding);
-
-                // Add the song sections...
-                for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
-                    float fontsize = ProcessSong.setScaledFontSize(0);
-                    LinearLayout sectionview = ProcessSong.songSectionView(StageMode.this, x, fontsize, false);
-                    sectionview.setPadding(0, 0, 0, 0);
-                    sectionview.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
-                    column1_1.addView(sectionview);
+    @Override
+    public void takeScreenShot() {
+        // This option is hidden (Song Menu/Highlight) unless we are in Performance Mode
+        if (!FullscreenActivity.whichMode.equals("Performance")) {
+            FullscreenActivity.highlightOn = false;
+            highlightNotes.setVisibility(View.GONE);
+            FullscreenActivity.myToastMessage = getString(R.string.switchtoperformmode);
+            ShowToast.showToast(StageMode.this);
+        } else {
+            if (!FullscreenActivity.thissong_scale.equals("Y")) {
+                FullscreenActivity.myToastMessage = getString(R.string.highlight_notallowed);
+                ShowToast.showToast(StageMode.this);
+                FullscreenActivity.bmScreen = null;
+            } else {
+                boolean vis = false;
+                if (highlightNotes != null && highlightNotes.getVisibility() == View.VISIBLE) {
+                    vis = true;
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
 
-        @Override
-        protected String doInBackground(Object... params) {
-            return null;
-        }
-
-        boolean cancelled = false;
-        @Override
-        protected void onCancelled() {
-            cancelled = true;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            try {
-                if (!cancelled) {
-                    songscrollview.removeAllViews();
-                    LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    if (FullscreenActivity.thissong_scale.equals("Y")) {
-                        llp1_1 = new LinearLayout.LayoutParams(getAvailableWidth(), getAvailableHeight());
-                    } else if (FullscreenActivity.thissong_scale.equals("W")) {
-                        llp1_1 = new LinearLayout.LayoutParams(getAvailableWidth(), LinearLayout.LayoutParams.WRAP_CONTENT);
+                if (vis) {
+                    highlightNotes.setVisibility(View.GONE);
+                }
+                if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
+                    glideimage_ScrollView.destroyDrawingCache();
+                    glideimage_ScrollView.setDrawingCacheEnabled(true);
+                    glideimage_ScrollView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+                    FullscreenActivity.bmScreen = null;
+                    try {
+                        FullscreenActivity.bmScreen = glideimage_ScrollView.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
+                    } catch (Exception e) {
+                        Log.d("StageMode", "error getting the screenshot!");
+                    } catch (OutOfMemoryError e) {
+                        Log.d("StageMode", "not enough memory");
                     }
-                    llp1_1.setMargins(0, 0, 0, 0);
-                    boxbit1_1.setLayoutParams(llp1_1);
-                    boxbit1_1.addView(column1_1);
-                    songbit.addView(boxbit1_1);
-                    songscrollview.addView(songbit);
-                    animateInSong();
+
+                } else {
+                    songscrollview.destroyDrawingCache();
+                    songscrollview.setDrawingCacheEnabled(true);
+                    songscrollview.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+                    FullscreenActivity.bmScreen = null;
+                    try {
+                        FullscreenActivity.bmScreen = songscrollview.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
+                    } catch (Exception e) {
+                        Log.d("StageMode", "error getting the screenshot!");
+                    } catch (OutOfMemoryError o) {
+                        Log.d("StageMode", "Out of memory");
+                    }
+
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+                if (vis) {
+                    highlightNotes.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
@@ -3605,81 +3625,19 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
-    @SuppressLint("StaticFieldLeak")
-    private class CreatePerformanceView2Col extends AsyncTask<Object, Void, String> {
 
-        LinearLayout songbit = new LinearLayout(StageMode.this);
-        LinearLayout column1_2 = new LinearLayout(StageMode.this);
-        LinearLayout column2_2 = new LinearLayout(StageMode.this);
-        RelativeLayout boxbit1_2 = new RelativeLayout(StageMode.this);
-        RelativeLayout boxbit2_2 = new RelativeLayout(StageMode.this);
-
-        @Override
-        protected void onPreExecute() {
-            try {
-                // We know how many columns we are using, so lets go for it.
-                column1_2 = ProcessSong.preparePerformanceColumnView(StageMode.this);
-                column2_2 = ProcessSong.preparePerformanceColumnView(StageMode.this);
-                songbit = ProcessSong.preparePerformanceSongBitView(StageMode.this, true); // true for horizontal
-                boxbit1_2 = ProcessSong.preparePerformanceBoxView(StageMode.this, getPixelsFromDpi(4), FullscreenActivity.padding);
-                boxbit2_2 = ProcessSong.preparePerformanceBoxView(StageMode.this, 0, FullscreenActivity.padding);
-
-                // Add the song sections...
-                for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
-
-                    if (x < FullscreenActivity.halfsplit_section) {
-                        float fontsize = ProcessSong.setScaledFontSize(1);
-                        LinearLayout sectionview = ProcessSong.songSectionView(StageMode.this, x, fontsize, false);
-                        sectionview.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
-                        sectionview.setPadding(0, 0, 0, 0);
-                        column1_2.addView(sectionview);
-
-                    } else {
-                        float fontsize = ProcessSong.setScaledFontSize(2);
-                        LinearLayout sectionview2 = ProcessSong.songSectionView(StageMode.this, x, fontsize, false);
-                        sectionview2.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
-                        sectionview2.setPadding(0, 0, 0, 0);
-                        column2_2.addView(sectionview2);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+    @Override
+    public void rebuildSearchIndex() {
+        FullscreenActivity.myToastMessage = getString(R.string.search_index_start);
+        ShowToast.showToast(StageMode.this);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                indexSongs.indexMySongs(StageMode.this, storageAccess, preferences, songXML,
+                        chordProConvert, usrConvert, onSongConvert, textSongConvert);
             }
-        }
+        }).start();
 
-        @Override
-        protected String doInBackground(Object... params) {
-            return null;
-        }
-
-        boolean cancelled = false;
-        @Override
-        protected void onCancelled() {
-            cancelled = true;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            try {
-                if (!cancelled) {
-                    songscrollview.removeAllViews();
-                    LinearLayout.LayoutParams llp1_2 = new LinearLayout.LayoutParams((int) (getAvailableWidth() / 2.0f) - getPixelsFromDpi(2), LinearLayout.LayoutParams.WRAP_CONTENT);
-                    LinearLayout.LayoutParams llp2_2 = new LinearLayout.LayoutParams((int) (getAvailableWidth() / 2.0f) - getPixelsFromDpi(2), LinearLayout.LayoutParams.WRAP_CONTENT);
-                    llp1_2.setMargins(0, 0, getPixelsFromDpi(4), 0);
-                    llp2_2.setMargins(0, 0, 0, 0);
-                    boxbit1_2.setLayoutParams(llp1_2);
-                    boxbit2_2.setLayoutParams(llp2_2);
-                    boxbit1_2.addView(column1_2);
-                    boxbit2_2.addView(column2_2);
-                    songbit.addView(boxbit1_2);
-                    songbit.addView(boxbit2_2);
-                    songscrollview.addView(songbit);
-                    animateInSong();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public void createPerformanceView3col() {
@@ -3691,94 +3649,36 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
-    @SuppressLint("StaticFieldLeak")
-    private class CreatePerformanceView3Col extends AsyncTask<Object, Void, String> {
 
-        LinearLayout songbit = new LinearLayout(StageMode.this);
-        LinearLayout column1_3 = new LinearLayout(StageMode.this);
-        LinearLayout column2_3 = new LinearLayout(StageMode.this);
-        LinearLayout column3_3 = new LinearLayout(StageMode.this);
-        RelativeLayout boxbit1_3 = new RelativeLayout(StageMode.this);
-        RelativeLayout boxbit2_3 = new RelativeLayout(StageMode.this);
-        RelativeLayout boxbit3_3 = new RelativeLayout(StageMode.this);
-
-        @Override
-        protected void onPreExecute() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == FullscreenActivity.REQUEST_CAMERA_CODE && resultCode == Activity.RESULT_OK) {
+            FullscreenActivity.whattodo = "savecameraimage";
+            openFragment();
+        } else if (requestCode == FullscreenActivity.REQUEST_PDF_CODE) {
+            // PDF sent back, so reload it
+            loadSong();
+        } else if (requestCode == 7789 && data != null && data.getExtras() != null) {
             try {
-                // We know how many columns we are using, so lets go for it.
-                column1_3 = ProcessSong.preparePerformanceColumnView(StageMode.this);
-                column2_3 = ProcessSong.preparePerformanceColumnView(StageMode.this);
-                column3_3 = ProcessSong.preparePerformanceColumnView(StageMode.this);
-                songbit = ProcessSong.preparePerformanceSongBitView(StageMode.this, true); // true for horizontal
-                boxbit1_3 = ProcessSong.preparePerformanceBoxView(StageMode.this, getPixelsFromDpi(3), FullscreenActivity.padding);
-                boxbit2_3 = ProcessSong.preparePerformanceBoxView(StageMode.this, getPixelsFromDpi(3), FullscreenActivity.padding);
-                boxbit3_3 = ProcessSong.preparePerformanceBoxView(StageMode.this, 0, FullscreenActivity.padding);
+                // This is for the File Chooser returning a file uri
+                String filelocation = data.getExtras().getString("data");
+                if (filelocation != null) {
+                    boolean validfiletype = (FullscreenActivity.whattodo.equals("processimportosb") && filelocation.endsWith(".osb")) ||
+                            (FullscreenActivity.whattodo.equals("importos") && filelocation.endsWith(".backup")) ||
+                            FullscreenActivity.whattodo.equals("doimport") ||
+                            FullscreenActivity.whattodo.equals("doimportset");
 
-                // Add the song sections...
-                for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
-                    if (x < FullscreenActivity.thirdsplit_section) {
-                        float fontsize = ProcessSong.setScaledFontSize(3);
-                        LinearLayout sectionview = ProcessSong.songSectionView(StageMode.this, x, fontsize, false);
-                        sectionview.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
-                        sectionview.setPadding(0, 0, 0, 0);
-                        column1_3.addView(sectionview);
-
-                    } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
-                        float fontsize = ProcessSong.setScaledFontSize(4);
-                        LinearLayout sectionview2 = ProcessSong.songSectionView(StageMode.this, x, fontsize, false);
-                        sectionview2.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
-                        sectionview2.setPadding(0, 0, 0, 0);
-                        column2_3.addView(sectionview2);
-
+                    if (validfiletype) {
+                        FullscreenActivity.file_uri = Uri.fromFile(new File(filelocation));
+                        openFragment();
                     } else {
-                        float fontsize = ProcessSong.setScaledFontSize(5);
-                        LinearLayout sectionview3 = ProcessSong.songSectionView(StageMode.this, x, fontsize, false);
-                        sectionview3.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
-                        sectionview3.setPadding(0, 0, 0, 0);
-                        column3_3.addView(sectionview3);
+                        FullscreenActivity.myToastMessage = getString(R.string.file_type_unknown);
+                        ShowToast.showToast(StageMode.this);
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-
-        @Override
-        protected String doInBackground(Object... params) {
-            return null;
-        }
-
-        boolean cancelled = false;
-        @Override
-        protected void onCancelled() {
-            cancelled = true;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            try {
-                if (!cancelled) {
-                    songscrollview.removeAllViews();
-                    LinearLayout.LayoutParams llp1_3 = new LinearLayout.LayoutParams((int) (getAvailableWidth() / 3.0f) - getPixelsFromDpi(3), LinearLayout.LayoutParams.WRAP_CONTENT);
-                    LinearLayout.LayoutParams llp3_3 = new LinearLayout.LayoutParams((int) (getAvailableWidth() / 3.0f) - getPixelsFromDpi(3), LinearLayout.LayoutParams.WRAP_CONTENT);
-                    llp1_3.setMargins(0, 0, getPixelsFromDpi(4), 0);
-                    llp3_3.setMargins(0, 0, 0, 0);
-                    boxbit1_3.setLayoutParams(llp1_3);
-                    boxbit2_3.setLayoutParams(llp1_3);
-                    boxbit3_3.setLayoutParams(llp3_3);
-                    boxbit1_3.addView(column1_3);
-                    boxbit2_3.addView(column2_3);
-                    boxbit3_3.addView(column3_3);
-                    songbit.addView(boxbit1_3);
-                    songbit.addView(boxbit2_3);
-                    songbit.addView(boxbit3_3);
-                    songscrollview.addView(songbit);
-                    animateInSong();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
         }
     }
 
@@ -3992,184 +3892,52 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
-    @SuppressLint("StaticFieldLeak")
-    @SuppressWarnings("deprecation")
-    private class PrepareSongView extends AsyncTask<Object, Void, String> {
 
-        @Override
-        protected void onPreExecute() {
+    public void selectSection(int whichone) {
+        if (whichone < 0) {
+            whichone = 0;
+        }
+
+        FullscreenActivity.currentSection = whichone;
+
+        // Send section to other devices (checks we are in stage or presentation mode in called method
+        if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
             try {
-                rendercalled = false;
-                mypage.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
-                songscrollview.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
-                biggestscale_1col = 0f;
-                biggestscale_2col = 0f;
-                biggestscale_3col = 0f;
-
-                width_scale = 0f;
-
-                FullscreenActivity.currentSection = 0;
-
-                testpane.removeAllViews();
-                testpane1_2.removeAllViews();
-                testpane2_2.removeAllViews();
-                testpane1_3.removeAllViews();
-                testpane2_3.removeAllViews();
-                testpane3_3.removeAllViews();
+                sendSongSectionToConnected();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        @Override
-        protected String doInBackground(Object... params) {
-            //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-            // Set up the songviews
-            try {
-                FullscreenActivity.songSectionsTypes = new String[FullscreenActivity.songSections.length];
-                FullscreenActivity.sectionviews = new LinearLayout[FullscreenActivity.songSections.length];
-                FullscreenActivity.sectionbitmaps = new Bitmap[FullscreenActivity.songSections.length];
-                FullscreenActivity.sectionScaleValue = new float[FullscreenActivity.songSections.length];
-                FullscreenActivity.sectionrendered = new boolean[FullscreenActivity.songSections.length];
-                FullscreenActivity.viewwidth = new int[FullscreenActivity.songSections.length];
-                FullscreenActivity.viewheight = new int[FullscreenActivity.songSections.length];
-            } catch (Exception e) {
-                 e.printStackTrace();
+        // Set this sections alpha to 1.0f;
+        try {
+            FullscreenActivity.sectionviews[whichone].setAlpha(1.0f);
+        } catch (Exception e) {
+            Log.d("StageMode", "Section not found");
+        }
+
+        // Smooth scroll to show this view at the top of the page unless we are autoscrolling
+        try {
+            if (!FullscreenActivity.isautoscrolling) {
+                songscrollview.smoothScrollTo(0, FullscreenActivity.sectionviews[whichone].getTop());
             }
-
-            return null;
+        } catch (Exception e) {
+            Log.d("StageMode", "Section not found");
         }
 
-        boolean cancelled = false;
-        @Override
-        protected void onCancelled() {
-            cancelled = true;
-        }
-
-        protected void onPostExecute(String s) {
-            try {
-                if (!cancelled) {
-                    // For stage mode, each section gets its own box
-                    // For performance mode, all the sections get added into the one box
-
-                    if (column1_1 != null) {
-                        column1_1.removeAllViews();
-                    }
-                    if (column1_2 != null) {
-                        column1_2.removeAllViews();
-                    }
-                    if (column2_2 != null) {
-                        column2_2.removeAllViews();
-                    }
-                    if (column1_3 != null) {
-                        column1_3.removeAllViews();
-                    }
-                    if (column2_3 != null) {
-                        column2_3.removeAllViews();
-                    }
-                    if (column3_3 != null) {
-                        column3_3.removeAllViews();
-                    }
-
-                    column1_1 = ProcessSong.createLinearLayout(StageMode.this);
-                    column1_2 = ProcessSong.createLinearLayout(StageMode.this);
-                    column2_2 = ProcessSong.createLinearLayout(StageMode.this);
-                    column1_3 = ProcessSong.createLinearLayout(StageMode.this);
-                    column2_3 = ProcessSong.createLinearLayout(StageMode.this);
-                    column3_3 = ProcessSong.createLinearLayout(StageMode.this);
-
-                    LinearLayout section1_1;
-                    LinearLayout section1_2;
-                    LinearLayout section2_2;
-                    LinearLayout section1_3;
-                    LinearLayout section2_3;
-                    LinearLayout section3_3;
-
-                    // Go through each section
-                    for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
-
-                        // The single stage mode view
-                        final LinearLayout section = ProcessSong.songSectionView(StageMode.this, x, 12.0f, false);
-                        section.setClipChildren(false);
-                        section.setClipToPadding(false);
-                        section.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        FullscreenActivity.viewwidth[x] = section.getMeasuredWidth();
-                        FullscreenActivity.viewheight[x] = section.getMeasuredHeight();
-
-                        // The other views for 2 or 3 column mode
-                        section1_1 = ProcessSong.songSectionView(StageMode.this, x, 12.0f, false);
-                        column1_1.addView(section1_1);
-
-                        if (x < FullscreenActivity.halfsplit_section) {
-                            section1_2 = ProcessSong.songSectionView(StageMode.this, x, 12.0f, false);
-                            column1_2.addView(section1_2);
-                        } else {
-                            section2_2 = ProcessSong.songSectionView(StageMode.this, x, 12.0f, false);
-                            column2_2.addView(section2_2);
-                        }
-
-                        if (x < FullscreenActivity.thirdsplit_section) {
-                            section1_3 = ProcessSong.songSectionView(StageMode.this, x, 12.0f, false);
-                            column1_3.addView(section1_3);
-                        } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
-                            section2_3 = ProcessSong.songSectionView(StageMode.this, x, 12.0f, false);
-                            column2_3.addView(section2_3);
-                        } else {
-                            section3_3 = ProcessSong.songSectionView(StageMode.this, x, 12.0f, false);
-                            column3_3.addView(section3_3);
-                        }
-
-                        if (FullscreenActivity.whichMode.equals("Stage")) {
-                            // Stage Mode
-                            resizeStageView();
-                        }
-                    }
-
-                    if (FullscreenActivity.whichMode.equals("Performance")) {
-                        FullscreenActivity.sectionScaleValue = new float[6];
-                        FullscreenActivity.viewwidth = new int[6];
-                        FullscreenActivity.viewheight = new int[6];
-
-                        // Performance Mode
-                        testpane.setClipChildren(false);
-                        testpane.setClipToPadding(false);
-                        testpane.addView(column1_1);
-                        testpane1_2.setClipChildren(false);
-                        testpane1_2.setClipToPadding(false);
-                        testpane1_2.addView(column1_2);
-                        testpane2_2.setClipChildren(false);
-                        testpane2_2.setClipToPadding(false);
-                        testpane2_2.addView(column2_2);
-                        testpane1_3.setClipChildren(false);
-                        testpane1_3.setClipToPadding(false);
-                        testpane1_3.addView(column1_3);
-                        testpane2_3.setClipChildren(false);
-                        testpane2_3.setClipToPadding(false);
-                        testpane2_3.addView(column2_3);
-                        testpane3_3.setClipChildren(false);
-                        testpane3_3.setClipToPadding(false);
-                        testpane3_3.addView(column3_3);
-
-                        testpane.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        testpane1_2.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        testpane2_2.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        testpane1_3.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        testpane2_3.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        testpane3_3.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                        testpane.setVisibility(View.INVISIBLE);
-                        testpane1_2.setVisibility(View.INVISIBLE);
-                        testpane2_2.setVisibility(View.INVISIBLE);
-                        testpane1_3.setVisibility(View.INVISIBLE);
-                        testpane2_3.setVisibility(View.INVISIBLE);
-                        testpane3_3.setVisibility(View.INVISIBLE);
-
-                        resizePerformanceView();
-                    }
+        try {
+            // Go through each of the views and set the alpha of the others to 0.5f;
+            for (int x = 0; x < FullscreenActivity.sectionviews.length; x++) {
+                if (x != whichone) {
+                    FullscreenActivity.sectionviews[x].setAlpha(0.5f);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+            FullscreenActivity.tempswipeSet = "enable";
+            FullscreenActivity.setMoveDirection = "";
+
+            dualScreenWork();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -4254,75 +4022,16 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
-    @SuppressLint("StaticFieldLeak")
-    private class CreateStageView1Col extends AsyncTask<Object, Void, String> {
 
-        LinearLayout songbit = new LinearLayout(StageMode.this);
-        LinearLayout column1_1 = new LinearLayout(StageMode.this);
-
-        @Override
-        protected void onPreExecute() {
+    public void getPadsOnStatus() {
+        FullscreenActivity.padson = FullscreenActivity.pad1Playing || FullscreenActivity.pad2Playing;
+        if (!FullscreenActivity.padson) {
             try {
-                // Only 1 column, but many sections
-                column1_1 = ProcessSong.preparePerformanceColumnView(StageMode.this);
-                songbit = ProcessSong.prepareStageSongBitView(StageMode.this);
-
-                // Add the song sections...
-                for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
-                    float fontsize = ProcessSong.setScaledFontSize(x);
-                    LinearLayout sectionview = ProcessSong.songSectionView(StageMode.this, x, fontsize, false);
-                    sectionview.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
-                    LinearLayout boxbit = ProcessSong.prepareStageBoxView(StageMode.this, 0, FullscreenActivity.padding);
-                    LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(getAvailableWidth(), LinearLayout.LayoutParams.WRAP_CONTENT);
-                    llp.setMargins(0, 0, 0, getPixelsFromDpi(4));
-                    boxbit.setLayoutParams(llp);
-                    boxbit.addView(sectionview);
-                    column1_1.addView(boxbit);
-                    boxbit.setAlpha(0.5f);
-                    FullscreenActivity.sectionviews[x] = boxbit;
-                    final int finalX = x;
-                    FullscreenActivity.sectionviews[x].setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            selectSection(finalX);
-                        }
-                    });
-                }
+                backingtrackProgress.setVisibility(View.GONE);
+                updateExtraInfoColorsAndSizes("pad");
             } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        protected String doInBackground(Object... params) {
-            return null;
-        }
-
-        boolean cancelled = false;
-        @Override
-        protected void onCancelled() {
-            cancelled = true;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            try {
-                if (!cancelled) {
-                    songscrollview.removeAllViews();
-                    songbit.addView(column1_1);
-                    songscrollview.addView(songbit);
-                    if (FullscreenActivity.sectionviews[0] != null) {
-                        // Make the first section active (full alpha)
-                        try {
-                            FullscreenActivity.sectionviews[0].setAlpha(1.0f);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    animateInSong();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                Log.d("StageMode", "Can't touch the view - " + e);
+                // This will happen if killPads was called from an async task
             }
         }
     }
@@ -4747,58 +4456,57 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void takeScreenShot() {
-        // This option is hidden (Song Menu/Highlight) unless we are in Performance Mode
-        if (!FullscreenActivity.whichMode.equals("Performance")) {
-            FullscreenActivity.highlightOn = false;
-            highlightNotes.setVisibility(View.GONE);
-            FullscreenActivity.myToastMessage = getString(R.string.switchtoperformmode);
-            ShowToast.showToast(StageMode.this);
+    @SuppressLint("ServiceCast")
+    public void updateDisplays() {
+        // This is called when display devices are changed (connected, disconnected, etc.)
+        Intent intent = new Intent(StageMode.this,
+                StageMode.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent notificationPendingIntent = PendingIntent.getActivity(
+                StageMode.this, 0, intent, 0);
+
+        CastRemoteDisplayLocalService.NotificationSettings settings =
+                new CastRemoteDisplayLocalService.NotificationSettings.Builder()
+                        .setNotificationPendingIntent(notificationPendingIntent).build();
+
+        if (mSelectedDevice != null) {
+            CastRemoteDisplayLocalService.startService(
+                    getApplicationContext(),
+                    PresentationService.class, getString(R.string.app_id),
+                    mSelectedDevice, settings,
+                    new CastRemoteDisplayLocalService.Callbacks() {
+                        @Override
+                        public void onServiceCreated(
+                                CastRemoteDisplayLocalService service) {
+                        }
+
+                        @Override
+                        public void onRemoteDisplaySessionStarted(
+                                CastRemoteDisplayLocalService service) {
+                        }
+
+                        @Override
+                        public void onRemoteDisplaySessionError(Status status) {
+                            Log.d("StageMode", "onRemoteDisplaySessionError status=" + status);
+                        }
+
+                        @Override
+                        public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                            Log.d("StageMode", "onRemoteDisplaySessionEnded");
+                        }
+
+                    });
         } else {
-            if (!FullscreenActivity.thissong_scale.equals("Y")) {
-                FullscreenActivity.myToastMessage = getString(R.string.highlight_notallowed);
-                ShowToast.showToast(StageMode.this);
-                FullscreenActivity.bmScreen = null;
-            } else {
-                boolean vis = false;
-                if (highlightNotes!=null && highlightNotes.getVisibility()==View.VISIBLE) {
-                    vis = true;
+            // Might be a hdmi connection
+            try {
+                Display mDisplay = mMediaRouter.getSelectedRoute().getPresentationDisplay();
+                if (mDisplay != null) {
+                    hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay);
+                    hdmi.show();
+                    FullscreenActivity.isHDMIConnected = true;
                 }
-
-                if (vis) {
-                    highlightNotes.setVisibility(View.GONE);
-                }
-                if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
-                    glideimage_ScrollView.destroyDrawingCache();
-                    glideimage_ScrollView.setDrawingCacheEnabled(true);
-                    glideimage_ScrollView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
-                    FullscreenActivity.bmScreen = null;
-                    try {
-                        FullscreenActivity.bmScreen = glideimage_ScrollView.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
-                    } catch (Exception e) {
-                        Log.d("d", "error getting the screenshot!");
-                    } catch (OutOfMemoryError e) {
-                        Log.d("d","not enough memory");
-                    }
-
-                } else {
-                    songscrollview.destroyDrawingCache();
-                    songscrollview.setDrawingCacheEnabled(true);
-                    songscrollview.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
-                    FullscreenActivity.bmScreen = null;
-                    try {
-                        FullscreenActivity.bmScreen = songscrollview.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
-                    } catch (Exception e) {
-                        Log.d("d", "error getting the screenshot!");
-                    } catch (OutOfMemoryError o) {
-                        Log.d("d","Out of memory");
-                    }
-
-                }
-                if (vis) {
-                    highlightNotes.setVisibility(View.VISIBLE);
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -5306,17 +5014,68 @@ public class StageMode extends AppCompatActivity implements
         closeMyDrawers("both");
     }
 
-    @Override
-    public void rebuildSearchIndex() {
-        FullscreenActivity.myToastMessage = getString(R.string.search_index_start);
-        ShowToast.showToast(StageMode.this);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                indexSongs.indexMySongs(StageMode.this,storageAccess);
-            }
-        }).start();
+    @SuppressLint("StaticFieldLeak")
+    private class CreatePerformanceView1Col extends AsyncTask<Object, Void, String> {
 
+        LinearLayout songbit = new LinearLayout(StageMode.this);
+        LinearLayout column1_1 = new LinearLayout(StageMode.this);
+        RelativeLayout boxbit1_1 = new RelativeLayout(StageMode.this);
+
+        @Override
+        protected void onPreExecute() {
+            try {
+                // We know how many columns we are using, so lets go for it.
+                column1_1 = ProcessSong.preparePerformanceColumnView(StageMode.this);
+                songbit = ProcessSong.preparePerformanceSongBitView(StageMode.this, true); // true for horizontal
+                boxbit1_1 = ProcessSong.preparePerformanceBoxView(StageMode.this, 0, FullscreenActivity.padding);
+
+                // Add the song sections...
+                for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
+                    float fontsize = ProcessSong.setScaledFontSize(0);
+                    LinearLayout sectionview = ProcessSong.songSectionView(StageMode.this, x, fontsize, false, storageAccess);
+                    sectionview.setPadding(0, 0, 0, 0);
+                    sectionview.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
+                    column1_1.addView(sectionview);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected String doInBackground(Object... params) {
+            return null;
+        }
+
+        boolean cancelled = false;
+
+        @Override
+        protected void onCancelled() {
+            cancelled = true;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            try {
+                if (!cancelled) {
+                    songscrollview.removeAllViews();
+                    LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    if (FullscreenActivity.thissong_scale.equals("Y")) {
+                        llp1_1 = new LinearLayout.LayoutParams(getAvailableWidth(), getAvailableHeight());
+                    } else if (FullscreenActivity.thissong_scale.equals("W")) {
+                        llp1_1 = new LinearLayout.LayoutParams(getAvailableWidth(), LinearLayout.LayoutParams.WRAP_CONTENT);
+                    }
+                    llp1_1.setMargins(0, 0, 0, 0);
+                    boxbit1_1.setLayoutParams(llp1_1);
+                    boxbit1_1.addView(column1_1);
+                    songbit.addView(boxbit1_1);
+                    songscrollview.addView(songbit);
+                    animateInSong();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -5476,78 +5235,173 @@ public class StageMode extends AppCompatActivity implements
         return image;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == FullscreenActivity.REQUEST_CAMERA_CODE && resultCode == Activity.RESULT_OK) {
-            FullscreenActivity.whattodo = "savecameraimage";
-            openFragment();
-        } else if (requestCode == FullscreenActivity.REQUEST_PDF_CODE) {
-            // PDF sent back, so reload it
-            loadSong();
-        } else if (requestCode == 7789 && data != null && data.getExtras() != null) {
-            // This is for the File Chooser returning a file uri
-            String filelocation = data.getExtras().getString("data");
-            if (filelocation!=null) {
-                boolean validfiletype = (FullscreenActivity.whattodo.equals("processimportosb") && filelocation.endsWith(".osb")) ||
-                        (FullscreenActivity.whattodo.equals("importos") && filelocation.endsWith(".backup") ||
-                        FullscreenActivity.whattodo.equals("doimport"));
+    @SuppressLint("StaticFieldLeak")
+    private class CreatePerformanceView2Col extends AsyncTask<Object, Void, String> {
 
-                if (validfiletype) {
-                    FullscreenActivity.file_uri = Uri.fromFile(new File(filelocation));
-                    openFragment();
-                } else {
-                    FullscreenActivity.myToastMessage = getString(R.string.file_type_unknown);
-                    ShowToast.showToast(StageMode.this);
-                }
-            }
-        }
-    }
+        LinearLayout songbit = new LinearLayout(StageMode.this);
+        LinearLayout column1_2 = new LinearLayout(StageMode.this);
+        LinearLayout column2_2 = new LinearLayout(StageMode.this);
+        RelativeLayout boxbit1_2 = new RelativeLayout(StageMode.this);
+        RelativeLayout boxbit2_2 = new RelativeLayout(StageMode.this);
 
-    public void selectSection(int whichone) {
-        if (whichone<0) {
-            whichone = 0;
-        }
-
-        FullscreenActivity.currentSection = whichone;
-
-        // Send section to other devices (checks we are in stage or presentation mode in called method
-        if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
+        @Override
+        protected void onPreExecute() {
             try {
-                sendSongSectionToConnected();
+                // We know how many columns we are using, so lets go for it.
+                column1_2 = ProcessSong.preparePerformanceColumnView(StageMode.this);
+                column2_2 = ProcessSong.preparePerformanceColumnView(StageMode.this);
+                songbit = ProcessSong.preparePerformanceSongBitView(StageMode.this, true); // true for horizontal
+                boxbit1_2 = ProcessSong.preparePerformanceBoxView(StageMode.this, getPixelsFromDpi(4), FullscreenActivity.padding);
+                boxbit2_2 = ProcessSong.preparePerformanceBoxView(StageMode.this, 0, FullscreenActivity.padding);
+
+                // Add the song sections...
+                for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
+
+                    if (x < FullscreenActivity.halfsplit_section) {
+                        float fontsize = ProcessSong.setScaledFontSize(1);
+                        LinearLayout sectionview = ProcessSong.songSectionView(StageMode.this, x, fontsize, false, storageAccess);
+                        sectionview.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
+                        sectionview.setPadding(0, 0, 0, 0);
+                        column1_2.addView(sectionview);
+
+                    } else {
+                        float fontsize = ProcessSong.setScaledFontSize(2);
+                        LinearLayout sectionview2 = ProcessSong.songSectionView(StageMode.this, x, fontsize, false, storageAccess);
+                        sectionview2.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
+                        sectionview2.setPadding(0, 0, 0, 0);
+                        column2_2.addView(sectionview2);
+                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        // Set this sections alpha to 1.0f;
-        try {
-            FullscreenActivity.sectionviews[whichone].setAlpha(1.0f);
-        } catch (Exception e) {
-            Log.d("d","Section not found");
+        @Override
+        protected String doInBackground(Object... params) {
+            return null;
         }
 
-        // Smooth scroll to show this view at the top of the page unless we are autoscrolling
-        try {
-            if (!FullscreenActivity.isautoscrolling) {
-                songscrollview.smoothScrollTo(0, FullscreenActivity.sectionviews[whichone].getTop());
-            }
-        } catch (Exception e) {
-                Log.d("d","Section not found");
+        boolean cancelled = false;
+
+        @Override
+        protected void onCancelled() {
+            cancelled = true;
         }
 
-        try {
-            // Go through each of the views and set the alpha of the others to 0.5f;
-            for (int x = 0; x < FullscreenActivity.sectionviews.length; x++) {
-                if (x != whichone) {
-                    FullscreenActivity.sectionviews[x].setAlpha(0.5f);
+        @Override
+        protected void onPostExecute(String s) {
+            try {
+                if (!cancelled) {
+                    songscrollview.removeAllViews();
+                    LinearLayout.LayoutParams llp1_2 = new LinearLayout.LayoutParams((int) (getAvailableWidth() / 2.0f) - getPixelsFromDpi(2), LinearLayout.LayoutParams.WRAP_CONTENT);
+                    LinearLayout.LayoutParams llp2_2 = new LinearLayout.LayoutParams((int) (getAvailableWidth() / 2.0f) - getPixelsFromDpi(2), LinearLayout.LayoutParams.WRAP_CONTENT);
+                    llp1_2.setMargins(0, 0, getPixelsFromDpi(4), 0);
+                    llp2_2.setMargins(0, 0, 0, 0);
+                    boxbit1_2.setLayoutParams(llp1_2);
+                    boxbit2_2.setLayoutParams(llp2_2);
+                    boxbit1_2.addView(column1_2);
+                    boxbit2_2.addView(column2_2);
+                    songbit.addView(boxbit1_2);
+                    songbit.addView(boxbit2_2);
+                    songscrollview.addView(songbit);
+                    animateInSong();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            FullscreenActivity.tempswipeSet = "enable";
-            FullscreenActivity.setMoveDirection = "";
+        }
+    }
 
-            dualScreenWork();
-        } catch (Exception e) {
-            e.printStackTrace();
+    @SuppressLint("StaticFieldLeak")
+    private class CreatePerformanceView3Col extends AsyncTask<Object, Void, String> {
+
+        LinearLayout songbit = new LinearLayout(StageMode.this);
+        LinearLayout column1_3 = new LinearLayout(StageMode.this);
+        LinearLayout column2_3 = new LinearLayout(StageMode.this);
+        LinearLayout column3_3 = new LinearLayout(StageMode.this);
+        RelativeLayout boxbit1_3 = new RelativeLayout(StageMode.this);
+        RelativeLayout boxbit2_3 = new RelativeLayout(StageMode.this);
+        RelativeLayout boxbit3_3 = new RelativeLayout(StageMode.this);
+
+        @Override
+        protected void onPreExecute() {
+            try {
+                // We know how many columns we are using, so lets go for it.
+                column1_3 = ProcessSong.preparePerformanceColumnView(StageMode.this);
+                column2_3 = ProcessSong.preparePerformanceColumnView(StageMode.this);
+                column3_3 = ProcessSong.preparePerformanceColumnView(StageMode.this);
+                songbit = ProcessSong.preparePerformanceSongBitView(StageMode.this, true); // true for horizontal
+                boxbit1_3 = ProcessSong.preparePerformanceBoxView(StageMode.this, getPixelsFromDpi(3), FullscreenActivity.padding);
+                boxbit2_3 = ProcessSong.preparePerformanceBoxView(StageMode.this, getPixelsFromDpi(3), FullscreenActivity.padding);
+                boxbit3_3 = ProcessSong.preparePerformanceBoxView(StageMode.this, 0, FullscreenActivity.padding);
+
+                // Add the song sections...
+                for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
+                    if (x < FullscreenActivity.thirdsplit_section) {
+                        float fontsize = ProcessSong.setScaledFontSize(3);
+                        LinearLayout sectionview = ProcessSong.songSectionView(StageMode.this, x, fontsize, false, storageAccess);
+                        sectionview.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
+                        sectionview.setPadding(0, 0, 0, 0);
+                        column1_3.addView(sectionview);
+
+                    } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
+                        float fontsize = ProcessSong.setScaledFontSize(4);
+                        LinearLayout sectionview2 = ProcessSong.songSectionView(StageMode.this, x, fontsize, false, storageAccess);
+                        sectionview2.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
+                        sectionview2.setPadding(0, 0, 0, 0);
+                        column2_3.addView(sectionview2);
+
+                    } else {
+                        float fontsize = ProcessSong.setScaledFontSize(5);
+                        LinearLayout sectionview3 = ProcessSong.songSectionView(StageMode.this, x, fontsize, false, storageAccess);
+                        sectionview3.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
+                        sectionview3.setPadding(0, 0, 0, 0);
+                        column3_3.addView(sectionview3);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected String doInBackground(Object... params) {
+            return null;
+        }
+
+        boolean cancelled = false;
+
+        @Override
+        protected void onCancelled() {
+            cancelled = true;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            try {
+                if (!cancelled) {
+                    songscrollview.removeAllViews();
+                    LinearLayout.LayoutParams llp1_3 = new LinearLayout.LayoutParams((int) (getAvailableWidth() / 3.0f) - getPixelsFromDpi(3), LinearLayout.LayoutParams.WRAP_CONTENT);
+                    LinearLayout.LayoutParams llp3_3 = new LinearLayout.LayoutParams((int) (getAvailableWidth() / 3.0f) - getPixelsFromDpi(3), LinearLayout.LayoutParams.WRAP_CONTENT);
+                    llp1_3.setMargins(0, 0, getPixelsFromDpi(4), 0);
+                    llp3_3.setMargins(0, 0, 0, 0);
+                    boxbit1_3.setLayoutParams(llp1_3);
+                    boxbit2_3.setLayoutParams(llp1_3);
+                    boxbit3_3.setLayoutParams(llp3_3);
+                    boxbit1_3.addView(column1_3);
+                    boxbit2_3.addView(column2_3);
+                    boxbit3_3.addView(column3_3);
+                    songbit.addView(boxbit1_3);
+                    songbit.addView(boxbit2_3);
+                    songbit.addView(boxbit3_3);
+                    songscrollview.addView(songbit);
+                    animateInSong();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -5680,6 +5534,272 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
+    @SuppressWarnings("deprecation")
+    private class PrepareSongView extends AsyncTask<Object, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            try {
+                rendercalled = false;
+                mypage.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
+                songscrollview.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
+                biggestscale_1col = 0f;
+                biggestscale_2col = 0f;
+                biggestscale_3col = 0f;
+
+                width_scale = 0f;
+
+                FullscreenActivity.currentSection = 0;
+
+                testpane.removeAllViews();
+                testpane1_2.removeAllViews();
+                testpane2_2.removeAllViews();
+                testpane1_3.removeAllViews();
+                testpane2_3.removeAllViews();
+                testpane3_3.removeAllViews();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected String doInBackground(Object... params) {
+            //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+            // Set up the songviews
+            try {
+                FullscreenActivity.songSectionsTypes = new String[FullscreenActivity.songSections.length];
+                FullscreenActivity.sectionviews = new LinearLayout[FullscreenActivity.songSections.length];
+                FullscreenActivity.sectionbitmaps = new Bitmap[FullscreenActivity.songSections.length];
+                FullscreenActivity.sectionScaleValue = new float[FullscreenActivity.songSections.length];
+                FullscreenActivity.sectionrendered = new boolean[FullscreenActivity.songSections.length];
+                FullscreenActivity.viewwidth = new int[FullscreenActivity.songSections.length];
+                FullscreenActivity.viewheight = new int[FullscreenActivity.songSections.length];
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        boolean cancelled = false;
+
+        @Override
+        protected void onCancelled() {
+            cancelled = true;
+        }
+
+        protected void onPostExecute(String s) {
+            try {
+                if (!cancelled) {
+                    // For stage mode, each section gets its own box
+                    // For performance mode, all the sections get added into the one box
+
+                    if (column1_1 != null) {
+                        column1_1.removeAllViews();
+                    }
+                    if (column1_2 != null) {
+                        column1_2.removeAllViews();
+                    }
+                    if (column2_2 != null) {
+                        column2_2.removeAllViews();
+                    }
+                    if (column1_3 != null) {
+                        column1_3.removeAllViews();
+                    }
+                    if (column2_3 != null) {
+                        column2_3.removeAllViews();
+                    }
+                    if (column3_3 != null) {
+                        column3_3.removeAllViews();
+                    }
+
+                    column1_1 = ProcessSong.createLinearLayout(StageMode.this);
+                    column1_2 = ProcessSong.createLinearLayout(StageMode.this);
+                    column2_2 = ProcessSong.createLinearLayout(StageMode.this);
+                    column1_3 = ProcessSong.createLinearLayout(StageMode.this);
+                    column2_3 = ProcessSong.createLinearLayout(StageMode.this);
+                    column3_3 = ProcessSong.createLinearLayout(StageMode.this);
+
+                    LinearLayout section1_1;
+                    LinearLayout section1_2;
+                    LinearLayout section2_2;
+                    LinearLayout section1_3;
+                    LinearLayout section2_3;
+                    LinearLayout section3_3;
+
+                    // Go through each section
+                    for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
+
+                        // The single stage mode view
+                        final LinearLayout section = ProcessSong.songSectionView(StageMode.this, x, 12.0f, false, storageAccess);
+                        section.setClipChildren(false);
+                        section.setClipToPadding(false);
+                        section.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        FullscreenActivity.viewwidth[x] = section.getMeasuredWidth();
+                        FullscreenActivity.viewheight[x] = section.getMeasuredHeight();
+
+                        // The other views for 2 or 3 column mode
+                        section1_1 = ProcessSong.songSectionView(StageMode.this, x, 12.0f, false, storageAccess);
+                        column1_1.addView(section1_1);
+
+                        if (x < FullscreenActivity.halfsplit_section) {
+                            section1_2 = ProcessSong.songSectionView(StageMode.this, x, 12.0f, false, storageAccess);
+                            column1_2.addView(section1_2);
+                        } else {
+                            section2_2 = ProcessSong.songSectionView(StageMode.this, x, 12.0f, false, storageAccess);
+                            column2_2.addView(section2_2);
+                        }
+
+                        if (x < FullscreenActivity.thirdsplit_section) {
+                            section1_3 = ProcessSong.songSectionView(StageMode.this, x, 12.0f, false, storageAccess);
+                            column1_3.addView(section1_3);
+                        } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
+                            section2_3 = ProcessSong.songSectionView(StageMode.this, x, 12.0f, false, storageAccess);
+                            column2_3.addView(section2_3);
+                        } else {
+                            section3_3 = ProcessSong.songSectionView(StageMode.this, x, 12.0f, false, storageAccess);
+                            column3_3.addView(section3_3);
+                        }
+
+                        if (FullscreenActivity.whichMode.equals("Stage")) {
+                            // Stage Mode
+                            resizeStageView();
+                        }
+                    }
+
+                    if (FullscreenActivity.whichMode.equals("Performance")) {
+                        FullscreenActivity.sectionScaleValue = new float[6];
+                        FullscreenActivity.viewwidth = new int[6];
+                        FullscreenActivity.viewheight = new int[6];
+
+                        // Performance Mode
+                        testpane.setClipChildren(false);
+                        testpane.setClipToPadding(false);
+                        testpane.addView(column1_1);
+                        testpane1_2.setClipChildren(false);
+                        testpane1_2.setClipToPadding(false);
+                        testpane1_2.addView(column1_2);
+                        testpane2_2.setClipChildren(false);
+                        testpane2_2.setClipToPadding(false);
+                        testpane2_2.addView(column2_2);
+                        testpane1_3.setClipChildren(false);
+                        testpane1_3.setClipToPadding(false);
+                        testpane1_3.addView(column1_3);
+                        testpane2_3.setClipChildren(false);
+                        testpane2_3.setClipToPadding(false);
+                        testpane2_3.addView(column2_3);
+                        testpane3_3.setClipChildren(false);
+                        testpane3_3.setClipToPadding(false);
+                        testpane3_3.addView(column3_3);
+
+                        testpane.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        testpane1_2.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        testpane2_2.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        testpane1_3.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        testpane2_3.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        testpane3_3.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                        testpane.setVisibility(View.INVISIBLE);
+                        testpane1_2.setVisibility(View.INVISIBLE);
+                        testpane2_2.setVisibility(View.INVISIBLE);
+                        testpane1_3.setVisibility(View.INVISIBLE);
+                        testpane2_3.setVisibility(View.INVISIBLE);
+                        testpane3_3.setVisibility(View.INVISIBLE);
+
+                        resizePerformanceView();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class CreateStageView1Col extends AsyncTask<Object, Void, String> {
+
+        LinearLayout songbit = new LinearLayout(StageMode.this);
+        LinearLayout column1_1 = new LinearLayout(StageMode.this);
+
+        @Override
+        protected void onPreExecute() {
+            try {
+                // Only 1 column, but many sections
+                column1_1 = ProcessSong.preparePerformanceColumnView(StageMode.this);
+                songbit = ProcessSong.prepareStageSongBitView(StageMode.this);
+
+                // Add the song sections...
+                for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
+                    float fontsize = ProcessSong.setScaledFontSize(x);
+                    LinearLayout sectionview = ProcessSong.songSectionView(StageMode.this, x, fontsize, false, storageAccess);
+                    sectionview.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
+                    LinearLayout boxbit = ProcessSong.prepareStageBoxView(StageMode.this, 0, FullscreenActivity.padding);
+                    LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(getAvailableWidth(), LinearLayout.LayoutParams.WRAP_CONTENT);
+                    llp.setMargins(0, 0, 0, getPixelsFromDpi(4));
+                    boxbit.setLayoutParams(llp);
+                    boxbit.addView(sectionview);
+                    column1_1.addView(boxbit);
+                    boxbit.setAlpha(0.5f);
+                    FullscreenActivity.sectionviews[x] = boxbit;
+                    final int finalX = x;
+                    FullscreenActivity.sectionviews[x].setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            selectSection(finalX);
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected String doInBackground(Object... params) {
+            return null;
+        }
+
+        boolean cancelled = false;
+
+        @Override
+        protected void onCancelled() {
+            cancelled = true;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            try {
+                if (!cancelled) {
+                    songscrollview.removeAllViews();
+                    songbit.addView(column1_1);
+                    songscrollview.addView(songbit);
+                    if (FullscreenActivity.sectionviews[0] != null) {
+                        // Make the first section active (full alpha)
+                        try {
+                            FullscreenActivity.sectionviews[0].setAlpha(1.0f);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    animateInSong();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void playPads(int which) {
+        doCancelAsyncTask(play_pads);
+        play_pads = new PlayPads(which);
+        try {
+            play_pads.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private class Player1Prepared implements MediaPlayer.OnPreparedListener {
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
@@ -5690,10 +5810,10 @@ public class StageMode extends AppCompatActivity implements
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     if (!PadFunctions.getLoop()) {
-                        Log.d("d", "Reached end and not looping");
+                        Log.d("StageMode", "Reached end and not looping");
 
                     } else {
-                        Log.d("d", "Reached end but looping");
+                        Log.d("StageMode", "Reached end but looping");
                     }
                 }
             });
@@ -5709,88 +5829,6 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.mPlayer1.start();
             FullscreenActivity.padson = true;
             dopadProgressTime.post(onEverySecond);
-        }
-    }
-
-    private class Player2Prepared implements MediaPlayer.OnPreparedListener {
-
-        @Override
-        public void onPrepared(MediaPlayer mediaPlayer) {
-            FullscreenActivity.padtime_length = (int) (FullscreenActivity.mPlayer2.getDuration() / 1000.0f);
-            FullscreenActivity.mPlayer2.setLooping(PadFunctions.getLoop());
-            FullscreenActivity.mPlayer2.setVolume(PadFunctions.getVol(0), PadFunctions.getVol(1));
-            FullscreenActivity.mPlayer2.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    if (!PadFunctions.getLoop()) {
-                        Log.d("d", "Reached end and not looping");
-
-                    } else {
-                        Log.d("d", "Reached end but looping");
-                    }
-                }
-            });
-            String text = TimeTools.timeFormatFixer(FullscreenActivity.padtime_length);
-            try {
-                updateExtraInfoColorsAndSizes("pad");
-                padcurrentTime_TextView.setText(getString(R.string.zerotime));
-                padtotalTime_TextView.setText(text);
-            } catch (Exception e) {
-                e.printStackTrace(); // If called from doInBackground()
-            }
-            FullscreenActivity.mPlayer2.start();
-            FullscreenActivity.padson = true;
-            dopadProgressTime.post(onEverySecond);
-        }
-    }
-
-    public void playPads(int which) {
-        doCancelAsyncTask(play_pads);
-        play_pads = new PlayPads(which);
-        try {
-            play_pads.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private class DoMoveInSet extends AsyncTask<Object, Void, String> {
-
-        @Override
-        protected String doInBackground(Object... objects) {
-            // Get the appropriate song
-            try {
-                if (FullscreenActivity.mSetList != null && FullscreenActivity.indexSongInSet > -1 &&
-                        FullscreenActivity.mSetList.length > FullscreenActivity.indexSongInSet) {
-                    FullscreenActivity.linkclicked = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet];
-                    FullscreenActivity.whatsongforsetwork = FullscreenActivity.linkclicked;
-                } else {
-                    FullscreenActivity.linkclicked = "";
-                    FullscreenActivity.whatsongforsetwork = "";
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        boolean cancelled = false;
-        @Override
-        protected void onCancelled() {
-            cancelled = true;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            try {
-                // Get the next set positions and song
-                if (!cancelled) {
-                    setActions.doMoveInSet(StageMode.this, listSongFiles, storageAccess);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -5823,16 +5861,35 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void getPadsOnStatus() {
-        FullscreenActivity.padson = FullscreenActivity.pad1Playing || FullscreenActivity.pad2Playing;
-        if (!FullscreenActivity.padson) {
+    private class Player2Prepared implements MediaPlayer.OnPreparedListener {
+
+        @Override
+        public void onPrepared(MediaPlayer mediaPlayer) {
+            FullscreenActivity.padtime_length = (int) (FullscreenActivity.mPlayer2.getDuration() / 1000.0f);
+            FullscreenActivity.mPlayer2.setLooping(PadFunctions.getLoop());
+            FullscreenActivity.mPlayer2.setVolume(PadFunctions.getVol(0), PadFunctions.getVol(1));
+            FullscreenActivity.mPlayer2.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    if (!PadFunctions.getLoop()) {
+                        Log.d("StageMode", "Reached end and not looping");
+
+                    } else {
+                        Log.d("StageMode", "Reached end but looping");
+                    }
+                }
+            });
+            String text = TimeTools.timeFormatFixer(FullscreenActivity.padtime_length);
             try {
-                backingtrackProgress.setVisibility(View.GONE);
                 updateExtraInfoColorsAndSizes("pad");
+                padcurrentTime_TextView.setText(getString(R.string.zerotime));
+                padtotalTime_TextView.setText(text);
             } catch (Exception e) {
-                Log.d("d", "Can't touch the view - " + e);
-                // This will happen if killPads was called from an async task
+                e.printStackTrace(); // If called from doInBackground()
             }
+            FullscreenActivity.mPlayer2.start();
+            FullscreenActivity.padson = true;
+            dopadProgressTime.post(onEverySecond);
         }
     }
 
@@ -6419,28 +6476,59 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("StaticFieldLeak")
+    private class DoMoveInSet extends AsyncTask<Object, Void, String> {
+
+        @Override
+        protected String doInBackground(Object... objects) {
+            // Get the appropriate song
+            try {
+                if (FullscreenActivity.mSetList != null && FullscreenActivity.indexSongInSet > -1 &&
+                        FullscreenActivity.mSetList.length > FullscreenActivity.indexSongInSet) {
+                    FullscreenActivity.linkclicked = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet];
+                    FullscreenActivity.whatsongforsetwork = FullscreenActivity.linkclicked;
+                } else {
+                    FullscreenActivity.linkclicked = "";
+                    FullscreenActivity.whatsongforsetwork = "";
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        boolean cancelled = false;
+
+        @Override
+        protected void onCancelled() {
+            cancelled = true;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            try {
+                // Get the next set positions and song
+                if (!cancelled) {
+                    setActions.doMoveInSet(StageMode.this, preferences, listSongFiles, storageAccess);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
     private class LoadSongAsync extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... params) {
             try {
-                //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
                 FullscreenActivity.scalingfiguredout = false;
                 sectionpresented = false;
 
                 try {
-                    Log.d("d", "LoadXML being called");
+                    Log.d("StageMode", "LoadXML being called");
                     LoadXML.loadXML(StageMode.this, preferences, listSongFiles, storageAccess);
                 } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                // Open the current folder and list the songs
-                listSongFiles.getAllSongFiles(StageMode.this, storageAccess);
-                // Get the current song index
-                try {
-                    listSongFiles.getCurrentSongIndex();
-                } catch (Exception e) {
-                    // Ooops
+                    Log.d("StageMode", "Error loading song:" + FullscreenActivity.songfilename);
                 }
 
                 // If we are in a set, try to get the appropriate indexes
@@ -6463,7 +6551,7 @@ public class StageMode extends AppCompatActivity implements
                     try {
                         Transpose.checkChordFormat();
                     } catch (Exception e) {
-                        Log.d("d", "Error checking the chord format");
+                        Log.d("StageMode", "Error checking the chord format");
                     }
 
                     FullscreenActivity.presenterChords = "Y";
@@ -6473,7 +6561,7 @@ public class StageMode extends AppCompatActivity implements
                     FullscreenActivity.myLyrics = ProcessSong.fixMultiLineFormat(FullscreenActivity.myLyrics);
 
                     // If we want info on the next song in the set, add it as a comment line
-                    ProcessSong.addExtraInfo(StageMode.this, preferences);
+                    ProcessSong.addExtraInfo(StageMode.this, storageAccess, preferences);
 
                     // Decide if the pad, metronome and autoscroll are good to go
                     FullscreenActivity.padok = PadFunctions.isPadValid(StageMode.this, preferences);
@@ -6677,121 +6765,6 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private class PrepareSongMenu extends AsyncTask<Object, Void, String> {
-
-        @Override
-        protected void onPreExecute() {
-            menuCount_TextView.setText("");
-            menuCount_TextView.setVisibility(View.GONE);
-            menuFolder_TextView.setText(getString(R.string.wait));
-            song_list_view.setAdapter(null);
-            LinearLayout indexLayout = findViewById(R.id.side_index);
-            indexLayout.removeAllViews();
-        }
-
-        @Override
-        protected String doInBackground(Object... params) {
-            try {
-                // Rebuild the song list
-                //storageAccess.listSongs(StageMode.this, preferences);
-                //listSongFiles = new ListSongFiles();
-                listSongFiles.songUrisInFolder(StageMode.this, preferences);
-
-                //List all of the songs in the current folder
-                listSongFiles.getAllSongFiles(StageMode.this, storageAccess);
-                //indexSongs.getSongDetailsFromIndex();
-
-            } catch (Exception e) {
-                Log.d("d", "StageMode: issue listing files in the folder " + FullscreenActivity.whichSongFolder);
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        boolean cancelled = false;
-
-        @Override
-        protected void onCancelled() {
-            cancelled = true;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            try {
-                if (!cancelled) {
-                    // Set the name of the current folder
-                    menuFolder_TextView.setText(FullscreenActivity.whichSongFolder);
-
-                    // Get the song indexes
-                    listSongFiles.getCurrentSongIndex();
-
-                    ArrayList<SongMenuViewItems> songmenulist = new ArrayList<>();
-                    if (FullscreenActivity.songDetails != null) {
-
-                        for (int i = 0; i < FullscreenActivity.songDetails.length; i++) {
-                            if (FullscreenActivity.songDetails[i][0] == null) {
-                                FullscreenActivity.songDetails[i][0] = "Can't find title";
-                            }
-                            if (FullscreenActivity.songDetails[i][1] == null) {
-                                FullscreenActivity.songDetails[i][1] = "Can't find author";
-                            }
-                            if (FullscreenActivity.songDetails[i][2] == null) {
-                                FullscreenActivity.songDetails[i][2] = "Can't find key";
-                            }
-
-                            // Detect if the song is in the set
-                            String whattolookfor = "$$**_**$$"; // not going to find this...
-                            if (FullscreenActivity.mSongFileNames != null && FullscreenActivity.mSongFileNames.length > i) {
-                                whattolookfor = setActions.whatToLookFor(StageMode.this,
-                                        FullscreenActivity.whichSongFolder, FullscreenActivity.mSongFileNames[i]);
-                            }
-                            boolean isinset = false;
-                            if (FullscreenActivity.mySet.contains(whattolookfor)) {
-                                isinset = true;
-                            }
-                            try {
-                                SongMenuViewItems song = new SongMenuViewItems(FullscreenActivity.mSongFileNames[i],
-                                        FullscreenActivity.songDetails[i][0], FullscreenActivity.songDetails[i][1], FullscreenActivity.songDetails[i][2], isinset);
-
-                                songmenulist.add(song);
-                            } catch (Exception e) {
-                                // Probably moving too quickly
-                            }
-                        }
-                    }
-
-                    SongMenuAdapter lva = new SongMenuAdapter(StageMode.this, preferences, songmenulist);
-                    song_list_view.setAdapter(lva);
-                    song_list_view.setFastScrollEnabled(true);
-                    song_list_view.setScrollingCacheEnabled(true);
-                    lva.notifyDataSetChanged();
-
-                    // Set the secondary alphabetical side bar
-                    SongMenuAdapter.getIndexList(StageMode.this);
-                    displayIndex();
-
-                    // Flick the song drawer open on8ce it is ready
-                    findSongInFolders();
-                    if (firstrun_song) {
-                        openMyDrawers("song");
-                        closeMyDrawers("song_delayed");
-                        firstrun_song = false;
-                    }
-
-                    if (menuCount_TextView != null) {
-                        String str = "" + songmenulist.size();
-                        menuCount_TextView.setText(str);
-                        menuCount_TextView.setVisibility(View.VISIBLE);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public boolean justSong(Context c) {
         boolean isallowed = true;
         if (FullscreenActivity.isImage || FullscreenActivity.isPDF || !FullscreenActivity.isSong) {
@@ -6928,33 +6901,35 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("StaticFieldLeak")
-    private class PrepareOptionMenu extends AsyncTask<Object, Void, String> {
+    private class PrepareSongMenu extends AsyncTask<Object, Void, String> {
 
-        public void onPreExecute() {
-            try {
-                optionmenu = findViewById(R.id.optionmenu);
-                try {
-                    optionmenu.removeAllViews();
-                } catch (Exception e) {
-                    Log.d("d", "Error removing view");
-                }
-                optionmenu.addView(OptionMenuListeners.prepareOptionMenu(StageMode.this));
-                if (optionmenu != null) {
-                    OptionMenuListeners.optionListeners(optionmenu, StageMode.this, preferences);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        @Override
+        protected void onPreExecute() {
+            menuCount_TextView.setText("");
+            menuCount_TextView.setVisibility(View.GONE);
+            menuFolder_TextView.setText(getString(R.string.wait));
+            song_list_view.setAdapter(null);
+            LinearLayout indexLayout = findViewById(R.id.side_index);
+            indexLayout.removeAllViews();
         }
 
         @Override
-        protected String doInBackground(Object... objects) {
-            // Get the current set list
+        protected String doInBackground(Object... params) {
             try {
-                setActions.prepareSetList();
+                // Rebuild the song list
+                //storageAccess.listSongs(StageMode.this, preferences);
+                //listSongFiles = new ListSongFiles();
+                listSongFiles.songUrisInFolder(StageMode.this, preferences);
+
+                //List all of the songs in the current folder
+                listSongFiles.getAllSongFiles(StageMode.this, preferences, storageAccess);
+                //indexSongs.getSongDetailsFromIndex();
+
             } catch (Exception e) {
+                Log.d("StageMode", "StageMode: issue listing files in the folder " + FullscreenActivity.whichSongFolder);
                 e.printStackTrace();
             }
+
             return null;
         }
 
@@ -6969,18 +6944,75 @@ public class StageMode extends AppCompatActivity implements
         protected void onPostExecute(String s) {
             try {
                 if (!cancelled) {
-                    if (firstrun_option) {
-                        openMyDrawers("option");
-                        closeMyDrawers("option_delayed");
-                        firstrun_option = false;
+                    // Set the name of the current folder
+                    menuFolder_TextView.setText(FullscreenActivity.whichSongFolder);
+
+                    // Get the song indexes
+                    listSongFiles.getCurrentSongIndex();
+
+                    ArrayList<SongMenuViewItems> songmenulist = new ArrayList<>();
+                    if (FullscreenActivity.songDetails != null) {
+
+                        for (int i = 0; i < FullscreenActivity.songDetails.length; i++) {
+                            if (FullscreenActivity.songDetails[i][0] == null) {
+                                FullscreenActivity.songDetails[i][0] = "Can't find title";
+                            }
+                            if (FullscreenActivity.songDetails[i][1] == null) {
+                                FullscreenActivity.songDetails[i][1] = "Can't find author";
+                            }
+                            if (FullscreenActivity.songDetails[i][2] == null) {
+                                FullscreenActivity.songDetails[i][2] = "Can't find key";
+                            }
+
+                            // Detect if the song is in the set
+                            String whattolookfor = "$$**_**$$"; // not going to find this...
+                            if (FullscreenActivity.mSongFileNames != null && FullscreenActivity.mSongFileNames.length > i) {
+                                whattolookfor = setActions.whatToLookFor(StageMode.this,
+                                        FullscreenActivity.whichSongFolder, FullscreenActivity.mSongFileNames[i]);
+                            }
+                            boolean isinset = false;
+                            if (FullscreenActivity.mySet.contains(whattolookfor)) {
+                                isinset = true;
+                            }
+                            try {
+                                SongMenuViewItems song = new SongMenuViewItems(FullscreenActivity.mSongFileNames[i],
+                                        FullscreenActivity.songDetails[i][0], FullscreenActivity.songDetails[i][1], FullscreenActivity.songDetails[i][2], isinset);
+
+                                songmenulist.add(song);
+                            } catch (Exception e) {
+                                // Probably moving too quickly
+                            }
+                        }
+                    }
+
+                    SongMenuAdapter lva = new SongMenuAdapter(StageMode.this, preferences, songmenulist);
+                    song_list_view.setAdapter(lva);
+                    song_list_view.setFastScrollEnabled(true);
+                    song_list_view.setScrollingCacheEnabled(true);
+                    lva.notifyDataSetChanged();
+
+                    // Set the secondary alphabetical side bar
+                    SongMenuAdapter.getIndexList(StageMode.this);
+                    displayIndex();
+
+                    // Flick the song drawer open on8ce it is ready
+                    findSongInFolders();
+                    if (firstrun_song) {
+                        openMyDrawers("song");
+                        closeMyDrawers("song_delayed");
+                        firstrun_song = false;
+                    }
+
+                    if (menuCount_TextView != null) {
+                        String str = "" + songmenulist.size();
+                        menuCount_TextView.setText(str);
+                        menuCount_TextView.setVisibility(View.VISIBLE);
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            OptionMenuListeners.updateMenuVersionNumber(StageMode.this, (TextView) findViewById(R.id.menu_version_bottom));
         }
-
     }
     public void pedalPrevious() {
         if (FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) {
@@ -7121,6 +7153,150 @@ public class StageMode extends AppCompatActivity implements
             }
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class PrepareOptionMenu extends AsyncTask<Object, Void, String> {
+
+        public void onPreExecute() {
+            try {
+                optionmenu = findViewById(R.id.optionmenu);
+                try {
+                    optionmenu.removeAllViews();
+                } catch (Exception e) {
+                    Log.d("StageMode", "Error removing view");
+                }
+                optionmenu.addView(OptionMenuListeners.prepareOptionMenu(StageMode.this));
+                if (optionmenu != null) {
+                    OptionMenuListeners.optionListeners(optionmenu, StageMode.this, preferences);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected String doInBackground(Object... objects) {
+            // Get the current set list
+            try {
+                setActions.prepareSetList();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        boolean cancelled = false;
+
+        @Override
+        protected void onCancelled() {
+            cancelled = true;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            try {
+                if (!cancelled) {
+                    if (firstrun_option) {
+                        openMyDrawers("option");
+                        closeMyDrawers("option_delayed");
+                        firstrun_option = false;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            OptionMenuListeners.updateMenuVersionNumber(StageMode.this, (TextView) findViewById(R.id.menu_version_bottom));
+        }
+
+    }
+
+    // Open/close the drawers
+    public void gesture1() {
+        if (mDrawerLayout.isDrawerOpen(songmenu)) {
+            closeMyDrawers("song");
+        } else {
+            openMyDrawers("song");
+        }
+        FullscreenActivity.wasscrolling = false;
+        if (delayactionBarHide != null && hideActionBarRunnable != null) {
+            delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+        }
+    }
+
+    // Edit song
+    public void gesture2() {
+        if (FullscreenActivity.isPDF) {
+            FullscreenActivity.whattodo = "extractPDF";
+            openFragment();
+        } else if (justSong(StageMode.this)) {
+            // Edit the song
+            FullscreenActivity.whattodo = "editsong";
+            openFragment();
+        }
+    }
+
+    // Add to set
+    public void gesture3() {
+        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+            FullscreenActivity.whatsongforsetwork = "$**_" + FullscreenActivity.songfilename + "_**$";
+        } else {
+            FullscreenActivity.whatsongforsetwork = "$**_" + FullscreenActivity.whichSongFolder + "/"
+                    + FullscreenActivity.songfilename + "_**$";
+        }
+
+        // Allow the song to be added, even if it is already there
+        FullscreenActivity.mySet = FullscreenActivity.mySet + FullscreenActivity.whatsongforsetwork;
+        // Tell the user that the song has been added.
+        showToastMessage("\"" + FullscreenActivity.songfilename + "\" "
+                + getResources().getString(R.string.addedtoset));
+        // Vibrate to let the user know something happened
+        DoVibrate.vibrate(StageMode.this, 50);
+
+        // Save the set and other preferences
+        Preferences.savePreferences();
+
+        setActions.prepareSetList();
+        prepareOptionMenu();
+
+        // Show the current set
+        openMyDrawers("option");
+
+        // Hide the menus - 1 second after opening the Option menu,
+        // close it (1000ms total)
+        Handler optionMenuFlickClosed = new Handler();
+        optionMenuFlickClosed.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mDrawerLayout.closeDrawer(optionmenu);
+            }
+        }, 1000);
+    }
+
+    // Redraw the lyrics page
+    public void gesture4() {
+        loadSong();
+    }
+
+    @Override
+    // Stop or start autoscroll
+    public void gesture5() {
+        if (justSong(StageMode.this)) {
+            DoVibrate.vibrate(StageMode.this, 50);
+            if (FullscreenActivity.isautoscrolling) {
+                stopAutoScroll();
+                FullscreenActivity.clickedOnAutoScrollStart = false;
+
+            } else {
+                if (FullscreenActivity.autoscrollok) {
+                    FullscreenActivity.clickedOnAutoScrollStart = true;
+                    startAutoScroll();
+                } else {
+                    showToastMessage(getResources().getString(R.string.autoscroll) + " - " +
+                            getResources().getString(R.string.notset));
+                }
+            }
+        }
     }
 
     private class SwipeDetector extends GestureDetector.SimpleOnGestureListener {
@@ -7326,97 +7502,87 @@ public class StageMode extends AppCompatActivity implements
                 return false;
 
             } catch (Exception e) {
-                Log.d("d", "error");
+                Log.d("StageMode", "error");
             }
             return false;
         }
     }
 
-    // Open/close the drawers
-    public void gesture1() {
-        if (mDrawerLayout.isDrawerOpen(songmenu)) {
-            closeMyDrawers("song");
-        } else {
-            openMyDrawers("song");
-        }
-        FullscreenActivity.wasscrolling = false;
-        if (delayactionBarHide != null && hideActionBarRunnable != null) {
-            delayactionBarHide.removeCallbacks(hideActionBarRunnable);
-        }
-    }
-
-    // Edit song
-    public void gesture2() {
-        if (FullscreenActivity.isPDF) {
-            FullscreenActivity.whattodo = "extractPDF";
-            openFragment();
-        } else if (justSong(StageMode.this)) {
-            // Edit the song
-            FullscreenActivity.whattodo = "editsong";
-            openFragment();
-        }
-    }
-
-    // Add to set
-    public void gesture3() {
-        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-            FullscreenActivity.whatsongforsetwork = "$**_" + FullscreenActivity.songfilename + "_**$";
-        } else {
-            FullscreenActivity.whatsongforsetwork = "$**_" + FullscreenActivity.whichSongFolder + "/"
-                    + FullscreenActivity.songfilename + "_**$";
-        }
-
-        // Allow the song to be added, even if it is already there
-        FullscreenActivity.mySet = FullscreenActivity.mySet + FullscreenActivity.whatsongforsetwork;
-        // Tell the user that the song has been added.
-        showToastMessage("\"" + FullscreenActivity.songfilename + "\" "
-                + getResources().getString(R.string.addedtoset));
-        // Vibrate to let the user know something happened
-        DoVibrate.vibrate(StageMode.this, 50);
-
-        // Save the set and other preferences
-        Preferences.savePreferences();
-
-        setActions.prepareSetList();
-        prepareOptionMenu();
-
-        // Show the current set
-        openMyDrawers("option");
-
-        // Hide the menus - 1 second after opening the Option menu,
-        // close it (1000ms total)
-        Handler optionMenuFlickClosed = new Handler();
-        optionMenuFlickClosed.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mDrawerLayout.closeDrawer(optionmenu);
-            }
-        }, 1000);
-    }
-
-    // Redraw the lyrics page
-    public void gesture4() {
-        loadSong();
-    }
-
     @Override
-    // Stop or start autoscroll
-    public void gesture5() {
+    public void gesture7() {
         if (justSong(StageMode.this)) {
+            // Start or stop metronome
+            // Vibrate to let the user know something happened
             DoVibrate.vibrate(StageMode.this, 50);
-            if (FullscreenActivity.isautoscrolling) {
-                stopAutoScroll();
-                FullscreenActivity.clickedOnAutoScrollStart = false;
-
+            if (FullscreenActivity.metronomeok) {
+                FullscreenActivity.clickedOnMetronomeStart = !FullscreenActivity.metronomeonoff.equals("on");
+                Metronome.startstopMetronome(StageMode.this);
             } else {
-                if (FullscreenActivity.autoscrollok) {
-                    FullscreenActivity.clickedOnAutoScrollStart = true;
-                    startAutoScroll();
-                } else {
-                    showToastMessage(getResources().getString(R.string.autoscroll) + " - " +
-                            getResources().getString(R.string.notset));
-                }
+                showToastMessage(getResources().getString(R.string.metronome) + " - " +
+                        getResources().getString(R.string.notset));
             }
+        }
+    }
+
+    // The stuff to deal with the second screen
+    @Override
+    public void connectHDMI() {
+        mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
+                MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
+        updateDisplays();
+    }
+
+    @SuppressLint("NewApi")
+    private class MyMediaRouterCallback extends MediaRouter.Callback {
+
+        @Override
+        public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
+            mSelectedDevice = CastDevice.getFromBundle(info.getExtras());
+            try {
+                updateDisplays();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
+            teardown();
+            mSelectedDevice = null;
+            FullscreenActivity.isPresenting = false;
+            FullscreenActivity.isHDMIConnected = false;
+        }
+
+        void teardown() {
+            try {
+                CastRemoteDisplayLocalService.stopService();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if (hdmi != null) {
+                    hdmi.dismiss();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onRouteAdded(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {
+        }
+
+        @Override
+        public void onRouteRemoved(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {
+        }
+
+        @Override
+        public void onRouteChanged(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {
+        }
+
+        @Override
+        public void onRouteVolumeChanged(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {
         }
     }
 
@@ -7557,7 +7723,7 @@ public class StageMode extends AppCompatActivity implements
                             validlinkaudio = true;
                         } catch (Exception e) {
                             validlinkaudio = false;
-                            Log.d("d", "Something went wrong with the media");
+                            Log.d("StageMode", "Something went wrong with the media");
                         }
 
                         if (!validlinkaudio) {
@@ -7581,133 +7747,6 @@ public class StageMode extends AppCompatActivity implements
                     if (error) {
                         ShowToast.showToast(StageMode.this);
                     }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public void gesture7() {
-        if (justSong(StageMode.this)) {
-            // Start or stop metronome
-            // Vibrate to let the user know something happened
-            DoVibrate.vibrate(StageMode.this, 50);
-            if (FullscreenActivity.metronomeok) {
-                FullscreenActivity.clickedOnMetronomeStart = !FullscreenActivity.metronomeonoff.equals("on");
-                Metronome.startstopMetronome(StageMode.this);
-            } else {
-                showToastMessage(getResources().getString(R.string.metronome) + " - " +
-                        getResources().getString(R.string.notset));
-            }
-        }
-    }
-
-    // The stuff to deal with the second screen
-    @Override
-    public void connectHDMI() {
-        mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
-                    MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
-        updateDisplays();
-    }
-    @SuppressLint("NewApi")
-    private class MyMediaRouterCallback extends MediaRouter.Callback {
-
-        @Override
-        public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
-            mSelectedDevice = CastDevice.getFromBundle(info.getExtras());
-            try {
-                updateDisplays();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
-            teardown();
-            mSelectedDevice = null;
-            FullscreenActivity.isPresenting = false;
-            FullscreenActivity.isHDMIConnected = false;
-        }
-
-        void teardown() {
-            try {
-                CastRemoteDisplayLocalService.stopService();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            try {
-                if (hdmi!=null) {
-                    hdmi.dismiss();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onRouteAdded(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {}
-
-        @Override
-        public void onRouteRemoved(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {}
-
-        @Override
-        public void onRouteChanged(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {}
-
-        @Override
-        public void onRouteVolumeChanged(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {}
-    }
-    @SuppressLint("ServiceCast")
-    public void updateDisplays() {
-        // This is called when display devices are changed (connected, disconnected, etc.)
-        Intent intent = new Intent(StageMode.this,
-                StageMode.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent notificationPendingIntent = PendingIntent.getActivity(
-                StageMode.this, 0, intent, 0);
-
-        CastRemoteDisplayLocalService.NotificationSettings settings =
-                new CastRemoteDisplayLocalService.NotificationSettings.Builder()
-                        .setNotificationPendingIntent(notificationPendingIntent).build();
-
-        if (mSelectedDevice!=null) {
-            CastRemoteDisplayLocalService.startService(
-            getApplicationContext(),
-                    PresentationService.class, getString(R.string.app_id),
-                    mSelectedDevice, settings,
-                    new CastRemoteDisplayLocalService.Callbacks() {
-                        @Override
-                        public void onServiceCreated(
-                                CastRemoteDisplayLocalService service) {
-                        }
-
-                        @Override
-                        public void onRemoteDisplaySessionStarted(
-                                CastRemoteDisplayLocalService service) {
-                        }
-
-                        @Override
-                        public void onRemoteDisplaySessionError(Status status) {
-                            Log.d("d","onRemoteDisplaySessionError status="+status);
-                        }
-
-                        @Override
-                        public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
-                            Log.d("d","onRemoteDisplaySessionEnded");
-                        }
-
-                    });
-        } else {
-            // Might be a hdmi connection
-            try {
-                Display mDisplay = mMediaRouter.getSelectedRoute().getPresentationDisplay();
-                if (mDisplay!=null) {
-                    hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay);
-                    hdmi.show();
-                    FullscreenActivity.isHDMIConnected = true;
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -616,7 +616,7 @@ public class OptionMenuListeners extends Activity {
         setNewButton.setText(c.getString(R.string.options_set_clear).toUpperCase(FullscreenActivity.locale));
         setDeleteButton.setText(c.getString(R.string.options_set_delete).toUpperCase(FullscreenActivity.locale));
         setOrganiseButton.setText(c.getString(R.string.managesets).toUpperCase(FullscreenActivity.locale));
-        setImportButton.setText(c.getString(R.string.importnewsong).toUpperCase(FullscreenActivity.locale));
+        setImportButton.setText(c.getString(R.string.importnewset).toUpperCase(FullscreenActivity.locale));
         setExportButton.setText(c.getString(R.string.options_set_export).toUpperCase(FullscreenActivity.locale));
         setCustomButton.setText(c.getString(R.string.add_custom_slide).toUpperCase(FullscreenActivity.locale));
         setVariationButton.setText(c.getString(R.string.customise_set_item).toUpperCase(FullscreenActivity.locale));
@@ -716,7 +716,7 @@ public class OptionMenuListeners extends Activity {
         setImportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FullscreenActivity.whattodo = "doimport";
+                FullscreenActivity.whattodo = "doimportset";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.selectAFileUri(c.getString(R.string.importnewset));
@@ -934,7 +934,7 @@ public class OptionMenuListeners extends Activity {
                     if (FullscreenActivity.bmScreen!=null) {
                         mListener.openFragment();
                     } else {
-                        Log.d("d","screenshot is null");
+                        Log.d("OptionMenuListeners", "screenshot is null");
                     }
                 }
             }

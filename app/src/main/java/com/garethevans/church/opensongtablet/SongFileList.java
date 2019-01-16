@@ -35,7 +35,8 @@ final class SongFileList {
         currentFileList.clear();
         // Filter out items in this folder
 
-        ArrayList<String> filesinfolder = storageAccess.listFilesInFolder(c,"Songs",FullscreenActivity.whichSongFolder);
+        Log.d("SongFileList", "Running storageAccess.listFilesInFolder");
+        ArrayList<String> filesinfolder = storageAccess.listFilesInFolder(c, preferences, "Songs", FullscreenActivity.whichSongFolder);
 
         // Not liking the comparator sort.  Reverse folder sorting
         // Create two arrays: one for folders, one for songs

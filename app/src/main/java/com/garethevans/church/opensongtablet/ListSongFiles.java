@@ -50,7 +50,7 @@ public class ListSongFiles {
 
     }
 
-    void getAllSongFiles(Context c, StorageAccess storageAccess) {
+    void getAllSongFiles(Context c, Preferences preferences, StorageAccess storageAccess) {
         // This will list all of the songs and subfolders in the current folder
         // They are extracted from the FullscreenActivity.allSongsForMenu array
 
@@ -69,7 +69,28 @@ public class ListSongFiles {
 
         if (FullscreenActivity.whichSongFolder.startsWith("../")) {
             // This is one of the custom slides/notes/images
-            songs = storageAccess.listFilesInFolder(c,"",FullscreenActivity.whichSongFolder);
+            String folder = FullscreenActivity.whichSongFolder.replace("../", "");
+            Log.d("ListSongFiles", "starting storageAccess.listFilesInFolder");
+            songs = storageAccess.listFilesInFolder(c, preferences, "", folder);
+            String what = "";
+            if (FullscreenActivity.whichSongFolder.startsWith("../Notes")) {
+                what = c.getString(R.string.note);
+            } else if (FullscreenActivity.whichSongFolder.startsWith("../Slides")) {
+                what = c.getString(R.string.slide);
+            } else if (FullscreenActivity.whichSongFolder.startsWith("../Variations")) {
+                what = c.getString(R.string.variation);
+            } else if (FullscreenActivity.whichSongFolder.startsWith("../Images")) {
+                what = c.getString(R.string.image_slide);
+            } else if (FullscreenActivity.whichSongFolder.startsWith("../Scripture")) {
+                what = c.getString(R.string.scripture);
+            } else if (FullscreenActivity.whichSongFolder.startsWith("../Received")) {
+                what = c.getString(R.string.connected_device_song);
+            }
+            // Add author as custom and key as blank for each item in this folder
+            for (int l = 0; l < songs.size(); l++) {
+                authors.add(what);
+                keys.add("");
+            }
 
         } else {
 
@@ -93,7 +114,6 @@ public class ListSongFiles {
 
             // Go through the folders and add the root ones
             for (String f : FullscreenActivity.mSongFolderNames) {
-                Log.d("d", "Folders=" + f);
 
                 // Don't add the folder if it is the main folder, or is a sub/sub folder or if it is the current whichSongFolder
                 if (!f.equals(c.getString(R.string.mainfoldername)) && !f.contains("/") &&
@@ -155,7 +175,7 @@ public class ListSongFiles {
                 }
             }
         } catch (Exception e) {
-            Log.d(e.getMessage(),"Some error with the song list");
+            Log.d("ListSongFiles", "Some error with the song list");
         }
     }
 

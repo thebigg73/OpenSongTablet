@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -20,6 +19,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,13 +34,11 @@ public class PopUpListSetsFragment extends DialogFragment {
         return frag;
     }
 
-    String myTitle = "";
+    String myTitle = "", lastSetName, lastSetCategory;
     FetchDataTask dataTask;
-    ProgressDialog prog;
     ArrayList<String> cats, allsets, filteredsets;
     ArrayAdapter<String> category_adapter, sets_adapter;
     NonScrollListView set_ListView;
-    //ListView set_ListView;
     TextView title, setCategory_TextView, newSetPromptTitle;
     EditText newCategory_EditText, setListName;
     FloatingActionButton sort_FAB, newCategory_FAB, closeMe, saveMe;
@@ -49,6 +47,7 @@ public class PopUpListSetsFragment extends DialogFragment {
     LinearLayout category, currentCategory_LinearLayout, newCategory_LinearLayout, newSetTitle_LinearLayout;
     RelativeLayout setCategory;
     View V;
+    ProgressBar progressBar;
 
     StorageAccess storageAccess;
     SetActions setActions;
@@ -107,6 +106,12 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         V = inflater.inflate(R.layout.popup_listsets, container, false);
 
+        // Initialise the helper classes
+        storageAccess = new StorageAccess();
+        setActions = new SetActions();
+        preferences = new Preferences();
+        listSongFiles = new ListSongFiles();
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -119,12 +124,6 @@ public class PopUpListSetsFragment extends DialogFragment {
                         identifyViews(V);
                     }
                 });
-
-                // Initialise the helper classes
-                storageAccess = new StorageAccess();
-                setActions = new SetActions();
-                preferences = new Preferences();
-                listSongFiles = new ListSongFiles();
 
                 // Prepare the toast message using the title.  It is cleared if cancel is clicked
                 FullscreenActivity.myToastMessage = myTitle + " : " + getActivity().getResources().getString(R.string.ok);
@@ -150,9 +149,11 @@ public class PopUpListSetsFragment extends DialogFragment {
                         sets_adapter = setCorrectAdapter(set_ListView);
 
                         setCategory_Spinner.setAdapter(category_adapter);
+                        if (cats.contains(lastSetCategory)) {
+                            setCategory_Spinner.setSelection(cats.indexOf(lastSetCategory));
+                        }
                         originalSetCategory_Spinner.setAdapter(category_adapter);
                         set_ListView.setAdapter(sets_adapter);
-                        fixListViewSize();
 
                         // Try to set the spinners to match the recently used set category
                         boolean done = false;
@@ -189,7 +190,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                             @Override
                             public void onClick(View view) {
                                 // Change button function and image
-                                //changeCategoryButton(true);
+                                createNewCategory();
                             }
                         });
 
@@ -204,6 +205,28 @@ public class PopUpListSetsFragment extends DialogFragment {
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
 
         return V;
+    }
+
+    void createNewCategory() {
+        // This shows the edit text field and allows the user to add a new set category
+        setCategory_Spinner.setVisibility(View.GONE);
+        newCategory_EditText.setVisibility(View.VISIBLE);
+        newCategory_EditText.requestFocus();
+        newCategory_FAB.setImageResource(R.drawable.ic_chevron_left_white_36dp);
+        newCategory_FAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setCategory_Spinner.setVisibility(View.VISIBLE);
+                newCategory_EditText.setVisibility(View.GONE);
+                newCategory_FAB.setImageResource(R.drawable.ic_plus_white_36dp);
+                newCategory_FAB.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        createNewCategory();
+                    }
+                });
+            }
+        });
     }
 
     String getTheTitle() {
@@ -241,7 +264,20 @@ public class PopUpListSetsFragment extends DialogFragment {
         newSetPromptTitle = V.findViewById(R.id.newSetPromptTitle);
         newCategory_EditText = V.findViewById(R.id.newCategory_EditText);
         setListName = V.findViewById(R.id.setListName);
-        setListName.setText(FullscreenActivity.lastSetName);
+        // Determine the last set name and category
+        lastSetName = FullscreenActivity.lastSetName;
+        lastSetCategory = "";
+        if (FullscreenActivity.lastSetName.contains("__")) {
+            String[] bits = FullscreenActivity.lastSetName.split("__");
+            try {
+                lastSetCategory = bits[0];
+                lastSetName = bits[1];
+            } catch (Exception e) {
+                lastSetCategory = "";
+                lastSetName = FullscreenActivity.lastSetName;
+            }
+        }
+        setListName.setText(lastSetName);
         sort_FAB = V.findViewById(R.id.sort_FAB);
         newCategory_FAB = V.findViewById(R.id.newCategory_FAB);
         overWrite_CheckBox = V.findViewById(R.id.overWrite_CheckBox);
@@ -252,6 +288,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         newCategory_LinearLayout = V.findViewById(R.id.newCategory_LinearLayout);
         newSetTitle_LinearLayout = V.findViewById(R.id.newSetTitle_LinearLayout);
         setCategory = V.findViewById(R.id.setCategory);
+        progressBar = V.findViewById(R.id.progressBar);
         title = V.findViewById(R.id.dialogtitle);
         title.setText(myTitle);
         closeMe = V.findViewById(R.id.closeMe);
@@ -332,8 +369,7 @@ public class PopUpListSetsFragment extends DialogFragment {
 
     void listOfAllSets() {
         // Get a note of the available sets first of all
-        allsets = setActions.listAllSets(getActivity(), storageAccess);
-
+        allsets = setActions.listAllSets(getActivity(), preferences, storageAccess);
         // Get a note of the available set categories from these
         cats = setActions.listSetCategories(getActivity(), allsets);
     }
@@ -366,26 +402,6 @@ public class PopUpListSetsFragment extends DialogFragment {
         return arr;
     }
 
-    void fixListViewSize() {
-        /*if (sets_adapter == null) {
-            // pre-condition
-            return;
-        }
-        sets_adapter.notifyDataSetChanged();
-        int set_counts = sets_adapter.getCount();
-        Log.d("d","set_counts="+set_counts);
-        int totalHeight = 0;
-        for (int i = 0; i < set_counts; i++) {
-            View listItem = sets_adapter.getView(i, null, set_ListView);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams params = set_ListView.getLayoutParams();
-        params.height = totalHeight + (set_ListView.getDividerHeight() * (sets_adapter.getCount() - 1));
-        set_ListView.setLayoutParams(params);
-        set_ListView.requestLayout();*/
-    }
     void updateAvailableSets() {
         // Get a record of all the sets available in the SETS folder
         listOfAllSets();
@@ -398,7 +414,6 @@ public class PopUpListSetsFragment extends DialogFragment {
         setCategory_Spinner.setAdapter(category_adapter);
         originalSetCategory_Spinner.setAdapter(category_adapter);
         set_ListView.setAdapter(sets_adapter);
-        fixListViewSize();
 
         // Try to set the spinners to match the recently used set category
         boolean done = false;
@@ -523,7 +538,6 @@ public class PopUpListSetsFragment extends DialogFragment {
         sets_adapter = setCorrectAdapter(set_ListView);
         sets_adapter.notifyDataSetChanged();
         set_ListView.setAdapter(sets_adapter);
-        fixListViewSize();
 
         // Go through new list and re tick any currently selected ones
         if (FullscreenActivity.whattodo.equals("loadset") || FullscreenActivity.whattodo.equals("managesets") ||
@@ -560,34 +574,6 @@ public class PopUpListSetsFragment extends DialogFragment {
 
     void doLoadSet() {
         // Load the set up
-        // Show the progress bar
-        prog = new ProgressDialog(getActivity());
-        prog.setTitle(getString(R.string.options_set_load));
-        prog.setMessage(getString(R.string.wait));
-        prog.setCancelable(true);
-        prog.setIndeterminate(true);
-        prog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        prog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                FullscreenActivity.abort = true;
-                try {
-                    if (dataTask!=null) {
-                        dataTask.cancel(true);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        /*runnable = new Runnable() {
-            public void run() {
-                prog.setMessage(val);
-            }
-        };*/
-        prog.show();
-
         FullscreenActivity.settoload = null;
         FullscreenActivity.abort = false;
 
@@ -604,40 +590,58 @@ public class PopUpListSetsFragment extends DialogFragment {
     }
 
     void doSaveSet() {
-        // Save the set into the settoload name
-        FullscreenActivity.settoload = setListName.getText().toString().trim();
-        FullscreenActivity.lastSetName = setListName.getText().toString().trim();
-        String new_cat = newCategory_EditText.getText().toString();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-        if (!new_cat.equals("")) {
-            FullscreenActivity.settoload = new_cat + "__" + setListName.getText().toString().trim();
-        } else if (setCategory_Spinner.getSelectedItemPosition()>0) {
-            FullscreenActivity.settoload = cats.get(setCategory_Spinner.getSelectedItemPosition()) +
-                    "__" + setListName.getText().toString().trim();
-        }
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
+                });
 
-        // Popup the are you sure alert into another dialog fragment
-        Uri newsetname = storageAccess.getUriForItem(getActivity(), preferences, "Sets", "",
-                FullscreenActivity.settoload);
+                // Save the set into the settoload name
+                FullscreenActivity.settoload = setListName.getText().toString().trim();
+                FullscreenActivity.lastSetName = setListName.getText().toString().trim();
+                String new_cat = newCategory_EditText.getText().toString();
 
-        // New structure, only give the are you sure prompt if the set name already exists.
-        if (storageAccess.uriExists(getActivity(),newsetname)) {
-            String message = getResources().getString(R.string.options_set_save) + " \'" + setListName.getText().toString().trim() + "\"?";
-            FullscreenActivity.myToastMessage = message;
-            DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
-            newFragment.show(getFragmentManager(), "dialog");
-            dismiss();
-        } else {
-            if (mListener!=null) {
-                FullscreenActivity.whattodo = "saveset";
-                mListener.confirmedAction();
+                if (!new_cat.equals("")) {
+                    FullscreenActivity.settoload = new_cat + "__" + setListName.getText().toString().trim();
+                } else if (setCategory_Spinner.getSelectedItemPosition() > 0) {
+                    FullscreenActivity.settoload = cats.get(setCategory_Spinner.getSelectedItemPosition()) +
+                            "__" + setListName.getText().toString().trim();
+                }
+
+                // Popup the are you sure alert into another dialog fragment
+                final Uri newsetname = storageAccess.getUriForItem(getActivity(), preferences, "Sets", "",
+                        FullscreenActivity.settoload);
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // New structure, only give the are you sure prompt if the set name already exists.
+                        if (storageAccess.uriExists(getActivity(), newsetname)) {
+                            String message = getResources().getString(R.string.options_set_save) + " \'" + setListName.getText().toString().trim() + "\"?";
+                            FullscreenActivity.myToastMessage = message;
+                            DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+                            newFragment.show(getFragmentManager(), "dialog");
+                            dismiss();
+                        } else {
+                            if (mListener != null) {
+                                FullscreenActivity.whattodo = "saveset";
+                                mListener.confirmedAction();
+                            }
+                            try {
+                                dismiss();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
             }
-            try {
-                dismiss();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        }).start();
     }
 
     void doRenameSet() {
@@ -647,6 +651,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         String newcat_spinner = cats.get(setCategory_Spinner.getSelectedItemPosition());
 
         String newsettitle = setListName.getText().toString();
+        FullscreenActivity.settoload = newsettitle;
 
         String newsetname;
         if (!newcat_edittext.equals("")) {
@@ -657,8 +662,6 @@ public class PopUpListSetsFragment extends DialogFragment {
             newsetname = newcat_spinner + "__" + newsettitle;
         }
 
-        Uri oldsetfile = storageAccess.getUriForItem(getActivity(), preferences, "Sets", "",
-                FullscreenActivity.setnamechosen);
         Uri newsetfile = storageAccess.getUriForItem(getActivity(), preferences, "Sets", "",
                 newsetname);
 
@@ -666,7 +669,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         boolean overwrite = overWrite_CheckBox.isChecked();
         boolean success = false;
         if (!exists || overwrite) {
-            success = storageAccess.renameFile(getActivity(),oldsetfile,newsetname);
+            success = storageAccess.renameFile(getActivity(), preferences, "Sets", "", "", FullscreenActivity.setnamechosen, newsetname);
         }
 
         if (success) {
@@ -679,9 +682,14 @@ public class PopUpListSetsFragment extends DialogFragment {
         }
 
         ShowToast.showToast(getActivity());
-
-        setListName.setText("");
+        FullscreenActivity.lastSetName = FullscreenActivity.setnamechosen;
         FullscreenActivity.setnamechosen = "";
+        // Close the window
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -690,14 +698,16 @@ public class PopUpListSetsFragment extends DialogFragment {
         @Override
         public void onPreExecute() {
             // Check the directories and clear them of prior content
-            setActions.emptyCacheDirectories(getActivity(), preferences, storageAccess);
-            FullscreenActivity.mySet = "";
-            FullscreenActivity.mSet = null;
-            FullscreenActivity.myParsedSet = null;
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
         protected String doInBackground(String... args) {
+            setActions.emptyCacheDirectories(getActivity(), preferences, storageAccess);
+            FullscreenActivity.mySet = "";
+            FullscreenActivity.mSet = null;
+            FullscreenActivity.myParsedSet = null;
+
             // Now users can load multiple sets and merge them, we need to load each one it turn
             // We then add the items to a temp string 'allsongsinset'
             // Once we have loaded them all, we replace the mySet field.
@@ -740,7 +750,7 @@ public class PopUpListSetsFragment extends DialogFragment {
 
             if (result.equals("LOADED") && !dataTask.isCancelled()) {
                 // Get the set first item
-                setActions.prepareFirstItem(getActivity(), listSongFiles, storageAccess);
+                setActions.prepareFirstItem(getActivity(), preferences, listSongFiles, storageAccess);
 
                 // Save the new set to the preferences
                 Preferences.savePreferences();
@@ -753,7 +763,8 @@ public class PopUpListSetsFragment extends DialogFragment {
                 //Close this dialog
                 dismiss();
             }
-            prog.dismiss();
+            //prog.dismiss();
+            progressBar.setVisibility(View.GONE);
         }
     }
 

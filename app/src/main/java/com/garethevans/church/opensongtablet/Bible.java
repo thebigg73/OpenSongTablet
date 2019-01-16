@@ -2,20 +2,13 @@ package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.StrictMode;
-import android.text.Html;
-import android.util.Log;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -329,97 +322,6 @@ class Bible {
         return scripture.toString().trim();
     }
 
-    void grabBibleText(final Context c, final String weblink) {
-        // Do this in a new thread
-
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                StringBuilder sb = new StringBuilder();
-                URL url;
-                HttpURLConnection urlConnection = null;
-                try {
-                    url = new URL(weblink);
-                    urlConnection = (HttpURLConnection) url.openConnection();
-                    InputStream in = urlConnection.getInputStream();
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(in));
-                    String s;
-                    while ((s = buffer.readLine()) != null) {
-                        sb.append("\n").append(s);
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    if (urlConnection != null) {
-                        urlConnection.disconnect();
-                    }
-                }
-                String scripture;
-                String scripture_title = "";
-
-                // TEST THE FULLY EXTRACTED SCRIPTURE (FULLER THAN HEADER)
-                String result = sb.toString();
-                String newbit = sb.toString();
-
-                // Find the start and end of the scripture bit
-                int startoffull = newbit.indexOf("<sup class=\"versenum\">");
-                int endoffull   = newbit.indexOf("<div class=\"crossrefs hidden\">");
-
-                if (endoffull > startoffull && startoffull > 0) {
-                    newbit = newbit.substring(startoffull,endoffull);
-                } else {
-                    FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
-                    ShowToast.showToast(c);
-                }
-
-                newbit = Html.fromHtml(newbit).toString();
-                newbit = newbit.replace("<p>","");
-                newbit = newbit.replace("</p>","");
-
-                //Now look to see if the webcontent has the desired text in it
-                if (result.contains("og:description")) {
-
-                    // Get the title
-                    int title_startpos = result.indexOf("<meta name=\"twitter:title\" content=\"")+36;
-                    int title_endpos   = result.indexOf("\" />",title_startpos);
-
-                    try {
-                        scripture_title = result.substring(title_startpos,title_endpos);
-                    } catch (Exception e) {
-                        Log.d("d","Error getting scripture title");
-                        FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
-                        ShowToast.showToast(c);
-                    }
-
-                    // Make the scripture more readable by making a line break at the start of the word after 40 chars
-                    // First split the scripture into an array of words
-                    //String[] scripturewords = scripture.split(" ");
-
-                    scripture = shortenTheLines(newbit, 40, 6);
-
-                    // Send these back to the popupcustomslide creator window
-                    FullscreenActivity.scripture_title = scripture_title;
-                    FullscreenActivity.scripture_verse = scripture;
-
-                    PopUpCustomSlideFragment.addScripture();
-
-                } else {
-                    FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
-                    ShowToast.showToast(c);
-                }
-            }
-        }).start();
-
-
-
-
-        /*DownloadWebTextTask task = new DownloadWebTextTask(c);
-        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,weblink);*/
-    }
 /*    @SuppressLint("StaticFieldLeak")
     private class DownloadWebTextTask extends AsyncTask<String, Void, String> {
         @SuppressLint("StaticFieldLeak")
@@ -491,7 +393,7 @@ class Bible {
                 try {
                     scripture_title = result.substring(title_startpos,title_endpos);
                 } catch (Exception e) {
-                    Log.d("d","Error getting scripture title");
+                    Log.d("Bible","Error getting scripture title");
                     FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
                     ShowToast.showToast(c);
                 }

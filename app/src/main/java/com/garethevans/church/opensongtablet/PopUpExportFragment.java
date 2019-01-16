@@ -137,7 +137,6 @@ public class PopUpExportFragment extends DialogFragment {
         FullscreenActivity.exportChordPro_String = "";
         FullscreenActivity.exportOnSong_String = "";
 
-
         // Set the listeners
         exportOpenSongAppSetCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -208,6 +207,9 @@ public class PopUpExportFragment extends DialogFragment {
     }
 
     public void doExportPrepare() {
+        // Save the preferences (to keep the checkboxes saved)
+        Preferences.savePreferences();
+
         if (mListener!=null) {
             mListener.doExport();
             try {

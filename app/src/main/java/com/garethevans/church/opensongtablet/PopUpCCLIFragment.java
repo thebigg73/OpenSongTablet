@@ -94,6 +94,10 @@ public class PopUpCCLIFragment extends DialogFragment {
                 "  <log></log>\n";
         StorageAccess storageAccess = new StorageAccess();
         Uri uri = storageAccess.getUriForItem(c, preferences, "Settings", "", "ActivityLog.xml");
+
+        // Check the uri exists for the outputstream to be valid
+        storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "Settings", "", "ActivityLog.xml");
+
         OutputStream outputStream = storageAccess.getOutputStream(c, uri);
         return storageAccess.writeFileFromString(blankXML, outputStream);
     }
@@ -241,7 +245,7 @@ public class PopUpCCLIFragment extends DialogFragment {
     }
     public static String getLogFileSize(Context c, Uri uri) {
         StorageAccess storageAccess = new StorageAccess();
-        Long file_size_kb = storageAccess.getFileSizeFromUri(c, uri);
+        float file_size_kb = storageAccess.getFileSizeFromUri(c, uri);
         String returntext = "ActivityLog.xml ("+file_size_kb + "kb)";
         if (file_size_kb > 1024) {
             returntext = " <font color='#f00'>ActivityLog.xml ("+file_size_kb + "kb)" + "</font>";
@@ -432,10 +436,10 @@ public class PopUpCCLIFragment extends DialogFragment {
         boolean exists = storageAccess.createFile(c, preferences, null, "Settings", "", "ActivityLog.xml");
         Uri uri = storageAccess.getUriForItem(c, preferences, "Settings", "", "ActivityLog.xml");
         InputStream inputStream = storageAccess.getInputStream(c, uri);
-        OutputStream outputStream = storageAccess.getOutputStream(c, uri);
         if (!exists) { // Create a blank file
             createBlankXML(c, preferences);
         }
+        OutputStream outputStream = storageAccess.getOutputStream(c, uri);
         String actfilesize = getLogFileSize(c, uri);
         BuildTable do_buildTable = new BuildTable(uri, inputStream, outputStream, actfilesize);
         do_buildTable.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

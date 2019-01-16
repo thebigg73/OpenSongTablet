@@ -32,11 +32,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         return frag;
     }
 
-    public interface MyInterface {
-        void refreshAll();
-        void onSongImportDone(String message);
-        void openFragment();
-    }
+    SetActions setActions;
 
     private MyInterface mListener;
 
@@ -68,6 +64,7 @@ public class PopUpImportExternalFile extends DialogFragment {
     SongFolders songFolders;
     ListSongFiles listSongFiles;
     ImportOnSongBackup import_os;
+    String what, errormessage = "", filetype, chosenfolder;
 
     // Folder variables
     ArrayList<String> folderlist;
@@ -75,7 +72,29 @@ public class PopUpImportExternalFile extends DialogFragment {
 
     // Other variables
     boolean overwrite, ok, error;
-    String what, errormessage, filetype, chosenfolder;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getDialog().setCanceledOnTouchOutside(true);
+
+        bibleC = new Bible();
+        storageAccess = new StorageAccess();
+        preferences = new Preferences();
+        songFolders = new SongFolders();
+        listSongFiles = new ListSongFiles();
+        setActions = new SetActions();
+
+        V = inflater.inflate(R.layout.popup_importexternalfile, container, false);
+
+        initialiseViews(V);
+        setAction();
+        updateTextViews();
+        initialiseLocationsToSave();
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
+
+        return V;
+    }
 
     @Override
     public void onStart() {
@@ -111,32 +130,79 @@ public class PopUpImportExternalFile extends DialogFragment {
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+    void setAction() {
+        String s = getActivity().getString(R.string.importnewsong);
+        String ext;
+        if (FullscreenActivity.whattodo.equals("doimportset")) {
+            s = getActivity().getString(R.string.importnewset);
+            what = "set";
+            filetype = getActivity().getString(R.string.options_set);
+        } else {
+            what = "song";
+            filetype = getActivity().getString(R.string.options_song);
+        }
+        if (FullscreenActivity.file_uri!=null && FullscreenActivity.file_uri.getPath()!=null) {
+            ext = FullscreenActivity.file_uri.getPath();
+            if (ext != null) {
+                ext = ext.toLowerCase();
+                if (ext.endsWith(".backup")) {
+                    s = getActivity().getString(R.string.import_onsong_choose);
+                    what = "onsongbackup";
+                    filetype = getActivity().getString(R.string.import_onsong_choose);
+                } else if (ext.endsWith(".osts")) {
+                    s = getActivity().getString(R.string.importnewset);
+                    what = "set";
+                    filetype = getActivity().getString(R.string.export_set);
+                } else if (ext.endsWith(".onsong")) {
+                    what = "onsongfile";
+                    filetype = getActivity().getString(R.string.export_onsong);
+                } else if (ext.endsWith(".pro") || ext.endsWith(".cho") || ext.endsWith(".chopro") || ext.endsWith("chordpro")) {
+                    what = "chordpro";
+                    filetype = getActivity().getString(R.string.export_chordpro);
+                } else if (ext.endsWith(".usr")) {
+                    what = "songselect";
+                    filetype = getActivity().getString(R.string.songselect);
+                } else if (ext.endsWith(".gif") || ext.endsWith(".jpg") || ext.endsWith(".png") || ext.endsWith(".gif")) {
+                    what = "image";
+                    filetype = getActivity().getString(R.string.image);
+                } else if (ext.endsWith(".pdf")) {
+                    what = "pdf";
+                    filetype = "PDF";
+                } else if (ext.endsWith(".txt")) {
+                    what = "text";
+                    filetype = getActivity().getString(R.string.export_text);
+                } else if (bibleC.isYouVersionScripture(FullscreenActivity.incoming_text)) {
+                    what = "bible";
+                    filetype = getActivity().getString(R.string.scripture);
+                } else {
+                    // Need to check that this is an OpenSong xml file (may have .ost extension though)
+                    if (storageAccess.containsXMLTags(getActivity(), FullscreenActivity.file_uri)) {
+                        if (FullscreenActivity.myToastMessage.equals("foundset")) {
+                            what = "set";
+                            filetype = getActivity().getString(R.string.options_set);
+                        } else {
+                            what = "song";
+                            filetype = getActivity().getString(R.string.options_song);
+                        }
+                    } else {
+                        notValid();
+                    }
+                }
+            }
+            try {
+                title.setText(s);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-        bibleC = new Bible();
-        storageAccess = new StorageAccess();
-        preferences = new Preferences();
-        songFolders = new SongFolders();
-        listSongFiles = new ListSongFiles();
-
-        V = inflater.inflate(R.layout.popup_importexternalfile, container, false);
-
-        initialiseViews(V);
-        setAction();
-        updateTextViews();
-        initialiseLocationsToSave();
-
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-
-        return V;
+        } else {
+            notValid();
+        }
     }
 
     void initialiseViews(View v) {
         fileTitle_TextView = v.findViewById(R.id.fileTitle_TextView);
-        fileType_TextView  = v.findViewById(R.id.fileType_TextView);
+        fileType_TextView = v.findViewById(R.id.fileType_TextView);
         title = v.findViewById(R.id.dialogtitle);
         chooseFolder_Spinner = v.findViewById(R.id.chooseFolder_Spinner);
         overWrite_CheckBox = v.findViewById(R.id.overWrite_CheckBox);
@@ -146,7 +212,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                CustomAnimations.animateFAB(closeMe, getActivity());
                 closeMe.setEnabled(false);
                 try {
                     dismiss();
@@ -158,7 +224,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
+                CustomAnimations.animateFAB(saveMe, getActivity());
                 saveMe.setEnabled(false);
                 overwrite = overWrite_CheckBox.isChecked();
                 getChosenFolder();
@@ -167,57 +233,17 @@ public class PopUpImportExternalFile extends DialogFragment {
         });
     }
 
-    void setAction() {
-        String s = getActivity().getString(R.string.importnewsong);
-        String ext;
-        if (FullscreenActivity.file_uri!=null && FullscreenActivity.file_uri.getPath()!=null) {
-            ext = FullscreenActivity.file_uri.getPath();
-            assert ext != null;
-            ext = ext.toLowerCase();
-            if (ext.endsWith(".backup")) {
-                s = getActivity().getString(R.string.import_onsong_choose);
-                what = "onsongbackup";
-                filetype = getActivity().getString(R.string.import_onsong_choose);
-            } else if (ext.endsWith(".osts")) {
-                s = getActivity().getString(R.string.importnewset);
-                what = "set";
-                filetype = getActivity().getString(R.string.export_set);
-            } else if (ext.endsWith(".onsong")) {
-                what = "onsongfile";
-                filetype = getActivity().getString(R.string.export_onsong);
-            } else if (ext.endsWith(".pro") || ext.endsWith(".cho") || ext.endsWith(".chopro") || ext.endsWith("chordpro")) {
-                what = "chordpro";
-                filetype = getActivity().getString(R.string.export_chordpro);
-            } else if (ext.endsWith(".usr")) {
-                what = "songselect";
-                filetype = getActivity().getString(R.string.songselect);
-            } else if (ext.endsWith(".gif") || ext.endsWith(".jpg") || ext.endsWith(".png") || ext.endsWith(".gif")) {
-                what = "image";
-                filetype = getActivity().getString(R.string.image);
-            } else if (ext.endsWith(".pdf")) {
-                what = "pdf";
-                filetype = "PDF";
-            } else if (ext.endsWith(".txt")) {
-                what = "text";
-                filetype = getActivity().getString(R.string.export_text);
-            } else if (bibleC.isYouVersionScripture(FullscreenActivity.incoming_text)) {
-                what = "bible";
-                filetype = getActivity().getString(R.string.scripture);
-            } else {
-                // Need to check that this is an OpenSong xml file (may have .ost extension though)
-                if (storageAccess.containsXMLTags(getActivity(), FullscreenActivity.file_uri)) {
-                    what = "opensong";
-                    filetype = getActivity().getString(R.string.export_set);
-                } else {
-                    notValid();
-                }
-            }
-            title.setText(s);
-
-        } else {
-            notValid();
+    void notValid() {
+        // Not a valid or recognised file, so warn the user and close the popup
+        FullscreenActivity.myToastMessage = getActivity().getString(R.string.file_type_unknown);
+        if (mListener != null) {
+            mListener.showToastMessage(FullscreenActivity.myToastMessage);
         }
-
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     void updateTextViews() {
@@ -227,14 +253,25 @@ public class PopUpImportExternalFile extends DialogFragment {
         fileType_TextView.setText(filetype);
     }
 
-    void notValid() {
-        // Not a valid or recognised file, so warn the user and close the popup
-        FullscreenActivity.myToastMessage = getActivity().getString(R.string.file_type_unknown);
-        ShowToast.showToast(getActivity());
+    void importOnSongBackup() {
+        // Hide the cancel button
+        if (closeMe != null) {
+            closeMe.setVisibility(View.GONE);
+        }
+
+        if (progressBar != null) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+        if (saveMe != null) {
+            saveMe.setClickable(false);
+        }
+
+        // Now start the AsyncTask
+        import_os = new ImportOnSongBackup();
         try {
-            dismiss();
+            import_os.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.d("d", "Error importing");
         }
     }
 
@@ -276,28 +313,6 @@ public class PopUpImportExternalFile extends DialogFragment {
         }
     }
 
-    void importOnSongBackup() {
-        // Hide the cancel button
-        if (closeMe!=null) {
-            closeMe.setVisibility(View.GONE);
-        }
-        //Change the text of the save button
-        if (progressBar!=null) {
-            progressBar.setVisibility(View.VISIBLE);
-        }
-        if (saveMe!=null) {
-            saveMe.setClickable(false);
-        }
-
-        // Now start the AsyncTask
-        import_os = new ImportOnSongBackup();
-        try {
-            import_os.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            Log.d("d","Error importing");
-        }
-    }
-
     void importOpenSongSet() {
         // Get the new file name
         String filename = FullscreenActivity.file_uri.getLastPathSegment();
@@ -305,11 +320,10 @@ public class PopUpImportExternalFile extends DialogFragment {
             filename = filename.replace(".osts","");
         }
 
-        // Copy the file
-        copyFile("Sets", "", filename);
+        progressBar.setVisibility(View.VISIBLE);
 
-        // Set up the file ready to open in the app
-        completedImport(filename, chosenfolder);
+        // Copy the set and to open in the app
+        completedImportSet(filename);
     }
 
     void importBibleText() {
@@ -334,9 +348,35 @@ public class PopUpImportExternalFile extends DialogFragment {
 
         // Write the file
         Uri scripturefile = storageAccess.getUriForItem(getActivity(), preferences, "Scripture", "", "YouVersion");
+
+        // Check the uri exists for the outputstream to be valid
+        storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, scripturefile, null,
+                "Scripture", "", "YouVersion");
+
         OutputStream outputStream = storageAccess.getOutputStream(getActivity(),scripturefile);
         storageAccess.writeFileFromString(text,outputStream);
         completedImport("YouVersion","../Scripture");
+    }
+
+    void copyFile(String folder, String subfolder, String filename) {
+        Uri newfile = storageAccess.getUriForItem(getActivity(), preferences, folder, subfolder, filename);
+        if (!storageAccess.uriExists(getActivity(), newfile) || overwrite) {
+            InputStream inputStream = storageAccess.getInputStream(getActivity(), FullscreenActivity.file_uri);
+
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, newfile, null,
+                    folder, subfolder, filename);
+
+            OutputStream outputStream = storageAccess.getOutputStream(getActivity(), newfile);
+            error = false;
+            ok = storageAccess.copyFile(inputStream, outputStream);
+            if (!ok) {
+                errormessage = errormessage + filename + ": " + getActivity().getString(R.string.backup_error) + "\n";
+            }
+        } else {
+            error = true;
+            errormessage = errormessage + filename + ": " + getActivity().getString(R.string.file_exists) + "\n";
+        }
     }
 
     void importFile() {
@@ -358,26 +398,11 @@ public class PopUpImportExternalFile extends DialogFragment {
         chosenfolder = folderlist.get(i);
     }
 
-    void copyFile(String folder, String subfolder, String filename) {
-        Uri newfile = storageAccess.getUriForItem(getActivity(), preferences, folder, subfolder, filename);
-        if (storageAccess.uriExists(getActivity(),newfile) || overwrite) {
-            InputStream inputStream = storageAccess.getInputStream(getActivity(), FullscreenActivity.file_uri);
-            OutputStream outputStream = storageAccess.getOutputStream(getActivity(), newfile);
-            ok = storageAccess.copyFile(inputStream, outputStream);
-            if (!ok) {
-                errormessage = errormessage + filename + ": " + getActivity().getString(R.string.backup_error) + "\n";
-            }
-        } else {
-            error = true;
-            errormessage = errormessage + filename + ": " + getActivity().getString(R.string.file_exists) + "\n";
-        }
-    }
-
     void completedImport(String song, String subfolder) {
         FullscreenActivity.songfilename = song;
         FullscreenActivity.whichSongFolder = subfolder;
         storageAccess.listSongs(getActivity(), preferences);
-        listSongFiles.getAllSongFiles(getActivity(), storageAccess);
+        listSongFiles.getAllSongFiles(getActivity(), preferences, storageAccess);
         if (mListener!=null) {
             mListener.refreshAll();
         }
@@ -386,10 +411,89 @@ public class PopUpImportExternalFile extends DialogFragment {
         } else {
             FullscreenActivity.myToastMessage = errormessage;
         }
-        ShowToast.showToast(getActivity());
+        if (mListener != null) {
+            mListener.showToastMessage(FullscreenActivity.myToastMessage);
+        }
     }
 
+    void completedImportSet(final String set) {
+        ImportSet importSet = new ImportSet(set);
+        importSet.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
 
+    public interface MyInterface {
+        void refreshAll();
+
+        void onSongImportDone(String message);
+
+        void openFragment();
+
+        void showToastMessage(String message);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class ImportSet extends AsyncTask<String, Void, String> {
+
+        String setname;
+
+        ImportSet(String set) {
+            setname = set;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            FullscreenActivity.settoload = setname;
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                // Copy the file
+                copyFile("Sets", "", setname);
+
+                if (!error) {
+                    setActions.loadASet(getActivity(), preferences, storageAccess);
+                    FullscreenActivity.setView = true;
+
+                    // Get the set first item
+                    setActions.prepareFirstItem(getActivity(), preferences, listSongFiles, storageAccess);
+
+                    // Save the new set to the preferences
+                    Preferences.savePreferences();
+
+                    FullscreenActivity.myToastMessage = getActivity().getString(R.string.success);
+
+
+                    FullscreenActivity.abort = false;
+
+                } else {
+
+                    FullscreenActivity.myToastMessage = errormessage;
+                }
+
+            } catch (Exception e) {
+                FullscreenActivity.myToastMessage = getActivity().getString(R.string.error);
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            try {
+                mListener.showToastMessage(FullscreenActivity.myToastMessage);
+                if (!error) {
+                    mListener.refreshAll();
+                    FullscreenActivity.whattodo = "editset";
+                    mListener.openFragment();
+                }
+                dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @SuppressLint("StaticFieldLeak")
     private class ImportOnSongBackup extends AsyncTask<String, Void, String> {
@@ -411,7 +515,6 @@ public class PopUpImportExternalFile extends DialogFragment {
             }
         }
     }
-
 
     @Override
     public void onCancel(DialogInterface dialog) {

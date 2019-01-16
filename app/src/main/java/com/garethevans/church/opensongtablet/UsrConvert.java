@@ -3,210 +3,223 @@ package com.garethevans.church.opensongtablet;
 import android.content.Context;
 import android.net.Uri;
 
-import java.io.OutputStream;
+import java.util.ArrayList;
 
 class UsrConvert {
 
-    boolean doExtract(Context c, Preferences preferences) {
+    // Declare the variables;
+    private String title;
+    private String author;
+    private String key;
+    private String copyright;
+    private String ccli;
+    private String time_sig;
+    private String lyrics;
+    private String theme;
+    private String oldSongFileName;
+    private String newSongFileName;
+    private String songSubFolder;
+    private String tags;
+    private String[] lines;
+    private StringBuilder parsedLines;
 
-        // This is called when a usr format song has been loaded.
-        // This tries to extract the relevant stuff and reformat the
-        // <lyrics>...</lyrics>
-        String temp = FullscreenActivity.myXML;
+    ArrayList<String> convertTextToTags(Context c, StorageAccess storageAccess, Preferences preferences,
+                                        SongXML songXML, ChordProConvert chordProConvert, Uri uri, String l, int pos) {
 
-        // Initialise all the xml tags a song should have
-        FullscreenActivity.mTitle = FullscreenActivity.songfilename;
-        LoadXML.initialiseSongTags();
+        initialiseTheVariables();
 
-        // Break the temp variable into an array split by line
-        // Check line endings are \n
-        temp = temp.replace("\r\n", "\n");
-        temp = temp.replace("\r", "\n");
-        temp = temp.replace("\n\n\n", "\n\n");
-        temp = temp.replace("\'", "'");
-        temp = temp.replace("&quot;", "\"");
-        temp = temp.replace("\\'", "'");
-        temp = temp.replace("&quot;", "\"");
+        lyrics = l;
 
-        String[] line = temp.split("\n");
-        int numlines = line.length;
+        // Fix line breaks and slashes
+        lyrics = chordProConvert.fixLineBreaksAndSlashes(lyrics);
 
-        String temptitle = "";
-        String tempauthor = "";
-        String tempcopy = "";
-        String tempccli = "";
-        String temptheme = "";
-        String tempkey = "";
-        String tempfields = "";
-        String tempwords = "";
+        // Fix content we recognise
+        lyrics = fixRecognisedContent(c, lyrics);
 
-        // Go through individual lines and fix simple stuff
-        for (int x = 0; x < numlines; x++) {
-            // Get rid of any extra whitespace
-            line[x] = line[x].trim();
+        // Get rid of multilple line breaks (max of 3 together)
+        lyrics = chordProConvert.getRidOfExtraLines(lyrics);
 
-            // If line has title, grab it
-            if (line[x].contains("Title=")) {
-                temptitle = line[x].replace("Title=","");
-            }
+        // Add spaces to beginnings of lines that aren't comments, chords or tags
+        lyrics = chordProConvert.addSpacesToLines(lyrics);
 
-            // If line has author, grab it
-            if (line[x].contains("Author=")) {
-                tempauthor = line[x].replace("Author=","");
-                tempauthor = tempauthor.replace("|", ",");
-            }
-
-            // If line has ccli, grab it
-            if (line[x].contains("[S A")) {
-                tempccli = line[x].replace("[S A","");
-                tempccli = tempccli.replace("]", "");
-            }
-
-            // If line has copyright, grab it
-            if (line[x].contains("Copyright=")) {
-                tempcopy = line[x].replace("Copyright=", "");
-                tempcopy = tempcopy.replace("|",",");
-            }
-
-            // If line has theme, grab it
-            if (line[x].contains("Themes=")) {
-                temptheme = line[x].replace("Themes=","");
-                temptheme = temptheme.replace("/t","; ");
-            }
-
-            // If line has key, grab it
-            if (line[x].contains("Keys=")) {
-                tempkey = line[x].replace("Keys=","");
-            }
-
-            // If line has fields, grab it
-            if (line[x].contains("Fields=")) {
-                tempfields = line[x].replace("Fields=","");
-                // Replace known fields
-                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_bridge)+" ","B");
-                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_bridge),"B");
-                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_prechorus)+" ","P");
-                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_prechorus),"B");
-                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_chorus)+" ","C");
-                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_chorus),"C");
-                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_verse)+" ","V");
-                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_verse),"V");
-                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_tag)+" ","T");
-                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_tag),"T");
-            }
-
-            // If line has words, grab it
-            if (line[x].contains("Words=")) {
-                tempwords = line[x].replace("Words=","");
-            }
-
-            // Change | separator
-            line[x] = line[x].replace("|",",");
-        }
-
-        // Fix the newline tag for words
-        tempwords = tempwords.replace("/n","\n");
-
-        // Split the words up by sections
-        String[] sections = tempwords.split("/t");
-
-        // Split the section titles up
-        String[] sectiontitles = tempfields.split("/t");
-
-        StringBuilder templyrics = new StringBuilder();
-
-        // Go through the sections and add the appropriate tag
-        for (int s=0;s<sections.length;s++) {
-            if (sections[s].indexOf("(")==0) {
-                sections[s] = sections[s].replace("(", "[");
-                sections[s] = sections[s].replace(")", "]");
-                int tagstart = sections[s].indexOf("[");
-                int tagend = sections[s].indexOf("]");
-                String customtag = "";
-                if (tagstart>-1 && tagend>1) {
-                    customtag = sections[s].substring(tagstart+1,tagend-1);
-                }
-                String newtag = customtag;
-                // Replace any know custom tags
-                newtag = newtag.replace(c.getResources().getString(R.string.tag_bridge)+" ","B");
-                newtag = newtag.replace(c.getResources().getString(R.string.tag_bridge),"B");
-                newtag = newtag.replace(c.getResources().getString(R.string.tag_prechorus)+" ","P");
-                newtag = newtag.replace(c.getResources().getString(R.string.tag_prechorus),"B");
-                newtag = newtag.replace(c.getResources().getString(R.string.tag_chorus)+" ","C");
-                newtag = newtag.replace(c.getResources().getString(R.string.tag_chorus),"C");
-                newtag = newtag.replace(c.getResources().getString(R.string.tag_verse)+" ","V");
-                newtag = newtag.replace(c.getResources().getString(R.string.tag_verse),"V");
-                newtag = newtag.replace(c.getResources().getString(R.string.tag_tag)+" ","T");
-                newtag = newtag.replace(c.getResources().getString(R.string.tag_tag),"T");
-                sections[s] = sections[s].replace(customtag, newtag);
-
-            } else {
-                if (sectiontitles[s]!=null) {
-                    sections[s] = "[" + sectiontitles[s] + "]\n" + sections[s];
-                }
-            }
-            // Fix all line breaks
-            sections[s] = sections[s].replace("/n", "\n ");
-
-            templyrics.append(sections[s]).append("\n");
-
-        }
-
-
-        // Get rid of double line breaks
-        while (templyrics.toString().contains("\n\n\n")) {
-            templyrics = new StringBuilder(templyrics.toString().replace("\n\n\n", "\n\n"));
-        }
-
-
-        // Initialise the variables
-        SongXML songXML = new SongXML();
+        // Initialise the song tags
         songXML.initialiseSongTags();
-        ListSongFiles listSongFiles = new ListSongFiles();
 
-        // Set the correct values
-        FullscreenActivity.mTitle = temptitle.trim();
-        FullscreenActivity.mAuthor = tempauthor.trim();
-        FullscreenActivity.mCopyright = tempcopy.trim();
-        FullscreenActivity.mCCLI = tempccli.trim();
-        FullscreenActivity.mTheme = temptheme.trim();
-        FullscreenActivity.mKey = tempkey.trim();
-        FullscreenActivity.mLyrics = templyrics.toString().trim();
+        // Prepare the correct values
+        setCorrectXMLValues();
 
+        // Now prepare the new songXML file
         FullscreenActivity.myXML = songXML.getXML();
 
-        // Change the name of the song to remove usr file extension
-        String newSongTitle = FullscreenActivity.songfilename;
+        // Get the filename and subfolder (if any) that the original song was in by parsing the uri
+        oldSongFileName = chordProConvert.getOldSongFileName(uri);
+        songSubFolder = chordProConvert.getSongFolderLocation(storageAccess, uri);
 
-        // Decide if a better song title is in the file
-        if (temptitle.length() > 0) {
-            newSongTitle = temptitle;
-        }
-        newSongTitle = newSongTitle.replace(".usr", "");
-        newSongTitle = newSongTitle.replace(".USR", "");
-        newSongTitle = newSongTitle.replace(".txt", "");
+        // Prepare the new song filename
+        newSongFileName = chordProConvert.getNewSongFileName(uri, title);
+
+        // Get a unique uri for the new song
+        Uri newUri = chordProConvert.getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);
 
         // Now write the modified song
-        StorageAccess storageAccess = new StorageAccess();
-        Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder, newSongTitle);
-        OutputStream outputStream = storageAccess.getOutputStream(c, uri);
-        if (storageAccess.writeFileFromString(FullscreenActivity.myXML,outputStream)) {
-            // Writing was successful, so delete the original
-            Uri originalfile = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
-            storageAccess.deleteFile(c,originalfile);
+        chordProConvert.writeTheImprovedSong(c, storageAccess, preferences, oldSongFileName, newSongFileName,
+                songSubFolder, newUri, uri, pos);
+
+        return chordProConvert.bitsForIndexing(newSongFileName, title, author, copyright, key, time_sig, ccli, lyrics);
+
+    }
+
+    private void initialiseTheVariables() {
+        title = "";
+        author = "";
+        key = "";
+        copyright = "";
+        ccli = "";
+        time_sig = "";
+        oldSongFileName = "";
+        newSongFileName = "";
+        songSubFolder = "";
+        lines = null;
+        theme = "";
+
+        parsedLines = new StringBuilder();
+    }
+
+    private String fixRecognisedContent(Context c, String l) {
+        // Break the filecontents into lines
+        lines = l.split("\n");
+
+        // This will be the new lyrics lines
+        parsedLines = new StringBuilder();
+        for (String line : lines) {
+            // Get rid of any extra whitespace
+            line = line.trim();
+
+            String words;
+            if (line.contains("Title=")) {
+                // Extract the title and empty the line (don't need to keep it)
+                title = removeTags(line, "Title=").trim();
+                line = "";
+
+            } else if (line.contains("Author=")) {
+                // Extract the author and empty the line (don't need to keep it)
+                author = removeTags(line, "Author=").trim();
+                line = "";
+
+            } else if (line.contains("Copyright=")) {
+                // Extract the copyright and empty the line (don't need to keep it)
+                copyright = removeTags(line, "Copyright=");
+                line = "";
+
+            } else if (line.contains("[S A")) {
+                ccli = removeTags(line, "[S A");
+                ccli = removeTags(ccli, "]");
+                line = "";
+
+            } else if (line.contains("Theme=")) {
+                theme = removeTags(line, "Theme=");
+                line = "";
+
+            } else if (line.contains("Keys=")) {
+                key = removeTags(line, "Keys=");
+                line = "";
+
+            } else if (line.contains("Fields=")) {
+                tags = line.replace("Fields=", "");
+                // Replace known fields
+                tags = tags.replace(c.getResources().getString(R.string.tag_bridge) + " ", "B");
+                tags = tags.replace(c.getResources().getString(R.string.tag_bridge), "B");
+                tags = tags.replace(c.getResources().getString(R.string.tag_prechorus) + " ", "P");
+                tags = tags.replace(c.getResources().getString(R.string.tag_prechorus), "B");
+                tags = tags.replace(c.getResources().getString(R.string.tag_chorus) + " ", "C");
+                tags = tags.replace(c.getResources().getString(R.string.tag_chorus), "C");
+                tags = tags.replace(c.getResources().getString(R.string.tag_verse) + " ", "V");
+                tags = tags.replace(c.getResources().getString(R.string.tag_verse), "V");
+                tags = tags.replace(c.getResources().getString(R.string.tag_tag) + " ", "T");
+                tags = tags.replace(c.getResources().getString(R.string.tag_tag), "T");
+                line = "";
+
+            } else if (line.contains("Words=")) {
+                words = removeTags(line, "Words=");
+
+            }
+
+            // Fix the line separator
+            words = line.replace("|", ",");
+
+            // Fix the newline tag for words
+            words = words.replace("/n", "\n");
+
+            // Split the words up by sections
+            String[] sections = words.split("/t");
+
+            // Split the section titles up
+            String[] sectiontitles = tags.split("/t");
+
+            // Go through the sections and add the appropriate tag
+            for (int w = 0; w < sections.length; w++) {
+                if (sections[w].startsWith("(")) {
+                    sections[w] = sections[w].replace("(", "[");
+                    sections[w] = sections[w].replace(")", "]");
+                    int tagstart = sections[w].indexOf("[");
+                    int tagend = sections[w].indexOf("]");
+                    String customtag = "";
+                    if (tagstart > -1 && tagend > 1) {
+                        customtag = sections[w].substring(tagstart + 1, tagend - 1);
+                    }
+                    String newtag = customtag;
+                    // Replace any know custom tags
+                    newtag = newtag.replace(c.getResources().getString(R.string.tag_bridge) + " ", "B");
+                    newtag = newtag.replace(c.getResources().getString(R.string.tag_bridge), "B");
+                    newtag = newtag.replace(c.getResources().getString(R.string.tag_prechorus) + " ", "P");
+                    newtag = newtag.replace(c.getResources().getString(R.string.tag_prechorus), "B");
+                    newtag = newtag.replace(c.getResources().getString(R.string.tag_chorus) + " ", "C");
+                    newtag = newtag.replace(c.getResources().getString(R.string.tag_chorus), "C");
+                    newtag = newtag.replace(c.getResources().getString(R.string.tag_verse) + " ", "V");
+                    newtag = newtag.replace(c.getResources().getString(R.string.tag_verse), "V");
+                    newtag = newtag.replace(c.getResources().getString(R.string.tag_tag) + " ", "T");
+                    newtag = newtag.replace(c.getResources().getString(R.string.tag_tag), "T");
+                    sections[w] = sections[w].replace(customtag, newtag);
+
+                } else {
+                    if (sectiontitles[w] != null) {
+                        sections[w] = "[" + sectiontitles[w] + "]\n" + sections[w];
+                    }
+                }
+                // Fix all line breaks
+                sections[w] = sections[w].replace("/n", "\n ");
+
+                parsedLines.append(sections[w]).append("\n");
+            }
         }
 
-        FullscreenActivity.songfilename = newSongTitle;
+        lyrics = parsedLines.toString();
+        // Get rid of double line breaks
+        while (lyrics.contains("\n\n\n")) {
+            lyrics = lyrics.replace("\n\n\n", "\n\n");
+        }
 
-        // Load the songs
-        listSongFiles.getAllSongFiles(c, storageAccess);
+        return lyrics;
+    }
 
-        // Get the song indexes
-        listSongFiles.getCurrentSongIndex();
-        Preferences.savePreferences();
+    private String removeTags(String s, String bit) {
+        return s.replace(bit, "");
+    }
 
-        // Prepare the app to fix the song menu with the new file
-        FullscreenActivity.converting = true;
+    private void setCorrectXMLValues() {
+        // Set the correct values
+        FullscreenActivity.mTitle = title.trim();
+        FullscreenActivity.mAuthor = author.trim();
+        FullscreenActivity.mCopyright = copyright.trim();
+        FullscreenActivity.mCCLI = ccli.trim();
+        FullscreenActivity.mTheme = theme.trim();
+        FullscreenActivity.mKey = key.trim();
+        FullscreenActivity.mLyrics = lyrics.trim();
+    }
+
+
+    // TODO remove this
+    boolean doExtract(Context c, Preferences preferences) {
 
         return true;
     }

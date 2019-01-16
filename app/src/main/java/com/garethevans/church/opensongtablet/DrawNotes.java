@@ -345,10 +345,10 @@ public class DrawNotes extends View {
             imageloaded = true;
 
         } catch (Exception e) {
-            Log.d("d","Loading the image-error");
+            Log.d("DrawNotes", "Loading the image-error");
             canvasBitmap = null;
         } catch (OutOfMemoryError oom) {
-            Log.d("d","Loading the image-out of memory");
+            Log.d("DrawNotes", "Loading the image-out of memory");
             canvasBitmap = null;
         }
         FullscreenActivity.saveHighlight = false;
@@ -371,10 +371,10 @@ public class DrawNotes extends View {
         FullscreenActivity.saveHighlight = false;
         try {
             if (uri==null || !storageAccess.deleteFile(c,uri)) {
-                Log.d("d","Unable to delete old highlighter note");
+                Log.d("DrawNotes", "Unable to delete old highlighter note");
             }
         } catch (Exception e) {
-            Log.d("d","Error trying to delete old highlighter note");
+            Log.d("DrawNotes", "Error trying to delete old highlighter note");
         }
         canvasBitmap = null;
         invalidate();

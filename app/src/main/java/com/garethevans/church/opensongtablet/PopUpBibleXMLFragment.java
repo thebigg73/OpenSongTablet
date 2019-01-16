@@ -257,7 +257,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                 quickUpdate = null;
 
                 // Get a list of the bible files in the folder
-                bibleFileNames = storageAccess.listFilesInFolder(getActivity(), "OpenSong Scripture","");
+                bibleFileNames = storageAccess.listFilesInFolder(getActivity(), preferences, "OpenSong Scripture", "");
                 bibleFileNames.add(0,"");
                 bibleFileNames.add(1,getActivity().getString(R.string.download_new));
                 bibleFileNames.add(2,"");
@@ -772,5 +772,4 @@ public class PopUpBibleXMLFragment extends DialogFragment {
             dealWithDownloadFile();
         }
     };
-
 }

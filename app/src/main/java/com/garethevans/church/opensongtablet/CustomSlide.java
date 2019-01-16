@@ -64,15 +64,22 @@ class CustomSlide {
 
         StorageAccess storageAccess = new StorageAccess();
         Uri uri = storageAccess.getUriForItem(c, preferences, folder, "_cache", filetitle);
+
+        // Check the uri exists for the outputstream to be valid
+        storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, folder, "_cache", filetitle);
+
         // Now write the modified item
         OutputStream outputStream = storageAccess.getOutputStream(c,uri);
         storageAccess.writeFileFromString(FullscreenActivity.mynewXML,outputStream);
-
 
         // If this is to be a reusable custom slide - not in the _cache folder
         if (FullscreenActivity.customreusable) {
             // Now write the modified item
             Uri uriReusable = storageAccess.getUriForItem(c, preferences, folder, "", filetitle);
+
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, uriReusable, null, folder, "", filetitle);
+
             OutputStream outputStreamReusable = storageAccess.getOutputStream(c,uriReusable);
             storageAccess.writeFileFromString(FullscreenActivity.mynewXML,outputStreamReusable);
             FullscreenActivity.customreusable = false;

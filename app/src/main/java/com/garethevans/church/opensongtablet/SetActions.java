@@ -30,8 +30,9 @@ public class SetActions {
     private String custom_notes, user1 = "", user2 = "", user3 = "", aka = "", key_line = "";
     private XmlPullParser xpp;
 
-    ArrayList<String> listAllSets(Context c, StorageAccess storageAccess) {
-        return storageAccess.listFilesInFolder(c,"Sets","");
+    ArrayList<String> listAllSets(Context c, Preferences preferences, StorageAccess storageAccess) {
+        Log.d("SetActions", "starting storageAccess.listFilesInFolder");
+        return storageAccess.listFilesInFolder(c, preferences, "Sets", "");
     }
     ArrayList<String> listSetCategories(Context c, ArrayList<String> allsets) {
         // Look for the different categories
@@ -99,7 +100,6 @@ public class SetActions {
 
         // Empty the _cache folders
         emptyCacheDirectories(c, preferences, storageAccess);
-
 
         FullscreenActivity.lastSetName = FullscreenActivity.settoload;
 
@@ -202,18 +202,13 @@ public class SetActions {
             }
             // See if we are already there!
             boolean alreadythere = false;
-            if (FullscreenActivity.indexSongInSet > -1 && FullscreenActivity.mSetList != null &&
-                    FullscreenActivity.indexSongInSet < FullscreenActivity.mSetList.length) {
+            if (FullscreenActivity.indexSongInSet > -1 && FullscreenActivity.indexSongInSet < FullscreenActivity.mSetList.length) {
                 if (FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet].contains(FullscreenActivity.songfilename)) {
                     alreadythere = true;
                 }
             }
 
-            if (FullscreenActivity.mSetList != null) {
-                FullscreenActivity.setSize = FullscreenActivity.mSetList.length;
-            } else {
-                FullscreenActivity.setSize = 0;
-            }
+            FullscreenActivity.setSize = FullscreenActivity.mSetList.length;
 
             if (alreadythere) {
                 if (FullscreenActivity.indexSongInSet > 0) {
@@ -424,7 +419,7 @@ public class SetActions {
         storageAccess.wipeFolder(c, preferences, "Slides", "_cache");
         storageAccess.wipeFolder(c, preferences, "Notes", "_cache");
         storageAccess.wipeFolder(c, preferences, "Images", "_cache");
-        storageAccess.wipeFolder(c, preferences, "Variations", "_cache");
+        storageAccess.wipeFolder(c, preferences, "Variations", "");
     }
 
     private void writeTempSlide(String where, String what, Context c, Preferences preferences, StorageAccess storageAccess) throws IOException {
@@ -458,6 +453,11 @@ public class SetActions {
         }
 
         Uri uri = storageAccess.getUriForItem(c, preferences, foldername, subfoldername, what);
+
+        // Check the uri exists for the outputstream to be valid
+        storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null,
+                foldername, subfoldername, what);
+
         OutputStream outputStream = storageAccess.getOutputStream(c, uri);
         set_item = setprefix + what + "_**$";
 
@@ -807,13 +807,18 @@ public class SetActions {
 
                             Uri uri = storageAccess.getUriForItem(c, preferences, "Images", "_cache",
                                     image_title.toString() + imagenums + image_type);
+
+                            // Check the uri exists for the outputstream to be valid
+                            storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null,
+                                    "Images", "_cache", image_title.toString() + imagenums + image_type);
+
                             OutputStream outputStream = storageAccess.getOutputStream(c, uri);
                             byte[] decodedString = Base64.decode(image_content, Base64.DEFAULT);
                             storageAccess.writeFileFromDecodedImageString(outputStream, decodedString);
                             image_content = "";
-                            slide_images.append(uri.getLastPathSegment()).append("\n");
+                            slide_images.append(uri.toString()).append("\n");
                             slide_image_titles.append("[").append(c.getResources().getString(R.string.image))
-                                    .append("_").append(imagenums + 1).append("]\n").append(uri.getLastPathSegment()).append("\n\n");
+                                    .append("_").append(imagenums + 1).append("]\n").append(uri.toString()).append("\n\n");
                             imagenums++;
                             encodedimage = false;
                         }
@@ -841,7 +846,8 @@ public class SetActions {
         user2 = image_loop;
         user3 = slide_images.toString().trim();
         aka = image_name;
-        hymn_number = hymn_number_imagecode.toString();
+        //hymn_number = hymn_number_imagecode.toString();
+        hymn_number = ""; // Not saving the image here!
         key_line = image_notes;
         lyrics = slide_image_titles.toString().trim();
         writeTempSlide(c.getResources().getString(R.string.image), title, c, preferences, storageAccess);
@@ -854,7 +860,7 @@ public class SetActions {
         return s;
     }
 
-    void prepareFirstItem(Context c, ListSongFiles listSongFiles, StorageAccess storageAccess) {
+    void prepareFirstItem(Context c, Preferences preferences, ListSongFiles listSongFiles, StorageAccess storageAccess) {
         // If we have just loaded a set, and it isn't empty,  load the first item
         if (FullscreenActivity.mSetList.length>0) {
             FullscreenActivity.whatsongforsetwork = FullscreenActivity.mSetList[0];
@@ -867,7 +873,7 @@ public class SetActions {
             getSongFileAndFolder(c);
 
             // Match the song folder
-            listSongFiles.getAllSongFiles(c, storageAccess);
+            listSongFiles.getAllSongFiles(c, preferences, storageAccess);
 
             // Get the index of the song in the current set
             indexSongInSet();
@@ -953,7 +959,7 @@ public class SetActions {
         }
     }
 
-    void doMoveInSet(Context c, ListSongFiles listSongFiles, StorageAccess storageAccess) {
+    void doMoveInSet(Context c, Preferences preferences, ListSongFiles listSongFiles, StorageAccess storageAccess) {
         mListener = (MyInterface) c;
 
         boolean justmovingsections = false;
@@ -1009,11 +1015,12 @@ public class SetActions {
             // Get the song and folder names from the item clicked in the set list
             getSongFileAndFolder(c);
 
+            Log.d("SetActions", "whichSongFolder=" + FullscreenActivity.whichSongFolder + "   songfilename=" + FullscreenActivity.songfilename);
             // Save the preferences
             Preferences.savePreferences();
 
             // Match the song folder
-            listSongFiles.getAllSongFiles(c, storageAccess);
+            listSongFiles.getAllSongFiles(c, preferences, storageAccess);
 
             FullscreenActivity.setMoveDirection = "";
             mListener.loadSong();

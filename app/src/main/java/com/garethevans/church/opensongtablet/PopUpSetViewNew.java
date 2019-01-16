@@ -45,15 +45,53 @@ public class PopUpSetViewNew extends DialogFragment {
         return frag;
     }
 
-    public interface MyInterface {
-        void loadSongFromSet();
-        void shuffleSongsInSet();
-        void prepareOptionMenu();
-        void refreshAll();
-        void closePopUps();
-        void pageButtonAlpha(String s);
-        void windowFlags();
-        void openFragment();
+    public static void makeVariation(Context c, Preferences preferences) {
+        // Prepare the name of the new variation slide
+        // If the file already exists, add _ to the filename
+        StringBuilder newsongname = new StringBuilder(FullscreenActivity.songfilename);
+        StorageAccess storageAccess = new StorageAccess();
+        Uri uriVariation = storageAccess.getUriForItem(c, preferences, "Variations", "",
+                FullscreenActivity.songfilename);
+
+        // Original file
+        Uri uriOriginal = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder,
+                FullscreenActivity.songfilename);
+
+        // Copy the file into the variations folder
+        InputStream inputStream = storageAccess.getInputStream(c, uriOriginal);
+
+        // Check the uri exists for the outputstream to be valid
+        storageAccess.lollipopCreateFileForOutputStream(c, preferences, uriVariation, null,
+                "Variations", "", FullscreenActivity.songfilename);
+
+        OutputStream outputStream = storageAccess.getOutputStream(c, uriVariation);
+        storageAccess.copyFile(inputStream, outputStream);
+
+        // Fix the song name and folder for loading
+        FullscreenActivity.songfilename = newsongname.toString();
+        FullscreenActivity.whichSongFolder = "../Variations";
+        FullscreenActivity.whatsongforsetwork = "\"$**_**" + c.getResources().getString(R.string.variation) + "/" + newsongname + "_**$";
+
+        // Replace the set item with the variation item
+        FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet] = "**" + c.getResources().getString(R.string.variation) + "/" + newsongname;
+        // Rebuild the mySet variable
+        StringBuilder new_mySet = new StringBuilder();
+        for (String thisitem : FullscreenActivity.mSetList) {
+            new_mySet.append("$**_").append(thisitem).append("_**$");
+        }
+        FullscreenActivity.mySet = new_mySet.toString();
+
+        Preferences.savePreferences();
+
+        FullscreenActivity.myToastMessage = c.getResources().getString(R.string.variation_edit);
+        ShowToast.showToast(c);
+        // Now load the new variation item up
+        loadSong();
+        if (mListener != null) {
+            mListener.prepareOptionMenu();
+            // Close the fragment
+            mListener.closePopUps();
+        }
     }
 
     private static MyInterface mListener;
@@ -86,7 +124,7 @@ public class PopUpSetViewNew extends DialogFragment {
     public void onStart() {
         super.onStart();
         if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
     }
 
@@ -99,60 +137,31 @@ public class PopUpSetViewNew extends DialogFragment {
         }
     }
 
-    public static void makeVariation(Context c, Preferences preferences) {
-        // Prepare the name of the new variation slide
-        // If the file already exists, add _ to the filename
-        StringBuilder newsongname = new StringBuilder(FullscreenActivity.songfilename);
-        StorageAccess storageAccess = new StorageAccess();
-        Uri uriVariation = storageAccess.getUriForItem(c, preferences, "Variations", "",
-                FullscreenActivity.songfilename);
-
-        // Original file
-        Uri uriOriginal = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder,
-                FullscreenActivity.songfilename);
-
-        // Copy the file into the variations folder
-        InputStream inputStream = storageAccess.getInputStream(c, uriOriginal);
-        OutputStream outputStream = storageAccess.getOutputStream(c, uriVariation);
-        storageAccess.copyFile(inputStream, outputStream);
-
-        // Fix the song name and folder for loading
-        FullscreenActivity.songfilename = newsongname.toString();
-        FullscreenActivity.whichSongFolder = "../Variations";
-        FullscreenActivity.whatsongforsetwork = "\"$**_**" + c.getResources().getString(R.string.variation) + "/" + newsongname + "_**$";
-
-        // Replace the set item with the variation item
-        FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet] = "**" + c.getResources().getString(R.string.variation) + "/" + newsongname;
-        // Rebuild the mySet variable
-        StringBuilder new_mySet = new StringBuilder();
-        for (String thisitem : FullscreenActivity.mSetList) {
-            new_mySet.append("$**_").append(thisitem).append("_**$");
+    public static void loadSong() {
+        FullscreenActivity.setView = true;
+        if (FullscreenActivity.setchanged && mListener != null) {
+            // We've edited the set and then clicked on a song, so save the set first
+            FullscreenActivity.whattodo = "saveset";
+            StringBuilder tempmySet = new StringBuilder();
+            String tempItem;
+            if (FullscreenActivity.mTempSetList == null) {
+                FullscreenActivity.mTempSetList = new ArrayList<>();
+            }
+            for (int z = 0; z < FullscreenActivity.mTempSetList.size(); z++) {
+                tempItem = FullscreenActivity.mTempSetList.get(z);
+                tempmySet.append("$**_").append(tempItem).append("_**$");
+            }
+            FullscreenActivity.mySet = null;
+            FullscreenActivity.mySet = tempmySet.toString();
+            mListener.confirmedAction();
         }
-        FullscreenActivity.mySet = new_mySet.toString();
-
-        Preferences.savePreferences();
-
-        FullscreenActivity.myToastMessage = c.getResources().getString(R.string.variation_edit);
-        ShowToast.showToast(c);
-        // Now load the new variation item up
-        loadSong();
         if (mListener != null) {
-            mListener.prepareOptionMenu();
-            // Close the fragment
-            mListener.closePopUps();
+            mListener.loadSongFromSet();
         }
+        setfrag.dismiss();
     }
 
     public void doSave() {
-        Log.d("SETVIEW", "before: mySet=" + FullscreenActivity.mySet);
-        for (String ms : FullscreenActivity.mSet) {
-            Log.d("SETVIEW", "before: mSet=" + ms);
-
-        }
-        for (String msl : FullscreenActivity.mSetList) {
-            Log.d("SETVIEW", "before: mSetList=" + msl);
-
-        }
         StringBuilder tempmySet = new StringBuilder();
         String tempItem;
         if (FullscreenActivity.mTempSetList == null) {
@@ -169,16 +178,6 @@ public class PopUpSetViewNew extends DialogFragment {
         FullscreenActivity.myToastMessage = getActivity().getString(R.string.currentset) +
                 " - " + getActivity().getString(R.string.ok);
         Preferences.savePreferences();
-        Log.d("SETVIEW", "after: mySet=" + FullscreenActivity.mySet);
-        for (String ms : FullscreenActivity.mSet) {
-            Log.d("SETVIEW", "after: mSet=" + ms);
-
-        }
-        for (String msl : FullscreenActivity.mSetList) {
-            Log.d("SETVIEW", "after: mSetList=" + msl);
-        }
-        // Tell the listener to do something
-
     }
 
     public void refresh() {
@@ -223,9 +222,6 @@ public class PopUpSetViewNew extends DialogFragment {
                 if (mysongtitle.isEmpty() || mysongfolder.equals("")) {
                     mysongtitle = "!ERROR!";
                 }
-
-                Log.d("d", "mysongtitle=" + mysongtitle);
-                Log.d("d", "mysongfolder=" + mysongfolder);
 
                 mSongName.add(i, mysongtitle);
                 mFolderName.add(i, mysongfolder);
@@ -279,6 +275,9 @@ public class PopUpSetViewNew extends DialogFragment {
         storageAccess = new StorageAccess();
         preferences = new Preferences();
         setActions = new SetActions();
+
+        // This is used if we edit the set then try to click on a song - it will save it first
+        FullscreenActivity.setchanged = false;
 
         TextView helpClickItem_TextView = V.findViewById(R.id.helpClickItem_TextView);
         TextView helpDragItem_TextView = V.findViewById(R.id.helpDragItem_TextView);
@@ -414,14 +413,6 @@ public class PopUpSetViewNew extends DialogFragment {
         return V;
     }
 
-    public static void loadSong() {
-        FullscreenActivity.setView = true;
-        if (mListener!=null) {
-            mListener.loadSongFromSet();
-        }
-        setfrag.dismiss();
-    }
-
     private List<SetItemInfo> createList(int size) {
         List<SetItemInfo> result = new ArrayList<>();
         for (int i=1; i <= size; i++) {
@@ -431,7 +422,7 @@ public class PopUpSetViewNew extends DialogFragment {
                 si.songtitle = mSongName.get(i - 1);
                 si.songfolder = mFolderName.get(i - 1);
                 String songLocation = LoadXML.getTempFileLocation(getActivity(),mFolderName.get(i-1),mSongName.get(i-1));
-                si.songkey = LoadXML.grabNextSongInSetKey(getActivity(), preferences, songLocation);
+                si.songkey = LoadXML.grabNextSongInSetKey(getActivity(), preferences, storageAccess, songLocation);
                 // Decide what image we'll need - song, image, note, slide, scripture, variation
                 if (mFolderName.get(i - 1).equals("**"+getActivity().getResources().getString(R.string.slide))) {
                     si.songicon = getActivity().getResources().getString(R.string.slide);
@@ -452,6 +443,26 @@ public class PopUpSetViewNew extends DialogFragment {
             }
         }
         return result;
+    }
+
+    public interface MyInterface {
+        void loadSongFromSet();
+
+        void shuffleSongsInSet();
+
+        void prepareOptionMenu();
+
+        void confirmedAction();
+
+        void refreshAll();
+
+        void closePopUps();
+
+        void pageButtonAlpha(String s);
+
+        void windowFlags();
+
+        void openFragment();
     }
 
     public void doExportSetTweet() {

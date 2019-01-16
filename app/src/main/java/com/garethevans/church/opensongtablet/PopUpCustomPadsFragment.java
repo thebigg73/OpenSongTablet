@@ -19,6 +19,7 @@ public class PopUpCustomPadsFragment extends DialogFragment {
     Spinner padAb, padA, padBb, padB, padC, padDb, padD, padEb, padE, padF, padGb, padG,
             padAbm, padAm, padBbm, padBm, padCm, padDbm, padDm, padEbm, padEm, padFm, padGbm, padGm;
     StorageAccess storageAccess;
+    Preferences preferences;
 
     static PopUpCustomPadsFragment newInstance() {
         PopUpCustomPadsFragment frag;
@@ -90,7 +91,9 @@ public class PopUpCustomPadsFragment extends DialogFragment {
 
         // Set up the spinners
         storageAccess = new StorageAccess();
-        ArrayList<String> padfiles = storageAccess.listFilesInFolder(getActivity(),"Pads","");
+        preferences = new Preferences();
+
+        ArrayList<String> padfiles = storageAccess.listFilesInFolder(getActivity(), preferences, "Pads", "");
         padfiles.add(0,getActivity().getString(R.string.pad_auto));
         ArrayAdapter<String> aa = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,padfiles);
         padAb.setAdapter(aa);

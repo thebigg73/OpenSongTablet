@@ -48,6 +48,11 @@ public class BootUpCheck extends AppCompatActivity {
     StorageAccess storageAccess;
     IndexSongs indexSongs;
     FullscreenActivity fullscreenActivity;
+    SongXML songXML;
+    ChordProConvert chordProConvert;
+    OnSongConvert onSongConvert;
+    UsrConvert usrConvert;
+    TextSongConvert textSongConvert;
 
     // Declare views
     ProgressBar progressBar;
@@ -73,6 +78,11 @@ public class BootUpCheck extends AppCompatActivity {
         storageAccess = new StorageAccess();
         indexSongs = new IndexSongs();
         fullscreenActivity = new FullscreenActivity();
+        songXML = new SongXML();
+        chordProConvert = new ChordProConvert();
+        onSongConvert = new OnSongConvert();
+        usrConvert = new UsrConvert();
+        textSongConvert = new TextSongConvert();
 
         // This will do one of 2 things - it will either show the splash screen or the welcome screen
         // To determine which one, we need to check the storage is set and is valid
@@ -90,7 +100,7 @@ public class BootUpCheck extends AppCompatActivity {
         skiptoapp = versionCheck();
 
         if (checkStorageIsValid() && storageGranted && skiptoapp) {
-            Log.d("d","Ready to go straight to the app");
+            Log.d("BootUpCheck", "Ready to go straight to the app");
             setContentView(R.layout.activity_logosplash);
             goToSongs();
 
@@ -193,7 +203,7 @@ public class BootUpCheck extends AppCompatActivity {
                 try {
                     startActivity(i);
                 } catch (Exception e) {
-                    Log.d("d", "Error showing activity");
+                    Log.d("BootUpCheck", "Error showing activity");
                 }
             }
         });
@@ -206,7 +216,7 @@ public class BootUpCheck extends AppCompatActivity {
                 try {
                     startActivity(i);
                 } catch (Exception e) {
-                    Log.d("d", "Error showing activity");
+                    Log.d("BootUpCheck", "Error showing activity");
                 }
             }
         });
@@ -219,7 +229,7 @@ public class BootUpCheck extends AppCompatActivity {
                 try {
                     startActivity(i);
                 } catch (Exception e) {
-                    Log.d("d", "Error showing activity");
+                    Log.d("BootUpCheck", "Error showing activity");
                 }
             }
         });
@@ -260,7 +270,7 @@ public class BootUpCheck extends AppCompatActivity {
         userGuideButton.setClickable(clickable);
     }
     void checkStoragePermission() {
-        Log.d("d","checkStoragePermission");
+        Log.d("BootUpCheck", "checkStoragePermission");
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -347,7 +357,7 @@ public class BootUpCheck extends AppCompatActivity {
         if (storageGranted) {
             Intent intent;
             if (storageAccess.lollipopOrLater()) {
-                Log.d("d", "uriTree=" + uriTree);
+                Log.d("BootUpCheck", "uriTree=" + uriTree);
                 intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
                 intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
                 intent.putExtra("android.content.extra.FANCY", true);
@@ -439,15 +449,15 @@ public class BootUpCheck extends AppCompatActivity {
             thisVersion = 0;
             versionCode = "";
         }
-        Log.d("d", "lastUsedVersion =" + lastUsedVersion);
-        Log.d("d","thisversion="+thisVersion);
+        Log.d("BootUpCheck", "lastUsedVersion =" + lastUsedVersion);
+        Log.d("BootUpCheck", "thisversion=" + thisVersion);
         return lastUsedVersion >= thisVersion;
     }
 
     void checkReadiness() {
-        Log.d("d","storageGranted="+storageGranted);
-        Log.d("d","checkStorageIsValid()="+checkStorageIsValid());
-        Log.d("d","skiptoapp="+skiptoapp);
+        Log.d("BootUpCheck", "storageGranted=" + storageGranted);
+        Log.d("BootUpCheck", "checkStorageIsValid()=" + checkStorageIsValid());
+        Log.d("BootUpCheck", "skiptoapp=" + skiptoapp);
 
         if (checkStorageIsValid() && storageGranted && !skiptoapp) {
             // We're good to go, but need to wait for the user to click on the start button
@@ -506,7 +516,7 @@ public class BootUpCheck extends AppCompatActivity {
             publishProgress("setmessage");
             final String progress = storageAccess.createOrCheckRootFolders(BootUpCheck.this, preferences);
             foldersok = !progress.contains("Error");
-            Log.d("d", "progress=" + progress);
+            Log.d("BootUpCheck", "progress=" + progress);
 
             if (foldersok) {
                 // Load up all of the preferences into FullscreenActivity (static variables)
@@ -536,6 +546,8 @@ public class BootUpCheck extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                // Listener for conversion of files
+                boolean hadtoconvert = false;
                 for (currentSongNum = 0; currentSongNum < numSongs; currentSongNum++) {
                     currentSongName = FullscreenActivity.songIds.get(currentSongNum);
                     if (currentSongName.contains("OpenSong/Songs/")) {
@@ -543,10 +555,46 @@ public class BootUpCheck extends AppCompatActivity {
                     }
                     message = currentSongName + "\n(" + currentSongNum + "/" + numSongs + ")";
                     publishProgress(currentSongName);
-                    indexSongs.doIndexThis(BootUpCheck.this, storageAccess, currentSongNum);
+                    boolean converted = indexSongs.doIndexThis(BootUpCheck.this, storageAccess, preferences, songXML,
+                            chordProConvert, usrConvert, onSongConvert, textSongConvert, currentSongNum);
+                    if (converted) {
+                        message = "Converted song...";
+                        publishProgress("setmessage");
+                        hadtoconvert = true;
+                    }
                 }
 
                 indexSongs.completeLog();
+
+                // TODO
+                // If we had to convert songs from OnSong, ChordPro, etc, we need to reindex to get sorted songs again
+                // This is because the filename will likely have changed alphabetical position
+                // Alert the user to the need for rebuilding and repeat the above
+                if (hadtoconvert) {
+                    Log.d("d", "Conversion had to happen, so rebuild the search index");
+                    message = "Updating indexes of converted songs...";
+                    publishProgress("setmessage");
+
+                    try {
+                        indexSongs.initialiseIndexStuff();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    // Listener for conversion of files
+                    for (currentSongNum = 0; currentSongNum < numSongs; currentSongNum++) {
+                        currentSongName = FullscreenActivity.songIds.get(currentSongNum);
+                        if (currentSongName.contains("OpenSong/Songs/")) {
+                            currentSongName = currentSongName.substring(currentSongName.lastIndexOf("OpenSong/Songs/") + 15);
+                        }
+                        message = currentSongName + "\n(" + currentSongNum + "/" + numSongs + ")";
+                        publishProgress(currentSongName);
+                        indexSongs.doIndexThis(BootUpCheck.this, storageAccess, preferences, songXML,
+                                chordProConvert, usrConvert, onSongConvert, textSongConvert, currentSongNum);
+                    }
+                    indexSongs.completeLog();
+                }
+
                 indexSongs.getSongDetailsFromIndex();
 
                 // Finished indexing
@@ -570,7 +618,7 @@ public class BootUpCheck extends AppCompatActivity {
 
             } else {
                 // There was a problem with the folders, so restart the app!
-                Log.d("d", "problem with folders");
+                Log.d("BootUpCheck", "problem with folders");
                 Intent intent = new Intent();
                 intent.setClass(BootUpCheck.this, BootUpCheck.class);
                 startActivity(intent);
@@ -725,7 +773,7 @@ public class BootUpCheck extends AppCompatActivity {
                                 if (position>0) {
                                     File f = new File(locations.get(position));
                                     uriTree = Uri.fromFile(f);
-                                    Log.d("d", "uriTree=" + uriTree);
+                                    Log.d("BootUpCheck", "uriTree=" + uriTree);
                                     chooseStorageButton.performClick();
                                 }
                             } else {

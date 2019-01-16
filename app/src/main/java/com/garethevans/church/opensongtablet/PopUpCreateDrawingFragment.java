@@ -285,7 +285,8 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
     public void setHighlighterFile() {
         // If this file already exists, load it up!
-        uri = ProcessSong.getHighlightFile(getActivity(), preferences);
+        String hname = ProcessSong.getHighlighterName(getActivity());
+        uri = storageAccess.getUriForItem(getActivity(), preferences, "Highlighter", "", hname);
         if (storageAccess.uriExists(getActivity(),uri)) {
             drawView.loadImage(getActivity(),uri);
         }
@@ -521,7 +522,14 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
             if (FullscreenActivity.saveHighlight) {
                 FullscreenActivity.highlightOn = true;
                 drawView.setDrawingCacheEnabled(true);
-                newUri = ProcessSong.getHighlightFile(getActivity(), preferences);
+                String hname = ProcessSong.getHighlighterName(getActivity());
+                newUri = storageAccess.getUriForItem(getActivity(), preferences,
+                        "Highlighter", "", hname);
+
+                // Check the uri exists for the outputstream to be valid
+                storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, newUri, null,
+                        "Highlighter", "", hname);
+
                 try {
                     bmp = drawView.getDrawingCache();
                 } catch (Exception e) {

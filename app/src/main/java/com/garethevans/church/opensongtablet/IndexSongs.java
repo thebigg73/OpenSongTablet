@@ -37,14 +37,17 @@ class IndexSongs {
     Uri uri;
     private String title, author, lyrics, theme, key, hymnnumber, copyright, alttheme, aka,
             user1, user2, user3, ccli, filename, folder, utf;
-    private long filesize;
+    private float filesize;
 
     // This is called if the user specifically requests a full rebuild of the index
-    private void completeRebuildIndex(Context c, StorageAccess storageAccess) throws XmlPullParserException{
+    private void completeRebuildIndex(Context c, StorageAccess storageAccess, Preferences preferences,
+                                      SongXML songXML, ChordProConvert chordProConvert,
+                                      UsrConvert usrConvert, OnSongConvert onSongConvert,
+                                      TextSongConvert textSongConvert) throws XmlPullParserException {
 
         initialiseIndexStuff();
         for (int w = 0; w<FullscreenActivity.songIds.size(); w++) {
-            doIndexThis(c,storageAccess,w);
+            doIndexThis(c, storageAccess, preferences, songXML, chordProConvert, usrConvert, onSongConvert, textSongConvert, w);
         }
         completeLog();
         getSongDetailsFromIndex();
@@ -84,8 +87,14 @@ class IndexSongs {
     }
 
     // This is the code to index the specific song (by sending the array index w)
-    void doIndexThis(Context c, StorageAccess storageAccess, int w) {
+    boolean doIndexThis(Context c, StorageAccess storageAccess, Preferences preferences,
+                        SongXML songXML, ChordProConvert chordProConvert, UsrConvert usrConvert,
+                        OnSongConvert onSongConvert, TextSongConvert textSongConvert, int w) {
+
+        boolean hadtoconvert = false;
+
         String id = FullscreenActivity.songIds.get(w);
+        Log.d("IndexSongs", "original songIds=" + id);
         initialiseSongTags();
         setFileAndUri(c, storageAccess, id);
         if (isDir(id)) {
@@ -96,15 +105,16 @@ class IndexSongs {
         filesize = getFileSize(c, storageAccess, uri);
 
         if (storageAccess.isXML(uri)) {
+            // This tries to extract the file contents as XML, but if that throws an error,
+            // It looks for .chordpro, .onsong, or .txt.
             utf = storageAccess.getUTFEncoding(c, uri);
-            getXMLStuff(storageAccess, id);
+            hadtoconvert = getXMLStuff(c, storageAccess, preferences, chordProConvert, onSongConvert,
+                    usrConvert, textSongConvert, songXML, id, w);
 
-        } else {
-            if (filesize < 250 && storageAccess.isTextFile(uri)) {
-                lyrics = storageAccess.readTextFileToString(inputStream);
-            }
         }
         parseIndexedDetails(c);
+
+        return hadtoconvert;
     }
 
     // Determine if the current songId is a directory or a file
@@ -155,8 +165,8 @@ class IndexSongs {
         return folder;
     }
 
-    // Get the file size
-    private long getFileSize(Context c, StorageAccess storageAccess, Uri uri) {
+    // Get the file size in Kb
+    private float getFileSize(Context c, StorageAccess storageAccess, Uri uri) {
         try {
             return storageAccess.getFileSizeFromUri(c, uri);
         } catch (Exception e) {
@@ -165,7 +175,12 @@ class IndexSongs {
     }
 
     // Get the stuff from the XML file
-    private void getXMLStuff(StorageAccess storageAccess, String id) {
+    private boolean getXMLStuff(Context c, StorageAccess storageAccess, Preferences preferences,
+                                ChordProConvert chordProConvert, OnSongConvert onSongConvert,
+                                UsrConvert usrConvert, TextSongConvert textSongConvert,
+                                SongXML songXML, String id, int pos) {
+        boolean hadtoconvert = false;
+
         int eventType;
         try {
             xpp.setInput(inputStream, utf);
@@ -230,8 +245,17 @@ class IndexSongs {
                 try {
                     eventType = xpp.next();
                 } catch (Exception e) {
-                    Log.d("d", "Not XML OpenSong format: issue with " + uri);
-                    //e.printStackTrace();
+                    // If this is a ChordPro or OpenSong formatted Song, try to convert it and extract what we need
+                    ArrayList<String> bits = tryToFixSong(c, storageAccess, preferences, songXML, chordProConvert,
+                            onSongConvert, usrConvert, textSongConvert, uri, pos);
+                    hadtoconvert = true;
+                    filename = bits.get(0);
+                    title = bits.get(1);
+                    author = bits.get(2);
+                    copyright = bits.get(3);
+                    key = bits.get(4);
+                    ccli = bits.get(5);
+                    lyrics = bits.get(6);
                 }
             }
         } catch (Exception e) {
@@ -252,6 +276,97 @@ class IndexSongs {
                 lyrics = "";
             }
         }
+        return hadtoconvert;
+    }
+
+    private ArrayList<String> tryToFixSong(Context c, StorageAccess storageAccess, Preferences preferences,
+                                           SongXML songXML, ChordProConvert chordProConvert,
+                                           OnSongConvert onSongConvert, UsrConvert usrConvert,
+                                           TextSongConvert textSongConvert, Uri uri, int pos) {
+
+        ArrayList<String> bits = new ArrayList<>();
+
+        if (uri != null) {
+            String name = uri.getPath();
+            String filename = storageAccess.getPartOfUri(uri, "/OpenSong/Songs");
+            filename = filename.substring(filename.lastIndexOf("/"));
+
+            if (name != null && (name.toLowerCase().endsWith(".cho") || name.toLowerCase().endsWith(".chordpro") ||
+                    name.toLowerCase().endsWith(".chopro") || name.toLowerCase().endsWith(".crd"))) {
+                Log.d("IndexSongs", "ChordPro, text or song without extension: " + uri);
+                // Extract the stuff!
+                // Load the current text contents
+                try {
+                    InputStream inputStream = storageAccess.getInputStream(c, uri);
+                    String filecontents = storageAccess.readTextFileToString(inputStream);
+                    bits = chordProConvert.convertTextToTags(c, storageAccess, preferences, songXML, uri, filecontents, pos);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            } else if (name != null && (name.toLowerCase().endsWith(".onsong"))) {
+                Log.d("IndexSongs", "OnSong song:" + uri);
+                try {
+                    InputStream inputStream = storageAccess.getInputStream(c, uri);
+                    String filecontents = storageAccess.readTextFileToString(inputStream);
+                    bits = onSongConvert.convertTextToTags(c, storageAccess, preferences, songXML, chordProConvert,
+                            uri, filecontents, pos);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            } else if (name != null && (name.toLowerCase().endsWith(".usr"))) {
+                Log.d("IndexSongs", "Usr song:" + uri);
+                try {
+                    InputStream inputStream = storageAccess.getInputStream(c, uri);
+                    String filecontents = storageAccess.readTextFileToString(inputStream);
+                    bits = usrConvert.convertTextToTags(c, storageAccess, preferences, songXML,
+                            chordProConvert, uri, filecontents, pos);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            } else if (name != null && (storageAccess.isTextFile(uri))) {
+                Log.d("IndexSongs", "Try to treat as text file:" + uri);
+                try {
+                    InputStream inputStream = storageAccess.getInputStream(c, uri);
+                    String filecontents = storageAccess.readTextFileToString(inputStream);
+                    bits.add(filename);
+                    bits.add(filename);
+                    bits.add("");
+                    bits.add("");
+                    bits.add("");
+                    bits.add("");
+                    bits.add("");
+                    bits.add(textSongConvert.convertText(c, filecontents));
+
+                } catch (Exception e) {
+                    Log.d("IndexSongs", "Can't index, so use filename only:" + uri);
+                    bits.add(filename);
+                    bits.add(filename);
+                    bits.add("");
+                    bits.add("");
+                    bits.add("");
+                    bits.add("");
+                    bits.add("");
+                    bits.add("");
+                }
+            } else {
+                Log.d("IndexSongs", "Can't index, so use filename only:" + uri);
+                bits.add(filename);
+                bits.add(filename);
+                bits.add("");
+                bits.add("");
+                bits.add("");
+                bits.add("");
+                bits.add("");
+                bits.add("");
+            }
+        }
+        return bits;
     }
 
     // Shorten the indexed stuff ready for the search database
@@ -330,7 +445,9 @@ class IndexSongs {
         }
     }
 
-    void indexMySongs(final Context c, final StorageAccess storageAccess) {
+    void indexMySongs(final Context c, final StorageAccess storageAccess, final Preferences preferences,
+                      final SongXML songXML, final ChordProConvert chordProConvert, final UsrConvert usrConvert,
+                      final OnSongConvert onSongConvert, final TextSongConvert textSongConvert) {
         // This indexes songs using a separate thread
         new Thread(new Runnable() {
             @Override
@@ -340,7 +457,7 @@ class IndexSongs {
                 String val;
                 try {
                     //doIndex(c,storageAccess);
-                    completeRebuildIndex(c,storageAccess);
+                    completeRebuildIndex(c, storageAccess, preferences, songXML, chordProConvert, usrConvert, onSongConvert, textSongConvert);
                     val = "ok";
                 } catch (Exception e) {
                     e.printStackTrace();

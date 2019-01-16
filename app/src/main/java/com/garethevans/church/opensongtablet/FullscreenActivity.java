@@ -26,7 +26,6 @@ import android.support.v4.provider.DocumentFile;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -164,7 +163,7 @@ public class FullscreenActivity extends AppCompatActivity {
             lastLoadedSetContent = "";
     public static String[] mSet, mSetList, myParsedSet;
     public static boolean setView, doneshuffle = false,
-            addingtoset = false;
+            addingtoset = false, setchanged = false;
     public static int setSize, indexSongInSet;
     public static ArrayList<String> mTempSetList;
 
@@ -768,6 +767,5 @@ public class FullscreenActivity extends AppCompatActivity {
         if (uriTree_string != null) {
             uriTree = Uri.parse(uriTree_string);
         }
-        Log.d("d", "From FullscreenActivity FullscreenActivity.uriTree=" + uriTree);
     }
 }

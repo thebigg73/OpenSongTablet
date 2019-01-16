@@ -182,7 +182,7 @@ public class PopUpFontsFragment extends DialogFragment {
 
         // Set up the custom fonts
         storageAccess = new StorageAccess();
-        ArrayList<String> customfontscontents = storageAccess.listFilesInFolder(getActivity(),"Fonts","");
+        ArrayList<String> customfontscontents = storageAccess.listFilesInFolder(getActivity(), preferences, "Fonts", "");
         ArrayList<String> customfontsavail = new ArrayList<>();
         customfontsavail.add("");
 

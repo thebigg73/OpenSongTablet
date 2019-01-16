@@ -117,6 +117,11 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             StorageAccess storageAccess = new StorageAccess();
             Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder,
                     FullscreenActivity.songfilename);
+
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null,
+                    "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+
             OutputStream outputStream = storageAccess.getOutputStream(c, uri);
             storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream);
         }
@@ -722,6 +727,11 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         // Now write the modified song
         Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.whichSongFolder,
                 FullscreenActivity.songfilename);
+
+        // Check the uri exists for the outputstream to be valid
+        storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
+                "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+
         OutputStream outputStream = storageAccess.getOutputStream(getActivity(), uri);
         storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream);
 

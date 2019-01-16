@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 
 class PadFunctions {
 
@@ -69,14 +68,11 @@ class PadFunctions {
                 !FullscreenActivity.mLinkAudio.isEmpty() && !FullscreenActivity.mLinkAudio.equals("")) {
             StorageAccess storageAccess = new StorageAccess();
             Uri uri = storageAccess.fixLocalisedUri(c, preferences, FullscreenActivity.mLinkAudio);
-            Log.d("d","uri="+uri);
             isvalid = storageAccess.uriExists(c,uri);
         } else if (!FullscreenActivity.mKey.isEmpty()){
             // Using auto
             isvalid = true;
         }
-        Log.d("d","isvalid="+isvalid);
-
         return isvalid;
     }
 

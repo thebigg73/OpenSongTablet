@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -1048,7 +1049,7 @@ public class ProcessSong extends Activity {
     }
 
     @SuppressWarnings("deprecation")
-    private static TableRow lyriclinetoTableRow(Context c, String[] lyrics, float fontsize) {
+    private static TableRow lyriclinetoTableRow(Context c, String[] lyrics, float fontsize, StorageAccess storageAccess) {
         TableRow lyricrow = new TableRow(c);
         if (FullscreenActivity.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout &&
                 !FullscreenActivity.presoShowChords) {
@@ -1065,10 +1066,10 @@ public class ProcessSong extends Activity {
 
         for (String bit:lyrics) {
             String imagetext;
-            if (bit.contains("/Images/_cache/")) {
+            if ((bit.toLowerCase().endsWith(".png") || bit.toLowerCase().endsWith(".jpg") || bit.toLowerCase().endsWith(".gif")) ||
+                    (bit.toLowerCase().contains("content://") || bit.toLowerCase().contains("file://"))) {
                 FullscreenActivity.isImageSection = true;
-                imagetext = bit;
-
+                imagetext = bit.trim();
             } else {
                 imagetext = "";
             }
@@ -1135,31 +1136,56 @@ public class ProcessSong extends Activity {
                 FullscreenActivity.isImageSection = false;
                 ImageView img = new ImageView(c);
 
+                Log.d("ProcessSong", "Trying to process image");
                 // By default, the image should be the not found one
                 Drawable drw = c.getResources().getDrawable(R.drawable.notfound);
 
                 int maxwidth = 320;
+                Log.d("ProcessSong", "myWidthAvail=" + FullscreenActivity.myWidthAvail);
                 if (FullscreenActivity.myWidthAvail>0) {
-                    maxwidth = (int) (0.25f * FullscreenActivity.myWidthAvail);
+                    maxwidth = (int) (0.25f * (float) FullscreenActivity.myWidthAvail);
+                    Log.d("ProcessSong", "calculating maxwidth=" + maxwidth);
                 }
 
                 img.setMaxWidth(maxwidth);
                 img.setMaxHeight(maxwidth);
 
-                File checkfile = new File(imagetext);
-                if (checkfile.exists()) {
+                Uri uri = Uri.parse(imagetext);
+                Log.d("ProcessSong", "imagetext=" + imagetext);
+                Log.d("ProcessSong", "uri=" + uri);
+                Log.d("ProcessSong", "uriExists()=" + storageAccess.uriExists(c, uri));
+                Log.d("ProcessSong", "storageAccess=" + storageAccess);
+                InputStream inputStream = storageAccess.getInputStream(c, uri);
+                Log.d("ProcessSong", "inputStream=" + inputStream);
+                if (inputStream != null) {
                     try {
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inJustDecodeBounds = true;
 
+                        BitmapFactory.decodeStream(inputStream, null, options);
                         //Returns null, sizes are in the options variable
-                        BitmapFactory.decodeFile(imagetext, options);
                         int width = options.outWidth;
                         int height = options.outHeight;
 
+                        if (width == 0) {
+                            width = maxwidth;
+                        }
+                        if (height == 0) {
+                            // Assume a 4:3
+                            height = (int) (((float) width / 4.0f) * 3.0f);
+                        }
+
+                        Log.d("d", "width=" + width);
+                        Log.d("d", "height=" + height);
+
                         int thumbheight = (int) ((float)height * ((float)maxwidth/(float)width));
 
-                        Bitmap ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(imagetext), maxwidth, thumbheight);
+                        Log.d("d", "maxwidth=" + maxwidth);
+                        Log.d("d", "thumbheight=" + thumbheight);
+
+                        inputStream = storageAccess.getInputStream(c, uri);
+                        Bitmap ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeStream(inputStream), maxwidth, thumbheight);
+                        Log.d("d", "ThumbImage=" + ThumbImage);
                         Resources res = c.getResources();
                         BitmapDrawable bd = new BitmapDrawable(res, ThumbImage);
                         if (ThumbImage!=null) {
@@ -1169,6 +1195,7 @@ public class ProcessSong extends Activity {
 
                     } catch (Exception e1) {
                         // Didn't work
+                        e1.printStackTrace();
                         img.setImageDrawable(drw);
                     } catch (OutOfMemoryError e2) {
                             e2.printStackTrace();
@@ -1192,8 +1219,11 @@ public class ProcessSong extends Activity {
         commentrow.setClipToPadding(false);
 
         for (String bit:comment) {
-            if (bit.indexOf(" ")==0 && bit.length()>1) {
+            if (bit.startsWith(" ") && bit.length() > 1) {
                 bit = bit.substring(1);
+            }
+            if (bit.startsWith("__")) {
+                bit = bit.replace("__", "");
             }
             if (!FullscreenActivity.whichSongFolder.contains(c.getResources().getString(R.string.image))) {
                 if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
@@ -1205,6 +1235,7 @@ public class ProcessSong extends Activity {
                     bit = bit.replace("_", " ");
                 }
             }
+
             TextView lyricbit = new TextView(c);
             lyricbit.setLayoutParams(tablerow_params());
             lyricbit.setText(bit);
@@ -2240,7 +2271,7 @@ public class ProcessSong extends Activity {
         return text.toString();
     }
     @SuppressWarnings("all")
-    public static LinearLayout songSectionView(Context c, int x, float fontsize, boolean projected) {
+    public static LinearLayout songSectionView(Context c, int x, float fontsize, boolean projected, StorageAccess storageAccess) {
 
         final LinearLayout ll = new LinearLayout(c);
 
@@ -2315,7 +2346,7 @@ public class ProcessSong extends Activity {
                             tl.addView(ProcessSong.chordlinetoTableRow(c, chords_returned, fontsize));
                         }
                         if (FullscreenActivity.showLyrics) {
-                            tl.addView(ProcessSong.lyriclinetoTableRow(c, lyrics_returned, fontsize));
+                            tl.addView(ProcessSong.lyriclinetoTableRow(c, lyrics_returned, fontsize, storageAccess));
                         }
                         break;
 
@@ -2334,7 +2365,7 @@ public class ProcessSong extends Activity {
                         lyrics_returned = new String[1];
                         lyrics_returned[0] = FullscreenActivity.sectionContents[x][y];
                         if (FullscreenActivity.showLyrics) {
-                            tl.addView(ProcessSong.lyriclinetoTableRow(c, lyrics_returned, fontsize));
+                            tl.addView(ProcessSong.lyriclinetoTableRow(c, lyrics_returned, fontsize, storageAccess));
                         }
                         break;
 
@@ -2401,7 +2432,7 @@ public class ProcessSong extends Activity {
         return ll;
     }
 
-    static LinearLayout projectedSectionView(Context c, int x, float fontsize) {
+    static LinearLayout projectedSectionView(Context c, int x, float fontsize, StorageAccess storageAccess) {
         final LinearLayout ll = new LinearLayout(c);
 
         if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
@@ -2501,7 +2532,7 @@ public class ProcessSong extends Activity {
                         tl.addView(ProcessSong.chordlinetoTableRow(c, chords_returned, fontsize));
                     }
                     if (FullscreenActivity.showLyrics) {
-                        tl.addView(ProcessSong.lyriclinetoTableRow(c, lyrics_returned, fontsize));
+                        tl.addView(ProcessSong.lyriclinetoTableRow(c, lyrics_returned, fontsize, storageAccess));
                     }
                     break;
 
@@ -2521,7 +2552,7 @@ public class ProcessSong extends Activity {
                     lyrics_returned = new String[1];
                     lyrics_returned[0] = whattoprocess[y];
                     if (FullscreenActivity.showLyrics) {
-                        tl.addView(ProcessSong.lyriclinetoTableRow(c, lyrics_returned, fontsize));
+                        tl.addView(ProcessSong.lyriclinetoTableRow(c, lyrics_returned, fontsize, storageAccess));
                     }
                     break;
 
@@ -2865,13 +2896,14 @@ public class ProcessSong extends Activity {
         }
     }
 
-    static void addExtraInfo(Context c, Preferences preferences) {
+    static void addExtraInfo(Context c, StorageAccess storageAccess, Preferences preferences) {
         String nextinset = "";
+
         if (FullscreenActivity.setView) {
             // Get the index in the set
             try {
                 if (!FullscreenActivity.nextSongInSet.equals("")) {
-                    FullscreenActivity.nextSongKeyInSet = LoadXML.grabNextSongInSetKey(c, preferences, FullscreenActivity.nextSongInSet);
+                    FullscreenActivity.nextSongKeyInSet = LoadXML.grabNextSongInSetKey(c, preferences, storageAccess, FullscreenActivity.nextSongInSet);
                     nextinset = ";__" + c.getString(R.string.next) + ": " + FullscreenActivity.nextSongInSet;
                     if (!FullscreenActivity.nextSongKeyInSet.equals("")) {
                         nextinset = nextinset + " (" + FullscreenActivity.nextSongKeyInSet + ")";
@@ -2891,9 +2923,10 @@ public class ProcessSong extends Activity {
             for (String line:notes) {
                 stickyNotes.append(";__").append(line).append("\n");
             }
-            stickyNotes = new StringBuilder(stickyNotes.toString().replace(";__" + c.getString(R.string.note) + ": " + ";__", ";__" + c.getString(R.string.note) + ": "));
+            String s = stickyNotes.toString();
+            s = s.replace(";__" + c.getString(R.string.note) + ": " + ";__", ";__" + c.getString(R.string.note) + ": ");
             if (FullscreenActivity.toggleAutoSticky.equals("T") && !FullscreenActivity.mNotes.equals("")) {
-                FullscreenActivity.myLyrics = stickyNotes + "\n" + FullscreenActivity.myLyrics;
+                FullscreenActivity.myLyrics = s + "\n" + FullscreenActivity.myLyrics;
             }
         }
 
@@ -2904,11 +2937,15 @@ public class ProcessSong extends Activity {
             FullscreenActivity.myLyrics = nextinset + "\n" + FullscreenActivity.myLyrics;
         }
 
+        Log.d("ProcessSong", "2915 myLyrics = " + FullscreenActivity.myLyrics);
+
         if (FullscreenActivity.toggleAutoSticky.equals("B")) {
             if (!FullscreenActivity.mNotes.equals("")) {
                 FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "\n\n" + stickyNotes;
             }
         }
+
+        Log.d("ProcessSong", "2923 myLyrics = " + FullscreenActivity.myLyrics);
 
         // If we want to add this to the top of the song page,
         if (FullscreenActivity.setView &&
@@ -2916,6 +2953,7 @@ public class ProcessSong extends Activity {
                 FullscreenActivity.showNextInSet.equals(("bottom"))) {
             FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "\n\n" + nextinset;
         }
+        Log.d("ProcessSong", "2931 myLyrics = " + FullscreenActivity.myLyrics);
     }
 
     // The stuff for PresenterMode
@@ -3004,14 +3042,10 @@ public class ProcessSong extends Activity {
     }
 
     // The stuff for the highlighter notes
-    static Uri getHighlightFile(Context c, Preferences preferences) {
+    static String getHighlighterName(Context c) {
         String layout;
         String highlighterfile;
-        if (c.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            layout = "_p";
-        } else {
-            layout = "_l";
-        }
+
         if (FullscreenActivity.whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
                 FullscreenActivity.whichSongFolder.equals("")) {
             highlighterfile = FullscreenActivity.mainfoldername + "_" + FullscreenActivity.songfilename;
@@ -3020,16 +3054,19 @@ public class ProcessSong extends Activity {
         } else {
             highlighterfile = FullscreenActivity.whichSongFolder.replace("/","_") + "_" + FullscreenActivity.songfilename;
         }
+
+        if (c.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            layout = "_p";
+        } else {
+            layout = "_l";
+        }
+
         String page = "";
         if (FullscreenActivity.isPDF) {
             // Because pdf files can have multiple pages, this allows different notes.
             page = "_" + FullscreenActivity.pdfPageCurrent;
         }
-        highlighterfile =  highlighterfile + layout + page + ".png";
+        return highlighterfile + layout + page + ".png";
 
-        // This file may or may not exist
-        StorageAccess storageAccess = new StorageAccess();
-        return storageAccess.getUriForItem(c, preferences, "Highlighter", "", highlighterfile);
     }
-
 }

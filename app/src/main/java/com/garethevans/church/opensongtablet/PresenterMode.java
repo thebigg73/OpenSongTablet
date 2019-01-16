@@ -133,6 +133,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     Preferences preferences;
     LoadXML loadXML;
     ListSongFiles listSongFiles;
+    SongXML songXML;
+    ChordProConvert chordProConvert;
+    OnSongConvert onSongConvert;
+    UsrConvert usrConvert;
+    TextSongConvert textSongConvert;
 
     // MIDI
     Midi midi;
@@ -245,6 +250,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         preferences = new Preferences();
         loadXML = new LoadXML();
         listSongFiles = new ListSongFiles();
+        songXML = new SongXML();
+        chordProConvert = new ChordProConvert();
+        onSongConvert = new OnSongConvert();
+        usrConvert = new UsrConvert();
+        textSongConvert = new TextSongConvert();
 
         checkStorage();
 
@@ -2131,118 +2141,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private class PrepareSongMenu extends AsyncTask<Object, Void, String> {
-
-        @Override
-        protected void onPreExecute() {
-            menuCount_TextView.setText("");
-            menuCount_TextView.setVisibility(View.GONE);
-            menuFolder_TextView.setText(getString(R.string.wait));
-            song_list_view.setAdapter(null);
-            LinearLayout indexLayout = findViewById(R.id.side_index);
-            indexLayout.removeAllViews();
-        }
-
-        @Override
-        protected String doInBackground(Object... params) {
-            try {
-                // Rebuild the song list
-                storageAccess.listSongs(PresenterMode.this, preferences);
-                listSongFiles.songUrisInFolder(PresenterMode.this, preferences);
-
-                //List all of the songs in the current folder
-                listSongFiles.getAllSongFiles(PresenterMode.this, storageAccess);
-                indexSongs.getSongDetailsFromIndex();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        boolean cancelled = false;
-
-        @Override
-        protected void onCancelled() {
-            cancelled = true;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            try {
-                if (!cancelled) {
-                    // Set the name of the current folder
-                    menuFolder_TextView.setText(FullscreenActivity.whichSongFolder);
-
-                    // Get the song indexes
-                    listSongFiles.getCurrentSongIndex();
-
-                    ArrayList<SongMenuViewItems> songmenulist = new ArrayList<>();
-                    for (int i = 0; i < FullscreenActivity.songDetails.length; i++) {
-                        if (FullscreenActivity.songDetails[i][0] == null) {
-                            FullscreenActivity.songDetails[i][0] = "Can't find title";
-                        }
-                        if (FullscreenActivity.songDetails[i][1] == null) {
-                            FullscreenActivity.songDetails[i][1] = "Can't find author";
-                        }
-                        if (FullscreenActivity.songDetails[i][2] == null) {
-                            FullscreenActivity.songDetails[i][2] = "Can't find key";
-                        }
-
-                        // Detect if the song is in the set
-                        String whattolookfor = "$$**_**$$"; // not going to find this...
-                        if (FullscreenActivity.mSongFileNames != null && FullscreenActivity.mSongFileNames.length > i) {
-                            whattolookfor = setActions.whatToLookFor(PresenterMode.this,
-                                    FullscreenActivity.whichSongFolder, FullscreenActivity.mSongFileNames[i]);
-                        }
-                        boolean isinset = false;
-                        if (FullscreenActivity.mySet.contains(whattolookfor)) {
-                            isinset = true;
-                        }
-                        try {
-                            SongMenuViewItems song = new SongMenuViewItems(FullscreenActivity.mSongFileNames[i],
-                                    FullscreenActivity.songDetails[i][0], FullscreenActivity.songDetails[i][1], FullscreenActivity.songDetails[i][2], isinset);
-                            songmenulist.add(song);
-                        } catch (Exception e) {
-                            // Probably moving too quickly
-                        }
-                    }
-
-                    SongMenuAdapter lva = new SongMenuAdapter(PresenterMode.this, preferences, songmenulist);
-                    song_list_view.setAdapter(lva);
-                    song_list_view.setFastScrollEnabled(true);
-                    song_list_view.setScrollingCacheEnabled(true);
-                    lva.notifyDataSetChanged();
-
-                    // Set the secondary alphabetical side bar
-                    SongMenuAdapter.getIndexList(PresenterMode.this);
-                    displayIndex();
-
-                    // Listen for long clicks in the song menu (songs only, not folders) - ADD TO SET!!!!
-                    //song_list_view.setOnItemLongClickListener(SongMenuListeners.myLongClickListener(StageMode.this));
-
-                    // Listen for short clicks in the song menu (songs only, not folders) - OPEN SONG!!!!
-                    //song_list_view.setOnItemClickListener(SongMenuListeners.myShortClickListener(StageMode.this));
-
-                    // Flick the song drawer open once it is ready
-                    findSongInFolders();
-                    if (firstrun_song) {
-                        openMyDrawers("song");
-                        closeMyDrawers("song_delayed");
-                        firstrun_song = false;
-                    }
-
-                    if (menuCount_TextView != null) {
-                        String str = "" + songmenulist.size();
-                        menuCount_TextView.setText(str);
-                        menuCount_TextView.setVisibility(View.VISIBLE);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
+    public void rebuildSearchIndex() {
+        indexSongs.indexMySongs(PresenterMode.this, storageAccess, preferences, songXML,
+                chordProConvert, usrConvert, onSongConvert, textSongConvert);
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -2425,47 +2326,30 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private class DoMoveInSet extends AsyncTask<Object, Void, String> {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == FullscreenActivity.REQUEST_CAMERA_CODE && resultCode == Activity.RESULT_OK) {
+            FullscreenActivity.whattodo = "savecameraimage";
+            openFragment();
+        } else if (requestCode == FullscreenActivity.REQUEST_PDF_CODE) {
+            // PDF sent back, so reload it
+            loadSong();
+        } else if (requestCode == 7789 && data != null && data.getExtras() != null) {
+            // This is for the File Chooser returning a file uri
+            String filelocation = data.getExtras().getString("data");
+            if (filelocation != null) {
+                boolean validfiletype = (FullscreenActivity.whattodo.equals("processimportosb") && filelocation.endsWith(".osb")) ||
+                        (FullscreenActivity.whattodo.equals("importos") && filelocation.endsWith(".backup")) ||
+                        FullscreenActivity.whattodo.equals("doimport") ||
+                        FullscreenActivity.whattodo.equals("doimportset");
 
-        @Override
-        protected String doInBackground(Object... objects) {
-            // Get the appropriate song
-            try {
-                FullscreenActivity.linkclicked = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet];
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        boolean cancelled = false;
-
-        @Override
-        protected void onCancelled() {
-            cancelled = true;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            try {
-                if (!cancelled) {
-                    // Get the next set positions and song
-                    FullscreenActivity.linkclicked = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet];
-                    FullscreenActivity.whatsongforsetwork = FullscreenActivity.linkclicked;
-                    FullscreenActivity.setMoveDirection = ""; // Expects back or forward for Stage/Performance, but not here
-                    setActions.doMoveInSet(PresenterMode.this, listSongFiles, storageAccess);
-
-                    // Set indexSongInSet position has moved
-                    //invalidateOptionsMenu();
-
-                    // Click the item in the set list
-                    if (presenter_set_buttonsListView.getChildAt(FullscreenActivity.indexSongInSet) != null) {
-                        presenter_set_buttonsListView.getChildAt(FullscreenActivity.indexSongInSet).performClick();
-                    }
+                if (validfiletype) {
+                    FullscreenActivity.file_uri = Uri.fromFile(new File(filelocation));
+                    openFragment();
+                } else {
+                    FullscreenActivity.myToastMessage = getString(R.string.file_type_unknown);
+                    ShowToast.showToast(PresenterMode.this);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
     }
@@ -3030,8 +2914,119 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             indexLayout.addView(textView);
         }
     }
-    public void rebuildSearchIndex() {
-        indexSongs.indexMySongs(PresenterMode.this,storageAccess);
+
+    @SuppressLint("StaticFieldLeak")
+    private class PrepareSongMenu extends AsyncTask<Object, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            menuCount_TextView.setText("");
+            menuCount_TextView.setVisibility(View.GONE);
+            menuFolder_TextView.setText(getString(R.string.wait));
+            song_list_view.setAdapter(null);
+            LinearLayout indexLayout = findViewById(R.id.side_index);
+            indexLayout.removeAllViews();
+        }
+
+        @Override
+        protected String doInBackground(Object... params) {
+            try {
+                // Rebuild the song list
+                storageAccess.listSongs(PresenterMode.this, preferences);
+                listSongFiles.songUrisInFolder(PresenterMode.this, preferences);
+
+                //List all of the songs in the current folder
+                listSongFiles.getAllSongFiles(PresenterMode.this, preferences, storageAccess);
+                indexSongs.getSongDetailsFromIndex();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        boolean cancelled = false;
+
+        @Override
+        protected void onCancelled() {
+            cancelled = true;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            try {
+                if (!cancelled) {
+                    // Set the name of the current folder
+                    menuFolder_TextView.setText(FullscreenActivity.whichSongFolder);
+
+                    // Get the song indexes
+                    listSongFiles.getCurrentSongIndex();
+
+                    ArrayList<SongMenuViewItems> songmenulist = new ArrayList<>();
+                    for (int i = 0; i < FullscreenActivity.songDetails.length; i++) {
+                        if (FullscreenActivity.songDetails[i][0] == null) {
+                            FullscreenActivity.songDetails[i][0] = "Can't find title";
+                        }
+                        if (FullscreenActivity.songDetails[i][1] == null) {
+                            FullscreenActivity.songDetails[i][1] = "Can't find author";
+                        }
+                        if (FullscreenActivity.songDetails[i][2] == null) {
+                            FullscreenActivity.songDetails[i][2] = "Can't find key";
+                        }
+
+                        // Detect if the song is in the set
+                        String whattolookfor = "$$**_**$$"; // not going to find this...
+                        if (FullscreenActivity.mSongFileNames != null && FullscreenActivity.mSongFileNames.length > i) {
+                            whattolookfor = setActions.whatToLookFor(PresenterMode.this,
+                                    FullscreenActivity.whichSongFolder, FullscreenActivity.mSongFileNames[i]);
+                        }
+                        boolean isinset = false;
+                        if (FullscreenActivity.mySet.contains(whattolookfor)) {
+                            isinset = true;
+                        }
+                        try {
+                            SongMenuViewItems song = new SongMenuViewItems(FullscreenActivity.mSongFileNames[i],
+                                    FullscreenActivity.songDetails[i][0], FullscreenActivity.songDetails[i][1], FullscreenActivity.songDetails[i][2], isinset);
+                            songmenulist.add(song);
+                        } catch (Exception e) {
+                            // Probably moving too quickly
+                        }
+                    }
+
+                    SongMenuAdapter lva = new SongMenuAdapter(PresenterMode.this, preferences, songmenulist);
+                    song_list_view.setAdapter(lva);
+                    song_list_view.setFastScrollEnabled(true);
+                    song_list_view.setScrollingCacheEnabled(true);
+                    lva.notifyDataSetChanged();
+
+                    // Set the secondary alphabetical side bar
+                    SongMenuAdapter.getIndexList(PresenterMode.this);
+                    displayIndex();
+
+                    // Listen for long clicks in the song menu (songs only, not folders) - ADD TO SET!!!!
+                    //song_list_view.setOnItemLongClickListener(SongMenuListeners.myLongClickListener(StageMode.this));
+
+                    // Listen for short clicks in the song menu (songs only, not folders) - OPEN SONG!!!!
+                    //song_list_view.setOnItemClickListener(SongMenuListeners.myShortClickListener(StageMode.this));
+
+                    // Flick the song drawer open once it is ready
+                    findSongInFolders();
+                    if (firstrun_song) {
+                        openMyDrawers("song");
+                        closeMyDrawers("song_delayed");
+                        firstrun_song = false;
+                    }
+
+                    if (menuCount_TextView != null) {
+                        String str = "" + songmenulist.size();
+                        menuCount_TextView.setText(str);
+                        menuCount_TextView.setVisibility(View.VISIBLE);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
     }
     @Override
     public void indexingDone() {
@@ -3643,29 +3638,48 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         FullscreenActivity.mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == FullscreenActivity.REQUEST_CAMERA_CODE && resultCode == Activity.RESULT_OK) {
-            FullscreenActivity.whattodo = "savecameraimage";
-            openFragment();
-        } else if (requestCode == FullscreenActivity.REQUEST_PDF_CODE) {
-            // PDF sent back, so reload it
-            loadSong();
-        } else if (requestCode == 7789 && data != null && data.getExtras() != null) {
-            // This is for the File Chooser returning a file uri
-            String filelocation = data.getExtras().getString("data");
-            if (filelocation!=null) {
-                boolean validfiletype = (FullscreenActivity.whattodo.equals("processimportosb") && filelocation.endsWith(".osb")) ||
-                        (FullscreenActivity.whattodo.equals("importos") && filelocation.endsWith(".backup") ||
-                                FullscreenActivity.whattodo.equals("doimport"));
 
-                if (validfiletype) {
-                    FullscreenActivity.file_uri = Uri.fromFile(new File(filelocation));
-                    openFragment();
-                } else {
-                    FullscreenActivity.myToastMessage = getString(R.string.file_type_unknown);
-                    ShowToast.showToast(PresenterMode.this);
+    @SuppressLint("StaticFieldLeak")
+    private class DoMoveInSet extends AsyncTask<Object, Void, String> {
+
+        @Override
+        protected String doInBackground(Object... objects) {
+            // Get the appropriate song
+            try {
+                FullscreenActivity.linkclicked = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet];
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        boolean cancelled = false;
+
+        @Override
+        protected void onCancelled() {
+            cancelled = true;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            try {
+                if (!cancelled) {
+                    // Get the next set positions and song
+                    FullscreenActivity.linkclicked = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet];
+                    FullscreenActivity.whatsongforsetwork = FullscreenActivity.linkclicked;
+                    FullscreenActivity.setMoveDirection = ""; // Expects back or forward for Stage/Performance, but not here
+                    setActions.doMoveInSet(PresenterMode.this, preferences, listSongFiles, storageAccess);
+
+                    // Set indexSongInSet position has moved
+                    //invalidateOptionsMenu();
+
+                    // Click the item in the set list
+                    if (presenter_set_buttonsListView.getChildAt(FullscreenActivity.indexSongInSet) != null) {
+                        presenter_set_buttonsListView.getChildAt(FullscreenActivity.indexSongInSet).performClick();
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

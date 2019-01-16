@@ -171,6 +171,11 @@ public class PopUpSongRenameFragment extends DialogFragment {
         if (!storageAccess.uriExists(getActivity(),to)) {
             try {
                 InputStream inputStream = storageAccess.getInputStream(getActivity(), from);
+
+                // Check the uri exists for the outputstream to be valid
+                storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, to, null,
+                        "Songs", tempNewFolder, tempNewSong);
+
                 OutputStream outputStream = storageAccess.getOutputStream(getActivity(), to);
 
                 // Copy

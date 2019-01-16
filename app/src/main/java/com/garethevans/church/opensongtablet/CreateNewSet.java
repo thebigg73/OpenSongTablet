@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Base64;
-import android.util.Log;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ class CreateNewSet {
         // Keep the current song and directory aside for now
         String tempsongfilename = FullscreenActivity.songfilename;
         String tempdir = FullscreenActivity.whichSongFolder;
-
 
         StringBuilder sb = new StringBuilder();
 
@@ -309,7 +307,7 @@ class CreateNewSet {
 
                     // The hymn_number field should contain all the images
                     // Each image is separated by \n$$$\n
-                    String imagecode[] = FullscreenActivity.mHymnNumber.split("XX_IMAGE_XX");
+                    //String imagecode[] = FullscreenActivity.mHymnNumber.split("XX_IMAGE_XX");
 
                     // Break all the images into the relevant slides
                     String[] separate_slide = FullscreenActivity.mUser3.split("\n");
@@ -324,8 +322,10 @@ class CreateNewSet {
 
                     for (int e=0;e<sepslidesnum;e++) {
                         String imglinetext;
-                        if (e<imagecode.length && imagecode[e]!=null && !imagecode[e].equals("")) {
-                            imglinetext = "        <image>" + imagecode[e].trim() + "</image>\n";
+                        // Try to get the image into bytes
+                        String imgcode = storageAccess.getImageSlide(c, separate_slide[e]);
+                        if (!imgcode.isEmpty()) {
+                            imglinetext = "        <image>" + imgcode.trim() + "</image>\n";
                         } else {
                             imglinetext = "        <filename>" + separate_slide[e] + "</filename>\n";
                         }
@@ -366,6 +366,10 @@ class CreateNewSet {
             FullscreenActivity.newSetContents = FullscreenActivity.newSetContents + sb.toString();
             // Write the string to the file
             Uri uri = storageAccess.getUriForItem(c, preferences, "Sets", "", FullscreenActivity.settoload);
+
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "Sets", "", FullscreenActivity.settoload);
+
             OutputStream outputStream = storageAccess.getOutputStream(c,uri);
             if (storageAccess.writeFileFromString(FullscreenActivity.newSetContents,outputStream)) {
                 FullscreenActivity.myToastMessage = "yes";
@@ -391,8 +395,6 @@ class CreateNewSet {
             return false;
         }
 
-        Log.d("d","SetActions tempsongfilename="+tempsongfilename);
-        Log.d("d","SetActions tempdir="+tempdir);
         // Load the set again - to make sure everything is parsed
         SetActions setActions = new SetActions();
         setActions.prepareSetList();
