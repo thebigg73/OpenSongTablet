@@ -463,7 +463,6 @@ public class PopUpImportExternalFile extends DialogFragment {
 
                     FullscreenActivity.myToastMessage = getActivity().getString(R.string.success);
 
-
                     FullscreenActivity.abort = false;
 
                 } else {

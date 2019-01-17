@@ -1,0 +1,251 @@
+package com.garethevans.church.opensongtablet;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+// This is called when something requires a database rebuild (something in the song menu has changed)
+
+public class PopUpRebuildDatabaseFragment extends DialogFragment {
+
+    public static MyInterface mListener;
+    TextView title, progressText;
+    ProgressBar progressBar, simpleProgressBar;
+    FloatingActionButton closeMe, saveMe;
+    View V;
+    StorageAccess storageAccess;
+    Preferences preferences;
+    IndexSongs indexSongs;
+    SongXML songXML;
+    ChordProConvert chordProConvert;
+    OnSongConvert onSongConvert;
+    TextSongConvert textSongConvert;
+    UsrConvert usrConvert;
+    Uri uri;
+
+    static PopUpRebuildDatabaseFragment newInstance() {
+        PopUpRebuildDatabaseFragment frag;
+        frag = new PopUpRebuildDatabaseFragment();
+        return frag;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onAttach(Activity activity) {
+        mListener = (MyInterface) activity;
+        super.onAttach(activity);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+        if (getDialog() == null) {
+            dismiss();
+        }
+
+        getDialog().setCanceledOnTouchOutside(false);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        V = inflater.inflate(R.layout.popup_rebuilddatabase, container, false);
+
+        // Initialise the views
+        initialiseViews();
+
+        // Set the helper classes
+        storageAccess = new StorageAccess();
+        preferences = new Preferences();
+        indexSongs = new IndexSongs();
+        songXML = new SongXML();
+        chordProConvert = new ChordProConvert();
+        onSongConvert = new OnSongConvert();
+        textSongConvert = new TextSongConvert();
+        usrConvert = new UsrConvert();
+
+        // Decorate the popup
+        Dialog dialog = getDialog();
+        if (dialog != null && getActivity() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), dialog);
+        }
+
+        BuildIndex buildIndex = new BuildIndex();
+        buildIndex.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        return V;
+    }
+
+    void initialiseViews() {
+        simpleProgressBar = V.findViewById(R.id.simpleProgressBar);
+        progressBar = V.findViewById(R.id.progressBar);
+        progressText = V.findViewById(R.id.progressText);
+        title = V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.search_rebuild));
+        closeMe = V.findViewById(R.id.closeMe);
+        saveMe = V.findViewById(R.id.saveMe);
+        closeMe.setVisibility(View.GONE);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    if (mListener != null) {
+                        mListener.refreshAll();
+                    }
+                    dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        saveMe.setVisibility(View.GONE);
+    }
+
+    public interface MyInterface {
+        void refreshAll();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class BuildIndex extends AsyncTask<Object, String, String> {
+
+        int numSongs;
+        int currentSongNum;
+        String currentSongName, message;
+        boolean settingProgressBarUp = false, foldersok = false;
+
+        @Override
+        protected String doInBackground(Object... objects) {
+
+            // Check if the folders exist, if not, create them
+            message = getString(R.string.storage_check);
+            publishProgress("setmessage");
+            final String progress = storageAccess.createOrCheckRootFolders(getActivity(), preferences);
+            foldersok = !progress.contains("Error");
+
+            if (foldersok) {
+                // Search for the user's songs
+                message = getString(R.string.initialisesongs_start).replace("-", "").trim();
+                publishProgress("setmessage");
+                try {
+                    storageAccess.listSongs(getActivity(), preferences);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                // Show how many songs have been found and display this to the user
+                // This will remain as until the current folder is build
+                numSongs = FullscreenActivity.songIds.size();
+                settingProgressBarUp = true;
+                message = numSongs + " " + getString(R.string.processing) + "\n" + getString(R.string.wait);
+                publishProgress("setupprogressbar");
+
+                try {
+                    indexSongs.initialiseIndexStuff();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                // Listener for conversion of files
+                boolean hadtoconvert = false;
+                for (currentSongNum = 0; currentSongNum < numSongs; currentSongNum++) {
+                    currentSongName = FullscreenActivity.songIds.get(currentSongNum);
+                    if (currentSongName.contains("OpenSong/Songs/")) {
+                        currentSongName = currentSongName.substring(currentSongName.lastIndexOf("OpenSong/Songs/") + 15);
+                    }
+                    message = currentSongName + "\n(" + currentSongNum + "/" + numSongs + ")";
+                    publishProgress(currentSongName);
+                    boolean converted = indexSongs.doIndexThis(getActivity(), storageAccess, preferences, songXML,
+                            chordProConvert, usrConvert, onSongConvert, textSongConvert, currentSongNum);
+                    if (converted) {
+                        message = "Converted song...";
+                        publishProgress("setmessage");
+                        hadtoconvert = true;
+                    }
+                }
+
+                indexSongs.completeLog();
+
+                // If we had to convert songs from OnSong, ChordPro, etc, we need to reindex to get sorted songs again
+                // This is because the filename will likely have changed alphabetical position
+                // Alert the user to the need for rebuilding and repeat the above
+                if (hadtoconvert) {
+                    Log.d("d", "Conversion had to happen, so rebuild the search index");
+                    message = "Updating indexes of converted songs...";
+                    publishProgress("setmessage");
+
+                    try {
+                        indexSongs.initialiseIndexStuff();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    // Listener for conversion of files
+                    for (currentSongNum = 0; currentSongNum < numSongs; currentSongNum++) {
+                        currentSongName = FullscreenActivity.songIds.get(currentSongNum);
+                        if (currentSongName.contains("OpenSong/Songs/")) {
+                            currentSongName = currentSongName.substring(currentSongName.lastIndexOf("OpenSong/Songs/") + 15);
+                        }
+                        message = currentSongName + "\n(" + currentSongNum + "/" + numSongs + ")";
+                        publishProgress(currentSongName);
+                        indexSongs.doIndexThis(getActivity(), storageAccess, preferences, songXML,
+                                chordProConvert, usrConvert, onSongConvert, textSongConvert, currentSongNum);
+                    }
+                    indexSongs.completeLog();
+                }
+
+                indexSongs.getSongDetailsFromIndex();
+
+                // Finished indexing
+                message = getString(R.string.success);
+                publishProgress("setmessage");
+
+            } else {
+                // There was a problem with the folders, so restart the app!
+                Log.d("RebuildDatabase", "problem with folders");
+                message = getString(R.string.error);
+                publishProgress("setmessage");
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... string) {
+            if (settingProgressBarUp) {
+                settingProgressBarUp = false;
+                progressBar.setVisibility(View.VISIBLE);
+                progressBar.setMax(numSongs);
+            }
+            if (currentSongNum > 0) {
+                progressBar.setProgress(currentSongNum);
+            }
+            progressText.setText(message);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            simpleProgressBar.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+            closeMe.setVisibility(View.VISIBLE);
+            FullscreenActivity.needtorefreshsongmenu = false;
+        }
+    }
+}

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class PopUpSongRenameFragment extends DialogFragment {
     // This is a quick popup to enter a new song folder name, or rename a current one
-    // Once it has been completed positively (i.e. ok was clicked) it sends a refreshAll() interface call
+    // Once it has been completed positively (i.e. ok was clicked) it sends a rebuildSongIndex() interface call
 
     static ArrayList<String> newtempfolders;
     Spinner newFolderSpinner;
@@ -37,8 +37,64 @@ public class PopUpSongRenameFragment extends DialogFragment {
     Preferences preferences;
     SongFolders songFolders;
 
-    public interface MyInterface {
-        void refreshAll();
+    public void doSave() {
+        // Get the variables
+        String tempNewSong = newSongNameEditText.getText().toString().trim();
+
+        String tempOldFolder = FullscreenActivity.currentFolder;
+        String tempNewFolder = FullscreenActivity.newFolder;
+
+        // Try to rename
+        if (isPDF) {
+            if (!tempNewSong.endsWith(".pdf") && !tempNewSong.endsWith(".PDF")) {
+                // Naughty, naughty, it should have a pdf extension
+                tempNewSong = tempNewSong + ".pdf";
+            }
+        }
+
+        storageAccess = new StorageAccess();
+        preferences = new Preferences();
+
+        Uri from = storageAccess.getUriForItem(getActivity(), preferences, "Songs", tempOldFolder, oldsongname);
+        Uri to = storageAccess.getUriForItem(getActivity(), preferences, "Songs", tempNewFolder, tempNewSong);
+
+        if (!storageAccess.uriExists(getActivity(), to)) {
+            try {
+                InputStream inputStream = storageAccess.getInputStream(getActivity(), from);
+
+                // Check the uri exists for the outputstream to be valid
+                storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, to, null,
+                        "Songs", tempNewFolder, tempNewSong);
+
+                OutputStream outputStream = storageAccess.getOutputStream(getActivity(), to);
+
+                // Copy
+                storageAccess.copyFile(inputStream, outputStream);
+
+                // Remove the original if it is a new file location
+                if (to.getPath() != null && !to.getPath().equals(from.getPath())) {
+                    storageAccess.deleteFile(getActivity(), from);
+                }
+
+                FullscreenActivity.whichSongFolder = tempNewFolder;
+                FullscreenActivity.songfilename = tempNewSong;
+
+                // Save preferences
+                Preferences.savePreferences();
+
+                FullscreenActivity.needtorefreshsongmenu = true;
+                mListener.rebuildSearchIndex();
+                dismiss();
+
+            } catch (Exception e) {
+                Log.d("d", "Error renaming");
+            }
+
+        } else {
+            FullscreenActivity.myToastMessage = getResources().getString(R.string.file_exists);
+            ShowToast.showToast(getActivity());
+
+        }
     }
 
     private MyInterface mListener;
@@ -147,68 +203,8 @@ public class PopUpSongRenameFragment extends DialogFragment {
         return V;
     }
 
-    public void doSave() {
-        // Get the variables
-        String tempNewSong = newSongNameEditText.getText().toString().trim();
-
-        String tempOldFolder = FullscreenActivity.currentFolder;
-        String tempNewFolder = FullscreenActivity.newFolder;
-
-        // Try to rename
-        if (isPDF) {
-            if (!tempNewSong.endsWith(".pdf") && !tempNewSong.endsWith(".PDF")) {
-                // Naughty, naughty, it should have a pdf extension
-                tempNewSong = tempNewSong + ".pdf";
-            }
-        }
-
-        storageAccess = new StorageAccess();
-        preferences = new Preferences();
-
-        Uri from = storageAccess.getUriForItem(getActivity(), preferences, "Songs", tempOldFolder, oldsongname);
-        Uri to = storageAccess.getUriForItem(getActivity(), preferences, "Songs", tempNewFolder, tempNewSong);
-
-        if (!storageAccess.uriExists(getActivity(),to)) {
-            try {
-                InputStream inputStream = storageAccess.getInputStream(getActivity(), from);
-
-                // Check the uri exists for the outputstream to be valid
-                storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, to, null,
-                        "Songs", tempNewFolder, tempNewSong);
-
-                OutputStream outputStream = storageAccess.getOutputStream(getActivity(), to);
-
-                // Copy
-                storageAccess.copyFile(inputStream, outputStream);
-
-                // Remove the original if it is a new file location
-                if (to.getPath()!=null && !to.getPath().equals(from.getPath())) {
-                    storageAccess.deleteFile(getActivity(), from);
-                }
-
-                FullscreenActivity.whichSongFolder = tempNewFolder;
-                FullscreenActivity.songfilename = tempNewSong;
-
-                // Save preferences
-                Preferences.savePreferences();
-
-                // Rebuild the song list
-                storageAccess.listSongs(getActivity(), preferences);
-                ListSongFiles listSongFiles = new ListSongFiles();
-                listSongFiles.songUrisInFolder(getActivity(), preferences);
-
-                mListener.refreshAll();
-
-                dismiss();
-            } catch (Exception e) {
-                Log.d("d","Error renaming");
-            }
-
-        } else {
-            FullscreenActivity.myToastMessage = getResources().getString(R.string.file_exists);
-            ShowToast.showToast(getActivity());
-
-        }
+    public interface MyInterface {
+        void rebuildSearchIndex();
     }
 
     @SuppressLint("StaticFieldLeak")

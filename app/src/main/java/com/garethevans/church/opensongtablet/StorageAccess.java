@@ -388,7 +388,7 @@ class StorageAccess {
     }
     void writeImage(OutputStream outputStream, Bitmap bmp, Bitmap.CompressFormat compressFormat) {
         try {
-            bmp.compress(compressFormat, 100, outputStream);
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
             outputStream.flush();
             outputStream.close();
             bmp.recycle();
@@ -420,7 +420,6 @@ class StorageAccess {
             return "";
         }
     }
-
 
     // Input and output streams for reading and writing files.
     InputStream getInputStream(Context c, Uri uri) {
@@ -714,13 +713,16 @@ class StorageAccess {
         boolean createdStuff = false;
         if (df != null && df.findFile(folder) != null && !folder.equals("")) {
             df_parent = df.findFile(folder);
+        } else if (df != null && !folder.equals("")) {
+            // Create the folder if it isn't there
+            df_parent = df.createDirectory(folder);
         } else {
             df_parent = df;
         }
 
         if (df!=null) {
             // Split the subfolder up if required
-            if (!subfolder.equals("")) {
+            if (subfolder != null && !subfolder.equals("")) {
                 String[] subfolders = subfolder.split("/");
                 for (String sf : subfolders) {
                     if (sf != null && !sf.isEmpty()) {
@@ -739,6 +741,7 @@ class StorageAccess {
                 df_parent.createFile(mimeType, filename);
                 createdStuff = true;
             }
+
         }
         return createdStuff;
     }

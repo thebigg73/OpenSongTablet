@@ -804,16 +804,20 @@ public class OptionMenuListeners extends Activity {
                 tv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        FullscreenActivity.setView = true;
-                        FullscreenActivity.pdfPageCurrent = 0;
-                        FullscreenActivity.linkclicked = FullscreenActivity.mSetList[val];
-                        FullscreenActivity.indexSongInSet = val;
-                        SetActions setActions = new SetActions();
-                        setActions.songIndexClickInSet();
-                        setActions.getSongFileAndFolder(c);
-                        if (mListener!=null) {
-                            mListener.closeMyDrawers("option");
-                            mListener.loadSong();
+                        try {
+                            FullscreenActivity.setView = true;
+                            FullscreenActivity.pdfPageCurrent = 0;
+                            FullscreenActivity.linkclicked = FullscreenActivity.mSetList[val];
+                            FullscreenActivity.indexSongInSet = val;
+                            SetActions setActions = new SetActions();
+                            setActions.songIndexClickInSet();
+                            setActions.getSongFileAndFolder(c);
+                            if (mListener != null) {
+                                mListener.closeMyDrawers("option");
+                                mListener.loadSong();
+                            }
+                        } catch (Exception e) {
+                            Log.d("OptionMenuListeners", "Something went wrong with the set item");
                         }
                     }
                 });

@@ -1136,27 +1136,19 @@ public class ProcessSong extends Activity {
                 FullscreenActivity.isImageSection = false;
                 ImageView img = new ImageView(c);
 
-                Log.d("ProcessSong", "Trying to process image");
                 // By default, the image should be the not found one
                 Drawable drw = c.getResources().getDrawable(R.drawable.notfound);
 
                 int maxwidth = 320;
-                Log.d("ProcessSong", "myWidthAvail=" + FullscreenActivity.myWidthAvail);
                 if (FullscreenActivity.myWidthAvail>0) {
                     maxwidth = (int) (0.25f * (float) FullscreenActivity.myWidthAvail);
-                    Log.d("ProcessSong", "calculating maxwidth=" + maxwidth);
                 }
 
                 img.setMaxWidth(maxwidth);
                 img.setMaxHeight(maxwidth);
 
                 Uri uri = Uri.parse(imagetext);
-                Log.d("ProcessSong", "imagetext=" + imagetext);
-                Log.d("ProcessSong", "uri=" + uri);
-                Log.d("ProcessSong", "uriExists()=" + storageAccess.uriExists(c, uri));
-                Log.d("ProcessSong", "storageAccess=" + storageAccess);
                 InputStream inputStream = storageAccess.getInputStream(c, uri);
-                Log.d("ProcessSong", "inputStream=" + inputStream);
                 if (inputStream != null) {
                     try {
                         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -1175,17 +1167,10 @@ public class ProcessSong extends Activity {
                             height = (int) (((float) width / 4.0f) * 3.0f);
                         }
 
-                        Log.d("d", "width=" + width);
-                        Log.d("d", "height=" + height);
-
                         int thumbheight = (int) ((float)height * ((float)maxwidth/(float)width));
-
-                        Log.d("d", "maxwidth=" + maxwidth);
-                        Log.d("d", "thumbheight=" + thumbheight);
 
                         inputStream = storageAccess.getInputStream(c, uri);
                         Bitmap ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeStream(inputStream), maxwidth, thumbheight);
-                        Log.d("d", "ThumbImage=" + ThumbImage);
                         Resources res = c.getResources();
                         BitmapDrawable bd = new BitmapDrawable(res, ThumbImage);
                         if (ThumbImage!=null) {
@@ -2937,15 +2922,11 @@ public class ProcessSong extends Activity {
             FullscreenActivity.myLyrics = nextinset + "\n" + FullscreenActivity.myLyrics;
         }
 
-        Log.d("ProcessSong", "2915 myLyrics = " + FullscreenActivity.myLyrics);
-
         if (FullscreenActivity.toggleAutoSticky.equals("B")) {
             if (!FullscreenActivity.mNotes.equals("")) {
                 FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "\n\n" + stickyNotes;
             }
         }
-
-        Log.d("ProcessSong", "2923 myLyrics = " + FullscreenActivity.myLyrics);
 
         // If we want to add this to the top of the song page,
         if (FullscreenActivity.setView &&
@@ -2953,7 +2934,6 @@ public class ProcessSong extends Activity {
                 FullscreenActivity.showNextInSet.equals(("bottom"))) {
             FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "\n\n" + nextinset;
         }
-        Log.d("ProcessSong", "2931 myLyrics = " + FullscreenActivity.myLyrics);
     }
 
     // The stuff for PresenterMode

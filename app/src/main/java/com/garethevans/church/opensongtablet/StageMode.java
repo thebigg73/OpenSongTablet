@@ -110,7 +110,7 @@ public class StageMode extends AppCompatActivity implements
         SetActions.MyInterface, PopUpFullSearchFragment.MyInterface, IndexSongs.MyInterface,
         SearchView.OnQueryTextListener, PopUpSetViewNew.MyInterface,
         PopUpChooseFolderFragment.MyInterface, PopUpCustomSlideFragment.MyInterface,
-        PopUpImportExternalFile.MyInterface,
+        PopUpImportExternalFile.MyInterface, PopUpRebuildDatabaseFragment.MyInterface,
         OnSongConvert.MyInterface,
         PopUpSongFolderRenameFragment.MyInterface, PopUpThemeChooserFragment.MyInterface,
         PopUpProfileFragment.MyInterface, PopUpExtraInfoFragment.MyInterface,
@@ -3628,7 +3628,11 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void rebuildSearchIndex() {
-        FullscreenActivity.myToastMessage = getString(R.string.search_index_start);
+        // This is handled by a popup
+        FullscreenActivity.whattodo = "rebuildindex";
+        openFragment();
+
+        /*FullscreenActivity.myToastMessage = getString(R.string.search_index_start);
         ShowToast.showToast(StageMode.this);
         new Thread(new Runnable() {
             @Override
@@ -3636,7 +3640,7 @@ public class StageMode extends AppCompatActivity implements
                 indexSongs.indexMySongs(StageMode.this, storageAccess, preferences, songXML,
                         chordProConvert, usrConvert, onSongConvert, textSongConvert);
             }
-        }).start();
+        }).start();*/
 
     }
 

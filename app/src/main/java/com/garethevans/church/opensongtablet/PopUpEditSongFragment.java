@@ -74,8 +74,121 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         edit_song_presentation.setText(FullscreenActivity.mPresentation);
     }
 
-    public interface MyInterface {
-        void refreshAll();
+    public void saveEdit(boolean ended) {
+
+        // If we are editing as chordpro, convert to OpenSong
+        if (FullscreenActivity.editAsChordPro) {
+            String textLyrics = edit_song_lyrics.getText().toString();
+            edit_song_lyrics.setText(chordProConvert.fromChordProToOpenSong(textLyrics));
+        }
+        // Go through the fields and save them
+        // Get the variables
+        // Set the newtext to the FullscreenActivity variables
+        FullscreenActivity.mTitle = edit_song_title.getText().toString();
+        FullscreenActivity.mAuthor = edit_song_author.getText().toString();
+        FullscreenActivity.mCopyright = edit_song_copyright.getText().toString();
+        FullscreenActivity.mLyrics = ProcessSong.fixStartOfLines(edit_song_lyrics.getText().toString());
+        FullscreenActivity.mPresentation = edit_song_presentation.getText().toString();
+        FullscreenActivity.mHymnNumber = edit_song_hymn.getText().toString();
+        FullscreenActivity.mCCLI = edit_song_CCLI.getText().toString();
+        FullscreenActivity.mUser1 = edit_song_user1.getText().toString();
+        FullscreenActivity.mUser2 = edit_song_user2.getText().toString();
+        FullscreenActivity.mUser3 = edit_song_user3.getText().toString();
+        FullscreenActivity.mAka = edit_song_aka.getText().toString();
+        FullscreenActivity.mKeyLine = edit_song_key_line.getText().toString();
+        FullscreenActivity.mKey = edit_song_key.getItemAtPosition(edit_song_key.getSelectedItemPosition()).toString();
+        FullscreenActivity.mDuration = edit_song_duration.getText().toString();
+        int predelayval = predelay_SeekBar.getProgress();
+        if (predelayval == 0) {
+            FullscreenActivity.mPreDelay = "";
+        } else {
+            FullscreenActivity.mPreDelay = "" + (predelayval - 1);
+        }
+        FullscreenActivity.mBooks = edit_song_books.getText().toString();
+        FullscreenActivity.mMidi = edit_song_midi.getText().toString();
+        FullscreenActivity.mMidiIndex = edit_song_midi_index.getText().toString();
+        FullscreenActivity.mPitch = edit_song_pitch.getText().toString();
+        FullscreenActivity.mRestrictions = edit_song_restrictions.getText().toString();
+        FullscreenActivity.mNotes = edit_song_notes.getText().toString();
+        FullscreenActivity.mPadFile = edit_song_pad_file.getItemAtPosition(edit_song_pad_file.getSelectedItemPosition()).toString();
+
+        // Get the position of the capo fret
+        FullscreenActivity.mCapo = edit_song_capo.getItemAtPosition(edit_song_capo.getSelectedItemPosition()).toString();
+        // If this contains a space (e.g. 2 (A)), then take the substring at the start as the actual fret
+        // This is because we may have a quick capo key reckoner next to the fret number
+        if (FullscreenActivity.mCapo.contains(" ")) {
+            int pos = FullscreenActivity.mCapo.indexOf(" ");
+            if (pos > 0) {
+                FullscreenActivity.mCapo = FullscreenActivity.mCapo.substring(0, pos).trim();
+            }
+        }
+
+        int tempmCapoPrint = edit_song_capo_print.getSelectedItemPosition();
+        if (tempmCapoPrint == 1) {
+            FullscreenActivity.mCapoPrint = "true";
+        } else if (tempmCapoPrint == 2) {
+            FullscreenActivity.mCapoPrint = "false";
+        } else {
+            FullscreenActivity.mCapoPrint = "";
+        }
+        int valoftempobar = edit_song_tempo.getProgress() + 39;
+        if (valoftempobar > 39) {
+            FullscreenActivity.mTempo = "" + valoftempobar;
+        } else {
+            FullscreenActivity.mTempo = "";
+        }
+        FullscreenActivity.mTimeSig = edit_song_timesig.getItemAtPosition(edit_song_timesig.getSelectedItemPosition()).toString();
+
+        FullscreenActivity.mTheme = customTheme.getText().toString();
+        if (!FullscreenActivity.mTheme.endsWith(";")) {
+            FullscreenActivity.mTheme += ";";
+        }
+
+        // Set the AltTheme to the same as the Theme?
+        FullscreenActivity.mAltTheme = FullscreenActivity.mTheme;
+
+        // Prepare the new XML file
+        prepareSongXML();
+
+        // Makes sure all & are replaced with &amp;
+        FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&amp;", "&");
+        FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&", "&amp;");
+
+        // Now write the modified song
+        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.whichSongFolder,
+                FullscreenActivity.songfilename);
+
+        // Check the uri exists for the outputstream to be valid
+        storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
+                "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+
+        OutputStream outputStream = storageAccess.getOutputStream(getActivity(), uri);
+        storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream);
+
+        // If we are autologging CCLI information
+        if (FullscreenActivity.ccli_automatic) {
+            PopUpCCLIFragment.addUsageEntryToLog(getActivity(), preferences, FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
+                    FullscreenActivity.mTitle.toString(), FullscreenActivity.mAuthor.toString(),
+                    FullscreenActivity.mCopyright.toString(), FullscreenActivity.mCCLI, "3"); // Edited
+        }
+
+        FullscreenActivity.mynewXML = "";
+
+        // Save the preferences
+        Preferences.savePreferences();
+
+        if (ended) {
+            // Prepare the message
+            FullscreenActivity.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
+                    getResources().getString(R.string.ok);
+
+            // Now tell the main page to refresh itself with this new song
+            // Don't need to reload the XML as we already have all its values
+            mListener.rebuildSearchIndex();
+
+            // Now dismiss this popup
+            dismiss();
+        }
     }
 
     private MyInterface mListener;
@@ -644,121 +757,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         FullscreenActivity.mynewXML = myNEWXML;
     }
 
-    public void saveEdit(boolean ended) {
-
-        // If we are editing as chordpro, convert to OpenSong
-        if (FullscreenActivity.editAsChordPro) {
-            String textLyrics = edit_song_lyrics.getText().toString();
-            edit_song_lyrics.setText(chordProConvert.fromChordProToOpenSong(textLyrics));
-        }
-        // Go through the fields and save them
-        // Get the variables
-        // Set the newtext to the FullscreenActivity variables
-        FullscreenActivity.mTitle = edit_song_title.getText().toString();
-        FullscreenActivity.mAuthor = edit_song_author.getText().toString();
-        FullscreenActivity.mCopyright = edit_song_copyright.getText().toString();
-        FullscreenActivity.mLyrics = ProcessSong.fixStartOfLines(edit_song_lyrics.getText().toString());
-        FullscreenActivity.mPresentation = edit_song_presentation.getText().toString();
-        FullscreenActivity.mHymnNumber = edit_song_hymn.getText().toString();
-        FullscreenActivity.mCCLI = edit_song_CCLI.getText().toString();
-        FullscreenActivity.mUser1 = edit_song_user1.getText().toString();
-        FullscreenActivity.mUser2 = edit_song_user2.getText().toString();
-        FullscreenActivity.mUser3 = edit_song_user3.getText().toString();
-        FullscreenActivity.mAka = edit_song_aka.getText().toString();
-        FullscreenActivity.mKeyLine = edit_song_key_line.getText().toString();
-        FullscreenActivity.mKey = edit_song_key.getItemAtPosition(edit_song_key.getSelectedItemPosition()).toString();
-        FullscreenActivity.mDuration = edit_song_duration.getText().toString();
-        int predelayval = predelay_SeekBar.getProgress();
-        if (predelayval == 0) {
-            FullscreenActivity.mPreDelay = "";
-        } else {
-            FullscreenActivity.mPreDelay = "" + (predelayval - 1);
-        }
-        FullscreenActivity.mBooks = edit_song_books.getText().toString();
-        FullscreenActivity.mMidi = edit_song_midi.getText().toString();
-        FullscreenActivity.mMidiIndex = edit_song_midi_index.getText().toString();
-        FullscreenActivity.mPitch = edit_song_pitch.getText().toString();
-        FullscreenActivity.mRestrictions = edit_song_restrictions.getText().toString();
-        FullscreenActivity.mNotes = edit_song_notes.getText().toString();
-        FullscreenActivity.mPadFile = edit_song_pad_file.getItemAtPosition(edit_song_pad_file.getSelectedItemPosition()).toString();
-
-        // Get the position of the capo fret
-        FullscreenActivity.mCapo = edit_song_capo.getItemAtPosition(edit_song_capo.getSelectedItemPosition()).toString();
-        // If this contains a space (e.g. 2 (A)), then take the substring at the start as the actual fret
-        // This is because we may have a quick capo key reckoner next to the fret number
-        if (FullscreenActivity.mCapo.contains(" ")) {
-            int pos = FullscreenActivity.mCapo.indexOf(" ");
-            if (pos > 0) {
-                FullscreenActivity.mCapo = FullscreenActivity.mCapo.substring(0, pos).trim();
-            }
-        }
-
-        int tempmCapoPrint = edit_song_capo_print.getSelectedItemPosition();
-        if (tempmCapoPrint == 1) {
-            FullscreenActivity.mCapoPrint = "true";
-        } else if (tempmCapoPrint == 2) {
-            FullscreenActivity.mCapoPrint = "false";
-        } else {
-            FullscreenActivity.mCapoPrint = "";
-        }
-        int valoftempobar = edit_song_tempo.getProgress() + 39;
-        if (valoftempobar > 39) {
-            FullscreenActivity.mTempo = "" + valoftempobar;
-        } else {
-            FullscreenActivity.mTempo = "";
-        }
-        FullscreenActivity.mTimeSig = edit_song_timesig.getItemAtPosition(edit_song_timesig.getSelectedItemPosition()).toString();
-
-        FullscreenActivity.mTheme = customTheme.getText().toString();
-        if (!FullscreenActivity.mTheme.endsWith(";")) {
-            FullscreenActivity.mTheme += ";";
-        }
-
-        // Set the AltTheme to the same as the Theme?
-        FullscreenActivity.mAltTheme = FullscreenActivity.mTheme;
-
-        // Prepare the new XML file
-        prepareSongXML();
-
-        // Makes sure all & are replaced with &amp;
-        FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&amp;", "&");
-        FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&", "&amp;");
-
-        // Now write the modified song
-        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.whichSongFolder,
-                FullscreenActivity.songfilename);
-
-        // Check the uri exists for the outputstream to be valid
-        storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
-                "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
-
-        OutputStream outputStream = storageAccess.getOutputStream(getActivity(), uri);
-        storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream);
-
-        // If we are autologging CCLI information
-        if (FullscreenActivity.ccli_automatic) {
-            PopUpCCLIFragment.addUsageEntryToLog(getActivity(), preferences, FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
-                    FullscreenActivity.mTitle.toString(), FullscreenActivity.mAuthor.toString(),
-                    FullscreenActivity.mCopyright.toString(), FullscreenActivity.mCCLI, "3"); // Edited
-        }
-
-        FullscreenActivity.mynewXML = "";
-
-        // Save the preferences
-        Preferences.savePreferences();
-
-        if (ended) {
-            // Prepare the message
-            FullscreenActivity.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
-                    getResources().getString(R.string.ok);
-
-            // Now tell the main page to refresh itself with this new song
-            // Don't need to reload the XML as we already have all its values
-            mListener.refreshAll();
-
-            // Now dismiss this popup
-            dismiss();
-        }
+    public interface MyInterface {
+        void rebuildSearchIndex();
     }
 
     public static String parseToHTMLEntities(String val) {

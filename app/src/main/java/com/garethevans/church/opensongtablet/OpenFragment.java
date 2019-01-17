@@ -351,6 +351,9 @@ class OpenFragment {
                 newFragment = PopUpSongCreateFragment.newInstance();
                 break;
 
+            case "rebuildindex":
+                newFragment = PopUpRebuildDatabaseFragment.newInstance();
+                break;
         }
         return newFragment;
     }

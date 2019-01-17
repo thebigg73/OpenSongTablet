@@ -356,7 +356,11 @@ public class PopUpBibleXMLFragment extends DialogFragment {
 
                 } else {
                     if (bibleFile!=null && bibleFile.getLastPathSegment()!=null) {
-                            bible = bibleFile.getLastPathSegment().toUpperCase(FullscreenActivity.locale);
+                        bible = bibleFile.getLastPathSegment();
+                        if (bible.contains("/OpenSong/OpenSong Scripture")) {
+                            bible = bible.substring(bible.indexOf("/OpenSong/OpenSong Scripture/") + 29);
+                        }
+                        bible = bible.toUpperCase(FullscreenActivity.locale);
                             bible = bible.replace(".XML", "");
                             bible = bible.replace(".XMM", "");
                     } else {

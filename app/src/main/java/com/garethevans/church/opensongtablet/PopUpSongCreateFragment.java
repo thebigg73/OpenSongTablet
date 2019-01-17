@@ -162,6 +162,8 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
     public void doSave() {
         // Get the variables
+        FullscreenActivity.needtorefreshsongmenu = true;
+
         String tempNewSong = newSongNameEditText.getText().toString().trim();
         Uri to = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.newFolder, tempNewSong);
 

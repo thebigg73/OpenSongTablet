@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -231,7 +232,7 @@ public class PopUpSetViewNew extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater,container,savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
         a = getActivity();
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
@@ -239,7 +240,7 @@ public class PopUpSetViewNew extends DialogFragment {
         final View V = inflater.inflate(R.layout.popup_setview_new, container, false);
         setfrag = getDialog();
         TextView title = V.findViewById(R.id.dialogtitle);
-        String titletext = getActivity().getResources().getString(R.string.options_set)+displaySetName();
+        String titletext = getActivity().getResources().getString(R.string.options_set) + displaySetName();
         title.setText(titletext);
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
@@ -260,15 +261,15 @@ public class PopUpSetViewNew extends DialogFragment {
             }
         });
         if (FullscreenActivity.whattodo.equals("setitemvariation")) {
-            CustomAnimations.animateFAB(saveMe,getActivity());
+            CustomAnimations.animateFAB(saveMe, getActivity());
             saveMe.setEnabled(false);
             saveMe.setVisibility(View.GONE);
         }
 
-        if (getDialog().getWindow()!=null) {
+        if (getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
-        if (mListener!=null) {
+        if (mListener != null) {
             mListener.pageButtonAlpha("set");
         }
 
@@ -292,16 +293,22 @@ public class PopUpSetViewNew extends DialogFragment {
 
         // Grab the saved set list array and put it into a list
         // This way we work with a temporary version
-
-        if (FullscreenActivity.doneshuffle && FullscreenActivity.mTempSetList!=null && FullscreenActivity.mTempSetList.size()>0) {
-            Log.d("d","We've shuffled the set list");
+        if (FullscreenActivity.doneshuffle && FullscreenActivity.mTempSetList != null && FullscreenActivity.mTempSetList.size() > 0) {
+            Log.d("d", "We've shuffled the set list");
         } else {
             FullscreenActivity.mTempSetList = new ArrayList<>();
-            Collections.addAll(FullscreenActivity.mTempSetList, FullscreenActivity.mSetList);
+            FullscreenActivity.mTempSetList.addAll(Arrays.asList(FullscreenActivity.mSetList));
         }
 
         extractSongsAndFolders();
         FullscreenActivity.doneshuffle = false;
+
+        for (String s : FullscreenActivity.mSetList) {
+            Log.d("d", "Check mSetList: " + s);
+        }
+        for (String s : FullscreenActivity.mTempSetList) {
+            Log.d("d", "Check mTempSetList: " + s);
+        }
 
         MyAdapter ma = new MyAdapter(createList(FullscreenActivity.mTempSetList.size()), getActivity(), preferences);
         mRecyclerView.setAdapter(ma);
@@ -337,6 +344,12 @@ public class PopUpSetViewNew extends DialogFragment {
                 // Save any changes to current set first
                 doSave();
 
+                if (FullscreenActivity.mTempSetList == null && FullscreenActivity.mSetList != null) {
+                    // Somehow the temp set list is null, so build it again
+                    FullscreenActivity.mTempSetList = new ArrayList<>();
+                    Collections.addAll(FullscreenActivity.mTempSetList, FullscreenActivity.mSetList);
+                }
+
                 if (FullscreenActivity.mTempSetList!=null && FullscreenActivity.mTempSetList.size()>0) {
                     // Redraw the lists
                     Collections.shuffle(FullscreenActivity.mTempSetList);
@@ -346,6 +359,7 @@ public class PopUpSetViewNew extends DialogFragment {
 
                     // Run the listener
                     PopUpSetViewNew.this.dismiss();
+
                     if (mListener != null) {
                         mListener.shuffleSongsInSet();
                     }

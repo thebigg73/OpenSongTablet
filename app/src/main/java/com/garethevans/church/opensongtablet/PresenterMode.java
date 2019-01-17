@@ -98,7 +98,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         SetActions.MyInterface, PopUpPresentationOrderFragment.MyInterface,
         PopUpSetViewNew.MyInterface, IndexSongs.MyInterface, SearchView.OnQueryTextListener,
         OptionMenuListeners.MyInterface, PopUpFullSearchFragment.MyInterface,
-        PopUpListSetsFragment.MyInterface,
+        PopUpListSetsFragment.MyInterface, PopUpRebuildDatabaseFragment.MyInterface,
         PopUpLongSongPressFragment.MyInterface, PopUpProfileFragment.MyInterface,
         PopUpFileChooseFragment.MyInterface,
         PopUpSongFolderRenameFragment.MyInterface, PopUpSongCreateFragment.MyInterface,
@@ -2142,8 +2142,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     public void rebuildSearchIndex() {
-        indexSongs.indexMySongs(PresenterMode.this, storageAccess, preferences, songXML,
-                chordProConvert, usrConvert, onSongConvert, textSongConvert);
+        // This is handled by a popup
+        FullscreenActivity.whattodo = "rebuildindex";
+        openFragment();
+        /*indexSongs.indexMySongs(PresenterMode.this, storageAccess, preferences, songXML,
+                chordProConvert, usrConvert, onSongConvert, textSongConvert);*/
     }
 
     @SuppressLint("StaticFieldLeak")

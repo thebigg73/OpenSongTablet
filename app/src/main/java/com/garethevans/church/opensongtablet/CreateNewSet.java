@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.util.Base64;
 
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 class CreateNewSet {
@@ -103,6 +104,8 @@ class CreateNewSet {
                             .append("    <title>")
                             .append(PopUpEditSongFragment.parseToHTMLEntities(songparts[1]))
                             .append("</title>\n");
+
+                    sb.append("    <slides>\n");
 
                     for (String mySlide : mySlides) {
                         if (mySlide != null && mySlide.length() > 0) {
@@ -227,7 +230,7 @@ class CreateNewSet {
                     FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
                     String slide_lyrics = FullscreenActivity.mLyrics;
                     try {
-                        byte[] data = FullscreenActivity.myXML.getBytes("UTF-8");
+                        byte[] data = FullscreenActivity.myXML.getBytes(StandardCharsets.UTF_8);
                         slide_lyrics = Base64.encodeToString(data, Base64.DEFAULT);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -305,34 +308,26 @@ class CreateNewSet {
                         e.printStackTrace();
                     }
 
-                    // The hymn_number field should contain all the images
-                    // Each image is separated by \n$$$\n
-                    //String imagecode[] = FullscreenActivity.mHymnNumber.split("XX_IMAGE_XX");
-
+                    // The mUser3 field should contain all the images
                     // Break all the images into the relevant slides
                     String[] separate_slide = FullscreenActivity.mUser3.split("\n");
-
-                    // Get the number of image codes
-                    int sepslidesnum = separate_slide.length;
-
 
                     FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
                     StringBuilder slide_code = new StringBuilder();
 
-
-                    for (int e=0;e<sepslidesnum;e++) {
+                    for (String aSeparate_slide : separate_slide) {
                         String imglinetext;
                         // Try to get the image into bytes
-                        String imgcode = storageAccess.getImageSlide(c, separate_slide[e]);
+                        String imgcode = storageAccess.getImageSlide(c, aSeparate_slide);
                         if (!imgcode.isEmpty()) {
                             imglinetext = "        <image>" + imgcode.trim() + "</image>\n";
                         } else {
-                            imglinetext = "        <filename>" + separate_slide[e] + "</filename>\n";
+                            imglinetext = "        <filename>" + aSeparate_slide + "</filename>\n";
                         }
                         slide_code.append("      <slide>\n")
                                 .append(imglinetext)
                                 .append("        <description>")
-                                .append(separate_slide[e])
+                                .append(aSeparate_slide)
                                 .append("</description>\n")
                                 .append("      </slide>\n");
                     }

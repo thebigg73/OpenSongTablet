@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -82,47 +83,16 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     // Declare views
     View V;
     RadioGroup customRadioGroup;
-    RadioButton noteRadioButton;
-    RadioButton slideRadioButton;
-    RadioButton imageRadioButton;
-    RadioButton scriptureRadioButton;
-    TextView slideTitleTextView;
-    TextView slideContentTextView;
-    @SuppressLint("StaticFieldLeak")
-    static EditText slideTitleEditText;
-    @SuppressLint("StaticFieldLeak")
-    static EditText slideContentEditText;
-    Button loadReusableButton;
-    CheckBox saveReusableCheckBox;
-    @SuppressLint("StaticFieldLeak")
-    static Button addPageButton;
-    @SuppressLint("StaticFieldLeak")
-    static TableLayout slideImageTable;
-    @SuppressLint("StaticFieldLeak")
-    static CheckBox loopCheckBox;
-    @SuppressLint("StaticFieldLeak")
-    static TextView timeTextView;
-    @SuppressLint("StaticFieldLeak")
-    static EditText timeEditText;
-    @SuppressLint("StaticFieldLeak")
-    static TextView warningTextView;
-    @SuppressLint("StaticFieldLeak")
-    static LinearLayout reusable_LinearLayout;
-    @SuppressLint("StaticFieldLeak")
-    static LinearLayout searchBible_LinearLayout;
-    @SuppressLint("StaticFieldLeak")
-    static RelativeLayout slideDetails_RelativeLayout;
-    @SuppressLint("StaticFieldLeak")
-    static EditText bibleSearch;
-    @SuppressLint("StaticFieldLeak")
-    static EditText bibleVersion;
-    Button searchBibleGateway_Button;
-    Button localBibleFile;
+    RadioButton noteRadioButton, slideRadioButton, imageRadioButton, scriptureRadioButton;
+    TextView slideTitleTextView, slideContentTextView, timeTextView, warningTextView;
+    EditText slideTitleEditText, slideContentEditText, timeEditText, bibleSearch, bibleVersion;
+    Button loadReusableButton, addPageButton, searchBibleGateway_Button, localBibleFile, grabVerse_Button;
+    CheckBox saveReusableCheckBox, loopCheckBox;
+    TableLayout slideImageTable;
+    LinearLayout reusable_LinearLayout, searchBible_LinearLayout;
+    RelativeLayout slideDetails_RelativeLayout;
     WebView bibleGateway_WebView;
-    @SuppressLint("StaticFieldLeak")
-    static Button grabVerse_Button;
-    @SuppressLint("StaticFieldLeak")
-    static ProgressBar searchBible_progressBar;
+    ProgressBar searchBible_progressBar;
 
     // Declare variables used
     static String whattype = "note";
@@ -138,146 +108,11 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         }
     }
 
-    public static void addScripture() {
-
-        /*if (FullscreenActivity.scripture_title!=null &&
-                !FullscreenActivity.scripture_title.equals("") &&
-                FullscreenActivity.scripture_verse!=null &&
-                !FullscreenActivity.scripture_verse.equals("")) {
-            searchBible_progressBar.setVisibility(View.GONE);
-            grabVerse_Button.setVisibility(View.GONE);
-            slideTitleEditText.setText(FullscreenActivity.scripture_title);
-            slideContentEditText.setText(FullscreenActivity.scripture_verse);
-            reusable_LinearLayout.setVisibility(View.GONE);
-            searchBible_LinearLayout.setVisibility(View.GONE);
-            slideDetails_RelativeLayout.setVisibility(View.VISIBLE);
-        }*/
-    }
-
-    @SuppressLint("SetJavaScriptEnabled")
-    void initialiseTheViews() {
-        TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.add_custom_slide));
-        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
-        });
-        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
-                saveMe.setEnabled(false);
-                doSave();
-            }
-        });
-
-        // Initialise the basic views
-        customRadioGroup = V.findViewById(R.id.customRadioGroup);
-        noteRadioButton = V.findViewById(R.id.noteRadioButton);
-        slideRadioButton = V.findViewById(R.id.slideRadioButton);
-        imageRadioButton = V.findViewById(R.id.imageRadioButton);
-        scriptureRadioButton = V.findViewById(R.id.scriptureRadioButton);
-        slideTitleTextView = V.findViewById(R.id.slideTitleTextView);
-        slideContentTextView = V.findViewById(R.id.slideContentTextView);
-        slideTitleEditText = V.findViewById(R.id.slideTitleEditText);
-        slideContentEditText = V.findViewById(R.id.slideContentEditText);
-        addPageButton = V.findViewById(R.id.addPageButton);
-        loadReusableButton = V.findViewById(R.id.loadReusableButton);
-        saveReusableCheckBox = V.findViewById(R.id.saveReusableCheckBox);
-        slideImageTable = V.findViewById(R.id.slideImageTable);
-        loopCheckBox = V.findViewById(R.id.loopCheckBox);
-        timeTextView = V.findViewById(R.id.timeTextView);
-        timeEditText = V.findViewById(R.id.timeEditText);
-        warningTextView = V.findViewById(R.id.warningTextView);
-        reusable_LinearLayout = V.findViewById(R.id.reusable_LinearLayout);
-        searchBible_LinearLayout = V.findViewById(R.id.searchBible_LinearLayout);
-        slideDetails_RelativeLayout = V.findViewById(R.id.slideDetails_RelativeLayout);
-        bibleSearch = V.findViewById(R.id.bibleSearch);
-        bibleVersion = V.findViewById(R.id.bibleVersion);
-        localBibleFile = V.findViewById(R.id.localBibleFile);
-        searchBibleGateway_Button = V.findViewById(R.id.searchBibleGateway_Button);
-        bibleGateway_WebView = V.findViewById(R.id.bibleGateway_WebView);
-        grabVerse_Button = V.findViewById(R.id.grabVerse_Button);
-        grabVerse_Button.setVisibility(View.GONE);
-        searchBible_progressBar = V.findViewById(R.id.searchBible_progressBar);
-        searchBible_progressBar.setVisibility(View.GONE);
-        bibleGateway_WebView.setVisibility(View.GONE);
-
-    }
-
-    @SuppressLint("SetJavaScriptEnabled")
-    public void setUpWebView() {
-        bibleGateway_WebView.getSettings().getJavaScriptEnabled();
-        bibleGateway_WebView.getSettings().setJavaScriptEnabled(true);
-        bibleGateway_WebView.getSettings().setDomStorageEnabled(true);
-        bibleGateway_WebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        bibleGateway_WebView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
-            }
-        });
-    }
-
-    public void doSave(){
-        FullscreenActivity.noteorslide = whattype;
-        StringBuilder text = new StringBuilder(slideContentEditText.getText().toString().trim());
-        FullscreenActivity.customreusable = saveReusableCheckBox.isChecked();
-        StringBuilder imagecontents;
-
-        if (whattype.equals("image")) {
-            imagecontents = new StringBuilder();
-            // Go through images in list and extract the full location and the filename
-            for (int r = 0; r < slideImageTable.getChildCount(); r++) {
-                // Look for image file location
-                if (slideImageTable.getChildAt(r) instanceof TableRow) {
-                    TextView tv = (TextView) ((TableRow) slideImageTable.getChildAt(r)).getChildAt(0);
-                    String tv_text = tv.getText().toString();
-                    imagecontents.append(tv_text).append("\n");
-                }
-            }
-
-            while (imagecontents.toString().contains("\n\n")) {
-                imagecontents = new StringBuilder(imagecontents.toString().replace("\n\n", "\n"));
-            }
-            imagecontents = new StringBuilder(imagecontents.toString().trim());
-            String[] individual_images = imagecontents.toString().split("\n");
-
-            // Prepare the lyrics
-            text = new StringBuilder();
-            for (int t = 0; t < individual_images.length; t++) {
-                text.append("[").append(getActivity().getResources().getString(R.string.image)).append("_").append(t + 1).append("]\n").append(individual_images[t]).append("\n\n");
-            }
-            text = new StringBuilder(text.toString().trim());
-
-        } else {
-            imagecontents = new StringBuilder();
-        }
-        FullscreenActivity.customslide_title = slideTitleEditText.getText().toString();
-        FullscreenActivity.customslide_content = text.toString();
-        FullscreenActivity.customimage_list = imagecontents.toString();
-        FullscreenActivity.customimage_loop = "" + loopCheckBox.isChecked() + "";
-        FullscreenActivity.customimage_time = timeEditText.getText().toString();
-        // Check the slide has a title.  If not, use _
-        if (FullscreenActivity.customslide_title == null || FullscreenActivity.customslide_title.equals("") || FullscreenActivity.customslide_title.isEmpty()) {
-            FullscreenActivity.customslide_title = "_";
-        }
-        mListener.addSlideToSet();
-        dismiss();
-    }
-
-    public void updateFields() {
-        update_fields = new UpdateFields();
-        try {
-            update_fields.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            Log.d("d","Error updating fields");
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
     }
 
@@ -287,9 +122,13 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
+        // Initialise the helper classes
         storageAccess = new StorageAccess();
         bibleC = new Bible();
         V = inflater.inflate(R.layout.popup_customslidecreator, container, false);
+
+        // Initialise the views
+        initialiseTheViews();
 
         new Thread(new Runnable() {
             @Override
@@ -298,14 +137,13 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        initialiseTheViews();
                         grabVerse_Button.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 searchBible_progressBar.setVisibility(View.VISIBLE);
                                 bibleGateway_WebView.setVisibility(View.GONE);
                                 grabVerse_Button.setVisibility(View.GONE);
-                                grabBibleText(getActivity().getApplicationContext(), bibleGateway_WebView.getUrl());
+                                grabBibleText(bibleGateway_WebView.getUrl());
                             }
                         });
 
@@ -327,6 +165,12 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                             @Override
                             public void onClick(View v) {
                                 searchBible_progressBar.setVisibility(View.VISIBLE);
+                                bibleSearch.clearFocus();
+                                bibleVersion.clearFocus();
+                                searchBibleGateway_Button.requestFocus(); // Try to hide keyboard
+                                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(bibleSearch.getWindowToken(), 0);
+                                imm.hideSoftInputFromWindow(bibleVersion.getWindowToken(), 0);
                                 setUpWebView();
                                 searchBible();
                             }
@@ -407,6 +251,92 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         return V;
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
+    void initialiseTheViews() {
+        TextView title = V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.add_custom_slide));
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe, getActivity());
+                closeMe.setEnabled(false);
+                dismiss();
+            }
+        });
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
+        saveMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(saveMe, getActivity());
+                saveMe.setEnabled(false);
+                doSave();
+            }
+        });
+
+        // Initialise the basic views
+        customRadioGroup = V.findViewById(R.id.customRadioGroup);
+        noteRadioButton = V.findViewById(R.id.noteRadioButton);
+        slideRadioButton = V.findViewById(R.id.slideRadioButton);
+        imageRadioButton = V.findViewById(R.id.imageRadioButton);
+        scriptureRadioButton = V.findViewById(R.id.scriptureRadioButton);
+        slideTitleTextView = V.findViewById(R.id.slideTitleTextView);
+        slideContentTextView = V.findViewById(R.id.slideContentTextView);
+        slideTitleEditText = V.findViewById(R.id.slideTitleEditText);
+        slideContentEditText = V.findViewById(R.id.slideContentEditText);
+        addPageButton = V.findViewById(R.id.addPageButton);
+        loadReusableButton = V.findViewById(R.id.loadReusableButton);
+        saveReusableCheckBox = V.findViewById(R.id.saveReusableCheckBox);
+        slideImageTable = V.findViewById(R.id.slideImageTable);
+        loopCheckBox = V.findViewById(R.id.loopCheckBox);
+        timeTextView = V.findViewById(R.id.timeTextView);
+        timeEditText = V.findViewById(R.id.timeEditText);
+        warningTextView = V.findViewById(R.id.warningTextView);
+        reusable_LinearLayout = V.findViewById(R.id.reusable_LinearLayout);
+        searchBible_LinearLayout = V.findViewById(R.id.searchBible_LinearLayout);
+        slideDetails_RelativeLayout = V.findViewById(R.id.slideDetails_RelativeLayout);
+        bibleSearch = V.findViewById(R.id.bibleSearch);
+        bibleVersion = V.findViewById(R.id.bibleVersion);
+        localBibleFile = V.findViewById(R.id.localBibleFile);
+        searchBibleGateway_Button = V.findViewById(R.id.searchBibleGateway_Button);
+        bibleGateway_WebView = V.findViewById(R.id.bibleGateway_WebView);
+        grabVerse_Button = V.findViewById(R.id.grabVerse_Button);
+        grabVerse_Button.setVisibility(View.GONE);
+        searchBible_progressBar = V.findViewById(R.id.searchBible_progressBar);
+        searchBible_progressBar.setVisibility(View.GONE);
+        bibleGateway_WebView.setVisibility(View.GONE);
+
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    public void setUpWebView() {
+        bibleGateway_WebView.getSettings().getJavaScriptEnabled();
+        bibleGateway_WebView.getSettings().setJavaScriptEnabled(true);
+        bibleGateway_WebView.getSettings().setDomStorageEnabled(true);
+        bibleGateway_WebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        bibleGateway_WebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+        });
+    }
+
+    void addScripture() {
+        if (FullscreenActivity.scripture_title != null &&
+                !FullscreenActivity.scripture_title.equals("") &&
+                FullscreenActivity.scripture_verse != null &&
+                !FullscreenActivity.scripture_verse.equals("")) {
+            searchBible_progressBar.setVisibility(View.GONE);
+            grabVerse_Button.setVisibility(View.GONE);
+            slideTitleEditText.setText(FullscreenActivity.scripture_title);
+            slideContentEditText.setText(FullscreenActivity.scripture_verse);
+            reusable_LinearLayout.setVisibility(View.GONE);
+            searchBible_LinearLayout.setVisibility(View.GONE);
+            slideDetails_RelativeLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
     public void switchViewToNote() {
         whattype = "note";
         FullscreenActivity.whattodo ="customnote";
@@ -474,11 +404,63 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         warningTextView.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+    public void doSave() {
+        FullscreenActivity.noteorslide = whattype;
+        StringBuilder text = new StringBuilder(slideContentEditText.getText().toString().trim());
+        FullscreenActivity.customreusable = saveReusableCheckBox.isChecked();
+        StringBuilder imagecontents;
+
+        if (whattype.equals("image")) {
+            imagecontents = new StringBuilder();
+            // Go through images in list and extract the full location and the filename
+            for (int r = 0; r < slideImageTable.getChildCount(); r++) {
+                // Look for image file location
+                if (slideImageTable.getChildAt(r) instanceof TableRow) {
+                    TextView tv = (TextView) ((TableRow) slideImageTable.getChildAt(r)).getChildAt(0);
+                    String tv_text = tv.getText().toString();
+                    imagecontents.append(tv_text).append("\n");
+                }
+            }
+
+            while (imagecontents.toString().contains("\n\n")) {
+                imagecontents = new StringBuilder(imagecontents.toString().replace("\n\n", "\n"));
+            }
+            imagecontents = new StringBuilder(imagecontents.toString().trim());
+            String[] individual_images = imagecontents.toString().split("\n");
+
+            // Prepare the lyrics
+            text = new StringBuilder();
+            for (int t = 0; t < individual_images.length; t++) {
+                text.append("[").append(getActivity().getResources().getString(R.string.image)).append("_").append(t + 1).append("]\n").append(individual_images[t]).append("\n\n");
+            }
+            text = new StringBuilder(text.toString().trim());
+
+        } else {
+            imagecontents = new StringBuilder();
+        }
+        FullscreenActivity.customslide_title = slideTitleEditText.getText().toString();
+        FullscreenActivity.customslide_content = text.toString();
+        FullscreenActivity.customimage_list = imagecontents.toString();
+        FullscreenActivity.customimage_loop = "" + loopCheckBox.isChecked() + "";
+        FullscreenActivity.customimage_time = timeEditText.getText().toString();
+        // Check the slide has a title.  If not, use _
+        if (FullscreenActivity.customslide_title == null || FullscreenActivity.customslide_title.equals("") || FullscreenActivity.customslide_title.isEmpty()) {
+            FullscreenActivity.customslide_title = "_";
+        }
+        // Fix the title to remove / and . to make them safe for file names
+        FullscreenActivity.customslide_title = FullscreenActivity.customslide_title.replace("/", "_");
+        FullscreenActivity.customslide_title = FullscreenActivity.customslide_title.replace(".", "_");
+
+        mListener.addSlideToSet();
+        dismiss();
+    }
+
+    public void updateFields() {
+        update_fields = new UpdateFields();
+        try {
+            update_fields.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            Log.d("d", "Error updating fields");
         }
     }
 
@@ -592,72 +574,105 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         }
     }
 
-    void grabBibleText(Context c, String weblink) {
-        StringBuilder sb = new StringBuilder();
+
+    public void grabBibleText(String weblink) {
+        GrabBibleText grab_Bible_Text = new GrabBibleText(weblink);
+        grab_Bible_Text.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class GrabBibleText extends AsyncTask<Object, Void, String> {
+
+        String weblink;
+        StringBuilder sb;
         URL url;
         HttpURLConnection urlConnection = null;
-        try {
-            url = new URL(weblink);
-            urlConnection = (HttpURLConnection) url.openConnection();
-            InputStream in = urlConnection.getInputStream();
-            BufferedReader buffer = new BufferedReader(new InputStreamReader(in));
-            String s;
-            while ((s = buffer.readLine()) != null) {
-                sb.append("\n").append(s);
 
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
-        }
-        String scripture;
-        String scripture_title = "";
-
-        // TEST THE FULLY EXTRACTED SCRIPTURE (FULLER THAN HEADER)
-        String result = sb.toString();
-        String newbit = sb.toString();
-
-        // Find the start and end of the scripture bit
-        int startoffull = newbit.indexOf("<sup class=\"versenum\">");
-        int endoffull = newbit.indexOf("<div class=\"crossrefs hidden\">");
-
-        if (endoffull > startoffull && startoffull > 0) {
-            newbit = newbit.substring(startoffull, endoffull);
-        } else {
-            FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
-            ShowToast.showToast(c);
+        GrabBibleText(String s) {
+            weblink = s;
         }
 
-        newbit = Html.fromHtml(newbit).toString();
-        newbit = newbit.replace("<p>", "");
-        newbit = newbit.replace("</p>", "");
-        //Now look to see if the webcontent has the desired text in it
-        if (result.contains("og:description")) {
+        @Override
+        protected void onPreExecute() {
+            sb = new StringBuilder();
+            FullscreenActivity.myToastMessage = "";
+        }
 
-            // Get the title
-            int title_startpos = result.indexOf("<meta name=\"twitter:title\" content=\"") + 36;
-            int title_endpos = result.indexOf("\" />", title_startpos);
-
+        @Override
+        protected String doInBackground(Object... objects) {
             try {
-                scripture_title = result.substring(title_startpos, title_endpos);
+                url = new URL(weblink);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = urlConnection.getInputStream();
+                BufferedReader buffer = new BufferedReader(new InputStreamReader(in));
+                String s;
+                while ((s = buffer.readLine()) != null) {
+                    sb.append("\n").append(s);
+                }
             } catch (Exception e) {
-                Log.d("Bible", "Error getting scripture title");
-                FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
-                ShowToast.showToast(c);
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+            String scripture_title = "";
+            String scripture;
+
+            // TEST THE FULLY EXTRACTED SCRIPTURE (FULLER THAN HEADER)
+            String result = sb.toString();
+            String newbit = sb.toString();
+
+            Log.d("d", "result=" + result);
+
+            // Find the start and end of the scripture bit
+            int startoffull = newbit.indexOf("<sup class=\"versenum\">");
+            int endoffull = newbit.indexOf("<div class=\"crossrefs hidden\">");
+
+            if (endoffull > startoffull && startoffull > 0) {
+                newbit = newbit.substring(startoffull, endoffull);
+            } else {
+                FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.error_missingsection);
             }
 
-            // Make the scripture more readable by making a line break at the start of the word after 40 chars
-            // First split the scripture into an array of words
-            //String[] scripturewords = scripture.split(" ");
+            newbit = Html.fromHtml(newbit).toString();
+            newbit = newbit.replace("<p>", "");
+            newbit = newbit.replace("</p>", "");
+            //Now look to see if the webcontent has the desired text in it
 
-            scripture = bibleC.shortenTheLines(newbit, 40, 6);
+            if (result.contains("og:description")) {
 
-            // Send these back to the popupcustomslide creator window
-            FullscreenActivity.scripture_title = scripture_title;
-            FullscreenActivity.scripture_verse = scripture;
+                // Get the title
+                int title_startpos = result.indexOf("<meta name=\"twitter:title\" content=\"") + 36;
+                int title_endpos = result.indexOf("\" />", title_startpos);
+
+                try {
+                    scripture_title = result.substring(title_startpos, title_endpos);
+                } catch (Exception e) {
+                    Log.d("Bible", "Error getting scripture title");
+                    FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.error_missingsection);
+                }
+
+                // Make the scripture more readable by making a line break at the start of the word after 40 chars
+                // First split the scripture into an array of words
+                scripture = bibleC.shortenTheLines(newbit, 40, 6);
+
+                // Send these back to the popupcustomslide creator window
+                FullscreenActivity.scripture_title = scripture_title;
+                FullscreenActivity.scripture_verse = scripture;
+
+            } else {
+                FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.error_missingsection);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (!FullscreenActivity.myToastMessage.equals("")) {
+                ShowToast.showToast(getActivity());
+            }
 
             // Try to update the views sent
             searchBible_progressBar.setVisibility(View.GONE);
@@ -667,15 +682,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             reusable_LinearLayout.setVisibility(View.GONE);
             searchBible_LinearLayout.setVisibility(View.GONE);
             slideDetails_RelativeLayout.setVisibility(View.VISIBLE);
-            //PopUpCustomSlideFragment.addScripture();
-
-        } else {
-            FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
-            ShowToast.showToast(c);
         }
-
-        /*DownloadWebTextTask task = new DownloadWebTextTask(c);
-        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,weblink);*/
     }
 
     @SuppressLint("StaticFieldLeak")
