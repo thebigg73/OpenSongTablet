@@ -34,6 +34,10 @@ android {
 
     productFlavors {
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 buildscript {
@@ -80,4 +84,8 @@ dependencies {
     implementation 'com.annimon:stream:1.1.9'
     //implementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     //implementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+
+    // Testing-only dependencies
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.+'
 }

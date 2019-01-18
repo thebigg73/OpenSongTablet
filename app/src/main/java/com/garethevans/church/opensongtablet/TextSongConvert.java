@@ -36,7 +36,7 @@ class TextSongConvert {
 
     private String fixTags(Context c, String l) {
         // Look for potential headings but get rid of rogue spaces before and after
-        if (l.contains("[") && l.contains("]") && l.length()<12) {
+        if (l.contains("[") && l.contains("]") && l.length() < 15) {
             l = l.trim();
         }
 
@@ -46,7 +46,7 @@ class TextSongConvert {
         }
 
         boolean alreadyheading = l.startsWith("[");
-        if (!alreadyheading) {
+        if (!alreadyheading && l.trim().length() < 15) {
             if (l.contains(c.getString(R.string.tag_verse)) || l.contains(c.getString(R.string.tag_chorus)) ||
                     l.contains(c.getString(R.string.tag_bridge)) || l.contains(c.getString(R.string.tag_ending)) ||
                     l.contains(c.getString(R.string.tag_instrumental)) || l.contains(c.getString(R.string.tag_interlude)) ||
