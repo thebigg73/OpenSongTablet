@@ -1,6 +1,8 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -14,7 +16,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.ignoreStubs;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
@@ -37,6 +39,9 @@ public class TextSongConvertTests {
     @Mock
     Context context;
 
+    @Mock
+    Resources resources;
+
     @Parameterized.Parameter // first data value (0) is default
     public String input;
 
@@ -48,17 +53,20 @@ public class TextSongConvertTests {
 
     @Test
     public void convertText() {
+        when(resources.getString(R.string.tag_verse)).thenReturn("Verse");
+        when(resources.getString(R.string.tag_chorus)).thenReturn("Chorus");
+        when(resources.getString(R.string.tag_bridge)).thenReturn("Bridge");
+        when(resources.getString(R.string.tag_ending)).thenReturn("Ending");
+        when(resources.getString(R.string.tag_instrumental)).thenReturn("Instrumental");
+        when(resources.getString(R.string.tag_interlude)).thenReturn("Interlude");
+        when(resources.getString(R.string.tag_intro)).thenReturn("Intro");
+        when(resources.getString(R.string.tag_prechorus)).thenReturn("Prechorus");
+        when(resources.getString(R.string.tag_refrain)).thenReturn("Refrain");
+        when(resources.getString(R.string.tag_tag)).thenReturn("Tag");
+        when(resources.getString(R.string.tag_reprise)).thenReturn("Reprise");
         when(context.getString(R.string.tag_verse)).thenReturn("Verse");
-        when(context.getString(R.string.tag_chorus)).thenReturn("Chorus");
-        when(context.getString(R.string.tag_bridge)).thenReturn("Bridge");
-        when(context.getString(R.string.tag_ending)).thenReturn("Ending");
-        when(context.getString(R.string.tag_instrumental)).thenReturn("Instrumental");
-        when(context.getString(R.string.tag_interlude)).thenReturn("Interlude");
-        when(context.getString(R.string.tag_intro)).thenReturn("Intro");
-        when(context.getString(R.string.tag_prechorus)).thenReturn("Prechorus");
-        when(context.getString(R.string.tag_refrain)).thenReturn("Refrain");
-        when(context.getString(R.string.tag_tag)).thenReturn("Tag");
-        when(context.getString(R.string.tag_reprise)).thenReturn("Reprise");
+        when(context.getResources()).thenReturn(resources);
+        when(context.createConfigurationContext(any(Configuration.class))).thenReturn(context);
 
         TextSongConvert textSongConvert = new TextSongConvert();
         assertEquals(message + " Input: '" + input + "'", expected, textSongConvert.convertText(context, input));
