@@ -90,7 +90,11 @@ public class PopUpRebuildDatabaseFragment extends DialogFragment {
         }
 
         BuildIndex buildIndex = new BuildIndex();
-        buildIndex.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        try {
+            buildIndex.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return V;
     }
@@ -130,21 +134,17 @@ public class PopUpRebuildDatabaseFragment extends DialogFragment {
         int numSongs;
         int currentSongNum;
         String currentSongName, message;
-        boolean settingProgressBarUp = false, foldersok = false;
+        boolean settingProgressBarUp = false;
 
         @Override
         protected String doInBackground(Object... objects) {
 
-            // Check if the folders exist, if not, create them
-            message = getString(R.string.storage_check);
-            publishProgress("setmessage");
-            final String progress = storageAccess.createOrCheckRootFolders(getActivity(), preferences);
-            foldersok = !progress.contains("Error");
-
-            if (foldersok) {
-                // Search for the user's songs
+            try {
                 message = getString(R.string.initialisesongs_start).replace("-", "").trim();
                 publishProgress("setmessage");
+
+
+                // Search for the user's songs
                 try {
                     storageAccess.listSongs(getActivity(), preferences);
                 } catch (Exception e) {
@@ -188,7 +188,6 @@ public class PopUpRebuildDatabaseFragment extends DialogFragment {
                 // This is because the filename will likely have changed alphabetical position
                 // Alert the user to the need for rebuilding and repeat the above
                 if (hadtoconvert) {
-                    Log.d("d", "Conversion had to happen, so rebuild the search index");
                     message = "Updating indexes of converted songs...";
                     publishProgress("setmessage");
 
@@ -218,34 +217,43 @@ public class PopUpRebuildDatabaseFragment extends DialogFragment {
                 message = getString(R.string.success);
                 publishProgress("setmessage");
 
-            } else {
-                // There was a problem with the folders, so restart the app!
-                Log.d("RebuildDatabase", "problem with folders");
-                message = getString(R.string.error);
-                publishProgress("setmessage");
+            } catch (Exception e) {
+                Log.d("PopUpRebuildDatabase", "User cancelled database - caught crash!");
             }
             return null;
         }
 
         @Override
         protected void onProgressUpdate(String... string) {
-            if (settingProgressBarUp) {
-                settingProgressBarUp = false;
-                progressBar.setVisibility(View.VISIBLE);
-                progressBar.setMax(numSongs);
+            try {
+                if (settingProgressBarUp) {
+                    settingProgressBarUp = false;
+                    progressBar.setVisibility(View.VISIBLE);
+                    progressBar.setMax(numSongs);
+                }
+                if (currentSongNum > 0) {
+                    progressBar.setProgress(currentSongNum);
+                }
+                progressText.setText(message);
+            } catch (Exception e) {
+                Log.d("PopUpRebuildDatabase", "Crash caught while updating progress");
             }
-            if (currentSongNum > 0) {
-                progressBar.setProgress(currentSongNum);
-            }
-            progressText.setText(message);
         }
 
         @Override
         protected void onPostExecute(String s) {
-            simpleProgressBar.setVisibility(View.GONE);
-            progressBar.setVisibility(View.GONE);
-            closeMe.setVisibility(View.VISIBLE);
-            FullscreenActivity.needtorefreshsongmenu = false;
+            try {
+                simpleProgressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+                closeMe.setVisibility(View.VISIBLE);
+                FullscreenActivity.needtorefreshsongmenu = false;
+                if (mListener != null) {
+                    mListener.refreshAll();
+                }
+                dismiss();
+            } catch (Exception e) {
+                Log.d("PopUpRebuildDatabase", "Crash caught while finishing indexing");
+            }
         }
     }
 }

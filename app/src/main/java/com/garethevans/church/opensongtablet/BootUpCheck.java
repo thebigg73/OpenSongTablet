@@ -17,6 +17,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
@@ -53,6 +55,10 @@ public class BootUpCheck extends AppCompatActivity {
     OnSongConvert onSongConvert;
     UsrConvert usrConvert;
     TextSongConvert textSongConvert;
+    SetTypeFace setTypeFace;
+
+    // Handlers for fonts
+    Handler lyrichandler, chordhandler, presohandler, presoinfohandler, customhandler, monohandler;
 
     // Declare views
     ProgressBar progressBar;
@@ -83,6 +89,15 @@ public class BootUpCheck extends AppCompatActivity {
         onSongConvert = new OnSongConvert();
         usrConvert = new UsrConvert();
         textSongConvert = new TextSongConvert();
+        setTypeFace = new SetTypeFace();
+
+        // Initialise the font handlers
+        lyrichandler = new Handler();
+        chordhandler = new Handler();
+        presohandler = new Handler();
+        presoinfohandler = new Handler();
+        customhandler = new Handler();
+        monohandler = new Handler();
 
         // This will do one of 2 things - it will either show the splash screen or the welcome screen
         // To determine which one, we need to check the storage is set and is valid
@@ -510,6 +525,9 @@ public class BootUpCheck extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Object... objects) {
+            Looper.prepare();
+
+            // Load up custom font
 
             // Check if the folders exist, if not, create them
             message = getString(R.string.storage_check);
@@ -522,7 +540,8 @@ public class BootUpCheck extends AppCompatActivity {
                 // Load up all of the preferences into FullscreenActivity (static variables)
                 message = getString(R.string.load_preferences);
                 publishProgress("setmessage");
-                fullscreenActivity.mainSetterOfVariables(BootUpCheck.this, preferences);
+                fullscreenActivity.mainSetterOfVariables(BootUpCheck.this, preferences, setTypeFace,
+                        lyrichandler, chordhandler, presohandler, presoinfohandler, customhandler, monohandler);
 
                 // Search for the user's songs
                 message = getString(R.string.initialisesongs_start).replace("-", "").trim();
@@ -566,7 +585,6 @@ public class BootUpCheck extends AppCompatActivity {
 
                 indexSongs.completeLog();
 
-                // TODO
                 // If we had to convert songs from OnSong, ChordPro, etc, we need to reindex to get sorted songs again
                 // This is because the filename will likely have changed alphabetical position
                 // Alert the user to the need for rebuilding and repeat the above

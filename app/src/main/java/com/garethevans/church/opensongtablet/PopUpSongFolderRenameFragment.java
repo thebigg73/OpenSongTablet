@@ -17,12 +17,11 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-
-//import java.io.File;
 
 public class PopUpSongFolderRenameFragment extends DialogFragment {
     // This is a quick popup to enter a new song folder name, or rename a current one
@@ -33,9 +32,9 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
     static ArrayList<String> oldtempfolders;
     GetFoldersAsync getFolders_async;
     String tempNewFolder;
-    //Uri checkExists;
     String tempOldFolder;
     TextView title;
+    ProgressBar progressBar;
     StorageAccess storageAccess;
     Preferences preferences;
     SongFolders songFolders;
@@ -46,49 +45,6 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         PopUpSongFolderRenameFragment frag;
         frag = new PopUpSongFolderRenameFragment();
         return frag;
-    }
-
-    public interface MyInterface {
-        void refreshAll();
-        void prepareSongMenu();
-    }
-
-    private MyInterface mListener;
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        mListener = null;
-        super.onDetach();
-    }
-
-    Spinner oldFolderNameSpinner;
-    EditText newFolderNameEditText;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // safety check
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            this.dismiss();
-        }
     }
 
     @Override
@@ -133,10 +89,10 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         songFolders = new SongFolders();
         listSongFiles = new ListSongFiles();
 
-
         // Initialise the views
         oldFolderNameSpinner = V.findViewById(R.id.oldFolderNameSpinner);
         newFolderNameEditText = V.findViewById(R.id.newFolderNameEditText);
+        progressBar = V.findViewById(R.id.progressBar);
 
         // Set up the folderspinner
         // Set up the spinner
@@ -175,45 +131,86 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         return V;
     }
 
+    private MyInterface mListener;
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onAttach(Activity activity) {
+        mListener = (MyInterface) activity;
+        super.onAttach(activity);
+    }
+
+    @Override
+    public void onDetach() {
+        mListener = null;
+        super.onDetach();
+    }
+
+    Spinner oldFolderNameSpinner;
+    EditText newFolderNameEditText;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // safety check
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
+
+    public void createOrRename() {
+        progressBar.setVisibility(View.VISIBLE);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getVariables();
+                if (myTask.equals("create")) {
+                    doCreateFolder();
+                } else {
+                    doRenameFolder();
+                }
+
+                ShowToast.showToast(getActivity());
+
+                // Save preferences
+                Preferences.savePreferences();
+
+                // Let the app know we need to rebuild the database
+                FullscreenActivity.needtorefreshsongmenu = true;
+
+                if (mListener != null) {
+                    mListener.loadSong();
+                }
+                try {
+                    dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
     public void doSetTitle() {
         title.setText(mTitle);
     }
 
-    public void createOrRename() {
-        getVariables();
-        if (myTask.equals("create")) {
-            doCreateFolder();
-        } else {
-            doRenameFolder();
-        }
-
-        ShowToast.showToast(getActivity());
-
-        // Load the songs and the folders
-        if (mListener!=null) {
-            mListener.prepareSongMenu();
-        }
-
-        try {
-            LoadXML.loadXML(getActivity(), preferences, listSongFiles, storageAccess);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Save preferences
-        Preferences.savePreferences();
-
-        if (myTask.equals("create") && mListener!=null) {
-            mListener.refreshAll();
-        }
-        dismiss();
-    }
-
     public void doCreateFolder() {
+
         // Try to create inside the current folder
-        if (!FullscreenActivity.whichSongFolder.equals(getString(R.string.mainfoldername))&&
+        if (!FullscreenActivity.whichSongFolder.equals(getString(R.string.mainfoldername)) &&
                 !FullscreenActivity.whichSongFolder.equals("")) {
-            tempNewFolder = FullscreenActivity.whichSongFolder+"/"+tempNewFolder;
+            tempNewFolder = FullscreenActivity.whichSongFolder + "/" + tempNewFolder;
         }
         if (storageAccess.createFile(getActivity(), preferences, DocumentsContract.Document.MIME_TYPE_DIR, "Songs", tempNewFolder, null)) {
             FullscreenActivity.myToastMessage = getResources().getString(R.string.newfolder) + " - " + getResources().getString(R.string.ok);
@@ -221,6 +218,10 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         } else {
             FullscreenActivity.myToastMessage = getResources().getString(R.string.newfolder) + " - " + getResources().getString(R.string.createfoldererror);
         }
+    }
+
+    public interface MyInterface {
+        void loadSong();
     }
 
     public void doRenameFolder() {

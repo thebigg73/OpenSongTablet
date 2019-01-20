@@ -1581,16 +1581,17 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         ListSongFiles listSongFiles = new ListSongFiles();
         listSongFiles.songUrisInFolder(getActivity(), preferences);
 
+        // Indicate after loading song (which renames it), we need to build the database and song index
+        FullscreenActivity.needtorefreshsongmenu = true;
+
         if (mListener != null) {
             mListener.loadSong();
-            mListener.prepareSongMenu();
             dismiss();
         }
     }
 
     public interface MyInterface {
         void pageButtonAlpha(String s);
-        void prepareSongMenu();
         void loadSong();
     }
 

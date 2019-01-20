@@ -411,8 +411,6 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
             documentFolders = new ArrayList<>();
             documentFolders.clear();
             try {
-
-                Log.d("d","Number of entries="+numzips);
                 ZipEntry ze;
 
                 // Create a reference to the main songs folder
@@ -537,7 +535,6 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
             // Split by &&_
             String[] bits = values[0].split("&&_");
             int progress = Integer.parseInt(bits[0]);
-            Log.d("d","Progress = "+progress+"/"+numzips);
             progressBar.setProgress(progress);
             currentFileWork.setText(bits[1]);
         }

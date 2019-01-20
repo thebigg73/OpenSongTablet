@@ -42,8 +42,7 @@ public class LoadXML extends Activity {
         Preferences.loadSongPrep();
 
         // Just in case
-        FullscreenActivity.myLyrics = c.getResources().getString(R.string.songdoesntexist) + "\n\n";
-        FullscreenActivity.mLyrics = c.getResources().getString(R.string.songdoesntexist) + "\n\n";
+        setNotFound(c);
 
         needtoloadextra = false;
         FullscreenActivity.myXML = null;
@@ -56,13 +55,11 @@ public class LoadXML extends Activity {
             FullscreenActivity.isPDF = true;
             filetype = "PDF";
             isxml = false;
-        }
-        if (FullscreenActivity.songfilename.toLowerCase().endsWith(".doc") ||
+        } else if (FullscreenActivity.songfilename.toLowerCase().endsWith(".doc") ||
                 FullscreenActivity.songfilename.toLowerCase().endsWith(".docx")) {
             filetype = "DOC";
             isxml = false;
-        }
-        if (FullscreenActivity.songfilename.toLowerCase().endsWith(".jpg") ||
+        } else if (FullscreenActivity.songfilename.toLowerCase().endsWith(".jpg") ||
                 FullscreenActivity.songfilename.toLowerCase().endsWith(".jpeg") ||
                 FullscreenActivity.songfilename.toLowerCase().endsWith(".png") ||
                 FullscreenActivity.songfilename.toLowerCase().endsWith(".gif") ||
@@ -82,11 +79,15 @@ public class LoadXML extends Activity {
         Uri uri = storageAccess.getUriForItem(c, preferences, where, folder,
                 FullscreenActivity.songfilename);
         if (filetype.equals("SONG") && !FullscreenActivity.songfilename.equals("Welcome to OpenSongApp")) {
-            utf = storageAccess.getUTFEncoding(c,uri);
+            utf = storageAccess.getUTFEncoding(c, uri);
         }
 
-        if (!filetype.equals("PDF") && !filetype.equals("DOC") && (!filetype.equals("IMG"))) {
+        if (FullscreenActivity.songfilename.equals("Welcome to OpenSongApp")) {
+            setWelcome(c);
+        }
 
+        if (!filetype.equals("PDF") && !filetype.equals("DOC") && (!filetype.equals("IMG")) &&
+                !FullscreenActivity.songfilename.equals("Welcome to OpenSongApp")) {
             // Initialise all the xml tags a song should have
             initialiseSongTags(c);
 
@@ -98,21 +99,11 @@ public class LoadXML extends Activity {
                     grabOpenSongXML(c, preferences);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.d("LoadXML", "Error performing grabOpenSongXML()");
-                    FullscreenActivity.thissong_scale = "W";
-                    FullscreenActivity.myXML = "<title>Welcome to OpenSongApp</title>\n<author></author>\n<lyrics>"
-                            + c.getResources().getString(R.string.songdoesntexist) + "\n\n" + "</lyrics>";
-                    FullscreenActivity.myLyrics = c.getResources().getString(R.string.songdoesntexist) + "\n\n";
-                    FullscreenActivity.mLyrics = c.getResources().getString(R.string.songdoesntexist) + "\n\n";
+                    setNotFound(c);
                     isxml = false;
                 }
             } else {
-                Log.d("LoadXML", "Didn't load");
-                FullscreenActivity.myXML = "<title>Welcome to OpenSongApp</title>\n<author></author>\n<lyrics>"
-                        + c.getResources().getString(R.string.songdoesntexist) + "\n\n" + "</lyrics>";
-                FullscreenActivity.myLyrics = c.getResources().getString(R.string.songdoesntexist) + "\n\n";
-                FullscreenActivity.mLyrics = c.getResources().getString(R.string.songdoesntexist) + "\n\n";
-                FullscreenActivity.myLyrics = "ERROR!";
+                setNotFound(c);
             }
 
             if (isxml && !FullscreenActivity.myLyrics.equals("ERROR!")) {
@@ -152,10 +143,7 @@ public class LoadXML extends Activity {
 
                 } catch (java.io.FileNotFoundException e) {
                     e.printStackTrace();
-                    // file doesn't exist
-                    FullscreenActivity.myXML = "<title>Welcome to OpenSongApp</title>\n<author>Gareth Evans</author>\n<lyrics>"
-                            + c.getResources().getString(R.string.songdoesntexist) + "\n\n" + "</lyrics>";
-                    FullscreenActivity.myLyrics = "ERROR!";
+                    setNotFound(c);
                 }
 
                 // If the song is OnSong format - try to import it
@@ -173,7 +161,8 @@ public class LoadXML extends Activity {
                     } catch (Exception e) {
                         Log.d("LoadXML", "Error performing grabOpenSongXML()");
                     }
-                  // If the song is usr format - try to import it
+
+                    // If the song is usr format - try to import it
                 } else if (FullscreenActivity.songfilename.contains(".usr")
                         || FullscreenActivity.myXML.contains("[File]")
                         || FullscreenActivity.myXML.contains("Type=")
@@ -190,7 +179,8 @@ public class LoadXML extends Activity {
                     } catch (Exception e) {
                         Log.d("LoadXML", "Error performing grabOpenSongXML()");
                     }
-                  // If the song is in ChordPro format - try to import it
+
+                    // If the song is in ChordPro format - try to import it
                 } else if (FullscreenActivity.myXML.contains("{title") ||
                         FullscreenActivity.myXML.contains("{t:") ||
                         FullscreenActivity.myXML.contains("{t :") ||
@@ -231,7 +221,7 @@ public class LoadXML extends Activity {
                 // Need to add a space to the start of each line
                 String[] lines = FullscreenActivity.myXML.split("\n");
                 StringBuilder text = new StringBuilder();
-                for (int z=0;z<lines.length;z++) {
+                for (int z=0; z<lines.length; z++) {
                     if (lines[z].indexOf("[")!=0 && lines[z].indexOf(".")!=0 && lines[z].indexOf(";")!=0 && lines[z].indexOf("---")!=0 && lines[z].indexOf(" ")!=0) {
                         lines[z] = " " + lines[z];
                     }
@@ -298,6 +288,33 @@ public class LoadXML extends Activity {
         }
 
         FullscreenActivity.thissong_scale = FullscreenActivity.toggleYScale;
+    }
+
+    private static void setNotFound(Context c) {
+        FullscreenActivity.myLyrics = FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename + "\n\n" +
+                c.getResources().getString(R.string.songdoesntexist) + "\n\n";
+        FullscreenActivity.mLyrics = FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename + "\n\n" +
+                c.getResources().getString(R.string.songdoesntexist) + "\n\n";
+        FullscreenActivity.myXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<title>Welcome to OpenSongApp</title>\n" +
+                "<author>Gareth Evans</author>\n<lyrics>"
+                + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename + "\n\n"
+                + c.getResources().getString(R.string.songdoesntexist) + "\n\n" + "</lyrics>";
+        FullscreenActivity.mLyrics = FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename + "\n\n"
+                + c.getResources().getString(R.string.songdoesntexist) + "\n\n";
+        FullscreenActivity.myLyrics = "ERROR!";
+    }
+
+    private static void setWelcome(Context c) {
+        FullscreenActivity.thissong_scale = "W";
+        FullscreenActivity.mTitle = "Welcome to OpenSongApp";
+        FullscreenActivity.mAuthor = "Gareth Evans";
+        FullscreenActivity.mLinkWeb = "http://www.opensongapp.com";
+        FullscreenActivity.mLyrics = c.getString(R.string.user_guide_lyrics);
+        FullscreenActivity.myLyrics = c.getString(R.string.user_guide_lyrics);
+        FullscreenActivity.myXML = "<?xml><song><title>" + FullscreenActivity.mTitle + "</title>\n" +
+                "<author>" + FullscreenActivity.mAuthor + "</author>\n" +
+                "<lyrics>" + FullscreenActivity.mLyrics + "\n</lyrics></song>";
     }
 
     static void prepareLoadCustomReusable(Context c, Preferences preferences, ListSongFiles listSongFiles, StorageAccess storageAccess, String what) {

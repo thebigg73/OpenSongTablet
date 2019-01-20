@@ -819,12 +819,12 @@ public class PopUpProfileFragment extends DialogFragment {
                         break;
                     case "light_extrainfo":
                         FullscreenActivity.light_extrainfo = getIntegerValue(xpp.nextText(), 0xff000000);
-
                         break;
+
                     case "linespacing":
-                        FullscreenActivity.linespacing = getIntegerValue(xpp.nextText(), 0);
-
+                        FullscreenActivity.linespacing = getFloatValue(xpp.nextText(), 0.1f);
                         break;
+
                     case "locale":
                         FullscreenActivity.locale = new Locale(getTextValue(xpp.nextText(), Preferences.getStoredLocale().toString()));
 
@@ -1027,41 +1027,6 @@ public class PopUpProfileFragment extends DialogFragment {
                         break;
                     case "pageButtonAlpha":
                         FullscreenActivity.pageButtonAlpha = getFloatValue(xpp.nextText(), 0.2f);
-
-                /*} else if (xpp.getName().equals("pageturner_AUTOSCROLL")) {
-                    FullscreenActivity.pageturner_AUTOSCROLL = getIntegerValue(xpp.nextText(), -1);
-
-                } else if (xpp.getName().equals("pageturner_AUTOSCROLLPAD")) {
-                    FullscreenActivity.pageturner_AUTOSCROLLPAD = getIntegerValue(xpp.nextText(), -1);
-
-                } else if (xpp.getName().equals("pageturner_AUTOSCROLLMETRONOME")) {
-                    FullscreenActivity.pageturner_AUTOSCROLLMETRONOME = getIntegerValue(xpp.nextText(), -1);
-
-                } else if (xpp.getName().equals("pageturner_AUTOSCROLLPADMETRONOME")) {
-                    FullscreenActivity.pageturner_AUTOSCROLLPADMETRONOME = getIntegerValue(xpp.nextText(), -1);
-
-                } else if (xpp.getName().equals("pageturner_DOWN")) {
-                    FullscreenActivity.pageturner_DOWN = getIntegerValue(xpp.nextText(), 20);
-
-                } else if (xpp.getName().equals("pageturner_METRONOME")) {
-                    FullscreenActivity.pageturner_METRONOME = getIntegerValue(xpp.nextText(), -1);
-
-                } else if (xpp.getName().equals("pageturner_NEXT")) {
-                    FullscreenActivity.pageturner_NEXT = getIntegerValue(xpp.nextText(), 22);
-
-                } else if (xpp.getName().equals("pageturner_PAD")) {
-                    FullscreenActivity.pageturner_PAD = getIntegerValue(xpp.nextText(), -1);
-
-                } else if (xpp.getName().equals("pageturner_PADMETRONOME")) {
-                    FullscreenActivity.pageturner_PADMETRONOME = getIntegerValue(xpp.nextText(), -1);
-
-                } else if (xpp.getName().equals("pageturner_PREVIOUS")) {
-                    FullscreenActivity.pageturner_PREVIOUS = getIntegerValue(xpp.nextText(), 21);
-
-                } else if (xpp.getName().equals("pageturner_UP")) {
-                    FullscreenActivity.pageturner_UP = getIntegerValue(xpp.nextText(), 19);
-
-                */
 
                         break;
                     case "pedal1":
@@ -1419,8 +1384,12 @@ public class PopUpProfileFragment extends DialogFragment {
                         break;
                     case "transposeStyle":
                         FullscreenActivity.transposeStyle = getTextValue(xpp.nextText(), "sharps");
-
                         break;
+
+                    case "trimLines":
+                        FullscreenActivity.trimLines = getBooleanValue(xpp.nextText(), true);
+                        break;
+
                     case "trimSections":
                         FullscreenActivity.trimSections = getBooleanValue(xpp.nextText(), false);
 
@@ -1737,19 +1706,6 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <page_sticky_visible>" + FullscreenActivity.page_sticky_visible + "</page_sticky_visible>\n";
         text += "  <pagebutton_position>" + FullscreenActivity.pagebutton_position + "</pagebutton_position>\n";
         text += "  <pagebutton_scale>" + FullscreenActivity.pagebutton_scale + "</pagebutton_scale>\n";
-        /*
-        text += "  <pageturner_AUTOSCROLL>" + FullscreenActivity.pageturner_AUTOSCROLL + "</pageturner_AUTOSCROLL>\n";
-        text += "  <pageturner_AUTOSCROLLPAD>" + FullscreenActivity.pageturner_AUTOSCROLLPAD + "</pageturner_AUTOSCROLLPAD>\n";
-        text += "  <pageturner_AUTOSCROLLMETRONOME>" + FullscreenActivity.pageturner_AUTOSCROLLMETRONOME + "</pageturner_AUTOSCROLLMETRONOME>\n";
-        text += "  <pageturner_AUTOSCROLLPADMETRONOME>" + FullscreenActivity.pageturner_AUTOSCROLLPADMETRONOME + "</pageturner_AUTOSCROLLPADMETRONOME>\n";
-        text += "  <pageturner_DOWN>" + FullscreenActivity.pageturner_DOWN + "</pageturner_DOWN>\n";
-        text += "  <pageturner_METRONOME>" + FullscreenActivity.pageturner_METRONOME + "</pageturner_METRONOME>\n";
-        text += "  <pageturner_NEXT>" + FullscreenActivity.pageturner_NEXT + "</pageturner_NEXT>\n";
-        text += "  <pageturner_PAD>" + FullscreenActivity.pageturner_PAD + "</pageturner_PAD>\n";
-        text += "  <pageturner_PADMETRONOME>" + FullscreenActivity.pageturner_PADMETRONOME + "</pageturner_PADMETRONOME>\n";
-        text += "  <pageturner_PREVIOUS>" + FullscreenActivity.pageturner_PREVIOUS + "</pageturner_PREVIOUS>\n";
-        text += "  <pageturner_UP>" + FullscreenActivity.pageturner_UP + "</pageturner_UP>\n";
-        */
         text += "  <pageButtonAlpha>" + FullscreenActivity.pageButtonAlpha + "</pageButtonAlpha>\n";
         text += "  <pedal1>" + FullscreenActivity.pedal1 + "</pedal1>\n";
         text += "  <pedal2>" + FullscreenActivity.pedal2 + "</pedal2>\n";
@@ -1841,6 +1797,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <toggleScrollBeforeSwipe>" + FullscreenActivity.toggleScrollBeforeSwipe + "</toggleScrollBeforeSwipe>\n";
         text += "  <toggleYScale>" + FullscreenActivity.toggleYScale + "</toggleYScale>\n";
         text += "  <transposeStyle>" + FullscreenActivity.transposeStyle + "</transposeStyle>\n";
+        text += "  <trimLines>" + FullscreenActivity.trimLines + "</trimLines>\n";
         text += "  <trimSections>" + FullscreenActivity.trimSections + "</trimSections>\n";
         text += "  <trimSectionSpace>" + FullscreenActivity.trimSectionSpace + "</trimSectionSpace>\n";
         text += "  <usePresentationOrder>" + FullscreenActivity.usePresentationOrder + "</usePresentationOrder>\n";

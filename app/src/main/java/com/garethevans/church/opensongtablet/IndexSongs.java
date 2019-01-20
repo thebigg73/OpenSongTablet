@@ -1,10 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -15,8 +12,6 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static android.content.Context.MODE_PRIVATE;
-
 // This class is used to index all of the songs in the user's folder
 // It builds the search index and prepares the required stuff for the song menus (name, author, key)
 // It relies on all of the songs to be added to the FullscreenActivity.songIds variable
@@ -26,33 +21,6 @@ class IndexSongs {
 
     private boolean errorsencountered = false;
 
-    interface MyInterface {
-        void indexingDone();
-    }
-    MyInterface mListener;
-
-    private XmlPullParser xpp;
-    private StringBuilder errmsg = new StringBuilder(), log = new StringBuilder();
-    InputStream inputStream;
-    Uri uri;
-    private String title, author, lyrics, theme, key, hymnnumber, copyright, alttheme, aka,
-            user1, user2, user3, ccli, filename, folder, utf;
-    private float filesize;
-
-    // This is called if the user specifically requests a full rebuild of the index
-    private void completeRebuildIndex(Context c, StorageAccess storageAccess, Preferences preferences,
-                                      SongXML songXML, ChordProConvert chordProConvert,
-                                      UsrConvert usrConvert, OnSongConvert onSongConvert,
-                                      TextSongConvert textSongConvert) throws XmlPullParserException {
-
-        initialiseIndexStuff();
-        for (int w = 0; w<FullscreenActivity.songIds.size(); w++) {
-            doIndexThis(c, storageAccess, preferences, songXML, chordProConvert, usrConvert, onSongConvert, textSongConvert, w);
-        }
-        completeLog();
-        getSongDetailsFromIndex();
-    }
-
     // This one prepares the search index log text
     void initialiseIndexStuff() throws XmlPullParserException {
         FullscreenActivity.safetosearch = false;
@@ -60,6 +28,25 @@ class IndexSongs {
         FullscreenActivity.search_database = new ArrayList<>();
         FullscreenActivity.search_database.clear();
         FullscreenActivity.indexlog = "";
+
+        FullscreenActivity.searchFileName = new ArrayList<>();
+        FullscreenActivity.searchFolder = new ArrayList<>();
+        FullscreenActivity.searchTitle = new ArrayList<>();
+        FullscreenActivity.searchAuthor = new ArrayList<>();
+        FullscreenActivity.searchShortLyrics = new ArrayList<>();
+        FullscreenActivity.searchTheme = new ArrayList<>();
+        FullscreenActivity.searchKey = new ArrayList<>();
+        FullscreenActivity.searchHymnNumber = new ArrayList<>();
+
+        FullscreenActivity.searchFileName.clear();
+        FullscreenActivity.searchFolder.clear();
+        FullscreenActivity.searchTitle.clear();
+        FullscreenActivity.searchAuthor.clear();
+        FullscreenActivity.searchShortLyrics.clear();
+        FullscreenActivity.searchTheme.clear();
+        FullscreenActivity.searchKey.clear();
+        FullscreenActivity.searchHymnNumber.clear();
+
         XmlPullParserFactory xppf = XmlPullParserFactory.newInstance();
         xppf.setNamespaceAware(true);
         xpp = xppf.newPullParser();
@@ -71,6 +58,60 @@ class IndexSongs {
         Collator collator = Collator.getInstance(FullscreenActivity.locale);
         collator.setStrength(Collator.SECONDARY);
         Collections.sort(FullscreenActivity.songIds, collator);
+    }
+
+    MyInterface mListener;
+
+    private XmlPullParser xpp;
+    private StringBuilder errmsg = new StringBuilder(), log = new StringBuilder();
+    InputStream inputStream;
+    Uri uri;
+    private String title, author, lyrics, theme, key, hymnnumber, copyright, alttheme, aka,
+            user1, user2, user3, ccli, filename, folder, utf;
+    private float filesize;
+
+    /*// This is called if the user specifically requests a full rebuild of the index
+    private void completeRebuildIndex(Context c, StorageAccess storageAccess, Preferences preferences,
+                                      SongXML songXML, ChordProConvert chordProConvert,
+                                      UsrConvert usrConvert, OnSongConvert onSongConvert,
+                                      TextSongConvert textSongConvert) throws XmlPullParserException {
+
+        initialiseIndexStuff();
+        for (int w = 0; w<FullscreenActivity.songIds.size(); w++) {
+            doIndexThis(c, storageAccess, preferences, songXML, chordProConvert, usrConvert, onSongConvert, textSongConvert, w);
+        }
+        completeLog();
+        getSongDetailsFromIndex();
+    }*/
+
+    // This is the code to index the specific song (by sending the array index w)
+    boolean doIndexThis(Context c, StorageAccess storageAccess, Preferences preferences,
+                        SongXML songXML, ChordProConvert chordProConvert, UsrConvert usrConvert,
+                        OnSongConvert onSongConvert, TextSongConvert textSongConvert, int w) {
+
+        boolean hadtoconvert = false;
+
+        String id = FullscreenActivity.songIds.get(w);
+        initialiseSongTags();
+        setFileAndUri(c, storageAccess, id);
+        if (isDir(id)) {
+            key = c.getString(R.string.songsinfolder);
+        }
+        title = filename;
+        folder = extractFolderFromId(c, id);
+        filesize = getFileSize(c, storageAccess, uri);
+
+        if (!key.equals(c.getString(R.string.songsinfolder)) && storageAccess.isXML(uri)) {
+            // This tries to extract the file contents as XML, but if that throws an error,
+            // It looks for .chordpro, .onsong, or .txt.
+            utf = storageAccess.getUTFEncoding(c, uri);
+            hadtoconvert = getXMLStuff(c, storageAccess, preferences, chordProConvert, onSongConvert,
+                    usrConvert, textSongConvert, songXML, id, w);
+
+        }
+        parseIndexedDetails(c);
+
+        return hadtoconvert;
     }
 
     // This one prepares the end of the search index log text
@@ -86,35 +127,39 @@ class IndexSongs {
         FullscreenActivity.safetosearch = true;
     }
 
-    // This is the code to index the specific song (by sending the array index w)
-    boolean doIndexThis(Context c, StorageAccess storageAccess, Preferences preferences,
-                        SongXML songXML, ChordProConvert chordProConvert, UsrConvert usrConvert,
-                        OnSongConvert onSongConvert, TextSongConvert textSongConvert, int w) {
+    // Once the song has been fully indexed, extract the stuff for the song menu
+    // We only need the name, author and key
+    void getSongDetailsFromIndex() {
+        // Set the details for the menu - extract the appropriate stuff
+        FullscreenActivity.allSongDetailsForMenu = new String[FullscreenActivity.search_database.size()][4];
 
-        boolean hadtoconvert = false;
+        for (int x = 0; x < FullscreenActivity.search_database.size(); x++) {
+            String[] bits = FullscreenActivity.search_database.get(x).split("_%%%_");
 
-        String id = FullscreenActivity.songIds.get(w);
-        Log.d("IndexSongs", "original songIds=" + id);
-        initialiseSongTags();
-        setFileAndUri(c, storageAccess, id);
-        if (isDir(id)) {
-            key = c.getString(R.string.songsinfolder);
+            String val_folder = getValue(bits, 0); // folder
+            String val_filename = getValue(bits, 1); // filename (skip index 2 as it is the title)
+            String val_title = getValue(bits, 2); // title
+            String val_author = getValue(bits, 3); // author
+            String val_key = getValue(bits, 4); // key
+            String val_shortlyrics = getValue(bits, 5); // short lyrics (also contains user fields)
+            String val_theme = getValue(bits, 6); // theme
+            String val_hymn = getValue(bits, 7); // hymn number
+
+            FullscreenActivity.allSongDetailsForMenu[x][0] = val_folder;
+            FullscreenActivity.allSongDetailsForMenu[x][1] = val_filename;
+            FullscreenActivity.allSongDetailsForMenu[x][2] = val_author;
+            FullscreenActivity.allSongDetailsForMenu[x][3] = val_key;
+
+            // Also create the search stuff
+            FullscreenActivity.searchFileName.add(val_filename);
+            FullscreenActivity.searchFolder.add(val_folder);
+            FullscreenActivity.searchTitle.add(val_title);
+            FullscreenActivity.searchAuthor.add(val_author);
+            FullscreenActivity.searchShortLyrics.add(val_shortlyrics);
+            FullscreenActivity.searchTheme.add(val_theme);
+            FullscreenActivity.searchKey.add(val_key);
+            FullscreenActivity.searchHymnNumber.add(val_hymn);
         }
-        title = filename;
-        folder = extractFolderFromId(c, id);
-        filesize = getFileSize(c, storageAccess, uri);
-
-        if (storageAccess.isXML(uri)) {
-            // This tries to extract the file contents as XML, but if that throws an error,
-            // It looks for .chordpro, .onsong, or .txt.
-            utf = storageAccess.getUTFEncoding(c, uri);
-            hadtoconvert = getXMLStuff(c, storageAccess, preferences, chordProConvert, onSongConvert,
-                    usrConvert, textSongConvert, songXML, id, w);
-
-        }
-        parseIndexedDetails(c);
-
-        return hadtoconvert;
     }
 
     // Determine if the current songId is a directory or a file
@@ -293,7 +338,6 @@ class IndexSongs {
 
             if (name != null && (name.toLowerCase().endsWith(".cho") || name.toLowerCase().endsWith(".chordpro") ||
                     name.toLowerCase().endsWith(".chopro") || name.toLowerCase().endsWith(".crd"))) {
-                Log.d("IndexSongs", "ChordPro, text or song without extension: " + uri);
                 // Extract the stuff!
                 // Load the current text contents
                 try {
@@ -306,7 +350,6 @@ class IndexSongs {
                 }
 
             } else if (name != null && (name.toLowerCase().endsWith(".onsong"))) {
-                Log.d("IndexSongs", "OnSong song:" + uri);
                 try {
                     InputStream inputStream = storageAccess.getInputStream(c, uri);
                     String filecontents = storageAccess.readTextFileToString(inputStream);
@@ -318,7 +361,6 @@ class IndexSongs {
                 }
 
             } else if (name != null && (name.toLowerCase().endsWith(".usr"))) {
-                Log.d("IndexSongs", "Usr song:" + uri);
                 try {
                     InputStream inputStream = storageAccess.getInputStream(c, uri);
                     String filecontents = storageAccess.readTextFileToString(inputStream);
@@ -330,7 +372,6 @@ class IndexSongs {
                 }
 
             } else if (name != null && (storageAccess.isTextFile(uri))) {
-                Log.d("IndexSongs", "Try to treat as text file:" + uri);
                 try {
                     InputStream inputStream = storageAccess.getInputStream(c, uri);
                     String filecontents = storageAccess.readTextFileToString(inputStream);
@@ -344,7 +385,6 @@ class IndexSongs {
                     bits.add(textSongConvert.convertText(c, filecontents));
 
                 } catch (Exception e) {
-                    Log.d("IndexSongs", "Can't index, so use filename only:" + uri);
                     bits.add(filename);
                     bits.add(filename);
                     bits.add("");
@@ -355,7 +395,6 @@ class IndexSongs {
                     bits.add("");
                 }
             } else {
-                Log.d("IndexSongs", "Can't index, so use filename only:" + uri);
                 bits.add(filename);
                 bits.add(filename);
                 bits.add("");
@@ -406,19 +445,7 @@ class IndexSongs {
 
     }
 
-    // Once the song has been fully indexed, extract the stuff for the song menu
-    // We only need the name, author and key
-    void getSongDetailsFromIndex() {
-        // Set the details for the menu - extract the appropriate stuff
-        FullscreenActivity.allSongDetailsForMenu = new String[FullscreenActivity.search_database.size()][4];
-
-        for (int x = 0; x < FullscreenActivity.search_database.size(); x++) {
-            String[] bits = FullscreenActivity.search_database.get(x).split("_%%%_");
-            FullscreenActivity.allSongDetailsForMenu[x][0] = getValue(bits, 0); // folder
-            FullscreenActivity.allSongDetailsForMenu[x][1] = getValue(bits, 1); // filename (skip index 2 as it is the title)
-            FullscreenActivity.allSongDetailsForMenu[x][2] = getValue(bits, 3); // author
-            FullscreenActivity.allSongDetailsForMenu[x][3] = getValue(bits, 4); // key
-        }
+    interface MyInterface {
     }
 
     private String getValue(String[] bit, int index) {
@@ -445,7 +472,7 @@ class IndexSongs {
         }
     }
 
-    void indexMySongs(final Context c, final StorageAccess storageAccess, final Preferences preferences,
+    /*void indexMySongs(final Context c, final StorageAccess storageAccess, final Preferences preferences,
                       final SongXML songXML, final ChordProConvert chordProConvert, final UsrConvert usrConvert,
                       final OnSongConvert onSongConvert, final TextSongConvert textSongConvert) {
         // This indexes songs using a separate thread
@@ -499,5 +526,5 @@ class IndexSongs {
                 }
             }
         }).start();
-    }
+    }*/
 }

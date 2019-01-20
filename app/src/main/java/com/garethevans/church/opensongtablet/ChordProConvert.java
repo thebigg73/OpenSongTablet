@@ -76,6 +76,9 @@ class ChordProConvert {
         writeTheImprovedSong(c, storageAccess, preferences, oldSongFileName, newSongFileName,
                 songSubFolder, newUri, uri, pos);
 
+        // Indicate after loading song (which renames it), we need to build the database and song index
+        FullscreenActivity.needtorefreshsongmenu = true;
+
         return bitsForIndexing(newSongFileName, title, author, copyright, key, time_sig, ccli, lyrics);
     }
 
@@ -521,8 +524,6 @@ class ChordProConvert {
                 Log.d("d", "About to create the file. subfolder=" + songSubFolder + "  newSongFileName=" + newSongFileName);
                 storageAccess.createFile(c, preferences, null, "Songs", songSubFolder, newSongFileName);
             }
-
-            Log.d("d", "newUri=" + newUri);
 
             OutputStream outputStream = storageAccess.getOutputStream(c, newUri);
             if (outputStream != null && storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream)) {

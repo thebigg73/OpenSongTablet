@@ -7,6 +7,10 @@
     <string name="storage_check" translatable="false">Checking storage</string>
     <string name="load_preferences" translatable="false">Loading preferences</string>
 
+    <string name="googlefontcustom" translatable="false">Other Google font name</string>
+    <string name="googlefontbrowse" translatable="false">Browse all Google Fonts</string>
+    <string name="lorem" translatable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+
     <string name="root" translatable="false">Choose storage location</string>
     <string name="root_explain" translatable="false">Your storage location should point to where the OpenSong folder resides or where
         the app should create it.  If you are locating an existing OpenSong folder, navigate to where it is, but
@@ -422,7 +426,7 @@
     <string name="wait">Wait....</string>
     <string name="volume">Volume</string>
     <string name="pan">Pan</string>
-    <string name="linespacing">Trim linespacing by</string>
+    <string name="linespacing">Trim linespacing</string>
     <string name="currently">Currently</string>
     <string name="currentkeycode">Current keycode</string>
 	<string name="notset">Not set</string>

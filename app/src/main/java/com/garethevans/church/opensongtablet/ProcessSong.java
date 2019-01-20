@@ -216,7 +216,7 @@ public class ProcessSong extends Activity {
 
     static void lookForSplitPoints() {
         // Script to determine 2 column split details
-        int halfwaypoint = Math.round(FullscreenActivity.numrowstowrite / 2);
+        int halfwaypoint = Math.round((float) FullscreenActivity.numrowstowrite / 2.0f);
 
         // Look for nearest split point before halfway
         int splitpoint_1sthalf = 0;
@@ -958,7 +958,13 @@ public class ProcessSong extends Activity {
         TableRow caporow  = new TableRow(c);
         caporow.setClipChildren(false);
         caporow.setClipToPadding(false);
-        caporow.setPadding(0, -(int) ((float) FullscreenActivity.linespacing / fontsize), 0, 0);
+        caporow.setPadding(0, 0, 0, 0);
+        int trimval = (int) (fontsize * FullscreenActivity.chordfontscalesize * FullscreenActivity.linespacing);
+
+        if (FullscreenActivity.trimLines) {
+            caporow.setPadding(0, -trimval, 0, -trimval);
+            caporow.setGravity(Gravity.CENTER_VERTICAL);
+        }
 
         for (String bit:chords) {
             if (bit.indexOf(".")==0 && bit.length()>1) {
@@ -997,6 +1003,13 @@ public class ProcessSong extends Activity {
                 }
                 capobit.setShadowLayer(shadow, 4, 4, FullscreenActivity.lyricsBackgroundColor);
             }
+            if (FullscreenActivity.trimLines) {
+                capobit.setSingleLine();
+                capobit.setIncludeFontPadding(false);
+                capobit.setGravity(Gravity.CENTER_VERTICAL);
+                capobit.setPadding(0, -trimval, 0, -trimval);
+                capobit.setLineSpacing(0f, 0f);
+            }
             caporow.addView(capobit);
         }
         return caporow;
@@ -1005,7 +1018,14 @@ public class ProcessSong extends Activity {
     private static TableRow chordlinetoTableRow(Context c, String[] chords, float fontsize) {
         TableRow chordrow = new TableRow(c);
         chordrow.setLayoutParams(tablelayout_params());
-        chordrow.setPadding(0, -(int) ((float) FullscreenActivity.linespacing / fontsize), 0, 0);
+
+        chordrow.setPadding(0, 0, 0, 0);
+        int trimval = (int) (fontsize * FullscreenActivity.chordfontscalesize * FullscreenActivity.linespacing);
+
+        if (FullscreenActivity.trimLines) {
+            chordrow.setPadding(0, -trimval, 0, -trimval);
+            chordrow.setGravity(Gravity.CENTER_VERTICAL);
+        }
         chordrow.setClipChildren(false);
         chordrow.setClipToPadding(false);
 
@@ -1014,7 +1034,6 @@ public class ProcessSong extends Activity {
                 bit = bit.substring(1);
             }
             TextView chordbit = new TextView(c);
-            chordbit.setPadding(0,0,0,0);
 
             //bit = bit.replace("b","\u266d"); //Gives the proper b symbol if available in font
             chordbit.setText(bit);
@@ -1043,6 +1062,13 @@ public class ProcessSong extends Activity {
                 }
                 chordbit.setShadowLayer(shadow, 4, 4, FullscreenActivity.lyricsBackgroundColor);
             }
+            if (FullscreenActivity.trimLines) {
+                chordbit.setSingleLine();
+                chordbit.setIncludeFontPadding(false);
+                chordbit.setGravity(Gravity.CENTER_VERTICAL);
+                chordbit.setPadding(0, -trimval, 0, -trimval);
+                chordbit.setLineSpacing(0f, 0f);
+            }
             chordrow.addView(chordbit);
         }
         return chordrow;
@@ -1059,8 +1085,15 @@ public class ProcessSong extends Activity {
         } else {
             lyricrow.setLayoutParams(tablelayout_params());
         }
+
+        int trimval = (int) (fontsize * FullscreenActivity.linespacing);
+        lyricrow.setPadding(0, 0, 0, 0);
+        if (FullscreenActivity.trimLines) {
+            lyricrow.setPadding(0, -trimval, 0, -trimval);
+            lyricrow.setGravity(Gravity.CENTER_VERTICAL);
+        }
+
         // set different layoutparams and set gravity
-        lyricrow.setPadding(0, -(int) ((float) FullscreenActivity.linespacing / fontsize), 0, 0);
         lyricrow.setClipChildren(false);
         lyricrow.setClipToPadding(false);
 
@@ -1086,6 +1119,7 @@ public class ProcessSong extends Activity {
             }
 
             TextView lyricbit = new TextView(c);
+
             if (FullscreenActivity.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout &&
                     !FullscreenActivity.presoShowChords) {
                 lyricbit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -1119,6 +1153,7 @@ public class ProcessSong extends Activity {
                 } else {
                     lyricbit.setSingleLine(true);
                 }
+
             } else {
                 lyricbit.setTextColor(FullscreenActivity.lyricsTextColor);
                 lyricbit.setTypeface(FullscreenActivity.lyricsfont);
@@ -1129,7 +1164,6 @@ public class ProcessSong extends Activity {
                 if (shadow>24.0f) {
                     shadow = 24.0f;
                 }
-                lyricbit.setShadowLayer(shadow, 4, 4, FullscreenActivity.lyricsBackgroundColor);
             }
 
             if (FullscreenActivity.isImageSection) {
@@ -1190,6 +1224,12 @@ public class ProcessSong extends Activity {
                 }
                 lyricrow.addView(img);
             } else {
+                if (FullscreenActivity.trimLines) {
+                    lyricbit.setIncludeFontPadding(false);
+                    lyricbit.setGravity(Gravity.CENTER_VERTICAL);
+                    lyricbit.setPadding(0, -trimval, 0, -trimval);
+                    lyricbit.setLineSpacing(0f, 0f);
+                }
                 lyricrow.addView(lyricbit);
             }
         }
@@ -1199,7 +1239,14 @@ public class ProcessSong extends Activity {
     private static TableRow commentlinetoTableRow(Context c, String[] comment, float fontsize, boolean tab) {
         TableRow commentrow = new TableRow(c);
         commentrow.setLayoutParams(tablelayout_params());
-        commentrow.setPadding(0, -(int) ((float) FullscreenActivity.linespacing / fontsize), 0, 0);
+
+        int trimval = (int) (fontsize * FullscreenActivity.linespacing);
+        commentrow.setPadding(0, 0, 0, 0);
+        if (FullscreenActivity.trimLines) {
+            commentrow.setPadding(0, -trimval, 0, -trimval);
+            commentrow.setGravity(Gravity.CENTER_VERTICAL);
+        }
+
         commentrow.setClipChildren(false);
         commentrow.setClipToPadding(false);
 
@@ -1222,6 +1269,7 @@ public class ProcessSong extends Activity {
             }
 
             TextView lyricbit = new TextView(c);
+
             lyricbit.setLayoutParams(tablerow_params());
             lyricbit.setText(bit);
             lyricbit.setTextSize(fontsize * FullscreenActivity.commentfontscalesize);
@@ -1250,7 +1298,13 @@ public class ProcessSong extends Activity {
             }
             if (tab) {
                 // Set the comment text as monospaced to make it fit
-                lyricbit.setTypeface(FullscreenActivity.typeface1);
+                lyricbit.setTypeface(FullscreenActivity.monofont);
+            }
+            if (FullscreenActivity.trimLines) {
+                lyricbit.setIncludeFontPadding(false);
+                lyricbit.setGravity(Gravity.CENTER_VERTICAL);
+                lyricbit.setPadding(0, -trimval, 0, -trimval);
+                lyricbit.setLineSpacing(0f, 0f);
             }
             commentrow.addView(lyricbit);
         }
@@ -1302,6 +1356,7 @@ public class ProcessSong extends Activity {
         titleview.setTypeface(FullscreenActivity.lyricsfont);
         titleview.setTextSize(fontsize * FullscreenActivity.headingfontscalesize);
         titleview.setPaintFlags(titleview.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+        int trimval = (int) (fontsize * FullscreenActivity.linespacing);
 
         return titleview;
     }

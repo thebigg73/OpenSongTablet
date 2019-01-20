@@ -138,6 +138,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     OnSongConvert onSongConvert;
     UsrConvert usrConvert;
     TextSongConvert textSongConvert;
+    SetTypeFace setTypeFace;
 
     // MIDI
     Midi midi;
@@ -255,6 +256,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         onSongConvert = new OnSongConvert();
         usrConvert = new UsrConvert();
         textSongConvert = new TextSongConvert();
+        setTypeFace = new SetTypeFace();
 
         checkStorage();
 
@@ -331,7 +333,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 // If we have started for the first time (not redrawn)
                 if (FullscreenActivity.firstload) {
                     FullscreenActivity.firstload = false;
-                    rebuildSearchIndex();
+                    //rebuildSearchIndex();
                 }
 
                 // Set up the Salut service
@@ -578,6 +580,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         batterycharge.setTextSize(FullscreenActivity.batterySize);
         digitalclock.setTextSize(FullscreenActivity.timeSize);
         songtitle_ab.setTextSize(FullscreenActivity.ab_titleSize);
+        songcapo_ab.setTextSize(FullscreenActivity.ab_titleSize);
         songauthor_ab.setTextSize(FullscreenActivity.ab_authorSize);
         songkey_ab.setTextSize(FullscreenActivity.ab_titleSize);
 
@@ -608,31 +611,37 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     public void loadSong() {
-        // Don't do this for a blacklisted filetype (application, video, audio)
-        Uri uri = storageAccess.getUriForItem(PresenterMode.this, preferences, "Songs", FullscreenActivity.whichSongFolder,
-                FullscreenActivity.songfilename);
-        if (!storageAccess.checkFileExtensionValid(uri) && !storageAccess.determineFileTypeByExtension()) {
-            FullscreenActivity.myToastMessage = getResources().getString(R.string.file_type_unknown);
-            ShowToast.showToast(PresenterMode.this);
-        } else {
-            // Declare we have loaded a new song (for the ccli log).
-            // This stops us reporting projecting every section
-            newsongloaded = true;
+        if (!FullscreenActivity.alreadyloading) {
+            FullscreenActivity.alreadyloading = true;
+            // Get the song indexes
+            listSongFiles.getCurrentSongIndex();
 
-            // Send WiFiP2P intent
-            if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
-                try {
-                    sendSongLocationToConnected();
-                } catch (Exception e) {
-                    e.printStackTrace();
+            // Don't do this for a blacklisted filetype (application, video, audio)
+            Uri uri = storageAccess.getUriForItem(PresenterMode.this, preferences, "Songs", FullscreenActivity.whichSongFolder,
+                    FullscreenActivity.songfilename);
+            if (!storageAccess.checkFileExtensionValid(uri) && !storageAccess.determineFileTypeByExtension()) {
+                FullscreenActivity.myToastMessage = getResources().getString(R.string.file_type_unknown);
+                ShowToast.showToast(PresenterMode.this);
+            } else {
+                // Declare we have loaded a new song (for the ccli log).
+                // This stops us reporting projecting every section
+                newsongloaded = true;
+
+                // Send WiFiP2P intent
+                if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
+                    try {
+                        sendSongLocationToConnected();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-            doCancelAsyncTask(loadsong_async);
-            loadsong_async = new LoadSong();
-            try {
-                loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } catch (Exception e) {
-                // Error loading the song
+                doCancelAsyncTask(loadsong_async);
+                loadsong_async = new LoadSong();
+                try {
+                    loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                } catch (Exception e) {
+                    // Error loading the song
+                }
             }
         }
     }
@@ -646,13 +655,23 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     @Override
     public void songShortClick(int mychild) {
-        // Scroll to this song in the song menu
-        song_list_view.smoothScrollToPosition(mychild);
-        fixSet();
         // Close both drawers
         closeMyDrawers("both");
+
         // Load the song
         loadSong();
+
+        FullscreenActivity.currentSongIndex = mychild;
+
+        // Scroll to this song in the song menu
+        song_list_view.smoothScrollToPosition(mychild);
+
+        // Initialise the previous and next songs now song has loaded
+        findSongInFolders();
+
+        // Fix set
+        fixSet();
+
     }
     @Override
     public void songLongClick() {
@@ -1747,9 +1766,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }
                 Preferences.savePreferences();
                 // Rebuild the song list
-                storageAccess.listSongs(PresenterMode.this, preferences);
-                listSongFiles.songUrisInFolder(PresenterMode.this, preferences);
-                refreshAll();
+                rebuildSearchIndex();
                 break;
 
             case "deleteset":
@@ -2145,8 +2162,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         // This is handled by a popup
         FullscreenActivity.whattodo = "rebuildindex";
         openFragment();
-        /*indexSongs.indexMySongs(PresenterMode.this, storageAccess, preferences, songXML,
-                chordProConvert, usrConvert, onSongConvert, textSongConvert);*/
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -2273,11 +2288,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public void backupInstall(String message) {
         // Songs have been imported, so update the song menu and rebuild the search index
         showToastMessage(message);
-        prepareSongMenu();
         rebuildSearchIndex();
-        openMyDrawers("song");
-        //FullscreenActivity.whattodo = "choosefolder";
-        //openFragment();
     }
     @Override
     public void fixSet() {
@@ -2526,11 +2537,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         FullscreenActivity.projectedLineTypes[x] = new String[FullscreenActivity.projectedContents[x].length];
                         for (int y = 0; y < FullscreenActivity.projectedLineTypes[x].length; y++) {
                             FullscreenActivity.projectedLineTypes[x][y] = ProcessSong.determineLineTypes(FullscreenActivity.projectedContents[x][y], PresenterMode.this);
-                            /*if (FullscreenActivity.projectedContents[x][y] != null &&
-                                    FullscreenActivity.projectedContents[x][y].length() > 0 && (FullscreenActivity.projectedContents[x][y].indexOf(" ") == 0 ||
-                                    FullscreenActivity.projectedContents[x][y].indexOf(".") == 0 || FullscreenActivity.projectedContents[x][y].indexOf(";") == 0)) {
-                                FullscreenActivity.projectedContents[x][y] = FullscreenActivity.projectedContents[x][y].substring(1);
-                            }*/
+
                         }
                     }
 
@@ -2545,6 +2552,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         @Override
         protected void onCancelled() {
+            FullscreenActivity.alreadyloading = false;
             cancelled = true;
         }
 
@@ -2581,9 +2589,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                     // If the user has shown the 'Welcome to OpenSongApp' file, and their song lists are empty,
                     // open the find new songs menu
-                    if (FullscreenActivity.mTitle.equals("Welcome to OpenSongApp") &&
-                            (FullscreenActivity.mSongFileNames == null ||
-                                    (FullscreenActivity.mSongFileNames != null && FullscreenActivity.mSongFileNames.length == 0))) {
+                    if (FullscreenActivity.mTitle.equals("Welcome to OpenSongApp") && (FullscreenActivity.mSongFileNames == null || FullscreenActivity.mSongFileNames.length == 0)) {
                         FullscreenActivity.whichOptionMenu = "FIND";
                         prepareOptionMenu();
                         Handler find = new Handler();
@@ -2594,10 +2600,21 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                             }
                         }, 2000);
                     }
+                    // If we have created, or converted a song format (e.g from OnSong or ChordPro), rebuild the database
+                    // or pull up the edit screen
+                    if (FullscreenActivity.needtoeditsong) {
+                        FullscreenActivity.whattodo = "editsong";
+                        FullscreenActivity.alreadyloading = false;
+                        FullscreenActivity.needtorefreshsongmenu = true;
+                    } else if (FullscreenActivity.needtorefreshsongmenu) {
+                        FullscreenActivity.needtorefreshsongmenu = false;
+                        rebuildSearchIndex();
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            FullscreenActivity.alreadyloading = false;
         }
     }
     public void shareActivityLog() {
@@ -3019,9 +3036,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         firstrun_song = false;
                     }
 
+                    String menusize = "" + (songmenulist.size() - FullscreenActivity.firstSongIndex);
                     if (menuCount_TextView != null) {
-                        String str = "" + songmenulist.size();
-                        menuCount_TextView.setText(str);
+                        menuCount_TextView.setText(menusize);
                         menuCount_TextView.setVisibility(View.VISIBLE);
                     }
                 }
@@ -3031,16 +3048,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         }
     }
-    @Override
-    public void indexingDone() {
-        doCancelAsyncTask(indexing_done);
-        indexing_done = new IndexingDone();
-        try {
-            indexing_done.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
     @SuppressLint("StaticFieldLeak")
     private class IndexingDone extends AsyncTask<Object, Void, String> {
 

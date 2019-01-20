@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/popup_bg"
     android:padding="8dp">
 
@@ -24,77 +25,200 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView19"
-                style="@style/MyHeadingText"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="@string/chooselyricfont" />
+                android:background="@drawable/section_box"
+                android:orientation="vertical">
 
-            <Spinner
-                android:id="@+id/lyricsFontSpinner"
-                style="@style/MySpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp" />
+                <TextView
+                    android:id="@+id/textView19"
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/chooselyricfont" />
 
-            <TextView
-                android:id="@+id/textView20"
-                style="@style/MyHeadingText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/choosechordfont" />
+                <Spinner
+                    android:id="@+id/lyricsFontSpinner"
+                    style="@style/MySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp" />
 
-            <Spinner
-                android:id="@+id/chordsFontSpinner"
-                style="@style/MySpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp" />
+                <TextView
+                    android:id="@+id/lyricPreviewTextView"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lorem" />
+            </LinearLayout>
 
-            <TextView
-                style="@style/MyHeadingText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/presoFont" />
 
-            <Spinner
-                android:id="@+id/presoFontSpinner"
-                style="@style/MySpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp" />
-
-            <TextView
-                style="@style/MyHeadingText"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="@string/presoInfoFont" />
+                android:background="@drawable/section_box"
+                android:orientation="vertical">
 
-            <Spinner
-                android:id="@+id/presoInfoFontSpinner"
-                style="@style/MySpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp" />
+                <TextView
+                    android:id="@+id/textView20"
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/choosechordfont" />
 
-            <TextView
-                style="@style/MyHeadingText"
+                <Spinner
+                    android:id="@+id/chordsFontSpinner"
+                    style="@style/MySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp" />
+
+                <TextView
+                    android:id="@+id/chordPreviewTextView"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lorem" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="@string/custom" />
+                android:background="@drawable/section_box"
+                android:orientation="vertical">
 
-            <Spinner
-                android:id="@+id/customFontSpinner"
-                style="@style/MySpinner"
+                <TextView
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/presoFont" />
+
+                <Spinner
+                    android:id="@+id/presoFontSpinner"
+                    style="@style/MySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp" />
+
+                <TextView
+                    android:id="@+id/presoPreviewTextView"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lorem" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:background="@drawable/section_box"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/presoInfoFont" />
+
+                <Spinner
+                    android:id="@+id/presoInfoFontSpinner"
+                    style="@style/MySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp" />
+
+                <TextView
+                    android:id="@+id/presoinfoPreviewTextView"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lorem" />
+
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/section_box">
+
+                <TextView
+                    android:id="@+id/googleFont_TextView"
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="8dp"
+                    android:text="@string/googlefontcustom" />
+
+                <LinearLayout
+                    android:id="@+id/customEditLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/googleFont_TextView"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/googleFont_EditText"
+                        style="@style/MyEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:inputType="textCapWords" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/testFont_FAB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:src="@drawable/ic_download_white_36dp"
+                        app:backgroundTint="@color/purple"
+                        app:borderWidth="0dp"
+                        app:fabSize="mini"
+                        app:useCompatPadding="false" />
+
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/customEditLayout"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/customPreviewTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/customEditLayout"
+                    android:text="@string/lorem" />
+
+                <Button
+                    android:id="@+id/browseMore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/customPreviewTextView"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/green_button"
+                    android:text="@string/googlefontbrowse" />
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/textView47"
@@ -213,12 +337,12 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/trimsections_SwitchCompat"/>
 
-            <TextView
-                android:id="@+id/textView21"
-                style="@style/MyHeadingText"
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/trimlinespacing_SwitchCompat"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/MyHeadingText"
                 android:layout_margin="8dp"
+                android:layout_height="wrap_content"
                 android:text="@string/linespacing" />
 
             <LinearLayout
@@ -227,7 +351,7 @@
                 android:orientation="horizontal">
 
                 <SeekBar
-                    android:id="@+id/lineSpacingSeekBar"
+                    android:id="@+id/lineSpacing_SeekBar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
@@ -237,82 +361,13 @@
                     android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
                 <TextView
-                    android:id="@+id/lineSpacingText"
+                    android:id="@+id/lineSpacing_TextView"
                     style="@style/MyInfoText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp" />
+
             </LinearLayout>
-
-            <TableLayout
-                android:id="@+id/songPreview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/headingPreview"
-                        style="@style/MyInfoText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/tag_verse" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/chordPreview1"
-                        style="@style/MyHeadingText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/font_chords_line1" />
-
-                    <TextView
-                        android:id="@+id/chordPreview2"
-                        style="@style/MyHeadingText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/font_chords_line2" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/lyricsPreview1"
-                        style="@style/MyWhiteHeadingText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/font_lyrics_line1" />
-
-                    <TextView
-                        android:id="@+id/lyricsPreview2"
-                        style="@style/MyWhiteHeadingText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/font_lyrics_line2" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/commentPreview"
-                        style="@style/MyWhiteHeadingText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Repeat x2" />
-                </TableRow>
-
-            </TableLayout>
 
         </LinearLayout>
 

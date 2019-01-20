@@ -245,6 +245,7 @@ class OpenFragment {
                 break;
 
             case "errorlog":
+            case "browsefonts":
                 newFragment = PopUpWebViewFragment.newInstance();
                 break;
 

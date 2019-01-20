@@ -162,7 +162,7 @@ public class PopUpImportExternalFile extends DialogFragment {
                 } else if (ext.endsWith(".usr")) {
                     what = "songselect";
                     filetype = getActivity().getString(R.string.songselect);
-                } else if (ext.endsWith(".gif") || ext.endsWith(".jpg") || ext.endsWith(".png") || ext.endsWith(".gif")) {
+                } else if (ext.endsWith(".gif") || ext.endsWith(".jpg") || ext.endsWith(".png")) {
                     what = "image";
                     filetype = getActivity().getString(R.string.image);
                 } else if (ext.endsWith(".pdf")) {
@@ -386,6 +386,9 @@ public class PopUpImportExternalFile extends DialogFragment {
             filename = filename.replace(".ost","");
         }
 
+        // Set the variable to initialise the search index
+        FullscreenActivity.needtorefreshsongmenu = true;
+
         // Copy the file
         copyFile("Songs", chosenfolder, filename);
 
@@ -403,9 +406,6 @@ public class PopUpImportExternalFile extends DialogFragment {
         FullscreenActivity.whichSongFolder = subfolder;
         storageAccess.listSongs(getActivity(), preferences);
         listSongFiles.getAllSongFiles(getActivity(), preferences, storageAccess);
-        if (mListener!=null) {
-            mListener.refreshAll();
-        }
         if (ok && !error) {
             FullscreenActivity.myToastMessage = getActivity().getString(R.string.success);
         } else {
@@ -413,6 +413,12 @@ public class PopUpImportExternalFile extends DialogFragment {
         }
         if (mListener != null) {
             mListener.showToastMessage(FullscreenActivity.myToastMessage);
+            mListener.rebuildSearchIndex();
+        }
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -424,10 +430,9 @@ public class PopUpImportExternalFile extends DialogFragment {
     public interface MyInterface {
         void refreshAll();
 
+        void rebuildSearchIndex();
         void onSongImportDone(String message);
-
         void openFragment();
-
         void showToastMessage(String message);
     }
 

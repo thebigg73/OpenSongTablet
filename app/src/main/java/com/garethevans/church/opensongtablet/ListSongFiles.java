@@ -70,7 +70,6 @@ public class ListSongFiles {
         if (FullscreenActivity.whichSongFolder.startsWith("../")) {
             // This is one of the custom slides/notes/images
             String folder = FullscreenActivity.whichSongFolder.replace("../", "");
-            Log.d("ListSongFiles", "starting storageAccess.listFilesInFolder");
             songs = storageAccess.listFilesInFolder(c, preferences, "", folder);
             String what = "";
             if (FullscreenActivity.whichSongFolder.startsWith("../Notes")) {
@@ -96,7 +95,6 @@ public class ListSongFiles {
 
             // Go through the values stored and add the ones required
             for (int w = 0; w < FullscreenActivity.allSongDetailsForMenu.length; w++) {
-
                 if ((FullscreenActivity.whichSongFolder.equals("") ||
                         FullscreenActivity.whichSongFolder.equals(c.getString(R.string.mainfoldername))) &&
                         (FullscreenActivity.allSongDetailsForMenu[w][0].equals("") ||
@@ -105,21 +103,35 @@ public class ListSongFiles {
                     authors.add(FullscreenActivity.allSongDetailsForMenu[w][2]);
                     keys.add(FullscreenActivity.allSongDetailsForMenu[w][3]);
 
-                } else if (FullscreenActivity.allSongDetailsForMenu[w][0].equals(FullscreenActivity.whichSongFolder)) {
+                } else if (FullscreenActivity.allSongDetailsForMenu[w][0].equals(FullscreenActivity.whichSongFolder) &&
+                        !FullscreenActivity.allSongDetailsForMenu[w][3].equals(c.getString(R.string.songsinfolder))) {
                     songs.add(FullscreenActivity.allSongDetailsForMenu[w][1]);
                     authors.add(FullscreenActivity.allSongDetailsForMenu[w][2]);
                     keys.add(FullscreenActivity.allSongDetailsForMenu[w][3]);
                 }
             }
 
+
             // Go through the folders and add the root ones
             for (String f : FullscreenActivity.mSongFolderNames) {
 
+                String thisfolder = FullscreenActivity.whichSongFolder;
+                boolean containsfolder = f.contains(thisfolder + "/");
+                String leftfolder = "";
+                if (containsfolder) {
+                    leftfolder = f.substring(f.lastIndexOf(thisfolder + "/") + thisfolder.length() + 1);
+                }
+                if ((thisfolder.equals(FullscreenActivity.mainfoldername) || thisfolder.equals("")) &&
+                        !leftfolder.contains("/")) {
+                    if (!f.equals(FullscreenActivity.mainfoldername) && !f.contains("/")) {
+                        leftfolder = f;
+                    }
+                }
+
                 // Don't add the folder if it is the main folder, or is a sub/sub folder or if it is the current whichSongFolder
-                if (!f.equals(c.getString(R.string.mainfoldername)) && !f.contains("/") &&
-                        !f.equals(FullscreenActivity.whichSongFolder)) {
+                if (!leftfolder.equals("")) {
                     // This is a subfolder of the MAIN folder - add it.  This way we only show roots (not folders within folders)
-                    subfolders.add("/" + f + "/");
+                    subfolders.add("/" + leftfolder + "/");
                     authorsfolder.add("");
                     keysfolder.add(c.getString(R.string.songsinfolder));
                 }
@@ -137,6 +149,9 @@ public class ListSongFiles {
         item_keys.addAll(keysfolder);
         item_keys.addAll(keys);
 
+        // Make the first song item the first one after the song folders
+        FullscreenActivity.firstSongIndex = subfolders.size();
+
         FullscreenActivity.mSongFileNames = item_files.toArray(new String[0]).clone();
         FullscreenActivity.songDetails = new String[FullscreenActivity.mSongFileNames.length][3];
         for (int y = 0; y < FullscreenActivity.mSongFileNames.length; y++) {
@@ -148,25 +163,21 @@ public class ListSongFiles {
 
     void getCurrentSongIndex() {
         // Find the current song index from the song filename
-        // Set them all to 0
-        FullscreenActivity.currentSongIndex = 0;
-        FullscreenActivity.nextSongIndex = 0;
-        FullscreenActivity.previousSongIndex = 0;
+        // Set them all to the firstSongIndex (0 if no subfolders, but if not, the first song after the subfolders)
+        FullscreenActivity.currentSongIndex = FullscreenActivity.firstSongIndex;
+        FullscreenActivity.nextSongIndex = FullscreenActivity.firstSongIndex;
+        FullscreenActivity.previousSongIndex = FullscreenActivity.firstSongIndex;
 
         // Go through the array
         try {
-            if (FullscreenActivity.mSongFileNames != null && FullscreenActivity.songfilename != null) {
-                for (int s = 0; s < FullscreenActivity.mSongFileNames.length; s++) {
-                    if (FullscreenActivity.mSongFileNames != null &&
-                            FullscreenActivity.mSongFileNames[s] != null &&
-                            FullscreenActivity.mSongFileNames[s].equals(FullscreenActivity.songfilename)) {
+            if (FullscreenActivity.songDetails != null && FullscreenActivity.songfilename != null) {
+                for (int s = 0; s < FullscreenActivity.songDetails.length; s++) {
+                    if (FullscreenActivity.songDetails[s][0] != null && FullscreenActivity.songDetails[s][0].equals(FullscreenActivity.songfilename)) {
                         FullscreenActivity.currentSongIndex = s;
-                        if (s > 0) {
+                        if (s > FullscreenActivity.firstSongIndex) {
                             FullscreenActivity.previousSongIndex = s - 1;
-                        } else {
-                            FullscreenActivity.previousSongIndex = s;
                         }
-                        if (s < FullscreenActivity.mSongFileNames.length - 1) {
+                        if (s < FullscreenActivity.songDetails.length - 1) {
                             FullscreenActivity.nextSongIndex = s + 1;
                         } else {
                             FullscreenActivity.nextSongIndex = s;

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
 import android.view.Gravity;
@@ -71,6 +72,10 @@ public class PopUpLayoutFragment extends DialogFragment {
     CheckBox image1CheckBox, image2CheckBox, video1CheckBox, video2CheckBox;
     StorageAccess storageAccess;
     Preferences preferences;
+    SetTypeFace setTypeFace;
+    // Handlers for fonts
+    Handler lyrichandler, chordhandler, presohandler, presoinfohandler, customhandler, monohandler;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,10 +118,21 @@ public class PopUpLayoutFragment extends DialogFragment {
 
         storageAccess = new StorageAccess();
         preferences = new Preferences();
+        setTypeFace = new SetTypeFace();
 
         identifyViews(V);
 
-        SetTypeFace.setTypeface(getActivity(), preferences);
+        // Initialise the font handlers
+        lyrichandler = new Handler();
+        chordhandler = new Handler();
+        presohandler = new Handler();
+        presoinfohandler = new Handler();
+        customhandler = new Handler();
+        monohandler = new Handler();
+
+        setTypeFace.setUpAppFonts(getActivity(), preferences, lyrichandler, chordhandler,
+                presohandler, presoinfohandler, customhandler, monohandler);
+        //SetTypeFace.setTypeface(getActivity(), preferences);
 
         prepareViews();
 

@@ -51,7 +51,7 @@ class StorageAccess {
 
     String appFolder = "OpenSong";
     private Uri uriTree = null;
-    private String[] rootFolders = {"Backgrounds", "Export", "Fonts", "Highlighter", "Images", "Media",
+    private String[] rootFolders = {"Backgrounds", "Export", "Highlighter", "Images", "Media",
             "Notes", "OpenSong Scripture", "Pads", "Profiles", "Received", "Scripture",
             "Sets", "Settings", "Slides", "Songs", "Variations"};
     private String[] cacheFolders = {"Backgrounds/_cache", "Images/_cache", "Notes/_cache",
@@ -111,15 +111,12 @@ class StorageAccess {
             // Check if we are in the app folder
             if (df.getName() != null && df.getName().equals(appFolder)) {
                 // Already in the app folder
-                Log.d("StorageAccess", "Already in the app folder");
                 FullscreenActivity.appHome = df;
             } else if (df.findFile(appFolder) != null) {
                 // Need to move into the app folder
-                Log.d("StorageAccess", "Above the app folder, so move inside");
                 FullscreenActivity.appHome = df.findFile(appFolder);
             } else {
                 // No app folder, so create it
-                Log.d("StorageAccess", "Can't find app folder so creating it");
                 df.createDirectory(appFolder);
                 FullscreenActivity.appHome = df.findFile(appFolder);
             }
@@ -570,7 +567,6 @@ class StorageAccess {
                 }
             }
         }
-        Log.d("StorageAccess","folderIds.size()="+FullscreenActivity.folderIds.size());
         getSongFolderNames(c, preferences);
     }
 
@@ -913,12 +909,12 @@ class StorageAccess {
 
         Uri locationtoindex = getUriForItem(c, preferences, folder, subfolder, "");
 
-        Log.d("StorageAccess", "locationtoindex=" + locationtoindex);
+        //Log.d("StorageAccess", "locationtoindex=" + locationtoindex);
 
         // Now get a documents contract at this location
         String id = getDocumentsContractId(locationtoindex);
 
-        Log.d("StorageAccess", "id=" + id);
+        //Log.d("StorageAccess", "id=" + id);
 
         // Get the children
         Uri children = getChildren(locationtoindex, id);

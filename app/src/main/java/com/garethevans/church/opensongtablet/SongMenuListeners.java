@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,11 +28,6 @@ public class SongMenuListeners extends Activity {
             @Override
             public void onClick(View v) {
                 FullscreenActivity.pdfPageCurrent = 0;
-                Log.d("d", "position=" + i);
-                Log.d("d", "filename=" + FullscreenActivity.songDetails[i][0]);
-                Log.d("d", "author=" + FullscreenActivity.songDetails[i][1]);
-                Log.d("d", "key=" + FullscreenActivity.songDetails[i][2]);
-
                 try {
                     if (FullscreenActivity.songDetails.length > i) {
                         if (FullscreenActivity.songDetails[i][2].equals(c.getString(R.string.songsinfolder))) {
@@ -45,7 +39,14 @@ public class SongMenuListeners extends Activity {
                                 s = s.substring(0, s.lastIndexOf("/"));
                             }
 
-                            FullscreenActivity.whichSongFolder = s;
+                            if (FullscreenActivity.whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
+                                    FullscreenActivity.whichSongFolder.equals("")) {
+                                FullscreenActivity.whichSongFolder = s;
+                            } else {
+                                // Add subdirectory on to the current whichsongfolder
+                                FullscreenActivity.whichSongFolder = FullscreenActivity.whichSongFolder + "/" + s;
+                            }
+
                             mListener.prepareSongMenu();
                         } else {
                             if (FullscreenActivity.mSongFileNames.length > i && FullscreenActivity.mSongFileNames[i] != null) {
@@ -59,7 +60,6 @@ public class SongMenuListeners extends Activity {
 
                                 if (FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
                                     // Song is in current set.  Find the song position in the current set and load it (and next/prev)
-
                                     FullscreenActivity.previousSongInSet = "";
                                     FullscreenActivity.nextSongInSet = "";
                                     setActions.prepareSetList();
@@ -67,6 +67,7 @@ public class SongMenuListeners extends Activity {
                                 } else {
                                     // Song isn't in the set, so just show the song
                                     // Switch off the set view (buttons in action bar)
+
                                     FullscreenActivity.setView = false;
                                     // Re-enable the disabled button
                                 }

@@ -1,9 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,10 +45,19 @@ public class PopUpWebViewFragment extends DialogFragment {
         }
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (FullscreenActivity.whattodo.equals("errorlog")) {
-            mTitle = getActivity().getResources().getString(R.string.search_log);
+        switch (FullscreenActivity.whattodo) {
+            case "errorlog":
+                mTitle = getActivity().getResources().getString(R.string.search_log);
+                break;
+            case "browsefonts":
+                mTitle = getActivity().getString(R.string.googlefontbrowse);
+                break;
+            default:
+                mTitle = getActivity().getString(R.string.websearch);
+                break;
         }
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
@@ -70,10 +81,49 @@ public class PopUpWebViewFragment extends DialogFragment {
         webview = V.findViewById(R.id.webview);
         textview = V.findViewById(R.id.textview);
 
-        if (FullscreenActivity.whattodo.equals("errorlog")) {
-            webview.setVisibility(View.GONE);
-            textview.setVisibility(View.VISIBLE);
-            textview.setText(FullscreenActivity.indexlog);
+        webview.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    WebView webView = (WebView) v;
+                    switch (keyCode) {
+                        case KeyEvent.KEYCODE_BACK:
+                            if (webView.canGoBack()) {
+                                webView.goBack();
+                                return true;
+                            }
+                            break;
+                    }
+                }
+                return true; // Stops the window closing
+            }
+        });
+
+        switch (FullscreenActivity.whattodo) {
+            case "errorlog":
+                webview.setVisibility(View.GONE);
+                textview.setVisibility(View.VISIBLE);
+                textview.setText(FullscreenActivity.indexlog);
+                break;
+            case "browsefonts":
+                webview.setVisibility(View.VISIBLE);
+                textview.setVisibility(View.GONE);
+                webview.getSettings().setJavaScriptEnabled(true);
+                webview.canGoBackOrForward(1);
+                webview.loadUrl(FullscreenActivity.webpage);
+                closeMe.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        FullscreenActivity.whattodo = "changefonts";
+                    }
+                });
+                break;
+            default:
+                webview.setVisibility(View.VISIBLE);
+                textview.setVisibility(View.GONE);
+                webview.canGoBackOrForward(1);
+                webview.loadUrl(FullscreenActivity.webpage);
+                break;
         }
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         return V;

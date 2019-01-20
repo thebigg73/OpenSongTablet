@@ -21,6 +21,7 @@ import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.provider.DocumentFile;
 import android.support.v7.app.ActionBar;
@@ -59,9 +60,6 @@ public class FullscreenActivity extends AppCompatActivity {
             dirsets = new File(root.getAbsolutePath() + "/documents/OpenSong/Sets"),
             dirPads = new File(root.getAbsolutePath() + "/documents/OpenSong/Pads"),
             dirbackgrounds = new File(root.getAbsolutePath() + "/documents/OpenSong/Backgrounds"),
-            dircustomslides = new File(root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache"),
-            dircustomnotes = new File(root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache"),
-            dircustomimages = new File(root.getAbsolutePath() + "/documents/OpenSong/Images/_cache"),
             dirreceived = new File(root.getAbsolutePath() + "/documents/OpenSong/Received");
 
     // The song fields
@@ -77,7 +75,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
     // Song menu
     public static boolean needtorefreshsongmenu = false, safetosearch = false,
-            showSetTickBoxInSongMenu, showAlphabeticalIndexInSongMenu;
+            showSetTickBoxInSongMenu, showAlphabeticalIndexInSongMenu, needtoeditsong = false;
     public static String indexlog = "", currentFolder = "", newFolder = "", whichSongFolder = "", randomFolders = "";
     public static ArrayList<String> searchFileName = new ArrayList<>(), searchFolder = new ArrayList<>(),
             searchTitle = new ArrayList<>(), searchAuthor = new ArrayList<>(),
@@ -96,9 +94,8 @@ public class FullscreenActivity extends AppCompatActivity {
     //this could be a ref to an xmlObject.
     public static String[][] allSongDetailsForMenu;
     public static String[][] songDetails;
-    public static int numDirs;
     public static Map<String, Integer> mapIndex;
-    public static int currentSongIndex, previousSongIndex, nextSongIndex;
+    public static int currentSongIndex, previousSongIndex, nextSongIndex, firstSongIndex;
     @SuppressLint("StaticFieldLeak")
     public static SearchViewAdapter sva;
 
@@ -219,7 +216,7 @@ public class FullscreenActivity extends AppCompatActivity {
     public static String file_name = "", file_location = "", file_type = "";
     public static Uri file_uri;
 
-    // Screencapure variables
+    // Screencapture variables
     public static Bitmap bmScreen;
     public static boolean abort = false;
 
@@ -235,10 +232,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
     public static int myWidthAvail, myHeightAvail;
 
-    // Fonts
-    public static Typeface typeface0, typeface1, typeface2, typeface3, typeface4, typeface4i,
-            typeface5, typeface5i, typeface6, typeface7, typeface7i, typeface8, typeface8i, typeface9,
-            typeface9i, typeface10, typeface10i, typeface11, typeface11i, typeface12, typeface12i;
+    public static String webpage = "https://www.google.com";
 
     public static ArrayList<String> exportsetfilenames = new ArrayList<>(), exportsetfilenames_ost = new ArrayList<>();
     public static String lastSetName = "", chordInstrument = "g", showNextInSet = "top",
@@ -287,7 +281,7 @@ public class FullscreenActivity extends AppCompatActivity {
     public static boolean scrollbutton = false, actionbarbutton = false;
 
     // Font sizes (relative)
-    public static int linespacing;
+    public static boolean trimLines = false;
 
     // Edit style
     public static boolean editAsChordPro;
@@ -394,9 +388,9 @@ public class FullscreenActivity extends AppCompatActivity {
     public static String mScripture = "", incoming_text = "", scripture_title,
             scripture_verse, mainfoldername = "";
     public static int mylyricsfontnum, mychordsfontnum, mypresofontnum, mypresoinfofontnum;
-    public static Typeface lyricsfont, commentfont, chordsfont, presofont, customfont;
+    public static Typeface lyricsfont, chordsfont, presofont, customfont, monofont;
     public static String customfontname = "";
-
+    public static float linespacing = 0.5f;
     public static int whichPad = 0;
 
     public static String[] songSections, songSectionsLabels, songSectionsTypes;
@@ -417,7 +411,7 @@ public class FullscreenActivity extends AppCompatActivity {
             exportDesktop_String = "", exportText_String = "", exportChordPro_String = "",
             exportOnSong_String = "";
 
-
+    public static boolean convertedfile = false, alreadyloading = false;
 
     // Salut / connect devices
     @SuppressLint("StaticFieldLeak")
@@ -574,6 +568,13 @@ public class FullscreenActivity extends AppCompatActivity {
         // Load up the preferences
         loadPreferences(FullscreenActivity.this);
 
+        Handler lyrichandler = new Handler();
+        Handler chordhandler = new Handler();
+        Handler presohandler = new Handler();
+        Handler presoinfohandler = new Handler();
+        Handler customhandler = new Handler();
+        Handler monohandler = new Handler();
+
         // Fix and set some variables
         fixAndSet(FullscreenActivity.this);
 
@@ -597,12 +598,16 @@ public class FullscreenActivity extends AppCompatActivity {
         // Test for NFC capability
         testForNFC();
 
-        // Initialise typefaces
-        initialiseTypefaces(FullscreenActivity.this);
 
         // Set up the user preferences for page colours and fonts
         SetUpColours.colours();
-        SetTypeFace.setTypeface(FullscreenActivity.this, preferences);
+
+        // Initialise typefaces
+        //initialiseTypefaces(FullscreenActivity.this);
+        SetTypeFace setTypeFace = new SetTypeFace();
+        setTypeFace.setUpAppFonts(FullscreenActivity.this, preferences, lyrichandler, chordhandler,
+                presohandler, presoinfohandler, customhandler, monohandler);
+        //SetTypeFace.setTypeface(FullscreenActivity.this, preferences);
 
         // If whichMode is Presentation, open that app instead
         switch (whichMode) {
@@ -628,7 +633,6 @@ public class FullscreenActivity extends AppCompatActivity {
                 break;
             }
         }
-
         finish();
     }
 
@@ -705,33 +709,10 @@ public class FullscreenActivity extends AppCompatActivity {
             mAndroidBeamAvailable = false;
         }
     }
-    void initialiseTypefaces(Context c) {
-        // Set up the available typefaces
-        // Initialise the typefaces available
-        typeface0 = Typeface.DEFAULT;
-        typeface1 = Typeface.MONOSPACE;
-        typeface2 = Typeface.SANS_SERIF;
-        typeface3 = Typeface.SERIF;
-        typeface4 = Typeface.createFromAsset(c.getAssets(), "fonts/FiraSansOT-Light.otf");
-        typeface4i = Typeface.createFromAsset(c.getAssets(), "fonts/FiraSans-LightItalic.otf");
-        typeface5 = Typeface.createFromAsset(c.getAssets(), "fonts/FiraSansOT-Regular.otf");
-        typeface5i = Typeface.createFromAsset(c.getAssets(), "fonts/FiraSans-Italic.otf");
-        typeface6 = Typeface.createFromAsset(c.getAssets(), "fonts/KaushanScript-Regular.otf");
-        typeface7 = Typeface.createFromAsset(c.getAssets(), "fonts/Lato-Lig.ttf");
-        typeface7i = Typeface.createFromAsset(c.getAssets(), "fonts/Lato-LigIta.ttf");
-        typeface8 = Typeface.createFromAsset(c.getAssets(), "fonts/Lato-Reg.ttf");
-        typeface8i = Typeface.createFromAsset(c.getAssets(), "fonts/Lato-RegIta.ttf");
-        typeface9 = Typeface.createFromAsset(c.getAssets(), "fonts/LeagueGothic-Regular.otf");
-        typeface9i = Typeface.createFromAsset(c.getAssets(), "fonts/LeagueGothic-Italic.otf");
-        typeface10 = Typeface.createFromAsset(c.getAssets(), "fonts/Roboto-Light.ttf");
-        typeface10i = Typeface.createFromAsset(c.getAssets(), "fonts/Roboto-LightItalic.ttf");
-        typeface11 = Typeface.createFromAsset(c.getAssets(), "fonts/Roboto-Thin.ttf");
-        typeface11i = Typeface.createFromAsset(c.getAssets(), "fonts/Roboto-ThinItalic.ttf");
-        typeface12 = Typeface.createFromAsset(c.getAssets(), "fonts/Roboto-Medium.ttf");
-        typeface12i = Typeface.createFromAsset(c.getAssets(), "fonts/Roboto-MediumItalic.ttf");
-    }
 
-    void mainSetterOfVariables(Context c, Preferences preferences) {
+    void mainSetterOfVariables(Context c, Preferences preferences, SetTypeFace setTypeFace,
+                               Handler lyrichandler, Handler chordhandler, Handler presohandler,
+                               Handler presoinfohandler, Handler customhandler, Handler monohandler) {
         // Load up the preferences
         loadPreferences(c);
 
@@ -749,19 +730,15 @@ public class FullscreenActivity extends AppCompatActivity {
         // Set the locale
         setTheLocale(c);
 
-        // Get the song folders
-        //storageAccess = new StorageAccess();
-        //ListSongFiles.getAllSongFolders(c,storageAccess);
-
         // Test for NFC capability
         testForNFC();
 
         // Initialise typefaces
-        initialiseTypefaces(c);
+        setTypeFace.setUpAppFonts(c, preferences, lyrichandler, chordhandler,
+                presohandler, presoinfohandler, customhandler, monohandler);
 
         // Set up the user preferences for page colours and fonts
         SetUpColours.colours();
-        SetTypeFace.setTypeface(c, preferences);
 
         String uriTree_string = preferences.getMyPreferenceString(c, "uriTree", null);
         if (uriTree_string != null) {

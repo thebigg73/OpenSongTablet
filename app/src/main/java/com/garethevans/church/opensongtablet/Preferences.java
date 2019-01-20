@@ -237,7 +237,7 @@ public class Preferences extends Activity {
             FullscreenActivity.exportOnSong = myPreferences.getBoolean("exportOnSong", false);
             FullscreenActivity.exportImage = myPreferences.getBoolean("exportImage", false);
             FullscreenActivity.exportPDF = myPreferences.getBoolean("exportPDF", false);
-            FullscreenActivity.fabSize = myPreferences.getInt("fabSize", FloatingActionButton.SIZE_MINI);
+            FullscreenActivity.fabSize = myPreferences.getInt("fabSize", FloatingActionButton.SIZE_NORMAL);
             FullscreenActivity.gesture_doubletap = myPreferences.getString("gesture_doubletap", "2");
             FullscreenActivity.gesture_longpress = myPreferences.getString("gesture_longpress", "1");
             FullscreenActivity.grouppagebuttons = myPreferences.getBoolean("grouppagebuttons", false);
@@ -269,7 +269,7 @@ public class Preferences extends Activity {
             FullscreenActivity.light_stickybg = myPreferences.getInt("light_stickybg", default_stickyNotesBG);
             FullscreenActivity.light_extrainfobg = myPreferences.getInt("light_extrainfobg", default_extrainfoBG);
             FullscreenActivity.light_extrainfo = myPreferences.getInt("light_extrainfo", default_extrainfo);
-            FullscreenActivity.linespacing = myPreferences.getInt("linespacing", 0);
+            FullscreenActivity.linespacing = myPreferences.getFloat("linespacing", 0.1f);
             FullscreenActivity.locale = getStoredLocale();
             FullscreenActivity.longpressdownpedalgesture = myPreferences.getString("longpressdownpedalgesture", "0");
             FullscreenActivity.longpressnextpedalgesture = myPreferences.getString("longpressnextpedalgesture", "4");
@@ -320,19 +320,7 @@ public class Preferences extends Activity {
             FullscreenActivity.page_sticky_visible = myPreferences.getBoolean("page_sticky_visible",true);
             FullscreenActivity.pagebutton_position = myPreferences.getString("pagebutton_position", "right");
             FullscreenActivity.pagebutton_scale = myPreferences.getString("pagebutton_scale", "M");
-            FullscreenActivity.pageButtonAlpha = myPreferences.getFloat("pageButtonAlpha", 0.3f);
-            /*FullscreenActivity.pageturner_AUTOSCROLL = myPreferences.getInt("pageturner_AUTOSCROLL", -1);
-            FullscreenActivity.pageturner_AUTOSCROLLPAD = myPreferences.getInt("pageturner_AUTOSCROLLPAD", -1);
-            FullscreenActivity.pageturner_AUTOSCROLLMETRONOME = myPreferences.getInt("pageturner_AUTOSCROLLMETRONOME", -1);
-            FullscreenActivity.pageturner_AUTOSCROLLPADMETRONOME = myPreferences.getInt("pageturner_AUTOSCROLLPADMETRONOME", -1);
-            FullscreenActivity.pageturner_DOWN = myPreferences.getInt("pageturner_DOWN", 20);
-            FullscreenActivity.pageturner_METRONOME = myPreferences.getInt("pageturner_METRONOME", -1);
-            FullscreenActivity.pageturner_NEXT = myPreferences.getInt("pageturner_NEXT", 22);
-            FullscreenActivity.pageturner_PAD = myPreferences.getInt("pageturner_PAD", -1);
-            FullscreenActivity.pageturner_PADMETRONOME = myPreferences.getInt("pageturner_PADMETRONOME", -1);
-            FullscreenActivity.pageturner_PREVIOUS = myPreferences.getInt("pageturner_PREVIOUS", 21);
-            FullscreenActivity.pageturner_UP = myPreferences.getInt("pageturner_UP", 19);*/
-
+            FullscreenActivity.pageButtonAlpha = myPreferences.getFloat("pageButtonAlpha", 0.4f);
             FullscreenActivity.pedal1 = myPreferences.getInt("pedal1", 21);
             FullscreenActivity.pedal2 = myPreferences.getInt("pedal2", 22);
             FullscreenActivity.pedal3 = myPreferences.getInt("pedal3", 19);
@@ -420,6 +408,7 @@ public class Preferences extends Activity {
             FullscreenActivity.toggleScrollBeforeSwipe = myPreferences.getString("toggleScrollBeforeSwipe", "Y");
             FullscreenActivity.toggleYScale = myPreferences.getString("toggleYScale", "W");
             FullscreenActivity.transposeStyle = myPreferences.getString("transposeStyle", "sharps");
+            FullscreenActivity.trimLines = myPreferences.getBoolean("trimLines", true);
             FullscreenActivity.trimSections = myPreferences.getBoolean("trimSections", false);
             FullscreenActivity.trimSectionSpace = myPreferences.getBoolean("trimSectionSpace", false);
             String uriTreeTemp = myPreferences.getString("uriTree", "");
@@ -650,7 +639,7 @@ public class Preferences extends Activity {
             editor.putInt("light_stickybg", FullscreenActivity.light_stickybg);
             editor.putInt("light_extrainfobg", FullscreenActivity.light_extrainfobg);
             editor.putInt("light_extrainfo", FullscreenActivity.light_extrainfo);
-            editor.putInt("linespacing", FullscreenActivity.linespacing);
+            editor.putFloat("linespacing", FullscreenActivity.linespacing);
             editor.putString("locale", FullscreenActivity.locale.toString());
             editor.putString("longpressdownpedalgesture", FullscreenActivity.longpressdownpedalgesture);
             editor.putString("longpressnextpedalgesture", FullscreenActivity.longpressnextpedalgesture);
@@ -797,6 +786,7 @@ public class Preferences extends Activity {
             editor.putString("toggleScrollBeforeSwipe", FullscreenActivity.toggleScrollBeforeSwipe);
             editor.putString("toggleYScale", FullscreenActivity.toggleYScale);
             editor.putString("transposeStyle", FullscreenActivity.transposeStyle);
+            editor.putBoolean("trimLines", FullscreenActivity.trimLines);
             editor.putBoolean("trimSections", FullscreenActivity.trimSections);
             editor.putBoolean("trimSectionSpace", FullscreenActivity.trimSectionSpace);
             if (FullscreenActivity.uriTree!=null) {
@@ -882,8 +872,13 @@ public class Preferences extends Activity {
 
     /* Values stored in Preferences alphabetically listed:
     Variable name           Type        What
-
     chosenstorage           String      The uri of the document tree (Storage Access Framework)
+    fontChord               String      The name of the font used for the chords.  From fonts.google.com
+    fontCustom              String      The name of the font used for custom fonts.  From fonts.google.com
+    fontLyric               String      The name of the font used for the lyrics.  From fonts.google.com
+    fontPreso               String      The name of the font used for the preso.  From fonts.google.com
+    fontPresoInfo           String      The name of the font used for the presoinfo.  From fonts.google.com
+
     lastUsedVersion         int         The app version number the last time the app ran
     treeUri                 String      A string representation of the root app folder (OpenSong/)
     */

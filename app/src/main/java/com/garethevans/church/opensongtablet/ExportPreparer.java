@@ -186,9 +186,9 @@ class ExportPreparer {
         Bitmap pdfbmp = bmp.copy(bmp.getConfig(),true);
 
         // Prepare the song uri and input stream
-        Uri uriinput = storageAccess.getUriForItem(c, preferences, "Song", FullscreenActivity.whichSongFolder,
+        Uri uriinput = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder,
                 FullscreenActivity.songfilename);
-        InputStream inputStream = storageAccess.getInputStream(c,uriinput);
+        InputStream inputStream;
 
         // Prepare a txt version of the song.
         String exportText_String = prepareTextFile(c);
@@ -207,13 +207,18 @@ class ExportPreparer {
 
         if (FullscreenActivity.exportOpenSongApp) {
             // Prepare an ost version of the song.
+            Log.d("d", "uriinput=" + uriinput);
             ost = storageAccess.getUriForItem(c, preferences, "Export", "",
                     FullscreenActivity.songfilename+".ost");
 
             // Check the uri exists for the outputstream to be valid
             storageAccess.lollipopCreateFileForOutputStream(c, preferences, ost, null, "Export", "", FullscreenActivity.songfilename + ".ost");
 
+            inputStream = storageAccess.getInputStream(c, uriinput);
+            Log.d("d", "inputstream=" + inputStream);
             OutputStream outputStream = storageAccess.getOutputStream(c,ost);
+            Log.d("d", "outputstream=" + outputStream);
+
             storageAccess.copyFile(inputStream,outputStream);
         }
 
@@ -225,6 +230,7 @@ class ExportPreparer {
             // Check the uri exists for the outputstream to be valid
             storageAccess.lollipopCreateFileForOutputStream(c, preferences, desktop, null, "Export", "", FullscreenActivity.songfilename);
 
+            inputStream = storageAccess.getInputStream(c, uriinput);
             OutputStream outputStream = storageAccess.getOutputStream(c,desktop);
             storageAccess.copyFile(inputStream,outputStream);
         }
@@ -271,6 +277,7 @@ class ExportPreparer {
             // Prepare a pdf version of the song.
             pdf = storageAccess.getUriForItem(c, preferences, "Export", "",
                     FullscreenActivity.songfilename+".pdf");
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, pdf, null, "Export", "", FullscreenActivity.songfilename + ".pdf");
             makePDF(c,pdfbmp,pdf,storageAccess);
         }
 
