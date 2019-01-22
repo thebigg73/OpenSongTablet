@@ -22,11 +22,13 @@ import android.widget.TextView;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -91,7 +93,7 @@ public class PopUpCCLIFragment extends DialogFragment {
 
     public static boolean createBlankXML(Context c, Preferences preferences) {
         String blankXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "  <log></log>\n";
+                "<log></log>\n";
         StorageAccess storageAccess = new StorageAccess();
         Uri uri = storageAccess.getUriForItem(c, preferences, "Settings", "", "ActivityLog.xml");
 
@@ -152,13 +154,13 @@ public class PopUpCCLIFragment extends DialogFragment {
         // Do this as an async task
         StorageAccess storageAccess = new StorageAccess();
         // Check if the log exists or if we need to create it
-        boolean created = storageAccess.createFile(c, preferences, "null", "Settings", "", "ActivityLog.xml");
         Uri uri = storageAccess.getUriForItem(c, preferences, "Settings", "", "ActivityLog.xml");
-        if (created) {
-            createBlankXML(c, preferences);
+        if (!storageAccess.uriExists(c, uri)) {
+            Log.d("d", "Creating blankXML=" + createBlankXML(c, preferences));
+        } else {
+            Log.d("d", uri + " exists");
         }
-        InputStream inputStream = storageAccess.getInputStream(c, uri);
-        AddUsageEntryToLog add_usage = new AddUsageEntryToLog(uri, inputStream, fname, song, author, copyright, ccli, usage);
+        AddUsageEntryToLog add_usage = new AddUsageEntryToLog(c, storageAccess, uri, fname, song, author, copyright, ccli, usage);
         add_usage.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
@@ -433,12 +435,11 @@ public class PopUpCCLIFragment extends DialogFragment {
         // Run this as an async task
 
         // Check if the Log file exists and if not, create it
-        boolean exists = storageAccess.createFile(c, preferences, null, "Settings", "", "ActivityLog.xml");
         Uri uri = storageAccess.getUriForItem(c, preferences, "Settings", "", "ActivityLog.xml");
-        InputStream inputStream = storageAccess.getInputStream(c, uri);
-        if (!exists) { // Create a blank file
+        if (!storageAccess.uriExists(c, uri)) { // Create a blank file
             createBlankXML(c, preferences);
         }
+        InputStream inputStream = storageAccess.getInputStream(c, uri);
         OutputStream outputStream = storageAccess.getOutputStream(c, uri);
         String actfilesize = getLogFileSize(c, uri);
         BuildTable do_buildTable = new BuildTable(uri, inputStream, outputStream, actfilesize);
@@ -446,8 +447,12 @@ public class PopUpCCLIFragment extends DialogFragment {
     }
 
     private static class AddUsageEntryToLog extends AsyncTask<Object, Void, String> {
+        @SuppressLint("StaticFieldLeak")
+        Context ctx;
         Uri uri;
         InputStream inputStream;
+        OutputStream outputStream;
+        StorageAccess storageAccess;
         String date;
         String time;
         String fname = "";
@@ -457,9 +462,10 @@ public class PopUpCCLIFragment extends DialogFragment {
         String ccli = "";
         String usage = "";
 
-        AddUsageEntryToLog (Uri fileuri, InputStream is, String f, String s, String a, String c, String l, String u){
+        AddUsageEntryToLog(Context context, StorageAccess sA, Uri fileuri, String f, String s, String a, String c, String l, String u) {
             uri = fileuri;
-            inputStream = is;
+            storageAccess = sA;
+            ctx = context;
             if (f!=null) {
                 fname = f;
             }if (s!=null) {
@@ -493,9 +499,14 @@ public class PopUpCCLIFragment extends DialogFragment {
         @Override
         protected String doInBackground(Object... objects) {
             try {
+                InputStream inputStream = storageAccess.getInputStream(ctx, uri);
+                Log.d("d", "inputStream=" + inputStream);
                 DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                Document document = documentBuilder.parse(inputStream);
+                String myString = storageAccess.readTextFileToString(inputStream);
+                Log.d("d", "myString=" + myString);
+                Document document = documentBuilder.parse(new InputSource(new StringReader(myString)));
+                //Document document = documentBuilder.parse(inputStream);
                 Element root = document.getDocumentElement();
 
                 String last = "Entry0";
@@ -580,9 +591,9 @@ public class PopUpCCLIFragment extends DialogFragment {
                 Transformer transformer = transformerFactory.newTransformer();
                 transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-                StreamResult result = new StreamResult(uri.toString());
+                OutputStream outputStream = storageAccess.getOutputStream(ctx, uri);
+                StreamResult result = new StreamResult(outputStream);
                 transformer.transform(source,result);
-
 
             } catch (Exception e) {
                 e.printStackTrace();

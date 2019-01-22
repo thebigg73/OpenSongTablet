@@ -6,8 +6,8 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.provider.DocumentFile;
 import android.support.v7.widget.SwitchCompat;
@@ -194,10 +194,13 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         if (FullscreenActivity.file_uri!=null && FullscreenActivity.whattodo.equals("processimportosb")) {
             // We must be importing and have selected an appropriate .osb file
             importfilechooser.setVisibility(View.VISIBLE);
-            chooseosbfile.setText(FullscreenActivity.file_uri.getLastPathSegment());
+            String nameoffile = FullscreenActivity.file_uri.getLastPathSegment();
+            if (nameoffile.contains("/")) {
+                nameoffile = nameoffile.substring(nameoffile.lastIndexOf("/") + 1);
+            }
+            chooseosbfile.setText(nameoffile);
             waiting.setVisibility(View.VISIBLE);
             prepareFolderListImport();
-
         }
         // Reset the folders selected text note
         selectednote = "";
@@ -410,6 +413,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
             createdfolders.clear();
             documentFolders = new ArrayList<>();
             documentFolders.clear();
+
             try {
                 ZipEntry ze;
 
@@ -441,8 +445,9 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                         // If not, add it
                         if (ze.isDirectory()) {
                             if (!createdfolders.contains(ze.getName())) {
-                                Uri folder_uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", "", ze.getName());
-                                storageAccess.createFile(getActivity(), preferences, null, "Songs", ze.getName(), "");
+                                Uri folder_uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", ze.getName(), "");
+                                storageAccess.createFile(getActivity(), preferences, DocumentsContract.Document.MIME_TYPE_DIR,
+                                        "Songs", ze.getName(), "");
                                 createdfolders.add(ze.getName());
                                 documentFolders.add(DocumentFile.fromSingleUri(getActivity(),folder_uri));
                                 publishProgress(numfile + "&&_" + ze.getName());
@@ -453,17 +458,26 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                         if (!ze.isDirectory()) {
                             // Get a uri for the song
                             Uri file_uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", "", ze.getName());
-
                             publishProgress(numfile + "&&_" + ze.getName());
 
-                            boolean justcreated = false;
                             // If we are lollipop or later, we need to create a file for the output stream to work
-                            if (storageAccess.lollipopOrLater() && !storageAccess.uriExists(getActivity(),file_uri)) {
+                            boolean exists = storageAccess.uriExists(getActivity(), file_uri);
+                            if (!exists || canoverwrite) {
+                                storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences,
+                                        file_uri, null, "Songs", "", ze.getName());
+                            }
+
+                            /*if (storageAccess.lollipopOrLater() && !storageAccess.uriExists(getActivity(),file_uri)) {
                                 // To speed this up, look for the documentfile of the folder and create the file
                                 if (ze.getName().contains("/")) {
-                                    String subfolder = ze.getName().substring(0,ze.getName().lastIndexOf("/"));
-                                    String zefilename = ze.getName().replace(subfolder+"/","");
-                                    if (createdfolders.contains(subfolder+"/")) {
+
+                                    storageAccess.createFile(getActivity(), preferences, null, "Songs", "", ze.getName());
+                                    justcreated = true;
+
+                                    //String subfolder = ze.getName().substring(0,ze.getName().lastIndexOf("/"));
+                                    //String zefilename = ze.getName().replace(subfolder+"/","");
+
+                                    *//*if (createdfolders.contains(subfolder+"/")) {
                                         int pos = createdfolders.indexOf(subfolder+"/");
                                         DocumentFile root = documentFolders.get(pos);
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -474,7 +488,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                                         // The long way...
                                         storageAccess.createFile(getActivity(), preferences, null, "Songs", "", ze.getName());
                                         justcreated = true;
-                                    }
+                                    }*//*
                                 } else {
                                     // The long way..
                                     int pos = createdfolders.indexOf("MAIN");
@@ -484,10 +498,10 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                                     }
                                     justcreated = true;
                                 }
-                            }
+                            }*/
 
-                            // If we just created a file, or we have allowed overwriting, get an output stream and write it
-                            if (justcreated || canoverwrite) {
+                            // If we have allowed overwriting, get an output stream and write it
+                            if (!exists || canoverwrite) {
                                 OutputStream outputStream = storageAccess.getOutputStream(getActivity(),file_uri);
                                 // Write the contents
                                 try {

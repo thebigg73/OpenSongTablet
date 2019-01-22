@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +21,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import static android.provider.DocumentsContract.Document.MIME_TYPE_DIR;
 
 public class PopUpSongFolderRenameFragment extends DialogFragment {
     // This is a quick popup to enter a new song folder name, or rename a current one
@@ -39,6 +40,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
     Preferences preferences;
     SongFolders songFolders;
     ListSongFiles listSongFiles;
+    TextView currentFolder_TextView;
 
     static PopUpSongFolderRenameFragment newInstance(String message) {
         myTask = message;
@@ -93,6 +95,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         oldFolderNameSpinner = V.findViewById(R.id.oldFolderNameSpinner);
         newFolderNameEditText = V.findViewById(R.id.newFolderNameEditText);
         progressBar = V.findViewById(R.id.progressBar);
+        currentFolder_TextView = V.findViewById(R.id.currentFolder_TextView);
 
         // Set up the folderspinner
         // Set up the spinner
@@ -113,6 +116,17 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         if (myTask.equals("create")) {
             // Hide the spinner
             oldFolderNameSpinner.setVisibility(View.GONE);
+
+            // Show the current folder location (to allow subfolder creation)
+            currentFolder_TextView.setVisibility(View.VISIBLE);
+            String s;
+            if (FullscreenActivity.whichSongFolder.equals("") ||
+                    FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+                s = "../OpenSong/Songs/";
+            } else {
+                s = "../OpenSong/Songs/" + FullscreenActivity.whichSongFolder + "/";
+            }
+            currentFolder_TextView.setText(s);
         }
 
         // Set the oldFolderNameSpinnerListener
@@ -171,17 +185,41 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
 
     public void createOrRename() {
         progressBar.setVisibility(View.VISIBLE);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                getVariables();
-                if (myTask.equals("create")) {
-                    doCreateFolder();
-                } else {
-                    doRenameFolder();
-                }
+        getVariables();
+        if (myTask.equals("create")) {
+            doCreateFolder();
+        } else {
+            doRenameFolder();
+        }
+    }
 
+    public void doSetTitle() {
+        title.setText(mTitle);
+    }
+
+    public void doCreateFolder() {
+        // Try to create inside the current folder
+        @SuppressLint("StaticFieldLeak") AsyncTask<Object, String, String> docreation = new AsyncTask<Object, String, String>() {
+            @Override
+            protected String doInBackground(Object... objects) {
+                if (!FullscreenActivity.whichSongFolder.equals(getString(R.string.mainfoldername)) &&
+                        !FullscreenActivity.whichSongFolder.equals("")) {
+                    tempNewFolder = FullscreenActivity.whichSongFolder + "/" + tempNewFolder;
+                }
+                if (storageAccess.createFile(getActivity(), preferences, MIME_TYPE_DIR, "Songs", tempNewFolder, null)) {
+                    FullscreenActivity.myToastMessage = getResources().getString(R.string.newfolder) + " - " + getResources().getString(R.string.ok);
+                    FullscreenActivity.whichSongFolder = tempNewFolder;
+                } else {
+                    FullscreenActivity.myToastMessage = getResources().getString(R.string.newfolder) + " - " + getResources().getString(R.string.createfoldererror);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
                 ShowToast.showToast(getActivity());
+
+                progressBar.setVisibility(View.GONE);
 
                 // Save preferences
                 Preferences.savePreferences();
@@ -198,26 +236,9 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
                     e.printStackTrace();
                 }
             }
-        }).start();
-    }
+        };
+        docreation.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-    public void doSetTitle() {
-        title.setText(mTitle);
-    }
-
-    public void doCreateFolder() {
-
-        // Try to create inside the current folder
-        if (!FullscreenActivity.whichSongFolder.equals(getString(R.string.mainfoldername)) &&
-                !FullscreenActivity.whichSongFolder.equals("")) {
-            tempNewFolder = FullscreenActivity.whichSongFolder + "/" + tempNewFolder;
-        }
-        if (storageAccess.createFile(getActivity(), preferences, DocumentsContract.Document.MIME_TYPE_DIR, "Songs", tempNewFolder, null)) {
-            FullscreenActivity.myToastMessage = getResources().getString(R.string.newfolder) + " - " + getResources().getString(R.string.ok);
-            FullscreenActivity.whichSongFolder = tempNewFolder;
-        } else {
-            FullscreenActivity.myToastMessage = getResources().getString(R.string.newfolder) + " - " + getResources().getString(R.string.createfoldererror);
-        }
     }
 
     public interface MyInterface {
@@ -225,18 +246,44 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
     }
 
     public void doRenameFolder() {
+
+        tempOldFolder = FullscreenActivity.currentFolder;
         // Try to rename
-        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", tempOldFolder, "");
-        if (storageAccess.uriExists(getActivity(), uri)) {
-            if (storageAccess.renameFile(getActivity(), preferences, "Songs", tempOldFolder, tempNewFolder, "", "")) {
-                FullscreenActivity.myToastMessage = getResources().getString(R.string.renametitle) + " - " + getResources().getString(R.string.ok);
-                FullscreenActivity.whichSongFolder = tempNewFolder;
-            } else {
-                FullscreenActivity.myToastMessage = getResources().getString(R.string.renametitle) + " - " + getResources().getString(R.string.createfoldererror);
+        @SuppressLint("StaticFieldLeak") AsyncTask<Object, String, String> renamefolders = new AsyncTask<Object, String, String>() {
+
+            @Override
+            protected String doInBackground(Object... objects) {
+                if (storageAccess.renameFolder(getActivity(), preferences, tempOldFolder, tempNewFolder)) {
+                    return "success";
+                } else {
+                    return "error";
+                }
             }
-        } else {
-            FullscreenActivity.myToastMessage = getResources().getString(R.string.renametitle) + " - " + getResources().getString(R.string.folderexists);
-        }
+
+            @Override
+            protected void onPostExecute(String s) {
+                ShowToast.showToast(getActivity());
+                if (s.equals("success")) {
+                    // Save preferences
+                    Preferences.savePreferences();
+
+                    // Let the app know we need to rebuild the database
+                    FullscreenActivity.needtorefreshsongmenu = true;
+
+                    if (mListener != null) {
+                        mListener.loadSong();
+                    }
+                    try {
+                        dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        };
+        renamefolders.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public void getVariables() {

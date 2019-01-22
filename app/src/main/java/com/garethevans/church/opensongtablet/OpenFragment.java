@@ -273,6 +273,10 @@ class OpenFragment {
                 newFragment = PopUpChordFormatFragment.newInstance();
                 break;
 
+            case "promptbackup":
+                newFragment = PopUpBackupPromptFragment.newInstance();
+                break;
+
             case "processimportosb":
             case "exportosb":
                 newFragment = PopUpImportExportOSBFragment.newInstance();

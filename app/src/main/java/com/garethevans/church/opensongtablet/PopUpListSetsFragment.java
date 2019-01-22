@@ -509,13 +509,13 @@ public class PopUpListSetsFragment extends DialogFragment {
             FullscreenActivity.setnamechosen = FullscreenActivity.setnamechosen.substring(0,FullscreenActivity.setnamechosen.length()-3);
         }
 
-        if (FullscreenActivity.whattodo.equals("loadset") && !FullscreenActivity.setnamechosen.isEmpty() && !FullscreenActivity.setnamechosen.equals("")) {
+        if (FullscreenActivity.whattodo.equals("loadset") && !FullscreenActivity.setnamechosen.isEmpty()) {
             doLoadSet();
         } else if (FullscreenActivity.whattodo.equals("saveset") && !setListName.getText().toString().trim().isEmpty() && !setListName.getText().toString().trim().equals("")) {
             doSaveSet();
-        } else if (FullscreenActivity.whattodo.equals("deleteset") && !FullscreenActivity.setnamechosen.isEmpty() && !FullscreenActivity.setnamechosen.equals("")) {
+        } else if (FullscreenActivity.whattodo.equals("deleteset") && !FullscreenActivity.setnamechosen.isEmpty()) {
             doDeleteSet();
-        } else if (FullscreenActivity.whattodo.equals("exportset") && !FullscreenActivity.setnamechosen.isEmpty() && !FullscreenActivity.setnamechosen.equals("")) {
+        } else if (FullscreenActivity.whattodo.equals("exportset") && !FullscreenActivity.setnamechosen.isEmpty()) {
             FullscreenActivity.settoload = FullscreenActivity.setnamechosen;
             doExportSet();
         } else if (FullscreenActivity.whattodo.equals("managesets")) {

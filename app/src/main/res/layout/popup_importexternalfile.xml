@@ -15,10 +15,52 @@
         <include layout="@layout/popup_dialogtitle" />
     </FrameLayout>
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/progressLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/myTitle"
+        android:layout_margin="8dp"
+        android:background="@drawable/section_box"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:visibility="gone">
+
+        <TextView
+            style="@style/MyHeadingText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="8dp"
+            android:text="@string/wait" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/progressText"
+            style="@style/MyInfoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="2"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/progressBarH"
+            style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/progressLinearLayout"
         tools:ignore="UselessParent">
 
         <LinearLayout
@@ -84,12 +126,5 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
 
 </RelativeLayout>

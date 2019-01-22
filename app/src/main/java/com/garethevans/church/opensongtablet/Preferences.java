@@ -878,8 +878,8 @@ public class Preferences extends Activity {
     fontLyric               String      The name of the font used for the lyrics.  From fonts.google.com
     fontPreso               String      The name of the font used for the preso.  From fonts.google.com
     fontPresoInfo           String      The name of the font used for the presoinfo.  From fonts.google.com
-
     lastUsedVersion         int         The app version number the last time the app ran
+    runswithoutbackup       int         The number of times the app has opened without backup (prompt the user after 10)
     treeUri                 String      A string representation of the root app folder (OpenSong/)
     */
 }

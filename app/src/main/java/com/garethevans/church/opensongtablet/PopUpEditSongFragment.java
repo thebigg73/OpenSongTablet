@@ -178,6 +178,9 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         Preferences.savePreferences();
 
         if (ended) {
+            // If we were sent here because we needed to edit the song, we can now reset that
+            FullscreenActivity.needtoeditsong = false;
+
             // Prepare the message
             FullscreenActivity.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
                     getResources().getString(R.string.ok);
@@ -254,7 +257,11 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             public void onClick(View view) {
                 CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
-                cancelEdit();
+                if (FullscreenActivity.needtoeditsong) {
+                    saveEdit(true);
+                } else {
+                    cancelEdit();
+                }
             }
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);

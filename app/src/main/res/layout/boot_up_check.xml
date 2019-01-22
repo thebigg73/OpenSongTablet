@@ -127,8 +127,9 @@
             </LinearLayout>
 
 
-            <RelativeLayout
-                android:id="@+id/goToSongsRelativeLayout"
+            <LinearLayout
+                android:id="@+id/goToSongsLinearLayout"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
@@ -139,11 +140,11 @@
                     android:background="@drawable/green_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
                     android:layout_margin="16dp"
                     android:padding="4dp"
                     android:text="@string/start"
                     android:textSize="24sp"
+                    android:layout_gravity="center_horizontal"
                     android:textColor="#fff" />
 
                 <Spinner
@@ -152,14 +153,13 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     style="@style/MySpinner"
-                    android:layout_below="@+id/goToSongsButton"
-                    android:layout_centerHorizontal="true"/>
+                    android:layout_gravity="center_horizontal" />
 
                 <ProgressBar
                     android:id="@+id/progressBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"
                     android:visibility="gone" />
 
                 <TextView
@@ -168,7 +168,6 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     style="@style/MyInfoText"
-                    android:layout_above="@+id/progressBarHorizontal"
                     android:visibility="gone"/>
 
                 <ProgressBar
@@ -176,10 +175,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_alignParentBottom="true"
                     android:visibility="gone"/>
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/userGuideLinearLayout"

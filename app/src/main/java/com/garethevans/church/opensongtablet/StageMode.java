@@ -87,10 +87,9 @@ import com.peak.salut.Salut;
 import com.peak.salut.SalutDataReceiver;
 import com.peak.salut.SalutServiceData;
 
-import org.apache.commons.io.FileUtils;
-
 import java.io.File;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -108,7 +107,7 @@ public class StageMode extends AppCompatActivity implements
         SearchView.OnQueryTextListener, PopUpSetViewNew.MyInterface,
         PopUpChooseFolderFragment.MyInterface, PopUpCustomSlideFragment.MyInterface,
         PopUpImportExternalFile.MyInterface, PopUpRebuildDatabaseFragment.MyInterface,
-        OnSongConvert.MyInterface,
+        OnSongConvert.MyInterface, PopUpBackupPromptFragment.MyInterface,
         PopUpSongFolderRenameFragment.MyInterface, PopUpThemeChooserFragment.MyInterface,
         PopUpProfileFragment.MyInterface, PopUpExtraInfoFragment.MyInterface,
         PopUpPageButtonsFragment.MyInterface, PopUpScalingFragment.MyInterface,
@@ -314,6 +313,7 @@ public class StageMode extends AppCompatActivity implements
         customhandler = new Handler();
         monohandler = new Handler();
 
+        // Check we have permission to use the storage
         checkStorage();
 
         // Load the layout and set the title
@@ -426,13 +426,15 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public void run() {
                 FullscreenActivity.firstload = false;
-                //rebuildSearchIndex();
             }
         };
 
         if (FullscreenActivity.firstload) {
             rebuild.postDelayed(r,2000);
         }
+
+        // Check if we need to remind the user to backup their songs
+        checkBackupState();
 
     }
 
@@ -1261,6 +1263,19 @@ public class StageMode extends AppCompatActivity implements
             shareactivitylog_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    void checkBackupState() {
+        // Check for the number of times the app has run without the user backing up his songs
+        // If this is 10 (or more) show the backup prompt window.
+        int runssincebackup = preferences.getMyPreferenceInt(StageMode.this, "runssincebackup", 0) + 1;
+
+        // Save the new value
+        preferences.setMyPreferenceInt(StageMode.this, "runssincebackup", runssincebackup);
+        if (runssincebackup >= 10) {
+            FullscreenActivity.whattodo = "promptbackup";
+            openFragment();
         }
     }
 
@@ -2574,13 +2589,7 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void onSongImportDone(String message) {
-        FullscreenActivity.myToastMessage = message;
-        if (!message.equals("cancel")) {
-            showToastMessage(message);
-            prepareSongMenu();
-        }
-        OnSongConvert onSongConvert = new OnSongConvert();
-        onSongConvert.doBatchConvert(StageMode.this);
+        rebuildSearchIndex();
     }
 
     @Override
@@ -3030,36 +3039,27 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    // List of URIs to provide to Android Beam
-    private Uri[] mFileUris = new Uri[10];
-    @SuppressLint("NewApi")
-    private class FileUriCallback implements NfcAdapter.CreateBeamUrisCallback {
-        FileUriCallback() {}
+    public void holdBeforeLoading() {
+        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
+        // As soon as we receive if, check this is the first time
+        if (FullscreenActivity.firstReceivingOfSalut) {
+            // Now turn it off
+            FullscreenActivity.firstReceivingOfSalut = false;
+            // Decide if the file exists on this device first
+            Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs",
+                    FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+            if (storageAccess.uriExists(StageMode.this, uri)) {
+                loadSong();
+            }
 
-        @Override
-        public Uri[] createBeamUris(NfcEvent event) {
-            String transferFile = FullscreenActivity.songfilename;
-            File extDir;
-            if (FullscreenActivity.whichSongFolder.equals(getString(R.string.mainfoldername))) {
-                extDir =FullscreenActivity.dir;
-            } else {
-                extDir = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/");
-            }
-            File requestFile = new File(extDir, transferFile);
-            @SuppressLint("SetWorldReadable")
-            boolean b = requestFile.setReadable(true, false);
-            if (!b) {
-                // Get a URI for the File and add it to the list of URIs
-                Uri fileUri = Uri.fromFile(requestFile);
-                if (fileUri != null) {
-                    mFileUris[0] = fileUri;
-                } else {
-                    Log.e("My Activity", "No File URI available for file.");
+            // After a delay of 2 seconds, reset the firstReceivingOfSalut;
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    FullscreenActivity.firstReceivingOfSalut = true;
                 }
-                return mFileUris;
-            } else {
-                return null;
-            }
+            }, 500);
         }
     }
 
@@ -3185,34 +3185,7 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
-    public void holdBeforeLoading() {
-        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
-        // As soon as we receive if, check this is the first time
-        if (FullscreenActivity.firstReceivingOfSalut) {
-            // Now turn it off
-            FullscreenActivity.firstReceivingOfSalut = false;
-            // Decide if the file exists on this device first
-            File f;
-            if (FullscreenActivity.whichSongFolder.equals("") || FullscreenActivity.whichSongFolder.equals(getString(R.string.mainfoldername))) {
-                f = new File(FullscreenActivity.dir,FullscreenActivity.songfilename);
-            } else {
-                f = new File(FullscreenActivity.dir,FullscreenActivity.whichSongFolder);
-                f = new File(f,FullscreenActivity.songfilename);
-            }
-            if (f.exists()) {
-                loadSong();
-            }
 
-            // After a delay of 2 seconds, reset the firstReceivingOfSalut;
-            Handler h = new Handler();
-            h.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    FullscreenActivity.firstReceivingOfSalut = true;
-                }
-            },500);
-        }
-    }
     public void holdBeforeLoadingXML() {
         // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
         // As soon as we receive if, check this is the first time
@@ -3220,37 +3193,31 @@ public class StageMode extends AppCompatActivity implements
             // Now turn it off
             FullscreenActivity.firstReceivingOfSalutXML = false;
 
-            File f;
-            if (FullscreenActivity.whichSongFolder.equals("") || FullscreenActivity.whichSongFolder.equals(getString(R.string.mainfoldername))) {
-                f = new File(FullscreenActivity.dir,FullscreenActivity.songfilename);
-            } else {
-                f = new File(FullscreenActivity.dir,FullscreenActivity.whichSongFolder);
-                f = new File(f,FullscreenActivity.songfilename);
-            }
-            if (!f.exists() || FullscreenActivity.receiveHostFiles) {
+            Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs",
+                    FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+            if (!storageAccess.uriExists(StageMode.this, uri) || FullscreenActivity.receiveHostFiles) {
                 FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\n", "$$__$$");
                 FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\", "");
                 FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("$$__$$", "\n");
 
                 // Create the temp song file
-                try {
-                    if (!FullscreenActivity.dirreceived.exists()) {
-                        if (!FullscreenActivity.dirreceived.mkdirs()) {
-                            Log.d("StageMode", "Couldn't make directory");
-                        }
-                    }
-                    FullscreenActivity.file = new File(FullscreenActivity.dirreceived, "ReceivedSong");
+                Uri receivedUri = storageAccess.getUriForItem(StageMode.this, preferences,
+                        "Received", "", "ReceivedSong");
+                storageAccess.lollipopCreateFileForOutputStream(StageMode.this, preferences, receivedUri,
+                        null, "Received", "", "ReceivedFile");
+                OutputStream outputStream = storageAccess.getOutputStream(StageMode.this, receivedUri);
+                storageAccess.writeFileFromString(FullscreenActivity.mySalutXML, outputStream);
 
-                    FileUtils.writeStringToFile(FullscreenActivity.file, FullscreenActivity.mySalutXML, "UTF-8");
+                FullscreenActivity.songfilename = "ReceivedSong";
+                FullscreenActivity.whichSongFolder = "../Received";
 
-                    FullscreenActivity.songfilename = "ReceivedSong";
-                    FullscreenActivity.whichSongFolder = "../Received";
-                } catch (Exception e) {
-                    FullscreenActivity.myToastMessage = getResources().getString(R.string.songdoesntexist);
-                    ShowToast.showToast(StageMode.this);
-                }
                 loadSong();
+
+            } else {
+                FullscreenActivity.myToastMessage = getResources().getString(R.string.songdoesntexist);
+                ShowToast.showToast(StageMode.this);
             }
+
             // After a delay of 2 seconds, reset the firstReceivingOfSalut;
             Handler h = new Handler();
             h.postDelayed(new Runnable() {
@@ -3259,40 +3226,6 @@ public class StageMode extends AppCompatActivity implements
                     FullscreenActivity.firstReceivingOfSalutXML = true;
                 }
             },500);
-        }
-    }
-    public void holdBeforeLoadingSection(int s) {
-        if (FullscreenActivity.firstReceivingOfSalutSection) {
-            // Now turn it off
-            FullscreenActivity.firstReceivingOfSalutSection = false;
-            selectSection(s);
-
-            // After a delay of 2 seconds, reset the firstReceivingOfSalutSection;
-            Handler h = new Handler();
-            h.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    FullscreenActivity.firstReceivingOfSalutSection = true;
-                }
-            }, 500);
-        }
-    }
-    public void holdBeforeAutoscrolling() {
-        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
-        // As soon as we receive if, check this is the first time
-        if (FullscreenActivity.firstReceivingOfSalutAutoscroll) {
-            // Now turn it off
-            FullscreenActivity.firstReceivingOfSalutAutoscroll = false;
-            gesture5();
-
-            // After a delay of 2 seconds, reset the firstReceivingOfSalut;
-            Handler h = new Handler();
-            h.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    FullscreenActivity.firstReceivingOfSalutAutoscroll = true;
-                }
-            }, 500);
         }
     }
 
@@ -3343,12 +3276,15 @@ public class StageMode extends AppCompatActivity implements
                 break;
 
             case "wipeallsongs":
-                // Wipe all songs
+                // Wipe all songs - Getting rid of this!!!!!
+                Log.d("PresenterMode", "Trying wipe songs folder - ignoring");
+
+                /*// Wipe all songs
                 storageAccess.wipeFolder(StageMode.this, preferences, "Songs", "");
                 // Rebuild the song list
                 storageAccess.listSongs(StageMode.this, preferences);
                 listSongFiles.songUrisInFolder(StageMode.this, preferences);
-                refreshAll();
+                refreshAll();*/
                 break;
 
             case "resetcolours":
@@ -3360,6 +3296,91 @@ public class StageMode extends AppCompatActivity implements
                 openFragment();
                 break;
         }
+    }
+
+    public void holdBeforeLoadingSection(int s) {
+        if (FullscreenActivity.firstReceivingOfSalutSection) {
+            // Now turn it off
+            FullscreenActivity.firstReceivingOfSalutSection = false;
+            selectSection(s);
+
+            // After a delay of 2 seconds, reset the firstReceivingOfSalutSection;
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    FullscreenActivity.firstReceivingOfSalutSection = true;
+                }
+            }, 500);
+        }
+    }
+
+    public void holdBeforeAutoscrolling() {
+        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
+        // As soon as we receive if, check this is the first time
+        if (FullscreenActivity.firstReceivingOfSalutAutoscroll) {
+            // Now turn it off
+            FullscreenActivity.firstReceivingOfSalutAutoscroll = false;
+            gesture5();
+
+            // After a delay of 2 seconds, reset the firstReceivingOfSalut;
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    FullscreenActivity.firstReceivingOfSalutAutoscroll = true;
+                }
+            }, 500);
+        }
+    }
+
+    public void loadImage() {
+        // Process the image location into an URI
+        Uri imageUri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs",
+                FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+
+        glideimage_ScrollView.setVisibility(View.VISIBLE);
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+
+        //Returns null, sizes are in the options variable
+        InputStream inputStream = storageAccess.getInputStream(StageMode.this, imageUri);
+        BitmapFactory.decodeStream(inputStream, null, options);
+
+        int imgwidth = options.outWidth;
+        int imgheight = options.outHeight;
+
+        int widthavail = getAvailableWidth();
+        int heightavail = getAvailableHeight();
+
+        // Decide on the image size to use
+        if (FullscreenActivity.toggleYScale.equals("Y")) {
+            // Glide sorts the width vs height (keeps the image in the space available using fitCenter
+            glideimage.setBackgroundColor(0x00000000);
+            RequestOptions myOptions = new RequestOptions()
+                    .fitCenter()
+                    .override(widthavail, heightavail);
+            Glide.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
+        } else {
+            // Now decide on the scaling required....
+            float xscale = (float) widthavail / (float) imgwidth;
+            int glideheight = (int) ((float) imgheight * xscale);
+            glideimage.setBackgroundColor(0x00000000);
+            RequestOptions myOptions = new RequestOptions()
+                    .override(widthavail, glideheight);
+            Glide.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
+        }
+
+        songscrollview.removeAllViews();
+
+        // Animate the view in after a delay (waiting for slide out animation to complete
+        animateInSong();
+
+        // Check for scroll position
+        delaycheckscroll.postDelayed(checkScrollPosition, FullscreenActivity.checkscroll_time);
+
+        Preferences.loadSongSuccess();
     }
 
     public void getLearnedSongLengthValue() {
@@ -3418,50 +3439,26 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void loadImage() {
-        // Process the image location into an URI
-        Uri imageUri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs",
-                FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+    public void getPadProgress() {
+        int pos;
+        boolean pad1status = PadFunctions.getPad1Status();
+        boolean pad2status = PadFunctions.getPad2Status();
 
-        glideimage_ScrollView.setVisibility(View.VISIBLE);
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-
-        //Returns null, sizes are in the options variable
-        BitmapFactory.decodeFile(FullscreenActivity.file.toString(), options);
-        int imgwidth = options.outWidth;
-        int imgheight = options.outHeight;
-        int widthavail = getAvailableWidth();
-        int heightavail = getAvailableHeight();
-
-        // Decide on the image size to use
-        if (FullscreenActivity.toggleYScale.equals("Y")) {
-            // Glide sorts the width vs height (keeps the image in the space available using fitCenter
-            glideimage.setBackgroundColor(0x00000000);
-            RequestOptions myOptions = new RequestOptions()
-                    .fitCenter()
-                    .override(widthavail, heightavail);
-            Glide.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
+        boolean display1 = (pad1status && !FullscreenActivity.pad1Fading);
+        boolean display2 = (pad2status && !FullscreenActivity.pad2Fading);
+        // Decide which player we should be getting the status of
+        if (display1 || FullscreenActivity.mPlayer1Paused) {
+            pos = (int) (FullscreenActivity.mPlayer1.getCurrentPosition() / 1000.0f);
+        } else if (display2 || FullscreenActivity.mPlayer2Paused) {
+            pos = (int) (FullscreenActivity.mPlayer2.getCurrentPosition() / 1000.0f);
         } else {
-            // Now decide on the scaling required....
-            float xscale = (float) widthavail / (float) imgwidth;
-            int glideheight = (int) ((float)imgheight * xscale);
-            glideimage.setBackgroundColor(0x00000000);
-            RequestOptions myOptions = new RequestOptions()
-                    .override(widthavail,glideheight);
-            Glide.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
+            pos = 0;
         }
 
-        songscrollview.removeAllViews();
+        String text = TimeTools.timeFormatFixer(pos);
+        updateExtraInfoColorsAndSizes("pad");
+        padcurrentTime_TextView.setText(text);
 
-        // Animate the view in after a delay (waiting for slide out animation to complete
-        animateInSong();
-
-        // Check for scroll position
-        delaycheckscroll.postDelayed(checkScrollPosition, FullscreenActivity.checkscroll_time);
-
-        Preferences.loadSongSuccess();
     }
 
     public void goToNextItem() {
@@ -5218,7 +5215,6 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    // TODO fix in presenter mode
     public void startCamera() {
         closeMyDrawers("option");
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -5240,7 +5236,6 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    // TODO Fix in Presenter mode - this is renamed
     private Uri getImageUri() {
         try {
             // Create an image file name
@@ -5860,26 +5855,20 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void getPadProgress() {
-        int pos;
-        boolean pad1status = PadFunctions.getPad1Status();
-        boolean pad2status = PadFunctions.getPad2Status();
-
-        boolean display1 = (pad1status && !FullscreenActivity.pad1Fading);
-        boolean display2 = (pad2status && FullscreenActivity.pad2Fading);
-        // Decide which player we should be getting the status of
-        if (display1 || FullscreenActivity.mPlayer1Paused) {
-            pos = (int) (FullscreenActivity.mPlayer1.getCurrentPosition() / 1000.0f);
-        } else if (display2 || FullscreenActivity.mPlayer2Paused) {
-            pos = (int) (FullscreenActivity.mPlayer2.getCurrentPosition() / 1000.0f);
-        } else {
-            pos = 0;
+    // Uri to provide to Android Beam
+    @SuppressLint("NewApi")
+    private class FileUriCallback implements NfcAdapter.CreateBeamUrisCallback {
+        FileUriCallback() {
         }
 
-        String text = TimeTools.timeFormatFixer(pos);
-        updateExtraInfoColorsAndSizes("pad");
-        padcurrentTime_TextView.setText(text);
+        private Uri[] mFileUris = new Uri[1]; // Send one at a time
 
+        @Override
+        public Uri[] createBeamUris(NfcEvent event) {
+            mFileUris[0] = storageAccess.getUriForItem(StageMode.this, preferences, "Songs",
+                    FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+            return mFileUris;
+        }
     }
 
     public void preparePadProgress() {
@@ -6699,8 +6688,17 @@ public class StageMode extends AppCompatActivity implements
                         ProcessSong.rebuildParsedLyrics(FullscreenActivity.songSections.length);
                         FullscreenActivity.numrowstowrite = FullscreenActivity.myParsedLyrics.length;
 
-                        // Look for song split points
-                        ProcessSong.lookForSplitPoints();
+                        // Look for song split points if the lyrics are long enough
+                        if (FullscreenActivity.numrowstowrite > 1) {
+                            ProcessSong.lookForSplitPoints();
+                        } else {
+                            FullscreenActivity.splitpoint = 0;
+                            FullscreenActivity.halfsplit_section = 0;
+                            FullscreenActivity.thirdsplitpoint = 0;
+                            FullscreenActivity.thirdsplit_section = 0;
+                            FullscreenActivity.twothirdsplitpoint = 0;
+                            FullscreenActivity.twothirdsplit_section = 0;
+                        }
 
                     }
                 }
@@ -6848,9 +6846,14 @@ public class StageMode extends AppCompatActivity implements
                     // If we have created, or converted a song format (e.g from OnSong or ChordPro), rebuild the database
                     // or pull up the edit screen
                     if (FullscreenActivity.needtoeditsong) {
+
+                        // This line below is now reset in the edit song window
+                        //FullscreenActivity.needtoeditsong = false;
+
                         FullscreenActivity.whattodo = "editsong";
                         FullscreenActivity.alreadyloading = false;
                         FullscreenActivity.needtorefreshsongmenu = true;
+                        openFragment();
                     } else if (FullscreenActivity.needtorefreshsongmenu) {
                         FullscreenActivity.needtorefreshsongmenu = false;
                         rebuildSearchIndex();

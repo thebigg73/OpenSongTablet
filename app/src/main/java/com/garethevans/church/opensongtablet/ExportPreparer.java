@@ -270,7 +270,7 @@ class ExportPreparer {
             storageAccess.lollipopCreateFileForOutputStream(c, preferences, image, null, "Export", "", FullscreenActivity.songfilename + ".png");
 
             OutputStream outputStream = storageAccess.getOutputStream(c,image);
-            storageAccess.writeImage(outputStream,bmp, Bitmap.CompressFormat.PNG);
+            storageAccess.writeImage(outputStream, bmp);
         }
 
         if (FullscreenActivity.exportPDF) {

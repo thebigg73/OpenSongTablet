@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="extracting" translatable="false">Extracting</string>
+    <string name="converting" translatable="false">Converting</string>
+
+    <string name="promptbackup" translatable="false">You haven\'t backed up your song library in the last 10 times you have used this app.
+        This is highly recommended as you can recover your songs if anything goes wrong.
+        Ideally you should keep a copy of your backup file on the cloud (e.g. Google Drive) or email it to yourself.</string>
+    <string name="backupnow" translatable="false">Create a backup now</string>
+    <string name="remindme" translatable="false">Remind me later</string>
+
     <string name="connected_device_song" translatable="false">Song from connected device</string>
     <string name="network_error" translatable="false">Network error</string>
     <string name="download_new" translatable="false">Click here to download a new Bible</string>

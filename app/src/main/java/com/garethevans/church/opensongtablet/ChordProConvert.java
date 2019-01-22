@@ -53,7 +53,7 @@ class ChordProConvert {
 
         // Get the filename and subfolder (if any) that the original song was in by parsing the uri
         oldSongFileName = getOldSongFileName(uri);
-        songSubFolder = getSongFolderLocation(storageAccess, uri);
+        songSubFolder = getSongFolderLocation(storageAccess, uri, oldSongFileName);
 
         // Prepare the new song filename
         newSongFileName = getNewSongFileName(uri, title);
@@ -69,8 +69,6 @@ class ChordProConvert {
 
         // Get a unique uri for the new song
         Uri newUri = getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);
-
-        Log.d("ChordProConvert", "newUri=" + newUri);
 
         // Now write the modified song
         writeTheImprovedSong(c, storageAccess, preferences, oldSongFileName, newSongFileName,
@@ -269,6 +267,15 @@ class ChordProConvert {
                 || s.contains("{pagetype")) {
             s = "";
         }
+        if (s.startsWith("&") && s.contains(":") && s.indexOf(":") < 10) {
+            // Remove colour tags (mostly onsong stuff)
+            while (s.contains("&") && s.contains(":") && s.indexOf("&") < s.indexOf(":")) {
+                String bittoremove = s.substring(s.indexOf("&"), s.indexOf(":") + 1);
+                s = s.replace(bittoremove, "");
+            }
+        }
+        s = s.replace(">gray:", "");
+
         return s;
     }
 
@@ -430,7 +437,7 @@ class ChordProConvert {
         // Prepare a new uri based on the best filename, but make it unique so as not to overwrite existing files
         Uri n = storageAccess.getUriForItem(c, preferences, "Songs", songSubFolder, newSongFileName);
         int attempts = 0;
-        if (storageAccess.uriExists(c, n) || attempts > 4) {
+        while (storageAccess.uriExists(c, n) && attempts < 4) {
             // Append _ to the end of the name until the filename is unique, or give up after 5 attempts
             newSongFileName = newSongFileName + "_";
             n = storageAccess.getUriForItem(c, preferences, "Songs", songSubFolder, newSongFileName);
@@ -448,7 +455,6 @@ class ChordProConvert {
             if (fn.contains("/")) {
                 fn = fn.substring(fn.lastIndexOf("/"));
                 fn = fn.replace("/", "");
-                Log.d("d", "Last pass of fn=" + fn);
             }
         }
         return fn;
@@ -456,9 +462,16 @@ class ChordProConvert {
 
     String getNewSongFileName(Uri uri, String title) {
         String fn = uri.getLastPathSegment();
+        if (fn == null) {
+            fn = "";
+        }
+        // Since the file is likely a treeUri, get the last bit again
+        if (fn.contains("/")) {
+            fn = fn.substring(fn.lastIndexOf("/") + 1);
+        }
         if (title != null && !title.equals("")) {
             fn = title;
-        } else if (fn != null) {
+        } else {
             // No title found, so use the filename and get rid of extensions
             fn = fn.replace(".pro", "");
             fn = fn.replace(".PRO", "");
@@ -476,13 +489,12 @@ class ChordProConvert {
             fn = fn.replace(".ONSONG", "");
             fn = fn.replace(".usr", "");
             fn = fn.replace(".US", "");
-        } else {
-            fn = "_";
         }
+        fn = fixLineBreaksAndSlashes(fn);
         return fn;
     }
 
-    String getSongFolderLocation(StorageAccess storageAccess, Uri uri) {
+    String getSongFolderLocation(StorageAccess storageAccess, Uri uri, String oldSongFileName) {
         String sf = storageAccess.getPartOfUri(uri, "/OpenSong/Songs");
         sf = sf.replace("/OpenSong/Songs/", "");
         sf = sf.replace(oldSongFileName, "");
@@ -521,7 +533,6 @@ class ChordProConvert {
                 && oldUri != null && newUri != null && storageAccess.uriExists(c, oldUri)) {
             if (storageAccess.lollipopOrLater()) {
                 // For lollipop+ we need to create a blank file for writing
-                Log.d("d", "About to create the file. subfolder=" + songSubFolder + "  newSongFileName=" + newSongFileName);
                 storageAccess.createFile(c, preferences, null, "Songs", songSubFolder, newSongFileName);
             }
 
@@ -529,7 +540,6 @@ class ChordProConvert {
             if (outputStream != null && storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream)) {
                 // Change the songId (references to the uri)
                 String id = storageAccess.getDocumentsContractId(newUri);
-                Log.d("ChordProConvert", "New id for uri:" + newUri + " is: " + id);
                 FullscreenActivity.songIds.set(pos, id);
                 // Now remove the old chordpro file
                 storageAccess.deleteFile(c, oldUri);
@@ -559,10 +569,9 @@ class ChordProConvert {
     }
 
 
-
-
     private String guessTags(String s) {
-        if (s.startsWith(";") || s.startsWith("#")) {
+        // Only check for definite comment lines on lines that are short enough to maybe be headings
+        if (s.startsWith(";") || s.startsWith("#") | s.length() < 16) {
             s = s.replace("Intro:", "[Intro]");
             s = s.replace("Intro", "[Intro]");
             s = s.replace("Outro:", "[Outro]");

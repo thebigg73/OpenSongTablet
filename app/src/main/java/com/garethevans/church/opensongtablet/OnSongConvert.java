@@ -74,10 +74,13 @@ class OnSongConvert {
 
         // Get the filename and subfolder (if any) that the original song was in by parsing the uri
         oldSongFileName = chordProConvert.getOldSongFileName(uri);
-        songSubFolder = chordProConvert.getSongFolderLocation(storageAccess, uri);
+        songSubFolder = chordProConvert.getSongFolderLocation(storageAccess, uri, oldSongFileName);
 
         // Prepare the new song filename
         newSongFileName = chordProConvert.getNewSongFileName(uri, title);
+
+        // By default, set the title to the new filename
+        FullscreenActivity.songfilename = newSongFileName;
 
         // Initialise the variables
         songXML.initialiseSongTags();
@@ -90,8 +93,6 @@ class OnSongConvert {
 
         // Get a unique uri for the new song
         Uri newUri = chordProConvert.getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);
-
-        Log.d("ChordProConvert", "newUri=" + newUri);
 
         // Now write the modified song
         chordProConvert.writeTheImprovedSong(c, storageAccess, preferences, oldSongFileName, newSongFileName,
@@ -323,9 +324,12 @@ class OnSongConvert {
         return parsedLines.toString();
     }
 
-
     private void setCorrectXMLValues() {
-        FullscreenActivity.mTitle = title.trim();
+        if (title == null || title.isEmpty()) {
+            FullscreenActivity.mTitle = newSongFileName;
+        } else {
+            FullscreenActivity.mTitle = title.trim();
+        }
         FullscreenActivity.mAuthor = author.trim();
         FullscreenActivity.mCopyright = copyright.trim();
         FullscreenActivity.mTempo = tempo.trim();

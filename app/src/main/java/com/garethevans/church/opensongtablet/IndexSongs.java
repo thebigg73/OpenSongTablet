@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -351,6 +352,7 @@ class IndexSongs {
 
             } else if (name != null && (name.toLowerCase().endsWith(".onsong"))) {
                 try {
+                    Log.d("IndexSong", "trying to read in onsong: " + name);
                     InputStream inputStream = storageAccess.getInputStream(c, uri);
                     String filecontents = storageAccess.readTextFileToString(inputStream);
                     bits = onSongConvert.convertTextToTags(c, storageAccess, preferences, songXML, chordProConvert,

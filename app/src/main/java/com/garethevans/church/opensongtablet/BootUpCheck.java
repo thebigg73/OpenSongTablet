@@ -18,7 +18,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
@@ -33,7 +32,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -62,10 +60,9 @@ public class BootUpCheck extends AppCompatActivity {
 
     // Declare views
     ProgressBar progressBar;
-    TextView progressText, version, previousStorageTextView, previousStorageHeading;
+    TextView progressText, version, previousStorageTextView, previousStorageHeading, currentAction;
     Button chooseStorageButton, goToSongsButton, userGuideButton, previousStorageButton;
-    LinearLayout storageLinearLayout, readUpdate, userGuideLinearLayout;
-    RelativeLayout goToSongsRelativeLayout;
+    LinearLayout storageLinearLayout, readUpdate, userGuideLinearLayout, goToSongsLinearLayout;
     Spinner appMode, previousStorageSpinner;
     Toolbar toolbar;
     // Declare variables
@@ -145,7 +142,7 @@ public class BootUpCheck extends AppCompatActivity {
         goToSongsButton = findViewById(R.id.goToSongsButton);
         chooseStorageButton = findViewById(R.id.chooseStorageButton);
         storageLinearLayout = findViewById(R.id.storageLinearLayout);
-        goToSongsRelativeLayout = findViewById(R.id.goToSongsRelativeLayout);
+        goToSongsLinearLayout = findViewById(R.id.goToSongsLinearLayout);
         readUpdate = findViewById(R.id.readUpdate);
         version = findViewById(R.id.version);
         version.setText(versionCode);
@@ -158,6 +155,7 @@ public class BootUpCheck extends AppCompatActivity {
         previousStorageButton = findViewById(R.id.previousStorageButton);
         previousStorageTextView = findViewById(R.id.previousStorageTextView);
         previousStorageHeading = findViewById(R.id.previousStorageHeading);
+        currentAction = findViewById(R.id.currentAction);
         // Set the 3 options
         ArrayList<String> appModes = new ArrayList<>();
         appModes.add(getString(R.string.performancemode));
@@ -268,7 +266,7 @@ public class BootUpCheck extends AppCompatActivity {
             progressvisibility = View.GONE;
             pulseStartButton();
         } else {
-            visibility = View.INVISIBLE;
+            visibility = View.GONE;
             progressvisibility = View.VISIBLE;
             goToSongsButton.clearAnimation();
         }
@@ -476,10 +474,10 @@ public class BootUpCheck extends AppCompatActivity {
 
         if (checkStorageIsValid() && storageGranted && !skiptoapp) {
             // We're good to go, but need to wait for the user to click on the start button
-            goToSongsRelativeLayout.setVisibility(View.VISIBLE);
+            goToSongsLinearLayout.setVisibility(View.VISIBLE);
         } else {
             // Not ready, so hide the start button
-            goToSongsRelativeLayout.setVisibility(View.GONE);
+            goToSongsLinearLayout.setVisibility(View.GONE);
         }
     }
 
@@ -492,14 +490,20 @@ public class BootUpCheck extends AppCompatActivity {
         // Load up the storage into the FullscreenActivity
         FullscreenActivity.uriTree = uriTree;
 
-        final TextView tv = findViewById(R.id.currentAction);
+        // Set the typefaces (don't do in the thread below as it is async anyway
+        // Initialise typefaces
+        setTypeFace.setUpAppFonts(BootUpCheck.this, preferences, lyrichandler, chordhandler,
+                presohandler, presoinfohandler, customhandler, monohandler);
+
+        // Intialise the views needed
         final ProgressBar progressBarHorizontal = findViewById(R.id.progressBarHorizontal);
-        tv.setVisibility(View.VISIBLE);
-        tv.setText("");
+        currentAction = findViewById(R.id.currentAction);
+        currentAction.setVisibility(View.VISIBLE);
+        //currentAction.setText("");
         progressBarHorizontal.setVisibility(View.INVISIBLE);
 
         // Do this as a separate thread
-        GoToSongs goToSongsAsync = new GoToSongs(progressBarHorizontal, tv);
+        GoToSongs goToSongsAsync = new GoToSongs(progressBarHorizontal);
         goToSongsAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
@@ -507,16 +511,16 @@ public class BootUpCheck extends AppCompatActivity {
     private class GoToSongs extends AsyncTask<Object, String, String> {
 
         ProgressBar hProgressBar;
-        TextView textView;
+        //TextView textView;
         int numSongs;
         int currentSongNum;
         String currentSongName, message;
-        boolean settingProgressBarUp = false;
+        boolean settingProgressBarUp = false, cancelled = false;
         Intent intent;
 
-        GoToSongs(ProgressBar pb, TextView tv) {
+        GoToSongs(ProgressBar pb) {
             hProgressBar = pb;
-            textView = tv;
+            //textView = tv;
         }
 
         @Override
@@ -525,10 +529,6 @@ public class BootUpCheck extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Object... objects) {
-            Looper.prepare();
-
-            // Load up custom font
-
             // Check if the folders exist, if not, create them
             message = getString(R.string.storage_check);
             publishProgress("setmessage");
@@ -540,8 +540,7 @@ public class BootUpCheck extends AppCompatActivity {
                 // Load up all of the preferences into FullscreenActivity (static variables)
                 message = getString(R.string.load_preferences);
                 publishProgress("setmessage");
-                fullscreenActivity.mainSetterOfVariables(BootUpCheck.this, preferences, setTypeFace,
-                        lyrichandler, chordhandler, presohandler, presoinfohandler, customhandler, monohandler);
+                fullscreenActivity.mainSetterOfVariables(BootUpCheck.this, preferences);
 
                 // Search for the user's songs
                 message = getString(R.string.initialisesongs_start).replace("-", "").trim();
@@ -655,32 +654,34 @@ public class BootUpCheck extends AppCompatActivity {
             if (currentSongNum > 0) {
                 hProgressBar.setProgress(currentSongNum);
             }
-            textView.setText(message);
+            //currentAction.setVisibility(View.VISIBLE);
+            currentAction.setText(message);
         }
 
         @Override
         protected void onPostExecute(String s) {
+            if (!cancelled) {
+                try {
+                    // Now save the appropriate variables and then start the intent
+                    // Set the current version
+                    preferences.setMyPreferenceInt(BootUpCheck.this, "lastUsedVersion", thisVersion);
+                    Preferences.savePreferences();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-            try {
-                // Now save the appropriate variables and then start the intent
-                // Set the current version
-                preferences.setMyPreferenceInt(BootUpCheck.this, "lastUsedVersion", thisVersion);
-                Preferences.savePreferences();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                // Show the progressBar if we were on the BootUpCheck screen
+                if (progressBar != null) {
+                    showLoadingBar(true);
+                }
 
-            // Show the progressBar if we were on the BootUpCheck screen
-            if (progressBar != null) {
+                startActivity(intent);
+                finish();
+
+            } else {
+                progressBar.setVisibility(View.GONE);
                 showLoadingBar(true);
             }
-
-            startActivity(intent);
-            finish();
-
-            // For now, just stay here
-            //progressBar.setVisibility(View.GONE);
-            //showLoadingBar(true);
         }
     }
 

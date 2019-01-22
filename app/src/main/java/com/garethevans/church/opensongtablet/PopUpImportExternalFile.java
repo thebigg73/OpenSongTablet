@@ -3,11 +3,14 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.support.design.widget.FloatingActionButton;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +18,17 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -50,10 +60,11 @@ public class PopUpImportExternalFile extends DialogFragment {
     }
 
     // The views
-    TextView fileTitle_TextView, fileType_TextView, title;
+    TextView fileTitle_TextView, fileType_TextView, title, progressText;
     Spinner chooseFolder_Spinner;
     CheckBox overWrite_CheckBox;
-    ProgressBar progressBar;
+    ProgressBar progressBar, progressBarH;
+    LinearLayout progressLinearLayout;
     FloatingActionButton saveMe, closeMe;
     View V;
 
@@ -64,6 +75,10 @@ public class PopUpImportExternalFile extends DialogFragment {
     SongFolders songFolders;
     ListSongFiles listSongFiles;
     ImportOnSongBackup import_os;
+    OnSongConvert onSongConvert;
+    ChordProConvert chordProConvert;
+    SongXML songXML;
+
     String what, errormessage = "", filetype, chosenfolder;
 
     // Folder variables
@@ -84,6 +99,9 @@ public class PopUpImportExternalFile extends DialogFragment {
         songFolders = new SongFolders();
         listSongFiles = new ListSongFiles();
         setActions = new SetActions();
+        onSongConvert = new OnSongConvert();
+        chordProConvert = new ChordProConvert();
+        songXML = new SongXML();
 
         V = inflater.inflate(R.layout.popup_importexternalfile, container, false);
 
@@ -133,6 +151,12 @@ public class PopUpImportExternalFile extends DialogFragment {
     void setAction() {
         String s = getActivity().getString(R.string.importnewsong);
         String ext;
+
+        // Defaults
+        overWrite_CheckBox.setChecked(false);
+        overWrite_CheckBox.setVisibility(View.VISIBLE);
+        overWrite_CheckBox.setEnabled(true);
+
         if (FullscreenActivity.whattodo.equals("doimportset")) {
             s = getActivity().getString(R.string.importnewset);
             what = "set";
@@ -149,6 +173,8 @@ public class PopUpImportExternalFile extends DialogFragment {
                     s = getActivity().getString(R.string.import_onsong_choose);
                     what = "onsongbackup";
                     filetype = getActivity().getString(R.string.import_onsong_choose);
+                    overWrite_CheckBox.setChecked(false);
+                    overWrite_CheckBox.setEnabled(false);
                 } else if (ext.endsWith(".osts")) {
                     s = getActivity().getString(R.string.importnewset);
                     what = "set";
@@ -156,12 +182,18 @@ public class PopUpImportExternalFile extends DialogFragment {
                 } else if (ext.endsWith(".onsong")) {
                     what = "onsongfile";
                     filetype = getActivity().getString(R.string.export_onsong);
+                    overWrite_CheckBox.setChecked(false);
+                    overWrite_CheckBox.setEnabled(false);
                 } else if (ext.endsWith(".pro") || ext.endsWith(".cho") || ext.endsWith(".chopro") || ext.endsWith("chordpro")) {
                     what = "chordpro";
                     filetype = getActivity().getString(R.string.export_chordpro);
+                    overWrite_CheckBox.setChecked(false);
+                    overWrite_CheckBox.setEnabled(false);
                 } else if (ext.endsWith(".usr")) {
                     what = "songselect";
                     filetype = getActivity().getString(R.string.songselect);
+                    overWrite_CheckBox.setChecked(false);
+                    overWrite_CheckBox.setEnabled(false);
                 } else if (ext.endsWith(".gif") || ext.endsWith(".jpg") || ext.endsWith(".png")) {
                     what = "image";
                     filetype = getActivity().getString(R.string.image);
@@ -207,6 +239,9 @@ public class PopUpImportExternalFile extends DialogFragment {
         chooseFolder_Spinner = v.findViewById(R.id.chooseFolder_Spinner);
         overWrite_CheckBox = v.findViewById(R.id.overWrite_CheckBox);
         progressBar = v.findViewById(R.id.progressBar);
+        progressBarH = v.findViewById(R.id.progressBarH);
+        progressText = v.findViewById(R.id.progressText);
+        progressLinearLayout = v.findViewById(R.id.progressLinearLayout);
         saveMe = v.findViewById(R.id.saveMe);
         closeMe = v.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
@@ -259,18 +294,19 @@ public class PopUpImportExternalFile extends DialogFragment {
             closeMe.setVisibility(View.GONE);
         }
 
-        if (progressBar != null) {
-            progressBar.setVisibility(View.VISIBLE);
+        if (progressLinearLayout != null) {
+            progressLinearLayout.setVisibility(View.VISIBLE);
         }
         if (saveMe != null) {
             saveMe.setClickable(false);
         }
 
         // Now start the AsyncTask
-        import_os = new ImportOnSongBackup();
+        import_os = new ImportOnSongBackup(FullscreenActivity.file_uri);
         try {
             import_os.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
+            e.printStackTrace();
             Log.d("d", "Error importing");
         }
     }
@@ -279,15 +315,15 @@ public class PopUpImportExternalFile extends DialogFragment {
         if (what.equals("set")) {
             folderlist = new ArrayList<>();
             folderlist.add(getActivity().getString(R.string.options_set));
+        } else if (what.contains("onsong")) {
+            folderlist = new ArrayList<>();
+            folderlist.clear();
+            songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
+            folderlist = new ArrayList<>(Arrays.asList(FullscreenActivity.mSongFolderNames));
+            folderlist.add(0, "OnSong");
         } else {
             songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
             folderlist = new ArrayList<>(Arrays.asList(FullscreenActivity.mSongFolderNames));
-            if (what.contains("onsong") && !folderlist.contains("OnSong")) {
-                folderlist.add(0, "OnSong");
-            }
-            if (what.contains("onsong")) {
-                folderlist.remove(getActivity().getString(R.string.mainfoldername));
-            }
         }
         arrayAdapter = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,folderlist);
         chooseFolder_Spinner.setAdapter(arrayAdapter);
@@ -320,7 +356,7 @@ public class PopUpImportExternalFile extends DialogFragment {
             filename = filename.replace(".osts","");
         }
 
-        progressBar.setVisibility(View.VISIBLE);
+        progressLinearLayout.setVisibility(View.VISIBLE);
 
         // Copy the set and to open in the app
         completedImportSet(filename);
@@ -499,33 +535,201 @@ public class PopUpImportExternalFile extends DialogFragment {
         }
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private class ImportOnSongBackup extends AsyncTask<String, Void, String> {
 
-        @Override
-        protected String doInBackground(String... params) {
-            return storageAccess.extractOnSongZipFile(getActivity(), preferences, FullscreenActivity.file_uri);
+    @SuppressLint("StaticFieldLeak")
+    private class ImportOnSongBackup extends AsyncTask<Object, String, String> {
+        String message;
+        InputStream is;
+        ZipArchiveInputStream zis;
+        String filename;
+        Uri zipUri;
+        int numitems;
+        int curritem;
+
+        ImportOnSongBackup(Uri zU) {
+            zipUri = zU;
         }
 
         @Override
-        protected void onPostExecute(String doneit) {
+        protected void onPreExecute() {
+            progressText.setVisibility(View.VISIBLE);
+            progressBarH.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onProgressUpdate(String... string) {
+            try {
+                progressText.setText(string[0]);
+                progressBarH.setMax(numitems);
+                progressBarH.setProgress(curritem);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected String doInBackground(Object... objects) {
+
+            File dbfile = new File(getActivity().getExternalFilesDir("OnSong"), "OnSong.Backup.sqlite3");
+            if (!dbfile.mkdirs()) {
+                Log.d("PopUpImport", "Database file already exists - ok");
+            }
+
+            Uri chosenfolderuri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", chosenfolder, "");
+
+            // Create the chosen folder (if it doesn't already exist)
+            if (chosenfolder.equals("OnSong")) {
+                storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, chosenfolderuri,
+                        DocumentsContract.Document.MIME_TYPE_DIR, "Songs", chosenfolder, "");
+            }
+
+            try {
+                is = storageAccess.getInputStream(getActivity(), zipUri);
+                zis = new ZipArchiveInputStream(new BufferedInputStream(is), "UTF-8", false);
+
+                ZipArchiveEntry ze;
+                while ((ze = (ZipArchiveEntry) zis.getNextEntry()) != null) {
+                    final byte[] buffer = new byte[2048];
+                    int count;
+                    filename = ze.getName();
+                    if (!filename.startsWith("Media")) {
+                        // The Media folder throws errors (it has zero length files sometimes
+                        // It also contains stuff that is irrelevant for OpenSongApp importing
+                        // Only process stuff that isn't in that folder!
+                        // It will also ignore any song starting with 'Media' - not worth a check for now!
+
+                        OutputStream out;
+                        if (filename.equals("OnSong.Backup.sqlite3") || filename.equals("OnSong.sqlite3")) {
+                            dbfile = new File(getActivity().getExternalFilesDir("OnSong"), "OnSong.Backup.sqlite3");
+                            Uri outuri = Uri.fromFile(dbfile);
+                            if (!dbfile.mkdirs()) {
+                                Log.d("PopUpImport", "Database file already exists - ok");
+                            }
+                            out = storageAccess.getOutputStream(getActivity(), outuri);
+
+                        } else if (!filename.endsWith(".doc") && !filename.endsWith(".docx") && !filename.endsWith(".sqlite3") &&
+                                !filename.endsWith(".preferences")) {
+                            Uri outuri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", chosenfolder, filename);
+                            storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences,
+                                    outuri, null, "Songs", chosenfolder, filename);
+                            out = storageAccess.getOutputStream(getActivity(), outuri);
+                            publishProgress(filename);
+
+                        } else {
+                            // Don't copy this
+                            out = null;
+                        }
+
+                        if (out != null) {
+                            final BufferedOutputStream bout = new BufferedOutputStream(out);
+                            try {
+                                while ((count = zis.read(buffer)) != -1) {
+                                    bout.write(buffer, 0, count);
+                                }
+                                bout.flush();
+                            } catch (Exception e) {
+                                message = getActivity().getResources().getString(R.string.file_type_unknown);
+                                e.printStackTrace();
+                            } finally {
+                                try {
+                                    bout.close();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                }
+                zis.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                message = getActivity().getResources().getString(R.string.import_onsong_error);
+                publishProgress(message);
+                return message;
+            }
+
+            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dbfile, null);
+
+            // Go through each row and read in the content field
+            // Save the files with the .onsong extension
+
+            String query = "SELECT title,content FROM Song";
+
+            //Cursor points to a location in your results
+            Cursor cursor;
+            String str_title;
+            String str_content;
+
+            try {
+                cursor = db.rawQuery(query, null);
+
+                numitems = cursor.getCount();
+                curritem = 0;
+
+                // Move to first row
+                cursor.moveToFirst();
+
+                while (cursor.moveToNext()) {
+                    curritem++;
+
+                    // Extract data
+                    str_title = cursor.getString(cursor.getColumnIndex("title"));
+                    // Make sure title doesn't have /
+                    str_title = str_title.replace("/", "_");
+                    str_title = TextUtils.htmlEncode(str_title);
+                    str_content = cursor.getString(cursor.getColumnIndex("content"));
+
+                    try {
+                        message = curritem + "/" + numitems + "  " + getActivity().getString(R.string.extracting) +
+                                ": " + str_title + ".onsong";
+                        publishProgress(message);
+
+                        // Prepare the OnSong file
+                        Uri oldsong = storageAccess.getUriForItem(getActivity(), preferences, "Songs",
+                                chosenfolder, str_title + ".onsong");
+                        storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences,
+                                oldsong, null, "Songs", chosenfolder, str_title + ".onsong");
+
+                        // Now write the modified song
+                        message = curritem + "/" + numitems + "  " + getActivity().getString(R.string.converting) +
+                                ": " + str_title + ".onsong";
+                        publishProgress(message);
+                        onSongConvert.convertTextToTags(getActivity(), storageAccess, preferences,
+                                songXML, chordProConvert, oldsong, str_content, 1);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        message = str_title + ".onsong --> " + getActivity().getString(R.string.error);
+                        publishProgress(message);
+                    }
+                }
+                cursor.close();
+                db.close();
+            } catch (Exception e) {
+                // Error with sql database
+                e.printStackTrace();
+                return "Error";
+            }
+
+            return getActivity().getResources().getString(R.string.success);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            // This bit will take a while, so will be called in an async task
+            ShowToast.showToast(getActivity());
+
             try {
                 if (mListener != null) {
-                    mListener.onSongImportDone(doneit);
+                    mListener.onSongImportDone(s);
                 }
                 dismiss();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-    }
 
-    @Override
-    public void onCancel(DialogInterface dialog) {
-        if (import_os!=null) {
-            import_os.cancel(true);
         }
-        this.dismiss();
     }
 
 }

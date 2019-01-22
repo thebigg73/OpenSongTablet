@@ -27,6 +27,7 @@ import android.support.v4.provider.DocumentFile;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -700,19 +701,21 @@ public class FullscreenActivity extends AppCompatActivity {
     void testForNFC() {
         // Test for NFC capability
         mAndroidBeamAvailable = true;
+
         try {
             mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+            Log.d("d", "NFC Available");
         } catch (Exception e) {
             mAndroidBeamAvailable = false;
         }
-        if (mNfcAdapter==null) {
+        if (mNfcAdapter == null) {
             mAndroidBeamAvailable = false;
+            Log.d("d", "NFC Unavailable");
         }
+
     }
 
-    void mainSetterOfVariables(Context c, Preferences preferences, SetTypeFace setTypeFace,
-                               Handler lyrichandler, Handler chordhandler, Handler presohandler,
-                               Handler presoinfohandler, Handler customhandler, Handler monohandler) {
+    void mainSetterOfVariables(Context c, Preferences preferences) {
         // Load up the preferences
         loadPreferences(c);
 
@@ -732,10 +735,6 @@ public class FullscreenActivity extends AppCompatActivity {
 
         // Test for NFC capability
         testForNFC();
-
-        // Initialise typefaces
-        setTypeFace.setUpAppFonts(c, preferences, lyrichandler, chordhandler,
-                presohandler, presoinfohandler, customhandler, monohandler);
 
         // Set up the user preferences for page colours and fonts
         SetUpColours.colours();

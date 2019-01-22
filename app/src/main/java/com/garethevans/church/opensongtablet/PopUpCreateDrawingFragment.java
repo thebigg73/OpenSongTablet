@@ -547,7 +547,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
                 Log.d("d","bmp="+bmp);
                 OutputStream outputStream = storageAccess.getOutputStream(getActivity(),newUri);
                 Log.d("d","outputStream="+outputStream);
-                storageAccess.writeImage(outputStream, bmp, Bitmap.CompressFormat.PNG);
+                storageAccess.writeImage(outputStream, bmp);
             }
             return null;
         }

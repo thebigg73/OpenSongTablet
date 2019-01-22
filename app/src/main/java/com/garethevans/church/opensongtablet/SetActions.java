@@ -12,6 +12,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -371,7 +372,6 @@ public class SetActions {
 
             if (FullscreenActivity.setView && FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
                 // If we are currently in set mode, check if the new song is there, in which case do nothing else
-                FullscreenActivity.setView = true;
                 indexSongInSet();
                 return true;
 
@@ -420,9 +420,12 @@ public class SetActions {
         storageAccess.wipeFolder(c, preferences, "Notes", "_cache");
         storageAccess.wipeFolder(c, preferences, "Images", "_cache");
         storageAccess.wipeFolder(c, preferences, "Variations", "");
+
+        // Create them again if they need to be
+        storageAccess.createOrCheckRootFolders(c, preferences);
     }
 
-    private void writeTempSlide(String where, String what, Context c, Preferences preferences, StorageAccess storageAccess) throws IOException {
+    private void writeTempSlide(String where, String what, Context c, Preferences preferences, StorageAccess storageAccess) {
         // Fix the custom name so there are no illegal characters
         what = what.replaceAll("[|?*<\":>+\\[\\]']", " ");
         String set_item;
@@ -478,7 +481,7 @@ public class SetActions {
         if (where.equals(c.getResources().getString(R.string.variation))) {
             // Create a full song instead
             byte[] data = Base64.decode(custom_notes, Base64.DEFAULT);
-            my_NEW_XML = new String(data, "UTF-8");
+            my_NEW_XML = new String(data, StandardCharsets.UTF_8);
         }
 
         storageAccess.writeFileFromString(my_NEW_XML,outputStream);
@@ -885,7 +888,7 @@ public class SetActions {
             FullscreenActivity.linkclicked = "/" + FullscreenActivity.linkclicked;
         }
 
-        if (FullscreenActivity.linkclicked==null || FullscreenActivity.linkclicked.equals("/")) {
+        if (FullscreenActivity.linkclicked.equals("/")) {
             // There was no song clicked, so just reload the current one
             if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
                 FullscreenActivity.linkclicked = "/"+FullscreenActivity.songfilename;
@@ -911,8 +914,8 @@ public class SetActions {
             FullscreenActivity.songfilename = FullscreenActivity.linkclicked.substring(songpos + 1);
         }
 
-        if (FullscreenActivity.whichSongFolder!=null && FullscreenActivity.whichSongFolder.equals("")) {
-            FullscreenActivity.whichSongFolder = c.getResources().getString(R.string.mainfoldername);
+        if (FullscreenActivity.whichSongFolder == null || FullscreenActivity.whichSongFolder.equals("")) {
+            FullscreenActivity.whichSongFolder = c.getString(R.string.mainfoldername);
         }
 
         // If the folder length isn't 0, it is a folder
