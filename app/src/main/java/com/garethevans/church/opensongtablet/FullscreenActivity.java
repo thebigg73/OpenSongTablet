@@ -1,8 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
@@ -442,7 +440,7 @@ public class FullscreenActivity extends AppCompatActivity {
     Preferences preferences;
 
     public static void restart(Context context) {
-        try {
+        /*try {
             Intent mStartActivity = new Intent(context, BootUpCheck.class);
             int mPendingIntentId = 123456;
             PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId, mStartActivity,
@@ -454,7 +452,7 @@ public class FullscreenActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override

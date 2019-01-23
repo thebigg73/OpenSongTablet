@@ -174,13 +174,6 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         static StorageAccess storageAccess;
         static Preferences preferences;
 
-        //static File img1File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage1);
-        //static File img2File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage2);
-        //static String vid1File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo1;
-        //static String vid2File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo2;
-        //static String vidFile;
-        //static File imgFile;
-
         static Drawable defimage;
         static Bitmap myBitmap;
         static Drawable dr;
@@ -223,7 +216,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             float xscale;
             float yscale;
             boolean usingcustom = false;
-            Uri customLogo = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.customLogo);
+            //Uri customLogo = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.customLogo);
+            Uri customLogo = Uri.parse(FullscreenActivity.customLogo);
             if (storageAccess.uriExists(c, customLogo)) {
                 InputStream inputStream = storageAccess.getInputStream(c, customLogo);
                 // Get the sizes of the custom logo
@@ -358,10 +352,15 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
         // Change background images/videos
         static void fixBackground() {
-            img1Uri = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.backgroundImage1);
-            img2Uri = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.backgroundImage2);
-            vid1Uri = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.backgroundVideo1);
-            vid2Uri = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.backgroundVideo2);
+            //img1Uri = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.backgroundImage1);
+            //img2Uri = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.backgroundImage2);
+            //vid1Uri = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.backgroundVideo1);
+            //vid2Uri = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.backgroundVideo2);
+            img1Uri = Uri.parse(FullscreenActivity.backgroundImage1);
+            img2Uri = Uri.parse(FullscreenActivity.backgroundImage2);
+            vid1Uri = Uri.parse(FullscreenActivity.backgroundVideo1);
+            vid2Uri = Uri.parse(FullscreenActivity.backgroundVideo2);
+
 
             // Decide if user is using video or image for background
             switch (FullscreenActivity.backgroundTypeToUse) {
@@ -1660,6 +1659,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+            Log.d("d", "Surface Texture Available");
             s = new Surface(surface);
             mMediaPlayer = new MediaPlayer();
             mMediaPlayer.setSurface(s);

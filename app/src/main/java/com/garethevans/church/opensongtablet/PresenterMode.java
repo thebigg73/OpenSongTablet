@@ -261,6 +261,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         // Load up the user preferences
         Preferences.loadPreferences();
+        preferences.loadPresentationPreferences(PresenterMode.this);
 
         // Load the layout and set the title
         setContentView(R.layout.presenter_mode);
@@ -277,6 +278,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 SetLocale.setLocale(PresenterMode.this);
             }
         });
+
+        // Battery monitor
+        IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        try {
+            br = new BatteryMonitor();
+            PresenterMode.this.registerReceiver(br, filter);
+        } catch (Exception e) {
+            Log.d("PresenterMode", "Didn't register battery");
+        }
+
 
         // Setup the CastContext
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
@@ -305,11 +316,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 // Identify the views
                 initialiseTheViews();
                 screenClickListeners();
-
-                // Battery monitor
-                IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-                br = new BatteryMonitor();
-                PresenterMode.this.registerReceiver(br, filter);
 
                 // Make the drawers match half the width of the screen
                 resizeDrawers();
@@ -380,7 +386,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 PresenterMode.this.unregisterReceiver(br);
             } catch (Exception e2) {
-                e2.printStackTrace();
+                Log.d("PresenterMode", "Battery receiver not registerd, so no need to unregister");
             }
         }
     }

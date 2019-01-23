@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,7 +76,7 @@ public class PopUpLayoutFragment extends DialogFragment {
     SetTypeFace setTypeFace;
     // Handlers for fonts
     Handler lyrichandler, chordhandler, presohandler, presoinfohandler, customhandler, monohandler;
-
+    String backgroundFileType;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -120,6 +121,9 @@ public class PopUpLayoutFragment extends DialogFragment {
         preferences = new Preferences();
         setTypeFace = new SetTypeFace();
 
+        // Load up the presentation preferences
+        preferences.loadPresentationPreferences(getActivity());
+
         identifyViews(V);
 
         // Initialise the font handlers
@@ -137,23 +141,6 @@ public class PopUpLayoutFragment extends DialogFragment {
         prepareViews();
 
         setupListeners();
-
-        /*
-
-// TODO GOING TO LEAVE THIS I THINK!!!!!
-        // Hide the appropriate views for Stage and Performance mode
-        switch (FullscreenActivity.whichMode) {
-            case "Presentation":
-                setUpPresentationMode();
-                break;
-
-            case "Stage":
-            case "Performance":
-            default:
-                setUpNormalMode();
-                break;
-        }
-*/
 
         // Make sure the logo we have is what is displayed (if we have set a new one)
         sendUpdateToScreen("logo");
@@ -349,6 +336,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View v) {
                 // Open another popup listing the files to choose from
                 PresenterMode.whatBackgroundLoaded = "logo";
+                backgroundFileType = "image";
                 chooseFile();
             }
         });
@@ -357,6 +345,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View v) {
                 // Open another popup listing the files to choose from
                 PresenterMode.whatBackgroundLoaded = "image1";
+                backgroundFileType = "image";
                 chooseFile();
             }
         });
@@ -365,6 +354,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View v) {
                 // Open another popup listing the files to choose from
                 PresenterMode.whatBackgroundLoaded = "image2";
+                backgroundFileType = "image";
                 chooseFile();
             }
         });
@@ -373,6 +363,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View v) {
                 // Open another popup listing the files to choose from
                 PresenterMode.whatBackgroundLoaded = "video1";
+                backgroundFileType = "video";
                 chooseFile();
             }
         });
@@ -381,6 +372,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View v) {
                 // Open another popup listing the files to choose from
                 PresenterMode.whatBackgroundLoaded = "video2";
+                backgroundFileType = "video";
                 chooseFile();
             }
         });
@@ -536,7 +528,7 @@ public class PopUpLayoutFragment extends DialogFragment {
     public void chooseFile() {
         // This calls an intent to choose a file
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
+        if (backgroundFileType.equals("video")) {
             intent.setType("video/*");
         } else {
             intent.setType("image/*");
@@ -578,8 +570,21 @@ public class PopUpLayoutFragment extends DialogFragment {
     }
 */
     public void setButtonBackground(ImageView v, String background) {
+        // The default uri is just as it is saved
+        Uri uri = Uri.parse(background);
 
-        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Backgrounds", "", background);
+        if (background.equals("ost_logo.png") || background.equals("ost_bg.png")) {
+            // The built in logo or background
+            uri = storageAccess.getUriForItem(getActivity(), preferences, "Backgrounds", "", background);
+
+        } else if (background.contains("OpenSong/Backgrounds/")) {
+            // Decide if the image is a localised OpenSong/Backgrounds file
+            background = storageAccess.getPartOfUri(uri, "OpenSong/Backgrounds/");
+            background = background.substring("OpenSong/Backgrounds/".length());
+            uri = storageAccess.getUriForItem(getActivity(), preferences, "Backgrounds", "", background);
+        }
+        Log.d("d", "image uri=" + uri);
+        Log.d("d", "uriExists=" + storageAccess.uriExists(getActivity(), uri));
         if (storageAccess.uriExists(getActivity(),uri)) {
             v.setBackgroundColor(0x00000000);
             RequestOptions myOptions = new RequestOptions()
@@ -704,41 +709,36 @@ public class PopUpLayoutFragment extends DialogFragment {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-        if (resultCode == -1) {
-            // The OK code
-            Uri uri = resultData.getData();
-            if (uri != null) {
-                /*getActivity().getContentResolver().takePersistableUriPermission(uri,
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                                Intent.FLAG_GRANT_WRITE_URI_PERMISSION);*/   // Don't need permissions to read I hope!
+        Uri uri = resultData.getData();
 
-                // Save the location
-                switch (PresenterMode.whatBackgroundLoaded) {
-                    case "logo":
-                        FullscreenActivity.customLogo = uri.getPath();
-                        preferences.setMyPreferenceString(getActivity(), "customLogo", uri.getPath());
-                        break;
-                    case "image1":
-                        FullscreenActivity.backgroundImage1 = uri.getPath();
-                        preferences.setMyPreferenceString(getActivity(), "backgroundImage1", uri.getPath());
-                        break;
-                    case "image2":
-                        FullscreenActivity.backgroundImage2 = uri.getPath();
-                        preferences.setMyPreferenceString(getActivity(), "backgroundImage2", uri.getPath());
-                        break;
-                    case "video1":
-                        FullscreenActivity.backgroundVideo1 = uri.getPath();
-                        preferences.setMyPreferenceString(getActivity(), "backgroundVideo1", uri.getPath());
-                        break;
-                    case "video2":
-                        FullscreenActivity.backgroundVideo2 = uri.getPath();
-                        preferences.setMyPreferenceString(getActivity(), "backgroundVideo2", uri.getPath());
-                        break;
-                }
+        if (resultCode == -1 && uri != null) {
 
-                // Update the storage text
-                setupPreviews();
+            // Save the location
+            switch (PresenterMode.whatBackgroundLoaded) {
+                case "logo":
+                    FullscreenActivity.customLogo = uri.toString();
+                    preferences.setMyPreferenceString(getActivity(), "customLogo", uri.toString());
+                    break;
+                case "image1":
+                    FullscreenActivity.backgroundImage1 = uri.toString();
+                    preferences.setMyPreferenceString(getActivity(), "backgroundImage1", uri.toString());
+                    break;
+                case "image2":
+                    FullscreenActivity.backgroundImage2 = uri.toString();
+                    preferences.setMyPreferenceString(getActivity(), "backgroundImage2", uri.toString());
+                    break;
+                case "video1":
+                    FullscreenActivity.backgroundVideo1 = uri.toString();
+                    preferences.setMyPreferenceString(getActivity(), "backgroundVideo1", uri.toString());
+                    break;
+                case "video2":
+                    FullscreenActivity.backgroundVideo2 = uri.toString();
+                    preferences.setMyPreferenceString(getActivity(), "backgroundVideo2", uri.toString());
+                    break;
             }
+
+            // Update the storage text
+            setupPreviews();
         }
     }
 

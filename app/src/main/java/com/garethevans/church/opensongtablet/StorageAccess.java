@@ -158,7 +158,6 @@ class StorageAccess {
         // Go through the main folders and try to create
         for (String folder : rootFolders) {
             try {
-                Log.d("d", "creating:" + folder);
                 Uri thisFolder = getUriForItem(c, preferences, folder, "", "");
                 if (!uriExists(c, thisFolder)) {
                     DocumentsContract.createDocument(c.getContentResolver(), rootUri, DocumentsContract.Document.MIME_TYPE_DIR, folder);

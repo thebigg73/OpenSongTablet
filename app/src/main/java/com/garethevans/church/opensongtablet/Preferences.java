@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.Gravity;
 
 import java.util.Locale;
@@ -79,17 +80,22 @@ public class Preferences extends Activity {
     }
 
     public static Locale getDefaultLocaleString() {
-        Locale locale = Locale.getDefault();
-        if  (locale==null) {
-            locale = new Locale(Locale.getDefault().getDisplayLanguage());
-        }
-
-        if (!locale.toString().equals("af") && !locale.toString().equals("cs") && !locale.toString().equals("de") &&
-                !locale.toString().equals("el") && !locale.toString().equals("es") && !locale.toString().equals("fr") &&
-                !locale.toString().equals("hu") && !locale.toString().equals("it") && !locale.toString().equals("ja") &&
-                !locale.toString().equals("pl") && !locale.toString().equals("pt") && !locale.toString().equals("ru") &&
-                !locale.toString().equals("sr") && !locale.toString().equals("sv") && !locale.toString().equals("zh")) {
-            locale = new Locale("en");
+        Locale locale;
+        try {
+            locale = Locale.getDefault();
+            if (locale == null) {
+                locale = new Locale(Locale.getDefault().getDisplayLanguage());
+            }
+            if (!locale.toString().equals("af") && !locale.toString().equals("cs") && !locale.toString().equals("de") &&
+                    !locale.toString().equals("el") && !locale.toString().equals("es") && !locale.toString().equals("fr") &&
+                    !locale.toString().equals("hu") && !locale.toString().equals("it") && !locale.toString().equals("ja") &&
+                    !locale.toString().equals("pl") && !locale.toString().equals("pt") && !locale.toString().equals("ru") &&
+                    !locale.toString().equals("sr") && !locale.toString().equals("sv") && !locale.toString().equals("zh")) {
+                locale = new Locale("en");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
         return locale;
     }
@@ -459,7 +465,7 @@ public class Preferences extends Activity {
             // Error loading the preferences
             e.printStackTrace();
             // Try restarting the app
-            FullscreenActivity.restart(FullscreenActivity.mContext);
+            //FullscreenActivity.restart(FullscreenActivity.mContext);
         }
 
     }
@@ -806,7 +812,7 @@ public class Preferences extends Activity {
             // Error saving.  Normally happens if app was closed before this happens
             e.printStackTrace();
             // Try restarting the app
-            FullscreenActivity.restart(FullscreenActivity.mContext);
+            // FullscreenActivity.restart(FullscreenActivity.mContext);
         }
     }
 
@@ -835,6 +841,24 @@ public class Preferences extends Activity {
         return myPreferences.getBoolean("songloadsuccess", false);
     }
 
+    // Load up the prefernces for the presentation windows
+    void loadPresentationPreferences(Context c) {
+        try {
+            // Load the specific presentation preferences
+            FullscreenActivity.customLogo = getMyPreferenceString(c, "customLogo", "ost_logo.png");
+            FullscreenActivity.backgroundImage1 = getMyPreferenceString(c, "backgroundImage1", "ost_bg.png");
+            FullscreenActivity.backgroundImage1 = getMyPreferenceString(c, "backgroundImage2", "ost_bg.png");
+            FullscreenActivity.backgroundToUse = getMyPreferenceString(c, "backgroundToUse", "img1");
+            FullscreenActivity.backgroundTypeToUse = getMyPreferenceString(c, "backgroundTypeToUse", "image");
+            FullscreenActivity.backgroundVideo1 = getMyPreferenceString(c, "backgroundVideo1", "");
+            FullscreenActivity.backgroundVideo2 = getMyPreferenceString(c, "backgroundVideo1", "");
+            FullscreenActivity.presoShowChords = getMyPreferenceBoolean(c, "presoShowChords", false);
+            FullscreenActivity.presoLyricsAlign = getMyPreferenceInt(c, "presoLyricsAlign", Gravity.CENTER);
+
+        } catch (Exception e) {
+            Log.d("Preferences", "Error setting presentation preferences");
+        }
+    }
 
     // This is the way that preferences will be stored in the future (after SAF is implemented)
     private SharedPreferences sharedPref;
@@ -851,6 +875,13 @@ public class Preferences extends Activity {
         // Identify the preferences
         sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
         return sharedPref.getInt(prefname, fallback);
+    }
+
+    boolean getMyPreferenceBoolean(Context c, String prefname, boolean fallback) {
+        // Return a boolean from saved preference
+        // Identify the preferences
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
+        return sharedPref.getBoolean(prefname, fallback);
     }
 
     // Save the preference values
@@ -872,7 +903,12 @@ public class Preferences extends Activity {
 
     /* Values stored in Preferences alphabetically listed:
     Variable name           Type        What
+    backgroundImage1        String      The uri of the background image 1 for presentations
+    backgroundImage2        String      The uri of the background image 2 for presentations
+    backgroundVideo1        String      The uri of the background video 1 for presentations
+    backgroundVideo2        String      The uri of the background video 2 for presentations
     chosenstorage           String      The uri of the document tree (Storage Access Framework)
+    customLogo              String      The uri of the user logo for presentations
     fontChord               String      The name of the font used for the chords.  From fonts.google.com
     fontCustom              String      The name of the font used for custom fonts.  From fonts.google.com
     fontLyric               String      The name of the font used for the lyrics.  From fonts.google.com
