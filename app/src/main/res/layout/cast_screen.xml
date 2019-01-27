@@ -23,12 +23,14 @@
         android:contentDescription="@string/app_name"
         android:visibility="invisible"/>
 
-    <TextureView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/projected_TextureView"
-        tools:ignore="NewApi"
-        android:visibility="invisible"/>
+        <SurfaceView
+            android:id="@+id/projected_SurfaceView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_margin="0dp"
+            android:padding="0dp"
+            android:visibility="invisible" />
 
     <ImageView
         android:id="@+id/projected_ImageView"
@@ -44,7 +46,7 @@
         android:gravity="center"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:orientation="vertical"
         android:layout_above="@+id/bottom_infobar"
         android:visibility="visible"/>
@@ -62,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:drawableLeft="@mipmap/ic_round_launcher"
+            android:drawableStart="@mipmap/ic_round_launcher"
             android:drawablePadding="12dp"
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
@@ -103,7 +105,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:visibility="invisible" />
@@ -114,7 +116,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:visibility="invisible" />
@@ -125,7 +127,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:visibility="invisible" />
@@ -136,7 +138,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:visibility="invisible" />
@@ -147,7 +149,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:visibility="invisible" />
@@ -158,7 +160,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:visibility="invisible" />

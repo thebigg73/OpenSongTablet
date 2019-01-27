@@ -5,7 +5,6 @@ import android.app.Presentation;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.SurfaceTexture;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -18,8 +17,8 @@ import android.support.annotation.RequiresApi;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
-import android.view.Surface;
-import android.view.TextureView;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageView;
@@ -30,18 +29,14 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-import java.io.IOException;
 import java.io.InputStream;
 
-//import java.io.File;
 
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
 class PresentationServiceHDMI extends Presentation
-        implements TextureView.SurfaceTextureListener,
-        MediaPlayer.OnBufferingUpdateListener,
-        MediaPlayer.OnVideoSizeChangedListener,
+        implements MediaPlayer.OnVideoSizeChangedListener,
         MediaPlayer.OnPreparedListener,
-        MediaPlayer.OnCompletionListener {
+        MediaPlayer.OnCompletionListener, SurfaceHolder.Callback {
 
     PresentationServiceHDMI(Context c, Display display) {
         super(c, display);
@@ -77,7 +72,8 @@ class PresentationServiceHDMI extends Presentation
     @SuppressLint("StaticFieldLeak")
     private static LinearLayout col3_3;
     @SuppressLint("StaticFieldLeak")
-    private static TextureView projected_TextureView;
+    private static SurfaceView projected_SurfaceView;
+    private static SurfaceHolder projected_SurfaceHolder;
     @SuppressLint("StaticFieldLeak")
     private static ImageView projected_BackgroundImage;
     @SuppressLint("StaticFieldLeak")
@@ -93,12 +89,8 @@ class PresentationServiceHDMI extends Presentation
 
     @SuppressLint("StaticFieldLeak")
     static Context context;
-    private static int availableScreenWidth;
-    private static int availableScreenHeight;
-    private static int padding;
-    private static int availableWidth_1col;
-    private static int availableWidth_2col;
-    private static int availableWidth_3col;
+    private static int screenWidth, screenHeight, availableScreenWidth, availableScreenHeight, padding,
+            availableWidth_1col, availableWidth_2col, availableWidth_3col;
     private static int[] projectedviewwidth;
     private static int[] projectedviewheight;
     @SuppressWarnings("unused")
@@ -116,40 +108,17 @@ class PresentationServiceHDMI extends Presentation
     //MediaController
     private static MediaPlayer mMediaPlayer;
 
-    // Images and video backgrounds
-    private static Uri img1Uri;
-    private static Uri img2Uri;
-    private static Uri imgUri;
-    private static Uri vid1Uri;
-    private static Uri vid2Uri;
     private static Uri vidUri;
 
     static StorageAccess storageAccess;
     static Preferences preferences;
-    //private static File img1File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage1);
-    //private static File img2File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage2);
-    //private static String vid1File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo1;
-    //private static String vid2File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo2;
-    //private static String vidFile;
-    //private static File imgFile;
 
     private static Drawable defimage;
-    @SuppressWarnings("unused")
-    private static Bitmap myBitmap;
-    @SuppressWarnings("unused")
-    private static Drawable dr;
-    static Surface s;
     private static Animation mypage_fadein;
     private static Animation mypage_fadeout;
     private static Animation background_fadein;
-    @SuppressWarnings("unused")
-    private static Animation background_fadeout;
     private static Animation image_fadein;
     private static Animation image_fadeout;
-    @SuppressWarnings("unused")
-    private static Animation video_fadein;
-    @SuppressWarnings("unused")
-    private static Animation video_fadeout;
     private static Animation logo_fadein;
     private static Animation logo_fadeout;
     private static Animation lyrics_fadein;
@@ -233,7 +202,7 @@ class PresentationServiceHDMI extends Presentation
                 songinfo_TextView.setAlpha(0.0f);
                 songinfo_TextView.setVisibility(View.VISIBLE);
                 presentermode_bottombit.setVisibility(View.GONE);
-                projected_TextureView.setVisibility(View.GONE);
+                projected_SurfaceView.setVisibility(View.GONE);
                 projected_BackgroundImage.setImageDrawable(null);
                 projected_BackgroundImage.setVisibility(View.GONE);
                 break;
@@ -247,29 +216,29 @@ class PresentationServiceHDMI extends Presentation
         FullscreenActivity.forcecastupdate = false;
     }
 
-    private void prepareBackgroundAnimations() {
-        mypage_fadein = CustomAnimations.setUpAnimation(pageHolder, 0.0f, 1.0f);
-        mypage_fadeout = CustomAnimations.setUpAnimation(pageHolder, 1.0f, 0.0f);
-        background_fadein = CustomAnimations.setUpAnimation(projected_BackgroundImage, 0.0f, 1.0f);
-        background_fadeout = CustomAnimations.setUpAnimation(projected_BackgroundImage, 1.0f, 0.0f);
-        logo_fadein = CustomAnimations.setUpAnimation(projected_Logo, 0.0f, 1.0f);
-        logo_fadeout = CustomAnimations.setUpAnimation(projected_Logo, 1.0f, 0.0f);
-        image_fadein = CustomAnimations.setUpAnimation(projected_ImageView, 0.0f, 1.0f);
-        image_fadeout = CustomAnimations.setUpAnimation(projected_ImageView, 1.0f, 0.0f);
-        video_fadein = CustomAnimations.setUpAnimation(projected_TextureView, 0.0f, 1.0f);
-        video_fadeout = CustomAnimations.setUpAnimation(projected_TextureView, 1.0f, 0.0f);
-        lyrics_fadein = CustomAnimations.setUpAnimation(projected_LinearLayout, 0.0f, 1.0f);
-        lyrics_fadeout = CustomAnimations.setUpAnimation(projected_LinearLayout, 1.0f, 0.0f);
-        songinfo_fadein = CustomAnimations.setUpAnimation(songinfo_TextView, 0.0f, 1.0f);
-        songinfo_fadeout = CustomAnimations.setUpAnimation(songinfo_TextView, 1.0f, 0.0f);
-        songtitle_fadein = CustomAnimations.setUpAnimation(presentermode_title, 0.0f, 1.0f);
-        songtitle_fadeout = CustomAnimations.setUpAnimation(presentermode_title, 1.0f, 0.0f);
-        songauthor_fadein = CustomAnimations.setUpAnimation(presentermode_author, 0.0f, 1.0f);
-        songauthor_fadeout = CustomAnimations.setUpAnimation(presentermode_author, 1.0f, 0.0f);
-        songcopyright_fadein = CustomAnimations.setUpAnimation(presentermode_copyright, 0.0f, 1.0f);
-        songcopyright_fadeout = CustomAnimations.setUpAnimation(presentermode_copyright, 1.0f, 0.0f);
-        songalert_fadein = CustomAnimations.setUpAnimation(presentermode_alert, 0.0f, 1.0f);
-        songalert_fadeout = CustomAnimations.setUpAnimation(presentermode_alert, 1.0f, 0.0f);
+    @SuppressLint("NewApi")
+    private static void getScreenSizes() {
+        DisplayMetrics metrics = new DisplayMetrics();
+        myscreen.getMetrics(metrics);
+        Drawable icon = bottom_infobar.getContext().getDrawable(R.mipmap.ic_round_launcher);
+        int bottombarheight = 0;
+        if (icon != null) {
+            bottombarheight = icon.getIntrinsicHeight();
+        }
+        padding = 8;
+
+        screenWidth = metrics.widthPixels;
+        int leftpadding = projectedPage_RelativeLayout.getPaddingLeft();
+        int rightpadding = projectedPage_RelativeLayout.getPaddingRight();
+        availableScreenWidth = screenWidth - leftpadding - rightpadding;
+
+        screenHeight = metrics.heightPixels;
+        int toppadding = projectedPage_RelativeLayout.getPaddingTop();
+        int bottompadding = projectedPage_RelativeLayout.getPaddingBottom();
+        availableScreenHeight = screenHeight - toppadding - bottompadding - bottombarheight - (padding * 4);
+        availableWidth_1col = availableScreenWidth - (padding * 2);
+        availableWidth_2col = (int) ((float) availableScreenWidth / 2.0f) - (padding * 3);
+        availableWidth_3col = (int) ((float) availableScreenWidth / 3.0f) - (padding * 4);
     }
 
     @SuppressWarnings("deprecation")
@@ -289,51 +258,20 @@ class PresentationServiceHDMI extends Presentation
                 FullscreenActivity.ymargin_presentation);
     }
 
-    @SuppressLint("NewApi")
-    private static void getScreenSizes() {
-        DisplayMetrics metrics = new DisplayMetrics();
-        myscreen.getMetrics(metrics);
-        Drawable icon = bottom_infobar.getContext().getDrawable(R.mipmap.ic_round_launcher);
-        int bottombarheight = 0;
-        if (icon != null) {
-            bottombarheight = icon.getIntrinsicHeight();
-        }
-
-        //int density = metrics.densityDpi;
-
-        padding = 8;
-
-        int screenWidth = metrics.widthPixels;
-        int leftpadding = projectedPage_RelativeLayout.getPaddingLeft();
-        int rightpadding = projectedPage_RelativeLayout.getPaddingRight();
-        availableScreenWidth = screenWidth - leftpadding - rightpadding;
-
-        int screenHeight = metrics.heightPixels;
-        int toppadding = projectedPage_RelativeLayout.getPaddingTop();
-        int bottompadding = projectedPage_RelativeLayout.getPaddingBottom();
-        availableScreenHeight = screenHeight - toppadding - bottompadding - bottombarheight - (padding * 4);
-        availableWidth_1col = availableScreenWidth - (padding * 2);
-        availableWidth_2col = (int) ((float) availableScreenWidth / 2.0f) - (padding * 3);
-        availableWidth_3col = (int) ((float) availableScreenWidth / 3.0f) - (padding * 4);
-    }
-
     // Change background images/videos
     static void fixBackground() {
-        //img1Uri = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.backgroundImage1);
-        //img2Uri = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.backgroundImage2);
-        //vid1Uri = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.backgroundVideo1);
-        //vid2Uri = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.backgroundVideo2);
-
-        img1Uri = Uri.parse(FullscreenActivity.backgroundImage1);
-        img2Uri = Uri.parse(FullscreenActivity.backgroundImage2);
-        vid1Uri = Uri.parse(FullscreenActivity.backgroundVideo1);
-        vid2Uri = Uri.parse(FullscreenActivity.backgroundVideo2);
+        // Images and video backgrounds
+        Uri img1Uri = Uri.parse(FullscreenActivity.backgroundImage1);
+        Uri img2Uri = Uri.parse(FullscreenActivity.backgroundImage2);
+        Uri vid1Uri = Uri.parse(FullscreenActivity.backgroundVideo1);
+        Uri vid2Uri = Uri.parse(FullscreenActivity.backgroundVideo2);
 
         // Decide if user is using video or image for background
+        Uri imgUri;
         switch (FullscreenActivity.backgroundTypeToUse) {
             case "image":
                 projected_BackgroundImage.setVisibility(View.VISIBLE);
-                projected_TextureView.setVisibility(View.INVISIBLE);
+                projected_SurfaceView.setVisibility(View.INVISIBLE);
                 if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
                     mMediaPlayer.pause();
                 }
@@ -356,7 +294,8 @@ class PresentationServiceHDMI extends Presentation
                 break;
             case "video":
                 projected_BackgroundImage.setVisibility(View.INVISIBLE);
-                projected_TextureView.setVisibility(View.VISIBLE);
+                projected_SurfaceView.setVisibility(View.VISIBLE);
+
                 if (FullscreenActivity.backgroundToUse.equals("vid1")) {
                     vidUri = vid1Uri;
                 } else {
@@ -368,20 +307,36 @@ class PresentationServiceHDMI extends Presentation
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                myBitmap = null;
-                dr = null;
                 projected_BackgroundImage.setImageDrawable(null);
                 projected_BackgroundImage.setVisibility(View.GONE);
-                projected_TextureView.startAnimation(background_fadein);
+                projected_SurfaceView.startAnimation(background_fadein);
                 break;
             default:
-                myBitmap = null;
-                dr = null;
                 projected_BackgroundImage.setImageDrawable(null);
                 projected_BackgroundImage.setVisibility(View.GONE);
                 break;
         }
         updateAlpha();
+    }
+
+    private static void panicShowViews() {
+        // After 3x the transition times, make sure the correct view is visible regardless of animations
+        if (FullscreenActivity.whichMode.equals("Presentation")) {
+            if (FullscreenActivity.isImage || FullscreenActivity.isPDF || FullscreenActivity.isImageSlide) {
+                projected_ImageView.setVisibility(View.VISIBLE);
+                projected_LinearLayout.setVisibility(View.GONE);
+                projected_ImageView.setAlpha(1.0f);
+            } else if (FullscreenActivity.isVideo) {
+                projected_SurfaceView.setVisibility(View.VISIBLE);
+                projected_LinearLayout.setVisibility(View.GONE);
+                projected_ImageView.setVisibility(View.GONE);
+                projected_SurfaceView.setAlpha(1.0f);
+            } else {
+                projected_LinearLayout.setVisibility(View.VISIBLE);
+                projected_ImageView.setVisibility(View.GONE);
+                projected_LinearLayout.setAlpha(1.0f);
+            }
+        }
     }
 
     static void showLogo() {
@@ -425,27 +380,9 @@ class PresentationServiceHDMI extends Presentation
         pageHolder.startAnimation(mypage_fadein);
     }
 
-    // Set up the screen changes
-    private void presenterStartUp() {
-        // Set up the text styles and fonts for the bottom info bar
-        presenterThemeSetUp();
-
-        // After the fadeout time, set the background and fade in
-        Handler h = new Handler();
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Try to set the new background
-                fixBackground();
-
-                Log.d("d", "backgroundTypeToUse="+FullscreenActivity.backgroundTypeToUse);
-                if (FullscreenActivity.backgroundTypeToUse.equals("image")) {
-                    projected_BackgroundImage.startAnimation(background_fadein);
-                } else if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
-                    projected_TextureView.startAnimation(background_fadein);
-                }
-            }
-        }, FullscreenActivity.presoTransitionTime);
+    private static void updateAlpha() {
+        projected_BackgroundImage.setAlpha(FullscreenActivity.presoAlpha);
+        projected_SurfaceView.setAlpha(FullscreenActivity.presoAlpha);
     }
 
     private void normalStartUp() {
@@ -483,22 +420,73 @@ class PresentationServiceHDMI extends Presentation
         }
     }
 
-    private static void panicShowViews() {
-        // After 3x the transition times, make sure the correct view is visible regardless of animations
-        if (FullscreenActivity.whichMode.equals("Presentation")) {
-            if (FullscreenActivity.isImage || FullscreenActivity.isPDF || FullscreenActivity.isImageSlide) {
-                projected_ImageView.setVisibility(View.VISIBLE);
-                projected_LinearLayout.setVisibility(View.GONE);
-                projected_ImageView.setAlpha(1.0f);
-            } else if (FullscreenActivity.isVideo) {
-                projected_TextureView.setVisibility(View.VISIBLE);
-                projected_LinearLayout.setVisibility(View.GONE);
-                projected_ImageView.setVisibility(View.GONE);
-                projected_TextureView.setAlpha(1.0f);
-            } else {
-                projected_LinearLayout.setVisibility(View.VISIBLE);
-                projected_ImageView.setVisibility(View.GONE);
-                projected_LinearLayout.setAlpha(1.0f);
+    private static void reloadVideo() {
+        if (mMediaPlayer == null) {
+            mMediaPlayer = new MediaPlayer();
+            try {
+                mMediaPlayer.setDisplay(projected_SurfaceHolder);
+                mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            mMediaPlayer.reset();
+        } catch (Exception e) {
+            Log.d("PresentationService", "Error resetting mMediaPlayer");
+        }
+
+        if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
+            try {
+                mMediaPlayer.setDataSource(c, vidUri);
+                mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        try {
+                            // Get the video sizes so we can scale appropriately
+                            int width = mp.getVideoWidth();
+                            int height = mp.getVideoHeight();
+                            float max_xscale = (float) screenWidth / (float) width;
+                            float max_yscale = (float) screenHeight / (float) height;
+                            if (max_xscale > max_yscale) {
+                                // Use the y scale
+                                width = (int) (max_yscale * (float) width);
+                                height = (int) (max_yscale * (float) height);
+
+                            } else {
+                                // Else use the x scale
+                                width = (int) (max_xscale * (float) width);
+                                height = (int) (max_xscale * (float) height);
+                            }
+                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
+                            params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+                            projected_SurfaceView.setLayoutParams(params);
+                            mp.start();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        if (mediaPlayer != null) {
+                            if (mediaPlayer.isPlaying()) {
+                                mediaPlayer.stop();
+                            }
+                            mediaPlayer.reset();
+                        }
+                        try {
+                            reloadVideo();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                mMediaPlayer.prepare();
+
+            } catch (Exception e) {
+                Log.d("PresentationService", "Error setting data source for video");
             }
         }
     }
@@ -654,6 +642,90 @@ class PresentationServiceHDMI extends Presentation
         tv.startAnimation(in);
     }
 
+    private void prepareBackgroundAnimations() {
+        mypage_fadein = CustomAnimations.setUpAnimation(pageHolder, 0.0f, 1.0f);
+        mypage_fadeout = CustomAnimations.setUpAnimation(pageHolder, 1.0f, 0.0f);
+        background_fadein = CustomAnimations.setUpAnimation(projected_BackgroundImage, 0.0f, 1.0f);
+        //Animation background_fadeout = CustomAnimations.setUpAnimation(projected_BackgroundImage, 1.0f, 0.0f);
+        logo_fadein = CustomAnimations.setUpAnimation(projected_Logo, 0.0f, 1.0f);
+        logo_fadeout = CustomAnimations.setUpAnimation(projected_Logo, 1.0f, 0.0f);
+        image_fadein = CustomAnimations.setUpAnimation(projected_ImageView, 0.0f, 1.0f);
+        image_fadeout = CustomAnimations.setUpAnimation(projected_ImageView, 1.0f, 0.0f);
+        //Animation video_fadein = CustomAnimations.setUpAnimation(projected_SurfaceView, 0.0f, 1.0f);
+        //Animation video_fadeout = CustomAnimations.setUpAnimation(projected_SurfaceView, 1.0f, 0.0f);
+        lyrics_fadein = CustomAnimations.setUpAnimation(projected_LinearLayout, 0.0f, 1.0f);
+        lyrics_fadeout = CustomAnimations.setUpAnimation(projected_LinearLayout, 1.0f, 0.0f);
+        songinfo_fadein = CustomAnimations.setUpAnimation(songinfo_TextView, 0.0f, 1.0f);
+        songinfo_fadeout = CustomAnimations.setUpAnimation(songinfo_TextView, 1.0f, 0.0f);
+        songtitle_fadein = CustomAnimations.setUpAnimation(presentermode_title, 0.0f, 1.0f);
+        songtitle_fadeout = CustomAnimations.setUpAnimation(presentermode_title, 1.0f, 0.0f);
+        songauthor_fadein = CustomAnimations.setUpAnimation(presentermode_author, 0.0f, 1.0f);
+        songauthor_fadeout = CustomAnimations.setUpAnimation(presentermode_author, 1.0f, 0.0f);
+        songcopyright_fadein = CustomAnimations.setUpAnimation(presentermode_copyright, 0.0f, 1.0f);
+        songcopyright_fadeout = CustomAnimations.setUpAnimation(presentermode_copyright, 1.0f, 0.0f);
+        songalert_fadein = CustomAnimations.setUpAnimation(presentermode_alert, 0.0f, 1.0f);
+        songalert_fadeout = CustomAnimations.setUpAnimation(presentermode_alert, 1.0f, 0.0f);
+    }
+
+    private static void doImagePage() {
+        projected_ImageView.setVisibility(View.GONE);
+        projected_ImageView.setBackgroundColor(0x00000000);
+        // Process the image location into an URI
+        Uri imageUri = Uri.fromFile(FullscreenActivity.file);
+        RequestOptions myOptions = new RequestOptions()
+                .fitCenter();
+        Glide.with(c).load(imageUri).apply(myOptions).into(projected_ImageView);
+        projected_ImageView.setVisibility(View.VISIBLE);
+        animateIn();
+    }
+
+
+    // Async stuff to prepare and write the page
+    private static void cancelAsyncTask(AsyncTask ast) {
+        if (ast != null) {
+            try {
+                ast.cancel(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void prepareStageProjected() {
+        cancelAsyncTask(preparestageprojected_async);
+        preparestageprojected_async = new PrepareStageProjected();
+        try {
+            FullscreenActivity.scalingfiguredout = false;
+            preparestageprojected_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Set up the screen changes
+    private void presenterStartUp() {
+        // Set up the text styles and fonts for the bottom info bar
+        presenterThemeSetUp();
+
+        // After the fadeout time, set the background and fade in
+        Handler h = new Handler();
+        h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Try to set the new background
+                fixBackground();
+
+                Log.d("d", "backgroundTypeToUse=" + FullscreenActivity.backgroundTypeToUse);
+                if (FullscreenActivity.backgroundTypeToUse.equals("image")) {
+                    projected_BackgroundImage.startAnimation(background_fadein);
+                } else if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
+                    projected_SurfaceView.startAnimation(background_fadein);
+
+                }
+            }
+        }, FullscreenActivity.presoTransitionTime);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -667,7 +739,9 @@ class PresentationServiceHDMI extends Presentation
         projected_LinearLayout = findViewById(R.id.projected_LinearLayout);
         projected_ImageView = findViewById(R.id.projected_ImageView);
         projected_BackgroundImage = findViewById(R.id.projected_BackgroundImage);
-        projected_TextureView = findViewById(R.id.projected_TextureView);
+        projected_SurfaceView = findViewById(R.id.projected_SurfaceView);
+        projected_SurfaceHolder = projected_SurfaceView.getHolder();
+        projected_SurfaceHolder.addCallback(PresentationServiceHDMI.this);
         projected_Logo = findViewById(R.id.projected_Logo);
         songinfo_TextView = findViewById(R.id.songinfo_TextView);
         presentermode_bottombit = findViewById(R.id.presentermode_bottombit);
@@ -718,38 +792,24 @@ class PresentationServiceHDMI extends Presentation
         }, 2000);
     }
 
-    private static void doImagePage() {
-        projected_ImageView.setVisibility(View.GONE);
-        projected_ImageView.setBackgroundColor(0x00000000);
-        // Process the image location into an URI
-        Uri imageUri = Uri.fromFile(FullscreenActivity.file);
-        RequestOptions myOptions = new RequestOptions()
-                .fitCenter();
-        Glide.with(c).load(imageUri).apply(myOptions).into(projected_ImageView);
-        projected_ImageView.setVisibility(View.VISIBLE);
-        animateIn();
-    }
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        // Get the size of the SurfaceView
+        getScreenSizes();
 
-
-    // Async stuff to prepare and write the page
-    private static void cancelAsyncTask(AsyncTask ast) {
-        if (ast != null) {
+        mMediaPlayer = new MediaPlayer();
+        mMediaPlayer.setDisplay(projected_SurfaceHolder);
+        mMediaPlayer.setOnPreparedListener(PresentationServiceHDMI.this);
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mMediaPlayer.setOnCompletionListener(PresentationServiceHDMI.this);
+        if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
             try {
-                ast.cancel(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+                mMediaPlayer.setDataSource(c, vidUri);
+                mMediaPlayer.prepare();
 
-    private static void prepareStageProjected() {
-        cancelAsyncTask(preparestageprojected_async);
-        preparestageprojected_async = new PrepareStageProjected();
-        try {
-            FullscreenActivity.scalingfiguredout = false;
-            preparestageprojected_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            e.printStackTrace();
+            } catch (Exception e) {
+                Log.d("PresentationService", "Error setting data source for video");
+            }
         }
     }
 
@@ -1572,53 +1632,14 @@ class PresentationServiceHDMI extends Presentation
         projected_ImageView.setImageBitmap(null);
     }
 
-    private static void updateAlpha() {
-        projected_BackgroundImage.setAlpha(FullscreenActivity.presoAlpha);
-        projected_TextureView.setAlpha(FullscreenActivity.presoAlpha);
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
     }
 
-    private static void reloadVideo() {
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
 
-        if (mMediaPlayer == null) {
-            mMediaPlayer = new MediaPlayer();
-            mMediaPlayer.setSurface(s);
-        }
-
-        mMediaPlayer.reset();
-        try {
-            mMediaPlayer.setDataSource(c,vidUri);
-            Log.d("d","Setting the video file "+vidUri);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-
-        try {
-            mMediaPlayer.prepareAsync();
-            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mediaPlayer) {
-                    mediaPlayer.start();
-                }
-            });
-            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    if (mediaPlayer != null) {
-                        if (mediaPlayer.isPlaying()) {
-                            mediaPlayer.stop();
-                        }
-                        mediaPlayer.reset();
-                    }
-                    try {
-                        reloadVideo();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        } catch (Exception e) {
-            Log.e("Presentation window", "media player error");
-        }
     }
 
     static void updateAlert(boolean show) {
@@ -1659,50 +1680,32 @@ class PresentationServiceHDMI extends Presentation
         doUpdate(); // Updates the page
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    @Override
-    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        s = new Surface(surface);
-        mMediaPlayer = new MediaPlayer();
-        mMediaPlayer.setSurface(s);
-        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mMediaPlayer.setOnPreparedListener(this);
-        mMediaPlayer.setOnCompletionListener(this);
-        if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
-            try {
-                mMediaPlayer.setDataSource(c,vidUri);
-                mMediaPlayer.prepareAsync();
-            } catch (IllegalArgumentException | SecurityException | IllegalStateException | IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-    }
-
-    @Override
-    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-        return false;
-    }
-
-    @Override
-    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-    }
-
-    @Override
-    public void onBufferingUpdate(MediaPlayer mp, int percent) {
-    }
-
     @Override
     public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
     }
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-        if (mp!=null && !mp.isPlaying()) {
+        try {
+            // Get the video sizes so we can scale appropriately
+            int width = mp.getVideoWidth();
+            int height = mp.getVideoHeight();
+            float max_xscale = (float) screenWidth / (float) width;
+            float max_yscale = (float) screenHeight / (float) height;
+            if (max_xscale > max_yscale) {
+                // Use the y scale
+                width = (int) (max_yscale * (float) width);
+                height = (int) (max_yscale * (float) height);
+            } else {
+                // Else use the x scale
+                width = (int) (max_xscale * (float) width);
+                height = (int) (max_xscale * (float) height);
+            }
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
+            projected_SurfaceView.setLayoutParams(params);
             mp.start();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

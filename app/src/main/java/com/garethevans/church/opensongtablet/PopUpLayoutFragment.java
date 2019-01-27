@@ -536,39 +536,6 @@ public class PopUpLayoutFragment extends DialogFragment {
         startActivityForResult(intent, 26);
     }
 
- /*   public void setUpNormalMode() {
-        // This hides the view we don't need in Performance / Stage Mode
-        toggleAutoScaleButton.setVisibility(View.GONE);
-        group_manualfontsize.setVisibility(View.GONE);
-        group_alignment.setVisibility(View.GONE);
-        group_songinfofontsizes.setVisibility(View.GONE);
-        group_backgrounds.setVisibility(View.GONE);
-
-        // Views we want...
-        toggleChordsButton.setVisibility(View.VISIBLE);
-        group_maxfontsize.setVisibility(View.VISIBLE);
-        group_margins.setVisibility(View.VISIBLE);
-    }
-
-    public void setUpPresentationMode() {
-        // This hides the view we don't need in Presentation Mode
-
-        // Views we want...
-        toggleChordsButton.setVisibility(View.VISIBLE);
-        toggleAutoScaleButton.setVisibility(View.VISIBLE);
-        if (FullscreenActivity.presoAutoScale) {
-            group_maxfontsize.setVisibility(View.VISIBLE);
-            group_manualfontsize.setVisibility(View.GONE);
-        } else {
-            group_maxfontsize.setVisibility(View.GONE);
-            group_manualfontsize.setVisibility(View.VISIBLE);
-        }
-        group_alignment.setVisibility(View.VISIBLE);
-        group_songinfofontsizes.setVisibility(View.VISIBLE);
-        group_backgrounds.setVisibility(View.VISIBLE);
-
-    }
-*/
     public void setButtonBackground(ImageView v, String background) {
         // The default uri is just as it is saved
         Uri uri = Uri.parse(background);
@@ -626,6 +593,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         public void onStartTrackingTouch(SeekBar seekBar) {}
 
         public void onStopTrackingTouch(SeekBar seekBar) {
+            Preferences.savePreferences();
             sendUpdateToScreen("margins");
         }
     }

@@ -851,7 +851,7 @@ public class Preferences extends Activity {
             FullscreenActivity.backgroundToUse = getMyPreferenceString(c, "backgroundToUse", "img1");
             FullscreenActivity.backgroundTypeToUse = getMyPreferenceString(c, "backgroundTypeToUse", "image");
             FullscreenActivity.backgroundVideo1 = getMyPreferenceString(c, "backgroundVideo1", "");
-            FullscreenActivity.backgroundVideo2 = getMyPreferenceString(c, "backgroundVideo1", "");
+            FullscreenActivity.backgroundVideo2 = getMyPreferenceString(c, "backgroundVideo2", "");
             FullscreenActivity.presoShowChords = getMyPreferenceBoolean(c, "presoShowChords", false);
             FullscreenActivity.presoLyricsAlign = getMyPreferenceInt(c, "presoLyricsAlign", Gravity.CENTER);
 

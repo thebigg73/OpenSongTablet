@@ -2445,15 +2445,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
-    /*//@Override
-    public void updateCustomStorage() {
-        switch (FullscreenActivity.whattodo) {
-            case "customstoragefind":
-                FullscreenActivity.whattodo = "managestorage";
-                openFragment();
-                break;
-        }
-    }*/
     @Override
     public void loadCustomReusable() {
         doCancelAsyncTask(load_customreusable);
@@ -3839,6 +3830,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     FullscreenActivity.isHDMIConnected = true;
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                // Ooops
             }
         }
