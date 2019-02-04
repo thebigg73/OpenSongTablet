@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 // This file is used to try to find any previous storage locations for the app
@@ -267,3 +268,4 @@ public class PopUpFindStorageLocationFragment extends DialogFragment {
         }
     }
 }
+*/

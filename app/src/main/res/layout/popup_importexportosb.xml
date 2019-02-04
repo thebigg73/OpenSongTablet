@@ -14,10 +14,40 @@
     </FrameLayout>
 
     <LinearLayout
-        android:id="@+id/importfilechooser"
+        android:id="@+id/progressUpdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/myTitle"
+        android:layout_margin="0dp"
+        android:background="@drawable/section_box"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="8dp" />
+
+        <TextView
+            android:id="@+id/currentFileWork"
+            style="@style/MyWhiteHeadingText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="8dp"
+            android:minLines="2" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/importfilechooser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/progressUpdate"
         android:orientation="vertical">
 
         <TextView
@@ -77,4 +107,6 @@
         android:isScrollContainer="true" />
 
     </LinearLayout>
+
+
 </RelativeLayout>

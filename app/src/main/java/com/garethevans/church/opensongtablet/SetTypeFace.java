@@ -1,223 +1,18 @@
 package com.garethevans.church.opensongtablet;
 
+import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Handler;
+import android.support.v4.provider.FontRequest;
+import android.support.v4.provider.FontsContractCompat;
+import android.support.v4.provider.FontsContractCompat.FontRequestCallback;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import java.io.File;
+import java.util.ArrayList;
 
 class SetTypeFace {
-
-    public static void setTypeface() {
-        // Set up the custom font (if it has been set)
-        FullscreenActivity.customfont = setCustomFont(FullscreenActivity.customfontname);
-
-        switch (FullscreenActivity.mylyricsfontnum) {
-            case 1:
-                FullscreenActivity.lyricsfont = FullscreenActivity.typeface1;
-                FullscreenActivity.commentfont = FullscreenActivity.typeface1;
-                break;
-            case 2:
-                FullscreenActivity.lyricsfont = FullscreenActivity.typeface2;
-                FullscreenActivity.commentfont = FullscreenActivity.typeface2;
-                break;
-            case 3:
-                FullscreenActivity.lyricsfont = FullscreenActivity.typeface3;
-                FullscreenActivity.commentfont = FullscreenActivity.typeface3;
-                break;
-            case 4:
-                FullscreenActivity.lyricsfont = FullscreenActivity.typeface4;
-                FullscreenActivity.commentfont = FullscreenActivity.typeface4i;
-                break;
-            case 5:
-                FullscreenActivity.lyricsfont = FullscreenActivity.typeface5;
-                FullscreenActivity.commentfont = FullscreenActivity.typeface5i;
-                break;
-            case 6:
-                FullscreenActivity.lyricsfont = FullscreenActivity.typeface6;
-                FullscreenActivity.commentfont = FullscreenActivity.typeface6;
-                break;
-            case 7:
-                FullscreenActivity.lyricsfont = FullscreenActivity.typeface7;
-                FullscreenActivity.commentfont = FullscreenActivity.typeface7i;
-                break;
-            case 8:
-                FullscreenActivity.lyricsfont = FullscreenActivity.typeface8;
-                FullscreenActivity.commentfont = FullscreenActivity.typeface8i;
-                break;
-            case 9:
-                FullscreenActivity.lyricsfont = FullscreenActivity.typeface9;
-                FullscreenActivity.commentfont = FullscreenActivity.typeface9i;
-                break;
-            case 10:
-                FullscreenActivity.lyricsfont = FullscreenActivity.typeface10;
-                FullscreenActivity.commentfont = FullscreenActivity.typeface10i;
-                break;
-            case 11:
-                FullscreenActivity.lyricsfont = FullscreenActivity.typeface11;
-                FullscreenActivity.commentfont = FullscreenActivity.typeface11i;
-                break;
-            case 12:
-                FullscreenActivity.lyricsfont = FullscreenActivity.typeface12;
-                FullscreenActivity.commentfont = FullscreenActivity.typeface12i;
-                break;
-            case 13:
-                FullscreenActivity.lyricsfont = FullscreenActivity.customfont;
-                FullscreenActivity.commentfont = FullscreenActivity.customfont;
-                break;
-            default:
-                FullscreenActivity.lyricsfont = FullscreenActivity.typeface0;
-                FullscreenActivity.commentfont = FullscreenActivity.typeface0;
-                break;
-        }
-
-        switch (FullscreenActivity.mychordsfontnum) {
-            case 1:
-                FullscreenActivity.chordsfont = FullscreenActivity.typeface1;
-                break;
-            case 2:
-                FullscreenActivity.chordsfont = FullscreenActivity.typeface2;
-                break;
-            case 3:
-                FullscreenActivity.chordsfont = FullscreenActivity.typeface3;
-                break;
-            case 4:
-                FullscreenActivity.chordsfont = FullscreenActivity.typeface4;
-                break;
-            case 5:
-                FullscreenActivity.chordsfont = FullscreenActivity.typeface5;
-                break;
-            case 6:
-                FullscreenActivity.chordsfont = FullscreenActivity.typeface6;
-                break;
-            case 7:
-                FullscreenActivity.chordsfont = FullscreenActivity.typeface7;
-                break;
-            case 8:
-                FullscreenActivity.chordsfont = FullscreenActivity.typeface8;
-                break;
-            case 9:
-                FullscreenActivity.chordsfont = FullscreenActivity.typeface9;
-                break;
-            case 10:
-                FullscreenActivity.chordsfont = FullscreenActivity.typeface10;
-                break;
-            case 11:
-                FullscreenActivity.chordsfont = FullscreenActivity.typeface11;
-                break;
-            case 12:
-                FullscreenActivity.chordsfont = FullscreenActivity.typeface12;
-                break;
-            case 13:
-                FullscreenActivity.chordsfont = FullscreenActivity.customfont;
-                break;
-            default:
-                FullscreenActivity.chordsfont = FullscreenActivity.typeface0;
-                break;
-        }
-
-        switch (FullscreenActivity.mypresofontnum) {
-            case 1:
-                FullscreenActivity.presofont = FullscreenActivity.typeface1;
-                break;
-            case 2:
-                FullscreenActivity.presofont = FullscreenActivity.typeface2;
-                break;
-            case 3:
-                FullscreenActivity.presofont = FullscreenActivity.typeface3;
-                break;
-            case 4:
-                FullscreenActivity.presofont = FullscreenActivity.typeface4;
-                break;
-            case 5:
-                FullscreenActivity.presofont = FullscreenActivity.typeface5;
-                break;
-            case 6:
-                FullscreenActivity.presofont = FullscreenActivity.typeface6;
-                break;
-            case 7:
-                FullscreenActivity.presofont = FullscreenActivity.typeface7;
-                break;
-            case 8:
-                FullscreenActivity.presofont = FullscreenActivity.typeface8;
-                break;
-            case 9:
-                FullscreenActivity.presofont = FullscreenActivity.typeface9;
-                break;
-            case 10:
-                FullscreenActivity.presofont = FullscreenActivity.typeface10;
-                break;
-            case 11:
-                FullscreenActivity.presofont = FullscreenActivity.typeface11;
-                break;
-            case 12:
-                FullscreenActivity.presofont = FullscreenActivity.typeface12;
-                break;
-            case 13:
-                FullscreenActivity.presofont = FullscreenActivity.customfont;
-                break;
-            default:
-                FullscreenActivity.presofont = FullscreenActivity.typeface0;
-                break;
-        }
-
-        switch (FullscreenActivity.mypresoinfofontnum) {
-            case 1:
-                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface1;
-                break;
-            case 2:
-                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface2;
-                break;
-            case 3:
-                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface3;
-                break;
-            case 4:
-                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface4;
-                break;
-            case 5:
-                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface5;
-                break;
-            case 6:
-                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface6;
-                break;
-            case 7:
-                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface7;
-                break;
-            case 8:
-                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface8;
-                break;
-            case 9:
-                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface9;
-                break;
-            case 10:
-                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface10;
-                break;
-            case 11:
-                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface11;
-                break;
-            case 12:
-                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface12;
-                break;
-            case 13:
-                FullscreenActivity.presoInfoFont = FullscreenActivity.customfont;
-                break;
-            default:
-                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface0;
-                break;
-        }
-
-    }
-
-    static Typeface setCustomFont(String ff) {
-        Typeface tf = FullscreenActivity.typeface0;
-        String fl = FullscreenActivity.dirfonts + "/" + ff;
-        File cf = new File(fl);
-        if (cf.exists() && (ff.endsWith(".ttf") || ff.endsWith(".otf"))) {
-            tf = Typeface.createFromFile(cf);
-        } else {
-            FullscreenActivity.customfontname = "";
-            Preferences.savePreferences();
-        }
-        return tf;
-    }
 
     static String setupWebViewLyricFont(int fontnum) {
 
@@ -407,6 +202,164 @@ class SetTypeFace {
         }
 
         return fontcode;
+    }
+
+    void setUpAppFonts(Context c, Preferences preferences, Handler lyrichandler, Handler chordhandler,
+                       Handler presohandler, Handler presoinfohandler, Handler customhandler, Handler monohandler) {
+        // Load up the user preferences
+        String fontLyric = preferences.getMyPreferenceString(c, "fontLyric", "Lato");
+        String fontChord = preferences.getMyPreferenceString(c, "fontChord", "Lato");
+        String fontPreso = preferences.getMyPreferenceString(c, "fontPreso", "Lato");
+        String fontPresoInfo = preferences.getMyPreferenceString(c, "fontPresoInfo", "Lato");
+        String fontCustom = preferences.getMyPreferenceString(c, "fontCustom", "Lato");
+
+        // Set the values to the custom font if they are set to Custom...
+        fontLyric = fixFont(c, fontLyric, fontCustom);
+        fontChord = fixFont(c, fontChord, fontCustom);
+        fontPreso = fixFont(c, fontPreso, fontCustom);
+        fontPresoInfo = fixFont(c, fontPresoInfo, fontCustom);
+
+        // Set the values
+        setChosenFont(c, preferences, fontLyric, "lyric", null, null, lyrichandler);
+        setChosenFont(c, preferences, fontChord, "chord", null, null, chordhandler);
+        setChosenFont(c, preferences, fontPreso, "preso", null, null, presohandler);
+        setChosenFont(c, preferences, fontPresoInfo, "presoinfo", null, null, presoinfohandler);
+        setChosenFont(c, preferences, fontCustom, "custom", null, null, customhandler);
+
+        // The monospace font for tab
+        setChosenFont(c, preferences, "Fira Mono", "mono", null, null, monohandler);
+    }
+
+    private String fixFont(Context c, String which, String custom) {
+        if (which.equals(c.getString(R.string.custom) + "...")) {
+            return custom;
+        } else {
+            return which;
+        }
+    }
+
+    private FontRequest getFontRequest(String fontnamechosen) {
+        return new FontRequest("com.google.android.gms.fonts",
+                "com.google.android.gms", fontnamechosen,
+                R.array.com_google_android_gms_fonts_certs);
+    }
+
+    private FontRequestCallback getFontRequestCallback(final Context c, final Preferences preferences, final String what,
+                                                       final String fontname,
+                                                       final TextView textView, final ProgressBar progressBar) {
+        return new FontRequestCallback() {
+            @Override
+            public void onTypefaceRetrieved(Typeface typeface) {
+                switch (what) {
+                    case "mono":
+                        FullscreenActivity.monofont = typeface;
+                        break;
+                    case "lyric":
+                        FullscreenActivity.lyricsfont = typeface;
+                        preferences.setMyPreferenceString(c, "fontLyric", fontname);
+                        break;
+                    case "chord":
+                        FullscreenActivity.chordsfont = typeface;
+                        preferences.setMyPreferenceString(c, "fontChord", fontname);
+                        break;
+                    case "preso":
+                        FullscreenActivity.presofont = typeface;
+                        preferences.setMyPreferenceString(c, "fontPreso", fontname);
+                        break;
+                    case "presoinfo":
+                        FullscreenActivity.presoInfoFont = typeface;
+                        preferences.setMyPreferenceString(c, "fontPresoInfo", fontname);
+                        break;
+                    case "custom":
+                        FullscreenActivity.customfont = typeface;
+                        preferences.setMyPreferenceString(c, "fontCustom", fontname);
+                        break;
+                }
+                // If we are previewing the font, update the text and hide the progressBar (these will be null otherwise)
+                if (textView != null) {
+                    textView.setTypeface(typeface);
+                }
+                if (progressBar != null) {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onTypefaceRequestFailed(int reason) {
+                // Your code to deal with the failure goes here
+                Typeface typeface = Typeface.createFromAsset(c.getAssets(), "font/lato.ttf");
+                FullscreenActivity.myToastMessage = fontname + ": " + c.getString(R.string.file_type_unknown);
+                ShowToast.showToast(c);
+
+                switch (what) {
+                    case "lyric":
+                        FullscreenActivity.lyricsfont = typeface;
+                        preferences.setMyPreferenceString(c, "fontLyric", "Lato");
+                        break;
+                    case "chord":
+                        FullscreenActivity.chordsfont = typeface;
+                        preferences.setMyPreferenceString(c, "fontChord", "Lato");
+                        break;
+                    case "preso":
+                        FullscreenActivity.presofont = typeface;
+                        preferences.setMyPreferenceString(c, "fontPreso", "Lato");
+                        break;
+                    case "presoinfo":
+                        FullscreenActivity.presoInfoFont = typeface;
+                        preferences.setMyPreferenceString(c, "fontPresoInfo", "Lato");
+                        break;
+                    case "custom":
+                        FullscreenActivity.customfont = typeface;
+                        preferences.setMyPreferenceString(c, "fontCustom", "Lato");
+                        break;
+                }
+
+                if (textView != null) {
+                    textView.setTypeface(FullscreenActivity.customfont);
+                }
+                if (progressBar != null) {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        };
+    }
+
+    void setChosenFont(final Context c, final Preferences preferences, String fontnamechosen, String which,
+                       final TextView textView, final ProgressBar progressBar, Handler handler) {
+        FontRequest fontRequest = getFontRequest(fontnamechosen);
+        FontRequestCallback fontRequestCallback = getFontRequestCallback(c, preferences, which,
+                fontnamechosen, textView, progressBar);
+        FontsContractCompat.requestFont(c, fontRequest, fontRequestCallback, handler);
+    }
+
+    ArrayList<String> googleFontsAllowed(Context c) {
+        ArrayList<String> f = new ArrayList<>();
+        f.add("Abel");
+        f.add("Actor");
+        f.add("Amiri");
+        f.add("Assistant");
+        f.add("Atma");
+        f.add("Baloo");
+        f.add("Basic");
+        f.add("Comfortaa");
+        f.add("Encode Sans");
+        f.add("Fira Mono");
+        f.add("Gidugu");
+        f.add("Gloria Hallelujah");
+        f.add("Gochi Hand");
+        f.add("Gurajada");
+        f.add("Hind Madurai");
+        f.add("Imprima");
+        f.add("Lato");
+        f.add("Noto Sans");
+        f.add("Paprika");
+        f.add("Roboto");
+        f.add("Roboto Mono");
+        f.add("Ubuntu");
+        f.add("Ubuntu Mono");
+        f.add(c.getString(R.string.custom) + "...");
+
+        return f;
     }
 
 }

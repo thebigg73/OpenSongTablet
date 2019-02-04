@@ -39,6 +39,7 @@ class PopUpSizeAndAlpha {
                     case "ultimate-guitar":
                     case "worshipready":
                     case "editsong":
+                    case "rebuildindex":
                         myscale = 1.0f;
                         myalpha = FullscreenActivity.popupAlpha_All;
                         mydim = FullscreenActivity.popupDim_All;

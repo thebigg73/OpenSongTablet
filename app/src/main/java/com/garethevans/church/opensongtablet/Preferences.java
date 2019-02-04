@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.Gravity;
 
 import java.util.Locale;
@@ -79,24 +80,32 @@ public class Preferences extends Activity {
     }
 
     public static Locale getDefaultLocaleString() {
-        Locale locale = Locale.getDefault();
-        if  (locale==null) {
-            locale = new Locale(Locale.getDefault().getDisplayLanguage());
-        }
-
-        if (!locale.toString().equals("af") && !locale.toString().equals("cs") && !locale.toString().equals("de") &&
-                !locale.toString().equals("el") && !locale.toString().equals("es") && !locale.toString().equals("fr") &&
-                !locale.toString().equals("hu") && !locale.toString().equals("it") && !locale.toString().equals("ja") &&
-                !locale.toString().equals("pl") && !locale.toString().equals("pt") && !locale.toString().equals("ru") &&
-                !locale.toString().equals("sr") && !locale.toString().equals("sv") && !locale.toString().equals("zh")) {
-            locale = new Locale("en");
+        Locale locale;
+        try {
+            locale = Locale.getDefault();
+            if (locale == null) {
+                locale = new Locale(Locale.getDefault().getDisplayLanguage());
+            }
+            if (!locale.toString().equals("af") && !locale.toString().equals("cs") && !locale.toString().equals("de") &&
+                    !locale.toString().equals("el") && !locale.toString().equals("es") && !locale.toString().equals("fr") &&
+                    !locale.toString().equals("hu") && !locale.toString().equals("it") && !locale.toString().equals("ja") &&
+                    !locale.toString().equals("pl") && !locale.toString().equals("pt") && !locale.toString().equals("ru") &&
+                    !locale.toString().equals("sr") && !locale.toString().equals("sv") && !locale.toString().equals("zh")) {
+                locale = new Locale("en");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
         return locale;
     }
 
-    public static void loadPreferences() {
+    public static void loadPreferences(Context c) {
         // Load up the user preferences
         // Set to blank if not used before
+        if (myPreferences == null) {
+            myPreferences = c.getSharedPreferences("OpenSongApp", Context.MODE_PRIVATE);
+        }
         try {
             FullscreenActivity.ab_titleSize = myPreferences.getFloat("ab_titleSize", 13.0f);
             FullscreenActivity.ab_authorSize = myPreferences.getFloat("ab_authorSize", 11.0f);
@@ -237,7 +246,7 @@ public class Preferences extends Activity {
             FullscreenActivity.exportOnSong = myPreferences.getBoolean("exportOnSong", false);
             FullscreenActivity.exportImage = myPreferences.getBoolean("exportImage", false);
             FullscreenActivity.exportPDF = myPreferences.getBoolean("exportPDF", false);
-            FullscreenActivity.fabSize = myPreferences.getInt("fabSize", FloatingActionButton.SIZE_MINI);
+            FullscreenActivity.fabSize = myPreferences.getInt("fabSize", FloatingActionButton.SIZE_NORMAL);
             FullscreenActivity.gesture_doubletap = myPreferences.getString("gesture_doubletap", "2");
             FullscreenActivity.gesture_longpress = myPreferences.getString("gesture_longpress", "1");
             FullscreenActivity.grouppagebuttons = myPreferences.getBoolean("grouppagebuttons", false);
@@ -269,7 +278,7 @@ public class Preferences extends Activity {
             FullscreenActivity.light_stickybg = myPreferences.getInt("light_stickybg", default_stickyNotesBG);
             FullscreenActivity.light_extrainfobg = myPreferences.getInt("light_extrainfobg", default_extrainfoBG);
             FullscreenActivity.light_extrainfo = myPreferences.getInt("light_extrainfo", default_extrainfo);
-            FullscreenActivity.linespacing = myPreferences.getInt("linespacing", 0);
+            FullscreenActivity.linespacing = myPreferences.getFloat("linespacing", 0.1f);
             FullscreenActivity.locale = getStoredLocale();
             FullscreenActivity.longpressdownpedalgesture = myPreferences.getString("longpressdownpedalgesture", "0");
             FullscreenActivity.longpressnextpedalgesture = myPreferences.getString("longpressnextpedalgesture", "4");
@@ -301,38 +310,26 @@ public class Preferences extends Activity {
             FullscreenActivity.padpan = myPreferences.getString("padpan", "both");
             FullscreenActivity.padvol = myPreferences.getFloat("padvol", 1.0f);
             FullscreenActivity.page_autoscroll_visible = myPreferences.getBoolean("page_autoscroll_visible",true);
-            FullscreenActivity.page_custom_visible = myPreferences.getBoolean("page_custom_visible",true);
-            FullscreenActivity.page_chord_visible = myPreferences.getBoolean("page_chord_visible",true);
+            FullscreenActivity.page_custom_visible = myPreferences.getBoolean("page_custom_visible", false);
+            FullscreenActivity.page_chord_visible = myPreferences.getBoolean("page_chord_visible", false);
             FullscreenActivity.page_custom1_visible = myPreferences.getBoolean("page_custom1_visible",true);
             FullscreenActivity.page_custom2_visible = myPreferences.getBoolean("page_custom2_visible",true);
             FullscreenActivity.page_custom3_visible = myPreferences.getBoolean("page_custom3_visible",true);
             FullscreenActivity.page_custom4_visible = myPreferences.getBoolean("page_custom4_visible",true);
-            FullscreenActivity.page_custom_grouped = myPreferences.getBoolean("page_custom_grouped",true);
-            FullscreenActivity.page_extra_grouped = myPreferences.getBoolean("page_extra_grouped",true);
-            FullscreenActivity.page_extra_visible = myPreferences.getBoolean("page_extra_visible",true);
-            FullscreenActivity.page_highlight_visible = myPreferences.getBoolean("page_highlight_visible",true);
-            FullscreenActivity.page_links_visible = myPreferences.getBoolean("page_links_visible",true);
-            FullscreenActivity.page_metronome_visible = myPreferences.getBoolean("page_metronome_visible",true);
-            FullscreenActivity.page_notation_visible = myPreferences.getBoolean("page_notation_visible",true);
+            FullscreenActivity.page_custom_grouped = myPreferences.getBoolean("page_custom_grouped", false);
+            FullscreenActivity.page_extra_grouped = myPreferences.getBoolean("page_extra_grouped", false);
+            FullscreenActivity.page_extra_visible = myPreferences.getBoolean("page_extra_visible", false);
+            FullscreenActivity.page_highlight_visible = myPreferences.getBoolean("page_highlight_visible", false);
+            FullscreenActivity.page_links_visible = myPreferences.getBoolean("page_links_visible", false);
+            FullscreenActivity.page_metronome_visible = myPreferences.getBoolean("page_metronome_visible", false);
+            FullscreenActivity.page_notation_visible = myPreferences.getBoolean("page_notation_visible", false);
             FullscreenActivity.page_pad_visible = myPreferences.getBoolean("page_pad_visible",true);
-            FullscreenActivity.page_pages_visible = myPreferences.getBoolean("page_pages_visible",true);
+            FullscreenActivity.page_pages_visible = myPreferences.getBoolean("page_pages_visible", false);
             FullscreenActivity.page_set_visible = myPreferences.getBoolean("page_set_visible",true);
-            FullscreenActivity.page_sticky_visible = myPreferences.getBoolean("page_sticky_visible",true);
+            FullscreenActivity.page_sticky_visible = myPreferences.getBoolean("page_sticky_visible", false);
             FullscreenActivity.pagebutton_position = myPreferences.getString("pagebutton_position", "right");
             FullscreenActivity.pagebutton_scale = myPreferences.getString("pagebutton_scale", "M");
-            FullscreenActivity.pageButtonAlpha = myPreferences.getFloat("pageButtonAlpha", 0.3f);
-            /*FullscreenActivity.pageturner_AUTOSCROLL = myPreferences.getInt("pageturner_AUTOSCROLL", -1);
-            FullscreenActivity.pageturner_AUTOSCROLLPAD = myPreferences.getInt("pageturner_AUTOSCROLLPAD", -1);
-            FullscreenActivity.pageturner_AUTOSCROLLMETRONOME = myPreferences.getInt("pageturner_AUTOSCROLLMETRONOME", -1);
-            FullscreenActivity.pageturner_AUTOSCROLLPADMETRONOME = myPreferences.getInt("pageturner_AUTOSCROLLPADMETRONOME", -1);
-            FullscreenActivity.pageturner_DOWN = myPreferences.getInt("pageturner_DOWN", 20);
-            FullscreenActivity.pageturner_METRONOME = myPreferences.getInt("pageturner_METRONOME", -1);
-            FullscreenActivity.pageturner_NEXT = myPreferences.getInt("pageturner_NEXT", 22);
-            FullscreenActivity.pageturner_PAD = myPreferences.getInt("pageturner_PAD", -1);
-            FullscreenActivity.pageturner_PADMETRONOME = myPreferences.getInt("pageturner_PADMETRONOME", -1);
-            FullscreenActivity.pageturner_PREVIOUS = myPreferences.getInt("pageturner_PREVIOUS", 21);
-            FullscreenActivity.pageturner_UP = myPreferences.getInt("pageturner_UP", 19);*/
-
+            FullscreenActivity.pageButtonAlpha = myPreferences.getFloat("pageButtonAlpha", 0.4f);
             FullscreenActivity.pedal1 = myPreferences.getInt("pedal1", 21);
             FullscreenActivity.pedal2 = myPreferences.getInt("pedal2", 22);
             FullscreenActivity.pedal3 = myPreferences.getInt("pedal3", 19);
@@ -374,13 +371,13 @@ public class Preferences extends Activity {
             FullscreenActivity.presoAlpha = myPreferences.getFloat("presoAlpha", 1.0f);
             FullscreenActivity.presoAutoScale = myPreferences.getBoolean("presoAutoScale", true);
             FullscreenActivity.presoFontSize = myPreferences.getInt("presoFontSize", 12);
-            FullscreenActivity.presoInfoAlign = myPreferences.getInt("presoInfoAlign", Gravity.RIGHT);
+            FullscreenActivity.presoInfoAlign = myPreferences.getInt("presoInfoAlign", Gravity.END);
             FullscreenActivity.presoLyricsAlign = myPreferences.getInt("presoLyricsAlign", Gravity.CENTER_HORIZONTAL);
             FullscreenActivity.presoMaxFontSize = myPreferences.getInt("presoMaxFontSize", 40);
             FullscreenActivity.presoShowChords = myPreferences.getBoolean("presoShowChords", false);
             FullscreenActivity.presoTransitionTime = myPreferences.getInt("presoTransitionTime", 800);
             FullscreenActivity.profile = myPreferences.getString("profile", "");
-            FullscreenActivity.quickLaunchButton_1 = myPreferences.getString("quickLaunchButton_1", "");
+            FullscreenActivity.quickLaunchButton_1 = myPreferences.getString("quickLaunchButton_1", "transpose");
             FullscreenActivity.quickLaunchButton_2 = myPreferences.getString("quickLaunchButton_2", "");
             FullscreenActivity.quickLaunchButton_3 = myPreferences.getString("quickLaunchButton_3", "");
             FullscreenActivity.quickLaunchButton_4 = myPreferences.getString("quickLaunchButton_4", "");
@@ -420,6 +417,7 @@ public class Preferences extends Activity {
             FullscreenActivity.toggleScrollBeforeSwipe = myPreferences.getString("toggleScrollBeforeSwipe", "Y");
             FullscreenActivity.toggleYScale = myPreferences.getString("toggleYScale", "W");
             FullscreenActivity.transposeStyle = myPreferences.getString("transposeStyle", "sharps");
+            FullscreenActivity.trimLines = myPreferences.getBoolean("trimLines", true);
             FullscreenActivity.trimSections = myPreferences.getBoolean("trimSections", false);
             FullscreenActivity.trimSectionSpace = myPreferences.getBoolean("trimSectionSpace", false);
             String uriTreeTemp = myPreferences.getString("uriTree", "");
@@ -470,7 +468,7 @@ public class Preferences extends Activity {
             // Error loading the preferences
             e.printStackTrace();
             // Try restarting the app
-            FullscreenActivity.restart(FullscreenActivity.mContext);
+            //FullscreenActivity.restart(FullscreenActivity.mContext);
         }
 
     }
@@ -650,7 +648,7 @@ public class Preferences extends Activity {
             editor.putInt("light_stickybg", FullscreenActivity.light_stickybg);
             editor.putInt("light_extrainfobg", FullscreenActivity.light_extrainfobg);
             editor.putInt("light_extrainfo", FullscreenActivity.light_extrainfo);
-            editor.putInt("linespacing", FullscreenActivity.linespacing);
+            editor.putFloat("linespacing", FullscreenActivity.linespacing);
             editor.putString("locale", FullscreenActivity.locale.toString());
             editor.putString("longpressdownpedalgesture", FullscreenActivity.longpressdownpedalgesture);
             editor.putString("longpressnextpedalgesture", FullscreenActivity.longpressnextpedalgesture);
@@ -797,6 +795,7 @@ public class Preferences extends Activity {
             editor.putString("toggleScrollBeforeSwipe", FullscreenActivity.toggleScrollBeforeSwipe);
             editor.putString("toggleYScale", FullscreenActivity.toggleYScale);
             editor.putString("transposeStyle", FullscreenActivity.transposeStyle);
+            editor.putBoolean("trimLines", FullscreenActivity.trimLines);
             editor.putBoolean("trimSections", FullscreenActivity.trimSections);
             editor.putBoolean("trimSectionSpace", FullscreenActivity.trimSectionSpace);
             if (FullscreenActivity.uriTree!=null) {
@@ -816,7 +815,7 @@ public class Preferences extends Activity {
             // Error saving.  Normally happens if app was closed before this happens
             e.printStackTrace();
             // Try restarting the app
-            FullscreenActivity.restart(FullscreenActivity.mContext);
+            // FullscreenActivity.restart(FullscreenActivity.mContext);
         }
     }
 
@@ -845,6 +844,24 @@ public class Preferences extends Activity {
         return myPreferences.getBoolean("songloadsuccess", false);
     }
 
+    // Load up the prefernces for the presentation windows
+    void loadPresentationPreferences(Context c) {
+        try {
+            // Load the specific presentation preferences
+            FullscreenActivity.customLogo = getMyPreferenceString(c, "customLogo", "ost_logo.png");
+            FullscreenActivity.backgroundImage1 = getMyPreferenceString(c, "backgroundImage1", "ost_bg.png");
+            FullscreenActivity.backgroundImage1 = getMyPreferenceString(c, "backgroundImage2", "ost_bg.png");
+            FullscreenActivity.backgroundToUse = getMyPreferenceString(c, "backgroundToUse", "img1");
+            FullscreenActivity.backgroundTypeToUse = getMyPreferenceString(c, "backgroundTypeToUse", "image");
+            FullscreenActivity.backgroundVideo1 = getMyPreferenceString(c, "backgroundVideo1", "");
+            FullscreenActivity.backgroundVideo2 = getMyPreferenceString(c, "backgroundVideo2", "");
+            FullscreenActivity.presoShowChords = getMyPreferenceBoolean(c, "presoShowChords", false);
+            FullscreenActivity.presoLyricsAlign = getMyPreferenceInt(c, "presoLyricsAlign", Gravity.CENTER);
+
+        } catch (Exception e) {
+            Log.d("Preferences", "Error setting presentation preferences");
+        }
+    }
 
     // This is the way that preferences will be stored in the future (after SAF is implemented)
     private SharedPreferences sharedPref;
@@ -863,6 +880,13 @@ public class Preferences extends Activity {
         return sharedPref.getInt(prefname, fallback);
     }
 
+    boolean getMyPreferenceBoolean(Context c, String prefname, boolean fallback) {
+        // Return a boolean from saved preference
+        // Identify the preferences
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
+        return sharedPref.getBoolean(prefname, fallback);
+    }
+
     // Save the preference values
     void setMyPreferenceString (Context c, String prefname, String value) {
         // Identify the preferences
@@ -874,10 +898,27 @@ public class Preferences extends Activity {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
         sharedPref.edit().putInt(prefname, value).apply();
     }
+    void setMyPreferenceBoolean (Context c, String prefname, boolean value) {
+        // Identify the preferences
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
+        sharedPref.edit().putBoolean(prefname, value).apply();
+    }
 
-    /* Values stored in Prefences alphabetically listed:
+    /* Values stored in Preferences alphabetically listed:
     Variable name           Type        What
+    backgroundImage1        String      The uri of the background image 1 for presentations
+    backgroundImage2        String      The uri of the background image 2 for presentations
+    backgroundVideo1        String      The uri of the background video 1 for presentations
+    backgroundVideo2        String      The uri of the background video 2 for presentations
     chosenstorage           String      The uri of the document tree (Storage Access Framework)
+    customLogo              String      The uri of the user logo for presentations
+    fontChord               String      The name of the font used for the chords.  From fonts.google.com
+    fontCustom              String      The name of the font used for custom fonts.  From fonts.google.com
+    fontLyric               String      The name of the font used for the lyrics.  From fonts.google.com
+    fontPreso               String      The name of the font used for the preso.  From fonts.google.com
+    fontPresoInfo           String      The name of the font used for the presoinfo.  From fonts.google.com
     lastUsedVersion         int         The app version number the last time the app ran
+    runswithoutbackup       int         The number of times the app has opened without backup (prompt the user after 10)
+    treeUri                 String      A string representation of the root app folder (OpenSong/)
     */
 }

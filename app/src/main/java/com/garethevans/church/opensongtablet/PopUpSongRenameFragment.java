@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,12 +19,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class PopUpSongRenameFragment extends DialogFragment {
     // This is a quick popup to enter a new song folder name, or rename a current one
-    // Once it has been completed positively (i.e. ok was clicked) it sends a refreshAll() interface call
+    // Once it has been completed positively (i.e. ok was clicked) it sends a rebuildSongIndex() interface call
 
     static ArrayList<String> newtempfolders;
     Spinner newFolderSpinner;
@@ -31,9 +33,68 @@ public class PopUpSongRenameFragment extends DialogFragment {
     boolean isPDF;
     String oldsongname;
     AsyncTask<Object, Void, String> getfolders;
+    StorageAccess storageAccess;
+    Preferences preferences;
+    SongFolders songFolders;
 
-    public interface MyInterface {
-        void refreshAll();
+    public void doSave() {
+        // Get the variables
+        String tempNewSong = newSongNameEditText.getText().toString().trim();
+
+        String tempOldFolder = FullscreenActivity.currentFolder;
+        String tempNewFolder = FullscreenActivity.newFolder;
+
+        // Try to rename
+        if (isPDF) {
+            if (!tempNewSong.endsWith(".pdf") && !tempNewSong.endsWith(".PDF")) {
+                // Naughty, naughty, it should have a pdf extension
+                tempNewSong = tempNewSong + ".pdf";
+            }
+        }
+
+        storageAccess = new StorageAccess();
+        preferences = new Preferences();
+
+        Uri from = storageAccess.getUriForItem(getActivity(), preferences, "Songs", tempOldFolder, oldsongname);
+        Uri to = storageAccess.getUriForItem(getActivity(), preferences, "Songs", tempNewFolder, tempNewSong);
+
+        if (!storageAccess.uriExists(getActivity(), to)) {
+            try {
+                InputStream inputStream = storageAccess.getInputStream(getActivity(), from);
+
+                // Check the uri exists for the outputstream to be valid
+                storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, to, null,
+                        "Songs", tempNewFolder, tempNewSong);
+
+                OutputStream outputStream = storageAccess.getOutputStream(getActivity(), to);
+
+                // Copy
+                storageAccess.copyFile(inputStream, outputStream);
+
+                // Remove the original if it is a new file location
+                if (to.getPath() != null && !to.getPath().equals(from.getPath())) {
+                    storageAccess.deleteFile(getActivity(), from);
+                }
+
+                FullscreenActivity.whichSongFolder = tempNewFolder;
+                FullscreenActivity.songfilename = tempNewSong;
+
+                // Save preferences
+                Preferences.savePreferences();
+
+                FullscreenActivity.needtorefreshsongmenu = true;
+                mListener.rebuildSearchIndex();
+                dismiss();
+
+            } catch (Exception e) {
+                Log.d("d", "Error renaming");
+            }
+
+        } else {
+            FullscreenActivity.myToastMessage = getResources().getString(R.string.file_exists);
+            ShowToast.showToast(getActivity());
+
+        }
     }
 
     private MyInterface mListener;
@@ -102,6 +163,10 @@ public class PopUpSongRenameFragment extends DialogFragment {
             }
         });
 
+        storageAccess = new StorageAccess();
+        songFolders = new SongFolders();
+        preferences = new Preferences();
+
         // Initialise the views
         newFolderSpinner = V.findViewById(R.id.newFolderSpinner);
         newSongNameEditText = V.findViewById(R.id.newSongNameEditText);
@@ -138,70 +203,15 @@ public class PopUpSongRenameFragment extends DialogFragment {
         return V;
     }
 
-    public void doSave() {
-        // Get the variables
-        String tempNewSong = newSongNameEditText.getText().toString().trim();
-
-        String tempOldFolder = FullscreenActivity.currentFolder;
-        String tempNewFolder = FullscreenActivity.newFolder;
-
-        File to;
-        if (tempNewFolder.equals(FullscreenActivity.mainfoldername)) {
-            to = new File(FullscreenActivity.dir + "/" + tempNewSong);
-        } else {
-            to = new File(FullscreenActivity.dir + "/" + tempNewFolder + "/" + tempNewSong);
-        }
-
-        File from;
-        if (tempOldFolder.equals("") || tempOldFolder.equals(FullscreenActivity.mainfoldername)) {
-            from = new File(FullscreenActivity.dir + "/" + oldsongname);
-        } else {
-            from = new File(FullscreenActivity.dir + "/" + tempOldFolder + "/" + oldsongname);
-        }
-
-        if (!tempNewSong.equals("") && !tempNewSong.isEmpty()
-                && !tempNewSong.contains("/") && !to.exists()
-                && !tempNewSong.equals(FullscreenActivity.mainfoldername)) {
-
-            // Try to rename
-            if (isPDF) {
-                if (!tempNewSong.endsWith(".pdf") && !tempNewSong.endsWith(".PDF")) {
-                    // Naughty, naughty, it should be a pdf extensions
-                    tempNewSong = tempNewSong + ".pdf";
-                }
-            }
-
-            if (from.renameTo(to)) {
-                FullscreenActivity.myToastMessage = getResources().getString(R.string.renametitle) + " - " + getResources().getString(R.string.ok);
-            } else {
-                FullscreenActivity.myToastMessage = getResources().getString(R.string.renametitle) + " - " + getResources().getString(R.string.error_notset);
-            }
-
-            FullscreenActivity.whichSongFolder = tempNewFolder;
-            FullscreenActivity.songfilename = tempNewSong;
-
-            // Save preferences
-            Preferences.savePreferences();
-
-            mListener.refreshAll();
-
-            dismiss();
-
-        } else if (to.exists()) {
-            FullscreenActivity.myToastMessage = getResources().getString(R.string.file_exists);
-            ShowToast.showToast(getActivity());
-
-        } else {
-            FullscreenActivity.myToastMessage = getResources().getString(R.string.no);
-            ShowToast.showToast(getActivity());
-        }
+    public interface MyInterface {
+        void rebuildSearchIndex();
     }
 
     @SuppressLint("StaticFieldLeak")
     private class GetFolders extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
-            ListSongFiles.getAllSongFolders();
+            songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
             return null;
         }
 

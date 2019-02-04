@@ -10,14 +10,17 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
+
+//import java.io.File;
 
 public class DrawNotes extends View {
 
@@ -250,7 +253,7 @@ public class DrawNotes extends View {
     }
 
     public int getSavedPaintColor() {
-        int c = 0xFFFFFF00;
+        int c = 0;
         if (FullscreenActivity.drawingTool.equals("pen")) {
             switch (FullscreenActivity.drawingPenColor) {
                 case "black":
@@ -262,6 +265,7 @@ public class DrawNotes extends View {
                     break;
 
                 case "yellow":
+                default:
                     c = 0xFFFFFF00;
                     break;
 
@@ -325,29 +329,34 @@ public class DrawNotes extends View {
         setLayerType(View.LAYER_TYPE_SOFTWARE, canvasPaint);
     }
 
-    public void loadImage(File file) {
+    public void loadImage(Context c, Uri uri) {
         touchisup = false;
         try {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            Bitmap bitmap = BitmapFactory.decodeFile(file.toString(), options);
-            canvasBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-            bitmap.recycle();
+            StorageAccess storageAccess = new StorageAccess();
+            InputStream inputStream = storageAccess.getInputStream(c, uri);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream,null,options);
+            if (bitmap != null) {
+                canvasBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                bitmap.recycle();
+            }
             //drawCanvas = new Canvas(canvasBitmap);
             imageloaded = true;
 
         } catch (Exception e) {
-            Log.d("d","Loading the image-error");
+            Log.d("DrawNotes", "Loading the image-error");
             canvasBitmap = null;
         } catch (OutOfMemoryError oom) {
-            Log.d("d","Loading the image-out of memory");
+            Log.d("DrawNotes", "Loading the image-out of memory");
             canvasBitmap = null;
         }
         FullscreenActivity.saveHighlight = false;
         invalidate();
     }
 
-    public void startNew(File file){
+    public void startNew(Context c, Uri uri) {
+        StorageAccess storageAccess = new StorageAccess();
         touchisup = true;
         paths = new ArrayList<>();
         undonePaths = new ArrayList<>();
@@ -361,11 +370,11 @@ public class DrawNotes extends View {
         imageloaded = false;
         FullscreenActivity.saveHighlight = false;
         try {
-            if (file==null || !file.delete()) {
-                Log.d("d","Unable to delete old highlighter note ("+file+")");
+            if (uri==null || !storageAccess.deleteFile(c,uri)) {
+                Log.d("DrawNotes", "Unable to delete old highlighter note");
             }
         } catch (Exception e) {
-            Log.d("d","Error trying to delete old highlighter note ("+file+")");
+            Log.d("DrawNotes", "Error trying to delete old highlighter note");
         }
         canvasBitmap = null;
         invalidate();

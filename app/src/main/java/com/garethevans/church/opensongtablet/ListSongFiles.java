@@ -1,289 +1,186 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
-import android.webkit.MimeTypeMap;
 
-import org.apache.commons.io.FileUtils;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.text.Collator;
+import java.util.ArrayList;
 
 public class ListSongFiles {
 
-    static Collator coll;
-    //private static ArrayList<String> filelist;
+    // This is used to build the song index by matching the current folder with allSongDetails array
+    // Filenames (including subfolders) are added to mSongFileNames
 
-    public static void getAllSongFolders() {
-        FullscreenActivity.allfilesforsearch.clear();
-        FullscreenActivity.mSongFolderNames = FullscreenActivity.songfilelist.getFolderList();
-    }
+    // This is what will work with SAF eventually....
+    void songUrisInFolder(Context c, Preferences preferences) {
+        // All of the songs are in the FullscreenActivity.songIds
+        // This is only updated when the app boots up, or the user forces a database rebuild
+        // Individual songs are just appended to this list
 
-    /*
-        incorporated new class here.
-     */
-    static void getAllSongFiles() {
-        try {
-            FullscreenActivity.mSongFileNames = FullscreenActivity.songfilelist.getSongFileListasArray();
-            //int j = 0;
-        } catch (Exception e) {
-            Log.d(e.getMessage(), "Error caught in getAllSongFiles() in ListSongFiles.java");
+        // Get the song folder document id
+        StorageAccess storageAccess = new StorageAccess();
+        Uri songFolderUri = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder, "");
+        String songfolderid;
+        if (storageAccess.lollipopOrLater()) {
+            songfolderid = storageAccess.getDocumentsContractId(songFolderUri);
+        } else {
+            songfolderid = songFolderUri.getPath();
         }
-    }
 
-    /*TODO why use a multidimensional array, when you could use an xml object?
-    I've been reading about performance and I guess its because of performance
-    limitations?  Is maintaining an object in memory expensive
-    in terms of performance?  So, the class I created is essentially worse
-    than reading directly from the file system?  I don't think so personally,
-    as I don't think the garbage collector will be dereference either of the objects
-    internal to the songfilelist class, and the songfilelist class persists for the
-    lifetime of the app, so there shouldn't be any extra work, and the memory overhead
-    is low and speed of access of cached variable is faster than file access, at
-    least I guess.
-     */
-    static void getSongDetails(final Context c) {
-        // Go through each song in the current folder and extract the title, key and author
-        // If not a valid song, just return the file name
-        try {
-            FullscreenActivity.songDetails = new String[FullscreenActivity.mSongFileNames.length][3];
-            boolean fileextensionok;
-            String s_f;
-            String utf;
-            for (int r = 0; r < FullscreenActivity.mSongFileNames.length; r++) {
-                String s = FullscreenActivity.mSongFileNames[r];
-                String[] vals = new String[3];
-                if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername) ||
-                        FullscreenActivity.whichSongFolder.equals("")) {
-                    s_f = FullscreenActivity.dir + "/" + s;
-                } else {
-                    s_f = FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + s;
-                }
-                File f = new File(s_f);
-                if (f.exists()) {
-                    if (f.isDirectory()) {
-                        vals[0] = s;
-                        vals[1] = f.getPath().substring(FullscreenActivity.dir.getPath().length());
-                        vals[2] = c.getString(R.string.songsinfolder);
-                    }
-                    else
-                    {
-                        fileextensionok = checkFileExtension(s);
-                        utf = checkUtfEncoding(s_f, c);
-                        if (fileextensionok) {
-                            vals = getSongDetailsXML(f, s, utf);
-                        } else {
-                            // Non OpenSong
-                            vals[0] = s;
-                            vals[1] = "";
-                            vals[2] = "";
-                        }
-                        if (vals[2] == null || vals[2].equals("")) {
-                            vals[2] = "";
-                        }
-                    }
-                    try {
-                        FullscreenActivity.songDetails[r][0] = vals[0];
-                        FullscreenActivity.songDetails[r][1] = vals[1];
-                        FullscreenActivity.songDetails[r][2] = vals[2];
-                    } catch (Exception e) {
-                        // Error trying to get song details
-                    }
+        // Now extract the ones in the current folder from the songIds
+        FullscreenActivity.songsInFolderUris = new ArrayList<>();
+        if (songfolderid!=null) {
+            for (String id : FullscreenActivity.songIds) {
+                String totest = id.replace(songfolderid, "");
+                // If we are in the mainfolder, we shouldn't have any '/'
+                if ((FullscreenActivity.whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
+                        FullscreenActivity.whichSongFolder.equals("")) && !totest.contains("/")) {
+                    Uri uri = storageAccess.documentUriFromId(id);
+                    FullscreenActivity.songsInFolderUris.add(uri);
+
+                } else if (!totest.replace(FullscreenActivity.whichSongFolder + "/", "").contains("/")) {
+                    // If we are in the current folder, we shouldn't have any / after this
+                    FullscreenActivity.songsInFolderUris.add(storageAccess.documentUriFromId(id));
                 }
             }
-        } catch (Exception e) {
-            // Ooops, error
         }
 
-        // Removed this sort method as it messed up - Folders were getting put back in reverse alphabetical order
-        /*Arrays.sort(FullscreenActivity.songDetails, new Comparator<String[]>() {
-            @Override
-            public int compare(final String[] entry1, final String[] entry2) {
-                if (entry1[2]!=null && entry1[2].equals(c.getString(R.string.songsinfolder))) {
-                    return -1;
-                } else if (entry2[2]!=null && entry2[2].equals(c.getString(R.string.songsinfolder))) {
-                    return 1;
-                } else {
-                    if (entry1[0]!=null && entry2[0]!=null) {
-                        return entry1[0].compareToIgnoreCase(entry2[0]);
-                    } else {
-                        return -1;
-                    }
+    }
+
+    void getAllSongFiles(Context c, Preferences preferences, StorageAccess storageAccess) {
+        // This will list all of the songs and subfolders in the current folder
+        // They are extracted from the FullscreenActivity.allSongsForMenu array
+
+        ArrayList<String> songs = new ArrayList<>();
+        songs.clear();
+        ArrayList<String> subfolders = new ArrayList<>();
+        subfolders.clear();
+        ArrayList<String> authors = new ArrayList<>();
+        authors.clear();
+        ArrayList<String> authorsfolder = new ArrayList<>();
+        authorsfolder.clear();
+        ArrayList<String> keys = new ArrayList<>();
+        keys.clear();
+        ArrayList<String> keysfolder = new ArrayList<>();
+        keysfolder.clear();
+
+        if (FullscreenActivity.whichSongFolder.startsWith("../")) {
+            // This is one of the custom slides/notes/images
+            String folder = FullscreenActivity.whichSongFolder.replace("../", "");
+            songs = storageAccess.listFilesInFolder(c, preferences, "", folder);
+            String what = "";
+            if (FullscreenActivity.whichSongFolder.startsWith("../Notes")) {
+                what = c.getString(R.string.note);
+            } else if (FullscreenActivity.whichSongFolder.startsWith("../Slides")) {
+                what = c.getString(R.string.slide);
+            } else if (FullscreenActivity.whichSongFolder.startsWith("../Variations")) {
+                what = c.getString(R.string.variation);
+            } else if (FullscreenActivity.whichSongFolder.startsWith("../Images")) {
+                what = c.getString(R.string.image_slide);
+            } else if (FullscreenActivity.whichSongFolder.startsWith("../Scripture")) {
+                what = c.getString(R.string.scripture);
+            } else if (FullscreenActivity.whichSongFolder.startsWith("../Received")) {
+                what = c.getString(R.string.connected_device_song);
+            }
+            // Add author as custom and key as blank for each item in this folder
+            for (int l = 0; l < songs.size(); l++) {
+                authors.add(what);
+                keys.add("");
+            }
+
+        } else {
+
+            // Go through the values stored and add the ones required
+            for (int w = 0; w < FullscreenActivity.allSongDetailsForMenu.length; w++) {
+                boolean mainfolder = FullscreenActivity.whichSongFolder.equals("") ||
+                        FullscreenActivity.whichSongFolder.equals(c.getString(R.string.mainfoldername));
+                boolean songfolderisnotnull = FullscreenActivity.allSongDetailsForMenu[w] != null &&
+                        FullscreenActivity.allSongDetailsForMenu[w][0] != null;
+                boolean songisinmainfolder = songfolderisnotnull &&
+                        (FullscreenActivity.allSongDetailsForMenu[w][0].replace("/", "").equals("") ||
+                                FullscreenActivity.allSongDetailsForMenu[w][0].replace("/", "").equals(FullscreenActivity.mainfoldername));
+                boolean songisincurrentfolder = songfolderisnotnull &&
+                        (FullscreenActivity.allSongDetailsForMenu[w][0].replace("/", "").equals(FullscreenActivity.whichSongFolder));
+
+                if (mainfolder && songisinmainfolder) {
+                    songs.add(FullscreenActivity.allSongDetailsForMenu[w][1]);
+                    authors.add(FullscreenActivity.allSongDetailsForMenu[w][2]);
+                    keys.add(FullscreenActivity.allSongDetailsForMenu[w][3]);
+
+                } else if (songisincurrentfolder && !FullscreenActivity.allSongDetailsForMenu[w][3].equals(c.getString(R.string.songsinfolder))) {
+                    songs.add(FullscreenActivity.allSongDetailsForMenu[w][1]);
+                    authors.add(FullscreenActivity.allSongDetailsForMenu[w][2]);
+                    keys.add(FullscreenActivity.allSongDetailsForMenu[w][3]);
                 }
             }
-        });*/
 
-        FullscreenActivity.numDirs = 0;
-        try {
-            while (FullscreenActivity.songDetails[FullscreenActivity.numDirs][2] != null &&
-                    FullscreenActivity.songDetails[FullscreenActivity.numDirs][2].equals(c.getString(R.string.songsinfolder))) {
-                FullscreenActivity.numDirs++;
-            }
-        } catch (Exception e){
-            Log.d("d","Error building a valid index - it's empty");
-        }
-        //numDirs is zerobased index >> horrible hack.
-        if(FullscreenActivity.numDirs > 0)
-            FullscreenActivity.numDirs += 1;
-//        for(int i=0; i<FullscreenActivity.songDetails.length; i++)
-//        {
-//            if (FullscreenActivity.songDetails[i][2] == "Directory")
-//            {
-//                FullscreenActivity.numDirs++;
-//            }
-//        }
-//        Arrays.sort(FullscreenActivity.songDetails,0,FullscreenActivity.numDirs, new Comparator<String[]>() {
-//            @Override
-//            public int compare(final String[] entry1, final String[] entry2) {
-//                return entry1[0].compareToIgnoreCase(entry2[0]);
-//            }
-//        });
-        //int bob = 0;
-    }
 
-    private static String[] getSongDetailsXML(File f, String s, String utf) {
-        String vals[] = new String[3];
-        vals[0] = s;
-        vals[1] = "";
-        vals[2] = "";
+            // Go through the folders and add the root ones
+            for (String f : FullscreenActivity.mSongFolderNames) {
 
-        try {
-            XmlPullParserFactory factory;
-            factory = XmlPullParserFactory.newInstance();
-
-            factory.setNamespaceAware(true);
-            XmlPullParser xpp;
-            xpp = factory.newPullParser();
-
-            InputStream inputStream = new FileInputStream(f);
-            InputStreamReader lineReader = new InputStreamReader(inputStream);
-            BufferedReader buffreader = new BufferedReader(lineReader);
-
-            String line;
-            try {
-                line = buffreader.readLine();
-                if (line.contains("encoding=\"")) {
-                    int startpos = line.indexOf("encoding=\"")+10;
-                    int endpos = line.indexOf("\"",startpos);
-                    String enc = line.substring(startpos,endpos);
-                    if (enc.length() > 0) {
-                        utf = enc.toUpperCase();
+                String thisfolder = FullscreenActivity.whichSongFolder;
+                boolean containsfolder = f.contains(thisfolder + "/");
+                String leftfolder = "";
+                if (containsfolder) {
+                    leftfolder = f.substring(f.lastIndexOf(thisfolder + "/") + thisfolder.length() + 1);
+                }
+                if ((thisfolder.equals(FullscreenActivity.mainfoldername) || thisfolder.equals("")) &&
+                        !leftfolder.contains("/")) {
+                    if (!f.equals(FullscreenActivity.mainfoldername) && !f.contains("/")) {
+                        leftfolder = f;
                     }
                 }
-            } catch (Exception e) {
-                Log.d("d","No encoding included in line 1");
-            }
 
-            inputStream.close();
-
-            inputStream = new FileInputStream(f);
-            xpp.setInput(inputStream, utf);
-
-            if (f.length()>0 && f.length()<500000) {
-                int eventType;
-                eventType = xpp.getEventType();
-                while (eventType != XmlPullParser.END_DOCUMENT) {
-                    if (eventType == XmlPullParser.START_TAG) {
-                        if (xpp.getName().equals("author")) {
-                            vals[1] = LoadXML.parseFromHTMLEntities(xpp.nextText());
-                        } else if (xpp.getName().equals("key")) {
-                            vals[2] = LoadXML.parseFromHTMLEntities(xpp.nextText());
-                        }
-                    }
-                    try {
-                        eventType = xpp.next();
-                    } catch (Exception e) {
-                        // Oops!
-                    }
+                // Don't add the folder if it is the main folder, or is a sub/sub folder or if it is the current whichSongFolder
+                if (!leftfolder.equals("")) {
+                    // This is a subfolder of the MAIN folder - add it.  This way we only show roots (not folders within folders)
+                    subfolders.add("/" + leftfolder + "/");
+                    authorsfolder.add("");
+                    keysfolder.add(c.getString(R.string.songsinfolder));
                 }
-            } else {
-                vals[1] = "";
-                vals[2] = "";
-            }
-        } catch (Exception e) {
-            vals[0] = s;
-            vals[1] = "";
-            vals[2] = "";
-        }
-         return vals;
-    }
-
-    private static boolean checkFileExtension(String s) {
-        boolean isxml = true;
-        s = s.toLowerCase();
-        String type = null;
-        if (s.lastIndexOf(".")>1 && s.lastIndexOf(".")<s.length()-1) {
-            MimeTypeMap mime = MimeTypeMap.getSingleton();
-            int index = s.lastIndexOf('.')+1;
-            String ext = s.substring(index).toLowerCase();
-            type = mime.getMimeTypeFromExtension(ext);
-        }
-
-        if (type!=null && !type.equals("")) {
-            if (type.contains("image") || type.contains("application") || type.contains("video") || type.contains("audio")) {
-                return false;
             }
         }
 
-        if (s.endsWith(".pdf") ||
-                s.endsWith(".doc") || s.endsWith(".docx") ||
-                s.endsWith(".jpg") || s.endsWith(".png") || s.endsWith(".gif") ||
-                s.endsWith(".zip") || s.endsWith(".apk") || s.endsWith(".tar")  || s.endsWith(".backup")) {
-            isxml = false;
+        // Add them together (folders at the start)
+        ArrayList<String> item_files = new ArrayList<>();
+        ArrayList<String> item_authors = new ArrayList<>();
+        ArrayList<String> item_keys = new ArrayList<>();
+        item_files.addAll(subfolders);
+        item_files.addAll(songs);
+        item_authors.addAll(authorsfolder);
+        item_authors.addAll(authors);
+        item_keys.addAll(keysfolder);
+        item_keys.addAll(keys);
+
+        // Make the first song item the first one after the song folders
+        FullscreenActivity.firstSongIndex = subfolders.size();
+
+        FullscreenActivity.mSongFileNames = item_files.toArray(new String[0]).clone();
+        FullscreenActivity.songDetails = new String[FullscreenActivity.mSongFileNames.length][3];
+        for (int y = 0; y < FullscreenActivity.mSongFileNames.length; y++) {
+            FullscreenActivity.songDetails[y][0] = item_files.get(y);
+            FullscreenActivity.songDetails[y][1] = item_authors.get(y);
+            FullscreenActivity.songDetails[y][2] = item_keys.get(y);
         }
-        return isxml;
     }
 
-    private static String checkUtfEncoding(String s_f, Context c) {
-        String utf = "";
-        File file = new File (s_f);
-        if (file.exists()) {
-            utf = LoadXML.getUTFEncoding(file, c);
-        }
-        return utf;
-    }
-
-    static boolean clearAllSongs() {
-        // Clear all songs in the songs folder
-        File delPath = FullscreenActivity.dir;
-        if (delPath.exists()) {
-            try {
-                FileUtils.deleteDirectory(delPath);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return delPath.mkdirs();
-    }
-
-    static void getCurrentSongIndex() {
+    void getCurrentSongIndex() {
         // Find the current song index from the song filename
-        // Set them all to 0
-        FullscreenActivity.currentSongIndex = 0;
-        FullscreenActivity.nextSongIndex = 0;
-        FullscreenActivity.previousSongIndex = 0;
+        // Set them all to the firstSongIndex (0 if no subfolders, but if not, the first song after the subfolders)
+        FullscreenActivity.currentSongIndex = FullscreenActivity.firstSongIndex;
+        FullscreenActivity.nextSongIndex = FullscreenActivity.firstSongIndex;
+        FullscreenActivity.previousSongIndex = FullscreenActivity.firstSongIndex;
 
         // Go through the array
         try {
-            if (FullscreenActivity.mSongFileNames != null && FullscreenActivity.songfilename != null) {
-                for (int s = 0; s < FullscreenActivity.mSongFileNames.length; s++) {
-                    if (FullscreenActivity.mSongFileNames != null &&
-                            FullscreenActivity.songfilename != null &&
-                            FullscreenActivity.mSongFileNames[s] != null &&
-                            FullscreenActivity.mSongFileNames[s].equals(FullscreenActivity.songfilename)) {
+            if (FullscreenActivity.songDetails != null && FullscreenActivity.songfilename != null) {
+                for (int s = 0; s < FullscreenActivity.songDetails.length; s++) {
+                    if (FullscreenActivity.songDetails[s][0] != null && FullscreenActivity.songDetails[s][0].equals(FullscreenActivity.songfilename)) {
                         FullscreenActivity.currentSongIndex = s;
-                        if (s > 0) {
+                        if (s > FullscreenActivity.firstSongIndex) {
                             FullscreenActivity.previousSongIndex = s - 1;
-                        } else {
-                            FullscreenActivity.previousSongIndex = s;
                         }
-                        if (s < FullscreenActivity.mSongFileNames.length - 1) {
+                        if (s < FullscreenActivity.songDetails.length - 1) {
                             FullscreenActivity.nextSongIndex = s + 1;
                         } else {
                             FullscreenActivity.nextSongIndex = s;
@@ -292,49 +189,8 @@ public class ListSongFiles {
                 }
             }
         } catch (Exception e) {
-            Log.d(e.getMessage(),"Some error with the song list");
+            Log.d("ListSongFiles", "Some error with the song list");
         }
     }
 
-    static void deleteSong(Context c) {
-        FullscreenActivity.setView = false;
-        String setFileLocation;
-        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-            setFileLocation = FullscreenActivity.dir + "/" + FullscreenActivity.songfilename;
-        } else {
-            setFileLocation = FullscreenActivity.dir + "/" +
-                    FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename;
-        }
-
-        File filetoremove = new File(setFileLocation);
-        if (filetoremove.delete()) {
-            FullscreenActivity.myToastMessage = "\"" + FullscreenActivity.songfilename + "\" "
-                    + c.getString(R.string.songhasbeendeleted);
-            // If we are autologging CCLI information
-            if (FullscreenActivity.ccli_automatic) {
-                PopUpCCLIFragment.addUsageEntryToLog(FullscreenActivity.whichSongFolder+"/"+FullscreenActivity.songfilename,
-                        "", "",
-                        "", "", "2"); // Deleted
-            }
-
-        } else {
-            FullscreenActivity.myToastMessage = c.getString(R.string.deleteerror_start)
-                    + " \"" + FullscreenActivity.songfilename + "\" "
-                    + c.getString(R.string.deleteerror_end_song);
-        }
-    }
-
-    static boolean blacklistFileType(String s) {
-        s = s.toLowerCase();
-        String type = null;
-        if (s.lastIndexOf(".") > 1 && s.lastIndexOf(".") < s.length() - 1) {
-            MimeTypeMap mime = MimeTypeMap.getSingleton();
-            int index = s.lastIndexOf('.') + 1;
-            String ext = s.substring(index).toLowerCase();
-            type = mime.getMimeTypeFromExtension(ext);
-        }
-
-        return type != null && !type.equals("") && !type.contains("pdf") && (type.contains("audio") || type.contains("application") || type.contains("video"));
-
-    }
 }

@@ -3,12 +3,14 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +25,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-
-import java.io.File;
 
 public class PopUpLayoutFragment extends DialogFragment {
 
@@ -57,44 +57,26 @@ public class PopUpLayoutFragment extends DialogFragment {
     boolean firsttime = true;
     String newtext = "";
 
-    SwitchCompat toggleChordsButton;
-    SwitchCompat toggleAutoScaleButton;
-    LinearLayout group_maxfontsize;
-    SeekBar setMaxFontSizeProgressBar;
-    TextView maxfontSizePreview;
-    LinearLayout group_manualfontsize;
-    SeekBar setFontSizeProgressBar;
-    TextView fontSizePreview;
-    LinearLayout group_alignment;
-    TextView lyrics_title_align;
-    FloatingActionButton lyrics_left_align;
-    FloatingActionButton lyrics_center_align;
-    FloatingActionButton lyrics_right_align;
-    FloatingActionButton info_left_align;
-    FloatingActionButton info_center_align;
-    FloatingActionButton info_right_align;
-    LinearLayout group_songinfofontsizes;
-    SeekBar presoTitleSizeSeekBar;
-    SeekBar presoAuthorSizeSeekBar;
-    SeekBar presoCopyrightSizeSeekBar;
-    SeekBar presoAlertSizeSeekBar;
-    SeekBar presoTransitionTimeSeekBar;
-    TextView presoTransitionTimeTextView;
-    LinearLayout group_backgrounds;
-    SeekBar presoAlphaProgressBar;
-    TextView presoAlphaText;
-    ImageView chooseLogoButton;
-    ImageView chooseImage1Button;
-    ImageView chooseImage2Button;
-    ImageView chooseVideo1Button;
-    ImageView chooseVideo2Button;
-    CheckBox image1CheckBox;
-    CheckBox image2CheckBox;
-    CheckBox video1CheckBox;
-    CheckBox video2CheckBox;
-    LinearLayout group_margins;
-    SeekBar setXMarginProgressBar;
-    SeekBar setYMarginProgressBar;
+    SwitchCompat toggleChordsButton, toggleAutoScaleButton;
+    LinearLayout group_maxfontsize, group_alignment, group_manualfontsize, group_songinfofontsizes,
+            group_backgrounds, group_margins;
+    SeekBar setMaxFontSizeProgressBar, setFontSizeProgressBar, presoAlphaProgressBar,
+            setXMarginProgressBar, setYMarginProgressBar, presoTitleSizeSeekBar,
+            presoAuthorSizeSeekBar, presoCopyrightSizeSeekBar,
+            presoAlertSizeSeekBar, presoTransitionTimeSeekBar;
+    TextView maxfontSizePreview, fontSizePreview, presoAlphaText, lyrics_title_align,
+            presoTransitionTimeTextView;
+    FloatingActionButton lyrics_left_align, lyrics_center_align, lyrics_right_align,
+            info_left_align, info_center_align, info_right_align;
+    ImageView chooseLogoButton, chooseImage1Button, chooseImage2Button, chooseVideo1Button,
+            chooseVideo2Button;
+    CheckBox image1CheckBox, image2CheckBox, video1CheckBox, video2CheckBox;
+    StorageAccess storageAccess;
+    Preferences preferences;
+    SetTypeFace setTypeFace;
+    // Handlers for fonts
+    Handler lyrichandler, chordhandler, presohandler, presoinfohandler, customhandler, monohandler;
+    String backgroundFileType;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -135,6 +117,40 @@ public class PopUpLayoutFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
+        storageAccess = new StorageAccess();
+        preferences = new Preferences();
+        setTypeFace = new SetTypeFace();
+
+        // Load up the presentation preferences
+        preferences.loadPresentationPreferences(getActivity());
+
+        identifyViews(V);
+
+        // Initialise the font handlers
+        lyrichandler = new Handler();
+        chordhandler = new Handler();
+        presohandler = new Handler();
+        presoinfohandler = new Handler();
+        customhandler = new Handler();
+        monohandler = new Handler();
+
+        setTypeFace.setUpAppFonts(getActivity(), preferences, lyrichandler, chordhandler,
+                presohandler, presoinfohandler, customhandler, monohandler);
+        //SetTypeFace.setTypeface(getActivity(), preferences);
+
+        prepareViews();
+
+        setupListeners();
+
+        // Make sure the logo we have is what is displayed (if we have set a new one)
+        sendUpdateToScreen("logo");
+
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
+        return V;
+    }
+
+    void identifyViews(View V) {
         toggleChordsButton = V.findViewById(R.id.toggleChordsButton);
         toggleAutoScaleButton = V.findViewById(R.id.toggleAutoScaleButton);
         group_maxfontsize = V.findViewById(R.id.group_maxfontsize);
@@ -173,17 +189,12 @@ public class PopUpLayoutFragment extends DialogFragment {
         group_margins = V.findViewById(R.id.group_margins);
         setXMarginProgressBar = V.findViewById(R.id.setXMarginProgressBar);
         setYMarginProgressBar = V.findViewById(R.id.setYMarginProgressBar);
+    }
 
-        SetTypeFace.setTypeface();
-
-
+    void prepareViews() {
         // Set the stuff up to what it should be from preferences
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            toggleChordsButton.setChecked(FullscreenActivity.presoShowChords);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            toggleAutoScaleButton.setChecked(FullscreenActivity.presoAutoScale);
-        }
+        toggleChordsButton.setChecked(FullscreenActivity.presoShowChords);
+        toggleAutoScaleButton.setChecked(FullscreenActivity.presoAutoScale);
         setMaxFontSizeProgressBar.setMax(70);
         setMaxFontSizeProgressBar.setProgress(FullscreenActivity.presoMaxFontSize - 4);
         maxfontSizePreview.setTypeface(FullscreenActivity.presofont);
@@ -205,35 +216,21 @@ public class PopUpLayoutFragment extends DialogFragment {
         presoTransitionTimeSeekBar.setMax(23);
         presoTransitionTimeSeekBar.setProgress(timeToSeekBarProgress());
         presoTransitionTimeTextView.setText(SeekBarProgressToText());
-        setButtonBackground(chooseLogoButton,FullscreenActivity.customLogo);
-        setButtonBackground(chooseImage1Button,FullscreenActivity.backgroundImage1);
-        setButtonBackground(chooseImage2Button,FullscreenActivity.backgroundImage2);
-        setButtonBackground(chooseVideo1Button,FullscreenActivity.backgroundVideo1);
-        setButtonBackground(chooseVideo2Button,FullscreenActivity.backgroundVideo2);
+        setupPreviews();
         setCheckBoxes();
         setXMarginProgressBar.setMax(50);
         setYMarginProgressBar.setMax(50);
         setXMarginProgressBar.setProgress(FullscreenActivity.xmargin_presentation);
         setYMarginProgressBar.setProgress(FullscreenActivity.ymargin_presentation);
+    }
 
-        // Hide the appropriate views for Stage and Performance mode
-        switch (FullscreenActivity.whichMode) {
-            case "Presentation":
-                setUpPresentationMode();
-                break;
-
-            case "Stage":
-            case "Performance":
-            default:
-                setUpNormalMode();
-                break;
-        }
-
+    void setupListeners() {
         // Set listeners
         toggleChordsButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 FullscreenActivity.presoShowChords = b;
+                preferences.setMyPreferenceBoolean(getActivity(),"presoShowChords",b);
                 sendUpdateToScreen("chords");
                 setUpAlignmentButtons();
             }
@@ -242,6 +239,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 FullscreenActivity.presoShowChords = b;
+                preferences.setMyPreferenceBoolean(getActivity(),"presoShowChords",b);
                 showorhideView(group_maxfontsize,b);
                 showorhideView(group_manualfontsize,!b);
                 sendUpdateToScreen("autoscale");
@@ -254,7 +252,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View view) {
                 CustomAnimations.animateFAB(lyrics_left_align, getActivity());
                 FullscreenActivity.presoLyricsAlign = Gravity.START;
-                Preferences.savePreferences();
+                preferences.setMyPreferenceInt(getActivity(),"presoLyricsAlign",FullscreenActivity.presoLyricsAlign);
                 setUpAlignmentButtons();
                 sendUpdateToScreen("all");
             }
@@ -264,7 +262,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View view) {
                 CustomAnimations.animateFAB(lyrics_center_align, getActivity());
                 FullscreenActivity.presoLyricsAlign = Gravity.CENTER;
-                Preferences.savePreferences();
+                preferences.setMyPreferenceInt(getActivity(),"presoLyricsAlign",FullscreenActivity.presoLyricsAlign);
                 setUpAlignmentButtons();
                 sendUpdateToScreen("all");
             }
@@ -274,7 +272,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View view) {
                 CustomAnimations.animateFAB(lyrics_right_align, getActivity());
                 FullscreenActivity.presoLyricsAlign = Gravity.END;
-                Preferences.savePreferences();
+                preferences.setMyPreferenceInt(getActivity(),"presoLyricsAlign",FullscreenActivity.presoLyricsAlign);
                 setUpAlignmentButtons();
                 sendUpdateToScreen("all");
             }
@@ -284,7 +282,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View view) {
                 CustomAnimations.animateFAB(info_left_align, getActivity());
                 FullscreenActivity.presoInfoAlign = Gravity.START;
-                Preferences.savePreferences();
+                preferences.setMyPreferenceInt(getActivity(),"presoInfoAlign",FullscreenActivity.presoInfoAlign);
                 setUpAlignmentButtons();
                 sendUpdateToScreen("info");
             }
@@ -294,7 +292,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View view) {
                 CustomAnimations.animateFAB(info_center_align, getActivity());
                 FullscreenActivity.presoInfoAlign = Gravity.CENTER;
-                Preferences.savePreferences();
+                preferences.setMyPreferenceInt(getActivity(),"presoInfoAlign",FullscreenActivity.presoInfoAlign);
                 setUpAlignmentButtons();
                 sendUpdateToScreen("info");
             }
@@ -304,7 +302,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View view) {
                 CustomAnimations.animateFAB(info_right_align, getActivity());
                 FullscreenActivity.presoInfoAlign = Gravity.END;
-                Preferences.savePreferences();
+                preferences.setMyPreferenceInt(getActivity(),"presoInfoAlign",FullscreenActivity.presoInfoAlign);
                 setUpAlignmentButtons();
                 sendUpdateToScreen("info");
             }
@@ -338,6 +336,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View v) {
                 // Open another popup listing the files to choose from
                 PresenterMode.whatBackgroundLoaded = "logo";
+                backgroundFileType = "image";
                 chooseFile();
             }
         });
@@ -346,6 +345,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View v) {
                 // Open another popup listing the files to choose from
                 PresenterMode.whatBackgroundLoaded = "image1";
+                backgroundFileType = "image";
                 chooseFile();
             }
         });
@@ -354,6 +354,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View v) {
                 // Open another popup listing the files to choose from
                 PresenterMode.whatBackgroundLoaded = "image2";
+                backgroundFileType = "image";
                 chooseFile();
             }
         });
@@ -362,6 +363,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View v) {
                 // Open another popup listing the files to choose from
                 PresenterMode.whatBackgroundLoaded = "video1";
+                backgroundFileType = "video";
                 chooseFile();
             }
         });
@@ -370,6 +372,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View v) {
                 // Open another popup listing the files to choose from
                 PresenterMode.whatBackgroundLoaded = "video2";
+                backgroundFileType = "video";
                 chooseFile();
             }
         });
@@ -383,6 +386,8 @@ public class PopUpLayoutFragment extends DialogFragment {
                     FullscreenActivity.backgroundTypeToUse = "image";
                     FullscreenActivity.backgroundToUse = "img1";
                     PresenterMode.whatBackgroundLoaded = "image1";
+                    preferences.setMyPreferenceString(getActivity(),"backgroundTypeToUse","image");
+                    preferences.setMyPreferenceString(getActivity(),"backgroundToUse","img1");
                     sendUpdateToScreen("backgrounds");
                 }
             }
@@ -397,6 +402,8 @@ public class PopUpLayoutFragment extends DialogFragment {
                     FullscreenActivity.backgroundTypeToUse = "image";
                     FullscreenActivity.backgroundToUse = "img2";
                     PresenterMode.whatBackgroundLoaded = "image2";
+                    preferences.setMyPreferenceString(getActivity(),"backgroundTypeToUse","image");
+                    preferences.setMyPreferenceString(getActivity(),"backgroundToUse","img2");
                     sendUpdateToScreen("backgrounds");
                 }
             }
@@ -411,6 +418,8 @@ public class PopUpLayoutFragment extends DialogFragment {
                     FullscreenActivity.backgroundTypeToUse = "video";
                     FullscreenActivity.backgroundToUse = "vid1";
                     PresenterMode.whatBackgroundLoaded = "video1";
+                    preferences.setMyPreferenceString(getActivity(),"backgroundTypeToUse","video");
+                    preferences.setMyPreferenceString(getActivity(),"backgroundToUse","vid1");
                     sendUpdateToScreen("backgrounds");
                 }
             }
@@ -425,17 +434,12 @@ public class PopUpLayoutFragment extends DialogFragment {
                     FullscreenActivity.backgroundTypeToUse = "video";
                     FullscreenActivity.backgroundToUse = "vid2";
                     PresenterMode.whatBackgroundLoaded = "video2";
+                    preferences.setMyPreferenceString(getActivity(),"backgroundTypeToUse","video");
+                    preferences.setMyPreferenceString(getActivity(),"backgroundToUse","vid2");
                     sendUpdateToScreen("backgrounds");
                 }
             }
         });
-
-        // Make sure the logo we have is what is displayed (if we have set a new one)
-        sendUpdateToScreen("logo");
-
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-
-        return V;
     }
 
     public int timeToSeekBarProgress() {
@@ -522,55 +526,37 @@ public class PopUpLayoutFragment extends DialogFragment {
     }
 
     public void chooseFile() {
-        // This calls the generic file chooser popupFragment
-        FullscreenActivity.whattodo = "choosefile";
-        if (mListener!=null) {
-            mListener.openFragment();
-        }
-        dismiss();
-    }
-
-    public void setUpNormalMode() {
-        // This hides the view we don't need in Performance / Stage Mode
-        toggleAutoScaleButton.setVisibility(View.GONE);
-        group_manualfontsize.setVisibility(View.GONE);
-        group_alignment.setVisibility(View.GONE);
-        group_songinfofontsizes.setVisibility(View.GONE);
-        group_backgrounds.setVisibility(View.GONE);
-
-        // Views we want...
-        toggleChordsButton.setVisibility(View.VISIBLE);
-        group_maxfontsize.setVisibility(View.VISIBLE);
-        group_margins.setVisibility(View.VISIBLE);
-    }
-
-    public void setUpPresentationMode() {
-        // This hides the view we don't need in Presentation Mode
-
-        // Views we want...
-        toggleChordsButton.setVisibility(View.VISIBLE);
-        toggleAutoScaleButton.setVisibility(View.VISIBLE);
-        if (FullscreenActivity.presoAutoScale) {
-            group_maxfontsize.setVisibility(View.VISIBLE);
-            group_manualfontsize.setVisibility(View.GONE);
+        // This calls an intent to choose a file
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        if (backgroundFileType.equals("video")) {
+            intent.setType("video/*");
         } else {
-            group_maxfontsize.setVisibility(View.GONE);
-            group_manualfontsize.setVisibility(View.VISIBLE);
+            intent.setType("image/*");
         }
-        group_alignment.setVisibility(View.VISIBLE);
-        group_songinfofontsizes.setVisibility(View.VISIBLE);
-        group_backgrounds.setVisibility(View.VISIBLE);
-
+        startActivityForResult(intent, 26);
     }
 
     public void setButtonBackground(ImageView v, String background) {
-        File imgfile = new File(FullscreenActivity.dirbackgrounds + "/"+ background);
-        if (imgfile.exists() && imgfile.isFile()) {
-            Uri imageUri = Uri.fromFile(imgfile);
+        // The default uri is just as it is saved
+        Uri uri = Uri.parse(background);
+
+        if (background.equals("ost_logo.png") || background.equals("ost_bg.png")) {
+            // The built in logo or background
+            uri = storageAccess.getUriForItem(getActivity(), preferences, "Backgrounds", "", background);
+
+        } else if (background.contains("OpenSong/Backgrounds/")) {
+            // Decide if the image is a localised OpenSong/Backgrounds file
+            background = storageAccess.getPartOfUri(uri, "OpenSong/Backgrounds/");
+            background = background.substring("OpenSong/Backgrounds/".length());
+            uri = storageAccess.getUriForItem(getActivity(), preferences, "Backgrounds", "", background);
+        }
+        Log.d("d", "image uri=" + uri);
+        Log.d("d", "uriExists=" + storageAccess.uriExists(getActivity(), uri));
+        if (storageAccess.uriExists(getActivity(),uri)) {
             v.setBackgroundColor(0x00000000);
             RequestOptions myOptions = new RequestOptions()
                     .override(120,90);
-            Glide.with(getActivity()).load(imageUri).apply(myOptions).into(v);
+            Glide.with(getActivity()).load(uri).apply(myOptions).into(v);
         }
     }
 
@@ -584,7 +570,6 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     public void sendUpdateToScreen(String what) {
         if (!firsttime) {
-            Preferences.savePreferences();
             if (mListener != null) {
                 mListener.refreshSecondaryDisplay(what);
             }
@@ -608,6 +593,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         public void onStartTrackingTouch(SeekBar seekBar) {}
 
         public void onStopTrackingTouch(SeekBar seekBar) {
+            Preferences.savePreferences();
             sendUpdateToScreen("margins");
         }
     }
@@ -679,6 +665,49 @@ public class PopUpLayoutFragment extends DialogFragment {
     @Override
     public void onCancel(DialogInterface dialog) {
         this.dismiss();
+    }
+
+    void setupPreviews() {
+        // This sets the background thumbnails for the images/videos/logo
+        setButtonBackground(chooseLogoButton,FullscreenActivity.customLogo);
+        setButtonBackground(chooseImage1Button,FullscreenActivity.backgroundImage1);
+        setButtonBackground(chooseImage2Button,FullscreenActivity.backgroundImage2);
+        setButtonBackground(chooseVideo1Button,FullscreenActivity.backgroundVideo1);
+        setButtonBackground(chooseVideo2Button,FullscreenActivity.backgroundVideo2);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        Uri uri = resultData.getData();
+
+        if (resultCode == -1 && uri != null) {
+
+            // Save the location
+            switch (PresenterMode.whatBackgroundLoaded) {
+                case "logo":
+                    FullscreenActivity.customLogo = uri.toString();
+                    preferences.setMyPreferenceString(getActivity(), "customLogo", uri.toString());
+                    break;
+                case "image1":
+                    FullscreenActivity.backgroundImage1 = uri.toString();
+                    preferences.setMyPreferenceString(getActivity(), "backgroundImage1", uri.toString());
+                    break;
+                case "image2":
+                    FullscreenActivity.backgroundImage2 = uri.toString();
+                    preferences.setMyPreferenceString(getActivity(), "backgroundImage2", uri.toString());
+                    break;
+                case "video1":
+                    FullscreenActivity.backgroundVideo1 = uri.toString();
+                    preferences.setMyPreferenceString(getActivity(), "backgroundVideo1", uri.toString());
+                    break;
+                case "video2":
+                    FullscreenActivity.backgroundVideo2 = uri.toString();
+                    preferences.setMyPreferenceString(getActivity(), "backgroundVideo2", uri.toString());
+                    break;
+            }
+
+            // Update the storage text
+            setupPreviews();
+        }
     }
 
 }

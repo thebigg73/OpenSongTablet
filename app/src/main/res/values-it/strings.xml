@@ -693,4 +693,20 @@
     <string name="keepmultiline">Mantieni compatto multilinea</string>
     <string name="notsaved">Non salvato</string>
 
+    <string name="extracting">"Estrazione"</string>
+    <string name="converting">"Conversione"</string>
+
+    <string name="promptbackup">"Non hai eseguito il backup della libreria di brani nelle ultime 10 volte in cui hai utilizzato questa app. Questo è altamente raccomandato in quanto puoi recuperare le tue canzoni se qualcosa va storto. Idealmente dovresti conservare una copia del tuo file di backup sul cloud (ad es. Google Drive) o inviarlo via email a te stesso."</string>
+    <string name="backupnow">"Crea un backup ora"</string>
+    <string name="remindme">"Ricordamelo più tardi"</string>
+
+    <string name="connected_device_song">"Canzone dal dispositivo collegato"</string>
+    <string name="network_error">"Errore di rete"</string>
+    <string name="download_new">"Clicca qui per scaricare una nuova Bibbia"</string>
+    <string name="storage_check">"Controllo dello spazio di archiviazione"</string>
+    <string name="load_preferences">"Caricamento delle preferenze"</string>
+
+    <string name="googlefontcustom">"Altro nome di carattere di Google"</string>
+    <string name="googlefontbrowse">"Sfoglia tutti i tipi di carattere di Google"</string>
+
 </resources>

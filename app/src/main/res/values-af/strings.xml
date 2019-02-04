@@ -692,4 +692,19 @@
     <string name="keepmultiline">" Hou multiline kompak"</string>
     <string name="notsaved">nie gestoor nie</string>
 
+    <string name="extracting">"onttrek"</string>
+    <string name="converting">"omskakeling"</string>
+
+    <string name="promptbackup">"Jy het nie jou liedjie biblioteek gerugsteun nie in die laaste 10 keer wat jy hierdie program gebruik het. Dit word sterk aanbeveel omdat jy jou liedjies kan herstel as daar iets fout gaan. Ideaal gesproke moet jy 'n kopie van jou rugsteunlêer op die wolk hou (bv. Google Drive) of e-pos dit aan jouself."</string>
+    <string name="backupnow">"Skep nou 'n rugsteun"</string>
+    <string name="remindme">"Herinner my later"</string>
+
+    <string name="connected_device_song">"Liedjie uit gekoppelde toestel"</string>
+    <string name="network_error">"Netwerk fout"</string>
+    <string name="download_new">"Klik hier om 'n nuwe Bybel af te laai"</string>
+    <string name="storage_check">"Kontroleer stoorplek"</string>
+    <string name="load_preferences">"Laai voorkeure"</string>
+
+    <string name="googlefontcustom">"Ander Google-font naam"</string>
+    <string name="googlefontbrowse">"Blaai deur alle Google Fonts"</string>
 </resources>

@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <LinearLayout
@@ -23,7 +24,8 @@
             android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:gravity="center"
             android:text="@string/autoscroll"
-            style="@style/MyMenuHeadingText" />
+            style="@style/MyMenuHeadingText"
+            tools:ignore="RtlHardcoded" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/closeOptionsFAB"
@@ -53,6 +55,21 @@
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/autoScrollButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableStart="@drawable/ic_rotate_right_white_36dp"
+                android:drawableLeft="@drawable/ic_rotate_right_white_36dp"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:text="@string/autoscroll"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
+
+            <Button
                 android:id="@+id/autoScrollTimeDefaultsButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,7 +81,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/default_autoscroll"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/autoScrollStartButton"
@@ -79,7 +97,8 @@
                 android:textColor="#fff"
                 android:theme="@style/SwitchStyle"
                 android:textSize="12sp"
-                app:showText="false" />
+                app:showText="false"
+                tools:ignore="RtlHardcoded" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switchTimerSize"
@@ -101,7 +120,8 @@
                 app:splitTrack="false"
                 android:thumb="@drawable/switch_button"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488" />
+                app:thumbTint="#444488"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/autoScrollLearnButton"
@@ -115,7 +135,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/timer_learn"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/autoscrollActivatedSwitch"
@@ -130,7 +151,8 @@
                 android:textColor="#fff"
                 android:textSize="12sp"
                 android:theme="@style/SwitchStyle"
-                app:showText="false" />
+                app:showText="false"
+                tools:ignore="RtlHardcoded" />
         </LinearLayout>
     </ScrollView>
 

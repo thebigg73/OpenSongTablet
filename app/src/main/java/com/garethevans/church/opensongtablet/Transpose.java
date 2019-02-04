@@ -1,5 +1,8 @@
 package com.garethevans.church.opensongtablet;
 
+import android.content.Context;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -72,7 +75,7 @@ class Transpose {
     private static boolean usesflats;
     private static boolean capousesflats;
 
-    static void doTranspose() {
+    static void doTranspose(Context c, Preferences preferences) {
 
         try {
             // Go through each line and change each chord to $..$
@@ -177,7 +180,7 @@ class Transpose {
             FullscreenActivity.mLyrics = FullscreenActivity.transposedLyrics;
 
             PopUpEditSongFragment.prepareSongXML();
-            PopUpEditSongFragment.justSaveSongXML();
+            PopUpEditSongFragment.justSaveSongXML(c, preferences);
 
             FullscreenActivity.transposedLyrics = null;
             FullscreenActivity.transposedLyrics = "";
@@ -197,6 +200,100 @@ class Transpose {
             Preferences.savePreferences();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    static String transposeThisString(String direction, int times, String texttotranspose) {
+        try {
+            // Go through each line and change each chord to $..$
+            // This marks the bit to be changed
+
+            Log.d("d", "direction=" + direction);
+            Log.d("d", "times=" + direction);
+            Log.d("d", "texttotranspose=" + texttotranspose);
+
+            FullscreenActivity.transposedLyrics = null;
+            FullscreenActivity.transposedLyrics = "";
+            FullscreenActivity.myTransposedLyrics = null;
+            FullscreenActivity.myTransposedLyrics = texttotranspose.split("\n");
+
+            FullscreenActivity.transposeDirection = direction;
+            FullscreenActivity.transposeTimes = times;
+
+            oldchordformat = FullscreenActivity.oldchordformat;
+
+            // Now we change the chords into numbers
+            for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
+                if (FullscreenActivity.myTransposedLyrics[x].indexOf(".") == 0) {
+                    // Since this line has chords, do the changing!
+                    // Decide on the chord format to use
+                    switch (oldchordformat) {
+                        default:
+                            FullscreenActivity.myTransposedLyrics[x] = chordToNumber1(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+
+                        case "2":
+                            FullscreenActivity.myTransposedLyrics[x] = chordToNumber2(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+
+                        case "3":
+                            FullscreenActivity.myTransposedLyrics[x] = chordToNumber3(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+
+                        case "4":
+                            FullscreenActivity.myTransposedLyrics[x] = chordToNumber4(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+
+                    }
+                }
+            }
+
+            // Next up we do the transposing
+
+            transposeChords();
+
+            StringBuilder sb = new StringBuilder();
+            // Now we put the numbers back into chords in the correct format and using either the key preference or the forced sharps or flats
+            for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
+                if (FullscreenActivity.myTransposedLyrics[x].indexOf(".") == 0) {
+                    // Since this line has chords, do the changing!
+                    // Decide on the chord format to use
+                    if (FullscreenActivity.alwaysPreferredChordFormat.equals("Y") || FullscreenActivity.convertchords) {
+                        // User has specified using their preferred chord format every time
+                        oldchordformat = FullscreenActivity.chordFormat;
+                        // This is only true when the user clicks the option in the menu, so reset
+                        FullscreenActivity.convertchords = false;
+                    }
+
+                    switch (oldchordformat) {
+                        default:
+                            FullscreenActivity.myTransposedLyrics[x] = numberToChord1(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+
+                        case "2":
+                            FullscreenActivity.myTransposedLyrics[x] = numberToChord2(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+
+                        case "3":
+                            FullscreenActivity.myTransposedLyrics[x] = numberToChord3(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+
+                        case "4":
+                            FullscreenActivity.myTransposedLyrics[x] = numberToChord4(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+                    }
+                }
+
+                // Add all the lines back up as a string
+                sb.append(FullscreenActivity.myTransposedLyrics[x]).append("\n");
+            }
+
+            // Now that the chords have been changed, return the lyrics
+            return sb.toString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return texttotranspose;
         }
     }
 

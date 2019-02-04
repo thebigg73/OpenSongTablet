@@ -36,6 +36,8 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
     int byte2 = 0;
     int byte3 = 0;
 
+    Preferences preferences;
+
     static PopUpBuildMidiMessageFragment newInstance() {
         PopUpBuildMidiMessageFragment frag;
         frag = new PopUpBuildMidiMessageFragment();
@@ -73,6 +75,8 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
+
+        preferences = new Preferences();
 
         View V = inflater.inflate(R.layout.popup_buildmidicommand, container, false);
 
@@ -225,7 +229,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
             Log.d("d","s="+s);
             FullscreenActivity.mMidi = s.toString();
             PopUpEditSongFragment.prepareSongXML();
-            PopUpEditSongFragment.justSaveSongXML();
+            PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
             dismiss();
         } catch (Exception e) {
             e.printStackTrace();

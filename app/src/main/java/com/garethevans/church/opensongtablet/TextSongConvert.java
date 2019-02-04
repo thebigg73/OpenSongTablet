@@ -5,7 +5,7 @@ import android.util.Log;
 
 class TextSongConvert {
 
-    // This class is called from the edit song window - try to convert to fix OpenSong format button
+    // This class is called when indexing text songs (ending in .txt or files that aren't xml, onsong or chordpro
     String convertText(Context c, String oldtext) {
         StringBuilder newtext = new StringBuilder();
 
@@ -30,6 +30,9 @@ class TextSongConvert {
 
         // Remove any blank headings if they are redundant
         compiledtext = fixBlankHeadings(c, compiledtext);
+
+        // Indicate after loading song (which renames it), we need to build the database and song index
+        FullscreenActivity.needtorefreshsongmenu = true;
 
         return compiledtext;
     }

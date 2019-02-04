@@ -51,6 +51,7 @@ public class PopUpTransposeFragment extends DialogFragment {
     RadioButton chordFormat4Radio;
     RadioButton chordFormat5Radio;
     boolean updatekey = false;
+    Preferences preferences;
 
     @Override
     public void onStart() {
@@ -98,6 +99,8 @@ public class PopUpTransposeFragment extends DialogFragment {
                 doTranspose();
             }
         });
+
+        preferences = new Preferences();
 
         // Initialise views
         transposeSeekBar = V.findViewById(R.id.transposeSeekBar);
@@ -247,7 +250,7 @@ public class PopUpTransposeFragment extends DialogFragment {
 
         // Do the transpose
         try {
-            Transpose.doTranspose();
+            Transpose.doTranspose(getActivity(), preferences);
         } catch (Exception e) {
             e.printStackTrace();
         }

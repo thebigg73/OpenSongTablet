@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
@@ -15,8 +14,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import java.io.IOException;
 
 public class PopUpEditStickyFragment extends DialogFragment {
 
@@ -37,6 +34,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
     TextView stickyNotesWidth_TextView, stickyNotesOpacity_TextView;
     SwitchCompat stickyTextSize;
     EditText editStickyText;
+    Preferences preferences;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -96,6 +94,8 @@ public class PopUpEditStickyFragment extends DialogFragment {
             }
         });
 
+        preferences = new Preferences();
+
         // Initialise the views
         editStickyText = V.findViewById(R.id.editStickyText);
         stickyNotesWidth_SeekBar = V.findViewById(R.id.stickyNotesWidth_SeekBar);
@@ -115,13 +115,9 @@ public class PopUpEditStickyFragment extends DialogFragment {
         stickyNotesOpacity_TextView.setText(s);
         // Set the switch up based on preferences
         if (FullscreenActivity.stickyTextSize==18.0f) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                stickyTextSize.setChecked(true);
-            }
+            stickyTextSize.setChecked(true);
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                stickyTextSize.setChecked(false);
-            }
+            stickyTextSize.setChecked(false);
         }
 
         stickyTextSize.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -181,14 +177,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
         FullscreenActivity.mNotes = editStickyText.getText().toString();
         // Save the file
         PopUpEditSongFragment.prepareSongXML();
-        try {
-            PopUpEditSongFragment.justSaveSongXML();
-        } catch (IOException e) {
-            e.printStackTrace();
-            FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.savesong) + " - " +
-                    getActivity().getResources().getString(R.string.error);
-            ShowToast.showToast(getActivity());
-        }
+        PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
         if (mListener!=null) {
             mListener.loadSong();
         }

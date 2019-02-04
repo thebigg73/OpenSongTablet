@@ -61,6 +61,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
     TextView popupautoscroll_delay_text;
     EditText popupautoscroll_duration;
     FloatingActionButton uselinkaudiolength_ImageButton;
+    Preferences preferences;
 
     boolean mStopHandler = false;
     Handler mHandler = new Handler();
@@ -102,6 +103,8 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
+
+        preferences = new Preferences();
 
         // Initialise the views
         popupautoscroll_startstopbutton = V.findViewById(R.id.popupautoscroll_startstopbutton);
@@ -236,7 +239,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
                 FullscreenActivity.autoScrollDuration = -1;
             }
             PopUpEditSongFragment.prepareSongXML();
-            PopUpEditSongFragment.justSaveSongXML();
+            PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
             FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.savesong) + " - " +
                     getActivity().getResources().getString(R.string.ok);
             ShowToast.showToast(getActivity());
@@ -250,7 +253,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
     }
 
     public void grabLinkAudioTime() {
-        AutoScrollFunctions.getAudioLength(getActivity());
+        AutoScrollFunctions.getAudioLength(getActivity(), preferences);
         if (FullscreenActivity.audiolength>-1) {
             // If this is a valid audio length, set the mDuration value
             FullscreenActivity.mDuration = "" + FullscreenActivity.audiolength;

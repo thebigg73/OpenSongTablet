@@ -30,7 +30,6 @@ public class BatteryMonitor extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent!=null) {
-            Log.d("d", "onReceive() intent.getAction()=" + intent.getAction());
             int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
             isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
                     status == BatteryManager.BATTERY_STATUS_FULL;
@@ -50,7 +49,7 @@ public class BatteryMonitor extends BroadcastReceiver {
                         mListener.setUpBatteryMonitor();
                     }
                 } catch (Exception e) {
-                    Log.d("d", "Problem setting up the battery monitor");
+                    Log.d("BatteryMonitor", "Problem setting up the battery monitor");
                 }
             }
         }

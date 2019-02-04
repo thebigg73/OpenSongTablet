@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,14 +16,12 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class PopUpSongCreateFragment extends DialogFragment {
@@ -32,8 +31,14 @@ public class PopUpSongCreateFragment extends DialogFragment {
     static ArrayList<String> newtempfolders;
     Spinner newFolderSpinner;
     EditText newSongNameEditText;
+    ProgressBar progressBar;
     private MyInterface mListener;
     AsyncTask<Object, Void, String> getfolders;
+    StorageAccess storageAccess;
+    Preferences preferences;
+    SongFolders songFolders;
+    ListSongFiles listSongFiles;
+    SongXML songXML;
 
     static PopUpSongCreateFragment newInstance() {
         PopUpSongCreateFragment frag;
@@ -44,6 +49,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
     public interface MyInterface {
         void doEdit();
         void loadSong();
+        void prepareSongMenu();
     }
 
     @Override
@@ -105,12 +111,20 @@ public class PopUpSongCreateFragment extends DialogFragment {
             }
         });
 
+        storageAccess = new StorageAccess();
+        preferences = new Preferences();
+        songFolders = new SongFolders();
+        listSongFiles = new ListSongFiles();
+        songXML = new SongXML();
+
         // Initialise the views
         newFolderSpinner = V.findViewById(R.id.newFolderSpinner);
         newSongNameEditText = V.findViewById(R.id.newSongNameEditText);
+        progressBar = V.findViewById(R.id.progressBar);
 
         if (FullscreenActivity.whattodo.equals("savecameraimage")) {
             try {
+                Log.d("PopUpSongCreate", "mCurrentPhotoPath=" + FullscreenActivity.mCurrentPhotoPath);
                 String currimagename = FullscreenActivity.mCurrentPhotoPath.
                         substring(FullscreenActivity.mCurrentPhotoPath.lastIndexOf("/") + 1);
                     newSongNameEditText.setText(currimagename);
@@ -151,147 +165,184 @@ public class PopUpSongCreateFragment extends DialogFragment {
     }
 
     public void doSave() {
-        // Get the variables
-        String tempNewSong = newSongNameEditText.getText().toString().trim();
+        // Show the progressBar (to indicate something is happening)
+        progressBar.setVisibility(View.VISIBLE);
 
-        if (FullscreenActivity.whattodo.equals("savecameraimage")) {
-            File from = new File(FullscreenActivity.mCurrentPhotoPath);
-            String currimagename = FullscreenActivity.mCurrentPhotoPath.
-                    substring(FullscreenActivity.mCurrentPhotoPath.lastIndexOf("/")+1);
+        // Try to do this as an AsyncTask!
+        DoSave doSave = new DoSave();
+        doSave.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
 
-            // If no name is specified, use the original ugly one
-            if (tempNewSong.isEmpty() || tempNewSong.equals("")) {
-                tempNewSong = currimagename;
-            }
+    @SuppressLint("StaticFieldLeak")
+    private class DoSave extends AsyncTask<Object, String, String> {
 
-            // Check the camera image ends with .jpg.  If not, add it!
-            if (!tempNewSong.endsWith(".jpg")) {
-                tempNewSong = tempNewSong + ".jpg";
-            }
-            File to;
-            if (FullscreenActivity.newFolder.equals(FullscreenActivity.mainfoldername)) {
-                to = new File(FullscreenActivity.dir + "/" + tempNewSong);
+        String tempNewSong;
+
+        @Override
+        protected void onPreExecute() {
+            // Prepare the app to rebuild the search index after loading the song
+            FullscreenActivity.needtorefreshsongmenu = true;
+            tempNewSong = newSongNameEditText.getText().toString().trim();
+            FullscreenActivity.myToastMessage = "";
+        }
+
+        @Override
+        protected String doInBackground(Object... objects) {
+            // Get the variables
+            Uri to = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.newFolder, tempNewSong);
+            Log.d("PopUpCreate", "to=" + to);
+
+            // Decide if this song already exists.  If so, alert the user and do nothing more
+            FullscreenActivity.myToastMessage = "";
+            if (storageAccess.uriExists(getActivity(), to)) {
+                FullscreenActivity.myToastMessage = getActivity().getString(R.string.songnamealreadytaken);
             } else {
-                to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.newFolder + "/" + tempNewSong);
+
+                if (FullscreenActivity.whattodo.equals("savecameraimage")) {
+                    Uri from = Uri.parse(FullscreenActivity.mCurrentPhotoPath);
+                    Log.d("PopUpCreate", "from=" + from);
+                    String currimagename = from.getLastPathSegment();
+                    Log.d("PopUpCreate", "currimagename=" + currimagename);
+
+                    // If no name is specified, use the original ugly one
+                    if (tempNewSong == null || tempNewSong.isEmpty()) {
+                        tempNewSong = currimagename;
+                    }
+
+                    // Check the camera image ends with .jpg.  If not, add it!
+                    if (tempNewSong != null && !tempNewSong.endsWith(".jpg")) {
+                        tempNewSong = tempNewSong + ".jpg";
+                    }
+
+                    Log.d("PopUpCreate", "tempNewSong=" + tempNewSong);
+
+                    InputStream inputStream = storageAccess.getInputStream(getActivity(), from);
+
+                    Log.d("PopUpCreate", "inputStream=" + inputStream);
+
+                    // Check the uri exists for the outputstream to be valid
+                    storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, to, null,
+                            "Songs", FullscreenActivity.newFolder, tempNewSong);
+
+                    OutputStream outputStream = storageAccess.getOutputStream(getActivity(), to);
+
+                    Log.d("PopUpCreate", "oututStream=" + outputStream);
+
+                    // Copy the image file and then remove the original (don't need to keep it in the media folder)
+                    Log.d("PopUpCreate", "copying file");
+                    storageAccess.copyFile(inputStream, outputStream);
+                    Log.d("PopUpCreate", "deleting original");
+                    storageAccess.deleteFile(getActivity(), from);
+
+                    try {
+                        if (mListener != null) {
+                            Log.d("PopUpCreate", "setting songfilename=" + tempNewSong);
+                            FullscreenActivity.songfilename = tempNewSong;
+                            Log.d("PopUpCreate", "setting whichSongFolder=" + FullscreenActivity.newFolder);
+                            FullscreenActivity.whichSongFolder = FullscreenActivity.newFolder;
+                        }
+
+                    } catch (Exception e) {
+                        FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.error);
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    if (!tempNewSong.equals("") && !tempNewSong.isEmpty()
+                            && !tempNewSong.contains("/") && !storageAccess.uriExists(getActivity(), to)
+                            && !tempNewSong.equals(FullscreenActivity.mainfoldername)) {
+
+                        FullscreenActivity.whichSongFolder = FullscreenActivity.newFolder;
+
+                        // Try to create
+                        if (tempNewSong.endsWith(".pdf") || tempNewSong.endsWith(".PDF")) {
+                            // Naughty, naughty, it shouldn't be a pdf extension
+                            tempNewSong = tempNewSong.replace(".pdf", "");
+                            tempNewSong = tempNewSong.replace(".PDF", "");
+                        }
+
+                        songXML.initialiseSongTags();
+
+                        // Prepare the XML
+                        FullscreenActivity.songfilename = tempNewSong;
+                        FullscreenActivity.mTitle = tempNewSong;
+
+                        Preferences.savePreferences();
+
+                        FullscreenActivity.mynewXML = songXML.prepareBlankSongXML();
+
+                        // If this is an import from text intent, add the text to the lyrics
+                        if (FullscreenActivity.scripture_title != null &&
+                                FullscreenActivity.scripture_title.equals("importedtext_in_scripture_verse") &&
+                                FullscreenActivity.scripture_verse != null && !FullscreenActivity.scripture_verse.equals("")) {
+                            FullscreenActivity.mLyrics = FullscreenActivity.scripture_verse;
+                            FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("<lyrics>[V]\n</lyrics>",
+                                    "<lyrics>[V]\n" + FullscreenActivity.scripture_verse + "</lyrics>");
+                        }
+
+                        // Save the file
+                        storageAccess.createFile(getActivity(), preferences, null, "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+                        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.whichSongFolder,
+                                FullscreenActivity.songfilename);
+
+                        // Check the uri exists for the outputstream to be valid
+                        storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
+                                "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+
+                        OutputStream outputStream = storageAccess.getOutputStream(getActivity(), uri);
+                        storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream);
+
+                        // If we are autologging CCLI information
+                        if (FullscreenActivity.ccli_automatic) {
+                            PopUpCCLIFragment.addUsageEntryToLog(getActivity(), preferences, FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
+                                    FullscreenActivity.songfilename, "",
+                                    "", "", "1"); // Created
+                        }
+                    } else {
+                        FullscreenActivity.myToastMessage = getResources().getString(R.string.error_notset);
+                    }
+                }
             }
 
+            return null;
+        }
+
+        protected void onPostExecute(String s) {
             try {
-                FileChannel inChannel = new FileInputStream(from).getChannel();
-                FileChannel outChannel = new FileOutputStream(to).getChannel();
-                try {
-                    inChannel.transferTo(0, inChannel.size(), outChannel);
-                } finally {
-                    if (inChannel != null)
-                        inChannel.close();
-                    outChannel.close();
+                if (!FullscreenActivity.myToastMessage.equals(getActivity().getString(R.string.error)) &&
+                        !FullscreenActivity.myToastMessage.equals(getActivity().getString(R.string.error_notset)) &&
+                        !FullscreenActivity.myToastMessage.equals(getActivity().getString(R.string.songnamealreadytaken))) {
+
+                    if (mListener != null) {
+                        if (FullscreenActivity.whattodo.equals("savecameraimage")) {
+                            mListener.loadSong();
+                        } else {
+                            // Prepare the app to open the edit page after loading
+                            FullscreenActivity.needtorefreshsongmenu = false;  // This will happen after editing
+                            FullscreenActivity.needtoeditsong = true;
+                            mListener.loadSong();
+                        }
+                    }
                 }
 
-                FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.success);
-                if (!from.delete()) {
-                    Log.d("d","Error deleting");
-                }
-
-                if (mListener != null) {
-                    FullscreenActivity.songfilename = tempNewSong;
-                    FullscreenActivity.whichSongFolder = FullscreenActivity.newFolder;
-                    mListener.loadSong();
-                }
-
-            } catch (Exception e) {
-                if (!from.delete()) {
-                    Log.d("d","Error deleting");
-                }
-                FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.error);
-                ShowToast.showToast(getActivity());
-            }
-            // Remove the file anyway as a tidy up
-
-            ShowToast.showToast(getActivity());
-            dismiss();
-
-        } else {
-            File to;
-            if (FullscreenActivity.newFolder.equals(FullscreenActivity.mainfoldername)) {
-                to = new File(FullscreenActivity.dir + "/" + tempNewSong);
-            } else {
-                to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.newFolder + "/" + tempNewSong);
-            }
-
-            if (!tempNewSong.equals("") && !tempNewSong.isEmpty()
-                    && !tempNewSong.contains("/") && !to.exists()
-                    && !tempNewSong.equals(FullscreenActivity.mainfoldername)) {
-
-                FullscreenActivity.whichSongFolder = FullscreenActivity.newFolder;
-
-                // Try to create
-                if (tempNewSong.endsWith(".pdf") || tempNewSong.endsWith(".PDF")) {
-                    // Naughty, naughty, it shouldn't be a pdf extension
-                    tempNewSong = tempNewSong.replace(".pdf", "");
-                    tempNewSong = tempNewSong.replace(".PDF", "");
-                }
-
-                LoadXML.initialiseSongTags();
-
-                // Prepare the XML
-                FullscreenActivity.songfilename = tempNewSong;
-                FullscreenActivity.mTitle = tempNewSong;
-
-                Preferences.savePreferences();
-
-                PopUpEditSongFragment.prepareBlankSongXML();
-
-                // If this is an import from text intent, add the text to the lyrics
-                if (FullscreenActivity.scripture_title!=null &&
-                        FullscreenActivity.scripture_title.equals("importedtext_in_scripture_verse") &&
-                        FullscreenActivity.scripture_verse!=null && !FullscreenActivity.scripture_verse.equals("")) {
-                    FullscreenActivity.mLyrics = FullscreenActivity.scripture_verse;
-                    FullscreenActivity.mynewXML =  FullscreenActivity.mynewXML.replace("<lyrics>[V]\n</lyrics>",
-                            "<lyrics>[V]\n"+FullscreenActivity.scripture_verse+"</lyrics>");
-                }
-
-                // Save the file
-                try {
-                    PopUpEditSongFragment.justSaveSongXML();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.savesong) + " - " +
-                            getActivity().getResources().getString(R.string.error);
+                if (!FullscreenActivity.myToastMessage.equals("")) {
                     ShowToast.showToast(getActivity());
                 }
-
-                // Load the XML up into memory
                 try {
-                    LoadXML.loadXML(getActivity());
+                    dismiss();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                // Tell the main page to now edit the song
-                if (mListener != null) {
-                    mListener.doEdit();
-                }
-
-                // If we are autologging CCLI information
-                if (FullscreenActivity.ccli_automatic) {
-                    PopUpCCLIFragment.addUsageEntryToLog(FullscreenActivity.whichSongFolder+"/"+FullscreenActivity.songfilename,
-                            FullscreenActivity.songfilename, "",
-                            "", "", "1"); // Created
-                }
-
-                // Close the popup
-                dismiss();
-            } else {
-                FullscreenActivity.myToastMessage = getResources().getString(R.string.error_notset);
-                ShowToast.showToast(getActivity());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
-
     @SuppressLint("StaticFieldLeak")
     private class GetFolders extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
-            ListSongFiles.getAllSongFolders();
+            songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
             return null;
         }
 

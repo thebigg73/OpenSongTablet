@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
@@ -76,6 +75,8 @@ public class PopUpMetronomeFragment extends DialogFragment {
     int total_counts = 0;
     int av_bpm;
 
+    Preferences preferences;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (savedInstanceState != null) {
@@ -84,6 +85,8 @@ public class PopUpMetronomeFragment extends DialogFragment {
         if (getDialog()==null) {
             dismiss();
         }
+
+        preferences = new Preferences();
 
         getDialog().setCanceledOnTouchOutside(true);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -133,9 +136,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         tempo = Metronome.getTempo(FullscreenActivity.mTempo);
         setPan();
         popupmetronome_volume.setProgress(getVolume(FullscreenActivity.metronomevol));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            visualmetronome.setChecked(FullscreenActivity.visualmetronome);
-        }
+        visualmetronome.setChecked(FullscreenActivity.visualmetronome);
         getTimeSigValues();
         getBPMValues();
 
@@ -239,7 +240,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
     public void doSave() {
         PopUpEditSongFragment.prepareSongXML();
         try {
-            PopUpEditSongFragment.justSaveSongXML();
+            PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
             FullscreenActivity.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
                     getResources().getString(R.string.ok);
         } catch (Exception e) {

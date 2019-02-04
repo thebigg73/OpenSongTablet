@@ -23,16 +23,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:gravity="center_horizontal"
-                android:text="@string/app_name"
-                android:textColor="#fff"
-                android:textSize="24sp" />
-
             <LinearLayout
                 android:id="@+id/readUpdate"
                 android:layout_width="wrap_content"
@@ -70,43 +60,79 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_margin="12dp"
                 android:background="@drawable/section_box">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    style="@style/MyWhiteHeadingText"
                     android:text="@string/storage_help"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/root_explain"/>
 
                 <TextView
                     android:id="@+id/progressText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/MyInfoText"/>
+                    android:layout_margin="8dp"
+                    android:layout_gravity="center_horizontal"
+                    style="@style/MyHeadingText"/>
 
                 <Button
                     android:id="@+id/chooseStorageButton"
-                    android:background="@drawable/green_button"
+                    android:background="@drawable/red_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="8dp"
                     android:padding="4dp"
-                    android:text="@string/root"
+                    android:text="@string/changestorage"
                     android:textColor="#fff" />
+
+                <Button
+                    android:id="@+id/previousStorageButton"
+                    android:background="@drawable/yellow_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="8dp"
+                    android:padding="4dp"
+                    android:text="@string/existing"
+                    android:textColor="#fff" />
+
+
+                <TextView
+                    android:id="@+id/previousStorageTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/previousStorageHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/found"
+                    style="@style/MyWhiteHeadingText"
+                    android:visibility="gone"/>
+
+                <Spinner
+                    android:id="@+id/previousStorageSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    style="@style/MySpinner"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 
 
             <LinearLayout
                 android:id="@+id/goToSongsLinearLayout"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_margin="12dp"
                 android:background="@drawable/section_box">
 
                 <Button
@@ -114,21 +140,41 @@
                     android:background="@drawable/green_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="8dp"
+                    android:layout_margin="16dp"
                     android:padding="4dp"
                     android:text="@string/start"
+                    android:textSize="24sp"
+                    android:layout_gravity="center_horizontal"
                     android:textColor="#fff" />
 
-                <TextView
-                    style="@style/MyHeadingText"
+                <Spinner
+                    android:id="@+id/appMode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/currentstorage"
+                    android:layout_margin="16dp"
+                    style="@style/MySpinner"
+                    android:layout_gravity="center_horizontal" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/currentAction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    style="@style/MyInfoText"
+                    android:visibility="gone"/>
+
+                <ProgressBar
+                    android:id="@+id/progressBarHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:visibility="gone"/>
 
             </LinearLayout>
@@ -138,30 +184,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_margin="12dp"
                 android:background="@drawable/section_box">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/intro"
-                style="@style/MyInfoText" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/intro"
+                    style="@style/MyInfoText" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/user_guide_text"
-                style="@style/MyInfoText" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/user_guide_text"
+                    style="@style/MyInfoText" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/blue_button"
-                android:text="@string/user_guide"
-                android:textColor="#ff0" />
+                <Button
+                    android:id="@+id/userGuideButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/blue_button"
+                    android:text="@string/user_guide"
+                    android:textColor="#ff0" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -176,10 +224,4 @@
         </LinearLayout>
     </ScrollView>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"/>
 </RelativeLayout>

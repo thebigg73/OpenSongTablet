@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -23,7 +24,8 @@
             android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:gravity="center"
             android:text="@string/options_set"
-            style="@style/MyMenuHeadingText" />
+            style="@style/MyMenuHeadingText"
+            tools:ignore="RtlHardcoded" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/closeOptionsFAB"
@@ -65,7 +67,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/options_set_load"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/setSaveButton"
@@ -79,7 +82,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/options_set_save"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/setOrganiseButton"
@@ -93,7 +97,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/managesets"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/setNewButton"
@@ -107,7 +112,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/options_set_clear"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/setDeleteButton"
@@ -121,7 +127,23 @@
                 android:gravity="center_vertical"
                 android:text="@string/options_set_delete"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
+
+        <Button
+            android:id="@+id/setImportButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawableLeft="@drawable/ic_arrow_right_white_36dp"
+            android:drawablePadding="4dp"
+            android:drawableStart="@drawable/ic_arrow_right_white_36dp"
+            android:gravity="center_vertical"
+            android:text="@string/importnewset"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/setExportButton"
@@ -135,7 +157,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/options_set_export"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/setCustomButton"
@@ -149,7 +172,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/add_custom_slide"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/setVariationButton"
@@ -163,7 +187,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/customise_set_item"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/setEditButton"
@@ -177,7 +202,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/options_set_edit"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/showSetTickBoxInSongMenu"
@@ -193,7 +219,8 @@
                 android:textColor="#fff"
                 android:textSize="12sp"
                 android:background="@drawable/menu_button"
-                app:showText="false" />
+                app:showText="false"
+                tools:ignore="RtlHardcoded" />
 
             <LinearLayout
                 android:id="@+id/setLinearLayout"

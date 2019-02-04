@@ -694,4 +694,21 @@
 	<string name="verse">"Vers"</string>
 	<string name="keepmultiline">Mehrzeilige Verse kompakt halten</string>
     <string name="notsaved">Nicht gespeichert</string>
+
+    <string name="extracting">"Extrahieren"</string>
+    <string name="converting">"Konvertierung"</string>
+
+    <string name="promptbackup">"Sie haben Ihre Songbibliothek in den letzten 10 Mal, in denen Sie diese App verwendet haben, nicht gesichert. Dies wird dringend empfohlen, da Sie Ihre Songs wiederherstellen können, wenn etwas schief geht. Idealerweise sollten Sie eine Kopie Ihrer Sicherungsdatei in der Cloud (z. B. Google Drive) aufbewahren oder per E-Mail an sich selbst senden."</string>
+    <string name="backupnow">"Erstellen Sie jetzt ein Backup"</string>
+    <string name="remindme">"Erinnere mich später"</string>
+
+    <string name="connected_device_song">"Song vom angeschlossenen Gerät"</string>
+    <string name="network_error">"Netzwerkfehler"</string>
+    <string name="download_new">"Klicken Sie hier, um eine neue Bibel herunterzuladen"</string>
+    <string name="storage_check">"Speicher prüfen"</string>
+    <string name="load_preferences">"Voreinstellungen laden"</string>
+
+    <string name="googlefontcustom">"Anderer Google-Schriftartname"</string>
+    <string name="googlefontbrowse">"Durchsuchen Sie alle Google-Schriftarten"</string>
+
 </resources>

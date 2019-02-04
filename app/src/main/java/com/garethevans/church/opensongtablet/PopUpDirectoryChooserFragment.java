@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.Manifest;
@@ -23,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.File;
+//import java.io.File;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,7 +72,7 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
     ImageView navigateUp;
     public TextView currentFolder;
     ListView directoryList;
-    public static File location = Environment.getExternalStorageDirectory();
+    //public static File location = Environment.getExternalStorageDirectory();
     public static Uri uri_root = FullscreenActivity.uriTree;
     public static Uri uri_current = FullscreenActivity.uriTree;
     public static String[] splitlocation;
@@ -91,7 +92,7 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
         super.onStart();
 
         // safety check
-        if (getActivity() != null && getDialog() != null) {
+        if (getActivity() != null && getDialog() != null && !FullscreenActivity.whattodo.equals("choosestorage_kitkat")) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         }
     }
@@ -276,21 +277,25 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
 
         checkCanWrite();
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        if (!FullscreenActivity.whattodo.equals("choosestorate_kitkat")) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
+        }
 
         return V;
     }
 
     public void doSave() {
-        //StorageChooser.customStorageLoc = location;
         FullscreenActivity.customStorage = location.toString();
-        Preferences.savePreferences();
-        if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
-            sListener.openStorageFragment();
-        } else {
+        if (FullscreenActivity.whattodo.equals("choosefolder_kitkat")) {
             mListener.updateCustomStorage();
+        } else {
+            Preferences.savePreferences();
+            if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
+                sListener.openStorageFragment();
+            } else {
+                mListener.updateCustomStorage();
+            }
         }
-
         try {
             dismiss();
         } catch (Exception e) {
@@ -606,3 +611,4 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
     }
 
 }
+*/

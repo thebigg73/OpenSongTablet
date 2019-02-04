@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.pdf.PdfRenderer;
 import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
@@ -25,8 +26,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -45,7 +46,10 @@ public class ProcessSong extends Activity {
         myLyrics = myLyrics.replace("&#27;", "'");
         myLyrics = myLyrics.replace("&#027;", "'");
         myLyrics = myLyrics.replace("&#39;","'");
+        myLyrics = myLyrics.replace("&#34;","'");
         myLyrics = myLyrics.replace("&#039;","'");
+        myLyrics = myLyrics.replace("&ndash;","-");
+        myLyrics = myLyrics.replace("&mdash;","-");
         myLyrics = myLyrics.replace("&apos;","'");
         myLyrics = myLyrics.replace("&lt;", "<");
         myLyrics = myLyrics.replace("&gt;", ">");
@@ -200,10 +204,9 @@ public class ProcessSong extends Activity {
                 tempLyrics.append(FullscreenActivity.songSections[x]).append("\n");
             } else if (FullscreenActivity.songSectionsLabels[x]!=null &&
                     !FullscreenActivity.songSectionsLabels[x].isEmpty()) {
-                tempLyrics.append("["+FullscreenActivity.songSectionsLabels[x]).append("]\n");
+                tempLyrics.append("[").append(FullscreenActivity.songSectionsLabels[x]).append("]\n");
                 tempLyrics.append(FullscreenActivity.songSections[x]).append("\n");
             }
-            Log.d("d","tempLyrics="+tempLyrics);
         }
         FullscreenActivity.myParsedLyrics = tempLyrics.toString().split("\n");
 
@@ -212,7 +215,7 @@ public class ProcessSong extends Activity {
 
     static void lookForSplitPoints() {
         // Script to determine 2 column split details
-        int halfwaypoint = Math.round(FullscreenActivity.numrowstowrite / 2);
+        int halfwaypoint = Math.round((float) FullscreenActivity.numrowstowrite / 2.0f);
 
         // Look for nearest split point before halfway
         int splitpoint_1sthalf = 0;
@@ -383,153 +386,153 @@ public class ProcessSong extends Activity {
         FullscreenActivity.twothirdsplit_section = twothirdsplit_section;
     }
 
-    static String validCustomPadString(String s, String c) {
+    static String validCustomPadString(Context c, Preferences preferences, StorageAccess storageAccess, String s, String custom) {
         if (c!=null) {
             // Null is the built in auto pad.  So, not using that.  Test it exists.
-            File f = new File (FullscreenActivity.dirPads,c);
-            if (f.exists() && f.isFile()) {
-                s = "custom_" + c;
+            Uri uri = storageAccess.getUriForItem(c, preferences, "Pads", "", custom);
+            if (storageAccess.uriExists(c, uri) && custom != null) {
+                s = "custom_" + custom;
             }
         }
         return s;
     }
 
-    static void processKey() {
+    static void processKey(Context c, Preferences preferences, StorageAccess storageAccess) {
         switch (FullscreenActivity.mKey) {
             case "A":
-                FullscreenActivity.pad_filename = validCustomPadString("a", FullscreenActivity.customPadA);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "a", FullscreenActivity.customPadA);
                 FullscreenActivity.keyindex = 1;
                 break;
             case "A#":
-                FullscreenActivity.pad_filename = validCustomPadString("asharp", FullscreenActivity.customPadBb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "asharp", FullscreenActivity.customPadBb);
                 FullscreenActivity.keyindex = 2;
                 break;
             case "Bb":
-                FullscreenActivity.pad_filename = validCustomPadString("asharp", FullscreenActivity.customPadBb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "asharp", FullscreenActivity.customPadBb);
                 FullscreenActivity.keyindex = 3;
                 break;
             case "B":
-                FullscreenActivity.pad_filename = validCustomPadString("b", FullscreenActivity.customPadB);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "b", FullscreenActivity.customPadB);
                 FullscreenActivity.keyindex = 4;
                 break;
             case "C":
-                FullscreenActivity.pad_filename = validCustomPadString("c", FullscreenActivity.customPadC);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "c", FullscreenActivity.customPadC);
                 FullscreenActivity.keyindex = 5;
                 break;
             case "C#":
-                FullscreenActivity.pad_filename = validCustomPadString("csharp", FullscreenActivity.customPadDb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "csharp", FullscreenActivity.customPadDb);
                 FullscreenActivity.keyindex = 6;
                 break;
             case "Db":
-                FullscreenActivity.pad_filename = validCustomPadString("csharp", FullscreenActivity.customPadDb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "csharp", FullscreenActivity.customPadDb);
                 FullscreenActivity.keyindex = 7;
                 break;
             case "D":
-                FullscreenActivity.pad_filename = validCustomPadString("d", FullscreenActivity.customPadD);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "d", FullscreenActivity.customPadD);
                 FullscreenActivity.keyindex = 8;
                 break;
             case "D#":
-                FullscreenActivity.pad_filename = validCustomPadString("dsharp", FullscreenActivity.customPadEb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "dsharp", FullscreenActivity.customPadEb);
                 FullscreenActivity.keyindex = 9;
                 break;
             case "Eb":
-                FullscreenActivity.pad_filename = validCustomPadString("dsharp", FullscreenActivity.customPadEb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "dsharp", FullscreenActivity.customPadEb);
                 FullscreenActivity.keyindex = 10;
                 break;
             case "E":
-                FullscreenActivity.pad_filename = validCustomPadString("e", FullscreenActivity.customPadE);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "e", FullscreenActivity.customPadE);
                 FullscreenActivity.keyindex = 11;
                 break;
             case "F":
-                FullscreenActivity.pad_filename = validCustomPadString("f", FullscreenActivity.customPadF);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "f", FullscreenActivity.customPadF);
                 FullscreenActivity.keyindex = 12;
                 break;
             case "F#":
-                FullscreenActivity.pad_filename = validCustomPadString("fsharp", FullscreenActivity.customPadGb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "fsharp", FullscreenActivity.customPadGb);
                 FullscreenActivity.keyindex = 13;
                 break;
             case "Gb":
-                FullscreenActivity.pad_filename = validCustomPadString("fsharp", FullscreenActivity.customPadGb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "fsharp", FullscreenActivity.customPadGb);
                 FullscreenActivity.keyindex = 14;
                 break;
             case "G":
-                FullscreenActivity.pad_filename = validCustomPadString("g", FullscreenActivity.customPadG);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "g", FullscreenActivity.customPadG);
                 FullscreenActivity.keyindex = 15;
                 break;
             case "G#":
-                FullscreenActivity.pad_filename = validCustomPadString("gsharp", FullscreenActivity.customPadAb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "gsharp", FullscreenActivity.customPadAb);
                 FullscreenActivity.keyindex = 16;
                 break;
             case "Ab":
-                FullscreenActivity.pad_filename = validCustomPadString("gsharp", FullscreenActivity.customPadAb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "gsharp", FullscreenActivity.customPadAb);
                 FullscreenActivity.keyindex = 17;
                 break;
             case "Am":
-                FullscreenActivity.pad_filename = validCustomPadString("am", FullscreenActivity.customPadAm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "am", FullscreenActivity.customPadAm);
                 FullscreenActivity.keyindex = 18;
                 break;
             case "A#m":
-                FullscreenActivity.pad_filename = validCustomPadString("asharpm", FullscreenActivity.customPadBbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "asharpm", FullscreenActivity.customPadBbm);
                 FullscreenActivity.keyindex = 19;
                 break;
             case "Bbm":
-                FullscreenActivity.pad_filename = validCustomPadString("asharpm", FullscreenActivity.customPadBbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "asharpm", FullscreenActivity.customPadBbm);
                 FullscreenActivity.keyindex = 20;
                 break;
             case "Bm":
-                FullscreenActivity.pad_filename = validCustomPadString("bm", FullscreenActivity.customPadBm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "bm", FullscreenActivity.customPadBm);
                 FullscreenActivity.keyindex = 21;
                 break;
             case "Cm":
-                FullscreenActivity.pad_filename = validCustomPadString("cm", FullscreenActivity.customPadCm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "cm", FullscreenActivity.customPadCm);
                 FullscreenActivity.keyindex = 22;
                 break;
             case "C#m":
-                FullscreenActivity.pad_filename = validCustomPadString("csharpm", FullscreenActivity.customPadDbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "csharpm", FullscreenActivity.customPadDbm);
                 FullscreenActivity.keyindex = 23;
                 break;
             case "Dbm":
-                FullscreenActivity.pad_filename = validCustomPadString("csharpm", FullscreenActivity.customPadDbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "csharpm", FullscreenActivity.customPadDbm);
                 FullscreenActivity.keyindex = 24;
                 break;
             case "Dm":
-                FullscreenActivity.pad_filename = validCustomPadString("dm", FullscreenActivity.customPadDm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "dm", FullscreenActivity.customPadDm);
                 FullscreenActivity.keyindex = 25;
                 break;
             case "D#m":
-                FullscreenActivity.pad_filename = validCustomPadString("dsharpm", FullscreenActivity.customPadEbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "dsharpm", FullscreenActivity.customPadEbm);
                 FullscreenActivity.keyindex = 26;
                 break;
             case "Ebm":
-                FullscreenActivity.pad_filename = validCustomPadString("dsharpm", FullscreenActivity.customPadEbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "dsharpm", FullscreenActivity.customPadEbm);
                 FullscreenActivity.keyindex = 27;
                 break;
             case "Em":
-                FullscreenActivity.pad_filename = validCustomPadString("em", FullscreenActivity.customPadEm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "em", FullscreenActivity.customPadEm);
                 FullscreenActivity.keyindex = 28;
                 break;
             case "Fm":
-                FullscreenActivity.pad_filename = validCustomPadString("fm", FullscreenActivity.customPadFm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "fm", FullscreenActivity.customPadFm);
                 FullscreenActivity.keyindex = 29;
                 break;
             case "F#m":
-                FullscreenActivity.pad_filename = validCustomPadString("fsharpm", FullscreenActivity.customPadGbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "fsharpm", FullscreenActivity.customPadGbm);
                 FullscreenActivity.keyindex = 30;
                 break;
             case "Gbm":
-                FullscreenActivity.pad_filename = validCustomPadString("fsharpm", FullscreenActivity.customPadGbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "fsharpm", FullscreenActivity.customPadGbm);
                 FullscreenActivity.keyindex = 31;
                 break;
             case "Gm":
-                FullscreenActivity.pad_filename = validCustomPadString("gm", FullscreenActivity.customPadGm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "gm", FullscreenActivity.customPadGm);
                 FullscreenActivity.keyindex = 32;
                 break;
             case "G#m":
-                FullscreenActivity.pad_filename = validCustomPadString("gsharpm", FullscreenActivity.customPadAbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "gsharpm", FullscreenActivity.customPadAbm);
                 FullscreenActivity.keyindex = 33;
                 break;
             case "Abm":
-                FullscreenActivity.pad_filename = validCustomPadString("gsharpm", FullscreenActivity.customPadAbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "gsharpm", FullscreenActivity.customPadAbm);
                 FullscreenActivity.keyindex = 34;
                 break;
             default:
@@ -641,7 +644,8 @@ public class ProcessSong extends Activity {
         }
         return i;
     }
-    static String getSalutReceivedLocation(String string, Context c) {
+
+    static String getSalutReceivedLocation(String string, Context c, Preferences preferences, StorageAccess storageAccess) {
         String[] s;
         string = string.replace("{\"description\":\"","");
         string = string.replace("\"}","");
@@ -661,13 +665,9 @@ public class ProcessSong extends Activity {
                 sent_file = s[1];
                 sent_direction = s[2];
                 // Check the song exists
-                File testfile;
-                if (s[0].equals(FullscreenActivity.mainfoldername)) {
-                    testfile = new File(FullscreenActivity.dir + "/" + s[1]);
-                } else {
-                    testfile = new File(FullscreenActivity.dir + "/" + s[0] + "/" + s[1]);
-                }
-                exists = testfile.exists();
+                Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", s[0], s[1]);
+                FullscreenActivity.uriToLoad = uri;
+                exists = storageAccess.uriExists(c, uri);
             }
         }
 
@@ -954,7 +954,13 @@ public class ProcessSong extends Activity {
         TableRow caporow  = new TableRow(c);
         caporow.setClipChildren(false);
         caporow.setClipToPadding(false);
-        caporow.setPadding(0, -(int) ((float) FullscreenActivity.linespacing / fontsize), 0, 0);
+        caporow.setPadding(0, 0, 0, 0);
+        int trimval = (int) (fontsize * FullscreenActivity.chordfontscalesize * FullscreenActivity.linespacing);
+
+        if (FullscreenActivity.trimLines) {
+            caporow.setPadding(0, -trimval, 0, -trimval);
+            caporow.setGravity(Gravity.CENTER_VERTICAL);
+        }
 
         for (String bit:chords) {
             if (bit.indexOf(".")==0 && bit.length()>1) {
@@ -993,6 +999,13 @@ public class ProcessSong extends Activity {
                 }
                 capobit.setShadowLayer(shadow, 4, 4, FullscreenActivity.lyricsBackgroundColor);
             }
+            if (FullscreenActivity.trimLines) {
+                capobit.setSingleLine();
+                capobit.setIncludeFontPadding(false);
+                capobit.setGravity(Gravity.CENTER_VERTICAL);
+                capobit.setPadding(0, -trimval, 0, -trimval);
+                capobit.setLineSpacing(0f, 0f);
+            }
             caporow.addView(capobit);
         }
         return caporow;
@@ -1001,7 +1014,14 @@ public class ProcessSong extends Activity {
     private static TableRow chordlinetoTableRow(Context c, String[] chords, float fontsize) {
         TableRow chordrow = new TableRow(c);
         chordrow.setLayoutParams(tablelayout_params());
-        chordrow.setPadding(0, -(int) ((float) FullscreenActivity.linespacing / fontsize), 0, 0);
+
+        chordrow.setPadding(0, 0, 0, 0);
+        int trimval = (int) (fontsize * FullscreenActivity.chordfontscalesize * FullscreenActivity.linespacing);
+
+        if (FullscreenActivity.trimLines) {
+            chordrow.setPadding(0, -trimval, 0, -trimval);
+            chordrow.setGravity(Gravity.CENTER_VERTICAL);
+        }
         chordrow.setClipChildren(false);
         chordrow.setClipToPadding(false);
 
@@ -1010,7 +1030,6 @@ public class ProcessSong extends Activity {
                 bit = bit.substring(1);
             }
             TextView chordbit = new TextView(c);
-            chordbit.setPadding(0,0,0,0);
 
             //bit = bit.replace("b","\u266d"); //Gives the proper b symbol if available in font
             chordbit.setText(bit);
@@ -1039,13 +1058,20 @@ public class ProcessSong extends Activity {
                 }
                 chordbit.setShadowLayer(shadow, 4, 4, FullscreenActivity.lyricsBackgroundColor);
             }
+            if (FullscreenActivity.trimLines) {
+                chordbit.setSingleLine();
+                chordbit.setIncludeFontPadding(false);
+                chordbit.setGravity(Gravity.CENTER_VERTICAL);
+                chordbit.setPadding(0, -trimval, 0, -trimval);
+                chordbit.setLineSpacing(0f, 0f);
+            }
             chordrow.addView(chordbit);
         }
         return chordrow;
     }
 
     @SuppressWarnings("deprecation")
-    private static TableRow lyriclinetoTableRow(Context c, String[] lyrics, float fontsize) {
+    private static TableRow lyriclinetoTableRow(Context c, String[] lyrics, float fontsize, StorageAccess storageAccess) {
         TableRow lyricrow = new TableRow(c);
         if (FullscreenActivity.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout &&
                 !FullscreenActivity.presoShowChords) {
@@ -1055,17 +1081,24 @@ public class ProcessSong extends Activity {
         } else {
             lyricrow.setLayoutParams(tablelayout_params());
         }
+
+        int trimval = (int) (fontsize * FullscreenActivity.linespacing);
+        lyricrow.setPadding(0, 0, 0, 0);
+        if (FullscreenActivity.trimLines) {
+            lyricrow.setPadding(0, -trimval, 0, -trimval);
+            lyricrow.setGravity(Gravity.CENTER_VERTICAL);
+        }
+
         // set different layoutparams and set gravity
-        lyricrow.setPadding(0, -(int) ((float) FullscreenActivity.linespacing / fontsize), 0, 0);
         lyricrow.setClipChildren(false);
         lyricrow.setClipToPadding(false);
 
         for (String bit:lyrics) {
             String imagetext;
-            if (bit.contains("/Images/_cache/")) {
+            if ((bit.toLowerCase().endsWith(".png") || bit.toLowerCase().endsWith(".jpg") || bit.toLowerCase().endsWith(".gif")) ||
+                    (bit.toLowerCase().contains("content://") || bit.toLowerCase().contains("file://"))) {
                 FullscreenActivity.isImageSection = true;
-                imagetext = bit;
-
+                imagetext = bit.trim();
             } else {
                 imagetext = "";
             }
@@ -1082,6 +1115,7 @@ public class ProcessSong extends Activity {
             }
 
             TextView lyricbit = new TextView(c);
+
             if (FullscreenActivity.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout &&
                     !FullscreenActivity.presoShowChords) {
                 lyricbit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -1115,6 +1149,7 @@ public class ProcessSong extends Activity {
                 } else {
                     lyricbit.setSingleLine(true);
                 }
+
             } else {
                 lyricbit.setTextColor(FullscreenActivity.lyricsTextColor);
                 lyricbit.setTypeface(FullscreenActivity.lyricsfont);
@@ -1125,7 +1160,6 @@ public class ProcessSong extends Activity {
                 if (shadow>24.0f) {
                     shadow = 24.0f;
                 }
-                lyricbit.setShadowLayer(shadow, 4, 4, FullscreenActivity.lyricsBackgroundColor);
             }
 
             if (FullscreenActivity.isImageSection) {
@@ -1137,26 +1171,36 @@ public class ProcessSong extends Activity {
 
                 int maxwidth = 320;
                 if (FullscreenActivity.myWidthAvail>0) {
-                    maxwidth = (int) (0.25f * FullscreenActivity.myWidthAvail);
+                    maxwidth = (int) (0.25f * (float) FullscreenActivity.myWidthAvail);
                 }
 
                 img.setMaxWidth(maxwidth);
                 img.setMaxHeight(maxwidth);
 
-                File checkfile = new File(imagetext);
-                if (checkfile.exists()) {
+                Uri uri = Uri.parse(imagetext);
+                InputStream inputStream = storageAccess.getInputStream(c, uri);
+                if (inputStream != null) {
                     try {
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inJustDecodeBounds = true;
 
+                        BitmapFactory.decodeStream(inputStream, null, options);
                         //Returns null, sizes are in the options variable
-                        BitmapFactory.decodeFile(imagetext, options);
                         int width = options.outWidth;
                         int height = options.outHeight;
 
+                        if (width == 0) {
+                            width = maxwidth;
+                        }
+                        if (height == 0) {
+                            // Assume a 4:3
+                            height = (int) (((float) width / 4.0f) * 3.0f);
+                        }
+
                         int thumbheight = (int) ((float)height * ((float)maxwidth/(float)width));
 
-                        Bitmap ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(imagetext), maxwidth, thumbheight);
+                        inputStream = storageAccess.getInputStream(c, uri);
+                        Bitmap ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeStream(inputStream), maxwidth, thumbheight);
                         Resources res = c.getResources();
                         BitmapDrawable bd = new BitmapDrawable(res, ThumbImage);
                         if (ThumbImage!=null) {
@@ -1166,6 +1210,7 @@ public class ProcessSong extends Activity {
 
                     } catch (Exception e1) {
                         // Didn't work
+                        e1.printStackTrace();
                         img.setImageDrawable(drw);
                     } catch (OutOfMemoryError e2) {
                             e2.printStackTrace();
@@ -1175,6 +1220,12 @@ public class ProcessSong extends Activity {
                 }
                 lyricrow.addView(img);
             } else {
+                if (FullscreenActivity.trimLines) {
+                    lyricbit.setIncludeFontPadding(false);
+                    lyricbit.setGravity(Gravity.CENTER_VERTICAL);
+                    lyricbit.setPadding(0, -trimval, 0, -trimval);
+                    lyricbit.setLineSpacing(0f, 0f);
+                }
                 lyricrow.addView(lyricbit);
             }
         }
@@ -1184,13 +1235,23 @@ public class ProcessSong extends Activity {
     private static TableRow commentlinetoTableRow(Context c, String[] comment, float fontsize, boolean tab) {
         TableRow commentrow = new TableRow(c);
         commentrow.setLayoutParams(tablelayout_params());
-        commentrow.setPadding(0, -(int) ((float) FullscreenActivity.linespacing / fontsize), 0, 0);
+
+        int trimval = (int) (fontsize * FullscreenActivity.linespacing);
+        commentrow.setPadding(0, 0, 0, 0);
+        if (FullscreenActivity.trimLines) {
+            commentrow.setPadding(0, -trimval, 0, -trimval);
+            commentrow.setGravity(Gravity.CENTER_VERTICAL);
+        }
+
         commentrow.setClipChildren(false);
         commentrow.setClipToPadding(false);
 
         for (String bit:comment) {
-            if (bit.indexOf(" ")==0 && bit.length()>1) {
+            if (bit.startsWith(" ") && bit.length() > 1) {
                 bit = bit.substring(1);
+            }
+            if (bit.startsWith("__")) {
+                bit = bit.replace("__", "");
             }
             if (!FullscreenActivity.whichSongFolder.contains(c.getResources().getString(R.string.image))) {
                 if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
@@ -1202,7 +1263,9 @@ public class ProcessSong extends Activity {
                     bit = bit.replace("_", " ");
                 }
             }
+
             TextView lyricbit = new TextView(c);
+
             lyricbit.setLayoutParams(tablerow_params());
             lyricbit.setText(bit);
             lyricbit.setTextSize(fontsize * FullscreenActivity.commentfontscalesize);
@@ -1231,7 +1294,13 @@ public class ProcessSong extends Activity {
             }
             if (tab) {
                 // Set the comment text as monospaced to make it fit
-                lyricbit.setTypeface(FullscreenActivity.typeface1);
+                lyricbit.setTypeface(FullscreenActivity.monofont);
+            }
+            if (FullscreenActivity.trimLines) {
+                lyricbit.setIncludeFontPadding(false);
+                lyricbit.setGravity(Gravity.CENTER_VERTICAL);
+                lyricbit.setPadding(0, -trimval, 0, -trimval);
+                lyricbit.setLineSpacing(0f, 0f);
             }
             commentrow.addView(lyricbit);
         }
@@ -1283,6 +1352,7 @@ public class ProcessSong extends Activity {
         titleview.setTypeface(FullscreenActivity.lyricsfont);
         titleview.setTextSize(fontsize * FullscreenActivity.headingfontscalesize);
         titleview.setPaintFlags(titleview.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+        //int trimval = (int) (fontsize * FullscreenActivity.linespacing);
 
         return titleview;
     }
@@ -1882,7 +1952,7 @@ public class ProcessSong extends Activity {
             } else {
                 String[] splitcurr;
                 // If a section has LATERSPLITHERE in it, we need to fix it for the chords we need to extract the chords
-                if (currsections[z].contains("%%LATERSPLITHERE%%")) {
+                if (currsections[z] != null && currsections[z].contains("%%LATERSPLITHERE%%")) {
                     String[] tempsection = currsections[z].split("\n");
                     for (int line = 0; line < tempsection.length; line++) {
                         // Go through each line and look for %%LATERSPLITHERE%%
@@ -2037,7 +2107,7 @@ public class ProcessSong extends Activity {
     static String getSongKey() {
         // If key is set
         String keytext = "";
-        if (!FullscreenActivity.mKey.isEmpty() && !FullscreenActivity.mKey.equals("")) {
+        if (!FullscreenActivity.mKey.isEmpty()) {
             keytext = " (" + FullscreenActivity.mKey + ")";
         }
         return keytext;
@@ -2237,7 +2307,7 @@ public class ProcessSong extends Activity {
         return text.toString();
     }
     @SuppressWarnings("all")
-    public static LinearLayout songSectionView(Context c, int x, float fontsize, boolean projected) {
+    public static LinearLayout songSectionView(Context c, int x, float fontsize, boolean projected, StorageAccess storageAccess) {
 
         final LinearLayout ll = new LinearLayout(c);
 
@@ -2312,7 +2382,7 @@ public class ProcessSong extends Activity {
                             tl.addView(ProcessSong.chordlinetoTableRow(c, chords_returned, fontsize));
                         }
                         if (FullscreenActivity.showLyrics) {
-                            tl.addView(ProcessSong.lyriclinetoTableRow(c, lyrics_returned, fontsize));
+                            tl.addView(ProcessSong.lyriclinetoTableRow(c, lyrics_returned, fontsize, storageAccess));
                         }
                         break;
 
@@ -2331,7 +2401,7 @@ public class ProcessSong extends Activity {
                         lyrics_returned = new String[1];
                         lyrics_returned[0] = FullscreenActivity.sectionContents[x][y];
                         if (FullscreenActivity.showLyrics) {
-                            tl.addView(ProcessSong.lyriclinetoTableRow(c, lyrics_returned, fontsize));
+                            tl.addView(ProcessSong.lyriclinetoTableRow(c, lyrics_returned, fontsize, storageAccess));
                         }
                         break;
 
@@ -2398,7 +2468,7 @@ public class ProcessSong extends Activity {
         return ll;
     }
 
-    static LinearLayout projectedSectionView(Context c, int x, float fontsize) {
+    static LinearLayout projectedSectionView(Context c, int x, float fontsize, StorageAccess storageAccess) {
         final LinearLayout ll = new LinearLayout(c);
 
         if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
@@ -2498,7 +2568,7 @@ public class ProcessSong extends Activity {
                         tl.addView(ProcessSong.chordlinetoTableRow(c, chords_returned, fontsize));
                     }
                     if (FullscreenActivity.showLyrics) {
-                        tl.addView(ProcessSong.lyriclinetoTableRow(c, lyrics_returned, fontsize));
+                        tl.addView(ProcessSong.lyriclinetoTableRow(c, lyrics_returned, fontsize, storageAccess));
                     }
                     break;
 
@@ -2518,7 +2588,7 @@ public class ProcessSong extends Activity {
                     lyrics_returned = new String[1];
                     lyrics_returned[0] = whattoprocess[y];
                     if (FullscreenActivity.showLyrics) {
-                        tl.addView(ProcessSong.lyriclinetoTableRow(c, lyrics_returned, fontsize));
+                        tl.addView(ProcessSong.lyriclinetoTableRow(c, lyrics_returned, fontsize, storageAccess));
                     }
                     break;
 
@@ -2571,7 +2641,7 @@ public class ProcessSong extends Activity {
         return tl;
     }
 
-    static Bitmap createPDFPage(Context c, int pagewidth, int pageheight, String scale) {
+    static Bitmap createPDFPage(Context c, Preferences preferences, StorageAccess storageAccess, int pagewidth, int pageheight, String scale) {
         String tempsongtitle = FullscreenActivity.songfilename.replace(".pdf", "");
         tempsongtitle = tempsongtitle.replace(".PDF", "");
         FullscreenActivity.mTitle = tempsongtitle;
@@ -2579,13 +2649,14 @@ public class ProcessSong extends Activity {
 
         // This only works for post Lollipop devices
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            LoadXML.getFileLocation();
+
+            Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+
             // FileDescriptor for file, it allows you to close file when you are done with it
             ParcelFileDescriptor mFileDescriptor = null;
             PdfRenderer mPdfRenderer = null;
-
             try {
-                mFileDescriptor = ParcelFileDescriptor.open(FullscreenActivity.file, ParcelFileDescriptor.MODE_READ_ONLY);
+                mFileDescriptor = c.getContentResolver().openFileDescriptor(uri, "r");
                 if (mFileDescriptor != null) {
                     mPdfRenderer = new PdfRenderer(mFileDescriptor);
                     FullscreenActivity.pdfPageCount = mPdfRenderer.getPageCount();
@@ -2861,18 +2932,23 @@ public class ProcessSong extends Activity {
         }
     }
 
-    static void addExtraInfo(Context c) {
+    static void addExtraInfo(Context c, StorageAccess storageAccess, Preferences preferences) {
         String nextinset = "";
+
         if (FullscreenActivity.setView) {
             // Get the index in the set
-            if (!FullscreenActivity.nextSongInSet.equals("")) {
-                FullscreenActivity.nextSongKeyInSet = LoadXML.grabNextSongInSetKey(c,FullscreenActivity.nextSongInSet);
-                nextinset = ";__" + c.getString(R.string.next) + ": " + FullscreenActivity.nextSongInSet;
-                if (!FullscreenActivity.nextSongKeyInSet.equals("")) {
-                    nextinset = nextinset + " (" + FullscreenActivity.nextSongKeyInSet + ")";
+            try {
+                if (!FullscreenActivity.nextSongInSet.equals("")) {
+                    FullscreenActivity.nextSongKeyInSet = LoadXML.grabNextSongInSetKey(c, preferences, storageAccess, FullscreenActivity.nextSongInSet);
+                    nextinset = ";__" + c.getString(R.string.next) + ": " + FullscreenActivity.nextSongInSet;
+                    if (!FullscreenActivity.nextSongKeyInSet.equals("")) {
+                        nextinset = nextinset + " (" + FullscreenActivity.nextSongKeyInSet + ")";
+                    }
+                } else {
+                    nextinset = ";__" + c.getResources().getString(R.string.lastsong);
                 }
-            } else {
-                nextinset = ";__"  + c.getResources().getString(R.string.lastsong);
+            } catch (Exception e) {
+                Log.d("d","Problem getting next song info");
             }
         }
 
@@ -2883,9 +2959,10 @@ public class ProcessSong extends Activity {
             for (String line:notes) {
                 stickyNotes.append(";__").append(line).append("\n");
             }
-            stickyNotes = new StringBuilder(stickyNotes.toString().replace(";__" + c.getString(R.string.note) + ": " + ";__", ";__" + c.getString(R.string.note) + ": "));
+            String s = stickyNotes.toString();
+            s = s.replace(";__" + c.getString(R.string.note) + ": " + ";__", ";__" + c.getString(R.string.note) + ": ");
             if (FullscreenActivity.toggleAutoSticky.equals("T") && !FullscreenActivity.mNotes.equals("")) {
-                FullscreenActivity.myLyrics = stickyNotes + "\n" + FullscreenActivity.myLyrics;
+                FullscreenActivity.myLyrics = s + "\n" + FullscreenActivity.myLyrics;
             }
         }
 
@@ -2996,29 +3073,31 @@ public class ProcessSong extends Activity {
     }
 
     // The stuff for the highlighter notes
-    static File getHighlightFile(Context c) {
+    static String getHighlighterName(Context c) {
         String layout;
         String highlighterfile;
+
+        if (FullscreenActivity.whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
+                FullscreenActivity.whichSongFolder.equals("")) {
+            highlighterfile = FullscreenActivity.mainfoldername + "_" + FullscreenActivity.songfilename;
+        } else if (FullscreenActivity.whichSongFolder.startsWith("../")) {
+            highlighterfile = FullscreenActivity.whichSongFolder.replace("../","").replace("/","_") + "_" + FullscreenActivity.songfilename;
+        } else {
+            highlighterfile = FullscreenActivity.whichSongFolder.replace("/","_") + "_" + FullscreenActivity.songfilename;
+        }
+
         if (c.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             layout = "_p";
         } else {
             layout = "_l";
         }
-        if (FullscreenActivity.whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
-                FullscreenActivity.whichSongFolder.equals("")) {
-            highlighterfile = FullscreenActivity.mainfoldername + "_" + FullscreenActivity.songfilename;
-        } else {
-            highlighterfile = FullscreenActivity.whichSongFolder.replace("/","_") + "_" + FullscreenActivity.songfilename;
-        }
+
         String page = "";
         if (FullscreenActivity.isPDF) {
             // Because pdf files can have multiple pages, this allows different notes.
             page = "_" + FullscreenActivity.pdfPageCurrent;
         }
-        highlighterfile =  highlighterfile + layout + page + ".png";
+        return highlighterfile + layout + page + ".png";
 
-        // This file may or may not exist
-        return new File (FullscreenActivity.dirhighlighter,highlighterfile);
     }
-
 }
