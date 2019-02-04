@@ -26,7 +26,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -387,153 +386,153 @@ public class ProcessSong extends Activity {
         FullscreenActivity.twothirdsplit_section = twothirdsplit_section;
     }
 
-    static String validCustomPadString(String s, String c) {
+    static String validCustomPadString(Context c, Preferences preferences, StorageAccess storageAccess, String s, String custom) {
         if (c!=null) {
             // Null is the built in auto pad.  So, not using that.  Test it exists.
-            File f = new File (FullscreenActivity.dirPads,c);
-            if (f.exists() && f.isFile()) {
-                s = "custom_" + c;
+            Uri uri = storageAccess.getUriForItem(c, preferences, "Pads", "", custom);
+            if (storageAccess.uriExists(c, uri) && custom != null) {
+                s = "custom_" + custom;
             }
         }
         return s;
     }
 
-    static void processKey() {
+    static void processKey(Context c, Preferences preferences, StorageAccess storageAccess) {
         switch (FullscreenActivity.mKey) {
             case "A":
-                FullscreenActivity.pad_filename = validCustomPadString("a", FullscreenActivity.customPadA);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "a", FullscreenActivity.customPadA);
                 FullscreenActivity.keyindex = 1;
                 break;
             case "A#":
-                FullscreenActivity.pad_filename = validCustomPadString("asharp", FullscreenActivity.customPadBb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "asharp", FullscreenActivity.customPadBb);
                 FullscreenActivity.keyindex = 2;
                 break;
             case "Bb":
-                FullscreenActivity.pad_filename = validCustomPadString("asharp", FullscreenActivity.customPadBb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "asharp", FullscreenActivity.customPadBb);
                 FullscreenActivity.keyindex = 3;
                 break;
             case "B":
-                FullscreenActivity.pad_filename = validCustomPadString("b", FullscreenActivity.customPadB);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "b", FullscreenActivity.customPadB);
                 FullscreenActivity.keyindex = 4;
                 break;
             case "C":
-                FullscreenActivity.pad_filename = validCustomPadString("c", FullscreenActivity.customPadC);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "c", FullscreenActivity.customPadC);
                 FullscreenActivity.keyindex = 5;
                 break;
             case "C#":
-                FullscreenActivity.pad_filename = validCustomPadString("csharp", FullscreenActivity.customPadDb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "csharp", FullscreenActivity.customPadDb);
                 FullscreenActivity.keyindex = 6;
                 break;
             case "Db":
-                FullscreenActivity.pad_filename = validCustomPadString("csharp", FullscreenActivity.customPadDb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "csharp", FullscreenActivity.customPadDb);
                 FullscreenActivity.keyindex = 7;
                 break;
             case "D":
-                FullscreenActivity.pad_filename = validCustomPadString("d", FullscreenActivity.customPadD);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "d", FullscreenActivity.customPadD);
                 FullscreenActivity.keyindex = 8;
                 break;
             case "D#":
-                FullscreenActivity.pad_filename = validCustomPadString("dsharp", FullscreenActivity.customPadEb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "dsharp", FullscreenActivity.customPadEb);
                 FullscreenActivity.keyindex = 9;
                 break;
             case "Eb":
-                FullscreenActivity.pad_filename = validCustomPadString("dsharp", FullscreenActivity.customPadEb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "dsharp", FullscreenActivity.customPadEb);
                 FullscreenActivity.keyindex = 10;
                 break;
             case "E":
-                FullscreenActivity.pad_filename = validCustomPadString("e", FullscreenActivity.customPadE);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "e", FullscreenActivity.customPadE);
                 FullscreenActivity.keyindex = 11;
                 break;
             case "F":
-                FullscreenActivity.pad_filename = validCustomPadString("f", FullscreenActivity.customPadF);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "f", FullscreenActivity.customPadF);
                 FullscreenActivity.keyindex = 12;
                 break;
             case "F#":
-                FullscreenActivity.pad_filename = validCustomPadString("fsharp", FullscreenActivity.customPadGb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "fsharp", FullscreenActivity.customPadGb);
                 FullscreenActivity.keyindex = 13;
                 break;
             case "Gb":
-                FullscreenActivity.pad_filename = validCustomPadString("fsharp", FullscreenActivity.customPadGb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "fsharp", FullscreenActivity.customPadGb);
                 FullscreenActivity.keyindex = 14;
                 break;
             case "G":
-                FullscreenActivity.pad_filename = validCustomPadString("g", FullscreenActivity.customPadG);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "g", FullscreenActivity.customPadG);
                 FullscreenActivity.keyindex = 15;
                 break;
             case "G#":
-                FullscreenActivity.pad_filename = validCustomPadString("gsharp", FullscreenActivity.customPadAb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "gsharp", FullscreenActivity.customPadAb);
                 FullscreenActivity.keyindex = 16;
                 break;
             case "Ab":
-                FullscreenActivity.pad_filename = validCustomPadString("gsharp", FullscreenActivity.customPadAb);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "gsharp", FullscreenActivity.customPadAb);
                 FullscreenActivity.keyindex = 17;
                 break;
             case "Am":
-                FullscreenActivity.pad_filename = validCustomPadString("am", FullscreenActivity.customPadAm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "am", FullscreenActivity.customPadAm);
                 FullscreenActivity.keyindex = 18;
                 break;
             case "A#m":
-                FullscreenActivity.pad_filename = validCustomPadString("asharpm", FullscreenActivity.customPadBbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "asharpm", FullscreenActivity.customPadBbm);
                 FullscreenActivity.keyindex = 19;
                 break;
             case "Bbm":
-                FullscreenActivity.pad_filename = validCustomPadString("asharpm", FullscreenActivity.customPadBbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "asharpm", FullscreenActivity.customPadBbm);
                 FullscreenActivity.keyindex = 20;
                 break;
             case "Bm":
-                FullscreenActivity.pad_filename = validCustomPadString("bm", FullscreenActivity.customPadBm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "bm", FullscreenActivity.customPadBm);
                 FullscreenActivity.keyindex = 21;
                 break;
             case "Cm":
-                FullscreenActivity.pad_filename = validCustomPadString("cm", FullscreenActivity.customPadCm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "cm", FullscreenActivity.customPadCm);
                 FullscreenActivity.keyindex = 22;
                 break;
             case "C#m":
-                FullscreenActivity.pad_filename = validCustomPadString("csharpm", FullscreenActivity.customPadDbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "csharpm", FullscreenActivity.customPadDbm);
                 FullscreenActivity.keyindex = 23;
                 break;
             case "Dbm":
-                FullscreenActivity.pad_filename = validCustomPadString("csharpm", FullscreenActivity.customPadDbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "csharpm", FullscreenActivity.customPadDbm);
                 FullscreenActivity.keyindex = 24;
                 break;
             case "Dm":
-                FullscreenActivity.pad_filename = validCustomPadString("dm", FullscreenActivity.customPadDm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "dm", FullscreenActivity.customPadDm);
                 FullscreenActivity.keyindex = 25;
                 break;
             case "D#m":
-                FullscreenActivity.pad_filename = validCustomPadString("dsharpm", FullscreenActivity.customPadEbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "dsharpm", FullscreenActivity.customPadEbm);
                 FullscreenActivity.keyindex = 26;
                 break;
             case "Ebm":
-                FullscreenActivity.pad_filename = validCustomPadString("dsharpm", FullscreenActivity.customPadEbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "dsharpm", FullscreenActivity.customPadEbm);
                 FullscreenActivity.keyindex = 27;
                 break;
             case "Em":
-                FullscreenActivity.pad_filename = validCustomPadString("em", FullscreenActivity.customPadEm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "em", FullscreenActivity.customPadEm);
                 FullscreenActivity.keyindex = 28;
                 break;
             case "Fm":
-                FullscreenActivity.pad_filename = validCustomPadString("fm", FullscreenActivity.customPadFm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "fm", FullscreenActivity.customPadFm);
                 FullscreenActivity.keyindex = 29;
                 break;
             case "F#m":
-                FullscreenActivity.pad_filename = validCustomPadString("fsharpm", FullscreenActivity.customPadGbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "fsharpm", FullscreenActivity.customPadGbm);
                 FullscreenActivity.keyindex = 30;
                 break;
             case "Gbm":
-                FullscreenActivity.pad_filename = validCustomPadString("fsharpm", FullscreenActivity.customPadGbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "fsharpm", FullscreenActivity.customPadGbm);
                 FullscreenActivity.keyindex = 31;
                 break;
             case "Gm":
-                FullscreenActivity.pad_filename = validCustomPadString("gm", FullscreenActivity.customPadGm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "gm", FullscreenActivity.customPadGm);
                 FullscreenActivity.keyindex = 32;
                 break;
             case "G#m":
-                FullscreenActivity.pad_filename = validCustomPadString("gsharpm", FullscreenActivity.customPadAbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "gsharpm", FullscreenActivity.customPadAbm);
                 FullscreenActivity.keyindex = 33;
                 break;
             case "Abm":
-                FullscreenActivity.pad_filename = validCustomPadString("gsharpm", FullscreenActivity.customPadAbm);
+                FullscreenActivity.pad_filename = validCustomPadString(c, preferences, storageAccess, "gsharpm", FullscreenActivity.customPadAbm);
                 FullscreenActivity.keyindex = 34;
                 break;
             default:
@@ -645,7 +644,8 @@ public class ProcessSong extends Activity {
         }
         return i;
     }
-    static String getSalutReceivedLocation(String string, Context c) {
+
+    static String getSalutReceivedLocation(String string, Context c, Preferences preferences, StorageAccess storageAccess) {
         String[] s;
         string = string.replace("{\"description\":\"","");
         string = string.replace("\"}","");
@@ -665,13 +665,9 @@ public class ProcessSong extends Activity {
                 sent_file = s[1];
                 sent_direction = s[2];
                 // Check the song exists
-                File testfile;
-                if (s[0].equals(FullscreenActivity.mainfoldername)) {
-                    testfile = new File(FullscreenActivity.dir + "/" + s[1]);
-                } else {
-                    testfile = new File(FullscreenActivity.dir + "/" + s[0] + "/" + s[1]);
-                }
-                exists = testfile.exists();
+                Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", s[0], s[1]);
+                FullscreenActivity.uriToLoad = uri;
+                exists = storageAccess.uriExists(c, uri);
             }
         }
 
@@ -1356,7 +1352,7 @@ public class ProcessSong extends Activity {
         titleview.setTypeface(FullscreenActivity.lyricsfont);
         titleview.setTextSize(fontsize * FullscreenActivity.headingfontscalesize);
         titleview.setPaintFlags(titleview.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
-        int trimval = (int) (fontsize * FullscreenActivity.linespacing);
+        //int trimval = (int) (fontsize * FullscreenActivity.linespacing);
 
         return titleview;
     }
@@ -2111,7 +2107,7 @@ public class ProcessSong extends Activity {
     static String getSongKey() {
         // If key is set
         String keytext = "";
-        if (!FullscreenActivity.mKey.isEmpty() && !FullscreenActivity.mKey.equals("")) {
+        if (!FullscreenActivity.mKey.isEmpty()) {
             keytext = " (" + FullscreenActivity.mKey + ")";
         }
         return keytext;

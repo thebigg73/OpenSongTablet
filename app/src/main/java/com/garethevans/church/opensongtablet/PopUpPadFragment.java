@@ -85,6 +85,7 @@ public class PopUpPadFragment extends DialogFragment {
     String text;
     boolean validpad;
     Preferences preferences;
+    StorageAccess storageAccess;
 
     AsyncTask<Object,Void,String> set_pad;
 
@@ -115,6 +116,7 @@ public class PopUpPadFragment extends DialogFragment {
         mListener.pageButtonAlpha("pad");
 
         preferences = new Preferences();
+        storageAccess = new StorageAccess();
 
         View V = inflater.inflate(R.layout.popup_page_pad, container, false);
 
@@ -175,7 +177,7 @@ public class PopUpPadFragment extends DialogFragment {
             Log.d("d","Error setting pad values");
         }
 
-        ProcessSong.processKey();
+        ProcessSong.processKey(getActivity(), preferences, storageAccess);
         popupPad_key.setSelection(FullscreenActivity.keyindex);
 
         // Set the listeners
@@ -222,7 +224,6 @@ public class PopUpPadFragment extends DialogFragment {
         validpad = false;
         StorageAccess storageAccess = new StorageAccess();
         Uri uri = storageAccess.fixLocalisedUri(getActivity(), preferences, FullscreenActivity.mLinkAudio);
-        Log.d("d", "uri=" + uri);
         boolean isvalid = storageAccess.uriExists(getActivity(), uri);
 
         if (popupPad_file.getSelectedItemPosition() == 0 && popupPad_key.getSelectedItemPosition() > 0) {
@@ -327,8 +328,7 @@ public class PopUpPadFragment extends DialogFragment {
             try {
                 if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.off))) {
                     popupPad_file.setSelection(2);
-                } else if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.link_audio)) &&
-                        !FullscreenActivity.mLinkAudio.isEmpty() && !FullscreenActivity.mLinkAudio.equals("")) {
+                } else if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.link_audio)) && !FullscreenActivity.mLinkAudio.isEmpty()) {
                     popupPad_file.setSelection(1);
                 } else {
                     popupPad_file.setSelection(0);
@@ -376,8 +376,7 @@ public class PopUpPadFragment extends DialogFragment {
         public void onItemSelected(AdapterView<?> parent, View view,
                                    int position, long id) {
             if (position == 1) {
-                if (FullscreenActivity.mLinkAudio != null &&
-                        (FullscreenActivity.mLinkAudio.isEmpty() || FullscreenActivity.mLinkAudio.equals(""))) {
+                if (FullscreenActivity.mLinkAudio != null && FullscreenActivity.mLinkAudio.isEmpty()) {
                     FullscreenActivity.mPadFile = getResources().getString(R.string.link_audio);
                     //popupPad_file.setSelection(0);
                     FullscreenActivity.myToastMessage = getResources().getString(R.string.notset);

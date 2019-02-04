@@ -1,0 +1,306 @@
+package com.garethevans.church.opensongtablet;
+
+import android.Manifest;
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
+import android.view.View;
+
+public class ImportIntent extends Activity implements PopUpImportExportOSBFragment.MyInterface,
+        PopUpImportExternalFile.MyInterface {
+
+    // This class is called when users click on compatible files outwith the app and choose to open them with OpenSongApp
+
+    // Declare helper classes:
+    Preferences preferences;
+    StorageAccess storageAccess;
+    IndexSongs indexSongs;
+    FullscreenActivity fullscreenActivity;
+    SongXML songXML;
+    ChordProConvert chordProConvert;
+    OnSongConvert onSongConvert;
+    UsrConvert usrConvert;
+    TextSongConvert textSongConvert;
+
+    // Variables
+    boolean storageGranted = false;
+    DialogFragment newFragment;
+    Uri uriTree;
+    String storagePath = "";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_logosplash);
+
+        // Load the helper classes (preferences)
+        preferences = new Preferences();
+        storageAccess = new StorageAccess();
+        indexSongs = new IndexSongs();
+        fullscreenActivity = new FullscreenActivity();
+        songXML = new SongXML();
+        chordProConvert = new ChordProConvert();
+        onSongConvert = new OnSongConvert();
+        usrConvert = new UsrConvert();
+        textSongConvert = new TextSongConvert();
+
+        // Load up the user preferences
+        Preferences.loadPreferences(ImportIntent.this);
+
+        // Load up all of the preferences and the user specified storage location if it exists
+        storagePath = storageAccess.getStoragePreference(ImportIntent.this, preferences);
+        uriTree = storageAccess.homeFolder(ImportIntent.this, preferences);
+
+
+        // Check we have the required permissions for storage
+        checkStoragePermission();
+        Log.d("d", "storageGranted=" + storageGranted);
+        Intent i = getIntent();
+        Log.d("d", "i=" + i);
+        dealWithIntent(i);
+    }
+
+    void checkStoragePermission() {
+        Log.d("ImportIntent", "checkStoragePermission");
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Storage permission has not been granted.
+            storageGranted = false;
+            requestStoragePermission();
+        } else {
+            storageGranted = true;
+        }
+    }
+
+    private void requestStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            try {
+                Snackbar.make(findViewById(R.id.page), R.string.storage_rationale,
+                        Snackbar.LENGTH_INDEFINITE).setAction(R.string.ok, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ActivityCompat.requestPermissions(ImportIntent.this,
+                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
+                    }
+                }).show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                // Storage permission has not been granted yet. Request it directly.
+                ActivityCompat.requestPermissions(ImportIntent.this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 101) {
+            storageGranted = grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Log.d("d", "Dealing with intent");
+        super.onNewIntent(intent);
+        dealWithIntent(intent);
+    }
+
+    public void dealWithIntent(Intent intent) {
+        try {
+            String action = intent.getAction();
+            String type = intent.getType();
+
+            Log.d("d", "action=" + action);
+            Log.d("d", "type=" + type);
+
+            // Sharing clipboard text
+            if (Intent.ACTION_SEND.equals(action) && type != null) {
+                if ("text/plain".equals(type) && storageGranted) {
+                    handleSendText(intent); // Handle text being sent
+                }
+            }
+
+            // Only works for files
+            if (intent.getData() != null && intent.getData().getPath() != null && storageGranted) {
+                Uri file_uri = intent.getData();
+                FullscreenActivity.file_uri = file_uri;
+                Log.d("d", "file_uri=" + file_uri);
+                String file_name = file_uri.getLastPathSegment();
+                Log.d("d", "file_name=" + file_name);
+
+                if (file_name != null) {
+                    // Check the file exists!
+                    if (storageAccess.uriExists(ImportIntent.this, file_uri)) {
+                        FullscreenActivity.incomingfile = intent;
+                        if (file_name.endsWith(".osb")) {
+                            // This is an OpenSong backup file
+                            FullscreenActivity.whattodo = "processimportosb";
+                            showFragment();
+                        } else {
+                            // This is an file opensong can deal with (hopefully)
+                            FullscreenActivity.whattodo = "doimport";
+                            showFragment();
+                        }
+                    } else {
+                        // Cancel the intent
+                        FullscreenActivity.incomingfile = null;
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+            // No file or intent data
+            e.printStackTrace();
+            // Clear the current intent data as we've dealt with it
+            FullscreenActivity.incomingfile = null;
+        }
+    }
+
+    public void handleSendText(Intent intent) {
+        StringBuilder sharedText = new StringBuilder(intent.getStringExtra(Intent.EXTRA_TEXT));
+        String title;
+        // Fix line breaks (if they exist)
+        sharedText = new StringBuilder(ProcessSong.fixlinebreaks(sharedText.toString()));
+
+        // If this is imported from YouVersion bible app, it should contain https://bible
+        if (sharedText.toString().contains("https://bible")) {
+
+            title = getString(R.string.scripture);
+            // Split the text into lines
+            String[] lines = sharedText.toString().split("\n");
+            if (lines.length > 0) {
+                // Remove the last line (http reference)
+                if (lines.length - 1 > 0 && lines[lines.length - 1] != null &&
+                        lines[lines.length - 1].contains("https://bible")) {
+                    lines[lines.length - 1] = "";
+                }
+
+                // The 2nd last line is likely to be the verse title
+                if (lines.length - 2 > 0 && lines[lines.length - 2] != null) {
+                    title = lines[lines.length - 2];
+                    lines[lines.length - 2] = "";
+                }
+
+                // Now put the string back together.
+                sharedText = new StringBuilder();
+                for (String l : lines) {
+                    sharedText.append(l).append("\n");
+                }
+                sharedText = new StringBuilder(sharedText.toString().trim());
+            }
+
+            // Now split it into smaller lines to better fit the screen size
+            Bible bibleC = new Bible();
+            sharedText = new StringBuilder(bibleC.shortenTheLines(sharedText.toString(), 40, 6));
+
+            FullscreenActivity.whattodo = "importfile_customreusable_scripture";
+            FullscreenActivity.scripture_title = title;
+            FullscreenActivity.scripture_verse = sharedText.toString();
+        } else {
+            // Just standard text, so create a new song
+            FullscreenActivity.whattodo = "importfile_newsong_text";
+            FullscreenActivity.scripture_title = "importedtext_in_scripture_verse";
+            FullscreenActivity.scripture_verse = sharedText.toString();
+        }
+    }
+
+    public void showFragment() {
+        // Initialise the newFragment
+        Log.d("d", "showFragment called");
+        try {
+            newFragment = OpenFragment.openFragment(ImportIntent.this);
+            Log.d("d", "newFragment=" + newFragment);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String message = "";
+        try {
+            message = OpenFragment.getMessage(ImportIntent.this);
+            Log.d("d", "message=" + message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.d("d", "getFragmentManager()=" + getFragmentManager());
+        if (newFragment != null && !ImportIntent.this.isFinishing()) {
+            try {
+                newFragment.show(getFragmentManager(), message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void refreshAll() {
+        Log.d("d", "refreshAll called");
+        rebuildSearchIndex();
+    }
+
+    @Override
+    public void rebuildSearchIndex() {
+        Log.d("d", "rebuildSearchIndex called");
+        FullscreenActivity.whattodo = "";
+        FullscreenActivity.needtorefreshsongmenu = false;
+        // If the app is already running, send the call to run BootUpCheck
+        if (FullscreenActivity.appRunning) {
+            // Close this intent and send the listener to rebuild inded
+            if (FullscreenActivity.whichMode.equals("Presentation")) {
+                PresenterMode pm = new PresenterMode();
+                pm.rebuildSearchIndex();
+            } else {
+                StageMode sm = new StageMode();
+                sm.rebuildSearchIndex();
+            }
+        } else {
+            Intent intent = new Intent();
+            intent.setClass(ImportIntent.this, BootUpCheck.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    @Override
+    public void onSongImportDone(String message) {
+        Log.d("d", "onSongImportDone called");
+        rebuildSearchIndex();
+    }
+
+    @Override
+    public void openFragment() {
+        Log.d("d", "openFragment called");
+    }
+
+    @Override
+    public void showToastMessage(String message) {
+        Log.d("d", "showToastMessage called");
+        ShowToast.showToast(ImportIntent.this);
+    }
+
+    @Override
+    public void backupInstall(String m) {
+        Log.d("d", "backupInstall called");
+        rebuildSearchIndex();
+    }
+
+    @Override
+    public void selectAFileUri(String s) {
+        Log.d("d", "selectAFileUri called");
+    }
+}

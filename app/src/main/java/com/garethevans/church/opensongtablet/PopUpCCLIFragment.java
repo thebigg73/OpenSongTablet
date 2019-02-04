@@ -255,6 +255,243 @@ public class PopUpCCLIFragment extends DialogFragment {
         return returntext;
     }
 
+    public void buildTable(Context c) {
+        StorageAccess storageAccess = new StorageAccess();
+        // Info is stored in ActivityLog.xml file inside Settings folder
+
+        // <Entry1>
+        // <Date>2016-11-28</Date>
+        // <Time>20:29:02</Time>
+        // <Description>1</Description>
+        // <FileName>( Main )/Early on one Christmas morn</FileName>
+        // <title>Early on one Christmas morn</title>
+        // <author/>
+        // <ccli/>
+        // <HasChords>false</HasChords></Entry1>
+
+        // Run this as an async task
+
+        // Check if the Log file exists and if not, create it
+        Uri uri = storageAccess.getUriForItem(c, preferences, "Settings", "", "ActivityLog.xml");
+        storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
+                "Settings", "", "ActivityLog.xml");
+        InputStream inputStream = storageAccess.getInputStream(c, uri);
+        String actfilesize = getLogFileSize(c, uri);
+        BuildTable do_buildTable = new BuildTable(uri, inputStream, actfilesize);
+        do_buildTable.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    public void doSave() {
+        Preferences.savePreferences();
+        if (mListener!=null) {
+            mListener.prepareOptionMenu();
+        }
+        try {
+            dismiss();
+        } catch (Exception e) {
+            Log.d("d","Error closing fragment");
+        }
+    }
+
+    public void setupReset() {
+        title.setText(getActivity().getResources().getString(R.string.areyousure));
+        // Show what we want and hide what we don't
+        setviewvisiblities(View.GONE, View.GONE, View.GONE, View.VISIBLE);
+
+        // Set up the default values
+        // Set up save/tick listener
+        saveMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (createBlankXML(getActivity(), preferences)) {
+                    FullscreenActivity.myToastMessage = getString(R.string.ok);
+                } else {
+                    FullscreenActivity.myToastMessage = getString(R.string.error);
+                }
+                ShowToast.showToast(getActivity());
+                try {
+                    dismiss();
+                } catch (Exception e) {
+                    Log.d("d", "Error closing the fragment");
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        try {
+            this.dismiss();
+        } catch (Exception e) {
+            Log.d("d","Error closing the fragment");
+        }
+    }
+
+    private static class AddUsageEntryToLog extends AsyncTask<Object, Void, String> {
+        @SuppressLint("StaticFieldLeak")
+        Context ctx;
+        Uri uri;
+        InputStream inputStream;
+        OutputStream outputStream;
+        StorageAccess storageAccess;
+        String date;
+        String time;
+        String fname = "";
+        String song = "";
+        String author = "";
+        String copyright = "";
+        String ccli = "";
+        String usage = "";
+
+        AddUsageEntryToLog(Context context, StorageAccess sA, Uri fileuri, String f, String s, String a, String c, String l, String u) {
+            uri = fileuri;
+            storageAccess = sA;
+            ctx = context;
+            if (f!=null) {
+                fname = f;
+            }if (s!=null) {
+                song = s;
+            }
+            if (a!=null) {
+                author = a;
+            }
+            if (c!=null) {
+                copyright = c;
+            }
+            if (l!=null) {
+                ccli = l;
+            }
+            if (u!=null) {
+                usage = u;
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            // Get today's date
+            @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            @SuppressLint("SimpleDateFormat") DateFormat tf = new SimpleDateFormat("HH:mm:ss");
+            Date d = new Date();
+            date = df.format(d);
+            time = tf.format(d);
+            date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        }
+
+        @Override
+        protected String doInBackground(Object... objects) {
+            try {
+                InputStream inputStream = storageAccess.getInputStream(ctx, uri);
+                Log.d("d", "inputStream=" + inputStream);
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                String myString = storageAccess.readTextFileToString(inputStream);
+                Log.d("d", "myString=" + myString);
+
+                Document document = null;
+                Element root = null;
+
+                String last = "Entry0";
+                try {
+                    document = documentBuilder.parse(new InputSource(new StringReader(myString)));
+                    //Document document = documentBuilder.parse(inputStream);
+                    root = document.getDocumentElement();
+
+                    if (root!=null && root.getLastChild()!=null && root.getLastChild().getNodeName()!=null) {
+                        last = root.getLastChild().getNodeName();
+                        // Repeat this a max of 5 times, or until we find the EntryX tag
+                        boolean found = false;
+                        int attempts = 0;
+                        Node n = root.getLastChild();
+                        while (!found) {
+                            n = n.getPreviousSibling();
+                            last = n.getNodeName();
+                            if (last.contains("Entry")) {
+                                found = true;
+                            } else {
+                                attempts ++;
+                            }
+                            if (attempts>6) {
+                                last = "";
+                                found = true;
+                            }
+                        }
+                    }
+                    last = last.replace("Entry", "");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                        e.printStackTrace();
+                        last = "0";
+                }
+
+                // Try to get the last entry number
+                int i;
+                try {
+                    i = Integer.parseInt(last.replaceAll("[\\D]", "")) + 1;
+                } catch (Exception e) {
+                    Log.d("d","No integer found, so will use 1");
+                    i = 1;
+                }
+
+                if (document != null) {
+                    Element newItem = document.createElement("Entry" + i);
+
+                    Element a_date = document.createElement("Date");
+                    a_date.appendChild(document.createTextNode(date));
+                    newItem.appendChild(a_date);
+
+                    Element a_time = document.createElement("Time");
+                    a_time.appendChild(document.createTextNode(time));
+                    newItem.appendChild(a_time);
+
+                    Element a_usage = document.createElement("Description");
+                    a_usage.appendChild(document.createTextNode(usage));
+                    newItem.appendChild(a_usage);
+
+                    Element a_fname = document.createElement("FileName");
+                    a_fname.appendChild(document.createTextNode(fname));
+                    newItem.appendChild(a_fname);
+
+                    Element a_song = document.createElement("title");
+                    a_song.appendChild(document.createTextNode(song));
+                    newItem.appendChild(a_song);
+
+                    Element a_author = document.createElement("author");
+                    a_author.appendChild(document.createTextNode(author));
+                    newItem.appendChild(a_author);
+
+                    Element a_copyright = document.createElement("copyright");
+                    a_copyright.appendChild(document.createTextNode(copyright));
+                    newItem.appendChild(a_copyright);
+
+                    Element a_ccli = document.createElement("ccli");
+                    a_ccli.appendChild(document.createTextNode(ccli));
+                    newItem.appendChild(a_ccli);
+
+                    if (root != null) {
+                        root.appendChild(newItem);
+                    }
+
+                    DOMSource source = new DOMSource(document);
+
+                    Log.d("CCLI", "newItem=" + newItem);
+                    TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                    Transformer transformer = transformerFactory.newTransformer();
+                    transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+                    transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+                    OutputStream outputStream = storageAccess.getOutputStream(ctx, uri);
+                    StreamResult result = new StreamResult(outputStream);
+                    transformer.transform(source, result);
+                } else {
+                    Log.d("CCLI", "doument was null");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
     @SuppressLint("StaticFieldLeak")
     private class BuildTable extends AsyncTask<Object, Void, String> {
         Uri uri;
@@ -262,11 +499,10 @@ public class PopUpCCLIFragment extends DialogFragment {
         OutputStream outputStream;
         String sizeoffile;
 
-        BuildTable(Uri u, InputStream is, OutputStream os, String filesize) {
+        BuildTable(Uri u, InputStream is, String filesize) {
             sizeoffile = filesize;
             uri = u;
             inputStream = is;
-            outputStream = os;
         }
 
         @Override
@@ -367,238 +603,8 @@ public class PopUpCCLIFragment extends DialogFragment {
             try {
                 logWebView.loadData(s, "text/html", "UTF-8");
             } catch (Exception e) {
-                Log.d("d","Error updating the WebView");
+                Log.d("d", "Error updating the WebView");
             }
-        }
-    }
-
-    public void doSave() {
-        Preferences.savePreferences();
-        if (mListener!=null) {
-            mListener.prepareOptionMenu();
-        }
-        try {
-            dismiss();
-        } catch (Exception e) {
-            Log.d("d","Error closing fragment");
-        }
-    }
-
-    public void setupReset() {
-        title.setText(getActivity().getResources().getString(R.string.areyousure));
-        // Show what we want and hide what we don't
-        setviewvisiblities(View.GONE, View.GONE, View.GONE, View.VISIBLE);
-
-        // Set up the default values
-        // Set up save/tick listener
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (createBlankXML(getActivity(), preferences)) {
-                    FullscreenActivity.myToastMessage = getString(R.string.ok);
-                } else {
-                    FullscreenActivity.myToastMessage = getString(R.string.error);
-                }
-                ShowToast.showToast(getActivity());
-                try {
-                    dismiss();
-                } catch (Exception e) {
-                    Log.d("d", "Error closing the fragment");
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onCancel(DialogInterface dialog) {
-        try {
-            this.dismiss();
-        } catch (Exception e) {
-            Log.d("d","Error closing the fragment");
-        }
-    }
-
-    public void buildTable(Context c) {
-        StorageAccess storageAccess = new StorageAccess();
-        // Info is stored in ActivityLog.xml file inside Settings folder
-
-        // <Entry1>
-        // <Date>2016-11-28</Date>
-        // <Time>20:29:02</Time>
-        // <Description>1</Description>
-        // <FileName>( Main )/Early on one Christmas morn</FileName>
-        // <title>Early on one Christmas morn</title>
-        // <author/>
-        // <ccli/>
-        // <HasChords>false</HasChords></Entry1>
-
-        // Run this as an async task
-
-        // Check if the Log file exists and if not, create it
-        Uri uri = storageAccess.getUriForItem(c, preferences, "Settings", "", "ActivityLog.xml");
-        if (!storageAccess.uriExists(c, uri)) { // Create a blank file
-            createBlankXML(c, preferences);
-        }
-        InputStream inputStream = storageAccess.getInputStream(c, uri);
-        OutputStream outputStream = storageAccess.getOutputStream(c, uri);
-        String actfilesize = getLogFileSize(c, uri);
-        BuildTable do_buildTable = new BuildTable(uri, inputStream, outputStream, actfilesize);
-        do_buildTable.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }
-
-    private static class AddUsageEntryToLog extends AsyncTask<Object, Void, String> {
-        @SuppressLint("StaticFieldLeak")
-        Context ctx;
-        Uri uri;
-        InputStream inputStream;
-        OutputStream outputStream;
-        StorageAccess storageAccess;
-        String date;
-        String time;
-        String fname = "";
-        String song = "";
-        String author = "";
-        String copyright = "";
-        String ccli = "";
-        String usage = "";
-
-        AddUsageEntryToLog(Context context, StorageAccess sA, Uri fileuri, String f, String s, String a, String c, String l, String u) {
-            uri = fileuri;
-            storageAccess = sA;
-            ctx = context;
-            if (f!=null) {
-                fname = f;
-            }if (s!=null) {
-                song = s;
-            }
-            if (a!=null) {
-                author = a;
-            }
-            if (c!=null) {
-                copyright = c;
-            }
-            if (l!=null) {
-                ccli = l;
-            }
-            if (u!=null) {
-                usage = u;
-            }
-        }
-
-        @Override
-        protected void onPreExecute() {
-            // Get today's date
-            @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            @SuppressLint("SimpleDateFormat") DateFormat tf = new SimpleDateFormat("HH:mm:ss");
-            Date d = new Date();
-            date = df.format(d);
-            time = tf.format(d);
-            date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        }
-
-        @Override
-        protected String doInBackground(Object... objects) {
-            try {
-                InputStream inputStream = storageAccess.getInputStream(ctx, uri);
-                Log.d("d", "inputStream=" + inputStream);
-                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                String myString = storageAccess.readTextFileToString(inputStream);
-                Log.d("d", "myString=" + myString);
-                Document document = documentBuilder.parse(new InputSource(new StringReader(myString)));
-                //Document document = documentBuilder.parse(inputStream);
-                Element root = document.getDocumentElement();
-
-                String last = "Entry0";
-                try {
-                    if (root!=null && root.getLastChild()!=null && root.getLastChild().getNodeName()!=null) {
-                        last = root.getLastChild().getNodeName();
-                        // Repeat this a max of 5 times, or until we find the EntryX tag
-                        boolean found = false;
-                        int attempts = 0;
-                        Node n = root.getLastChild();
-                        while (!found) {
-                            n = n.getPreviousSibling();
-                            last = n.getNodeName();
-                            if (last.contains("Entry")) {
-                                found = true;
-                            } else {
-                                attempts ++;
-                            }
-                            if (attempts>6) {
-                                last = "";
-                                found = true;
-                            }
-                        }
-                    }
-                    last = last.replace("Entry", "");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                        e.printStackTrace();
-                        last = "0";
-                }
-
-                // Try to get the last entry number
-                int i;
-                try {
-                    i = Integer.parseInt(last.replaceAll("[\\D]", "")) + 1;
-                } catch (Exception e) {
-                    Log.d("d","No integer found, so will use 1");
-                    i = 1;
-                }
-
-                Element newItem = document.createElement("Entry"+i);
-
-                Element a_date = document.createElement("Date");
-                a_date.appendChild(document.createTextNode(date));
-                newItem.appendChild(a_date);
-
-                Element a_time = document.createElement("Time");
-                a_time.appendChild(document.createTextNode(time));
-                newItem.appendChild(a_time);
-
-                Element a_usage = document.createElement("Description");
-                a_usage.appendChild(document.createTextNode(usage));
-                newItem.appendChild(a_usage);
-
-                Element a_fname = document.createElement("FileName");
-                a_fname.appendChild(document.createTextNode(fname));
-                newItem.appendChild(a_fname);
-
-                Element a_song = document.createElement("title");
-                a_song.appendChild(document.createTextNode(song));
-                newItem.appendChild(a_song);
-
-                Element a_author = document.createElement("author");
-                a_author.appendChild(document.createTextNode(author));
-                newItem.appendChild(a_author);
-
-                Element a_copyright = document.createElement("copyright");
-                a_copyright.appendChild(document.createTextNode(copyright));
-                newItem.appendChild(a_copyright);
-
-                Element a_ccli = document.createElement("ccli");
-                a_ccli.appendChild(document.createTextNode(ccli));
-                newItem.appendChild(a_ccli);
-
-                if (root!=null) {
-                    root.appendChild(newItem);
-                }
-
-                DOMSource source = new DOMSource(document);
-
-                TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                Transformer transformer = transformerFactory.newTransformer();
-                transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-                transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-                OutputStream outputStream = storageAccess.getOutputStream(ctx, uri);
-                StreamResult result = new StreamResult(outputStream);
-                transformer.transform(source,result);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
         }
     }
 

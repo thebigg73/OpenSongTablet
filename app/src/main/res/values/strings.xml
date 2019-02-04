@@ -1,30 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="extracting" translatable="false">Extracting</string>
-    <string name="converting" translatable="false">Converting</string>
+    <string name="extracting">Extracting</string>
+    <string name="converting">Converting</string>
 
-    <string name="promptbackup" translatable="false">You haven\'t backed up your song library in the last 10 times you have used this app.
+    <string name="promptbackup">You haven\'t backed up your song library in the last 10 times you have used this app.
         This is highly recommended as you can recover your songs if anything goes wrong.
         Ideally you should keep a copy of your backup file on the cloud (e.g. Google Drive) or email it to yourself.</string>
-    <string name="backupnow" translatable="false">Create a backup now</string>
-    <string name="remindme" translatable="false">Remind me later</string>
+    <string name="backupnow">Create a backup now</string>
+    <string name="remindme">Remind me later</string>
 
-    <string name="connected_device_song" translatable="false">Song from connected device</string>
-    <string name="network_error" translatable="false">Network error</string>
-    <string name="download_new" translatable="false">Click here to download a new Bible</string>
-    <string name="storage_check" translatable="false">Checking storage</string>
-    <string name="load_preferences" translatable="false">Loading preferences</string>
+    <string name="connected_device_song">Song from connected device</string>
+    <string name="network_error">Network error</string>
+    <string name="download_new">Click here to download a new Bible</string>
+    <string name="storage_check">Checking storage</string>
+    <string name="load_preferences">Loading preferences</string>
 
-    <string name="googlefontcustom" translatable="false">Other Google font name</string>
-    <string name="googlefontbrowse" translatable="false">Browse all Google Fonts</string>
+    <string name="googlefontcustom">Other Google font name</string>
+    <string name="googlefontbrowse">Browse all Google Fonts</string>
     <string name="lorem" translatable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
-
-    <string name="root" translatable="false">Choose storage location</string>
-    <string name="root_explain" translatable="false">Your storage location should point to where the OpenSong folder resides or where
-        the app should create it.  If you are locating an existing OpenSong folder, navigate to where it is, but
-        do not select the OpenSong folder itself, but instead, select the folder that contains the OpenSong folder.</string>
-    <string name="root_error" translatable="false">You are currently inside an OpenSong folder - not allowed</string>
 
     <string name="holychords" translatable="false">HolyChords.com</string>
     <string name="notsaved">not saved</string>

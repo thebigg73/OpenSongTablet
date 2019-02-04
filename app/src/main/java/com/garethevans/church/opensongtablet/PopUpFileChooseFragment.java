@@ -105,35 +105,35 @@ public class PopUpFileChooseFragment extends DialogFragment {
             case "logo":
                 myTitle = getActivity().getResources().getString(R.string.logo);
                 filechecks = imagefiletypes;
-                location.setText(FullscreenActivity.dirbackgrounds.toString());
+                location.setText("OpenSong/Backgrounds/");
                 listvidsandimages();
                 break;
 
             case "image1":
                 myTitle = getActivity().getResources().getString(R.string.choose_image1);
                 filechecks = imagefiletypes;
-                location.setText(FullscreenActivity.dirbackgrounds.toString());
+                location.setText("OpenSong/Backgrounds/");
                 listvidsandimages();
                 break;
 
             case "image2":
                 myTitle = getActivity().getResources().getString(R.string.choose_image2);
                 filechecks = imagefiletypes;
-                location.setText(FullscreenActivity.dirbackgrounds.toString());
+                location.setText("OpenSong/Backgrounds/");
                 listvidsandimages();
                 break;
 
             case "video1":
                 myTitle = getActivity().getResources().getString(R.string.choose_video1);
                 filechecks = videofiletypes;
-                location.setText(FullscreenActivity.dirbackgrounds.toString());
+                location.setText("\"OpenSong/Backgrounds/\"");
                 listvidsandimages();
                 break;
 
             case "video2":
                 myTitle = getActivity().getResources().getString(R.string.choose_video2);
                 filechecks = videofiletypes;
-                location.setText(FullscreenActivity.dirbackgrounds.toString());
+                location.setText("OpenSong/Backgrounds/");
                 listvidsandimages();
                 break;
 

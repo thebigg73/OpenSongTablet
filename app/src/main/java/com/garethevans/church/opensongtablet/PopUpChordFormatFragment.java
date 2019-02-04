@@ -79,7 +79,7 @@ public class PopUpChordFormatFragment extends DialogFragment {
         saveMe.setVisibility(View.GONE);
 
         // Load the user preferences
-        Preferences.loadPreferences();
+        Preferences.loadPreferences(getActivity());
 
         numeral = FullscreenActivity.chordFormat;
         numeral2 = FullscreenActivity.alwaysPreferredChordFormat;

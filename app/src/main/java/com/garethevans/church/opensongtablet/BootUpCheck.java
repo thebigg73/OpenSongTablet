@@ -96,6 +96,10 @@ public class BootUpCheck extends AppCompatActivity {
         customhandler = new Handler();
         monohandler = new Handler();
 
+        if (getIntent() != null) {
+            dealWithIntent(getIntent());
+        }
+
         // This will do one of 2 things - it will either show the splash screen or the welcome screen
         // To determine which one, we need to check the storage is set and is valid
         // The last version used must be the same or greater than the current app version
@@ -400,7 +404,7 @@ public class BootUpCheck extends AppCompatActivity {
                         uriTree = null;
                         ShowToast showToast = new ShowToast();
                         showToast.showToastMessage(BootUpCheck.this, getString(R.string.storage_notwritable));
-                        if (locations.size() > 0) {
+                        if (locations != null && locations.size() > 0) {
                             // Revert back to the blank selection as the one chosen can't be used
                             previousStorageSpinner.setSelection(0);
                         }
@@ -408,6 +412,7 @@ public class BootUpCheck extends AppCompatActivity {
                 }
 
 
+                Log.d("d", "uriTree=" + resultData.getData());
             } else {
                 // This is the newer version for Lollipop+ This is preferred!
                 if (resultData!=null) {
@@ -471,7 +476,13 @@ public class BootUpCheck extends AppCompatActivity {
         Log.d("BootUpCheck", "storageGranted=" + storageGranted);
         Log.d("BootUpCheck", "checkStorageIsValid()=" + checkStorageIsValid());
         Log.d("BootUpCheck", "skiptoapp=" + skiptoapp);
-
+        if (skiptoapp) {
+            try {
+                goToSongsLinearLayout.setVisibility(View.VISIBLE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         if (checkStorageIsValid() && storageGranted && !skiptoapp) {
             // We're good to go, but need to wait for the user to click on the start button
             goToSongsLinearLayout.setVisibility(View.VISIBLE);
@@ -810,6 +821,104 @@ public class BootUpCheck extends AppCompatActivity {
                     previousStorageTextView.setVisibility(View.GONE);
                 }
             }
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Log.d("d", "Dealing with intent");
+        super.onNewIntent(intent);
+        dealWithIntent(intent);
+    }
+
+    public void dealWithIntent(Intent intent) {
+        try {
+            String action = intent.getAction();
+            String type = intent.getType();
+
+            // Sharing clipboard text
+            if (Intent.ACTION_SEND.equals(action) && type != null) {
+                if ("text/plain".equals(type)) {
+                    handleSendText(intent); // Handle text being sent
+                }
+            }
+
+            // Only works for files
+            if (intent.getData() != null && intent.getData().getPath() != null) {
+                Uri file_uri = intent.getData();
+                String file_name = file_uri.getLastPathSegment();
+
+                if (file_name != null) {
+                    // Check the file exists!
+                    if (storageAccess.uriExists(BootUpCheck.this, file_uri)) {
+                        FullscreenActivity.incomingfile = intent;
+                        if (file_name.endsWith(".osb")) {
+                            // This is an OpenSong backup file
+                            FullscreenActivity.whattodo = "importfile_processimportosb";
+                        } else {
+                            // This is an file opensong can deal with (hopefully)
+                            FullscreenActivity.whattodo = "importfile_doimport";
+                        }
+                    } else {
+                        // Cancel the intent
+                        FullscreenActivity.incomingfile = null;
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+            // No file or intent data
+            e.printStackTrace();
+            // Clear the current intent data as we've dealt with it
+            FullscreenActivity.incomingfile = null;
+        }
+    }
+
+    public void handleSendText(Intent intent) {
+        StringBuilder sharedText = new StringBuilder(intent.getStringExtra(Intent.EXTRA_TEXT));
+        String title;
+        // Fix line breaks (if they exist)
+        sharedText = new StringBuilder(ProcessSong.fixlinebreaks(sharedText.toString()));
+
+        // If this is imported from YouVersion bible app, it should contain https://bible
+        if (sharedText.toString().contains("https://bible")) {
+
+            title = getString(R.string.scripture);
+            // Split the text into lines
+            String[] lines = sharedText.toString().split("\n");
+            if (lines.length > 0) {
+                // Remove the last line (http reference)
+                if (lines.length - 1 > 0 && lines[lines.length - 1] != null &&
+                        lines[lines.length - 1].contains("https://bible")) {
+                    lines[lines.length - 1] = "";
+                }
+
+                // The 2nd last line is likely to be the verse title
+                if (lines.length - 2 > 0 && lines[lines.length - 2] != null) {
+                    title = lines[lines.length - 2];
+                    lines[lines.length - 2] = "";
+                }
+
+                // Now put the string back together.
+                sharedText = new StringBuilder();
+                for (String l : lines) {
+                    sharedText.append(l).append("\n");
+                }
+                sharedText = new StringBuilder(sharedText.toString().trim());
+            }
+
+            // Now split it into smaller lines to better fit the screen size
+            Bible bibleC = new Bible();
+            sharedText = new StringBuilder(bibleC.shortenTheLines(sharedText.toString(), 40, 6));
+
+            FullscreenActivity.whattodo = "importfile_customreusable_scripture";
+            FullscreenActivity.scripture_title = title;
+            FullscreenActivity.scripture_verse = sharedText.toString();
+        } else {
+            // Just standard text, so create a new song
+            FullscreenActivity.whattodo = "importfile_newsong_text";
+            FullscreenActivity.scripture_title = "importedtext_in_scripture_verse";
+            FullscreenActivity.scripture_verse = sharedText.toString();
         }
     }
 

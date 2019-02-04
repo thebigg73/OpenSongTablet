@@ -303,13 +303,6 @@ public class PopUpSetViewNew extends DialogFragment {
         extractSongsAndFolders();
         FullscreenActivity.doneshuffle = false;
 
-        for (String s : FullscreenActivity.mSetList) {
-            Log.d("d", "Check mSetList: " + s);
-        }
-        for (String s : FullscreenActivity.mTempSetList) {
-            Log.d("d", "Check mTempSetList: " + s);
-        }
-
         MyAdapter ma = new MyAdapter(createList(FullscreenActivity.mTempSetList.size()), getActivity(), preferences);
         mRecyclerView.setAdapter(ma);
         callback = new SetListItemTouchHelper(ma);

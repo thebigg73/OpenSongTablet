@@ -4,15 +4,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
-import java.text.Collator;
 import java.util.ArrayList;
 
 public class ListSongFiles {
 
     // This is used to build the song index by matching the current folder with allSongDetails array
     // Filenames (including subfolders) are added to mSongFileNames
-
-    Collator coll;
 
     // This is what will work with SAF eventually....
     void songUrisInFolder(Context c, Preferences preferences) {
@@ -95,16 +92,22 @@ public class ListSongFiles {
 
             // Go through the values stored and add the ones required
             for (int w = 0; w < FullscreenActivity.allSongDetailsForMenu.length; w++) {
-                if ((FullscreenActivity.whichSongFolder.equals("") ||
-                        FullscreenActivity.whichSongFolder.equals(c.getString(R.string.mainfoldername))) &&
-                        (FullscreenActivity.allSongDetailsForMenu[w][0].equals("") ||
-                                FullscreenActivity.allSongDetailsForMenu[w][0].equals(c.getString(R.string.mainfoldername)))) {
+                boolean mainfolder = FullscreenActivity.whichSongFolder.equals("") ||
+                        FullscreenActivity.whichSongFolder.equals(c.getString(R.string.mainfoldername));
+                boolean songfolderisnotnull = FullscreenActivity.allSongDetailsForMenu[w] != null &&
+                        FullscreenActivity.allSongDetailsForMenu[w][0] != null;
+                boolean songisinmainfolder = songfolderisnotnull &&
+                        (FullscreenActivity.allSongDetailsForMenu[w][0].replace("/", "").equals("") ||
+                                FullscreenActivity.allSongDetailsForMenu[w][0].replace("/", "").equals(FullscreenActivity.mainfoldername));
+                boolean songisincurrentfolder = songfolderisnotnull &&
+                        (FullscreenActivity.allSongDetailsForMenu[w][0].replace("/", "").equals(FullscreenActivity.whichSongFolder));
+
+                if (mainfolder && songisinmainfolder) {
                     songs.add(FullscreenActivity.allSongDetailsForMenu[w][1]);
                     authors.add(FullscreenActivity.allSongDetailsForMenu[w][2]);
                     keys.add(FullscreenActivity.allSongDetailsForMenu[w][3]);
 
-                } else if (FullscreenActivity.allSongDetailsForMenu[w][0].equals(FullscreenActivity.whichSongFolder) &&
-                        !FullscreenActivity.allSongDetailsForMenu[w][3].equals(c.getString(R.string.songsinfolder))) {
+                } else if (songisincurrentfolder && !FullscreenActivity.allSongDetailsForMenu[w][3].equals(c.getString(R.string.songsinfolder))) {
                     songs.add(FullscreenActivity.allSongDetailsForMenu[w][1]);
                     authors.add(FullscreenActivity.allSongDetailsForMenu[w][2]);
                     keys.add(FullscreenActivity.allSongDetailsForMenu[w][3]);

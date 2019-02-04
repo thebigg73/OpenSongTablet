@@ -768,4 +768,20 @@
     <string name="keepmultiline">Διατηρήστε συμπαγές πολυγραμμικό</string>
     <string name="notsaved">Δεν έχει αποθηκευτεί</string>
 
+    <string name="extracting">"Εξαγωγή"</string>
+    <string name="converting">"Μετατροπή"</string>
+
+    <string name="promptbackup">"Δεν έχετε δημιουργήσει αντίγραφο ασφαλείας της βιβλιοθήκης τραγουδιών σας τις τελευταίες 10 φορές που έχετε χρησιμοποιήσει αυτήν την εφαρμογή. Αυτό συνιστάται ιδιαίτερα καθώς μπορείτε να ανακτήσετε τα τραγούδια σας αν κάτι δεν πάει στραβά. Στην ιδανική περίπτωση, πρέπει να φυλάξετε ένα αντίγραφο του αρχείου αντιγράφων ασφαλείας στο σύννεφο (π.χ. Google Drive) ή να το στείλετε με μήνυμα ηλεκτρονικού ταχυδρομείου στον εαυτό σας."</string>
+    <string name="backupnow">"Δημιουργήστε ένα αντίγραφο ασφαλείας τώρα"</string>
+    <string name="remindme">"Θύμισέ μου αργότερα"</string>
+
+    <string name="connected_device_song">"Τραγούδι από συνδεδεμένη συσκευή"</string>
+    <string name="network_error">"Σφάλμα δικτύου"</string>
+    <string name="download_new">"Κάντε κλικ εδώ για να κατεβάσετε μια νέα Βίβλο"</string>
+    <string name="storage_check">"Έλεγχος αποθήκευσης"</string>
+    <string name="load_preferences">"Φόρτωση προτιμήσεων"</string>
+
+    <string name="googlefontcustom">"Άλλο όνομα γραμματοσειράς Google"</string>
+    <string name="googlefontbrowse">"Περιηγηθείτε σε όλες τις γραμματοσειρές Google"</string>
+
 </resources>

@@ -599,7 +599,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     if (FullscreenActivity.isPDF) {
                         doPDFPage();
                     } else if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide) {
-                        doImagePage();
+                        doImagePage(FullscreenActivity.uriToLoad);
                     } else {
                         projected_ImageView.setVisibility(View.GONE);
                         switch (FullscreenActivity.whichMode) {
@@ -723,11 +723,10 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             songalert_fadeout = CustomAnimations.setUpAnimation(presentermode_alert, 1.0f, 0.0f);
         }
 
-        static void doImagePage() {
+        static void doImagePage(Uri imageUri) {
             projected_ImageView.setVisibility(View.GONE);
             projected_ImageView.setBackgroundColor(0x00000000);
             // Process the image location into an URI
-            Uri imageUri = Uri.fromFile(FullscreenActivity.file);
             RequestOptions myOptions = new RequestOptions()
                     .fitCenter();
             Glide.with(c).load(imageUri).apply(myOptions).into(projected_ImageView);

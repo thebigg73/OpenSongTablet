@@ -64,8 +64,7 @@ class PadFunctions {
 
         if (FullscreenActivity.mPadFile.equals(c.getResources().getString(R.string.off))) {
             isvalid = false;
-        } else if (FullscreenActivity.mPadFile.equals(c.getResources().getString(R.string.link_audio)) &&
-                !FullscreenActivity.mLinkAudio.isEmpty() && !FullscreenActivity.mLinkAudio.equals("")) {
+        } else if (FullscreenActivity.mPadFile.equals(c.getResources().getString(R.string.link_audio)) && !FullscreenActivity.mLinkAudio.isEmpty()) {
             StorageAccess storageAccess = new StorageAccess();
             Uri uri = storageAccess.fixLocalisedUri(c, preferences, FullscreenActivity.mLinkAudio);
             isvalid = storageAccess.uriExists(c,uri);

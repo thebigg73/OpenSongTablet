@@ -25,8 +25,6 @@ android {
         multiDexEnabled true
         minSdkVersion 19
         targetSdkVersion 26
-        //android.compileOptions.sourceCompatibility 1.8
-        //android.compileOptions.targetCompatibility 1.8
 
     }
     dexOptions {
@@ -49,9 +47,6 @@ buildscript {
         classpath 'me.tatarka:gradle-retrolambda:3.7.0'
     }
 }
-
-//apply plugin: 'com.neenbedankt.android-apt'
-//apply plugin: 'me.tatarka.retrolambda'
 
 repositories {
     google()
@@ -79,8 +74,6 @@ dependencies {
     implementation 'com.itextpdf:itextg:5.5.9'
     implementation 'ru.egslava:MaskedEditText:1.0.5'
     implementation 'com.annimon:stream:1.1.9'
-    //implementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    //implementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     implementation 'lib.kashif:folderpicker:2.4'
 
 }

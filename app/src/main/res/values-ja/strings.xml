@@ -692,4 +692,19 @@
     <string name="keepmultiline">マルチラインコンパクトを保つ</string>
     <string name="notsaved">保存されません</string>
 
+    <string name="extracting">"抽出する"</string>
+    <string name="converting">"変換中"</string>
+
+    <string name="promptbackup">"あなたはこのアプリを使ったことがある過去10回の間あなたのソングライブラリをバックアップしていません。問題が発生した場合は曲を復元できますので、これを強くお勧めします。理想的には、バックアップファイルのコピーをクラウド（Googleドライブなど）に保存するか、自分自身に電子メールで送信する必要があります。"</string>
+    <string name="backupnow">"今すぐバックアップを作成する"</string>
+    <string name="remindme">"後で思い出させる"</string>
+
+    <string name="connected_device_song">"接続機器からの曲"</string>
+    <string name="network_error">"ネットワークエラー"</string>
+    <string name="download_new">"新しい聖書をダウンロードするにはここをクリック"</string>
+    <string name="storage_check">"ストレージの確認"</string>
+    <string name="load_preferences">"設定を読み込む"</string>
+
+    <string name="googlefontcustom">"その他のGoogleフォント名"</string>
+    <string name="googlefontbrowse">"Googleフォントの全製品を見る"</string>
 </resources>

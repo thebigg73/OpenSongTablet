@@ -17,9 +17,6 @@ import android.media.midi.MidiReceiver;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.provider.DocumentFile;
 import android.support.v7.app.ActionBar;
@@ -34,7 +31,6 @@ import com.peak.salut.Salut;
 import com.peak.salut.SalutDataReceiver;
 import com.peak.salut.SalutServiceData;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
@@ -54,12 +50,6 @@ public class FullscreenActivity extends AppCompatActivity {
     public static String mediaStore = "", prefStorage, customStorage, mStorage = "";
     public static Uri uriTree;
     public static DocumentFile appHome;
-    public static File root = Environment.getExternalStorageDirectory(),
-            dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs"),
-            dirsets = new File(root.getAbsolutePath() + "/documents/OpenSong/Sets"),
-            dirPads = new File(root.getAbsolutePath() + "/documents/OpenSong/Pads"),
-            dirbackgrounds = new File(root.getAbsolutePath() + "/documents/OpenSong/Backgrounds"),
-            dirreceived = new File(root.getAbsolutePath() + "/documents/OpenSong/Received");
 
     // The song fields
     public static CharSequence mTitle = "", mAuthor = "Gareth Evans", mCopyright = "";
@@ -82,7 +72,7 @@ public class FullscreenActivity extends AppCompatActivity {
             searchKey = new ArrayList<>(), searchHymnNumber = new ArrayList<>(),
             allfilesforsearch = new ArrayList<>(), search_database = new ArrayList<>();
     public static float menuSize, alphabeticalSize;
-    public static File filechosen, file;
+    public static Uri uriToLoad;
     public static String[] mSongFileNames, mSongFolderNames;
 
     //instantiated new class here.
@@ -90,6 +80,8 @@ public class FullscreenActivity extends AppCompatActivity {
     public static ArrayList<String> songIds = new ArrayList<>();
     public static ArrayList<String> folderIds = new ArrayList<>();
     public static ArrayList<Uri> songsInFolderUris = new ArrayList<>();
+    public static boolean appRunning = false;
+
     //this could be a ref to an xmlObject.
     public static String[][] allSongDetailsForMenu;
     public static String[][] songDetails;
@@ -212,7 +204,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
     // This is for trying to automatically open songs via intent
     public static Intent incomingfile;
-    public static String file_name = "", file_location = "", file_type = "";
+    public static String file_type = "";
     public static Uri file_uri;
 
     // Screencapture variables
@@ -358,10 +350,8 @@ public class FullscreenActivity extends AppCompatActivity {
     public static boolean usePresentationOrder = false, multilineCompact = false;
     public static int presoTransitionTime = 800;
 
-
     // Song xml data
     public static ArrayList<String> foundSongSections_heading = new ArrayList<>();
-    //public static ArrayList<String> foundSongSections_content = new ArrayList<>();
 
 
     public static boolean isPresenting, isHDMIConnected = false, autoProject;
@@ -410,7 +400,7 @@ public class FullscreenActivity extends AppCompatActivity {
             exportDesktop_String = "", exportText_String = "", exportChordPro_String = "",
             exportOnSong_String = "";
 
-    public static boolean convertedfile = false, alreadyloading = false;
+    public static boolean alreadyloading = false;
 
     // Salut / connect devices
     @SuppressLint("StaticFieldLeak")
@@ -433,212 +423,13 @@ public class FullscreenActivity extends AppCompatActivity {
     public static boolean mAndroidBeamAvailable  = false;
     public static boolean forcecastupdate;
 
-    //public static RefWatcher refWatcher;
-
     StorageAccess storageAccess;
-    SongFolders songFolders;
     Preferences preferences;
-
-    public static void restart(Context context) {
-        /*try {
-            Intent mStartActivity = new Intent(context, BootUpCheck.class);
-            int mPendingIntentId = 123456;
-            PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId, mStartActivity,
-                    PendingIntent.FLAG_CANCEL_CURRENT);
-            AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            if (mgr != null) {
-                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
-                System.exit(0);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        dealWithIntent(intent);
-    }
-
-    public void dealWithIntent(Intent intent) {
-        try {
-            if (intent != null) {
-                if (intent.getData() != null && intent.getData().getPath() != null) {
-                    file_location = intent.getData().getPath();
-                    filechosen = new File(intent.getData().getPath());
-                    file_name = intent.getData().getLastPathSegment();
-                }
-                file_uri = intent.getData();
-                String action = intent.getAction();
-                String type = intent.getType();
-
-                if (Intent.ACTION_SEND.equals(action) && type != null) {
-                    if ("text/plain".equals(type)) {
-                        handleSendText(intent); // Handle text being sent
-                    } /*else if (type.startsWith("image/")) {
-                        handleSendImage(intent); // Handle single image being sent
-                    }*/
-                }
-
-                if (file_name != null && file_location != null) {
-                    // Check the file exists!
-                    File f = new File(file_location);
-                    if (f.exists() && f.canRead()) {
-                        FullscreenActivity.incomingfile = intent;
-                        if (file_name.endsWith(".osb")) {
-                            // This is an OpenSong backup file
-                            whattodo = "importfile_processimportosb";
-                        } else {
-                            // This is an file opensong can deal with (hopefully)
-                            whattodo = "importfile_doimport";
-                        }
-                    } else {
-                        // Cancel the intent
-                        FullscreenActivity.incomingfile = null;
-                    }
-                }
-
-            }
-        } catch (Exception e) {
-            // No file or intent data
-            e.printStackTrace();
-            // Just open the app
-            // Clear the current intent data as we've dealt with it
-            FullscreenActivity.incomingfile = null;
-            FullscreenActivity.myToastMessage = getString(R.string.error);
-
-        }
-    }
-
-    public void handleSendText(Intent intent) {
-        StringBuilder sharedText = new StringBuilder(intent.getStringExtra(Intent.EXTRA_TEXT));
-        String title;
-        // Fix line breaks (if they exist)
-        sharedText = new StringBuilder(ProcessSong.fixlinebreaks(sharedText.toString()));
-
-        // If this is imported from YouVersion bible app, it should contain https://bible
-        if (sharedText.toString().contains("https://bible")) {
-
-            title = getString(R.string.scripture);
-            // Split the text into lines
-            String[] lines = sharedText.toString().split("\n");
-            if (lines.length>0) {
-                // Remove the last line (http reference)
-                if (lines.length-1>0 && lines[lines.length-1]!=null &&
-                        lines[lines.length-1].contains("https://bible")) {
-                    lines[lines.length-1] = "";
-                }
-
-                // The 2nd last line is likely to be the verse title
-                if (lines.length-2>0 && lines[lines.length-2]!=null) {
-                    title = lines[lines.length-2];
-                    lines[lines.length-2] = "";
-                }
-
-                // Now put the string back together.
-                sharedText = new StringBuilder();
-                for (String l:lines) {
-                    sharedText.append(l).append("\n");
-                }
-                sharedText = new StringBuilder(sharedText.toString().trim());
-            }
-
-            // Now split it into smaller lines to better fit the screen size
-            Bible bibleC = new Bible();
-            sharedText = new StringBuilder(bibleC.shortenTheLines(sharedText.toString(), 40, 6));
-
-            whattodo = "importfile_customreusable_scripture";
-            scripture_title = title;
-            scripture_verse = sharedText.toString();
-        } else {
-            // Just standard text, so create a new song
-            whattodo = "importfile_newsong_text";
-            scripture_title = "importedtext_in_scripture_verse";
-            scripture_verse = sharedText.toString();
-        }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        preferences = new Preferences();
-        // Load up the preferences
-        loadPreferences(FullscreenActivity.this);
-
-        Handler lyrichandler = new Handler();
-        Handler chordhandler = new Handler();
-        Handler presohandler = new Handler();
-        Handler presoinfohandler = new Handler();
-        Handler customhandler = new Handler();
-        Handler monohandler = new Handler();
-
-        // Fix and set some variables
-        fixAndSet(FullscreenActivity.this);
-
-        // If we have an intent or a whattodo starting with importfile, retain this
-        if (getIntent()!=null) {
-            dealWithIntent(getIntent());
-        }
-
-        // Check song was loaded last time (if appropriate)
-        checkSongLoadedLastTime();
-
-        // Set the locale
-        setTheLocale(FullscreenActivity.this);
-
-        // Get the song folders
-        storageAccess = new StorageAccess();
-        songFolders = new SongFolders();
-
-        songFolders.prepareSongFolders(FullscreenActivity.this, storageAccess, preferences);
-
-        // Test for NFC capability
-        testForNFC();
-
-
-        // Set up the user preferences for page colours and fonts
-        SetUpColours.colours();
-
-        // Initialise typefaces
-        //initialiseTypefaces(FullscreenActivity.this);
-        SetTypeFace setTypeFace = new SetTypeFace();
-        setTypeFace.setUpAppFonts(FullscreenActivity.this, preferences, lyrichandler, chordhandler,
-                presohandler, presoinfohandler, customhandler, monohandler);
-        //SetTypeFace.setTypeface(FullscreenActivity.this, preferences);
-
-        // If whichMode is Presentation, open that app instead
-        switch (whichMode) {
-            case "Presentation":
-                Intent performmode = new Intent();
-                performmode.setClass(FullscreenActivity.this, PresenterMode.class);
-                startActivity(performmode);
-                finish();
-                break;
-            case "Stage": {
-                Intent stagemode = new Intent();
-                stagemode.setClass(FullscreenActivity.this, StageMode.class);
-                startActivity(stagemode);
-                finish();
-                break;
-            }
-            case "Performance":
-            default: {
-                Intent stagemode = new Intent();
-                stagemode.setClass(FullscreenActivity.this, StageMode.class);
-                startActivity(stagemode);
-                finish();
-                break;
-            }
-        }
-        finish();
-    }
 
     void loadPreferences(Context c) {
         try {
             myPreferences = c.getSharedPreferences("OpenSongApp",Context.MODE_PRIVATE);
-            Preferences.loadPreferences();
+            Preferences.loadPreferences(c);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -719,11 +510,6 @@ public class FullscreenActivity extends AppCompatActivity {
 
         // Fix and set some variables
         fixAndSet(c);
-
-        // If we have an intent or a whattodo starting with importfile, retain this
-        if (getIntent() != null) {
-            dealWithIntent(getIntent());
-        }
 
         // Check song was loaded last time (if appropriate)
         checkSongLoadedLastTime();

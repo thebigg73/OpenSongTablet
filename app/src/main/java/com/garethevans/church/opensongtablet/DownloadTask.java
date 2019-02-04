@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -56,6 +57,7 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
                 connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
 
+                Log.d("d", "address=" + address);
                 // expect HTTP 200 OK, so we don't mistakenly save error report
                 // instead of the file
                 if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -67,8 +69,12 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
                 // might be -1: server did not report the length
                 int fileLength = connection.getContentLength();
 
+                Log.d("d", "fileLength=" + fileLength);
+
                 // download the file
                 input = connection.getInputStream();
+                Log.d("d", "input=" + input);
+
                 if (input!=null) {
 
                     uri = storageAccess.getUriForItem(c, preferences, "", "", filename);

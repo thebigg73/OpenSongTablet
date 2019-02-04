@@ -90,9 +90,6 @@ public class PopUpImportExternalFile extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
-
         bibleC = new Bible();
         storageAccess = new StorageAccess();
         preferences = new Preferences();
@@ -103,13 +100,26 @@ public class PopUpImportExternalFile extends DialogFragment {
         chordProConvert = new ChordProConvert();
         songXML = new SongXML();
 
+        Log.d("d", "Opened importexternalfile fragment");
         V = inflater.inflate(R.layout.popup_importexternalfile, container, false);
+        Log.d("d", "V=" + V);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getDialog().setCanceledOnTouchOutside(true);
 
         initialiseViews(V);
+        Log.d("d", "initialiseViews success");
+
         setAction();
+        Log.d("d", "setActions success");
+
         updateTextViews();
+        Log.d("d", "updateTextViews success");
+
         initialiseLocationsToSave();
+        Log.d("d", "initialiseLocationsToSave success");
+
         PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
+        Log.d("d", "decoratePopUp success");
 
         return V;
     }
@@ -448,8 +458,12 @@ public class PopUpImportExternalFile extends DialogFragment {
             FullscreenActivity.myToastMessage = errormessage;
         }
         if (mListener != null) {
-            mListener.showToastMessage(FullscreenActivity.myToastMessage);
-            mListener.rebuildSearchIndex();
+            try {
+                mListener.showToastMessage(FullscreenActivity.myToastMessage);
+                mListener.rebuildSearchIndex();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         try {
             dismiss();
@@ -465,7 +479,6 @@ public class PopUpImportExternalFile extends DialogFragment {
 
     public interface MyInterface {
         void refreshAll();
-
         void rebuildSearchIndex();
         void onSongImportDone(String message);
         void openFragment();
@@ -535,7 +548,6 @@ public class PopUpImportExternalFile extends DialogFragment {
         }
     }
 
-
     @SuppressLint("StaticFieldLeak")
     private class ImportOnSongBackup extends AsyncTask<Object, String, String> {
         String message;
@@ -569,11 +581,13 @@ public class PopUpImportExternalFile extends DialogFragment {
 
         @Override
         protected String doInBackground(Object... objects) {
-
             File dbfile = new File(getActivity().getExternalFilesDir("OnSong"), "OnSong.Backup.sqlite3");
-            if (!dbfile.mkdirs()) {
-                Log.d("PopUpImport", "Database file already exists - ok");
+            try {
+                dbfile.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
 
             Uri chosenfolderuri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", chosenfolder, "");
 
@@ -718,9 +732,8 @@ public class PopUpImportExternalFile extends DialogFragment {
         @Override
         protected void onPostExecute(String s) {
             // This bit will take a while, so will be called in an async task
-            ShowToast.showToast(getActivity());
-
             try {
+                ShowToast.showToast(getActivity());
                 if (mListener != null) {
                     mListener.onSongImportDone(s);
                 }

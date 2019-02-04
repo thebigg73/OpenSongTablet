@@ -334,7 +334,6 @@ public class PopUpLinks extends DialogFragment {
                 uri = resultData.getData();
                 if (uri!=null) {
                     String uriPath = uri.getPath();
-                    Log.d("d", "uriPath=" + uriPath);
                     if (uriPath != null && uriPath.contains("OpenSong/Media/")) {
                         // This will be a localised file
                         uriPath = uriPath.substring(uriPath.indexOf("OpenSong/Media/") + 15);
@@ -355,8 +354,6 @@ public class PopUpLinks extends DialogFragment {
             }
         }
     }
-
-
 
     void setAudioLength(Uri uri) {
         // If this is a genuine audio file, give the user the option of setting the song duration to match this file

@@ -697,4 +697,20 @@
     <string name="keepmultiline">保持多线紧凑</string>
     <string name="notsaved">没保存</string>
 
+    <string name="extracting">"提取"</string>
+    <string name="converting">"转换"</string>
+
+    <string name="promptbackup">"在过去10次使用此应用程序时，您尚未备份歌曲库。强烈建议您这样做，因为如果出现任何问题，您可以恢复歌曲。理想情况下，您应该将备份文件的副本保存在云端（例如Google Drive）或通过电子邮件发送给自己。"</string>
+    <string name="backupnow">"立即创建备份"</string>
+    <string name="remindme">"稍后提醒我"</string>
+
+    <string name="connected_device_song">"来自连接设备的歌曲"</string>
+    <string name="network_error">"网络错误"</string>
+    <string name="download_new">"点击这里下载新的圣经"</string>
+    <string name="storage_check">"检查存储"</string>
+    <string name="load_preferences">"加载首选项"</string>
+
+    <string name="googlefontcustom">"其他Google字体名称"</string>
+    <string name="googlefontbrowse">"浏览所有Google字体"</string>
+
 </resources>

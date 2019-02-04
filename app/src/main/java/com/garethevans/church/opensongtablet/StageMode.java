@@ -285,11 +285,12 @@ public class StageMode extends AppCompatActivity implements
 
         Log.d("StageMode", "Welcome to Stage Mode");
         FullscreenActivity.mContext = StageMode.this;
+        FullscreenActivity.appRunning = true;
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 
         // Load up the user preferences
-        Preferences.loadPreferences();
+        Preferences.loadPreferences(StageMode.this);
 
         setActions = new SetActions();
         exportPreparer = new ExportPreparer();
@@ -346,8 +347,6 @@ public class StageMode extends AppCompatActivity implements
 
                 // Since this mode has just been opened, force an update to the cast screen
                 FullscreenActivity.forcecastupdate = true;
-
-
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -923,7 +922,7 @@ public class StageMode extends AppCompatActivity implements
                 // Must be receiving a song or a song location
             } else {
                 // Load the song
-                String action = ProcessSong.getSalutReceivedLocation(data.toString(), StageMode.this);
+                String action = ProcessSong.getSalutReceivedLocation(data.toString(), StageMode.this, preferences, storageAccess);
                 switch (action) {
                     case "Location":
                         holdBeforeLoading();
@@ -1014,6 +1013,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void onStart() {
         super.onStart();
+        FullscreenActivity.appRunning = true;
         if (mMediaRouter!=null && mMediaRouteSelector!=null && mMediaRouterCallback!=null) {
             mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                     MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
@@ -1026,6 +1026,7 @@ public class StageMode extends AppCompatActivity implements
     public void onStop() {
         super.onStop();
         try {
+            FullscreenActivity.appRunning = false;
             mMediaRouter.removeCallback(mMediaRouterCallback);
         } catch (Exception e) {
             Log.d("StageMode", "Problem removing mediaroutercallback");
@@ -1044,6 +1045,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        FullscreenActivity.appRunning = true;
         // Make the drawers match half the width of the screen
         resizeDrawers();
         // Fix the page flags
@@ -1250,8 +1252,7 @@ public class StageMode extends AppCompatActivity implements
         songscrollview.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
         setTypeFace.setUpAppFonts(StageMode.this, preferences, lyrichandler, chordhandler,
                 presohandler, presoinfohandler, customhandler, monohandler);
-        //SetTypeFace.setTypeface(StageMode.this, preferences);
-        prepareSongMenu();
+
         prepareOptionMenu();
         loadSong();
     }
@@ -2919,69 +2920,6 @@ public class StageMode extends AppCompatActivity implements
         invalidateOptionsMenu();
     }
 
-/*
-    @SuppressLint("StaticFieldLeak")
-    private class IndexingDone extends AsyncTask<Object, Void, String> {
-
-        @Override
-        protected String doInBackground(Object... objects) {
-            Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
-            try {
-                // Add locale sort
-                Collator coll = Collator.getInstance(FullscreenActivity.locale);
-                coll.setStrength(Collator.SECONDARY);
-                Collections.sort(FullscreenActivity.search_database, coll);
-
-                // Copy the full search string, now it is sorted, into a song and folder array
-                FullscreenActivity.searchFileName.clear();
-                FullscreenActivity.searchFolder.clear();
-                FullscreenActivity.searchTitle.clear();
-                FullscreenActivity.searchAuthor.clear();
-                FullscreenActivity.searchShortLyrics.clear();
-                FullscreenActivity.searchTheme.clear();
-                FullscreenActivity.searchKey.clear();
-                FullscreenActivity.searchHymnNumber.clear();
-
-                for (int d = 0; d < FullscreenActivity.search_database.size(); d++) {
-                    String[] songbits = FullscreenActivity.search_database.get(d).split("_%%%_");
-                    if (songbits[0] != null && songbits[1] != null && songbits[2] != null && songbits[3] != null &&
-                            songbits[4] != null && songbits[5] != null && songbits[6] != null && songbits[7] != null) {
-                        FullscreenActivity.searchFileName.add(d, songbits[0].trim());
-                        FullscreenActivity.searchFolder.add(d, songbits[1].trim());
-                        FullscreenActivity.searchTitle.add(d, songbits[2].trim());
-                        FullscreenActivity.searchAuthor.add(d, songbits[3].trim());
-                        FullscreenActivity.searchShortLyrics.add(d, songbits[4].trim());
-                        FullscreenActivity.searchTheme.add(d, songbits[5].trim());
-                        FullscreenActivity.searchKey.add(d, songbits[6].trim());
-                        FullscreenActivity.searchHymnNumber.add(d, songbits[7].trim());
-                    }
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        boolean cancelled = false;
-        @Override
-        protected void onCancelled() {
-            cancelled = true;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            try {
-                if (!cancelled) {
-                    prepareSongMenu();
-                }
-            } catch (Exception e) {
-                // Ooops, error when updating song menu
-            }
-        }
-    }
-*/
-
     @Override
     public boolean onQueryTextSubmit(String newText) {
         SearchViewItems item = (SearchViewItems) FullscreenActivity.sva.getItem(0);
@@ -3664,7 +3602,6 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    // TODO fix the camera bit in Presenter Mode
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == FullscreenActivity.REQUEST_CAMERA_CODE && resultCode == Activity.RESULT_OK) {
@@ -3684,7 +3621,8 @@ public class StageMode extends AppCompatActivity implements
                             FullscreenActivity.whattodo.equals("doimportset");
 
                     if (validfiletype) {
-                        FullscreenActivity.file_uri = Uri.fromFile(new File(filelocation));
+                        FullscreenActivity.file_uri = Uri.parse(filelocation);
+                        //FullscreenActivity.file_uri = Uri.fromFile(new File(filelocation));
                         openFragment();
                     } else {
                         FullscreenActivity.myToastMessage = getString(R.string.file_type_unknown);
@@ -7194,7 +7132,7 @@ public class StageMode extends AppCompatActivity implements
                 }
                 optionmenu.addView(OptionMenuListeners.prepareOptionMenu(StageMode.this));
                 if (optionmenu != null) {
-                    OptionMenuListeners.optionListeners(optionmenu, StageMode.this, preferences);
+                    OptionMenuListeners.optionListeners(optionmenu, StageMode.this, preferences, storageAccess);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -7626,7 +7564,7 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected Integer doInBackground(Void... voids) {
             try {
-                ProcessSong.processKey();
+                ProcessSong.processKey(StageMode.this, preferences, storageAccess);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -7647,14 +7585,17 @@ public class StageMode extends AppCompatActivity implements
                     if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.pad_auto)) ||
                             FullscreenActivity.mPadFile.equals("")) {
 
+                        boolean custompad;
                         FullscreenActivity.padson = true;
                         if (FullscreenActivity.pad_filename != null && FullscreenActivity.mKey != null) {
-                            boolean custompad = FullscreenActivity.pad_filename.startsWith("custom_");
+                            custompad = !FullscreenActivity.pad_filename.endsWith("null") && FullscreenActivity.pad_filename.startsWith("custom_");
                             AssetFileDescriptor afd = null;
                             String padpath = null;
                             if (custompad) {
                                 // Prepare the custom pad
-                                padpath = FullscreenActivity.dirPads + "/" + FullscreenActivity.pad_filename.replace("custom_", "");
+                                Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Pads", "",
+                                        FullscreenActivity.pad_filename.replace("custom_", ""));
+                                padpath = uri.toString();
 
                             } else {
                                 // Prepare the default auto pad
@@ -7676,6 +7617,7 @@ public class StageMode extends AppCompatActivity implements
                                     FullscreenActivity.mPlayer1.reset();
                                     FullscreenActivity.mPlayer1.setOnPreparedListener(new Player1Prepared());
                                     if (custompad) {
+                                        Log.d("d", "padpath=" + padpath);
                                         FullscreenActivity.mPlayer1.setDataSource(padpath);
                                     } else {
                                         FullscreenActivity.mPlayer1.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());

@@ -25,6 +25,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <Button
+                android:id="@+id/showAll_Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/green_button"
+                android:text="@string/pagebuttons" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

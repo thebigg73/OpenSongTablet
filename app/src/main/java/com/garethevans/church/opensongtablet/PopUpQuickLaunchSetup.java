@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -27,10 +28,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         return frag;
     }
 
-    public interface MyInterface {
-        void pageButtonAlpha(String s);
-        void setupQuickLaunchButtons();
-    }
+    FloatingActionButton button1_image, button2_image, button3_image, button4_image;
 
     private MyInterface mListener;
 
@@ -59,22 +57,9 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         }
     }
 
-    FloatingActionButton button1_image;
-    FloatingActionButton button2_image;
-    FloatingActionButton button3_image;
-    FloatingActionButton button4_image;
-    Spinner button1_spinner;
-    Spinner button2_spinner;
-    Spinner button3_spinner;
-    Spinner button4_spinner;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            this.dismiss();
-        }
-    }
+    Spinner button1_spinner, button2_spinner, button3_spinner, button4_spinner;
+    Button showAll_Button;
+    View V;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -86,8 +71,38 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         mListener.pageButtonAlpha("");
 
-        View V = inflater.inflate(R.layout.popup_quicklaunch, container, false);
+        V = inflater.inflate(R.layout.popup_quicklaunch, container, false);
 
+        // Do this in a new thread
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initialiseViews();
+                        setFABS();
+                        setUpSpinners();
+                        setListeners();
+                    }
+                });
+            }
+        }).start();
+
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
+
+        return V;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
+
+    public void initialiseViews() {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.quicklaunch_title));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
@@ -118,13 +133,18 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         button2_spinner = V.findViewById(R.id.button2_spinner);
         button3_spinner = V.findViewById(R.id.button3_spinner);
         button4_spinner = V.findViewById(R.id.button4_spinner);
+        showAll_Button = V.findViewById(R.id.showAll_Button);
+    }
 
+    void setFABS() {
         // Set the floatingactionbuttons to the correct color
         button1_image.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         button2_image.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         button3_image.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         button4_image.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
+    }
 
+    public void setUpSpinners() {
         ArrayList<String> actionOptions = new ArrayList<>();
         //0
         actionOptions.add("");
@@ -189,7 +209,23 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         button2_image.setBackgroundDrawable(getButtonImage(getActivity(),FullscreenActivity.quickLaunchButton_2));
         button3_image.setBackgroundDrawable(getButtonImage(getActivity(),FullscreenActivity.quickLaunchButton_3));
         button4_image.setBackgroundDrawable(getButtonImage(getActivity(),FullscreenActivity.quickLaunchButton_4));
+    }
 
+    public void setListeners() {
+        showAll_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FullscreenActivity.whattodo = "pagebuttons";
+                try {
+                    if (mListener != null) {
+                        mListener.openFragment();
+                    }
+                    dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         button1_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -226,10 +262,14 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
+    }
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+    public interface MyInterface {
+        void pageButtonAlpha(String s);
 
-        return V;
+        void setupQuickLaunchButtons();
+
+        void openFragment();
     }
 
     public void doSave() {

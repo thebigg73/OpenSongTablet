@@ -195,7 +195,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
             // We must be importing and have selected an appropriate .osb file
             importfilechooser.setVisibility(View.VISIBLE);
             String nameoffile = FullscreenActivity.file_uri.getLastPathSegment();
-            if (nameoffile.contains("/")) {
+            if (nameoffile != null && nameoffile.contains("/")) {
                 nameoffile = nameoffile.substring(nameoffile.lastIndexOf("/") + 1);
             }
             chooseosbfile.setText(nameoffile);
@@ -228,7 +228,14 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
     }
 
     public void prepareFolderListExport() {
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, FullscreenActivity.mSongFolderNames);
+        ArrayList<String> folders = new ArrayList<>();
+        for (String f : FullscreenActivity.mSongFolderNames) {
+            if (f != null && f.contains("OpenSong/Songs/")) {
+                f = f.substring(f.lastIndexOf("OpenSong/Songs/") + 15);
+            }
+            folders.add(f);
+        }
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, folders);
         folderlist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         folderlist.setAdapter(adapter);
     }

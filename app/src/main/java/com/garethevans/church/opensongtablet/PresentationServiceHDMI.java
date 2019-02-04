@@ -671,10 +671,9 @@ class PresentationServiceHDMI extends Presentation
         projected_ImageView.setVisibility(View.GONE);
         projected_ImageView.setBackgroundColor(0x00000000);
         // Process the image location into an URI
-        Uri imageUri = Uri.fromFile(FullscreenActivity.file);
         RequestOptions myOptions = new RequestOptions()
                 .fitCenter();
-        Glide.with(c).load(imageUri).apply(myOptions).into(projected_ImageView);
+        Glide.with(c).load(FullscreenActivity.uriToLoad).apply(myOptions).into(projected_ImageView);
         projected_ImageView.setVisibility(View.VISIBLE);
         animateIn();
     }

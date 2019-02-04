@@ -693,4 +693,20 @@
     <string name="keepmultiline">Держите многострочный компактный</string>
     <string name="notsaved">Не сохранено</string>
 
+    <string name="extracting">"экстрагирование"</string>
+    <string name="converting">"преобразование"</string>
+
+    <string name="promptbackup">"Вы не делали резервную копию своей библиотеки песен за последние 10 раз, когда использовали это приложение. Это настоятельно рекомендуется, поскольку вы можете восстановить свои песни, если что-то пойдет не так. В идеале вы должны хранить копию файла резервной копии в облаке (например, на Google Диске) или отправить ее себе по электронной почте."</string>
+    <string name="backupnow">"Создайте резервную копию сейчас"</string>
+    <string name="remindme">"Напомни мне позже"</string>
+
+    <string name="connected_device_song">"Песня с подключенного устройства"</string>
+    <string name="network_error">"Ошибка сети"</string>
+    <string name="download_new">"Нажмите здесь, чтобы загрузить новую Библию"</string>
+    <string name="storage_check">"Проверка хранилища"</string>
+    <string name="load_preferences">"Загрузка настроек"</string>
+
+    <string name="googlefontcustom">"Другое название шрифта Google"</string>
+    <string name="googlefontbrowse">"Просмотреть все шрифты Google"</string>
+
 </resources>

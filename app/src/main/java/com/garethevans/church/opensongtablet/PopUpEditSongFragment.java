@@ -11,7 +11,10 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -22,6 +25,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -46,6 +50,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     SeekBar predelay_SeekBar, edit_song_tempo;
     TextView predelay_TextView, tempo_text, abcnotation, availabletags;
     SwitchCompat editAsChordPro;
+    ActionMode mActionMode = null;
 
     // Advanced
     EditText edit_song_CCLI, edit_song_aka, edit_song_key_line, edit_song_hymn, edit_song_user1,
@@ -57,7 +62,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
 
     // Buttons
     Button toggleGeneralAdvanced, fix_lyrics;
-    FloatingActionButton addBrackets;
+    FloatingActionButton addBrackets, transposeUpFAB, transposeDownFAB;
+    RelativeLayout transposeDown_RelativeLayout, transposeUp_RelativeLayout;
 
     static int temposlider;
     View V;
@@ -243,6 +249,245 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         }
     }
 
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        // Called when the action mode is created; startActionMode() was called
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            Log.d("d", "create");
+            transposeDown_RelativeLayout.setVisibility(View.VISIBLE);
+            transposeUp_RelativeLayout.setVisibility(View.VISIBLE);
+            return false;
+        }
+
+        // Called each time the action mode is shown. Always called after onCreateActionMode, but
+        // may be called multiple times if the mode is invalidated.
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            Log.d("d", "prepare");
+            return false; // Return false if nothing is done
+        }
+
+        // Called when the user selects a contextual menu item
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            Log.d("d", "clicked");
+            return false;
+        }
+
+        // Called when the user exits the action mode
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            Log.d("d", "destroy");
+            transposeDown_RelativeLayout.setVisibility(View.GONE);
+            transposeUp_RelativeLayout.setVisibility(View.GONE);
+            mActionMode = null;
+        }
+    };
+
+    public void cancelEdit() {
+        // Load the song back up with the default values
+        try {
+            LoadXML.loadXML(getActivity(), preferences, listSongFiles, storageAccess);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        dismiss();
+    }
+
+    private class seekBarListener implements SeekBar.OnSeekBarChangeListener {
+
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            String newtext = getResources().getString(R.string.notset);
+            temposlider = edit_song_tempo.getProgress() + 39;
+            if (temposlider > 39) {
+                newtext = temposlider + " " + getResources().getString(R.string.bpm);
+            }
+            tempo_text.setText(newtext);
+        }
+
+        public void onStartTrackingTouch(SeekBar seekBar) {
+        }
+
+        public void onStopTrackingTouch(SeekBar seekBar) {
+        }
+    }
+
+    public static void prepareBlankSongXML() {
+        // Prepare the new XML file
+        String myNEWXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        myNEWXML += "<song>\n";
+        myNEWXML += "  <title>" + FullscreenActivity.songfilename + "</title>\n";
+        myNEWXML += "  <author></author>\n";
+        myNEWXML += "  <copyright></copyright>\n";
+        myNEWXML += "  <presentation></presentation>\n";
+        myNEWXML += "  <hymn_number></hymn_number>\n";
+        myNEWXML += "  <capo print=\"\"></capo>\n";
+        myNEWXML += "  <tempo></tempo>\n";
+        myNEWXML += "  <time_sig></time_sig>\n";
+        myNEWXML += "  <duration></duration>\n";
+        myNEWXML += "  <predelay></predelay>\n";
+        myNEWXML += "  <ccli></ccli>\n";
+        myNEWXML += "  <theme></theme>\n";
+        myNEWXML += "  <alttheme></alttheme>\n";
+        myNEWXML += "  <user1></user1>\n";
+        myNEWXML += "  <user2></user2>\n";
+        myNEWXML += "  <user3></user3>\n";
+        myNEWXML += "  <key></key>\n";
+        myNEWXML += "  <aka></aka>\n";
+        myNEWXML += "  <key_line></key_line>\n";
+        myNEWXML += "  <books></books>\n";
+        myNEWXML += "  <midi></midi>\n";
+        myNEWXML += "  <midi_index></midi_index>\n";
+        myNEWXML += "  <pitch></pitch>\n";
+        myNEWXML += "  <restrictions></restrictions>\n";
+        myNEWXML += "  <notes></notes>\n";
+        myNEWXML += "  <lyrics>[V]\n</lyrics>\n";
+        myNEWXML += "  <linked_songs></linked_songs>\n";
+        myNEWXML += "  <pad_file></pad_file>\n";
+        myNEWXML += "  <custom_chords></custom_chords>\n";
+        myNEWXML += "  <link_youtube></link_youtube>\n";
+        myNEWXML += "  <link_web></link_web>\n";
+        myNEWXML += "  <link_audio></link_audio>\n";
+        myNEWXML += "  <loop_audio>false</loop_audio>\n";
+        myNEWXML += "  <link_other></link_other>\n";
+        myNEWXML += "  <abcnotation></abcnotation>\n";
+        myNEWXML += "</song>";
+        FullscreenActivity.mynewXML = myNEWXML;
+    }
+
+    public static void prepareSongXML() {
+        // Prepare the new XML file
+
+        if (FullscreenActivity.mEncoding == null || FullscreenActivity.mEncoding.equals("")) {
+            FullscreenActivity.mEncoding = "UTF-8";
+        }
+        String myNEWXML = "<?xml version=\"1.0\" encoding=\"" + FullscreenActivity.mEncoding + "\"?>\n";
+        myNEWXML += "<song>\n";
+        myNEWXML += "  <title>" + parseToHTMLEntities(FullscreenActivity.mTitle.toString()) + "</title>\n";
+        myNEWXML += "  <author>" + parseToHTMLEntities(FullscreenActivity.mAuthor.toString()) + "</author>\n";
+        myNEWXML += "  <copyright>" + parseToHTMLEntities(FullscreenActivity.mCopyright.toString()) + "</copyright>\n";
+        myNEWXML += "  <presentation>" + parseToHTMLEntities(FullscreenActivity.mPresentation) + "</presentation>\n";
+        myNEWXML += "  <hymn_number>" + parseToHTMLEntities(FullscreenActivity.mHymnNumber) + "</hymn_number>\n";
+        myNEWXML += "  <capo print=\"" + parseToHTMLEntities(FullscreenActivity.mCapoPrint) + "\">" + parseToHTMLEntities(FullscreenActivity.mCapo) + "</capo>\n";
+        myNEWXML += "  <tempo>" + parseToHTMLEntities(FullscreenActivity.mTempo) + "</tempo>\n";
+        myNEWXML += "  <time_sig>" + parseToHTMLEntities(FullscreenActivity.mTimeSig) + "</time_sig>\n";
+        myNEWXML += "  <duration>" + parseToHTMLEntities(FullscreenActivity.mDuration) + "</duration>\n";
+        myNEWXML += "  <predelay>" + parseToHTMLEntities(FullscreenActivity.mPreDelay) + "</predelay>\n";
+        myNEWXML += "  <ccli>" + parseToHTMLEntities(FullscreenActivity.mCCLI) + "</ccli>\n";
+        myNEWXML += "  <theme>" + parseToHTMLEntities(FullscreenActivity.mTheme) + "</theme>\n";
+        myNEWXML += "  <alttheme>" + parseToHTMLEntities(FullscreenActivity.mAltTheme) + "</alttheme>\n";
+        myNEWXML += "  <user1>" + parseToHTMLEntities(FullscreenActivity.mUser1) + "</user1>\n";
+        myNEWXML += "  <user2>" + parseToHTMLEntities(FullscreenActivity.mUser2) + "</user2>\n";
+        myNEWXML += "  <user3>" + parseToHTMLEntities(FullscreenActivity.mUser3) + "</user3>\n";
+        myNEWXML += "  <key>" + parseToHTMLEntities(FullscreenActivity.mKey) + "</key>\n";
+        myNEWXML += "  <aka>" + parseToHTMLEntities(FullscreenActivity.mAka) + "</aka>\n";
+        myNEWXML += "  <key_line>" + parseToHTMLEntities(FullscreenActivity.mKeyLine) + "</key_line>\n";
+        myNEWXML += "  <books>" + parseToHTMLEntities(FullscreenActivity.mBooks) + "</books>\n";
+        myNEWXML += "  <midi>" + parseToHTMLEntities(FullscreenActivity.mMidi) + "</midi>\n";
+        myNEWXML += "  <midi_index>" + parseToHTMLEntities(FullscreenActivity.mMidiIndex) + "</midi_index>\n";
+        myNEWXML += "  <pitch>" + parseToHTMLEntities(FullscreenActivity.mPitch) + "</pitch>\n";
+        myNEWXML += "  <restrictions>" + parseToHTMLEntities(FullscreenActivity.mRestrictions) + "</restrictions>\n";
+        myNEWXML += "  <notes>" + parseToHTMLEntities(FullscreenActivity.mNotes) + "</notes>\n";
+        myNEWXML += "  <lyrics>" + parseToHTMLEntities(FullscreenActivity.mLyrics) + "</lyrics>\n";
+        myNEWXML += "  <linked_songs>" + parseToHTMLEntities(FullscreenActivity.mLinkedSongs) + "</linked_songs>\n";
+        myNEWXML += "  <pad_file>" + parseToHTMLEntities(FullscreenActivity.mPadFile) + "</pad_file>\n";
+        myNEWXML += "  <custom_chords>" + parseToHTMLEntities(FullscreenActivity.mCustomChords) + "</custom_chords>\n";
+        myNEWXML += "  <link_youtube>" + parseToHTMLEntities(FullscreenActivity.mLinkYouTube) + "</link_youtube>\n";
+        myNEWXML += "  <link_web>" + parseToHTMLEntities(FullscreenActivity.mLinkWeb) + "</link_web>\n";
+        myNEWXML += "  <link_audio>" + parseToHTMLEntities(FullscreenActivity.mLinkAudio) + "</link_audio>\n";
+        myNEWXML += "  <loop_audio>" + parseToHTMLEntities(FullscreenActivity.mLoopAudio) + "</loop_audio>\n";
+        myNEWXML += "  <link_other>" + parseToHTMLEntities(FullscreenActivity.mLinkOther) + "</link_other>\n";
+        myNEWXML += "  <abcnotation>" + parseToHTMLEntities(FullscreenActivity.mNotation) + "</abcnotation>\n";
+
+        if (!FullscreenActivity.mExtraStuff1.isEmpty()) {
+            myNEWXML += "  " + FullscreenActivity.mExtraStuff1 + "\n";
+        }
+        if (!FullscreenActivity.mExtraStuff2.isEmpty()) {
+            myNEWXML += "  " + FullscreenActivity.mExtraStuff2 + "\n";
+        }
+        myNEWXML += "</song>";
+
+        FullscreenActivity.mynewXML = myNEWXML;
+    }
+
+    public interface MyInterface {
+        void rebuildSearchIndex();
+    }
+
+    public static String parseToHTMLEntities(String val) {
+        if (val == null) {
+            val = "";
+        }
+        // Make sure all vals are unencoded to start with
+        // Now HTML encode everything that needs encoded
+        // Protected are < > &
+        // Change < to __lt;  We'll later replace the __ with &.  Do this to deal with &amp; separately
+        val = val.replace("<", "__lt;");
+        val = val.replace("&lt;", "__lt;");
+
+        // Change > to __gt;  We'll later replace the __ with &.  Do this to deal with &amp; separately
+        val = val.replace(">", "__gt;");
+        val = val.replace("&gt;", "__gt;");
+
+        // Change &apos; to ' as they don't need encoding in this format - also makes it compatible with desktop
+        val = val.replace("&apos;", "'");
+        val = val.replace("\'", "'");
+
+        // Change " to __quot;  We'll later replace the __ with &.  Do this to deal with &amp; separately
+        val = val.replace("\"", "__quot;");
+        val = val.replace("&quot;", "__quot;");
+
+        // Now deal with the remaining ampersands
+        val = val.replace("&amp;", "&");  // Reset any that already encoded - all need encoded now
+        val = val.replace("&&", "&");     // Just in case we have wrongly encoded old ones e.g. &amp;&quot;
+        val = val.replace("&", "&amp;");  // Reencode all remaining ampersands
+
+        // Now replace the other protected encoded entities back with their leading ampersands
+        val = val.replace("__lt;", "&lt;");
+        val = val.replace("__gt;", "&gt;");
+        val = val.replace("__quot;", "&quot;");
+
+        return val;
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+    }
+
+    void setCapoSpinner(String mKey) {
+        ArrayList<String> capooptions = Transpose.quickCapoKey(mKey);
+        ArrayAdapter<String> aa = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, capooptions);
+        aa.notifyDataSetChanged();
+        edit_song_capo.setAdapter(aa);
+        // Where is the key in the available array
+        int index = -1;
+        List<String> capo_choice = Arrays.asList(getResources().getStringArray(R.array.capo));
+        for (int w = 0; w < capo_choice.size(); w++) {
+            if (FullscreenActivity.mCapo.equals(capo_choice.get(w))) {
+                index = w;
+            }
+        }
+        edit_song_capo.setSelection(index);
+    }
+
+    public void changeFormat(boolean chordpro) {
+        String textLyrics = edit_song_lyrics.getText().toString();
+        Log.d("d", textLyrics);
+        if (chordpro) {
+            edit_song_lyrics.setText(chordProConvert.fromOpenSongToChordPro(textLyrics, getActivity()));
+            availabletags.setVisibility(View.GONE);
+            fix_lyrics.setVisibility(View.GONE);
+            edit_song_lyrics.requestFocus();
+        } else {
+            edit_song_lyrics.setText(chordProConvert.fromChordProToOpenSong(textLyrics));
+            edit_song_lyrics.requestFocus();
+            availabletags.setVisibility(View.VISIBLE);
+            fix_lyrics.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -320,6 +565,54 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 edit_song_lyrics.setSelection(start+1);
             }
         });
+        transposeDown_RelativeLayout = V.findViewById(R.id.transposeDown_RelativeLayout);
+        transposeUp_RelativeLayout = V.findViewById(R.id.transposeUp_RelativeLayout);
+        transposeDown_RelativeLayout.setVisibility(View.GONE);
+        transposeUp_RelativeLayout.setVisibility(View.GONE);
+        transposeUpFAB = V.findViewById(R.id.transposeUpFAB);
+        transposeUpFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int startSelection = edit_song_lyrics.getSelectionStart();
+                int endSelection = edit_song_lyrics.getSelectionEnd();
+
+                if (startSelection > 0 && endSelection > startSelection) {
+                    String selectedText = edit_song_lyrics.getText().toString().substring(startSelection, endSelection);
+                    // Transpose it
+                    selectedText = Transpose.transposeThisString("+1", 1, selectedText);
+
+                    // Replace the old text
+                    String lyricsinfront = edit_song_lyrics.getText().toString().substring(0, startSelection);
+                    String lyricsafter = edit_song_lyrics.getText().toString().substring(endSelection);
+                    String newtext = lyricsinfront + selectedText + lyricsafter;
+                    edit_song_lyrics.setText(newtext);
+                    edit_song_lyrics.setSelection(startSelection);
+
+                }
+            }
+        });
+        transposeDownFAB = V.findViewById(R.id.transposeDownFAB);
+        transposeDownFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int startSelection = edit_song_lyrics.getSelectionStart();
+                int endSelection = edit_song_lyrics.getSelectionEnd();
+
+                if (startSelection > 0 && endSelection > startSelection) {
+                    String selectedText = edit_song_lyrics.getText().toString().substring(startSelection, endSelection);
+                    // Transpose it
+                    selectedText = Transpose.transposeThisString("-1", 1, selectedText);
+
+                    // Replace the old text
+                    String lyricsinfront = edit_song_lyrics.getText().toString().substring(0, startSelection);
+                    String lyricsafter = edit_song_lyrics.getText().toString().substring(endSelection);
+                    String newtext = lyricsinfront + selectedText + lyricsafter;
+                    edit_song_lyrics.setText(newtext);
+                    edit_song_lyrics.setSelection(startSelection);
+
+                }
+            }
+        });
         editAsChordPro = V.findViewById(R.id.editAsChordPro);
         editAsChordPro.setChecked(FullscreenActivity.editAsChordPro);
         editAsChordPro.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -339,7 +632,22 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                     addBrackets.setVisibility(View.VISIBLE);
                 } else {
                     addBrackets.setVisibility(View.GONE);
+                    //transposeDown_RelativeLayout.setVisibility(View.GONE);
+                    //transposeUp_RelativeLayout.setVisibility(View.GONE);
                 }
+            }
+        });
+        edit_song_lyrics.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mActionMode != null) {
+                    return false;
+                }
+                Log.d("d", "onlongclick");
+                // Start the CAB using the ActionMode.Callback defined above
+                mActionMode = getActivity().startActionMode(mActionModeCallback);
+                edit_song_lyrics.setSelected(true);
+                return false;
             }
         });
         toggleGeneralAdvanced = V.findViewById(R.id.show_general_advanced);
@@ -638,206 +946,5 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
 
         return V;
-    }
-
-    public void cancelEdit() {
-        // Load the song back up with the default values
-        try {
-            LoadXML.loadXML(getActivity(), preferences, listSongFiles, storageAccess);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        dismiss();
-    }
-
-    private class seekBarListener implements SeekBar.OnSeekBarChangeListener {
-
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            String newtext = getResources().getString(R.string.notset);
-            temposlider = edit_song_tempo.getProgress()+39;
-            if (temposlider>39) {
-                newtext = temposlider+" "+getResources().getString(R.string.bpm);
-            }
-            tempo_text.setText(newtext);
-        }
-
-        public void onStartTrackingTouch(SeekBar seekBar) {}
-
-        public void onStopTrackingTouch(SeekBar seekBar) {}
-    }
-
-    public static void prepareBlankSongXML() {
-        // Prepare the new XML file
-        String myNEWXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-        myNEWXML += "<song>\n";
-        myNEWXML += "  <title>" + FullscreenActivity.songfilename + "</title>\n";
-        myNEWXML += "  <author></author>\n";
-        myNEWXML += "  <copyright></copyright>\n";
-        myNEWXML += "  <presentation></presentation>\n";
-        myNEWXML += "  <hymn_number></hymn_number>\n";
-        myNEWXML += "  <capo print=\"\"></capo>\n";
-        myNEWXML += "  <tempo></tempo>\n";
-        myNEWXML += "  <time_sig></time_sig>\n";
-        myNEWXML += "  <duration></duration>\n";
-        myNEWXML += "  <predelay></predelay>\n";
-        myNEWXML += "  <ccli></ccli>\n";
-        myNEWXML += "  <theme></theme>\n";
-        myNEWXML += "  <alttheme></alttheme>\n";
-        myNEWXML += "  <user1></user1>\n";
-        myNEWXML += "  <user2></user2>\n";
-        myNEWXML += "  <user3></user3>\n";
-        myNEWXML += "  <key></key>\n";
-        myNEWXML += "  <aka></aka>\n";
-        myNEWXML += "  <key_line></key_line>\n";
-        myNEWXML += "  <books></books>\n";
-        myNEWXML += "  <midi></midi>\n";
-        myNEWXML += "  <midi_index></midi_index>\n";
-        myNEWXML += "  <pitch></pitch>\n";
-        myNEWXML += "  <restrictions></restrictions>\n";
-        myNEWXML += "  <notes></notes>\n";
-        myNEWXML += "  <lyrics>[V]\n</lyrics>\n";
-        myNEWXML += "  <linked_songs></linked_songs>\n";
-        myNEWXML += "  <pad_file></pad_file>\n";
-        myNEWXML += "  <custom_chords></custom_chords>\n";
-        myNEWXML += "  <link_youtube></link_youtube>\n";
-        myNEWXML += "  <link_web></link_web>\n";
-        myNEWXML += "  <link_audio></link_audio>\n";
-        myNEWXML += "  <loop_audio>false</loop_audio>\n";
-        myNEWXML += "  <link_other></link_other>\n";
-        myNEWXML += "  <abcnotation></abcnotation>\n";
-        myNEWXML += "</song>";
-        FullscreenActivity.mynewXML = myNEWXML;
-    }
-
-    public static void prepareSongXML() {
-        // Prepare the new XML file
-
-        if (FullscreenActivity.mEncoding==null || FullscreenActivity.mEncoding.equals("")) {
-            FullscreenActivity.mEncoding = "UTF-8";
-        }
-        String myNEWXML = "<?xml version=\"1.0\" encoding=\""+FullscreenActivity.mEncoding+"\"?>\n";
-        myNEWXML += "<song>\n";
-        myNEWXML += "  <title>" + parseToHTMLEntities(FullscreenActivity.mTitle.toString()) + "</title>\n";
-        myNEWXML += "  <author>" + parseToHTMLEntities(FullscreenActivity.mAuthor.toString()) + "</author>\n";
-        myNEWXML += "  <copyright>" + parseToHTMLEntities(FullscreenActivity.mCopyright.toString()) + "</copyright>\n";
-        myNEWXML += "  <presentation>" + parseToHTMLEntities(FullscreenActivity.mPresentation) + "</presentation>\n";
-        myNEWXML += "  <hymn_number>" + parseToHTMLEntities(FullscreenActivity.mHymnNumber) + "</hymn_number>\n";
-        myNEWXML += "  <capo print=\"" + parseToHTMLEntities(FullscreenActivity.mCapoPrint) + "\">" + parseToHTMLEntities(FullscreenActivity.mCapo) + "</capo>\n";
-        myNEWXML += "  <tempo>" + parseToHTMLEntities(FullscreenActivity.mTempo) + "</tempo>\n";
-        myNEWXML += "  <time_sig>" + parseToHTMLEntities(FullscreenActivity.mTimeSig) + "</time_sig>\n";
-        myNEWXML += "  <duration>" + parseToHTMLEntities(FullscreenActivity.mDuration) + "</duration>\n";
-        myNEWXML += "  <predelay>" + parseToHTMLEntities(FullscreenActivity.mPreDelay) + "</predelay>\n";
-        myNEWXML += "  <ccli>" + parseToHTMLEntities(FullscreenActivity.mCCLI) + "</ccli>\n";
-        myNEWXML += "  <theme>" + parseToHTMLEntities(FullscreenActivity.mTheme) + "</theme>\n";
-        myNEWXML += "  <alttheme>" + parseToHTMLEntities(FullscreenActivity.mAltTheme) + "</alttheme>\n";
-        myNEWXML += "  <user1>" + parseToHTMLEntities(FullscreenActivity.mUser1) + "</user1>\n";
-        myNEWXML += "  <user2>" + parseToHTMLEntities(FullscreenActivity.mUser2) + "</user2>\n";
-        myNEWXML += "  <user3>" + parseToHTMLEntities(FullscreenActivity.mUser3) + "</user3>\n";
-        myNEWXML += "  <key>" + parseToHTMLEntities(FullscreenActivity.mKey) + "</key>\n";
-        myNEWXML += "  <aka>" + parseToHTMLEntities(FullscreenActivity.mAka) + "</aka>\n";
-        myNEWXML += "  <key_line>" + parseToHTMLEntities(FullscreenActivity.mKeyLine) + "</key_line>\n";
-        myNEWXML += "  <books>" + parseToHTMLEntities(FullscreenActivity.mBooks) + "</books>\n";
-        myNEWXML += "  <midi>" + parseToHTMLEntities(FullscreenActivity.mMidi) + "</midi>\n";
-        myNEWXML += "  <midi_index>" + parseToHTMLEntities(FullscreenActivity.mMidiIndex) + "</midi_index>\n";
-        myNEWXML += "  <pitch>" + parseToHTMLEntities(FullscreenActivity.mPitch) + "</pitch>\n";
-        myNEWXML += "  <restrictions>" + parseToHTMLEntities(FullscreenActivity.mRestrictions) + "</restrictions>\n";
-        myNEWXML += "  <notes>" + parseToHTMLEntities(FullscreenActivity.mNotes) + "</notes>\n";
-        myNEWXML += "  <lyrics>" + parseToHTMLEntities(FullscreenActivity.mLyrics) + "</lyrics>\n";
-        myNEWXML += "  <linked_songs>" + parseToHTMLEntities(FullscreenActivity.mLinkedSongs) + "</linked_songs>\n";
-        myNEWXML += "  <pad_file>" + parseToHTMLEntities(FullscreenActivity.mPadFile) + "</pad_file>\n";
-        myNEWXML += "  <custom_chords>" + parseToHTMLEntities(FullscreenActivity.mCustomChords) + "</custom_chords>\n";
-        myNEWXML += "  <link_youtube>" + parseToHTMLEntities(FullscreenActivity.mLinkYouTube) + "</link_youtube>\n";
-        myNEWXML += "  <link_web>" + parseToHTMLEntities(FullscreenActivity.mLinkWeb) + "</link_web>\n";
-        myNEWXML += "  <link_audio>" + parseToHTMLEntities(FullscreenActivity.mLinkAudio) + "</link_audio>\n";
-        myNEWXML += "  <loop_audio>" + parseToHTMLEntities(FullscreenActivity.mLoopAudio) + "</loop_audio>\n";
-        myNEWXML += "  <link_other>" + parseToHTMLEntities(FullscreenActivity.mLinkOther) + "</link_other>\n";
-        myNEWXML += "  <abcnotation>" + parseToHTMLEntities(FullscreenActivity.mNotation) + "</abcnotation>\n";
-
-        if (!FullscreenActivity.mExtraStuff1.isEmpty()) {
-            myNEWXML += "  " + FullscreenActivity.mExtraStuff1 + "\n";
-        }
-        if (!FullscreenActivity.mExtraStuff2.isEmpty()) {
-            myNEWXML += "  " + FullscreenActivity.mExtraStuff2 + "\n";
-        }
-        myNEWXML += "</song>";
-
-        FullscreenActivity.mynewXML = myNEWXML;
-    }
-
-    public interface MyInterface {
-        void rebuildSearchIndex();
-    }
-
-    public static String parseToHTMLEntities(String val) {
-        if (val==null) {
-            val = "";
-        }
-        // Make sure all vals are unencoded to start with
-        // Now HTML encode everything that needs encoded
-        // Protected are < > &
-        // Change < to __lt;  We'll later replace the __ with &.  Do this to deal with &amp; separately
-        val = val.replace("<","__lt;");
-        val = val.replace("&lt;","__lt;");
-
-        // Change > to __gt;  We'll later replace the __ with &.  Do this to deal with &amp; separately
-        val = val.replace(">","__gt;");
-        val = val.replace("&gt;","__gt;");
-
-        // Change &apos; to ' as they don't need encoding in this format - also makes it compatible with desktop
-        val = val.replace("&apos;","'");
-        val = val.replace("\'","'");
-
-        // Change " to __quot;  We'll later replace the __ with &.  Do this to deal with &amp; separately
-        val = val.replace("\"","__quot;");
-        val = val.replace("&quot;","__quot;");
-
-        // Now deal with the remaining ampersands
-        val = val.replace("&amp;","&");  // Reset any that already encoded - all need encoded now
-        val = val.replace("&&","&");     // Just in case we have wrongly encoded old ones e.g. &amp;&quot;
-        val = val.replace("&","&amp;");  // Reencode all remaining ampersands
-
-        // Now replace the other protected encoded entities back with their leading ampersands
-        val = val.replace("__lt;","&lt;");
-        val = val.replace("__gt;","&gt;");
-        val = val.replace("__quot;","&quot;");
-
-        return val;
-    }
-
-    @Override
-    public void onCancel(DialogInterface dialog) {
-        this.dismiss();
-    }
-
-    void setCapoSpinner(String mKey) {
-        ArrayList<String> capooptions = Transpose.quickCapoKey(mKey);
-        ArrayAdapter<String> aa = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, capooptions);
-        aa.notifyDataSetChanged();
-        edit_song_capo.setAdapter(aa);
-        // Where is the key in the available array
-        int index = -1;
-        List<String> capo_choice = Arrays.asList(getResources().getStringArray(R.array.capo));
-        for (int w=0;w<capo_choice.size();w++) {
-            if (FullscreenActivity.mCapo.equals(capo_choice.get(w))) {
-                index = w;
-            }
-        }
-        edit_song_capo.setSelection(index);
-    }
-
-    public void changeFormat(boolean chordpro) {
-        String textLyrics = edit_song_lyrics.getText().toString();
-        Log.d("d",textLyrics);
-        if (chordpro) {
-            edit_song_lyrics.setText(chordProConvert.fromOpenSongToChordPro(textLyrics, getActivity()));
-            availabletags.setVisibility(View.GONE);
-            fix_lyrics.setVisibility(View.GONE);
-            edit_song_lyrics.requestFocus();
-        } else {
-            edit_song_lyrics.setText(chordProConvert.fromChordProToOpenSong(textLyrics));
-            edit_song_lyrics.requestFocus();
-            availabletags.setVisibility(View.VISIBLE);
-            fix_lyrics.setVisibility(View.VISIBLE);
-        }
     }
 }

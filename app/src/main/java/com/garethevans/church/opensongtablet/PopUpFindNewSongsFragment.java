@@ -384,7 +384,11 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
     @Override
     public void onCancel(DialogInterface dialog) {
-        this.dismiss();
+        try {
+            this.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void grabchordpro() {

@@ -23,8 +23,6 @@ import com.peak.salut.Callbacks.SalutCallback;
 import com.peak.salut.Callbacks.SalutDeviceCallback;
 import com.peak.salut.SalutDevice;
 
-import java.io.File;
-
 public class OptionMenuListeners extends Activity {
 
     public interface MyInterface {
@@ -311,7 +309,7 @@ public class OptionMenuListeners extends Activity {
         }
     }
 
-    static void optionListeners(View v, Context c, Preferences preferences) {
+    static void optionListeners(View v, Context c, Preferences preferences, StorageAccess storageAccess) {
 
         // Decide which listeners we need based on the menu
         switch (FullscreenActivity.whichOptionMenu) {
@@ -321,7 +319,7 @@ public class OptionMenuListeners extends Activity {
                 break;
 
             case "SET":
-                setOptionListener(v,c);
+                setOptionListener(v, c, preferences, storageAccess);
                 break;
 
             case "SONG":
@@ -590,7 +588,7 @@ public class OptionMenuListeners extends Activity {
 
     }
 
-    private static void setOptionListener(View v, final Context c) {
+    private static void setOptionListener(View v, final Context c, final Preferences preferences, final StorageAccess storageAccess) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -650,14 +648,14 @@ public class OptionMenuListeners extends Activity {
         setSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                File settosave = new File(FullscreenActivity.dirsets,FullscreenActivity.lastSetName);
+                Uri settosave = storageAccess.getUriForItem(c, preferences, "Sets", "", FullscreenActivity.lastSetName);
                 if (FullscreenActivity.lastSetName==null || FullscreenActivity.lastSetName.equals("")) {
                     FullscreenActivity.whattodo = "saveset";
                     if (mListener != null) {
                         mListener.closeMyDrawers("option");
                         mListener.openFragment();
                     }
-                } else if (settosave.exists()) {
+                } else if (storageAccess.uriExists(c, settosave)) {
                     // Load the are you sure prompt
                     FullscreenActivity.whattodo = "saveset";
                     String setnamenice = FullscreenActivity.lastSetName.replace("__"," / ");
@@ -843,11 +841,16 @@ public class OptionMenuListeners extends Activity {
         // Identify the buttons
         TextView menuup = v.findViewById(R.id.songMenuTitle);
         Button songEditButton = v.findViewById(R.id.songEditButton);
+        Button songPadButton = v.findViewById(R.id.songPadButton);
+        Button songAutoScrollButton = v.findViewById(R.id.songAutoScrollButton);
+        Button songMetronomeButton = v.findViewById(R.id.songMetronomeButton);
         Button songStickyButton = v.findViewById(R.id.songStickyButton);
         Button songDrawingButton = v.findViewById(R.id.songDrawingButton);
+        Button songChordsButton = v.findViewById(R.id.songChordsButton);
         Button songScoreButton = v.findViewById(R.id.songScoreButton);
         Button songOnYouTubeButton = v.findViewById(R.id.songOnYouTubeButton);
         Button songOnWebButton = v.findViewById(R.id.songOnWebButton);
+        Button songLinksButton = v.findViewById(R.id.songLinksButton);
         Button songRenameButton = v.findViewById(R.id.songRenameButton);
         Button songNewButton = v.findViewById(R.id.songNewButton);
         Button songDeleteButton = v.findViewById(R.id.songDeleteButton);
@@ -859,6 +862,11 @@ public class OptionMenuListeners extends Activity {
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.options_song).toUpperCase(FullscreenActivity.locale));
+        songPadButton.setText(c.getString(R.string.pad).toUpperCase(FullscreenActivity.locale));
+        songAutoScrollButton.setText(c.getString(R.string.autoscroll).toUpperCase(FullscreenActivity.locale));
+        songMetronomeButton.setText(c.getString(R.string.metronome).toUpperCase(FullscreenActivity.locale));
+        songChordsButton.setText(c.getString(R.string.chords).toUpperCase(FullscreenActivity.locale));
+        songLinksButton.setText(c.getString(R.string.link).toUpperCase(FullscreenActivity.locale));
         songEditButton.setText(c.getString(R.string.options_song_edit).toUpperCase(FullscreenActivity.locale));
         songStickyButton.setText(c.getString(R.string.options_song_stickynotes).toUpperCase(FullscreenActivity.locale));
         songDrawingButton.setText(c.getString(R.string.highlight).toUpperCase(FullscreenActivity.locale));
@@ -891,6 +899,71 @@ public class OptionMenuListeners extends Activity {
                 FullscreenActivity.whichOptionMenu = "MAIN";
                 if (mListener!=null) {
                     mListener.prepareOptionMenu();
+                }
+            }
+        });
+
+        songPadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (FullscreenActivity.isSong) {
+                    FullscreenActivity.whattodo = "page_pad";
+                    if (mListener != null) {
+                        mListener.closeMyDrawers("option");
+                        mListener.openFragment();
+                    }
+                }
+            }
+        });
+
+        songAutoScrollButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (FullscreenActivity.isSong) {
+                    FullscreenActivity.whattodo = "page_autoscroll";
+                    if (mListener != null) {
+                        mListener.closeMyDrawers("option");
+                        mListener.openFragment();
+                    }
+                }
+            }
+        });
+
+        songMetronomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (FullscreenActivity.isSong) {
+                    FullscreenActivity.whattodo = "page_metronome";
+                    if (mListener != null) {
+                        mListener.closeMyDrawers("option");
+                        mListener.openFragment();
+                    }
+                }
+            }
+        });
+
+        songChordsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (FullscreenActivity.isSong) {
+                    FullscreenActivity.whattodo = "page_chords";
+                    if (mListener != null) {
+                        mListener.closeMyDrawers("option");
+                        mListener.openFragment();
+                    }
+                }
+            }
+        });
+
+        songLinksButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (FullscreenActivity.isSong) {
+                    FullscreenActivity.whattodo = "page_links";
+                    if (mListener != null) {
+                        mListener.closeMyDrawers("option");
+                        mListener.openFragment();
+                    }
                 }
             }
         });
@@ -1085,6 +1158,7 @@ public class OptionMenuListeners extends Activity {
 
         // Identify the buttons
         TextView menuup = v.findViewById(R.id.chordsMenuTitle);
+        Button chordsButton = v.findViewById(R.id.chordsButton);
         Button chordsTransposeButton = v.findViewById(R.id.chordsTransposeButton);
         Button chordsSharpButton = v.findViewById(R.id.chordsSharpButton);
         Button chordsFlatButton = v.findViewById(R.id.chordsFlatButton);
@@ -1100,6 +1174,7 @@ public class OptionMenuListeners extends Activity {
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.chords).toUpperCase(FullscreenActivity.locale));
+        chordsButton.setText(c.getString(R.string.chords).toUpperCase(FullscreenActivity.locale));
         chordsTransposeButton.setText(c.getString(R.string.options_song_transpose).toUpperCase(FullscreenActivity.locale));
         chordsSharpButton.setText(c.getString(R.string.options_song_sharp).toUpperCase(FullscreenActivity.locale));
         String temp = c.getString(R.string.options_song_flat).replace("b","#");
@@ -1158,6 +1233,19 @@ public class OptionMenuListeners extends Activity {
                 FullscreenActivity.whichOptionMenu = "MAIN";
                 if (mListener!=null) {
                     mListener.prepareOptionMenu();
+                }
+            }
+        });
+
+        chordsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (FullscreenActivity.isSong) {
+                    FullscreenActivity.whattodo = "page_chords";
+                    if (mListener != null) {
+                        mListener.closeMyDrawers("option");
+                        mListener.openFragment();
+                    }
                 }
             }
         });
@@ -1669,7 +1757,7 @@ public class OptionMenuListeners extends Activity {
                 FullscreenActivity.myToastMessage = c.getString(R.string.wait);
                 ShowToast.showToast(c);
                 if (mListener!=null) {
-                    mListener.doDownload("https://sites.google.com/site/opensongtabletmusicviewer/downloads/Band.osb?attredirects=0&d=1");
+                    mListener.doDownload("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_leDR5bFFjRVVxVjA");
                     mListener.closeMyDrawers("option");
                 }
             }
@@ -1681,7 +1769,7 @@ public class OptionMenuListeners extends Activity {
                 FullscreenActivity.myToastMessage = c.getString(R.string.wait);
                 ShowToast.showToast(c);
                 if (mListener!=null) {
-                    mListener.doDownload("https://sites.google.com/site/opensongtabletmusicviewer/downloads/Church.osb?attredirects=0&d=1");
+                    mListener.doDownload("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_lbVY3VVVOMkc5OGM");
                     mListener.closeMyDrawers("option");
                 }
             }
@@ -1806,7 +1894,6 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.filechosen = null;
                     FullscreenActivity.whattodo = "processimportosb";
                     mListener.selectAFileUri(c.getString(R.string.backup_import));
                     mListener.closeMyDrawers("option");
@@ -2225,7 +2312,7 @@ public class OptionMenuListeners extends Activity {
                     FullscreenActivity.whichMode = "Performance";
                     Preferences.savePreferences();
                     Intent performmode = new Intent();
-                    performmode.setClass(c, FullscreenActivity.class);
+                    performmode.setClass(c, StageMode.class);
                     if (mListener!=null) {
                         mListener.closeMyDrawers("option");
                         mListener.callIntent("activity", performmode);
@@ -2241,7 +2328,7 @@ public class OptionMenuListeners extends Activity {
                     FullscreenActivity.whichMode = "Stage";
                     Preferences.savePreferences();
                     Intent stagemode = new Intent();
-                    stagemode.setClass(c, FullscreenActivity.class);
+                    stagemode.setClass(c, StageMode.class);
                     if (mListener!=null) {
                         mListener.closeMyDrawers("option");
                         mListener.callIntent("activity", stagemode);
@@ -2257,7 +2344,7 @@ public class OptionMenuListeners extends Activity {
                     FullscreenActivity.whichMode = "Presentation";
                     Preferences.savePreferences();
                     Intent presentmode = new Intent();
-                    presentmode.setClass(c, FullscreenActivity.class);
+                    presentmode.setClass(c, PresenterMode.class);
                     if (mListener!=null) {
                         mListener.closeMyDrawers("option");
                         mListener.callIntent("activity", presentmode);
@@ -2412,6 +2499,7 @@ public class OptionMenuListeners extends Activity {
 
         // Identify the buttons
         TextView menuup = v.findViewById(R.id.optionAutoScrollTitle);
+        Button autoScrollButton = v.findViewById(R.id.autoScrollButton);
         Button autoScrollTimeDefaultsButton = v.findViewById(R.id.autoScrollTimeDefaultsButton);
         Button autoScrollLearnButton = v.findViewById(R.id.autoScrollLearnButton);
         SwitchCompat switchTimerSize = v.findViewById(R.id.switchTimerSize);
@@ -2421,6 +2509,7 @@ public class OptionMenuListeners extends Activity {
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.autoscroll).toUpperCase(FullscreenActivity.locale));
+        autoScrollButton.setText(c.getString(R.string.autoscroll).toUpperCase(FullscreenActivity.locale));
         autoScrollTimeDefaultsButton.setText(c.getString(R.string.default_autoscroll).toUpperCase(FullscreenActivity.locale));
         autoScrollStartButton.setText(c.getString(R.string.options_options_autostartscroll).toUpperCase(FullscreenActivity.locale));
         autoscrollActivatedSwitch.setText(c.getString(R.string.activated).toUpperCase(FullscreenActivity.locale));
@@ -2444,6 +2533,19 @@ public class OptionMenuListeners extends Activity {
                 FullscreenActivity.whichOptionMenu = "MAIN";
                 if (mListener!=null) {
                     mListener.prepareOptionMenu();
+                }
+            }
+        });
+
+        autoScrollButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (FullscreenActivity.isSong) {
+                    FullscreenActivity.whattodo = "page_autoscroll";
+                    if (mListener != null) {
+                        mListener.closeMyDrawers("option");
+                        mListener.openFragment();
+                    }
                 }
             }
         });
@@ -2515,6 +2617,7 @@ public class OptionMenuListeners extends Activity {
 
         // Identify the buttons
         TextView menuup = v.findViewById(R.id.optionPadTitle);
+        Button padButton = v.findViewById(R.id.padButton);
         Button padCrossFadeButton = v.findViewById(R.id.padCrossFadeButton);
         Button padCustomButton = v.findViewById(R.id.padCustomButton);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
@@ -2524,6 +2627,7 @@ public class OptionMenuListeners extends Activity {
 
 
         // Capitalise all the text by locale
+        padButton.setText(c.getString(R.string.pad).toUpperCase(FullscreenActivity.locale));
         menuup.setText(c.getString(R.string.pad).toUpperCase(FullscreenActivity.locale));
         padStartButton.setText(c.getString(R.string.autostartpad).toUpperCase(FullscreenActivity.locale));
         padCustomButton.setText(c.getString(R.string.custom).toUpperCase(FullscreenActivity.locale));
@@ -2549,6 +2653,20 @@ public class OptionMenuListeners extends Activity {
                 }
             }
         });
+
+        padButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (FullscreenActivity.isSong) {
+                    FullscreenActivity.whattodo = "page_pad";
+                    if (mListener != null) {
+                        mListener.closeMyDrawers("option");
+                        mListener.openFragment();
+                    }
+                }
+            }
+        });
+
         padStartButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -2617,12 +2735,14 @@ public class OptionMenuListeners extends Activity {
 
         // Identify the buttons
         TextView menuup = v.findViewById(R.id.optionMetronomeTitle);
+        Button metronomeButton = v.findViewById(R.id.metronomeButton);
         SwitchCompat metronomeStartButton = v.findViewById(R.id.metronomeStartButton);
         SwitchCompat metronomeActivatedSwitch = v.findViewById(R.id.metronomeActivatedSwitch);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.metronome).toUpperCase(FullscreenActivity.locale));
+        metronomeButton.setText(c.getString(R.string.metronome).toUpperCase(FullscreenActivity.locale));
         metronomeActivatedSwitch.setText(c.getString(R.string.activated).toUpperCase(FullscreenActivity.locale));
         metronomeStartButton.setText(c.getString(R.string.autostartmetronome).toUpperCase(FullscreenActivity.locale));
 
@@ -2641,6 +2761,18 @@ public class OptionMenuListeners extends Activity {
             }
         });
 
+        metronomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (FullscreenActivity.isSong) {
+                    FullscreenActivity.whattodo = "page_metronome";
+                    if (mListener != null) {
+                        mListener.closeMyDrawers("option");
+                        mListener.openFragment();
+                    }
+                }
+            }
+        });
         metronomeStartButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

@@ -748,4 +748,19 @@
     <string name="keepmultiline">"Håll multilinkompakt "</string>
     <string name="notsaved">Ej sparat</string>
 
+    <string name="extracting">"Extrahera"</string>
+    <string name="converting">"Konvertera"</string>
+
+    <string name="promptbackup">"Du har inte säkerhetskopierat ditt låtbibliotek under de senaste 10 gånger du har använt den här appen. Detta rekommenderas starkt eftersom du kan återställa dina låtar om något går fel. Helst bör du hålla en kopia av din säkerhetskopia på molnet (t.ex. Google Drive) eller maila det till dig själv."</string>
+    <string name="backupnow">"Skapa en säkerhetskopia nu"</string>
+    <string name="remindme">"Påminn mig senare"</string>
+
+    <string name="connected_device_song">"Sång från ansluten enhet"</string>
+    <string name="network_error">"Nätverksfel"</string>
+    <string name="download_new">"Klicka här för att ladda ner en ny Bibel"</string>
+    <string name="storage_check">"Kontrollerar lagring"</string>
+    <string name="load_preferences">"Laddar inställningar"</string>
+
+    <string name="googlefontcustom">"Annat Google-teckensnamn"</string>
+    <string name="googlefontbrowse">"Bläddra bland alla Google Fonts"</string>
 </resources>

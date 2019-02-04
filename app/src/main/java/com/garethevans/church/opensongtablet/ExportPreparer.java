@@ -127,11 +127,19 @@ class ExportPreparer {
                 // Remove any subfolder from the exportsetfilenames_ost.get(q)
                 String tempsong_ost = FullscreenActivity.exportsetfilenames_ost.get(q);
                 tempsong_ost = tempsong_ost.substring(tempsong_ost.lastIndexOf("/") + 1);
+                Log.d("ExportPreparer", "tempsong_ost=" + tempsong_ost);
                 Uri songtoload = storageAccess.getFileProviderUri(c, preferences, "Songs", "",
                         FullscreenActivity.exportsetfilenames.get(q));
+                Log.d("ExportPreparer", "songtoload=" + songtoload);
 
                 boolean isimage = false;
-                String s = songtoload.getLastPathSegment();
+                String s = songtoload.toString();
+                try {
+                    s = songtoload.getLastPathSegment();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
 
                 if (s != null && (s.endsWith(".jpg") || s.endsWith(".JPG") || s.endsWith(".jpeg") || s.endsWith(".JPEG") ||
                         s.endsWith(".gif") || s.endsWith(".GIF") || s.endsWith(".png") || s.endsWith(".PNG") ||
@@ -140,18 +148,20 @@ class ExportPreparer {
                 }
 
                 // Copy the song
-                if (storageAccess.uriExists(c,songtoload) && !isimage) {
+                if (!storageAccess.lollipopOrLater() || storageAccess.uriExists(c, songtoload) && !isimage) {
                     InputStream inputStream = storageAccess.getInputStream(c,songtoload);
-
+                    Log.d("ExportPreparer", "inputStream=" + inputStream);
                     if (inputStream != null) {
                         Uri ostsongcopy = storageAccess.getFileProviderUri(c, preferences, "Notes", "_cache",
                                 tempsong_ost + ".ost");
-
+                        Log.d("ExportPreparer", "ostsongcopy=" + ostsongcopy);
                         // Check the uri exists for the outputstream to be valid
                         storageAccess.lollipopCreateFileForOutputStream(c, preferences, ostsongcopy, null, "Notes", "_cache", tempsong_ost + ".ost");
-
+                        Log.d("ExportPreparer", "filecreated");
                         OutputStream outputStream = storageAccess.getOutputStream(c, ostsongcopy);
+                        Log.d("ExportPreparer", "outputStream=" + outputStream);
                         storageAccess.copyFile(inputStream, outputStream);
+                        Log.d("ExportPreparer", "file copied=");
                         uris.add(ostsongcopy);
                     }
                 }

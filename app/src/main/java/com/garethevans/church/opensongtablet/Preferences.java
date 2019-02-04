@@ -100,9 +100,12 @@ public class Preferences extends Activity {
         return locale;
     }
 
-    public static void loadPreferences() {
+    public static void loadPreferences(Context c) {
         // Load up the user preferences
         // Set to blank if not used before
+        if (myPreferences == null) {
+            myPreferences = c.getSharedPreferences("OpenSongApp", Context.MODE_PRIVATE);
+        }
         try {
             FullscreenActivity.ab_titleSize = myPreferences.getFloat("ab_titleSize", 13.0f);
             FullscreenActivity.ab_authorSize = myPreferences.getFloat("ab_authorSize", 11.0f);
@@ -307,23 +310,23 @@ public class Preferences extends Activity {
             FullscreenActivity.padpan = myPreferences.getString("padpan", "both");
             FullscreenActivity.padvol = myPreferences.getFloat("padvol", 1.0f);
             FullscreenActivity.page_autoscroll_visible = myPreferences.getBoolean("page_autoscroll_visible",true);
-            FullscreenActivity.page_custom_visible = myPreferences.getBoolean("page_custom_visible",true);
-            FullscreenActivity.page_chord_visible = myPreferences.getBoolean("page_chord_visible",true);
+            FullscreenActivity.page_custom_visible = myPreferences.getBoolean("page_custom_visible", false);
+            FullscreenActivity.page_chord_visible = myPreferences.getBoolean("page_chord_visible", false);
             FullscreenActivity.page_custom1_visible = myPreferences.getBoolean("page_custom1_visible",true);
             FullscreenActivity.page_custom2_visible = myPreferences.getBoolean("page_custom2_visible",true);
             FullscreenActivity.page_custom3_visible = myPreferences.getBoolean("page_custom3_visible",true);
             FullscreenActivity.page_custom4_visible = myPreferences.getBoolean("page_custom4_visible",true);
-            FullscreenActivity.page_custom_grouped = myPreferences.getBoolean("page_custom_grouped",true);
-            FullscreenActivity.page_extra_grouped = myPreferences.getBoolean("page_extra_grouped",true);
-            FullscreenActivity.page_extra_visible = myPreferences.getBoolean("page_extra_visible",true);
-            FullscreenActivity.page_highlight_visible = myPreferences.getBoolean("page_highlight_visible",true);
-            FullscreenActivity.page_links_visible = myPreferences.getBoolean("page_links_visible",true);
-            FullscreenActivity.page_metronome_visible = myPreferences.getBoolean("page_metronome_visible",true);
-            FullscreenActivity.page_notation_visible = myPreferences.getBoolean("page_notation_visible",true);
+            FullscreenActivity.page_custom_grouped = myPreferences.getBoolean("page_custom_grouped", false);
+            FullscreenActivity.page_extra_grouped = myPreferences.getBoolean("page_extra_grouped", false);
+            FullscreenActivity.page_extra_visible = myPreferences.getBoolean("page_extra_visible", false);
+            FullscreenActivity.page_highlight_visible = myPreferences.getBoolean("page_highlight_visible", false);
+            FullscreenActivity.page_links_visible = myPreferences.getBoolean("page_links_visible", false);
+            FullscreenActivity.page_metronome_visible = myPreferences.getBoolean("page_metronome_visible", false);
+            FullscreenActivity.page_notation_visible = myPreferences.getBoolean("page_notation_visible", false);
             FullscreenActivity.page_pad_visible = myPreferences.getBoolean("page_pad_visible",true);
-            FullscreenActivity.page_pages_visible = myPreferences.getBoolean("page_pages_visible",true);
+            FullscreenActivity.page_pages_visible = myPreferences.getBoolean("page_pages_visible", false);
             FullscreenActivity.page_set_visible = myPreferences.getBoolean("page_set_visible",true);
-            FullscreenActivity.page_sticky_visible = myPreferences.getBoolean("page_sticky_visible",true);
+            FullscreenActivity.page_sticky_visible = myPreferences.getBoolean("page_sticky_visible", false);
             FullscreenActivity.pagebutton_position = myPreferences.getString("pagebutton_position", "right");
             FullscreenActivity.pagebutton_scale = myPreferences.getString("pagebutton_scale", "M");
             FullscreenActivity.pageButtonAlpha = myPreferences.getFloat("pageButtonAlpha", 0.4f);
@@ -374,7 +377,7 @@ public class Preferences extends Activity {
             FullscreenActivity.presoShowChords = myPreferences.getBoolean("presoShowChords", false);
             FullscreenActivity.presoTransitionTime = myPreferences.getInt("presoTransitionTime", 800);
             FullscreenActivity.profile = myPreferences.getString("profile", "");
-            FullscreenActivity.quickLaunchButton_1 = myPreferences.getString("quickLaunchButton_1", "");
+            FullscreenActivity.quickLaunchButton_1 = myPreferences.getString("quickLaunchButton_1", "transpose");
             FullscreenActivity.quickLaunchButton_2 = myPreferences.getString("quickLaunchButton_2", "");
             FullscreenActivity.quickLaunchButton_3 = myPreferences.getString("quickLaunchButton_3", "");
             FullscreenActivity.quickLaunchButton_4 = myPreferences.getString("quickLaunchButton_4", "");

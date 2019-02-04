@@ -176,7 +176,7 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
-        Preferences.loadPreferences();
+        Preferences.loadPreferences(getActivity());
 
         stickynote_text = V.findViewById(R.id.stickynote_text);
         stickynote_bg = V.findViewById(R.id.stickynote_bg);

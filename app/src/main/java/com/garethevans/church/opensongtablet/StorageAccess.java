@@ -124,28 +124,32 @@ class StorageAccess {
         if (lollipopOrLater()) {
             return createOrCheckRootFolders_SAF(c, preferences);
         } else {
-            return createOrCheckRootFolders_File(c);
+            return createOrCheckRootFolders_File(c, preferences);
         }
     }
 
-    private String createOrCheckRootFolders_File(Context c) {
+    private String createOrCheckRootFolders_File(Context c, Preferences preferences) {
         File rootFolder = new File(stringForFile(""));
         // Go through the main folders and try to create
         for (String folder : rootFolders) {
             File nf = new File(rootFolder, folder);
-            if (!nf.mkdirs()) {
-                Log.d("d", "Error creating folder: " + folder);
+            if (!nf.exists()) {
+                if (!nf.mkdirs()) {
+                    Log.d("d", "Error creating folder: " + folder);
+                }
             }
         }
 
-        // Go through the main folders and try to create
-        for (String folder : rootFolders) {
-            File nf = new File(rootFolder, folder);
-            if (!nf.mkdirs()) {
-                Log.d("d", "Error creating subfolder: " + folder);
+        // Go through the sub folders and try to create
+        for (String subfolder : cacheFolders) {
+            File nf = new File(rootFolder, subfolder);
+            if (!nf.exists()) {
+                if (!nf.mkdirs()) {
+                    Log.d("d", "Error creating subfolder: " + subfolder);
+                }
             }
         }
-        copyAssets(c);
+        copyAssets(c, preferences);
         return "Success";
     }
 
@@ -182,16 +186,19 @@ class StorageAccess {
         }
 
         // Now copy the assets if they aren't already there
-            copyAssets(c);
+        copyAssets(c, preferences);
             return "Success";
     }
 
-    private void copyAssets(Context c) {
+    private void copyAssets(Context c, Preferences preferences) {
         try {
             AssetManager assetManager = c.getAssets();
             String[] files = new String[2];
             files[0] = "backgrounds/ost_bg.png";
             files[1] = "backgrounds/ost_logo.png";
+            if (FullscreenActivity.appHome == null) {
+                getAppFolderDocumentFile(c, preferences);
+            }
             DocumentFile df = FullscreenActivity.appHome.findFile("Backgrounds");
             for (String filename : files) {
                 String filetocopy = filename.replace("backgrounds/", "");
@@ -474,15 +481,28 @@ class StorageAccess {
         if (lollipopOrLater() && !uriExists(c, uri)) {
             // Only need to do this for Lollipop or later
             createFile(c, preferences, mimeType, folder, subfolder, filename);
+        } else {
+            // Check it exists
+            try {
+                File f = new File(uri.getPath());
+                if (!f.exists()) {
+                    if (mimeType == DocumentsContract.Document.MIME_TYPE_DIR) {
+                        f.mkdirs();
+                    } else {
+                        f.createNewFile();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     // Used to decide on the best storage method (using tree or not)
-    //TODO
     boolean lollipopOrLater() {
-        boolean testingKitKat = false;
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !testingKitKat;
-        //return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+        //boolean testingKitKat = true;
+        //return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !testingKitKat;
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
     // This builds an index of all the songs on the device
@@ -889,7 +909,7 @@ class StorageAccess {
             utf = ubis.getBOM().toString();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.d("d", "Unable to get encoding for " + uri.getLastPathSegment());
         }
         try {
             if (is != null) {
@@ -937,7 +957,7 @@ class StorageAccess {
         if (lollipopOrLater()) {
             return uriExists_SAF(c, uri);
         } else {
-            return uriExists_File(uri);
+            return uriExists_File(c, uri);
         }
     }
     private boolean uriExists_SAF(Context c, Uri uri) {
@@ -948,15 +968,29 @@ class StorageAccess {
             return false;
         }
     }
-    private boolean uriExists_File(Uri uri) {
-        File df = null;
-        if (uri!=null && uri.getPath()!=null) {
-            df = new File(uri.getPath());
-        }
-        if (df!=null) {
-            return df.exists();
+
+    private boolean uriExists_File(Context c, Uri uri) {
+        if (uri != null && uri.getScheme().equals("file")) {
+            File df = null;
+            if (uri.getPath() != null) {
+                df = new File(uri.getPath());
+            }
+            if (df != null) {
+                return df.exists();
+            } else {
+                return false;
+            }
         } else {
-            return false;
+            try {
+                if (uri != null) {
+                    c.getContentResolver().openInputStream(uri);
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception e) {
+                return false;
+            }
         }
     }
 
@@ -1229,7 +1263,14 @@ class StorageAccess {
             // Copy the file
             copyFile(inputStream, outputStream);
             // All is good, so delete the old one
-            DocumentFile.fromSingleUri(c, olduri).delete();
+            if (lollipopOrLater()) {
+                DocumentFile.fromSingleUri(c, olduri).delete();
+            } else {
+                if (olduri.getPath() != null) {
+                    File f = new File(olduri.getPath());
+                    f.delete();
+                }
+            }
             return true;
         } catch (Exception e) {
             e.printStackTrace();
