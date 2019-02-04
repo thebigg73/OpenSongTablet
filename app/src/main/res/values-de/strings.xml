@@ -379,10 +379,10 @@
     <string name="customchords_saved">Aktuell gespeicherte benutzerdefinierte Akkorde</string>
     <string name="maxfontsize">Maximale Schriftgröße bei automatischer Skalierung</string>
 	<string name="tag_prechorus">Vorspiel</string>
-	<string name="tag_chorus">Refrain</string>
+	<string name="tag_chorus">Chorus</string>
 	<string name="tag_bridge">Zwischenteil</string>
 	<string name="tag_tag">Markierung</string>
-	<string name="tag_verse">Strophe</string>
+	<string name="tag_verse">Vers</string>
 	<string name="actions">Aktionen</string>
 	<string name="alert">Meldung</string>
 	<string name="alert_text">Text eingeben</string>

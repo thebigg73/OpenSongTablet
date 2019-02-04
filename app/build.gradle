@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+
     compileSdkVersion 27
     buildToolsVersion '28.0.3'
     buildTypes {
@@ -32,6 +33,10 @@ android {
     }
 
     productFlavors {
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 }
 
@@ -75,5 +80,4 @@ dependencies {
     implementation 'ru.egslava:MaskedEditText:1.0.5'
     implementation 'com.annimon:stream:1.1.9'
     implementation 'lib.kashif:folderpicker:2.4'
-
 }

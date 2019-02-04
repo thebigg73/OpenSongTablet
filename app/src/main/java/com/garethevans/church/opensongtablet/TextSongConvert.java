@@ -1,7 +1,14 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
+import android.os.LocaleList;
+import android.support.annotation.NonNull;
 import android.util.Log;
+
+import java.util.Locale;
 
 class TextSongConvert {
 
@@ -39,7 +46,7 @@ class TextSongConvert {
 
     private String fixTags(Context c, String l) {
         // Look for potential headings but get rid of rogue spaces before and after
-        if (l.contains("[") && l.contains("]") && l.length()<12) {
+        if (l.contains("[") && l.contains("]") && l.length() < 15) {
             l = l.trim();
         }
 
@@ -49,15 +56,27 @@ class TextSongConvert {
         }
 
         boolean alreadyheading = l.startsWith("[");
-        if (!alreadyheading) {
-            if (l.contains(c.getString(R.string.tag_verse)) || l.contains(c.getString(R.string.tag_chorus)) ||
-                    l.contains(c.getString(R.string.tag_bridge)) || l.contains(c.getString(R.string.tag_ending)) ||
-                    l.contains(c.getString(R.string.tag_instrumental)) || l.contains(c.getString(R.string.tag_interlude)) ||
-                    l.contains(c.getString(R.string.tag_intro)) || l.contains(c.getString(R.string.tag_prechorus)) ||
-                    l.contains(c.getString(R.string.tag_refrain)) || l.contains(c.getString(R.string.tag_tag)) ||
-                    l.contains(c.getString(R.string.tag_reprise))) {
+        if (!alreadyheading && l.trim().length() < 15) {
+            boolean containsTag = false;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                LocaleList list = Resources.getSystem().getConfiguration().getLocales();
+                for (int i = 0; i < list.size(); i++) {
+                    containsTag |= stringContainsTag(c, list.get(i), l);
+                }
+            } else {
+                //noinspection deprecation
+                Resources system = Resources.getSystem();
+                Locale locale;
+                if (system == null) {
+                    locale = Locale.getDefault();
+                } else {
+                    locale = system.getConfiguration().locale;
+                }
+                containsTag = stringContainsTag(c, locale, l);
+            }
+            if (containsTag) {
                 // Remove any colons and white space
-                l = l.replace(":","");
+                l = l.replace(":", "");
                 l = l.trim();
                 // Add the tag braces
                 l = "[" + l + "]";
@@ -68,6 +87,25 @@ class TextSongConvert {
         }
 
         return l;
+    }
+
+    private boolean stringContainsTag(Context context, Locale locale, String line) {
+        Resources res = getLocalizedResources(context, locale);
+        return line.contains(res.getString(R.string.tag_verse)) || line.contains(res.getString(R.string.tag_chorus)) ||
+                line.contains(res.getString(R.string.tag_bridge)) || line.contains(res.getString(R.string.tag_ending)) ||
+                line.contains(res.getString(R.string.tag_instrumental)) || line.contains(res.getString(R.string.tag_interlude)) ||
+                line.contains(res.getString(R.string.tag_intro)) || line.contains(res.getString(R.string.tag_prechorus)) ||
+                line.contains(res.getString(R.string.tag_refrain)) || line.contains(res.getString(R.string.tag_tag)) ||
+                line.contains(res.getString(R.string.tag_reprise));
+    }
+
+    @NonNull
+    Resources getLocalizedResources(Context context, Locale desiredLocale) {
+        Configuration conf = context.getResources().getConfiguration();
+        conf = new Configuration(conf);
+        conf.setLocale(desiredLocale);
+        Context localizedContext = context.createConfigurationContext(conf);
+        return localizedContext.getResources();
     }
 
     private String fixChordLines(String l) {
