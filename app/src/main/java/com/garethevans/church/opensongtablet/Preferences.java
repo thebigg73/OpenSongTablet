@@ -278,7 +278,12 @@ public class Preferences extends Activity {
             FullscreenActivity.light_stickybg = myPreferences.getInt("light_stickybg", default_stickyNotesBG);
             FullscreenActivity.light_extrainfobg = myPreferences.getInt("light_extrainfobg", default_extrainfoBG);
             FullscreenActivity.light_extrainfo = myPreferences.getInt("light_extrainfo", default_extrainfo);
-            FullscreenActivity.linespacing = myPreferences.getFloat("linespacing", 0.1f);
+            try {
+                FullscreenActivity.linespacing = myPreferences.getFloat("linespacing", 0.1f);
+            } catch (Exception e) {
+                // Old app version had linespacing as an integer
+                FullscreenActivity.linespacing = 0.5f;
+            }
             FullscreenActivity.locale = getStoredLocale();
             FullscreenActivity.longpressdownpedalgesture = myPreferences.getString("longpressdownpedalgesture", "0");
             FullscreenActivity.longpressnextpedalgesture = myPreferences.getString("longpressnextpedalgesture", "4");
@@ -649,7 +654,15 @@ public class Preferences extends Activity {
             editor.putInt("light_extrainfobg", FullscreenActivity.light_extrainfobg);
             editor.putInt("light_extrainfo", FullscreenActivity.light_extrainfo);
             editor.putFloat("linespacing", FullscreenActivity.linespacing);
-            editor.putString("locale", FullscreenActivity.locale.toString());
+            if (FullscreenActivity.locale==null) {
+                FullscreenActivity.locale = Locale.getDefault();
+            }
+            try {
+                editor.putString("locale", FullscreenActivity.locale.toString());
+            } catch (Exception e) {
+                // Locale is null
+                e.printStackTrace();
+            }
             editor.putString("longpressdownpedalgesture", FullscreenActivity.longpressdownpedalgesture);
             editor.putString("longpressnextpedalgesture", FullscreenActivity.longpressnextpedalgesture);
             editor.putString("longpresspreviouspedalgesture", FullscreenActivity.longpresspreviouspedalgesture);
