@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
@@ -24,10 +25,8 @@ import android.widget.TextView;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,26 +60,17 @@ public class PopUpProfileFragment extends DialogFragment {
         super.onDetach();
     }
 
-    File location;
-    File[] tempmyFiles;
+    StorageAccess storageAccess;
+    Preferences preferences;
     String[] foundFiles;
-    ArrayList<String> tempFoundFiles;
-    String[] filechecks;
     Collator coll;
     ScrollView profile_overview;
-    RelativeLayout profile_load;
-    RelativeLayout profile_save;
+    RelativeLayout profile_load, profile_save;
     TextView profileName_TextView;
     EditText profileName_EditText;
-    ListView profileFilesLoad_ListView;
-    ListView profileFilesSave_ListView;
-    Button loadProfile_Button;
-    Button saveProfile_Button;
-    Button okSave_Button;
-    Button cancelSave_Button;
-    Button cancelLoad_Button;
-    String name;
-    String what = "overview";
+    ListView profileFilesLoad_ListView, profileFilesSave_ListView;
+    Button loadProfile_Button, saveProfile_Button, okSave_Button, cancelSave_Button, cancelLoad_Button;
+    String name, what = "overview";
 
     @Override
     public void onStart() {
@@ -119,6 +109,9 @@ public class PopUpProfileFragment extends DialogFragment {
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
+
+        storageAccess = new StorageAccess();
+        preferences = new Preferences();
 
         // Initialise the views
         profile_overview = V.findViewById(R.id.profile_overview);
@@ -167,23 +160,18 @@ public class PopUpProfileFragment extends DialogFragment {
                 String contents = prepareProfile();
                 name = profileName_EditText.getText().toString();
                 if (!name.equals("")) {
-                    File myfile = new File(FullscreenActivity.dirprofiles + "/" + name);
-                    try {
-                        FileOutputStream overWrite = new FileOutputStream(myfile, false);
-                        overWrite.write(contents.getBytes());
-                        overWrite.flush();
-                        overWrite.close();
-                        FullscreenActivity.myToastMessage = getString(R.string.ok);
-                        FullscreenActivity.profile = name;
-                        profileName_TextView.setText(name);
-                        profileName_EditText.setText(name);
+                    Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Profiles", "", name);
 
+                    // Check the uri exists for the outputstream to be valid
+                    storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
+                            "Profiles", "", name);
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        FullscreenActivity.myToastMessage = getString(R.string.profile) + " " +
-                                getString(R.string.hasnotbeenexported);
-                    }
+                    OutputStream outputStream = storageAccess.getOutputStream(getActivity(), uri);
+                    storageAccess.writeFileFromString(contents,outputStream);
+                    FullscreenActivity.myToastMessage = getString(R.string.ok);
+                    FullscreenActivity.profile = name;
+                    profileName_TextView.setText(name);
+                    profileName_EditText.setText(name);
                 } else {
                     FullscreenActivity.myToastMessage = getString(R.string.profile) + " " +
                             getString(R.string.hasnotbeenexported);
@@ -237,28 +225,7 @@ public class PopUpProfileFragment extends DialogFragment {
     }
 
     public void setupProfileList() {
-        location = new File(FullscreenActivity.homedir + "/Profiles");
-        tempmyFiles = location.listFiles();
-        tempFoundFiles = new ArrayList<>();
-
-        // Go through each file
-        for (File tempmyFile : tempmyFiles) {
-
-            // If we need to check the filetype and it is ok, add it to the array
-            if (filechecks != null && filechecks.length > 0) {
-                for (String filecheck : filechecks) {
-                    if (tempmyFile!=null && tempmyFile.getName().contains(filecheck) && !tempmyFile.isDirectory()) {
-                        tempFoundFiles.add(tempmyFile.getName());
-                    }
-                }
-
-                // Otherwise, no check needed, add to the array (if it isn't a directory)
-            } else {
-                if (tempmyFile!=null && !tempmyFile.isDirectory()) {
-                    tempFoundFiles.add(tempmyFile.getName());
-                }
-            }
-        }
+        ArrayList<String> tempFoundFiles = storageAccess.listFilesInFolder(getActivity(), preferences, "Profiles", "");
 
         // Sort the array list alphabetically by locale rules
         // Add locale sort
@@ -292,7 +259,7 @@ public class PopUpProfileFragment extends DialogFragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try {
                         FullscreenActivity.profile = foundFiles[position];
-                        grabvalues(FullscreenActivity.dirprofiles + "/" + foundFiles[position]);
+                        grabvalues(foundFiles[position]);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -305,12 +272,12 @@ public class PopUpProfileFragment extends DialogFragment {
         // Extract all of the key bits of the profile
         XmlPullParserFactory factory;
         factory = XmlPullParserFactory.newInstance();
-
         factory.setNamespaceAware(true);
         XmlPullParser xpp;
         xpp = factory.newPullParser();
 
-        InputStream inputStream = new FileInputStream(file);
+        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Profiles", "", file);
+        InputStream inputStream = storageAccess.getInputStream(getActivity(),uri);
         xpp.setInput(inputStream,null);
 
         int eventType;
@@ -852,12 +819,12 @@ public class PopUpProfileFragment extends DialogFragment {
                         break;
                     case "light_extrainfo":
                         FullscreenActivity.light_extrainfo = getIntegerValue(xpp.nextText(), 0xff000000);
-
                         break;
+
                     case "linespacing":
-                        FullscreenActivity.linespacing = getIntegerValue(xpp.nextText(), 0);
-
+                        FullscreenActivity.linespacing = getFloatValue(xpp.nextText(), 0.1f);
                         break;
+
                     case "locale":
                         FullscreenActivity.locale = new Locale(getTextValue(xpp.nextText(), Preferences.getStoredLocale().toString()));
 
@@ -1060,41 +1027,6 @@ public class PopUpProfileFragment extends DialogFragment {
                         break;
                     case "pageButtonAlpha":
                         FullscreenActivity.pageButtonAlpha = getFloatValue(xpp.nextText(), 0.2f);
-
-                /*} else if (xpp.getName().equals("pageturner_AUTOSCROLL")) {
-                    FullscreenActivity.pageturner_AUTOSCROLL = getIntegerValue(xpp.nextText(), -1);
-
-                } else if (xpp.getName().equals("pageturner_AUTOSCROLLPAD")) {
-                    FullscreenActivity.pageturner_AUTOSCROLLPAD = getIntegerValue(xpp.nextText(), -1);
-
-                } else if (xpp.getName().equals("pageturner_AUTOSCROLLMETRONOME")) {
-                    FullscreenActivity.pageturner_AUTOSCROLLMETRONOME = getIntegerValue(xpp.nextText(), -1);
-
-                } else if (xpp.getName().equals("pageturner_AUTOSCROLLPADMETRONOME")) {
-                    FullscreenActivity.pageturner_AUTOSCROLLPADMETRONOME = getIntegerValue(xpp.nextText(), -1);
-
-                } else if (xpp.getName().equals("pageturner_DOWN")) {
-                    FullscreenActivity.pageturner_DOWN = getIntegerValue(xpp.nextText(), 20);
-
-                } else if (xpp.getName().equals("pageturner_METRONOME")) {
-                    FullscreenActivity.pageturner_METRONOME = getIntegerValue(xpp.nextText(), -1);
-
-                } else if (xpp.getName().equals("pageturner_NEXT")) {
-                    FullscreenActivity.pageturner_NEXT = getIntegerValue(xpp.nextText(), 22);
-
-                } else if (xpp.getName().equals("pageturner_PAD")) {
-                    FullscreenActivity.pageturner_PAD = getIntegerValue(xpp.nextText(), -1);
-
-                } else if (xpp.getName().equals("pageturner_PADMETRONOME")) {
-                    FullscreenActivity.pageturner_PADMETRONOME = getIntegerValue(xpp.nextText(), -1);
-
-                } else if (xpp.getName().equals("pageturner_PREVIOUS")) {
-                    FullscreenActivity.pageturner_PREVIOUS = getIntegerValue(xpp.nextText(), 21);
-
-                } else if (xpp.getName().equals("pageturner_UP")) {
-                    FullscreenActivity.pageturner_UP = getIntegerValue(xpp.nextText(), 19);
-
-                */
 
                         break;
                     case "pedal1":
@@ -1452,8 +1384,12 @@ public class PopUpProfileFragment extends DialogFragment {
                         break;
                     case "transposeStyle":
                         FullscreenActivity.transposeStyle = getTextValue(xpp.nextText(), "sharps");
-
                         break;
+
+                    case "trimLines":
+                        FullscreenActivity.trimLines = getBooleanValue(xpp.nextText(), true);
+                        break;
+
                     case "trimSections":
                         FullscreenActivity.trimSections = getBooleanValue(xpp.nextText(), false);
 
@@ -1512,13 +1448,15 @@ public class PopUpProfileFragment extends DialogFragment {
     }
 
     public int getIntegerValue(String s, int def) {
-        int integer = def;
+        int integer;
         if (s!=null && !s.equals("")) {
             try {
                 integer = Integer.parseInt(s);
             } catch (Exception e) {
                 integer = def;
             }
+        } else {
+            integer = def;
         }
         return integer;
     }
@@ -1768,19 +1706,6 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <page_sticky_visible>" + FullscreenActivity.page_sticky_visible + "</page_sticky_visible>\n";
         text += "  <pagebutton_position>" + FullscreenActivity.pagebutton_position + "</pagebutton_position>\n";
         text += "  <pagebutton_scale>" + FullscreenActivity.pagebutton_scale + "</pagebutton_scale>\n";
-        /*
-        text += "  <pageturner_AUTOSCROLL>" + FullscreenActivity.pageturner_AUTOSCROLL + "</pageturner_AUTOSCROLL>\n";
-        text += "  <pageturner_AUTOSCROLLPAD>" + FullscreenActivity.pageturner_AUTOSCROLLPAD + "</pageturner_AUTOSCROLLPAD>\n";
-        text += "  <pageturner_AUTOSCROLLMETRONOME>" + FullscreenActivity.pageturner_AUTOSCROLLMETRONOME + "</pageturner_AUTOSCROLLMETRONOME>\n";
-        text += "  <pageturner_AUTOSCROLLPADMETRONOME>" + FullscreenActivity.pageturner_AUTOSCROLLPADMETRONOME + "</pageturner_AUTOSCROLLPADMETRONOME>\n";
-        text += "  <pageturner_DOWN>" + FullscreenActivity.pageturner_DOWN + "</pageturner_DOWN>\n";
-        text += "  <pageturner_METRONOME>" + FullscreenActivity.pageturner_METRONOME + "</pageturner_METRONOME>\n";
-        text += "  <pageturner_NEXT>" + FullscreenActivity.pageturner_NEXT + "</pageturner_NEXT>\n";
-        text += "  <pageturner_PAD>" + FullscreenActivity.pageturner_PAD + "</pageturner_PAD>\n";
-        text += "  <pageturner_PADMETRONOME>" + FullscreenActivity.pageturner_PADMETRONOME + "</pageturner_PADMETRONOME>\n";
-        text += "  <pageturner_PREVIOUS>" + FullscreenActivity.pageturner_PREVIOUS + "</pageturner_PREVIOUS>\n";
-        text += "  <pageturner_UP>" + FullscreenActivity.pageturner_UP + "</pageturner_UP>\n";
-        */
         text += "  <pageButtonAlpha>" + FullscreenActivity.pageButtonAlpha + "</pageButtonAlpha>\n";
         text += "  <pedal1>" + FullscreenActivity.pedal1 + "</pedal1>\n";
         text += "  <pedal2>" + FullscreenActivity.pedal2 + "</pedal2>\n";
@@ -1872,6 +1797,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <toggleScrollBeforeSwipe>" + FullscreenActivity.toggleScrollBeforeSwipe + "</toggleScrollBeforeSwipe>\n";
         text += "  <toggleYScale>" + FullscreenActivity.toggleYScale + "</toggleYScale>\n";
         text += "  <transposeStyle>" + FullscreenActivity.transposeStyle + "</transposeStyle>\n";
+        text += "  <trimLines>" + FullscreenActivity.trimLines + "</trimLines>\n";
         text += "  <trimSections>" + FullscreenActivity.trimSections + "</trimSections>\n";
         text += "  <trimSectionSpace>" + FullscreenActivity.trimSectionSpace + "</trimSectionSpace>\n";
         text += "  <usePresentationOrder>" + FullscreenActivity.usePresentationOrder + "</usePresentationOrder>\n";

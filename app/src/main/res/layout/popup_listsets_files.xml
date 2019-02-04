@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/section_box">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/sort_FAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="0dp"
+        android:src="@drawable/ic_sort_white_36dp"
+        app:backgroundTint="@color/purple"
+        app:borderWidth="0dp"
+        app:fabSize="mini" />
+
+    <com.garethevans.church.opensongtablet.NonScrollListView
+        android:id="@+id/set_ListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="200dp"
+        android:layout_alignParentStart="true"
+        android:layout_margin="8dp"
+        android:choiceMode="multipleChoice"
+        android:isScrollContainer="true"
+        android:padding="16dp"
+        tools:ignore="RtlHardcoded" />
+
+</RelativeLayout>

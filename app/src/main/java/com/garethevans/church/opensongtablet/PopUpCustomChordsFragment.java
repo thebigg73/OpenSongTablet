@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -22,8 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class PopUpCustomChordsFragment extends DialogFragment {
@@ -63,123 +63,39 @@ public class PopUpCustomChordsFragment extends DialogFragment {
     }
 
     AsyncTask<Object,Void,String> prepare_custom;
-    String string6_text = "x";
-    String string5_text = "x";
-    String string4_text = "x";
-    String string3_text = "x";
-    String string2_text = "x";
-    String string1_text = "x";
-    String fret_text = "0";
-    String instrument_text = "g";
-    String chord_text = "xxxxxx";
-    String chord_name = "";
+    String string6_text = "x", string5_text = "x", string4_text = "x", string3_text = "x",
+            string2_text = "x", string1_text = "x", fret_text = "0", instrument_text = "g",
+            chord_text = "xxxxxx", chord_name = "";
 
-    boolean string6_O = false;
-    boolean string5_O = false;
-    boolean string4_O = false;
-    boolean string3_O = false;
-    boolean string2_O = false;
-    boolean string1_O = false;
-    boolean string6_X = true;
-    boolean string5_X = true;
-    boolean string4_X = true;
-    boolean string3_X = true;
-    boolean string2_X = true;
-    boolean string1_X = true;
-    boolean string6_f1_on = false;
-    boolean string6_f2_on = false;
-    boolean string6_f3_on = false;
-    boolean string6_f4_on = false;
-    boolean string6_f5_on = false;
-    boolean string5_f1_on = false;
-    boolean string5_f2_on = false;
-    boolean string5_f3_on = false;
-    boolean string5_f4_on = false;
-    boolean string5_f5_on = false;
-    boolean string4_f1_on = false;
-    boolean string4_f2_on = false;
-    boolean string4_f3_on = false;
-    boolean string4_f4_on = false;
-    boolean string4_f5_on = false;
-    boolean string3_f1_on = false;
-    boolean string3_f2_on = false;
-    boolean string3_f3_on = false;
-    boolean string3_f4_on = false;
-    boolean string3_f5_on = false;
-    boolean string2_f1_on = false;
-    boolean string2_f2_on = false;
-    boolean string2_f3_on = false;
-    boolean string2_f4_on = false;
-    boolean string2_f5_on = false;
-    boolean string1_f1_on = false;
-    boolean string1_f2_on = false;
-    boolean string1_f3_on = false;
-    boolean string1_f4_on = false;
-    boolean string1_f5_on = false;
-    Drawable stringtop;
-    Drawable stringtop_X;
-    Drawable stringtop_O;
-    Drawable string6;
-    Drawable string5;
-    Drawable string4;
-    Drawable string3;
-    Drawable string2;
-    Drawable string1;
-    Drawable string6_on;
-    Drawable string5_on;
-    Drawable string4_on;
-    Drawable string3_on;
-    Drawable string2_on;
-    Drawable string1_on;
-    LinearLayout guitar;
-    LinearLayout fret0;
-    LinearLayout fret1;
-    LinearLayout fret2;
-    LinearLayout fret3;
-    LinearLayout fret4;
-    LinearLayout fret5;
-    Spinner customchords_instrument;
-    Spinner customchords_fret;
+    boolean string6_O = false, string5_O = false, string4_O = false, string3_O = false,
+            string2_O = false, string1_O = false, string6_X = true, string5_X = true,
+            string4_X = true, string3_X = true, string2_X = true, string1_X = true,
+            string6_f1_on = false, string6_f2_on = false, string6_f3_on = false,
+            string6_f4_on = false, string6_f5_on = false, string5_f1_on = false,
+            string5_f2_on = false, string5_f3_on = false, string5_f4_on = false,
+            string5_f5_on = false, string4_f1_on = false, string4_f2_on = false,
+            string4_f3_on = false, string4_f4_on = false, string4_f5_on = false,
+            string3_f1_on = false, string3_f2_on = false, string3_f3_on = false,
+            string3_f4_on = false, string3_f5_on = false, string2_f1_on = false,
+            string2_f2_on = false, string2_f3_on = false, string2_f4_on = false,
+            string2_f5_on = false, string1_f1_on = false, string1_f2_on = false,
+            string1_f3_on = false, string1_f4_on = false, string1_f5_on = false;
+    Drawable stringtop, stringtop_X, stringtop_O, string6, string5, string4, string3, string2,
+            string1, string6_on, string5_on, string4_on, string3_on, string2_on, string1_on;
+    LinearLayout guitar, fret0, fret1, fret2, fret3, fret4, fret5, savedcustomchords;
+    Spinner customchords_instrument, customchords_fret;
     EditText customchord_name;
     TextView customchord_code;
     Button customChordSave;
-    LinearLayout savedcustomchords;
-    ImageView string6_top;
-    ImageView string5_top;
-    ImageView string4_top;
-    ImageView string3_top;
-    ImageView string2_top;
-    ImageView string1_top;
-    ImageView string6_f1;
-    ImageView string5_f1;
-    ImageView string4_f1;
-    ImageView string3_f1;
-    ImageView string2_f1;
-    ImageView string1_f1;
-    ImageView string6_f2;
-    ImageView string5_f2;
-    ImageView string4_f2;
-    ImageView string3_f2;
-    ImageView string2_f2;
-    ImageView string1_f2;
-    ImageView string6_f3;
-    ImageView string5_f3;
-    ImageView string4_f3;
-    ImageView string3_f3;
-    ImageView string2_f3;
-    ImageView string1_f3;
-    ImageView string6_f4;
-    ImageView string5_f4;
-    ImageView string4_f4;
-    ImageView string3_f4;
-    ImageView string2_f4;
-    ImageView string1_f4;
-    ImageView string6_f5;
-    ImageView string5_f5;
-    ImageView string4_f5;
-    ImageView string3_f5;
-    ImageView string2_f5;
-    ImageView string1_f5;
+    ImageView string6_top, string5_top, string4_top, string3_top, string2_top, string1_top,
+            string6_f1, string5_f1, string4_f1, string3_f1, string2_f1, string1_f1,
+            string6_f2, string5_f2, string4_f2, string3_f2, string2_f2, string1_f2,
+            string6_f3, string5_f3, string4_f3, string3_f3, string2_f3, string1_f3,
+            string6_f4, string5_f4, string4_f4, string3_f4, string2_f4, string1_f4,
+            string6_f5, string5_f5, string4_f5, string3_f5, string2_f5, string1_f5;
+
+    StorageAccess storageAccess;
+    Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -215,6 +131,9 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
+
+        storageAccess = new StorageAccess();
+        preferences = new Preferences();
 
         // Initialise the views
         stringtop = getActivity().getResources().getDrawable(R.drawable.string_top);
@@ -1735,7 +1654,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
             //No instrument set
             FullscreenActivity.myToastMessage = getResources().getString(R.string.customchords_noinstrument);
             ShowToast.showToast(getActivity());
-        } else if (customNameToSave==null || customNameToSave.equals("") || customNameToSave.isEmpty()) {
+        } else if (customNameToSave.equals("") || customNameToSave.isEmpty()) {
             //No chordname set
             FullscreenActivity.myToastMessage = getResources().getString(R.string.customchords_nochordname);
             ShowToast.showToast(getActivity());
@@ -1758,24 +1677,15 @@ public class PopUpCustomChordsFragment extends DialogFragment {
 
     public void doSave() {
         // Add the custom chord code to the xml
+        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.whichSongFolder,
+                FullscreenActivity.songfilename);
 
-        FileOutputStream overWrite;
-        try {
-            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-                overWrite = new FileOutputStream(FullscreenActivity.dir + "/" + FullscreenActivity.songfilename,false);
-            } else {
-                overWrite = new FileOutputStream(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,false);
-            }
-            overWrite.write(FullscreenActivity.mynewXML.getBytes());
-            overWrite.flush();
-            overWrite.close();
-            FullscreenActivity.myToastMessage = getResources().getString(R.string.ok);
-        } catch (IOException e) {
-            e.printStackTrace();
-            FullscreenActivity.myToastMessage = getResources().getString(R.string.no);
-        }
-        ShowToast.showToast(getActivity());
+        // Check the uri exists for the outputstream to be valid
+        storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
+                "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
 
+        OutputStream outputStream = storageAccess.getOutputStream(getActivity(),uri);
+        storageAccess.writeFileFromString(FullscreenActivity.mynewXML,outputStream);
     }
 
     private class OnDelete implements View.OnClickListener {

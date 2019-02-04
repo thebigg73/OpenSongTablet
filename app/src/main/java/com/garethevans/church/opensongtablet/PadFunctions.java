@@ -1,9 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
-
-import java.io.File;
-import java.net.URI;
+import android.net.Uri;
 
 class PadFunctions {
 
@@ -57,7 +55,7 @@ class PadFunctions {
         return result;
     }
 
-    static boolean isPadValid(Context c) {
+    static boolean isPadValid(Context c, Preferences preferences) {
         // If we are using auto, key needs to be set
         // If we are using audio file link, it needs to exist
         // If we are set to OFF then nope!
@@ -66,18 +64,12 @@ class PadFunctions {
 
         if (FullscreenActivity.mPadFile.equals(c.getResources().getString(R.string.off))) {
             isvalid = false;
-        } else if (FullscreenActivity.mPadFile.equals(c.getResources().getString(R.string.link_audio)) &&
-                !FullscreenActivity.mLinkAudio.isEmpty() && !FullscreenActivity.mLinkAudio.equals("")) {
-            String filetext = FullscreenActivity.mLinkAudio;
-            filetext = filetext.replace("file://","");
-            // If this is a localised file, we need to unlocalise it to enable it to be read
-            if (filetext.startsWith("../OpenSong/")) {
-                filetext = filetext.replace("../OpenSong/",FullscreenActivity.homedir+"/");
-            }
-            filetext = "file://" + filetext;
-            File file = new File(URI.create(filetext).getPath());
-            isvalid = file.exists() && file.isFile();
+        } else if (FullscreenActivity.mPadFile.equals(c.getResources().getString(R.string.link_audio)) && !FullscreenActivity.mLinkAudio.isEmpty()) {
+            StorageAccess storageAccess = new StorageAccess();
+            Uri uri = storageAccess.fixLocalisedUri(c, preferences, FullscreenActivity.mLinkAudio);
+            isvalid = storageAccess.uriExists(c,uri);
         } else if (!FullscreenActivity.mKey.isEmpty()){
+            // Using auto
             isvalid = true;
         }
         return isvalid;

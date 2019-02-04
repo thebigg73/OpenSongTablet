@@ -693,4 +693,19 @@
     <string name="keepmultiline">Zachowaj wielomiętową kompaktowość</string>
     <string name="notsaved">Nie zapisane</string>
 
+    <string name="extracting">"Ekstrahujący"</string>
+    <string name="converting">"Konwersja"</string>
+
+    <string name="promptbackup">"Nie masz kopii zapasowej biblioteki piosenek w ciągu ostatnich 10 razy korzystałeś z tej aplikacji. Jest to wysoce zalecane, ponieważ możesz odzyskać swoje utwory, jeśli coś pójdzie nie tak. Najlepiej byłoby zachować kopię pliku kopii zapasowej w chmurze (np. Dysk Google) lub przesłać go e-mailem do siebie."</string>
+    <string name="backupnow">"Utwórz teraz kopię zapasową"</string>
+    <string name="remindme">"Przypomnij mi później"</string>
+
+    <string name="connected_device_song">"Utwór z podłączonego urządzenia"</string>
+    <string name="network_error">"Błąd sieci"</string>
+    <string name="download_new">"Kliknij tutaj, aby pobrać nową Biblię"</string>
+    <string name="storage_check">"Sprawdzanie pamięci"</string>
+    <string name="load_preferences">"Ładowanie preferencji"</string>
+
+    <string name="googlefontcustom">"Inna nazwa czcionki Google"</string>
+    <string name="googlefontbrowse">"Przeglądaj wszystkie czcionki Google"</string>
 </resources>

@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <LinearLayout
@@ -23,7 +24,8 @@
             android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:gravity="center"
-            android:text="@string/pad" />
+            android:text="@string/pad"
+            tools:ignore="RtlHardcoded" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/closeOptionsFAB"
@@ -52,6 +54,21 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <Button
+                android:id="@+id/padButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableStart="@drawable/ic_amplifier_white_36dp"
+                android:drawableLeft="@drawable/ic_amplifier_white_36dp"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:text="@string/pad"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
+
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/padStartButton"
                 android:layout_width="match_parent"
@@ -65,7 +82,8 @@
                 android:textColor="#fff"
                 android:textSize="12sp"
                 android:theme="@style/SwitchStyle"
-                app:showText="false" />
+                app:showText="false"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/padCrossFadeButton"
@@ -79,7 +97,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/crossfade_time"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/padCustomButton"
@@ -93,7 +112,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/custom"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switchTimerSize"
@@ -115,7 +135,8 @@
                 app:splitTrack="false"
                 app:textAllCaps="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488" />
+                app:thumbTint="#444488"
+                tools:ignore="RtlHardcoded" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/padActivatedSwitch"
@@ -130,7 +151,8 @@
                 android:textColor="#fff"
                 android:textSize="12sp"
                 android:theme="@style/SwitchStyle"
-                app:showText="false" />
+                app:showText="false"
+                tools:ignore="RtlHardcoded" />
         </LinearLayout>
     </ScrollView>
 

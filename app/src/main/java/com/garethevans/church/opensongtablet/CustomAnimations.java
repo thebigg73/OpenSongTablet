@@ -141,9 +141,13 @@ class CustomAnimations {
 
     static void highlightAction(View v, Context c) {
         try {
-            v.startAnimation(AnimationUtils.loadAnimation(c, R.anim.pulse));
+            v.startAnimation(AnimationUtils.loadAnimation(c, R.anim.highlight));
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    void pulse(Context c, View v) {
+        v.startAnimation(AnimationUtils.loadAnimation(c, R.anim.pulse));
     }
 }

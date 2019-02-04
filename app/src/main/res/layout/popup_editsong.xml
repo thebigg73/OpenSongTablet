@@ -377,6 +377,7 @@
                     android:layout_marginRight="8dp"
                     android:gravity="left|top"
                     android:hint="@string/edit_song_lyrics"
+                    android:textIsSelectable="true"
                     android:inputType="textMultiLine"
                     android:minLines="10"
                     android:scrollbarStyle="insideOverlay"
@@ -706,13 +707,79 @@
 
         </LinearLayout>
     </ScrollView>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addBrackets"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:id="@+id/editFabs"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@null"
-        android:gravity="center_vertical|end|right"
-        android:padding="3dp"
-        android:src="@drawable/ic_code_brackets_white_36dp" />
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/addBrackets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:contentDescription="@null"
+            android:gravity="center_vertical|end|right"
+            android:padding="3dp"
+            android:src="@drawable/ic_code_brackets_white_36dp" />
+
+        <RelativeLayout
+            android:id="@+id/transposeDown_RelativeLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/transposeDownFAB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:gravity="center_vertical|end|right"
+                android:padding="3dp"
+                android:src="@drawable/ic_transpose_white_36dp"
+                app:elevation="0dp" />
+
+            <TextView
+                style="@style/MyInfoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/transposeDownFAB"
+                android:alpha="0.8"
+                android:text="-"
+                android:textSize="30sp"
+                app:elevation="8dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/transposeUp_RelativeLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/transposeUpFAB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@null"
+                android:gravity="center_vertical|end|right"
+                android:padding="3dp"
+                android:src="@drawable/ic_transpose_white_36dp"
+                app:elevation="0dp" />
+
+            <TextView
+                style="@style/MyInfoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/transposeUpFAB"
+                android:alpha="0.8"
+                android:text="+"
+                android:textSize="28sp"
+                app:elevation="8dp" />
+
+        </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -693,4 +693,20 @@
     <string name="keepmultiline">Tartsa a többsoros kompakt</string>
     <string name="notsaved">Nem mentve</string>
 
+    <string name="extracting">"kitermelő"</string>
+    <string name="converting">"áttérés"</string>
+
+    <string name="promptbackup">"Az elmúlt tíz alkalommal, amikor ezt az alkalmazást használta, még nem készítette el a dalkönyvtárát. Ez rendkívül ajánlott, mert ha visszaáll a dolog, akkor visszaállíthatja a dalokat. Ideális esetben a biztonsági másolat egy példányát a felhőben (pl. Google Drive) kell tárolni, vagy e-mailben elküldeni magának."</string>
+    <string name="backupnow">"Készítsen biztonsági másolatot most"</string>
+    <string name="remindme">"Emlékeztess később"</string>
+
+    <string name="connected_device_song">"Dal a csatlakoztatott eszközről"</string>
+    <string name="network_error">"Hálózati hiba"</string>
+    <string name="download_new">"Kattintson ide egy új Biblia letöltéséhez"</string>
+    <string name="storage_check">"A tárolás ellenőrzése"</string>
+    <string name="load_preferences">"Betöltési beállítások"</string>
+
+    <string name="googlefontcustom">"Egyéb Google betűtípus neve"</string>
+    <string name="googlefontbrowse">"Tallózzon az összes Google-betűtípusra"</string>
+
 </resources>

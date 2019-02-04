@@ -37,6 +37,7 @@ public class PopUpLinks extends DialogFragment {
     FloatingActionButton linkOtherClear_ImageButton;
 
     StorageAccess storageAccess;
+    Preferences preferences;
 
     Uri uri;
 
@@ -84,6 +85,7 @@ public class PopUpLinks extends DialogFragment {
         }
 
         storageAccess = new StorageAccess();
+        preferences = new Preferences();
 
         getDialog().setCanceledOnTouchOutside(true);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -220,7 +222,7 @@ public class PopUpLinks extends DialogFragment {
             @Override
             public void onClick(View v) {
                 String mytext = linkAudio_EditText.getText().toString();
-                uri = storageAccess.fixLocalisedUri(getActivity(),mytext);
+                uri = storageAccess.fixLocalisedUri(getActivity(), preferences, mytext);
                 if (!mytext.equals("")) {
                     MimeTypeMap myMime = MimeTypeMap.getSingleton();
                     String mimeType = myMime.getMimeTypeFromExtension(mytext);
@@ -254,7 +256,7 @@ public class PopUpLinks extends DialogFragment {
                 if (!mytext.equals("")) {
                     MimeTypeMap myMime = MimeTypeMap.getSingleton();
                     Intent newIntent = new Intent(Intent.ACTION_VIEW);
-                    uri = storageAccess.fixLocalisedUri(getActivity(),mytext);
+                    uri = storageAccess.fixLocalisedUri(getActivity(), preferences, mytext);
                     String mimeType = myMime.getMimeTypeFromExtension(mytext);
 
                     if (mimeType == null) {
@@ -292,7 +294,7 @@ public class PopUpLinks extends DialogFragment {
         // Now resave the song with these new links
         PopUpEditSongFragment.prepareSongXML();
         try {
-            PopUpEditSongFragment.justSaveSongXML();
+            PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
             mListener.refreshAll();
             dismiss();
         } catch (Exception e) {
@@ -332,8 +334,7 @@ public class PopUpLinks extends DialogFragment {
                 uri = resultData.getData();
                 if (uri!=null) {
                     String uriPath = uri.getPath();
-                    Log.d("d", "uriPath=" + uriPath);
-                    if (uriPath.contains("OpenSong/Media/")) {
+                    if (uriPath != null && uriPath.contains("OpenSong/Media/")) {
                         // This will be a localised file
                         uriPath = uriPath.substring(uriPath.indexOf("OpenSong/Media/") + 15);
                         uriPath = "../OpenSong/Media/" + uriPath;
@@ -353,8 +354,6 @@ public class PopUpLinks extends DialogFragment {
             }
         }
     }
-
-
 
     void setAudioLength(Uri uri) {
         // If this is a genuine audio file, give the user the option of setting the song duration to match this file

@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
@@ -123,37 +122,29 @@ public class PopUpScalingFragment extends DialogFragment {
         switch (FullscreenActivity.toggleYScale) {
             case "W":
                 // Width only
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    switchAutoScaleOnOff_SwitchCompat.setChecked(true);
-                    switchAutoScaleWidthFull_SwitchCompat.setChecked(false);
-                }
+                switchAutoScaleOnOff_SwitchCompat.setChecked(true);
+                switchAutoScaleWidthFull_SwitchCompat.setChecked(false);
                 switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.VISIBLE);
                 maxAutoScale_Group.setVisibility(View.VISIBLE);
                 break;
             case "Y":
                 // Full
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    switchAutoScaleOnOff_SwitchCompat.setChecked(true);
-                    switchAutoScaleWidthFull_SwitchCompat.setChecked(true);
-                }
+                switchAutoScaleOnOff_SwitchCompat.setChecked(true);
+                switchAutoScaleWidthFull_SwitchCompat.setChecked(true);
                 switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.VISIBLE);
                 maxAutoScale_Group.setVisibility(View.VISIBLE);
                 break;
             default:
                 // Off
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    switchAutoScaleOnOff_SwitchCompat.setChecked(false);
-                    switchAutoScaleWidthFull_SwitchCompat.setChecked(false);
-                }
+                switchAutoScaleOnOff_SwitchCompat.setChecked(false);
+                switchAutoScaleWidthFull_SwitchCompat.setChecked(false);
                 switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.GONE);
                 maxAutoScale_Group.setVisibility(View.GONE);
                 break;
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            overrideFull_Switch.setChecked(FullscreenActivity.override_fullscale);
-            overrideWidth_Switch.setChecked(FullscreenActivity.override_widthscale);
-        }
+        overrideFull_Switch.setChecked(FullscreenActivity.override_fullscale);
+        overrideWidth_Switch.setChecked(FullscreenActivity.override_widthscale);
         setupfontsizeseekbar();
         setupmaxfontsizeseekbar();
         setupminfontsizeseekbar();

@@ -42,8 +42,6 @@ import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -68,22 +66,17 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     EditText songfilename_EditText;
     Spinner choosefolder_Spinner;
     Button saveSong_Button;
-    String weblink = "http://www.ultimate-guitar.com/";
-    String response;
-    String filename;
-    String author;
-    String authorname;
-    String folder;
-    String filecontents;
-    String newtext;
+    String weblink = "http://www.ultimate-guitar.com/", response, filename, author, authorname,
+            folder, filecontents, newtext, whatfolderselected, mTitle = "";
     AsyncTask<Object, Void, String> getfolders;
     ArrayList<String> newtempfolders;
-    String whatfolderselected;
-    String mTitle = "";
     private MyInterface mListener;
-    String originaltemppdffile;
     boolean downloadcomplete = false;
     TextSongConvert textSongConvert;
+    StorageAccess storageAccess;
+    Preferences preferences;
+    SongFolders songFolders;
+    Uri downloadedFile;
 
     static PopUpFindNewSongsFragment newInstance() {
         PopUpFindNewSongsFragment frag;
@@ -170,6 +163,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         saveMe.setVisibility(View.GONE);
 
         textSongConvert = new TextSongConvert();
+        storageAccess = new StorageAccess();
+        preferences = new Preferences();
+        songFolders = new SongFolders();
 
         // Initialise the views
         searchtext_LinearLayout = V.findViewById(R.id.searchtext_LinearLayout);
@@ -343,7 +339,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
                         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
                         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename);
-                        originaltemppdffile = file.toString();
+                        downloadedFile = Uri.fromFile(file);
                         DownloadManager dm = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
                         request.addRequestHeader("Cookie", cookie);
                         if (dm != null) {
@@ -388,7 +384,11 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
     @Override
     public void onCancel(DialogInterface dialog) {
-        this.dismiss();
+        try {
+            this.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void grabchordpro() {
@@ -419,32 +419,81 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         // Find the position of the start of this section
         int getstart = resultposted.indexOf("<textarea id=\"chordproContent\"");
         int startpos = resultposted.indexOf("\">", getstart) + 2;
-        if (startpos < 1) {
-            startpos = 0;
-        }
-        // Remove everything before this position
-        resultposted = resultposted.substring(startpos);
+        if (getstart < 1) {
+            // We are using the other version of the file content
+            getstart = resultposted.indexOf("<h1 class=\"titleLeft\"");
+            startpos = resultposted.indexOf(">",getstart) + 1;
 
-        // Find the position of the end of the form
-        int endpos = resultposted.indexOf("</textarea>");
-        if (endpos < 0) {
-            endpos = resultposted.length();
-        }
-        resultposted = resultposted.substring(0, endpos);
+            // Remove everything before this position
+            resultposted = resultposted.substring(startpos);
 
-        //Replace all \r with \n
-        resultposted = resultposted.replace("\r", "\n");
-        resultposted = resultposted.replace("\'", "'");
-        resultposted = resultposted.trim();
+            // The title is everything up to &nbsp; or <span>
+            int endpos = resultposted.indexOf("&nbsp;");
+            if (endpos>100) {
+                endpos = resultposted.indexOf("<span>");
+            }
+            if (endpos>0) {
+                temptitle = resultposted.substring(0, endpos);
+            }
 
-        // Try to get the title of the song from the metadata
-        int startpostitle = resultposted.indexOf("{t:");
-        int endpostitle = resultposted.indexOf("}", startpostitle);
-        if (startpostitle >= 0 && startpostitle < endpostitle && endpostitle < startpostitle + 50) {
-            temptitle = resultposted.substring(startpostitle + 3, endpostitle);
+            // The author is between the first <span> and </span>
+            startpos = resultposted.indexOf("<span>")+6;
+            endpos = resultposted.indexOf("</span>");
+            if (endpos>startpos && startpos>-1 && endpos<200) {
+                authorname = resultposted.substring(startpos,endpos);
+            }
+
+            // Get the rest of the song content
+            startpos = resultposted.indexOf("<div");
+            endpos = resultposted.indexOf("<div id=\"importantBox\"");
+
+            if (startpos>-1 && startpos<endpos) {
+                resultposted = resultposted.substring(startpos,endpos);
+            }
+
+            StringBuilder contents = new StringBuilder();
+            // Split into lines
+            String[] lines = resultposted.split("\n");
+            for (String line:lines) {
+                line = line.replaceAll("<(.*?)\\>", "");
+                line = line.replaceAll("<(.*?)\\\n", "");
+                line = line.replaceFirst("(.*?)\\>", "");
+                line = line.replaceAll("&nbsp;", " ");
+                line = line.replaceAll("&amp;", "&");
+
+                if (!line.equals("")) {
+                    contents.append(line);
+                    contents.append("\n");
+                }
+            }
+            filename = temptitle.trim();
+            filecontents = contents.toString();
+
+        } else {
+            // Remove everything before this position - using the desktop version
+            resultposted = resultposted.substring(startpos);
+
+            // Find the position of the end of the form
+            int endpos = resultposted.indexOf("</textarea>");
+            if (endpos < 0) {
+                endpos = resultposted.length();
+            }
+            resultposted = resultposted.substring(0, endpos);
+
+            //Replace all \r with \n
+            resultposted = resultposted.replace("\r", "\n");
+            resultposted = resultposted.replace("\'", "'");
+            resultposted = resultposted.trim();
+
+            // Try to get the title of the song from the metadata
+            int startpostitle = resultposted.indexOf("{t:");
+            int endpostitle = resultposted.indexOf("}", startpostitle);
+            if (startpostitle >= 0 && startpostitle < endpostitle && endpostitle < startpostitle + 50) {
+                temptitle = resultposted.substring(startpostitle + 3, endpostitle);
+            }
+            filename = temptitle.trim();
+            filecontents = resultposted;
         }
-        filename = temptitle.trim();
-        filecontents = resultposted;
     }
 
     public void fixWTContent(String resultposted) {
@@ -630,7 +679,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     if (startpos > -1 && endpos > -1 && startpos < endpos) {
                         String chordbit = l.substring(startpos+2,endpos);
                         if (!chordbit.isEmpty()) {
-                            newline.append("[").append(l.substring(startpos + 2, endpos)).append("]");
+                            newline.append("[").append(l, startpos + 2, endpos).append("]");
+                            //newline.append("[").append(l.substring(startpos + 2, endpos)).append("]");
                         }
                     }
 
@@ -641,7 +691,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     startpos = l.indexOf("'>",startpos);
                     endpos = l.indexOf("</div>",startpos);
                     if (startpos > -1 && endpos > -1 && startpos < endpos) {
-                        newline.append(l.substring(startpos + 2, endpos));
+                        newline.append(l, startpos + 2, endpos);
+                        //newline.append(l.substring(startpos + 2, endpos));
                     }
                 }
 
@@ -676,12 +727,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         authorname = "";
         String author_resultposted;
 
-/*
-        String[] lines = resultposted.split("\n");
-        for (String l:lines) {
-            Log.d("d", l);
-        }
-*/
 
         int startpos = resultposted.indexOf("<title>");
         int endpos = resultposted.indexOf("</title>");
@@ -912,7 +957,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         newtext = newtext.replace("&quot;","\"");
         newtext = TextUtils.htmlEncode(newtext);
 
-        if (filenametosave != null && !filenametosave.equals("")) {
+        if (!filenametosave.equals("")) {
             filename = filenametosave.trim();
         } else {
             filename = FullscreenActivity.phrasetosearchfor;
@@ -1066,6 +1111,12 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 String remove = l.substring(start, end);
                 l = l.replace(remove,"");
             }
+
+            l = l.replaceAll("<(.*?)\\>", "");
+            l = l.replaceAll("<(.*?)\\\n", "");
+            l = l.replaceFirst("(.*?)\\>", "");
+            l = l.replaceAll("&nbsp;", " ");
+            l = l.replaceAll("&amp;", "&");
 
             l = l.replace(">","");
             l = l.replace("<","");
@@ -1447,21 +1498,22 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     }
 
     public void doSaveSong() {
-        if (!songfilename_EditText.getText().toString().equals("")) {
-            filename = songfilename_EditText.getText().toString();
-        }
-        FileOutputStream newFile;
-        String filenameandlocation;
-        String tempfile;
-        String temppdffile;
-        temppdffile = filename.replace(".pdf","") + ".pdf";  // Gets rid of multiple .pdf extensions
-        String pdffilenameandlocation;
 
-        if (FullscreenActivity.whattodo.equals("chordie") || FullscreenActivity.whattodo.equals("songselect") ||
-                FullscreenActivity.whattodo.equals("worshiptogether")) {
-            tempfile = filename + ".chopro";
+        // Get the name of the file we want to use
+        String nameoffile = songfilename_EditText.getText().toString();
+        if (nameoffile.equals("")) {
+            nameoffile = filename;
+        }
+
+        // Fix the filename
+        String nameofpdffile = nameoffile.replace(".pdf","")+".pdf";   // Gets rid of multilple .pdf extensions
+
+        nameoffile = nameoffile.replace(".pdf","");
+        if ((FullscreenActivity.whattodo.equals("chordie") || FullscreenActivity.whattodo.equals("songselect") ||
+                FullscreenActivity.whattodo.equals("worshiptogether")) && !nameoffile.endsWith(".chopro")) {
+            nameoffile = nameoffile + ".chopro";
+
         } else {
-            tempfile = filename;
             // Last check of best practice OpenSong formatting
             newtext = textSongConvert.convertText(getActivity(),newtext);
 
@@ -1472,57 +1524,41 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     + "</lyrics>\n</song>";
         }
 
+        // Get the uri for the new file
+        Uri uri_newfile = storageAccess.getUriForItem(getActivity(), preferences, "Songs", whatfolderselected, nameoffile);
+        Uri uri_newpdffile;
+
+        // Check the uri exists for the outputstream to be valid
+        storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri_newfile, null,
+                "Songs", whatfolderselected, nameoffile);
+
+        // Get the outputstream
+        OutputStream outputStream = storageAccess.getOutputStream(getActivity(),uri_newfile);
+        OutputStream outputStreamPDF = null;
+
+        // Get the inputstream of the downloaded file song select
+        InputStream inputStream = null;
+
+        // Get the song select pdf file stuff
+        if (FullscreenActivity.whattodo.equals("songselect") && downloadcomplete) {
+            uri_newpdffile = storageAccess.getUriForItem(getActivity(), preferences, "Songs", whatfolderselected, nameofpdffile);
+
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri_newpdffile, null,
+                    "Songs", whatfolderselected, nameofpdffile);
+
+            outputStreamPDF = storageAccess.getOutputStream(getActivity(),uri_newpdffile);
+            inputStream = storageAccess.getInputStream(getActivity(),downloadedFile);
+        }
         try {
-            if (whatfolderselected.equals(FullscreenActivity.mainfoldername)) {
-                filenameandlocation = FullscreenActivity.dir + "/"
-                        + tempfile;
-                pdffilenameandlocation = FullscreenActivity.dir + "/"
-                        + temppdffile;
-            } else {
-                filenameandlocation = FullscreenActivity.dir + "/"
-                        + whatfolderselected + "/" + tempfile;
-                pdffilenameandlocation = FullscreenActivity.dir + "/"
-                        + whatfolderselected + "/" + temppdffile;
-                FullscreenActivity.whichSongFolder = whatfolderselected;
-            }
             if (filecontents!=null && !filecontents.equals("")) {
-                newFile = new FileOutputStream(filenameandlocation, false);
-                newFile.write(filecontents.getBytes());
-                newFile.flush();
-                newFile.close();
+                storageAccess.writeFileFromString(filecontents,outputStream);
             }
 
-            if (FullscreenActivity.whattodo.equals("songselect") && downloadcomplete) {
-                InputStream in;
-                OutputStream out;
-                try {
-                    in = new FileInputStream(originaltemppdffile);
-                    out = new FileOutputStream(pdffilenameandlocation);
-
-                    File f = new File(originaltemppdffile);
-                    if (f.exists()) {
-                        byte[] buffer = new byte[1024];
-                        int read;
-                        while ((read = in.read(buffer)) != -1) {
-                            out.write(buffer, 0, read);
-                        }
-                        in.close();
-
-                        // write the output file
-                        out.flush();
-                        out.close();
-
-                        // delete the original file
-                        if(!f.delete()) {
-                            Log.d("d","Problem deleting the original");
-                        }
-                    }
+            if (FullscreenActivity.whattodo.equals("songselect") && downloadcomplete && outputStreamPDF!=null && inputStream!=null) {
+                // Copy the orignal pdf file
+                storageAccess.copyFile(inputStream,outputStreamPDF);
                 }
-
-                catch (Exception e) {
-                    Log.e("tag", e.getMessage());
-                }
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1530,19 +1566,28 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         // Set the folder and song to the one we've set here
         FullscreenActivity.whichSongFolder = whatfolderselected;
         if (filecontents!=null) {
-            FullscreenActivity.songfilename = tempfile;
+            FullscreenActivity.songfilename = nameoffile;
         } else if (FullscreenActivity.whattodo.equals("songselect") && downloadcomplete) {
-            FullscreenActivity.songfilename = temppdffile;
+            FullscreenActivity.songfilename = nameofpdffile;
         }
 
         // If we are autologging CCLI information
         if (FullscreenActivity.ccli_automatic) {
-            PopUpCCLIFragment.addUsageEntryToLog(FullscreenActivity.whichSongFolder+"/"+FullscreenActivity.songfilename,
+            PopUpCCLIFragment.addUsageEntryToLog(getActivity(), preferences, FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
                     FullscreenActivity.songfilename, "",
                     "", "", "1"); // Created
         }
 
         Preferences.savePreferences();
+
+        // Rebuild the song list
+        storageAccess.listSongs(getActivity(), preferences);
+        ListSongFiles listSongFiles = new ListSongFiles();
+        listSongFiles.songUrisInFolder(getActivity(), preferences);
+
+        // Indicate after loading song (which renames it), we need to build the database and song index
+        FullscreenActivity.needtorefreshsongmenu = true;
+
         if (mListener != null) {
             mListener.loadSong();
             dismiss();
@@ -1551,7 +1596,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
     public interface MyInterface {
         void pageButtonAlpha(String s);
-
         void loadSong();
     }
 
@@ -1596,6 +1640,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         @Override
         protected void onPostExecute(String result) {
+            // Split the result into lines
             //Now look to see if the webcontent has the ChordPro text in it
             // Check we aren't trying to use the tab-pro page!
             try {
@@ -1604,7 +1649,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     FullscreenActivity.myToastMessage = getActivity().getResources().getText(R.string.not_allowed).toString();
                     ShowToast.showToast(getActivity());
                     grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
-                } else if (result != null && result.contains("<textarea id=\"chordproContent\"")) {
+                } else if (result != null && (result.contains("<textarea id=\"chordproContent\"") ||
+                result.contains("<h1 class=\"titleLeft\""))) {
                     // Using Chordie
                     fixChordieContent(result);
                     setFileNameAndFolder();
@@ -1632,7 +1678,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     // Using SongSelect USR page
                     webresults_WebView.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
 
-                } else if (result!=null && result.contains("holychords.com") && result.contains("transpose-keys")) {
+                } else if (result!=null && result.contains("holychords.com")) {
                     // Using Holychords page
                     fixHolyChordsContent(result);
                     setFileNameAndFolder();
@@ -1658,7 +1704,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         @Override
         protected String doInBackground(Object... objects) {
             try {
-                ListSongFiles.getAllSongFolders();
+                songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
             } catch (Exception e) {
                 e.printStackTrace();
             }

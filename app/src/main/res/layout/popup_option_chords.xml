@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <LinearLayout
@@ -23,7 +24,8 @@
             android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:gravity="center"
             android:text="@string/chords"
-            style="@style/MyMenuHeadingText" />
+            style="@style/MyMenuHeadingText"
+            tools:ignore="RtlHardcoded" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/closeOptionsFAB"
@@ -52,7 +54,22 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Button
+        <Button
+            android:id="@+id/chordsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_guitar_electric_white_36dp"
+            android:drawableLeft="@drawable/ic_guitar_electric_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/chords"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
+
+        <Button
                 android:id="@+id/chordsTransposeButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,7 +81,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/options_song_transpose"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/chordsSharpButton"
@@ -78,7 +96,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/options_song_sharp"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/chordsFlatButton"
@@ -92,7 +111,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/options_song_flat"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/chordsToggleSwitch"
@@ -108,7 +128,8 @@
                 android:textColor="#fff"
                 android:theme="@style/SwitchStyle"
                 android:textSize="12sp"
-                app:showText="false" />
+                app:showText="false"
+                tools:ignore="RtlHardcoded" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/chordsLyricsToggleSwitch"
@@ -124,7 +145,8 @@
                 android:textColor="#fff"
                 android:theme="@style/SwitchStyle"
                 android:textSize="12sp"
-                app:showText="false" />
+                app:showText="false"
+                tools:ignore="RtlHardcoded" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/chordsCapoToggleSwitch"
@@ -140,7 +162,8 @@
                 android:theme="@style/SwitchStyle"
                 android:textColor="#fff"
                 android:textSize="12sp"
-                app:showText="false" />
+                app:showText="false"
+                tools:ignore="RtlHardcoded" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/chordsNativeAndCapoToggleSwitch"
@@ -155,7 +178,8 @@
                 android:theme="@style/SwitchStyle"
                 android:textColor="#fff"
                 android:textSize="12sp"
-                app:showText="false" />
+                app:showText="false"
+                tools:ignore="RtlHardcoded" />
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/capoAsNumeralsToggleSwitch"
@@ -170,7 +194,8 @@
             android:theme="@style/SwitchStyle"
             android:textColor="#fff"
             android:textSize="12sp"
-            app:showText="false" />
+            app:showText="false"
+            tools:ignore="RtlHardcoded" />
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/switchCapoTextSize"
@@ -192,7 +217,8 @@
             app:splitTrack="false"
             android:thumb="@drawable/switch_button"
             app:thumbTextPadding="4dp"
-            app:thumbTint="#444488" />
+            app:thumbTint="#444488"
+            tools:ignore="RtlHardcoded" />
 
         <Button
                 android:id="@+id/chordsFormatButton"
@@ -206,7 +232,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/options_options_chordformat"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/chordsConvertButton"
@@ -220,7 +247,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/options_song_convert"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
         </LinearLayout>
     </ScrollView>

@@ -14,8 +14,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.IOException;
-
 public class PopUpPresentationOrderFragment extends DialogFragment {
 
     static PopUpPresentationOrderFragment newInstance() {
@@ -29,6 +27,9 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
     }
 
     private MyInterface mListener;
+    StorageAccess storageAccess;
+    ListSongFiles listSongFiles;
+    Preferences preferences;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -95,6 +96,10 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
             }
         });
 
+        storageAccess = new StorageAccess();
+        preferences = new Preferences();
+        listSongFiles = new ListSongFiles();
+
         // Define the views
         root_buttonshere = V.findViewById(R.id.songsectionstoadd);
         m_mPresentation = V.findViewById(R.id.popuppres_mPresentation);
@@ -155,19 +160,12 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
     public void doSave() {
         FullscreenActivity.mPresentation = m_mPresentation.getText().toString().trim();
         PopUpEditSongFragment.prepareSongXML();
+        PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
         try {
-            PopUpEditSongFragment.justSaveSongXML();
-        } catch (IOException e) {
+            LoadXML.loadXML(getActivity(), preferences, listSongFiles, storageAccess);
+        } catch (Exception e) {
             e.printStackTrace();
-            FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.savesong) + " - " +
-                    getActivity().getResources().getString(R.string.error);
-            ShowToast.showToast(getActivity());
         }
-       try {
-           LoadXML.loadXML(getActivity());
-       } catch (Exception e) {
-           e.printStackTrace();
-       }
         if (mListener!=null) {
             mListener.updatePresentationOrder();
         }

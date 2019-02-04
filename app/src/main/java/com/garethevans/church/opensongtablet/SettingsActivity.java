@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.Manifest;
@@ -29,7 +30,7 @@ import java.io.File;
 import java.util.Arrays;
 
 public class SettingsActivity extends AppCompatActivity implements PopUpStorageFragment.SettingsInterface,
-PopUpDirectoryChooserFragment.SettingsInterface, PopUpFindStorageLocationFragment.MyInterface {
+PopUpFindStorageLocationFragment.MyInterface {
 
     // This class covers the splash screen and main settings page
     // Users then have the option to move into the FullscreenActivity
@@ -364,7 +365,7 @@ PopUpDirectoryChooserFragment.SettingsInterface, PopUpFindStorageLocationFragmen
         }
     }
 
-    @Override
+    //@Override
     public void openStorageFragment() {
         FullscreenActivity.whattodo = "splashpagestorage";
         DialogFragment newFragment = PopUpStorageFragment.newInstance();
@@ -408,7 +409,8 @@ PopUpDirectoryChooserFragment.SettingsInterface, PopUpFindStorageLocationFragmen
 
     @Override
     public void selectStorage() {
-        FullscreenActivity.whattodo = "splashpagestorage";
+        */
+/*FullscreenActivity.whattodo = "splashpagestorage";
         DialogFragment newFragment = PopUpDirectoryChooserFragment.newInstance();
         Bundle args = new Bundle();
         args.putString("type", "folder");
@@ -417,11 +419,12 @@ PopUpDirectoryChooserFragment.SettingsInterface, PopUpFindStorageLocationFragmen
             newFragment.show(getFragmentManager(), "splashpagestorage");
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*//*
+
     }
 
     @Override
     public void openFragment() {
         selectStorage();
     }
-}
+}*/

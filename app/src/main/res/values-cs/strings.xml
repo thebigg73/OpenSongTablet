@@ -693,4 +693,21 @@
 	<string name="verse">"Verš"</string>
     <string name="keepmultiline">Udržujte multiline kompaktní</string>
 	<string name="notsaved">"neuloženo"</string>
+
+    <string name="extracting">"Extrakce"</string>
+    <string name="converting">"Konverze"</string>
+
+    <string name="promptbackup">"Během posledních 10krát jste tuto aplikaci nepodporili. To je velmi doporučeno, protože můžete obnovit skladby, pokud se něco pokazí. V ideálním případě byste měli uchovávat kopii svého záložního souboru v cloudu (např. Disk Google) nebo ho poslat e-mailem."</string>
+    <string name="backupnow">"Vytvořte nyní zálohu"</string>
+    <string name="remindme">"Připomeň mi později"</string>
+
+    <string name="connected_device_song">"Písek z připojeného zařízení"</string>
+    <string name="network_error">"Chyba sítě"</string>
+    <string name="download_new">"Klikněte zde pro stažení nové Bible"</string>
+    <string name="storage_check">"Kontrola ukládání"</string>
+    <string name="load_preferences">"Načítání předvolby"</string>
+
+    <string name="googlefontcustom">"Jiný název písma Google"</string>
+    <string name="googlefontbrowse">"Procházejte všechny písma Google"</string>
+
 </resources>

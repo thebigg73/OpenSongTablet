@@ -38,7 +38,12 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
 
         for (int x = 0; x < FullscreenActivity.searchTitle.size(); x++) {
             String title = FullscreenActivity.searchTitle.get(x);
-            String ch = title.substring(0, 1);
+            String ch;
+            if (title.length() > 0) {
+                ch = title.substring(0, 1);
+            } else {
+                ch = title;
+            }
             ch = ch.toUpperCase(FullscreenActivity.locale);
 
             // HashMap will prevent duplicates
@@ -243,7 +248,12 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
 
         for (int x = 0; x < results.size(); x++) {
             String title = results.get(x).getTitle();
-            String ch = title.substring(0, 1);
+            String ch;
+            if (title.length() > 1) {
+                ch = title.substring(0, 1);
+            } else {
+                ch = title;
+            }
             ch = ch.toUpperCase(FullscreenActivity.locale);
 
             // HashMap will prevent duplicates

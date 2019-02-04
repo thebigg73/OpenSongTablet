@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.File;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +26,9 @@ public class PopUpExportSongListFragment extends DialogFragment {
     }
 
     ListView songDirectoy_ListView;
+    StorageAccess storageAccess;
+    Preferences preferences;
+    SongFolders songFolders;
 
     @Override
     public void onStart() {
@@ -72,9 +74,16 @@ public class PopUpExportSongListFragment extends DialogFragment {
             }
         });
 
+        storageAccess = new StorageAccess();
+        preferences = new Preferences();
+        songFolders = new SongFolders();
+
+
         songDirectoy_ListView = V.findViewById(R.id.songDirectoy_ListView);
 
         // Prepare a list of the song directories
+        songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, FullscreenActivity.mSongFolderNames);
         songDirectoy_ListView.setAdapter(adapter);
         songDirectoy_ListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -103,40 +112,30 @@ public class PopUpExportSongListFragment extends DialogFragment {
     }
 
     public void prepareSongDirectory(ArrayList<String> directories) {
-        // For each selected directory, list the song that exist.
+        // For each selected directory, list the songs that exist.
         StringBuilder songContents = new StringBuilder();
 
-        for (String directory:directories) {
-            File directory_file;
-            if (directory.equals(FullscreenActivity.mainfoldername)) {
-                directory_file = FullscreenActivity.dir;
-            } else {
-                directory_file = new File(FullscreenActivity.dir + "/" + directory);
+        for (String directory : directories) {
+            if (directory.equals(getString(R.string.mainfoldername))) {
+                directory = "";
             }
-            File[] contents;
-            if (directory_file.exists()) {
-                contents = directory_file.listFiles();
-                ArrayList<String> files_ar = new ArrayList<>();
-                for (File s:contents) {
-                    if (s.isFile()) {
-                        files_ar.add(s.getName());
-                    }
+            ArrayList<String> files_ar = storageAccess.listFilesInFolder(getActivity(), preferences, "Songs", directory);
+            songContents.append(getActivity().getString(R.string.songsinfolder)).append(" \"");
+            if (directory.equals("")) {
+                songContents.append(getString(R.string.mainfoldername));
+            } else {
+                songContents.append(directory);
+            }
+            songContents.append("\":\n\n");
+            try {
+                Collator coll = Collator.getInstance(FullscreenActivity.locale);
+                coll.setStrength(Collator.SECONDARY);
+                Collections.sort(files_ar, coll);
+                for (int l = 0; l < files_ar.size(); l++) {
+                    songContents.append(files_ar.get(l)).append("\n");
                 }
-
-                songContents.append(getActivity().getString(R.string.songsinfolder)).append(" \"")
-                        .append(directory).append("\":\n\n");
-
-                try {
-                    Collator coll = Collator.getInstance(FullscreenActivity.locale);
-                    coll.setStrength(Collator.SECONDARY);
-                    Collections.sort(files_ar, coll);
-                    for (int l=0;l<files_ar.size();l++) {
-                        songContents.append(files_ar.get(l)).append("\n");
-                    }
-                } catch (Exception e) {
-                    // Error sorting
-                }
-
+            } catch (Exception e) {
+                // Error sorting
             }
             songContents.append("\n\n\n\n");
         }
@@ -151,6 +150,12 @@ public class PopUpExportSongListFragment extends DialogFragment {
         Intent chooser = Intent.createChooser(intent, title);
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             getActivity().startActivity(chooser);
+        }
+
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

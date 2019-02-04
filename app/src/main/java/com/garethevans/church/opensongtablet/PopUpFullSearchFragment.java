@@ -41,6 +41,8 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
     public final ArrayList<String> mHymnNumber = new ArrayList<>();
     ArrayList<SearchViewItems> searchlist = new ArrayList<>();
 
+    String[] songbits;
+
     public static List<Map<String, String>> data;
 
     public interface MyInterface {
@@ -239,15 +241,15 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
             mHymnNumber.clear();
 
             for (int d = 0; d < FullscreenActivity.search_database.size(); d++) {
-                String[] songbits = FullscreenActivity.search_database.get(d).split("_%%%_");
-                mFileName.add(d, songbits[0].trim());
-                mFolder.add(d, songbits[1].trim());
-                mTitle.add(d, songbits[2].trim());
-                mAuthor.add(d, songbits[3].trim());
-                mShortLyrics.add(d, songbits[4].trim());
-                mTheme.add(d, songbits[5].trim());
-                mKey.add(d, songbits[6].trim());
-                mHymnNumber.add(d, songbits[7].trim());
+                songbits = FullscreenActivity.search_database.get(d).split("_%%%_");
+                mFolder.add(d, getStringValue(0));
+                mFileName.add(d, getStringValue(1));
+                mTitle.add(d, getStringValue(2));
+                mAuthor.add(d, getStringValue(3));
+                mKey.add(d, getStringValue(4));
+                mShortLyrics.add(d, getStringValue(5));
+                mTheme.add(d, getStringValue(6));
+                mHymnNumber.add(d, getStringValue(7));
             }
 
             mListView.setTextFilterEnabled(true);
@@ -270,6 +272,15 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public String getStringValue(int index) {
+        String val = "";
+        if (songbits != null && songbits.length > index && songbits[index] != null) {
+            val = songbits[index].trim();
+        }
+        Log.d("PopUpFullSearch", "index=" + index + ":  " + val);
+        return val;
     }
 
     @Override

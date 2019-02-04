@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -19,8 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 public class PopUpCreateDrawingFragment extends DialogFragment {
 
@@ -98,7 +98,9 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
     int isvis = View.VISIBLE;
     int isgone = View.GONE;
 
-    File hf;
+    StorageAccess storageAccess;
+    Preferences preferences;
+    Uri uri;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -125,6 +127,9 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
                 doSave();
             }
         });
+
+        storageAccess = new StorageAccess();
+        preferences = new Preferences();
 
         // Initialise the views
         drawView = V.findViewById(R.id.drawView);
@@ -248,7 +253,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         delete_FAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                drawView.startNew(hf);
+                drawView.startNew(getActivity(),uri);
             }
         });
         // Hide the undo/redo buttons for now
@@ -280,9 +285,10 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
     public void setHighlighterFile() {
         // If this file already exists, load it up!
-        hf = ProcessSong.getHighlightFile(getActivity());
-        if (hf.exists()) {
-            drawView.loadImage(hf);
+        String hname = ProcessSong.getHighlighterName(getActivity());
+        uri = storageAccess.getUriForItem(getActivity(), preferences, "Highlighter", "", hname);
+        if (storageAccess.uriExists(getActivity(),uri)) {
+            drawView.loadImage(getActivity(),uri);
         }
     }
 
@@ -507,7 +513,8 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
     @SuppressLint("StaticFieldLeak")
     private class DoSave extends AsyncTask<Object, Void, Void> {
 
-        File f;
+        Uri newUri;
+
         Bitmap bmp;
 
         @Override
@@ -515,7 +522,14 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
             if (FullscreenActivity.saveHighlight) {
                 FullscreenActivity.highlightOn = true;
                 drawView.setDrawingCacheEnabled(true);
-                f = ProcessSong.getHighlightFile(getActivity());
+                String hname = ProcessSong.getHighlighterName(getActivity());
+                newUri = storageAccess.getUriForItem(getActivity(), preferences,
+                        "Highlighter", "", hname);
+
+                // Check the uri exists for the outputstream to be valid
+                storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, newUri, null,
+                        "Highlighter", "", hname);
+
                 try {
                     bmp = drawView.getDrawingCache();
                 } catch (Exception e) {
@@ -528,16 +542,12 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
         @Override
         protected Void doInBackground(Object... objects) {
-            if (f!=null && bmp!=null) {
-                try {
-                    FileOutputStream out = new FileOutputStream(f);
-                    bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
-                    out.flush();
-                    out.close();
-                    bmp.recycle();
-                } catch (Exception e) {
-                    Log.d("d","Error saving");
-                }
+            if (newUri!=null && bmp!=null) {
+                Log.d("d","newUri="+newUri);
+                Log.d("d","bmp="+bmp);
+                OutputStream outputStream = storageAccess.getOutputStream(getActivity(),newUri);
+                Log.d("d","outputStream="+outputStream);
+                storageAccess.writeImage(outputStream, bmp);
             }
             return null;
         }

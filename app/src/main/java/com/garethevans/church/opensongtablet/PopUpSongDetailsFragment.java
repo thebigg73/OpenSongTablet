@@ -123,7 +123,7 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         setContentInfo(t_mHymnNumber,v_mHymnNumber, FullscreenActivity.mHymnNumber);
         setContentInfo(t_mNotes,v_mNotes, FullscreenActivity.mNotes);
 
-        v_mLyrics.setTypeface(FullscreenActivity.typeface1);
+        v_mLyrics.setTypeface(FullscreenActivity.lyricsfont);
         v_mLyrics.setTextSize(8.0f);
         v_mLyrics.setText(FullscreenActivity.mLyrics);
 

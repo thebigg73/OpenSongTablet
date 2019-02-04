@@ -1,17 +1,16 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import android.util.Base64;
-import android.util.Log;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-public class CreateNewSet extends Activity {
+class CreateNewSet {
 
-    static boolean doCreation(Context c) {
+    boolean doCreation(Context c, Preferences preferences, ListSongFiles listSongFiles, StorageAccess storageAccess) {
 
         // Keep the current song and directory aside for now
         String tempsongfilename = FullscreenActivity.songfilename;
@@ -81,7 +80,7 @@ public class CreateNewSet extends Activity {
                     FullscreenActivity.whichSongFolder = "../Scripture/_cache";
                     FullscreenActivity.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML(c);
+                        LoadXML.loadXML(c, preferences, listSongFiles, storageAccess);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -105,6 +104,8 @@ public class CreateNewSet extends Activity {
                             .append("    <title>")
                             .append(PopUpEditSongFragment.parseToHTMLEntities(songparts[1]))
                             .append("</title>\n");
+
+                    sb.append("    <slides>\n");
 
                     for (String mySlide : mySlides) {
                         if (mySlide != null && mySlide.length() > 0) {
@@ -131,7 +132,7 @@ public class CreateNewSet extends Activity {
                     FullscreenActivity.whichSongFolder = "../Slides/_cache";
                     FullscreenActivity.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML(c);
+                        LoadXML.loadXML(c, preferences, listSongFiles, storageAccess);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -185,7 +186,7 @@ public class CreateNewSet extends Activity {
                     FullscreenActivity.whichSongFolder = "../Notes/_cache";
                     FullscreenActivity.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML(c);
+                        LoadXML.loadXML(c, preferences, listSongFiles, storageAccess);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -221,7 +222,7 @@ public class CreateNewSet extends Activity {
                     FullscreenActivity.whichSongFolder = "../Variations";
                     FullscreenActivity.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML(c);
+                        LoadXML.loadXML(c, preferences, listSongFiles, storageAccess);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -229,7 +230,7 @@ public class CreateNewSet extends Activity {
                     FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
                     String slide_lyrics = FullscreenActivity.mLyrics;
                     try {
-                        byte[] data = FullscreenActivity.myXML.getBytes("UTF-8");
+                        byte[] data = FullscreenActivity.myXML.getBytes(StandardCharsets.UTF_8);
                         slide_lyrics = Base64.encodeToString(data, Base64.DEFAULT);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -302,37 +303,31 @@ public class CreateNewSet extends Activity {
                     FullscreenActivity.whichSongFolder = "../Images/_cache";
                     FullscreenActivity.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML(c);
+                        LoadXML.loadXML(c, preferences, listSongFiles, storageAccess);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    // The hymn_number field should contain all the images
-                    // Each image is separated by \n$$$\n
-                    String imagecode[] = FullscreenActivity.mHymnNumber.split("XX_IMAGE_XX");
-
+                    // The mUser3 field should contain all the images
                     // Break all the images into the relevant slides
                     String[] separate_slide = FullscreenActivity.mUser3.split("\n");
-
-                    // Get the number of image codes
-                    int sepslidesnum = separate_slide.length;
-
 
                     FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
                     StringBuilder slide_code = new StringBuilder();
 
-
-                    for (int e=0;e<sepslidesnum;e++) {
+                    for (String aSeparate_slide : separate_slide) {
                         String imglinetext;
-                        if (e<imagecode.length && imagecode[e]!=null && !imagecode[e].equals("")) {
-                            imglinetext = "        <image>" + imagecode[e].trim() + "</image>\n";
+                        // Try to get the image into bytes
+                        String imgcode = storageAccess.getImageSlide(c, aSeparate_slide);
+                        if (!imgcode.isEmpty()) {
+                            imglinetext = "        <image>" + imgcode.trim() + "</image>\n";
                         } else {
-                            imglinetext = "        <filename>" + separate_slide[e] + "</filename>\n";
+                            imglinetext = "        <filename>" + aSeparate_slide + "</filename>\n";
                         }
                         slide_code.append("      <slide>\n")
                                 .append(imglinetext)
                                 .append("        <description>")
-                                .append(separate_slide[e])
+                                .append(aSeparate_slide)
                                 .append("</description>\n")
                                 .append("      </slide>\n");
                     }
@@ -363,32 +358,29 @@ public class CreateNewSet extends Activity {
 
             sb.append("</slide_groups>\n</set>");
 
-            FullscreenActivity.newSetContents = sb.toString();
+            FullscreenActivity.newSetContents = FullscreenActivity.newSetContents + sb.toString();
             // Write the string to the file
-            FileOutputStream newFile;
-            try {
-                newFile = new FileOutputStream(FullscreenActivity.dirsets + "/"
-                        + FullscreenActivity.settoload, false);
-                newFile.write(FullscreenActivity.newSetContents.getBytes());
-                newFile.flush();
-                newFile.close();
+            Uri uri = storageAccess.getUriForItem(c, preferences, "Sets", "", FullscreenActivity.settoload);
+
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "Sets", "", FullscreenActivity.settoload);
+
+            OutputStream outputStream = storageAccess.getOutputStream(c,uri);
+            if (storageAccess.writeFileFromString(FullscreenActivity.newSetContents,outputStream)) {
                 FullscreenActivity.myToastMessage = "yes";
                 // Update the last loaded set now it is saved.
                 FullscreenActivity.lastLoadedSetContent = FullscreenActivity.mySet;
-
-            } catch (IOException e) {
+            } else {
                 FullscreenActivity.myToastMessage = "no";
-                e.printStackTrace();
             }
 
-            Log.d("d","New set=\n"+FullscreenActivity.newSetContents);
             FullscreenActivity.lastSetName = FullscreenActivity.settoload;
 
             // Now we are finished, put the original songfilename back
             FullscreenActivity.songfilename = tempsongfilename;
             FullscreenActivity.whichSongFolder = tempdir;
             try {
-                LoadXML.loadXML(c);
+                LoadXML.loadXML(c, preferences, listSongFiles, storageAccess);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -399,8 +391,8 @@ public class CreateNewSet extends Activity {
         }
 
         // Load the set again - to make sure everything is parsed
-        SetActions.prepareSetList();
-
+        SetActions setActions = new SetActions();
+        setActions.prepareSetList();
         Preferences.savePreferences();
         return true;
     }

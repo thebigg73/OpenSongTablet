@@ -2,6 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -23,7 +24,8 @@
             android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:gravity="center"
             android:text="@string/options_song"
-            style="@style/MyMenuHeadingText" />
+            style="@style/MyMenuHeadingText"
+            tools:ignore="RtlHardcoded" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/closeOptionsFAB"
@@ -52,20 +54,140 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+        <Button
+            android:id="@+id/songNewButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_plus_white_36dp"
+            android:drawableLeft="@drawable/ic_plus_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/options_song_new"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
 
-            <Button
-                android:id="@+id/songEditButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_table_edit_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_table_edit_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/options_song_edit"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/songEditButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_table_edit_white_36dp"
+            android:drawableLeft="@drawable/ic_table_edit_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/options_song_edit"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
+
+        <Button
+            android:id="@+id/songRenameButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_rename_box_white_36dp"
+            android:drawableLeft="@drawable/ic_rename_box_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/options_song_rename"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
+
+        <Button
+            android:id="@+id/songDeleteButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_delete_white_36dp"
+            android:drawableLeft="@drawable/ic_delete_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/options_song_delete"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
+
+        <Button
+            android:id="@+id/songImportButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_arrow_right_white_36dp"
+            android:drawableLeft="@drawable/ic_arrow_right_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/importnewsong"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
+
+        <Button
+            android:id="@+id/songExportButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_share_variant_white_36dp"
+            android:drawableLeft="@drawable/ic_share_variant_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/options_song_export"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
+
+        <Button
+            android:id="@+id/songPadButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_amplifier_white_36dp"
+            android:drawableLeft="@drawable/ic_amplifier_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/pad"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
+
+        <Button
+            android:id="@+id/songAutoScrollButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_rotate_right_white_36dp"
+            android:drawableLeft="@drawable/ic_rotate_right_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/autoscroll"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
+
+        <Button
+            android:id="@+id/songMetronomeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_pulse_white_36dp"
+            android:drawableLeft="@drawable/ic_pulse_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/metronome"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/songStickyButton"
@@ -73,27 +195,44 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_comment_text_white_36dp"
-                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_comment_text_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableLeft="@drawable/ic_comment_text_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/options_song_stickynotes"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
-            <Button
-                android:id="@+id/songDrawingButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_highlighter_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_highlighter_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/highlight"
+        <Button
+            android:id="@+id/songDrawingButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_highlighter_white_36dp"
+            android:drawableLeft="@drawable/ic_highlighter_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/highlight"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
+
+        <Button
+            android:id="@+id/songChordsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_guitar_electric_white_36dp"
+            android:drawableLeft="@drawable/ic_guitar_electric_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/chords"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/songScoreButton"
@@ -101,99 +240,62 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
+                android:drawableStart="@drawable/ic_clef_white_36dp"
                 android:drawableLeft="@drawable/ic_clef_white_36dp"
                 android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_clef_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/highlight"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
-            <Button
-                android:id="@+id/songOnYouTubeButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_youtube_play_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_youtube_play_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/youtube"
+        <Button
+            android:id="@+id/songLinksButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_link_white_36dp"
+            android:drawablePadding="4dp"
+            android:drawableLeft="@drawable/ic_link_white_36dp"
+            android:gravity="center_vertical"
+            android:text="@string/link"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
+
+        <Button
+            android:id="@+id/songOnYouTubeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_youtube_play_white_36dp"
+            android:drawablePadding="4dp"
+            android:drawableLeft="@drawable/ic_youtube_play_white_36dp"
+            android:gravity="center_vertical"
+            android:text="@string/youtube"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
+
+        <Button
+            android:id="@+id/songOnWebButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_web_white_36dp"
+            android:drawableLeft="@drawable/ic_web_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/websearch"
                 android:textColor="#fff"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
-            <Button
-                android:id="@+id/songOnWebButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_web_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_web_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/websearch"
-                android:textColor="#fff"
-                android:textSize="12sp"/>
 
-            <Button
-                android:id="@+id/songRenameButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_rename_box_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_rename_box_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/options_song_rename"
-                android:textColor="#fff"
-                android:textSize="12sp" />
-
-            <Button
-                android:id="@+id/songNewButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_plus_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_plus_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/options_song_new"
-                android:textColor="#fff"
-                android:textSize="12sp" />
-
-            <Button
-                android:id="@+id/songDeleteButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_delete_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_delete_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/options_song_delete"
-                android:textColor="#fff"
-                android:textSize="12sp" />
-
-            <Button
-                android:id="@+id/songExportButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_share_variant_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_share_variant_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/options_song_export"
-                android:textColor="#fff"
-                android:textSize="12sp" />
-
-            <android.support.v7.widget.SwitchCompat
+        <android.support.v7.widget.SwitchCompat
                 android:id="@+id/songPresentationOrderButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -206,7 +308,8 @@
                 android:theme="@style/SwitchStyle"
                 android:textColor="#fff"
                 android:textSize="12sp"
-                app:showText="false" />
+                app:showText="false"
+                tools:ignore="RtlHardcoded" />
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/songKeepMultiLineCompactButton"
@@ -221,7 +324,8 @@
             android:theme="@style/SwitchStyle"
             android:textColor="#fff"
             android:textSize="12sp"
-            app:showText="false" />
+            app:showText="false"
+            tools:ignore="RtlHardcoded" />
 
     </LinearLayout>
     </ScrollView>
