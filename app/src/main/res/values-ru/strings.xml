@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
 	<string name="capo_toggle">"Показ аккордов с каподастром"</string>
@@ -13,7 +13,7 @@
 
     <string name="visualmetronome">"Визуальный метроном"</string>
     <string name="onsonglocation">"Вы должны разместить файл OnSong в папке /documents/OpenSong/, чтобы он был доступным для импорта"</string>
-    <string name="opensonglocation">"Вы должны разместить файл OpenSOng в папке /documents/OpenSong/, чтобы он был доступным для импорта"</string>
+    <string name="opensonglocation">"Вы должны разместить файл OpenSong в папке /documents/OpenSong/, чтобы он был доступным для импорта"</string>
     <string name="savesong">"Cохранить"</string>
     <string name="metronomepadsettings">"Параметры метроном и подложки"</string>
     <string name="metronome">"Метроном"</string>
@@ -118,16 +118,16 @@
 
     <string name="transpose">"Транспонирование"</string>
     <string name="docontinue">"продолжать"</string>
-    <string name="chordformat_help">"Приложение определяет формат аккордов при каждом транспонировании?"</string>
-    <string name="chordformat_check">"Определять формат аккордов при каждом транспонировании"</string>
-    <string name="chordformat_default">"Всегда  изменять аккорды в предпочтительный формат"</string>
+    <string name="chordformat_help">"Определять формат аккордов при каждом транспонировании?"</string>
+    <string name="chordformat_check">"Определять при каждом транспонировании"</string>
+    <string name="chordformat_default">"Всегда  изменять в предпочтительный формат"</string>
     <string name="chordformat_check_short">"Всегда проверять"</string>
     <string name="chordformat_default_short">"Больше не спрашивать"</string>
 
     <string name="nothighenoughapi">"Необходимо обновить версию Android!"</string>
 
     <string name="checkchordformat">"Вы уверены, что аккорды в нужном формате?"</string>
-    <string name="oldchordformat">"Обнаружен старый формат аккордов"</string>
+    <string name="oldchordformat">"Определен текущий формат аккордов"</string>
 
     <string name="firstsong">"Показать первую песню"</string>
     <string name="lastsong">"Показать последнюю песню"</string>
@@ -245,7 +245,7 @@
     <string name="edit_song_tempo">"Темп"</string>
     <string name="edit_song_timesig">"Размер"</string>
     <string name="edit_song_hymn">"Номер Гимна"</string>
-    <string name="edit_song_availabletags">"[В] = Стих, [V1] = Стих 1, [C] = хор, [С1] для хора 1, [P] = Prechorus, [T] = тегов, [B] = мост, [&#8230; (все, что вы хотите ) &#8230;] = пользовательских тегов. \ п Лирические строки начинаются с пробела аккордов линий с полной остановки, строки комментариев с запятой."</string>
+    <string name="edit_song_availabletags">"[V1] = Куплет 1, [C] = Припев, [С1] = Припев 1, [P] = Предприпев, [T] = Тэг, [B] = мост, [&#8230; (все, что вы хотите ) &#8230;] = пользовательские теги. \ п Строки текста начинаются с пробела, строки аккордов - с точки, строки комментариев - с запятой."</string>
     <string name="edit_song_duration">"Продолжительность песни (в секундах)"</string>
     <string name="edit_song_notes">"Заметки"</string>
     <string name="edit_song_midi">"MIDI сообщение, отправленное из песни"</string>
@@ -584,12 +584,12 @@
     <string name="width">"Ширина"</string>
     <string name="quicklaunch_button4">"Кнопка 4"</string>
 
-    <string name="export_chordpro">"Песня в формате ChordPro (.cho)"</string>
-    <string name="export_desktop">"Файл для настольной версии (без расширения)"</string>
-    <string name="export_onsong">"Песня в формате OnSong (.ongong)"</string>
-    <string name="export_ost">"Песня в формате OpenSongApp (.ost)"</string>
-    <string name="export_pdf">"Снимок экрана PDF (.pdf)"</string>
-    <string name="export_png">"Снимок экрана (.png)"</string>
+    <string name="export_chordpro">"Файл в формате ChordPro (.cho)"</string>
+    <string name="export_desktop">"Файл настольной версии Open Song (без расширения)"</string>
+    <string name="export_onsong">"Файл в формате OnSong (.ongong)"</string>
+    <string name="export_ost">"Файл в формате OpenSongApp (.ost)"</string>
+    <string name="export_pdf">"Скриншот PDF (.pdf)"</string>
+    <string name="export_png">"Скриншот PNG (.png)"</string>
     <string name="export_set">"Список OpenSongApp (.osts)"</string>
     <string name="export_text">"Текстовый файл (.txt)"</string>
     <string name="floating_window">"Плавающее окно"</string>
@@ -625,7 +625,7 @@
     <string name="tag_refrain">"рефрен"</string>
     <string name="tag_reprise">"реприз"</string>
 
-    <string name="music_score">"Уровень оценки музыки"</string>
+    <string name="music_score">"Рейтинг"</string>
     <string name="pdftotext_extract">"Извлечение текста из PDF"</string>
     <string name="pdftotext_found">"Текст найден:"</string>
 
