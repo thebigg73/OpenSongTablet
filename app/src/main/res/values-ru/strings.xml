@@ -130,7 +130,7 @@
     <string name="oldchordformat">"Определен текущий формат аккордов"</string>
 
     <string name="firstsong">"Показать первую песню"</string>
-    <string name="lastsong">"Показать последнюю песню"</string>
+    <string name="lastsong">"Последняя песня"</string>
 
     <string name="set_edit">"Правка"</string>
     <string name="set_edit_title">"Изменить название списка"</string>
