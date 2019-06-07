@@ -80,4 +80,7 @@ dependencies {
     implementation 'ru.egslava:MaskedEditText:1.0.5'
     implementation 'com.annimon:stream:1.1.9'
     implementation 'lib.kashif:folderpicker:2.4'
+    testImplementation 'org.junit:com.springsource.org.junit:4.11.0'
+    testImplementation 'org.mockito:mockito-android:2.28.2'
+    testImplementation 'org.mockito:inline:2.20.0'
 }
