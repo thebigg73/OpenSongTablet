@@ -569,83 +569,10 @@ class ChordProConvert {
     }
 
 
-    private String guessTags(String s) {
+    protected static String guessTags(String s) {
         // Only check for definite comment lines on lines that are short enough to maybe be headings
         if (s.startsWith(";") || s.startsWith("#") | s.length() < 16) {
-            s = s.replace("Intro:", "[Intro]");
-            s = s.replace("Intro", "[Intro]");
-            s = s.replace("Outro:", "[Outro]");
-            s = s.replace("Outro", "[Outro]");
-            s = s.replace("Verse:", "[V]");
-            s = s.replace("VERSE:", "[V]");
-            s = s.replace("Verse 1:", "[V1]");
-            s = s.replace("Verse 2:", "[V2]");
-            s = s.replace("Verse 3:", "[V3]");
-            s = s.replace("Verse 4:", "[V4]");
-            s = s.replace("VERSE 1:", "[V1]");
-            s = s.replace("VERSE 2:", "[V2]");
-            s = s.replace("VERSE 3:", "[V3]");
-            s = s.replace("VERSE 4:", "[V4]");
-            s = s.replace("(VERSE)", "[V]");
-            s = s.replace("(Verse 1)", "[V1]");
-            s = s.replace("(Verse 2)", "[V2]");
-            s = s.replace("(Verse 3)", "[V3]");
-            s = s.replace("Verse 1", "[V1]");
-            s = s.replace("Verse 2", "[V2]");
-            s = s.replace("Verse 3", "[V3]");
-            s = s.replace("Verse 4", "[V4]");
-            s = s.replace("VERSE 1", "[V1]");
-            s = s.replace("VERSE 2", "[V2]");
-            s = s.replace("VERSE 3", "[V3]");
-            s = s.replace("VERSE 4", "[V4]");
-            s = s.replace("Verse", "[V]");
-            s = s.replace("VERSE", "[V]");
-            s = s.replace("Prechorus:", "[P]");
-            s = s.replace("Pre-chorus:", "[P]");
-            s = s.replace("PreChorus:", "[P]");
-            s = s.replace("Pre-Chorus:", "[P]");
-            s = s.replace("PRECHORUS:", "[P]");
-            s = s.replace("Prechorus 1:", "[P1]");
-            s = s.replace("Prechorus 2:", "[P2]");
-            s = s.replace("Prechorus 3:", "[P3]");
-            s = s.replace("PreChorus 1:", "[P1]");
-            s = s.replace("PreChorus 2:", "[P2]");
-            s = s.replace("PreChorus 3:", "[P3]");
-            s = s.replace("Pre-Chorus 1:", "[P1]");
-            s = s.replace("Pre-Chorus 2:", "[P2]");
-            s = s.replace("Pre-Chorus 3:", "[P3]");
-            s = s.replace("(Chorus)", "[C]");
-            s = s.replace("Chorus:", "[C]");
-            s = s.replace("CHORUS:", "[C]");
-            s = s.replace("Chorus 1:", "[C1]");
-            s = s.replace("Chorus 2:", "[C2]");
-            s = s.replace("Chorus 3:", "[C3]");
-            s = s.replace("CHORUS 1:", "[C1]");
-            s = s.replace("CHORUS 2:", "[C2]");
-            s = s.replace("CHORUS 3:", "[C3]");
-            s = s.replace("Chorus 1", "[C1]");
-            s = s.replace("Chorus 2", "[C2]");
-            s = s.replace("Chorus 3", "[C3]");
-            s = s.replace("CHORUS 1", "[C1]");
-            s = s.replace("CHORUS 2", "[C2]");
-            s = s.replace("CHORUS 3", "[C3]");
-            s = s.replace("Chorus", "[C]");
-            s = s.replace("CHORUS", "[C]");
-            s = s.replace("Bridge:", "[B]");
-            s = s.replace("BRIDGE:", "[B]");
-            s = s.replace("Bridge 1:", "[B1]");
-            s = s.replace("Bridge 2:", "[B2]");
-            s = s.replace("Bridge 3:", "[B3]");
-            s = s.replace("BRIDGE 1:", "[B1]");
-            s = s.replace("BRIDGE 2:", "[B2]");
-            s = s.replace("BRIDGE 3:", "[B3]");
-            s = s.replace("Tag:", "[T]");
-            if (s.endsWith(":") && s.length() < 12) {
-                // Likely to be another custom tag
-                s = "[" + s.replace(":", "") + "]";
-            }
-            s = s.replace("[[", "[");
-            s = s.replace("]]", "]");
+            s = OnSongConvert.guessTags(s);
         }
         return s;
     }

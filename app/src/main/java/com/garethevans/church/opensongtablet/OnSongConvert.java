@@ -939,161 +939,12 @@ class OnSongConvert {
 		for (int x = 0; x < numlines; x++) {
 			// Try to guess tags used
 			if (line[x].indexOf(";")!=0) {
-				line[x] = line[x].replace(" Intro:", "[Intro]");
-				line[x] = line[x].replace(" Outro:", "[Outro]");
-				line[x] = line[x].replace(" V:", "[V]");
-				line[x] = line[x].replace(" V1:", "[V1]");
-				line[x] = line[x].replace(" V2:", "[V2]");
-				line[x] = line[x].replace(" V3:", "[V3]");
-				line[x] = line[x].replace(" V4:", "[V4]");
-				line[x] = line[x].replace(" V5:", "[V5]");
-				line[x] = line[x].replace(" V6:", "[V6]");
-				line[x] = line[x].replace(" V7:", "[V7]");
-				line[x] = line[x].replace(" V8:", "[V8]");
-				line[x] = line[x].replace(" V9:", "[V9]");
-				line[x] = line[x].replace(" Verse:", "[V]");
-				line[x] = line[x].replace(" Verse 1:", "[V1]");
-				line[x] = line[x].replace(" Verse 2:", "[V2]");
-				line[x] = line[x].replace(" Verse 3:", "[V3]");
-				line[x] = line[x].replace(" Verse 4:", "[V4]");
-				line[x] = line[x].replace(" (Verse)", "[V]");
-				line[x] = line[x].replace(" (Verse 1)", "[V1]");
-				line[x] = line[x].replace(" (Verse 2)", "[V2]");
-				line[x] = line[x].replace(" (Verse 3)", "[V3]");
-				line[x] = line[x].replace(" (Chorus)", "[y]");
-                line[x] = line[x].replace(" Chorus", "[y]");
-				line[x] = line[x].replace(" C:", "[y]");
-				line[x] = line[x].replace(" C1:", "[C1]");
-				line[x] = line[x].replace(" C2:", "[C2]");
-				line[x] = line[x].replace(" C3:", "[C3]");
-				line[x] = line[x].replace(" C4:", "[C4]");
-				line[x] = line[x].replace(" C5:", "[C5]");
-				line[x] = line[x].replace(" C6:", "[C6]");
-				line[x] = line[x].replace(" C7:", "[C7]");
-				line[x] = line[x].replace(" C8:", "[C8]");
-				line[x] = line[x].replace(" C9:", "[C9]");
-				line[x] = line[x].replace(" Chorus:", "[y]");
-				line[x] = line[x].replace(" Chorus 1:", "[C1]");
-				line[x] = line[x].replace(" Chorus 2:", "[C2]");
-				line[x] = line[x].replace(" Chorus 3:", "[C3]");
-				line[x] = line[x].replace(" Prechorus:", "[P]");
-				line[x] = line[x].replace(" Prechorus 1:", "[P1]");
-				line[x] = line[x].replace(" Prechorus 2:", "[P2]");
-				line[x] = line[x].replace(" Prechorus 3:", "[P3]");
-				line[x] = line[x].replace(" Bridge:", "[B]");
-				line[x] = line[x].replace(" Tag:", "[T]");
-				line[x] = line[x].replace("Intro:", "[Intro]");
-				line[x] = line[x].replace("Outro:", "[Outro]");
-				line[x] = line[x].replace("V:", "[V]");
-				line[x] = line[x].replace("V1:", "[V1]");
-				line[x] = line[x].replace("V2:", "[V2]");
-				line[x] = line[x].replace("V3:", "[V3]");
-				line[x] = line[x].replace("V4:", "[V4]");
-				line[x] = line[x].replace("V5:", "[V5]");
-				line[x] = line[x].replace("V6:", "[V6]");
-				line[x] = line[x].replace("V7:", "[V7]");
-				line[x] = line[x].replace("V8:", "[V8]");
-				line[x] = line[x].replace("V9:", "[V9]");
-				line[x] = line[x].replace("Verse:", "[V]");
-				line[x] = line[x].replace("Verse 1:", "[V1]");
-				line[x] = line[x].replace("Verse 2:", "[V2]");
-				line[x] = line[x].replace("Verse 3:", "[V3]");
-				line[x] = line[x].replace("Verse 4:", "[V4]");
-				line[x] = line[x].replace("(Verse)", "[V]");
-				line[x] = line[x].replace("(Verse 1)", "[V1]");
-				line[x] = line[x].replace("(Verse 2)", "[V2]");
-				line[x] = line[x].replace("(Verse 3)", "[V3]");				
-				line[x] = line[x].replace("(Chorus)", "[y]");
-				line[x] = line[x].replace("C:", "[y]");
-				line[x] = line[x].replace("C1:", "[C1]");
-				line[x] = line[x].replace("C2:", "[C2]");
-				line[x] = line[x].replace("C3:", "[C3]");
-				line[x] = line[x].replace("C4:", "[C4]");
-				line[x] = line[x].replace("C5:", "[C5]");
-				line[x] = line[x].replace("C6:", "[C6]");
-				line[x] = line[x].replace("C7:", "[C7]");
-				line[x] = line[x].replace("C8:", "[C8]");
-				line[x] = line[x].replace("C9:", "[C9]");
-				line[x] = line[x].replace("Chorus:", "[y]");
-				line[x] = line[x].replace("Chorus 1:", "[C1]");
-				line[x] = line[x].replace("Chorus 2:", "[C2]");
-				line[x] = line[x].replace("Chorus 3:", "[C3]");
-				line[x] = line[x].replace("Prechorus:", "[P]");
-				line[x] = line[x].replace("Prechorus 1:", "[P1]");
-				line[x] = line[x].replace("Prechorus 2:", "[P2]");
-				line[x] = line[x].replace("Prechorus 3:", "[P3]");
-				line[x] = line[x].replace("Bridge:", "[B]");
-				line[x] = line[x].replace("Tag:", "[T]");
-
-				// Guess custom tags - will be a short line with :
-				if (line[x].length()<15 && line[x].contains(":") && line[x].indexOf("{")!=0) {
-					line[x] = "[" + line[x].replace(":","") + "]";
-				}
+				line[x] = guessTags(line[x]);
 			}
 			parsedlines.append(line[x]).append("\n");
 		}
 
-		
-		// Remove start and end of tabs
-		while (parsedlines.toString().contains("{start_of_tab") && parsedlines.toString().contains("{end_of_tab")) {
-			int startoftabpos;
-			int endoftabpos;
-			startoftabpos = parsedlines.indexOf("{start_of_tab");
-			endoftabpos = parsedlines.indexOf("{end_of_tab") + 12;
-			
-			if (endoftabpos > 13 && startoftabpos > -1 && endoftabpos > startoftabpos) {
-				String startbit = parsedlines.substring(0, startoftabpos);
-				String endbit = parsedlines.substring(endoftabpos);
-				parsedlines = new StringBuilder(startbit + endbit);
-			}
-		}
-		
-		// Change start and end of chorus
-		while (parsedlines.toString().contains("{start_of_chorus")) {
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus}", "[y]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus:}", "[y]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus :}", "[y]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus", "[y]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace(":", ""));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("}", ""));
-		}
-
-		while (parsedlines.toString().contains("{end_of_chorus")) {
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_chorus}", "[]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_chorus:}", "[]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_chorus :}", "[]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_chorus", "[]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace(":", ""));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("}", ""));
-		}
-
-		// Change start and end of bridge
-		while (parsedlines.toString().contains("{start_of_bridge")) {
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_bridge}", "[B]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_bridge:}", "[B]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_bridge :}", "[B]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_bridge", "[B]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace(":", ""));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("}", ""));
-		}
-
-		while (parsedlines.toString().contains("{end_of_bridge")) {
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_bridge}", "[]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_bridge:}", "[]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_bridge :}", "[]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_bridge", "[]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace(":", ""));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("}", ""));
-		}
-		
-		// Get rid of double line breaks
-		while (parsedlines.toString().contains("\n\n\n")) {
-			parsedlines = new StringBuilder(parsedlines.toString().replace("\n\n\n", "\n\n"));
-		}
-
-		while (parsedlines.toString().contains(";\n\n;")) {
-			parsedlines = new StringBuilder(parsedlines.toString().replace(";\n\n;", ";\n"));
-		}
+		parsedlines = changeStartAndEndLines(parsedlines);
 
 		// Ok, go back through the parsed lines and add spaces to the beginning
 		// of lines that aren't comments, chords or tags
@@ -1176,6 +1027,102 @@ class OnSongConvert {
         }
         
 		return true;
+	}
+
+	public static StringBuilder changeStartAndEndLines(StringBuilder parsedlines) {
+		// Remove start and end of tabs
+		while (parsedlines.toString().contains("{start_of_tab") && parsedlines.toString().contains("{end_of_tab")) {
+			int startoftabpos;
+			int endoftabpos;
+			startoftabpos = parsedlines.indexOf("{start_of_tab");
+			endoftabpos = parsedlines.indexOf("{end_of_tab") + 12;
+
+			if (endoftabpos > 13 && startoftabpos > -1 && endoftabpos > startoftabpos) {
+				String startbit = parsedlines.substring(0, startoftabpos);
+				String endbit = parsedlines.substring(endoftabpos);
+				parsedlines = new StringBuilder(startbit + endbit);
+			}
+		}
+
+		// Change start and end of chorus
+		while (parsedlines.toString().contains("{start_of_chorus")) {
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus}", "[y]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus:}", "[y]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus :}", "[y]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus", "[y]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace(":", ""));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("}", ""));
+		}
+
+		while (parsedlines.toString().contains("{end_of_chorus")) {
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_chorus}", "[]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_chorus:}", "[]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_chorus :}", "[]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_chorus", "[]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace(":", ""));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("}", ""));
+		}
+
+		// Change start and end of bridge
+		while (parsedlines.toString().contains("{start_of_bridge")) {
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_bridge}", "[B]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_bridge:}", "[B]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_bridge :}", "[B]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_bridge", "[B]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace(":", ""));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("}", ""));
+		}
+
+		while (parsedlines.toString().contains("{end_of_bridge")) {
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_bridge}", "[]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_bridge:}", "[]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_bridge :}", "[]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_bridge", "[]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace(":", ""));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("}", ""));
+		}
+
+		// Get rid of double line breaks
+		while (parsedlines.toString().contains("\n\n\n")) {
+			parsedlines = new StringBuilder(parsedlines.toString().replace("\n\n\n", "\n\n"));
+		}
+
+		while (parsedlines.toString().contains(";\n\n;")) {
+			parsedlines = new StringBuilder(parsedlines.toString().replace(";\n\n;", ";\n"));
+		}
+
+		return parsedlines;
+	}
+
+	private static String guessOneTag(String s, String tag, String newTag) {
+		String x = s.replaceAll("(?i) *\\(?" + tag + " *(?<number>([0-9 a-z])*)(:|\\))?",
+				"[" + newTag + "${number}]");
+		if (x.equals(s))
+			return s;
+		return x.replaceAll("\\[(" + newTag + ") *([^ \\]]+)\\]", "[$1$2]");
+	}
+
+	public static String guessTags(String s) {
+		s = guessOneTag(s, "(?<![a-z])(intro|outro|T|V|P|C|B)(?![a-z])", "$1");
+		s = guessOneTag(s, "tag", "T");
+		s = guessOneTag(s, "verse", "V");
+		s = guessOneTag(s, "pre-?chorus", "P");
+		s = guessOneTag(s, "chorus", "C");
+		s = guessOneTag(s, "bridge", "B");
+
+		// Guess custom tags - will be a short line with :
+		if (s.length()<15 && s.contains(":") && s.indexOf("{")!=0) {
+			if (s.indexOf(";") >= 0 || s.indexOf("#") >= 0) {
+				s = ";[" + s.substring(1).replace(":", "") + "]";
+			} else {
+				s = "[" + s.replace(":", "") + "]";
+			}
+		}
+		s = s.replace("[[", "[");
+		s = s.replace("]]", "]");
+		if (s.equals("[C]"))
+		    s = "[y]";
+		return s.trim();
 	}
 
 	void doBatchConvert(Context contxt) {
