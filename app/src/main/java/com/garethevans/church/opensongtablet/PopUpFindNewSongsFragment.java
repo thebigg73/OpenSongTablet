@@ -1342,7 +1342,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
         return "";
     }
-    private String getLyricsSongSelectChordPro(String s) {
+    protected String getLyricsSongSelectChordPro(String s) {
+        s = s.replace("<sup>", "").replace("</sup>", "");
+
         int start = s.indexOf("<pre class=\"cproSongBody\">");
         int end = s.indexOf("</pre>",start);
         if (start>-1 && end>-1 && end>start) {
