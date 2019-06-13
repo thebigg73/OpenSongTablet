@@ -1046,10 +1046,10 @@ class OnSongConvert {
 
 		// Change start and end of chorus
 		while (parsedlines.toString().contains("{start_of_chorus")) {
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus}", "[y]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus:}", "[y]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus :}", "[y]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus", "[y]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus}", "[C]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus:}", "[C]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus :}", "[C]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus", "[C]"));
 			parsedlines = new StringBuilder(parsedlines.toString().replace(":", ""));
 			parsedlines = new StringBuilder(parsedlines.toString().replace("}", ""));
 		}
@@ -1120,8 +1120,6 @@ class OnSongConvert {
 		}
 		s = s.replace("[[", "[");
 		s = s.replace("]]", "]");
-		if (s.equals("[C]"))
-		    s = "[y]";
 		return s.trim();
 	}
 
