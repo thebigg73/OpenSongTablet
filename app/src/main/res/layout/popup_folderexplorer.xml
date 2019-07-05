@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/myTitle">
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             app:fabSize="mini"
             app:backgroundTint="@color/blue"
             app:borderWidth="0dp"
@@ -41,14 +41,14 @@
                 android:text="@string/storage_int"
                 android:id="@+id/currentFolderText"
                 style="@style/MyWhiteHeadingText"
-                android:gravity="center_vertical|right" />
+                android:gravity="center_vertical|end" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/storage_notwritable"
                 android:id="@+id/isWritableText"
                 style="@style/MyInfoText"
-                android:gravity="center_vertical|right"
+                android:gravity="center_vertical|end"
                 android:visibility="invisible"/>
 
             <TextView

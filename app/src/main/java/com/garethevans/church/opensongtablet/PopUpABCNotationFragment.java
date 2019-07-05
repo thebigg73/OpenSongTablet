@@ -3,11 +3,12 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,8 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
+
+import java.util.Objects;
 
 public class PopUpABCNotationFragment extends DialogFragment {
 
@@ -47,14 +50,6 @@ public class PopUpABCNotationFragment extends DialogFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -77,12 +72,12 @@ public class PopUpABCNotationFragment extends DialogFragment {
         }
     }
 
-    WebView abcWebView;
+    private WebView abcWebView;
     Preferences preferences;
 
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(false);
         if (getDialog().getWindow()!=null) {
@@ -91,7 +86,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_abcnotation, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getString(R.string.music_score));
+        title.setText(Objects.requireNonNull(getActivity()).getString(R.string.music_score));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +98,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         if (FullscreenActivity.whattodo.equals("abcnotation")) {
-            saveMe.setVisibility(View.GONE);
+            saveMe.hide();
         }
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,10 +137,10 @@ public class PopUpABCNotationFragment extends DialogFragment {
         abcWebView.setWebViewClient(new WebViewClient() {
 
             public void onPageFinished(WebView view, String url) {
-                if (FullscreenActivity.mNotation.equals("")) {
+                if (StaticVariables.mNotation.equals("")) {
                     updateContent(getSongInfo());
                 } else {
-                    updateContent(FullscreenActivity.mNotation);
+                    updateContent(StaticVariables.mNotation);
                 }
                 if (!FullscreenActivity.whattodo.equals("abcnotation")) {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
@@ -165,7 +160,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
         abcWebView.loadUrl("file:///android_asset/ABC/abc.html");
         Dialog dialog = getDialog();
         if (dialog!=null && getActivity()!=null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog);
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog, preferences);
         }
         return V;
     }
@@ -179,7 +174,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
         }
     }
 
-    public void updateContent(String s) {
+    private void updateContent(String s) {
         try {
             s = Uri.encode(s, "UTF-8");
         } catch  (Exception e) {
@@ -206,22 +201,22 @@ public class PopUpABCNotationFragment extends DialogFragment {
         }
     }
 
-    public String getSongInfo() {
+    private String getSongInfo() {
         String info = "";
         // Add the song time signature
-        if (FullscreenActivity.mTimeSig.equals("")) {
+        if (StaticVariables.mTimeSig.equals("")) {
             info += "M:4/4\n";
         } else {
-            info += "M:" + FullscreenActivity.mTimeSig + "\n";
+            info += "M:" + StaticVariables.mTimeSig + "\n";
         }
         // Add the note length
         info += "L:1/8\n";
 
         // Add the song key
-        if (FullscreenActivity.mKey.equals("")) {
+        if (StaticVariables.mKey.equals("")) {
             info += "K:C treble %treble or bass clef\n";
         } else {
-            info += "K: " + FullscreenActivity.mKey + " %treble or bass clef\n";
+            info += "K: " + StaticVariables.mKey + " %treble or bass clef\n";
         }
         info += "|";
         return info;
@@ -233,7 +228,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
             // String received from WebView
             if (!value.equals(getSongInfo())) {
                 // Something has changed
-                FullscreenActivity.mNotation = value;
+                StaticVariables.mNotation = value;
                 //String ABCPlaceHolder = ";"+getActivity().getString(R.string.music_score);
                 // I could add a line at the start to let the user know there is score, but decided not to
                 /*if (!FullscreenActivity.mLyrics.contains(ABCPlaceHolder)) {

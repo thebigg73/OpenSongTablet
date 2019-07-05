@@ -708,5 +708,6 @@
 
     <string name="googlefontcustom">"Autre nom de police Google"</string>
     <string name="googlefontbrowse">"Parcourir toutes les polices de Google"</string>
+    <string name="reset_text">Si vous rencontrez des difficultés avec l\'application, essayez de réinitialiser vos paramètres à l\'aide du bouton ci-dessous. Cela effacera vos paramètres, mais ne supprimera pas vos chansons.</string>
 
 </resources>

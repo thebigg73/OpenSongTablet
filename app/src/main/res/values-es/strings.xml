@@ -708,5 +708,6 @@
 
     <string name="googlefontcustom">"Otro nombre de fuente de Google"</string>
     <string name="googlefontbrowse">"Explorar todas las fuentes de Google"</string>
+    <string name="reset_text">Si tiene dificultades con la aplicación, intente restablecer la configuración con el botón de abajo. Esto borrará su configuración, pero no eliminará sus canciones.</string>
 
 </resources>

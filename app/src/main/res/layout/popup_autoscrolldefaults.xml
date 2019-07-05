@@ -42,6 +42,7 @@
                 android:layout_marginBottom="0dp"
                 android:text="@string/edit_default_delaymax"
                 style="@style/MyInfoText"/>
+
             <EditText
                 android:id="@+id/default_delaymax_EditText"
                 style="@style/MyEditText"
@@ -53,7 +54,8 @@
                 android:layout_marginTop="8dp"
                 android:hint="@string/edit_default_delaymax"
                 android:inputType="number"
-                android:maxLines="1" />
+                android:maxLines="1"
+                tools:ignore="Autofill" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -103,7 +105,8 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                tools:ignore="Autofill" />
 
             <TextView
                 android:layout_width="wrap_content"

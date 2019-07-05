@@ -43,6 +43,7 @@
                 android:textIsSelectable="true"
                 android:textSize="32sp" />
 
+
             <TextView
                 android:id="@+id/keyChange_TextView"
                 android:layout_width="match_parent"
@@ -51,6 +52,22 @@
                 android:gravity="center_horizontal"
                 android:text="@string/edit_song_key"
                 android:textSize="28sp" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/assumePreferred_SwitchCompat"
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:text="@string/chordformat_default"
+                android:theme="@style/SwitchStyle" />
+
+            <LinearLayout
+                android:id="@+id/chooseFormat_LinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
             <TextView
                 android:id="@+id/detectedChordFormatText"
@@ -100,7 +117,14 @@
                     android:layout_height="wrap_content"
                     android:text="@string/chordFormat5" />
 
+                <RadioButton
+                    android:id="@+id/chordFormat6Radio"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chordFormat6" />
             </RadioGroup>
+            </LinearLayout>
 
         </LinearLayout>
 

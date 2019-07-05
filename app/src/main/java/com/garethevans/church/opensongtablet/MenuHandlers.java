@@ -3,7 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
+import androidx.appcompat.app.ActionBar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.ViewConfiguration;
@@ -23,9 +23,9 @@ class MenuHandlers {
 
     public static MyInterface mListener;
 
-    static void actOnClicks(Context c, int menuitem) {
+    static void actOnClicks(Context c, Preferences preferences, int menuitem) {
         mListener = (MyInterface) c;
-        FullscreenActivity.setMoveDirection = "";
+        StaticVariables.setMoveDirection = "";
 
         switch (menuitem) {
 
@@ -50,24 +50,23 @@ class MenuHandlers {
                 break;
 
             case R.id.set_add:
-                if ((FullscreenActivity.isSong || FullscreenActivity.isPDF) && !FullscreenActivity.whichSongFolder.startsWith("..")) {
-                    if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-                        FullscreenActivity.whatsongforsetwork = "$**_" + FullscreenActivity.songfilename + "_**$";
+                if ((FullscreenActivity.isSong || FullscreenActivity.isPDF) && !StaticVariables.whichSongFolder.startsWith("..")) {
+                    if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername))) {
+                        StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.songfilename + "_**$";
                     } else {
-                        FullscreenActivity.whatsongforsetwork = "$**_" + FullscreenActivity.whichSongFolder + "/"
-                                + FullscreenActivity.songfilename + "_**$";
+                        StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.whichSongFolder + "/"
+                                + StaticVariables.songfilename + "_**$";
                     }
                     // Allow the song to be added, even if it is already there
-                    FullscreenActivity.mySet = FullscreenActivity.mySet + FullscreenActivity.whatsongforsetwork;
+                    String newval = preferences.getMyPreferenceString(c,"setCurrent","") + StaticVariables.whatsongforsetwork;
+                    preferences.setMyPreferenceString(c,"setCurrent",newval);
                     // Tell the user that the song has been added.
-                    FullscreenActivity.myToastMessage = "\"" + FullscreenActivity.songfilename + "\" "
+                    StaticVariables.myToastMessage = "\"" + StaticVariables.songfilename + "\" "
                             + c.getResources().getString(R.string.addedtoset);
                     ShowToast.showToast(c);
                     // Vibrate to indicate something has happened
                     DoVibrate.vibrate(c,50);
 
-                    // Save the set and other preferences
-                    Preferences.savePreferences();
                     if (mListener!=null) {
                         mListener.prepareOptionMenu();
                     }
@@ -79,7 +78,7 @@ class MenuHandlers {
     static void forceOverFlow(Context c, ActionBar ab, Menu menu) {
         try {
             ViewConfiguration config = ViewConfiguration.get(c);
-            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPerma nentMenuKey");
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
             if (menuKeyField != null) {
                 menuKeyField.setAccessible(true);
                 menuKeyField.setBoolean(config, false);

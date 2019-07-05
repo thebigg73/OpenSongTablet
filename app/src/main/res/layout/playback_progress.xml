@@ -1,136 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_alignParentEnd="true"
     android:gravity="end"
-    android:layout_alignParentRight="true"
-    android:layout_alignParentEnd="true">
+    android:orientation="vertical">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal"
+    <LinearLayout
+        android:id="@+id/learnAutoScroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/learnAutoScroll"
-        android:background="#888888"
-        android:alpha="0.5"
-        android:padding="4dp"
         android:layout_margin="4dp"
-        android:gravity="center_vertical">
+        android:alpha="0.7"
+        android:background="#888888"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="4dp">
 
         <TextView
+            android:id="@+id/learnAutoScroll_TextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/learnAutoScroll_TextView"
-            android:drawableLeft="@drawable/ic_rotate_right_white_36dp"
-            android:drawablePadding="2dp"
+            android:layout_gravity="center_horizontal|center_vertical"
             android:layout_weight="1"
             android:drawableStart="@drawable/ic_rotate_right_white_36dp"
-            android:textStyle="bold|italic"
-            android:textSize="12sp"
-            android:layout_gravity="center_horizontal|center_vertical"
+            android:drawablePadding="2dp"
             android:gravity="center_vertical|center_horizontal"
-            android:textColor="#fff" />
+            android:textColor="#fff"
+            android:textSize="12sp"
+            android:textStyle="bold|italic" />
 
         <TextView
+            android:id="@+id/learnAutoScrollTime_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/learnAutoScrollTime_TextView"
-            android:textStyle="bold|italic"
-            android:textSize="14sp"
-            android:textColor="#fff"
-            android:singleLine="true"
             android:layout_margin="4dp"
-            android:padding="4dp"/>
+            android:padding="4dp"
+            android:singleLine="true"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:textStyle="bold|italic" />
 
     </LinearLayout>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal" android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <LinearLayout
         android:id="@+id/backingtrackProgress"
-        android:background="#888888"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:alpha="0.5"
-        android:padding="4dp"
-        android:gravity="center_vertical|center_horizontal">
+        android:background="#888888"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="horizontal"
+        android:padding="4dp">
 
         <ImageView
+            android:id="@+id/imageView6"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:id="@+id/imageView6"
-            android:src="@drawable/ic_amplifier_white_36dp"
+            android:layout_marginEnd="8dp"
             android:contentDescription="@string/pad"
-            android:layout_marginRight="8dp"
-            android:layout_marginEnd="8dp" />
+            android:src="@drawable/ic_amplifier_white_36dp" />
 
         <TextView
+            android:id="@+id/padcurrentTime_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/padcurrentTime_TextView"
-            android:textStyle="bold|italic"
+            android:textColor="#fff"
             android:textSize="14sp"
-            android:textColor="#fff" />
+            android:textStyle="bold|italic" />
 
         <TextView
+            android:id="@+id/padTimeSeparator_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/separator"
-            android:id="@+id/padTimeSeparator_TextView"
-            android:textStyle="bold|italic"
+            android:textColor="#fff"
             android:textSize="14sp"
-            android:textColor="#fff" />
+            android:textStyle="bold|italic" />
 
         <TextView
+            android:id="@+id/padtotalTime_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/padtotalTime_TextView"
-            android:textStyle="bold|italic"
+            android:textColor="#fff"
             android:textSize="14sp"
-            android:textColor="#fff" />
+            android:textStyle="bold|italic" />
     </LinearLayout>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/playbackProgress"
-    android:background="#888888"
-    android:alpha="0.5"
-    android:padding="4dp"
-    android:gravity="center_vertical|center_horizontal">
-
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:id="@+id/imageView5"
-        android:src="@drawable/ic_rotate_right_white_36dp"
-        android:contentDescription="@string/autoscroll"
-        android:layout_marginRight="8dp"
-        android:layout_marginEnd="8dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/playbackProgress"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/currentTime_TextView"
-        android:textStyle="bold|italic"
-        android:textSize="14sp"
-        android:textColor="#fff" />
+        android:alpha="0.5"
+        android:background="#888888"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="horizontal"
+        android:padding="4dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/separator"
-        android:id="@+id/timeSeparator_TextView"
-        android:textStyle="bold|italic"
-        android:textSize="14sp"
-        android:textColor="#fff" />
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/autoscroll"
+            android:src="@drawable/ic_rotate_right_white_36dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/totalTime_TextView"
-        android:textStyle="bold|italic"
-        android:textSize="14sp"
-        android:textColor="#fff" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/currentTime_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/timeSeparator_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/separator"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/totalTime_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:textStyle="bold|italic" />
+    </LinearLayout>
 </LinearLayout>

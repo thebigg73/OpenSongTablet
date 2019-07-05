@@ -54,7 +54,7 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/previouspage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                         android:layout_margin="8dp"
                         android:text="@string/pdf_selectpage" />
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/nextpage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

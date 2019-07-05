@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="0dp"
@@ -20,7 +21,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/myTitle">
+        android:layout_below="@+id/myTitle"
+        android:layout_marginTop="9dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,58 +30,58 @@
             android:orientation="vertical">
 
             <TextView
+                style="@style/MyHeadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/transparency"
-                style="@style/MyHeadingText"
                 android:layout_marginTop="32dp"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="12dp"
+                android:text="@string/transparency" />
 
             <SeekBar
+                android:id="@+id/popupAlpha_seekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/popupAlpha_seekBar"
-                android:background="@drawable/apptheme_scrubber_primary_holo"
-                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:layout_margin="12dp"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
                 android:max="4"
-                android:progress="3"/>
+                android:progress="3"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
+                style="@style/MyHeadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/size"
-                style="@style/MyHeadingText"
                 android:layout_marginTop="32dp"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="12dp"
+                android:text="@string/size" />
 
             <SeekBar
+                android:id="@+id/popupScale_seekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/popupScale_seekBar"
-                android:background="@drawable/apptheme_scrubber_primary_holo"
-                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
-                android:progress="5"
-                android:max="7"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:layout_marginLeft="0dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginRight="0dp"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:max="7"
+                android:progress="5"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
+                style="@style/MyHeadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/dim"
-                style="@style/MyHeadingText"
                 android:layout_marginTop="32dp"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="12dp"
+                android:text="@string/dim" />
 
             <SeekBar
+                android:id="@+id/popupDim_seekbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/popupDim_seekbar"
                 android:layout_margin="12dp"
                 android:background="@drawable/apptheme_scrubber_primary_holo"
                 android:max="10"
@@ -88,86 +90,118 @@
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
+                style="@style/MyHeadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/position"
-                style="@style/MyHeadingText"
                 android:layout_marginTop="32dp"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="12dp"
+                android:text="@string/position" />
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TableRow
-                    android:weightSum="0.9"
+                    style="?android:attr/buttonBarStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:weightSum="0.9">
+
                     <Button
                         android:id="@+id/tl_button"
-                        android:layout_weight="0.3"
+                        style="?android:attr/buttonBarStyle"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
                         android:background="@drawable/grey_button"
-                        android:text="."/>
+                        android:text="."
+                        tools:ignore="HardcodedText" />
+
                     <Button
                         android:id="@+id/tc_button"
-                        android:layout_weight="0.3"
+                        style="?android:attr/buttonBarStyle"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
                         android:background="@drawable/grey_button"
-                        android:text="."/>
+                        android:text="."
+                        tools:ignore="HardcodedText" />
+
                     <Button
                         android:id="@+id/tr_button"
-                        android:layout_weight="0.3"
+                        style="?android:attr/buttonBarStyle"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
                         android:background="@drawable/grey_button"
-                        android:text="."/>
+                        android:text="."
+                        tools:ignore="HardcodedText" />
                 </TableRow>
+
                 <TableRow
-                    android:weightSum="0.9"
+                    style="?android:attr/buttonBarStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:weightSum="0.9">
+
                     <Button
                         android:id="@+id/l_button"
-                        android:layout_weight="0.3"
+                        style="?android:attr/buttonBarStyle"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
                         android:background="@drawable/grey_button"
-                        android:text="."/>
+                        android:text="."
+                        tools:ignore="HardcodedText" />
+
                     <Button
                         android:id="@+id/c_button"
-                        android:layout_weight="0.3"
+                        style="?android:attr/buttonBarStyle"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
                         android:background="@drawable/grey_button"
-                        android:text="."/>
+                        android:text="."
+                        tools:ignore="HardcodedText" />
+
                     <Button
                         android:id="@+id/r_button"
-                        android:layout_weight="0.3"
+                        style="?android:attr/buttonBarStyle"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
                         android:background="@drawable/grey_button"
-                        android:text="."/>
+                        android:text="."
+                        tools:ignore="HardcodedText" />
 
                 </TableRow>
+
                 <TableRow
-                    android:weightSum="0.9"
+                    style="?android:attr/buttonBarStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:weightSum="0.9">
+
                     <Button
                         android:id="@+id/bl_button"
-                        android:layout_weight="0.3"
+                        style="?android:attr/buttonBarStyle"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
                         android:background="@drawable/grey_button"
-                        android:text="."/>
+                        android:text="."
+                        tools:ignore="HardcodedText" />
+
                     <Button
                         android:id="@+id/bc_button"
-                        android:layout_weight="0.3"
+                        style="?android:attr/buttonBarStyle"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
                         android:background="@drawable/grey_button"
-                        android:text="."/>
+                        android:text="."
+                        tools:ignore="HardcodedText" />
+
                     <Button
                         android:id="@+id/br_button"
-                        android:layout_weight="0.3"
+                        style="?android:attr/buttonBarStyle"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
                         android:background="@drawable/grey_button"
-                        android:text="."/>
+                        android:text="."
+                        tools:ignore="HardcodedText" />
                 </TableRow>
             </TableLayout>
         </LinearLayout>

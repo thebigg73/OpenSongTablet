@@ -22,6 +22,12 @@
             android:layout_marginTop="4dp"
             android:text="@string/options_set_nameofset" />
 
+        <!-- This is added to stop the EditText below grabbing focus and showing the keyboard-->
+        <LinearLayout android:focusable="true"
+            android:focusableInTouchMode="true" android:layout_width="0px"
+            android:layout_height="0px"
+            tools:ignore="UselessLeaf" />
+
         <EditText
             android:id="@+id/setListName"
             style="@style/MyEditText"

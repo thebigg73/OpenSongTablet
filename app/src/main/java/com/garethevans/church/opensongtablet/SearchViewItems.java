@@ -9,7 +9,7 @@ public class SearchViewItems {
     String key;
     String theme;
     String lyrics;
-    String hymnnum;
+    //private String hymnnum;
 
     SearchViewItems(String filename, String title, String folder, String author, String key, String theme, String lyrics, String hymnnum) {
         this.filename = filename;
@@ -19,7 +19,7 @@ public class SearchViewItems {
         this.key = key;
         this.theme = theme;
         this.lyrics = lyrics;
-        this.hymnnum = hymnnum;
+        //this.hymnnum = hymnnum;
     }
 
     public String getFilename() {
@@ -78,12 +78,12 @@ public class SearchViewItems {
         this.lyrics = lyrics;
     }
 
-    public String getHymnnum() {
+    /*public String getHymnnum() {
         return hymnnum;
     }
 
     public void setHymnnum(String hymnnum) {
         this.hymnnum = hymnnum;
-    }
+    }*/
 
 }

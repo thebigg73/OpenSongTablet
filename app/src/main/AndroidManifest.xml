@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.garethevans.church.opensongtablet"
     android:installLocation="auto"
-    android:versionCode="155"
-    android:versionName="4.8.5">
+    android:versionCode="158"
+    android:versionName="4.8.8">
 
     <!--Overrides are for Sdk=12/13 but library specifiesv Sdk=14+-->
     <uses-sdk
@@ -52,7 +52,8 @@
     <uses-permission android:name="android.permission.NFC" />
 
     <application
-        android:name="android.support.multidex.MultiDexApplication"
+        android:name="androidx.multidex.MultiDexApplication"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -60,7 +61,8 @@
         android:largeHeap="false"
         android:roundIcon="@mipmap/ic_round_launcher"
         android:theme="@style/MyTheme"
-        android:vmSafeMode="true">
+        android:vmSafeMode="true"
+        tools:ignore="UnusedAttribute">
 
         <receiver android:name=".BatteryMonitor">
             <intent-filter>
@@ -89,7 +91,7 @@
             android:value="com.garethevans.church.opensongtablet.CastOptionsProvider" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="OpenSongAppFiles"
             android:exported="false"
             android:grantUriPermissions="true"
@@ -476,7 +478,6 @@
         <activity android:name=".OptionMenuListeners" />
         <activity android:name=".ProcessSong" />
         <!--<activity android:name=".SetActions" />-->
-        <activity android:name=".SetLocale" />
         <activity android:name=".SongMenuListeners" />
         <activity android:name=".ShowToast" />
 

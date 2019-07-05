@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -133,9 +133,9 @@ class Midi extends Activity {
     @RequiresApi(api = Build.VERSION_CODES.M)
     boolean sendMidi(byte[] b) {
         boolean success = false;
-        if (FullscreenActivity.midiInputPort!=null) {
+        if (StaticVariables.midiInputPort!=null) {
             try {
-                FullscreenActivity.midiInputPort.send(b, 0, b.length);
+                StaticVariables.midiInputPort.send(b, 0, b.length);
                 success = true;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -214,25 +214,24 @@ class Midi extends Activity {
                 i = Integer.parseInt(s,16);
             } catch (Exception e) {
                 e.printStackTrace();
-                i = 0;
             }
         }
         return i;
     }
 
     void disconnectDevice() {
-        if (FullscreenActivity.midiDevice!=null) {
+        if (StaticVariables.midiDevice!=null) {
             try {
-                FullscreenActivity.midiDevice.close();
+                StaticVariables.midiDevice.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            FullscreenActivity.midiDevice = null;
+            StaticVariables.midiDevice = null;
         }
-        FullscreenActivity.midiDeviceName = "";
-        FullscreenActivity.midiDeviceAddress = "";
-        if (FullscreenActivity.midiOutputPort!=null && FullscreenActivity.loggingReceiver!=null) {
-            FullscreenActivity.midiOutputPort.disconnect(FullscreenActivity.loggingReceiver);
+        StaticVariables.midiDeviceName = "";
+        StaticVariables.midiDeviceAddress = "";
+        if (StaticVariables.midiOutputPort!=null && StaticVariables.loggingReceiver!=null) {
+            StaticVariables.midiOutputPort.disconnect(StaticVariables.loggingReceiver);
         }
     }
 

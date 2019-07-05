@@ -1,14 +1,13 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +29,7 @@ import java.io.OutputStream;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Locale;
+import java.util.Objects;
 
 public class PopUpProfileFragment extends DialogFragment {
 
@@ -62,23 +61,13 @@ public class PopUpProfileFragment extends DialogFragment {
 
     StorageAccess storageAccess;
     Preferences preferences;
-    String[] foundFiles;
-    Collator coll;
-    ScrollView profile_overview;
-    RelativeLayout profile_load, profile_save;
-    TextView profileName_TextView;
-    EditText profileName_EditText;
-    ListView profileFilesLoad_ListView, profileFilesSave_ListView;
-    Button loadProfile_Button, saveProfile_Button, okSave_Button, cancelSave_Button, cancelLoad_Button;
+    private String[] foundFiles;
+    private ScrollView profile_overview;
+    private RelativeLayout profile_load, profile_save;
+    private TextView profileName_TextView;
+    private EditText profileName_EditText;
+    private ListView profileFilesLoad_ListView, profileFilesSave_ListView;
     String name, what = "overview";
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,13 +80,13 @@ public class PopUpProfileFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_profile, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.profile));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.profile));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +97,7 @@ public class PopUpProfileFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
 
         storageAccess = new StorageAccess();
         preferences = new Preferences();
@@ -121,20 +110,18 @@ public class PopUpProfileFragment extends DialogFragment {
         profileName_EditText = V.findViewById(R.id.profileName_EditText);
         profileFilesLoad_ListView = V.findViewById(R.id.profileFilesLoad_ListView);
         profileFilesSave_ListView = V.findViewById(R.id.profileFilesSave_ListView);
-        loadProfile_Button = V.findViewById(R.id.loadProfile_Button);
-        saveProfile_Button = V.findViewById(R.id.saveProfile_Button);
-        cancelSave_Button = V.findViewById(R.id.cancelSave_Button);
-        okSave_Button = V.findViewById(R.id.okSave_Button);
-        cancelLoad_Button = V.findViewById(R.id.cancelLoad_Button);
+        Button loadProfile_Button = V.findViewById(R.id.loadProfile_Button);
+        Button saveProfile_Button = V.findViewById(R.id.saveProfile_Button);
+        Button cancelSave_Button = V.findViewById(R.id.cancelSave_Button);
+        Button okSave_Button = V.findViewById(R.id.okSave_Button);
+        Button cancelLoad_Button = V.findViewById(R.id.cancelLoad_Button);
 
         // Only show the first view with profile name and options to load or save or reset
         showOverView();
 
-        // Set the profile name if it exists
-        if (FullscreenActivity.profile.equals("")) {
+        name = preferences.getMyPreferenceString(getActivity(),"profileName","");
+        if (name.equals("")) {
             name = getActivity().getString(R.string.options_song_new);
-        } else {
-            name = FullscreenActivity.profile;
         }
         profileName_TextView.setText(name);
         profileName_EditText.setText(name);
@@ -168,12 +155,12 @@ public class PopUpProfileFragment extends DialogFragment {
 
                     OutputStream outputStream = storageAccess.getOutputStream(getActivity(), uri);
                     storageAccess.writeFileFromString(contents,outputStream);
-                    FullscreenActivity.myToastMessage = getString(R.string.ok);
-                    FullscreenActivity.profile = name;
+                    StaticVariables.myToastMessage = getString(R.string.ok);
+                    preferences.setMyPreferenceString(getActivity(),"profileName",name);
                     profileName_TextView.setText(name);
                     profileName_EditText.setText(name);
                 } else {
-                    FullscreenActivity.myToastMessage = getString(R.string.profile) + " " +
+                    StaticVariables.myToastMessage = getString(R.string.profile) + " " +
                             getString(R.string.hasnotbeenexported);
                 }
                 ShowToast.showToast(getActivity());
@@ -196,19 +183,19 @@ public class PopUpProfileFragment extends DialogFragment {
                 showOverView();
             }
         });
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
 
-    public void showOverView() {
+    private void showOverView() {
         profile_overview.setVisibility(View.VISIBLE);
         profile_load.setVisibility(View.GONE);
         profile_save.setVisibility(View.GONE);
         what = "overview";
     }
 
-    public void showLoad() {
+    private void showLoad() {
         profile_overview.setVisibility(View.GONE);
         profile_load.setVisibility(View.VISIBLE);
         profile_save.setVisibility(View.GONE);
@@ -216,7 +203,7 @@ public class PopUpProfileFragment extends DialogFragment {
         setupProfileList();
     }
 
-    public void showSave() {
+    private void showSave() {
         profile_overview.setVisibility(View.GONE);
         profile_load.setVisibility(View.GONE);
         profile_save.setVisibility(View.VISIBLE);
@@ -224,12 +211,12 @@ public class PopUpProfileFragment extends DialogFragment {
         setupProfileList();
     }
 
-    public void setupProfileList() {
+    private void setupProfileList() {
         ArrayList<String> tempFoundFiles = storageAccess.listFilesInFolder(getActivity(), preferences, "Profiles", "");
 
         // Sort the array list alphabetically by locale rules
         // Add locale sort
-        coll = Collator.getInstance(FullscreenActivity.locale);
+        Collator coll = Collator.getInstance(StaticVariables.locale);
         coll.setStrength(Collator.SECONDARY);
         Collections.sort(tempFoundFiles, coll);
 
@@ -240,7 +227,7 @@ public class PopUpProfileFragment extends DialogFragment {
         // Add the saved profiles to the listview
         // Populate the file list view
         if (what.equals("save")) {
-            profileFilesSave_ListView.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, foundFiles));
+            profileFilesSave_ListView.setAdapter(new ArrayAdapter<>(Objects.requireNonNull(getActivity()), android.R.layout.simple_list_item_1, foundFiles));
             profileFilesSave_ListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -253,12 +240,12 @@ public class PopUpProfileFragment extends DialogFragment {
             });
 
         } else if (what.equals("load")) {
-            profileFilesLoad_ListView.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, foundFiles));
+            profileFilesLoad_ListView.setAdapter(new ArrayAdapter<>(Objects.requireNonNull(getActivity()), android.R.layout.simple_list_item_1, foundFiles));
             profileFilesLoad_ListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try {
-                        FullscreenActivity.profile = foundFiles[position];
+                        preferences.setMyPreferenceString(getActivity(),"profileName",foundFiles[position]);
                         grabvalues(foundFiles[position]);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -268,7 +255,7 @@ public class PopUpProfileFragment extends DialogFragment {
         }
     }
 
-    public void grabvalues(String file) throws Exception {
+    private void grabvalues(String file) throws Exception {
         // Extract all of the key bits of the profile
         XmlPullParserFactory factory;
         factory = XmlPullParserFactory.newInstance();
@@ -286,15 +273,7 @@ public class PopUpProfileFragment extends DialogFragment {
         while (eventType != XmlPullParser.END_DOCUMENT) {
             if (eventType == XmlPullParser.START_TAG) {
                 switch (xpp.getName()) {
-                    case "ab_titleSize":
-                        FullscreenActivity.ab_titleSize = getFloatValue(xpp.nextText(), 13.0f);
-
-                        break;
-                    case "ab_authorSize":
-                        FullscreenActivity.ab_authorSize = getFloatValue(xpp.nextText(), 11.0f);
-
-                        break;
-                    case "alphabeticalSize":
+                    /*case "alphabeticalSize":
                         FullscreenActivity.alphabeticalSize = getFloatValue(xpp.nextText(), 14.0f);
 
                         break;
@@ -350,22 +329,6 @@ public class PopUpProfileFragment extends DialogFragment {
                         FullscreenActivity.backgroundTypeToUse = getTextValue(xpp.nextText(), "image");
 
                         break;
-                    case "batteryDialOn":
-                        FullscreenActivity.batteryDialOn = getBooleanValue(xpp.nextText(), true);
-
-                        break;
-                    case "batteryLine":
-                        FullscreenActivity.batteryLine = getIntegerValue(xpp.nextText(), 4);
-
-                        break;
-                    case "batteryOn":
-                        FullscreenActivity.batteryOn = getBooleanValue(xpp.nextText(), true);
-
-                        break;
-                    case "batterySize":
-                        FullscreenActivity.batterySize = getFloatValue(xpp.nextText(), 9.0f);
-
-                        break;
                     case "bibleFile":
                         FullscreenActivity.bibleFile = getTextValue(xpp.nextText(), "");
 
@@ -405,120 +368,6 @@ public class PopUpProfileFragment extends DialogFragment {
                     case "commentfontscalesize":
                         FullscreenActivity.commentfontscalesize = getFloatValue(xpp.nextText(), 0.8f);
 
-                        break;
-                    case "custom1_lyricsBackgroundColor":
-                        FullscreenActivity.custom1_lyricsBackgroundColor = getIntegerValue(xpp.nextText(), 0xff000000);
-                        break;
-                    case "custom1_lyricsBridgeColor":
-                        FullscreenActivity.custom1_lyricsBridgeColor = getIntegerValue(xpp.nextText(), 0xff330000);
-                        break;
-                    case "custom1_lyricsCapoColor":
-                        FullscreenActivity.custom1_lyricsCapoColor = getIntegerValue(xpp.nextText(), 0xffff0000);
-                        break;
-                    case "custom1_lyricsChordsColor":
-                        FullscreenActivity.custom1_lyricsChordsColor = getIntegerValue(xpp.nextText(), 0xffffff00);
-                        break;
-                    case "custom1_lyricsChorusColor":
-                        FullscreenActivity.custom1_lyricsChorusColor = getIntegerValue(xpp.nextText(), 0xff000033);
-                        break;
-                    case "custom1_lyricsCommentColor":
-                        FullscreenActivity.custom1_lyricsCommentColor = getIntegerValue(xpp.nextText(), 0xff003300);
-                        break;
-                    case "custom1_lyricsCustomColor":
-                        FullscreenActivity.custom1_lyricsCustomColor = getIntegerValue(xpp.nextText(), 0xff222200);
-                        break;
-                    case "custom1_lyricsPreChorusColor":
-                        FullscreenActivity.custom1_lyricsPreChorusColor = getIntegerValue(xpp.nextText(), 0xff112211);
-                        break;
-                    case "custom1_lyricsTagColor":
-                        FullscreenActivity.custom1_lyricsTagColor = getIntegerValue(xpp.nextText(), 0xff330033);
-                        break;
-                    case "custom1_lyricsTextColor":
-                        FullscreenActivity.custom1_lyricsTextColor = getIntegerValue(xpp.nextText(), 0xffffffff);
-                        break;
-                    case "custom1_lyricsVerseColor":
-                        FullscreenActivity.custom1_lyricsVerseColor = getIntegerValue(xpp.nextText(), 0xff000000);
-                        break;
-                    case "custom1_metronome":
-                        FullscreenActivity.custom1_metronome = getIntegerValue(xpp.nextText(), 0xffaa1212);
-                        break;
-                    case "custom1_pagebuttons":
-                        FullscreenActivity.custom1_pagebuttons = getIntegerValue(xpp.nextText(), 0xff452277);
-                        break;
-                    case "custom1_presoAlertFont":
-                        FullscreenActivity.custom1_presoAlertFont = getIntegerValue(xpp.nextText(), 0xffff0000);
-                        break;
-                    case "custom1_presoFont":
-                        FullscreenActivity.custom1_presoFont = getIntegerValue(xpp.nextText(), 0xffffffff);
-                        break;
-                    case "custom1_presoInfoFont":
-                        FullscreenActivity.custom1_presoInfoFont = getIntegerValue(xpp.nextText(), 0xffffffff);
-                        break;
-                    case "custom1_presoShadow":
-                        FullscreenActivity.custom1_presoShadow = getIntegerValue(xpp.nextText(), 0xff000000);
-                        break;
-                    case "custom1_extrainfobg":
-                        FullscreenActivity.custom1_extrainfobg = getIntegerValue(xpp.nextText(), 0xff000000);
-                        break;
-                    case "custom1_extrainfo":
-                        FullscreenActivity.custom1_extrainfo = getIntegerValue(xpp.nextText(), 0xff000000);
-                        break;
-                    case "custom2_lyricsBackgroundColor":
-                        FullscreenActivity.custom2_lyricsBackgroundColor = getIntegerValue(xpp.nextText(), 0xffffffff);
-                        break;
-                    case "custom2_lyricsBridgeColor":
-                        FullscreenActivity.custom2_lyricsBridgeColor = getIntegerValue(xpp.nextText(), 0xffddffff);
-                        break;
-                    case "custom2_lyricsCapoColor":
-                        FullscreenActivity.custom2_lyricsCapoColor = getIntegerValue(xpp.nextText(), 0xffff0000);
-                        break;
-                    case "custom2_lyricsChordsColor":
-                        FullscreenActivity.custom2_lyricsChordsColor = getIntegerValue(xpp.nextText(), 0xff0000dd);
-                        break;
-                    case "custom2_lyricsChorusColor":
-                        FullscreenActivity.custom2_lyricsChorusColor = getIntegerValue(xpp.nextText(), 0xffffddff);
-                        break;
-                    case "custom2_lyricsCommentColor":
-                        FullscreenActivity.custom2_lyricsCommentColor = getIntegerValue(xpp.nextText(), 0xffddddff);
-                        break;
-                    case "custom2_lyricsCustomColor":
-                        FullscreenActivity.custom2_lyricsCustomColor = getIntegerValue(xpp.nextText(), 0xffccddff);
-                        break;
-                    case "custom2_lyricsPreChorusColor":
-                        FullscreenActivity.custom2_lyricsPreChorusColor = getIntegerValue(xpp.nextText(), 0xffeeccee);
-                        break;
-                    case "custom2_lyricsTagColor":
-                        FullscreenActivity.custom2_lyricsTagColor = getIntegerValue(xpp.nextText(), 0xffddffdd);
-                        break;
-                    case "custom2_lyricsTextColor":
-                        FullscreenActivity.custom2_lyricsTextColor = getIntegerValue(xpp.nextText(), 0xff000000);
-                        break;
-                    case "custom2_lyricsVerseColor":
-                        FullscreenActivity.custom2_lyricsVerseColor = getIntegerValue(xpp.nextText(), 0xffffffff);
-                        break;
-                    case "custom2_metronome":
-                        FullscreenActivity.custom2_metronome = getIntegerValue(xpp.nextText(), 0xffaa1212);
-                        break;
-                    case "custom2_pagebuttons":
-                        FullscreenActivity.custom2_pagebuttons = getIntegerValue(xpp.nextText(), 0xff452277);
-                        break;
-                    case "custom2_presoAlertFont":
-                        FullscreenActivity.custom2_presoAlertFont = getIntegerValue(xpp.nextText(), 0xffff0000);
-                        break;
-                    case "custom2_presoFont":
-                        FullscreenActivity.custom2_presoFont = getIntegerValue(xpp.nextText(), 0xffffffff);
-                        break;
-                    case "custom2_presoInfoFont":
-                        FullscreenActivity.custom2_presoInfoFont = getIntegerValue(xpp.nextText(), 0xffffffff);
-                        break;
-                    case "custom2_presoShadow":
-                        FullscreenActivity.custom2_presoShadow = getIntegerValue(xpp.nextText(), 0xff000000);
-                        break;
-                    case "custom2_extrainfobg":
-                        FullscreenActivity.custom2_extrainfobg = getIntegerValue(xpp.nextText(), 0xff000000);
-                        break;
-                    case "custom2_extrainfo":
-                        FullscreenActivity.custom2_extrainfo = getIntegerValue(xpp.nextText(), 0xff000000);
                         break;
                     case "customfontname":
                         FullscreenActivity.customfontname = getTextValue(xpp.nextText(), "");
@@ -603,67 +452,6 @@ public class PopUpProfileFragment extends DialogFragment {
                     case "customPadGm":
                         FullscreenActivity.customPadGm = getTextValue(xpp.nextText(), null);
 
-                        break;
-                    case "customStorage":
-                        FullscreenActivity.customStorage = getTextValue(xpp.nextText(), Environment.getExternalStorageDirectory().getAbsolutePath());
-
-                        break;
-                    case "dark_lyricsBackgroundColor":
-                        FullscreenActivity.dark_lyricsBackgroundColor = getIntegerValue(xpp.nextText(), 0xff000000);
-                        break;
-                    case "dark_lyricsBridgeColor":
-                        FullscreenActivity.dark_lyricsBridgeColor = getIntegerValue(xpp.nextText(), 0xff330000);
-                        break;
-                    case "dark_lyricsCapoColor":
-                        FullscreenActivity.dark_lyricsCapoColor = getIntegerValue(xpp.nextText(), 0xffff0000);
-                        break;
-                    case "dark_lyricsChordsColor":
-                        FullscreenActivity.dark_lyricsChordsColor = getIntegerValue(xpp.nextText(), 0xffffff00);
-                        break;
-                    case "dark_lyricsChorusColor":
-                        FullscreenActivity.dark_lyricsChorusColor = getIntegerValue(xpp.nextText(), 0xff000033);
-                        break;
-                    case "dark_lyricsCommentColor":
-                        FullscreenActivity.dark_lyricsCommentColor = getIntegerValue(xpp.nextText(), 0xff003300);
-                        break;
-                    case "dark_lyricsCustomColor":
-                        FullscreenActivity.dark_lyricsCustomColor = getIntegerValue(xpp.nextText(), 0xff222200);
-                        break;
-                    case "dark_lyricsPreChorusColor":
-                        FullscreenActivity.dark_lyricsPreChorusColor = getIntegerValue(xpp.nextText(), 0xff112211);
-                        break;
-                    case "dark_lyricsTagColor":
-                        FullscreenActivity.dark_lyricsTagColor = getIntegerValue(xpp.nextText(), 0xff330033);
-                        break;
-                    case "dark_lyricsTextColor":
-                        FullscreenActivity.dark_lyricsTextColor = getIntegerValue(xpp.nextText(), 0xffffffff);
-                        break;
-                    case "dark_lyricsVerseColor":
-                        FullscreenActivity.dark_lyricsVerseColor = getIntegerValue(xpp.nextText(), 0xff000000);
-                        break;
-                    case "dark_metronome":
-                        FullscreenActivity.dark_metronome = getIntegerValue(xpp.nextText(), 0xffaa1212);
-                        break;
-                    case "dark_pagebuttons":
-                        FullscreenActivity.dark_pagebuttons = getIntegerValue(xpp.nextText(), 0xff452277);
-                        break;
-                    case "dark_presoAlertFont":
-                        FullscreenActivity.dark_presoAlertFont = getIntegerValue(xpp.nextText(), 0xffff0000);
-                        break;
-                    case "dark_presoFont":
-                        FullscreenActivity.dark_presoFont = getIntegerValue(xpp.nextText(), 0xffffffff);
-                        break;
-                    case "dark_presoInfoFont":
-                        FullscreenActivity.dark_presoInfoFont = getIntegerValue(xpp.nextText(), 0xffffffff);
-                        break;
-                    case "dark_presoShadow":
-                        FullscreenActivity.dark_presoShadow = getIntegerValue(xpp.nextText(), 0xff000000);
-                        break;
-                    case "dark_extrainfobg":
-                        FullscreenActivity.dark_extrainfobg = getIntegerValue(xpp.nextText(), 0xff000000);
-                        break;
-                    case "dark_extrainfo":
-                        FullscreenActivity.dark_extrainfo = getIntegerValue(xpp.nextText(), 0xff000000);
                         break;
                     case "default_autoscroll_predelay":
                         FullscreenActivity.default_autoscroll_predelay = getIntegerValue(xpp.nextText(), 10);
@@ -763,70 +551,13 @@ public class PopUpProfileFragment extends DialogFragment {
                         FullscreenActivity.lastSetName = getTextValue(xpp.nextText(), "");
 
                         break;
-                    case "light_lyricsBackgroundColor":
-                        FullscreenActivity.light_lyricsBackgroundColor = getIntegerValue(xpp.nextText(), 0xffffffff);
-                        break;
-                    case "light_lyricsBridgeColor":
-                        FullscreenActivity.light_lyricsBridgeColor = getIntegerValue(xpp.nextText(), 0xffddffff);
-                        break;
-                    case "light_lyricsCapoColor":
-                        FullscreenActivity.light_lyricsCapoColor = getIntegerValue(xpp.nextText(), 0xffff0000);
-                        break;
-                    case "light_lyricsChordsColor":
-                        FullscreenActivity.light_lyricsChordsColor = getIntegerValue(xpp.nextText(), 0xff0000dd);
-                        break;
-                    case "light_lyricsChorusColor":
-                        FullscreenActivity.light_lyricsChorusColor = getIntegerValue(xpp.nextText(), 0xffffddff);
-                        break;
-                    case "light_lyricsCommentColor":
-                        FullscreenActivity.light_lyricsCommentColor = getIntegerValue(xpp.nextText(), 0xffddddff);
-                        break;
-                    case "light_lyricsCustomColor":
-                        FullscreenActivity.light_lyricsCustomColor = getIntegerValue(xpp.nextText(), 0xffccddff);
-                        break;
-                    case "light_lyricsPreChorusColor":
-                        FullscreenActivity.light_lyricsPreChorusColor = getIntegerValue(xpp.nextText(), 0xffeeccee);
-                        break;
-                    case "light_lyricsTagColor":
-                        FullscreenActivity.light_lyricsTagColor = getIntegerValue(xpp.nextText(), 0xffddffdd);
-                        break;
-                    case "light_lyricsTextColor":
-                        FullscreenActivity.light_lyricsTextColor = getIntegerValue(xpp.nextText(), 0xff000000);
-                        break;
-                    case "light_lyricsVerseColor":
-                        FullscreenActivity.light_lyricsVerseColor = getIntegerValue(xpp.nextText(), 0xffffffff);
-                        break;
-                    case "light_metronome":
-                        FullscreenActivity.light_metronome = getIntegerValue(xpp.nextText(), 0xffaa1212);
-                        break;
-                    case "light_pagebuttons":
-                        FullscreenActivity.light_pagebuttons = getIntegerValue(xpp.nextText(), 0xff452277);
-                        break;
-                    case "light_presoAlertFont":
-                        FullscreenActivity.light_presoAlertFont = getIntegerValue(xpp.nextText(), 0xffff0000);
-                        break;
-                    case "light_presoFont":
-                        FullscreenActivity.light_presoFont = getIntegerValue(xpp.nextText(), 0xffffffff);
-                        break;
-                    case "light_presoInfoFont":
-                        FullscreenActivity.light_presoInfoFont = getIntegerValue(xpp.nextText(), 0xffffffff);
-                        break;
-                    case "light_presoShadow":
-                        FullscreenActivity.light_presoShadow = getIntegerValue(xpp.nextText(), 0xff000000);
-                        break;
-                    case "light_extrainfobg":
-                        FullscreenActivity.light_extrainfobg = getIntegerValue(xpp.nextText(), 0xff000000);
-                        break;
-                    case "light_extrainfo":
-                        FullscreenActivity.light_extrainfo = getIntegerValue(xpp.nextText(), 0xff000000);
-                        break;
 
                     case "linespacing":
                         FullscreenActivity.linespacing = getFloatValue(xpp.nextText(), 0.1f);
                         break;
 
                     case "locale":
-                        FullscreenActivity.locale = new Locale(getTextValue(xpp.nextText(), Preferences.getStoredLocale().toString()));
+                        StaticVariables.locale = new Locale(getTextValue(xpp.nextText(), Preferences.getStoredLocale().toString()));
 
                         break;
                     case "longpressdownpedalgesture":
@@ -874,7 +605,7 @@ public class PopUpProfileFragment extends DialogFragment {
 
                         break;
                     case "mDisplayTheme":
-                        FullscreenActivity.mDisplayTheme = getTextValue(xpp.nextText(), "Theme.Holo");
+                        StaticVariables.mDisplayTheme = getTextValue(xpp.nextText(), "Theme.Holo");
 
                         break;
                     case "menuSize":
@@ -891,10 +622,6 @@ public class PopUpProfileFragment extends DialogFragment {
                         break;
                     case "mMinFontSize":
                         FullscreenActivity.mMinFontSize = getIntegerValue(xpp.nextText(), 8);
-
-                        break;
-                    case "mStorage":
-                        FullscreenActivity.mStorage = getTextValue(xpp.nextText(), "int");
 
                         break;
                     case "mTitle":
@@ -926,7 +653,7 @@ public class PopUpProfileFragment extends DialogFragment {
 
                         break;
                     case "mySet":
-                        FullscreenActivity.mySet = getTextValue(xpp.nextText(), "");
+                        StaticVariables.mySet = getTextValue(xpp.nextText(), "");
 
                         break;
                     case "override_fullscale":
@@ -1164,10 +891,6 @@ public class PopUpProfileFragment extends DialogFragment {
                         FullscreenActivity.prefChord_Gflatm_Fsharpm = getTextValue(xpp.nextText(), "#");
 
                         break;
-                    case "prefStorage":
-                        FullscreenActivity.prefStorage = getTextValue(xpp.nextText(), "");
-
-                        break;
                     case "presenterChords":
                         FullscreenActivity.presenterChords = getTextValue(xpp.nextText(), "N");
 
@@ -1285,7 +1008,7 @@ public class PopUpProfileFragment extends DialogFragment {
 
                         break;
                     case "songfilename":
-                        FullscreenActivity.songfilename = getTextValue(xpp.nextText(), "");
+                        StaticVariables.songfilename = getTextValue(xpp.nextText(), "");
 
                         break;
                     case "stagemodeScale":
@@ -1346,18 +1069,6 @@ public class PopUpProfileFragment extends DialogFragment {
                         FullscreenActivity.timerFontSizePad = getFloatValue(xpp.nextText(), 14.0f);
 
                         break;
-                    case "timeFormat24h":
-                        FullscreenActivity.timeFormat24h = getBooleanValue(xpp.nextText(), true);
-
-                        break;
-                    case "timeOn":
-                        FullscreenActivity.timeOn = getBooleanValue(xpp.nextText(), true);
-
-                        break;
-                    case "timeSize":
-                        FullscreenActivity.timeSize = getFloatValue(xpp.nextText(), 9.0f);
-
-                        break;
                     case "toggleAutoHighlight":
                         FullscreenActivity.toggleAutoHighlight = getBooleanValue(xpp.nextText(), true);
 
@@ -1414,7 +1125,7 @@ public class PopUpProfileFragment extends DialogFragment {
 
                         break;
                     case "whichSongFolder":
-                        FullscreenActivity.whichSongFolder = getTextValue(xpp.nextText(), FullscreenActivity.mainfoldername);
+                        StaticVariables.whichSongFolder = getTextValue(xpp.nextText(), FullscreenActivity.mainfoldername);
 
                         break;
                     case "xmargin_presentation":
@@ -1424,7 +1135,7 @@ public class PopUpProfileFragment extends DialogFragment {
                     case "ymargin_presentation":
                         FullscreenActivity.ymargin_presentation = getIntegerValue(xpp.nextText(), 25);
 
-                        break;
+                        break;*/
                 }
 
             }
@@ -1437,14 +1148,14 @@ public class PopUpProfileFragment extends DialogFragment {
             }
         }
 
-        // Save the new preferences
-        Preferences.savePreferences();
-
         // Reload the display
-        dismiss();
-        SetUpColours.colours();
-        mListener.refreshAll();
-        mListener.setupPageButtons("");
+        try {
+            mListener.refreshAll();
+            mListener.setupPageButtons("");
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public int getIntegerValue(String s, int def) {
@@ -1489,12 +1200,10 @@ public class PopUpProfileFragment extends DialogFragment {
         return f;
     }
 
-    public String prepareProfile() {
+    private String prepareProfile() {
 
         String text = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-        text += "<myprofile>\n";
-        text += "  <ab_titleSize>" + FullscreenActivity.ab_titleSize + "</ab_titleSize>\n";
-        text += "  <ab_authorSize>" + FullscreenActivity.ab_authorSize + "</ab_authorSize>\n";
+        /*text += "<myprofile>\n";
         text += "  <alphabeticalSize>" + FullscreenActivity.alphabeticalSize + "</alphabeticalSize>\n";
         text += "  <alwaysPreferredChordFormat>" + FullscreenActivity.alwaysPreferredChordFormat + "</alwaysPreferredChordFormat>\n";
         text += "  <autoProject>" + FullscreenActivity.autoProject + "</autoProject>\n";
@@ -1509,10 +1218,6 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <backgroundVideo2>" + FullscreenActivity.backgroundVideo2 + "</backgroundVideo2>\n";
         text += "  <backgroundToUse>" + FullscreenActivity.backgroundToUse + "</backgroundToUse>\n";
         text += "  <backgroundTypeToUse>" + FullscreenActivity.backgroundTypeToUse + "</backgroundTypeToUse>\n";
-        text += "  <batteryDialOn>" + FullscreenActivity.batteryDialOn + "</batteryDialOn>\n";
-        text += "  <batteryLine>" + FullscreenActivity.batteryLine + "</batteryLine>\n";
-        text += "  <batteryOn>" + FullscreenActivity.batteryOn + "</batteryOn>\n";
-        text += "  <batterySize>" + FullscreenActivity.batterySize + "</batterySize>\n";
         text += "  <bibleFile>" + FullscreenActivity.bibleFile + "</bibleFile>\n";
         text += "  <capoDisplay>" + FullscreenActivity.capoDisplay + "</capoDisplay>\n";
         text += "  <capoFontSizeInfoBar>" + FullscreenActivity.capoFontSizeInfoBar + "</capoFontSizeInfoBar>\n";
@@ -1523,44 +1228,6 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <chordFormat>" + FullscreenActivity.chordFormat + "</chordFormat>\n";
         text += "  <chordInstrument>" + FullscreenActivity.chordInstrument + "</chordInstrument>\n";
         text += "  <commentfontscalesize>" + FullscreenActivity.commentfontscalesize + "</commentfontscalesize>\n";
-        text += "  <custom1_extrainfobg>" + FullscreenActivity.custom1_extrainfobg + "</custom1_extrainfobg>\n";
-        text += "  <custom1_extrainfo>" + FullscreenActivity.custom1_extrainfo + "</custom1_extrainfo>\n";
-        text += "  <custom1_lyricsBackgroundColor>" + FullscreenActivity.custom1_lyricsBackgroundColor + "</custom1_lyricsBackgroundColor>\n";
-        text += "  <custom1_lyricsBridgeColor>" + FullscreenActivity.custom1_lyricsBridgeColor + "</custom1_lyricsBridgeColor>\n";
-        text += "  <custom1_lyricsCapoColor>" + FullscreenActivity.custom1_lyricsCapoColor + "</custom1_lyricsCapoColor>\n";
-        text += "  <custom1_lyricsChordsColor>" + FullscreenActivity.custom1_lyricsChordsColor + "</custom1_lyricsChordsColor>\n";
-        text += "  <custom1_lyricsChorusColor>" + FullscreenActivity.custom1_lyricsChorusColor + "</custom1_lyricsChorusColor>\n";
-        text += "  <custom1_lyricsCommentColor>" + FullscreenActivity.custom1_lyricsCommentColor + "</custom1_lyricsCommentColor>\n";
-        text += "  <custom1_lyricsCustomColor>" + FullscreenActivity.custom1_lyricsCustomColor + "</custom1_lyricsCustomColor>\n";
-        text += "  <custom1_lyricsPreChorusColor>" + FullscreenActivity.custom1_lyricsPreChorusColor + "</custom1_lyricsPreChorusColor>\n";
-        text += "  <custom1_lyricsTagColor>" + FullscreenActivity.custom1_lyricsTagColor + "</custom1_lyricsTagColor>\n";
-        text += "  <custom1_lyricsTextColor>" + FullscreenActivity.custom1_lyricsTextColor + "</custom1_lyricsTextColor>\n";
-        text += "  <custom1_lyricsVerseColor>" + FullscreenActivity.custom1_lyricsVerseColor + "</custom1_lyricsVerseColor>\n";
-        text += "  <custom1_metronome>" + FullscreenActivity.custom1_metronome + "</custom1_metronome>\n";
-        text += "  <custom1_pagebuttons>" + FullscreenActivity.custom1_pagebuttons + "</custom1_pagebuttons>\n";
-        text += "  <custom1_presoAlertFont>" + FullscreenActivity.custom1_presoAlertFont + "</custom1_presoAlertFont>\n";
-        text += "  <custom1_presoFont>" + FullscreenActivity.custom1_presoFont + "</custom1_presoFont>\n";
-        text += "  <custom1_presoInfoFont>" + FullscreenActivity.custom1_presoInfoFont + "</custom1_presoInfoFont>\n";
-        text += "  <custom1_presoShadow>" + FullscreenActivity.custom1_presoShadow + "</custom1_presoShadow>\n";
-        text += "  <custom2_extrainfobg>" + FullscreenActivity.custom2_extrainfobg + "</custom2_extrainfobg>\n";
-        text += "  <custom2_extrainfo>" + FullscreenActivity.custom2_extrainfo + "</custom2_extrainfo>\n";
-        text += "  <custom2_lyricsBackgroundColor>" + FullscreenActivity.custom2_lyricsBackgroundColor + "</custom2_lyricsBackgroundColor>\n";
-        text += "  <custom2_lyricsBridgeColor>" + FullscreenActivity.custom2_lyricsBridgeColor + "</custom2_lyricsBridgeColor>\n";
-        text += "  <custom2_lyricsCapoColor>" + FullscreenActivity.custom2_lyricsCapoColor + "</custom2_lyricsCapoColor>\n";
-        text += "  <custom2_lyricsChordsColor>" + FullscreenActivity.custom2_lyricsChordsColor + "</custom2_lyricsChordsColor>\n";
-        text += "  <custom2_lyricsChorusColor>" + FullscreenActivity.custom2_lyricsChorusColor + "</custom2_lyricsChorusColor>\n";
-        text += "  <custom2_lyricsCommentColor>" + FullscreenActivity.custom2_lyricsCommentColor + "</custom2_lyricsCommentColor>\n";
-        text += "  <custom2_lyricsCustomColor>" + FullscreenActivity.custom2_lyricsCustomColor + "</custom2_lyricsCustomColor>\n";
-        text += "  <custom2_lyricsPreChorusColor>" + FullscreenActivity.custom2_lyricsPreChorusColor + "</custom2_lyricsPreChorusColor>\n";
-        text += "  <custom2_lyricsTagColor>" + FullscreenActivity.custom2_lyricsTagColor + "</custom2_lyricsTagColor>\n";
-        text += "  <custom2_lyricsTextColor>" + FullscreenActivity.custom2_lyricsTextColor + "</custom2_lyricsTextColor>\n";
-        text += "  <custom2_lyricsVerseColor>" + FullscreenActivity.custom2_lyricsVerseColor + "</custom2_lyricsVerseColor>\n";
-        text += "  <custom2_metronome>" + FullscreenActivity.custom2_metronome + "</custom2_metronome>\n";
-        text += "  <custom2_pagebuttons>" + FullscreenActivity.custom2_pagebuttons + "</custom2_pagebuttons>\n";
-        text += "  <custom2_presoAlertFont>" + FullscreenActivity.custom2_presoAlertFont + "</custom2_presoAlertFont>\n";
-        text += "  <custom2_presoFont>" + FullscreenActivity.custom2_presoFont + "</custom2_presoFont>\n";
-        text += "  <custom2_presoInfoFont>" + FullscreenActivity.custom2_presoInfoFont + "</custom2_presoInfoFont>\n";
-        text += "  <custom2_presoShadow>" + FullscreenActivity.custom2_presoShadow + "</custom2_presoShadow>\n";
         text += "  <customfontname>" + FullscreenActivity.customfontname + "</customfontname>\n";
         text += "  <customLogo>" + FullscreenActivity.customLogo + "</customLogo>\n";
         text += "  <customLogoSize>" + FullscreenActivity.customLogoSize + "</customLogoSize>\n";
@@ -1588,26 +1255,6 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <customPadFm>" + FullscreenActivity.customPadFm + "</customPadFm>\n";
         text += "  <customPadGbm>" + FullscreenActivity.customPadGbm + "</customPadGbm>\n";
         text += "  <customPadGm>" + FullscreenActivity.customPadGm + "</customPadGm>\n";
-        text += "  <customStorage>" + FullscreenActivity.customStorage + "</customStorage>\n";
-        text += "  <dark_extrainfobg>" + FullscreenActivity.dark_extrainfobg + "</dark_extrainfobg>\n";
-        text += "  <dark_extrainfo>" + FullscreenActivity.dark_extrainfo + "</dark_extrainfo>\n";
-        text += "  <dark_lyricsBackgroundColor>" + FullscreenActivity.dark_lyricsBackgroundColor + "</dark_lyricsBackgroundColor>\n";
-        text += "  <dark_lyricsBridgeColor>" + FullscreenActivity.dark_lyricsBridgeColor + "</dark_lyricsBridgeColor>\n";
-        text += "  <dark_lyricsCapoColor>" + FullscreenActivity.dark_lyricsCapoColor + "</dark_lyricsCapoColor>\n";
-        text += "  <dark_lyricsChordsColor>" + FullscreenActivity.dark_lyricsChordsColor + "</dark_lyricsChordsColor>\n";
-        text += "  <dark_lyricsChorusColor>" + FullscreenActivity.dark_lyricsChorusColor + "</dark_lyricsChorusColor>\n";
-        text += "  <dark_lyricsCommentColor>" + FullscreenActivity.dark_lyricsCommentColor + "</dark_lyricsCommentColor>\n";
-        text += "  <dark_lyricsCustomColor>" + FullscreenActivity.dark_lyricsCustomColor + "</dark_lyricsCustomColor>\n";
-        text += "  <dark_lyricsPreChorusColor>" + FullscreenActivity.dark_lyricsPreChorusColor + "</dark_lyricsPreChorusColor>\n";
-        text += "  <dark_lyricsTagColor>" + FullscreenActivity.dark_lyricsTagColor + "</dark_lyricsTagColor>\n";
-        text += "  <dark_lyricsTextColor>" + FullscreenActivity.dark_lyricsTextColor + "</dark_lyricsTextColor>\n";
-        text += "  <dark_lyricsVerseColor>" + FullscreenActivity.dark_lyricsVerseColor + "</dark_lyricsVerseColor>\n";
-        text += "  <dark_metronome>" + FullscreenActivity.dark_metronome + "</dark_metronome>\n";
-        text += "  <dark_pagebuttons>" + FullscreenActivity.dark_pagebuttons + "</dark_pagebuttons>\n";
-        text += "  <dark_presoAlertFont>" + FullscreenActivity.dark_presoAlertFont + "</dark_presoAlertFont>\n";
-        text += "  <dark_presoFont>" + FullscreenActivity.dark_presoFont + "</dark_presoFont>\n";
-        text += "  <dark_presoInfoFont>" + FullscreenActivity.dark_presoInfoFont + "</dark_presoInfoFont>\n";
-        text += "  <dark_presoShadow>" + FullscreenActivity.dark_presoShadow + "</dark_presoShadow>\n";
         text += "  <default_autoscroll_predelay>" + FullscreenActivity.default_autoscroll_predelay + "</default_autoscroll_predelay>\n";
         text += "  <default_autoscroll_predelay_max>" + FullscreenActivity.default_autoscroll_predelay_max + "</default_autoscroll_predelay_max>\n";
         text += "  <default_autoscroll_songlength>" + FullscreenActivity.default_autoscroll_songlength + "</default_autoscroll_songlength>\n";
@@ -1636,27 +1283,8 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <hideLyricsBox>" + FullscreenActivity.hideLyricsBox + "</hideLyricsBox>\n";
         text += "  <languageToLoad>" + FullscreenActivity.languageToLoad + "</languageToLoad>\n";
         text += "  <lastSetName>" + FullscreenActivity.lastSetName + "</lastSetName>\n";
-        text += "  <light_extrainfobg>" + FullscreenActivity.light_extrainfobg + "</light_extrainfobg>\n";
-        text += "  <light_extrainfo>" + FullscreenActivity.light_extrainfo + "</light_extrainfo>\n";
-        text += "  <light_lyricsBackgroundColor>" + FullscreenActivity.light_lyricsBackgroundColor + "</light_lyricsBackgroundColor>\n";
-        text += "  <light_lyricsBridgeColor>" + FullscreenActivity.light_lyricsBridgeColor + "</light_lyricsBridgeColor>\n";
-        text += "  <light_lyricsCapoColor>" + FullscreenActivity.light_lyricsCapoColor + "</light_lyricsCapoColor>\n";
-        text += "  <light_lyricsChordsColor>" + FullscreenActivity.light_lyricsChordsColor + "</light_lyricsChordsColor>\n";
-        text += "  <light_lyricsChorusColor>" + FullscreenActivity.light_lyricsChorusColor + "</light_lyricsChorusColor>\n";
-        text += "  <light_lyricsCommentColor>" + FullscreenActivity.light_lyricsCommentColor + "</light_lyricsCommentColor>\n";
-        text += "  <light_lyricsCustomColor>" + FullscreenActivity.light_lyricsCustomColor + "</light_lyricsCustomColor>\n";
-        text += "  <light_lyricsPreChorusColor>" + FullscreenActivity.light_lyricsPreChorusColor + "</light_lyricsPreChorusColor>\n";
-        text += "  <light_lyricsTagColor>" + FullscreenActivity.light_lyricsTagColor + "</light_lyricsTagColor>\n";
-        text += "  <light_lyricsTextColor>" + FullscreenActivity.light_lyricsTextColor + "</light_lyricsTextColor>\n";
-        text += "  <light_lyricsVerseColor>" + FullscreenActivity.light_lyricsVerseColor + "</light_lyricsVerseColor>\n";
-        text += "  <light_metronome>" + FullscreenActivity.light_metronome + "</light_metronome>\n";
-        text += "  <light_pagebuttons>" + FullscreenActivity.light_pagebuttons + "</light_pagebuttons>\n";
-        text += "  <light_presoAlertFont>" + FullscreenActivity.light_presoAlertFont + "</light_presoAlertFont>\n";
-        text += "  <light_presoFont>" + FullscreenActivity.light_presoFont + "</light_presoFont>\n";
-        text += "  <light_presoInfoFont>" + FullscreenActivity.light_presoInfoFont + "</light_presoInfoFont>\n";
-        text += "  <light_presoShadow>" + FullscreenActivity.light_presoShadow + "</light_presoShadow>\n";
         text += "  <linespacing>" + FullscreenActivity.linespacing + "</linespacing>\n";
-        text += "  <locale>" + FullscreenActivity.locale + "</locale>\n";
+        text += "  <locale>" + StaticVariables.locale + "</locale>\n";
         text += "  <longpressdownpedalgesture>" + FullscreenActivity.longpressdownpedalgesture + "</longpressdownpedalgesture>\n";
         text += "  <longpressnextpedalgesture>" + FullscreenActivity.longpressnextpedalgesture + "</longpressnextpedalgesture>\n";
         text += "  <longpresspreviouspedalgesture>" + FullscreenActivity.longpresspreviouspedalgesture + "</longpresspreviouspedalgesture>\n";
@@ -1669,7 +1297,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <midiAuto>" + FullscreenActivity.midiAuto + "</midiAuto>\n";
         text += "  <mAuthor>" + FullscreenActivity.mAuthor + "</mAuthor>\n";
         text += "  <mCopyright>" + FullscreenActivity.mCopyright + "</mCopyright>\n";
-        text += "  <mDisplayTheme>" + FullscreenActivity.mDisplayTheme + "</mDisplayTheme>\n";
+        text += "  <mDisplayTheme>" + StaticVariables.mDisplayTheme + "</mDisplayTheme>\n";
         text += "  <mFontSize>" + FullscreenActivity.mFontSize + "</mFontSize>\n";
         text += "  <mMaxFontSize>" + FullscreenActivity.mMaxFontSize + "</mMaxFontSize>\n";
         text += "  <mMinFontSize>" + FullscreenActivity.mMinFontSize + "</mMinFontSize>\n";
@@ -1681,7 +1309,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <mylyricsfontnum>" + FullscreenActivity.mylyricsfontnum + "</mylyricsfontnum>\n";
         text += "  <mypresofontnum>" + FullscreenActivity.mylyricsfontnum + "</mypresofontnum>\n";
         text += "  <mypresoinfofontnum>" + FullscreenActivity.mypresoinfofontnum + "</mypresoinfofontnum>\n";
-        text += "  <mySet>" + FullscreenActivity.mySet + "</mySet>\n";
+        text += "  <mySet>" + StaticVariables.mySet + "</mySet>\n";
         text += "  <override_fullscale>" + FullscreenActivity.override_fullscale + "</override_fullscale>\n";
         text += "  <override_widthscale>" + FullscreenActivity.override_widthscale + "</override_widthscale>\n";
         text += "  <padpan>" + FullscreenActivity.padpan + "</padpan>\n";
@@ -1742,7 +1370,6 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <prefChord_Dflatm_Csharpm>" + FullscreenActivity.prefChord_Dflatm_Csharpm + "</prefChord_Dflatm_Csharpm>\n";
         text += "  <prefChord_Eflatm_Dsharpm>" + FullscreenActivity.prefChord_Eflatm_Dsharpm + "</prefChord_Eflatm_Dsharpm>\n";
         text += "  <prefChord_Gflatm_Fsharpm>" + FullscreenActivity.prefChord_Gflatm_Fsharpm + "</prefChord_Gflatm_Fsharpm>\n";
-        text += "  <prefStorage>" + FullscreenActivity.prefStorage + "</prefStorage>\n";
         text += "  <presenterChords>" + FullscreenActivity.presenterChords + "</presenterChords>\n";
         text += "  <presoAlertSize>" + FullscreenActivity.presoAlertSize + "</presoAlertSize>\n";
         text += "  <presoAlpha>" + FullscreenActivity.presoAlpha + "</presoAlpha>\n";
@@ -1772,7 +1399,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <showNextInSet>" + FullscreenActivity.showNextInSet + "</showNextInSet>\n";
         text += "  <showLyrics>" + FullscreenActivity.showLyrics + "</showLyrics>\n";
         text += "  <showSetTickBoxInSongMenu>" + FullscreenActivity.showSetTickBoxInSongMenu + "</showSetTickBoxInSongMenu>\n";
-        text += "  <songfilename>" + FullscreenActivity.songfilename + "</songfilename>\n";
+        text += "  <songfilename>" + StaticVariables.songfilename + "</songfilename>\n";
         text += "  <stagemodeScale>" + FullscreenActivity.stagemodeScale + "</stagemodeScale>\n";
         text += "  <stickyNotesShowSecs>" + FullscreenActivity.stickyNotesShowSecs + "</stickyNotesShowSecs>\n";
         text += "  <stickyOpacity>" + FullscreenActivity.stickyOpacity + "</stickyOpacity>\n";
@@ -1787,9 +1414,6 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <swipeSet>" + FullscreenActivity.swipeSet + "</swipeSet>\n";
         text += "  <timerFontSizeAutoScroll>" + FullscreenActivity.timerFontSizeAutoScroll + "</timerFontSizeAutoScroll>\n";
         text += "  <timerFontSizePad>" + FullscreenActivity.timerFontSizePad + "</timerFontSizePad>\n";
-        text += "  <timeFormat24h>" + FullscreenActivity.timeFormat24h + "</timeFormat24h>\n";
-        text += "  <timeOn>" + FullscreenActivity.timeOn + "</timeOn>\n";
-        text += "  <timeSize>" + FullscreenActivity.timeSize + "</timeSize>\n";
         text += "  <toggleAutoHighlight>" + FullscreenActivity.toggleAutoHighlight + "</toggleAutoHighlight>\n";
         text += "  <toggleAutoSticky>" + FullscreenActivity.toggleAutoSticky + "</toggleAutoSticky>\n";
         text += "  <togglePageButtons>" + FullscreenActivity.togglePageButtons + "</togglePageButtons>\n";
@@ -1804,10 +1428,11 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <visualmetronome>" + FullscreenActivity.visualmetronome + "</visualmetronome>\n";
         //text += "  <whichMode>" + FullscreenActivity.whichMode + "</whichMode>\n";
         text += "  <whichSetCategory>" + FullscreenActivity.whichSetCategory + "</whichSetCategory>\n";
-        text += "  <whichSongFolder>" + FullscreenActivity.whichSongFolder + "</whichSongFolder>\n";
+        text += "  <whichSongFolder>" + StaticVariables.whichSongFolder + "</whichSongFolder>\n";
         text += "  <xmargin_presentation>" + FullscreenActivity.xmargin_presentation + "</xmargin_presentation>\n";
         text += "  <ymargin_presentation>" + FullscreenActivity.visualmetronome + "</ymargin_presentation>\n";
         text += "</myprofile>";
+        */
         return text;
     }
 

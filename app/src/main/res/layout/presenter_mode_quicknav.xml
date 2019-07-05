@@ -26,7 +26,7 @@
             android:orientation="horizontal"
             android:layout_gravity="center_vertical">
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/nav_prevsong"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                 android:src="@drawable/ic_skip_backward_white_36dp"
                 app:fabSize="mini" />
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/nav_prevsection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 android:src="@drawable/ic_skip_previous_white_36dp"
                 app:fabSize="mini" />
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/nav_nextsection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
                 android:src="@drawable/ic_skip_next_white_36dp"
                 app:fabSize="mini" />
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/nav_nextsong"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

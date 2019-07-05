@@ -76,6 +76,12 @@
                     android:layout_marginTop="0dp"
                     android:layout_toStartOf="@+id/newCategory_FAB" />
 
+                <!-- This is added to stop the EditText below grabbing focus and showing the keyboard-->
+                <LinearLayout android:focusable="true"
+                    android:focusableInTouchMode="true" android:layout_width="0px"
+                    android:layout_height="0px"
+                    tools:ignore="UselessLeaf" />
+
                 <EditText
                     android:id="@+id/newCategory_EditText"
                     style="@style/MyEditText"
@@ -93,7 +99,7 @@
                     android:maxLines="1"
                     tools:ignore="Autofill" />
 
-                <android.support.design.widget.FloatingActionButton
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/newCategory_FAB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

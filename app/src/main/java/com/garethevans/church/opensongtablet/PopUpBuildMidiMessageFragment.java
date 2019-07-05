@@ -1,11 +1,12 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,22 +20,24 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PopUpBuildMidiMessageFragment extends DialogFragment {
 
     Midi m;
-    ArrayList<String> midiCommands, midiNotes, songMidiMessages, songMidiMessagesToSave;
-    ArrayList<Integer> midiChannels, midiValues;
-    ArrayAdapter<String> midiCommandsAdapter, midiNotesAdapter, midiMessagesAdapter;
-    ArrayAdapter<Integer> midiChannelsAdapter, midiValuesAdapter;
-    Spinner midiCommandsSpinner, midiChannelsSpinner, midiValuesSpinner, midiValue2Spinner;
-    TextView valueOrVelocity, noteOrValue, midiMessage;
-    ListView midiActionList;
-    Button addMidiMessage, testMidiMessage;
+    private ArrayList<String> songMidiMessages;
+    private ArrayList<String> songMidiMessagesToSave;
+    private ArrayAdapter<String> midiCommandsAdapter, midiNotesAdapter, midiMessagesAdapter;
+    private ArrayAdapter<Integer> midiChannelsAdapter, midiValuesAdapter;
+    private Spinner midiCommandsSpinner;
+    private Spinner midiValuesSpinner;
+    private Spinner midiValue2Spinner;
+    private TextView valueOrVelocity, noteOrValue, midiMessage;
+    private ListView midiActionList;
     String action = "PC";
-    int channel = 1;
-    int byte2 = 0;
-    int byte3 = 0;
+    private int channel = 1;
+    private int byte2 = 0;
+    private int byte3 = 0;
 
     Preferences preferences;
 
@@ -56,14 +59,6 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
@@ -72,7 +67,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
@@ -81,7 +76,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_buildmidicommand, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.midi_commands));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.midi_commands));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,15 +105,15 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
 
         // Initialise the basic views
         midiCommandsSpinner = V.findViewById(R.id.messageType);
-        midiChannelsSpinner = V.findViewById(R.id.myMidiChannel);
+        Spinner midiChannelsSpinner = V.findViewById(R.id.myMidiChannel);
         valueOrVelocity = V.findViewById(R.id.valueorvelocity);
         midiValuesSpinner = V.findViewById(R.id.myMidiValue1);
         midiValue2Spinner = V.findViewById(R.id.myMidiValue2);
         noteOrValue = V.findViewById(R.id.noteorvalue);
         midiMessage = V.findViewById(R.id.midiMessage);
         midiActionList = V.findViewById(R.id.midiActionList);
-        testMidiMessage = V.findViewById(R.id.midiTest);
-        addMidiMessage = V.findViewById(R.id.midiAdd);
+        Button testMidiMessage = V.findViewById(R.id.midiTest);
+        Button addMidiMessage = V.findViewById(R.id.midiAdd);
 
         testMidiMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,7 +205,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -227,7 +222,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
             }
             s = new StringBuilder(s.toString().trim()); // Get rid of extra line breaks
             Log.d("d","s="+s);
-            FullscreenActivity.mMidi = s.toString();
+            StaticVariables.mMidi = s.toString();
             PopUpEditSongFragment.prepareSongXML();
             PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
             dismiss();
@@ -237,51 +232,51 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
     }
 
     private void setUpMidiCommands() {
-        midiCommands = new ArrayList<>();
+        ArrayList<String> midiCommands = new ArrayList<>();
         midiCommands.add(getString(R.string.note) + " " + getString(R.string.on));
         midiCommands.add(getString(R.string.note) + " " + getString(R.string.off));
         midiCommands.add(getString(R.string.midi_program));
         midiCommands.add(getString(R.string.midi_controller));
         midiCommands.add("MSB");
         midiCommands.add("LSB");
-        midiCommandsAdapter = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, midiCommands);
+        midiCommandsAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, midiCommands);
     }
 
     private void setUpMidiChannels() {
         // Remember that midi channel 1-16 are actually 0-15 in code
-        midiChannels = new ArrayList<>();
+        ArrayList<Integer> midiChannels = new ArrayList<>();
         int i = 1;
         while (i<=16) {
             midiChannels.add(i);
             i++;
         }
-        midiChannelsAdapter = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, midiChannels);
+        midiChannelsAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, midiChannels);
     }
 
-    public void setUpMidiValues() {
+    private void setUpMidiValues() {
         // Returns values 0-127
-        midiValues = new ArrayList<>();
+        ArrayList<Integer> midiValues = new ArrayList<>();
         int i = 0;
         while (i<=127) {
             midiValues.add(i);
             i++;
         }
-        midiValuesAdapter = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,midiValues);
+        midiValuesAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),R.layout.my_spinner, midiValues);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void setUpMidiNotes() {
+    private void setUpMidiNotes() {
         // Return an array adapter with music note representation of values 0-127
-        midiNotes = new ArrayList<>();
+        ArrayList<String> midiNotes = new ArrayList<>();
         int i = 0;
         while (i<=127) {
             midiNotes.add(m.getNoteFromInt(i));
             i++;
         }
-        midiNotesAdapter = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,midiNotes);
+        midiNotesAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),R.layout.my_spinner, midiNotes);
     }
 
-    public void showCorrectValues() {
+    private void showCorrectValues() {
         String valorvel = getString(R.string.midi_value);
         String noteorval = getString(R.string.midi_value);
 
@@ -323,7 +318,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    void getHexCodeFromSpinners() {
+    private void getHexCodeFromSpinners() {
         String s;
         try {
             s = m.buildMidiString(action, channel, byte2, byte3);
@@ -334,11 +329,11 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    void initialiseCurrentMessages() {
+    private void initialiseCurrentMessages() {
         songMidiMessages = new ArrayList<>();
         songMidiMessagesToSave = new ArrayList<>();
         // Add what is there already
-        String bits[] = FullscreenActivity.mMidi.trim().split("\n");
+        String[] bits = StaticVariables.mMidi.trim().split("\n");
         for (String s : bits) {
             if (s!=null && !s.equals("") && !s.isEmpty()) {
                 // Get a human readable version of the midi code
@@ -348,7 +343,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
                 songMidiMessagesToSave.add(s);
             }
         }
-        midiMessagesAdapter = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,songMidiMessages);
+        midiMessagesAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),R.layout.my_spinner,songMidiMessages);
         midiMessagesAdapter.notifyDataSetChanged();
         midiActionList.setAdapter(midiMessagesAdapter);
         midiActionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -367,7 +362,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
         });
     }
 
-    void updateCurrentMessages() {
+    private void updateCurrentMessages() {
         midiMessagesAdapter.notifyDataSetChanged();
         midiActionList.setAdapter(midiMessagesAdapter);
         midiActionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -387,7 +382,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    void addMidiToList() {
+    private void addMidiToList() {
         try {
             String s = midiMessage.getText().toString();
             String hr = m.getReadableStringFromHex(s, getActivity());
@@ -400,7 +395,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
         }
     }
 
-    void deleteMidiFromList(int i) {
+    private void deleteMidiFromList(int i) {
         try {
             songMidiMessages.remove(i);
             songMidiMessagesToSave.remove(i);
@@ -411,13 +406,13 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    void sendMidiFromList(int i) {
+    private void sendMidiFromList(int i) {
         String s = songMidiMessagesToSave.get(i);
         testTheMidiMessage(s);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    void testTheMidiMessage(String mm) {
+    private void testTheMidiMessage(String mm) {
         // Test the midi message being sent
         // First split by spaces
         boolean success = false;
@@ -428,7 +423,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
             e.printStackTrace();
         }
         if (!success) {
-            FullscreenActivity.myToastMessage = getString(R.string.midi_error);
+            StaticVariables.myToastMessage = getString(R.string.midi_error);
             ShowToast.showToast(getActivity());
         }
     }

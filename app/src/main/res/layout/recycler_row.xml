@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
@@ -16,11 +16,10 @@
         android:layout_height="match_parent"
         android:id="@+id/cardview_layout">
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
             app:fabSize="mini"
             app:borderWidth="0dp"
             app:backgroundTint="@color/grey"
@@ -34,7 +33,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@id/cardview_icon"
             android:layout_toEndOf="@id/cardview_icon"
             android:text="@string/title"
             style="@style/MyWhiteHeadingText"
@@ -47,7 +45,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@id/cardview_item"
             android:layout_toEndOf="@id/cardview_item"
             android:gravity="center_vertical"
             android:text="@string/title"
@@ -63,7 +60,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="false"
             android:layout_below="@+id/cardview_songtitle"
-            android:layout_toRightOf="@id/cardview_item"
             android:layout_toEndOf="@id/cardview_item"
             android:gravity="center_vertical"
             android:text="@string/mainfoldername"
@@ -75,4 +71,4 @@
             android:textStyle="italic" />
 
     </RelativeLayout>
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>

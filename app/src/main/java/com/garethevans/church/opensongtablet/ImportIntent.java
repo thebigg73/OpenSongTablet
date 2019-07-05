@@ -1,19 +1,19 @@
 package com.garethevans.church.opensongtablet;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
+import androidx.annotation.NonNull;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-public class ImportIntent extends Activity implements PopUpImportExportOSBFragment.MyInterface,
+public class ImportIntent extends AppCompatActivity implements PopUpImportExportOSBFragment.MyInterface,
         PopUpImportExternalFile.MyInterface {
 
     // This class is called when users click on compatible files outwith the app and choose to open them with OpenSongApp
@@ -28,6 +28,7 @@ public class ImportIntent extends Activity implements PopUpImportExportOSBFragme
     OnSongConvert onSongConvert;
     UsrConvert usrConvert;
     TextSongConvert textSongConvert;
+    ProcessSong processSong;
 
     // Variables
     boolean storageGranted = false;
@@ -50,13 +51,14 @@ public class ImportIntent extends Activity implements PopUpImportExportOSBFragme
         onSongConvert = new OnSongConvert();
         usrConvert = new UsrConvert();
         textSongConvert = new TextSongConvert();
+        processSong = new ProcessSong();
 
         // Load up the user preferences
-        Preferences.loadPreferences(ImportIntent.this);
+        //Preferences.loadPreferences(ImportIntent.this);
 
         // Load up all of the preferences and the user specified storage location if it exists
         storagePath = storageAccess.getStoragePreference(ImportIntent.this, preferences);
-        uriTree = storageAccess.homeFolder(ImportIntent.this, preferences);
+        uriTree = storageAccess.homeFolder(ImportIntent.this, null,preferences);
 
 
         // Check we have the required permissions for storage
@@ -176,7 +178,7 @@ public class ImportIntent extends Activity implements PopUpImportExportOSBFragme
         StringBuilder sharedText = new StringBuilder(intent.getStringExtra(Intent.EXTRA_TEXT));
         String title;
         // Fix line breaks (if they exist)
-        sharedText = new StringBuilder(ProcessSong.fixlinebreaks(sharedText.toString()));
+        sharedText = new StringBuilder(processSong.fixlinebreaks(sharedText.toString()));
 
         // If this is imported from YouVersion bible app, it should contain https://bible
         if (sharedText.toString().contains("https://bible")) {
@@ -237,10 +239,9 @@ public class ImportIntent extends Activity implements PopUpImportExportOSBFragme
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.d("d", "getFragmentManager()=" + getFragmentManager());
         if (newFragment != null && !ImportIntent.this.isFinishing()) {
             try {
-                newFragment.show(getFragmentManager(), message);
+                newFragment.show(getSupportFragmentManager(), message);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -254,6 +255,10 @@ public class ImportIntent extends Activity implements PopUpImportExportOSBFragme
     }
 
     @Override
+    public void prepareSongMenu() {
+
+    }
+
     public void rebuildSearchIndex() {
         Log.d("d", "rebuildSearchIndex called");
         FullscreenActivity.whattodo = "";
@@ -261,7 +266,7 @@ public class ImportIntent extends Activity implements PopUpImportExportOSBFragme
         // If the app is already running, send the call to run BootUpCheck
         if (FullscreenActivity.appRunning) {
             // Close this intent and send the listener to rebuild inded
-            if (FullscreenActivity.whichMode.equals("Presentation")) {
+            if (StaticVariables.whichMode.equals("Presentation")) {
                 PresenterMode pm = new PresenterMode();
                 pm.rebuildSearchIndex();
             } else {

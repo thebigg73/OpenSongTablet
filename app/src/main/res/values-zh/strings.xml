@@ -712,5 +712,6 @@
 
     <string name="googlefontcustom">"其他Google字体名称"</string>
     <string name="googlefontbrowse">"浏览所有Google字体"</string>
+    <string name="reset_text">如果您在使用该应用时遇到问题，请尝试使用下面的按钮重置您的设置。 这将清除您的设置，但不会删除您的歌曲。</string>
 
 </resources>

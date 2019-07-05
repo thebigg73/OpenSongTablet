@@ -18,14 +18,13 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_margin="4dp"
-            android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:gravity="center"
             android:text="@string/options_modes"
             style="@style/MyMenuHeadingText" />
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/closeOptionsFAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,7 +57,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_microphone_variant_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_microphone_variant_white_36dp"
                 android:gravity="center_vertical"
@@ -72,7 +70,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_lan_connect_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_lan_connect_white_36dp"
                 android:gravity="center_vertical"
@@ -86,7 +83,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_projector_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_projector_white_36dp"
                 android:gravity="center_vertical"

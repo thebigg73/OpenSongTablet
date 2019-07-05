@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">ultimate-guitar.com</domain>
+        <domain includeSubdomains="true">chordie.com</domain>
+        <domain includeSubdomains="true">worshiptogether.com</domain>
+        <domain includeSubdomains="true">worshipready.com</domain>
+        <domain includeSubdomains="true">ccli.com</domain>
+        <domain includeSubdomains="true">ukutabs.com</domain>
+        <domain includeSubdomains="true">holychords.com</domain>
+    </domain-config>
+</network-security-config>

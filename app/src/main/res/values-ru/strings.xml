@@ -708,5 +708,6 @@
 
     <string name="googlefontcustom">"Другое название шрифта Google"</string>
     <string name="googlefontbrowse">"Просмотреть все шрифты Google"</string>
+    <string name="reset_text">Если у вас возникли проблемы с приложением, попробуйте сбросить настройки с помощью кнопки ниже. Это очистит ваши настройки, но не удалит ваши песни.</string>
 
 </resources>

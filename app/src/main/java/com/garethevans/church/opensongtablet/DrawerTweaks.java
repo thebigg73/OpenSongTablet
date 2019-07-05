@@ -1,9 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
 import android.os.Handler;
-import android.support.v4.widget.DrawerLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import static androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
 
 class DrawerTweaks {
 
@@ -93,7 +95,7 @@ class DrawerTweaks {
             case "locked":
                 drawer.closeDrawer(song);
                 drawer.closeDrawer(option);
-                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                drawer.setDrawerLockMode(LOCK_MODE_LOCKED_CLOSED);
         }
     }
 

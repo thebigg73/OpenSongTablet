@@ -2,16 +2,19 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.Objects;
 
 public class PopUpBackupPromptFragment extends DialogFragment {
 
@@ -47,15 +50,6 @@ public class PopUpBackupPromptFragment extends DialogFragment {
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // safety check
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-    }
-
     private void doClose() {
         try {
             dismiss();
@@ -65,14 +59,14 @@ public class PopUpBackupPromptFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         View v = inflater.inflate(R.layout.popup_backupprompt, container, false);
 
         TextView title = v.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.backupnow));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.backupnow));
         final FloatingActionButton closeMe = v.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +77,7 @@ public class PopUpBackupPromptFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = v.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
 
         // Reset the counter to 0 (value set when this popup loads) and save to preferences
         preferences = new Preferences();
@@ -116,7 +110,7 @@ public class PopUpBackupPromptFragment extends DialogFragment {
 
         Dialog dialog = getDialog();
         if (dialog != null && getActivity() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), dialog);
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), dialog, preferences);
         }
         return v;
     }

@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/green_button"
-                android:text="Send test note"
+                android:text="@string/midi_test"
                 android:layout_margin="8dp"/>
 
             <Button

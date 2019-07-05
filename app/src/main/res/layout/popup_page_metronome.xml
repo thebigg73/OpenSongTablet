@@ -176,7 +176,7 @@
                     android:layout_margin="8dp" />
             </LinearLayout>
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/visualmetronome"
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"

@@ -2,90 +2,71 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 public class SongMenuListeners extends Activity {
 
     public interface MyInterface {
-        void songShortClick(int mychild);
-        void openFragment();
+        void songShortClick(String myfile, String myfolder, int myposition);
+        void openSongLongClickAction(String myfile, String myfolder, int myposition);
         void prepareSongMenu();
     }
 
     public static MyInterface mListener;
 
-    public static TextView.OnClickListener itemShortClickListener(final int i) {
+    public static TextView.OnClickListener itemShortClickListener(final String clickedfilename,
+                                                                  final String clickedkey,
+                                                                  final int position) {
         final Context c =  FullscreenActivity.mContext;
-        final SetActions setActions = new SetActions();
+        final Preferences preferences = new Preferences();
+
         mListener = null;
         try {
             mListener = (MyInterface) c;
         } catch (Exception e) {
             mListener = (MyInterface) c.getApplicationContext();
         }
+
+        final String whichSongFolder = StaticVariables.whichSongFolder;
+
         return new TextView.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FullscreenActivity.pdfPageCurrent = 0;
+
                 try {
-                    if (FullscreenActivity.songDetails.length > i) {
-                        if (FullscreenActivity.songDetails[i][2].equals(c.getString(R.string.songsinfolder))) {
-                            String s = FullscreenActivity.songDetails[i][0];
-                            if (s.startsWith("/")) {
-                                s = s.replaceFirst("/", "");
-                            }
-                            if (s.endsWith("/")) {
-                                s = s.substring(0, s.lastIndexOf("/"));
-                            }
+                    if (clickedkey.equals(c.getString(R.string.songsinfolder))) {
+                        // We clicked on a folder
+                        String s = clickedfilename;
+                        if (s.startsWith("/")) {
+                            s = s.replaceFirst("/", "");
+                        }
 
-                            if (FullscreenActivity.whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
-                                    FullscreenActivity.whichSongFolder.equals("")) {
-                                FullscreenActivity.whichSongFolder = s;
-                            } else {
-                                // Add subdirectory on to the current whichsongfolder
-                                FullscreenActivity.whichSongFolder = FullscreenActivity.whichSongFolder + "/" + s;
-                            }
+                        if (s.endsWith("/")) {
+                            s = s.substring(0, s.lastIndexOf("/"));
+                        }
 
-                            mListener.prepareSongMenu();
+                        if (whichSongFolder.equals(c.getString(R.string.mainfoldername)) || whichSongFolder.equals("")) {
+                            StaticVariables.whichSongFolder =  s;
                         } else {
-                            if (FullscreenActivity.mSongFileNames.length > i && FullscreenActivity.mSongFileNames[i] != null) {
-                                FullscreenActivity.songfilename = FullscreenActivity.mSongFileNames[i];
-                            } else {
-                                FullscreenActivity.songfilename = "";
-                            }
-                            if (FullscreenActivity.setView && FullscreenActivity.setSize > 0) {
-                                // Get the name of the song to look for (including folders if need be)
-                                setActions.getSongForSetWork(c);
+                            // Add subdirectory on to the current whichsongfolder
+                            s = whichSongFolder + "/" + s;
+                            StaticVariables.whichSongFolder =  s;
+                            Log.d("SongMenuListeners","s="+s);
+                        }
 
-                                if (FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
-                                    // Song is in current set.  Find the song position in the current set and load it (and next/prev)
-                                    FullscreenActivity.previousSongInSet = "";
-                                    FullscreenActivity.nextSongInSet = "";
-                                    setActions.prepareSetList();
-                                    //setupSetButtons();
-                                } else {
-                                    // Song isn't in the set, so just show the song
-                                    // Switch off the set view (buttons in action bar)
-
-                                    FullscreenActivity.setView = false;
-                                    // Re-enable the disabled button
-                                }
-                            } else {
-                                // User wasn't in set view, or the set was empty
-                                // Switch off the set view (buttons in action bar)
-                                FullscreenActivity.setView = false;
-                            }
-
-                            // Now save the preferences
-                            Preferences.savePreferences();
-
-                            // Now tell the activity to fix the options menu and close the drawers
-                            if (mListener != null) {
-                                mListener.songShortClick(i);
-                            }
+                        // Update the menu again as it has changed
+                        preferences.setMyPreferenceString(c, "whichSongFolder", StaticVariables.whichSongFolder);
+                        mListener.prepareSongMenu();
+                    } else {
+                        // We have clicked on a song
+                        if (mListener != null) {
+                            mListener.songShortClick(clickedfilename, whichSongFolder, position);
                         }
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -93,27 +74,20 @@ public class SongMenuListeners extends Activity {
         };
     }
 
-    public static TextView.OnLongClickListener itemLongClickListener(final int i) {
+    public static TextView.OnLongClickListener itemLongClickListener(final String clickedfilename,
+                                                                     final String clickedfolder, final int position) {
+
         return new TextView.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 final Context c =  FullscreenActivity.mContext;
                 mListener = (MyInterface) c;
 
-                // Save the preferences (to keep the folder and filename)
-                Preferences.savePreferences();
-
-                // Get the songfilename from the position we clicked on
-                if (i!=-1 && FullscreenActivity.mSongFileNames!=null && FullscreenActivity.mSongFileNames.length>=i) {
-                    FullscreenActivity.songfilename = FullscreenActivity.mSongFileNames[i];
-                    // Now open the longpress fragment
-                    FullscreenActivity.whattodo = "songlongpress";
-                    if (mListener != null) {
-                        try {
-                            mListener.openFragment();
-                        } catch (Exception e){
-                            e.printStackTrace();
-                        }
+                if (mListener != null) {
+                    try {
+                        mListener.openSongLongClickAction(clickedfilename,clickedfolder, position);
+                    } catch (Exception e){
+                        e.printStackTrace();
                     }
                 }
                 return true;

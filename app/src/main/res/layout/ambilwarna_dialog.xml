@@ -29,8 +29,8 @@
             android:id="@+id/ambilwarna_viewHue"
             android:layout_width="@dimen/ambilwarna_hueWidth"
             android:layout_height="@dimen/ambilwarna_hsvHeight"
-            android:layout_marginLeft="@dimen/ambilwarna_spacer"
-            android:layout_toRightOf="@id/ambilwarna_viewSatBri"
+            android:layout_marginStart="@dimen/ambilwarna_spacer"
+            android:layout_toEndOf="@id/ambilwarna_viewSatBri"
             android:scaleType="fitXY"
             android:contentDescription="@string/colorchooser"
             android:src="@drawable/ambilwarna_hue" />
@@ -39,8 +39,8 @@
             android:id="@+id/ambilwarna_alphaCheckered"
             android:layout_width="@dimen/ambilwarna_hueWidth"
             android:layout_height="@dimen/ambilwarna_hsvHeight"
-            android:layout_marginLeft="@dimen/ambilwarna_spacer"
-            android:layout_toRightOf="@id/ambilwarna_viewHue"
+            android:layout_marginStart="@dimen/ambilwarna_spacer"
+            android:layout_toEndOf="@id/ambilwarna_viewHue"
             android:scaleType="fitXY"
             android:contentDescription="@string/colorchooser"
             android:src="@drawable/ambilwarna_alphacheckered_tiled" />
@@ -49,8 +49,8 @@
             android:id="@+id/ambilwarna_overlay"
             android:layout_width="@dimen/ambilwarna_hueWidth"
             android:layout_height="@dimen/ambilwarna_hsvHeight"
-            android:layout_marginLeft="@dimen/ambilwarna_spacer"
-            android:layout_toRightOf="@id/ambilwarna_viewHue" />
+            android:layout_marginStart="@dimen/ambilwarna_spacer"
+            android:layout_toEndOf="@id/ambilwarna_viewHue" />
 
         <ImageView
             android:id="@+id/ambilwarna_cursor"

@@ -3,11 +3,12 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +22,8 @@ import android.widget.TextView;
 public class PopUpRebuildDatabaseFragment extends DialogFragment {
 
     public static MyInterface mListener;
-    TextView title, progressText;
-    ProgressBar progressBar, simpleProgressBar;
+    private TextView progressText;
+    private ProgressBar progressBar, simpleProgressBar;
     FloatingActionButton closeMe, saveMe;
     View V;
     StorageAccess storageAccess;
@@ -33,6 +34,7 @@ public class PopUpRebuildDatabaseFragment extends DialogFragment {
     OnSongConvert onSongConvert;
     TextSongConvert textSongConvert;
     UsrConvert usrConvert;
+    ProcessSong processSong;
     Uri uri;
 
     static PopUpRebuildDatabaseFragment newInstance() {
@@ -49,15 +51,7 @@ public class PopUpRebuildDatabaseFragment extends DialogFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             this.dismiss();
         }
@@ -82,11 +76,12 @@ public class PopUpRebuildDatabaseFragment extends DialogFragment {
         onSongConvert = new OnSongConvert();
         textSongConvert = new TextSongConvert();
         usrConvert = new UsrConvert();
+        processSong = new ProcessSong();
 
         // Decorate the popup
         Dialog dialog = getDialog();
         if (dialog != null && getActivity() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), dialog);
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), dialog, preferences);
         }
 
         BuildIndex buildIndex = new BuildIndex();
@@ -99,15 +94,15 @@ public class PopUpRebuildDatabaseFragment extends DialogFragment {
         return V;
     }
 
-    void initialiseViews() {
+    private void initialiseViews() {
         simpleProgressBar = V.findViewById(R.id.simpleProgressBar);
         progressBar = V.findViewById(R.id.progressBar);
         progressText = V.findViewById(R.id.progressText);
-        title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.search_rebuild));
+        TextView title = V.findViewById(R.id.dialogtitle);
+        title.setText(getResources().getString(R.string.search_rebuild));
         closeMe = V.findViewById(R.id.closeMe);
         saveMe = V.findViewById(R.id.saveMe);
-        closeMe.setVisibility(View.GONE);
+        closeMe.hide();
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +116,7 @@ public class PopUpRebuildDatabaseFragment extends DialogFragment {
                 }
             }
         });
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
     }
 
     public interface MyInterface {
@@ -133,11 +128,13 @@ public class PopUpRebuildDatabaseFragment extends DialogFragment {
 
         int numSongs;
         int currentSongNum;
-        String currentSongName, message;
+        String message;
         boolean settingProgressBarUp = false;
 
         @Override
         protected String doInBackground(Object... objects) {
+/*
+                    // TODO hopefully don't need this anymore - in fact, any of this file!
 
             try {
                 message = getString(R.string.initialisesongs_start).replace("-", "").trim();
@@ -173,13 +170,15 @@ public class PopUpRebuildDatabaseFragment extends DialogFragment {
                     }
                     message = currentSongName + "\n(" + currentSongNum + "/" + numSongs + ")";
                     publishProgress(currentSongName);
-                    boolean converted = indexSongs.doIndexThis(getActivity(), storageAccess, preferences, songXML,
-                            chordProConvert, usrConvert, onSongConvert, textSongConvert, currentSongNum);
-                    if (converted) {
+                    boolean converted = indexSongs.doIndexThis(getActivity(), storageAccess, preferences, processSong,
+                            songXML, chordProConvert, usrConvert, onSongConvert, textSongConvert, currentSongNum);
+if (converted) {
                         message = "Converted song...";
                         publishProgress("setmessage");
                         hadtoconvert = true;
                     }
+
+
                 }
 
                 indexSongs.completeLog();
@@ -205,7 +204,7 @@ public class PopUpRebuildDatabaseFragment extends DialogFragment {
                         }
                         message = currentSongName + "\n(" + currentSongNum + "/" + numSongs + ")";
                         publishProgress(currentSongName);
-                        indexSongs.doIndexThis(getActivity(), storageAccess, preferences, songXML,
+                        indexSongs.doIndexThis(getActivity(), storageAccess, preferences, processSong, songXML,
                                 chordProConvert, usrConvert, onSongConvert, textSongConvert, currentSongNum);
                     }
                     indexSongs.completeLog();
@@ -220,6 +219,7 @@ public class PopUpRebuildDatabaseFragment extends DialogFragment {
             } catch (Exception e) {
                 Log.d("PopUpRebuildDatabase", "User cancelled database - caught crash!");
             }
+            */
             return null;
         }
 
@@ -245,7 +245,7 @@ public class PopUpRebuildDatabaseFragment extends DialogFragment {
             try {
                 simpleProgressBar.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
-                closeMe.setVisibility(View.VISIBLE);
+                closeMe.show();
                 FullscreenActivity.needtorefreshsongmenu = false;
                 if (mListener != null) {
                     mListener.refreshAll();

@@ -3,13 +3,14 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -66,19 +68,11 @@ public class PopUpCCLIFragment extends DialogFragment {
         super.onAttach(activity);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-    }
-
-    TextView title, churchNameTextView, licenceTextView, logTextView, resetText;
-    EditText churchNameEditText,licenceEditText;
-    WebView logWebView;
+    private TextView title, churchNameTextView, licenceTextView, logTextView, resetText;
+    private EditText churchNameEditText,licenceEditText;
+    private WebView logWebView;
     FloatingActionButton saveMe;
-    ArrayList<String> songfile;
+    private ArrayList<String> songfile;
     ArrayList<String> song;
     ArrayList<String> author;
     ArrayList<String> copyright;
@@ -91,7 +85,7 @@ public class PopUpCCLIFragment extends DialogFragment {
     Preferences preferences;
     Uri uri;
 
-    public static boolean createBlankXML(Context c, Preferences preferences) {
+    static boolean createBlankXML(Context c, Preferences preferences) {
         String blankXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<log></log>\n";
         StorageAccess storageAccess = new StorageAccess();
@@ -104,41 +98,41 @@ public class PopUpCCLIFragment extends DialogFragment {
         return storageAccess.writeFileFromString(blankXML, outputStream);
     }
 
-    public void setupChurchName() {
+    private void setupChurchName() {
         // Show what we want and hide what we don't
         setviewvisiblities(View.VISIBLE, View.GONE, View.GONE, View.GONE);
 
         // Set up the default values
-        churchNameEditText.setText(FullscreenActivity.ccli_church);
+        churchNameEditText.setText(preferences.getMyPreferenceString(getActivity(),"ccliChurchName",""));
 
         // Set up save/tick listener
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.ccli_church = churchNameEditText.getText().toString();
+                preferences.setMyPreferenceString(getActivity(),"ccliChurchName",churchNameEditText.getText().toString());
                 doSave();
             }
         });
     }
 
-    public void setupLicence() {
+    private void setupLicence() {
         // Show what we want and hide what we don't
         setviewvisiblities(View.GONE, View.VISIBLE, View.GONE, View.GONE);
 
         // Set up the default values
-        licenceEditText.setText(FullscreenActivity.ccli_licence);
+        licenceEditText.setText(preferences.getMyPreferenceString(getActivity(),"ccliLicence",""));
 
         // Set up save/tick listener
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.ccli_licence = licenceEditText.getText().toString();
+                preferences.setMyPreferenceString(getActivity(),"ccliLicence",licenceEditText.getText().toString());
                 doSave();
             }
         });
     }
 
-    public void setupLog() {
+    private void setupLog() {
         // Show what we want and hide what we don't
         setviewvisiblities(View.GONE, View.GONE, View.VISIBLE, View.GONE);
 
@@ -146,7 +140,7 @@ public class PopUpCCLIFragment extends DialogFragment {
         buildTable(getActivity());
 
         // Set up save/tick listener
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
     }
 
     public static void addUsageEntryToLog(Context c, Preferences preferences, String fname, String song,
@@ -164,7 +158,7 @@ public class PopUpCCLIFragment extends DialogFragment {
         add_usage.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    public void setviewvisiblities(int church, int licence, int log, int reset) {
+    private void setviewvisiblities(int church, int licence, int log, int reset) {
         churchNameTextView.setVisibility(church);
         churchNameEditText.setVisibility(church);
         licenceTextView.setVisibility(licence);
@@ -175,7 +169,7 @@ public class PopUpCCLIFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             this.dismiss();
         }
@@ -191,7 +185,7 @@ public class PopUpCCLIFragment extends DialogFragment {
         // Set the title based on the whattodo
 
         title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.edit_song_ccli));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.edit_song_ccli));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -241,11 +235,11 @@ public class PopUpCCLIFragment extends DialogFragment {
         }
         Dialog dialog = getDialog();
         if (dialog!=null && getActivity()!=null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog);
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog, preferences);
         }
         return V;
     }
-    public static String getLogFileSize(Context c, Uri uri) {
+    private static String getLogFileSize(Context c, Uri uri) {
         StorageAccess storageAccess = new StorageAccess();
         float file_size_kb = storageAccess.getFileSizeFromUri(c, uri);
         String returntext = "ActivityLog.xml ("+file_size_kb + "kb)";
@@ -255,7 +249,7 @@ public class PopUpCCLIFragment extends DialogFragment {
         return returntext;
     }
 
-    public void buildTable(Context c) {
+    private void buildTable(Context c) {
         StorageAccess storageAccess = new StorageAccess();
         // Info is stored in ActivityLog.xml file inside Settings folder
 
@@ -282,7 +276,6 @@ public class PopUpCCLIFragment extends DialogFragment {
     }
 
     public void doSave() {
-        Preferences.savePreferences();
         if (mListener!=null) {
             mListener.prepareOptionMenu();
         }
@@ -293,8 +286,8 @@ public class PopUpCCLIFragment extends DialogFragment {
         }
     }
 
-    public void setupReset() {
-        title.setText(getActivity().getResources().getString(R.string.areyousure));
+    private void setupReset() {
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.areyousure));
         // Show what we want and hide what we don't
         setviewvisiblities(View.GONE, View.GONE, View.GONE, View.VISIBLE);
 
@@ -304,9 +297,9 @@ public class PopUpCCLIFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 if (createBlankXML(getActivity(), preferences)) {
-                    FullscreenActivity.myToastMessage = getString(R.string.ok);
+                    StaticVariables.myToastMessage = getString(R.string.ok);
                 } else {
-                    FullscreenActivity.myToastMessage = getString(R.string.error);
+                    StaticVariables.myToastMessage = getString(R.string.error);
                 }
                 ShowToast.showToast(getActivity());
                 try {
@@ -381,11 +374,9 @@ public class PopUpCCLIFragment extends DialogFragment {
         protected String doInBackground(Object... objects) {
             try {
                 InputStream inputStream = storageAccess.getInputStream(ctx, uri);
-                Log.d("d", "inputStream=" + inputStream);
                 DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
                 String myString = storageAccess.readTextFileToString(inputStream);
-                Log.d("d", "myString=" + myString);
 
                 Document document = null;
                 Element root = null;
@@ -473,7 +464,6 @@ public class PopUpCCLIFragment extends DialogFragment {
 
                     DOMSource source = new DOMSource(document);
 
-                    Log.d("CCLI", "newItem=" + newItem);
                     TransformerFactory transformerFactory = TransformerFactory.newInstance();
                     Transformer transformer = transformerFactory.newTransformer();
                     transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
@@ -623,8 +613,10 @@ public class PopUpCCLIFragment extends DialogFragment {
         StringBuilder table;
         if (song == null || song.size() == 0) {
             table = new StringBuilder("<html><body><h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
-                    "<h3>" + getString(R.string.ccli_church) + ": " + FullscreenActivity.ccli_church + "</h3>\n" +
-                    "<h3>" + getString(R.string.ccli_licence) + ": " + FullscreenActivity.ccli_licence + "</h3>\n" +
+                    "<h3>" + getString(R.string.ccli_church) + ": " +
+                    preferences.getMyPreferenceString(getActivity(),"ccliChurchName","") + "</h3>\n" +
+                    "<h3>" + getString(R.string.ccli_licence) + ": " +
+                    preferences.getMyPreferenceString(getActivity(),"ccliLicence","")+ "</h3>\n" +
                     "<h4>" + sizeoffile + "</h4>\n" +
                     "</body></html>");
 
@@ -637,8 +629,10 @@ public class PopUpCCLIFragment extends DialogFragment {
                     "background-color: #4CAF50; color: white;\n}\n" +
                     "</style>\n</head><body>" +
                     "<h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
-                    "<h3>" + getString(R.string.ccli_church) + ": " + FullscreenActivity.ccli_church + "</h3>\n" +
-                    "<h3>" + getString(R.string.ccli_licence) + ": " + FullscreenActivity.ccli_licence + "</h3>\n" +
+                    "<h3>" + getString(R.string.ccli_church) + ": " +
+                    preferences.getMyPreferenceString(getActivity(),"ccliChurchName","") + "</h3>\n" +
+                    "<h3>" + getString(R.string.ccli_licence) + ": " +
+                    preferences.getMyPreferenceString(getActivity(),"ccliLicence","")+ "</h3>\n" +
                     "<h4>" + sizeoffile + "</h4>\n" +
                     "<body><table id=\"mytable\">\n<tr>");
             table.append("<th>").append(getString(R.string.item)).append("</th>");

@@ -9,42 +9,39 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Set;
 
-class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexer {
+class SearchViewAdapter extends BaseAdapter implements Filterable {
 
     Context context;
-    private ArrayList<SearchViewItems> searchlist;
-    private ArrayList<SearchViewItems> mStringFilterList;
+    private ArrayList<SQLite> searchlist;
+    private ArrayList<SQLite> mStringFilterList;
     private ValueFilter valueFilter;
     String what;
-    private HashMap<String, Integer> mapIndex;
+    //private HashMap<String, Integer> mapIndex;
     String[] sections;
 
-    SearchViewAdapter(Context context , ArrayList<SearchViewItems> searchlist, String what) {
+    SearchViewAdapter(Context context , ArrayList<SQLite> searchlist, String what) {
         this.context = context;
         this.searchlist = searchlist;
         mStringFilterList = searchlist;
         this.what = what;
 
+        // TODO Struggling to get this working with sectionindexer, so turn off for now!
+        /*// Get an array of the song values
         mapIndex = new LinkedHashMap<>();
 
-        for (int x = 0; x < FullscreenActivity.searchTitle.size(); x++) {
-            String title = FullscreenActivity.searchTitle.get(x);
-            String ch;
-            if (title.length() > 0) {
-                ch = title.substring(0, 1);
-            } else {
-                ch = title;
+        for (int x = 0; x < searchlist.size(); x++) {
+            String filename = searchlist.get(x).getFilename();
+            String ch = "";
+            if (filename!=null && filename.length() > 0) {
+                ch = filename.substring(0, 1);
+            } else if (filename!=null){
+                ch = filename;
             }
-            ch = ch.toUpperCase(FullscreenActivity.locale);
+            ch = ch.toUpperCase(StaticVariables.locale);
 
             // HashMap will prevent duplicates
             mapIndex.put(ch, x);
@@ -55,15 +52,18 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
         // create a list from the set to sort
         ArrayList<String> sectionList = new ArrayList<>(sectionLetters);
 
-        Collections.sort(sectionList);
+        //Collections.sort(sectionList);
 
         sections = new String[sectionList.size()];
 
-        sectionList.toArray(sections);
+        sectionList.toArray(sections);*/
     }
 
     @Override
     public int getCount() {
+        if (searchlist==null) {
+            searchlist = new ArrayList<>();
+        }
         return searchlist.size();
     }
 
@@ -99,11 +99,11 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
         TextView lyrics_tv = convertView.findViewById(R.id.cardview_lyrics);
         TextView hymnnum_tv = convertView.findViewById(R.id.cardview_hymn);
 
-        SearchViewItems song = searchlist.get(position);
+        SQLite song = fixNullSongStuff(searchlist.get(position));
 
         if (what.equals("songmenu")) {
             name_tv.setTextSize(16.0f);
-            name_tv.setText(song.getTitle());
+            name_tv.setText(song.getFilename());
 
             author_tv.setText(song.getAuthor());
             author_tv.setTextSize(10.0f);
@@ -121,7 +121,7 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
             key_tv.setText(song.getKey());
             theme_tv.setText(song.getTheme());
             lyrics_tv.setText(song.getLyrics());
-            hymnnum_tv.setText(song.getHymnnum());
+            hymnnum_tv.setText(song.getHymn_num());
 
             // Hide the empty stuff
             if (song.getAuthor().equals("")) {
@@ -151,19 +151,62 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
         return valueFilter;
     }
 
-    @Override
-    public Object[] getSections() {
-        return sections;
+    private SQLite fixNullSongStuff(SQLite song) {
+        if (song.getAka()==null) {
+            song.setAka("");
+        }
+        if (song.getAlttheme()==null) {
+            song.setAlttheme("");
+        }
+        if (song.getAuthor()==null) {
+            song.setAuthor("");
+        }
+        if (song.getCcli()==null) {
+            song.setCcli("");
+        }
+        if (song.getCopyright()==null) {
+            song.setCcli("");
+        }
+        if (song.getFilename()==null) {
+            song.setFilename("");
+        }
+        if (song.getFolder()==null) {
+            song.setFolder("");
+        }
+        if (song.getHymn_num()==null) {
+            song.setHymn_num("");
+        }
+        if (song.getKey()==null) {
+            song.setKey("");
+        }
+        if (song.getLyrics()==null) {
+            song.setLyrics("");
+        }
+        if (song.getSongid()==null) {
+            song.setSongid("");
+        }
+        if (song.getTheme()==null) {
+            song.setTheme("");
+        }
+        if (song.getTimesig()==null) {
+            song.setTimesig("");
+        }
+        if (song.getTitle()==null) {
+            song.setTitle("");
+        }
+        if (song.getUser1()==null) {
+            song.setUser1("");
+        }
+        if (song.getUser2()==null) {
+            song.setUser2("");
+        }
+        if (song.getUser3()==null) {
+            song.setUser3("");
+        }
+        return song;
     }
 
-    @Override
-    public int getPositionForSection(int i) {
-        if (mapIndex!=null && sections!=null && sections.length>0) {
-            return mapIndex.get(sections[i]);
-        } else {
-            return 0;
-        }
-    }
+
 
     @Override
     public void notifyDataSetInvalidated() {
@@ -175,43 +218,36 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
         super.notifyDataSetChanged();
     }
 
-    @SuppressWarnings("SuspiciousMethodCalls")
-    @Override
-    public int getSectionForPosition(int i) {
-        try {
-            if (mapIndex!=null && i>-1 && mapIndex.size()>i) {
-                return mapIndex.get(i);
-            } else {
-                return 0;
-            }
-        } catch (Exception e) {
-            return 0;
-        }
-
-        //return i;
-    }
-
     private class ValueFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();
 
             if (constraint != null && constraint.length() > 0) {
-                ArrayList<SearchViewItems> filterList = new ArrayList<>();
+                ArrayList<SQLite> filterList = new ArrayList<>();
                 for (int i = 0; i < mStringFilterList.size(); i++) {
 
-                    if ( (mStringFilterList.get(i).getLyrics().toUpperCase(FullscreenActivity.locale) )
-                            .contains(constraint.toString().toUpperCase(FullscreenActivity.locale))) {
+                    if ( (mStringFilterList.get(i).getLyrics().toUpperCase(StaticVariables.locale) )
+                            .contains(constraint.toString().toUpperCase(StaticVariables.locale))) {
 
-                        SearchViewItems song = new SearchViewItems(
-                                mStringFilterList.get(i).getFilename(),
-                                mStringFilterList.get(i).getTitle(),
-                                mStringFilterList.get(i).getFolder(),
-                                mStringFilterList.get(i).getAuthor(),
-                                mStringFilterList.get(i).getKey(),
-                                mStringFilterList.get(i).getTheme(),
-                                mStringFilterList.get(i).getLyrics(),
-                                mStringFilterList.get(i).getHymnnum());
+                        SQLite song = new SQLite();
+                        song.setSongid(mStringFilterList.get(i).getSongid());
+                        song.setFilename(mStringFilterList.get(i).getFilename());
+                        song.setFolder(mStringFilterList.get(i).getFolder());
+                        song.setTitle(mStringFilterList.get(i).getTitle());
+                        song.setAuthor(mStringFilterList.get(i).getAuthor());
+                        song.setCopyright(mStringFilterList.get(i).getCopyright());
+                        song.setLyrics(mStringFilterList.get(i).getLyrics());
+                        song.setHymn_num(mStringFilterList.get(i).getHymn_num());
+                        song.setCcli(mStringFilterList.get(i).getCcli());
+                        song.setTheme(mStringFilterList.get(i).getTheme());
+                        song.setAlttheme(mStringFilterList.get(i).getAlttheme());
+                        song.setUser1(mStringFilterList.get(i).getUser1());
+                        song.setUser2(mStringFilterList.get(i).getUser2());
+                        song.setUser3(mStringFilterList.get(i).getUser3());
+                        song.setKey(mStringFilterList.get(i).getKey());
+                        song.setTimesig(mStringFilterList.get(i).getTimesig());
+                        song.setAka(mStringFilterList.get(i).getAka());
 
                         filterList.add(song);
                     }
@@ -230,8 +266,8 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
         @Override
         protected void publishResults(CharSequence constraint,
                                       FilterResults results) {
-            searchlist = (ArrayList<SearchViewItems>) results.values;
-            updateListIndex(searchlist);
+            searchlist = (ArrayList<SQLite>) results.values;
+            //updateListIndex(searchlist);
             // Let the adapter know about the updated list
             if (results.count > 0) {
                 notifyDataSetChanged();
@@ -242,33 +278,5 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
 
     }
 
-    private void updateListIndex(ArrayList<SearchViewItems> results) {
 
-        mapIndex = new LinkedHashMap<>();
-
-        for (int x = 0; x < results.size(); x++) {
-            String title = results.get(x).getTitle();
-            String ch;
-            if (title.length() > 1) {
-                ch = title.substring(0, 1);
-            } else {
-                ch = title;
-            }
-            ch = ch.toUpperCase(FullscreenActivity.locale);
-
-            // HashMap will prevent duplicates
-            mapIndex.put(ch, x);
-        }
-
-        Set<String> sectionLetters = mapIndex.keySet();
-
-        // create a list from the set to sort
-        ArrayList<String> sectionList = new ArrayList<>(sectionLetters);
-
-        Collections.sort(sectionList);
-
-        sections = new String[sectionList.size()];
-
-        sectionList.toArray(sections);
-    }
 }

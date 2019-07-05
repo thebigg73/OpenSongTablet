@@ -1,7 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,13 +9,12 @@ import java.io.PushbackInputStream;
 
 class UnicodeBOMInputStream extends InputStream {
 
-    @SuppressWarnings("WeakerAccess")
     public static final class BOM {
 
         static final BOM NONE = new BOM(new byte[]{}, "UTF-8");
 
-        static final BOM WINDOWS = new BOM(new byte[]{}, "WINDOWS-1252");
-
+        /*static final BOM WINDOWS = new BOM(new byte[]{}, "WINDOWS-1252");
+*/
         static final BOM UTF_8 = new BOM(new byte[]{(byte) 0xEF,
                 (byte) 0xBB,
                 (byte) 0xBF},
@@ -42,6 +41,7 @@ class UnicodeBOMInputStream extends InputStream {
                 "UTF-32BE");
 
         //Returns a <code>String</code> representation of this <code>BOM</code>
+        @NonNull
         public final String toString() {
             return description;
         }
@@ -58,7 +58,7 @@ class UnicodeBOMInputStream extends InputStream {
         }
 
         @SuppressLint("Assert")
-        private BOM(final byte bom[], final String description) {
+        private BOM(final byte[] bom, final String description) {
             assert (bom != null) : "invalid BOM: null is not allowed";
             assert (description != null) : "invalid description: null is not allowed";
             assert (description.length() != 0) : "invalid description: empty string is not allowed";
@@ -67,7 +67,7 @@ class UnicodeBOMInputStream extends InputStream {
             this.description = description;
         }
 
-        final byte bytes[];
+        final byte[] bytes;
         private final String description;
 
     } // BOM
@@ -78,7 +78,7 @@ class UnicodeBOMInputStream extends InputStream {
             throw new NullPointerException("invalid input stream: null is not allowed");
 
         in = new PushbackInputStream(inputStream, 4);
-        final byte bom[] = new byte[4];
+        final byte[] bom = new byte[4];
         final int read = in.read(bom);
 
         switch (read) {
@@ -135,22 +135,22 @@ class UnicodeBOMInputStream extends InputStream {
         // BOM type is immutable.
         return bom;
     }
-
-    /**
+/*
+    *
      * Skips the <code>BOM</code> that was found in the wrapped
      * <code>InputStream</code> object.
      *
      * @return this <code>UnicodeBOMInputStream</code>.
      * @throws IOException when trying to skip the BOM from the wrapped
      *                     <code>InputStream</code> object.
-     */
-    public final synchronized UnicodeBOMInputStream skipBOM() throws IOException {
+    */
+    /*public final synchronized UnicodeBOMInputStream skipBOM() throws IOException {
         if (!skipped) {
             in.skip(bom.bytes.length);
             skipped = true;
         }
         return this;
-    }
+    }*/
 
     /**
      * {@inheritDoc}
@@ -162,7 +162,7 @@ class UnicodeBOMInputStream extends InputStream {
     /**
      * {@inheritDoc}
      */
-    public int read(@NonNull final byte b[]) throws IOException,
+    public int read(@NonNull final byte[] b) throws IOException,
             NullPointerException {
         return in.read(b, 0, b.length);
     }
@@ -170,7 +170,7 @@ class UnicodeBOMInputStream extends InputStream {
     /**
      * {@inheritDoc}
      */
-    public int read(@NonNull final byte b[],
+    public int read(@NonNull final byte[] b,
                     final int off,
                     final int len) throws IOException,
             NullPointerException {
@@ -221,6 +221,6 @@ class UnicodeBOMInputStream extends InputStream {
 
     private final PushbackInputStream in;
     private final BOM bom;
-    private boolean skipped = false;
+    //private boolean skipped = false;
 
 }

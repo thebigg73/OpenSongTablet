@@ -2,12 +2,13 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,21 +24,21 @@ import android.widget.TextView;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PopUpSongCreateFragment extends DialogFragment {
     // This is a quick popup to enter a new song folder name, or rename a current one
     // Once it has been completed positively (i.e. ok was clicked) it sends a refreshAll() interface call
 
-    static ArrayList<String> newtempfolders;
-    Spinner newFolderSpinner;
-    EditText newSongNameEditText;
+    private ArrayList<String> foldernames;
+    private Spinner newFolderSpinner;
+    private EditText newSongNameEditText;
     ProgressBar progressBar;
     private MyInterface mListener;
-    AsyncTask<Object, Void, String> getfolders;
+    private AsyncTask<Object, Void, String> getfolders;
     StorageAccess storageAccess;
     Preferences preferences;
-    SongFolders songFolders;
-    ListSongFiles listSongFiles;
+    private SongFolders songFolders;
     SongXML songXML;
 
     static PopUpSongCreateFragment newInstance() {
@@ -66,14 +67,6 @@ public class PopUpSongCreateFragment extends DialogFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -84,14 +77,14 @@ public class PopUpSongCreateFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setCanceledOnTouchOutside(true);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         View V = inflater.inflate(R.layout.popup_songcreate, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.createanewsong));
+        title.setText(getResources().getString(R.string.createanewsong));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +107,6 @@ public class PopUpSongCreateFragment extends DialogFragment {
         storageAccess = new StorageAccess();
         preferences = new Preferences();
         songFolders = new SongFolders();
-        listSongFiles = new ListSongFiles();
         songXML = new SongXML();
 
         // Initialise the views
@@ -138,8 +130,8 @@ public class PopUpSongCreateFragment extends DialogFragment {
         // Set up the folderspinner
         // Populate the list view with the current song folders
         // Reset to the main songs folder, so we can list them
-        FullscreenActivity.currentFolder = FullscreenActivity.whichSongFolder;
-        FullscreenActivity.newFolder = FullscreenActivity.whichSongFolder;
+        FullscreenActivity.currentFolder = StaticVariables.whichSongFolder;
+        FullscreenActivity.newFolder = StaticVariables.whichSongFolder;
         getfolders = new GetFolders();
         try {
             getfolders.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -151,7 +143,11 @@ public class PopUpSongCreateFragment extends DialogFragment {
         newFolderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                FullscreenActivity.newFolder = newtempfolders.get(position);
+                try {
+                    FullscreenActivity.newFolder = foldernames.get(position);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -159,7 +155,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
         return V;
 
     }
@@ -183,7 +179,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
             // Prepare the app to rebuild the search index after loading the song
             FullscreenActivity.needtorefreshsongmenu = true;
             tempNewSong = newSongNameEditText.getText().toString().trim();
-            FullscreenActivity.myToastMessage = "";
+            StaticVariables.myToastMessage = "";
         }
 
         @Override
@@ -193,9 +189,9 @@ public class PopUpSongCreateFragment extends DialogFragment {
             Log.d("PopUpCreate", "to=" + to);
 
             // Decide if this song already exists.  If so, alert the user and do nothing more
-            FullscreenActivity.myToastMessage = "";
+            StaticVariables.myToastMessage = "";
             if (storageAccess.uriExists(getActivity(), to)) {
-                FullscreenActivity.myToastMessage = getActivity().getString(R.string.songnamealreadytaken);
+                StaticVariables.myToastMessage = getString(R.string.songnamealreadytaken);
             } else {
 
                 if (FullscreenActivity.whattodo.equals("savecameraimage")) {
@@ -234,25 +230,30 @@ public class PopUpSongCreateFragment extends DialogFragment {
                     Log.d("PopUpCreate", "deleting original");
                     storageAccess.deleteFile(getActivity(), from);
 
+                    // Add the new song to the SQLite database
+                    SQLiteHelper sqLiteHelper = new SQLiteHelper(getActivity());
+                    sqLiteHelper.createSong(getActivity(),FullscreenActivity.newFolder,tempNewSong);
+
                     try {
                         if (mListener != null) {
+                            mListener.prepareSongMenu();
                             Log.d("PopUpCreate", "setting songfilename=" + tempNewSong);
-                            FullscreenActivity.songfilename = tempNewSong;
+                            StaticVariables.songfilename = tempNewSong;
                             Log.d("PopUpCreate", "setting whichSongFolder=" + FullscreenActivity.newFolder);
-                            FullscreenActivity.whichSongFolder = FullscreenActivity.newFolder;
+                            StaticVariables.whichSongFolder = FullscreenActivity.newFolder;
                         }
 
                     } catch (Exception e) {
-                        FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.error);
+                        StaticVariables.myToastMessage = getResources().getString(R.string.error);
                         e.printStackTrace();
                     }
 
                 } else {
                     if (!tempNewSong.equals("") && !tempNewSong.isEmpty()
                             && !tempNewSong.contains("/") && !storageAccess.uriExists(getActivity(), to)
-                            && !tempNewSong.equals(FullscreenActivity.mainfoldername)) {
+                            && !tempNewSong.equals(getString(R.string.mainfoldername))) {
 
-                        FullscreenActivity.whichSongFolder = FullscreenActivity.newFolder;
+                        StaticVariables.whichSongFolder = FullscreenActivity.newFolder;
 
                         // Try to create
                         if (tempNewSong.endsWith(".pdf") || tempNewSong.endsWith(".PDF")) {
@@ -264,10 +265,8 @@ public class PopUpSongCreateFragment extends DialogFragment {
                         songXML.initialiseSongTags();
 
                         // Prepare the XML
-                        FullscreenActivity.songfilename = tempNewSong;
-                        FullscreenActivity.mTitle = tempNewSong;
-
-                        Preferences.savePreferences();
+                        StaticVariables.songfilename = tempNewSong;
+                        StaticVariables.mTitle = tempNewSong;
 
                         FullscreenActivity.mynewXML = songXML.prepareBlankSongXML();
 
@@ -275,31 +274,35 @@ public class PopUpSongCreateFragment extends DialogFragment {
                         if (FullscreenActivity.scripture_title != null &&
                                 FullscreenActivity.scripture_title.equals("importedtext_in_scripture_verse") &&
                                 FullscreenActivity.scripture_verse != null && !FullscreenActivity.scripture_verse.equals("")) {
-                            FullscreenActivity.mLyrics = FullscreenActivity.scripture_verse;
+                            StaticVariables.mLyrics = FullscreenActivity.scripture_verse;
                             FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("<lyrics>[V]\n</lyrics>",
                                     "<lyrics>[V]\n" + FullscreenActivity.scripture_verse + "</lyrics>");
                         }
 
                         // Save the file
-                        storageAccess.createFile(getActivity(), preferences, null, "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
-                        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.whichSongFolder,
-                                FullscreenActivity.songfilename);
+                        storageAccess.createFile(getActivity(), preferences, null, "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
+                        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", StaticVariables.whichSongFolder,
+                                StaticVariables.songfilename);
 
                         // Check the uri exists for the outputstream to be valid
                         storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
-                                "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+                                "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
 
                         OutputStream outputStream = storageAccess.getOutputStream(getActivity(), uri);
                         storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream);
 
                         // If we are autologging CCLI information
-                        if (FullscreenActivity.ccli_automatic) {
-                            PopUpCCLIFragment.addUsageEntryToLog(getActivity(), preferences, FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
-                                    FullscreenActivity.songfilename, "",
+                        if (preferences.getMyPreferenceBoolean(getActivity(),"ccliAutomaticLogging",false)) {
+                            PopUpCCLIFragment.addUsageEntryToLog(getActivity(), preferences, StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename,
+                                    StaticVariables.songfilename, "",
                                     "", "", "1"); // Created
                         }
+
+                        // Add the new song to the SQLite database
+                        SQLiteHelper sqLiteHelper = new SQLiteHelper(getActivity());
+                        sqLiteHelper.createSong(getActivity(),StaticVariables.whichSongFolder,StaticVariables.songfilename);
                     } else {
-                        FullscreenActivity.myToastMessage = getResources().getString(R.string.error_notset);
+                        StaticVariables.myToastMessage = getResources().getString(R.string.error_notset);
                     }
                 }
             }
@@ -309,11 +312,12 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
         protected void onPostExecute(String s) {
             try {
-                if (!FullscreenActivity.myToastMessage.equals(getActivity().getString(R.string.error)) &&
-                        !FullscreenActivity.myToastMessage.equals(getActivity().getString(R.string.error_notset)) &&
-                        !FullscreenActivity.myToastMessage.equals(getActivity().getString(R.string.songnamealreadytaken))) {
+                if (!StaticVariables.myToastMessage.equals(getString(R.string.error)) &&
+                        !StaticVariables.myToastMessage.equals(getString(R.string.error_notset)) &&
+                        !StaticVariables.myToastMessage.equals(getString(R.string.songnamealreadytaken))) {
 
                     if (mListener != null) {
+                        mListener.prepareSongMenu();
                         if (FullscreenActivity.whattodo.equals("savecameraimage")) {
                             mListener.loadSong();
                         } else {
@@ -325,7 +329,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
                     }
                 }
 
-                if (!FullscreenActivity.myToastMessage.equals("")) {
+                if (!StaticVariables.myToastMessage.equals("")) {
                     ShowToast.showToast(getActivity());
                 }
                 try {
@@ -342,37 +346,23 @@ public class PopUpSongCreateFragment extends DialogFragment {
     private class GetFolders extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
-            songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
+            foldernames = songFolders.prepareSongFolders(getActivity());
             return null;
         }
 
         protected void onPostExecute(String s) {
-            // The song folder
-            newtempfolders = new ArrayList<>();
-            if (FullscreenActivity.mainfoldername!=null) {
-                newtempfolders.add(FullscreenActivity.mainfoldername);
-            }
-            for (int e = 0; e < FullscreenActivity.mSongFolderNames.length; e++) {
-                if (FullscreenActivity.mSongFolderNames[e] != null &&
-                        !FullscreenActivity.mSongFolderNames[e].equals(FullscreenActivity.mainfoldername)) {
-                    newtempfolders.add(FullscreenActivity.mSongFolderNames[e]);
-                }
-            }
-            if (newtempfolders==null) {
-                newtempfolders = new ArrayList<>();
-                newtempfolders.add("");
-            }
-            ArrayAdapter<String> folders = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, newtempfolders);
+
+            ArrayAdapter<String> folders = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, foldernames);
             folders.setDropDownViewResource(R.layout.my_spinner);
             newFolderSpinner.setAdapter(folders);
 
             // Select the current folder as the preferred one - i.e. rename into the same folder
             newFolderSpinner.setSelection(0);
-            for (int w = 0; w < newtempfolders.size(); w++) {
-                if (FullscreenActivity.currentFolder.equals(newtempfolders.get(w)) ||
-                        FullscreenActivity.currentFolder.equals("(" + newtempfolders.get(w) + ")")) {
+            for (int w = 0; w < foldernames.size(); w++) {
+                if (FullscreenActivity.currentFolder.equals(foldernames.get(w)) ||
+                        FullscreenActivity.currentFolder.equals("(" + foldernames.get(w) + ")")) {
                     newFolderSpinner.setSelection(w);
-                    FullscreenActivity.newFolder = newtempfolders.get(w);
+                    FullscreenActivity.newFolder = foldernames.get(w);
                 }
             }
         }

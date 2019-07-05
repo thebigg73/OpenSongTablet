@@ -24,7 +24,7 @@ class UsrConvert {
     private StringBuilder parsedLines;
 
     ArrayList<String> convertTextToTags(Context c, StorageAccess storageAccess, Preferences preferences,
-                                        SongXML songXML, ChordProConvert chordProConvert, Uri uri, String l, int pos) {
+                                        SongXML songXML, ChordProConvert chordProConvert, Uri uri, String l) {
 
         initialiseTheVariables();
 
@@ -63,10 +63,7 @@ class UsrConvert {
 
         // Now write the modified song
         chordProConvert.writeTheImprovedSong(c, storageAccess, preferences, oldSongFileName, newSongFileName,
-                songSubFolder, newUri, uri, pos);
-
-        // Indicate after loading song (which renames it), we need to build the database and song index
-        FullscreenActivity.needtorefreshsongmenu = true;
+                songSubFolder, newUri, uri);
 
         return chordProConvert.bitsForIndexing(newSongFileName, title, author, copyright, key, time_sig, ccli, lyrics);
 
@@ -143,8 +140,7 @@ class UsrConvert {
                 line = "";
 
             } else if (line.contains("Words=")) {
-                words = removeTags(line, "Words=");
-
+                line = removeTags(line, "Words=");
             }
 
             // Fix the line separator
@@ -211,19 +207,13 @@ class UsrConvert {
 
     private void setCorrectXMLValues() {
         // Set the correct values
-        FullscreenActivity.mTitle = title.trim();
-        FullscreenActivity.mAuthor = author.trim();
-        FullscreenActivity.mCopyright = copyright.trim();
-        FullscreenActivity.mCCLI = ccli.trim();
-        FullscreenActivity.mTheme = theme.trim();
-        FullscreenActivity.mKey = key.trim();
-        FullscreenActivity.mLyrics = lyrics.trim();
+        StaticVariables.mTitle = title.trim();
+        StaticVariables.mAuthor = author.trim();
+        StaticVariables.mCopyright = copyright.trim();
+        StaticVariables.mCCLI = ccli.trim();
+        StaticVariables.mTheme = theme.trim();
+        StaticVariables.mKey = key.trim();
+        StaticVariables.mLyrics = lyrics.trim();
     }
 
-
-    // TODO remove this
-    boolean doExtract(Context c, Preferences preferences) {
-
-        return true;
-    }
 }

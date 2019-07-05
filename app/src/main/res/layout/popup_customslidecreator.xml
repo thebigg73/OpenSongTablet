@@ -171,7 +171,8 @@
                             android:layout_margin="8dp"
                             android:layout_weight="0.6"
                             android:hint="@string/bible_search"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            tools:ignore="Autofill" />
                     </TableRow>
 
                     <TableRow
@@ -195,7 +196,8 @@
                             android:layout_margin="8dp"
                             android:layout_weight="0.6"
                             android:hint="@string/bible_translation"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            tools:ignore="Autofill" />
                     </TableRow>
                 </TableLayout>
 
@@ -241,7 +243,6 @@
                     style="@style/MyHeadingText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_marginBottom="4dp"
                     android:layout_marginLeft="8dp"
@@ -261,7 +262,8 @@
                     android:layout_marginTop="0dp"
                     android:hint="@string/title"
                     android:inputType="text"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/timeTextView"
@@ -287,7 +289,8 @@
                     android:layout_marginTop="0dp"
                     android:hint="@string/time_slide_pages_help"
                     android:inputType="number"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    tools:ignore="Autofill" />
 
                 <CheckBox
                     android:id="@+id/loopCheckBox"
@@ -318,13 +321,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="false"
-                    android:layout_alignParentRight="false"
                     android:layout_below="@+id/slideContentTextView"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
                     android:background="@drawable/yellow_button"
                     android:text="@string/slide_add_page"
                     android:textColor="#fff" />
@@ -334,7 +335,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="false"
-                    android:layout_alignParentRight="false"
                     android:layout_below="@+id/addPageButton"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center_horizontal"
@@ -356,7 +356,8 @@
                     android:gravity="top|start"
                     android:hint="@string/content"
                     android:inputType="textMultiLine"
-                    android:minLines="8" />
+                    android:minLines="8"
+                    tools:ignore="Autofill" />
 
             </RelativeLayout>
 
@@ -370,12 +371,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="false"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="24dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/red_button"

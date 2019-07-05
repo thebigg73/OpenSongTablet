@@ -246,8 +246,8 @@ class AmbilWarnaDialog {
 		float y = viewHue.getMeasuredHeight() - (getHue() * viewHue.getMeasuredHeight() / 360.f);
 		if (y == viewHue.getMeasuredHeight()) y = 0.f;
 		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) viewCursor.getLayoutParams();
-		layoutParams.leftMargin = (int) (viewHue.getLeft() - Math.floor(viewCursor.getMeasuredWidth() / 2) - viewContainer.getPaddingLeft());
-		layoutParams.topMargin = (int) (viewHue.getTop() + y - Math.floor(viewCursor.getMeasuredHeight() / 2) - viewContainer.getPaddingTop());
+		layoutParams.leftMargin = (int) (viewHue.getLeft() - Math.floor(viewCursor.getMeasuredWidth() / 2.0f) - viewContainer.getPaddingLeft());
+		layoutParams.topMargin = (int) (viewHue.getTop() + y - Math.floor(viewCursor.getMeasuredHeight() / 2.0f) - viewContainer.getPaddingTop());
 		viewCursor.setLayoutParams(layoutParams);
 		}
 
@@ -255,8 +255,8 @@ class AmbilWarnaDialog {
         float y = viewHue.getMeasuredHeight() - (getNewHue() * viewHue.getMeasuredHeight() / 360.f);
         if (y == viewHue.getMeasuredHeight()) y = 0.f;
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) viewCursor.getLayoutParams();
-        layoutParams.leftMargin = (int) (viewHue.getLeft() - Math.floor(viewCursor.getMeasuredWidth() / 2) - viewContainer.getPaddingLeft());
-        layoutParams.topMargin = (int) (viewHue.getTop() + y - Math.floor(viewCursor.getMeasuredHeight() / 2) - viewContainer.getPaddingTop());
+        layoutParams.leftMargin = (int) (viewHue.getLeft() - Math.floor(viewCursor.getMeasuredWidth() / 2.0f) - viewContainer.getPaddingLeft());
+        layoutParams.topMargin = (int) (viewHue.getTop() + y - Math.floor(viewCursor.getMeasuredHeight() / 2.0f) - viewContainer.getPaddingTop());
         viewCursor.setLayoutParams(layoutParams);
     }
 
@@ -264,8 +264,8 @@ class AmbilWarnaDialog {
 		float x = getSat() * viewSatVal.getMeasuredWidth();
 		float y = (1.f - getVal()) * viewSatVal.getMeasuredHeight();
 		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) viewTarget.getLayoutParams();
-		layoutParams.leftMargin = (int) (viewSatVal.getLeft() + x - Math.floor(viewTarget.getMeasuredWidth() / 2) - viewContainer.getPaddingLeft());
-		layoutParams.topMargin = (int) (viewSatVal.getTop() + y - Math.floor(viewTarget.getMeasuredHeight() / 2) - viewContainer.getPaddingTop());
+		layoutParams.leftMargin = (int) (viewSatVal.getLeft() + x - Math.floor(viewTarget.getMeasuredWidth() / 2.0f) - viewContainer.getPaddingLeft());
+		layoutParams.topMargin = (int) (viewSatVal.getTop() + y - Math.floor(viewTarget.getMeasuredHeight() / 2.0f) - viewContainer.getPaddingTop());
 		viewTarget.setLayoutParams(layoutParams);
 		}
 
@@ -273,8 +273,8 @@ class AmbilWarnaDialog {
         float x = getNewSat() * viewSatVal.getMeasuredWidth();
         float y = (1.f - getNewVal()) * viewSatVal.getMeasuredHeight();
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) viewTarget.getLayoutParams();
-        layoutParams.leftMargin = (int) (viewSatVal.getLeft() + x - Math.floor(viewTarget.getMeasuredWidth() / 2) - viewContainer.getPaddingLeft());
-        layoutParams.topMargin = (int) (viewSatVal.getTop() + y - Math.floor(viewTarget.getMeasuredHeight() / 2) - viewContainer.getPaddingTop());
+        layoutParams.leftMargin = (int) (viewSatVal.getLeft() + x - Math.floor(viewTarget.getMeasuredWidth() / 2.0f) - viewContainer.getPaddingLeft());
+        layoutParams.topMargin = (int) (viewSatVal.getTop() + y - Math.floor(viewTarget.getMeasuredHeight() / 2.0f) - viewContainer.getPaddingTop());
         viewTarget.setLayoutParams(layoutParams);
     }
 
@@ -282,8 +282,8 @@ class AmbilWarnaDialog {
 		final int measuredHeight = this.viewAlphaCheckered.getMeasuredHeight();
 		float y = measuredHeight - ((this.getAlpha() * measuredHeight) / 255.f);
 		final RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) this.viewAlphaCursor.getLayoutParams();
-		layoutParams.leftMargin = (int) (this.viewAlphaCheckered.getLeft() - Math.floor(this.viewAlphaCursor.getMeasuredWidth() / 2) - this.viewContainer.getPaddingLeft());
-		layoutParams.topMargin = (int) ((this.viewAlphaCheckered.getTop() + y) - Math.floor(this.viewAlphaCursor.getMeasuredHeight() / 2) - this.viewContainer.getPaddingTop());
+		layoutParams.leftMargin = (int) (this.viewAlphaCheckered.getLeft() - Math.floor(this.viewAlphaCursor.getMeasuredWidth() / 2.0f) - this.viewContainer.getPaddingLeft());
+		layoutParams.topMargin = (int) ((this.viewAlphaCheckered.getTop() + y) - Math.floor(this.viewAlphaCursor.getMeasuredHeight() / 2.0f) - this.viewContainer.getPaddingTop());
 
 		this.viewAlphaCursor.setLayoutParams(layoutParams);
 		}

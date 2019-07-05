@@ -2,12 +2,13 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static android.provider.DocumentsContract.Document.MIME_TYPE_DIR;
 
@@ -28,19 +30,18 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
     // This is a quick popup to enter a new song folder name, or rename a current one
     // Once it has been completed positively (i.e. ok was clicked) it sends a refreshAll() interface call
 
-    static String myTask;
+    private static String myTask;
     String mTitle;
-    static ArrayList<String> oldtempfolders;
-    GetFoldersAsync getFolders_async;
-    String tempNewFolder;
-    String tempOldFolder;
+    private static ArrayList<String> oldtempfolders;
+    private GetFoldersAsync getFolders_async;
+    private String tempNewFolder;
+    private String tempOldFolder;
     TextView title;
     ProgressBar progressBar;
     StorageAccess storageAccess;
     Preferences preferences;
-    SongFolders songFolders;
-    ListSongFiles listSongFiles;
-    TextView currentFolder_TextView;
+    private SongFolders songFolders;
+    SQLiteHelper sqLiteHelper;
 
     static PopUpSongFolderRenameFragment newInstance(String message) {
         myTask = message;
@@ -50,16 +51,12 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.options_song_rename));
-        switch (myTask) {
-            case "create":
-                mTitle = getActivity().getResources().getString(R.string.options_song_newfolder);
-                break;
-
-            default:
-                mTitle = getActivity().getResources().getString(R.string.options_song_rename);
-                break;
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().setTitle(getString(R.string.options_song_rename));
+        if ("create".equals(myTask)) {
+            mTitle = getString(R.string.options_song_newfolder);
+        } else {
+            mTitle = getString(R.string.options_song_rename);
         }
         getDialog().setCanceledOnTouchOutside(true);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -89,20 +86,20 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         storageAccess = new StorageAccess();
         preferences = new Preferences();
         songFolders = new SongFolders();
-        listSongFiles = new ListSongFiles();
+        sqLiteHelper = new SQLiteHelper(getActivity());
 
         // Initialise the views
         oldFolderNameSpinner = V.findViewById(R.id.oldFolderNameSpinner);
         newFolderNameEditText = V.findViewById(R.id.newFolderNameEditText);
         progressBar = V.findViewById(R.id.progressBar);
-        currentFolder_TextView = V.findViewById(R.id.currentFolder_TextView);
+        TextView currentFolder_TextView = V.findViewById(R.id.currentFolder_TextView);
 
         // Set up the folderspinner
         // Set up the spinner
         // Populate the list view with the current song folders
         // Reset to the main songs folder, so we can list them
-        FullscreenActivity.currentFolder = FullscreenActivity.whichSongFolder;
-        FullscreenActivity.newFolder = FullscreenActivity.whichSongFolder;
+        FullscreenActivity.currentFolder = StaticVariables.whichSongFolder;
+        FullscreenActivity.newFolder = StaticVariables.whichSongFolder;
         //FullscreenActivity.whichSongFolder = "";
 
         // Do the time consuming bit as an asynctask
@@ -120,11 +117,11 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
             // Show the current folder location (to allow subfolder creation)
             currentFolder_TextView.setVisibility(View.VISIBLE);
             String s;
-            if (FullscreenActivity.whichSongFolder.equals("") ||
-                    FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+            if (StaticVariables.whichSongFolder.equals("") ||
+                    StaticVariables.whichSongFolder.equals(getString(R.string.mainfoldername))) {
                 s = "../OpenSong/Songs/";
             } else {
-                s = "../OpenSong/Songs/" + FullscreenActivity.whichSongFolder + "/";
+                s = "../OpenSong/Songs/" + StaticVariables.whichSongFolder + "/";
             }
             currentFolder_TextView.setText(s);
         }
@@ -141,7 +138,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
         return V;
     }
 
@@ -160,18 +157,8 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         super.onDetach();
     }
 
-    Spinner oldFolderNameSpinner;
-    EditText newFolderNameEditText;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // safety check
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-    }
+    private Spinner oldFolderNameSpinner;
+    private EditText newFolderNameEditText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -183,7 +170,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         }
     }
 
-    public void createOrRename() {
+    private void createOrRename() {
         progressBar.setVisibility(View.VISIBLE);
         getVariables();
         if (myTask.equals("create")) {
@@ -193,24 +180,28 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         }
     }
 
-    public void doSetTitle() {
+    private void doSetTitle() {
         title.setText(mTitle);
     }
 
-    public void doCreateFolder() {
+    private void doCreateFolder() {
         // Try to create inside the current folder
         @SuppressLint("StaticFieldLeak") AsyncTask<Object, String, String> docreation = new AsyncTask<Object, String, String>() {
             @Override
             protected String doInBackground(Object... objects) {
-                if (!FullscreenActivity.whichSongFolder.equals(getString(R.string.mainfoldername)) &&
-                        !FullscreenActivity.whichSongFolder.equals("")) {
-                    tempNewFolder = FullscreenActivity.whichSongFolder + "/" + tempNewFolder;
+                if (!StaticVariables.whichSongFolder.equals(getString(R.string.mainfoldername)) &&
+                        !StaticVariables.whichSongFolder.equals("")) {
+                    tempNewFolder = StaticVariables.whichSongFolder + "/" + tempNewFolder;
                 }
                 if (storageAccess.createFile(getActivity(), preferences, MIME_TYPE_DIR, "Songs", tempNewFolder, null)) {
-                    FullscreenActivity.myToastMessage = getResources().getString(R.string.newfolder) + " - " + getResources().getString(R.string.ok);
-                    FullscreenActivity.whichSongFolder = tempNewFolder;
+                    StaticVariables.myToastMessage = getResources().getString(R.string.newfolder) + " - " + getResources().getString(R.string.ok);
+                    StaticVariables.whichSongFolder = tempNewFolder;
+
+                    // Add the new folder to the SQLite database
+                    sqLiteHelper.createSong(getActivity(),StaticVariables.whichSongFolder,"");
+
                 } else {
-                    FullscreenActivity.myToastMessage = getResources().getString(R.string.newfolder) + " - " + getResources().getString(R.string.createfoldererror);
+                    StaticVariables.myToastMessage = getResources().getString(R.string.newfolder) + " - " + getResources().getString(R.string.createfoldererror);
                 }
                 return null;
             }
@@ -220,9 +211,6 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
                 ShowToast.showToast(getActivity());
 
                 progressBar.setVisibility(View.GONE);
-
-                // Save preferences
-                Preferences.savePreferences();
 
                 // Let the app know we need to rebuild the database
                 FullscreenActivity.needtorefreshsongmenu = true;
@@ -245,7 +233,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         void loadSong();
     }
 
-    public void doRenameFolder() {
+    private void doRenameFolder() {
 
         tempOldFolder = FullscreenActivity.currentFolder;
         // Try to rename
@@ -254,6 +242,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
             @Override
             protected String doInBackground(Object... objects) {
                 if (storageAccess.renameFolder(getActivity(), preferences, tempOldFolder, tempNewFolder)) {
+                    sqLiteHelper.updateFolderName(getActivity(),tempOldFolder,tempNewFolder);
                     return "success";
                 } else {
                     return "error";
@@ -264,9 +253,6 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
             protected void onPostExecute(String s) {
                 ShowToast.showToast(getActivity());
                 if (s.equals("success")) {
-                    // Save preferences
-                    Preferences.savePreferences();
-
                     // Let the app know we need to rebuild the database
                     FullscreenActivity.needtorefreshsongmenu = true;
 
@@ -286,14 +272,14 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         renamefolders.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    public void getVariables() {
+    private void getVariables() {
         // Get the variables
         tempNewFolder = newFolderNameEditText.getText().toString().trim();
         Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", tempNewFolder, "");
 
         if (!tempNewFolder.equals("") && !tempNewFolder.isEmpty() && !tempNewFolder.contains("/") &&
                 !storageAccess.uriExists(getActivity(),uri) &&
-                !tempNewFolder.equals(FullscreenActivity.mainfoldername)) {
+                !tempNewFolder.equals(getString(R.string.mainfoldername))) {
             FullscreenActivity.newFolder = tempNewFolder;
             tempOldFolder = FullscreenActivity.currentFolder;
         }
@@ -304,14 +290,12 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
 
         @Override
         protected String doInBackground(Object... params) {
-            songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
-
-            // The song folder
+            ArrayList<String> initialoldtempfolders = songFolders.prepareSongFolders(getActivity());
+            // We don't want the main folder to show here
             oldtempfolders = new ArrayList<>();
-            for (int e=0;e<FullscreenActivity.mSongFolderNames.length;e++) {
-                if (FullscreenActivity.mSongFolderNames[e]!=null &&
-                        !FullscreenActivity.mSongFolderNames[e].equals(FullscreenActivity.mainfoldername)) {
-                    oldtempfolders.add(FullscreenActivity.mSongFolderNames[e]);
+            for (String s:initialoldtempfolders) {
+                if (!s.equals(getString(R.string.mainfoldername))) {
+                    oldtempfolders.add(s);
                 }
             }
             return null;
@@ -320,14 +304,14 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         @Override
         protected void onPostExecute(String s) {
             try {
-                ArrayAdapter<String> folders = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, oldtempfolders);
+                ArrayAdapter<String> folders = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, oldtempfolders);
                 folders.setDropDownViewResource(R.layout.my_spinner);
                 oldFolderNameSpinner.setAdapter(folders);
 
                 // Select the current folder as the preferred one
                 oldFolderNameSpinner.setSelection(0);
                 for (int w = 0; w < oldtempfolders.size(); w++) {
-                    if (FullscreenActivity.whichSongFolder.equals(oldtempfolders.get(w))) {
+                    if (StaticVariables.whichSongFolder.equals(oldtempfolders.get(w))) {
                         oldFolderNameSpinner.setSelection(w);
                         FullscreenActivity.currentFolder = oldtempfolders.get(w);
                     }

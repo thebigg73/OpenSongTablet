@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -20,8 +19,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ParcelUuid;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PopUpBluetoothMidiFragment extends DialogFragment {
 
@@ -57,6 +59,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
     private Handler selected;
     private Runnable runnable;
     Midi m;
+    Preferences preferences;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -70,14 +73,6 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
@@ -86,14 +81,14 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         View V = inflater.inflate(R.layout.popup_mididevices, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.midi_bluetooth));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.midi_bluetooth));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +103,9 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
             }
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
+
+        preferences = new Preferences();
 
         // Initialise the basic views
         progressBar = V.findViewById(R.id.progressBar);
@@ -180,7 +177,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
             mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
         }
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -188,7 +185,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private boolean permissionAllowed() {
         boolean allowed = true;
-        int permissionCheck = getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+        int permissionCheck = Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             allowed = false;
             if (!getActivity().shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
@@ -198,10 +195,10 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         return allowed;
     }
 
-    void updateDevices(final ArrayList<String> bn, final List<BluetoothDevice> bd) {
+    private void updateDevices(final ArrayList<String> bn, final List<BluetoothDevice> bd) {
         try {
             if (bluetoothDevices != null) {
-                ArrayAdapter<String> aa = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, bn);
+                ArrayAdapter<String> aa = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), android.R.layout.simple_list_item_1, bn);
                 aa.notifyDataSetChanged();
                 bluetoothDevices.setAdapter(aa);
                 bluetoothDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -210,15 +207,15 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         disconnectDevices(false);
                         // Display the current device
-                        FullscreenActivity.midiDeviceName = bd.get(i).getName();
-                        FullscreenActivity.midiDeviceAddress = bd.get(i).getAddress();
+                        StaticVariables.midiDeviceName = bd.get(i).getName();
+                        StaticVariables.midiDeviceAddress = bd.get(i).getAddress();
                         //displayCurrentDevice();
-                        FullscreenActivity.midiManager = (MidiManager) getActivity().getSystemService(Context.MIDI_SERVICE);
-                        FullscreenActivity.midiManager.openBluetoothDevice(bd.get(i),
+                        StaticVariables.midiManager = (MidiManager) Objects.requireNonNull(getActivity()).getSystemService(Context.MIDI_SERVICE);
+                        StaticVariables.midiManager.openBluetoothDevice(bd.get(i),
                                 new MidiManager.OnDeviceOpenedListener() {
                                     @Override
                                     public void onDeviceOpened(MidiDevice midiDevice) {
-                                        FullscreenActivity.midiDevice = midiDevice;
+                                        StaticVariables.midiDevice = midiDevice;
                                         Log.d("d", "Device opened = " + midiDevice);
                                         MidiDeviceInfo midiDeviceInfo = midiDevice.getInfo();
                                         int numInputs = midiDeviceInfo.getInputPortCount();
@@ -234,14 +231,14 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
                                                 case MidiDeviceInfo.PortInfo.TYPE_INPUT:
                                                     if (!foundinport) {
                                                         Log.d("d", "Input port found = " + pi.getPortNumber());
-                                                        FullscreenActivity.midiInputPort = FullscreenActivity.midiDevice.openInputPort(pi.getPortNumber());
+                                                        StaticVariables.midiInputPort = StaticVariables.midiDevice.openInputPort(pi.getPortNumber());
                                                         foundinport = true;
                                                     }
                                                     break;
                                                 case MidiDeviceInfo.PortInfo.TYPE_OUTPUT:
                                                     if (!foundoutport) {
                                                         Log.d("d", "Output port found = " + pi.getPortNumber());
-                                                        FullscreenActivity.midiOutputPort = FullscreenActivity.midiDevice.openOutputPort(pi.getPortNumber());
+                                                        StaticVariables.midiOutputPort = StaticVariables.midiDevice.openOutputPort(pi.getPortNumber());
                                                         foundoutport = true;
                                                     }
                                                     break;
@@ -294,7 +291,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         if (mBluetoothLeScanner!=null) {
             mBluetoothLeScanner.startScan(scanFilters, scanSettings, scanCallback);
         } else {
-            FullscreenActivity.myToastMessage = getActivity().getString(R.string.nothighenoughapi);
+            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.nothighenoughapi);
             ShowToast.showToast(getActivity());
         }
     }
@@ -319,7 +316,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         @Override
         public void onScanFailed(int errorCode) {
             super.onScanFailed(errorCode);
-            Log.d("d","onScanFailed: " + String.valueOf(errorCode));
+            Log.d("d","onScanFailed: " + errorCode);
         }
 
         private void addBluetoothDevice(BluetoothDevice device){
@@ -333,23 +330,23 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         }
     };
 
-    void displayCurrentDevice() {
+    private void displayCurrentDevice() {
         Log.d("d","displayCurrentDevice()");
-        if (FullscreenActivity.midiDevice!=null && FullscreenActivity.midiDeviceName!=null && FullscreenActivity.midiDeviceAddress!=null) {
+        if (StaticVariables.midiDevice!=null && StaticVariables.midiDeviceName!=null && StaticVariables.midiDeviceAddress!=null) {
             currentDevice.setVisibility(View.VISIBLE);
-            currentDeviceName.setText(FullscreenActivity.midiDeviceName);
-            currentDeviceAddress.setText(FullscreenActivity.midiDeviceAddress);
-            String d = getString(R.string.options_connections_disconnect) + " " + FullscreenActivity.midiDeviceName;
+            currentDeviceName.setText(StaticVariables.midiDeviceName);
+            currentDeviceAddress.setText(StaticVariables.midiDeviceAddress);
+            String d = getString(R.string.options_connections_disconnect) + " " + StaticVariables.midiDeviceName;
             disconnectDevice.setText(d);
         } else {
             currentDevice.setVisibility(View.GONE);
-            FullscreenActivity.midiDeviceName = "";
-            FullscreenActivity.midiDeviceAddress = "";
+            StaticVariables.midiDeviceName = "";
+            StaticVariables.midiDeviceAddress = "";
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    void sendTestNote() {
+    private void sendTestNote() {
         try {
             String s1 = m.buildMidiString("NoteOn",1,60,100);
             byte[] buffer1 = m.returnBytesFromHexText(s1);
@@ -366,17 +363,17 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
                     m.sendMidi(buffer2);
                 }
             },1000);
-            FullscreenActivity.myToastMessage = getString(R.string.ok);
+            StaticVariables.myToastMessage = getString(R.string.ok);
             ShowToast.showToast(getContext());
         } catch (Exception e) {
             e.printStackTrace();
-            FullscreenActivity.myToastMessage = getString(R.string.error);
+            StaticVariables.myToastMessage = getString(R.string.error);
             ShowToast.showToast(getContext());
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    void disconnectDevices(boolean doUpdate) {
+    private void disconnectDevices(boolean doUpdate) {
         m.disconnectDevice();
         if (doUpdate) {
             displayCurrentDevice();

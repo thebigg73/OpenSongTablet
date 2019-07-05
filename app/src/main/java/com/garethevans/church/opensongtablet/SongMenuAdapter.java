@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.SparseBooleanArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +17,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
 
     public interface MyInterface {
         void prepareOptionMenu();
+        void prepareSongMenu();
         void fixSet();
     }
 
@@ -37,9 +38,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
     String[] songs;
     private ArrayList<SongMenuViewItems> songList;
     Preferences preferences;
-    ViewHolder viewHolder;
-    // sparse boolean array for checking the state of the items
-    private SparseBooleanArray itemStateArray = new SparseBooleanArray();
+    private ViewHolder viewHolder;
 
     @SuppressLint("UseSparseArrays")
     SongMenuAdapter(Context context, Preferences p, ArrayList<SongMenuViewItems> songList) {
@@ -73,7 +72,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                 song = " ";
             }
             if (key==null) {
-                key = " ";
+                key = "";
             }
             String ch;
             if (key.equals(context.getString(R.string.songsinfolder))) { // This is a directory
@@ -83,7 +82,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
             } else {
                 ch = "/";
             }
-            ch = ch.toUpperCase(FullscreenActivity.locale);
+            ch = ch.toUpperCase(StaticVariables.locale);
 
             // HashMap will prevent duplicates
             if (!mapIndex.containsKey(ch)) {
@@ -104,7 +103,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
 
     }
 
-    static class ViewHolder {
+    class ViewHolder {
         TextView lblListItem;
         TextView lblListItemAuthor;
         CheckBox lblListCheck;
@@ -151,8 +150,13 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                     temp_title = song.getTitle();
                 }
 
+                if (song.getFilename().equals("")) {
+                    // Hide it - it's just a reference for this folder, or we already have it
+                    convertView.setVisibility(View.GONE);
+                }
+
                 final String item_title = temp_title;
-                boolean item_isinset = song.getInSet();
+                //boolean item_isinset = song.getInSet();
 
                 // Get the listener ready for item actions (press and long press items)
                 final Context c = convertView.getContext();
@@ -185,7 +189,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                     item_key = "";
                 }
 
-                if (FullscreenActivity.showSetTickBoxInSongMenu && !isdirectory) {
+                if (preferences.getMyPreferenceBoolean(c,"songMenuSetTicksShow",true) && !isdirectory) {
                     viewHolder.lblListCheck.setVisibility(View.VISIBLE);
                 } else {
                     viewHolder.lblListCheck.setVisibility(View.GONE);
@@ -194,58 +198,72 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                 final String item = item_title + item_key;
                 viewHolder.lblListItem.setText(item);
                 viewHolder.lblListItemAuthor.setText(item_author);
-                viewHolder.lblListItem.setOnClickListener(SongMenuListeners.itemShortClickListener(position));
-                viewHolder.lblListItemAuthor.setOnClickListener(SongMenuListeners.itemShortClickListener(position));
 
                 // Don't do this for folders
                 if (!isdirectory) {
-                    viewHolder.lblListItem.setOnLongClickListener(SongMenuListeners.itemLongClickListener(position));
-                    viewHolder.lblListItemAuthor.setOnLongClickListener(SongMenuListeners.itemLongClickListener(position));
+                    viewHolder.lblListItem.setOnClickListener(SongMenuListeners.itemShortClickListener(item_filename,item_key,position));
+                    viewHolder.lblListItemAuthor.setOnClickListener(SongMenuListeners.itemShortClickListener(item_filename,item_key,position));
+                    viewHolder.lblListItem.setOnLongClickListener(SongMenuListeners.itemLongClickListener(item_filename, StaticVariables.whichSongFolder, position));
+                    viewHolder.lblListItemAuthor.setOnLongClickListener(SongMenuListeners.itemLongClickListener(item_filename, StaticVariables.whichSongFolder, position));
+                } else {
+                    viewHolder.lblListItem.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            // Don't save the folder preference yet until a song is clicked.
+                            if (StaticVariables.whichSongFolder.equals("")||StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername))) {
+                                StaticVariables.whichSongFolder = item_filename;
+                            } else {
+                                StaticVariables.whichSongFolder = StaticVariables.whichSongFolder + "/" + item_filename;
+                            }
+                            if (mListener != null) {
+                                mListener.prepareSongMenu();
+                            }
+                        }
+                    });
                 }
 
                 // Set the checked state
-                viewHolder.lblListCheck.setChecked(songList.get(position).getInSet());
-                viewHolder.isTicked = songList.get(position).getInSet();
+                boolean ischecked = songList.get(position).getInSet();
+                viewHolder.lblListCheck.setChecked(ischecked);
+                viewHolder.isTicked = ischecked;
 
                 // Now either hide the tick boxes or set up their actions
-                if (FullscreenActivity.showSetTickBoxInSongMenu) {
+                if (preferences.getMyPreferenceBoolean(c,"songMenuSetTicksShow",true)) {
 
                     viewHolder.lblListCheck.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             int position = (Integer) v.getTag();
                             // Create the text to add to the set (sets FullscreenActivity.whatsongforsetwork
-                            convertSongToSetItemText(item_filename);
+                            convertSongToSetItemText(c, item_filename);
 
                             // If it was checked already, uncheck it and remove it from the set
                             if (songList.get(position).getInSet()) {
                                 viewHolder.isTicked = false;
                                 songList.get(position).setInSet(false);
-                                FullscreenActivity.mySet = FullscreenActivity.mySet.replace(FullscreenActivity.whatsongforsetwork, "");
+                                String val = preferences.getMyPreferenceString(c,"setCurrent","").replace(StaticVariables.whatsongforsetwork,"");
+                                preferences.setMyPreferenceString(c,"setCurrent",val);
                                 SetActions setActions = new SetActions();
-                                setActions.prepareSetList();
+                                setActions.prepareSetList(c,preferences);
 
                                 // Tell the user that the song has been removed.
-                                FullscreenActivity.myToastMessage = "\"" + item_title + "\" " + c.getResources().getString(R.string.removedfromset);
+                                StaticVariables.myToastMessage = "\"" + item_title + "\" " + c.getResources().getString(R.string.removedfromset);
                                 ShowToast.showToast(c);
-
-                                // Save the set and other preferences
-                                Preferences.savePreferences();
-
 
                             } else {
                                 // Trying to add to the set
-                                FullscreenActivity.addingtoset = true;
+                                StaticVariables.addingtoset = true;
                                 if (userShouldConvertSongFormat(item_filename)) {
                                     // Tried to add a ChordPro song - Don't add song yet, but tell the user
-                                    FullscreenActivity.myToastMessage = c.getResources().getString(R.string.convert_song);
+                                    StaticVariables.myToastMessage = c.getResources().getString(R.string.convert_song);
                                     ShowToast.showToast(c);
                                     viewHolder.isTicked = false;
                                     songList.get(position).setInSet(false);
 
                                 } else if (unsupportedSongFormat(item_filename)) {
                                     // Tried to add an unsupported song (MS Word) - Don't add song yet, but tell the user
-                                    FullscreenActivity.myToastMessage = c.getResources().getString(R.string.not_allowed);
+                                    StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
                                     ShowToast.showToast(c);
                                     viewHolder.lblListCheck.setChecked(false);
                                     viewHolder.isTicked = false;
@@ -255,28 +273,26 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                                     songList.get(position).setInSet(true);
 
                                     // If we are autologging CCLI information
-                                    if (FullscreenActivity.ccli_automatic) {
+                                    if (preferences.getMyPreferenceBoolean(c,"ccliAutomaticLogging",false)) {
                                         // Now we need to get the song info quickly to log it correctly
                                         // as this might not be the song loaded
-                                        String[] vals = LoadXML.getCCLILogInfo(c, preferences, FullscreenActivity.whichSongFolder, item_filename);
+                                        String[] vals = LoadXML.getCCLILogInfo(c, preferences, StaticVariables.whichSongFolder, item_filename);
                                         if (vals.length == 4 && vals[0] != null && vals[1] != null && vals[2] != null && vals[3] != null) {
-                                            PopUpCCLIFragment.addUsageEntryToLog(c, preferences, FullscreenActivity.whichSongFolder + "/" + item_filename,
+                                            PopUpCCLIFragment.addUsageEntryToLog(c, preferences, StaticVariables.whichSongFolder + "/" + item_filename,
                                                     vals[0], vals[1], vals[2], vals[3], "6"); // Printed
                                         }
                                     }
 
                                     // Add the song
-                                    FullscreenActivity.mySet = FullscreenActivity.mySet + FullscreenActivity.whatsongforsetwork;
+                                    String val = preferences.getMyPreferenceString(c,"setCurrent","") + StaticVariables.whatsongforsetwork;
+                                    preferences.setMyPreferenceString(c,"setCurrent",val);
                                     SetActions setActions = new SetActions();
-                                    setActions.prepareSetList();
+                                    setActions.prepareSetList(c,preferences);
 
                                     // Tell the user that the song has been added.
-                                    FullscreenActivity.myToastMessage = "\"" + item_title + "\" " + c.getResources().getString(R.string.addedtoset);
+                                    StaticVariables.myToastMessage = "\"" + item_title + "\" " + c.getResources().getString(R.string.addedtoset);
                                     ShowToast.showToast(c);
 
-
-                                    // Save the set and other preferences
-                                    Preferences.savePreferences();
                                 }
 
                             }
@@ -301,7 +317,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
 
 
     private boolean userShouldConvertSongFormat(String filename) {
-        filename = filename.toLowerCase(FullscreenActivity.locale);
+        filename = filename.toLowerCase(StaticVariables.locale);
 
         return filename.endsWith(".pro") || filename.endsWith(".pro") || filename.endsWith(".chopro") ||
                 filename.endsWith(".cho") || filename.endsWith(".chordpro") ||
@@ -309,24 +325,28 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
     }
 
     private boolean unsupportedSongFormat(String filename) {
-        filename = filename.toLowerCase(FullscreenActivity.locale);
+        filename = filename.toLowerCase(StaticVariables.locale);
 
         return filename.endsWith(".doc") || filename.endsWith(".docx");
     }
 
-    private void convertSongToSetItemText(String filename) {
+    private void convertSongToSetItemText(Context c, String filename) {
         // Set the appropriate song filename
-        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-            FullscreenActivity.whatsongforsetwork = "$**_" + filename + "_**$";
+        if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername))) {
+            StaticVariables.whatsongforsetwork = "$**_" + filename + "_**$";
         } else {
-            FullscreenActivity.whatsongforsetwork = "$**_" + FullscreenActivity.whichSongFolder + "/" + filename + "_**$";
+            StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.whichSongFolder + "/" + filename + "_**$";
         }
     }
 
     public int getPositionForSection(int section) {
         try {
-            if (positionsForSection!=null && section>-1 && positionsForSection.size()>section) {
-                return positionsForSection.get(section);
+            if (positionsForSection!=null && section>-1 && positionsForSection.size()>section && positionsForSection.get(section)!=null) {
+                try {
+                    return positionsForSection.get(section);
+                } catch (Exception e) {
+                    return 0;
+                }
             } else {
                 return 0;
             }
@@ -358,7 +378,11 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
     public int getSectionForPosition(int position) {
         try {
             if (sectionPositions!=null && position>-1 && sectionPositions.size()>position) {
-                return sectionPositions.get(position);
+                try {
+                    return sectionPositions.get(position);
+                } catch (Exception e) {
+                    return 0;
+                }
             } else {
                 return 0;
             }
@@ -385,26 +409,22 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
         return i;
     }
 
-    static void getIndexList(Context c) {
-        FullscreenActivity.mapIndex = new LinkedHashMap<>();
-        if (FullscreenActivity.songDetails != null) {
-            for (int i = 0; i < FullscreenActivity.songDetails.length; i++) {
-                String title;
-                String index = "";
-                if (FullscreenActivity.songDetails[i][2] != null &&
-                        FullscreenActivity.songDetails[i][2].equals(c.getString(R.string.songsinfolder))) {
-                    index = "/";
-                }
-                if (FullscreenActivity.songDetails[i][0] != null) {
-                    title = FullscreenActivity.songDetails[i][0];
-                    if (!index.equals("/") && title!=null && title.length()>=1) {
-                        index = title.substring(0, 1);
-                    }
-                }
+    Map<String,Integer> getAlphaIndex(Context c, ArrayList<SongMenuViewItems> songlist) {
+        Map<String,Integer> linkedHashMap = new LinkedHashMap<>();
+        for (int i=0; i<songlist.size(); i++) {
+            String index = "";
+            if (songlist.get(i)!=null && songlist.get(i).getAuthor()!=null &&
+                    songlist.get(i).getKey().equals(c.getString(R.string.songsinfolder))) {
+                index = "/";
+            } else if (songlist.get(i)!=null && songlist.get(i).getFilename()!=null && !songlist.get(i).getFilename().equals("")) {
+                index = songlist.get(i).getFilename().substring(0, 1).toUpperCase();
+            }
 
-                if (FullscreenActivity.mapIndex.get(index) == null)
-                    FullscreenActivity.mapIndex.put(index, i);
+            if (linkedHashMap.get(index) == null) {
+                linkedHashMap.put(index, i);
             }
         }
+        return linkedHashMap;
     }
+
 }

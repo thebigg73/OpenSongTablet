@@ -1,8 +1,9 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +13,13 @@ import android.widget.TextView;
 import java.util.Collections;
 import java.util.List;
 
-class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
+class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHolder> {
 
     private List<SetItemInfo> setList;
     Context c;
     Preferences preferences;
 
-    MyAdapter(List<SetItemInfo> setList, Context context, Preferences p) {
+    SetListAdapter(List<SetItemInfo> setList, Context context, Preferences p) {
         this.setList = setList;
         c = context;
         preferences = p;
@@ -30,7 +31,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(SetItemViewHolder setitemViewHolder, int i) {
+    public void onBindViewHolder(@NonNull SetItemViewHolder setitemViewHolder, int i) {
         SetItemInfo si = setList.get(i);
         String key = si.songkey;
         String titlesongname = si.songtitle;
@@ -90,25 +91,25 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
         setitemViewHolder.vCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FullscreenActivity.songfilename = songname;
-                if (songfolder.equals(FullscreenActivity.mainfoldername)) {
-                    FullscreenActivity.whatsongforsetwork = "$**_" + songname + "_**$";
+                StaticVariables.songfilename = songname;
+                if (songfolder.equals(c.getString(R.string.mainfoldername))) {
+                    StaticVariables.whatsongforsetwork = "$**_" + songname + "_**$";
                 } else {
-                    FullscreenActivity.whatsongforsetwork = "$**_" + songfolder + "/" + songname + "_**$";
+                    StaticVariables.whatsongforsetwork = "$**_" + songfolder + "/" + songname + "_**$";
                 }
-                FullscreenActivity.whichSongFolder = songfolder;
-                FullscreenActivity.indexSongInSet = item;
-                FullscreenActivity.nextSongInSet = "";
-                FullscreenActivity.previousSongInSet = "";
+                StaticVariables.whichSongFolder = songfolder;
+                StaticVariables.indexSongInSet = item;
+                StaticVariables.nextSongInSet = "";
+                StaticVariables.previousSongInSet = "";
                 // Get set position
                 boolean issue = false;
-                if (item > 0 && FullscreenActivity.mSet.length >= item - 1) {
-                    FullscreenActivity.previousSongInSet = FullscreenActivity.mSet[item - 1];
+                if (item > 0 && StaticVariables.mSet.length >= item - 1) {
+                    StaticVariables.previousSongInSet = StaticVariables.mSet[item - 1];
                 } else {
                     issue = true;
                 }
-                if (item != FullscreenActivity.setSize - 1 && FullscreenActivity.mSet.length>(item+1)) {
-                    FullscreenActivity.nextSongInSet = FullscreenActivity.mSet[item + 1];
+                if (item != StaticVariables.setSize - 1 && StaticVariables.mSet.length>(item+1)) {
+                    StaticVariables.nextSongInSet = StaticVariables.mSet[item + 1];
                 } else {
                     issue = true;
                 }
@@ -122,7 +123,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
                     PopUpSetViewNew.makeVariation(c, preferences);
 
                 } else {
-                    PopUpSetViewNew.loadSong();
+                    PopUpSetViewNew.loadSong(c,preferences);
                 }
             }
         });
@@ -133,8 +134,9 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
         }
     }
 
+    @NonNull
     @Override
-    public SetItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public SetItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
                 inflate(R.layout.recycler_row, viewGroup, false);
@@ -164,10 +166,10 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
         try {
             Collections.swap(setList, firstPosition, secondPosition);
             notifyItemMoved(firstPosition, secondPosition);
-            Collections.swap(FullscreenActivity.mTempSetList, firstPosition, secondPosition);
+            Collections.swap(StaticVariables.mTempSetList, firstPosition, secondPosition);
             Collections.swap(PopUpSetViewNew.mSongName, firstPosition, secondPosition);
             Collections.swap(PopUpSetViewNew.mFolderName, firstPosition, secondPosition);
-            FullscreenActivity.setchanged = true;
+            StaticVariables.setchanged = true;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -177,10 +179,10 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
         try {
             setList.remove(position);
             notifyItemRemoved(position);
-            FullscreenActivity.mTempSetList.remove(position);
+            StaticVariables.mTempSetList.remove(position);
             PopUpSetViewNew.mSongName.remove(position);
             PopUpSetViewNew.mFolderName.remove(position);
-            FullscreenActivity.setchanged = true;
+            StaticVariables.setchanged = true;
         } catch (Exception e) {
             e.printStackTrace();
         }

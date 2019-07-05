@@ -37,7 +37,7 @@
                 android:orientation="vertical"
                 android:padding="8dp">
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/nextSongOnOff_Switch"
                     style="@style/MyTextSwitch"
                     android:layout_width="match_parent"
@@ -54,7 +54,7 @@
                     app:thumbTextPadding="4dp"
                     app:thumbTint="#444488" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/nextSongTopBottom_Switch"
                     style="@style/MyTextSwitch"
                     android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                 android:orientation="vertical"
                 android:padding="8dp">
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/stickyNotesOnOff_Switch"
                     style="@style/MyTextSwitch"
                     android:layout_width="match_parent"
@@ -98,7 +98,7 @@
                     app:thumbTextPadding="4dp"
                     app:thumbTint="#444488" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/stickyNotesFloat_Switch"
                     style="@style/MyTextSwitch"
                     android:layout_width="match_parent"
@@ -144,7 +144,7 @@
                     android:gravity="center_horizontal"
                     style="@style/MyInfoText" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/stickyNotesTopBottom_Switch"
                     style="@style/MyTextSwitch"
                     android:layout_width="match_parent"
@@ -172,7 +172,7 @@
                 android:orientation="vertical"
                 android:padding="8dp">
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/highlightNotesOnOff_Switch"
                     style="@style/MyTextSwitch"
                     android:layout_width="match_parent"

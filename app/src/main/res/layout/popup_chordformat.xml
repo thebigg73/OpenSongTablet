@@ -2,6 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
@@ -16,7 +17,7 @@
         <include layout="@layout/popup_dialogtitle" />
     </FrameLayout>
 
-    <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/myTitle">
@@ -35,7 +36,7 @@
                 android:layout_margin="8dp"
                 android:text="@string/pref_key_text" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchAb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,9 +49,10 @@
                 app:splitTrack="false"
                 app:textAllCaps="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488" />
+                app:thumbTint="#444488"
+                tools:ignore="HardcodedText" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchBb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,9 +64,10 @@
                 app:showText="true"
                 app:splitTrack="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488" />
+                app:thumbTint="#444488"
+                tools:ignore="HardcodedText" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchDb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,9 +79,10 @@
                 app:showText="true"
                 app:splitTrack="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488" />
+                app:thumbTint="#444488"
+                tools:ignore="HardcodedText" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchEb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,9 +94,10 @@
                 app:showText="true"
                 app:splitTrack="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488" />
+                app:thumbTint="#444488"
+                tools:ignore="HardcodedText" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchGb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,9 +109,10 @@
                 app:showText="true"
                 app:splitTrack="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488" />
+                app:thumbTint="#444488"
+                tools:ignore="HardcodedText" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchAbm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,9 +126,10 @@
                 app:splitTrack="false"
                 app:switchPadding="12dp"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488" />
+                app:thumbTint="#444488"
+                tools:ignore="HardcodedText" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchBbm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -134,9 +141,10 @@
                 app:showText="true"
                 app:splitTrack="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488" />
+                app:thumbTint="#444488"
+                tools:ignore="HardcodedText" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchDbm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -149,9 +157,10 @@
                 app:showText="true"
                 app:splitTrack="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488" />
+                app:thumbTint="#444488"
+                tools:ignore="HardcodedText" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchEbm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -163,9 +172,10 @@
                 app:showText="true"
                 app:splitTrack="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488" />
+                app:thumbTint="#444488"
+                tools:ignore="HardcodedText" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchGbm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -179,7 +189,8 @@
                 app:showText="true"
                 app:splitTrack="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488" />
+                app:thumbTint="#444488"
+                tools:ignore="HardcodedText" />
 
             <TextView
                 style="@style/MyHeadingText"
@@ -223,33 +234,24 @@
                     android:layout_height="wrap_content"
                     android:text="@string/chordFormat5" />
 
+                <RadioButton
+                    android:id="@+id/chordFormat6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chordFormat6" />
+
             </RadioGroup>
 
-            <TextView
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/assumePreferred_SwitchCompat"
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_margin="8dp"
-                android:text="@string/chordformat_help" />
+                android:text="@string/chordformat_default"
+                android:theme="@style/SwitchStyle" />
 
-            <RadioGroup
-                android:id="@+id/chordFormat_decideaction"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp">
-
-                <RadioButton
-                    android:id="@+id/chordformat_check"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/chordformat_check" />
-
-                <RadioButton
-                    android:id="@+id/chordformat_default"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/chordformat_default" />
-            </RadioGroup>
 
         </LinearLayout>
 

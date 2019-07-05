@@ -3,8 +3,8 @@
     android:orientation="horizontal"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="right|center_vertical"
-    android:layout_alignParentRight="true"
+    android:gravity="end|center_vertical"
+    android:layout_alignParentEnd="true"
     android:background="#888888"
     android:alpha="0.5"
     android:paddingLeft="4dp"
@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:id="@+id/capoinfo"
         style="@style/MyInfoText"
-        android:drawableLeft="@drawable/ic_capo_white_36dp"
+        android:drawableStart="@drawable/ic_capo_white_36dp"
         android:drawablePadding="8dp"
         android:gravity="center_vertical|center_horizontal"/>
 

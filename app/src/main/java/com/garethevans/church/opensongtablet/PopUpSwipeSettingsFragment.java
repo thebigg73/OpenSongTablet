@@ -1,13 +1,13 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.SwitchCompat;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.widget.SwitchCompat;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,40 +19,31 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 public class PopUpSwipeSettingsFragment extends DialogFragment {
 
-    public static Dialog setfrag;
     Activity a;
-    String speed;
-    String distance;
-    String errordistance;
-    SeekBar swipedistance_SeekBar;
-    SeekBar swipespeed_SeekBar;
-    SeekBar swipeerror_SeekBar;
-    TextView swipedistance_TextView;
-    TextView swipespeed_TextView;
-    TextView swipeerror_TextView;
-    ImageView swipesimulateion_ImageView;
-    LinearLayout swipesettings;
-    SwitchCompat gesturesSongSwipeButton;
+    private String speed;
+    private String distance;
+    private String errordistance;
+    private SeekBar swipedistance_SeekBar;
+    private SeekBar swipespeed_SeekBar;
+    private SeekBar swipeerror_SeekBar;
+    private TextView swipedistance_TextView;
+    private TextView swipespeed_TextView;
+    private TextView swipeerror_TextView;
+    private ImageView swipesimulateion_ImageView;
+    private LinearLayout swipesettings;
 
-    int maxwidth;
-    int maxheight;
-    int maxspeed;
     LinearLayout.LayoutParams llp;
+
+    Preferences preferences;
 
     static PopUpSwipeSettingsFragment newInstance() {
         PopUpSwipeSettingsFragment frag;
         frag = new PopUpSwipeSettingsFragment();
         return frag;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
     }
 
     @Override
@@ -65,17 +56,16 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         a = getActivity();
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         final View V = inflater.inflate(R.layout.popup_swipesettings, container, false);
-        setfrag = getDialog();
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.swipe));
+        title.setText(getResources().getString(R.string.swipe));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +76,9 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
+
+        preferences = new Preferences();
 
         if (getDialog().getWindow()!=null) {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -101,7 +93,7 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
         swipeerror_TextView = V.findViewById(R.id.swipeerror_TextView);
         swipesimulateion_ImageView = V.findViewById(R.id.swipesimulateion_ImageView);
         swipesettings = V.findViewById(R.id.swipesettings);
-        gesturesSongSwipeButton = V.findViewById(R.id.gesturesSongSwipeButton);
+        SwitchCompat gesturesSongSwipeButton = V.findViewById(R.id.gesturesSongSwipeButton);
 
         // Get the maximum values allowed for the seekbars
         // maxwidth is 80% of the screen width
@@ -109,20 +101,20 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
         // Speed is 2000 pixels per second
 
         DisplayMetrics metrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        maxheight = 400 - 100;
-        maxwidth = ((int) (0.8f * metrics.widthPixels)) - 100;
-        maxspeed = 2000;
-        if (maxwidth<0) {
-            maxwidth=0;
+        Objects.requireNonNull(getActivity()).getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int maxheight = 400 - 100;
+        int maxwidth = ((int) (0.8f * metrics.widthPixels)) - 100;
+        int maxspeed = 2000;
+        if (maxwidth <0) {
+            maxwidth =0;
         }
 
         // If our max values are smaller than the stored ones, set the stored ones to match
-        if (FullscreenActivity.SWIPE_MIN_DISTANCE>maxwidth) {
-            FullscreenActivity.SWIPE_MIN_DISTANCE = maxwidth;
+        if (preferences.getMyPreferenceInt(getActivity(),"swipeMinimumDistance",250)> maxwidth) {
+            preferences.getMyPreferenceInt(getActivity(),"swipeMinimumDistance", maxwidth);
         }
-        if (FullscreenActivity.SWIPE_MAX_OFF_PATH>maxheight) {
-            FullscreenActivity.SWIPE_MAX_OFF_PATH = maxheight;
+        if (preferences.getMyPreferenceInt(getActivity(),"swipeMaxDistanceYError",200)> maxheight) {
+            preferences.getMyPreferenceInt(getActivity(),"swipeMaxDistanceYError", maxheight);
         }
 
         // Set the SeekBar sizes
@@ -153,7 +145,6 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Preferences.savePreferences();
                 swipeAnimate();
             }
         });
@@ -171,7 +162,6 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Preferences.savePreferences();
                 swipeAnimate();
             }
         });
@@ -189,39 +179,37 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Preferences.savePreferences();
                 swipeAnimate();
             }
         });
-        gesturesSongSwipeButton.setChecked(FullscreenActivity.swipeForSongs);
+        gesturesSongSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"swipeForSongs",true));
         hideorunhideSettings();
 
         gesturesSongSwipeButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.swipeForSongs = b;
-                Preferences.savePreferences();
+                preferences.setMyPreferenceBoolean(getActivity(),"swipeForSongs",b);
                 hideorunhideSettings();
             }
         });
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
         return V;
     }
 
-    public void getSpeed(int s) {
+    private void getSpeed(int s) {
         // This will be between 0 and 15.  Add 5 and divide by 10
         // (min speed should be 0.5 secs and max should be 2.0)
         int val = s+100;
         // Multiply this by 1000 to convert to milliseconds for the preferences
-        FullscreenActivity.SWIPE_THRESHOLD_VELOCITY = val;
+        preferences.setMyPreferenceInt(getActivity(),"swipeMinimumVelocity",val);
         speed =  val + " px/s";
     }
 
-    public void setSpeed() {
+    private void setSpeed() {
         // Take the preference and subtract 100 (minimum allowed is 100)
-        int s = FullscreenActivity.SWIPE_THRESHOLD_VELOCITY - 100;
+        int s = preferences.getMyPreferenceInt(getActivity(),"swipeMinimumVelocity",600) - 100;
         if (s<0) {
-            FullscreenActivity.SWIPE_THRESHOLD_VELOCITY = 100;
+            preferences.setMyPreferenceInt(getActivity(),"swipeMinimumVelocity",100);
             s=0;
         }
         swipespeed_SeekBar.setProgress(s);
@@ -229,52 +217,55 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
         swipespeed_TextView.setText(speed);
     }
 
-    public void getErrorDistance(int d) {
+    private void getErrorDistance(int d) {
         // Add 100 (minimum)
         d = d+100;
-        FullscreenActivity.SWIPE_MAX_OFF_PATH = d;
+        preferences.setMyPreferenceInt(getActivity(),"swipeMaxDistanceYError",d);
         errordistance = d + " px";
     }
 
-    public void setErrorDistance() {
+    private void setErrorDistance() {
         // Take the preference and subtract 100 (minimum allowed is 100)
-        int d = FullscreenActivity.SWIPE_MAX_OFF_PATH -100;
+        int d = preferences.getMyPreferenceInt(getActivity(),"swipeMaxDistanceYError",200) -100;
         if (d<0) {
             d=0;
-            FullscreenActivity.SWIPE_MAX_OFF_PATH = 100;
+            preferences.setMyPreferenceInt(getActivity(),"swipeMaxDistanceYError",100);
         }
-        errordistance = d + " px";
+        errordistance = (d+100) + " px";
         swipeerror_SeekBar.setProgress(d);
         swipeerror_TextView.setText(errordistance);
     }
 
-    public void getDistance(int d) {
+    private void getDistance(int d) {
         // Add 100 (minimum)
         d = d+100;
-        FullscreenActivity.SWIPE_MIN_DISTANCE = d;
+        preferences.setMyPreferenceInt(getActivity(),"swipeMinimumDistance",d);
         distance = d + " px";
     }
 
-    public void setDistance() {
+    private void setDistance() {
         // Take the preference and subtract 100 (minimum allowed is 100)
-        int d = FullscreenActivity.SWIPE_MIN_DISTANCE -100;
+        int d = preferences.getMyPreferenceInt(getActivity(),"swipeMinimumDistance",250) -100;
         if (d<0) {
             d=0;
-            FullscreenActivity.SWIPE_MIN_DISTANCE = 100;
+            preferences.setMyPreferenceInt(getActivity(),"swipeMinimumDistance",100);
         }
-        distance = d + " px";
+        distance = (d+100) + " px";
         swipedistance_SeekBar.setProgress(d);
         swipedistance_TextView.setText(distance);
     }
 
-    public void swipeAnimate() {
-        llp = new LinearLayout.LayoutParams(FullscreenActivity.SWIPE_MIN_DISTANCE,FullscreenActivity.SWIPE_MAX_OFF_PATH);
+    private void swipeAnimate() {
+        llp = new LinearLayout.LayoutParams(preferences.getMyPreferenceInt(getActivity(),"swipeMinimumDistance",250),
+                preferences.getMyPreferenceInt(getActivity(),"swipeMaxDistanceYError",200));
         swipesimulateion_ImageView.setLayoutParams(llp);
-        CustomAnimations.animateSwipe(swipesimulateion_ImageView);
+        CustomAnimations.animateSwipe(swipesimulateion_ImageView,
+                preferences.getMyPreferenceInt(getActivity(),"swipeMinimumDistance",250),
+                preferences.getMyPreferenceInt(getActivity(),"swipeMinimumVelocity",600));
     }
 
-    public void hideorunhideSettings() {
-        if (FullscreenActivity.swipeForSongs) {
+    private void hideorunhideSettings() {
+        if (preferences.getMyPreferenceBoolean(getActivity(),"swipeForSongs",true)) {
             swipesettings.setVisibility(View.VISIBLE);
         } else {
             swipesettings.setVisibility(View.GONE);

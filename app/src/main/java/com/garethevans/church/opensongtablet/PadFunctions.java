@@ -5,19 +5,19 @@ import android.net.Uri;
 
 class PadFunctions {
 
-    static float getVol(int w) {
+    static float getVol(String pan, float padvol, int w) {
         float vol = 0.0f;
         switch (w) {
             case 0:
                 // This is the left vol
-                if (!FullscreenActivity.padpan.equals("right")) {
-                    vol = FullscreenActivity.padvol;
+                if (!pan.equals("R")) {
+                    vol = padvol;
                 }
                 break;
             case 1:
                 // This is the right vol
-                if (!FullscreenActivity.padpan.equals("left")) {
-                    vol = FullscreenActivity.padvol;
+                if (!pan.equals("L")) {
+                    vol = padvol;
                 }
                 break;
         }
@@ -27,7 +27,7 @@ class PadFunctions {
     static boolean getLoop() {
         // Set the looping value
         boolean shouldloop = false;
-        if (FullscreenActivity.mLoopAudio.equals("true")) {
+        if (StaticVariables.mLoopAudio.equals("true")) {
             shouldloop = true;
         }
         return shouldloop;
@@ -40,7 +40,7 @@ class PadFunctions {
         } catch (Exception e) {
             result = false;
         }
-        FullscreenActivity.pad1Playing = result;
+        StaticVariables.pad1Playing = result;
         return result;
     }
 
@@ -51,7 +51,7 @@ class PadFunctions {
         } catch (Exception e) {
             result = false;
         }
-        FullscreenActivity.pad2Playing = result;
+        StaticVariables.pad2Playing = result;
         return result;
     }
 
@@ -60,18 +60,19 @@ class PadFunctions {
         // If we are using audio file link, it needs to exist
         // If we are set to OFF then nope!
 
-        boolean isvalid = false;
+        boolean isvalid;
 
-        if (FullscreenActivity.mPadFile.equals(c.getResources().getString(R.string.off))) {
+        if (StaticVariables.mPadFile.equals(c.getResources().getString(R.string.off))) {
             isvalid = false;
-        } else if (FullscreenActivity.mPadFile.equals(c.getResources().getString(R.string.link_audio)) && !FullscreenActivity.mLinkAudio.isEmpty()) {
+        } else if (StaticVariables.mPadFile.equals(c.getResources().getString(R.string.link_audio)) && !StaticVariables.mLinkAudio.isEmpty()) {
             StorageAccess storageAccess = new StorageAccess();
-            Uri uri = storageAccess.fixLocalisedUri(c, preferences, FullscreenActivity.mLinkAudio);
+            Uri uri = storageAccess.fixLocalisedUri(c, preferences, StaticVariables.mLinkAudio);
             isvalid = storageAccess.uriExists(c,uri);
-        } else if (!FullscreenActivity.mKey.isEmpty()){
+        } else {
             // Using auto
-            isvalid = true;
+            isvalid = !StaticVariables.mKey.isEmpty();
         }
+
         return isvalid;
     }
 

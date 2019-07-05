@@ -759,5 +759,6 @@
 
     <string name="googlefontcustom">"Drugo ime fonta Google"</string>
     <string name="googlefontbrowse">"Pregledajte sve Google fontove"</string>
+    <string name="reset_text">Ako imate problema sa aplikacijom, pokušajte ponovo da podesite postavke pomoću dugmeta u nastavku. Ovo će obrisati vaše postavke, ali neće izbrisati vaše pjesme.</string>
 
 </resources>

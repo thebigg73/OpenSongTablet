@@ -1,10 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 public class PopUpExportSongListFragment extends DialogFragment {
 
@@ -25,18 +27,10 @@ public class PopUpExportSongListFragment extends DialogFragment {
         return frag;
     }
 
-    ListView songDirectoy_ListView;
+    private ListView songDirectoy_ListView;
     StorageAccess storageAccess;
     Preferences preferences;
-    SongFolders songFolders;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
+    ArrayList<String> songfolders;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,14 +41,14 @@ public class PopUpExportSongListFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View V = inflater.inflate(R.layout.popup_exportsonglist, container, false);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.exportsongdirectory));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.exportsongdirectory));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,29 +70,29 @@ public class PopUpExportSongListFragment extends DialogFragment {
 
         storageAccess = new StorageAccess();
         preferences = new Preferences();
-        songFolders = new SongFolders();
+        SongFolders songFolders = new SongFolders();
 
 
         songDirectoy_ListView = V.findViewById(R.id.songDirectoy_ListView);
 
         // Prepare a list of the song directories
-        songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
+        songfolders = songFolders.prepareSongFolders(getActivity());
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, FullscreenActivity.mSongFolderNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, songfolders);
         songDirectoy_ListView.setAdapter(adapter);
         songDirectoy_ListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
 
-    public void getFoldersSelected() {
+    private void getFoldersSelected() {
         // Get the selected index
         ArrayList<String> folders = new ArrayList<>();
-        for (int i=0;i<FullscreenActivity.mSongFolderNames.length;i++) {
+        for (int i=0;i<songfolders.size();i++) {
             if (songDirectoy_ListView.isItemChecked(i)) {
-                folders.add(FullscreenActivity.mSongFolderNames[i]);
+                folders.add(songfolders.get(i));
             }
         }
         if (folders.size()>0) {
@@ -111,7 +105,7 @@ public class PopUpExportSongListFragment extends DialogFragment {
         this.dismiss();
     }
 
-    public void prepareSongDirectory(ArrayList<String> directories) {
+    private void prepareSongDirectory(ArrayList<String> directories) {
         // For each selected directory, list the songs that exist.
         StringBuilder songContents = new StringBuilder();
 
@@ -120,7 +114,7 @@ public class PopUpExportSongListFragment extends DialogFragment {
                 directory = "";
             }
             ArrayList<String> files_ar = storageAccess.listFilesInFolder(getActivity(), preferences, "Songs", directory);
-            songContents.append(getActivity().getString(R.string.songsinfolder)).append(" \"");
+            songContents.append(Objects.requireNonNull(getActivity()).getString(R.string.songsinfolder)).append(" \"");
             if (directory.equals("")) {
                 songContents.append(getString(R.string.mainfoldername));
             } else {
@@ -128,7 +122,7 @@ public class PopUpExportSongListFragment extends DialogFragment {
             }
             songContents.append("\":\n\n");
             try {
-                Collator coll = Collator.getInstance(FullscreenActivity.locale);
+                Collator coll = Collator.getInstance(StaticVariables.locale);
                 coll.setStrength(Collator.SECONDARY);
                 Collections.sort(files_ar, coll);
                 for (int l = 0; l < files_ar.size(); l++) {
@@ -142,7 +136,7 @@ public class PopUpExportSongListFragment extends DialogFragment {
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, getActivity().getString(R.string.app_name) + " " +
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, Objects.requireNonNull(getActivity()).getString(R.string.app_name) + " " +
                 getActivity().getString(R.string.exportsongdirectory));
         intent.putExtra(Intent.EXTRA_TEXT, songContents.toString());
 

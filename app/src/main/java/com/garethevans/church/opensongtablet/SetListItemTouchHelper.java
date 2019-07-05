@@ -1,24 +1,25 @@
 package com.garethevans.church.opensongtablet;
 
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 
 class SetListItemTouchHelper extends ItemTouchHelper.SimpleCallback {
-    private MyAdapter mAdapter;
+    private SetListAdapter mAdapter;
 
-    SetListItemTouchHelper(MyAdapter mAdapter){
+    SetListItemTouchHelper(SetListAdapter mAdapter){
             super(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
             this.mAdapter = mAdapter;
     }
 
     @Override
-    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
         mAdapter.swap(viewHolder.getAdapterPosition(), target.getAdapterPosition());
         return true;
     }
 
     @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         //Remove item
         mAdapter.remove(viewHolder.getAdapterPosition());
     }

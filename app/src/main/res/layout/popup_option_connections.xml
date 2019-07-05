@@ -19,14 +19,13 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_margin="4dp"
-            android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:gravity="center"
             android:text="@string/options_connections"
             style="@style/MyMenuHeadingText" />
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/closeOptionsFAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,7 +58,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_access_point_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_access_point_white_36dp"
                 android:gravity="center_vertical"
@@ -73,7 +71,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_access_point_network_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_access_point_network_white_36dp"
                 android:gravity="center_vertical"
@@ -81,13 +78,12 @@
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/connectionsReceiveHostFile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_download_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_download_white_36dp"
                 android:gravity="center_vertical"

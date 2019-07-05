@@ -1,18 +1,20 @@
 package com.garethevans.church.opensongtablet;
 
+import android.content.Context;
+
 class ChordDirectory {
 
 	private static String chordtoworkon;
 	
-	private static void simplifyChords(String tempchord) {
+	private static void simplifyChords(Context c, Preferences preferences, String tempchord) {
 		chordtoworkon = tempchord;
-		
-		if (FullscreenActivity.chordFormat.equals("2")) {
+		int myformat = preferences.getMyPreferenceInt(c,"chordFormat",1);
+		if (myformat==2) {
 			//European Bb = B and B = H
 			chordtoworkon = chordtoworkon.replace("$Bb","$A#");
 			chordtoworkon = chordtoworkon.replace("$B","$A#");
 			chordtoworkon = chordtoworkon.replace("$H", "$B");
-		} else if (FullscreenActivity.chordFormat.equals("3")) {
+		} else if (myformat==3) {
 			// Replace minors, flats and sharps
 			chordtoworkon = chordtoworkon.replace("$As", "$Ab");
 			chordtoworkon = chordtoworkon.replace("$Ais","$A#");
@@ -131,10 +133,10 @@ class ChordDirectory {
 		chordtoworkon = chordtoworkon.replace("$", "");
 	}
 
-	static void guitarChords(String chord) {
+	static void guitarChords(Context c, Preferences preferences, String chord) {
 		
 		String chordnotes;
-		simplifyChords(chord);
+		simplifyChords(c,preferences,chord);
 
 		// MAJOR CHORDS
 		switch (chordtoworkon) {
@@ -677,13 +679,13 @@ class ChordDirectory {
 		if (!chordnotes.contains("_")) {
 			chordnotes = chordnotes + "_0_g_"+chordtoworkon;
 		}
-		FullscreenActivity.chordnotes = chordnotes;
+		StaticVariables.chordnotes = chordnotes;
 	}
 
-    static void ukuleleChords(String chord) {
+    static void ukuleleChords(Context c, Preferences preferences, String chord) {
 
         String chordnotes;
-        simplifyChords(chord);
+        simplifyChords(c,preferences,chord);
 
         // MAJOR CHORDS
 		switch (chordtoworkon) {
@@ -1227,13 +1229,13 @@ class ChordDirectory {
             chordnotes = chordnotes + "_0_u_"+chordtoworkon;
         }
 
-        FullscreenActivity.chordnotes = chordnotes;
+        StaticVariables.chordnotes = chordnotes;
     }
 
-    static void mandolinChords(String chord) {
+    static void mandolinChords(Context c, Preferences preferences, String chord) {
 
         String chordnotes;
-        simplifyChords(chord);
+        simplifyChords(c,preferences,chord);
 
         // MAJOR CHORDS
 		switch (chordtoworkon) {
@@ -1777,13 +1779,13 @@ class ChordDirectory {
             chordnotes = chordnotes + "_0_m_"+chordtoworkon;
         }
 
-        FullscreenActivity.chordnotes = chordnotes;
+        StaticVariables.chordnotes = chordnotes;
     }
 
-	static void cavaquinhoChords(String chord) {
+	static void cavaquinhoChords(Context c, Preferences preferences, String chord) {
 
 		String chordnotes;
-		simplifyChords(chord);
+		simplifyChords(c,preferences,chord);
 
 		// MAJOR CHORDS
 		switch (chordtoworkon) {
@@ -2327,13 +2329,13 @@ class ChordDirectory {
 			chordnotes = chordnotes + "_0_c_"+chordtoworkon;
 		}
 
-		FullscreenActivity.chordnotes = chordnotes;
+		StaticVariables.chordnotes = chordnotes;
 	}
 
-    static void banjo4stringChords(String chord) {
+    static void banjo4stringChords(Context c, Preferences preferences, String chord) {
 
         String chordnotes;
-        simplifyChords(chord);
+        simplifyChords(c,preferences,chord);
 
         // MAJOR CHORDS
         switch (chordtoworkon) {
@@ -2877,13 +2879,13 @@ class ChordDirectory {
             chordnotes = chordnotes + "_0_b_"+chordtoworkon;
         }
 
-        FullscreenActivity.chordnotes = chordnotes;
+        StaticVariables.chordnotes = chordnotes;
     }
 
-    static void banjo5stringChords(String chord) {
+    static void banjo5stringChords(Context c, Preferences preferences, String chord) {
 
         String chordnotes;
-        simplifyChords(chord);
+        simplifyChords(c,preferences,chord);
 
         // MAJOR CHORDS
         switch (chordtoworkon) {
@@ -3427,7 +3429,7 @@ class ChordDirectory {
             chordnotes = chordnotes + "_0_B_"+chordtoworkon;
         }
 
-        FullscreenActivity.chordnotes = chordnotes;
+        StaticVariables.chordnotes = chordnotes;
     }
 
 }

@@ -11,7 +11,7 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.net.Uri;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -20,10 +20,9 @@ import android.view.View;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-//import java.io.File;
-
 public class DrawNotes extends View {
 
+    private Context c;
     private Path drawPath;
     private Paint drawPaint, canvasPaint;
     private Bitmap canvasBitmap;
@@ -40,10 +39,14 @@ public class DrawNotes extends View {
     private float mX;
     private float mY;
     boolean touchisup = false;
-
-    public DrawNotes(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        setupDrawing();
+    Preferences preferences;
+    public DrawNotes(Context c, @Nullable AttributeSet attrs) {
+        super(FullscreenActivity.mContext, attrs);
+        if (c==null) {
+            c = FullscreenActivity.mContext;
+        }
+        preferences = new Preferences();
+        setupDrawing(c);
     }
 
     @Override
@@ -85,6 +88,10 @@ public class DrawNotes extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        if (c==null) {
+            c = FullscreenActivity.mContext;
+        }
         if (canvasBitmap!=null) {
             canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
         }
@@ -104,13 +111,13 @@ public class DrawNotes extends View {
             canvas.drawPath(path, drawPaint);
         }
 
-        drawPaint.setColor(getSavedPaintColor());
+        drawPaint.setColor(getSavedPaintColor(c));
         drawPaint.setAntiAlias(true);
-        drawPaint.setStrokeWidth(getSavedPaintSize());
+        drawPaint.setStrokeWidth(getSavedPaintSize(c));
         drawPaint.setStyle(Paint.Style.STROKE);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
-        if (FullscreenActivity.drawingTool.equals("eraser")) {
+        if (preferences.getMyPreferenceString(c,"drawingTool","pen").equals("eraser")) {
             setErase(true);
         } else {
             setErase(false);
@@ -155,6 +162,9 @@ public class DrawNotes extends View {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (c==null) {
+            c = FullscreenActivity.mContext;
+        }
         float touchX = event.getX();
         float touchY = event.getY();
 
@@ -166,15 +176,15 @@ public class DrawNotes extends View {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                touchStart(touchX, touchY);
+                touchStart(c,touchX, touchY);
                 invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
-                touchMove(touchX, touchY);
+                touchMove(c,touchX, touchY);
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
-                touchUp();
+                touchUp(c);
                 invalidate();
                 break;
             case MotionEvent.ACTION_CANCEL:
@@ -187,14 +197,17 @@ public class DrawNotes extends View {
         return true;
     }
 
-    private void touchStart(float x, float y) {
+    private void touchStart(Context c, float x, float y) {
+        if (c==null) {
+            c = FullscreenActivity.mContext;
+        }
         undonePaths.clear();
         undonecolourList.clear();
         undonesizeList.clear();
         undonetoolList.clear();
         drawPath.reset();
         touchisup = false;
-        setCurrentPaint();
+        setCurrentPaint(c);
         drawingapath = false;
         FullscreenActivity.saveHighlight = true;
         drawPath.moveTo(x, y);
@@ -202,12 +215,15 @@ public class DrawNotes extends View {
         mY = y;
     }
 
-    private void touchMove(float x, float y) {
+    private void touchMove(Context c, float x, float y) {
+        if (c==null) {
+            c = FullscreenActivity.mContext;
+        }
         float dx = Math.abs(x - mX);
         float dy = Math.abs(y - mY);
         int TOUCH_TOLERANCE = 4;
         if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-            setCurrentPaint();
+            setCurrentPaint(c);
             drawPath.quadTo(mX, mY, (x + mX)/2, (y + mY)/2);
             drawingapath = true;
             mX = x;
@@ -220,13 +236,16 @@ public class DrawNotes extends View {
         drawingapath = false;
     }
 
-    private void touchUp() {
+    private void touchUp(Context c) {
+        if (c==null) {
+            c = FullscreenActivity.mContext;
+        }
         touchisup = true;
         drawPath.lineTo(mX, mY);
         paths.add(drawPath);
-        sizeList.add(getSavedPaintSize());
-        toolList.add(FullscreenActivity.drawingTool);
-        colourList.add(getSavedPaintColor());
+        sizeList.add(getSavedPaintSize(c));
+        toolList.add(preferences.getMyPreferenceString(c,"drawingTool","pen"));
+        colourList.add(getSavedPaintColor(c));
         drawPath = new Path();
         drawingapath = false;
     }
@@ -236,91 +255,50 @@ public class DrawNotes extends View {
         imageheight = h;
     }
 
-    public int getSavedPaintSize() {
+    public int getSavedPaintSize(Context c) {
+        if (c==null) {
+            c = FullscreenActivity.mContext;
+        }
         int size = 20;
-        switch (FullscreenActivity.drawingTool) {
+        switch (preferences.getMyPreferenceString(c,"drawingTool","pen")) {
             case "pen":
-                size = FullscreenActivity.drawingPenSize;
+                size = preferences.getMyPreferenceInt(c,"drawingPenSize",20);
                 break;
             case "highlighter":
-                size = FullscreenActivity.drawingHighlightSize;
+                size = preferences.getMyPreferenceInt(c,"drawingHighlighterSize",20);
                 break;
             case "eraser":
-                size = FullscreenActivity.drawingEraserSize;
+                size = preferences.getMyPreferenceInt(c,"drawingEraserSize",20);
                 break;
         }
         return size;
     }
 
-    public int getSavedPaintColor() {
-        int c = 0;
-        if (FullscreenActivity.drawingTool.equals("pen")) {
-            switch (FullscreenActivity.drawingPenColor) {
-                case "black":
-                    c = 0xFF000000;
-                    break;
-
-                case "white":
-                    c = 0xFFFFFFFF;
-                    break;
-
-                case "yellow":
-                default:
-                    c = 0xFFFFFF00;
-                    break;
-
-                case "red":
-                    c = 0xFFFF0000;
-                    break;
-
-                case "green":
-                    c = 0xFF00FF00;
-                    break;
-
-                case "blue":
-                    c = 0xFF0000FF;
-                    break;
-            }
-        } else {
-            switch (FullscreenActivity.drawingHighlightColor) {
-                case "black":
-                    c = 0x66000000;
-                    break;
-
-                case "white":
-                    c = 0x66FFFFFF;
-                    break;
-
-                case "yellow":
-                    c = 0x66FFFF00;
-                    break;
-
-                case "red":
-                    c = 0x66FF0000;
-                    break;
-
-                case "green":
-                    c = 0x6600FF00;
-                    break;
-
-                case "blue":
-                    c = 0x660000FF;
-                    break;
-            }
+    public int getSavedPaintColor(Context c) {
+        if (c==null) {
+            c = FullscreenActivity.mContext;
         }
-        return c;
+        if (preferences.getMyPreferenceString(c,"drawingTool","pen").equals("pen")) {
+            return preferences.getMyPreferenceInt(c,"drawingPenColor",StaticVariables.black);
+
+        } else {
+            return preferences.getMyPreferenceInt(c, "drawingHighlighterColor", StaticVariables.highighteryellow);
+        }
     }
 
-    public void setupDrawing() {
+    public void setupDrawing(Context c) {
+        if (c==null) {
+            c = FullscreenActivity.mContext;
+        }
         drawPath = new Path();
         drawPaint = new Paint();
-        drawPaint.setColor(getSavedPaintColor());
+        drawPaint.setColor(getSavedPaintColor(c));
         drawPaint.setAntiAlias(true);
-        drawPaint.setStrokeWidth(getSavedPaintSize());
+        drawPaint.setStrokeWidth(getSavedPaintSize(c));
         drawPaint.setStyle(Paint.Style.STROKE);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
-        if (FullscreenActivity.drawingTool.equals("eraser")) {
+        if (preferences.getMyPreferenceString(c,"drawingTool","pen").equals("eraser")) {
             setErase(true);
         } else {
             setErase(false);
@@ -330,6 +308,9 @@ public class DrawNotes extends View {
     }
 
     public void loadImage(Context c, Uri uri) {
+        if (c==null) {
+            c = FullscreenActivity.mContext;
+        }
         touchisup = false;
         try {
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -356,6 +337,9 @@ public class DrawNotes extends View {
     }
 
     public void startNew(Context c, Uri uri) {
+        if (c==null) {
+            c = FullscreenActivity.mContext;
+        }
         StorageAccess storageAccess = new StorageAccess();
         touchisup = true;
         paths = new ArrayList<>();
@@ -380,14 +364,17 @@ public class DrawNotes extends View {
         invalidate();
     }
 
-    public void setCurrentPaint() {
-        drawPaint.setColor(getSavedPaintColor());
+    public void setCurrentPaint(Context c) {
+        if (c==null) {
+            c = FullscreenActivity.mContext;
+        }
+        drawPaint.setColor(getSavedPaintColor(c));
         drawPaint.setAntiAlias(true);
-        drawPaint.setStrokeWidth(getSavedPaintSize());
+        drawPaint.setStrokeWidth(getSavedPaintSize(c));
         drawPaint.setStyle(Paint.Style.STROKE);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
-        if (FullscreenActivity.drawingTool.equals("eraser")) {
+        if (preferences.getMyPreferenceString(c,"drawingTool","pen").equals("eraser")) {
             setErase(true);
         } else {
             setErase(false);

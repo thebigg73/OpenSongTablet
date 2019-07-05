@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
@@ -42,13 +43,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:hint="@string/phrasesearch"
-                android:singleLine="true" />
+                android:singleLine="true"
+                tools:ignore="Autofill,TextFields" />
 
             <Button
                 android:id="@+id/doSearch_Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:layout_margin="8dp"
                 android:background="@drawable/green_button"
                 android:text="@string/action_search" />
@@ -66,7 +68,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@+id/grabSongData_Button"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_margin="8dp"
                 android:background="#ffffff"
@@ -74,11 +75,10 @@
                 android:focusableInTouchMode="true"
                 android:minHeight="200dp" />
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/webBack_ImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:contentDescription="@string/set_back"
@@ -127,7 +127,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:hint="@string/choosesongname" />
+                android:hint="@string/choosesongname"
+                tools:ignore="Autofill,TextFields" />
 
             <TextView
                 style="@style/MyHeadingText"
@@ -148,7 +149,7 @@
                 android:id="@+id/saveSong_Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:layout_margin="8dp"
                 android:background="@drawable/green_button"
                 android:text="@string/savesong" />

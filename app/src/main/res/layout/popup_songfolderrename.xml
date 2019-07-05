@@ -68,7 +68,7 @@
                     android:layout_margin="8dp"
                     android:inputType="text"
                     android:maxLines="1"
-                    tools:ignore="LabelFor" />
+                    tools:ignore="Autofill,LabelFor" />
 
             </LinearLayout>
 

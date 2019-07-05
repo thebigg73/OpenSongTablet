@@ -1,18 +1,21 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.SwitchCompat;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import java.util.Objects;
 
 public class PopUpChordFormatFragment extends DialogFragment {
 
@@ -22,30 +25,12 @@ public class PopUpChordFormatFragment extends DialogFragment {
         return frag;
     }
 
-    //Variables
-    RadioGroup radioGroup;
-    RadioGroup radioGroup2;
-    static String numeral;
-    static String numeral2;
+    private RadioGroup chordFormat;
+    private RadioButton chordFormat1, chordFormat2, chordFormat3, chordFormat4, chordFormat5, chordFormat6;
+    private SwitchCompat switchAb, switchBb, switchDb, switchEb, switchGb, switchAbm, switchBbm,
+            switchDbm, switchEbm, switchGbm, assumePreferred_SwitchCompat;
 
-    SwitchCompat switchAb;
-    SwitchCompat switchBb;
-    SwitchCompat switchDb;
-    SwitchCompat switchEb;
-    SwitchCompat switchGb;
-    SwitchCompat switchAbm;
-    SwitchCompat switchBbm;
-    SwitchCompat switchDbm;
-    SwitchCompat switchEbm;
-    SwitchCompat switchGbm;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
+    Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,14 +43,14 @@ public class PopUpChordFormatFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         View V = inflater.inflate(R.layout.popup_chordformat, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.choosechordformat));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.choosechordformat));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,15 +61,25 @@ public class PopUpChordFormatFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
 
-        // Load the user preferences
-        Preferences.loadPreferences(getActivity());
+        preferences = new Preferences();
 
-        numeral = FullscreenActivity.chordFormat;
-        numeral2 = FullscreenActivity.alwaysPreferredChordFormat;
+        // Identify the views
+        identifyViews(V);
 
-        // Set up the preferred chord buttons
+        // Set the values based on preferences
+        setButtons();
+
+        // Set the listeners
+        setListeners();
+
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+
+        return V;
+    }
+
+    private void identifyViews(View V) {
         switchAb = V.findViewById(R.id.switchAb);
         switchBb = V.findViewById(R.id.switchBb);
         switchDb = V.findViewById(R.id.switchDb);
@@ -95,167 +90,155 @@ public class PopUpChordFormatFragment extends DialogFragment {
         switchDbm = V.findViewById(R.id.switchDbm);
         switchEbm = V.findViewById(R.id.switchEbm);
         switchGbm = V.findViewById(R.id.switchGbm);
+        assumePreferred_SwitchCompat = V.findViewById(R.id.assumePreferred_SwitchCompat);
+        chordFormat = V.findViewById(R.id.chordFormat);
+        chordFormat1 = V.findViewById(R.id.chordFormat1);
+        chordFormat2 = V.findViewById(R.id.chordFormat2);
+        chordFormat3 = V.findViewById(R.id.chordFormat3);
+        chordFormat4 = V.findViewById(R.id.chordFormat4);
+        chordFormat5 = V.findViewById(R.id.chordFormat5);
+        chordFormat6 = V.findViewById(R.id.chordFormat6);
+    }
 
-        setSwitches(FullscreenActivity.prefChord_Aflat_Gsharp, switchAb);
-        setSwitches(FullscreenActivity.prefChord_Bflat_Asharp, switchBb);
-        setSwitches(FullscreenActivity.prefChord_Dflat_Csharp, switchDb);
-        setSwitches(FullscreenActivity.prefChord_Eflat_Dsharp, switchEb);
-        setSwitches(FullscreenActivity.prefChord_Gflat_Fsharp, switchGb);
-        setSwitches(FullscreenActivity.prefChord_Aflatm_Gsharpm, switchAbm);
-        setSwitches(FullscreenActivity.prefChord_Bflatm_Asharpm, switchBbm);
-        setSwitches(FullscreenActivity.prefChord_Dflatm_Csharpm, switchDbm);
-        setSwitches(FullscreenActivity.prefChord_Eflatm_Dsharpm, switchEbm);
-        setSwitches(FullscreenActivity.prefChord_Gflatm_Fsharpm, switchGbm);
+    private void setButtons() {
+        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyAb",true), switchAb);
+        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyBb",true), switchBb);
+        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyDb",false), switchDb);
+        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyEb",true), switchEb);
+        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyGb",false), switchGb);
+        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyAbm",false), switchAbm);
+        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyBbm",true), switchBbm);
+        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyDbm",false), switchDbm);
+        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyEbm",true), switchEbm);
+        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyGbm",false), switchGbm);
+        setSwitches(preferences.getMyPreferenceBoolean(getActivity(), "chordFormatUsePreferred",true), assumePreferred_SwitchCompat);
 
-        radioGroup = V.findViewById(R.id.chordFormat);
-        radioGroup2 = V.findViewById(R.id.chordFormat_decideaction);
+        switch (preferences.getMyPreferenceInt(getActivity(),"chordFormat",1)) {
+            case 1:
+                chordFormat1.setChecked(true);
+                break;
+            case 2:
+                chordFormat2.setChecked(true);
+                break;
+            case 3:
+                chordFormat3.setChecked(true);
+                break;
+            case 4:
+                chordFormat4.setChecked(true);
+                break;
+            case 5:
+                chordFormat5.setChecked(true);
+                break;
+            case 6:
+                chordFormat6.setChecked(true);
+                break;
+        }
+    }
 
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-
+    private void setListeners() {
+        switchAb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyAb",isChecked);
+            }
+        });
+        switchBb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyBb",isChecked);
+            }
+        });
+        switchDb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyDb",isChecked);
+            }
+        });
+        switchEb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyEb",isChecked);
+            }
+        });
+        switchGb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyGb",isChecked);
+            }
+        });
+        switchAbm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyAbm",isChecked);
+            }
+        });
+        switchBbm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyBbm",isChecked);
+            }
+        });
+        switchDbm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyDbm",isChecked);
+            }
+        });
+        switchEbm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyEbm",isChecked);
+            }
+        });
+        switchGbm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyGbm",isChecked);
+            }
+        });
+        assumePreferred_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                preferences.setMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",isChecked);
+            }
+        });
+        chordFormat.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-
                 switch (checkedId) {
                     case R.id.chordFormat1:
-                        numeral = "1";
+                        preferences.setMyPreferenceInt(getActivity(), "chordFormat", 1);
                         break;
                     case R.id.chordFormat2:
-                        numeral = "2";
+                        preferences.setMyPreferenceInt(getActivity(), "chordFormat", 2);
                         break;
                     case R.id.chordFormat3:
-                        numeral = "3";
+                        preferences.setMyPreferenceInt(getActivity(), "chordFormat", 3);
                         break;
                     case R.id.chordFormat4:
-                        numeral = "4";
+                        preferences.setMyPreferenceInt(getActivity(), "chordFormat", 4);
                         break;
                     case R.id.chordFormat5:
-                        numeral = "5";
+                        preferences.setMyPreferenceInt(getActivity(), "chordFormat", 5);
+                        break;
+                    case R.id.chordFormat6:
+                        preferences.setMyPreferenceInt(getActivity(), "chordFormat", 6);
                         break;
                 }
             }
         });
-
-        radioGroup2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.chordformat_check:
-                        numeral2 = "N";
-                        break;
-                    case R.id.chordformat_default:
-                        numeral2 = "Y";
-                        break;
-                }
-            }
-        });
-
-        RadioButton radioButton1 = V.findViewById(R.id.chordFormat1);
-        RadioButton radioButton2 = V.findViewById(R.id.chordFormat2);
-        RadioButton radioButton3 = V.findViewById(R.id.chordFormat3);
-        RadioButton radioButton4 = V.findViewById(R.id.chordFormat4);
-        RadioButton radioButton5 = V.findViewById(R.id.chordFormat5);
-        RadioButton radioButton6 = V.findViewById(R.id.chordformat_check);
-        RadioButton radioButton7 = V.findViewById(R.id.chordformat_default);
-
-        // Set the appropriate radiobutton
-        switch (FullscreenActivity.chordFormat) {
-            case "1":
-                radioButton1.setChecked(true);
-                break;
-            case "2":
-                radioButton2.setChecked(true);
-                break;
-            case "3":
-                radioButton3.setChecked(true);
-                break;
-            case "4":
-                radioButton4.setChecked(true);
-                break;
-            case "5":
-                radioButton5.setChecked(true);
-                break;
-        }
-
-        if (FullscreenActivity.alwaysPreferredChordFormat.equals("N")) {
-            radioButton6.setChecked(true);
-        } else {
-            radioButton7.setChecked(true);
-        }
-
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-
-        return V;
     }
 
-    public void setSwitches(String what, SwitchCompat myswitch) {
-        if (what.equals("b")) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                myswitch.setChecked(false);
-            }
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                myswitch.setChecked(true);
-            }
-        }
+    private void setSwitches(boolean prefb, SwitchCompat myswitch) {
+        myswitch.setChecked(prefb);
     }
 
-    public void exitChordFormat() {
-        if (switchAb.isChecked()) {
-            FullscreenActivity.prefChord_Aflat_Gsharp = "#";
-        } else {
-            FullscreenActivity.prefChord_Aflat_Gsharp = "b";
+    private void exitChordFormat() {
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if (switchBb.isChecked()) {
-            FullscreenActivity.prefChord_Bflat_Asharp = "#";
-        } else {
-            FullscreenActivity.prefChord_Bflat_Asharp = "b";
-        }
-        if (switchDb.isChecked()) {
-            FullscreenActivity.prefChord_Dflat_Csharp = "#";
-        } else {
-            FullscreenActivity.prefChord_Dflat_Csharp = "b";
-        }
-        if (switchEb.isChecked()) {
-            FullscreenActivity.prefChord_Eflat_Dsharp = "#";
-        } else {
-            FullscreenActivity.prefChord_Eflat_Dsharp = "b";
-        }
-        if (switchGb.isChecked()) {
-            FullscreenActivity.prefChord_Gflat_Fsharp = "#";
-        } else {
-            FullscreenActivity.prefChord_Gflat_Fsharp = "b";
-        }
-        if (switchAbm.isChecked()) {
-            FullscreenActivity.prefChord_Aflatm_Gsharpm = "#";
-        } else {
-            FullscreenActivity.prefChord_Aflatm_Gsharpm = "b";
-        }
-        if (switchBbm.isChecked()) {
-            FullscreenActivity.prefChord_Bflatm_Asharpm = "#";
-        } else {
-            FullscreenActivity.prefChord_Bflatm_Asharpm = "b";
-        }
-        if (switchDbm.isChecked()) {
-            FullscreenActivity.prefChord_Dflatm_Csharpm = "#";
-        } else {
-            FullscreenActivity.prefChord_Dflatm_Csharpm = "b";
-        }
-        if (switchEbm.isChecked()) {
-            FullscreenActivity.prefChord_Eflatm_Dsharpm = "#";
-        } else {
-            FullscreenActivity.prefChord_Eflatm_Dsharpm = "b";
-        }
-        if (switchGbm.isChecked()) {
-            FullscreenActivity.prefChord_Gflatm_Fsharpm = "#";
-        } else {
-            FullscreenActivity.prefChord_Gflatm_Fsharpm = "b";
-        }
-
-        FullscreenActivity.chordFormat = numeral;
-        FullscreenActivity.alwaysPreferredChordFormat = numeral2;
-        Preferences.savePreferences();
-        dismiss();
     }
 
     @Override

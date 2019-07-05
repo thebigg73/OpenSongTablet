@@ -1,15 +1,16 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.SwitchCompat;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.widget.SwitchCompat;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,6 +36,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class PopUpEditSongFragment extends DialogFragment implements PopUpPresentationOrderFragment.MyInterface {
 
@@ -44,114 +47,119 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     }
 
     // The General views available
-    EditText edit_song_title, edit_song_author, edit_song_copyright, edit_song_duration,
+    private EditText edit_song_title, edit_song_author, edit_song_copyright, edit_song_duration,
             edit_song_presentation, edit_song_notes, edit_song_lyrics;
-    Spinner edit_song_key, edit_song_timesig, edit_song_capo, edit_song_capo_print;
-    SeekBar predelay_SeekBar, edit_song_tempo;
-    TextView predelay_TextView, tempo_text, abcnotation, availabletags;
-    SwitchCompat editAsChordPro;
-    ActionMode mActionMode = null;
+    private Spinner edit_song_key, edit_song_timesig, edit_song_capo, edit_song_capo_print;
+    private SeekBar predelay_SeekBar, edit_song_tempo;
+    private TextView predelay_TextView;
+    private TextView tempo_text;
+    private TextView availabletags;
+    private ActionMode mActionMode = null;
 
     // Advanced
-    EditText edit_song_CCLI, edit_song_aka, edit_song_key_line, edit_song_hymn, edit_song_user1,
+    private EditText edit_song_CCLI, edit_song_aka, edit_song_key_line, edit_song_hymn, edit_song_user1,
             edit_song_user2, edit_song_user3, edit_song_midi, edit_song_midi_index,
             edit_song_restrictions, edit_song_books, edit_song_pitch, customTheme;
-    Spinner edit_song_pad_file;
+    private Spinner edit_song_pad_file;
 
-    LinearLayout generalSettings, advancedSettings;
+    private LinearLayout generalSettings, advancedSettings;
 
-    // Buttons
-    Button toggleGeneralAdvanced, fix_lyrics;
-    FloatingActionButton addBrackets, transposeUpFAB, transposeDownFAB;
-    RelativeLayout transposeDown_RelativeLayout, transposeUp_RelativeLayout;
+    private Button fix_lyrics;
+    private FloatingActionButton addBrackets;
+    private RelativeLayout transposeDown_RelativeLayout, transposeUp_RelativeLayout;
 
-    static int temposlider;
+    private static int temposlider;
     View V;
     String title;
 
     TextSongConvert textSongConvert;
     ChordProConvert chordProConvert;
     StorageAccess storageAccess;
-    ListSongFiles listSongFiles;
     Preferences preferences;
+    ProcessSong processSong;
+    SQLite sqLite;
+    SQLiteHelper sqLiteHelper;
+    Transpose transpose;
+
+    private boolean keyboardopen = false;
 
     @Override
     public void updatePresentationOrder() {
-        edit_song_presentation.setText(FullscreenActivity.mPresentation);
+        edit_song_presentation.setText(StaticVariables.mPresentation);
     }
 
-    public void saveEdit(boolean ended) {
+    private void saveEdit(boolean ended) {
 
         // If we are editing as chordpro, convert to OpenSong
-        if (FullscreenActivity.editAsChordPro) {
+        if (preferences.getMyPreferenceBoolean(getActivity(),"editAsChordPro",false)) {
             String textLyrics = edit_song_lyrics.getText().toString();
             edit_song_lyrics.setText(chordProConvert.fromChordProToOpenSong(textLyrics));
         }
         // Go through the fields and save them
         // Get the variables
         // Set the newtext to the FullscreenActivity variables
-        FullscreenActivity.mTitle = edit_song_title.getText().toString();
-        FullscreenActivity.mAuthor = edit_song_author.getText().toString();
-        FullscreenActivity.mCopyright = edit_song_copyright.getText().toString();
-        FullscreenActivity.mLyrics = ProcessSong.fixStartOfLines(edit_song_lyrics.getText().toString());
-        FullscreenActivity.mPresentation = edit_song_presentation.getText().toString();
-        FullscreenActivity.mHymnNumber = edit_song_hymn.getText().toString();
-        FullscreenActivity.mCCLI = edit_song_CCLI.getText().toString();
-        FullscreenActivity.mUser1 = edit_song_user1.getText().toString();
-        FullscreenActivity.mUser2 = edit_song_user2.getText().toString();
-        FullscreenActivity.mUser3 = edit_song_user3.getText().toString();
-        FullscreenActivity.mAka = edit_song_aka.getText().toString();
-        FullscreenActivity.mKeyLine = edit_song_key_line.getText().toString();
-        FullscreenActivity.mKey = edit_song_key.getItemAtPosition(edit_song_key.getSelectedItemPosition()).toString();
-        FullscreenActivity.mDuration = edit_song_duration.getText().toString();
+        StaticVariables.mTitle = edit_song_title.getText().toString();
+        StaticVariables.mAuthor = edit_song_author.getText().toString();
+        StaticVariables.mCopyright = edit_song_copyright.getText().toString();
+        StaticVariables.mLyrics = processSong.fixStartOfLines(edit_song_lyrics.getText().toString());
+        StaticVariables.mPresentation = edit_song_presentation.getText().toString();
+        StaticVariables.mHymnNumber = edit_song_hymn.getText().toString();
+        StaticVariables.mCCLI = edit_song_CCLI.getText().toString();
+        StaticVariables.mUser1 = edit_song_user1.getText().toString();
+        StaticVariables.mUser2 = edit_song_user2.getText().toString();
+        StaticVariables.mUser3 = edit_song_user3.getText().toString();
+        StaticVariables.mAka = edit_song_aka.getText().toString();
+        StaticVariables.mKeyLine = edit_song_key_line.getText().toString();
+        StaticVariables.mKey = edit_song_key.getItemAtPosition(edit_song_key.getSelectedItemPosition()).toString();
+        StaticVariables.mDuration = edit_song_duration.getText().toString();
         int predelayval = predelay_SeekBar.getProgress();
         if (predelayval == 0) {
-            FullscreenActivity.mPreDelay = "";
+            StaticVariables.mPreDelay = "";
         } else {
-            FullscreenActivity.mPreDelay = "" + (predelayval - 1);
+            StaticVariables.mPreDelay = "" + (predelayval - 1);
         }
-        FullscreenActivity.mBooks = edit_song_books.getText().toString();
-        FullscreenActivity.mMidi = edit_song_midi.getText().toString();
-        FullscreenActivity.mMidiIndex = edit_song_midi_index.getText().toString();
-        FullscreenActivity.mPitch = edit_song_pitch.getText().toString();
-        FullscreenActivity.mRestrictions = edit_song_restrictions.getText().toString();
-        FullscreenActivity.mNotes = edit_song_notes.getText().toString();
-        FullscreenActivity.mPadFile = edit_song_pad_file.getItemAtPosition(edit_song_pad_file.getSelectedItemPosition()).toString();
+        StaticVariables.mBooks = edit_song_books.getText().toString();
+        StaticVariables.mMidi = edit_song_midi.getText().toString();
+        StaticVariables.mMidiIndex = edit_song_midi_index.getText().toString();
+        StaticVariables.mPitch = edit_song_pitch.getText().toString();
+        StaticVariables.mRestrictions = edit_song_restrictions.getText().toString();
+        StaticVariables.mNotes = edit_song_notes.getText().toString();
+        StaticVariables.mPadFile = edit_song_pad_file.getItemAtPosition(edit_song_pad_file.getSelectedItemPosition()).toString();
 
         // Get the position of the capo fret
-        FullscreenActivity.mCapo = edit_song_capo.getItemAtPosition(edit_song_capo.getSelectedItemPosition()).toString();
+        StaticVariables.mCapo = edit_song_capo.getItemAtPosition(edit_song_capo.getSelectedItemPosition()).toString();
         // If this contains a space (e.g. 2 (A)), then take the substring at the start as the actual fret
         // This is because we may have a quick capo key reckoner next to the fret number
-        if (FullscreenActivity.mCapo.contains(" ")) {
-            int pos = FullscreenActivity.mCapo.indexOf(" ");
+        if (StaticVariables.mCapo.contains(" ")) {
+            int pos = StaticVariables.mCapo.indexOf(" ");
             if (pos > 0) {
-                FullscreenActivity.mCapo = FullscreenActivity.mCapo.substring(0, pos).trim();
+                StaticVariables.mCapo = StaticVariables.mCapo.substring(0, pos).trim();
             }
         }
 
         int tempmCapoPrint = edit_song_capo_print.getSelectedItemPosition();
         if (tempmCapoPrint == 1) {
-            FullscreenActivity.mCapoPrint = "true";
+            StaticVariables.mCapoPrint = "true";
         } else if (tempmCapoPrint == 2) {
-            FullscreenActivity.mCapoPrint = "false";
+            StaticVariables.mCapoPrint = "false";
         } else {
-            FullscreenActivity.mCapoPrint = "";
+            StaticVariables.mCapoPrint = "";
         }
         int valoftempobar = edit_song_tempo.getProgress() + 39;
         if (valoftempobar > 39) {
-            FullscreenActivity.mTempo = "" + valoftempobar;
+            StaticVariables.mTempo = "" + valoftempobar;
         } else {
-            FullscreenActivity.mTempo = "";
+            StaticVariables.mTempo = "";
         }
-        FullscreenActivity.mTimeSig = edit_song_timesig.getItemAtPosition(edit_song_timesig.getSelectedItemPosition()).toString();
+        StaticVariables.mTimeSig = edit_song_timesig.getItemAtPosition(edit_song_timesig.getSelectedItemPosition()).toString();
 
-        FullscreenActivity.mTheme = customTheme.getText().toString();
-        if (!FullscreenActivity.mTheme.endsWith(";")) {
-            FullscreenActivity.mTheme += ";";
+        StaticVariables.mTheme = customTheme.getText().toString();
+        if (!StaticVariables.mTheme.endsWith(";")) {
+            StaticVariables.mTheme += ";";
         }
 
         // Set the AltTheme to the same as the Theme?
-        FullscreenActivity.mAltTheme = FullscreenActivity.mTheme;
+        StaticVariables.mAltTheme = StaticVariables.mTheme;
 
         // Prepare the new XML file
         prepareSongXML();
@@ -161,41 +169,71 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&", "&amp;");
 
         // Now write the modified song
-        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.whichSongFolder,
-                FullscreenActivity.songfilename);
+        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", StaticVariables.whichSongFolder,
+                StaticVariables.songfilename);
 
         // Check the uri exists for the outputstream to be valid
         storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
-                "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+                "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
 
         OutputStream outputStream = storageAccess.getOutputStream(getActivity(), uri);
         storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream);
 
+        // If this isn't a song (a set item, variation, etc, it won't be in the database, so the following will fail
+        // That's ok though!!  We don't want to update search indexes or song menus
+        try {
+            if (sqLite!=null && sqLite.getId()>-1) {
+                Log.d("d", "id=" + sqLite.getId());
+                sqLite.setId(sqLite.getId());
+                sqLite.setFolder(StaticVariables.whichSongFolder);
+                sqLite.setFilename(StaticVariables.songfilename);
+                sqLite.setSongid(StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename);
+                sqLite.setTitle(StaticVariables.mTitle);
+                sqLite.setAuthor(StaticVariables.mAuthor);
+                sqLite.setCopyright(StaticVariables.mCopyright);
+                sqLite.setLyrics(StaticVariables.mLyrics);
+                sqLite.setHymn_num(StaticVariables.mHymnNumber);
+                sqLite.setCcli(StaticVariables.mCCLI);
+                sqLite.setTheme(StaticVariables.mTheme);
+                sqLite.setAlttheme(StaticVariables.mAltTheme);
+                sqLite.setUser1(StaticVariables.mUser1);
+                sqLite.setUser2(StaticVariables.mUser2);
+                sqLite.setUser3(StaticVariables.mUser3);
+                sqLite.setKey(StaticVariables.mKey);
+                sqLite.setTimesig(StaticVariables.mTimeSig);
+                sqLite.setAka(StaticVariables.mAka);
+                sqLiteHelper.updateSong(getActivity(), sqLite);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         // If we are autologging CCLI information
-        if (FullscreenActivity.ccli_automatic) {
-            PopUpCCLIFragment.addUsageEntryToLog(getActivity(), preferences, FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
-                    FullscreenActivity.mTitle.toString(), FullscreenActivity.mAuthor.toString(),
-                    FullscreenActivity.mCopyright.toString(), FullscreenActivity.mCCLI, "3"); // Edited
+        if (preferences.getMyPreferenceBoolean(getActivity(),"ccliAutomaticLogging",false)) {
+            PopUpCCLIFragment.addUsageEntryToLog(getActivity(), preferences, StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename,
+                    StaticVariables.mTitle, StaticVariables.mAuthor,
+                    StaticVariables.mCopyright, StaticVariables.mCCLI, "3"); // Edited
         }
 
         FullscreenActivity.mynewXML = "";
 
-        // Save the preferences
-        Preferences.savePreferences();
-
+        Log.d("d","ended="+ended);
         if (ended) {
             // If we were sent here because we needed to edit the song, we can now reset that
             FullscreenActivity.needtoeditsong = false;
 
             // Prepare the message
-            FullscreenActivity.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
+            StaticVariables.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
                     getResources().getString(R.string.ok);
 
             // Now tell the main page to refresh itself with this new song
             // Don't need to reload the XML as we already have all its values
-            mListener.rebuildSearchIndex();
+            mListener.loadSong();
+            mListener.prepareSongMenu();
 
             // Now dismiss this popup
+            forceHideKeyboard(edit_song_lyrics);
             dismiss();
         }
     }
@@ -219,30 +257,23 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
+            forceHideKeyboard(edit_song_lyrics);
             this.dismiss();
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
     }
 
     public static void justSaveSongXML(Context c, Preferences preferences) {
         // Only do this if the title or song file doesn't identify it as the 'welcome to opensongapp' file
-        if (!FullscreenActivity.mTitle.equals("Welcome to OpenSongApp") &&
+        if (!StaticVariables.mTitle.equals("Welcome to OpenSongApp") &&
                 !FullscreenActivity.mynewXML.contains("Welcome to OpenSongApp")) {
             // Now write the modified song
             StorageAccess storageAccess = new StorageAccess();
-            Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder,
-                    FullscreenActivity.songfilename);
+            Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", StaticVariables.whichSongFolder,
+                    StaticVariables.songfilename);
 
             // Check the uri exists for the outputstream to be valid
             storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null,
-                    "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+                    "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
 
             OutputStream outputStream = storageAccess.getOutputStream(c, uri);
             storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream);
@@ -254,7 +285,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         // Called when the action mode is created; startActionMode() was called
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            Log.d("d", "create");
             transposeDown_RelativeLayout.setVisibility(View.VISIBLE);
             transposeUp_RelativeLayout.setVisibility(View.VISIBLE);
             return false;
@@ -264,7 +294,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         // may be called multiple times if the mode is invalidated.
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            Log.d("d", "prepare");
             return false; // Return false if nothing is done
         }
 
@@ -285,13 +314,14 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         }
     };
 
-    public void cancelEdit() {
+    private void cancelEdit() {
         // Load the song back up with the default values
         try {
-            LoadXML.loadXML(getActivity(), preferences, listSongFiles, storageAccess);
+            LoadXML.loadXML(getActivity(), preferences, storageAccess, processSong);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        forceHideKeyboard(edit_song_lyrics);
         dismiss();
     }
 
@@ -313,11 +343,11 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         }
     }
 
-    public static void prepareBlankSongXML() {
+    static void prepareBlankSongXML() {
         // Prepare the new XML file
         String myNEWXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         myNEWXML += "<song>\n";
-        myNEWXML += "  <title>" + FullscreenActivity.songfilename + "</title>\n";
+        myNEWXML += "  <title>" + StaticVariables.songfilename + "</title>\n";
         myNEWXML += "  <author></author>\n";
         myNEWXML += "  <copyright></copyright>\n";
         myNEWXML += "  <presentation></presentation>\n";
@@ -359,52 +389,52 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     public static void prepareSongXML() {
         // Prepare the new XML file
 
-        if (FullscreenActivity.mEncoding == null || FullscreenActivity.mEncoding.equals("")) {
-            FullscreenActivity.mEncoding = "UTF-8";
+        if (StaticVariables.mEncoding == null || StaticVariables.mEncoding.equals("")) {
+            StaticVariables.mEncoding = "UTF-8";
         }
-        String myNEWXML = "<?xml version=\"1.0\" encoding=\"" + FullscreenActivity.mEncoding + "\"?>\n";
+        String myNEWXML = "<?xml version=\"1.0\" encoding=\"" + StaticVariables.mEncoding + "\"?>\n";
         myNEWXML += "<song>\n";
-        myNEWXML += "  <title>" + parseToHTMLEntities(FullscreenActivity.mTitle.toString()) + "</title>\n";
-        myNEWXML += "  <author>" + parseToHTMLEntities(FullscreenActivity.mAuthor.toString()) + "</author>\n";
-        myNEWXML += "  <copyright>" + parseToHTMLEntities(FullscreenActivity.mCopyright.toString()) + "</copyright>\n";
-        myNEWXML += "  <presentation>" + parseToHTMLEntities(FullscreenActivity.mPresentation) + "</presentation>\n";
-        myNEWXML += "  <hymn_number>" + parseToHTMLEntities(FullscreenActivity.mHymnNumber) + "</hymn_number>\n";
-        myNEWXML += "  <capo print=\"" + parseToHTMLEntities(FullscreenActivity.mCapoPrint) + "\">" + parseToHTMLEntities(FullscreenActivity.mCapo) + "</capo>\n";
-        myNEWXML += "  <tempo>" + parseToHTMLEntities(FullscreenActivity.mTempo) + "</tempo>\n";
-        myNEWXML += "  <time_sig>" + parseToHTMLEntities(FullscreenActivity.mTimeSig) + "</time_sig>\n";
-        myNEWXML += "  <duration>" + parseToHTMLEntities(FullscreenActivity.mDuration) + "</duration>\n";
-        myNEWXML += "  <predelay>" + parseToHTMLEntities(FullscreenActivity.mPreDelay) + "</predelay>\n";
-        myNEWXML += "  <ccli>" + parseToHTMLEntities(FullscreenActivity.mCCLI) + "</ccli>\n";
-        myNEWXML += "  <theme>" + parseToHTMLEntities(FullscreenActivity.mTheme) + "</theme>\n";
-        myNEWXML += "  <alttheme>" + parseToHTMLEntities(FullscreenActivity.mAltTheme) + "</alttheme>\n";
-        myNEWXML += "  <user1>" + parseToHTMLEntities(FullscreenActivity.mUser1) + "</user1>\n";
-        myNEWXML += "  <user2>" + parseToHTMLEntities(FullscreenActivity.mUser2) + "</user2>\n";
-        myNEWXML += "  <user3>" + parseToHTMLEntities(FullscreenActivity.mUser3) + "</user3>\n";
-        myNEWXML += "  <key>" + parseToHTMLEntities(FullscreenActivity.mKey) + "</key>\n";
-        myNEWXML += "  <aka>" + parseToHTMLEntities(FullscreenActivity.mAka) + "</aka>\n";
-        myNEWXML += "  <key_line>" + parseToHTMLEntities(FullscreenActivity.mKeyLine) + "</key_line>\n";
-        myNEWXML += "  <books>" + parseToHTMLEntities(FullscreenActivity.mBooks) + "</books>\n";
-        myNEWXML += "  <midi>" + parseToHTMLEntities(FullscreenActivity.mMidi) + "</midi>\n";
-        myNEWXML += "  <midi_index>" + parseToHTMLEntities(FullscreenActivity.mMidiIndex) + "</midi_index>\n";
-        myNEWXML += "  <pitch>" + parseToHTMLEntities(FullscreenActivity.mPitch) + "</pitch>\n";
-        myNEWXML += "  <restrictions>" + parseToHTMLEntities(FullscreenActivity.mRestrictions) + "</restrictions>\n";
-        myNEWXML += "  <notes>" + parseToHTMLEntities(FullscreenActivity.mNotes) + "</notes>\n";
-        myNEWXML += "  <lyrics>" + parseToHTMLEntities(FullscreenActivity.mLyrics) + "</lyrics>\n";
-        myNEWXML += "  <linked_songs>" + parseToHTMLEntities(FullscreenActivity.mLinkedSongs) + "</linked_songs>\n";
-        myNEWXML += "  <pad_file>" + parseToHTMLEntities(FullscreenActivity.mPadFile) + "</pad_file>\n";
-        myNEWXML += "  <custom_chords>" + parseToHTMLEntities(FullscreenActivity.mCustomChords) + "</custom_chords>\n";
-        myNEWXML += "  <link_youtube>" + parseToHTMLEntities(FullscreenActivity.mLinkYouTube) + "</link_youtube>\n";
-        myNEWXML += "  <link_web>" + parseToHTMLEntities(FullscreenActivity.mLinkWeb) + "</link_web>\n";
-        myNEWXML += "  <link_audio>" + parseToHTMLEntities(FullscreenActivity.mLinkAudio) + "</link_audio>\n";
-        myNEWXML += "  <loop_audio>" + parseToHTMLEntities(FullscreenActivity.mLoopAudio) + "</loop_audio>\n";
-        myNEWXML += "  <link_other>" + parseToHTMLEntities(FullscreenActivity.mLinkOther) + "</link_other>\n";
-        myNEWXML += "  <abcnotation>" + parseToHTMLEntities(FullscreenActivity.mNotation) + "</abcnotation>\n";
+        myNEWXML += "  <title>" + parseToHTMLEntities(StaticVariables.mTitle) + "</title>\n";
+        myNEWXML += "  <author>" + parseToHTMLEntities(StaticVariables.mAuthor) + "</author>\n";
+        myNEWXML += "  <copyright>" + parseToHTMLEntities(StaticVariables.mCopyright) + "</copyright>\n";
+        myNEWXML += "  <presentation>" + parseToHTMLEntities(StaticVariables.mPresentation) + "</presentation>\n";
+        myNEWXML += "  <hymn_number>" + parseToHTMLEntities(StaticVariables.mHymnNumber) + "</hymn_number>\n";
+        myNEWXML += "  <capo print=\"" + parseToHTMLEntities(StaticVariables.mCapoPrint) + "\">" + parseToHTMLEntities(StaticVariables.mCapo) + "</capo>\n";
+        myNEWXML += "  <tempo>" + parseToHTMLEntities(StaticVariables.mTempo) + "</tempo>\n";
+        myNEWXML += "  <time_sig>" + parseToHTMLEntities(StaticVariables.mTimeSig) + "</time_sig>\n";
+        myNEWXML += "  <duration>" + parseToHTMLEntities(StaticVariables.mDuration) + "</duration>\n";
+        myNEWXML += "  <predelay>" + parseToHTMLEntities(StaticVariables.mPreDelay) + "</predelay>\n";
+        myNEWXML += "  <ccli>" + parseToHTMLEntities(StaticVariables.mCCLI) + "</ccli>\n";
+        myNEWXML += "  <theme>" + parseToHTMLEntities(StaticVariables.mTheme) + "</theme>\n";
+        myNEWXML += "  <alttheme>" + parseToHTMLEntities(StaticVariables.mAltTheme) + "</alttheme>\n";
+        myNEWXML += "  <user1>" + parseToHTMLEntities(StaticVariables.mUser1) + "</user1>\n";
+        myNEWXML += "  <user2>" + parseToHTMLEntities(StaticVariables.mUser2) + "</user2>\n";
+        myNEWXML += "  <user3>" + parseToHTMLEntities(StaticVariables.mUser3) + "</user3>\n";
+        myNEWXML += "  <key>" + parseToHTMLEntities(StaticVariables.mKey) + "</key>\n";
+        myNEWXML += "  <aka>" + parseToHTMLEntities(StaticVariables.mAka) + "</aka>\n";
+        myNEWXML += "  <key_line>" + parseToHTMLEntities(StaticVariables.mKeyLine) + "</key_line>\n";
+        myNEWXML += "  <books>" + parseToHTMLEntities(StaticVariables.mBooks) + "</books>\n";
+        myNEWXML += "  <midi>" + parseToHTMLEntities(StaticVariables.mMidi) + "</midi>\n";
+        myNEWXML += "  <midi_index>" + parseToHTMLEntities(StaticVariables.mMidiIndex) + "</midi_index>\n";
+        myNEWXML += "  <pitch>" + parseToHTMLEntities(StaticVariables.mPitch) + "</pitch>\n";
+        myNEWXML += "  <restrictions>" + parseToHTMLEntities(StaticVariables.mRestrictions) + "</restrictions>\n";
+        myNEWXML += "  <notes>" + parseToHTMLEntities(StaticVariables.mNotes) + "</notes>\n";
+        myNEWXML += "  <lyrics>" + parseToHTMLEntities(StaticVariables.mLyrics) + "</lyrics>\n";
+        myNEWXML += "  <linked_songs>" + parseToHTMLEntities(StaticVariables.mLinkedSongs) + "</linked_songs>\n";
+        myNEWXML += "  <pad_file>" + parseToHTMLEntities(StaticVariables.mPadFile) + "</pad_file>\n";
+        myNEWXML += "  <custom_chords>" + parseToHTMLEntities(StaticVariables.mCustomChords) + "</custom_chords>\n";
+        myNEWXML += "  <link_youtube>" + parseToHTMLEntities(StaticVariables.mLinkYouTube) + "</link_youtube>\n";
+        myNEWXML += "  <link_web>" + parseToHTMLEntities(StaticVariables.mLinkWeb) + "</link_web>\n";
+        myNEWXML += "  <link_audio>" + parseToHTMLEntities(StaticVariables.mLinkAudio) + "</link_audio>\n";
+        myNEWXML += "  <loop_audio>" + parseToHTMLEntities(StaticVariables.mLoopAudio) + "</loop_audio>\n";
+        myNEWXML += "  <link_other>" + parseToHTMLEntities(StaticVariables.mLinkOther) + "</link_other>\n";
+        myNEWXML += "  <abcnotation>" + parseToHTMLEntities(StaticVariables.mNotation) + "</abcnotation>\n";
 
-        if (!FullscreenActivity.mExtraStuff1.isEmpty()) {
-            myNEWXML += "  " + FullscreenActivity.mExtraStuff1 + "\n";
+        if (!StaticVariables.mExtraStuff1.isEmpty()) {
+            myNEWXML += "  " + StaticVariables.mExtraStuff1 + "\n";
         }
-        if (!FullscreenActivity.mExtraStuff2.isEmpty()) {
-            myNEWXML += "  " + FullscreenActivity.mExtraStuff2 + "\n";
+        if (!StaticVariables.mExtraStuff2.isEmpty()) {
+            myNEWXML += "  " + StaticVariables.mExtraStuff2 + "\n";
         }
         myNEWXML += "</song>";
 
@@ -413,9 +443,11 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
 
     public interface MyInterface {
         void rebuildSearchIndex();
+        void prepareSongMenu();
+        void loadSong();
     }
 
-    public static String parseToHTMLEntities(String val) {
+    static String parseToHTMLEntities(String val) {
         if (val == null) {
             val = "";
         }
@@ -432,7 +464,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
 
         // Change &apos; to ' as they don't need encoding in this format - also makes it compatible with desktop
         val = val.replace("&apos;", "'");
-        val = val.replace("\'", "'");
+        //val = val.replace("\'", "'");
 
         // Change " to __quot;  We'll later replace the __ with &.  Do this to deal with &amp; separately
         val = val.replace("\"", "__quot;");
@@ -453,30 +485,35 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
 
     @Override
     public void onCancel(DialogInterface dialog) {
-        this.dismiss();
+        try {
+            forceHideKeyboard(edit_song_lyrics);
+            this.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    void setCapoSpinner(String mKey) {
-        ArrayList<String> capooptions = Transpose.quickCapoKey(mKey);
-        ArrayAdapter<String> aa = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, capooptions);
+    private void setCapoSpinner(String mKey) {
+        ArrayList<String> capooptions = transpose.quickCapoKey(getActivity(), preferences, mKey);
+        ArrayAdapter<String> aa = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, capooptions);
         aa.notifyDataSetChanged();
         edit_song_capo.setAdapter(aa);
         // Where is the key in the available array
         int index = -1;
         List<String> capo_choice = Arrays.asList(getResources().getStringArray(R.array.capo));
         for (int w = 0; w < capo_choice.size(); w++) {
-            if (FullscreenActivity.mCapo.equals(capo_choice.get(w))) {
+            if (StaticVariables.mCapo.equals(capo_choice.get(w))) {
                 index = w;
             }
         }
         edit_song_capo.setSelection(index);
     }
 
-    public void changeFormat(boolean chordpro) {
+    private void changeFormat(boolean chordpro) {
         String textLyrics = edit_song_lyrics.getText().toString();
         Log.d("d", textLyrics);
         if (chordpro) {
-            edit_song_lyrics.setText(chordProConvert.fromOpenSongToChordPro(textLyrics, getActivity()));
+            edit_song_lyrics.setText(chordProConvert.fromOpenSongToChordPro(textLyrics, getActivity(), processSong));
             availabletags.setVisibility(View.GONE);
             fix_lyrics.setVisibility(View.GONE);
             edit_song_lyrics.requestFocus();
@@ -489,13 +526,17 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         V = inflater.inflate(R.layout.popup_editsong, container, false);
 
+        String songid = StaticVariables.whichSongFolder.replace("'","''") + "/" + StaticVariables.songfilename.replace("'","''");
+        sqLiteHelper = new SQLiteHelper(getActivity());
+        sqLite = sqLiteHelper.getSong(getActivity(),songid);
+
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.options_song_edit));
+        title.setText(getResources().getString(R.string.options_song_edit));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -522,8 +563,9 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         textSongConvert = new TextSongConvert();
         chordProConvert = new ChordProConvert();
         storageAccess = new StorageAccess();
-        listSongFiles = new ListSongFiles();
         preferences = new Preferences();
+        processSong = new ProcessSong();
+        transpose = new Transpose();
 
         // Initialise the basic views
         availabletags = V.findViewById(R.id.availabletags);
@@ -548,13 +590,14 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 saveEdit(false);
 
                 DialogFragment newFragment = PopUpPresentationOrderFragment.newInstance();
-                newFragment.show(getFragmentManager(), "dialog");
+                newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
+                forceHideKeyboard(edit_song_lyrics);
                 dismiss();
             }
         });
         edit_song_notes = V.findViewById(R.id.edit_song_notes);
         addBrackets = V.findViewById(R.id.addBrackets);
-        addBrackets.setVisibility(View.GONE);
+        addBrackets.hide();
         addBrackets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -569,7 +612,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         transposeUp_RelativeLayout = V.findViewById(R.id.transposeUp_RelativeLayout);
         transposeDown_RelativeLayout.setVisibility(View.GONE);
         transposeUp_RelativeLayout.setVisibility(View.GONE);
-        transposeUpFAB = V.findViewById(R.id.transposeUpFAB);
+        FloatingActionButton transposeUpFAB = V.findViewById(R.id.transposeUpFAB);
         transposeUpFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -579,7 +622,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 if (startSelection > 0 && endSelection > startSelection) {
                     String selectedText = edit_song_lyrics.getText().toString().substring(startSelection, endSelection);
                     // Transpose it
-                    selectedText = Transpose.transposeThisString("+1", 1, selectedText);
+                    selectedText = transpose.transposeThisString(getActivity(),preferences,false,false,false,"+1", 1, selectedText);
 
                     // Replace the old text
                     String lyricsinfront = edit_song_lyrics.getText().toString().substring(0, startSelection);
@@ -591,7 +634,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 }
             }
         });
-        transposeDownFAB = V.findViewById(R.id.transposeDownFAB);
+        FloatingActionButton transposeDownFAB = V.findViewById(R.id.transposeDownFAB);
         transposeDownFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -601,7 +644,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 if (startSelection > 0 && endSelection > startSelection) {
                     String selectedText = edit_song_lyrics.getText().toString().substring(startSelection, endSelection);
                     // Transpose it
-                    selectedText = Transpose.transposeThisString("-1", 1, selectedText);
+                    selectedText = transpose.transposeThisString(getActivity(),preferences,false,false,false,"-1", 1, selectedText);
 
                     // Replace the old text
                     String lyricsinfront = edit_song_lyrics.getText().toString().substring(0, startSelection);
@@ -613,13 +656,12 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 }
             }
         });
-        editAsChordPro = V.findViewById(R.id.editAsChordPro);
-        editAsChordPro.setChecked(FullscreenActivity.editAsChordPro);
+        SwitchCompat editAsChordPro = V.findViewById(R.id.editAsChordPro);
+        editAsChordPro.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"editAsChordPro",false));
         editAsChordPro.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                FullscreenActivity.editAsChordPro = isChecked;
-                Preferences.savePreferences();
+                preferences.setMyPreferenceBoolean(getActivity(),"editAsChordPro",isChecked);
                 changeFormat(isChecked);
             }
         });
@@ -629,12 +671,25 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    addBrackets.setVisibility(View.VISIBLE);
+                    addBrackets.show();
+                    keyboardopen = false;
+                    forceShowKeyboard();
                 } else {
-                    addBrackets.setVisibility(View.GONE);
-                    //transposeDown_RelativeLayout.setVisibility(View.GONE);
-                    //transposeUp_RelativeLayout.setVisibility(View.GONE);
+                    addBrackets.hide();
+                    transposeDown_RelativeLayout.setVisibility(View.GONE);
+                    transposeUp_RelativeLayout.setVisibility(View.GONE);
+                    forceHideKeyboard(edit_song_lyrics);
                 }
+            }
+        });
+        edit_song_lyrics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show the keyboard
+                keyboardopen = false;
+                forceShowKeyboard();
+                transposeDown_RelativeLayout.setVisibility(View.GONE);
+                transposeUp_RelativeLayout.setVisibility(View.GONE);
             }
         });
         edit_song_lyrics.setOnLongClickListener(new View.OnLongClickListener() {
@@ -645,14 +700,15 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 }
                 Log.d("d", "onlongclick");
                 // Start the CAB using the ActionMode.Callback defined above
-                mActionMode = getActivity().startActionMode(mActionModeCallback);
+                mActionMode = Objects.requireNonNull(getActivity()).startActionMode(mActionModeCallback);
                 edit_song_lyrics.setSelected(true);
                 return false;
             }
         });
-        toggleGeneralAdvanced = V.findViewById(R.id.show_general_advanced);
+        // Buttons
+        Button toggleGeneralAdvanced = V.findViewById(R.id.show_general_advanced);
         generalSettings = V.findViewById(R.id.general_settings);
-        abcnotation = V.findViewById(R.id.abcnotation);
+        TextView abcnotation = V.findViewById(R.id.abcnotation);
         abcnotation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -661,7 +717,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
 
                 FullscreenActivity.whattodo = "abcnotation_edit";
                 DialogFragment newFragment = PopUpABCNotationFragment.newInstance();
-                newFragment.show(getFragmentManager(), "dialog");
+                newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
                 dismiss();
             }
         });
@@ -670,13 +726,13 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             @Override
             public void onClick(View view) {
                 String text = edit_song_lyrics.getText().toString();
-                if (FullscreenActivity.editAsChordPro) {
+                if (preferences.getMyPreferenceBoolean(getActivity(),"editAsChordPro",false)) {
                     // If we are editing as ChordPro, convert it back to OpenSong first
                     text = chordProConvert.fromChordProToOpenSong(text);
                     // Now fix it
                     text = textSongConvert.convertText(getActivity(),text);
                     // Now set it back to the ChordPro format
-                    text = chordProConvert.fromOpenSongToChordPro(text,getActivity());
+                    text = chordProConvert.fromOpenSongToChordPro(text,getActivity(),processSong);
                 } else {
                     // Using OpenSong format, so simply fix it
                     text = textSongConvert.convertText(getActivity(),text);
@@ -762,16 +818,16 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
 
         // Fill in the current values
         // Start with the simple EditTexts
-        edit_song_title.setText(FullscreenActivity.mTitle);
-        edit_song_author.setText(FullscreenActivity.mAuthor);
-        edit_song_copyright.setText(FullscreenActivity.mCopyright);
-        edit_song_presentation.setText(FullscreenActivity.mPresentation);
-        edit_song_duration.setText(FullscreenActivity.mDuration);
-        if (FullscreenActivity.mPreDelay.isEmpty()) {
+        edit_song_title.setText(StaticVariables.mTitle);
+        edit_song_author.setText(StaticVariables.mAuthor);
+        edit_song_copyright.setText(StaticVariables.mCopyright);
+        edit_song_presentation.setText(StaticVariables.mPresentation);
+        edit_song_duration.setText(StaticVariables.mDuration);
+        if (StaticVariables.mPreDelay.isEmpty()) {
             predelay_SeekBar.setProgress(0);
             predelay_TextView.setText("");
         } else {
-            int val=Integer.parseInt(FullscreenActivity.mPreDelay.replaceAll("[\\D]",""));
+            int val=Integer.parseInt(StaticVariables.mPreDelay.replaceAll("[\\D]",""));
             if (val<0) {
                 val=0;
             }
@@ -779,11 +835,11 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             predelay_SeekBar.setProgress(val+1);
             predelay_TextView.setText(text);
         }
-        edit_song_notes.setText(FullscreenActivity.mNotes);
-        edit_song_duration.setText(FullscreenActivity.mDuration);
+        edit_song_notes.setText(StaticVariables.mNotes);
+        edit_song_duration.setText(StaticVariables.mDuration);
         edit_song_lyrics.setTypeface(Typeface.MONOSPACE);
         // Get the lyrics into a temp string (so we can get rid of rubbish tabs, etc)
-        String editBoxLyrics = FullscreenActivity.mLyrics;
+        String editBoxLyrics = StaticVariables.mLyrics;
         editBoxLyrics = editBoxLyrics.replaceAll("\r\n", "\n");
         editBoxLyrics = editBoxLyrics.replaceAll("\n\r", "\n");
         editBoxLyrics = editBoxLyrics.replaceAll("\t", "    ");
@@ -791,28 +847,28 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         editBoxLyrics = editBoxLyrics.replaceAll("\f", "    ");
         edit_song_lyrics.setText(editBoxLyrics);
         // If the user wants to use ChordPro format, change it
-        if (FullscreenActivity.editAsChordPro) {
+        if (preferences.getMyPreferenceBoolean(getActivity(),"editAsChordPro",false)) {
             changeFormat(true);
         }
-        edit_song_CCLI.setText(FullscreenActivity.mCCLI);
-        edit_song_aka.setText(FullscreenActivity.mAka);
-        edit_song_key_line.setText(FullscreenActivity.mKeyLine);
-        edit_song_hymn.setText(FullscreenActivity.mHymnNumber);
-        edit_song_user1.setText(FullscreenActivity.mUser1);
-        edit_song_user2.setText(FullscreenActivity.mUser2);
-        edit_song_user3.setText(FullscreenActivity.mUser3);
-        edit_song_midi.setText(FullscreenActivity.mMidi);
-        edit_song_midi_index.setText(FullscreenActivity.mMidiIndex);
-        edit_song_restrictions.setText(FullscreenActivity.mRestrictions);
-        edit_song_books.setText(FullscreenActivity.mBooks);
-        edit_song_pitch.setText(FullscreenActivity.mPitch);
-        abcnotation.setText(FullscreenActivity.mNotation);
+        edit_song_CCLI.setText(StaticVariables.mCCLI);
+        edit_song_aka.setText(StaticVariables.mAka);
+        edit_song_key_line.setText(StaticVariables.mKeyLine);
+        edit_song_hymn.setText(StaticVariables.mHymnNumber);
+        edit_song_user1.setText(StaticVariables.mUser1);
+        edit_song_user2.setText(StaticVariables.mUser2);
+        edit_song_user3.setText(StaticVariables.mUser3);
+        edit_song_midi.setText(StaticVariables.mMidi);
+        edit_song_midi_index.setText(StaticVariables.mMidiIndex);
+        edit_song_restrictions.setText(StaticVariables.mRestrictions);
+        edit_song_books.setText(StaticVariables.mBooks);
+        edit_song_pitch.setText(StaticVariables.mPitch);
+        abcnotation.setText(StaticVariables.mNotation);
 
-        customTheme.setText(FullscreenActivity.mTheme);
+        customTheme.setText(StaticVariables.mTheme);
 
         // Now the Spinners
         // The Key
-        ArrayAdapter<CharSequence> song_key = ArrayAdapter.createFromResource(getActivity(),
+        ArrayAdapter<CharSequence> song_key = ArrayAdapter.createFromResource(Objects.requireNonNull(getActivity()),
                 R.array.key_choice,
                 R.layout.my_spinner);
         song_key.setDropDownViewResource(R.layout.my_spinner);
@@ -821,7 +877,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         int index = -1;
         List<String> key_choice = Arrays.asList(getResources().getStringArray(R.array.key_choice));
         for (int w=0;w<key_choice.size();w++) {
-            if (FullscreenActivity.mKey.equals(key_choice.get(w))) {
+            if (StaticVariables.mKey.equals(key_choice.get(w))) {
                 index = w;
             }
         }
@@ -837,14 +893,14 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         index = -1;
         List<String> timesig = Arrays.asList(getResources().getStringArray(R.array.timesig));
         for (int w=0;w<timesig.size();w++) {
-            if (FullscreenActivity.mTimeSig.equals(timesig.get(w))) {
+            if (StaticVariables.mTimeSig.equals(timesig.get(w))) {
                 index = w;
             }
         }
         edit_song_timesig.setSelection(index);
 
         // The capo fret
-        setCapoSpinner(FullscreenActivity.mKey);
+        setCapoSpinner(StaticVariables.mKey);
 
         // If the key changes, we need to update the spinner for the capo fret
         edit_song_key.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -866,7 +922,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         capo_print.setDropDownViewResource(R.layout.my_spinner);
         edit_song_capo_print.setAdapter(capo_print);
         // Where is the key in the available array
-        switch (FullscreenActivity.mCapoPrint) {
+        switch (StaticVariables.mCapoPrint) {
             case "true":
                 edit_song_capo_print.setSelection(1);
                 break;
@@ -892,16 +948,16 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         pad_file.setDropDownViewResource(R.layout.my_spinner);
         edit_song_pad_file.setAdapter(pad_file);
         // Only allow auto for now (first index)
-        if (FullscreenActivity.mPadFile.equals(auto)) {
+        if (StaticVariables.mPadFile.equals(auto)) {
             edit_song_pad_file.setSelection(1);
-        } else if (FullscreenActivity.mPadFile.equals(link)) {
+        } else if (StaticVariables.mPadFile.equals(link)) {
             edit_song_pad_file.setSelection(2);
         } else {
             edit_song_pad_file.setSelection(0);
         }
 
         // Now the seekbars
-        String temp_tempo = FullscreenActivity.mTempo;
+        String temp_tempo = StaticVariables.mTempo;
         temp_tempo = temp_tempo.replace("Very Fast", "140");
         temp_tempo = temp_tempo.replace("Fast", "120");
         temp_tempo = temp_tempo.replace("Moderate", "100");
@@ -943,8 +999,37 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
+    }
+
+    private void forceShowKeyboard() {
+        if (!keyboardopen && edit_song_lyrics.hasFocus()) {
+            try {
+                keyboardopen=true;
+                Log.d("d", "Force show keyboard");
+                InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm!=null) {
+                    imm.showSoftInput(edit_song_lyrics,0);
+                    //imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void forceHideKeyboard(View v) {
+            try {
+                Log.d("d", "Force hide keyboard");
+                InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm!=null) {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+                keyboardopen = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
 }

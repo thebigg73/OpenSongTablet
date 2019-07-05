@@ -38,9 +38,7 @@ class CustomSlide {
         }
 
         // If slide content is empty - put the title in
-        if ((FullscreenActivity.customslide_content.isEmpty() ||
-                FullscreenActivity.customslide_content.equals("")) &&
-                !FullscreenActivity.noteorslide.equals("image")) {
+        if (FullscreenActivity.customslide_content.isEmpty() && !FullscreenActivity.noteorslide.equals("image")) {
             FullscreenActivity.customslide_content = FullscreenActivity.customslide_title;
         }
 
@@ -86,16 +84,14 @@ class CustomSlide {
         }
 
         // Add to set
-        FullscreenActivity.whatsongforsetwork = "$**_**" + templocator + "/" + filetitle + "_**$";
+        StaticVariables.whatsongforsetwork = "$**_**" + templocator + "/" + filetitle + "_**$";
 
         // Allow the song to be added, even if it is already there
-        FullscreenActivity.mySet = FullscreenActivity.mySet + FullscreenActivity.whatsongforsetwork;
-
-        // Save the set and other preferences
-        Preferences.savePreferences();
+        String val = preferences.getMyPreferenceString(c,"setCurrent","") + StaticVariables.whatsongforsetwork;
+        preferences.setMyPreferenceString(c,"setCurrent",val);
 
         // Show the current set
         SetActions setActions = new SetActions();
-        setActions.prepareSetList();
+        setActions.prepareSetList(c,preferences);
     }
 }

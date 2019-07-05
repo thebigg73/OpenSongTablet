@@ -1,14 +1,15 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ import android.widget.TextView;
 public class PopUpSoundLevelMeterFragment extends DialogFragment {
 
     private AudioRecord audio;
-    int bufferSize;
+    private int bufferSize;
 
     static PopUpSoundLevelMeterFragment newInstance() {
         PopUpSoundLevelMeterFragment frag;
@@ -29,25 +30,25 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
         return frag;
     }
 
-    TextView dBTextView;
-    Handler mHandlerStart;
-    ImageView level_1;
-    ImageView level_2;
-    ImageView level_3;
-    ImageView level_4;
-    ImageView level_5;
-    ImageView level_6;
-    ImageView level_7;
-    ImageView level_8;
-    ImageView level_9;
-    ImageView level_10;
-    SeekBar maxvolrange;
-    TextView volval;
-    TextView averagevol;
-    Button resetaverage;
-    int totalvols = 0;
-    int counts = 0;
-    float avvol = 0.0f;
+    private TextView dBTextView;
+    private Handler mHandlerStart;
+    private ImageView level_1;
+    private ImageView level_2;
+    private ImageView level_3;
+    private ImageView level_4;
+    private ImageView level_5;
+    private ImageView level_6;
+    private ImageView level_7;
+    private ImageView level_8;
+    private ImageView level_9;
+    private ImageView level_10;
+    private TextView volval;
+    private TextView averagevol;
+    private int totalvols = 0;
+    private int counts = 0;
+    private float avvol = 0.0f;
+
+    Preferences preferences;
 
     Runnable r = new Runnable() {
         @Override
@@ -55,14 +56,6 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
             sampleSound();
         }
     };
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,13 +68,13 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_soundlevelmeter, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.volume));
+        title.setText(getResources().getString(R.string.volume));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +85,9 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
+
+        preferences = new Preferences();
 
         dBTextView = V.findViewById(R.id.dBTextView);
 
@@ -108,7 +103,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
         level_10 = V.findViewById(R.id.level_10);
 
         averagevol = V.findViewById(R.id.averagevol);
-        resetaverage = V.findViewById(R.id.resetaverage);
+        Button resetaverage = V.findViewById(R.id.resetaverage);
 
         resetaverage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,11 +116,11 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
 
         volval = V.findViewById(R.id.volval);
 
-        maxvolrange = V.findViewById(R.id.maxvolrange);
+        SeekBar maxvolrange = V.findViewById(R.id.maxvolrange);
         maxvolrange.setMax(7);
         int myprogress;
         String mytext;
-        switch (FullscreenActivity.maxvolrange) {
+        switch (preferences.getMyPreferenceInt(getActivity(),"soundMeterRange",400)) {
             case 50:
                 myprogress = 0;
                 mytext = "0 - 50";
@@ -220,9 +215,8 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                         break;
                     }
 
-                FullscreenActivity.maxvolrange = volrangechosen;
+                preferences.setMyPreferenceInt(getActivity(),"soundMeterRange",volrangechosen);
                 volval.setText(text);
-                Preferences.savePreferences();
             }
 
             @Override
@@ -255,7 +249,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
             e.printStackTrace();
         }
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
         return V;
     }
 
@@ -275,7 +269,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
         }
     }
 
-    public void sampleSound() {
+    private void sampleSound() {
 
         short[] buffer = new short[bufferSize];
 
@@ -303,7 +297,8 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
             // Turn the appropriate level lights on or off
             // Assume the highest value is 170
 
-            if (vol>(0.9*(float)FullscreenActivity.maxvolrange)) {
+            float maxvolrange = (float) preferences.getMyPreferenceInt(getActivity(),"soundMeterRange",400);
+            if (vol>(0.9*maxvolrange)) {
                 // All 10 levels on
                 level_1.setVisibility(View.VISIBLE);
                 level_2.setVisibility(View.VISIBLE);
@@ -315,7 +310,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 level_8.setVisibility(View.VISIBLE);
                 level_9.setVisibility(View.VISIBLE);
                 level_10.setVisibility(View.VISIBLE);
-            } else if (vol>(0.8*(float)FullscreenActivity.maxvolrange)) {
+            } else if (vol>(0.8*maxvolrange)) {
                 // 9 levels on
                 level_1.setVisibility(View.VISIBLE);
                 level_2.setVisibility(View.VISIBLE);
@@ -327,7 +322,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 level_8.setVisibility(View.VISIBLE);
                 level_9.setVisibility(View.VISIBLE);
                 level_10.setVisibility(View.INVISIBLE);
-            } else if (vol>(0.7*(float)FullscreenActivity.maxvolrange)) {
+            } else if (vol>(0.7*maxvolrange)) {
                 // 8 levels on
                 level_1.setVisibility(View.VISIBLE);
                 level_2.setVisibility(View.VISIBLE);
@@ -339,7 +334,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 level_8.setVisibility(View.VISIBLE);
                 level_9.setVisibility(View.INVISIBLE);
                 level_10.setVisibility(View.INVISIBLE);
-            } else if (vol>(0.6*(float)FullscreenActivity.maxvolrange)) {
+            } else if (vol>(0.6*maxvolrange)) {
                 // 7 levels on
                 level_1.setVisibility(View.VISIBLE);
                 level_2.setVisibility(View.VISIBLE);
@@ -351,7 +346,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 level_8.setVisibility(View.INVISIBLE);
                 level_9.setVisibility(View.INVISIBLE);
                 level_10.setVisibility(View.INVISIBLE);
-            } else if (vol>(0.5*(float)FullscreenActivity.maxvolrange)) {
+            } else if (vol>(0.5*maxvolrange)) {
                 // 6 levels on
                 level_1.setVisibility(View.VISIBLE);
                 level_2.setVisibility(View.VISIBLE);
@@ -363,7 +358,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 level_8.setVisibility(View.INVISIBLE);
                 level_9.setVisibility(View.INVISIBLE);
                 level_10.setVisibility(View.INVISIBLE);
-            } else if (vol>(0.4*(float)FullscreenActivity.maxvolrange)) {
+            } else if (vol>(0.4*maxvolrange)) {
                 // 5 levels on
                 level_1.setVisibility(View.VISIBLE);
                 level_2.setVisibility(View.VISIBLE);
@@ -375,7 +370,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 level_8.setVisibility(View.INVISIBLE);
                 level_9.setVisibility(View.INVISIBLE);
                 level_10.setVisibility(View.INVISIBLE);
-            } else if (vol>(0.3*(float)FullscreenActivity.maxvolrange)) {
+            } else if (vol>(0.3*maxvolrange)) {
                 // 4 levels on
                 level_1.setVisibility(View.VISIBLE);
                 level_2.setVisibility(View.VISIBLE);
@@ -387,7 +382,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 level_8.setVisibility(View.INVISIBLE);
                 level_9.setVisibility(View.INVISIBLE);
                 level_10.setVisibility(View.INVISIBLE);
-            } else if (vol>(0.2*(float)FullscreenActivity.maxvolrange)) {
+            } else if (vol>(0.2*maxvolrange)) {
                 // 3 levels on
                 level_1.setVisibility(View.VISIBLE);
                 level_2.setVisibility(View.VISIBLE);
@@ -399,7 +394,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 level_8.setVisibility(View.INVISIBLE);
                 level_9.setVisibility(View.INVISIBLE);
                 level_10.setVisibility(View.INVISIBLE);
-            } else if (vol>(0.1*(float)FullscreenActivity.maxvolrange)) {
+            } else if (vol>(0.1*maxvolrange)) {
                 // 2 levels on
                 level_1.setVisibility(View.VISIBLE);
                 level_2.setVisibility(View.VISIBLE);

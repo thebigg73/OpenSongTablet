@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
@@ -81,9 +82,10 @@
                     android:layout_weight="1"
                     android:hint="@string/edit_song_duration"
                     android:inputType="number"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    tools:ignore="Autofill" />
 
-                <android.support.design.widget.FloatingActionButton
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/uselinkaudiolength_ImageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

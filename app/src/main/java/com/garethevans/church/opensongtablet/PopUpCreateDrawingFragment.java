@@ -2,13 +2,14 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.io.OutputStream;
+import java.util.Objects;
 
 public class PopUpCreateDrawingFragment extends DialogFragment {
 
@@ -50,14 +52,6 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
@@ -72,38 +66,34 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
     private DrawNotes drawView;
     private ImageView screenShot;
-    RelativeLayout drawingArea;
-    HorizontalScrollView myTools;
-    HorizontalScrollView myColors;
-    RelativeLayout mySizes;
-    FloatingActionButton currentTool;
-    FloatingActionButton pencil_FAB;
-    FloatingActionButton highlighter_FAB;
-    FloatingActionButton eraser_FAB;
-    FloatingActionButton undo_FAB;
-    FloatingActionButton redo_FAB;
-    FloatingActionButton delete_FAB;
-    FloatingActionButton color_black;
-    FloatingActionButton color_white;
-    FloatingActionButton color_yellow;
-    FloatingActionButton color_red;
-    FloatingActionButton color_green;
-    FloatingActionButton color_blue;
-    SeekBar size_SeekBar;
-    TextView size_TextView;
-    int screenshot_width;
-    int screenshot_height;
+    private RelativeLayout drawingArea, mySizes;
+    private HorizontalScrollView myTools, myColors;
+    private FloatingActionButton currentTool;
+    private FloatingActionButton pencil_FAB;
+    private FloatingActionButton highlighter_FAB;
+    private FloatingActionButton eraser_FAB;
+    private FloatingActionButton color_black;
+    private FloatingActionButton color_white;
+    private FloatingActionButton color_yellow;
+    private FloatingActionButton color_red;
+    private FloatingActionButton color_green;
+    private FloatingActionButton color_blue;
+    private SeekBar size_SeekBar;
+    private TextView size_TextView;
+    private int screenshot_width;
+    private int screenshot_height;
     float scale;
-    float off_alpha = 0.4f;
-    int isvis = View.VISIBLE;
-    int isgone = View.GONE;
+    private float off_alpha = 0.4f;
+    private int isvis = View.VISIBLE;
+    private int isgone = View.GONE;
 
     StorageAccess storageAccess;
     Preferences preferences;
+    ProcessSong processSong;
     Uri uri;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(false);
         View V = inflater.inflate(R.layout.popup_createdrawing, container, false);
@@ -130,6 +120,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
         storageAccess = new StorageAccess();
         preferences = new Preferences();
+        processSong = new ProcessSong();
 
         // Initialise the views
         drawView = V.findViewById(R.id.drawView);
@@ -143,7 +134,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         pencil_FAB = V.findViewById(R.id.pencil_FAB);
         highlighter_FAB = V.findViewById(R.id.highlighter_FAB);
         eraser_FAB = V.findViewById(R.id.eraser_FAB);
-        delete_FAB = V.findViewById(R.id.delete_FAB);
+        FloatingActionButton delete_FAB = V.findViewById(R.id.delete_FAB);
         color_black = V.findViewById(R.id.color_black);
         color_white = V.findViewById(R.id.color_white);
         color_yellow = V.findViewById(R.id.color_yellow);
@@ -152,8 +143,8 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         color_blue = V.findViewById(R.id.color_blue);
         size_SeekBar = V.findViewById(R.id.size_SeekBar);
         size_TextView = V.findViewById(R.id.size_TextView);
-        undo_FAB = V.findViewById(R.id.undo_FAB);
-        redo_FAB = V.findViewById(R.id.redo_FAB);
+        FloatingActionButton undo_FAB = V.findViewById(R.id.undo_FAB);
+        FloatingActionButton redo_FAB = V.findViewById(R.id.redo_FAB);
 
         // Get the screenshot size and ajust the drawing to match
         getSizes();
@@ -203,37 +194,37 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         color_black.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateColor("black");
+                updateColor(StaticVariables.black);
             }
         });
         color_white.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateColor("white");
+                updateColor(StaticVariables.white);
             }
         });
         color_yellow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateColor("yellow");
+                updateColor(StaticVariables.yellow);
             }
         });
         color_red.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateColor("red");
+                updateColor(StaticVariables.red);
             }
         });
         color_green.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateColor("green");
+                updateColor(StaticVariables.green);
             }
         });
         color_blue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateColor("blue");
+                updateColor(StaticVariables.blue);
             }
         });
         size_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -246,9 +237,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
             public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Preferences.savePreferences();
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         delete_FAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -278,73 +267,68 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
         drawView.setDrawingSize(screenshot_width,screenshot_height);
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
 
-    public void setHighlighterFile() {
+    private void setHighlighterFile() {
         // If this file already exists, load it up!
-        String hname = ProcessSong.getHighlighterName(getActivity());
+        String hname = processSong.getHighlighterName(Objects.requireNonNull(getActivity()));
         uri = storageAccess.getUriForItem(getActivity(), preferences, "Highlighter", "", hname);
         if (storageAccess.uriExists(getActivity(),uri)) {
             drawView.loadImage(getActivity(),uri);
         }
     }
 
-    public void updateTool(String what) {
-        FullscreenActivity.drawingTool = what;
+    private void updateTool(String what) {
+        preferences.setMyPreferenceString(getActivity(),"drawingTool",what);
         if (what.equals("eraser")) {
             drawView.setErase(true);
         } else {
             drawView.setErase(false);
         }
-        Preferences.savePreferences();
         setCurrentTool();
         setCurrentColor();
         setCurrentSize();
         showorhideToolOptions(isvis);
     }
 
-    public void updateColor(String what) {
-        switch (FullscreenActivity.drawingTool) {
+    private void updateColor(int what) {
+        switch (preferences.getMyPreferenceString(getActivity(),"drawingTool","pen")) {
             case "pen":
-                FullscreenActivity.drawingPenColor = what;
+                preferences.setMyPreferenceInt(getActivity(),"drawingPenColor",what);
                 break;
             case "highlighter":
-                FullscreenActivity.drawingHighlightColor = what;
+                preferences.setMyPreferenceInt(getActivity(),"drawingHighlighterColor",what);
                 break;
         }
-        Preferences.savePreferences();
         setCurrentTool();
         setCurrentColor();
         setCurrentSize();
         showorhideToolOptions(isvis);
     }
 
-    public void showorhideToolOptions(int vis) {
+    private void showorhideToolOptions(int vis) {
         if (vis == isgone) {
             myTools.setVisibility(isgone);
             myColors.setVisibility(isgone);
             mySizes.setVisibility(isgone);
         } else {
-            switch (FullscreenActivity.drawingTool) {
-                case "eraser":
-                    myTools.setVisibility(vis);
-                    myColors.setVisibility(isgone);
-                    mySizes.setVisibility(vis);
-                    break;
-                default:
-                    myTools.setVisibility((vis));
-                    myColors.setVisibility(vis);
-                    mySizes.setVisibility(vis);
-                    break;
+            if ("eraser".equals(preferences.getMyPreferenceString(getActivity(), "drawingTool", "pen"))) {
+                myTools.setVisibility(vis);
+                myColors.setVisibility(isgone);
+                mySizes.setVisibility(vis);
+            } else {
+                myTools.setVisibility((vis));
+                myColors.setVisibility(vis);
+                mySizes.setVisibility(vis);
             }
         }
     }
 
-    public void setCurrentTool() {
-        switch (FullscreenActivity.drawingTool) {
+    private void setCurrentTool() {
+        switch (preferences.getMyPreferenceString(getActivity(),"drawingTool","pen")) {
             case "pen":
                 currentTool.setImageResource(R.drawable.ic_pencil_white_36dp);
                 setToolAlpha(1.0f,off_alpha,off_alpha);
@@ -359,17 +343,43 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         }
     }
 
-    public void setCurrentColor() {
+    private void setCurrentColor() {
         String color;
-
-        switch (FullscreenActivity.drawingTool) {
+        int val;
+        switch (preferences.getMyPreferenceString(getActivity(),"drawingTool","pen")) {
             case "pen":
             default:
-                color = FullscreenActivity.drawingPenColor;
+                color = "black";
+                val = preferences.getMyPreferenceInt(getActivity(),"drawingPenColor",StaticVariables.black);
+                if (val==StaticVariables.white) {
+                    color = "white";
+                } else if (val==StaticVariables.yellow) {
+                    color = "yellow";
+                } else if (val==StaticVariables.red) {
+                    color = "red";
+                } else if (val==StaticVariables.green) {
+                    color = "green";
+                } else if (val==StaticVariables.blue) {
+                    color = "blue";
+                }
                 break;
 
+
+
             case "highlighter":
-                color = FullscreenActivity.drawingHighlightColor;
+                color = "yellow";
+                val = preferences.getMyPreferenceInt(getActivity(),"drawingPenColor",StaticVariables.black);
+                if (val==StaticVariables.highlighterblack) {
+                    color = "black";
+                } else if (val==StaticVariables.highlighterwhite) {
+                    color = "white";
+                } else if (val==StaticVariables.highlighterred) {
+                    color = "red";
+                } else if (val==StaticVariables.highlightergreen) {
+                    color = "green";
+                } else if (val==StaticVariables.highlighterblue) {
+                    color = "blue";
+                }
                 break;
 
             case "eraser":
@@ -412,49 +422,49 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         }
     }
 
-    public void setCurrentSize() {
+    private void setCurrentSize() {
         int size = 0;
-        switch (FullscreenActivity.drawingTool) {
+        switch (preferences.getMyPreferenceString(getActivity(),"drawingTool","pen")) {
             case "pen":
-                size = (FullscreenActivity.drawingPenSize / 5) - 1;
+                size = (preferences.getMyPreferenceInt(getActivity(),"drawingPenSize",20) / 5) - 1;
                 break;
             case "highlighter":
-                size = (FullscreenActivity.drawingHighlightSize / 5) - 1;
+                size = (preferences.getMyPreferenceInt(getActivity(),"drawingHighlighterSize",20) / 5) - 1;
                 break;
             case "eraser":
-                size = (FullscreenActivity.drawingEraserSize / 5) - 1;
+                size = (preferences.getMyPreferenceInt(getActivity(),"drawingEraserSize",20) / 5) - 1;
         }
         size_SeekBar.setProgress(size);
         String t = ((size+1)*5) + " px";
         size_TextView.setText(t);
     }
 
-    public void getCurrentSize() {
+    private void getCurrentSize() {
         int size = (size_SeekBar.getProgress() + 1) * 5;
         String t = size + " px";
-        switch (FullscreenActivity.drawingTool) {
+        switch (preferences.getMyPreferenceString(getActivity(),"drawingTool","pen")) {
             case "pen":
-                FullscreenActivity.drawingPenSize = size;
+                preferences.setMyPreferenceInt(getActivity(),"drawingPenSize",size);
                 break;
             case "highlighter":
-                FullscreenActivity.drawingHighlightSize = size;
+                preferences.setMyPreferenceInt(getActivity(),"drawingHighlighterSize",size);
                 break;
             case "eraser":
-                FullscreenActivity.drawingEraserSize = size;
+                preferences.setMyPreferenceInt(getActivity(),"drawingEraserSize",size);
                 break;
         }
         size_TextView.setText(t);
     }
 
-    public void setToolAlpha(float float_pen, float float_highlighter, float float_eraser) {
+    private void setToolAlpha(float float_pen, float float_highlighter, float float_eraser) {
         pencil_FAB.setAlpha(float_pen);
         highlighter_FAB.setAlpha(float_highlighter);
         eraser_FAB.setAlpha(float_eraser);
     }
 
-    public void setColorTick(int b_black, int b_white, int b_yellow,
-                             int b_red, int b_green, int b_blue) {
-        if (FullscreenActivity.drawingTool.equals("eraser")) {
+    private void setColorTick(int b_black, int b_white, int b_yellow,
+                              int b_red, int b_green, int b_blue) {
+        if (preferences.getMyPreferenceString(getActivity(),"drawingTool","pen").equals("eraser")) {
             myColors.setVisibility(View.GONE);
         } else {
             myColors.setVisibility(View.VISIBLE);
@@ -467,8 +477,8 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         color_blue.setImageResource(b_blue);
     }
 
-    public void setColorAlpha(float c_black, float c_white, float c_yellow,
-                              float c_red, float c_green, float c_blue) {
+    private void setColorAlpha(float c_black, float c_white, float c_yellow,
+                               float c_red, float c_green, float c_blue) {
         color_black.setAlpha(c_black);
         color_white.setAlpha(c_white);
         color_yellow.setAlpha(c_yellow);
@@ -477,7 +487,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         color_blue.setAlpha(c_blue);
     }
 
-    public void getSizes() {
+    private void getSizes() {
         int w = FullscreenActivity.bmScreen.getWidth();
         int h = FullscreenActivity.bmScreen.getHeight();
 
@@ -522,7 +532,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
             if (FullscreenActivity.saveHighlight) {
                 FullscreenActivity.highlightOn = true;
                 drawView.setDrawingCacheEnabled(true);
-                String hname = ProcessSong.getHighlighterName(getActivity());
+                String hname = processSong.getHighlighterName(Objects.requireNonNull(getActivity()));
                 newUri = storageAccess.getUriForItem(getActivity(), preferences,
                         "Highlighter", "", hname);
 

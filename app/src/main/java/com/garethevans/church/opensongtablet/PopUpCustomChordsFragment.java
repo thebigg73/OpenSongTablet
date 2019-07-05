@@ -2,13 +2,14 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PopUpCustomChordsFragment extends DialogFragment {
 
@@ -54,20 +56,18 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         super.onDetach();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-    }
+    private AsyncTask<Object,Void,String> prepare_custom;
+    private String string6_text = "x";
+    private String string5_text = "x";
+    private String string4_text = "x";
+    private String string3_text = "x";
+    private String string2_text = "x";
+    private String string1_text = "x";
+    private String fret_text = "0";
+    private String instrument_text = "g";
+    private String chord_text = "xxxxxx";
 
-    AsyncTask<Object,Void,String> prepare_custom;
-    String string6_text = "x", string5_text = "x", string4_text = "x", string3_text = "x",
-            string2_text = "x", string1_text = "x", fret_text = "0", instrument_text = "g",
-            chord_text = "xxxxxx", chord_name = "";
-
-    boolean string6_O = false, string5_O = false, string4_O = false, string3_O = false,
+    private boolean string6_O = false, string5_O = false, string4_O = false, string3_O = false,
             string2_O = false, string1_O = false, string6_X = true, string5_X = true,
             string4_X = true, string3_X = true, string2_X = true, string1_X = true,
             string6_f1_on = false, string6_f2_on = false, string6_f3_on = false,
@@ -80,14 +80,13 @@ public class PopUpCustomChordsFragment extends DialogFragment {
             string2_f2_on = false, string2_f3_on = false, string2_f4_on = false,
             string2_f5_on = false, string1_f1_on = false, string1_f2_on = false,
             string1_f3_on = false, string1_f4_on = false, string1_f5_on = false;
-    Drawable stringtop, stringtop_X, stringtop_O, string6, string5, string4, string3, string2,
+    private Drawable stringtop, stringtop_X, stringtop_O, string6, string5, string4, string3, string2,
             string1, string6_on, string5_on, string4_on, string3_on, string2_on, string1_on;
-    LinearLayout guitar, fret0, fret1, fret2, fret3, fret4, fret5, savedcustomchords;
-    Spinner customchords_instrument, customchords_fret;
-    EditText customchord_name;
-    TextView customchord_code;
-    Button customChordSave;
-    ImageView string6_top, string5_top, string4_top, string3_top, string2_top, string1_top,
+    private LinearLayout savedcustomchords;
+    private Spinner customchords_fret;
+    private EditText customchord_name;
+    private TextView customchord_code;
+    private ImageView string6_top, string5_top, string4_top, string3_top, string2_top, string1_top,
             string6_f1, string5_f1, string4_f1, string3_f1, string2_f1, string1_f1,
             string6_f2, string5_f2, string4_f2, string3_f2, string2_f2, string1_f2,
             string6_f3, string5_f3, string4_f3, string3_f3, string2_f3, string1_f3,
@@ -107,9 +106,8 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setCanceledOnTouchOutside(true);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         if (mListener!=null) {
@@ -119,7 +117,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_customchords, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.customchords));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.customchords));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +128,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
 
         storageAccess = new StorageAccess();
         preferences = new Preferences();
@@ -152,18 +150,11 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         string1 = getActivity().getResources().getDrawable(R.drawable.string_1);
         string1_on = getActivity().getResources().getDrawable(R.drawable.string_1_on);
 
-        guitar = V.findViewById(R.id.guitar);
-        fret0 = V.findViewById(R.id.fret0);
-        fret1 = V.findViewById(R.id.fret1);
-        fret2 = V.findViewById(R.id.fret2);
-        fret3 = V.findViewById(R.id.fret3);
-        fret4 = V.findViewById(R.id.fret4);
-        fret5 = V.findViewById(R.id.fret5);
-        customchords_instrument = V.findViewById(R.id.customchords_instrument);
+        Spinner customchords_instrument = V.findViewById(R.id.customchords_instrument);
         customchords_fret = V.findViewById(R.id.customchords_fret);
         customchord_name = V.findViewById(R.id.customchord_name);
         customchord_code = V.findViewById(R.id.customchord_code);
-        customChordSave = V.findViewById(R.id.customChordSave);
+        Button customChordSave = V.findViewById(R.id.customChordSave);
         savedcustomchords = V.findViewById(R.id.savedcustomchords);
         string6_top = V.findViewById(R.id.string6_top);
         string5_top = V.findViewById(R.id.string5_top);
@@ -214,8 +205,8 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         customchords_instrument.setAdapter(adapter_instrument);
 
         // Set the current instrument
-        instrument_text = FullscreenActivity.chordInstrument;
-        switch (FullscreenActivity.chordInstrument) {
+        instrument_text = preferences.getMyPreferenceString(getActivity(),"chordInstrument","g");
+        switch (instrument_text) {
             case "g":
                 customchords_instrument.setSelection(0);
                 set6String();
@@ -247,37 +238,31 @@ public class PopUpCustomChordsFragment extends DialogFragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i) {
                     case 0:
-                        FullscreenActivity.chordInstrument = "g";
                         instrument_text = "g";
                         set6String();
                         break;
                     case 1:
-                        FullscreenActivity.chordInstrument = "u";
                         instrument_text = "u";
                         set4String();
                         break;
                     case 2:
-                        FullscreenActivity.chordInstrument = "m";
                         instrument_text = "m";
                         set4String();
                         break;
                     case 3:
-                        FullscreenActivity.chordInstrument = "c";
                         instrument_text = "c";
                         set4String();
                         break;
                     case 4:
-                        FullscreenActivity.chordInstrument = "b";
                         instrument_text = "b";
                         set4String();
                         break;
                     case 5:
-                        FullscreenActivity.chordInstrument = "B";
                         instrument_text = "B";
                         set5String();
                         break;
                 }
-                Preferences.savePreferences();
+                preferences.setMyPreferenceString(getActivity(),"chordInstrument",instrument_text);
             }
 
             @Override
@@ -517,12 +502,12 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         customchords_fret.setAdapter(adapter_fret);
         customchords_fret.setOnItemSelectedListener(new FretListener());
         prepareCustomChords();
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
 
-    public void prepareCustomChords() {
+    private void prepareCustomChords() {
         prepare_custom = new PrepareCustom();
         try {
             prepare_custom.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -546,11 +531,11 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         protected String doInBackground(Object... objects) {
 
             //Get rid of excessive spaces
-            FullscreenActivity.mCustomChords = FullscreenActivity.mCustomChords.trim();
-            while (FullscreenActivity.mCustomChords.contains("  ")) {
-                FullscreenActivity.mCustomChords = FullscreenActivity.mCustomChords.replace("  ", " ");
+            StaticVariables.mCustomChords = StaticVariables.mCustomChords.trim();
+            while (StaticVariables.mCustomChords.contains("  ")) {
+                StaticVariables.mCustomChords = StaticVariables.mCustomChords.replace("  ", " ");
             }
-            tempCustomChords = FullscreenActivity.mCustomChords.split(" ");
+            tempCustomChords = StaticVariables.mCustomChords.split(" ");
             return null;
         }
 
@@ -584,12 +569,6 @@ public class PopUpCustomChordsFragment extends DialogFragment {
                     }
                     if (tempCustomChords[q].contains("_0")) {
                         chorddetails = chorddetails + getResources().getString(R.string.customchords_fret) + " = 0\n";
-                        workingChord = workingChord.replace("_0", "");
-                    } else if (tempCustomChords[q].contains("_1")) {
-                        chorddetails = chorddetails + getResources().getString(R.string.customchords_fret) + " = 1\n";
-                        workingChord = workingChord.replace("_0", "");
-                    } else if (tempCustomChords[q].contains("_1")) {
-                        chorddetails = chorddetails + getResources().getString(R.string.customchords_fret) + " = 1\n";
                         workingChord = workingChord.replace("_0", "");
                     } else if (tempCustomChords[q].contains("_1")) {
                         chorddetails = chorddetails + getResources().getString(R.string.customchords_fret) + " = 1\n";
@@ -667,7 +646,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
     }
 
     //This is the code to handle the user clicking on the strings/frets
-    public void string6_top () {
+    private void string6_top () {
         resetString6Drawables();
         if (string6_O) {
             string6_O = false;
@@ -684,7 +663,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string6_f1 () {
+    private void string6_f1 () {
         resetString6Drawables();
         if (string6_f1_on) {
             string6_f1_on = false;
@@ -701,7 +680,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string6_f2 () {
+    private void string6_f2 () {
         resetString6Drawables();
         if (string6_f2_on) {
             string6_f2_on = false;
@@ -718,7 +697,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string6_f3 () {
+    private void string6_f3 () {
         resetString6Drawables();
         if (string6_f3_on) {
             string6_f3_on = false;
@@ -735,7 +714,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string6_f4 () {
+    private void string6_f4 () {
         resetString6Drawables();
         if (string6_f4_on) {
             string6_f4_on = false;
@@ -752,7 +731,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string6_f5 () {
+    private void string6_f5 () {
         resetString6Drawables();
         if (string6_f5_on) {
             string6_f5_on = false;
@@ -769,7 +748,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string5_top () {
+    private void string5_top () {
         resetString5Drawables();
         if (string5_O) {
             string5_O = false;
@@ -786,7 +765,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string5_f1 () {
+    private void string5_f1 () {
         resetString5Drawables();
         if (string5_f1_on) {
             string5_f1_on = false;
@@ -803,7 +782,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string5_f2 () {
+    private void string5_f2 () {
         resetString5Drawables();
         if (string5_f2_on) {
             string5_f2_on = false;
@@ -820,7 +799,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string5_f3 () {
+    private void string5_f3 () {
         resetString5Drawables();
         if (string5_f3_on) {
             string5_f3_on = false;
@@ -837,7 +816,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string5_f4 () {
+    private void string5_f4 () {
         resetString5Drawables();
         if (string5_f4_on) {
             string5_f4_on = false;
@@ -854,7 +833,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string5_f5 () {
+    private void string5_f5 () {
         resetString5Drawables();
         if (string5_f5_on) {
             string5_f5_on = false;
@@ -871,7 +850,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string4_top () {
+    private void string4_top () {
         resetString4Drawables();
         if (string4_O) {
             string4_O = false;
@@ -888,7 +867,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string4_f1 () {
+    private void string4_f1 () {
         resetString4Drawables();
         if (string4_f1_on) {
             string4_f1_on = false;
@@ -905,7 +884,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string4_f2 () {
+    private void string4_f2 () {
         resetString4Drawables();
         if (string4_f2_on) {
             string4_f2_on = false;
@@ -922,7 +901,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string4_f3 () {
+    private void string4_f3 () {
         resetString4Drawables();
         if (string4_f3_on) {
             string4_f3_on = false;
@@ -939,7 +918,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string4_f4 () {
+    private void string4_f4 () {
         resetString4Drawables();
         if (string4_f4_on) {
             string4_f4_on = false;
@@ -956,7 +935,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string4_f5 () {
+    private void string4_f5 () {
         resetString4Drawables();
         if (string4_f5_on) {
             string4_f5_on = false;
@@ -973,7 +952,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string3_top () {
+    private void string3_top () {
         resetString3Drawables();
         if (string3_O) {
             string3_O = false;
@@ -990,7 +969,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string3_f1 () {
+    private void string3_f1 () {
         resetString3Drawables();
         if (string3_f1_on) {
             string3_f1_on = false;
@@ -1007,7 +986,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string3_f2 () {
+    private void string3_f2 () {
         resetString3Drawables();
         if (string3_f2_on) {
             string3_f2_on = false;
@@ -1024,7 +1003,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string3_f3 () {
+    private void string3_f3 () {
         resetString3Drawables();
         if (string3_f3_on) {
             string3_f3_on = false;
@@ -1041,7 +1020,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string3_f4 () {
+    private void string3_f4 () {
         resetString3Drawables();
         if (string3_f4_on) {
             string3_f4_on = false;
@@ -1058,7 +1037,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string3_f5 () {
+    private void string3_f5 () {
         resetString3Drawables();
         if (string3_f5_on) {
             string3_f5_on = false;
@@ -1075,7 +1054,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string2_top () {
+    private void string2_top () {
         resetString2Drawables();
         if (string2_O) {
             string2_O = false;
@@ -1092,7 +1071,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string2_f1 () {
+    private void string2_f1 () {
         resetString2Drawables();
         if (string2_f1_on) {
             string2_f1_on = false;
@@ -1109,7 +1088,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string2_f2 () {
+    private void string2_f2 () {
         resetString2Drawables();
         if (string2_f2_on) {
             string2_f2_on = false;
@@ -1126,7 +1105,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string2_f3 () {
+    private void string2_f3 () {
         resetString2Drawables();
         if (string2_f3_on) {
             string2_f3_on = false;
@@ -1143,7 +1122,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string2_f4 () {
+    private void string2_f4 () {
         resetString2Drawables();
         if (string2_f4_on) {
             string2_f4_on = false;
@@ -1160,7 +1139,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string2_f5 () {
+    private void string2_f5 () {
         resetString2Drawables();
         if (string2_f5_on) {
             string2_f5_on = false;
@@ -1177,7 +1156,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string1_top () {
+    private void string1_top () {
         resetString1Drawables();
         if (string1_O) {
             string1_O = false;
@@ -1194,7 +1173,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string1_f1 () {
+    private void string1_f1 () {
         resetString1Drawables();
         if (string1_f1_on) {
             string1_f1_on = false;
@@ -1211,7 +1190,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string1_f2 () {
+    private void string1_f2 () {
         resetString1Drawables();
         if (string1_f2_on) {
             string1_f2_on = false;
@@ -1228,7 +1207,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string1_f3 () {
+    private void string1_f3 () {
         resetString1Drawables();
         if (string1_f3_on) {
             string1_f3_on = false;
@@ -1245,7 +1224,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string1_f4 () {
+    private void string1_f4 () {
         resetString1Drawables();
         if (string1_f4_on) {
             string1_f4_on = false;
@@ -1262,7 +1241,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void string1_f5 () {
+    private void string1_f5 () {
         resetString1Drawables();
         if (string1_f5_on) {
             string1_f5_on = false;
@@ -1279,7 +1258,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void resetString6Drawables() {
+    private void resetString6Drawables() {
         string6_top.setImageDrawable(stringtop);
         string6_f1.setImageDrawable(string6);
         string6_f2.setImageDrawable(string6);
@@ -1288,7 +1267,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         string6_f5.setImageDrawable(string6);
     }
 
-    public void resetString6Values() {
+    private void resetString6Values() {
         string6_f1_on = false;
         string6_f2_on = false;
         string6_f3_on = false;
@@ -1296,7 +1275,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         string6_f5_on = false;
     }
 
-    public void resetString5HDrawables() {
+    private void resetString5HDrawables() {
         string5_top.setImageDrawable(stringtop);
         string5_f1.setImageDrawable(string1);
         string5_f2.setImageDrawable(string1);
@@ -1305,7 +1284,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         string5_f5.setImageDrawable(string1);
     }
 
-    public void resetString5Drawables() {
+    private void resetString5Drawables() {
         string5_top.setImageDrawable(stringtop);
         string5_f1.setImageDrawable(string5);
         string5_f2.setImageDrawable(string5);
@@ -1314,7 +1293,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         string5_f5.setImageDrawable(string5);
     }
 
-    public void resetString5Values() {
+    private void resetString5Values() {
         string5_f1_on = false;
         string5_f2_on = false;
         string5_f3_on = false;
@@ -1322,7 +1301,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         string5_f5_on = false;
     }
 
-    public void resetString4Drawables() {
+    private void resetString4Drawables() {
         string4_top.setImageDrawable(stringtop);
         string4_f1.setImageDrawable(string4);
         string4_f2.setImageDrawable(string4);
@@ -1331,7 +1310,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         string4_f5.setImageDrawable(string4);
     }
 
-    public void resetString4Values() {
+    private void resetString4Values() {
         string4_f1_on = false;
         string4_f2_on = false;
         string4_f3_on = false;
@@ -1339,7 +1318,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         string4_f5_on = false;
     }
 
-    public void resetString3Drawables() {
+    private void resetString3Drawables() {
         string3_top.setImageDrawable(stringtop);
         string3_f1.setImageDrawable(string3);
         string3_f2.setImageDrawable(string3);
@@ -1348,7 +1327,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         string3_f5.setImageDrawable(string3);
     }
 
-    public void resetString3Values() {
+    private void resetString3Values() {
         string3_f1_on = false;
         string3_f2_on = false;
         string3_f3_on = false;
@@ -1356,7 +1335,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         string3_f5_on = false;
     }
 
-    public void resetString2Drawables() {
+    private void resetString2Drawables() {
         string2_top.setImageDrawable(stringtop);
         string2_f1.setImageDrawable(string2);
         string2_f2.setImageDrawable(string2);
@@ -1365,7 +1344,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         string2_f5.setImageDrawable(string2);
     }
 
-    public void resetString2Values() {
+    private void resetString2Values() {
         string2_f1_on = false;
         string2_f2_on = false;
         string2_f3_on = false;
@@ -1373,7 +1352,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         string2_f5_on = false;
     }
 
-    public void resetString1Drawables() {
+    private void resetString1Drawables() {
         string1_top.setImageDrawable(stringtop);
         string1_f1.setImageDrawable(string1);
         string1_f2.setImageDrawable(string1);
@@ -1382,7 +1361,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         string1_f5.setImageDrawable(string1);
     }
 
-    public void resetString1Values() {
+    private void resetString1Values() {
         string1_f1_on = false;
         string1_f2_on = false;
         string1_f3_on = false;
@@ -1390,8 +1369,8 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         string1_f5_on = false;
     }
 
-    public void updateChordText() {
-        chord_name = customchord_name.getText().toString();
+    private void updateChordText() {
+        String chord_name = customchord_name.getText().toString();
         switch (instrument_text) {
             case "u":
             case "m":
@@ -1413,7 +1392,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         customchord_code.setText(texttowrite);
     }
 
-    public void set6String() {
+    private void set6String() {
         string6_top.setVisibility(View.VISIBLE);
         string6_f1.setVisibility(View.VISIBLE);
         string6_f2.setVisibility(View.VISIBLE);
@@ -1467,7 +1446,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void set5String() {
+    private void set5String() {
         string6_top.setVisibility(View.GONE);
         string6_f1.setVisibility(View.GONE);
         string6_f2.setVisibility(View.GONE);
@@ -1521,7 +1500,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void set4String() {
+    private void set4String() {
         string6_top.setVisibility(View.GONE);
         string6_f1.setVisibility(View.GONE);
         string6_f2.setVisibility(View.GONE);
@@ -1575,7 +1554,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         updateChordText();
     }
 
-    public void resetStringTops() {
+    private void resetStringTops() {
         string6_O = false;
         string6_X = true;
         string5_O = false;
@@ -1597,7 +1576,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
 
     }
 
-    public void resetStringNotes() {
+    private void resetStringNotes() {
         string6_text = "x";
         string5_text = "x";
         string4_text = "x";
@@ -1607,7 +1586,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         fret_text = "0";
     }
 
-    public void customChordSave() {
+    private void customChordSave() {
         // The user is trying to save a custom chord
         // Find out what instrument we are using and get the appropriate string data
         switch (instrument_text) {
@@ -1652,17 +1631,17 @@ public class PopUpCustomChordsFragment extends DialogFragment {
                 !customChordToSave.contains("_B") &&
                 !customChordToSave.contains("_c")) {
             //No instrument set
-            FullscreenActivity.myToastMessage = getResources().getString(R.string.customchords_noinstrument);
+            StaticVariables.myToastMessage = getResources().getString(R.string.customchords_noinstrument);
             ShowToast.showToast(getActivity());
         } else if (customNameToSave.equals("") || customNameToSave.isEmpty()) {
             //No chordname set
-            FullscreenActivity.myToastMessage = getResources().getString(R.string.customchords_nochordname);
+            StaticVariables.myToastMessage = getResources().getString(R.string.customchords_nochordname);
             ShowToast.showToast(getActivity());
         } else {
-            FullscreenActivity.myToastMessage = getResources().getString(R.string.customchords_save);
+            StaticVariables.myToastMessage = getResources().getString(R.string.customchords_save);
             ShowToast.showToast(getActivity());
-            FullscreenActivity.mCustomChords = FullscreenActivity.mCustomChords + " " + customChordToSave;
-            FullscreenActivity.mCustomChords = FullscreenActivity.mCustomChords.trim();
+            StaticVariables.mCustomChords = StaticVariables.mCustomChords + " " + customChordToSave;
+            StaticVariables.mCustomChords = StaticVariables.mCustomChords.trim();
 
             // Prepare the song for saving
             PopUpEditSongFragment.prepareSongXML();
@@ -1677,12 +1656,12 @@ public class PopUpCustomChordsFragment extends DialogFragment {
 
     public void doSave() {
         // Add the custom chord code to the xml
-        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.whichSongFolder,
-                FullscreenActivity.songfilename);
+        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", StaticVariables.whichSongFolder,
+                StaticVariables.songfilename);
 
         // Check the uri exists for the outputstream to be valid
         storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
-                "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+                "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
 
         OutputStream outputStream = storageAccess.getOutputStream(getActivity(),uri);
         storageAccess.writeFileFromString(FullscreenActivity.mynewXML,outputStream);
@@ -1699,7 +1678,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
             String buttonText = b.getText().toString();
             buttonText = buttonText.replace(getResources().getString(R.string.options_song_delete),"");
             buttonText = buttonText.replace("\n","");
-            FullscreenActivity.mCustomChords = FullscreenActivity.mCustomChords.replace(buttonText,"");
+            StaticVariables.mCustomChords = StaticVariables.mCustomChords.replace(buttonText,"");
             // Save the song
             PopUpEditSongFragment.prepareSongXML();
             // Makes sure all & are replaced with &amp;

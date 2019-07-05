@@ -2,11 +2,12 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.SwitchCompat;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import android.view.Window;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import java.util.Objects;
 
 public class PopUpActionBarInfoFragment extends DialogFragment {
 
@@ -29,6 +32,8 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
 
     private MyInterface mListener;
 
+    Preferences preferences;
+
     @Override
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
@@ -40,14 +45,6 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
     public void onDetach() {
         mListener = null;
         super.onDetach();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
     }
 
     @Override
@@ -65,18 +62,18 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         this.dismiss();
     }
 
-    SeekBar titleTextSize, authorTextSize, batteryTextSize, batteryDialSize, clockTextSize;
-    SwitchCompat batteryDialOnOff, batteryTextOnOff, clock24hrOnOff, clockTextOnOff;
-    TextView batteryTextSizeLabel, batteryDialSizeLabel, clockTextSizeLabel;
+    private SeekBar titleTextSize, authorTextSize, batteryTextSize, batteryDialSize, clockTextSize;
+    private SwitchCompat clock24hrOnOff;
+    private TextView batteryTextSizeLabel, batteryDialSizeLabel, clockTextSizeLabel;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_clockandbattery, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.actionbar));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.actionbar));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +84,9 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
+
+        preferences = new Preferences();
 
         // Initialise the views
         titleTextSize = V.findViewById(R.id.titleTextSize);
@@ -95,10 +94,10 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         batteryTextSize = V.findViewById(R.id.batteryTextSize);
         batteryDialSize = V.findViewById(R.id.batteryDialSize);
         clockTextSize = V.findViewById(R.id.clockTextSize);
-        batteryDialOnOff = V.findViewById(R.id.batteryDialOnOff);
-        batteryTextOnOff = V.findViewById(R.id.batteryTextOnOff);
+        SwitchCompat batteryDialOnOff = V.findViewById(R.id.batteryDialOnOff);
+        SwitchCompat batteryTextOnOff = V.findViewById(R.id.batteryTextOnOff);
         clock24hrOnOff = V.findViewById(R.id.clock24hrOnOff);
-        clockTextOnOff = V.findViewById(R.id.clockTextOnOff);
+        SwitchCompat clockTextOnOff = V.findViewById(R.id.clockTextOnOff);
         batteryTextSizeLabel = V.findViewById(R.id.batteryTextSizeLabel);
         batteryDialSizeLabel = V.findViewById(R.id.batteryDialSizeLabel);
         clockTextSizeLabel = V.findViewById(R.id.clockTextSizeLabel);
@@ -109,19 +108,19 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         setBatteryTextSize();
         setBatteryDialSize();
         setClockTextSize();
-        batteryDialOnOff.setChecked(FullscreenActivity.batteryDialOn);
-        batteryTextOnOff.setChecked(FullscreenActivity.batteryOn);
-        clockTextOnOff.setChecked(FullscreenActivity.timeOn);
-        clock24hrOnOff.setChecked(FullscreenActivity.timeFormat24h);
-        hideshowbatterytextsize(FullscreenActivity.batteryOn);
-        hideshowclocktextsize(FullscreenActivity.timeOn);
-        hideshowbatterylinesize(FullscreenActivity.batteryOn);
+        batteryDialOnOff.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"batteryDialOn",true));
+        batteryTextOnOff.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"batteryTextOn",true));
+        clockTextOnOff.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"clockOn",true));
+        clock24hrOnOff.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"clock24hFormat",true));
+        hideshowbatterytextsize(preferences.getMyPreferenceBoolean(getActivity(),"batteryTextOn",true));
+        hideshowclocktextsize(preferences.getMyPreferenceBoolean(getActivity(),"clockOn",true));
+        hideshowbatterylinesize(preferences.getMyPreferenceBoolean(getActivity(),"batteryDialOn",true));
 
         // Set listeners
         titleTextSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                getTitleTextSize();
+                preferences.setMyPreferenceFloat(getActivity(),"songTitleSize",getTitleTextSize());
                 if (mListener!=null) {
                     mListener.adjustABInfo();
                 }
@@ -131,14 +130,12 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
             public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Preferences.savePreferences();
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         authorTextSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                getAuthorTextSize();
+                preferences.setMyPreferenceFloat(getActivity(),"songAuthorSize",getAuthorTextSize());
                 if (mListener!=null) {
                     mListener.adjustABInfo();
                 }
@@ -148,14 +145,12 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
             public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Preferences.savePreferences();
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         batteryTextSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                getBatteryTextSize();
+                preferences.setMyPreferenceFloat(getActivity(),"batteryTextSize",(float)i + 6);
                 if (mListener!=null) {
                     mListener.adjustABInfo();
                 }
@@ -165,14 +160,12 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
             public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Preferences.savePreferences();
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         batteryDialSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                getBatteryDialSize();
+                preferences.setMyPreferenceInt(getActivity(),"batteryDialThickness",getBatteryDialSize());
                 if (mListener!=null) {
                     mListener.adjustABInfo();
                 }
@@ -182,14 +175,12 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
             public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Preferences.savePreferences();
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         clockTextSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                getClockTextSize();
+                preferences.setMyPreferenceFloat(getActivity(),"clockTextSize",(float)getClockTextSize());
                 if (mListener!=null) {
                     mListener.adjustABInfo();
                 }
@@ -199,16 +190,13 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
             public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Preferences.savePreferences();
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         batteryDialOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.batteryDialOn = b;
+                preferences.setMyPreferenceBoolean(getActivity(),"batteryDialOn",b);
                 hideshowbatterylinesize(b);
-                Preferences.savePreferences();
                 if (mListener!=null) {
                     mListener.adjustABInfo();
                 }
@@ -217,9 +205,8 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         batteryTextOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.batteryOn = b;
+                preferences.setMyPreferenceBoolean(getActivity(),"batteryTextOn",b);
                 hideshowbatterytextsize(b);
-                Preferences.savePreferences();
                 if (mListener!=null) {
                     mListener.adjustABInfo();
                 }
@@ -228,9 +215,8 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         clockTextOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.timeOn = b;
+                preferences.setMyPreferenceBoolean(getActivity(),"clockOn",b);
                 hideshowclocktextsize(b);
-                Preferences.savePreferences();
                 if (mListener!=null) {
                     mListener.adjustABInfo();
                 }
@@ -239,8 +225,7 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         clock24hrOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.timeFormat24h = b;
-                Preferences.savePreferences();
+                preferences.setMyPreferenceBoolean(getActivity(),"clock24hFormat",b);
                 if (mListener!=null) {
                     mListener.adjustABInfo();
                 }
@@ -249,66 +234,58 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
 
         Dialog dialog = getDialog();
         if (dialog!=null && getActivity()!=null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog);
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog, preferences);
         }
         return V;
     }
 
-    public void setTitleTextSize() {
+    private void setTitleTextSize() {
         // Min size is 6, this is 0 on the seekBar
-        int s = (int) FullscreenActivity.ab_titleSize - 6;
+        int s = (int) preferences.getMyPreferenceFloat(getActivity(),"songTitleSize",13.0f) - 6;
         titleTextSize.setProgress(s);
     }
-    public void getTitleTextSize() {
+    private int getTitleTextSize() {
         // Min size is 6, this is 0 on the seekBar
-        int s = titleTextSize.getProgress() + 6;
-        FullscreenActivity.ab_titleSize = (float) s;
+        return titleTextSize.getProgress() + 6;
     }
 
-    public void setAuthorTextSize() {
+    private void setAuthorTextSize() {
         // Min size is 6, this is 0 on the seekBar
-        int s = (int) FullscreenActivity.ab_authorSize - 6;
+        int s = (int) preferences.getMyPreferenceFloat(getActivity(),"songAuthorSize",11.0f) - 6;
         authorTextSize.setProgress(s);
     }
-    public void getAuthorTextSize() {
+    private int getAuthorTextSize() {
         // Min size is 6, this is 0 on the seekBar
-        int s = authorTextSize.getProgress() + 6;
-        FullscreenActivity.ab_authorSize = (float) s;
+        return authorTextSize.getProgress() + 6;
     }
 
-    public void setBatteryTextSize() {
+    private void setBatteryTextSize() {
         // Min size is 6, this is 0 on the seekBar
-        int s = (int) FullscreenActivity.batterySize - 6;
+        int s = (int) preferences.getMyPreferenceFloat(getActivity(),"batteryTextSize",9.0f) - 6;
         batteryTextSize.setProgress(s);
     }
-    public void getBatteryTextSize() {
-        // Min size is 6, this is 0 on the seekBar
-        int s = batteryTextSize.getProgress() + 6;
-        FullscreenActivity.batterySize = (float) s;
-    }
 
-    public void setBatteryDialSize() {
+    private void setBatteryDialSize() {
         // Min size is 1, this is 0 on the seekBar
-        int s = FullscreenActivity.batteryLine - 1;
+        int s = preferences.getMyPreferenceInt(getActivity(),"batteryDialThickness",4) - 1;
         batteryDialSize.setProgress(s);
     }
-    public void getBatteryDialSize() {
+    private int getBatteryDialSize() {
         // Min size is 1, this is 0 on the seekBar
-        FullscreenActivity.batteryLine = batteryDialSize.getProgress() + 1;
+        return batteryDialSize.getProgress() + 1;
     }
 
-    public void setClockTextSize() {
+    private void setClockTextSize() {
         // Min size is 6, this is 0 on the seekBar
-        int s = (int) FullscreenActivity.timeSize - 6;
+        int s = (int) preferences.getMyPreferenceFloat(getActivity(),"clockTextSize",9.0f) - 6;
         clockTextSize.setProgress(s);
     }
-    public void getClockTextSize() {
+    public int getClockTextSize() {
         // Min size is 6, this is 0 on the seekBar
-        int s = clockTextSize.getProgress() + 6;
-        FullscreenActivity.timeSize = (float) s;
+        return clockTextSize.getProgress() + 6;
     }
 
-    public void hideshowclocktextsize (Boolean b) {
+    private void hideshowclocktextsize(Boolean b) {
         if (b) {
             clockTextSize.setVisibility(View.VISIBLE);
             clockTextSizeLabel.setVisibility(View.VISIBLE);
@@ -320,7 +297,7 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         }
     }
 
-    public void hideshowbatterytextsize (Boolean b) {
+    private void hideshowbatterytextsize(Boolean b) {
         if (b) {
             batteryTextSize.setVisibility(View.VISIBLE);
             batteryTextSizeLabel.setVisibility(View.VISIBLE);
@@ -330,7 +307,7 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         }
     }
 
-    public void hideshowbatterylinesize (Boolean b) {
+    private void hideshowbatterylinesize(Boolean b) {
         if (b) {
             batteryDialSize.setVisibility(View.VISIBLE);
             batteryDialSizeLabel.setVisibility(View.VISIBLE);

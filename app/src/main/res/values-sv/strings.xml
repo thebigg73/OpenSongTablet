@@ -763,4 +763,5 @@
 
     <string name="googlefontcustom">"Annat Google-teckensnamn"</string>
     <string name="googlefontbrowse">"Bläddra bland alla Google Fonts"</string>
+    <string name="reset_text">Om du har problem med appen kan du försöka återställa inställningarna med knappen nedan. Detta kommer att rensa dina inställningar, men kommer inte att ta bort dina låtar.</string>
 </resources>

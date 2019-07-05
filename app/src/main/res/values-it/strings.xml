@@ -708,5 +708,6 @@
 
     <string name="googlefontcustom">"Altro nome di carattere di Google"</string>
     <string name="googlefontbrowse">"Sfoglia tutti i tipi di carattere di Google"</string>
+    <string name="reset_text">Se hai difficoltà con l\'app, prova a reimpostare le impostazioni utilizzando il pulsante in basso. Questo cancellerà le tue impostazioni, ma non cancellerà i tuoi brani.</string>
 
 </resources>

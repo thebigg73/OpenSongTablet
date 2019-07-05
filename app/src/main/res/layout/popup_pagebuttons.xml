@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/pageButtonSize_Switch"
                 style="@style/MyTextSwitch"
                 android:layout_width="match_parent"
@@ -80,7 +80,7 @@
                     android:id="@+id/transparency_TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
+                    android:layout_gravity="end|center_vertical"
                     android:minEms="3"
                     android:textColor="#fff"
                     android:textSize="14sp" />
@@ -93,7 +93,7 @@
                 android:background="@drawable/section_box"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/pageButtonGroup_Switch"
                     style="@style/MyHeadingText"
                     android:layout_width="match_parent"
@@ -101,10 +101,13 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:text="@string/pagebutton_group"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_bullseye_white_36dp"
+                    android:drawablePadding="8dp"
                     android:textColor="#ff0"
                     android:theme="@style/SwitchStyle" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/extraButtonGroup_Switch"
                     style="@style/MyHeadingText"
                     android:layout_width="match_parent"
@@ -112,10 +115,13 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:text="@string/pagebutton_extrainfo_group"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_information_white_36dp"
+                    android:drawablePadding="8dp"
                     android:textColor="#ff0"
                     android:theme="@style/SwitchStyle" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/customButtonGroup_Switch"
                     style="@style/MyHeadingText"
                     android:layout_width="match_parent"
@@ -123,6 +129,9 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:text="@string/pagebutton_custom_group"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_bullseye_white_36dp"
+                    android:drawablePadding="8dp"
                     android:textColor="#ff0"
                     android:theme="@style/SwitchStyle" />
 
@@ -132,7 +141,6 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:background="@drawable/green_button"
-                    android:drawableLeft="@drawable/ic_bullseye_white_36dp"
                     android:drawablePadding="4dp"
                     android:drawableStart="@drawable/ic_bullseye_white_36dp"
                     android:gravity="center_vertical"
@@ -158,17 +166,46 @@
                     android:layout_marginTop="24dp"
                     android:text="@string/pagebutton_visibility" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/setVisible_Switch"
                     style="@style/MyWhiteHeadingText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
-                    android:text="@string/options_set"
+                    android:text="@string/currentset"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_format_list_numbers_white_36dp"
+                    android:drawablePadding="8dp"
                     android:theme="@style/SwitchStyle" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/setMoveVisible_Switch"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:text="@string/pageturn_next"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_arrow_right_white_36dp"
+                    android:drawablePadding="8dp"
+                    android:theme="@style/SwitchStyle" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/scrollVisible_Switch"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:text="@string/scrollbuttons_toggle"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_arrow_down_white_36dp"
+                    android:drawablePadding="8dp"
+                    android:theme="@style/SwitchStyle" />
+
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/padVisible_Switch"
                     style="@style/MyWhiteHeadingText"
                     android:layout_width="match_parent"
@@ -176,9 +213,12 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:text="@string/pad"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_amplifier_white_36dp"
+                    android:drawablePadding="8dp"
                     android:theme="@style/SwitchStyle" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/metronomeVisible_Switch"
                     style="@style/MyWhiteHeadingText"
                     android:layout_width="match_parent"
@@ -186,9 +226,12 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:text="@string/metronome"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_pulse_white_36dp"
+                    android:drawablePadding="8dp"
                     android:theme="@style/SwitchStyle" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/autoscrollVisible_Switch"
                     style="@style/MyWhiteHeadingText"
                     android:layout_width="match_parent"
@@ -196,9 +239,12 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:text="@string/autoscroll"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_rotate_right_white_36dp"
+                    android:drawablePadding="8dp"
                     android:theme="@style/SwitchStyle" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/chordsVisible_Switch"
                     style="@style/MyWhiteHeadingText"
                     android:layout_width="match_parent"
@@ -206,9 +252,12 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:text="@string/chords"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_guitar_electric_white_36dp"
+                    android:drawablePadding="8dp"
                     android:theme="@style/SwitchStyle" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/linksVisible_Switch"
                     style="@style/MyWhiteHeadingText"
                     android:layout_width="match_parent"
@@ -216,9 +265,12 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:text="@string/link"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_link_white_36dp"
+                    android:drawablePadding="8dp"
                     android:theme="@style/SwitchStyle" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/stickyVisible_Switch"
                     style="@style/MyWhiteHeadingText"
                     android:layout_width="match_parent"
@@ -226,9 +278,12 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:text="@string/stickynotes"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_comment_text_white_36dp"
+                    android:drawablePadding="8dp"
                     android:theme="@style/SwitchStyle" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/notationVisible_Switch"
                     style="@style/MyWhiteHeadingText"
                     android:layout_width="match_parent"
@@ -236,9 +291,12 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:text="@string/music_score"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_clef_white_36dp"
+                    android:drawablePadding="8dp"
                     android:theme="@style/SwitchStyle" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/highlightVisible_Switch"
                     style="@style/MyWhiteHeadingText"
                     android:layout_width="match_parent"
@@ -246,9 +304,12 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:text="@string/highlight"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_highlighter_white_36dp"
+                    android:drawablePadding="8dp"
                     android:theme="@style/SwitchStyle" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/pageselectVisible_Switch"
                     style="@style/MyWhiteHeadingText"
                     android:layout_width="match_parent"
@@ -256,9 +317,12 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:text="@string/pdf_selectpage"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_book_white_36dp"
+                    android:drawablePadding="8dp"
                     android:theme="@style/SwitchStyle" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/custom1Visible_Switch"
                     style="@style/MyWhiteHeadingText"
                     android:layout_width="match_parent"
@@ -266,9 +330,12 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:text="@string/custom"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_bullseye_white_36dp"
+                    android:drawablePadding="8dp"
                     android:theme="@style/SwitchStyle" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/custom2Visible_Switch"
                     style="@style/MyWhiteHeadingText"
                     android:layout_width="match_parent"
@@ -276,9 +343,12 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:text="@string/custom"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_bullseye_white_36dp"
+                    android:drawablePadding="8dp"
                     android:theme="@style/SwitchStyle" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/custom3Visible_Switch"
                     style="@style/MyWhiteHeadingText"
                     android:layout_width="match_parent"
@@ -286,9 +356,12 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:text="@string/custom"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_bullseye_white_36dp"
+                    android:drawablePadding="8dp"
                     android:theme="@style/SwitchStyle" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/custom4Visible_Switch"
                     style="@style/MyWhiteHeadingText"
                     android:layout_width="match_parent"
@@ -296,6 +369,9 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:text="@string/custom"
+                    android:textAllCaps="true"
+                    android:drawableStart="@drawable/ic_bullseye_white_36dp"
+                    android:drawablePadding="8dp"
                     android:theme="@style/SwitchStyle" />
 
             </LinearLayout>

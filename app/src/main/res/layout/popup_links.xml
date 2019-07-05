@@ -40,7 +40,7 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/linkYouTube_ImageButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:gravity="left"
+                        android:gravity="start"
                         android:text="@string/link_youtube" />
 
                 </LinearLayout>
@@ -74,9 +74,10 @@
                         android:layout_margin="8dp"
                         android:layout_weight="1"
                         android:hint="@string/link_choose"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        tools:ignore="Autofill" />
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/linkYouTubeClear_ImageButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -103,7 +104,7 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/linkWeb_ImageButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -135,9 +136,10 @@
                         android:layout_margin="8dp"
                         android:layout_weight="1"
                         android:hint="@string/link_choose"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        tools:ignore="Autofill" />
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/linkWebClear_ImageButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -164,7 +166,7 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/linkAudio_ImageButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -196,9 +198,10 @@
                         android:layout_margin="8dp"
                         android:layout_weight="1"
                         android:hint="@string/link_choose"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        tools:ignore="Autofill" />
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/linkAudioClear_ImageButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -225,7 +228,7 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/linkOther_ImageButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -257,9 +260,10 @@
                         android:layout_margin="8dp"
                         android:layout_weight="1"
                         android:hint="@string/link_choose"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        tools:ignore="Autofill" />
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/linkOtherClear_ImageButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

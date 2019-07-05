@@ -707,4 +707,5 @@
 
     <string name="googlefontcustom">"Ander Google-font naam"</string>
     <string name="googlefontbrowse">"Blaai deur alle Google Fonts"</string>
+    <string name="reset_text">As jy probleme ondervind met die program, probeer om jou instellings te herstel deur die onderstaande knoppie te gebruik.  Dit sal jou instellings skoonmaak, maar sal nie jou liedjies uitvee nie.</string>
 </resources>

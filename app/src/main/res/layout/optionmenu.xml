@@ -3,7 +3,7 @@
     android:id="@+id/optionmenu"
     android:layout_width="220dp"
     android:layout_height="match_parent"
-    android:layout_gravity="end|right"
+    android:layout_gravity="end"
     android:background="@drawable/drawer_bg"
     android:clickable="true"
     android:orientation="vertical"

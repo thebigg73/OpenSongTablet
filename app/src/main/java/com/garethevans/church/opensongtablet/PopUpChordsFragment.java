@@ -2,12 +2,13 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PopUpChordsFragment extends DialogFragment {
 
@@ -52,21 +54,16 @@ public class PopUpChordsFragment extends DialogFragment {
         super.onDetach();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-    }
-
-    TableLayout chordimageshere;
-    ArrayList<String> unique_chords;
-    AsyncTask<Object,Void,String> prepare_chords;
+    private TableLayout chordimageshere;
+    private ArrayList<String> unique_chords;
+    private AsyncTask<Object,Void,String> prepare_chords;
 
     // Identify the chord images
     private Drawable f1, f2, f3, f4, f5, f6, f7, f8, f9, lx, l0, l1, l2, l3, l4, l5,
             mx, m0, m1, m2, m3, m4, m5, rx, r0, r1, r2, r3, r4, r5;
+
+    ProcessSong processSong;
+    Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,9 +73,8 @@ public class PopUpChordsFragment extends DialogFragment {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setCanceledOnTouchOutside(true);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         if (mListener!=null) {
@@ -88,7 +84,7 @@ public class PopUpChordsFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_page_chords, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.chords));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.chords));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +95,10 @@ public class PopUpChordsFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
+
+        processSong = new ProcessSong();
+        preferences = new Preferences();
 
         // Initialise the views
         Spinner popupchord_instrument = V.findViewById(R.id.popupchord_instrument);
@@ -156,8 +155,9 @@ public class PopUpChordsFragment extends DialogFragment {
         ArrayAdapter<String> adapter_instrument = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, instrument_choice);
         adapter_instrument.setDropDownViewResource(R.layout.my_spinner);
         popupchord_instrument.setAdapter(adapter_instrument);
-        switch (FullscreenActivity.chordInstrument) {
+        switch (preferences.getMyPreferenceString(getActivity(),"chordInstrument","g")) {
             case "g":
+            default:
                 popupchord_instrument.setSelection(0);
                 break;
             case "u":
@@ -175,7 +175,6 @@ public class PopUpChordsFragment extends DialogFragment {
             case "B":
                 popupchord_instrument.setSelection(5);
                 break;
-
         }
 
         // Set up the listener for the instruments
@@ -184,25 +183,24 @@ public class PopUpChordsFragment extends DialogFragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i) {
                     case 0:
-                        FullscreenActivity.chordInstrument = "g";
+                        preferences.setMyPreferenceString(getActivity(),"chordInstrument","g");
                         break;
                     case 1:
-                        FullscreenActivity.chordInstrument = "u";
+                        preferences.setMyPreferenceString(getActivity(),"chordInstrument","u");
                         break;
                     case 2:
-                        FullscreenActivity.chordInstrument = "m";
+                        preferences.setMyPreferenceString(getActivity(),"chordInstrument","m");
                         break;
                     case 3:
-                        FullscreenActivity.chordInstrument = "c";
+                        preferences.setMyPreferenceString(getActivity(),"chordInstrument","c");
                         break;
                     case 4:
-                        FullscreenActivity.chordInstrument = "b";
+                        preferences.setMyPreferenceString(getActivity(),"chordInstrument","b");
                         break;
                     case 5:
-                        FullscreenActivity.chordInstrument = "B";
+                        preferences.setMyPreferenceString(getActivity(),"chordInstrument","B");
                         break;
                 }
-                Preferences.savePreferences();
                 prepareChords();
             }
 
@@ -213,12 +211,12 @@ public class PopUpChordsFragment extends DialogFragment {
         });
         prepareChords();
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
 
-    public void prepareChords() {
+    private void prepareChords() {
         prepare_chords = new PrepareChords();
         try {
             prepare_chords.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -241,55 +239,51 @@ public class PopUpChordsFragment extends DialogFragment {
         @Override
         protected String doInBackground(Object... objects) {
             // Read in my custom chords
-            if (FullscreenActivity.mCustomChords == null) {
-                FullscreenActivity.mCustomChords = "";
+            if (StaticVariables.mCustomChords == null) {
+                StaticVariables.mCustomChords = "";
             }
-            while (FullscreenActivity.mCustomChords.contains("  ")) {
-                FullscreenActivity.mCustomChords = FullscreenActivity.mCustomChords.replace("  ", " ");
+            while (StaticVariables.mCustomChords.contains("  ")) {
+                StaticVariables.mCustomChords = StaticVariables.mCustomChords.replace("  ", " ");
             }
 
             // Initialise the chords in the song
-            FullscreenActivity.allchords = ProcessSong.getAllChords(FullscreenActivity.mLyrics);
-            while (FullscreenActivity.allchords.contains("  ")) {
-                FullscreenActivity.allchords = FullscreenActivity.allchords.replace("  "," ");
+            StaticVariables.allchords = processSong.getAllChords(StaticVariables.mLyrics);
+            while (StaticVariables.allchords.contains("  ")) {
+                StaticVariables.allchords = StaticVariables.allchords.replace("  "," ");
             }
 
-            String tempallchords = FullscreenActivity.allchords;
-            FullscreenActivity.mCustomChords = FullscreenActivity.mCustomChords.trim();
-            String[] tempCustomChordsArray = FullscreenActivity.mCustomChords.split(" ");
+            String tempallchords = StaticVariables.allchords;
+            StaticVariables.mCustomChords = StaticVariables.mCustomChords.trim();
+            String[] tempCustomChordsArray = StaticVariables.mCustomChords.split(" ");
             StringBuilder tempCustomChordsToAdd = new StringBuilder();
             int numcustomchords;
 
             if (tempCustomChordsArray.length > 0) {
                 numcustomchords = tempCustomChordsArray.length;
+                String mychordinstrument = preferences.getMyPreferenceString(getActivity(),"chordInstrument","g");
                 for (int q = 0; q < numcustomchords; q++) {
-                    if ((FullscreenActivity.chordInstrument.equals("u") && tempCustomChordsArray[q] != null && tempCustomChordsArray[q].contains("_u_")) ||
-                            (FullscreenActivity.chordInstrument.equals("m") && tempCustomChordsArray[q] != null && tempCustomChordsArray[q].contains("_m_")) ||
-                            (FullscreenActivity.chordInstrument.equals("c") && tempCustomChordsArray[q] != null && tempCustomChordsArray[q].contains("_c_")) ||
-                            (FullscreenActivity.chordInstrument.equals("b") && tempCustomChordsArray[q] != null && tempCustomChordsArray[q].contains("_b_")) ||
-                            (FullscreenActivity.chordInstrument.equals("B") && tempCustomChordsArray[q] != null && tempCustomChordsArray[q].contains("_B_")) ||
-                            (FullscreenActivity.chordInstrument.equals("g") && tempCustomChordsArray[q] != null && tempCustomChordsArray[q].contains("_g_"))) {
+                    if (tempCustomChordsArray[q] != null && tempCustomChordsArray[q].contains("_"+mychordinstrument+"_")) {
                         tempCustomChordsToAdd.append(" $$$").append(tempCustomChordsArray[q]);
                     }
                 }
             }
 
             // Remove all whitespace between chords
-            if (FullscreenActivity.allchords == null) {
-                FullscreenActivity.allchords = "";
+            if (StaticVariables.allchords == null) {
+                StaticVariables.allchords = "";
             }
-            while (FullscreenActivity.allchords.contains("  ")) {
-                FullscreenActivity.allchords = FullscreenActivity.allchords.replace("  ", " ");
+            while (StaticVariables.allchords.contains("  ")) {
+                StaticVariables.allchords = StaticVariables.allchords.replace("  ", " ");
             }
 
             // Get rid of other bits that shouldn't be there
-            FullscreenActivity.allchords = FullscreenActivity.allchords.replace("(", "");
-            FullscreenActivity.allchords = FullscreenActivity.allchords.replace(")", "");
-            FullscreenActivity.allchords = FullscreenActivity.allchords.replace("*", "");
-            FullscreenActivity.allchords = FullscreenActivity.allchords.replace("!", "");
-            FullscreenActivity.allchords = FullscreenActivity.allchords.replace(";", "");
-            FullscreenActivity.allchords = FullscreenActivity.allchords.replace(":", "");
-            FullscreenActivity.allchords = FullscreenActivity.allchords.replace("*", "");
+            StaticVariables.allchords = StaticVariables.allchords.replace("(", "");
+            StaticVariables.allchords = StaticVariables.allchords.replace(")", "");
+            StaticVariables.allchords = StaticVariables.allchords.replace("*", "");
+            StaticVariables.allchords = StaticVariables.allchords.replace("!", "");
+            StaticVariables.allchords = StaticVariables.allchords.replace(";", "");
+            StaticVariables.allchords = StaticVariables.allchords.replace(":", "");
+            StaticVariables.allchords = StaticVariables.allchords.replace("*", "");
 
             // Add the identified custom chords (start with $$$) to the allchords
             tempallchords = tempCustomChordsToAdd + " " + tempallchords;
@@ -314,27 +308,29 @@ public class PopUpChordsFragment extends DialogFragment {
                 // Send the unique chords off to get the string layout
                 // This will eventually be if guitar/ukulele/mandolin/piano/other
                 // Custom chords don't get sent for retrieval as they are already defined
+                String myinstr = preferences.getMyPreferenceString(getActivity(),"chordInstrument","g");
                 for (int l = 0; l < unique_chords.size(); l++) {
-                    if (FullscreenActivity.chordInstrument.equals("u") && !unique_chords.get(l).contains("$$$")) {
-                        ChordDirectory.ukuleleChords(unique_chords.get(l));
-                    } else if (FullscreenActivity.chordInstrument.equals("m") && !unique_chords.get(l).contains("$$$")) {
-                        ChordDirectory.mandolinChords(unique_chords.get(l));
-                    } else if (FullscreenActivity.chordInstrument.equals("g") && !unique_chords.get(l).contains("$$$")) {
-                        ChordDirectory.guitarChords(unique_chords.get(l));
-                    } else if (FullscreenActivity.chordInstrument.equals("c") && !unique_chords.get(l).contains("$$$")) {
-                        ChordDirectory.cavaquinhoChords(unique_chords.get(l));
-                    } else if (FullscreenActivity.chordInstrument.equals("b") && !unique_chords.get(l).contains("$$$")) {
-                        ChordDirectory.banjo4stringChords(unique_chords.get(l));
-                    } else if (FullscreenActivity.chordInstrument.equals("B") && !unique_chords.get(l).contains("$$$")) {
-                        ChordDirectory.banjo5stringChords(unique_chords.get(l));
+                    boolean containsit = unique_chords.get(l).contains("$$$");
+                    if (myinstr.equals("u") && !containsit) {
+                        ChordDirectory.ukuleleChords(getActivity(),preferences,unique_chords.get(l));
+                    } else if (myinstr.equals("m") && !containsit) {
+                        ChordDirectory.mandolinChords(getActivity(),preferences,unique_chords.get(l));
+                    } else if (myinstr.equals("g") && !containsit) {
+                        ChordDirectory.guitarChords(getActivity(),preferences,unique_chords.get(l));
+                    } else if (myinstr.equals("c") && !containsit) {
+                        ChordDirectory.cavaquinhoChords(getActivity(),preferences,unique_chords.get(l));
+                    } else if (myinstr.equals("b") && !containsit) {
+                        ChordDirectory.banjo4stringChords(getActivity(),preferences,unique_chords.get(l));
+                    } else if (myinstr.equals("B") && !containsit) {
+                        ChordDirectory.banjo5stringChords(getActivity(),preferences,unique_chords.get(l));
                     }
 
                     // If chord is custom, prepare this prefix to the name
                     String iscustom = "";
                     if (unique_chords.get(l).contains("$$$")) {
                         iscustom = "\n" + getResources().getString(R.string.custom) + "";
-                        FullscreenActivity.chordnotes = unique_chords.get(l);
-                        FullscreenActivity.chordnotes = FullscreenActivity.chordnotes.replace("$$$", "");
+                        StaticVariables.chordnotes = unique_chords.get(l);
+                        StaticVariables.chordnotes = StaticVariables.chordnotes.replace("$$$", "");
                         unique_chords.set(l, unique_chords.get(l).replace("$$$", ""));
                         int startposcname = unique_chords.get(l).lastIndexOf("_");
                         if (startposcname != -1) {
@@ -374,29 +370,29 @@ public class PopUpChordsFragment extends DialogFragment {
                     String string_1 = "";
                     String fret = "";
 
-                    switch (FullscreenActivity.chordInstrument) {
+                    switch (preferences.getMyPreferenceString(getActivity(),"chordInstrument","g")) {
                         case "g":
 
-                            if (FullscreenActivity.chordnotes.length() > 0) {
-                                string_6 = FullscreenActivity.chordnotes.substring(0, 1);
+                            if (StaticVariables.chordnotes.length() > 0) {
+                                string_6 = StaticVariables.chordnotes.substring(0, 1);
                             }
-                            if (FullscreenActivity.chordnotes.length() > 1) {
-                                string_5 = FullscreenActivity.chordnotes.substring(1, 2);
+                            if (StaticVariables.chordnotes.length() > 1) {
+                                string_5 = StaticVariables.chordnotes.substring(1, 2);
                             }
-                            if (FullscreenActivity.chordnotes.length() > 2) {
-                                string_4 = FullscreenActivity.chordnotes.substring(2, 3);
+                            if (StaticVariables.chordnotes.length() > 2) {
+                                string_4 = StaticVariables.chordnotes.substring(2, 3);
                             }
-                            if (FullscreenActivity.chordnotes.length() > 3) {
-                                string_3 = FullscreenActivity.chordnotes.substring(3, 4);
+                            if (StaticVariables.chordnotes.length() > 3) {
+                                string_3 = StaticVariables.chordnotes.substring(3, 4);
                             }
-                            if (FullscreenActivity.chordnotes.length() > 4) {
-                                string_2 = FullscreenActivity.chordnotes.substring(4, 5);
+                            if (StaticVariables.chordnotes.length() > 4) {
+                                string_2 = StaticVariables.chordnotes.substring(4, 5);
                             }
-                            if (FullscreenActivity.chordnotes.length() > 5) {
-                                string_1 = FullscreenActivity.chordnotes.substring(5, 6);
+                            if (StaticVariables.chordnotes.length() > 5) {
+                                string_1 = StaticVariables.chordnotes.substring(5, 6);
                             }
-                            if (FullscreenActivity.chordnotes.length() > 7) {
-                                fret = FullscreenActivity.chordnotes.substring(7, 8);
+                            if (StaticVariables.chordnotes.length() > 7) {
+                                fret = StaticVariables.chordnotes.substring(7, 8);
                             }
 
                             // Prepare string_6
@@ -598,23 +594,23 @@ public class PopUpChordsFragment extends DialogFragment {
                             break;
                         case "B":
 
-                            if (FullscreenActivity.chordnotes.length() > 0) {
-                                string_5 = FullscreenActivity.chordnotes.substring(0, 1);
+                            if (StaticVariables.chordnotes.length() > 0) {
+                                string_5 = StaticVariables.chordnotes.substring(0, 1);
                             }
-                            if (FullscreenActivity.chordnotes.length() > 1) {
-                                string_4 = FullscreenActivity.chordnotes.substring(1, 2);
+                            if (StaticVariables.chordnotes.length() > 1) {
+                                string_4 = StaticVariables.chordnotes.substring(1, 2);
                             }
-                            if (FullscreenActivity.chordnotes.length() > 2) {
-                                string_3 = FullscreenActivity.chordnotes.substring(2, 3);
+                            if (StaticVariables.chordnotes.length() > 2) {
+                                string_3 = StaticVariables.chordnotes.substring(2, 3);
                             }
-                            if (FullscreenActivity.chordnotes.length() > 3) {
-                                string_2 = FullscreenActivity.chordnotes.substring(3, 4);
+                            if (StaticVariables.chordnotes.length() > 3) {
+                                string_2 = StaticVariables.chordnotes.substring(3, 4);
                             }
-                            if (FullscreenActivity.chordnotes.length() > 4) {
-                                string_1 = FullscreenActivity.chordnotes.substring(4, 5);
+                            if (StaticVariables.chordnotes.length() > 4) {
+                                string_1 = StaticVariables.chordnotes.substring(4, 5);
                             }
-                            if (FullscreenActivity.chordnotes.length() > 6) {
-                                fret = FullscreenActivity.chordnotes.substring(6, 7);
+                            if (StaticVariables.chordnotes.length() > 6) {
+                                fret = StaticVariables.chordnotes.substring(6, 7);
                             }
 
                             // Prepare string_5
@@ -791,20 +787,20 @@ public class PopUpChordsFragment extends DialogFragment {
                         case "m":
                         case "c":
                         case "b":
-                            if (FullscreenActivity.chordnotes.length() > 0) {
-                                string_4 = FullscreenActivity.chordnotes.substring(0, 1);
+                            if (StaticVariables.chordnotes.length() > 0) {
+                                string_4 = StaticVariables.chordnotes.substring(0, 1);
                             }
-                            if (FullscreenActivity.chordnotes.length() > 1) {
-                                string_3 = FullscreenActivity.chordnotes.substring(1, 2);
+                            if (StaticVariables.chordnotes.length() > 1) {
+                                string_3 = StaticVariables.chordnotes.substring(1, 2);
                             }
-                            if (FullscreenActivity.chordnotes.length() > 2) {
-                                string_2 = FullscreenActivity.chordnotes.substring(2, 3);
+                            if (StaticVariables.chordnotes.length() > 2) {
+                                string_2 = StaticVariables.chordnotes.substring(2, 3);
                             }
-                            if (FullscreenActivity.chordnotes.length() > 3) {
-                                string_1 = FullscreenActivity.chordnotes.substring(3, 4);
+                            if (StaticVariables.chordnotes.length() > 3) {
+                                string_1 = StaticVariables.chordnotes.substring(3, 4);
                             }
-                            if (FullscreenActivity.chordnotes.length() > 5) {
-                                fret = FullscreenActivity.chordnotes.substring(5, 6);
+                            if (StaticVariables.chordnotes.length() > 5) {
+                                fret = StaticVariables.chordnotes.substring(5, 6);
                             }
 
                             // Prepare string_4
@@ -949,7 +945,7 @@ public class PopUpChordsFragment extends DialogFragment {
                             break;
                     }
 
-                    if (FullscreenActivity.chordnotes != null && !FullscreenActivity.chordnotes.contains("xxxx_") && !FullscreenActivity.chordnotes.contains("xxxxxx_")) {
+                    if (StaticVariables.chordnotes != null && !StaticVariables.chordnotes.contains("xxxx_") && !StaticVariables.chordnotes.contains("xxxxxx_")) {
                         chordimageshere.addView(chordview);
                         String text;
                         if (unique_chords.get(l) == null) {

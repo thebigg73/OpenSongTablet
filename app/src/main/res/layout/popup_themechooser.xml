@@ -712,7 +712,8 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/colorchooser"
+                        tools:ignore="TooManyViews" />
                 </TableRow>
 
                 <TableRow

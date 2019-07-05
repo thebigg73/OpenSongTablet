@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -40,11 +41,12 @@
                 android:hint="@string/alert_text"
                 android:inputType="textAutoComplete|textAutoCorrect"
                 android:maxLines="1"
-                style="@style/MyEditText" />
+                style="@style/MyEditText"
+                tools:ignore="Autofill" />
         </LinearLayout>
     </ScrollView>
 
-    <android.support.v7.widget.SwitchCompat
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/alertToggleButton"
         android:text="@string/options_display"
         android:padding="8dp"

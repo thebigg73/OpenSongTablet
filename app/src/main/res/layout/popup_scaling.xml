@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchAutoScaleOnOff_SwitchCompat"
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
@@ -48,7 +48,7 @@
                 app:thumbTextPadding="4dp"
                 app:thumbTint="#444488" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchAutoScaleWidthFull_SwitchCompat"
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
@@ -137,7 +137,7 @@
                     android:layout_margin="12dp"
                     android:text="@string/override_scale_explanation" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/overrideFull_Switch"
                     style="@style/MyHeadingText"
                     android:layout_width="match_parent"
@@ -154,7 +154,7 @@
                     app:thumbTextPadding="4dp"
                     app:thumbTint="#444488" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/overrideWidth_Switch"
                     style="@style/MyHeadingText"
                     android:layout_width="match_parent"

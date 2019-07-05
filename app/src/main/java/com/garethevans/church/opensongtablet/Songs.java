@@ -1,5 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
+import androidx.annotation.NonNull;
+
 public class Songs {
 
     private int id;
@@ -20,6 +22,7 @@ public class Songs {
     }
 
     //getters & setters
+    @NonNull
     @Override
     public String toString() {
         return "Songs [id=" + id + ", fileid=" + fileid + ", title=" + title + ", author=" + author + ",lyrics=" + lyrics

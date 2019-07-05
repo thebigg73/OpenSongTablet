@@ -1,10 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.SwitchCompat;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.widget.SwitchCompat;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +14,12 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PopUpPedalsFragment extends DialogFragment {
 
@@ -26,46 +29,39 @@ public class PopUpPedalsFragment extends DialogFragment {
         return frag;
     }
 
-    SwitchCompat pedalToggleScrollBeforeSwipeButton;
+    private SwitchCompat pedalToggleScrollBeforeSwipeButton;
 
-    Button pedal1button;
-    Button pedal2button;
-    Button pedal3button;
-    Button pedal4button;
-    Button pedal5button;
-    Button pedal6button;
+    private Button pedal1button;
+    private Button pedal2button;
+    private Button pedal3button;
+    private Button pedal4button;
+    private Button pedal5button;
+    private Button pedal6button;
 
-    TextView pedal1text;
-    TextView pedal2text;
-    TextView pedal3text;
-    TextView pedal4text;
-    TextView pedal5text;
-    TextView pedal6text;
+    private TextView pedal1text;
+    private TextView pedal2text;
+    private TextView pedal3text;
+    private TextView pedal4text;
+    private TextView pedal5text;
+    private TextView pedal6text;
 
-    Spinner pedal1choice;
-    Spinner pedal2choice;
-    Spinner pedal3choice;
-    Spinner pedal4choice;
-    Spinner pedal5choice;
-    Spinner pedal6choice;
-    Spinner pedallong1choice;
-    Spinner pedallong2choice;
-    Spinner pedallong3choice;
-    Spinner pedallong4choice;
-    Spinner pedallong5choice;
-    Spinner pedallong6choice;
+    private Spinner pedal1choice;
+    private Spinner pedal2choice;
+    private Spinner pedal3choice;
+    private Spinner pedal4choice;
+    private Spinner pedal5choice;
+    private Spinner pedal6choice;
+    private Spinner pedallong1choice;
+    private Spinner pedallong2choice;
+    private Spinner pedallong3choice;
+    private Spinner pedallong4choice;
+    private Spinner pedallong5choice;
+    private Spinner pedallong6choice;
 
-    ArrayList<String> availableactions;
+    private ArrayList<String> availableactions;
+    Preferences preferences;
 
-    int assignWhich = -1;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
+    private int assignWhich = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,13 +72,13 @@ public class PopUpPedalsFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_pedals, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.options_options_pedal));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.options_options_pedal));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +89,9 @@ public class PopUpPedalsFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
+
+        preferences = new Preferences();
 
         // Initialise the views
         initialiseViews(V);
@@ -104,12 +102,12 @@ public class PopUpPedalsFragment extends DialogFragment {
         // Initialise the buttons, text, listeners and set defaults
         resetButtons();
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
 
-    public void initialiseViews(View V) {
+    private void initialiseViews(View V) {
         // Initialise the views
         pedal1text   = V.findViewById(R.id.pedal1text);
         pedal2text   = V.findViewById(R.id.pedal2text);
@@ -138,7 +136,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         pedalToggleScrollBeforeSwipeButton = V.findViewById(R.id.pedalToggleScrollBeforeSwipeButton);
     }
 
-    public void setAvailableActions() {
+    private void setAvailableActions() {
         availableactions = new ArrayList<>();
 
         //0
@@ -238,7 +236,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         availableactions.add(getString(R.string.add_song_to_set));
     }
 
-    public String convertSelectionNumberToTextOption(int i) {
+    private String convertSelectionNumberToTextOption(int i) {
         // This is done to allow me to change the order of the available options
         String option;
         switch (i) {
@@ -407,7 +405,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         return option;
     }
 
-    public int convertSelectionTextToNumberOption(String s) {
+    private int convertSelectionTextToNumberOption(String s) {
         // This is done to allow me to change the order of the available options
         int option;
         switch (s) {
@@ -576,53 +574,53 @@ public class PopUpPedalsFragment extends DialogFragment {
         return option;
     }
 
-    public String getSavedOptionForPedal(String which) {
+    private String getSavedOptionForPedal(String which) {
         String savedoption = "";
 
         switch (which) {
             case "1s":
-                savedoption = FullscreenActivity.pedal1shortaction;
+                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal1ShortPressAction","prev");
                 break;
             case "2s":
-                savedoption = FullscreenActivity.pedal2shortaction;
+                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal2ShortPressAction","next");
                 break;
             case "3s":
-                savedoption = FullscreenActivity.pedal3shortaction;
+                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal3ShortPressAction","prev");
                 break;
             case "4s":
-                savedoption = FullscreenActivity.pedal4shortaction;
+                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal4ShortPressAction","next");
                 break;
             case "5s":
-                savedoption = FullscreenActivity.pedal5shortaction;
+                savedoption = preferences.getMyPreferenceString(getActivity(),"peda15ShortPressAction","prev");
                 break;
             case "6s":
-                savedoption = FullscreenActivity.pedal6shortaction;
+                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal6ShortPressAction","next");
                 break;
             case "1l":
-                savedoption = FullscreenActivity.pedal1longaction;
+                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal1LongPressAction","songmenu");
                 break;
             case "2l":
-                savedoption = FullscreenActivity.pedal2longaction;
+                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal2LongPressAction","set");
                 break;
             case "3l":
-                savedoption = FullscreenActivity.pedal3longaction;
+                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal3LongPressAction","songmenu");
                 break;
             case "4l":
-                savedoption = FullscreenActivity.pedal4longaction;
+                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal4LongPressAction","set");
                 break;
             case "5l":
-                savedoption = FullscreenActivity.pedal5longaction;
+                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal5LongPressAction","songmenu");
                 break;
             case "6l":
-                savedoption = FullscreenActivity.pedal6longaction;
+                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal6LongPressAction","set");
                 break;
         }
         return savedoption;
     }
 
-    public void setSpinner(Spinner s, final String which) {
+    private void setSpinner(Spinner s, final String which) {
         int chosen = convertSelectionTextToNumberOption(getSavedOptionForPedal(which));
-        ArrayAdapter a = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, availableactions);
+        ArrayAdapter a = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, availableactions);
         s.setAdapter(a);
         s.setSelection(chosen);
         s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -636,7 +634,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         });
     }
 
-    public void setButtons(final Button b, int i, final int which) {
+    private void setButtons(final Button b, int i, final int which) {
         // This sets the buttons
         b.setEnabled(true);
         String t;
@@ -660,66 +658,59 @@ public class PopUpPedalsFragment extends DialogFragment {
         });
     }
 
-    public void setGroupText(TextView tv, int i) {
+    private void setGroupText(TextView tv, int i) {
         String text = getString(R.string.pedal) + " " + i;
         tv.setText(text);
     }
 
-    public void saveAction(String w, int i) {
+    private void saveAction(String w, int i) {
         String option = convertSelectionNumberToTextOption(i);
         switch (w) {
             case "1s":
-                FullscreenActivity.pedal1shortaction = option;
+                preferences.setMyPreferenceString(getActivity(),"pedal1ShortPressAction",option);
                 break;
             case "2s":
-                FullscreenActivity.pedal2shortaction = option;
+                preferences.setMyPreferenceString(getActivity(),"pedal2ShortPressAction",option);
                 break;
             case "3s":
-                FullscreenActivity.pedal3shortaction = option;
+                preferences.setMyPreferenceString(getActivity(),"pedal3ShortPressAction",option);
                 break;
             case "4s":
-                FullscreenActivity.pedal4shortaction = option;
+                preferences.setMyPreferenceString(getActivity(),"pedal4ShortPressAction",option);
                 break;
             case "5s":
-                FullscreenActivity.pedal5shortaction = option;
+                preferences.setMyPreferenceString(getActivity(),"pedal5ShortPressAction",option);
                 break;
             case "6s":
-                FullscreenActivity.pedal6shortaction = option;
+                preferences.setMyPreferenceString(getActivity(),"pedal6ShortPressAction",option);
                 break;
             case "1l":
-                FullscreenActivity.pedal1longaction = option;
+                preferences.setMyPreferenceString(getActivity(),"pedal1LongPressAction",option);
                 break;
             case "2l":
-                FullscreenActivity.pedal2longaction = option;
+                preferences.setMyPreferenceString(getActivity(),"pedal2LongPressAction",option);
                 break;
             case "3l":
-                FullscreenActivity.pedal3longaction = option;
+                preferences.setMyPreferenceString(getActivity(),"pedal3LongPressAction",option);
                 break;
             case "4l":
-                FullscreenActivity.pedal4longaction = option;
+                preferences.setMyPreferenceString(getActivity(),"pedal4LongPressAction",option);
                 break;
             case "5l":
-                FullscreenActivity.pedal5longaction = option;
+                preferences.setMyPreferenceString(getActivity(),"pedal5LongPressAction",option);
                 break;
             case "6l":
-                FullscreenActivity.pedal6longaction = option;
+                preferences.setMyPreferenceString(getActivity(),"pedal6LongPressAction",option);
                 break;
         }
-        Preferences.savePreferences();
     }
 
-    public void resetButtons() {
-        boolean checked = FullscreenActivity.toggleScrollBeforeSwipe.equals("Y");
-        pedalToggleScrollBeforeSwipeButton.setChecked(checked);
-        pedalToggleScrollBeforeSwipeButton.setOnClickListener(new View.OnClickListener() {
+    private void resetButtons() {
+        pedalToggleScrollBeforeSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"pedalScrollBeforeMove",true));
+        pedalToggleScrollBeforeSwipeButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                if (FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) {
-                    FullscreenActivity.toggleScrollBeforeSwipe = "N";
-                } else {
-                    FullscreenActivity.toggleScrollBeforeSwipe = "Y";
-                }
-                Preferences.savePreferences();
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                preferences.setMyPreferenceBoolean(getActivity(),"pedalScrollBeforeMove",isChecked);
             }
         });
 
@@ -730,12 +721,12 @@ public class PopUpPedalsFragment extends DialogFragment {
         setGroupText(pedal5text, 5);
         setGroupText(pedal6text, 6);
 
-        setButtons(pedal1button, FullscreenActivity.pedal1, 1);
-        setButtons(pedal2button, FullscreenActivity.pedal2, 2);
-        setButtons(pedal3button, FullscreenActivity.pedal3, 3);
-        setButtons(pedal4button, FullscreenActivity.pedal4, 4);
-        setButtons(pedal5button, FullscreenActivity.pedal5, 5);
-        setButtons(pedal6button, FullscreenActivity.pedal6, 6);
+        setButtons(pedal1button, preferences.getMyPreferenceInt(getActivity(),"pedal1Code",21), 1);
+        setButtons(pedal2button, preferences.getMyPreferenceInt(getActivity(),"pedal2Code",22), 2);
+        setButtons(pedal3button, preferences.getMyPreferenceInt(getActivity(),"pedal3Code",19), 3);
+        setButtons(pedal4button, preferences.getMyPreferenceInt(getActivity(),"pedal4Code",20), 4);
+        setButtons(pedal5button, preferences.getMyPreferenceInt(getActivity(),"pedal5Code",92), 5);
+        setButtons(pedal6button, preferences.getMyPreferenceInt(getActivity(),"pedal6Code",93), 6);
 
         setSpinner(pedal1choice, "1s");
         setSpinner(pedal2choice, "2s");
@@ -758,45 +749,39 @@ public class PopUpPedalsFragment extends DialogFragment {
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_UP) {
                     // Reset buttons already using this keycode
-                    if (FullscreenActivity.pedal1 == keyCode) {
-                        FullscreenActivity.pedal1 = -1;
-                    } else if (FullscreenActivity.pedal2 == keyCode) {
-                        FullscreenActivity.pedal2 = -1;
-                    } else if (FullscreenActivity.pedal3 == keyCode) {
-                        FullscreenActivity.pedal3 = -1;
-                    } else if (FullscreenActivity.pedal4 == keyCode) {
-                        FullscreenActivity.pedal4 = -1;
-                    } else if (FullscreenActivity.pedal5 == keyCode) {
-                        FullscreenActivity.pedal5 = -1;
-                    } else if (FullscreenActivity.pedal6 == keyCode) {
-                        FullscreenActivity.pedal6 = -1;
+                    if (preferences.getMyPreferenceInt(getActivity(),"pedal1Code",21) == keyCode) {
+                        preferences.setMyPreferenceInt(getActivity(),"pedal1Code",-1);
+                    } else if (preferences.getMyPreferenceInt(getActivity(),"pedal2Code",22) == keyCode) {
+                        preferences.setMyPreferenceInt(getActivity(),"pedal2Code",-1);
+                    } else if (preferences.getMyPreferenceInt(getActivity(),"pedal3Code",19) == keyCode) {
+                        preferences.setMyPreferenceInt(getActivity(),"pedal3Code",-1);
+                    } else if (preferences.getMyPreferenceInt(getActivity(),"pedal4Code",20) == keyCode) {
+                        preferences.setMyPreferenceInt(getActivity(),"pedal4Code",-1);
+                    } else if (preferences.getMyPreferenceInt(getActivity(),"pedal5Code",92) == keyCode) {
+                        preferences.setMyPreferenceInt(getActivity(),"pedal5Code",-1);
+                    } else if (preferences.getMyPreferenceInt(getActivity(),"pedal6Code",93) == keyCode) {
+                        preferences.setMyPreferenceInt(getActivity(),"pedal6Code",-1);
                     }
 
                     if (keyCode == KeyEvent.KEYCODE_BACK && assignWhich>-1) {
                         //User has pressed the back key - not allowed!!!!
-                        FullscreenActivity.myToastMessage = getResources().getString(R.string.no);
+                        StaticVariables.myToastMessage = getResources().getString(R.string.no);
                         ShowToast.showToast(getActivity());
                     } else if (keyCode == KeyEvent.KEYCODE_BACK && assignWhich==-1) {
                         dismiss();
                         return false;
                     } else if (assignWhich==1) {
-                        FullscreenActivity.pedal1 = keyCode;
-                        Preferences.savePreferences();
+                        preferences.setMyPreferenceInt(getActivity(),"pedal1Code",keyCode);
                     } else if (assignWhich==2) {
-                        FullscreenActivity.pedal2 = keyCode;
-                        Preferences.savePreferences();
+                        preferences.setMyPreferenceInt(getActivity(),"pedal2Code",keyCode);
                     } else if (assignWhich==3) {
-                        FullscreenActivity.pedal3 = keyCode;
-                        Preferences.savePreferences();
+                        preferences.setMyPreferenceInt(getActivity(),"pedal3Code",keyCode);
                     } else if (assignWhich==4) {
-                        FullscreenActivity.pedal4 = keyCode;
-                        Preferences.savePreferences();
+                        preferences.setMyPreferenceInt(getActivity(),"pedal4Code",keyCode);
                     } else if (assignWhich==5) {
-                        FullscreenActivity.pedal5 = keyCode;
-                        Preferences.savePreferences();
+                        preferences.setMyPreferenceInt(getActivity(),"pedal5Code",keyCode);
                     } else if (assignWhich==6) {
-                        FullscreenActivity.pedal6 = keyCode;
-                        Preferences.savePreferences();
+                        preferences.setMyPreferenceInt(getActivity(),"pedal6Code",keyCode);
                     }
                     assignWhich = -1;
                     resetButtons();

@@ -710,5 +710,6 @@
 
     <string name="googlefontcustom">"Anderer Google-Schriftartname"</string>
     <string name="googlefontbrowse">"Durchsuchen Sie alle Google-Schriftarten"</string>
+    <string name="reset_text">Wenn Sie Probleme mit der App haben, versuchen Sie, Ihre Einstellungen über die Schaltfläche unten zurückzusetzen. Dadurch werden Ihre Einstellungen gelöscht, Ihre Songs jedoch nicht gelöscht.</string>
 
 </resources>

@@ -707,4 +707,5 @@
 
     <string name="googlefontcustom">"その他のGoogleフォント名"</string>
     <string name="googlefontbrowse">"Googleフォントの全製品を見る"</string>
+    <string name="reset_text">アプリで問題がある場合は、下のボタンを使用して設定をリセットしてみてください。 これで設定はクリアされますが、曲は削除されません。</string>
 </resources>

@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.media.MediaPlayer;
@@ -9,11 +8,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.widget.SwitchCompat;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
+import androidx.loader.content.CursorLoader;
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,20 +27,24 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class PopUpMediaStoreFragment extends DialogFragment {
 
-    ListView mediaStore_ListView;
+    // TODO
+    // Will replace this with built in file chooser
+
+    private ListView mediaStore_ListView;
     @SuppressLint("StaticFieldLeak")
-    static FloatingActionButton startPlay;
-    SwitchCompat externalSwitch;
-    TextView mediaSelected;
-    SeekBar scrubbar_SeekBar;
-    TextView scrubbar_TextView;
-    int mptotaltimesecs = 0;
+    private static FloatingActionButton startPlay;
+    private TextView mediaSelected;
+    private SeekBar scrubbar_SeekBar;
+    private TextView scrubbar_TextView;
+    private int mptotaltimesecs = 0;
     String[] from;
     int[] to;
-    Handler seekHandler;
+    private Handler seekHandler;
+    Preferences preferences;
 
     static PopUpMediaStoreFragment newInstance() {
         PopUpMediaStoreFragment frag;
@@ -47,7 +52,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
         return frag;
     }
 
-    Uri sourceUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+    private Uri sourceUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,24 +65,14 @@ public class PopUpMediaStoreFragment extends DialogFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        // safety check
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
-
-    @SuppressWarnings("deprecation")
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         View V = inflater.inflate(R.layout.popup_mediastore, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.media_chooser));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.media_chooser));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +83,9 @@ public class PopUpMediaStoreFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
+
+        preferences = new Preferences();
 
         from = new String[] {MediaStore.MediaColumns.TITLE};
         to = new int[] {android.R.id.text1};
@@ -98,21 +95,22 @@ public class PopUpMediaStoreFragment extends DialogFragment {
         mediaStore_ListView = V.findViewById(R.id.mediaStore_ListView);
         mediaSelected = V.findViewById(R.id.mediaSelected);
         mediaSelected.setText(PresenterMode.mpTitle);
-        externalSwitch = V.findViewById(R.id.externalSwitch);
-        if (FullscreenActivity.mediaStore.equals("ext")) {
+        SwitchCompat externalSwitch = V.findViewById(R.id.externalSwitch);
+        /*if (FullscreenActivity.mediaStore.equals("ext")) {
             externalSwitch.setChecked(true);
         } else {
             externalSwitch.setChecked(false);
         }
+        */
         externalSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+                /*if (isChecked) {
                     FullscreenActivity.mediaStore = "ext";
                 } else {
                     FullscreenActivity.mediaStore = "int";
                 }
-                Preferences.savePreferences();
+                Preferences.savePreferences();*/
                 updateMedia();
             }
         });
@@ -162,7 +160,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
                 // Ooops
             }
         }
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -174,8 +172,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
         }
     };
 
-    @SuppressWarnings("deprecation")
-    public void seekUpdate() {
+    private void seekUpdate() {
         if (PresenterMode.mp!=null && PresenterMode.mp.isPlaying()) {
             int pos = (int) ((float)PresenterMode.mp.getCurrentPosition()/1000.0f);
             int dur = (int) ((float)PresenterMode.mp.getDuration()/1000.0f);
@@ -186,17 +183,16 @@ public class PopUpMediaStoreFragment extends DialogFragment {
         }
     }
 
-    @SuppressWarnings("deprecation")
-    public void updateMedia() {
+    private void updateMedia() {
 
-        if (FullscreenActivity.mediaStore.equals("ext")) {
+        /*if (FullscreenActivity.mediaStore.equals("ext")) {
             sourceUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         } else {
             sourceUri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
-        }
+        }*/
 
         CursorLoader cursorLoader = new CursorLoader(
-                getActivity(),
+                Objects.requireNonNull(getActivity()),
                 sourceUri,
                 null,
                 null,
@@ -254,9 +250,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
         });
     }
 
-
-    @SuppressWarnings("deprecation")
-    public void startPlay() {
+    private void startPlay() {
         if (PresenterMode.mp.isPlaying()) {
             if (seekHandler!=null) {
                 seekHandler.removeCallbacks(run);

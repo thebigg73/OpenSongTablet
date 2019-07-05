@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true">
         <include layout="@layout/popup_dialogtitle"/>
     </FrameLayout>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_below="@+id/myTitle">
@@ -55,7 +55,7 @@
                     android:orientation="vertical"
                     tools:ignore="UselessParent">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/group_set"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                     android:layout_margin="8dp"
                     android:orientation="vertical">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/group_pad"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -128,13 +128,13 @@
 
                 <LinearLayout
                     android:id="@+id/sect1_icon2"
-                    android:layout_toRightOf="@+id/sect1_icon1"
+                    android:layout_toEndOf="@+id/sect1_icon1"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:orientation="vertical">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/group_autoscroll"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -157,11 +157,11 @@
                     android:id="@+id/sect1_icon3"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/sect1_icon2"
+                    android:layout_toEndOf="@+id/sect1_icon2"
                     android:orientation="vertical"
                     android:layout_margin="8dp">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/group_metronome"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -214,7 +214,7 @@
                     android:layout_margin="8dp"
                     android:orientation="vertical">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/group_chords"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -238,10 +238,10 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:layout_toRightOf="@+id/sect2_icon1"
+                    android:layout_toEndOf="@+id/sect2_icon1"
                     android:orientation="vertical">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/group_links"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -264,11 +264,11 @@
                     android:id="@+id/sect2_icon3"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/sect2_icon2"
+                    android:layout_toEndOf="@+id/sect2_icon2"
                     android:layout_margin="8dp"
                     android:orientation="vertical">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/group_sticky"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -295,7 +295,7 @@
                     android:layout_margin="8dp"
                     android:orientation="vertical">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/group_highlight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -320,10 +320,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/sect2_icon2"
                     android:layout_margin="8dp"
-                    android:layout_toRightOf="@+id/sect2_icon3b"
+                    android:layout_toEndOf="@+id/sect2_icon3b"
                     android:orientation="vertical">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/group_pages"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -348,10 +348,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/sect2_icon3"
                     android:layout_margin="8dp"
-                    android:layout_toRightOf="@+id/sect2_icon4"
+                    android:layout_toEndOf="@+id/sect2_icon4"
                     android:orientation="vertical">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/group_notation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -403,7 +403,7 @@
                     android:layout_margin="8dp"
                     android:orientation="vertical">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/group_custom1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -424,13 +424,13 @@
 
                 <LinearLayout
                     android:id="@+id/sect3_icon2"
-                    android:layout_toRightOf="@+id/sect3_icon1"
+                    android:layout_toEndOf="@+id/sect3_icon1"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:orientation="vertical">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/group_custom2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -457,7 +457,7 @@
                     android:orientation="vertical"
                     android:layout_margin="8dp">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/group_custom3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -480,14 +480,14 @@
 
                 <LinearLayout
                     android:id="@+id/sect3_icon4"
-                    android:layout_toRightOf="@+id/sect3_icon3"
+                    android:layout_toEndOf="@+id/sect3_icon3"
                     android:layout_below="@+id/sect3_icon2"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:orientation="vertical">
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/group_custom4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

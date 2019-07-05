@@ -13,10 +13,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -38,10 +39,11 @@ class PresentationServiceHDMI extends Presentation
         MediaPlayer.OnPreparedListener,
         MediaPlayer.OnCompletionListener, SurfaceHolder.Callback {
 
-    PresentationServiceHDMI(Context c, Display display) {
+    PresentationServiceHDMI(Context c, Display display, ProcessSong pS) {
         super(c, display);
         context = c;
         myscreen = display;
+        processSong = pS;
     }
 
     private static Display myscreen;
@@ -134,12 +136,27 @@ class PresentationServiceHDMI extends Presentation
     private static Animation songalert_fadein;
     private static Animation songalert_fadeout;
 
+    static int lyricsBackgroundColor;
+    static int lyricsTextColor;
+    static int lyricsCapoColor;
+    static int lyricsChordsColor;
+    static int presoFontColor;
+    private static int presoInfoColor;
+    private static int presoAlertColor;
+    static int presoShadowColor;
+    static int lyricsVerseColor;
+    static int lyricsChorusColor;
+    static int lyricsPreChorusColor;
+    static int lyricsBridgeColor;
+    static int lyricsTagColor;
+    static int lyricsCommentColor;
+    static int lyricsCustomColor;
 
     @SuppressLint("StaticFieldLeak")
     static Context c;
-
+    static ProcessSong processSong;
+    
     // The logo stuff
-    @SuppressWarnings("deprecation")
     static void setUpLogo() {
         // If the customLogo doesn't exist, use the default one
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -149,8 +166,7 @@ class PresentationServiceHDMI extends Presentation
         float xscale;
         float yscale;
         boolean usingcustom = false;
-        //Uri customLogo = storageAccess.getUriForItem(c, preferences, "Backgrounds", "", FullscreenActivity.customLogo);
-        Uri customLogo = Uri.parse(FullscreenActivity.customLogo);
+        Uri customLogo = Uri.parse(preferences.getMyPreferenceString(c,"customLogo","ost_logo.png"));
         if (storageAccess.uriExists(c, customLogo)) {
             InputStream inputStream = storageAccess.getInputStream(c, customLogo);
             // Get the sizes of the custom logo
@@ -162,8 +178,10 @@ class PresentationServiceHDMI extends Presentation
             }
         }
 
-        xscale = ((float) availableWidth_1col * FullscreenActivity.customLogoSize) / (float) imgwidth;
-        yscale = ((float) availableScreenHeight * FullscreenActivity.customLogoSize) / (float) imgheight;
+        xscale = ((float) availableWidth_1col *
+                preferences.getMyPreferenceFloat(c,"customLogoSize",0.5f)) / (float) imgwidth;
+        yscale = ((float) availableScreenHeight *
+                preferences.getMyPreferenceFloat(c,"customLogoSize",0.5f)) / (float) imgheight;
 
         if (xscale > yscale) {
             xscale = yscale;
@@ -195,7 +213,7 @@ class PresentationServiceHDMI extends Presentation
 
     // Setup some default stuff
     private static void matchPresentationToMode() {
-        switch (FullscreenActivity.whichMode) {
+        switch (StaticVariables.whichMode) {
             case "Stage":
             case "Performance":
             default:
@@ -241,7 +259,6 @@ class PresentationServiceHDMI extends Presentation
         availableWidth_3col = (int) ((float) availableScreenWidth / 3.0f) - (padding * 4);
     }
 
-    @SuppressWarnings("deprecation")
     private void setDefaultBackgroundImage() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             defimage = getResources().getDrawable(R.drawable.preso_default_bg, null);
@@ -252,30 +269,30 @@ class PresentationServiceHDMI extends Presentation
 
     // Get and setup screen sizes
     static void changeMargins() {
-        songinfo_TextView.setTextColor(FullscreenActivity.lyricsTextColor);
-        projectedPage_RelativeLayout.setPadding(FullscreenActivity.xmargin_presentation,
-                FullscreenActivity.ymargin_presentation, FullscreenActivity.xmargin_presentation,
-                FullscreenActivity.ymargin_presentation);
+        songinfo_TextView.setTextColor(presoInfoColor);
+        projectedPage_RelativeLayout.setPadding(preferences.getMyPreferenceInt(c,"presoXMargin",20),
+                preferences.getMyPreferenceInt(c,"presoYMargin",10), preferences.getMyPreferenceInt(c,"presoXMargin",20),
+                preferences.getMyPreferenceInt(c,"presoYMargin",10));
     }
 
     // Change background images/videos
     static void fixBackground() {
         // Images and video backgrounds
-        Uri img1Uri = Uri.parse(FullscreenActivity.backgroundImage1);
-        Uri img2Uri = Uri.parse(FullscreenActivity.backgroundImage2);
-        Uri vid1Uri = Uri.parse(FullscreenActivity.backgroundVideo1);
-        Uri vid2Uri = Uri.parse(FullscreenActivity.backgroundVideo2);
+        Uri img1Uri = Uri.parse(preferences.getMyPreferenceString(c,"backgroundImage1","ost_bg.png"));
+        Uri img2Uri = Uri.parse(preferences.getMyPreferenceString(c,"backgroundImage2","ost_bg.png"));
+        Uri vid1Uri = Uri.parse(preferences.getMyPreferenceString(c,"backgroundVideo1",""));
+        Uri vid2Uri = Uri.parse(preferences.getMyPreferenceString(c,"backgroundVideo2",""));
 
         // Decide if user is using video or image for background
         Uri imgUri;
-        switch (FullscreenActivity.backgroundTypeToUse) {
+        switch (preferences.getMyPreferenceString(c,"backgroundTypeToUse","image")) {
             case "image":
                 projected_BackgroundImage.setVisibility(View.VISIBLE);
                 projected_SurfaceView.setVisibility(View.INVISIBLE);
                 if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
                     mMediaPlayer.pause();
                 }
-                if (FullscreenActivity.backgroundToUse.equals("img1")) {
+                if (preferences.getMyPreferenceString(c,"backgroundToUse","img1").equals("img1")) {
                     imgUri = img1Uri;
                 } else {
                     imgUri = img2Uri;
@@ -296,7 +313,7 @@ class PresentationServiceHDMI extends Presentation
                 projected_BackgroundImage.setVisibility(View.INVISIBLE);
                 projected_SurfaceView.setVisibility(View.VISIBLE);
 
-                if (FullscreenActivity.backgroundToUse.equals("vid1")) {
+                if (preferences.getMyPreferenceString(c,"backgroundToUse","img1").equals("vid1")) {
                     vidUri = vid1Uri;
                 } else {
                     vidUri = vid2Uri;
@@ -321,7 +338,7 @@ class PresentationServiceHDMI extends Presentation
 
     private static void panicShowViews() {
         // After 3x the transition times, make sure the correct view is visible regardless of animations
-        if (FullscreenActivity.whichMode.equals("Presentation")) {
+        if (StaticVariables.whichMode.equals("Presentation")) {
             if (FullscreenActivity.isImage || FullscreenActivity.isPDF || FullscreenActivity.isImageSlide) {
                 projected_ImageView.setVisibility(View.VISIBLE);
                 projected_LinearLayout.setVisibility(View.GONE);
@@ -381,38 +398,40 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private static void updateAlpha() {
-        projected_BackgroundImage.setAlpha(FullscreenActivity.presoAlpha);
-        projected_SurfaceView.setAlpha(FullscreenActivity.presoAlpha);
+        projected_BackgroundImage.setAlpha(preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
+        projected_SurfaceView.setAlpha(preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
     }
 
     private void normalStartUp() {
         // Animate out the default logo
+        getDefaultColors();
         projected_Logo.startAnimation(logo_fadeout);
         doUpdate();
     }
 
     private static void presenterThemeSetUp() {
+        getDefaultColors();
         // Set the text at the bottom of the page to match the presentation text colour
-        presentermode_title.setTypeface(FullscreenActivity.presoInfoFont);
-        presentermode_author.setTypeface(FullscreenActivity.presoInfoFont);
-        presentermode_copyright.setTypeface(FullscreenActivity.presoInfoFont);
-        presentermode_alert.setTypeface(FullscreenActivity.presoInfoFont);
-        presentermode_title.setTextColor(FullscreenActivity.presoInfoFontColor);
-        presentermode_author.setTextColor(FullscreenActivity.presoInfoFontColor);
-        presentermode_copyright.setTextColor(FullscreenActivity.presoInfoFontColor);
-        presentermode_alert.setTextColor(FullscreenActivity.presoAlertFontColor);
-        presentermode_title.setTextSize(FullscreenActivity.presoTitleSize);
-        presentermode_author.setTextSize(FullscreenActivity.presoAuthorSize);
-        presentermode_copyright.setTextSize(FullscreenActivity.presoCopyrightSize);
-        presentermode_alert.setTextSize(FullscreenActivity.presoAlertSize);
-        presentermode_title.setShadowLayer(FullscreenActivity.presoTitleSize / 2.0f, 4, 4, FullscreenActivity.presoShadowColor);
-        presentermode_author.setShadowLayer(FullscreenActivity.presoAuthorSize / 2.0f, 4, 4, FullscreenActivity.presoShadowColor);
-        presentermode_copyright.setShadowLayer(FullscreenActivity.presoCopyrightSize / 2.0f, 4, 4, FullscreenActivity.presoShadowColor);
-        presentermode_alert.setShadowLayer(FullscreenActivity.presoAlertSize / 2.0f, 4, 4, FullscreenActivity.presoShadowColor);
-        presentermode_title.setGravity(FullscreenActivity.presoInfoAlign);
-        presentermode_author.setGravity(FullscreenActivity.presoInfoAlign);
-        presentermode_copyright.setGravity(FullscreenActivity.presoInfoAlign);
-        presentermode_alert.setGravity(FullscreenActivity.presoInfoAlign);
+        presentermode_title.setTypeface(StaticVariables.typefacePresoInfo);
+        presentermode_author.setTypeface(StaticVariables.typefacePresoInfo);
+        presentermode_copyright.setTypeface(StaticVariables.typefacePresoInfo);
+        presentermode_alert.setTypeface(StaticVariables.typefacePresoInfo);
+        presentermode_title.setTextColor(presoInfoColor);
+        presentermode_author.setTextColor(presoInfoColor);
+        presentermode_copyright.setTextColor(presoInfoColor);
+        presentermode_alert.setTextColor(presoAlertColor);
+        presentermode_title.setTextSize(preferences.getMyPreferenceFloat(c,"presoTitleTextSize", 14.0f));
+        presentermode_author.setTextSize(preferences.getMyPreferenceFloat(c,"presoAuthorTextSize", 12.0f));
+        presentermode_copyright.setTextSize(preferences.getMyPreferenceFloat(c,"presoCopyrightTextSize", 12.0f));
+        presentermode_alert.setTextSize(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f));
+        presentermode_title.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoTitleTextSize", 14.0f) / 2.0f, 4, 4, presoShadowColor);
+        presentermode_author.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoAuthorTextSize", 12.0f) / 2.0f, 4, 4, presoShadowColor);
+        presentermode_copyright.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoCopyrightTextSize", 14.0f) / 2.0f, 4, 4, presoShadowColor);
+        presentermode_alert.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f) / 2.0f, 4, 4, presoShadowColor);
+        presentermode_title.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
+        presentermode_author.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
+        presentermode_copyright.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
+        presentermode_alert.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
         if (PresenterMode.alert_on.equals("Y")) {
             presentermode_alert.setVisibility(View.VISIBLE);
         } else {
@@ -436,7 +455,7 @@ class PresentationServiceHDMI extends Presentation
             Log.d("PresentationService", "Error resetting mMediaPlayer");
         }
 
-        if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
+        if (preferences.getMyPreferenceString(c,"backgroundTypeToUse","image").equals("video")) {
             try {
                 mMediaPlayer.setDataSource(c, vidUri);
                 mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -491,6 +510,81 @@ class PresentationServiceHDMI extends Presentation
         }
     }
 
+    private static void getDefaultColors() {
+        switch (StaticVariables.mDisplayTheme) {
+            case "dark":
+            default:
+
+                lyricsCapoColor = preferences.getMyPreferenceInt(c, "dark_lyricsCapoColor", StaticVariables.red);
+                lyricsChordsColor = preferences.getMyPreferenceInt(c, "dark_lyricsChordsColor", StaticVariables.yellow);
+                presoFontColor = preferences.getMyPreferenceInt(c, "dark_presoFontColor", StaticVariables.white);
+                lyricsBackgroundColor = preferences.getMyPreferenceInt(c,"dark_lyricsBackgroundColor",StaticVariables.black);
+                lyricsTextColor = preferences.getMyPreferenceInt(c,"dark_lyricsTextColor",StaticVariables.white);
+                presoInfoColor = preferences.getMyPreferenceInt(c,"dark_presoInfoColor", StaticVariables.white);
+                presoAlertColor = preferences.getMyPreferenceInt(c,"dark_presoAlertColor",StaticVariables.red);
+                presoShadowColor = preferences.getMyPreferenceInt(c,"dark_presoShadowColor",StaticVariables.black);
+                lyricsVerseColor = preferences.getMyPreferenceInt(c,"dark_lyricsVerseColor",StaticVariables.black);
+                lyricsChorusColor = preferences.getMyPreferenceInt(c,"dark_lyricsChorusColor",StaticVariables.vdarkblue);
+                lyricsPreChorusColor = preferences.getMyPreferenceInt(c,"dark_lyricsPreChorusColor",StaticVariables.darkishgreen);
+                lyricsBridgeColor = preferences.getMyPreferenceInt(c,"dark_lyricsBridgeColor",StaticVariables.vdarkred);
+                lyricsTagColor = preferences.getMyPreferenceInt(c,"dark_lyricsTagColor",StaticVariables.darkpurple);
+                lyricsCommentColor = preferences.getMyPreferenceInt(c,"dark_lyricsCommentColor",StaticVariables.vdarkgreen);
+                lyricsCustomColor = preferences.getMyPreferenceInt(c,"dark_lyricsCustomColor",StaticVariables.vdarkyellow);
+                break;
+            case "light":
+                lyricsCapoColor = preferences.getMyPreferenceInt(c, "light_lyricsCapoColor", StaticVariables.red);
+                lyricsChordsColor = preferences.getMyPreferenceInt(c, "light_lyricsChordsColor", StaticVariables.yellow);
+                presoFontColor = preferences.getMyPreferenceInt(c, "light_presoFontColor", StaticVariables.black);
+                lyricsBackgroundColor = preferences.getMyPreferenceInt(c,"light_lyricsBackgroundColor",StaticVariables.white);
+                lyricsTextColor = preferences.getMyPreferenceInt(c,"light_lyricsTextColor",StaticVariables.black);
+                presoInfoColor = preferences.getMyPreferenceInt(c,"light_presoInfoColor", StaticVariables.black);
+                presoAlertColor = preferences.getMyPreferenceInt(c,"light_presoAlertColor",StaticVariables.red);
+                presoShadowColor = preferences.getMyPreferenceInt(c,"light_presoShadowColor",StaticVariables.black);
+                lyricsVerseColor = preferences.getMyPreferenceInt(c,"light_lyricsVerseColor",StaticVariables.white);
+                lyricsChorusColor = preferences.getMyPreferenceInt(c,"light_lyricsChorusColor",StaticVariables.vlightpurple);
+                lyricsPreChorusColor = preferences.getMyPreferenceInt(c,"light_lyricsPreChorusColor",StaticVariables.lightgreen);
+                lyricsBridgeColor = preferences.getMyPreferenceInt(c,"light_lyricsBridgeColor",StaticVariables.vlightcyan);
+                lyricsTagColor = preferences.getMyPreferenceInt(c,"light_lyricsTagColor",StaticVariables.vlightgreen);
+                lyricsCommentColor = preferences.getMyPreferenceInt(c,"light_lyricsCommentColor",StaticVariables.vlightblue);
+                lyricsCustomColor = preferences.getMyPreferenceInt(c,"light_lyricsCustomColor",StaticVariables.lightishcyan);
+                break;
+            case "custom1":
+                lyricsCapoColor = preferences.getMyPreferenceInt(c, "custom1_lyricsCapoColor", StaticVariables.red);
+                lyricsChordsColor = preferences.getMyPreferenceInt(c, "custom1_lyricsChordsColor", StaticVariables.yellow);
+                presoFontColor = preferences.getMyPreferenceInt(c, "dark_presoFontColor", StaticVariables.white);
+                lyricsBackgroundColor = preferences.getMyPreferenceInt(c,"custom1_lyricsBackgroundColor",StaticVariables.black);
+                lyricsTextColor = preferences.getMyPreferenceInt(c,"custom1_lyricsTextColor",StaticVariables.white);
+                presoInfoColor = preferences.getMyPreferenceInt(c,"custom1_presoInfoColor", StaticVariables.white);
+                presoAlertColor = preferences.getMyPreferenceInt(c,"custom1_presoAlertColor",StaticVariables.red);
+                presoShadowColor = preferences.getMyPreferenceInt(c,"custom1_presoShadowColor",StaticVariables.black);
+                lyricsVerseColor = preferences.getMyPreferenceInt(c,"custom1_lyricsVerseColor",StaticVariables.black);
+                lyricsChorusColor = preferences.getMyPreferenceInt(c,"custom1_lyricsChorusColor",StaticVariables.black);
+                lyricsPreChorusColor = preferences.getMyPreferenceInt(c,"custom1_lyricsPreChorusColor",StaticVariables.black);
+                lyricsBridgeColor = preferences.getMyPreferenceInt(c,"custom1_lyricsBridgeColor",StaticVariables.black);
+                lyricsTagColor = preferences.getMyPreferenceInt(c,"custom1_lyricsTagColor",StaticVariables.black);
+                lyricsCommentColor = preferences.getMyPreferenceInt(c,"custom1_lyricsCommentColor",StaticVariables.black);
+                lyricsCustomColor = preferences.getMyPreferenceInt(c,"custom1_lyricsCustomColor",StaticVariables.black);
+                break;
+            case "custom2":
+                lyricsCapoColor = preferences.getMyPreferenceInt(c, "custom2_lyricsCapoColor", StaticVariables.red);
+                lyricsChordsColor = preferences.getMyPreferenceInt(c, "custom2_lyricsChordsColor", StaticVariables.yellow);
+                presoFontColor = preferences.getMyPreferenceInt(c, "custom2_presoFontColor", StaticVariables.black);
+                lyricsBackgroundColor = preferences.getMyPreferenceInt(c,"custom2_lyricsBackgroundColor",StaticVariables.white);
+                lyricsTextColor = preferences.getMyPreferenceInt(c,"custom2_lyricsTextColor",StaticVariables.black);
+                presoInfoColor = preferences.getMyPreferenceInt(c,"custom2_presoInfoColor", StaticVariables.black);
+                presoAlertColor = preferences.getMyPreferenceInt(c,"custom2_presoAlertColor",StaticVariables.red);
+                presoShadowColor = preferences.getMyPreferenceInt(c,"custom2_presoShadowColor",StaticVariables.black);
+                lyricsVerseColor = preferences.getMyPreferenceInt(c,"custom2_lyricsVerseColor",StaticVariables.white);
+                lyricsChorusColor = preferences.getMyPreferenceInt(c,"custom2_lyricsChorusColor",StaticVariables.white);
+                lyricsPreChorusColor = preferences.getMyPreferenceInt(c,"custom2_lyricsPreChorusColor",StaticVariables.white);
+                lyricsBridgeColor = preferences.getMyPreferenceInt(c,"custom2_lyricsBridgeColor",StaticVariables.white);
+                lyricsTagColor = preferences.getMyPreferenceInt(c,"custom2_lyricsTagColor",StaticVariables.white);
+                lyricsCommentColor = preferences.getMyPreferenceInt(c,"custom2_lyricsCommentColor",StaticVariables.white);
+                lyricsCustomColor = preferences.getMyPreferenceInt(c,"custom2_lyricsCustomColor",StaticVariables.white);
+                break;
+        }
+    }
+
     static void doUpdate() {
         // First up, animate everything away
         animateOut();
@@ -505,17 +599,17 @@ class PresentationServiceHDMI extends Presentation
             pageHolder.startAnimation(mypage_fadein);
         }
 
-        // Just in case there is a glitch, make the stuff visible after 3x transition time
+        // Just in case there is a glitch, make the stuff visible after 5x transition time
         Handler panic = new Handler();
         panic.postDelayed(new Runnable() {
             @Override
             public void run() {
                 panicShowViews();
             }
-        }, 3 * FullscreenActivity.presoTransitionTime);
+        }, 5 * preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
 
         // Set the title of the song and author (if available).  Only does this for changes
-        if (FullscreenActivity.whichMode.equals("Presentation")) {
+        if (StaticVariables.whichMode.equals("Presentation")) {
             presenterWriteSongInfo();
         } else {
             setSongTitle();
@@ -530,10 +624,10 @@ class PresentationServiceHDMI extends Presentation
                 wipeAllViews();
 
                 // Check the colours colour
-                if (!FullscreenActivity.whichMode.equals("Presentation")) {
+                if (!StaticVariables.whichMode.equals("Presentation")) {
                     // Set the page background to the correct colour for Peformance/Stage modes
-                    projectedPage_RelativeLayout.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
-                    songinfo_TextView.setTextColor(FullscreenActivity.lyricsTextColor);
+                    projectedPage_RelativeLayout.setBackgroundColor(lyricsTextColor);
+                    songinfo_TextView.setTextColor(presoInfoColor);
                 }
 
                 // Decide on what we are going to show
@@ -543,7 +637,7 @@ class PresentationServiceHDMI extends Presentation
                     doImagePage();
                 } else {
                     projected_ImageView.setVisibility(View.GONE);
-                    switch (FullscreenActivity.whichMode) {
+                    switch (StaticVariables.whichMode) {
                         case "Stage":
                             prepareStageProjected();
                             break;
@@ -556,13 +650,13 @@ class PresentationServiceHDMI extends Presentation
                     }
                 }
             }
-        }, FullscreenActivity.presoTransitionTime);
+        }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
     }
 
     private static void doPDFPage() {
-        Bitmap bmp = ProcessSong.createPDFPage(c, preferences, storageAccess, availableScreenWidth, availableScreenHeight, "Y");
+        Bitmap bmp = processSong.createPDFPage(c, preferences, storageAccess, availableScreenWidth, availableScreenHeight, "Y");
         projected_ImageView.setVisibility(View.GONE);
-        projected_ImageView.setBackgroundColor(0xffffffff);
+        projected_ImageView.setBackgroundColor(StaticVariables.white);
         projected_ImageView.setImageBitmap(bmp);
         projected_ImageView.setVisibility(View.VISIBLE);
         animateIn();
@@ -572,9 +666,9 @@ class PresentationServiceHDMI extends Presentation
     // Change the song info at the bottom of the page
     private static void setSongTitle() {
         String old_title = songinfo_TextView.getText().toString();
-        String new_title = FullscreenActivity.mTitle.toString();
-        if (!FullscreenActivity.mAuthor.equals("")) {
-            new_title = new_title + "\n" + FullscreenActivity.mAuthor;
+        String new_title = StaticVariables.mTitle;
+        if (!StaticVariables.mAuthor.equals("")) {
+            new_title = new_title + "\n" + StaticVariables.mAuthor;
         }
         if (!old_title.equals(new_title)) {
             // It has changed, so make the text update on the screen
@@ -586,14 +680,14 @@ class PresentationServiceHDMI extends Presentation
         String old_title = presentermode_title.getText().toString();
         String old_author = presentermode_author.getText().toString();
         String old_copyright = presentermode_copyright.getText().toString();
-        if (!old_title.contentEquals(FullscreenActivity.mTitle)) {
-            presenterFadeOutSongInfo(presentermode_title, songtitle_fadeout, songtitle_fadein, FullscreenActivity.mTitle.toString());
+        if (!old_title.contentEquals(StaticVariables.mTitle)) {
+            presenterFadeOutSongInfo(presentermode_title, songtitle_fadeout, songtitle_fadein, StaticVariables.mTitle);
         }
-        if (!old_author.contentEquals(FullscreenActivity.mAuthor)) {
-            presenterFadeOutSongInfo(presentermode_author, songauthor_fadeout, songauthor_fadein, FullscreenActivity.mAuthor.toString());
+        if (!old_author.contentEquals(StaticVariables.mAuthor)) {
+            presenterFadeOutSongInfo(presentermode_author, songauthor_fadeout, songauthor_fadein, StaticVariables.mAuthor);
         }
-        if (!old_copyright.contentEquals(FullscreenActivity.mCopyright)) {
-            presenterFadeOutSongInfo(presentermode_copyright, songcopyright_fadeout, songcopyright_fadein, FullscreenActivity.mCopyright.toString());
+        if (!old_copyright.contentEquals(StaticVariables.mCopyright)) {
+            presenterFadeOutSongInfo(presentermode_copyright, songcopyright_fadeout, songcopyright_fadein, StaticVariables.mCopyright);
         }
     }
 
@@ -604,11 +698,11 @@ class PresentationServiceHDMI extends Presentation
         h.postDelayed(new Runnable() {
             @Override
             public void run() {
-                songinfo_TextView.setTextColor(FullscreenActivity.lyricsTextColor);
+                songinfo_TextView.setTextColor(presoInfoColor);
                 songinfo_TextView.setText(s);
                 songinfo_TextView.startAnimation(songinfo_fadein);
             }
-        }, FullscreenActivity.presoTransitionTime);
+        }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
     }
 
     private static void presenterFadeOutSongInfo(final TextView tv, Animation out, final Animation in, final String s) {
@@ -635,7 +729,7 @@ class PresentationServiceHDMI extends Presentation
                     presenterFadeInSongInfo(tv, in);
                 }
             }
-        }, FullscreenActivity.presoTransitionTime);
+        }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
     }
 
     private static void presenterFadeInSongInfo(TextView tv, Animation in) {
@@ -643,28 +737,29 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private void prepareBackgroundAnimations() {
-        mypage_fadein = CustomAnimations.setUpAnimation(pageHolder, 0.0f, 1.0f);
-        mypage_fadeout = CustomAnimations.setUpAnimation(pageHolder, 1.0f, 0.0f);
-        background_fadein = CustomAnimations.setUpAnimation(projected_BackgroundImage, 0.0f, 1.0f);
+        int t = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
+        mypage_fadein = CustomAnimations.setUpAnimation(pageHolder, t, 0.0f, 1.0f);
+        mypage_fadeout = CustomAnimations.setUpAnimation(pageHolder, t, 1.0f, 0.0f);
+        background_fadein = CustomAnimations.setUpAnimation(projected_BackgroundImage, t, 0.0f, 1.0f);
         //Animation background_fadeout = CustomAnimations.setUpAnimation(projected_BackgroundImage, 1.0f, 0.0f);
-        logo_fadein = CustomAnimations.setUpAnimation(projected_Logo, 0.0f, 1.0f);
-        logo_fadeout = CustomAnimations.setUpAnimation(projected_Logo, 1.0f, 0.0f);
-        image_fadein = CustomAnimations.setUpAnimation(projected_ImageView, 0.0f, 1.0f);
-        image_fadeout = CustomAnimations.setUpAnimation(projected_ImageView, 1.0f, 0.0f);
+        logo_fadein = CustomAnimations.setUpAnimation(projected_Logo, t, 0.0f, 1.0f);
+        logo_fadeout = CustomAnimations.setUpAnimation(projected_Logo, t, 1.0f, 0.0f);
+        image_fadein = CustomAnimations.setUpAnimation(projected_ImageView, t, 0.0f, 1.0f);
+        image_fadeout = CustomAnimations.setUpAnimation(projected_ImageView, t, 1.0f, 0.0f);
         //Animation video_fadein = CustomAnimations.setUpAnimation(projected_SurfaceView, 0.0f, 1.0f);
         //Animation video_fadeout = CustomAnimations.setUpAnimation(projected_SurfaceView, 1.0f, 0.0f);
-        lyrics_fadein = CustomAnimations.setUpAnimation(projected_LinearLayout, 0.0f, 1.0f);
-        lyrics_fadeout = CustomAnimations.setUpAnimation(projected_LinearLayout, 1.0f, 0.0f);
-        songinfo_fadein = CustomAnimations.setUpAnimation(songinfo_TextView, 0.0f, 1.0f);
-        songinfo_fadeout = CustomAnimations.setUpAnimation(songinfo_TextView, 1.0f, 0.0f);
-        songtitle_fadein = CustomAnimations.setUpAnimation(presentermode_title, 0.0f, 1.0f);
-        songtitle_fadeout = CustomAnimations.setUpAnimation(presentermode_title, 1.0f, 0.0f);
-        songauthor_fadein = CustomAnimations.setUpAnimation(presentermode_author, 0.0f, 1.0f);
-        songauthor_fadeout = CustomAnimations.setUpAnimation(presentermode_author, 1.0f, 0.0f);
-        songcopyright_fadein = CustomAnimations.setUpAnimation(presentermode_copyright, 0.0f, 1.0f);
-        songcopyright_fadeout = CustomAnimations.setUpAnimation(presentermode_copyright, 1.0f, 0.0f);
-        songalert_fadein = CustomAnimations.setUpAnimation(presentermode_alert, 0.0f, 1.0f);
-        songalert_fadeout = CustomAnimations.setUpAnimation(presentermode_alert, 1.0f, 0.0f);
+        lyrics_fadein = CustomAnimations.setUpAnimation(projected_LinearLayout, t, 0.0f, 1.0f);
+        lyrics_fadeout = CustomAnimations.setUpAnimation(projected_LinearLayout, t, 1.0f, 0.0f);
+        songinfo_fadein = CustomAnimations.setUpAnimation(songinfo_TextView, t, 0.0f, 1.0f);
+        songinfo_fadeout = CustomAnimations.setUpAnimation(songinfo_TextView, t, 1.0f, 0.0f);
+        songtitle_fadein = CustomAnimations.setUpAnimation(presentermode_title, t, 0.0f, 1.0f);
+        songtitle_fadeout = CustomAnimations.setUpAnimation(presentermode_title, t, 1.0f, 0.0f);
+        songauthor_fadein = CustomAnimations.setUpAnimation(presentermode_author, t, 0.0f, 1.0f);
+        songauthor_fadeout = CustomAnimations.setUpAnimation(presentermode_author, t, 1.0f, 0.0f);
+        songcopyright_fadein = CustomAnimations.setUpAnimation(presentermode_copyright, t, 0.0f, 1.0f);
+        songcopyright_fadeout = CustomAnimations.setUpAnimation(presentermode_copyright, t, 1.0f, 0.0f);
+        songalert_fadein = CustomAnimations.setUpAnimation(presentermode_alert, t, 0.0f, 1.0f);
+        songalert_fadeout = CustomAnimations.setUpAnimation(presentermode_alert, t, 1.0f, 0.0f);
     }
 
     private static void doImagePage() {
@@ -673,7 +768,7 @@ class PresentationServiceHDMI extends Presentation
         // Process the image location into an URI
         RequestOptions myOptions = new RequestOptions()
                 .fitCenter();
-        Glide.with(c).load(FullscreenActivity.uriToLoad).apply(myOptions).into(projected_ImageView);
+        Glide.with(c).load(StaticVariables.uriToLoad).apply(myOptions).into(projected_ImageView);
         projected_ImageView.setVisibility(View.VISIBLE);
         animateIn();
     }
@@ -703,6 +798,7 @@ class PresentationServiceHDMI extends Presentation
 
     // Set up the screen changes
     private void presenterStartUp() {
+        getDefaultColors();
         // Set up the text styles and fonts for the bottom info bar
         presenterThemeSetUp();
 
@@ -714,15 +810,14 @@ class PresentationServiceHDMI extends Presentation
                 // Try to set the new background
                 fixBackground();
 
-                Log.d("d", "backgroundTypeToUse=" + FullscreenActivity.backgroundTypeToUse);
-                if (FullscreenActivity.backgroundTypeToUse.equals("image")) {
+                if (preferences.getMyPreferenceString(c,"backgroundTypeToUse","image").equals("image")) {
                     projected_BackgroundImage.startAnimation(background_fadein);
-                } else if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
+                } else if (preferences.getMyPreferenceString(c,"backgroundTypeToUse","image").equals("video")) {
                     projected_SurfaceView.startAnimation(background_fadein);
 
                 }
             }
-        }, FullscreenActivity.presoTransitionTime);
+        }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
     }
 
     @Override
@@ -732,6 +827,8 @@ class PresentationServiceHDMI extends Presentation
 
         storageAccess = new StorageAccess();
         preferences = new Preferences();
+
+        getDefaultColors();
 
         pageHolder = findViewById(R.id.pageHolder);
         projectedPage_RelativeLayout = findViewById(R.id.projectedPage_RelativeLayout);
@@ -781,7 +878,7 @@ class PresentationServiceHDMI extends Presentation
         h.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (!FullscreenActivity.whichMode.equals("Presentation")) {
+                if (!StaticVariables.whichMode.equals("Presentation")) {
                     normalStartUp();
                 } else {
                     // Switch to the user background and logo
@@ -801,7 +898,7 @@ class PresentationServiceHDMI extends Presentation
         mMediaPlayer.setOnPreparedListener(PresentationServiceHDMI.this);
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mMediaPlayer.setOnCompletionListener(PresentationServiceHDMI.this);
-        if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
+        if (preferences.getMyPreferenceString(c,"backgroundTypeToUse","image").equals("video")) {
             try {
                 mMediaPlayer.setDataSource(c, vidUri);
                 mMediaPlayer.prepare();
@@ -814,7 +911,7 @@ class PresentationServiceHDMI extends Presentation
 
     private static class PrepareStageProjected extends AsyncTask<Object, Void, String> {
         @SuppressLint("StaticFieldLeak")
-        LinearLayout test1_1 = ProcessSong.createLinearLayout(context);
+        LinearLayout test1_1 = processSong.createLinearLayout(context);
 
         @Override
         protected void onPreExecute() {
@@ -849,7 +946,10 @@ class PresentationServiceHDMI extends Presentation
         protected void onPostExecute(String s) {
             try {
                 if (!cancelled) {
-                    test1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection, 12.0f, storageAccess);
+                    test1_1 = processSong.projectedSectionView(context, StaticVariables.currentSection, 12.0f,
+                            storageAccess, preferences,
+                            lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,
+                            lyricsCapoColor, presoFontColor, presoShadowColor);
                     col1_1.addView(test1_1);
 
                     // Now premeasure the view
@@ -880,9 +980,10 @@ class PresentationServiceHDMI extends Presentation
 
     private static class ProjectedStageView1Col extends AsyncTask<Object, Void, String> {
         @SuppressLint("StaticFieldLeak")
-        LinearLayout lyrics1_1 = ProcessSong.createLinearLayout(context);
+        LinearLayout lyrics1_1 = processSong.createLinearLayout(context);
         @SuppressLint("StaticFieldLeak")
-        LinearLayout box1_1 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
+        LinearLayout box1_1    = processSong.prepareProjectedBoxView(context,preferences,lyricsTextColor,
+                lyricsBackgroundColor,0,padding);
         float scale;
 
         @Override
@@ -897,7 +998,7 @@ class PresentationServiceHDMI extends Presentation
                     scale = max_height_scale;
                 }
 
-                float maxscale = FullscreenActivity.presoMaxFontSize / 12.0f;
+                float maxscale = preferences.getMyPreferenceFloat(c,"fontSizePresoMax",40.0f) / 12.0f;
                 if (scale > maxscale) {
                     scale = maxscale;
                 }
@@ -925,8 +1026,11 @@ class PresentationServiceHDMI extends Presentation
         protected void onPostExecute(String s) {
             try {
                 if (!cancelled) {
-                    lyrics1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection,
-                            ProcessSong.getProjectedFontSize(scale), storageAccess);
+                    lyrics1_1 = processSong.projectedSectionView(context, StaticVariables.currentSection,
+                            processSong.getProjectedFontSize(scale),
+                            storageAccess, preferences,
+                            lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,
+                            lyricsCapoColor, presoFontColor, presoShadowColor);
                     LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(availableWidth_1col, LinearLayout.LayoutParams.WRAP_CONTENT);
                     llp1_1.setMargins(0, 0, 0, 0);
                     lyrics1_1.setLayoutParams(llp1_1);
@@ -959,7 +1063,7 @@ class PresentationServiceHDMI extends Presentation
 
     private static class PreparePresenterProjected extends AsyncTask<Object, Void, String> {
         @SuppressLint("StaticFieldLeak")
-        LinearLayout test1_1 = ProcessSong.createLinearLayout(context);
+        LinearLayout test1_1 = processSong.createLinearLayout(context);
 
         @Override
         protected void onPreExecute() {
@@ -994,7 +1098,10 @@ class PresentationServiceHDMI extends Presentation
         protected void onPostExecute(String s) {
             try {
                 if (!cancelled) {
-                    test1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection, 12.0f, storageAccess);
+                    test1_1 = processSong.projectedSectionView(context, StaticVariables.currentSection, 12.0f,
+                            storageAccess, preferences,
+                            lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,
+                            lyricsCapoColor, presoFontColor, presoShadowColor);
                     col1_1.addView(test1_1);
 
                     // Now premeasure the view
@@ -1025,9 +1132,10 @@ class PresentationServiceHDMI extends Presentation
 
     private static class ProjectedPresenterView1Col extends AsyncTask<Object, Void, String> {
         @SuppressLint("StaticFieldLeak")
-        LinearLayout lyrics1_1 = ProcessSong.createLinearLayout(context);
+        LinearLayout lyrics1_1 = processSong.createLinearLayout(context);
         @SuppressLint("StaticFieldLeak")
-        LinearLayout box1_1 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
+        LinearLayout box1_1    = processSong.prepareProjectedBoxView(context,preferences,lyricsTextColor,
+                lyricsBackgroundColor,0,padding);
         float scale;
 
         @Override
@@ -1042,7 +1150,7 @@ class PresentationServiceHDMI extends Presentation
                     scale = max_height_scale;
                 }
 
-                float maxscale = FullscreenActivity.presoMaxFontSize / 12.0f;
+                float maxscale = preferences.getMyPreferenceFloat(c,"fontSizePresoMax",40.0f) / 12.0f;
                 if (scale > maxscale) {
                     scale = maxscale;
                 }
@@ -1070,8 +1178,11 @@ class PresentationServiceHDMI extends Presentation
         protected void onPostExecute(String s) {
             try {
                 if (!cancelled) {
-                    lyrics1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection,
-                            ProcessSong.getProjectedFontSize(scale), storageAccess);
+                    lyrics1_1 = processSong.projectedSectionView(context, StaticVariables.currentSection,
+                            processSong.getProjectedFontSize(scale),
+                            storageAccess, preferences,
+                            lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,
+                            lyricsCapoColor, presoFontColor, presoShadowColor);
                     LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(availableWidth_1col, LinearLayout.LayoutParams.WRAP_CONTENT);
                     llp1_1.setMargins(0, 0, 0, 0);
                     lyrics1_1.setLayoutParams(llp1_1);
@@ -1161,7 +1272,7 @@ class PresentationServiceHDMI extends Presentation
         }
 
         // Now we know how many columns we should use, let's do it!
-        float maxscale = FullscreenActivity.presoMaxFontSize / 12.0f;
+        float maxscale = preferences.getMyPreferenceFloat(c,"fontSizePresoMax",40.0f) / 12.0f;
 
         switch (colstouse) {
             case 1:
@@ -1209,17 +1320,17 @@ class PresentationServiceHDMI extends Presentation
 
     private static class PrepareFullProjected extends AsyncTask<Object, Void, String> {
         @SuppressLint("StaticFieldLeak")
-        LinearLayout test1_1 = ProcessSong.createLinearLayout(context);
+        LinearLayout test1_1 = processSong.createLinearLayout(context);
         @SuppressLint("StaticFieldLeak")
-        LinearLayout test1_2 = ProcessSong.createLinearLayout(context);
+        LinearLayout test1_2 = processSong.createLinearLayout(context);
         @SuppressLint("StaticFieldLeak")
-        LinearLayout test2_2 = ProcessSong.createLinearLayout(context);
+        LinearLayout test2_2 = processSong.createLinearLayout(context);
         @SuppressLint("StaticFieldLeak")
-        LinearLayout test1_3 = ProcessSong.createLinearLayout(context);
+        LinearLayout test1_3 = processSong.createLinearLayout(context);
         @SuppressLint("StaticFieldLeak")
-        LinearLayout test2_3 = ProcessSong.createLinearLayout(context);
+        LinearLayout test2_3 = processSong.createLinearLayout(context);
         @SuppressLint("StaticFieldLeak")
-        LinearLayout test3_3 = ProcessSong.createLinearLayout(context);
+        LinearLayout test3_3 = processSong.createLinearLayout(context);
 
         @Override
         protected void onPreExecute() {
@@ -1261,27 +1372,45 @@ class PresentationServiceHDMI extends Presentation
                 if (!cancelled) {
                     // Prepare the new views to add to 1,2 and 3 colums ready for measuring
                     // Go through each section
-                    for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
+                    for (int x = 0; x < StaticVariables.songSections.length; x++) {
 
-                        test1_1 = ProcessSong.projectedSectionView(context, x, 12.0f, storageAccess);
+                        test1_1 = processSong.projectedSectionView(context, x, 12.0f,
+                                storageAccess, preferences,
+                                lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,
+                                lyricsCapoColor, presoFontColor, presoShadowColor);
                         col1_1.addView(test1_1);
 
                         if (x < FullscreenActivity.halfsplit_section) {
-                            test1_2 = ProcessSong.projectedSectionView(context, x, 12.0f, storageAccess);
+                            test1_2 = processSong.projectedSectionView(context, x, 12.0f,
+                                    storageAccess, preferences,
+                                    lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,
+                                    lyricsCapoColor, presoFontColor, presoShadowColor);
                             col1_2.addView(test1_2);
                         } else {
-                            test2_2 = ProcessSong.projectedSectionView(context, x, 12.0f, storageAccess);
+                            test2_2 = processSong.projectedSectionView(context, x, 12.0f,
+                                    storageAccess, preferences,
+                                    lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,
+                                    lyricsCapoColor, presoFontColor, presoShadowColor);
                             col2_2.addView(test2_2);
                         }
 
                         if (x < FullscreenActivity.thirdsplit_section) {
-                            test1_3 = ProcessSong.projectedSectionView(context, x, 12.0f, storageAccess);
+                            test1_3 = processSong.projectedSectionView(context, x, 12.0f,
+                                    storageAccess, preferences,
+                                    lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,
+                                    lyricsCapoColor, presoFontColor, presoShadowColor);
                             col1_3.addView(test1_3);
                         } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
-                            test2_3 = ProcessSong.projectedSectionView(context, x, 12.0f, storageAccess);
+                            test2_3 = processSong.projectedSectionView(context, x, 12.0f,
+                                    storageAccess, preferences,
+                                    lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,
+                                    lyricsCapoColor, presoFontColor, presoShadowColor);
                             col2_3.addView(test2_3);
                         } else {
-                            test3_3 = ProcessSong.projectedSectionView(context, x, 12.0f, storageAccess);
+                            test3_3 = processSong.projectedSectionView(context, x, 12.0f,
+                                    storageAccess, preferences,
+                                    lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,
+                                    lyricsCapoColor, presoFontColor, presoShadowColor);
                             col3_3.addView(test3_3);
                         }
                     }
@@ -1329,15 +1458,16 @@ class PresentationServiceHDMI extends Presentation
 
     private static class ProjectedPerformanceView1Col extends AsyncTask<Object, Void, String> {
         @SuppressLint("StaticFieldLeak")
-        LinearLayout lyrics1_1 = ProcessSong.createLinearLayout(context);
+        LinearLayout lyrics1_1 = processSong.createLinearLayout(context);
         @SuppressLint("StaticFieldLeak")
-        LinearLayout box1_1 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
+        LinearLayout box1_1    = processSong.prepareProjectedBoxView(context,preferences,lyricsTextColor,
+                lyricsBackgroundColor,0,padding);
         float scale1_1;
         float fontsize1_1;
 
         ProjectedPerformanceView1Col(float s1_1) {
             scale1_1 = s1_1;
-            fontsize1_1 = ProcessSong.getProjectedFontSize(scale1_1);
+            fontsize1_1 = processSong.getProjectedFontSize(scale1_1);
         }
 
         @Override
@@ -1369,12 +1499,17 @@ class PresentationServiceHDMI extends Presentation
                 if (!cancelled) {
                     // Prepare the new views to add to 1,2 and 3 colums ready for measuring
                     // Go through each section
-                    for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
-                        lyrics1_1 = ProcessSong.projectedSectionView(context, x, fontsize1_1, storageAccess);
+                    for (int x = 0; x < StaticVariables.songSections.length; x++) {
+                        lyrics1_1 = processSong.projectedSectionView(context, x, fontsize1_1,
+                                storageAccess, preferences,
+                                lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,
+                                lyricsCapoColor, presoFontColor, presoShadowColor);
                         LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(availableWidth_1col, LinearLayout.LayoutParams.WRAP_CONTENT);
                         llp1_1.setMargins(0, 0, 0, 0);
                         lyrics1_1.setLayoutParams(llp1_1);
-                        lyrics1_1.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
+                        lyrics1_1.setBackgroundColor(processSong.getSectionColors(StaticVariables.songSectionsTypes[x],
+                                lyricsVerseColor,lyricsChorusColor, lyricsPreChorusColor,lyricsBridgeColor,lyricsTagColor,
+                                lyricsCommentColor,lyricsCustomColor));
                         box1_1.addView(lyrics1_1);
                     }
 
@@ -1408,19 +1543,21 @@ class PresentationServiceHDMI extends Presentation
         float fontsize1_2;
         float fontsize2_2;
         @SuppressLint("StaticFieldLeak")
-        LinearLayout lyrics1_2 = ProcessSong.createLinearLayout(context);
+        LinearLayout lyrics1_2 = processSong.createLinearLayout(context);
         @SuppressLint("StaticFieldLeak")
-        LinearLayout lyrics2_2 = ProcessSong.createLinearLayout(context);
+        LinearLayout lyrics2_2 = processSong.createLinearLayout(context);
         @SuppressLint("StaticFieldLeak")
-        LinearLayout box1_2 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
+        LinearLayout box1_2    = processSong.prepareProjectedBoxView(context,preferences,lyricsTextColor,
+                lyricsBackgroundColor,0,padding);
         @SuppressLint("StaticFieldLeak")
-        LinearLayout box2_2 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
+        LinearLayout box2_2    = processSong.prepareProjectedBoxView(context,preferences,lyricsTextColor,
+                lyricsBackgroundColor,0,padding);
 
         ProjectedPerformanceView2Col(float s1_2, float s2_2) {
             scale1_2 = s1_2;
             scale2_2 = s2_2;
-            fontsize1_2 = ProcessSong.getProjectedFontSize(scale1_2);
-            fontsize2_2 = ProcessSong.getProjectedFontSize(scale2_2);
+            fontsize1_2 = processSong.getProjectedFontSize(scale1_2);
+            fontsize2_2 = processSong.getProjectedFontSize(scale2_2);
         }
 
         @Override
@@ -1452,21 +1589,31 @@ class PresentationServiceHDMI extends Presentation
             try {
                 if (!cancelled) {
                     // Add the song sections...
-                    for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
+                    for (int x = 0; x < StaticVariables.songSections.length; x++) {
 
                         if (x < FullscreenActivity.halfsplit_section) {
-                            lyrics1_2 = ProcessSong.projectedSectionView(context, x, fontsize1_2, storageAccess);
+                            lyrics1_2 = processSong.projectedSectionView(context, x, fontsize1_2,
+                                    storageAccess, preferences,
+                                    lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,
+                                    lyricsCapoColor, presoFontColor, presoShadowColor);
                             LinearLayout.LayoutParams llp1_2 = new LinearLayout.LayoutParams(availableWidth_2col, LinearLayout.LayoutParams.WRAP_CONTENT);
                             llp1_2.setMargins(0, 0, 0, 0);
                             lyrics1_2.setLayoutParams(llp1_2);
-                            lyrics1_2.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
+                            lyrics1_2.setBackgroundColor(processSong.getSectionColors(StaticVariables.songSectionsTypes[x],
+                                    lyricsVerseColor,lyricsChorusColor, lyricsPreChorusColor,lyricsBridgeColor,lyricsTagColor,
+                                    lyricsCommentColor,lyricsCustomColor));
                             box1_2.addView(lyrics1_2);
                         } else {
-                            lyrics2_2 = ProcessSong.projectedSectionView(context, x, fontsize2_2, storageAccess);
+                            lyrics2_2 = processSong.projectedSectionView(context, x, fontsize2_2,
+                                    storageAccess, preferences,
+                                    lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,
+                                    lyricsCapoColor, presoFontColor, presoShadowColor);
                             LinearLayout.LayoutParams llp2_2 = new LinearLayout.LayoutParams(availableWidth_2col, LinearLayout.LayoutParams.WRAP_CONTENT);
                             llp2_2.setMargins(0, 0, 0, 0);
                             lyrics2_2.setLayoutParams(llp2_2);
-                            lyrics2_2.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
+                            lyrics2_2.setBackgroundColor(processSong.getSectionColors(StaticVariables.songSectionsTypes[x],
+                                    lyricsVerseColor,lyricsChorusColor, lyricsPreChorusColor,lyricsBridgeColor,lyricsTagColor,
+                                    lyricsCommentColor,lyricsCustomColor));
                             box2_2.addView(lyrics2_2);
                         }
                     }
@@ -1506,25 +1653,28 @@ class PresentationServiceHDMI extends Presentation
         float fontsize2_3;
         float fontsize3_3;
         @SuppressLint("StaticFieldLeak")
-        LinearLayout lyrics1_3 = ProcessSong.createLinearLayout(context);
+        LinearLayout lyrics1_3 = processSong.createLinearLayout(context);
         @SuppressLint("StaticFieldLeak")
-        LinearLayout lyrics2_3 = ProcessSong.createLinearLayout(context);
+        LinearLayout lyrics2_3 = processSong.createLinearLayout(context);
         @SuppressLint("StaticFieldLeak")
-        LinearLayout lyrics3_3 = ProcessSong.createLinearLayout(context);
+        LinearLayout lyrics3_3 = processSong.createLinearLayout(context);
         @SuppressLint("StaticFieldLeak")
-        LinearLayout box1_3 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
+        LinearLayout box1_3    = processSong.prepareProjectedBoxView(context,preferences,lyricsTextColor,
+                lyricsBackgroundColor,0,padding);
         @SuppressLint("StaticFieldLeak")
-        LinearLayout box2_3 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
+        LinearLayout box2_3    = processSong.prepareProjectedBoxView(context,preferences,lyricsTextColor,
+                lyricsBackgroundColor,0,padding);
         @SuppressLint("StaticFieldLeak")
-        LinearLayout box3_3 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
+        LinearLayout box3_3    = processSong.prepareProjectedBoxView(context,preferences,lyricsTextColor,
+                lyricsBackgroundColor,0,padding);
 
         ProjectedPerformanceView3Col(float s1_3, float s2_3, float s3_3) {
             scale1_3 = s1_3;
             scale2_3 = s2_3;
             scale3_3 = s3_3;
-            fontsize1_3 = ProcessSong.getProjectedFontSize(scale1_3);
-            fontsize2_3 = ProcessSong.getProjectedFontSize(scale2_3);
-            fontsize3_3 = ProcessSong.getProjectedFontSize(scale3_3);
+            fontsize1_3 = processSong.getProjectedFontSize(scale1_3);
+            fontsize2_3 = processSong.getProjectedFontSize(scale2_3);
+            fontsize3_3 = processSong.getProjectedFontSize(scale3_3);
         }
 
         @Override
@@ -1557,27 +1707,42 @@ class PresentationServiceHDMI extends Presentation
             try {
                 if (!cancelled) {
                     // Add the song sections...
-                    for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
+                    for (int x = 0; x < StaticVariables.songSections.length; x++) {
                         if (x < FullscreenActivity.thirdsplit_section) {
-                            lyrics1_3 = ProcessSong.projectedSectionView(context, x, fontsize1_3, storageAccess);
+                            lyrics1_3 = processSong.projectedSectionView(context, x, fontsize1_3,
+                                    storageAccess, preferences,
+                                    lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,
+                                    lyricsCapoColor, presoFontColor, presoShadowColor);
                             LinearLayout.LayoutParams llp1_3 = new LinearLayout.LayoutParams(availableWidth_3col, LinearLayout.LayoutParams.WRAP_CONTENT);
                             llp1_3.setMargins(0, 0, 0, 0);
                             lyrics1_3.setLayoutParams(llp1_3);
-                            lyrics1_3.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
+                            lyrics1_3.setBackgroundColor(processSong.getSectionColors(StaticVariables.songSectionsTypes[x],
+                                    lyricsVerseColor,lyricsChorusColor, lyricsPreChorusColor,lyricsBridgeColor,lyricsTagColor,
+                                    lyricsCommentColor,lyricsCustomColor));
                             box1_3.addView(lyrics1_3);
                         } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
-                            lyrics2_3 = ProcessSong.projectedSectionView(context, x, fontsize2_3, storageAccess);
+                            lyrics2_3 = processSong.projectedSectionView(context, x, fontsize2_3,
+                                    storageAccess, preferences,
+                                    lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,
+                                    lyricsCapoColor, presoFontColor, presoShadowColor);
                             LinearLayout.LayoutParams llp2_3 = new LinearLayout.LayoutParams(availableWidth_3col, LinearLayout.LayoutParams.WRAP_CONTENT);
                             llp2_3.setMargins(0, 0, 0, 0);
                             lyrics2_3.setLayoutParams(llp2_3);
-                            lyrics2_3.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
+                            lyrics2_3.setBackgroundColor(processSong.getSectionColors(StaticVariables.songSectionsTypes[x],
+                                    lyricsVerseColor,lyricsChorusColor, lyricsPreChorusColor,lyricsBridgeColor,lyricsTagColor,
+                                    lyricsCommentColor,lyricsCustomColor));
                             box2_3.addView(lyrics2_3);
                         } else {
-                            lyrics3_3 = ProcessSong.projectedSectionView(context, x, fontsize3_3, storageAccess);
+                            lyrics3_3 = processSong.projectedSectionView(context, x, fontsize3_3,
+                                    storageAccess, preferences,
+                                    lyricsTextColor, lyricsBackgroundColor, lyricsChordsColor,
+                                    lyricsCapoColor, presoFontColor, presoShadowColor);
                             LinearLayout.LayoutParams llp3_3 = new LinearLayout.LayoutParams(availableWidth_3col, LinearLayout.LayoutParams.WRAP_CONTENT);
                             llp3_3.setMargins(0, 0, 0, 0);
                             lyrics3_3.setLayoutParams(llp3_3);
-                            lyrics3_3.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
+                            lyrics3_3.setBackgroundColor(processSong.getSectionColors(StaticVariables.songSectionsTypes[x],
+                                    lyricsVerseColor,lyricsChorusColor, lyricsPreChorusColor,lyricsBridgeColor,lyricsTagColor,
+                                    lyricsCommentColor,lyricsCustomColor));
                             box3_3.addView(lyrics3_3);
                         }
                     }
@@ -1652,11 +1817,11 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private static void fadeinAlert() {
-        presentermode_alert.setText(FullscreenActivity.myAlert);
-        presentermode_alert.setTypeface(FullscreenActivity.presoInfoFont);
-        presentermode_alert.setTextSize(FullscreenActivity.presoAlertSize);
-        presentermode_alert.setTextColor(FullscreenActivity.presoAlertFontColor);
-        presentermode_alert.setShadowLayer(FullscreenActivity.presoAlertSize / 2.0f, 4, 4, FullscreenActivity.presoShadowColor);
+        presentermode_alert.setText(preferences.getMyPreferenceString(c,"presoAlertText",""));
+        presentermode_alert.setTypeface(StaticVariables.typefacePresoInfo);
+        presentermode_alert.setTextSize(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f));
+        presentermode_alert.setTextColor(presoAlertColor);
+        presentermode_alert.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f) / 2.0f, 4, 4, presoShadowColor);
         presentermode_alert.setVisibility(View.VISIBLE);
         getScreenSizes();
         presentermode_alert.startAnimation(songalert_fadein);
@@ -1671,10 +1836,11 @@ class PresentationServiceHDMI extends Presentation
                 presentermode_alert.setVisibility(View.GONE);
                 getScreenSizes();
             }
-        }, FullscreenActivity.presoTransitionTime * 2);
+        }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800) * 2);
     }
 
     static void updateFonts() {
+        getDefaultColors();
         presenterThemeSetUp(); // Sets the bottom info bar for presentation
         doUpdate(); // Updates the page
     }

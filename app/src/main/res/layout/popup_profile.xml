@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="0dp"
@@ -47,7 +48,7 @@
                     android:id="@+id/profileName_TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
+                    android:layout_marginStart="24dp"
                     android:text="@string/options_song_new"
                     style="@style/MyWhiteHeadingText" />
             </LinearLayout>
@@ -63,7 +64,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right"
+                android:gravity="end"
                 android:orientation="horizontal">
 
                 <Button
@@ -73,7 +74,8 @@
                     android:layout_margin="8dp"
                     android:background="@drawable/green_button"
                     android:text="@string/options_set_load"
-                    android:textColor="#fff" />
+                    android:textColor="#fff"
+                    tools:ignore="ButtonStyle" />
 
                 <Button
                     android:id="@+id/saveProfile_Button"
@@ -82,7 +84,8 @@
                     android:layout_margin="8dp"
                     android:background="@drawable/red_button"
                     android:text="@string/savesong"
-                    android:textColor="#fff" />
+                    android:textColor="#fff"
+                    tools:ignore="ButtonStyle" />
 
 
 
@@ -128,16 +131,17 @@
             android:layout_margin="8dp"
             android:hint="@string/profile_name"
             android:text="@string/options_song_new"
-            style="@style/MyEditText" />
+            style="@style/MyEditText"
+            tools:ignore="Autofill,TextFields" />
 
         <LinearLayout
             android:id="@+id/saveButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_margin="8dp"
-            android:gravity="right"
+            android:gravity="end"
             android:orientation="horizontal">
 
             <Button
@@ -147,7 +151,8 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/blue_button"
                 android:text="@string/cancel"
-                android:textColor="#fff" />
+                android:textColor="#fff"
+                tools:ignore="ButtonStyle" />
 
             <Button
                 android:id="@+id/okSave_Button"
@@ -156,7 +161,8 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/green_button"
                 android:text="@string/ok"
-                android:textColor="#fff" />
+                android:textColor="#fff"
+                tools:ignore="ButtonStyle" />
 
         </LinearLayout>
     </RelativeLayout>
@@ -195,8 +201,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="right"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
             android:layout_margin="8dp"
             android:background="@drawable/blue_button"
             android:text="@string/cancel"

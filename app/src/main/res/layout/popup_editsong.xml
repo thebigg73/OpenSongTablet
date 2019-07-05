@@ -53,7 +53,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:hint="@string/edit_song_title"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/myAuthor"
@@ -73,7 +74,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:hint="@string/edit_song_author"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/myCopyright"
@@ -93,7 +95,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:hint="@string/edit_song_copyright"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/myKey"
@@ -171,7 +174,8 @@
                     android:layout_marginRight="8dp"
                     android:hint="@string/edit_song_duration"
                     android:inputType="number"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/myTempo"
@@ -288,12 +292,13 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:gravity="start|top|left"
+                    android:gravity="start|top"
                     android:hint="@string/edit_song_presentation"
                     android:inputType="textMultiLine"
                     android:minLines="2"
                     android:scrollbarStyle="insideOverlay"
-                    android:scrollbars="vertical" />
+                    android:scrollbars="vertical"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/myNotes"
@@ -312,13 +317,14 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:gravity="start|top|left"
+                    android:gravity="start|top"
                     android:hint="@string/edit_song_notes"
                     android:inputType="textMultiLine"
                     android:isScrollContainer="true"
                     android:minLines="10"
                     android:scrollbarStyle="insideOverlay"
-                    android:scrollbars="vertical" />
+                    android:scrollbars="vertical"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/myScore"
@@ -337,7 +343,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:gravity="start|top|left"
+                    android:gravity="start|top"
                     android:hint="@string/music_score"
                     android:isScrollContainer="true"
                     android:minLines="1"
@@ -353,7 +359,7 @@
                     android:layout_marginRight="8dp"
                     android:text="@string/edit_song_lyrics" />
 
-                <android.support.v7.widget.SwitchCompat
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/editAsChordPro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -365,7 +371,8 @@
                     app:showText="true"
                     app:splitTrack="false"
                     app:thumbTextPadding="4dp"
-                    app:thumbTint="#444488" />
+                    app:thumbTint="#444488"
+                    tools:ignore="HardcodedText" />
 
                 <EditText
                     android:id="@+id/edit_song_lyrics"
@@ -375,7 +382,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:gravity="left|top"
+                    android:gravity="start|top"
                     android:hint="@string/edit_song_lyrics"
                     android:textIsSelectable="true"
                     android:inputType="textMultiLine"
@@ -385,11 +392,11 @@
                     android:fadeScrollbars="false"
                     android:scrollHorizontally="true"
                     android:typeface="monospace"
-                    tools:ignore="SmallSp" />
+                    tools:ignore="Autofill,SmallSp" />
 
                 <Button
                     android:id="@+id/fix_lyrics"
-                    android:layout_gravity="right"
+                    android:layout_gravity="end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/grey_button"
@@ -433,7 +440,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:hint="@string/edit_song_ccli"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/myAka"
@@ -453,7 +461,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:hint="@string/edit_song_aka"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/myKeyLine"
@@ -472,7 +481,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:hint="@string/edit_song_keyline"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/myHymnNumber"
@@ -492,7 +502,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:hint="@string/edit_song_hymn"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/myUser1"
@@ -512,7 +523,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:hint="@string/edit_song_user1"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/myUser2"
@@ -532,7 +544,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:hint="@string/edit_song_user2"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/myUser3"
@@ -552,7 +565,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:hint="@string/edit_song_user3"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/myPadOnOrOff"
@@ -591,7 +605,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:hint="@string/edit_song_midi"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/myMidiIndex"
@@ -611,7 +626,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:hint="@string/edit_song_midi_index"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/myRestrictions"
@@ -631,7 +647,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:hint="@string/edit_song_restrictions"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/myBooks"
@@ -651,7 +668,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:hint="@string/edit_song_books"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/myPitch"
@@ -671,7 +689,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:hint="@string/edit_song_pitch"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    tools:ignore="Autofill" />
 
                 <TextView
                     android:id="@+id/myTheme"
@@ -690,7 +709,8 @@
                     android:hint="@string/custom"
                     android:inputType="textMultiLine"
                     android:scrollHorizontally="false"
-                    android:layout_margin="8dp" />
+                    android:layout_margin="8dp"
+                    tools:ignore="Autofill" />
 
             </LinearLayout>
 
@@ -715,13 +735,13 @@
         android:layout_alignParentTop="true"
         android:orientation="horizontal">
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addBrackets"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             android:contentDescription="@null"
-            android:gravity="center_vertical|end|right"
+            android:gravity="center_vertical|end"
             android:padding="3dp"
             android:src="@drawable/ic_code_brackets_white_36dp" />
 
@@ -729,14 +749,14 @@
             android:id="@+id/transposeDown_RelativeLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp">
+            android:layout_marginEnd="8dp">
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/transposeDownFAB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@null"
-                android:gravity="center_vertical|end|right"
+                android:gravity="center_vertical|end"
                 android:padding="3dp"
                 android:src="@drawable/ic_transpose_white_36dp"
                 app:elevation="0dp" />
@@ -749,7 +769,8 @@
                 android:alpha="0.8"
                 android:text="-"
                 android:textSize="30sp"
-                app:elevation="8dp" />
+                app:elevation="8dp"
+                tools:ignore="HardcodedText" />
 
         </RelativeLayout>
 
@@ -757,14 +778,14 @@
             android:id="@+id/transposeUp_RelativeLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp">
+            android:layout_marginEnd="8dp">
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/transposeUpFAB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@null"
-                android:gravity="center_vertical|end|right"
+                android:gravity="center_vertical|end"
                 android:padding="3dp"
                 android:src="@drawable/ic_transpose_white_36dp"
                 app:elevation="0dp" />
@@ -777,7 +798,8 @@
                 android:alpha="0.8"
                 android:text="+"
                 android:textSize="28sp"
-                app:elevation="8dp" />
+                app:elevation="8dp"
+                tools:ignore="HardcodedText" />
 
         </RelativeLayout>
     </LinearLayout>

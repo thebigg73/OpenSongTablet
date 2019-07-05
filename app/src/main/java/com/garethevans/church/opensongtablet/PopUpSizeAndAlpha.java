@@ -11,7 +11,7 @@ import android.view.WindowManager;
 
 class PopUpSizeAndAlpha {
 
-    static void decoratePopUp(Activity ac, Dialog dialog) {
+    static void decoratePopUp(Activity ac, Dialog dialog, Preferences preferences) {
 
         if (ac!=null && dialog!=null) {
             try {
@@ -22,51 +22,26 @@ class PopUpSizeAndAlpha {
                 int height = metrics.heightPixels;
                 int width = metrics.widthPixels;
 
-                float myscale;
-                float myalpha;
-                float mydim;
-                String position;
+                float myscale = preferences.getMyPreferenceFloat(ac,"popupScale",0.7f);
+                float myalpha = preferences.getMyPreferenceFloat(ac,"popupAlpha",0.8f);
+                float mydim = preferences.getMyPreferenceFloat(ac,"popupDim",0.8f);
+                String position = preferences.getMyPreferenceString(ac,"popupPosition","c");
 
+                // Override some of the defaults if required
                 switch (FullscreenActivity.whattodo) {
-                    case "showtheset":
-                        myscale = FullscreenActivity.popupScale_Set;
-                        myalpha = FullscreenActivity.popupAlpha_Set;
-                        mydim = FullscreenActivity.popupDim_Set;
-                        position = FullscreenActivity.popupPosition_Set;
-                        break;
-
                     case "chordie":
                     case "ultimate-guitar":
                     case "worshipready":
                     case "editsong":
                     case "rebuildindex":
-                        myscale = 1.0f;
-                        myalpha = FullscreenActivity.popupAlpha_All;
-                        mydim = FullscreenActivity.popupDim_All;
-                        position = "C";
-                        break;
-
                     case "drawnotes":
-                        myscale = 1.0f;
-                        myalpha = 1.0f;
-                        mydim = 1.0f;
-                        position = "C";
-                        break;
-
                     case "abcnotation":
                     case "abcnotation_edit":
                         myscale = 1.0f;
-                        myalpha = FullscreenActivity.popupAlpha_All;
-                        mydim = FullscreenActivity.popupDim_All;
-                        position = "C";
+                        myalpha = 1.0f;
+                        mydim = 1.0f;
+                        position = "c";
                         break;
-
-                    default:
-                    case "default":
-                        myscale = FullscreenActivity.popupScale_All;
-                        myalpha = FullscreenActivity.popupAlpha_All;
-                        mydim = FullscreenActivity.popupDim_All;
-                        position = FullscreenActivity.popupPosition_All;
                 }
 
                 int desired_width = (int) ((float) width * myscale);
@@ -78,11 +53,7 @@ class PopUpSizeAndAlpha {
                     dw.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
                     dw.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
                     dialog.getWindow().setLayout(desired_width, desired_height);
-                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    dw.setBackgroundDrawable(ac.getDrawable(R.drawable.popup_bg));
-                } else {
-                    dw.setBackgroundDrawable(ac.getResources().getDrawable(R.drawable.popup_bg));
-                }*/
+
                     WindowManager.LayoutParams lp = dw.getAttributes();
                     lp.alpha = myalpha;
                     lp.dimAmount = mydim;

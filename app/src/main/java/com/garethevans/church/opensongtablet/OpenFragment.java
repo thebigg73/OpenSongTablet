@@ -1,7 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.DialogFragment;
 import android.content.Context;
+import androidx.fragment.app.DialogFragment;
 
 class OpenFragment {
 
@@ -52,7 +52,7 @@ class OpenFragment {
 
             case "deletesong":
                 message = c.getResources().getString(R.string.options_song_delete) +
-                        " \"" + FullscreenActivity.songfilename + "\"?";
+                        " \"" + StaticVariables.songfilename + "\"?";
                 newFragment = PopUpAreYouSureFragment.newInstance(message);
                 break;
 
@@ -373,7 +373,7 @@ class OpenFragment {
 
             case "deletesong":
                 message = c.getResources().getString(R.string.options_song_delete) +
-                        " \"" + FullscreenActivity.songfilename + "\"?";
+                        " \"" + StaticVariables.songfilename + "\"?";
                 break;
 
             case "newfolder":
@@ -391,7 +391,7 @@ class OpenFragment {
     private static boolean justSong(Context c) {
         boolean isallowed = true;
         if (FullscreenActivity.isImage || FullscreenActivity.isPDF || !FullscreenActivity.isSong) {
-            FullscreenActivity.myToastMessage = c.getResources().getString(R.string.not_allowed);
+            StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
             ShowToast.showToast(c);
             isallowed = false;
         }

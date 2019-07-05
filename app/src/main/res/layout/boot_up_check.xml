@@ -5,7 +5,7 @@
     android:background="@drawable/popup_bg"
     android:id="@+id/page">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -155,13 +155,6 @@
                     style="@style/MySpinner"
                     android:layout_gravity="center_horizontal" />
 
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:visibility="gone" />
-
                 <TextView
                     android:id="@+id/currentAction"
                     android:layout_width="match_parent"
@@ -170,15 +163,32 @@
                     style="@style/MyInfoText"
                     android:visibility="gone"/>
 
-                <ProgressBar
-                    android:id="@+id/progressBarHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:visibility="gone"/>
-
             </LinearLayout>
 
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:background="@drawable/section_box">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyInfoText"
+                    android:text="@string/reset_text"/>
+
+                <Button
+                    android:id="@+id/resetCacheButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/yellow_button"
+                    android:text="@string/reset"
+                    android:textColor="#ff0" />
+
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/userGuideLinearLayout"
                 android:layout_width="match_parent"

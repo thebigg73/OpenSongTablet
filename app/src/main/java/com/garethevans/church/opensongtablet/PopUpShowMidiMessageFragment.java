@@ -1,11 +1,12 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +18,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PopUpShowMidiMessageFragment extends DialogFragment {
 
     Midi m;
-    ArrayList<String> songMidiMessages, songMidiMessagesNice;
-    ArrayAdapter<String> midiMessagesAdapter;
-    ListView songMessages;
-    Button sendAll, editMidi;
+    private ArrayList<String> songMidiMessages;
+    private ArrayAdapter<String> midiMessagesAdapter;
+
+    Preferences preferences;
 
     static PopUpShowMidiMessageFragment newInstance() {
         PopUpShowMidiMessageFragment frag;
@@ -46,9 +48,6 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
     public void onAttach(Activity activity) {
         mListener = (MyInterface) activity;
         // safety check
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
         super.onAttach(activity);
     }
 
@@ -56,14 +55,6 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
     public void onDetach() {
         mListener = null;
         super.onDetach();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
     }
 
     @Override
@@ -75,7 +66,7 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             this.dismiss();
         }
@@ -85,7 +76,7 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_showmidimessages, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.midi));
+        title.setText(getResources().getString(R.string.midi));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,15 +87,17 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
             }
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
 
         // Initialise the Midi - this is only available for Marshmallow+
         m = new Midi();
 
+        preferences = new Preferences();
+
         // Initialise the views
-        songMessages = V.findViewById(R.id.songMessages);
-        sendAll = V.findViewById(R.id.sendAll);
-        editMidi = V.findViewById(R.id.editMidi);
+        ListView songMessages = V.findViewById(R.id.songMessages);
+        Button sendAll = V.findViewById(R.id.sendAll);
+        Button editMidi = V.findViewById(R.id.editMidi);
 
         // Initialise the lists
         initialiseArrays();
@@ -131,12 +124,12 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
                 openMidiEdit();
             }
         });
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
 
         return V;
     }
 
-    void doSendAll() {
+    private void doSendAll() {
         // Trigger the Override in StageMode/PresenterMode to send all the Midi messages stored
         if (mListener!=null) {
             mListener.sendMidi();
@@ -144,7 +137,7 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    void sendOneMessage(String message) {
+    private void sendOneMessage(String message) {
         boolean success = false;
         if (m==null) {
             m = new Midi();
@@ -155,22 +148,22 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
             e.printStackTrace();
         }
         if (!success) {
-            FullscreenActivity.myToastMessage = getString(R.string.midi_error);
+            StaticVariables.myToastMessage = getString(R.string.midi_error);
             ShowToast.showToast(getActivity());
         }
     }
 
-    void openMidiEdit() {
+    private void openMidiEdit() {
         if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
             if (mListener != null) {
-                FullscreenActivity.whichOptionMenu = "MIDI";
+                StaticVariables.whichOptionMenu = "MIDI";
                 mListener.prepareOptionMenu();
                 mListener.openMyDrawers("option");
                 FullscreenActivity.whattodo = "midicommands";
                 mListener.openFragment();
             }
         } else {
-            FullscreenActivity.myToastMessage = getString(R.string.nothighenoughapi);
+            StaticVariables.myToastMessage = getString(R.string.nothighenoughapi);
             ShowToast.showToast(getActivity());
         }
         try {
@@ -181,14 +174,14 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    void initialiseArrays() {
+    private void initialiseArrays() {
         songMidiMessages = new ArrayList<>();
-        songMidiMessagesNice = new ArrayList<>();
+        ArrayList<String> songMidiMessagesNice = new ArrayList<>();
         if (m==null) {
             m = new Midi();
         }
         // Add what is there already
-        String bits[] = FullscreenActivity.mMidi.trim().split("\n");
+        String[] bits = StaticVariables.mMidi.trim().split("\n");
         try {
             for (String s : bits) {
                 if (s!=null && !s.equals("") && !s.isEmpty()) {
@@ -202,6 +195,6 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        midiMessagesAdapter = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,songMidiMessagesNice);
+        midiMessagesAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),R.layout.my_spinner, songMidiMessagesNice);
     }
 }

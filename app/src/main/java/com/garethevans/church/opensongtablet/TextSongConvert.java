@@ -5,7 +5,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.LocaleList;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import java.util.Locale;
@@ -64,7 +64,7 @@ class TextSongConvert {
                     containsTag |= stringContainsTag(c, list.get(i), l);
                 }
             } else {
-                //noinspection deprecation
+                //noinspection
                 Resources system = Resources.getSystem();
                 Locale locale;
                 if (system == null) {
@@ -100,7 +100,7 @@ class TextSongConvert {
     }
 
     @NonNull
-    Resources getLocalizedResources(Context context, Locale desiredLocale) {
+    private Resources getLocalizedResources(Context context, Locale desiredLocale) {
         Configuration conf = context.getResources().getConfiguration();
         conf = new Configuration(conf);
         conf.setLocale(desiredLocale);

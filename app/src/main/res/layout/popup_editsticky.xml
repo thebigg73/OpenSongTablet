@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -33,15 +34,15 @@
         android:minLines="5"
         android:layout_margin="8dp"
         android:hint="@string/stickynotes"
-        android:gravity="top|left"
-        style="@style/MyEditText" />
+        android:gravity="top|start"
+        style="@style/MyEditText"
+        tools:ignore="Autofill" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/stickyTextSize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:drawableLeft="@drawable/ic_format_text_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_format_text_white_36dp"
                 android:gravity="center_vertical"

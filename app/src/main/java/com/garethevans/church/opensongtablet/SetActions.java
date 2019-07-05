@@ -27,12 +27,11 @@ public class SetActions {
     public MyInterface mListener;
 
     private boolean encodedimage;
-    String title = "", author = "", lyrics = "", hymn_number = "";
+    private String title = "", author = "", lyrics = "", hymn_number = "";
     private String custom_notes, user1 = "", user2 = "", user3 = "", aka = "", key_line = "";
     private XmlPullParser xpp;
 
     ArrayList<String> listAllSets(Context c, Preferences preferences, StorageAccess storageAccess) {
-        Log.d("SetActions", "starting storageAccess.listFilesInFolder");
         return storageAccess.listFilesInFolder(c, preferences, "Sets", "");
     }
     ArrayList<String> listSetCategories(Context c, ArrayList<String> allsets) {
@@ -78,7 +77,7 @@ public class SetActions {
                 filtered.add(found.replace(cat+"__",""));
             }
         }
-        Collator collator = Collator.getInstance(FullscreenActivity.locale);
+        Collator collator = Collator.getInstance(StaticVariables.locale);
         collator.setStrength(Collator.SECONDARY);
 
         // Sort the categories alphabetically
@@ -93,21 +92,10 @@ public class SetActions {
 
     void loadASet(Context c, Preferences preferences, StorageAccess storageAccess) throws XmlPullParserException, IOException {
 
-        FullscreenActivity.mySetXML = "";
-        FullscreenActivity.myParsedSet = null;
-
-        // Reset any current set
-        FullscreenActivity.mySet = "";
-
-        // Empty the _cache folders
-        emptyCacheDirectories(c, preferences, storageAccess);
-
-        FullscreenActivity.lastSetName = FullscreenActivity.settoload;
-
         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
         factory.setNamespaceAware(true);
         xpp = factory.newPullParser();
-        Uri uri = storageAccess.getUriForItem(c, preferences, "Sets", "", FullscreenActivity.settoload);
+        Uri uri = storageAccess.getUriForItem(c, preferences, "Sets", "", StaticVariables.settoload);
         String utf = storageAccess.getUTFEncoding(c,uri);
         InputStream inputStream = storageAccess.getInputStream(c,uri);
         xpp.setInput(inputStream, utf);
@@ -121,7 +109,7 @@ public class SetActions {
                     switch (xpp.getAttributeValue(null, "type")) {
                         case "song":
                             // Get song
-                            getSong();
+                            getSong(c,preferences);
                             break;
                         case "scripture":
                             // Get Scripture
@@ -147,37 +135,32 @@ public class SetActions {
 
         // Save the loaded set contents so we can compare to the current set to see if it has changed
         // On the set list popup it will compare these and display unsaved if it is different.
-        FullscreenActivity.lastLoadedSetContent = FullscreenActivity.mySet;
-
-        // Save the preferences
-        Preferences.savePreferences();
+        preferences.setMyPreferenceString(c,"setCurrentBeforeEdits",preferences.getMyPreferenceString(c,"setCurrent",""));
     }
 
-    void prepareSetList() {
+    void prepareSetList(Context c, Preferences preferences) {
         try {
-            FullscreenActivity.mSet = null;
-            FullscreenActivity.mSetList = null;
+            StaticVariables.mSet = null;
+            StaticVariables.mSetList = null;
 
             // Remove any blank set entries that shouldn't be there
-            FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**__**$", "");
+            String setparse = preferences.getMyPreferenceString(c,"setCurrent","");
+            setparse =  setparse.replace("$**__**$", "");
 
             // Add a delimiter between songs
-            FullscreenActivity.mySet = FullscreenActivity.mySet.replace("_**$$**_", "_**$%%%$**_");
+            setparse = setparse.replace("_**$$**_", "_**$%%%$**_");
 
             // Break the saved set up into a new String[]
-            FullscreenActivity.mSet = FullscreenActivity.mySet.split("%%%");
-            FullscreenActivity.mSetList = FullscreenActivity.mSet;
+            StaticVariables.mSet = setparse.split("%%%");
+            StaticVariables.mSetList = StaticVariables.mSet;
 
-            // Restore the set back to what it was
-            FullscreenActivity.mySet = FullscreenActivity.mySet.replace("_**$%%%$**_", "_**$$**_");
-
-            FullscreenActivity.setSize = FullscreenActivity.mSetList.length;
+            StaticVariables.setSize = StaticVariables.mSetList.length;
 
             // Get rid of tags before and after folder/filenames
-            for (int x = 0; x < FullscreenActivity.mSetList.length; x++) {
-                FullscreenActivity.mSetList[x] = FullscreenActivity.mSetList[x]
+            for (int x = 0; x < StaticVariables.mSetList.length; x++) {
+                StaticVariables.mSetList[x] = StaticVariables.mSetList[x]
                         .replace("$**_", "");
-                FullscreenActivity.mSetList[x] = FullscreenActivity.mSetList[x]
+                StaticVariables.mSetList[x] = StaticVariables.mSetList[x]
                         .replace("_**$", "");
             }
         } catch (Exception e) {
@@ -188,64 +171,64 @@ public class SetActions {
     void indexSongInSet() {
         try {
             // Initialise variables if they are null
-            if (FullscreenActivity.mSetList == null) {
-                FullscreenActivity.mSetList = new String[1];
-                FullscreenActivity.mSetList[0] = "";
+            if (StaticVariables.mSetList == null) {
+                StaticVariables.mSetList = new String[1];
+                StaticVariables.mSetList[0] = "";
             }
 
-            if (FullscreenActivity.mSet == null) {
-                FullscreenActivity.mSet = new String[1];
-                FullscreenActivity.mSet[0] = "";
+            if (StaticVariables.mSet == null) {
+                StaticVariables.mSet = new String[1];
+                StaticVariables.mSet[0] = "";
             }
 
-            if (FullscreenActivity.whatsongforsetwork == null) {
-                FullscreenActivity.whatsongforsetwork = "";
+            if (StaticVariables.whatsongforsetwork == null) {
+                StaticVariables.whatsongforsetwork = "";
             }
             // See if we are already there!
             boolean alreadythere = false;
-            if (FullscreenActivity.indexSongInSet > -1 && FullscreenActivity.indexSongInSet < FullscreenActivity.mSetList.length) {
-                if (FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet].contains(FullscreenActivity.songfilename)) {
+            if (StaticVariables.indexSongInSet > -1 && StaticVariables.indexSongInSet < StaticVariables.mSetList.length) {
+                if (StaticVariables.mSetList[StaticVariables.indexSongInSet].contains(StaticVariables.whatsongforsetwork)) {
                     alreadythere = true;
                 }
             }
 
-            FullscreenActivity.setSize = FullscreenActivity.mSetList.length;
+            StaticVariables.setSize = StaticVariables.mSetList.length;
 
             if (alreadythere) {
-                if (FullscreenActivity.indexSongInSet > 0) {
-                    FullscreenActivity.previousSongInSet = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet - 1];
+                if (StaticVariables.indexSongInSet > 0) {
+                    StaticVariables.previousSongInSet = StaticVariables.mSetList[StaticVariables.indexSongInSet - 1];
                 } else {
-                    FullscreenActivity.previousSongInSet = "";
+                    StaticVariables.previousSongInSet = "";
                 }
-                if (FullscreenActivity.indexSongInSet < FullscreenActivity.mSetList.length - 1) {
-                    FullscreenActivity.nextSongInSet = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet + 1];
+                if (StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) {
+                    StaticVariables.nextSongInSet = StaticVariables.mSetList[StaticVariables.indexSongInSet + 1];
                 } else {
-                    FullscreenActivity.nextSongInSet = "";
+                    StaticVariables.nextSongInSet = "";
                 }
             } else {
-                FullscreenActivity.previousSongInSet = "";
-                FullscreenActivity.nextSongInSet = "";
+                StaticVariables.previousSongInSet = "";
+                StaticVariables.nextSongInSet = "";
             }
 
             // Go backwards through the setlist - this finishes with the first occurrence
             // Useful for duplicate items, otherwise it returns the last occurrence
             // Not yet tested, so left
 
-            FullscreenActivity.mSet = FullscreenActivity.mSetList;
+            StaticVariables.mSet = StaticVariables.mSetList;
 
             if (!alreadythere) {
-                for (int x = 0; x < FullscreenActivity.setSize; x++) {
+                for (int x = 0; x < StaticVariables.setSize; x++) {
 //		for (int x = FullscreenActivity.setSize-1; x<1; x--) {
 
-                    if (FullscreenActivity.mSet[x].equals(FullscreenActivity.whatsongforsetwork) ||
-                            FullscreenActivity.mSet[x].equals("**" + FullscreenActivity.whatsongforsetwork)) {
+                    if (StaticVariables.mSet[x].equals(StaticVariables.whatsongforsetwork) ||
+                            StaticVariables.mSet[x].equals("**" + StaticVariables.whatsongforsetwork)) {
 
-                        FullscreenActivity.indexSongInSet = x;
+                        StaticVariables.indexSongInSet = x;
                         if (x > 0) {
-                            FullscreenActivity.previousSongInSet = FullscreenActivity.mSet[x - 1];
+                            StaticVariables.previousSongInSet = StaticVariables.mSet[x - 1];
                         }
-                        if (x != FullscreenActivity.setSize - 1) {
-                            FullscreenActivity.nextSongInSet = FullscreenActivity.mSet[x + 1];
+                        if (x != StaticVariables.setSize - 1) {
+                            StaticVariables.nextSongInSet = StaticVariables.mSet[x + 1];
                         }
 
                     }
@@ -258,56 +241,54 @@ public class SetActions {
     }
 
     void songIndexClickInSet() {
-        if (FullscreenActivity.indexSongInSet == 0) {
+        if (StaticVariables.indexSongInSet == 0) {
             // Already first item
-            FullscreenActivity.previousSongInSet = "";
+            StaticVariables.previousSongInSet = "";
         } else {
-            FullscreenActivity.previousSongInSet = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet - 1];
+            StaticVariables.previousSongInSet = StaticVariables.mSetList[StaticVariables.indexSongInSet - 1];
         }
 
-        if (FullscreenActivity.indexSongInSet == (FullscreenActivity.setSize - 1)) {
+        if (StaticVariables.indexSongInSet == (StaticVariables.setSize - 1)) {
             // Last item
-            FullscreenActivity.nextSongInSet = "";
+            StaticVariables.nextSongInSet = "";
         } else {
-            FullscreenActivity.nextSongInSet = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet + 1];
+            StaticVariables.nextSongInSet = StaticVariables.mSetList[StaticVariables.indexSongInSet + 1];
         }
         FullscreenActivity.whichDirection = "R2L";
     }
 
-    void saveSetMessage(Context c, Preferences preferences, ListSongFiles listSongFiles, StorageAccess storageAccess) {
+    void saveSetMessage(Context c, Preferences preferences,
+                        StorageAccess storageAccess, ProcessSong processSong) {
         FullscreenActivity.whattodo = "";
-        if (FullscreenActivity.mSetList!=null && FullscreenActivity.mSetList.length>0) {
+        if (StaticVariables.mSetList!=null && StaticVariables.mSetList.length>0) {
             CreateNewSet createNewSet = new CreateNewSet();
-            if (!createNewSet.doCreation(c, preferences, listSongFiles, storageAccess)) {
-                FullscreenActivity.myToastMessage = c.getString(R.string.error_notset);
+            if (!createNewSet.doCreation(c, preferences, storageAccess, processSong)) {
+                StaticVariables.myToastMessage = c.getString(R.string.error_notset);
             }
-        } else if (FullscreenActivity.mSetList!=null) {
-            FullscreenActivity.myToastMessage = c.getString(R.string.error_notset);
+        } else if (StaticVariables.mSetList!=null) {
+            StaticVariables.myToastMessage = c.getString(R.string.error_notset);
         }
 
-        if (FullscreenActivity.myToastMessage.equals("yes")) {
-            FullscreenActivity.myToastMessage = c.getString(R.string.set_save)
+        if (StaticVariables.myToastMessage.equals("yes")) {
+            StaticVariables.myToastMessage = c.getString(R.string.set_save)
                     + " - " + c.getString(R.string.ok);
         }
     }
 
-    void clearSet(Context c) {
-        FullscreenActivity.mySet = "";
-        FullscreenActivity.mSetList = null;
-        FullscreenActivity.setView = false;
+    void clearSet(Context c, Preferences preferences) {
+        preferences.setMyPreferenceString(c,"setCurrent","");
+        StaticVariables.mSetList = null;
+        StaticVariables.setView = false;
 
-        FullscreenActivity.lastSetName = "";
+        preferences.setMyPreferenceString(c,"setCurrentLastName","");
 
-        // Save the new, empty, set
-        Preferences.savePreferences();
-
-        FullscreenActivity.myToastMessage = c.getString(R.string.options_set_clear) + " " +
+        StaticVariables.myToastMessage = c.getString(R.string.options_set_clear) + " " +
                 c.getString(R.string.ok);
     }
 
     void deleteSet(Context c, Preferences preferences, StorageAccess storageAccess) {
-        String[] tempsets = FullscreenActivity.setnamechosen.split("%_%");
-        FullscreenActivity.myToastMessage = "";
+        String[] tempsets = StaticVariables.setnamechosen.split("%_%");
+        StaticVariables.myToastMessage = "";
         StringBuilder message = new StringBuilder();
         for (String tempfile:tempsets) {
             if (tempfile!=null && !tempfile.equals("") && !tempfile.isEmpty()) {
@@ -317,35 +298,38 @@ public class SetActions {
                 }
             }
         }
-        FullscreenActivity.myToastMessage = message.toString();
-        if (FullscreenActivity.myToastMessage.length()>2) {
-            FullscreenActivity.myToastMessage = FullscreenActivity.myToastMessage.substring(0, FullscreenActivity.myToastMessage.length() - 2);
+        StaticVariables.myToastMessage = message.toString();
+        if (StaticVariables.myToastMessage.length()>2) {
+            StaticVariables.myToastMessage = StaticVariables.myToastMessage.substring(0, StaticVariables.myToastMessage.length() - 2);
         }
-        FullscreenActivity.myToastMessage = FullscreenActivity.myToastMessage + " " + c.getString(R.string.sethasbeendeleted);
+        StaticVariables.myToastMessage = StaticVariables.myToastMessage + " " + c.getString(R.string.sethasbeendeleted);
     }
 
-    void getSongForSetWork(Context c) {
-        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-            FullscreenActivity.whatsongforsetwork = FullscreenActivity.songfilename;
-        } else if (FullscreenActivity.whichSongFolder.equals("../Scripture/_cache")) {
-            FullscreenActivity.whatsongforsetwork = c.getResources().getString(R.string.scripture) + "/" + FullscreenActivity.songfilename;
-        } else if (FullscreenActivity.whichSongFolder.equals("../Slides/_cache")) {
-            FullscreenActivity.whatsongforsetwork = c.getResources().getString(R.string.slide) + "/" + FullscreenActivity.songfilename;
-        } else if (FullscreenActivity.whichSongFolder.equals("../Notes/_cache")) {
-            FullscreenActivity.whatsongforsetwork = c.getResources().getString(R.string.note) + "/" + FullscreenActivity.songfilename;
-        } else if (FullscreenActivity.whichSongFolder.equals("../Images/_cache")) {
-            FullscreenActivity.whatsongforsetwork = c.getResources().getString(R.string.image) + "/" + FullscreenActivity.songfilename;
-        } else if (FullscreenActivity.whichSongFolder.equals("../Variations")) {
-            FullscreenActivity.whatsongforsetwork = c.getResources().getString(R.string.variation) + "/" + FullscreenActivity.songfilename;
+    String getSongForSetWork(Context c) {
+        String val;
+        if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername))) {
+            val = StaticVariables.songfilename;
+        } else if (StaticVariables.whichSongFolder.equals("../Scripture/_cache")) {
+            val = c.getResources().getString(R.string.scripture) + "/" + StaticVariables.songfilename;
+        } else if (StaticVariables.whichSongFolder.equals("../Slides/_cache")) {
+            val = c.getResources().getString(R.string.slide) + "/" + StaticVariables.songfilename;
+        } else if (StaticVariables.whichSongFolder.equals("../Notes/_cache")) {
+            val = c.getResources().getString(R.string.note) + "/" + StaticVariables.songfilename;
+        } else if (StaticVariables.whichSongFolder.equals("../Images/_cache")) {
+            val = c.getResources().getString(R.string.image) + "/" + StaticVariables.songfilename;
+        } else if (StaticVariables.whichSongFolder.equals("../Variations")) {
+            val = c.getResources().getString(R.string.variation) + "/" + StaticVariables.songfilename;
         } else {
-            FullscreenActivity.whatsongforsetwork = FullscreenActivity.whichSongFolder + "/"
-                    + FullscreenActivity.songfilename;
+            val = StaticVariables.whichSongFolder + "/"
+                    + StaticVariables.songfilename;
         }
+        StaticVariables.whatsongforsetwork = val;
+        return val;
     }
 
     String whatToLookFor(Context c, String folder, String filename) {
         String whattolookfor;
-        if (folder.equals("") || folder.equals(FullscreenActivity.mainfoldername)) {
+        if (folder.equals("") || folder.equals(c.getString(R.string.mainfoldername))) {
             whattolookfor = "$**_" + filename + "_**$";
         } else if (folder.startsWith("**"+c.getString(R.string.variation)) ||
                 folder.startsWith("../Variations")) {
@@ -365,50 +349,56 @@ public class SetActions {
         return whattolookfor;
     }
 
-    boolean isSongInSet(Context c) {
-        if (FullscreenActivity.setSize > 0) {
+    boolean isSongInSet(Context c, Preferences preferences) {
+        if (StaticVariables.setSize > 0) {
             // Get the name of the song to look for (including folders if need be)
-            getSongForSetWork(c);
+            String songforsetwork;
+            if (StaticVariables.whichSongFolder.startsWith("../")) {
+                songforsetwork = "$**_**" + getSongForSetWork(c) + "_**$";
+            } else {
+                songforsetwork ="$**_" + getSongForSetWork(c) + "_**$";
+            }
+            String currset = preferences.getMyPreferenceString(c,"setCurrent","");
 
-            if (FullscreenActivity.setView && FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
+            if (StaticVariables.setView && currset.contains(songforsetwork)) {
                 // If we are currently in set mode, check if the new song is there, in which case do nothing else
                 indexSongInSet();
                 return true;
 
-            } else if (FullscreenActivity.setView && !FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
+            } else if (StaticVariables.setView && !currset.contains(songforsetwork)) {
                 // If we are currently in set mode, but the new song isn't there, leave set mode
-                FullscreenActivity.setView = false;
-                FullscreenActivity.previousSongInSet = "";
-                FullscreenActivity.nextSongInSet = "";
-                FullscreenActivity.indexSongInSet = 0;
+                StaticVariables.setView = false;
+                StaticVariables.previousSongInSet = "";
+                StaticVariables.nextSongInSet = "";
+                StaticVariables.indexSongInSet = 0;
                 return false;
 
-            } else if (!FullscreenActivity.setView && FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
+            } else if (!StaticVariables.setView && currset.contains(songforsetwork)) {
                 // If we aren't currently in set mode and the new song is there, enter set mode and get the index
-                FullscreenActivity.setView = true;
-                FullscreenActivity.previousSongInSet = "";
-                FullscreenActivity.nextSongInSet = "";
+                StaticVariables.setView = true;
+                StaticVariables.previousSongInSet = "";
+                StaticVariables.nextSongInSet = "";
 
                 // Get the song index
                 indexSongInSet();
                 return true;
 
-            } else if (!FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
+            } else if (!currset.contains(songforsetwork)) {
                 // The new song isn't in the set, so leave set mode and reset index
-                FullscreenActivity.setView = false;
-                FullscreenActivity.previousSongInSet = "";
-                FullscreenActivity.nextSongInSet = "";
-                FullscreenActivity.indexSongInSet = 0;
+                StaticVariables.setView = false;
+                StaticVariables.previousSongInSet = "";
+                StaticVariables.nextSongInSet = "";
+                StaticVariables.indexSongInSet = 0;
                 return false;
             }
 
         } else {
             // User wasn't in set view, or the set was empty
             // Switch off the set view (buttons in action bar)
-            FullscreenActivity.setView = false;
-            FullscreenActivity.previousSongInSet = "";
-            FullscreenActivity.nextSongInSet = "";
-            FullscreenActivity.indexSongInSet = 0;
+            StaticVariables.setView = false;
+            StaticVariables.previousSongInSet = "";
+            StaticVariables.nextSongInSet = "";
+            StaticVariables.indexSongInSet = 0;
             return false;
         }
         return false;
@@ -422,7 +412,7 @@ public class SetActions {
         storageAccess.wipeFolder(c, preferences, "Variations", "");
 
         // Create them again if they need to be
-        storageAccess.createOrCheckRootFolders(c, preferences);
+        storageAccess.createOrCheckRootFolders(c, null, preferences);
     }
 
     private void writeTempSlide(String where, String what, Context c, Preferences preferences, StorageAccess storageAccess) {
@@ -485,10 +475,11 @@ public class SetActions {
         }
 
         storageAccess.writeFileFromString(my_NEW_XML,outputStream);
-        FullscreenActivity.mySet = FullscreenActivity.mySet + set_item;
+        String val = preferences.getMyPreferenceString(c,"setCurrent","") + set_item;
+        preferences.setMyPreferenceString(c,"setCurrent",val);
     }
 
-    private void getSong() {
+    private void getSong(Context c, Preferences preferences) {
         try {
             // Get path and remove leading /
             String p_name = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"path"));
@@ -513,7 +504,9 @@ public class SetActions {
                 location = location.substring(0,location.length()-1);
             }
 
-            FullscreenActivity.mySet = FullscreenActivity.mySet + "$**_" + location + "_**$";
+            String val = preferences.getMyPreferenceString(c,"setCurrent","") + "$**_" + location + "_**$";
+            preferences.setMyPreferenceString(c,"setCurrent",val);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -764,73 +757,77 @@ public class SetActions {
         while (!allimagesdone) {
             // Keep going until we get to the end of the document
             if (eventType == XmlPullParser.START_TAG) {
-                switch (xpp.getName()) {
-                    case "title":
-                        image_title = new StringBuilder(LoadXML.parseFromHTMLEntities(xpp.nextText()));
-                        break;
+                if (xpp != null) {
+                    switch (xpp.getName()) {
+                        case "title":
+                            image_title = new StringBuilder(LoadXML.parseFromHTMLEntities(xpp.nextText()));
+                            break;
 
-                    case "subtitle":
-                        image_subtitle = LoadXML.parseFromHTMLEntities(xpp.nextText());
-                        break;
-                    case "notes":
-                        image_notes = LoadXML.parseFromHTMLEntities(xpp.nextText());
-                        break;
-                    case "filename":
-                        image_filename = LoadXML.parseFromHTMLEntities(xpp.nextText());
-                        if (image_filename != null && !image_filename.equals("") && !image_filename.isEmpty()) {
-                            slide_images.append(image_filename).append("\n");
-                            slide_image_titles.append("[").append(c.getResources().getString(R.string.image))
-                                    .append("_").append(imagenums + 1).append("]\n").append(image_filename)
-                                    .append("\n\n");
-                            imagenums++;
-                            encodedimage = false;
-                        }
-                        break;
-                    case "image":
-                        image_content = xpp.nextText();
-                        hymn_number_imagecode.append(image_content.trim()).append("XX_IMAGE_XX");
-                        encodedimage = true;
-                        break;
-                    case "description":
-                        String file_name = LoadXML.parseFromHTMLEntities(xpp.nextText());
-                        if (file_name.contains(".png") || file_name.contains(".PNG")) {
-                            image_type = ".png";
-                        } else if (file_name.contains(".gif") || file_name.contains(".GIF")) {
-                            image_type = ".gif";
-                        } else {
-                            image_type = ".jpg";
-                        }
-
-                        if (encodedimage) {
-                            // Save this image content
-                            // Need to see if the image already exists
-                            if (image_title.toString().equals("")) {
-                                image_title = new StringBuilder(c.getResources().getString(R.string.image));
+                        case "subtitle":
+                            image_subtitle = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                            break;
+                        case "notes":
+                            image_notes = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                            break;
+                        case "filename":
+                            image_filename = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                            if (image_filename != null && !image_filename.equals("") && !image_filename.isEmpty()) {
+                                slide_images.append(image_filename).append("\n");
+                                slide_image_titles.append("[").append(c.getResources().getString(R.string.image))
+                                        .append("_").append(imagenums + 1).append("]\n").append(image_filename)
+                                        .append("\n\n");
+                                imagenums++;
+                                encodedimage = false;
+                            }
+                            break;
+                        case "image":
+                            image_content = xpp.nextText();
+                            hymn_number_imagecode.append(image_content.trim()).append("XX_IMAGE_XX");
+                            encodedimage = true;
+                            break;
+                        case "description":
+                            String file_name = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                            if (file_name.contains(".png") || file_name.contains(".PNG")) {
+                                image_type = ".png";
+                            } else if (file_name.contains(".gif") || file_name.contains(".GIF")) {
+                                image_type = ".gif";
+                            } else {
+                                image_type = ".jpg";
                             }
 
-                            Uri uri = storageAccess.getUriForItem(c, preferences, "Images", "_cache",
-                                    image_title.toString() + imagenums + image_type);
+                            if (encodedimage) {
+                                // Save this image content
+                                // Need to see if the image already exists
+                                if (image_title.toString().equals("")) {
+                                    image_title = new StringBuilder(c.getResources().getString(R.string.image));
+                                }
 
-                            // Check the uri exists for the outputstream to be valid
-                            storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null,
-                                    "Images", "_cache", image_title.toString() + imagenums + image_type);
+                                Uri uri = storageAccess.getUriForItem(c, preferences, "Images", "_cache",
+                                        image_title.toString() + imagenums + image_type);
 
-                            OutputStream outputStream = storageAccess.getOutputStream(c, uri);
-                            byte[] decodedString = Base64.decode(image_content, Base64.DEFAULT);
-                            storageAccess.writeFileFromDecodedImageString(outputStream, decodedString);
-                            image_content = "";
-                            slide_images.append(uri.toString()).append("\n");
-                            slide_image_titles.append("[").append(c.getResources().getString(R.string.image))
-                                    .append("_").append(imagenums + 1).append("]\n").append(uri.toString()).append("\n\n");
-                            imagenums++;
-                            encodedimage = false;
-                        }
-                        break;
+                                // Check the uri exists for the outputstream to be valid
+                                storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null,
+                                        "Images", "_cache", image_title.toString() + imagenums + image_type);
+
+                                OutputStream outputStream = storageAccess.getOutputStream(c, uri);
+                                byte[] decodedString = Base64.decode(image_content, Base64.DEFAULT);
+                                storageAccess.writeFileFromDecodedImageString(outputStream, decodedString);
+                                image_content = "";
+                                slide_images.append(uri.toString()).append("\n");
+                                slide_image_titles.append("[").append(c.getResources().getString(R.string.image))
+                                        .append("_").append(imagenums + 1).append("]\n").append(uri.toString()).append("\n\n");
+                                imagenums++;
+                                encodedimage = false;
+                            }
+                            break;
+                    }
                 }
             }
             allimagesdone = eventType==XmlPullParser.END_TAG && xpp!=null && xpp.getName()!=null &&
                     xpp.getName().equals("slide_group");
-            eventType = xpp.next();
+            if (xpp != null) {
+                eventType = xpp.next();
+            }
         }
 
         if (image_title.toString().equals("")) {
@@ -863,20 +860,20 @@ public class SetActions {
         return s;
     }
 
-    void prepareFirstItem(Context c, Preferences preferences, ListSongFiles listSongFiles, StorageAccess storageAccess) {
+    void prepareFirstItem(Context c) {
         // If we have just loaded a set, and it isn't empty,  load the first item
-        if (FullscreenActivity.mSetList.length>0) {
-            FullscreenActivity.whatsongforsetwork = FullscreenActivity.mSetList[0];
-            FullscreenActivity.setView = true;
+        if (StaticVariables.mSetList.length>0) {
+            StaticVariables.whatsongforsetwork = StaticVariables.mSetList[0];
+            StaticVariables.setView = true;
 
-            FullscreenActivity.linkclicked = FullscreenActivity.mSetList[0];
+            FullscreenActivity.linkclicked = StaticVariables.mSetList[0];
             FullscreenActivity.pdfPageCurrent = 0;
 
             // Get the song and folder names from the item clicked in the set list
             getSongFileAndFolder(c);
 
             // Match the song folder
-            listSongFiles.getAllSongFiles(c, preferences, storageAccess);
+            //listSongFiles.getAllSongFiles(c, preferences, storageAccess);
 
             // Get the index of the song in the current set
             indexSongInSet();
@@ -890,11 +887,11 @@ public class SetActions {
 
         if (FullscreenActivity.linkclicked.equals("/")) {
             // There was no song clicked, so just reload the current one
-            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-                FullscreenActivity.linkclicked = "/"+FullscreenActivity.songfilename;
+            if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername))) {
+                FullscreenActivity.linkclicked = "/"+ StaticVariables.songfilename;
             } else {
-                FullscreenActivity.linkclicked = FullscreenActivity.whichSongFolder + "/" +
-                        FullscreenActivity.songfilename;
+                FullscreenActivity.linkclicked = StaticVariables.whichSongFolder + "/" +
+                        StaticVariables.songfilename;
             }
         }
 
@@ -902,130 +899,123 @@ public class SetActions {
         int songpos = FullscreenActivity.linkclicked.lastIndexOf("/");
         if (songpos==0) {
             // Empty folder
-            FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
+            StaticVariables.whichSongFolder = c.getString(R.string.mainfoldername);
         } else {
-            FullscreenActivity.whichSongFolder = FullscreenActivity.linkclicked.substring(0,songpos);
+            StaticVariables.whichSongFolder = FullscreenActivity.linkclicked.substring(0,songpos);
         }
 
         if (songpos>=FullscreenActivity.linkclicked.length()) {
             // Empty song
-            FullscreenActivity.songfilename = "";
+            StaticVariables.songfilename = "";
         } else {
-            FullscreenActivity.songfilename = FullscreenActivity.linkclicked.substring(songpos + 1);
+            StaticVariables.songfilename = FullscreenActivity.linkclicked.substring(songpos + 1);
         }
 
-        if (FullscreenActivity.whichSongFolder == null || FullscreenActivity.whichSongFolder.equals("")) {
-            FullscreenActivity.whichSongFolder = c.getString(R.string.mainfoldername);
+        if (StaticVariables.whichSongFolder.equals("")) {
+            StaticVariables.whichSongFolder = c.getString(R.string.mainfoldername);
         }
 
         // If the folder length isn't 0, it is a folder
-        if (FullscreenActivity.whichSongFolder.length() > 0 &&
-                FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.scripture)) &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.variation)) &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.image)) &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.slide)) &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.note))) {
-            FullscreenActivity.whichSongFolder = "../Scripture/_cache";
+        if (StaticVariables.whichSongFolder.length() > 0 &&
+                StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.scripture)) &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.variation)) &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.image)) &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.slide)) &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.note))) {
+            StaticVariables.whichSongFolder = "../Scripture/_cache";
 
-        } else if (FullscreenActivity.whichSongFolder.length() > 0 &&
-                FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.slide)) &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.variation)) &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.image)) &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.note)) &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.scripture))) {
-            FullscreenActivity.whichSongFolder = "../Slides/_cache";
+        } else if (StaticVariables.whichSongFolder.length() > 0 &&
+                StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.slide)) &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.variation)) &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.image)) &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.note)) &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.scripture))) {
+            StaticVariables.whichSongFolder = "../Slides/_cache";
 
-        } else if (FullscreenActivity.whichSongFolder.length() > 0 &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.variation)) &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.slide)) &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.image)) &&
-                FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.note)) &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.scripture))) {
-            FullscreenActivity.whichSongFolder = "../Notes/_cache";
+        } else if (StaticVariables.whichSongFolder.length() > 0 &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.variation)) &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.slide)) &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.image)) &&
+                StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.note)) &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.scripture))) {
+            StaticVariables.whichSongFolder = "../Notes/_cache";
 
-        } else if (FullscreenActivity.whichSongFolder.length() > 0 &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.variation)) &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.slide)) &&
-                FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.image)) &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.note)) &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.scripture))) {
-            FullscreenActivity.whichSongFolder = "../Images/_cache";
+        } else if (StaticVariables.whichSongFolder.length() > 0 &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.variation)) &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.slide)) &&
+                StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.image)) &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.note)) &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.scripture))) {
+            StaticVariables.whichSongFolder = "../Images/_cache";
 
-        } else if (FullscreenActivity.whichSongFolder.length() > 0 &&
-                FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.variation)) &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.slide)) &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.image)) &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.note)) &&
-                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.scripture))) {
-            FullscreenActivity.whichSongFolder = "../Variations";
+        } else if (StaticVariables.whichSongFolder.length() > 0 &&
+                StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.variation)) &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.slide)) &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.image)) &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.note)) &&
+                !StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.scripture))) {
+            StaticVariables.whichSongFolder = "../Variations";
 
         }
     }
 
-    void doMoveInSet(Context c, Preferences preferences, ListSongFiles listSongFiles, StorageAccess storageAccess) {
+    void doMoveInSet(Context c) {
         mListener = (MyInterface) c;
 
         boolean justmovingsections = false;
 
         // If we are in Stage Mode, check the sections first
-        if (FullscreenActivity.whichMode.equals("Stage")) {
+        if (StaticVariables.whichMode.equals("Stage")) {
 
             // Might be staying on the same song but moving section
-            if (FullscreenActivity.setMoveDirection.equals("back")) {
-                if (FullscreenActivity.currentSection > 0) {
+            if (StaticVariables.setMoveDirection.equals("back")) {
+                if (StaticVariables.currentSection > 0) {
                     justmovingsections = true;
                     mListener.doMoveSection();
                 } else {
-                    FullscreenActivity.currentSection = 0;
+                    StaticVariables.currentSection = 0;
                 }
-            } else if (FullscreenActivity.setMoveDirection.equals("forward")) {
-                if (FullscreenActivity.currentSection<FullscreenActivity.songSections.length-1) {
+            } else if (StaticVariables.setMoveDirection.equals("forward")) {
+                if (StaticVariables.currentSection< StaticVariables.songSections.length-1) {
                     justmovingsections = true;
                     mListener.doMoveSection();
                 } else {
-                    FullscreenActivity.currentSection = 0;
+                    StaticVariables.currentSection = 0;
                 }
             }
         }
 
         if (!justmovingsections) {
             // Moving to a different song
-            if (FullscreenActivity.setMoveDirection.equals("back")) {
-                if (FullscreenActivity.indexSongInSet>0) {
-                    FullscreenActivity.indexSongInSet -= 1;
-                    FullscreenActivity.linkclicked = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet];
-                    FullscreenActivity.whatsongforsetwork = FullscreenActivity.linkclicked;
+            if (StaticVariables.setMoveDirection.equals("back")) {
+                if (StaticVariables.indexSongInSet>0) {
+                    StaticVariables.indexSongInSet -= 1;
+                    FullscreenActivity.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
+                    StaticVariables.whatsongforsetwork = FullscreenActivity.linkclicked;
                     if (FullscreenActivity.linkclicked == null) {
                         FullscreenActivity.linkclicked = "";
-                        FullscreenActivity.whatsongforsetwork = "";
+                        StaticVariables.whatsongforsetwork = "";
                     }
                 }
 
-            } else if (FullscreenActivity.setMoveDirection.equals("forward")) {
-                if (FullscreenActivity.indexSongInSet<FullscreenActivity.mSetList.length-1) {
-                    FullscreenActivity.indexSongInSet += 1;
-                    FullscreenActivity.linkclicked = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet];
-                    FullscreenActivity.whatsongforsetwork = FullscreenActivity.linkclicked;
+            } else if (StaticVariables.setMoveDirection.equals("forward")) {
+                if (StaticVariables.indexSongInSet< StaticVariables.mSetList.length-1) {
+                    StaticVariables.indexSongInSet += 1;
+                    FullscreenActivity.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
+                    StaticVariables.whatsongforsetwork = FullscreenActivity.linkclicked;
                     if (FullscreenActivity.linkclicked == null) {
                         FullscreenActivity.linkclicked = "";
-                        FullscreenActivity.whatsongforsetwork = "";
+                        StaticVariables.whatsongforsetwork = "";
                     }
                 }
             }
 
-            FullscreenActivity.setMoveDirection = "";
+            StaticVariables.setMoveDirection = "";
 
             // Get the song and folder names from the item clicked in the set list
             getSongFileAndFolder(c);
 
-            Log.d("SetActions", "whichSongFolder=" + FullscreenActivity.whichSongFolder + "   songfilename=" + FullscreenActivity.songfilename);
-            // Save the preferences
-            Preferences.savePreferences();
-
-            // Match the song folder
-            listSongFiles.getAllSongFiles(c, preferences, storageAccess);
-
-            FullscreenActivity.setMoveDirection = "";
+            StaticVariables.setMoveDirection = "";
             mListener.loadSong();
         }
 

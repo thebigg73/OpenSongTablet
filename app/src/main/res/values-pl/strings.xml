@@ -708,4 +708,5 @@
 
     <string name="googlefontcustom">"Inna nazwa czcionki Google"</string>
     <string name="googlefontbrowse">"Przeglądaj wszystkie czcionki Google"</string>
+    <string name="reset_text">Jeśli masz problemy z aplikacją, spróbuj zresetować ustawienia za pomocą przycisku poniżej. Spowoduje to wyczyszczenie ustawień, ale nie spowoduje usunięcia twoich utworów.</string>
 </resources>

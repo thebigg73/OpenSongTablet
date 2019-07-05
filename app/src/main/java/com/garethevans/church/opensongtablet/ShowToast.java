@@ -9,7 +9,7 @@ import android.widget.Toast;
 public class ShowToast extends Activity {
 
 	public static void showToast(Context view) {
-		if (FullscreenActivity.myToastMessage!=null && !FullscreenActivity.myToastMessage.equals("")) {
+		if (StaticVariables.myToastMessage!=null && !StaticVariables.myToastMessage.equals("")) {
 			try {
 				// I did think about using a SnackBar, but had problems with it not showing when a dialogfragment was visible
 				// Obviously it was showing behind this.
@@ -33,12 +33,12 @@ public class ShowToast extends Activity {
                 //Snackbar mySnackbar = Snackbar.make(rootview,FullscreenActivity.myToastMessage,length);
                 //mySnackbar.show();
 
-				Toast toast = Toast.makeText(view, FullscreenActivity.myToastMessage, Toast.LENGTH_LONG);
+				Toast toast = Toast.makeText(view, StaticVariables.myToastMessage, Toast.LENGTH_LONG);
 				toast.setGravity(Gravity.CENTER, 0, 0);
 				toast.show();
 
-				FullscreenActivity.myToastMessage = null;
-				FullscreenActivity.myToastMessage = "";
+				StaticVariables.myToastMessage = null;
+				StaticVariables.myToastMessage = "";
 			} catch (Exception e) {
 				Log.d("d","Error showing toast message");
 				e.printStackTrace();

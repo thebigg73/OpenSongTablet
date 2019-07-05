@@ -3,9 +3,9 @@ package com.garethevans.church.opensongtablet;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Handler;
-import android.support.v4.provider.FontRequest;
-import android.support.v4.provider.FontsContractCompat;
-import android.support.v4.provider.FontsContractCompat.FontRequestCallback;
+import androidx.core.provider.FontRequest;
+import androidx.core.provider.FontsContractCompat;
+import androidx.core.provider.FontsContractCompat.FontRequestCallback;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -13,12 +13,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 class SetTypeFace {
+/*
 
+    // Not using this, but keep kust on case
     static String setupWebViewLyricFont(int fontnum) {
 
         String fontcode = "";
 
-        switch (fontnum) {
+        */
+/*switch (fontnum) {
             case 1:
                 // Monospace
                 fontcode += ".lyric      {font-family: Monospace; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
@@ -103,14 +106,18 @@ class SetTypeFace {
                 fontcode += ".lyric      {font-family: 'latolight'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
                 fontcode += ".comment    {font-family: 'latolightitalic'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
                 break;
-        }
+        }*//*
+
 
         return fontcode;
     }
 
+    // Not used, but keeping just in case!
     static String setupWebViewChordFont(int fontnum) {
 
         String fontcode = "";
+        */
+/*
         boolean already = false;
         if (FullscreenActivity.mylyricsfontnum==FullscreenActivity.mychordsfontnum) {
             already = true;
@@ -200,9 +207,11 @@ class SetTypeFace {
                 fontcode += ".chord      {font-family: 'latolight'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
                 break;
         }
+*//*
 
         return fontcode;
     }
+*/
 
     void setUpAppFonts(Context c, Preferences preferences, Handler lyrichandler, Handler chordhandler,
                        Handler presohandler, Handler presoinfohandler, Handler customhandler, Handler monohandler) {
@@ -213,11 +222,11 @@ class SetTypeFace {
         String fontPresoInfo = preferences.getMyPreferenceString(c, "fontPresoInfo", "Lato");
         String fontCustom = preferences.getMyPreferenceString(c, "fontCustom", "Lato");
 
-        // Set the values to the custom font if they are set to Custom...
+        /*// Set the values to the custom font if they are set to Custom...
         fontLyric = fixFont(c, fontLyric, fontCustom);
         fontChord = fixFont(c, fontChord, fontCustom);
         fontPreso = fixFont(c, fontPreso, fontCustom);
-        fontPresoInfo = fixFont(c, fontPresoInfo, fontCustom);
+        fontPresoInfo = fixFont(c, fontPresoInfo, fontCustom);*/
 
         // Set the values
         setChosenFont(c, preferences, fontLyric, "lyric", null, null, lyrichandler);
@@ -230,14 +239,14 @@ class SetTypeFace {
         setChosenFont(c, preferences, "Fira Mono", "mono", null, null, monohandler);
     }
 
-    private String fixFont(Context c, String which, String custom) {
+    /*private String fixFont(Context c, String which, String custom) {
         if (which.equals(c.getString(R.string.custom) + "...")) {
             return custom;
         } else {
             return which;
         }
     }
-
+*/
     private FontRequest getFontRequest(String fontnamechosen) {
         return new FontRequest("com.google.android.gms.fonts",
                 "com.google.android.gms", fontnamechosen,
@@ -252,26 +261,26 @@ class SetTypeFace {
             public void onTypefaceRetrieved(Typeface typeface) {
                 switch (what) {
                     case "mono":
-                        FullscreenActivity.monofont = typeface;
+                        StaticVariables.typefaceMono = typeface;
                         break;
                     case "lyric":
-                        FullscreenActivity.lyricsfont = typeface;
+                        StaticVariables.typefaceLyrics = typeface;
                         preferences.setMyPreferenceString(c, "fontLyric", fontname);
                         break;
                     case "chord":
-                        FullscreenActivity.chordsfont = typeface;
+                        StaticVariables.typefaceChords = typeface;
                         preferences.setMyPreferenceString(c, "fontChord", fontname);
                         break;
                     case "preso":
-                        FullscreenActivity.presofont = typeface;
+                        StaticVariables.typefacePreso = typeface;
                         preferences.setMyPreferenceString(c, "fontPreso", fontname);
                         break;
                     case "presoinfo":
-                        FullscreenActivity.presoInfoFont = typeface;
+                        StaticVariables.typefacePresoInfo = typeface;
                         preferences.setMyPreferenceString(c, "fontPresoInfo", fontname);
                         break;
                     case "custom":
-                        FullscreenActivity.customfont = typeface;
+                        StaticVariables.typefaceCustom = typeface;
                         preferences.setMyPreferenceString(c, "fontCustom", fontname);
                         break;
                 }
@@ -288,34 +297,34 @@ class SetTypeFace {
             public void onTypefaceRequestFailed(int reason) {
                 // Your code to deal with the failure goes here
                 Typeface typeface = Typeface.createFromAsset(c.getAssets(), "font/lato.ttf");
-                FullscreenActivity.myToastMessage = fontname + ": " + c.getString(R.string.file_type_unknown);
+                StaticVariables.myToastMessage = fontname + ": " + c.getString(R.string.file_type_unknown);
                 ShowToast.showToast(c);
 
                 switch (what) {
                     case "lyric":
-                        FullscreenActivity.lyricsfont = typeface;
+                        StaticVariables.typefaceLyrics = typeface;
                         preferences.setMyPreferenceString(c, "fontLyric", "Lato");
                         break;
                     case "chord":
-                        FullscreenActivity.chordsfont = typeface;
+                        StaticVariables.typefaceChords = typeface;
                         preferences.setMyPreferenceString(c, "fontChord", "Lato");
                         break;
                     case "preso":
-                        FullscreenActivity.presofont = typeface;
+                        StaticVariables.typefacePreso = typeface;
                         preferences.setMyPreferenceString(c, "fontPreso", "Lato");
                         break;
                     case "presoinfo":
-                        FullscreenActivity.presoInfoFont = typeface;
+                        StaticVariables.typefacePresoInfo = typeface;
                         preferences.setMyPreferenceString(c, "fontPresoInfo", "Lato");
                         break;
                     case "custom":
-                        FullscreenActivity.customfont = typeface;
+                        StaticVariables.typefaceCustom = typeface;
                         preferences.setMyPreferenceString(c, "fontCustom", "Lato");
                         break;
                 }
 
                 if (textView != null) {
-                    textView.setTypeface(FullscreenActivity.customfont);
+                    textView.setTypeface(StaticVariables.typefaceCustom);
                 }
                 if (progressBar != null) {
                     progressBar.setVisibility(View.GONE);
@@ -332,7 +341,7 @@ class SetTypeFace {
         FontsContractCompat.requestFont(c, fontRequest, fontRequestCallback, handler);
     }
 
-    ArrayList<String> googleFontsAllowed(Context c) {
+    ArrayList<String> googleFontsAllowed() {
         ArrayList<String> f = new ArrayList<>();
         f.add("Abel");
         f.add("Actor");
@@ -357,7 +366,6 @@ class SetTypeFace {
         f.add("Roboto Mono");
         f.add("Ubuntu");
         f.add("Ubuntu Mono");
-        f.add(c.getString(R.string.custom) + "...");
 
         return f;
     }

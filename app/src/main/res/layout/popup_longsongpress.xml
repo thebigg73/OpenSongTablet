@@ -14,7 +14,7 @@
         <include layout="@layout/popup_dialogtitle" />
     </FrameLayout>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/myTitle"
@@ -31,7 +31,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_plus_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_plus_white_36dp"
                 android:gravity="center_vertical"
@@ -45,7 +44,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_table_edit_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_table_edit_white_36dp"
                 android:gravity="center_vertical"
@@ -59,7 +57,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_rename_box_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_rename_box_white_36dp"
                 android:gravity="center_vertical"
@@ -73,7 +70,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_share_variant_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_share_variant_white_36dp"
                 android:gravity="center_vertical"
@@ -87,7 +83,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_delete_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_delete_white_36dp"
                 android:gravity="center_vertical"

@@ -1,12 +1,12 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,27 +16,20 @@ import android.widget.TextView;
 
 public class PopUpScrollSettingsFragment extends DialogFragment {
 
-    public static Dialog setfrag;
     Activity a;
-    String speed;
-    String distance;
-    SeekBar scrollspeed_SeekBar;
-    SeekBar scrolldistance_SeekBar;
-    TextView scrollspeed_TextView;
-    TextView scrolldistance_TextView;
+    private String speed;
+    private String distance;
+    private SeekBar scrollspeed_SeekBar;
+    private SeekBar scrolldistance_SeekBar;
+    private TextView scrollspeed_TextView;
+    private TextView scrolldistance_TextView;
+
+    Preferences preferences;
 
     static PopUpScrollSettingsFragment newInstance() {
         PopUpScrollSettingsFragment frag;
         frag = new PopUpScrollSettingsFragment();
         return frag;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
     }
 
     @Override
@@ -49,17 +42,16 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         a = getActivity();
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         final View V = inflater.inflate(R.layout.popup_scrollsettings, container, false);
-        setfrag = getDialog();
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.scrollbuttons));
+        title.setText(getString(R.string.scrollbuttons));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +62,9 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
+
+        preferences = new Preferences();
 
         if (getDialog().getWindow()!=null) {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -100,9 +94,7 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Preferences.savePreferences();
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         scrolldistance_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -117,27 +109,25 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Preferences.savePreferences();
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
 
-    public void getSpeed(int s) {
+    private void getSpeed(int s) {
         // This will be between 0 and 15.  Add 5 and divide by 10
         // (min speed should be 0.5 secs and max should be 2.0)
         float val = ((float)s + 5.0f) / 10.0f;
         // Multiply this by 1000 to convert to milliseconds for the preferences
-        FullscreenActivity.scrollSpeed = (int) (val * 1000);
+        preferences.setMyPreferenceInt(getActivity(),"scrollSpeed",(int) (val * 1000));
         speed =  val + " s";
     }
 
-    public void setSpeed() {
+    private void setSpeed() {
         // Take the preference and subtract 500 (minimum allowed is 500)
-        int s = FullscreenActivity.scrollSpeed - 500;
+        int s = preferences.getMyPreferenceInt(getActivity(),"scrollSpeed",1500) - 500;
         // Divide this by 100 to get a value between 0 and 15
         s = s/100;
         scrollspeed_SeekBar.setProgress(s);
@@ -145,19 +135,19 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
         scrollspeed_TextView.setText(speed);
     }
 
-    public void getDistance(int d) {
+    private void getDistance(int d) {
         // This will be between 0 and 8
         // Add 2 on as minimum scroll amount is 20%
         d = d+2;
-        FullscreenActivity.scrollDistance = ((float)d) / 10.0f;
+        preferences.setMyPreferenceFloat(getActivity(),"scrollDistance", ((float)d) / 10.0f);
         distance = (d*10) + " %";
     }
 
-    public void setDistance() {
+    private void setDistance() {
         // Take the preference and multiply by 10, then subtract 2
         // Pref can be between 0.2f and 1.0f, but we want an int betweeen 0 and 8
-        distance = ((int)(FullscreenActivity.scrollDistance * 100.0f)) + " %";
-        int d = ((int)(FullscreenActivity.scrollDistance * 10.0f)) - 2;
+        distance = ((int)(preferences.getMyPreferenceFloat(getActivity(),"scrollDistance", 0.7f)* 100.0f)) + " %";
+        int d = ((int)(preferences.getMyPreferenceFloat(getActivity(),"scrollDistance", 0.7f) * 10.0f)) - 2;
         scrolldistance_SeekBar.setProgress(d);
         scrolldistance_TextView.setText(distance);
     }

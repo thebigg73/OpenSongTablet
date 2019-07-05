@@ -1,10 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import java.util.Objects;
 
 public class PopUpPagesFragment extends DialogFragment {
 
@@ -42,14 +45,6 @@ public class PopUpPagesFragment extends DialogFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -59,23 +54,21 @@ public class PopUpPagesFragment extends DialogFragment {
         }
     }
 
-    TextView pages_notavailable;
-    LinearLayout pages_available;
-    SeekBar pageseekbar;
-    FloatingActionButton previouspage;
-    FloatingActionButton nextpage;
-    TextView pagetextView;
-    int temppos = 1;
+    private SeekBar pageseekbar;
+    private TextView pagetextView;
+    private int temppos = 1;
+
+    Preferences preferences;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setCanceledOnTouchOutside(true);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         View V = inflater.inflate(R.layout.popup_pages, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.pdf_selectpage));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.pdf_selectpage));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,14 +79,16 @@ public class PopUpPagesFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
+
+        preferences = new Preferences();
 
         // Initialise the views
-        pages_notavailable = V.findViewById(R.id.pages_notavailable);
-        pages_available = V.findViewById(R.id.pages_available);
+        TextView pages_notavailable = V.findViewById(R.id.pages_notavailable);
+        LinearLayout pages_available = V.findViewById(R.id.pages_available);
         pageseekbar = V.findViewById(R.id.pageseekbar);
-        previouspage = V.findViewById(R.id.previouspage);
-        nextpage = V.findViewById(R.id.nextpage);
+        FloatingActionButton previouspage = V.findViewById(R.id.previouspage);
+        FloatingActionButton nextpage = V.findViewById(R.id.nextpage);
         pagetextView = V.findViewById(R.id.pagetextView);
 
         // If this is an OpenSong song, then this isn't for you!
@@ -146,16 +141,16 @@ public class PopUpPagesFragment extends DialogFragment {
             });
 
 
-        } else if (FullscreenActivity.isPDF) {
+        } else {
             pages_notavailable.setVisibility(View.VISIBLE);
             pages_available.setVisibility(View.GONE);
         }
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
 
-    public void moveToSelectedPage(int newpos) {
+    private void moveToSelectedPage(int newpos) {
         String dir = "R2L";
         if (newpos < FullscreenActivity.pdfPageCurrent) {
             dir = "L2R";
@@ -166,7 +161,7 @@ public class PopUpPagesFragment extends DialogFragment {
         }
     }
 
-    public String pageInfo(int current) {
+    private String pageInfo(int current) {
         return current + " / " + FullscreenActivity.pdfPageCount;
     }
 

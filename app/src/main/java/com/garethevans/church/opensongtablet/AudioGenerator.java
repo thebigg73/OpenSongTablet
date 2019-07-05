@@ -35,7 +35,7 @@ class AudioGenerator {
 		return generatedSound;
 	}
 
-	void createPlayer(){
+	void createPlayer(String pan, float vol){
 		try {
 
             audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
@@ -47,23 +47,16 @@ class AudioGenerator {
             Log.d("audiotrack","Can't initialise");
         }
 
-		float leftVolume = FullscreenActivity.metronomevol;
-		float rightVolume = FullscreenActivity.metronomevol;
+		float leftVolume = vol;
+		float rightVolume = vol;
 
-        Log.d("d", "metronomepan=" + FullscreenActivity.metronomepan);
-
-        if (FullscreenActivity.metronomepan.equals("L")) {
-			leftVolume = FullscreenActivity.metronomevol;	
+        if (pan.equals("L")) {
 			rightVolume = 0.0f;
-        } else if (FullscreenActivity.metronomepan.equals("R")) {
+        } else if (pan.equals("R")) {
 			leftVolume = 0.0f;
-			rightVolume = FullscreenActivity.metronomevol;
         }
 
-        Log.d("d", "leftVolume=" + leftVolume);
-        Log.d("d", "rightVolume=" + rightVolume);
-
-		try {
+        try {
             audioTrack.setStereoVolume(leftVolume, rightVolume);
 			audioTrack.play();
 		} catch (Exception e) {
@@ -71,9 +64,9 @@ class AudioGenerator {
 		}
 	}
 
-	void writeSound(double[] samples) {
+	void writeSound(String pan, float vol, double[] samples) {
 		byte[] generatedSnd = get16BitPcm(samples);
-		if (FullscreenActivity.metronomeonoff.equals("on") &&
+		if (StaticVariables.metronomeonoff.equals("on") &&
 				audioTrack.getState()==AudioTrack.STATE_INITIALIZED &&
                 audioTrack.getPlayState()==AudioTrack.PLAYSTATE_PLAYING) {
 			try {
@@ -82,11 +75,10 @@ class AudioGenerator {
 			     // This will catch any exception, because they are all descended from Exception
 				Log.d("whoops","error writing sound");
 			}
-			switch (FullscreenActivity.metronomepan) {
+			switch (pan) {
                 case "L":
 					try {
-						audioTrack.setStereoVolume(FullscreenActivity.metronomevol, 0.0f);
-                        Log.d("d", "L=" + FullscreenActivity.metronomevol + " R=0.0f");
+						audioTrack.setStereoVolume(vol, 0.0f);
 					} catch (Exception e) {
 						// This will catch any exception, because they are all descended from Exception
 						Log.d("whoops", "error setting volume left");
@@ -94,8 +86,7 @@ class AudioGenerator {
 					break;
                 case "R":
 					try {
-						audioTrack.setStereoVolume(0.0f, FullscreenActivity.metronomevol);
-                        Log.d("d", "R=0.0f L=" + FullscreenActivity.metronomevol);
+						audioTrack.setStereoVolume(0.0f, vol);
 					} catch (Exception e) {
 						// This will catch any exception, because they are all descended from Exception
 						Log.d("whoops", "error setting volume right");
@@ -103,8 +94,8 @@ class AudioGenerator {
 					break;
 				default:
 					try {
-						audioTrack.setStereoVolume(FullscreenActivity.metronomevol, FullscreenActivity.metronomevol);
-                        Log.d("d", "L=" + FullscreenActivity.metronomevol + " R=" + FullscreenActivity.metronomevol);
+						audioTrack.setStereoVolume(vol, vol);
+
 					} catch (Exception e) {
 						// This will catch any exception, because they are all descended from Exception
 						Log.d("whoops", "error setting volume both");

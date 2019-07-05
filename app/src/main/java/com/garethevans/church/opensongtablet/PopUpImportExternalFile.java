@@ -2,14 +2,15 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,16 +24,15 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Objects;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class PopUpImportExternalFile extends DialogFragment {
 
@@ -60,78 +60,60 @@ public class PopUpImportExternalFile extends DialogFragment {
     }
 
     // The views
-    TextView fileTitle_TextView, fileType_TextView, title, progressText;
-    Spinner chooseFolder_Spinner;
-    CheckBox overWrite_CheckBox;
-    ProgressBar progressBar, progressBarH;
-    LinearLayout progressLinearLayout;
+    private TextView fileTitle_TextView, fileType_TextView, title, progressText;
+    private Spinner chooseFolder_Spinner;
+    private CheckBox overWrite_CheckBox;
+    private ProgressBar progressBarH;
+    private LinearLayout progressLinearLayout;
     FloatingActionButton saveMe, closeMe;
     View V;
 
     // Helper classes
-    Bible bibleC;
+    private Bible bibleC;
     StorageAccess storageAccess;
     Preferences preferences;
-    SongFolders songFolders;
-    ListSongFiles listSongFiles;
-    ImportOnSongBackup import_os;
+    private SongFolders songFolders;
     OnSongConvert onSongConvert;
     ChordProConvert chordProConvert;
     SongXML songXML;
+    SQLiteHelper sqLiteHelper;
+    SQLite sqLite;
 
-    String what, errormessage = "", filetype, chosenfolder;
+    private String what, errormessage = "", filetype, chosenfolder;
 
     // Folder variables
-    ArrayList<String> folderlist;
-    ArrayAdapter<String> arrayAdapter;
+    private ArrayList<String> folderlist;
 
     // Other variables
-    boolean overwrite, ok, error;
+    private boolean overwrite, ok, error;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         bibleC = new Bible();
         storageAccess = new StorageAccess();
         preferences = new Preferences();
         songFolders = new SongFolders();
-        listSongFiles = new ListSongFiles();
         setActions = new SetActions();
         onSongConvert = new OnSongConvert();
         chordProConvert = new ChordProConvert();
         songXML = new SongXML();
+        sqLiteHelper = new SQLiteHelper(getActivity());
 
-        Log.d("d", "Opened importexternalfile fragment");
         V = inflater.inflate(R.layout.popup_importexternalfile, container, false);
-        Log.d("d", "V=" + V);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        getDialog().setCanceledOnTouchOutside(false);
 
         initialiseViews(V);
-        Log.d("d", "initialiseViews success");
 
         setAction();
-        Log.d("d", "setActions success");
 
         updateTextViews();
-        Log.d("d", "updateTextViews success");
 
         initialiseLocationsToSave();
-        Log.d("d", "initialiseLocationsToSave success");
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        Log.d("d", "decoratePopUp success");
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
 
         return V;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // safety check
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
     }
 
     public void setTitle(String s) {
@@ -158,8 +140,8 @@ public class PopUpImportExternalFile extends DialogFragment {
         }
     }
 
-    void setAction() {
-        String s = getActivity().getString(R.string.importnewsong);
+    private void setAction() {
+        String s = Objects.requireNonNull(getActivity()).getString(R.string.importnewsong);
         String ext;
 
         // Defaults
@@ -219,7 +201,7 @@ public class PopUpImportExternalFile extends DialogFragment {
                 } else {
                     // Need to check that this is an OpenSong xml file (may have .ost extension though)
                     if (storageAccess.containsXMLTags(getActivity(), FullscreenActivity.file_uri)) {
-                        if (FullscreenActivity.myToastMessage.equals("foundset")) {
+                        if (StaticVariables.myToastMessage.equals("foundset")) {
                             what = "set";
                             filetype = getActivity().getString(R.string.options_set);
                         } else {
@@ -242,13 +224,12 @@ public class PopUpImportExternalFile extends DialogFragment {
         }
     }
 
-    void initialiseViews(View v) {
+    private void initialiseViews(View v) {
         fileTitle_TextView = v.findViewById(R.id.fileTitle_TextView);
         fileType_TextView = v.findViewById(R.id.fileType_TextView);
         title = v.findViewById(R.id.dialogtitle);
         chooseFolder_Spinner = v.findViewById(R.id.chooseFolder_Spinner);
         overWrite_CheckBox = v.findViewById(R.id.overWrite_CheckBox);
-        progressBar = v.findViewById(R.id.progressBar);
         progressBarH = v.findViewById(R.id.progressBarH);
         progressText = v.findViewById(R.id.progressText);
         progressLinearLayout = v.findViewById(R.id.progressLinearLayout);
@@ -278,11 +259,11 @@ public class PopUpImportExternalFile extends DialogFragment {
         });
     }
 
-    void notValid() {
+    private void notValid() {
         // Not a valid or recognised file, so warn the user and close the popup
-        FullscreenActivity.myToastMessage = getActivity().getString(R.string.file_type_unknown);
+        StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.file_type_unknown);
         if (mListener != null) {
-            mListener.showToastMessage(FullscreenActivity.myToastMessage);
+            mListener.showToastMessage(StaticVariables.myToastMessage);
         }
         try {
             dismiss();
@@ -291,17 +272,17 @@ public class PopUpImportExternalFile extends DialogFragment {
         }
     }
 
-    void updateTextViews() {
+    private void updateTextViews() {
         if ((FullscreenActivity.file_uri != null) && (FullscreenActivity.file_uri.getLastPathSegment() != null)) {
             fileTitle_TextView.setText(FullscreenActivity.file_uri.getLastPathSegment());
         }
         fileType_TextView.setText(filetype);
     }
 
-    void importOnSongBackup() {
+    private void importOnSongBackup() {
         // Hide the cancel button
         if (closeMe != null) {
-            closeMe.setVisibility(View.GONE);
+            closeMe.hide();
         }
 
         if (progressLinearLayout != null) {
@@ -312,7 +293,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         }
 
         // Now start the AsyncTask
-        import_os = new ImportOnSongBackup(FullscreenActivity.file_uri);
+        ImportOnSongBackup import_os = new ImportOnSongBackup(FullscreenActivity.file_uri);
         try {
             import_os.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
@@ -321,25 +302,23 @@ public class PopUpImportExternalFile extends DialogFragment {
         }
     }
 
-    void initialiseLocationsToSave() {
+    private void initialiseLocationsToSave() {
         if (what.equals("set")) {
             folderlist = new ArrayList<>();
-            folderlist.add(getActivity().getString(R.string.options_set));
+            folderlist.add(Objects.requireNonNull(getActivity()).getString(R.string.options_set));
         } else if (what.contains("onsong")) {
             folderlist = new ArrayList<>();
             folderlist.clear();
-            songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
-            folderlist = new ArrayList<>(Arrays.asList(FullscreenActivity.mSongFolderNames));
+            folderlist = songFolders.prepareSongFolders(getActivity());
             folderlist.add(0, "OnSong");
         } else {
-            songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
-            folderlist = new ArrayList<>(Arrays.asList(FullscreenActivity.mSongFolderNames));
+            folderlist = songFolders.prepareSongFolders(getActivity());
         }
-        arrayAdapter = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,folderlist);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, folderlist);
         chooseFolder_Spinner.setAdapter(arrayAdapter);
     }
 
-    void setUpSaveAction() {
+    private void setUpSaveAction() {
         switch (what) {
             case "onsongbackup":
                 importOnSongBackup();
@@ -359,7 +338,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         }
     }
 
-    void importOpenSongSet() {
+    private void importOpenSongSet() {
         // Get the new file name
         String filename = FullscreenActivity.file_uri.getLastPathSegment();
         if (filename!=null && filename.endsWith(".osts")) {
@@ -372,7 +351,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         completedImportSet(filename);
     }
 
-    void importBibleText() {
+    private void importBibleText() {
         String translation = FullscreenActivity.scripture_title.substring(FullscreenActivity.scripture_title.lastIndexOf(" "));
         String verses = FullscreenActivity.scripture_title.replace(translation, "");
 
@@ -404,9 +383,11 @@ public class PopUpImportExternalFile extends DialogFragment {
         completedImport("YouVersion","../Scripture");
     }
 
-    void copyFile(String folder, String subfolder, String filename) {
+    private void copyFile(String folder, String subfolder, String filename) {
         Uri newfile = storageAccess.getUriForItem(getActivity(), preferences, folder, subfolder, filename);
         if (!storageAccess.uriExists(getActivity(), newfile) || overwrite) {
+
+            Log.d("ImportExternalFile","file_uri="+FullscreenActivity.file_uri);
             InputStream inputStream = storageAccess.getInputStream(getActivity(), FullscreenActivity.file_uri);
 
             // Check the uri exists for the outputstream to be valid
@@ -414,18 +395,20 @@ public class PopUpImportExternalFile extends DialogFragment {
                     folder, subfolder, filename);
 
             OutputStream outputStream = storageAccess.getOutputStream(getActivity(), newfile);
+
             error = false;
             ok = storageAccess.copyFile(inputStream, outputStream);
+
             if (!ok) {
-                errormessage = errormessage + filename + ": " + getActivity().getString(R.string.backup_error) + "\n";
+                errormessage = errormessage + filename + ": " + Objects.requireNonNull(getActivity()).getString(R.string.backup_error) + "\n";
             }
         } else {
             error = true;
-            errormessage = errormessage + filename + ": " + getActivity().getString(R.string.file_exists) + "\n";
+            errormessage = errormessage + filename + ": " + Objects.requireNonNull(getActivity()).getString(R.string.file_exists) + "\n";
         }
     }
 
-    void importFile() {
+    private void importFile() {
         // Get the new file name
         String filename = FullscreenActivity.file_uri.getLastPathSegment();
         if (filename!=null && filename.endsWith(".ost")) {
@@ -442,25 +425,31 @@ public class PopUpImportExternalFile extends DialogFragment {
         completedImport(filename, chosenfolder);
     }
 
-    void getChosenFolder() {
+    private void getChosenFolder() {
         int i = chooseFolder_Spinner.getSelectedItemPosition();
         chosenfolder = folderlist.get(i);
     }
 
-    void completedImport(String song, String subfolder) {
-        FullscreenActivity.songfilename = song;
-        FullscreenActivity.whichSongFolder = subfolder;
-        storageAccess.listSongs(getActivity(), preferences);
-        listSongFiles.getAllSongFiles(getActivity(), preferences, storageAccess);
+    private void completedImport(String song, String subfolder) {
+        StaticVariables.songfilename = song;
+        StaticVariables.whichSongFolder = subfolder;
+
+        // Add the songs to the SQLite database if it isn't a custom slide/scripture
+        if (!subfolder.startsWith("../")) {
+            SQLiteHelper sqLiteHelper = new SQLiteHelper(getActivity());
+            sqLiteHelper.createSong(getActivity(), subfolder, song);
+        }
+
         if (ok && !error) {
-            FullscreenActivity.myToastMessage = getActivity().getString(R.string.success);
+            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.success);
         } else {
-            FullscreenActivity.myToastMessage = errormessage;
+            StaticVariables.myToastMessage = errormessage;
         }
         if (mListener != null) {
             try {
-                mListener.showToastMessage(FullscreenActivity.myToastMessage);
-                mListener.rebuildSearchIndex();
+                mListener.showToastMessage(StaticVariables.myToastMessage);
+                mListener.refreshAll();
+                //mListener.prepareSongMenu();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -472,14 +461,14 @@ public class PopUpImportExternalFile extends DialogFragment {
         }
     }
 
-    void completedImportSet(final String set) {
+    private void completedImportSet(final String set) {
         ImportSet importSet = new ImportSet(set);
         importSet.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public interface MyInterface {
         void refreshAll();
-        void rebuildSearchIndex();
+        void prepareSongMenu();
         void onSongImportDone(String message);
         void openFragment();
         void showToastMessage(String message);
@@ -496,7 +485,7 @@ public class PopUpImportExternalFile extends DialogFragment {
 
         @Override
         protected void onPreExecute() {
-            FullscreenActivity.settoload = setname;
+            StaticVariables.settoload = setname;
         }
 
         @Override
@@ -507,25 +496,22 @@ public class PopUpImportExternalFile extends DialogFragment {
 
                 if (!error) {
                     setActions.loadASet(getActivity(), preferences, storageAccess);
-                    FullscreenActivity.setView = true;
+                    StaticVariables.setView = true;
 
                     // Get the set first item
-                    setActions.prepareFirstItem(getActivity(), preferences, listSongFiles, storageAccess);
+                    setActions.prepareFirstItem(getActivity());
 
-                    // Save the new set to the preferences
-                    Preferences.savePreferences();
-
-                    FullscreenActivity.myToastMessage = getActivity().getString(R.string.success);
+                    StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.success);
 
                     FullscreenActivity.abort = false;
 
                 } else {
 
-                    FullscreenActivity.myToastMessage = errormessage;
+                    StaticVariables.myToastMessage = errormessage;
                 }
 
             } catch (Exception e) {
-                FullscreenActivity.myToastMessage = getActivity().getString(R.string.error);
+                StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.error);
                 e.printStackTrace();
             }
 
@@ -535,7 +521,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         @Override
         protected void onPostExecute(String s) {
             try {
-                mListener.showToastMessage(FullscreenActivity.myToastMessage);
+                mListener.showToastMessage(StaticVariables.myToastMessage);
                 if (!error) {
                     mListener.refreshAll();
                     FullscreenActivity.whattodo = "editset";
@@ -552,7 +538,7 @@ public class PopUpImportExternalFile extends DialogFragment {
     private class ImportOnSongBackup extends AsyncTask<Object, String, String> {
         String message;
         InputStream is;
-        ZipArchiveInputStream zis;
+        ZipInputStream zis;
         String filename;
         Uri zipUri;
         int numitems;
@@ -581,13 +567,14 @@ public class PopUpImportExternalFile extends DialogFragment {
 
         @Override
         protected String doInBackground(Object... objects) {
-            File dbfile = new File(getActivity().getExternalFilesDir("OnSong"), "OnSong.Backup.sqlite3");
+            File onsongdbfile = new File(Objects.requireNonNull(getActivity()).getExternalFilesDir("OnSong"), "OnSong.Backup.sqlite3");
             try {
-                dbfile.createNewFile();
+                if (!onsongdbfile.createNewFile()) {
+                    Log.d("PopUpImportExternal","Error creating file");
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
 
             Uri chosenfolderuri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", chosenfolder, "");
 
@@ -599,10 +586,10 @@ public class PopUpImportExternalFile extends DialogFragment {
 
             try {
                 is = storageAccess.getInputStream(getActivity(), zipUri);
-                zis = new ZipArchiveInputStream(new BufferedInputStream(is), "UTF-8", false);
+                zis = new ZipInputStream(new BufferedInputStream(is));
 
-                ZipArchiveEntry ze;
-                while ((ze = (ZipArchiveEntry) zis.getNextEntry()) != null) {
+                ZipEntry ze;
+                while ((ze = zis.getNextEntry()) != null) {
                     final byte[] buffer = new byte[2048];
                     int count;
                     filename = ze.getName();
@@ -614,9 +601,9 @@ public class PopUpImportExternalFile extends DialogFragment {
 
                         OutputStream out;
                         if (filename.equals("OnSong.Backup.sqlite3") || filename.equals("OnSong.sqlite3")) {
-                            dbfile = new File(getActivity().getExternalFilesDir("OnSong"), "OnSong.Backup.sqlite3");
-                            Uri outuri = Uri.fromFile(dbfile);
-                            if (!dbfile.mkdirs()) {
+                            onsongdbfile = new File(getActivity().getExternalFilesDir("OnSong"), "OnSong.Backup.sqlite3");
+                            Uri outuri = Uri.fromFile(onsongdbfile);
+                            if (!onsongdbfile.mkdirs()) {
                                 Log.d("PopUpImport", "Database file already exists - ok");
                             }
                             out = storageAccess.getOutputStream(getActivity(), outuri);
@@ -653,6 +640,7 @@ public class PopUpImportExternalFile extends DialogFragment {
                             }
                         }
                     }
+                   zis.closeEntry();
                 }
                 zis.close();
 
@@ -663,7 +651,7 @@ public class PopUpImportExternalFile extends DialogFragment {
                 return message;
             }
 
-            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dbfile, null);
+            SQLiteDatabase onsongdb = SQLiteDatabase.openOrCreateDatabase(onsongdbfile, null);
 
             // Go through each row and read in the content field
             // Save the files with the .onsong extension
@@ -676,7 +664,7 @@ public class PopUpImportExternalFile extends DialogFragment {
             String str_content;
 
             try {
-                cursor = db.rawQuery(query, null);
+                cursor = onsongdb.rawQuery(query, null);
 
                 numitems = cursor.getCount();
                 curritem = 0;
@@ -709,8 +697,14 @@ public class PopUpImportExternalFile extends DialogFragment {
                         message = curritem + "/" + numitems + "  " + getActivity().getString(R.string.converting) +
                                 ": " + str_title + ".onsong";
                         publishProgress(message);
-                        onSongConvert.convertTextToTags(getActivity(), storageAccess, preferences,
-                                songXML, chordProConvert, oldsong, str_content, 1);
+                        ArrayList<String> returnedstuff = onSongConvert.convertTextToTags(getActivity(), storageAccess, preferences,
+                                songXML, chordProConvert, oldsong, str_content);
+
+                        // Write the song to the database
+                        sqLiteHelper.createImportedSong(getActivity(), chosenfolder, returnedstuff.get(0),
+                                returnedstuff.get(1), returnedstuff.get(2), returnedstuff.get(3),
+                                returnedstuff.get(4), returnedstuff.get(5), returnedstuff.get(6),
+                                returnedstuff.get(7));
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -719,7 +713,7 @@ public class PopUpImportExternalFile extends DialogFragment {
                     }
                 }
                 cursor.close();
-                db.close();
+                onsongdb.close();
             } catch (Exception e) {
                 // Error with sql database
                 e.printStackTrace();

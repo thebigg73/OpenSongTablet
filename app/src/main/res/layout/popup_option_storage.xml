@@ -18,14 +18,13 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_margin="4dp"
-            android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:gravity="center"
             android:text="@string/options_storage"
             style="@style/MyMenuHeadingText" />
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/closeOptionsFAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,7 +57,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_folder_new_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_folder_new_white_36dp"
                 android:gravity="center_vertical"
@@ -72,7 +70,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_folder_edit_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_folder_edit_white_36dp"
                 android:gravity="center_vertical"
@@ -86,7 +83,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_sd_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_sd_white_36dp"
                 android:gravity="center_vertical"
@@ -100,7 +96,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_format_list_bulleted_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_format_list_bulleted_white_36dp"
                 android:gravity="center_vertical"
@@ -114,7 +109,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_unarchive_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_unarchive_white_36dp"
                 android:gravity="center_vertical"
@@ -128,7 +122,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_archive_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_archive_white_36dp"
                 android:gravity="center_vertical"
@@ -142,7 +135,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_unarchive_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_unarchive_white_36dp"
                 android:gravity="center_vertical"
@@ -156,7 +148,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_sync_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_sync_white_36dp"
                 android:gravity="center_vertical"
@@ -170,7 +161,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_update_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_update_white_36dp"
                 android:gravity="center_vertical"
@@ -184,16 +174,16 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_message_alert_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_message_alert_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/search_log"
                 android:textColor="#fff"
-                android:textSize="12sp" />
-
+                android:textSize="12sp"
+                android:visibility="gone"/>
 
         </LinearLayout>
+
     </ScrollView>
 
 </LinearLayout>

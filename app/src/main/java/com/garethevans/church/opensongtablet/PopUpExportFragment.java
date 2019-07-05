@@ -1,10 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import java.util.Objects;
 
 public class PopUpExportFragment extends DialogFragment {
 
@@ -41,14 +44,6 @@ public class PopUpExportFragment extends DialogFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
@@ -56,21 +51,22 @@ public class PopUpExportFragment extends DialogFragment {
         }
     }
 
-    CheckBox exportOpenSongAppSetCheckBox, exportOpenSongAppCheckBox, exportDesktopCheckBox,
-            exportTextCheckBox, exportChordProCheckBox, exportOnSongCheckBox,
-            exportImageCheckBox, exportPDFCheckBox;
+    private CheckBox exportImageCheckBox;
+    private CheckBox exportPDFCheckBox;
+
+    Preferences preferences;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_exportselection, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
         if (FullscreenActivity.whattodo.equals("customise_exportsong")) {
-            title.setText(getActivity().getResources().getString(R.string.exportcurrentsong));
+            title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.exportcurrentsong));
         } else {
-            title.setText(getActivity().getResources().getString(R.string.exportsavedset));
+            title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.exportsavedset));
         }
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
@@ -91,13 +87,15 @@ public class PopUpExportFragment extends DialogFragment {
             }
         });
 
+        preferences = new Preferences();
+
         // Initialise the views
-        exportOpenSongAppSetCheckBox = V.findViewById(R.id.exportOpenSongAppSetCheckBox);
-        exportOpenSongAppCheckBox = V.findViewById(R.id.exportOpenSongAppCheckBox);
-        exportDesktopCheckBox = V.findViewById(R.id.exportDesktopCheckBox);
-        exportTextCheckBox = V.findViewById(R.id.exportTextCheckBox);
-        exportChordProCheckBox = V.findViewById(R.id.exportChordProCheckBox);
-        exportOnSongCheckBox = V.findViewById(R.id.exportOnSongCheckBox);
+        CheckBox exportOpenSongAppSetCheckBox = V.findViewById(R.id.exportOpenSongAppSetCheckBox);
+        CheckBox exportOpenSongAppCheckBox = V.findViewById(R.id.exportOpenSongAppCheckBox);
+        CheckBox exportDesktopCheckBox = V.findViewById(R.id.exportDesktopCheckBox);
+        CheckBox exportTextCheckBox = V.findViewById(R.id.exportTextCheckBox);
+        CheckBox exportChordProCheckBox = V.findViewById(R.id.exportChordProCheckBox);
+        CheckBox exportOnSongCheckBox = V.findViewById(R.id.exportOnSongCheckBox);
         exportImageCheckBox = V.findViewById(R.id.exportImageCheckBox);
         exportPDFCheckBox = V.findViewById(R.id.exportPDFCheckBox);
 
@@ -111,78 +109,67 @@ public class PopUpExportFragment extends DialogFragment {
             exportPDFCheckBox.setVisibility(View.GONE);
         }
 
-        if (!FullscreenActivity.whichMode.equals("Performance")) {
+        if (!StaticVariables.whichMode.equals("Performance")) {
             exportImageCheckBox.setVisibility(View.GONE);
             exportPDFCheckBox.setVisibility(View.GONE);
-            FullscreenActivity.exportImage = false;
-            FullscreenActivity.exportPDF = false;
-            Preferences.savePreferences();
         }
 
         // Set the checkboxes to their last set value
-        exportOpenSongAppSetCheckBox.setChecked(FullscreenActivity.exportOpenSongAppSet);
-        exportOpenSongAppCheckBox.setChecked(FullscreenActivity.exportOpenSongApp);
-        exportDesktopCheckBox.setChecked(FullscreenActivity.exportDesktop);
-        exportTextCheckBox.setChecked(FullscreenActivity.exportText);
-        exportChordProCheckBox.setChecked(FullscreenActivity.exportChordPro);
-        exportOnSongCheckBox.setChecked(FullscreenActivity.exportOnSong);
-        exportImageCheckBox.setChecked(FullscreenActivity.exportImage);
-        exportPDFCheckBox.setChecked(FullscreenActivity.exportPDF);
-
-        // Initialise any previous text created for the export files
-        FullscreenActivity.exportOpenSongAppSet_String = "";
-        FullscreenActivity.exportOpenSongApp_String = "";
-        FullscreenActivity.exportDesktop_String = "";
-        FullscreenActivity.exportText_String = "";
-        FullscreenActivity.exportChordPro_String = "";
-        FullscreenActivity.exportOnSong_String = "";
+        exportOpenSongAppSetCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportOpenSongAppSet",true));
+        exportOpenSongAppCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportOpenSongApp",true));
+        exportDesktopCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportOpenSongAppSet",false));
+        exportTextCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportOpenSongText",true));
+        exportChordProCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportChordPro",false));
+        exportOnSongCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportOnSong",false));
+        exportImageCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportImage",false));
+        exportPDFCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportPDF",false));
 
         // Set the listeners
         exportOpenSongAppSetCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.exportOpenSongAppSet = b;
+                preferences.setMyPreferenceBoolean(getActivity(),"exportOpenSongAppSet",b);
             }
         });
         exportOpenSongAppCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.exportOpenSongApp = b;
+                preferences.setMyPreferenceBoolean(getActivity(),"exportOpenSongApp",b);
             }
         });
         exportDesktopCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.exportDesktop = b;
+                preferences.setMyPreferenceBoolean(getActivity(),"exportDesktop",b);
             }
         });
         exportTextCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.exportText = b;
+                preferences.setMyPreferenceBoolean(getActivity(),"exportText",b);
             }
         });
         exportChordProCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.exportChordPro = b;
+                preferences.setMyPreferenceBoolean(getActivity(),"exportChordPro",b);
             }
         });
         exportOnSongCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.exportOnSong = b;
+                preferences.setMyPreferenceBoolean(getActivity(),"exportOnSong",b);
             }
         });
         exportImageCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (FullscreenActivity.thissong_scale.equals("Y") && FullscreenActivity.whichMode.equals("Performance")) {
-                    FullscreenActivity.exportImage = b;
+                if (StaticVariables.thisSongScale !=null && StaticVariables.thisSongScale.equals("Y") && StaticVariables.whichMode.equals("Performance")) {
+                    preferences.setMyPreferenceBoolean(getActivity(),"exportImage",b);
                 } else {
-                    FullscreenActivity.exportImage = false;
+                    preferences.setMyPreferenceBoolean(getActivity(),"exportImage",false);
                     exportImageCheckBox.setChecked(false);
-                    FullscreenActivity.myToastMessage = getActivity().getString(R.string.toobig);
+                    StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.toobig);
                     ShowToast.showToast(getActivity());
                 }
             }
@@ -190,26 +177,24 @@ public class PopUpExportFragment extends DialogFragment {
         exportPDFCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (FullscreenActivity.thissong_scale.equals("Y") && FullscreenActivity.whichMode.equals("Performance")) {
-                    FullscreenActivity.exportPDF = b;
+                if (StaticVariables.thisSongScale!=null && StaticVariables.thisSongScale.equals("Y") &&
+                        StaticVariables.whichMode.equals("Performance")) {
+                    preferences.setMyPreferenceBoolean(getActivity(),"exportPDF",b);
                 } else {
-                    FullscreenActivity.exportPDF = false;
+                    preferences.setMyPreferenceBoolean(getActivity(),"exportPDF",false);
                     exportPDFCheckBox.setChecked(false);
-                    FullscreenActivity.myToastMessage = getActivity().getString(R.string.toobig);
+                    StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.toobig);
                     ShowToast.showToast(getActivity());
                 }
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
 
-    public void doExportPrepare() {
-        // Save the preferences (to keep the checkboxes saved)
-        Preferences.savePreferences();
-
+    private void doExportPrepare() {
         if (mListener!=null) {
             mListener.doExport();
             try {

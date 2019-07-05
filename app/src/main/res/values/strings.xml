@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="reset_text">If you are having difficulties with the app, try resetting your settings using the button below.
+        This will clear your settings, but will not delete your songs.</string>
     <string name="extracting">Extracting</string>
     <string name="converting">Converting</string>
 
@@ -592,11 +594,12 @@
     <string name="choose_video2">Choose background video 2</string>
     
     <string name="choosechordformat">Choose chord format (important when transposing a song)</string>
-    <string name="chordFormat1" translatable="false">C   C#/Db   D   D#/Eb   E   F   F#/Gb   G   G#/Ab   A   A#/Bb   B</string>
-    <string name="chordFormat2" translatable="false">C   C#/Db   D   D#/Eb   E   F   F#/Gb   G   G#/Ab   A   B   H</string>
-    <string name="chordFormat3" translatable="false">C   Cis/Des   D   Dis/Es   E   F   Fis/Ges   G   Gis/As   A   B   H</string>
-    <string name="chordFormat4" translatable="false">Do   Do#/Reb   Re   Re#/Mib   Mi   Fa   Fa#/Solb   Sol   Sol#/Lab   La   La#/Sib  Si</string>
-	<string name="chordFormat5" translatable="false">1    2    3    4    5    6    7    8    9    10    11    12</string>
+    <string name="chordFormat1" translatable="false">C  C#/Db  D  D#/Eb  E  F  F#/Gb  G  G#/Ab  A  A#/Bb  B</string>
+    <string name="chordFormat2" translatable="false">C  C#/Db  D  D#/Eb  E  F  F#/Gb  G  G#/Ab  A  B   H</string>
+    <string name="chordFormat3" translatable="false">C  Cis/Des  D  Dis/Es  E  F  Fis/Ges  G  Gis/As  A  B  H</string>
+    <string name="chordFormat4" translatable="false">Do  Do#/Reb  Re  Re#/Mib  Mi  Fa  Fa#/Solb  Sol  Sol#/Lab  La  La#/Sib Si</string>
+	<string name="chordFormat5" translatable="false">1  2  3  4  5  6  7  8  9  10  11  12</string>
+    <string name="chordFormat6" translatable="false">I  II  III  IV  V  VI  VII  VIII  IX  X  XI  XII</string>
 
     <string name="switchtopresentmode">Switch to presentation mode</string>
     <string name="switchtoperformmode">Switch to performance mode</string>

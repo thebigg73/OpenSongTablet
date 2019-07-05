@@ -57,7 +57,7 @@
                     android:layout_margin="8dp" />
             </LinearLayout>
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/gesturesMenuSwipeButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                 app:thumbTextPadding="4dp"
                 app:thumbTint="#444488" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/showSetTickBoxInSongMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
                 app:thumbTextPadding="4dp"
                 app:thumbTint="#444488" />
 
-            <android.support.v7.widget.SwitchCompat
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/showAlphabetInSongMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

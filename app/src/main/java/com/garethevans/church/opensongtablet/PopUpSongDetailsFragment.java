@@ -1,10 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,9 @@ public class PopUpSongDetailsFragment extends DialogFragment {
 
     private MyInterface mListener;
 
+    ProcessSong processSong;
+    Preferences preferences;
+
     @Override
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
@@ -40,14 +44,6 @@ public class PopUpSongDetailsFragment extends DialogFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -58,13 +54,13 @@ public class PopUpSongDetailsFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_song_details, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(FullscreenActivity.songfilename);
+        title.setText(StaticVariables.songfilename);
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +71,11 @@ public class PopUpSongDetailsFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
+
+        processSong = new ProcessSong();
+        preferences = new Preferences();
+
         Button editSongDetails = V.findViewById(R.id.editSongDetails);
         editSongDetails.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,37 +101,37 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         TextView v_mNotes = V.findViewById(R.id.v_mNotes);
         TextView v_mLyrics = V.findViewById(R.id.v_mLyrics);
 
-        String k = ProcessSong.getSongKey();
+        String k = processSong.getSongKey();
         // Fix the key text
         k = k.replace("(","");
         k = k.replace(")","");
 
         // Get the capo key if it exitst
-        String ck = ProcessSong.getCapoInfo();
+        String ck = processSong.getCapoInfo(getActivity(),preferences);
         if (!ck.equals("")) {
-            ck = " (" + getActivity().getString(R.string.edit_song_capo) + " " + ck + ")";
+            ck = " (" + getString(R.string.edit_song_capo) + " " + ck + ")";
             k += ck;
         }
 
         // Decide what should or should be shown
-        v_mTitle.setText(FullscreenActivity.mTitle);
-        setContentInfo(t_mAuthor,v_mAuthor, FullscreenActivity.mAuthor.toString());
+        v_mTitle.setText(StaticVariables.mTitle);
+        setContentInfo(t_mAuthor,v_mAuthor, StaticVariables.mAuthor);
         setContentInfo(t_mKey,v_mKey, k);
-        setContentInfo(t_mCopyright,v_mCopyright, FullscreenActivity.mCopyright.toString());
-        setContentInfo(t_mCCLI,v_mCCLI, FullscreenActivity.mCCLI);
-        setContentInfo(t_mPresentation,v_mPresentation, FullscreenActivity.mPresentation);
-        setContentInfo(t_mHymnNumber,v_mHymnNumber, FullscreenActivity.mHymnNumber);
-        setContentInfo(t_mNotes,v_mNotes, FullscreenActivity.mNotes);
+        setContentInfo(t_mCopyright,v_mCopyright, StaticVariables.mCopyright);
+        setContentInfo(t_mCCLI,v_mCCLI, StaticVariables.mCCLI);
+        setContentInfo(t_mPresentation,v_mPresentation, StaticVariables.mPresentation);
+        setContentInfo(t_mHymnNumber,v_mHymnNumber, StaticVariables.mHymnNumber);
+        setContentInfo(t_mNotes,v_mNotes, StaticVariables.mNotes);
 
-        v_mLyrics.setTypeface(FullscreenActivity.lyricsfont);
+        v_mLyrics.setTypeface(StaticVariables.typefaceLyrics);
         v_mLyrics.setTextSize(8.0f);
-        v_mLyrics.setText(FullscreenActivity.mLyrics);
+        v_mLyrics.setText(StaticVariables.mLyrics);
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
         return V;
     }
 
-    public void setContentInfo(TextView tv_t, TextView tv_v, String s) {
+    private void setContentInfo(TextView tv_t, TextView tv_v, String s) {
         if (s!=null && !s.equals("")) {
             tv_t.setVisibility(View.VISIBLE);
             tv_v.setVisibility(View.VISIBLE);

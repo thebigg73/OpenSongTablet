@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +28,7 @@ public class BatteryMonitor extends BroadcastReceiver {
 
     public static MyInterface mListener;
 
+    @SuppressLint("UnsafeProtectedBroadcastReceiver")
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent!=null) {
@@ -45,9 +47,7 @@ public class BatteryMonitor extends BroadcastReceiver {
             if (FullscreenActivity.mContext != null) {
                 try {
                     mListener = (MyInterface) FullscreenActivity.mContext;
-                    if (mListener != null) {
-                        mListener.setUpBatteryMonitor();
-                    }
+                    mListener.setUpBatteryMonitor();
                 } catch (Exception e) {
                     Log.d("BatteryMonitor", "Problem setting up the battery monitor");
                 }
@@ -82,10 +82,10 @@ public class BatteryMonitor extends BroadcastReceiver {
         }
     }
 
-    public static BitmapDrawable batteryImage(int charge, int abheight, Context c) {
+    public static BitmapDrawable batteryImage(Context c, Preferences preferences, int charge, int abheight) {
 
         int size = (int)(abheight*0.75f);
-        int thickness = FullscreenActivity.batteryLine;
+        int thickness = preferences.getMyPreferenceInt(c,"batteryDialThickness",4);
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
         Bitmap bmp = Bitmap.createBitmap(size,size, conf);
 

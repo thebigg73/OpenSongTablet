@@ -2,14 +2,15 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.SwitchCompat;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PopUpPadFragment extends DialogFragment {
 
@@ -58,39 +60,24 @@ public class PopUpPadFragment extends DialogFragment {
         super.onDetach();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-    }
-
-    Spinner popupPad_key;
-    Spinner popupPad_file;
-    SwitchCompat popupPad_loopaudio;
-    SeekBar popupPad_volume;
-    TextView popupPad_volume_text;
-    SeekBar popupPad_pan;
-    TextView popupPad_pan_text;
-    Button start_stop_padplay;
+    private Spinner popupPad_key;
+    private Spinner popupPad_file;
+    private SwitchCompat popupPad_loopaudio;
+    private SeekBar popupPad_volume;
+    private TextView popupPad_volume_text;
+    private SeekBar popupPad_pan;
+    private TextView popupPad_pan_text;
+    private Button start_stop_padplay;
     String text;
-    boolean validpad;
+    private boolean validpad;
     Preferences preferences;
     StorageAccess storageAccess;
+    ProcessSong processSong;
 
-    AsyncTask<Object,Void,String> set_pad;
+    private AsyncTask<Object,Void,String> set_pad;
 
-    boolean mStopHandler = false;
-    Handler mHandler = new Handler();
+    private boolean mStopHandler = false;
+    private Handler mHandler = new Handler();
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
@@ -106,7 +93,7 @@ public class PopUpPadFragment extends DialogFragment {
     };
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             this.dismiss();
         }
@@ -117,11 +104,12 @@ public class PopUpPadFragment extends DialogFragment {
 
         preferences = new Preferences();
         storageAccess = new StorageAccess();
+        processSong = new ProcessSong();
 
         View V = inflater.inflate(R.layout.popup_page_pad, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.pad));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.pad));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,18 +120,10 @@ public class PopUpPadFragment extends DialogFragment {
             }
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
-        /*saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
-                saveMe.setEnabled(false);
-                doSave();
-            }
-        });*/
+        saveMe.hide();
 
         if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
         }
 
         // Initialise the views
@@ -177,7 +157,7 @@ public class PopUpPadFragment extends DialogFragment {
             Log.d("d","Error setting pad values");
         }
 
-        ProcessSong.processKey(getActivity(), preferences, storageAccess);
+        processSong.processKey(getActivity(), preferences, storageAccess);
         popupPad_key.setSelection(FullscreenActivity.keyindex);
 
         // Set the listeners
@@ -188,14 +168,13 @@ public class PopUpPadFragment extends DialogFragment {
         popupPad_loopaudio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                FullscreenActivity.mLoopAudio = isChecked + "";
-                Preferences.savePreferences();
+                StaticVariables.mLoopAudio = isChecked + "";
             }
         });
 
         mHandler.post(runnable);
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -203,9 +182,12 @@ public class PopUpPadFragment extends DialogFragment {
     public void doSave() {
         PopUpEditSongFragment.prepareSongXML();
         PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
-        Preferences.savePreferences();
-        mListener.loadSong();
-        dismiss();
+        try {
+            mListener.loadSong();
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private class popupPad_keyListener implements AdapterView.OnItemSelectedListener {
@@ -213,7 +195,7 @@ public class PopUpPadFragment extends DialogFragment {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view,
                                    int position, long id) {
-            FullscreenActivity.mKey = popupPad_key.getItemAtPosition(popupPad_key.getSelectedItemPosition()).toString();
+            StaticVariables.mKey = popupPad_key.getItemAtPosition(popupPad_key.getSelectedItemPosition()).toString();
         }
 
         @Override
@@ -223,7 +205,7 @@ public class PopUpPadFragment extends DialogFragment {
     private void startenabled() {
         validpad = false;
         StorageAccess storageAccess = new StorageAccess();
-        Uri uri = storageAccess.fixLocalisedUri(getActivity(), preferences, FullscreenActivity.mLinkAudio);
+        Uri uri = storageAccess.fixLocalisedUri(getActivity(), preferences, StaticVariables.mLinkAudio);
         boolean isvalid = storageAccess.uriExists(getActivity(), uri);
 
         if (popupPad_file.getSelectedItemPosition() == 0 && popupPad_key.getSelectedItemPosition() > 0) {
@@ -264,7 +246,7 @@ public class PopUpPadFragment extends DialogFragment {
                 float leftVolume = temp_padvol;
                 float rightVolume = temp_padvol;
                 if (temp_padpan.equals("left")) {
-                    leftVolume = temp_padvol;
+                    //leftVolume = temp_padvol;
                     rightVolume = 0.0f;
                 } else if (temp_padpan.equals("right")) {
                     leftVolume = 0.0f;
@@ -282,7 +264,7 @@ public class PopUpPadFragment extends DialogFragment {
                 float leftVolume = temp_padvol;
                 float rightVolume = temp_padvol;
                 if (temp_padpan.equals("left")) {
-                    leftVolume = temp_padvol;
+                    //leftVolume = temp_padvol;
                     rightVolume = 0.0f;
                 } else if (temp_padpan.equals("right")) {
                     leftVolume = 0.0f;
@@ -301,17 +283,14 @@ public class PopUpPadFragment extends DialogFragment {
 
         public void onStopTrackingTouch(SeekBar seekBar) {
             int temp_padvol = popupPad_volume.getProgress();
-            FullscreenActivity.padvol = (float) temp_padvol / 100.0f;
+            preferences.setMyPreferenceFloat(getActivity(),"padVol",(float)temp_padvol/100.0f);
             if (popupPad_pan.getProgress() == 0) {
-                FullscreenActivity.padpan = "left";
+                preferences.setMyPreferenceString(getActivity(),"padPan","L");
             } else if (popupPad_pan.getProgress() == 2) {
-                FullscreenActivity.padpan = "right";
+                preferences.setMyPreferenceString(getActivity(),"padPan","R");
             } else {
-                FullscreenActivity.padpan = "both";
+                preferences.setMyPreferenceString(getActivity(),"padPan","C");
             }
-
-            // Save preferences
-            Preferences.savePreferences();
         }
     }
 
@@ -326,33 +305,33 @@ public class PopUpPadFragment extends DialogFragment {
         protected void onPostExecute(String s) {
             // Set the pad / backing track
             try {
-                if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.off))) {
+                if (StaticVariables.mPadFile.equals(getResources().getString(R.string.off))) {
                     popupPad_file.setSelection(2);
-                } else if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.link_audio)) && !FullscreenActivity.mLinkAudio.isEmpty()) {
+                } else if (StaticVariables.mPadFile.equals(getResources().getString(R.string.link_audio)) && !StaticVariables.mLinkAudio.isEmpty()) {
                     popupPad_file.setSelection(1);
                 } else {
                     popupPad_file.setSelection(0);
                 }
 
                 // Set the loop on or off
-                if (FullscreenActivity.mLoopAudio.equals("true")) {
+                if (StaticVariables.mLoopAudio.equals("true")) {
                     popupPad_loopaudio.setChecked(true);
                 } else {
-                    FullscreenActivity.mLoopAudio = "false";
+                    StaticVariables.mLoopAudio = "false";
                     popupPad_loopaudio.setChecked(false);
                 }
 
                 // Set the pad volume and pan
-                int temp_padvol = (int) (100 * FullscreenActivity.padvol);
+                int temp_padvol = (int) (100 * preferences.getMyPreferenceFloat(getActivity(),"padVol",1.0f));
                 popupPad_volume.setProgress(temp_padvol);
                 String text = temp_padvol + " %";
                 popupPad_volume_text.setText(text);
-                switch (FullscreenActivity.padpan) {
-                    case "left":
+                switch (preferences.getMyPreferenceString(getActivity(),"padPan","C")) {
+                    case "L":
                         popupPad_pan_text.setText("L");
                         popupPad_pan.setProgress(0);
                         break;
-                    case "right":
+                    case "R":
                         popupPad_pan_text.setText("R");
                         popupPad_pan.setProgress(2);
                         break;
@@ -361,8 +340,6 @@ public class PopUpPadFragment extends DialogFragment {
                         popupPad_pan.setProgress(1);
                         break;
                 }
-
-                //checkPadStatus();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -376,10 +353,10 @@ public class PopUpPadFragment extends DialogFragment {
         public void onItemSelected(AdapterView<?> parent, View view,
                                    int position, long id) {
             if (position == 1) {
-                if (FullscreenActivity.mLinkAudio != null && FullscreenActivity.mLinkAudio.isEmpty()) {
-                    FullscreenActivity.mPadFile = getResources().getString(R.string.link_audio);
+                if (StaticVariables.mLinkAudio != null && StaticVariables.mLinkAudio.isEmpty()) {
+                    StaticVariables.mPadFile = getResources().getString(R.string.link_audio);
                     //popupPad_file.setSelection(0);
-                    FullscreenActivity.myToastMessage = getResources().getString(R.string.notset);
+                    StaticVariables.myToastMessage = getResources().getString(R.string.notset);
                     ShowToast.showToast(getActivity());
                     // Try opening the link file popup to get the user to set one
                     if (mListener != null) {
@@ -388,10 +365,10 @@ public class PopUpPadFragment extends DialogFragment {
                         //dismiss();
                     }
                 } else {
-                    FullscreenActivity.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
+                    StaticVariables.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
                 }
             } else {
-                FullscreenActivity.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
+                StaticVariables.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
             }
             PopUpEditSongFragment.prepareSongXML();
             PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
@@ -402,7 +379,7 @@ public class PopUpPadFragment extends DialogFragment {
         }
     }
 
-    public void checkPadStatus() {
+    private void checkPadStatus() {
         boolean pad1playing = false;
         boolean pad2playing = false;
         try {
@@ -419,29 +396,29 @@ public class PopUpPadFragment extends DialogFragment {
 
         if (pad1playing && !pad2playing) {
             text = getResources().getString(R.string.stop);
-            FullscreenActivity.clickedOnPadStart = true;
+            StaticVariables.clickedOnPadStart = true;
             validpad = true;
             start_stop_padplay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     FullscreenActivity.whichPad = 1;
-                    FullscreenActivity.pad1Fading = true;
+                    StaticVariables.pad1Fading = true;
                     mListener.fadeoutPad();
-                    FullscreenActivity.clickedOnPadStart = false;
+                    StaticVariables.clickedOnPadStart = false;
                     dismiss();
                 }
             });
         } else if (pad2playing && !pad1playing) {
             text = getResources().getString(R.string.stop);
-            FullscreenActivity.clickedOnPadStart = true;
+            StaticVariables.clickedOnPadStart = true;
             validpad = true;
             //start_stop_padplay.setText(getResources().getString(R.string.stop));
             start_stop_padplay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     FullscreenActivity.whichPad = 2;
-                    FullscreenActivity.pad2Fading = true;
-                    FullscreenActivity.clickedOnPadStart = false;
+                    StaticVariables.pad2Fading = true;
+                    StaticVariables.clickedOnPadStart = false;
                     mListener.fadeoutPad();
                     dismiss();
                 }
@@ -449,7 +426,7 @@ public class PopUpPadFragment extends DialogFragment {
 
         } else if (!pad1playing) {
             text = getResources().getString(R.string.start);
-            FullscreenActivity.clickedOnPadStart = false;
+            StaticVariables.clickedOnPadStart = false;
             // start_stop_padplay.setText(getResources().getString(R.string.start));
             // Decide if pad is valid
             startenabled();
@@ -466,14 +443,14 @@ public class PopUpPadFragment extends DialogFragment {
 
         } else {
             text = getResources().getString(R.string.stop);
-            FullscreenActivity.clickedOnPadStart = true;
+            StaticVariables.clickedOnPadStart = true;
             validpad = true;
             //start_stop_padplay.setText(getResources().getString(R.string.stop));
             start_stop_padplay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     FullscreenActivity.whichPad = 0;  // both
-                    FullscreenActivity.clickedOnPadStart = false;
+                    StaticVariables.clickedOnPadStart = false;
                     mListener.killPad();
                     dismiss();
                 }

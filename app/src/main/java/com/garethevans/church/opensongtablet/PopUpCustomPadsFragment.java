@@ -1,8 +1,9 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.DialogFragment;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PopUpCustomPadsFragment extends DialogFragment {
 
-    ArrayList<String> filenames;
-    Spinner padAb, padA, padBb, padB, padC, padDb, padD, padEb, padE, padF, padGb, padG,
+    private ArrayList<String> padfiles;
+    private Spinner padAb, padA, padBb, padB, padC, padDb, padD, padEb, padE, padF, padGb, padG,
             padAbm, padAm, padBbm, padBm, padCm, padDbm, padDm, padEbm, padEm, padFm, padGbm, padGm;
     StorageAccess storageAccess;
     Preferences preferences;
@@ -28,14 +30,6 @@ public class PopUpCustomPadsFragment extends DialogFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
@@ -43,14 +37,14 @@ public class PopUpCustomPadsFragment extends DialogFragment {
         }
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setCanceledOnTouchOutside(true);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         View V = inflater.inflate(R.layout.popup_custompads, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.pad));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.pad));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +55,7 @@ public class PopUpCustomPadsFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
 
         // Initialise the views
         padAb = V.findViewById(R.id.padAb);
@@ -93,7 +87,7 @@ public class PopUpCustomPadsFragment extends DialogFragment {
         storageAccess = new StorageAccess();
         preferences = new Preferences();
 
-        ArrayList<String> padfiles = storageAccess.listFilesInFolder(getActivity(), preferences, "Pads", "");
+        padfiles = storageAccess.listFilesInFolder(getActivity(), preferences, "Pads", "");
         padfiles.add(0,getActivity().getString(R.string.pad_auto));
         ArrayAdapter<String> aa = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,padfiles);
         padAb.setAdapter(aa);
@@ -123,61 +117,61 @@ public class PopUpCustomPadsFragment extends DialogFragment {
 
         // Set the spinners to the default values
         // This returns an updated string in case the specified one is no longer valid
-        FullscreenActivity.customPadAb = setSpinnerVal(padAb,FullscreenActivity.customPadAb);
-        FullscreenActivity.customPadA = setSpinnerVal(padA,FullscreenActivity.customPadA);
-        FullscreenActivity.customPadBb = setSpinnerVal(padBb,FullscreenActivity.customPadBb);
-        FullscreenActivity.customPadB = setSpinnerVal(padB,FullscreenActivity.customPadB);
-        FullscreenActivity.customPadC = setSpinnerVal(padC,FullscreenActivity.customPadC);
-        FullscreenActivity.customPadDb = setSpinnerVal(padDb,FullscreenActivity.customPadDb);
-        FullscreenActivity.customPadD = setSpinnerVal(padD,FullscreenActivity.customPadD);
-        FullscreenActivity.customPadEb = setSpinnerVal(padEb,FullscreenActivity.customPadEb);
-        FullscreenActivity.customPadE = setSpinnerVal(padE,FullscreenActivity.customPadE);
-        FullscreenActivity.customPadF = setSpinnerVal(padF,FullscreenActivity.customPadF);
-        FullscreenActivity.customPadGb = setSpinnerVal(padGb,FullscreenActivity.customPadGb);
-        FullscreenActivity.customPadG = setSpinnerVal(padG,FullscreenActivity.customPadG);
-        FullscreenActivity.customPadAbm = setSpinnerVal(padAbm,FullscreenActivity.customPadAbm);
-        FullscreenActivity.customPadAm = setSpinnerVal(padAm,FullscreenActivity.customPadAm);
-        FullscreenActivity.customPadBbm = setSpinnerVal(padBbm,FullscreenActivity.customPadBbm);
-        FullscreenActivity.customPadBm = setSpinnerVal(padBm,FullscreenActivity.customPadBm);
-        FullscreenActivity.customPadCm = setSpinnerVal(padCm,FullscreenActivity.customPadCm);
-        FullscreenActivity.customPadDbm = setSpinnerVal(padDbm,FullscreenActivity.customPadDbm);
-        FullscreenActivity.customPadDm = setSpinnerVal(padDm,FullscreenActivity.customPadDm);
-        FullscreenActivity.customPadEbm = setSpinnerVal(padEbm,FullscreenActivity.customPadEbm);
-        FullscreenActivity.customPadEm = setSpinnerVal(padEm,FullscreenActivity.customPadEm);
-        FullscreenActivity.customPadFm = setSpinnerVal(padFm,FullscreenActivity.customPadFm);
-        FullscreenActivity.customPadGbm = setSpinnerVal(padGbm,FullscreenActivity.customPadGbm);
-        FullscreenActivity.customPadGm = setSpinnerVal(padGm,FullscreenActivity.customPadGm);
+        
+        // Get the user values and if it isn't found in the array, set it to auto
+        setSpinnerVal(padAb,preferences.getMyPreferenceString(getActivity(),"customPadAb",""));
+        setSpinnerVal(padA,preferences.getMyPreferenceString(getActivity(),"customPadA",""));
+        setSpinnerVal(padBb,preferences.getMyPreferenceString(getActivity(),"customPadBb",""));
+        setSpinnerVal(padB,preferences.getMyPreferenceString(getActivity(),"customPadB",""));
+        setSpinnerVal(padC,preferences.getMyPreferenceString(getActivity(),"customPadC",""));
+        setSpinnerVal(padDb,preferences.getMyPreferenceString(getActivity(),"customPadDb",""));
+        setSpinnerVal(padD,preferences.getMyPreferenceString(getActivity(),"customPadD",""));
+        setSpinnerVal(padEb,preferences.getMyPreferenceString(getActivity(),"customPadEb",""));
+        setSpinnerVal(padE,preferences.getMyPreferenceString(getActivity(),"customPadE",""));
+        setSpinnerVal(padF,preferences.getMyPreferenceString(getActivity(),"customPadF",""));
+        setSpinnerVal(padGb,preferences.getMyPreferenceString(getActivity(),"customPadGb",""));
+        setSpinnerVal(padG,preferences.getMyPreferenceString(getActivity(),"customPadG",""));
+        setSpinnerVal(padAbm,preferences.getMyPreferenceString(getActivity(),"customPadAbm",""));
+        setSpinnerVal(padAm,preferences.getMyPreferenceString(getActivity(),"customPadAm",""));
+        setSpinnerVal(padBbm,preferences.getMyPreferenceString(getActivity(),"customPadBbm",""));
+        setSpinnerVal(padBm,preferences.getMyPreferenceString(getActivity(),"customPadBm",""));
+        setSpinnerVal(padCm,preferences.getMyPreferenceString(getActivity(),"customPadCm",""));
+        setSpinnerVal(padDbm,preferences.getMyPreferenceString(getActivity(),"customPadDbm",""));
+        setSpinnerVal(padDm,preferences.getMyPreferenceString(getActivity(),"customPadDm",""));
+        setSpinnerVal(padEbm,preferences.getMyPreferenceString(getActivity(),"customPadEbm",""));
+        setSpinnerVal(padEm,preferences.getMyPreferenceString(getActivity(),"customPadEm",""));
+        setSpinnerVal(padFm,preferences.getMyPreferenceString(getActivity(),"customPadFm",""));
+        setSpinnerVal(padGbm,preferences.getMyPreferenceString(getActivity(),"customPadGbm",""));
+        setSpinnerVal(padGm,preferences.getMyPreferenceString(getActivity(),"customPadGm",""));
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
 
-    String setSpinnerVal (Spinner s, String v) {
+    private void setSpinnerVal (Spinner s, String v) {
         try {
-            if (v == null) {
+            if (v == null || v.isEmpty()) {
                 // Set the pad to 'Auto' - this is the first option
                 s.setSelection(0);
             } else {
-                int pos = filenames.indexOf(v);
+                int pos = padfiles.indexOf(v);
                 if (pos < 0) {
                     // User did have a file specified, but it is no longer there
                     pos = 0;
-                    v = null;
                 }
                 s.setSelection(pos);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return v;
     }
 
-    String getSpinnerVal (Spinner s) {
+    private String getSpinnerVal (Spinner s) {
         String v;
         try {
             v = s.getSelectedItem().toString();
-            if (v != null && v.equals(getActivity().getString(R.string.pad_auto))) {
+            if (v.equals(Objects.requireNonNull(getActivity()).getString(R.string.pad_auto))) {
                 v = null;
             }
         } catch (Exception e) {
@@ -190,32 +184,30 @@ public class PopUpCustomPadsFragment extends DialogFragment {
     void doSave() {
         try {
             // Get the spinner values and save them
-            FullscreenActivity.customPadAb = getSpinnerVal(padAb);
-            FullscreenActivity.customPadA = getSpinnerVal(padA);
-            FullscreenActivity.customPadBb = getSpinnerVal(padBb);
-            FullscreenActivity.customPadB = getSpinnerVal(padB);
-            FullscreenActivity.customPadC = getSpinnerVal(padC);
-            FullscreenActivity.customPadDb = getSpinnerVal(padDb);
-            FullscreenActivity.customPadD = getSpinnerVal(padD);
-            FullscreenActivity.customPadEb = getSpinnerVal(padEb);
-            FullscreenActivity.customPadE = getSpinnerVal(padE);
-            FullscreenActivity.customPadF = getSpinnerVal(padF);
-            FullscreenActivity.customPadGb = getSpinnerVal(padGb);
-            FullscreenActivity.customPadG = getSpinnerVal(padG);
-            FullscreenActivity.customPadAbm = getSpinnerVal(padAbm);
-            FullscreenActivity.customPadAm = getSpinnerVal(padAm);
-            FullscreenActivity.customPadBbm = getSpinnerVal(padBbm);
-            FullscreenActivity.customPadBm = getSpinnerVal(padBm);
-            FullscreenActivity.customPadCm = getSpinnerVal(padCm);
-            FullscreenActivity.customPadDbm = getSpinnerVal(padDbm);
-            FullscreenActivity.customPadDm = getSpinnerVal(padDm);
-            FullscreenActivity.customPadEbm = getSpinnerVal(padEbm);
-            FullscreenActivity.customPadEm = getSpinnerVal(padEm);
-            FullscreenActivity.customPadFm = getSpinnerVal(padFm);
-            FullscreenActivity.customPadGbm = getSpinnerVal(padGbm);
-            FullscreenActivity.customPadGm = getSpinnerVal(padGm);
-
-            Preferences.savePreferences();
+            preferences.setMyPreferenceString(getActivity(),"customPadAb",getSpinnerVal(padAb));
+            preferences.setMyPreferenceString(getActivity(),"customPadA", getSpinnerVal(padA));
+            preferences.setMyPreferenceString(getActivity(),"customPadBb",getSpinnerVal(padBb));
+            preferences.setMyPreferenceString(getActivity(),"customPadB", getSpinnerVal(padB));
+            preferences.setMyPreferenceString(getActivity(),"customPadC", getSpinnerVal(padC));
+            preferences.setMyPreferenceString(getActivity(),"customPadDb",getSpinnerVal(padDb));
+            preferences.setMyPreferenceString(getActivity(),"customPadD", getSpinnerVal(padD));
+            preferences.setMyPreferenceString(getActivity(),"customPadEb",getSpinnerVal(padEb));
+            preferences.setMyPreferenceString(getActivity(),"customPadE", getSpinnerVal(padE));
+            preferences.setMyPreferenceString(getActivity(),"customPadF", getSpinnerVal(padF));
+            preferences.setMyPreferenceString(getActivity(),"customPadGb",getSpinnerVal(padGb));
+            preferences.setMyPreferenceString(getActivity(),"customPadG", getSpinnerVal(padG));
+            preferences.setMyPreferenceString(getActivity(),"customPadAbm",getSpinnerVal(padAbm));
+            preferences.setMyPreferenceString(getActivity(),"customPadAm", getSpinnerVal(padAm));
+            preferences.setMyPreferenceString(getActivity(),"customPadBbm",getSpinnerVal(padBbm));
+            preferences.setMyPreferenceString(getActivity(),"customPadBm", getSpinnerVal(padBm));
+            preferences.setMyPreferenceString(getActivity(),"customPadCm", getSpinnerVal(padCm));
+            preferences.setMyPreferenceString(getActivity(),"customPadDbm",getSpinnerVal(padDbm));
+            preferences.setMyPreferenceString(getActivity(),"customPadDm", getSpinnerVal(padDm));
+            preferences.setMyPreferenceString(getActivity(),"customPadEbm",getSpinnerVal(padEbm));
+            preferences.setMyPreferenceString(getActivity(),"customPadEm", getSpinnerVal(padEm));
+            preferences.setMyPreferenceString(getActivity(),"customPadFm", getSpinnerVal(padFm));
+            preferences.setMyPreferenceString(getActivity(),"customPadGbm",getSpinnerVal(padGbm));
+            preferences.setMyPreferenceString(getActivity(),"customPadGm", getSpinnerVal(padGm));
             dismiss();
         } catch (Exception e) {
             e.printStackTrace();

@@ -15,7 +15,7 @@
         <include layout="@layout/popup_dialogtitle" />
     </FrameLayout>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/myTitle">
@@ -38,8 +38,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="32dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="32dp"
                 android:layout_marginTop="8dp" />
 
             <TextView
@@ -55,76 +55,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="32dp"
-                android:layout_marginTop="8dp" />
-
-            <TextView
-                style="@style/MyHeadingText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/longPressUp" />
-
-            <Spinner
-                android:id="@+id/upPedalLongPress"
-                style="@style/MySpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="32dp"
-                android:layout_marginTop="8dp" />
-
-            <TextView
-                style="@style/MyHeadingText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/longPressDown" />
-
-            <Spinner
-                android:id="@+id/downPedalLongPress"
-                style="@style/MySpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="32dp"
-                android:layout_marginTop="8dp" />
-
-            <TextView
-                style="@style/MyHeadingText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/longPressPrevious" />
-
-            <Spinner
-                android:id="@+id/previousPedalLongPress"
-                style="@style/MySpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="32dp"
-                android:layout_marginTop="8dp" />
-
-            <TextView
-                style="@style/MyHeadingText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/longPressNext" />
-
-            <Spinner
-                android:id="@+id/nextPedalLongPress"
-                style="@style/MySpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="32dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="32dp"
                 android:layout_marginTop="8dp" />
 
         </LinearLayout>

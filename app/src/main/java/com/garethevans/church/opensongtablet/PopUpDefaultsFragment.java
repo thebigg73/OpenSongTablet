@@ -1,9 +1,10 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,34 +13,26 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 public class PopUpDefaultsFragment extends DialogFragment {
 
-    SeekBar popupAlpha_seekBar;
-    SeekBar popupScale_seekBar;
-    SeekBar popupDim_seekBar;
-    Button tl_button;
-    Button tc_button;
-    Button tr_button;
-    Button l_button;
-    Button c_button;
-    Button r_button;
-    Button bl_button;
-    Button bc_button;
-    Button br_button;
+    private Button tl_button;
+    private Button tc_button;
+    private Button tr_button;
+    private Button l_button;
+    private Button c_button;
+    private Button r_button;
+    private Button bl_button;
+    private Button bc_button;
+    private Button br_button;
+
+    Preferences preferences;
 
     static PopUpDefaultsFragment newInstance() {
         PopUpDefaultsFragment frag;
         frag = new PopUpDefaultsFragment();
         return frag;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // safety check
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
     }
 
     @Override
@@ -53,13 +46,13 @@ public class PopUpDefaultsFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View V = inflater.inflate(R.layout.popup_popupdefaults, container, false);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.options_display_popups));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.options_display_popups));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,12 +63,14 @@ public class PopUpDefaultsFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
+
+        preferences = new Preferences();
 
         // Initialise the views
-        popupAlpha_seekBar = V.findViewById(R.id.popupAlpha_seekBar);
-        popupScale_seekBar = V.findViewById(R.id.popupScale_seekBar);
-        popupDim_seekBar   = V.findViewById(R.id.popupDim_seekbar);
+        SeekBar popupAlpha_seekBar = V.findViewById(R.id.popupAlpha_seekBar);
+        SeekBar popupScale_seekBar = V.findViewById(R.id.popupScale_seekBar);
+        SeekBar popupDim_seekBar = V.findViewById(R.id.popupDim_seekbar);
         tl_button = V.findViewById(R.id.tl_button);
         tc_button = V.findViewById(R.id.tc_button);
         tr_button = V.findViewById(R.id.tr_button);
@@ -87,26 +82,9 @@ public class PopUpDefaultsFragment extends DialogFragment {
         br_button = V.findViewById(R.id.br_button);
 
         // Set the seekBars to their current positions
-        if (FullscreenActivity.popupAlpha_All >= 0.6f && FullscreenActivity.popupAlpha_All <= 1.0f) {
-            popupAlpha_seekBar.setProgress((int) (FullscreenActivity.popupAlpha_All*10)-6);
-        } else {
-            popupAlpha_seekBar.setProgress(4);
-            FullscreenActivity.popupAlpha_All = 0.9f;
-        }
-
-        if (FullscreenActivity.popupDim_All >= 0.0f && FullscreenActivity.popupDim_All <= 1.0f) {
-            popupDim_seekBar.setProgress((int) (FullscreenActivity.popupDim_All*10));
-        } else {
-            popupDim_seekBar.setProgress(7);
-            FullscreenActivity.popupDim_All = 0.7f;
-        }
-
-        if (FullscreenActivity.popupScale_All >= 0.3f && FullscreenActivity.popupScale_All <= 1.0f) {
-            popupScale_seekBar.setProgress((int) (FullscreenActivity.popupScale_All*10)-3);
-        } else {
-            popupScale_seekBar.setProgress(5);
-            FullscreenActivity.popupScale_All = 0.8f;
-        }
+        popupAlpha_seekBar.setProgress((int) (preferences.getMyPreferenceFloat(getActivity(),"popupAlpha",0.8f)*10)-6);
+        popupDim_seekBar.setProgress((int) (preferences.getMyPreferenceFloat(getActivity(),"popupDim",0.8f)*10));
+        popupScale_seekBar.setProgress((int) (preferences.getMyPreferenceFloat(getActivity(),"popupScale",0.7f)*10)-3);
 
         fixbuttons();
 
@@ -114,39 +92,33 @@ public class PopUpDefaultsFragment extends DialogFragment {
         popupAlpha_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                FullscreenActivity.popupAlpha_All = (i+6.0f) / 10.0f;
-                PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+                preferences.setMyPreferenceFloat(getActivity(),"popupAlpha",((i+6.0f) / 10.0f));
+                PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(),preferences);
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Preferences.savePreferences();
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-
         popupDim_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                FullscreenActivity.popupDim_All = (float) i / 10.0f;
-                PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+                preferences.setMyPreferenceFloat(getActivity(),"popupDim", (float) i / 10.0f);
+                PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(),preferences);
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Preferences.savePreferences();
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-
         popupScale_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                FullscreenActivity.popupScale_All = (i+3.0f)/10.0f;
+                preferences.setMyPreferenceFloat(getActivity(),"popupScale", (i+3.0f)/10.0f);
             }
 
             @Override
@@ -154,130 +126,121 @@ public class PopUpDefaultsFragment extends DialogFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-                Preferences.savePreferences();
+                PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(),preferences);
             }
         });
 
         tl_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.popupPosition_All = "tl";
+                preferences.setMyPreferenceString(getActivity(),"popupPosition","tl");
                 fixbuttons();
-                Preferences.savePreferences();
             }
         });
         tc_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.popupPosition_All = "tc";
+                preferences.setMyPreferenceString(getActivity(),"popupPosition","tc");
                 fixbuttons();
-                Preferences.savePreferences();
             }
         });
         tr_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.popupPosition_All = "tr";
+                preferences.setMyPreferenceString(getActivity(),"popupPosition","tr");
                 fixbuttons();
-                Preferences.savePreferences();
             }
         });
         l_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.popupPosition_All = "l";
+                preferences.setMyPreferenceString(getActivity(),"popupPosition","l");
                 fixbuttons();
-                Preferences.savePreferences();
             }
         });
         c_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.popupPosition_All = "c";
+                preferences.setMyPreferenceString(getActivity(),"popupPosition","c");
                 fixbuttons();
-                Preferences.savePreferences();
             }
         });
         r_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.popupPosition_All = "r";
+                preferences.setMyPreferenceString(getActivity(),"popupPosition","r");
                 fixbuttons();
-                Preferences.savePreferences();
             }
         });
         bl_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.popupPosition_All = "bl";
+                preferences.setMyPreferenceString(getActivity(),"popupPosition","bl");
                 fixbuttons();
-                Preferences.savePreferences();
             }
         });
         bc_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.popupPosition_All = "bc";
+                preferences.setMyPreferenceString(getActivity(),"popupPosition","bc");
                 fixbuttons();
-                Preferences.savePreferences();
             }
         });
         br_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.popupPosition_All = "br";
+                preferences.setMyPreferenceString(getActivity(),"popupPosition","br");
                 fixbuttons();
-                Preferences.savePreferences();
             }
         });
         return V;
     }
 
-    @SuppressWarnings("deprecation")
-    public void fixbuttons() {
-        tl_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.grey_button));
-        tc_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.grey_button));
-        tr_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.grey_button));
-        l_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.grey_button));
-        c_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.grey_button));
-        r_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.grey_button));
-        bl_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.grey_button));
-        bc_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.grey_button));
-        br_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.grey_button));
+    //@SuppressWarnings("deprecation")
+    private void fixbuttons() {
 
-        switch (FullscreenActivity.popupPosition_All) {
-            case "tl":
-                tl_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.blue_button));
-                break;
-            case "tc":
-                tc_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.blue_button));
-                break;
-            case "tr":
-                tr_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.blue_button));
-                break;
-            case "l":
-                l_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.blue_button));
-                break;
-            default:
-            case "c":
-                c_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.blue_button));
-                FullscreenActivity.popupPosition_All = "c";
-                break;
-            case "r":
-                r_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.blue_button));
-                break;
-            case "bl":
-                bl_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.blue_button));
-                break;
-            case "bc":
-                bc_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.blue_button));
-                break;
-            case "br":
-                br_button.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.blue_button));
-                break;
-        }
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+            tl_button.setBackgroundResource(R.drawable.grey_button);
+            tc_button.setBackgroundResource(R.drawable.grey_button);
+            tr_button.setBackgroundResource(R.drawable.grey_button);
+            l_button.setBackgroundResource(R.drawable.grey_button);
+            c_button.setBackgroundResource(R.drawable.grey_button);
+            r_button.setBackgroundResource(R.drawable.grey_button);
+            bl_button.setBackgroundResource(R.drawable.grey_button);
+            bc_button.setBackgroundResource(R.drawable.grey_button);
+            br_button.setBackgroundResource(R.drawable.grey_button);
+
+            switch (preferences.getMyPreferenceString(getActivity(),"popupPosition","c")) {
+                case "tl":
+                    tl_button.setBackgroundResource(R.drawable.blue_button);
+                    break;
+                case "tc":
+                    tc_button.setBackgroundResource(R.drawable.blue_button);
+                    break;
+                case "tr":
+                    tr_button.setBackgroundResource(R.drawable.blue_button);
+                    break;
+                case "l":
+                    l_button.setBackgroundResource(R.drawable.blue_button);
+                    break;
+                default:
+                case "c":
+                    c_button.setBackgroundResource(R.drawable.blue_button);
+                    preferences.setMyPreferenceString(getActivity(),"popupPosition","c");
+                    break;
+                case "r":
+                    r_button.setBackgroundResource(R.drawable.blue_button);
+                    break;
+                case "bl":
+                    bl_button.setBackgroundResource(R.drawable.blue_button);
+                    break;
+                case "bc":
+                    bc_button.setBackgroundResource(R.drawable.blue_button);
+                    break;
+                case "br":
+                    br_button.setBackgroundResource(R.drawable.blue_button);
+                    break;
+            }
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(),preferences);
     }
 
     @Override

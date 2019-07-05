@@ -1,41 +1,43 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
-// This file simply prepares the songFolders
+// This file simply prepares the songFolders from the SQLite database
 
 class SongFolders {
 
-    void prepareSongFolders(Context c, StorageAccess storageAccess, Preferences preferences) {
-        // Use the folderIds to get the song folders found
-        // This is used for the folder chooser popup
-
-        ArrayList<String> folders = new ArrayList<>();
-        FullscreenActivity.mSongFolderNames = null;
-        String bittoremove = storageAccess.getUriForItem(c, preferences, "Songs", "", "").getPath() + "/";
-        for (String s : FullscreenActivity.folderIds) {
-            s = s.replace(bittoremove, "");
-            folders.add(s);
-        }
-
-        // Remove any duplicates
-        Set<String> hs = new HashSet<>(folders);
-        folders.clear();
-        folders.addAll(hs);
+    ArrayList<String> prepareSongFolders(Context c) {
+        // Use the database to get the available folders
+        SQLiteHelper sqLiteHelper = new SQLiteHelper(c);
+        ArrayList<String> folders = sqLiteHelper.getFolders(c);
 
         // Sort the list
-        Collator collator = Collator.getInstance(FullscreenActivity.locale);
+        Collator collator = Collator.getInstance(StaticVariables.locale);
         collator.setStrength(Collator.SECONDARY);
         Collections.sort(folders, collator);
 
-        // Add the main folder to the top
-        folders.add(0, c.getString(R.string.mainfoldername));
-        FullscreenActivity.mSongFolderNames = folders.toArray(new String[0]).clone();
+        // Add the main folder to the top if it isn't already there
+        int pos = folders.indexOf(c.getString(R.string.mainfoldername));
+        if (pos<0) {
+            // It isn't there, so add it
+            folders.add(0,c.getString(R.string.mainfoldername));
+
+        } else if (pos>0) {
+            // It's there, but not at the top - remove it
+            folders.remove(pos);
+            // Add it to the top position
+            folders.add(0,c.getString(R.string.mainfoldername));
+        }
+
+        for (String folder:folders) {
+            Log.d("SongFolders", "folder=" + folder);
+        }
+
+        return folders;
     }
 }

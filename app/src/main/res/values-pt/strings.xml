@@ -708,5 +708,6 @@
 
     <string name="googlefontcustom">"Outro nome de fonte do Google"</string>
     <string name="googlefontbrowse">"Procurar todas as fontes do Google"</string>
+    <string name="reset_text">Se você tiver dificuldades com o aplicativo, tente redefinir suas configurações usando o botão abaixo. Isso limpará suas configurações, mas não excluirá suas músicas.</string>
 
 </resources>

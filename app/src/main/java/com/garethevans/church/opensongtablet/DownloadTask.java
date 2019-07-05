@@ -23,6 +23,7 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
     private String address;
     private String filename;
     StorageAccess storageAccess;
+    @SuppressLint("StaticFieldLeak")
     Preferences preferences;
     @SuppressLint("StaticFieldLeak")
     private Context c;
@@ -74,17 +75,27 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
                 // download the file
                 input = connection.getInputStream();
                 Log.d("d", "input=" + input);
+                Log.d("d", "filename=" + filename);
 
                 if (input!=null) {
 
                     uri = storageAccess.getUriForItem(c, preferences, "", "", filename);
 
+                    Log.d("DownloadTask","uri="+uri);
+                    Log.d("DownloadTask","filename="+filename);
+
                     // Check the uri exists for the outputstream to be valid
-                    storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "", "", filename);
+                    if (!storageAccess.uriExists(c,uri)) {
+                        storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "", "", filename);
+                    }
+                    uri = storageAccess.getUriForItem(c, preferences, "", "", filename);
+
+                    Log.d("DownloadTask","uri="+uri);
 
                     outputStream = storageAccess.getOutputStream(c, uri);
+                    Log.d("DownloadTask","outputStream="+outputStream);
 
-                    byte data[] = new byte[4096];
+                    byte[] data = new byte[4096];
                     long total = 0;
                     int count;
                     while ((count = input.read(data)) != -1) {
@@ -100,10 +111,10 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
                         outputStream.write(data, 0, count);
                     }
                 } else {
-                    FullscreenActivity.myToastMessage = c.getResources().getString(R.string.network_error);
+                    StaticVariables.myToastMessage = c.getResources().getString(R.string.network_error);
                 }
             } catch (Exception e) {
-                FullscreenActivity.myToastMessage = c.getResources().getString(R.string.network_error);
+                StaticVariables.myToastMessage = c.getResources().getString(R.string.network_error);
                 e.printStackTrace();
             } finally {
                 try {
@@ -123,7 +134,7 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
 
         @Override
         protected void onPostExecute(String s) {
-            if (FullscreenActivity.myToastMessage.equals(c.getResources().getString(R.string.network_error))) {
+            if (StaticVariables.myToastMessage.equals(c.getResources().getString(R.string.network_error))) {
                 ShowToast.showToast(c);
             } else {
                 FullscreenActivity.whattodo = "processimportosb";

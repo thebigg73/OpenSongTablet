@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
@@ -29,11 +30,11 @@
             android:layout_weight="0.6"
             android:minHeight="200dp">
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/sort_ImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_margin="0dp"
                 android:src="@drawable/ic_sort_white_36dp"
@@ -45,7 +46,6 @@
                 android:id="@+id/setListView1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentLeft="false"
                 android:layout_alignParentStart="false"
                 android:layout_margin="8dp"
                 android:background="@drawable/section_box"
@@ -117,28 +117,29 @@
                             style="@style/MySpinner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
                             android:layout_alignParentTop="true"
                             android:layout_margin="8dp"
-                            android:layout_toLeftOf="@+id/newCategory_ImageButton" />
+                            android:layout_toStartOf="@+id/newCategory_ImageButton" />
 
                         <EditText
                             android:id="@+id/newCategory_EditText"
                             style="@style/MyEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
                             android:layout_alignParentTop="true"
                             android:layout_margin="8dp"
-                            android:layout_toLeftOf="@+id/newCategory_ImageButton"
+                            android:layout_toStartOf="@+id/newCategory_ImageButton"
                             android:hint="@string/category"
-                            android:maxLines="1" />
+                            android:maxLines="1"
+                            tools:ignore="Autofill,TextFields" />
 
                         <ImageButton
                             android:id="@+id/newCategory_ImageButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
                             android:layout_alignParentTop="true"
                             android:contentDescription="@string/category"
                             android:src="@drawable/ic_plus_white_36dp" />
@@ -170,7 +171,8 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:hint="@string/options_set_nameofset"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        tools:ignore="Autofill,TextFields" />
 
                     <CheckBox
                         android:id="@+id/overWrite_CheckBox"

@@ -709,5 +709,6 @@
 
     <string name="googlefontcustom">"Jiný název písma Google"</string>
     <string name="googlefontbrowse">"Procházejte všechny písma Google"</string>
+    <string name="reset_text">Pokud máte s aplikací potíže, vyzkoušejte resetování pomocí tlačítka níže. Tímto se vymažou vaše nastavení, ale vaše skladby nebudou smazány.</string>
 
 </resources>

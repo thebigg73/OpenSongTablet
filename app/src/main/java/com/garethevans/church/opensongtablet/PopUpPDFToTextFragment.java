@@ -1,12 +1,13 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
 import java.io.InputStream;
+import java.util.Objects;
 
 public class PopUpPDFToTextFragment extends DialogFragment {
     // This is called when user tries to extract pdf to text
@@ -30,14 +32,14 @@ public class PopUpPDFToTextFragment extends DialogFragment {
     }
 
     View V;
-    String foundText = "";
-    String foundCopyright = "";
-    String foundAuthor = "";
-    String foundCCLI = "";
-    String foundTitle = "";
-    String foundKey = "";
-    String foundTempo = "";
-    String foundTimeSig = "";
+    private String foundText = "";
+    private String foundCopyright = "";
+    private String foundAuthor = "";
+    private String foundCCLI = "";
+    private String foundTitle = "";
+    private String foundKey = "";
+    private String foundTempo = "";
+    private String foundTimeSig = "";
     StorageAccess storageAccess;
     Preferences preferences;
 
@@ -71,22 +73,14 @@ public class PopUpPDFToTextFragment extends DialogFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         V = inflater.inflate(R.layout.popup_pdftotext, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.pdftotext_extract));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.pdftotext_extract));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +91,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
             }
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
 
         storageAccess = new StorageAccess();
         // Initialise the basic views
@@ -129,7 +123,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         getPDFExtractedText();
         pdftotext_found.setText(foundText);
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -139,7 +133,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         this.dismiss();
     }
 
-    public void cancelEdit() {
+    private void cancelEdit() {
         try {
             dismiss();
         } catch (Exception e) {
@@ -147,7 +141,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         }
     }
 
-    public void saveEdit() {
+    private void saveEdit() {
         PopUpEditSongFragment.prepareBlankSongXML();
         // Replace the default lyrics with the ones we've found
         FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("[V]\n",foundText);
@@ -158,7 +152,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
             FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace(".pdf","_from_pdf");
             FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace(".PDF","_from_pdf");
         } else {
-            FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("<title>" + FullscreenActivity.songfilename + "</title>",
+            FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("<title>" + StaticVariables.songfilename + "</title>",
                     "<title>" + foundTitle + "</title>");
         }
 
@@ -193,29 +187,29 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         // Change the file name
         FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace(".pdf","_from_pdf");
         FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace(".PDF","_from_pdf");
-        FullscreenActivity.songfilename = FullscreenActivity.songfilename.replace(".pdf","_from_pdf");
-        FullscreenActivity.songfilename = FullscreenActivity.songfilename.replace(".PDF","_from_pdf");
+        StaticVariables.songfilename = StaticVariables.songfilename.replace(".pdf","_from_pdf");
+        StaticVariables.songfilename = StaticVariables.songfilename.replace(".PDF","_from_pdf");
         try {
             if (mListener!=null) {
                 PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
-                FullscreenActivity.myToastMessage = "";
+                StaticVariables.myToastMessage = "";
                 mListener.refreshAll();
                 dismiss();
             }
         } catch (Exception e) {
             Log.d("d","Error saving");
-            FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.savesong) + " - " +
+            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.savesong) + " - " +
                     getActivity().getResources().getString(R.string.error);
             ShowToast.showToast(getActivity());
         }
     }
 
-    public void getPDFExtractedText() {
+    private void getPDFExtractedText() {
         StringBuilder parsedText= new StringBuilder();
 
         try {
-            Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.whichSongFolder,
-                    FullscreenActivity.songfilename);
+            Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", StaticVariables.whichSongFolder,
+                    StaticVariables.songfilename);
             InputStream inputStream = storageAccess.getInputStream(getActivity(),uri);
             PdfReader reader = new PdfReader(inputStream);
             int n = reader.getNumberOfPages();
@@ -230,16 +224,16 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         foundText = PopUpEditSongFragment.parseToHTMLEntities(parsedText.toString());
     }
 
-    public String detectAndImproveLine(String alltext) {
+    private String detectAndImproveLine(String alltext) {
         StringBuilder fixedtext = new StringBuilder();
         // Split the text into lines
         String[] lines = alltext.split("\n");
         for (String s:lines) {
-            String c = s.toLowerCase(FullscreenActivity.locale).trim();
-            String verse_tag = getActivity().getString(R.string.tag_verse).toLowerCase(FullscreenActivity.locale);
-            String chorus_tag = getActivity().getString(R.string.tag_chorus).toLowerCase(FullscreenActivity.locale);
-            String prechorus_tag = getActivity().getString(R.string.tag_prechorus).toLowerCase(FullscreenActivity.locale);
-            String bridge_tag = getActivity().getString(R.string.tag_bridge).toLowerCase(FullscreenActivity.locale);
+            String c = s.toLowerCase(StaticVariables.locale).trim();
+            String verse_tag = Objects.requireNonNull(getActivity()).getString(R.string.tag_verse).toLowerCase(StaticVariables.locale);
+            String chorus_tag = getActivity().getString(R.string.tag_chorus).toLowerCase(StaticVariables.locale);
+            String prechorus_tag = getActivity().getString(R.string.tag_prechorus).toLowerCase(StaticVariables.locale);
+            String bridge_tag = getActivity().getString(R.string.tag_bridge).toLowerCase(StaticVariables.locale);
 
             if ((c.startsWith("verse") || c.startsWith("chorus") || c.startsWith("bridge") ||
                     c.startsWith("intro") || c.startsWith("outro") || c.startsWith("ending") ||

@@ -15,7 +15,7 @@
     <include layout="@layout/popup_dialogtitle"/>
     </FrameLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -72,16 +72,14 @@
         android:layout_alignParentBottom="true"
         android:id="@+id/icons"
         android:layout_alignParentStart="false"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentEnd="true">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="right">
+        android:gravity="end">
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -91,7 +89,7 @@
             android:layout_margin="8dp"
             app:backgroundTint="@color/grey"/>
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/listSetTweetButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -101,7 +99,7 @@
             android:layout_margin="8dp"
             app:backgroundTint="@color/purple"/>
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/shuffle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -111,7 +109,7 @@
             android:layout_margin="8dp"
             app:backgroundTint="@color/purple"/>
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/saveAsProperSet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -1,15 +1,18 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import java.util.Objects;
 
 public class PopUpCrossFadeFragment extends DialogFragment {
 
@@ -19,14 +22,7 @@ public class PopUpCrossFadeFragment extends DialogFragment {
         return frag;
     }
 
-    public void onStart() {
-        super.onStart();
-
-        // safety check
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
+    Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,13 +35,13 @@ public class PopUpCrossFadeFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_crossfadetime, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.crossfade_time));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.crossfade_time));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +52,9 @@ public class PopUpCrossFadeFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
+
+        preferences = new Preferences();
 
         // Initialise the views
         final SeekBar crossFadeSeekBar = V.findViewById(R.id.crossFadeSeekBar);
@@ -81,11 +79,9 @@ public class PopUpCrossFadeFragment extends DialogFragment {
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Preferences.savePreferences();
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }

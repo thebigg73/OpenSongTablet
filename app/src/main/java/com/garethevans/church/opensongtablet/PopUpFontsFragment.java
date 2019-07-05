@@ -1,27 +1,36 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.SwitchCompat;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PopUpFontsFragment extends DialogFragment {
 
@@ -31,7 +40,7 @@ public class PopUpFontsFragment extends DialogFragment {
         return frag;
     }
 
-    Spinner lyricsFontSpinner, chordsFontSpinner, presoFontSpinner, presoInfoFontSpinner;
+    private Spinner lyricsFontSpinner, chordsFontSpinner, presoFontSpinner, presoInfoFontSpinner;
 
     private MyInterface mListener;
 
@@ -48,32 +57,36 @@ public class PopUpFontsFragment extends DialogFragment {
         super.onDetach();
     }
 
-    TextView scaleHeading_TextView, scaleComment_TextView, scaleChords_TextView,
-            lineSpacing_TextView, googleFont_TextView, customPreviewTextView, lyricPreviewTextView,
-            chordPreviewTextView, presoPreviewTextView, presoinfoPreviewTextView;
-    EditText googleFont_EditText;
-    Button browseMore;
-    FloatingActionButton testFont_FAB;
-    ArrayAdapter<String> choose_fonts;
+    private TextView scaleHeading_TextView;
+    private TextView scaleComment_TextView;
+    private TextView scaleChords_TextView;
+    private TextView lineSpacing_TextView;
+    private TextView lyricPreviewTextView;
+    private TextView chordPreviewTextView;
+    private TextView presoPreviewTextView;
+    private TextView presoinfoPreviewTextView;
+    private ArrayAdapter<String> choose_fonts;
     ProgressBar progressBar;
-    SeekBar scaleHeading_SeekBar, scaleComment_SeekBar, scaleChords_SeekBar, lineSpacing_SeekBar;
-    SwitchCompat trimlines_SwitchCompat, trimsections_SwitchCompat, hideBox_SwitchCompat, trimlinespacing_SwitchCompat;
+    private SeekBar scaleHeading_SeekBar, scaleComment_SeekBar, scaleChords_SeekBar, lineSpacing_SeekBar;
     SetTypeFace setTypeFace;
     StorageAccess storageAccess;
     Preferences preferences;
     // Handlers for fonts
-    Handler lyrichandler, chordhandler, presohandler, presoinfohandler, customhandler, monohandler;
+    private Handler lyrichandler;
+    private Handler chordhandler;
+    private Handler presohandler;
+    private Handler presoinfohandler;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_font, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.options_options_fonts));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.options_options_fonts));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setVisibility(View.GONE);
+        closeMe.hide();
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,8 +106,8 @@ public class PopUpFontsFragment extends DialogFragment {
         chordhandler = new Handler();
         presohandler = new Handler();
         presoinfohandler = new Handler();
-        customhandler = new Handler();
-        monohandler = new Handler();
+        Handler customhandler = new Handler();
+        Handler monohandler = new Handler();
 
         // Initialise the views
         lyricsFontSpinner = V.findViewById(R.id.lyricsFontSpinner);
@@ -105,7 +118,15 @@ public class PopUpFontsFragment extends DialogFragment {
         chordPreviewTextView = V.findViewById(R.id.chordPreviewTextView);
         presoPreviewTextView = V.findViewById(R.id.presoPreviewTextView);
         presoinfoPreviewTextView = V.findViewById(R.id.presoinfoPreviewTextView);
-        customPreviewTextView = V.findViewById(R.id.customPreviewTextView);
+        TextView fontBrowse = V.findViewById(R.id.fontBrowse);
+        fontBrowse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://fonts.google.com"));
+                startActivity(intent);
+            }
+        });
         scaleChords_TextView = V.findViewById(R.id.scaleChords_TextView);
         scaleChords_SeekBar = V.findViewById(R.id.scaleChords_SeekBar);
         scaleComment_TextView = V.findViewById(R.id.scaleComment_TextView);
@@ -114,32 +135,152 @@ public class PopUpFontsFragment extends DialogFragment {
         scaleHeading_SeekBar = V.findViewById(R.id.scaleHeading_SeekBar);
         lineSpacing_TextView = V.findViewById(R.id.lineSpacing_TextView);
         lineSpacing_SeekBar = V.findViewById(R.id.lineSpacing_SeekBar);
-        trimlinespacing_SwitchCompat = V.findViewById(R.id.trimlinespacing_SwitchCompat);
-        hideBox_SwitchCompat = V.findViewById(R.id.hideBox_SwitchCompat);
-        trimlines_SwitchCompat = V.findViewById(R.id.trimlines_SwitchCompat);
-        trimsections_SwitchCompat = V.findViewById(R.id.trimsections_SwitchCompat);
-        googleFont_EditText = V.findViewById(R.id.googleFont_EditText);
-        googleFont_TextView = V.findViewById(R.id.googleFont_TextView);
+        SwitchCompat trimlinespacing_SwitchCompat = V.findViewById(R.id.trimlinespacing_SwitchCompat);
+        SwitchCompat hideBox_SwitchCompat = V.findViewById(R.id.hideBox_SwitchCompat);
+        SwitchCompat trimlines_SwitchCompat = V.findViewById(R.id.trimlines_SwitchCompat);
+        SwitchCompat trimsections_SwitchCompat = V.findViewById(R.id.trimsections_SwitchCompat);
         progressBar = V.findViewById(R.id.progressBar);
-        testFont_FAB = V.findViewById(R.id.testFont_FAB);
-        browseMore = V.findViewById(R.id.browseMore);
 
         // Set up the typefaces
         setTypeFace.setUpAppFonts(getActivity(), preferences, lyrichandler, chordhandler,
                 presohandler, presoinfohandler, customhandler, monohandler);
 
-        trimlines_SwitchCompat.setChecked(FullscreenActivity.trimSections);
-        hideBox_SwitchCompat.setChecked(FullscreenActivity.hideLyricsBox);
-        trimsections_SwitchCompat.setChecked(!FullscreenActivity.trimSectionSpace);
-        trimlinespacing_SwitchCompat.setChecked(FullscreenActivity.trimLines);
-        lineSpacing_SeekBar.setEnabled(FullscreenActivity.trimLines);
+        trimlines_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"trimSections",true));
+        hideBox_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"hideLyricsBox",false));
+        trimsections_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"addSectionSpace",true));
+        trimlinespacing_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"trimLines",false));
+        lineSpacing_SeekBar.setEnabled(preferences.getMyPreferenceBoolean(getActivity(),"trimLines",false));
 
-        // Set up the custom fonts - use my preferred Google font lists as local files no longer work!!!
-        ArrayList<String> customfontsavail = setTypeFace.googleFontsAllowed(getActivity());
-        choose_fonts = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, customfontsavail);
-        choose_fonts.setDropDownViewResource(R.layout.my_spinner);
 
-        // Set the dropdown lists
+        // Listen for seekbar changes
+        scaleHeading_SeekBar.setMax(200);
+        int progress = (int) (preferences.getMyPreferenceFloat(getActivity(),"scaleHeadings", 0.6f) * 100);
+        scaleHeading_SeekBar.setProgress(progress);
+        String text = progress + "%";
+        scaleHeading_TextView.setText(text);
+        scaleHeading_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                String text = progress + "%";
+                scaleHeading_TextView.setText(text);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+        scaleChords_SeekBar.setMax(200);
+        progress = (int) (preferences.getMyPreferenceFloat(getActivity(),"scaleChords",1.0f) * 100);
+        scaleChords_SeekBar.setProgress(progress);
+        text = progress + "%";
+        scaleChords_TextView.setText(text);
+        scaleChords_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                String text = progress + "%";
+                scaleChords_TextView.setText(text);
+                //float newsize = 12 * ((float) progress/100.0f);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+        scaleComment_SeekBar.setMax(200);
+        progress = (int) (preferences.getMyPreferenceFloat(getActivity(),"scaleComments", 0.8f) * 100);
+        scaleComment_SeekBar.setProgress(progress);
+        text = progress + "%";
+        scaleComment_TextView.setText(text);
+        scaleComment_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                String text = progress + "%";
+                scaleComment_TextView.setText(text);
+                //float newsize = 12 * ((float) progress/100.0f);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+        lineSpacing_SeekBar.setMax(100);
+        progress = (int) (preferences.getMyPreferenceFloat(getActivity(),"lineSpacing",0.1f) * 100);
+        lineSpacing_SeekBar.setProgress(progress);
+        text = progress + "%";
+        lineSpacing_TextView.setText(text);
+        lineSpacing_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                String text = progress + "%";
+                lineSpacing_TextView.setText(text);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        trimlinespacing_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean b) {
+                // Disable the linespacing seekbar if required
+                lineSpacing_SeekBar.setEnabled(b);
+                preferences.setMyPreferenceBoolean(getActivity(),"trimLines",b);
+            }
+        });
+
+        hideBox_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                preferences.setMyPreferenceBoolean(getActivity(),"hideLyricsBox",b);
+            }
+        });
+        trimlines_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                preferences.setMyPreferenceBoolean(getActivity(),"trimSections",b);
+            }
+        });
+        trimsections_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                // Historic button name - actually asks if space should be added
+                preferences.setMyPreferenceBoolean(getActivity(),"addSectionSpace",true);
+            }
+        });
+
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+
+        // Try to get a list of fonts from Google
+        GetFontList getFontList = new GetFontList();
+        getFontList.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        return V;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
+
+    private void setSpinners() {
         lyricsFontSpinner.setAdapter(choose_fonts);
         chordsFontSpinner.setAdapter(choose_fonts);
         presoFontSpinner.setAdapter(choose_fonts);
@@ -150,18 +291,6 @@ public class PopUpFontsFragment extends DialogFragment {
         chordsFontSpinner.setSelection(getPositionInList("fontChord"));
         presoFontSpinner.setSelection(getPositionInList("fontPreso"));
         presoInfoFontSpinner.setSelection(getPositionInList("fontPresoInfo"));
-
-        // Listen for the user changing the Google custom font
-        testFont_FAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String fonttosearch = "Lato";
-                if (googleFont_EditText.getText() != null && !googleFont_EditText.getText().toString().equals("")) {
-                    fonttosearch = googleFont_EditText.getText().toString();
-                }
-                setTypeFace.setChosenFont(getActivity(), preferences, fonttosearch, "custom", customPreviewTextView, progressBar, customhandler);
-            }
-        });
 
         lyricsFontSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -207,182 +336,28 @@ public class PopUpFontsFragment extends DialogFragment {
             }
         });
 
-        // Listen for seekbar changes
-        scaleHeading_SeekBar.setMax(200);
-        int progress = (int) (FullscreenActivity.headingfontscalesize * 100);
-        scaleHeading_SeekBar.setProgress(progress);
-        String text = progress + "%";
-        scaleHeading_TextView.setText(text);
-        scaleHeading_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String text = progress + "%";
-                scaleHeading_TextView.setText(text);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-        scaleChords_SeekBar.setMax(200);
-        progress = (int) (FullscreenActivity.chordfontscalesize * 100);
-        scaleChords_SeekBar.setProgress(progress);
-        text = progress + "%";
-        scaleChords_TextView.setText(text);
-        scaleChords_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String text = progress + "%";
-                scaleChords_TextView.setText(text);
-                //float newsize = 12 * ((float) progress/100.0f);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-        scaleComment_SeekBar.setMax(200);
-        progress = (int) (FullscreenActivity.commentfontscalesize * 100);
-        scaleComment_SeekBar.setProgress(progress);
-        text = progress + "%";
-        scaleComment_TextView.setText(text);
-        scaleComment_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String text = progress + "%";
-                scaleComment_TextView.setText(text);
-                //float newsize = 12 * ((float) progress/100.0f);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
-        lineSpacing_SeekBar.setMax(100);
-        progress = (int) (FullscreenActivity.linespacing * 100);
-        lineSpacing_SeekBar.setProgress(progress);
-        text = progress + "%";
-        lineSpacing_TextView.setText(text);
-        lineSpacing_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String text = progress + "%";
-                lineSpacing_TextView.setText(text);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
-
-        trimlinespacing_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean b) {
-                // Disable the linespacing seekbar if required
-                lineSpacing_SeekBar.setEnabled(b);
-                FullscreenActivity.trimLines = b;
-                Preferences.savePreferences();
-            }
-        });
-
-        hideBox_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.hideLyricsBox = b;
-                Preferences.savePreferences();
-            }
-        });
-        trimlines_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.trimSections = b;
-                Preferences.savePreferences();
-            }
-        });
-        trimsections_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                // Since this asks the user if they want the space, the trim value is the opposite!
-                FullscreenActivity.trimSectionSpace = !b;
-                Preferences.savePreferences();
-            }
-        });
-        browseMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FullscreenActivity.whattodo = "browsefonts";
-                FullscreenActivity.webpage = "https://fonts.google.com";
-                if (mListener!=null) {
-                    mListener.openFragment();
-                }
-                try {
-                    dismiss();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-
-        return V;
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            this.dismiss();
-        }
-    }
-
-    void updateItem(int position, String prefname, String what, TextView textView, Handler handler) {
+    private void updateItem(int position, String prefname, String what, TextView textView, Handler handler) {
         String fontchosen = choose_fonts.getItem(position);
         preferences.setMyPreferenceString(getActivity(), prefname, fontchosen);
         setTypeFace.setChosenFont(getActivity(), preferences, fontchosen, what,
                 textView, null, handler);
     }
 
-    int getPositionInList(String what) {
+    private int getPositionInList(String what) {
         String valToFind = preferences.getMyPreferenceString(getActivity(), what, "Lato");
         return choose_fonts.getPosition(valToFind);
     }
 
     public void doSave() {
-        FullscreenActivity.mylyricsfontnum = lyricsFontSpinner.getSelectedItemPosition();
-        FullscreenActivity.mychordsfontnum = chordsFontSpinner.getSelectedItemPosition();
-        FullscreenActivity.mypresofontnum = presoFontSpinner.getSelectedItemPosition();
-        FullscreenActivity.mypresoinfofontnum = presoInfoFontSpinner.getSelectedItemPosition();
         float num = (float) scaleHeading_SeekBar.getProgress()/100.0f;
-        FullscreenActivity.headingfontscalesize = num;
+        preferences.setMyPreferenceFloat(getActivity(),"scaleHeadings", num);
         num = (float) scaleComment_SeekBar.getProgress()/100.0f;
-        FullscreenActivity.commentfontscalesize = num;
+        preferences.setMyPreferenceFloat(getActivity(),"scaleComments", num);
         num = (float) scaleChords_SeekBar.getProgress()/100.0f;
-        FullscreenActivity.chordfontscalesize = num;
+        preferences.setMyPreferenceFloat(getActivity(),"scaleChords",num);
         num = (float) lineSpacing_SeekBar.getProgress() / 100.0f;
-        FullscreenActivity.linespacing = num;
-        Preferences.savePreferences();
+        preferences.setMyPreferenceFloat(getActivity(),"lineSpacing",num);
         mListener.refreshAll();
         dismiss();
     }
@@ -400,4 +375,68 @@ public class PopUpFontsFragment extends DialogFragment {
         this.dismiss();
     }
 
+    @SuppressLint("StaticFieldLeak")
+    private class GetFontList extends AsyncTask<Object,String,String> {
+
+        @Override
+        protected String doInBackground(Object... objects) {
+            try {
+                URL url = new URL("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBKvCB1NnWwXGyGA7RTar0VQFCM3rdOE8k&sort=alpha");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                try {
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(line).append("\n");
+                    }
+                    bufferedReader.close();
+                    return stringBuilder.toString();
+                }
+                finally{
+                    urlConnection.disconnect();
+                }
+            }
+            catch(Exception e) {
+                Log.e("ERROR", e.getMessage(), e);
+                return null;
+            }
+        }
+
+        protected void onPostExecute(String response) {
+            if(response == null) {
+                // Set up the custom fonts - use my preferred Google font lists as local files no longer work!!!
+                ArrayList<String> customfontsavail = setTypeFace.googleFontsAllowed();
+                choose_fonts = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, customfontsavail);
+                choose_fonts.setDropDownViewResource(R.layout.my_spinner);
+
+
+            } else {
+
+                // Split the returned JSON into lines
+                String[] lines = response.split("\n");
+
+                ArrayList<String> fontnames = new ArrayList<>();
+
+                for (String line : lines) {
+                    if (line.contains("\"family\":")) {
+                        line = line.replace("\"family\"", "");
+                        line = line.replace(":", "");
+                        line = line.replace("\"", "");
+                        line = line.replace(",", "");
+                        line = line.trim();
+                        fontnames.add(line);
+                    }
+                }
+                // Set up the custom fonts - use my preferred Google font lists as local files no longer work!!!
+                choose_fonts = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, fontnames);
+                choose_fonts.setDropDownViewResource(R.layout.my_spinner);
+                choose_fonts.notifyDataSetChanged();
+            }
+
+            // Set the dropdown lists
+            setSpinners();
+
+        }
+    }
 }

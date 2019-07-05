@@ -2,12 +2,12 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.SwitchCompat;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +16,13 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 public class PopUpAlertFragment extends DialogFragment {
 
     private EditText alertMessage;
     private MyInterface mListener;
+    Preferences preferences;
 
     static PopUpAlertFragment newInstance() {
         PopUpAlertFragment frag;
@@ -50,30 +53,24 @@ public class PopUpAlertFragment extends DialogFragment {
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // safety check
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
+    private void doClose() {
+        preferences.setMyPreferenceString(getActivity(),"presoAlertText",alertMessage.getText().toString().trim());
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    private void doClose() {
-        FullscreenActivity.myAlert = alertMessage.getText().toString().trim();
-        Preferences.savePreferences();
-        dismiss();
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         final View V = inflater.inflate(R.layout.popup_alert, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.alert));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.alert));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,21 +81,18 @@ public class PopUpAlertFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
 
+        preferences = new Preferences();
         alertMessage = V.findViewById(R.id.alertMessage);
-        alertMessage.setText(FullscreenActivity.myAlert);
+        alertMessage.setText(preferences.getMyPreferenceString(getActivity(),"presoAlertText",""));
         SwitchCompat alertToggle = V.findViewById(R.id.alertToggleButton);
 
         // If an alert is currently being shown, make sure the toggle button is on.  If not, off!
         if (PresenterMode.alert_on.equals("Y")) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                alertToggle.setChecked(true);
-            }
+            alertToggle.setChecked(true);
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                alertToggle.setChecked(false);
-            }
+            alertToggle.setChecked(false);
         }
 
         // Now set a listener for the toggle changing.
@@ -106,8 +100,6 @@ public class PopUpAlertFragment extends DialogFragment {
         alertToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                FullscreenActivity.myAlert = alertMessage.getText().toString().trim();
-                Preferences.savePreferences();
                 if (mListener != null) {
                     mListener.updateAlert(isChecked);
                 }
@@ -115,7 +107,7 @@ public class PopUpAlertFragment extends DialogFragment {
         });
         Dialog dialog = getDialog();
         if (dialog != null && getActivity() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), dialog);
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), dialog, preferences);
         }
         return V;
     }

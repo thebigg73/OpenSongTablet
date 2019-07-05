@@ -44,7 +44,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:textSize="12sp"
                 tools:ignore="RelativeOverlap" />
@@ -64,7 +63,7 @@
 
         </LinearLayout>
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/closeSongsFAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -97,9 +96,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
-            android:paddingRight="24dp"
-            android:paddingEnd="24dp"
-            android:paddingLeft="4dp"
+            android:paddingEnd="8dp"
             android:paddingStart="4dp"
             android:scrollbarStyle="outsideOverlay"
             android:layout_weight="1"

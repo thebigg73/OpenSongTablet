@@ -1,10 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 public class PopUpLanguageFragment extends DialogFragment {
 
-    String tempLanguage;
+    private String tempLanguage;
+    Preferences preferences;
 
     static PopUpLanguageFragment newInstance() {
         PopUpLanguageFragment frag;
@@ -36,16 +40,6 @@ public class PopUpLanguageFragment extends DialogFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-        // safety check
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -56,8 +50,8 @@ public class PopUpLanguageFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.language));
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().setTitle(Objects.requireNonNull(getActivity()).getResources().getString(R.string.language));
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_language, container, false);
@@ -83,65 +77,65 @@ public class PopUpLanguageFragment extends DialogFragment {
             }
         });
 
+        preferences = new Preferences();
+
         // Initialise the views
         ListView languagescroll = V.findViewById(R.id.languagescroll);
 
         // Go through the language array and create radio buttons for each
-        int positionselected = -1;
-        if (!FullscreenActivity.languageToLoad.isEmpty()) {
-            switch (FullscreenActivity.languageToLoad) {
-                case "af":
-                    positionselected = 0;
-                    break;
-                case "cs":
-                    positionselected = 1;
-                    break;
-                case "de":
-                    positionselected = 2;
-                    break;
-                case "el":
-                    positionselected = 3;
-                    break;
-                default:
-                case "en":
-                    positionselected = 4;
-                    break;
-                case "es":
-                    positionselected = 5;
-                    break;
-                case "fr":
-                    positionselected = 6;
-                    break;
-                case "hu":
-                    positionselected = 7;
-                    break;
-                case "it":
-                    positionselected = 8;
-                    break;
-                case "ja":
-                    positionselected = 9;
-                    break;
-                case "pl":
-                    positionselected = 10;
-                    break;
-                case "pt":
-                    positionselected = 11;
-                    break;
-                case "ru":
-                    positionselected = 12;
-                    break;
-                case "sr":
-                    positionselected = 13;
-                    break;
-                case "sv":
-                    positionselected = 14;
-                    break;
-                case "zh":
-                    positionselected = 15;
-                    break;
-            }
-        }
+        int positionselected;
 
+        switch (preferences.getMyPreferenceString(getActivity(),"language","en")) {
+            case "af":
+                positionselected = 0;
+                break;
+            case "cs":
+                positionselected = 1;
+                break;
+            case "de":
+                positionselected = 2;
+                break;
+            case "el":
+                positionselected = 3;
+                break;
+            default:
+            case "en":
+                positionselected = 4;
+                break;
+            case "es":
+                positionselected = 5;
+                break;
+            case "fr":
+                positionselected = 6;
+                break;
+            case "hu":
+                positionselected = 7;
+                break;
+            case "it":
+                positionselected = 8;
+                break;
+            case "ja":
+                positionselected = 9;
+                break;
+            case "pl":
+                positionselected = 10;
+                break;
+            case "pt":
+                positionselected = 11;
+                break;
+            case "ru":
+                positionselected = 12;
+                break;
+            case "sr":
+                positionselected = 13;
+                break;
+            case "sv":
+                positionselected = 14;
+                break;
+            case "zh":
+                positionselected = 15;
+                break;
+        }
 
         ArrayAdapter<String> la = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_single_choice,
@@ -207,18 +201,16 @@ public class PopUpLanguageFragment extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
 
     public void doSave() {
-        Preferences.savePreferences();
-        FullscreenActivity.languageToLoad = tempLanguage;
-        Preferences.savePreferences();
+        preferences.setMyPreferenceString(getActivity(),"language",tempLanguage);
         // Unfortunately this means the MAIN folder name isn't right!
         dismiss();
-        getActivity().recreate();
+        Objects.requireNonNull(getActivity()).recreate();
     }
 
     @Override

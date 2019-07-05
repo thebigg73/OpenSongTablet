@@ -708,5 +708,6 @@
 
     <string name="googlefontcustom">"Egyéb Google betűtípus neve"</string>
     <string name="googlefontbrowse">"Tallózzon az összes Google-betűtípusra"</string>
+    <string name="reset_text">Ha nehézségekbe ütközik az alkalmazással, próbálja meg újraindítani a beállításokat az alábbi gomb segítségével. Ez törli a beállításokat, de nem törli a dalokat.</string>
 
 </resources>

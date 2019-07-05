@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -24,8 +25,8 @@ class Metronome {
     static MetronomeAsyncTask metroTask;
     static VisualMetronomeAsyncTask visualMetronome;
 
-	private Metronome() {
-		audioGenerator.createPlayer();
+	private Metronome(String pan, float vol) {
+		audioGenerator.createPlayer(pan,vol);
 	}
 	
 	private void calcSilence() {
@@ -52,7 +53,17 @@ class Metronome {
         // 2 = half notes, 4 = quarter notes, 8 = eigth notes
 
 
-		int resolutionmeter = (int) (8.0f / (float) noteValue);
+        Log.d("Metronome","noteValue="+noteValue);
+        Log.d("Metronome","beat="+beat);
+        Log.d("Metronome","bpm="+bpm);
+
+        if (beat==6 || beat==9) {
+            noteValue = (short)(noteValue/(beat/3));
+        } else if (beat==5 || beat==7) {
+            noteValue = (short)(noteValue/2);
+        }
+
+        int resolutionmeter = (int) (8.0f / (float) noteValue);
 
         if (resolutionmeter ==0) {
             resolutionmeter =1;
@@ -73,7 +84,7 @@ class Metronome {
 		silenceSoundArray = new double[this.silence];
         double[] tick;
         double[] tock;
-		if (FullscreenActivity.mTimeSig.equals("1/4")) {
+		if (StaticVariables.mTimeSig.equals("1/4")) {
             tick = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, beatSound/ resolutionmeter);
             tock = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, beatSound/ resolutionmeter);
 
@@ -89,15 +100,15 @@ class Metronome {
 			silenceSoundArray[i] = 0;
 	}
 	
-	public void play() {
+	public void play(String pan, float vol) {
 		calcSilence();
 		do {
 			if(currentBeat == 1) {
-				audioGenerator.writeSound(soundTockArray);
+				audioGenerator.writeSound(pan,vol,soundTockArray);
 			} else {
-				audioGenerator.writeSound(soundTickArray);				
+				audioGenerator.writeSound(pan,vol,soundTickArray);
 			}
-			audioGenerator.writeSound(silenceSoundArray);
+			audioGenerator.writeSound(pan,vol,silenceSoundArray);
 
 			currentBeat++;
 			if(currentBeat > beat)
@@ -177,19 +188,19 @@ class Metronome {
 
     static void setBeatValues() {
         short r = 0;
-        if (FullscreenActivity.mTimeSig.startsWith("1/")) {
+        if (StaticVariables.mTimeSig.startsWith("1/")) {
             r = 4;
-        } else if (FullscreenActivity.mTimeSig.startsWith("2/")) {
+        } else if (StaticVariables.mTimeSig.startsWith("2/")) {
             r = 2;
-        } else if (FullscreenActivity.mTimeSig.startsWith("3/")) {
+        } else if (StaticVariables.mTimeSig.startsWith("3/")) {
             r = 3;
-        } else if (FullscreenActivity.mTimeSig.startsWith("4/")) {
+        } else if (StaticVariables.mTimeSig.startsWith("4/")) {
             r = 4;
-        } else if (FullscreenActivity.mTimeSig.startsWith("5/")) {
+        } else if (StaticVariables.mTimeSig.startsWith("5/")) {
             r = 5;
-        } else if (FullscreenActivity.mTimeSig.startsWith("6/")) {
+        } else if (StaticVariables.mTimeSig.startsWith("6/")) {
             r = 6;
-        } else if (FullscreenActivity.mTimeSig.startsWith("7/")) {
+        } else if (StaticVariables.mTimeSig.startsWith("7/")) {
             r = 7;
         }
         FullscreenActivity.beats = r;
@@ -197,32 +208,32 @@ class Metronome {
 
     static void setNoteValues() {
         short r = 0;
-        if (FullscreenActivity.mTimeSig.endsWith("/2")) {
+        if (StaticVariables.mTimeSig.endsWith("/2")) {
             r = 2;
-        } else if (FullscreenActivity.mTimeSig.endsWith("/4")) {
+        } else if (StaticVariables.mTimeSig.endsWith("/4")) {
             r = 4;
-        } else if (FullscreenActivity.mTimeSig.endsWith("/8")) {
-            r = 8;
+        } else if (StaticVariables.mTimeSig.endsWith("/8")) {
+            r = 2; //8
         }
         FullscreenActivity.noteValue = r;
     }
 
-    static void startstopMetronome(Activity activity) {
-        if (checkMetronomeValid() && FullscreenActivity.metronomeonoff.equals("off")) {
+    static void startstopMetronome(Activity activity, Context c, boolean showvisual, int metronomeColor, String pan, float vol) {
+        if (checkMetronomeValid(c) && StaticVariables.metronomeonoff.equals("off")) {
             // Start the metronome
-            FullscreenActivity.metronomeonoff = "on";
-            FullscreenActivity.whichbeat = "b";
-            metroTask = new MetronomeAsyncTask();
+            StaticVariables.metronomeonoff = "on";
+            StaticVariables.whichbeat = "b";
+            metroTask = new MetronomeAsyncTask(pan,vol);
             try {
                 metroTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             } catch (Exception e) {
                 Log.d("d","Error starting the metronome");
             }
-            startstopVisualMetronome();
+            startstopVisualMetronome(showvisual,metronomeColor);
 
-        } else if (checkMetronomeValid() && FullscreenActivity.metronomeonoff.equals("on")) {
+        } else if (checkMetronomeValid(c) && StaticVariables.metronomeonoff.equals("on")) {
             // Stop the metronome
-            FullscreenActivity.metronomeonoff = "off";
+            StaticVariables.metronomeonoff = "off";
             if (metroTask!=null) {
                 metroTask.stop();
             }
@@ -240,17 +251,19 @@ class Metronome {
         }
     }
 
-    private static boolean checkMetronomeValid() {
+    private static boolean checkMetronomeValid(Context c) {
         boolean validTimeSig = false;
         boolean validBPM = true;
         boolean validMetro = false;
 
-        if (getTempo(FullscreenActivity.mTempo)==160) {
+        if (getTempo(StaticVariables.mTempo)==160) {
             validBPM = false;
         }
 
-        for (int i=0; i<FullscreenActivity.timesigs.length; i++) {
-            if (FullscreenActivity.mTimeSig.equals(FullscreenActivity.timesigs[i])) {
+        String[] arrayvals = c.getResources().getStringArray(R.array.timesig);
+
+        for (String arrayval : arrayvals) {
+            if (StaticVariables.mTimeSig.equals(arrayval)) {
                 validTimeSig = true;
             }
         }
@@ -262,8 +275,8 @@ class Metronome {
         return validMetro;
     }
 
-    static void startstopVisualMetronome() {
-        visualMetronome = new VisualMetronomeAsyncTask();
+    static void startstopVisualMetronome(boolean showvisual, int metronomeColor) {
+        visualMetronome = new VisualMetronomeAsyncTask(showvisual, metronomeColor);
         try {
             visualMetronome.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
@@ -272,17 +285,24 @@ class Metronome {
     }
     private static class VisualMetronomeAsyncTask extends AsyncTask<Void, Integer, String> {
 
+	    VisualMetronomeAsyncTask(boolean showvis, int metronomeColor) {
+	        this.metronomeColor = metronomeColor;
+	        this.showvisual = showvis;
+        }
+
         boolean on = false;
         int beatmultiplier = FullscreenActivity.noteValue;
         long time_in_millisecs = (long) (((60.0f / (float) PopUpMetronomeFragment.bpm) * (4.0f / (float) beatmultiplier))* 1000);
         long oldtime = System.currentTimeMillis();
         long nexttime = oldtime + time_in_millisecs;
+        boolean showvisual;
 
+        int metronomeColor;
 
         @Override
         protected String doInBackground(Void... voids) {
             publishProgress(1);
-            while (FullscreenActivity.metronomeonoff.equals("on")) {
+            while (StaticVariables.metronomeonoff.equals("on")) {
                 // Post this activity based on the bpm
                 if (System.currentTimeMillis() >= nexttime) {
                     oldtime = nexttime;
@@ -295,16 +315,16 @@ class Metronome {
 
         @Override
         protected void onProgressUpdate(Integer... integers) {
-            if (FullscreenActivity.visualmetronome) {
-                if (FullscreenActivity.whichbeat.equals("a")) {
-                    FullscreenActivity.whichbeat = "b";
+            if (showvisual) {
+                if (StaticVariables.whichbeat.equals("a")) {
+                    StaticVariables.whichbeat = "b";
                     if (StageMode.ab != null) {
-                        StageMode.ab.setBackgroundDrawable(new ColorDrawable(FullscreenActivity.beatoffcolour));
+                        StageMode.ab.setBackgroundDrawable(new ColorDrawable(0xff232333));
                     }
                 } else {
-                    FullscreenActivity.whichbeat = "a";
+                    StaticVariables.whichbeat = "a";
                     if (StageMode.ab != null) {
-                        StageMode.ab.setBackgroundDrawable(new ColorDrawable(FullscreenActivity.metronomeColor));
+                        StageMode.ab.setBackgroundDrawable(new ColorDrawable(metronomeColor));
                     }
                 }
             }
@@ -313,7 +333,7 @@ class Metronome {
         @Override
         protected void onPostExecute(String s) {
             if (StageMode.ab != null) {
-                StageMode.ab.setBackgroundDrawable(new ColorDrawable(FullscreenActivity.beatoffcolour));
+                StageMode.ab.setBackgroundDrawable(new ColorDrawable(0xff232333));
             }
         }
     }
@@ -321,9 +341,13 @@ class Metronome {
     static class MetronomeAsyncTask extends AsyncTask<Void, Void, String> {
 
         Metronome metronome;
+        String pan;
+        float vol;
 
-        MetronomeAsyncTask() {
-            metronome = new Metronome();
+        MetronomeAsyncTask(String pan, float vol) {
+            metronome = new Metronome(pan,vol);
+            this.pan = pan;
+            this.vol = vol;
         }
 
         void setNoteValue(short noteVal) {
@@ -405,9 +429,9 @@ class Metronome {
             setBpm(PopUpMetronomeFragment.bpm);
             setBeatSound(FullscreenActivity.beatSound);
             setSound(FullscreenActivity.sound);
-            setVolume(FullscreenActivity.metrovol);
-            setCurrentBeat(FullscreenActivity.currentBeat);
-            play();
+            setVolume(vol);
+            setCurrentBeat(1);
+            play(pan, vol);
             return null;
         }
 
@@ -418,9 +442,9 @@ class Metronome {
             }
         }
 
-        public void play() {
+        public void play(String pan,float vol) {
             if (metronome != null) {
-                metronome.play();
+                metronome.play(pan,vol);
                 metronome = null;
             }
         }
@@ -434,12 +458,12 @@ class Metronome {
     static boolean isMetronomeValid() {
         int t;
         try {
-            t = Integer.parseInt(FullscreenActivity.mTempo.replaceAll("[\\D]", ""));
+            t = Integer.parseInt(StaticVariables.mTempo.replaceAll("[\\D]", ""));
         } catch (NumberFormatException nfe) {
             t = 39;
         }
         ProcessSong.processTimeSig();
-        return t >= 40 && t < 199 && FullscreenActivity.mTimeSigValid;
+        return t >= 40 && t < 199 && StaticVariables.mTimeSigValid;
 
     }
 }

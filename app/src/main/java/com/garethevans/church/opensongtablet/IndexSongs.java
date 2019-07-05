@@ -1,381 +1,299 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
-import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Collections;
 
 // This class is used to index all of the songs in the user's folder
 // It builds the search index and prepares the required stuff for the song menus (name, author, key)
-// It relies on all of the songs to be added to the FullscreenActivity.songIds variable
-// It then goes through them one at a time and extracts the required information
+// It updates the entries in the user sqlite database
 
+// Bits to extract from the song files
 class IndexSongs {
 
-    private boolean errorsencountered = false;
+    private String filename;
+    private String folder;
+    private String title;
+    private String author;
+    private String copyright;
+    private String lyrics;
+    private String hymnnum;
+    private String ccli;
+    private String theme;
+    private String alttheme;
+    private String user1;
+    private String user2;
+    private String user3;
+    private String key;
+    private String aka;
+    private String timesig;
+    private InputStream inputStream;
+    private Uri uri;
+    private String utf;
 
-    // This one prepares the search index log text
-    void initialiseIndexStuff() throws XmlPullParserException {
-        FullscreenActivity.safetosearch = false;
-        FullscreenActivity.search_database = null;
-        FullscreenActivity.search_database = new ArrayList<>();
-        FullscreenActivity.search_database.clear();
-        FullscreenActivity.indexlog = "";
+    private void initialiseValues() {
 
-        FullscreenActivity.searchFileName = new ArrayList<>();
-        FullscreenActivity.searchFolder = new ArrayList<>();
-        FullscreenActivity.searchTitle = new ArrayList<>();
-        FullscreenActivity.searchAuthor = new ArrayList<>();
-        FullscreenActivity.searchShortLyrics = new ArrayList<>();
-        FullscreenActivity.searchTheme = new ArrayList<>();
-        FullscreenActivity.searchKey = new ArrayList<>();
-        FullscreenActivity.searchHymnNumber = new ArrayList<>();
-
-        FullscreenActivity.searchFileName.clear();
-        FullscreenActivity.searchFolder.clear();
-        FullscreenActivity.searchTitle.clear();
-        FullscreenActivity.searchAuthor.clear();
-        FullscreenActivity.searchShortLyrics.clear();
-        FullscreenActivity.searchTheme.clear();
-        FullscreenActivity.searchKey.clear();
-        FullscreenActivity.searchHymnNumber.clear();
-
-        XmlPullParserFactory xppf = XmlPullParserFactory.newInstance();
-        xppf.setNamespaceAware(true);
-        xpp = xppf.newPullParser();
-        log.append("Search index progress.\n\n" +
-                "If the last song shown in this list is not the last song in your directory, there was an error indexing it.\n" +
-                "Please manually check that the file is a correctly formatted OpenSong file.\n\n\n");
-
-        // Sort the ids
-        Collator collator = Collator.getInstance(FullscreenActivity.locale);
-        collator.setStrength(Collator.SECONDARY);
-        Collections.sort(FullscreenActivity.songIds, collator);
-    }
-
-    MyInterface mListener;
-
-    private XmlPullParser xpp;
-    private StringBuilder errmsg = new StringBuilder(), log = new StringBuilder();
-    InputStream inputStream;
-    Uri uri;
-    private String title, author, lyrics, theme, key, hymnnumber, copyright, alttheme, aka,
-            user1, user2, user3, ccli, filename, folder, utf;
-    private float filesize;
-
-    /*// This is called if the user specifically requests a full rebuild of the index
-    private void completeRebuildIndex(Context c, StorageAccess storageAccess, Preferences preferences,
-                                      SongXML songXML, ChordProConvert chordProConvert,
-                                      UsrConvert usrConvert, OnSongConvert onSongConvert,
-                                      TextSongConvert textSongConvert) throws XmlPullParserException {
-
-        initialiseIndexStuff();
-        for (int w = 0; w<FullscreenActivity.songIds.size(); w++) {
-            doIndexThis(c, storageAccess, preferences, songXML, chordProConvert, usrConvert, onSongConvert, textSongConvert, w);
-        }
-        completeLog();
-        getSongDetailsFromIndex();
-    }*/
-
-    // This is the code to index the specific song (by sending the array index w)
-    boolean doIndexThis(Context c, StorageAccess storageAccess, Preferences preferences,
-                        SongXML songXML, ChordProConvert chordProConvert, UsrConvert usrConvert,
-                        OnSongConvert onSongConvert, TextSongConvert textSongConvert, int w) {
-
-        boolean hadtoconvert = false;
-
-        String id = FullscreenActivity.songIds.get(w);
-        initialiseSongTags();
-        setFileAndUri(c, storageAccess, id);
-        if (isDir(id)) {
-            key = c.getString(R.string.songsinfolder);
-        }
-        title = filename;
-        folder = extractFolderFromId(c, id);
-        filesize = getFileSize(c, storageAccess, uri);
-
-        if (!key.equals(c.getString(R.string.songsinfolder)) && storageAccess.isXML(uri)) {
-            // This tries to extract the file contents as XML, but if that throws an error,
-            // It looks for .chordpro, .onsong, or .txt.
-            utf = storageAccess.getUTFEncoding(c, uri);
-            hadtoconvert = getXMLStuff(c, storageAccess, preferences, chordProConvert, onSongConvert,
-                    usrConvert, textSongConvert, songXML, id, w);
-
-        }
-        parseIndexedDetails(c);
-
-        return hadtoconvert;
-    }
-
-    // This one prepares the end of the search index log text
-    void completeLog() {
-        if (errorsencountered) {
-            FullscreenActivity.indexlog += "\n\nErrors in importing files\n\nThese songs are either not XML or have invalid XML\n\n" + errmsg;
-        }
-        int totalsongsindexed = FullscreenActivity.search_database.size();
-
-        FullscreenActivity.indexlog += "\n\nTotal songs indexed=" + totalsongsindexed + "\n\n";
-        FullscreenActivity.indexlog += log.toString();
-
-        FullscreenActivity.safetosearch = true;
-    }
-
-    // Once the song has been fully indexed, extract the stuff for the song menu
-    // We only need the name, author and key
-    void getSongDetailsFromIndex() {
-        // Set the details for the menu - extract the appropriate stuff
-        FullscreenActivity.allSongDetailsForMenu = new String[FullscreenActivity.search_database.size()][4];
-
-        for (int x = 0; x < FullscreenActivity.search_database.size(); x++) {
-            String[] bits = FullscreenActivity.search_database.get(x).split("_%%%_");
-
-            String val_folder = getValue(bits, 0); // folder
-            String val_filename = getValue(bits, 1); // filename (skip index 2 as it is the title)
-            String val_title = getValue(bits, 2); // title
-            String val_author = getValue(bits, 3); // author
-            String val_key = getValue(bits, 4); // key
-            String val_shortlyrics = getValue(bits, 5); // short lyrics (also contains user fields)
-            String val_theme = getValue(bits, 6); // theme
-            String val_hymn = getValue(bits, 7); // hymn number
-
-            FullscreenActivity.allSongDetailsForMenu[x][0] = val_folder;
-            FullscreenActivity.allSongDetailsForMenu[x][1] = val_filename;
-            FullscreenActivity.allSongDetailsForMenu[x][2] = val_author;
-            FullscreenActivity.allSongDetailsForMenu[x][3] = val_key;
-
-            // Also create the search stuff
-            FullscreenActivity.searchFileName.add(val_filename);
-            FullscreenActivity.searchFolder.add(val_folder);
-            FullscreenActivity.searchTitle.add(val_title);
-            FullscreenActivity.searchAuthor.add(val_author);
-            FullscreenActivity.searchShortLyrics.add(val_shortlyrics);
-            FullscreenActivity.searchTheme.add(val_theme);
-            FullscreenActivity.searchKey.add(val_key);
-            FullscreenActivity.searchHymnNumber.add(val_hymn);
-        }
-    }
-
-    // Determine if the current songId is a directory or a file
-    private boolean isDir(String id) {
-        return id.endsWith("/");
-    }
-
-    // Before indexing a song, set all the tags to blank values
-    private void initialiseSongTags() {
+        title = "";
+        folder = "";
         author = "";
-        lyrics = "";
-        theme = "";
-        key = "";
-        hymnnumber = "";
         copyright = "";
+        lyrics = "";
+        hymnnum = "";
+        ccli = "";
+        theme = "";
         alttheme = "";
-        aka = "";
         user1 = "";
         user2 = "";
         user3 = "";
-        ccli = "";
+        key = "";
+        aka = "";
+        timesig = "";
+        inputStream = null;
+        uri = null;
+        utf = "UTF-8";
     }
 
-    // Prepare the song uri, inputstream and filename
-    private void setFileAndUri(Context c, StorageAccess storageAccess, String id) {
-        uri = storageAccess.getUriFromId(FullscreenActivity.uriTree, id);
-        inputStream = storageAccess.getInputStream(c, uri);
-        filename = uri.getLastPathSegment();
-        if (storageAccess.lollipopOrLater() && filename.contains("/")) {
-            filename = filename.substring(filename.lastIndexOf("/") + 1);
-        }
-    }
+    void fullIndex(Context c, Preferences preferences, StorageAccess storageAccess,
+                   SQLiteHelper sqLiteHelper, SongXML songXML,
+                   ChordProConvert chordProConvert, OnSongConvert onSongConvert,
+                   TextSongConvert textSongConvert, UsrConvert usrConvert) {
 
-    // Extract the folder from the songId
-    private String extractFolderFromId(Context c, String id) {
-        int startoffolder = id.indexOf("OpenSong/Songs/");
-        int endoffolder = id.indexOf(title);
-        String folder;
-        if (startoffolder > 0 && endoffolder > 0 && endoffolder > startoffolder) {
-            folder = id.substring(startoffolder + 15, endoffolder);
-        } else {
-            folder = c.getString(R.string.mainfoldername);
-        }
+        // The basic database was created on boot.
+        // Now comes the time consuming bit that fully indexes the songs into the database
 
-        if (folder.equals("")) {
-            folder = c.getString(R.string.mainfoldername);
-        }
-        return folder;
-    }
+        try (SQLiteDatabase db = sqLiteHelper.getDB(c)) {
+            StringBuilder log = new StringBuilder();
+            log.append("Search index progress.\n\n" +
+                    "If the last song shown in this list is not the last song in your directory, there was an error indexing it.\n" +
+                    "Please manually check that the file is a correctly formatted OpenSong file.\n\n\n");
 
-    // Get the file size in Kb
-    private float getFileSize(Context c, StorageAccess storageAccess, Uri uri) {
-        try {
-            return storageAccess.getFileSizeFromUri(c, uri);
-        } catch (Exception e) {
-            return 1000000;
-        }
-    }
+            // Go through each entry in the database and get the folder and filename.
+            // Then load the file and write the values into the sql table
+            String altquery = "SELECT " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_FILENAME +
+                    " FROM " + SQLite.TABLE_NAME;
 
-    // Get the stuff from the XML file
-    private boolean getXMLStuff(Context c, StorageAccess storageAccess, Preferences preferences,
-                                ChordProConvert chordProConvert, OnSongConvert onSongConvert,
-                                UsrConvert usrConvert, TextSongConvert textSongConvert,
-                                SongXML songXML, String id, int pos) {
-        boolean hadtoconvert = false;
+            Cursor cursor = db.rawQuery(altquery, null);
+            cursor.moveToFirst();
+            do {
+                initialiseValues();
 
-        int eventType;
-        try {
-            xpp.setInput(inputStream, utf);
-            // Extract the title, author, key, lyrics, theme
-            eventType = xpp.getEventType();
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                if (eventType == XmlPullParser.START_TAG) {
-                    switch (xpp.getName()) {
-                        case "author":
-                            author = xpp.nextText();
-                            break;
+                // Get the folder and filename
+                if (cursor.getColumnIndex(SQLite.COLUMN_FOLDER) > -1) {
+                    folder = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER));
+                    filename = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME));
 
-                        case "title":
-                            title = xpp.nextText();
-                            break;
+                    if (!filename.equals("")) {
+                        // Get the uri, utf and inputStream for the file
+                        uri = storageAccess.getUriForItem(c, preferences, "Songs",
+                                folder.replaceAll("''", "'"), filename.replaceAll("''", "'"));
+                        utf = storageAccess.getUTFEncoding(c, uri);
+                        inputStream = storageAccess.getInputStream(c, uri);
 
-                        case "lyrics":
-                            lyrics = xpp.nextText();
-                            break;
+                        // Now try to get the file as an xml.  If it encounters an error, it is treated in the catch statements
+                        if (filenameIsOk(filename)) {
+                            try {
+                                getXMLStuff();
+                                log.append(folder).append("/").append(filename).append("\n");
 
-                        case "key":
-                            key = xpp.nextText();
-                            break;
+                            } catch (Exception e) {
+                                // OK, so this wasn't an XML file.  Try to extract as something else
+                                ArrayList<String> bits = tryToFixSong(c, storageAccess, preferences, songXML, chordProConvert, onSongConvert,
+                                        usrConvert, textSongConvert, uri);
+                                filename = bits.get(0);
+                                title = bits.get(1);
+                                author = bits.get(2);
+                                copyright = bits.get(3);
+                                key = bits.get(4);
+                                timesig = bits.get(5);
+                                ccli = bits.get(6);
+                                lyrics = bits.get(7);
+                            }
+                        }
 
-                        case "theme":
-                            theme = xpp.nextText();
-                            break;
+                        // Make the lyrics nicer for the database (remove chord lines and headings)
+                        String[] lines = lyrics.split("\n");
+                        StringBuilder sb = new StringBuilder();
+                        for (String l : lines) {
+                            if (!l.startsWith("[") && !l.startsWith(".")) {
+                                sb.append(l).append("\n");
+                            }
+                        }
+                        lyrics = sb.toString();
 
-                        case "copyright":
-                            copyright = xpp.nextText();
-                            break;
-
-                        case "ccli":
-                            ccli = xpp.nextText();
-                            break;
-
-                        case "alttheme":
-                            alttheme = xpp.nextText();
-                            break;
-
-                        case "user1":
-                            user1 = xpp.nextText();
-                            break;
-
-                        case "user2":
-                            user1 = xpp.nextText();
-                            break;
-
-                        case "user3":
-                            user1 = xpp.nextText();
-                            break;
-
-                        case "aka":
-                            aka = xpp.nextText();
-                            break;
-
-                        case "hymn_number":
-                            hymnnumber = xpp.nextText();
-                            break;
+                        String songid = folder.replaceAll("'", "''") + "/" + filename.replaceAll("'", "''");
+                        // Now we have the song info, update the table row
+                        String updateQuery = "UPDATE " + SQLite.TABLE_NAME + " " + "SET " +
+                                SQLite.COLUMN_FOLDER + "='" + folder.replaceAll("'", "''") + "', " +
+                                SQLite.COLUMN_FILENAME + "='" + filename.replaceAll("'", "''") + "', " +
+                                SQLite.COLUMN_TITLE + "='" + title.replaceAll("'", "''") + "', " +
+                                SQLite.COLUMN_AUTHOR + "='" + author.replaceAll("'", "''") + "', " +
+                                SQLite.COLUMN_COPYRIGHT + "='" + copyright.replaceAll("'", "''") + "', " +
+                                SQLite.COLUMN_LYRICS + "='" + lyrics.replaceAll("'", "''") + "', " +
+                                SQLite.COLUMN_KEY + "='" + key.replaceAll("'", "''") + "', " +
+                                SQLite.COLUMN_THEME + "='" + theme.replaceAll("'", "''") + "', " +
+                                SQLite.COLUMN_ALTTHEME + "='" + alttheme.replaceAll("'", "''") + "', " +
+                                SQLite.COLUMN_AKA + "='" + aka.replaceAll("'", "''") + "', " +
+                                SQLite.COLUMN_USER1 + "='" + user1.replaceAll("'", "''") + "', " +
+                                SQLite.COLUMN_USER2 + "='" + user2.replaceAll("'", "''") + "', " +
+                                SQLite.COLUMN_USER3 + "='" + user3.replaceAll("'", "''") + "', " +
+                                SQLite.COLUMN_HYMNNUM + "='" + hymnnum.replaceAll("'", "''") + "', " +
+                                SQLite.COLUMN_CCLI + "='" + ccli.replaceAll("'", "''") + "', " +
+                                SQLite.COLUMN_TIMESIG + "='" + timesig.replaceAll("'", "''") + "' " +
+                                "WHERE " + SQLite.COLUMN_SONGID + "='" + songid + "';";
+                        db.execSQL(updateQuery);
+                        // close the db connection
                     }
                 }
-                try {
-                    eventType = xpp.next();
-                } catch (Exception e) {
-                    // If this is a ChordPro or OpenSong formatted Song, try to convert it and extract what we need
-                    ArrayList<String> bits = tryToFixSong(c, storageAccess, preferences, songXML, chordProConvert,
-                            onSongConvert, usrConvert, textSongConvert, uri, pos);
-                    hadtoconvert = true;
-                    filename = bits.get(0);
-                    title = bits.get(1);
-                    author = bits.get(2);
-                    copyright = bits.get(3);
-                    key = bits.get(4);
-                    ccli = bits.get(5);
-                    lyrics = bits.get(6);
-                }
-            }
+            } while (cursor.moveToNext());
+
+            cursor.close();
+
         } catch (Exception e) {
-            //e.printStackTrace();
-            int start = id.indexOf("OpenSong/Songs/");
-            if (start > 0 && id.length() > 15) {
-                id = id.substring(start + 15);
-            }
-            if (!id.endsWith("/")) {
-                // If this isn't a directory ending with / it is an error file
-                errmsg.append("File with error = ").append(id).append("\n");
-                errorsencountered = true;
-                // Error in the xml, so import the text
-                if (filesize < 250 && storageAccess.isTextFile(uri)) {
-                    lyrics = storageAccess.readTextFileToString(inputStream);
-                }
-            } else {
-                lyrics = "";
-            }
+            e.printStackTrace();
         }
-        return hadtoconvert;
+
+    }
+
+    private boolean filenameIsOk(String f) {
+        f = f.toLowerCase();
+        if (f.contains(".")) {
+            f = f.substring(f.lastIndexOf("."));
+            String badendings = ".pdf.png.jpg.jpeg.gif.jpeg.doc.docx.sqlite.db";
+            return !badendings.contains(f);
+        }
+        return true;
+    }
+
+    private boolean isChordPro(String f) {
+        f = f.toLowerCase();
+        if (f.contains(".")) {
+            f = f.substring(f.lastIndexOf("."));
+            String chordproendings = ".chopro.crd.chordpro.pro.cho";
+            return chordproendings.contains(f);
+        }
+        return false;
+    }
+
+    private void getXMLStuff() throws Exception {
+        XmlPullParserFactory factory;
+        factory = XmlPullParserFactory.newInstance();
+        factory.setNamespaceAware(true);
+        XmlPullParser xpp;
+        xpp = factory.newPullParser();
+        xpp.setInput(inputStream, utf);
+        int eventType;
+
+        // Extract the title, author, key, lyrics, theme
+        eventType = xpp.getEventType();
+        while (eventType != XmlPullParser.END_DOCUMENT) {
+            if (eventType == XmlPullParser.START_TAG) {
+                switch (xpp.getName()) {
+                    case "author":
+                        author = xpp.nextText();
+                        break;
+
+                    case "title":
+                        title = xpp.nextText();
+                        break;
+
+                    case "lyrics":
+                        lyrics = xpp.nextText();
+                        break;
+
+                    case "key":
+                        key = xpp.nextText();
+                        break;
+
+                    case "theme":
+                        theme = xpp.nextText();
+                        break;
+
+                    case "copyright":
+                        copyright = xpp.nextText();
+                        break;
+
+                    case "ccli":
+                        ccli = xpp.nextText();
+                        break;
+
+                    case "alttheme":
+                        alttheme = xpp.nextText();
+                        break;
+
+                    case "user1":
+                        user1 = xpp.nextText();
+                        break;
+
+                    case "user2":
+                        user1 = xpp.nextText();
+                        break;
+
+                    case "user3":
+                        user1 = xpp.nextText();
+                        break;
+
+                    case "aka":
+                        aka = xpp.nextText();
+                        break;
+
+                    case "hymn_number":
+                        hymnnum = xpp.nextText();
+                        break;
+                }
+            }
+            // This next line will throw an error if the song isn't xml
+            eventType = xpp.next();
+        }
+        // If we got this far, the song information was extracted!
     }
 
     private ArrayList<String> tryToFixSong(Context c, StorageAccess storageAccess, Preferences preferences,
                                            SongXML songXML, ChordProConvert chordProConvert,
                                            OnSongConvert onSongConvert, UsrConvert usrConvert,
-                                           TextSongConvert textSongConvert, Uri uri, int pos) {
+                                           TextSongConvert textSongConvert, Uri uri) {
 
         ArrayList<String> bits = new ArrayList<>();
 
         if (uri != null) {
-            String name = uri.getPath();
-            String filename = storageAccess.getPartOfUri(uri, "/OpenSong/Songs");
-            filename = filename.substring(filename.lastIndexOf("/"));
-
-            if (name != null && (name.toLowerCase().endsWith(".cho") || name.toLowerCase().endsWith(".chordpro") ||
-                    name.toLowerCase().endsWith(".chopro") || name.toLowerCase().endsWith(".crd"))) {
-                // Extract the stuff!
+            if (isChordPro(filename)) {
+                // This is a chordpro file
                 // Load the current text contents
                 try {
-                    InputStream inputStream = storageAccess.getInputStream(c, uri);
                     String filecontents = storageAccess.readTextFileToString(inputStream);
-                    bits = chordProConvert.convertTextToTags(c, storageAccess, preferences, songXML, uri, filecontents, pos);
-
+                    bits = chordProConvert.convertTextToTags(c, storageAccess, preferences, songXML, uri, filecontents);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-            } else if (name != null && (name.toLowerCase().endsWith(".onsong"))) {
+            } else if (filename.toLowerCase().endsWith(".onsong")) {
                 try {
-                    Log.d("IndexSong", "trying to read in onsong: " + name);
-                    InputStream inputStream = storageAccess.getInputStream(c, uri);
                     String filecontents = storageAccess.readTextFileToString(inputStream);
                     bits = onSongConvert.convertTextToTags(c, storageAccess, preferences, songXML, chordProConvert,
-                            uri, filecontents, pos);
+                            uri, filecontents);
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-            } else if (name != null && (name.toLowerCase().endsWith(".usr"))) {
+            } else if (filename.toLowerCase().endsWith(".usr")) {
                 try {
-                    InputStream inputStream = storageAccess.getInputStream(c, uri);
                     String filecontents = storageAccess.readTextFileToString(inputStream);
                     bits = usrConvert.convertTextToTags(c, storageAccess, preferences, songXML,
-                            chordProConvert, uri, filecontents, pos);
+                            chordProConvert, uri, filecontents);
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-            } else if (name != null && (storageAccess.isTextFile(uri))) {
+            } else if (storageAccess.isTextFile(uri)) {
                 try {
-                    InputStream inputStream = storageAccess.getInputStream(c, uri);
                     String filecontents = storageAccess.readTextFileToString(inputStream);
                     bits.add(filename);
                     bits.add(filename);
@@ -410,123 +328,6 @@ class IndexSongs {
         return bits;
     }
 
-    // Shorten the indexed stuff ready for the search database
-    private void parseIndexedDetails(Context c) {
-        // Remove chord lines, empty lines and setions in lyrics (to save memory) - only line that start with " "
-        String lyricslines[] = lyrics.split("\n");
-        StringBuilder shortlyrics = new StringBuilder();
-        for (String line : lyricslines) {
-            if (!line.startsWith(".") && !line.startsWith("[") && !line.equals("")) {
-                if (line.startsWith(";")) {
-                    line = line.substring(1);
-                }
-                shortlyrics.append(line);
-            }
-        }
-
-        shortlyrics = new StringBuilder(filename.trim() + " " + folder.trim() + " " + title.trim() + " " + author.trim() + " " +
-                c.getString(R.string.edit_song_key) + " " + key.trim() + " " + copyright.trim() + " " + ccli.trim() + " " +
-                user1.trim() + " " + user2.trim() + " " + user3.trim() + " " + alttheme.trim() + " " + aka.trim() + " " +
-                theme.trim() + " " + hymnnumber.trim() + " " + shortlyrics.toString().trim());
-
-        // Replace unwanted symbols
-        shortlyrics = new StringBuilder(ProcessSong.removeUnwantedSymbolsAndSpaces(shortlyrics.toString()));
-
-        String item_to_add = folder + "_%%%_" + filename + "_%%%_" + title + "_%%%_" + author + "_%%%_" +
-                key + "_%%%_" + shortlyrics + "_%%%_" + theme + "_%%%_" + hymnnumber;
-
-        if (filename != null && !filename.equals("")) {
-            FullscreenActivity.search_database.add(item_to_add);
-            String line_to_add = folder + "/" + filename + "\n";
-            line_to_add = line_to_add.replace("//", "/");
-
-            if (!line_to_add.endsWith("/\n")) {
-                log.append(line_to_add);
-            }
-        }
-
-    }
-
     interface MyInterface {
     }
-
-    private String getValue(String[] bit, int index) {
-        // If we are tring to get the folder
-        if (index == 0) {
-            // Get the root folder the song belongs to
-            String root;
-            if (bit.length > 0 && bit[0] != null) {
-                root = bit[0];
-                if (root.endsWith("/")) {
-                    return root.substring(0, root.lastIndexOf("/"));
-                } else {
-                    return "";
-                }
-            } else {
-                return "";
-            }
-        }
-
-        if (bit.length > index && bit[index] != null) {
-            return bit[index];
-        } else {
-            return "";
-        }
-    }
-
-    /*void indexMySongs(final Context c, final StorageAccess storageAccess, final Preferences preferences,
-                      final SongXML songXML, final ChordProConvert chordProConvert, final UsrConvert usrConvert,
-                      final OnSongConvert onSongConvert, final TextSongConvert textSongConvert) {
-        // This indexes songs using a separate thread
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                errorsencountered = false;
-                //storageAccess.listSongs(c);
-                String val;
-                try {
-                    //doIndex(c,storageAccess);
-                    completeRebuildIndex(c, storageAccess, preferences, songXML, chordProConvert, usrConvert, onSongConvert, textSongConvert);
-                    val = "ok";
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    val = "error";
-                }
-                if (errorsencountered) {
-                    val = "error";
-                }
-
-                try {
-                    if (val.equals("error")) {
-                        FullscreenActivity.myToastMessage = c.getString(R.string.search_index_error)+"\n"+
-                                c.getString(R.string.search_log);
-                        ((Activity) c).runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ShowToast.showToast(c);
-                            }
-                        });
-                        FullscreenActivity.safetosearch = true;
-                        SharedPreferences indexSongPreferences = c.getSharedPreferences("indexsongs",MODE_PRIVATE);
-                        SharedPreferences.Editor editor_index = indexSongPreferences.edit();
-                        editor_index.putBoolean("buildSearchIndex", true);
-                        editor_index.apply();
-                    } else {
-                        FullscreenActivity.myToastMessage = c.getString(R.string.search_index_end);
-                        ((Activity) c).runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ShowToast.showToast(c);
-                            }
-                        });
-                        if (mListener!=null) {
-                            mListener.indexingDone();
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }*/
 }

@@ -1,10 +1,14 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +17,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class PopUpChooseFolderFragment extends DialogFragment {
 
@@ -29,7 +36,8 @@ public class PopUpChooseFolderFragment extends DialogFragment {
     private MyInterface mListener;
     StorageAccess storageAccess;
     Preferences preferences;
-    SongFolders songFolders;
+    SQLiteHelper sqLiteHelper;
+    ArrayList<String> songfolders;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -44,16 +52,7 @@ public class PopUpChooseFolderFragment extends DialogFragment {
         super.onDetach();
     }
 
-    ListView lv;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // safety check
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
+    private ListView lv;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,14 +65,14 @@ public class PopUpChooseFolderFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         final View V = inflater.inflate(R.layout.popup_choosefolder, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.songfolder));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.songfolder));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,49 +83,80 @@ public class PopUpChooseFolderFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
 
         lv = V.findViewById(R.id.songfolders_ListView);
 
         storageAccess = new StorageAccess();
         preferences = new Preferences();
-        songFolders = new SongFolders();
+        sqLiteHelper = new SQLiteHelper(getActivity());
 
         // Update the song folders
-        FullscreenActivity.songfilelist = new SongFileList();
-        FullscreenActivity.mSongFolderNames = null;
+
+        UpDateList upDateList = new UpDateList(getActivity());
+        upDateList.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
-                getActivity().runOnUiThread(new Runnable() {
+
+                Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (FullscreenActivity.mSongFolderNames!=null) {
-                            ArrayAdapter<String> lva = new ArrayAdapter<>(getActivity(),
-                                    R.layout.songlistitem, FullscreenActivity.mSongFolderNames);
-                            lv.setAdapter(lva);
-                            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                    FullscreenActivity.whichSongFolder = FullscreenActivity.mSongFolderNames[i];
-                                    //Preferences.savePreferences();  // Remove this to avoid bugs if user is only browsing
-                                    if (mListener != null) {
-                                        mListener.prepareSongMenu();
-                                    }
-                                    PopUpChooseFolderFragment.this.dismiss();
-                                }
-                            });
-                        }
+
                     }
+
                 });
             }
         }).start();
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    class UpDateList extends AsyncTask<Object, String, String> {
+
+        Context c;
+
+        UpDateList(Context ctx) {
+            c = ctx;
+        }
+
+        @Override
+        protected String doInBackground(Object... objects) {
+            try {
+                songfolders = sqLiteHelper.getFolders(c);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            try {
+                ArrayAdapter<String> lva = new ArrayAdapter<>(c, R.layout.songlistitem, songfolders);
+                lv.setAdapter(lva);
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        StaticVariables.whichSongFolder = songfolders.get(i);
+                        if (mListener != null) {
+                            mListener.prepareSongMenu();
+                        }
+                        try {
+                            PopUpChooseFolderFragment.this.dismiss();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

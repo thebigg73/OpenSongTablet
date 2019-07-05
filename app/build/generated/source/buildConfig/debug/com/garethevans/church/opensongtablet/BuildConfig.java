@@ -8,6 +8,6 @@ public final class BuildConfig {
   public static final String APPLICATION_ID = "com.garethevans.church.opensongtablet";
   public static final String BUILD_TYPE = "debug";
   public static final String FLAVOR = "";
-  public static final int VERSION_CODE = 155;
-  public static final String VERSION_NAME = "4.8.5";
+  public static final int VERSION_CODE = 157;
+  public static final String VERSION_NAME = "4.8.7";
 }

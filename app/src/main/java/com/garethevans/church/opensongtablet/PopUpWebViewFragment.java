@@ -1,10 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,19 +22,10 @@ public class PopUpWebViewFragment extends DialogFragment {
         return frag;
     }
 
-    WebView webview;
     TextView textview;
     String mTitle = "";
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // safety check
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
+    Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,22 +39,24 @@ public class PopUpWebViewFragment extends DialogFragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         switch (FullscreenActivity.whattodo) {
             case "errorlog":
-                mTitle = getActivity().getResources().getString(R.string.search_log);
+                mTitle = getResources().getString(R.string.search_log);
                 break;
             case "browsefonts":
-                mTitle = getActivity().getString(R.string.googlefontbrowse);
+                mTitle = getString(R.string.googlefontbrowse);
                 break;
             default:
-                mTitle = getActivity().getString(R.string.websearch);
+                mTitle = getString(R.string.websearch);
                 break;
         }
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         View V = inflater.inflate(R.layout.popup_webview, container, false);
+
+        preferences = new Preferences();
 
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(mTitle);
@@ -76,9 +70,9 @@ public class PopUpWebViewFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
 
-        webview = V.findViewById(R.id.webview);
+        WebView webview = V.findViewById(R.id.webview);
         textview = V.findViewById(R.id.textview);
 
         webview.setOnKeyListener(new View.OnKeyListener() {
@@ -86,13 +80,11 @@ public class PopUpWebViewFragment extends DialogFragment {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     WebView webView = (WebView) v;
-                    switch (keyCode) {
-                        case KeyEvent.KEYCODE_BACK:
-                            if (webView.canGoBack()) {
-                                webView.goBack();
-                                return true;
-                            }
-                            break;
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        if (webView.canGoBack()) {
+                            webView.goBack();
+                            return true;
+                        }
                     }
                 }
                 return true; // Stops the window closing
@@ -125,7 +117,7 @@ public class PopUpWebViewFragment extends DialogFragment {
                 webview.loadUrl(FullscreenActivity.webpage);
                 break;
         }
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
         return V;
     }
 

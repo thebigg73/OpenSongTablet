@@ -1,15 +1,16 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,22 +20,16 @@ import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 import static android.app.Activity.RESULT_OK;
 
 public class PopUpLinks extends DialogFragment {
 
-    FloatingActionButton linkYouTube_ImageButton;
-    FloatingActionButton linkWeb_ImageButton;
-    FloatingActionButton linkAudio_ImageButton;
-    FloatingActionButton linkOther_ImageButton;
-    EditText linkYouTube_EditText;
-    EditText linkWeb_EditText;
-    EditText linkAudio_EditText;
-    EditText linkOther_EditText;
-    FloatingActionButton linkYouTubeClear_ImageButton;
-    FloatingActionButton linkWebClear_ImageButton;
-    FloatingActionButton linkAudioClear_ImageButton;
-    FloatingActionButton linkOtherClear_ImageButton;
+    private EditText linkYouTube_EditText;
+    private EditText linkWeb_EditText;
+    private EditText linkAudio_EditText;
+    private EditText linkOther_EditText;
 
     StorageAccess storageAccess;
     Preferences preferences;
@@ -68,15 +63,7 @@ public class PopUpLinks extends DialogFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             this.dismiss();
         }
@@ -96,7 +83,7 @@ public class PopUpLinks extends DialogFragment {
         final View V = inflater.inflate(R.layout.popup_links, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.link));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.link));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,24 +104,24 @@ public class PopUpLinks extends DialogFragment {
         });
 
         // Initialise the views
-        linkYouTube_ImageButton = V.findViewById(R.id.linkYouTube_ImageButton);
-        linkWeb_ImageButton = V.findViewById(R.id.linkWeb_ImageButton);
-        linkAudio_ImageButton = V.findViewById(R.id.linkAudio_ImageButton);
-        linkOther_ImageButton = V.findViewById(R.id.linkOther_ImageButton);
+        FloatingActionButton linkYouTube_ImageButton = V.findViewById(R.id.linkYouTube_ImageButton);
+        FloatingActionButton linkWeb_ImageButton = V.findViewById(R.id.linkWeb_ImageButton);
+        FloatingActionButton linkAudio_ImageButton = V.findViewById(R.id.linkAudio_ImageButton);
+        FloatingActionButton linkOther_ImageButton = V.findViewById(R.id.linkOther_ImageButton);
         linkYouTube_EditText = V.findViewById(R.id.linkYouTube_EditText);
         linkWeb_EditText = V.findViewById(R.id.linkWeb_EditText);
         linkAudio_EditText = V.findViewById(R.id.linkAudio_EditText);
         linkOther_EditText = V.findViewById(R.id.linkOther_EditText);
-        linkYouTubeClear_ImageButton = V.findViewById(R.id.linkYouTubeClear_ImageButton);
-        linkWebClear_ImageButton = V.findViewById(R.id.linkWebClear_ImageButton);
-        linkAudioClear_ImageButton = V.findViewById(R.id.linkAudioClear_ImageButton);
-        linkOtherClear_ImageButton = V.findViewById(R.id.linkOtherClear_ImageButton);
+        FloatingActionButton linkYouTubeClear_ImageButton = V.findViewById(R.id.linkYouTubeClear_ImageButton);
+        FloatingActionButton linkWebClear_ImageButton = V.findViewById(R.id.linkWebClear_ImageButton);
+        FloatingActionButton linkAudioClear_ImageButton = V.findViewById(R.id.linkAudioClear_ImageButton);
+        FloatingActionButton linkOtherClear_ImageButton = V.findViewById(R.id.linkOtherClear_ImageButton);
 
         // Put any links in to the text fields
-        linkYouTube_EditText.setText(FullscreenActivity.mLinkYouTube);
-        linkWeb_EditText.setText(FullscreenActivity.mLinkWeb);
-        linkAudio_EditText.setText(FullscreenActivity.mLinkAudio);
-        linkOther_EditText.setText(FullscreenActivity.mLinkOther);
+        linkYouTube_EditText.setText(StaticVariables.mLinkYouTube);
+        linkWeb_EditText.setText(StaticVariables.mLinkWeb);
+        linkAudio_EditText.setText(StaticVariables.mLinkAudio);
+        linkOther_EditText.setText(StaticVariables.mLinkOther);
 
         // Set listeners to clear the fields
         linkYouTubeClear_ImageButton.setOnClickListener(new View.OnClickListener() {
@@ -172,17 +159,15 @@ public class PopUpLinks extends DialogFragment {
         linkAudio_EditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FullscreenActivity.filetoselect = "audiolink";
                 FullscreenActivity.whattodo = "filechooser";
-                openDocumentPicker("audio/*",0);
+                openDocumentPicker("audio/*",StaticVariables.LINK_AUDIO);
             }
         });
         linkOther_EditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FullscreenActivity.filetoselect = "otherlink";
                 FullscreenActivity.whattodo = "filechooser";
-                openDocumentPicker("*/*",1);
+                openDocumentPicker("*/*",StaticVariables.LINK_OTHER);
             }
         });
 
@@ -195,7 +180,7 @@ public class PopUpLinks extends DialogFragment {
                             Uri.parse(linkYouTube_EditText.getText().toString())));
                 } catch (Exception e) {
                     e.printStackTrace();
-                    FullscreenActivity.myToastMessage = getResources().getString(R.string.error_notset);
+                    StaticVariables.myToastMessage = getResources().getString(R.string.error_notset);
                     ShowToast.showToast(getActivity());
                 }
             }
@@ -213,7 +198,7 @@ public class PopUpLinks extends DialogFragment {
                             Uri.parse(weblink)));
                 } catch (Exception e) {
                     e.printStackTrace();
-                    FullscreenActivity.myToastMessage = getResources().getString(R.string.error_notset);
+                    StaticVariables.myToastMessage = getResources().getString(R.string.error_notset);
                     ShowToast.showToast(getActivity());
                 }
             }
@@ -229,7 +214,8 @@ public class PopUpLinks extends DialogFragment {
                     Intent newIntent = new Intent(Intent.ACTION_VIEW);
 
                     if (mimeType == null) {
-                        mimeType = "*/*";
+                        // If using a proper content uri, it will be null!
+                        mimeType = "audio/*";
                     }
 
                     newIntent.setDataAndType(uri, mimeType);
@@ -244,7 +230,7 @@ public class PopUpLinks extends DialogFragment {
                         e.printStackTrace();
                     }
                 } else {
-                    FullscreenActivity.myToastMessage = getResources().getString(R.string.error_notset);
+                    StaticVariables.myToastMessage = getResources().getString(R.string.error_notset);
                     ShowToast.showToast(getActivity());
                 }
             }
@@ -273,23 +259,23 @@ public class PopUpLinks extends DialogFragment {
                         e.printStackTrace();
                     }
                 } else {
-                    FullscreenActivity.myToastMessage = getResources().getString(R.string.error_notset);
+                    StaticVariables.myToastMessage = getResources().getString(R.string.error_notset);
                     ShowToast.showToast(getActivity());
                 }
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
 
     public void doSave() {
         // Get the values from the page
-        FullscreenActivity.mLinkYouTube = linkYouTube_EditText.getText().toString();
-        FullscreenActivity.mLinkWeb = linkWeb_EditText.getText().toString();
-        FullscreenActivity.mLinkAudio = linkAudio_EditText.getText().toString();
-        FullscreenActivity.mLinkOther = linkOther_EditText.getText().toString();
+        StaticVariables.mLinkYouTube = linkYouTube_EditText.getText().toString();
+        StaticVariables.mLinkWeb = linkWeb_EditText.getText().toString();
+        StaticVariables.mLinkAudio = linkAudio_EditText.getText().toString();
+        StaticVariables.mLinkOther = linkOther_EditText.getText().toString();
 
         // Now resave the song with these new links
         PopUpEditSongFragment.prepareSongXML();
@@ -298,7 +284,7 @@ public class PopUpLinks extends DialogFragment {
             mListener.refreshAll();
             dismiss();
         } catch (Exception e) {
-            FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.savesong) + " - " +
+            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.savesong) + " - " +
                     getActivity().getResources().getString(R.string.error);
             ShowToast.showToast(getActivity());
             e.printStackTrace();
@@ -318,20 +304,29 @@ public class PopUpLinks extends DialogFragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    void openDocumentPicker(String mimeType, int requestCode) {
+    private void openDocumentPicker(String mimeType, int requestCode) {
         // This uses the new Storage Access Framework to return a uri for a file of the user's choice
         Intent intent;
         intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType(mimeType);
-        startActivityForResult(intent, requestCode);
+        Log.d("PopUpLinks","opening docment picker with requestCode="+requestCode);
+        if (getActivity()!=null) {
+            getActivity().startActivityForResult(intent, requestCode);
+        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        Log.d("PopUpLinks","requestCode="+requestCode);
+        Log.d("PopUpLinks","resultCode="+resultCode);
+        Log.d("PopUpLinks","resultDate="+resultData);
+
         if (resultCode == RESULT_OK) {
             if (resultData!=null) {
                 uri = resultData.getData();
+                Log.d("PopUpLinks","uri="+uri);
+
                 if (uri!=null) {
                     String uriPath = uri.getPath();
                     if (uriPath != null && uriPath.contains("OpenSong/Media/")) {
@@ -342,11 +337,11 @@ public class PopUpLinks extends DialogFragment {
                         uriPath = uri.toString();
                     }
 
-                    if (requestCode == 0) {
+                    if (requestCode == 1000) {
                         // Audio
                         linkAudio_EditText.setText(uriPath);
                         setAudioLength(uri);
-                    } else if (requestCode == 1) {
+                    } else if (requestCode == 1001) {
                         // Document
                         linkOther_EditText.setText(uriPath);
                     }
@@ -355,23 +350,23 @@ public class PopUpLinks extends DialogFragment {
         }
     }
 
-    void setAudioLength(Uri uri) {
+    private void setAudioLength(Uri uri) {
         // If this is a genuine audio file, give the user the option of setting the song duration to match this file
         MediaPlayer mediafile = new MediaPlayer();
         try {
-            mediafile.setDataSource(getActivity(),uri);
+            mediafile.setDataSource(Objects.requireNonNull(getActivity()),uri);
             mediafile.prepareAsync();
             mediafile.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
-                    FullscreenActivity.audiolength = (int) (mp.getDuration() / 1000.0f);
+                    StaticVariables.audiolength = (int) (mp.getDuration() / 1000.0f);
                     mp.release();
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
             linkAudio_EditText.setText("");
-            FullscreenActivity.myToastMessage = getString(R.string.not_allowed);
+            StaticVariables.myToastMessage = getString(R.string.not_allowed);
             ShowToast.showToast(getActivity());
             mediafile.release();
         }

@@ -1,11 +1,12 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.Objects;
 
 public class PopUpPresentationOrderFragment extends DialogFragment {
 
@@ -28,8 +31,8 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
 
     private MyInterface mListener;
     StorageAccess storageAccess;
-    ListSongFiles listSongFiles;
     Preferences preferences;
+    ProcessSong processSong;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -45,14 +48,6 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -62,21 +57,18 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
         }
     }
 
-    TextView m_mPresentation;
-    TextView popuppresorder_presorder_title;
-    LinearLayout root_buttonshere;
-    Button deletePresOrder;
+    private TextView m_mPresentation;
 
     @SuppressWarnings("deprecation")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         View V = inflater.inflate(R.layout.popup_presentation_order, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.edit_song_presentation));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.edit_song_presentation));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,17 +90,17 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
 
         storageAccess = new StorageAccess();
         preferences = new Preferences();
-        listSongFiles = new ListSongFiles();
+        processSong = new ProcessSong();
 
         // Define the views
-        root_buttonshere = V.findViewById(R.id.songsectionstoadd);
+        LinearLayout root_buttonshere = V.findViewById(R.id.songsectionstoadd);
         m_mPresentation = V.findViewById(R.id.popuppres_mPresentation);
-        popuppresorder_presorder_title = V.findViewById(R.id.popuppresorder_presorder_title);
-        deletePresOrder = V.findViewById(R.id.deletePresOrder);
+        TextView popuppresorder_presorder_title = V.findViewById(R.id.popuppresorder_presorder_title);
+        Button deletePresOrder = V.findViewById(R.id.deletePresOrder);
 
         // Set the values
-        popuppresorder_presorder_title.setText(FullscreenActivity.mTitle);
-        m_mPresentation.setText(FullscreenActivity.mPresentation);
+        popuppresorder_presorder_title.setText(StaticVariables.mTitle);
+        m_mPresentation.setText(StaticVariables.mPresentation);
 
         // Set the buttons up
         int numbuttons = FullscreenActivity.foundSongSections_heading.size();
@@ -152,17 +144,17 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
                 m_mPresentation.setText("");
             }
         });
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
 
     public void doSave() {
-        FullscreenActivity.mPresentation = m_mPresentation.getText().toString().trim();
+        StaticVariables.mPresentation = m_mPresentation.getText().toString().trim();
         PopUpEditSongFragment.prepareSongXML();
         PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
         try {
-            LoadXML.loadXML(getActivity(), preferences, listSongFiles, storageAccess);
+            LoadXML.loadXML(getActivity(), preferences, storageAccess, processSong);
         } catch (Exception e) {
             e.printStackTrace();
         }

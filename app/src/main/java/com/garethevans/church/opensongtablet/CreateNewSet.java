@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Base64;
+import android.util.Log;
 
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -10,30 +11,31 @@ import java.util.ArrayList;
 
 class CreateNewSet {
 
-    boolean doCreation(Context c, Preferences preferences, ListSongFiles listSongFiles, StorageAccess storageAccess) {
+    boolean doCreation(Context c, Preferences preferences,
+                       StorageAccess storageAccess, ProcessSong processSong) {
 
         // Keep the current song and directory aside for now
-        String tempsongfilename = FullscreenActivity.songfilename;
-        String tempdir = FullscreenActivity.whichSongFolder;
+        String tempsongfilename = StaticVariables.songfilename;
+        String tempdir = StaticVariables.whichSongFolder;
 
         StringBuilder sb = new StringBuilder();
 
         // Only do this is the mSetList isn't empty
-        if (FullscreenActivity.mSetList!=null && FullscreenActivity.mSetList.length>0) {
-            FullscreenActivity.newSetContents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        if (StaticVariables.mSetList!=null && StaticVariables.mSetList.length>0) {
+            StaticVariables.newSetContents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                     + "<set name=\""
-                    + PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.settoload)
+                    + PopUpEditSongFragment.parseToHTMLEntities(StaticVariables.settoload)
                     + "\">\n<slide_groups>\n";
 
-            for (int x = 0; x < FullscreenActivity.mSetList.length; x++) {
+            for (int x = 0; x < StaticVariables.mSetList.length; x++) {
                 // Check if song is in subfolder
-                if (!FullscreenActivity.mSetList[x].contains("/")) {
-                    FullscreenActivity.mSetList[x] = "/" + FullscreenActivity.mSetList[x];
+                if (!StaticVariables.mSetList[x].contains("/")) {
+                    StaticVariables.mSetList[x] = "/" + StaticVariables.mSetList[x];
                 }
 
                 // Split the string into two
                 String[] songparts;
-                songparts = FullscreenActivity.mSetList[x].split("/");
+                songparts = StaticVariables.mSetList[x].split("/");
 
                 if (songparts.length<1) {
                     return false;
@@ -77,17 +79,17 @@ class CreateNewSet {
                         !songparts[0].contains("**"+c.getResources().getString(R.string.note))) {
                     // Adding a scripture
                     // Load the scripture file up
-                    FullscreenActivity.whichSongFolder = "../Scripture/_cache";
-                    FullscreenActivity.songfilename = songparts[1];
+                    StaticVariables.whichSongFolder = "../Scripture/_cache";
+                    StaticVariables.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML(c, preferences, listSongFiles, storageAccess);
+                        LoadXML.loadXML(c, preferences, storageAccess, processSong);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+                    FullscreenActivity.myLyrics = StaticVariables.mLyrics;
 
-                    String scripture_lyrics = FullscreenActivity.mLyrics;
+                    String scripture_lyrics = StaticVariables.mLyrics;
 
                     // Parse the lyrics into individual slides;
                     scripture_lyrics = scripture_lyrics.replace("[]", "_SPLITHERE_");
@@ -95,8 +97,8 @@ class CreateNewSet {
                     String[] mySlides = scripture_lyrics.split("_SPLITHERE_");
 
                     String newname = songparts[1];
-                    if (FullscreenActivity.mAuthor!="") {
-                        newname = newname+"|"+FullscreenActivity.mAuthor;
+                    if (!StaticVariables.mAuthor.equals("")) {
+                        newname = newname+"|"+ StaticVariables.mAuthor;
                     }
                     sb.append("  <slide_group type=\"scripture\" name=\"")
                             .append(PopUpEditSongFragment.parseToHTMLEntities(newname))
@@ -129,17 +131,17 @@ class CreateNewSet {
                     // Adding a custom slide
                     // Load the slide file up
                     // Keep the songfile as a temp
-                    FullscreenActivity.whichSongFolder = "../Slides/_cache";
-                    FullscreenActivity.songfilename = songparts[1];
+                    StaticVariables.whichSongFolder = "../Slides/_cache";
+                    StaticVariables.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML(c, preferences, listSongFiles, storageAccess);
+                        LoadXML.loadXML(c, preferences, storageAccess, processSong);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+                    FullscreenActivity.myLyrics = StaticVariables.mLyrics;
 
-                    String slide_lyrics = FullscreenActivity.mLyrics;
+                    String slide_lyrics = StaticVariables.mLyrics;
 
                     if (slide_lyrics.indexOf("---\n") == 0) {
                         slide_lyrics = slide_lyrics.replaceFirst("---\n", "");
@@ -152,17 +154,17 @@ class CreateNewSet {
                     sb.append("  <slide_group name=\"")
                             .append(PopUpEditSongFragment.parseToHTMLEntities(songparts[1]))
                             .append("\" type=\"custom\" print=\"true\" seconds=\"")
-                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mUser1))
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(StaticVariables.mUser1))
                             .append("\" loop=\"")
-                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mUser2))
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(StaticVariables.mUser2))
                             .append("\" transition=\"")
-                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mUser3))
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(StaticVariables.mUser3))
                             .append("\">\n    <title>")
-                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mTitle.toString()))
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(StaticVariables.mTitle))
                             .append("</title>\n    <subtitle>")
-                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mCopyright.toString()))
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(StaticVariables.mCopyright))
                             .append("</subtitle>\n    <notes>")
-                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mKeyLine))
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(StaticVariables.mKeyLine))
                             .append("</notes>\n    <slides>\n");
 
                     for (String mySlide : mySlides) {
@@ -183,17 +185,17 @@ class CreateNewSet {
                     // Adding a custom note
 
                     // Load the note up to grab the contents
-                    FullscreenActivity.whichSongFolder = "../Notes/_cache";
-                    FullscreenActivity.songfilename = songparts[1];
+                    StaticVariables.whichSongFolder = "../Notes/_cache";
+                    StaticVariables.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML(c, preferences, listSongFiles, storageAccess);
+                        LoadXML.loadXML(c, preferences, storageAccess, processSong);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+                    FullscreenActivity.myLyrics = StaticVariables.mLyrics;
 
-                    String slide_lyrics = FullscreenActivity.mLyrics;
+                    String slide_lyrics = StaticVariables.mLyrics;
 
                     sb.append("  <slide_group name=\"# ")
                             .append(PopUpEditSongFragment.parseToHTMLEntities(c.getResources().getString(R.string.note)))
@@ -219,16 +221,16 @@ class CreateNewSet {
                     // The entire song is copied to the notes, and a simplified version is copied to the text
 
                     // Load the variation song up to grab the contents
-                    FullscreenActivity.whichSongFolder = "../Variations";
-                    FullscreenActivity.songfilename = songparts[1];
+                    StaticVariables.whichSongFolder = "../Variations";
+                    StaticVariables.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML(c, preferences, listSongFiles, storageAccess);
+                        LoadXML.loadXML(c, preferences, storageAccess, processSong);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
-                    String slide_lyrics = FullscreenActivity.mLyrics;
+                    FullscreenActivity.myLyrics = StaticVariables.mLyrics;
+                    String slide_lyrics = StaticVariables.mLyrics;
                     try {
                         byte[] data = FullscreenActivity.myXML.getBytes(StandardCharsets.UTF_8);
                         slide_lyrics = Base64.encodeToString(data, Base64.DEFAULT);
@@ -281,7 +283,7 @@ class CreateNewSet {
                             .append(PopUpEditSongFragment.parseToHTMLEntities(songparts[1]))
                             .append("</title>\n")
                             .append("    <subtitle>")
-                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mAuthor.toString()))
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(StaticVariables.mAuthor))
                             .append("</subtitle>\n")
                             .append("    <notes>")
                             .append(PopUpEditSongFragment.parseToHTMLEntities(slide_lyrics))
@@ -300,19 +302,19 @@ class CreateNewSet {
                     // Adding a custom image slide
 
                     // Load the image slide up to grab the contents
-                    FullscreenActivity.whichSongFolder = "../Images/_cache";
-                    FullscreenActivity.songfilename = songparts[1];
+                    StaticVariables.whichSongFolder = "../Images/_cache";
+                    StaticVariables.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML(c, preferences, listSongFiles, storageAccess);
+                        LoadXML.loadXML(c, preferences, storageAccess, processSong);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
                     // The mUser3 field should contain all the images
                     // Break all the images into the relevant slides
-                    String[] separate_slide = FullscreenActivity.mUser3.split("\n");
+                    String[] separate_slide = StaticVariables.mUser3.split("\n");
 
-                    FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+                    FullscreenActivity.myLyrics = StaticVariables.mLyrics;
                     StringBuilder slide_code = new StringBuilder();
 
                     for (String aSeparate_slide : separate_slide) {
@@ -333,20 +335,20 @@ class CreateNewSet {
                     }
 
                     sb.append("  <slide_group name=\"")
-                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mAka))
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(StaticVariables.mAka))
                             .append("\" type=\"image\" print=\"true\" seconds=\"")
-                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mUser1))
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(StaticVariables.mUser1))
                             .append("\" loop=\"")
-                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mUser2))
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(StaticVariables.mUser2))
                             .append("\" transition=\"0\" resize=\"screen\" keep_aspect=\"false\" link=\"false\">\n")
                             .append("    <title>")
-                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mTitle.toString()))
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(StaticVariables.mTitle))
                             .append("</title>\n")
                             .append("    <subtitle>")
-                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mAuthor.toString()))
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(StaticVariables.mAuthor))
                             .append("</subtitle>\n")
                             .append("    <notes>")
-                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mKeyLine))
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(StaticVariables.mKeyLine))
                             .append("</notes>\n")
                             .append("    <slides>\n")
                             .append(slide_code)
@@ -358,42 +360,43 @@ class CreateNewSet {
 
             sb.append("</slide_groups>\n</set>");
 
-            FullscreenActivity.newSetContents = FullscreenActivity.newSetContents + sb.toString();
+            StaticVariables.newSetContents = StaticVariables.newSetContents + sb.toString();
             // Write the string to the file
-            Uri uri = storageAccess.getUriForItem(c, preferences, "Sets", "", FullscreenActivity.settoload);
+            Uri uri = storageAccess.getUriForItem(c, preferences, "Sets", "", StaticVariables.settoload);
 
             // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "Sets", "", FullscreenActivity.settoload);
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "Sets", "", StaticVariables.settoload);
+
+            Log.d("CreateNewSet","StaticVariables.settoload="+StaticVariables.settoload);
 
             OutputStream outputStream = storageAccess.getOutputStream(c,uri);
-            if (storageAccess.writeFileFromString(FullscreenActivity.newSetContents,outputStream)) {
-                FullscreenActivity.myToastMessage = "yes";
+            if (storageAccess.writeFileFromString(StaticVariables.newSetContents,outputStream)) {
+                StaticVariables.myToastMessage = "yes";
                 // Update the last loaded set now it is saved.
-                FullscreenActivity.lastLoadedSetContent = FullscreenActivity.mySet;
+                preferences.setMyPreferenceString(c,"setCurrentBeforeEdits",preferences.getMyPreferenceString(c,"setCurrent",""));
             } else {
-                FullscreenActivity.myToastMessage = "no";
+                StaticVariables.myToastMessage = "no";
             }
 
-            FullscreenActivity.lastSetName = FullscreenActivity.settoload;
+            preferences.setMyPreferenceString(c,"setCurrentLastName",StaticVariables.settoload);
 
             // Now we are finished, put the original songfilename back
-            FullscreenActivity.songfilename = tempsongfilename;
-            FullscreenActivity.whichSongFolder = tempdir;
+            StaticVariables.songfilename = tempsongfilename;
+            StaticVariables.whichSongFolder = tempdir;
             try {
-                LoadXML.loadXML(c, preferences, listSongFiles, storageAccess);
+                LoadXML.loadXML(c, preferences, storageAccess, processSong);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+            FullscreenActivity.myLyrics = StaticVariables.mLyrics;
         } else {
             return false;
         }
 
         // Load the set again - to make sure everything is parsed
         SetActions setActions = new SetActions();
-        setActions.prepareSetList();
-        Preferences.savePreferences();
+        setActions.prepareSetList(c,preferences);
         return true;
     }
 }

@@ -25,7 +25,7 @@ class ChordProConvert {
     private StringBuilder parsedLines;
 
     ArrayList<String> convertTextToTags(Context c, StorageAccess storageAccess, Preferences preferences,
-                                        SongXML songXML, Uri uri, String l, int pos) {
+                                        SongXML songXML, Uri uri, String l) {
 
         initialiseTheVariables();
 
@@ -58,6 +58,12 @@ class ChordProConvert {
         // Prepare the new song filename
         newSongFileName = getNewSongFileName(uri, title);
 
+        Log.d("ChordProConvert","uri="+uri);
+        Log.d("ChordProConvert","oldSongFileName="+oldSongFileName);
+        Log.d("ChordProConvert","title="+title);
+        Log.d("ChordProConvert","newSongFileName="+newSongFileName);
+        Log.d("ChordProConvert","songSubFolder="+songSubFolder);
+
         // Initialise the variables
         songXML.initialiseSongTags();
 
@@ -72,7 +78,7 @@ class ChordProConvert {
 
         // Now write the modified song
         writeTheImprovedSong(c, storageAccess, preferences, oldSongFileName, newSongFileName,
-                songSubFolder, newUri, uri, pos);
+                songSubFolder, newUri, uri);
 
         // Indicate after loading song (which renames it), we need to build the database and song index
         FullscreenActivity.needtorefreshsongmenu = true;
@@ -99,7 +105,6 @@ class ChordProConvert {
         s = s.replace("\r\n", "\n");
         s = s.replace("\r", "\n");
         s = s.replace("\n\n\n", "\n\n");
-        s = s.replace("\'", "'");
         s = s.replace("&quot;", "\"");
         s = s.replace("\\'", "'");
         s = s.replace("&quot;", "\"");
@@ -495,8 +500,8 @@ class ChordProConvert {
     }
 
     String getSongFolderLocation(StorageAccess storageAccess, Uri uri, String oldSongFileName) {
-        String sf = storageAccess.getPartOfUri(uri, "/OpenSong/Songs");
-        sf = sf.replace("/OpenSong/Songs/", "");
+        String sf = storageAccess.getPartOfUri(uri, "OpenSong/Songs");
+        sf = sf.replace("OpenSong/Songs/", "");
         sf = sf.replace(oldSongFileName, "");
         sf = sf.replace("//", "/");
         if (sf.startsWith("/")) {
@@ -507,7 +512,6 @@ class ChordProConvert {
         }
         return sf;
     }
-
 
     ArrayList<String> bitsForIndexing(String newSongFileName, String title, String author, String copyright,
                                       String key, String time_sig, String ccli, String lyrics) {
@@ -524,38 +528,56 @@ class ChordProConvert {
         return bits;
     }
 
-
     void writeTheImprovedSong(Context c, StorageAccess storageAccess, Preferences preferences,
                               String oldSongFileName, String newSongFileName, String songSubFolder,
-                              Uri newUri, Uri oldUri, int pos) {
+                              Uri newUri, Uri oldUri) {
+
         // Only do this for songs that exist!
         if (oldSongFileName != null && !oldSongFileName.equals("") && newSongFileName != null && !newSongFileName.equals("")
                 && oldUri != null && newUri != null && storageAccess.uriExists(c, oldUri)) {
-            if (storageAccess.lollipopOrLater()) {
-                // For lollipop+ we need to create a blank file for writing
-                storageAccess.createFile(c, preferences, null, "Songs", songSubFolder, newSongFileName);
-            }
+            storageAccess.lollipopCreateFileForOutputStream(c,preferences,newUri,null,"Songs",songSubFolder,newSongFileName);
 
             OutputStream outputStream = storageAccess.getOutputStream(c, newUri);
             if (outputStream != null && storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream)) {
                 // Change the songId (references to the uri)
-                String id = storageAccess.getDocumentsContractId(newUri);
-                FullscreenActivity.songIds.set(pos, id);
                 // Now remove the old chordpro file
                 storageAccess.deleteFile(c, oldUri);
             }
+
+            // Update the song filename
+            StaticVariables.songfilename = newSongFileName;
+            preferences.setMyPreferenceString(c,"songfilename",newSongFileName);
+
+            // Now change the database references
+            SQLiteHelper sqLiteHelper = new SQLiteHelper(c);
+
+            if (songSubFolder==null || songSubFolder.isEmpty()) {
+                songSubFolder = c.getString(R.string.mainfoldername);
+            }
+
+            sqLiteHelper.createSong(c,songSubFolder,newSongFileName);
+
+            SQLite sqLite = sqLiteHelper.getSong(c,songSubFolder+"/"+newSongFileName);
+            sqLite.setTitle(StaticVariables.mTitle);
+            sqLite.setLyrics(StaticVariables.mLyrics);
+            sqLite.setFolder(songSubFolder);
+
+            sqLiteHelper.updateSong(c,sqLite);
         }
     }
 
     private void setCorrectXMLValues() {
-        FullscreenActivity.mTitle = title.trim();
-        FullscreenActivity.mAuthor = author.trim();
-        FullscreenActivity.mCopyright = copyright.trim();
-        FullscreenActivity.mTempo = tempo.trim();
-        FullscreenActivity.mTimeSig = time_sig.trim();
-        FullscreenActivity.mCCLI = ccli.trim();
-        FullscreenActivity.mKey = key.trim();
-        FullscreenActivity.mLyrics = lyrics.trim();
+        if (title==null || title.isEmpty()) {
+            title = newSongFileName;
+        }
+        StaticVariables.mTitle = title.trim();
+        StaticVariables.mAuthor = author.trim();
+        StaticVariables.mCopyright = copyright.trim();
+        StaticVariables.mTempo = tempo.trim();
+        StaticVariables.mTimeSig = time_sig.trim();
+        StaticVariables.mCCLI = ccli.trim();
+        StaticVariables.mKey = key.trim();
+        StaticVariables.mLyrics = lyrics.trim();
     }
 
     private String getRidOfGuitarTapp(String s) {
@@ -567,7 +589,6 @@ class ChordProConvert {
         s = s.trim();
         return s;
     }
-
 
     private String guessTags(String s) {
         // Only check for definite comment lines on lines that are short enough to maybe be headings
@@ -694,7 +715,6 @@ class ChordProConvert {
         return s.trim();
     }
 
-
     private String removeInline(String l) {
         if (l.contains("{inline")) {
             l = l.replace("{inline:", "");
@@ -705,7 +725,7 @@ class ChordProConvert {
         return l;
     }
 
-    String fromOpenSongToChordPro(String lyrics, Context c) {
+    String fromOpenSongToChordPro(String lyrics, Context c, ProcessSong processSong) {
         // This receives the text from the edit song lyrics editor and changes the format
         // Allows users to enter their song as chordpro/onsong format
         // The app will convert it into OpenSong before saving.
@@ -718,7 +738,7 @@ class ChordProConvert {
 
         // Determine the line types
         for (String l:lines) {
-            type.add(ProcessSong.determineLineTypes(l,c));
+            type.add(processSong.determineLineTypes(l,c));
         }
 
         boolean dealingwithchorus = false;
@@ -741,19 +761,19 @@ class ChordProConvert {
             String[] chords_returned;
             String[] lyrics_returned;
 
-            switch (ProcessSong.howToProcessLines(y, linenums, thislinetype, nextlinetype, previouslinetype)) {
+            switch (processSong.howToProcessLines(y, linenums, thislinetype, nextlinetype, previouslinetype)) {
                 // If this is a chord line followed by a lyric line.
                 case "chord_then_lyric":
                     if (lines[y].length() > lines[y+1].length()) {
-                        lines[y+1] = ProcessSong.fixLineLength(lines[y+1], lines[y].length());
+                        lines[y+1] = processSong.fixLineLength(lines[y+1], lines[y].length());
                     }
-                    positions_returned = ProcessSong.getChordPositions(lines[y]);
+                    positions_returned = processSong.getChordPositions(lines[y]);
                     // Remove the . at the start of the line
                     if (lines[y].startsWith(".")) {
                         lines[y] = lines[y].replaceFirst("."," ");
                     }
-                    chords_returned = ProcessSong.getChordSections(lines[y], positions_returned);
-                    lyrics_returned = ProcessSong.getLyricSections(lines[y + 1], positions_returned);
+                    chords_returned = processSong.getChordSections(lines[y], positions_returned);
+                    lyrics_returned = processSong.getLyricSections(lines[y + 1], positions_returned);
                     for (int w = 0; w < lyrics_returned.length; w++) {
                         String chord_to_add = "";
                         if (w<chords_returned.length) {
@@ -771,8 +791,8 @@ class ChordProConvert {
                     break;
 
                 case "chord_only":
-                    positions_returned = ProcessSong.getChordPositions(lines[y]);
-                    chords_returned = ProcessSong.getChordSections(lines[y], positions_returned);
+                    positions_returned = processSong.getChordPositions(lines[y]);
+                    chords_returned = processSong.getChordSections(lines[y], positions_returned);
                     for (String aChords_returned : chords_returned) {
                         String chord_to_add = "";
                         if (aChords_returned != null && !aChords_returned.trim().equals("")) {
@@ -852,310 +872,6 @@ class ChordProConvert {
             }
         }
         return newlyrics.toString();
-    }
-
-
-    // TODO
-    // Old version still references from loadXML.  Need to remove and use the above
-    boolean doExtract(Context c, Preferences preferences) {
-
-        // This is called when a ChordPro format song has been loaded.
-        // This tries to extract the relevant stuff and reformat the
-        // <lyrics>...</lyrics>
-        String temp = FullscreenActivity.myXML;
-        StringBuilder parsedlines;
-        // Initialise all the xml tags a song should have
-        FullscreenActivity.mTitle = FullscreenActivity.songfilename;
-        LoadXML.initialiseSongTags(c);
-
-        // Break the temp variable into an array split by line
-        // Check line endings are \n
-
-        temp = fixLineBreaksAndSlashes(temp);
-
-        String[] line = temp.split("\n");
-
-        int numlines = line.length;
-
-        String temptitle = "";
-        String tempsubtitle;
-        String tempccli = "";
-        String tempauthor = "";
-        String tempcopyright = "";
-        String tempkey = "";
-        String temptimesig = "";
-        String temptempo = "";
-
-        // Go through individual lines and fix simple stuff
-        for (int x = 0; x < numlines; x++) {
-            // Get rid of any extra whitespace
-            line[x] = line[x].trim();
-            // Make tag lines common
-            line[x] = makeTagsCommon(line[x]);
-
-            // Remove directive lines we don't need
-            line[x] = removeObsolete(line[x]);
-
-            // Extract the title
-            if (line[x].contains("{title:")) {
-                temptitle = removeTags(line[x], "{title:");
-                line[x] = "";
-            }
-
-            // Extract the author
-            if (line[x].contains("{artist:")) {
-                tempauthor = removeTags(line[x], "{artist:");
-                line[x] = "";
-            }
-
-            // Extract the copyright
-            if (line[x].contains("{copyright:")) {
-                tempcopyright = removeTags(line[x], "{copyright:");
-                line[x] = "";
-            }
-
-            // Extract the subtitles
-            if (line[x].contains("{subtitle:")) {
-                tempsubtitle = removeTags(line[x], "{subtitle:");
-                if (tempauthor.equals("")) {
-                    tempauthor = tempsubtitle;
-                }
-                if (tempcopyright.equals("")) {
-                    tempcopyright = tempsubtitle;
-                }
-                line[x] = ";" + tempsubtitle;
-            }
-
-            // Extract the ccli (not really a chordpro tag, but works for songselect and worship together
-            if (line[x].contains("{ccli:")) {
-                tempccli = removeTags(line[x], "{ccli:");
-                line[x] = "";
-            }
-
-            // Extract the key
-            if (line[x].contains("{key:")) {
-                tempkey = removeTags(line[x], "{key:");
-                line[x] = "";
-            }
-
-            // Extract the tempo
-            if (line[x].contains("{tempo:")) {
-                temptempo = removeTags(line[x], "{tempo:");
-                line[x] = "";
-            }
-
-            // Extract the timesig
-            if (line[x].contains("{time:")) {
-                temptimesig = removeTags(line[x], "{time:");
-                line[x] = "";
-            }
-
-            // Change lines that start with # into comment lines
-            if (line[x].startsWith("#")) {
-                line[x] = line[x].replaceFirst("#", ";");
-            }
-
-            // Change comment lines
-            if (line[x].contains("{comments:")) {
-                line[x] = ";" + removeTags(line[x], "{comments:");
-            }
-
-            // Change comment lines
-            if (line[x].contains("{comment:")) {
-                line[x] = ";" + removeTags(line[x], "{comment:");
-            }
-
-        }
-
-        // Go through each line and try to fix chord lines
-        for (int x = 0; x < numlines; x++) {
-            line[x] = extractChordLines(line[x]);
-        }
-
-        // Join the individual lines back up
-        parsedlines = new StringBuilder();
-        for (int x = 0; x < numlines; x++) {
-            // Try to guess tags used
-            line[x] = guessTags(line[x]);
-
-            //Added to complete guess tags operation
-            line[x] = fixHeadings(line[x]);
-            parsedlines.append(line[x]).append("\n");
-        }
-
-        // Remove start and end of tabs
-        while (parsedlines.toString().contains("{start_of_tab") && parsedlines.toString().contains("{end_of_tab")) {
-            int startoftabpos;
-            int endoftabpos;
-            startoftabpos = parsedlines.indexOf("{start_of_tab");
-            endoftabpos = parsedlines.indexOf("{end_of_tab") + 12;
-
-            if (endoftabpos > 13 && startoftabpos > -1 && endoftabpos > startoftabpos) {
-                String startbit = parsedlines.substring(0, startoftabpos);
-                String endbit = parsedlines.substring(endoftabpos);
-                parsedlines = new StringBuilder(startbit + endbit);
-            }
-        }
-
-        // Change start and end of chorus
-        while (parsedlines.toString().contains("{start_of_chorus")) {
-
-            parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus}", "[C]"));
-            parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus:", "[C]"));
-            parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus :", "[C]"));
-            parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus", "[C]"));
-
-            parsedlines = new StringBuilder(parsedlines.toString().replace(":", ""));
-            parsedlines = new StringBuilder(parsedlines.toString().replace("}", ""));
-        }
-
-        while (parsedlines.toString().contains("{end_of_chorus")) {
-
-            parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_chorus}", "[]"));
-            parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_chorus:", "[]"));
-            parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_chorus :", "[]"));
-            parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_chorus", "[]"));
-            parsedlines = new StringBuilder(parsedlines.toString().replace(":", ""));
-            parsedlines = new StringBuilder(parsedlines.toString().replace("}", ""));
-        }
-        /*Added to support the parsing of bridge in ChordPro Format
-         * {start_of_bridge}
-         * {end_of_bridge}
-         * {sob}
-         * {eob}
-         * */
-        while (parsedlines.toString().contains("{start_of_bridge")) {
-
-            parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_bridge}", "[B]"));
-            parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_bridge:", "[B]"));
-            parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_bridge :", "[B]"));
-            parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_bridge", "[B]"));
-
-            parsedlines = new StringBuilder(parsedlines.toString().replace(":", ""));
-            parsedlines = new StringBuilder(parsedlines.toString().replace("}", ""));
-        }
-
-        while (parsedlines.toString().contains("{end_of_bridge")) {
-
-            parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_bridge}", "[]"));
-            parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_bridge:", "[]"));
-            parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_bridge :", "[]"));
-            parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_bridge", "[]"));
-            parsedlines = new StringBuilder(parsedlines.toString().replace(":", ""));
-            parsedlines = new StringBuilder(parsedlines.toString().replace("}", ""));
-        }
-
-        // Get rid of double line breaks
-        while (parsedlines.toString().contains("\n\n\n")) {
-            parsedlines = new StringBuilder(parsedlines.toString().replace("\n\n\n", "\n\n"));
-        }
-
-        while (parsedlines.toString().contains(";\n\n;")) {
-            parsedlines = new StringBuilder(parsedlines.toString().replace(";\n\n;", ";\n"));
-        }
-
-        // Ok, go back through the parsed lines and add spaces to the beginning
-        // of lines that aren't comments, chords or tags
-        String[] line2 = parsedlines.toString().split("\n");
-        int numlines2 = line2.length;
-        // Reset the parsed lines
-        parsedlines = new StringBuilder();
-
-        // Go through the lines one at a time
-        // Add the fixed bit back together
-        for (int x = 0; x < numlines2; x++) {
-
-            if (line2[x].length() > 1) {
-
-                //Take the line and eliminates spaces before the first letter of symbol
-                //to avoid taking chorus or bridge tags as lyrics
-
-                String lineAux = line2[x].trim();
-                /*Also could change the 0 in the if to index 1*/
-                if (lineAux.indexOf("[") != 0 && lineAux.indexOf(";") != 0
-                        && lineAux.indexOf(".") != 0) {
-                    /*the line contains lyrics*/
-
-                    line2[x] = " " + line2[x];
-
-                } else {
-                    //Keep the line without spaces before a letter of symbol
-                    line2[x] = lineAux;
-
-                }
-
-            }
-            parsedlines.append(line2[x]).append("\n");
-
-        }
-
-        // Initialise the variables
-        SongXML songXML = new SongXML();
-        songXML.initialiseSongTags();
-
-        // Set the correct values
-        FullscreenActivity.mTitle = temptitle.trim();
-        FullscreenActivity.mAuthor = tempauthor.trim();
-        FullscreenActivity.mCopyright = tempcopyright.trim();
-        FullscreenActivity.mTempo = temptempo.trim();
-        FullscreenActivity.mTimeSig = temptimesig.trim();
-        FullscreenActivity.mCCLI = tempccli.trim();
-        FullscreenActivity.mKey = tempkey.trim();
-        FullscreenActivity.mLyrics = parsedlines.toString().trim();
-
-        FullscreenActivity.myXML = songXML.getXML();
-
-        // Change the name of the song to remove chordpro file extension
-        String newSongTitle = FullscreenActivity.songfilename;
-
-        // Decide if a better song title is in the file
-        if (temptitle.length() > 0) {
-            newSongTitle = temptitle;
-        }
-
-        newSongTitle = newSongTitle.replace(".pro", "");
-        newSongTitle = newSongTitle.replace(".PRO", "");
-        newSongTitle = newSongTitle.replace(".chopro", "");
-        newSongTitle = newSongTitle.replace(".chordpro", "");
-        newSongTitle = newSongTitle.replace(".CHOPRO", "");
-        newSongTitle = newSongTitle.replace(".CHORDPRO", "");
-        newSongTitle = newSongTitle.replace(".cho", "");
-        newSongTitle = newSongTitle.replace(".CHO", "");
-        newSongTitle = newSongTitle.replace(".txt", "");
-        newSongTitle = newSongTitle.replace(".TXT", "");
-
-        // Now write the modified song
-        StorageAccess storageAccess = new StorageAccess();
-        Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder, newSongTitle);
-
-        // Check the uri exists for the outputstream to be valid
-        storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "Songs", FullscreenActivity.whichSongFolder, newSongTitle);
-
-        OutputStream outputStream = storageAccess.getOutputStream(c, uri);
-        if (storageAccess.writeFileFromString(FullscreenActivity.myXML, outputStream)) {
-            // Writing was successful, so delete the original
-            Uri originalfile = storageAccess.getUriForItem(c, preferences, "Songs", FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
-            storageAccess.deleteFile(c, originalfile);
-        }
-
-        FullscreenActivity.songfilename = newSongTitle;
-
-        // Rebuild the song list
-        storageAccess.listSongs(c, preferences);
-        ListSongFiles listSongFiles = new ListSongFiles();
-        listSongFiles.songUrisInFolder(c, preferences);
-
-        // Load the songs
-        listSongFiles.getAllSongFiles(c, preferences, storageAccess);
-
-        // Get the song indexes
-        listSongFiles.getCurrentSongIndex();
-        Preferences.savePreferences();
-
-        // Prepare the app to fix the song menu with the new file
-        FullscreenActivity.converting = true;
-
-        return true;
     }
 
 }

@@ -18,14 +18,13 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_margin="4dp"
-            android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:gravity="center"
             android:text="@string/options_display"
             style="@style/MyMenuHeadingText" />
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/closeOptionsFAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,7 +57,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_theme_light_dark_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_theme_light_dark_white_36dp"
                 android:gravity="center_vertical"
@@ -72,7 +70,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_arrow_expand_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_arrow_expand_white_36dp"
                 android:gravity="center_vertical"
@@ -86,7 +83,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_format_text_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_format_text_white_36dp"
                 android:gravity="center_vertical"
@@ -100,7 +96,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_bullseye_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_bullseye_white_36dp"
                 android:gravity="center_vertical"
@@ -114,7 +109,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_settings_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_settings_white_36dp"
                 android:gravity="center_vertical"
@@ -128,7 +122,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_information_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_information_white_36dp"
                 android:gravity="center_vertical"
@@ -142,7 +135,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_menu_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_menu_white_36dp"
                 android:gravity="center_vertical"
@@ -150,6 +142,7 @@
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
+        <!--
             <Button
                 android:id="@+id/displayProfileButton"
                 android:layout_width="match_parent"
@@ -163,6 +156,7 @@
                 android:text="@string/profile"
                 android:textColor="#fff"
                 android:textSize="12sp" />
+                -->
 
             <Button
                 android:id="@+id/displayConnectedDisplayButton"
@@ -170,7 +164,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_monitor_multiple_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_monitor_multiple_white_36dp"
                 android:gravity="center_vertical"
@@ -184,7 +177,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_monitor_multiple_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_monitor_multiple_white_36dp"
                 android:gravity="center_vertical"

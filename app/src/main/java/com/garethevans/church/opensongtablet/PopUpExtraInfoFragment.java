@@ -1,12 +1,12 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.SwitchCompat;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +14,8 @@ import android.view.Window;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import java.util.Objects;
 
 public class PopUpExtraInfoFragment extends DialogFragment {
 
@@ -42,19 +44,12 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         super.onDetach();
     }
 
-    SwitchCompat nextSongOnOff_Switch, nextSongTopBottom_Switch,stickyNotesOnOff_Switch,
+    private SwitchCompat nextSongOnOff_Switch, nextSongTopBottom_Switch,stickyNotesOnOff_Switch,
             stickyNotesFloat_Switch,stickyNotesTopBottom_Switch, highlightNotesOnOff_Switch;
-    SeekBar stickyNotesTime_SeekBar, highlightTime_SeekBar;
-    TextView stickyNotesTime_TextView, stickNotesTimeInfo_TextView, highlightTime_TextView,
+    private SeekBar stickyNotesTime_SeekBar, highlightTime_SeekBar;
+    private TextView stickyNotesTime_TextView, stickNotesTimeInfo_TextView, highlightTime_TextView,
             highlightTimeInfo_TextView;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
+    Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,13 +62,13 @@ public class PopUpExtraInfoFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_extrainfo, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.extra));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.extra));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +80,9 @@ public class PopUpExtraInfoFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
+
+        preferences = new Preferences();
 
         // Initialise the views
         nextSongOnOff_Switch = V.findViewById(R.id.nextSongOnOff_Switch);
@@ -113,15 +110,13 @@ public class PopUpExtraInfoFragment extends DialogFragment {
                 if (b) {
                     //nextSongTopBottom_Switch.setVisibility((View.VISIBLE));
                     if (nextSongTopBottom_Switch.isChecked()) {
-                        FullscreenActivity.showNextInSet = "bottom";
+                        preferences.setMyPreferenceString(getActivity(),"displayNextInSet","B");
                     } else {
-                        FullscreenActivity.showNextInSet = "top";
+                        preferences.setMyPreferenceString(getActivity(),"displayNextInSet","T");
                     }
                 } else {
-                    //nextSongTopBottom_Switch.setVisibility((View.GONE));
-                    FullscreenActivity.showNextInSet = "off";
+                    preferences.setMyPreferenceString(getActivity(),"displayNextInSet","N");
                 }
-                Preferences.savePreferences();
                 showNextButtons();
             }
         });
@@ -129,30 +124,26 @@ public class PopUpExtraInfoFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    FullscreenActivity.showNextInSet = "bottom";
+                    preferences.setMyPreferenceString(getActivity(),"displayNextInSet","B");
                 } else {
-                    FullscreenActivity.showNextInSet = "top";
+                    preferences.setMyPreferenceString(getActivity(),"displayNextInSet","T");
                 }
-                Preferences.savePreferences();
             }
         });
         stickyNotesOnOff_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    //stickyNotesTopBottom_Switch.setVisibility((View.VISIBLE));
                     if (stickyNotesFloat_Switch.isChecked()) {
-                        FullscreenActivity.toggleAutoSticky = "F";
+                        preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","F");
                     } else if (stickyNotesTopBottom_Switch.isChecked()) {
-                        FullscreenActivity.toggleAutoSticky = "B";
+                        preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","B");
                     } else {
-                        FullscreenActivity.toggleAutoSticky = "T";
+                        preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","T");
                     }
                 } else {
-                    //stickyNotesTopBottom_Switch.setVisibility((View.GONE));
-                    FullscreenActivity.toggleAutoSticky = "N";
+                    preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","N");
                 }
-                Preferences.savePreferences();
                 showStickyButtons();
             }
         });
@@ -160,17 +151,16 @@ public class PopUpExtraInfoFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    FullscreenActivity.toggleAutoSticky = "F";
+                    preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","F");
                 } else if (stickyNotesOnOff_Switch.isChecked()) {
                     if (stickyNotesTopBottom_Switch.isChecked()) {
-                        FullscreenActivity.toggleAutoSticky = "B";
+                        preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","B");
                     } else {
-                        FullscreenActivity.toggleAutoSticky = "T";
+                        preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","T");
                     }
                 } else {
-                    FullscreenActivity.toggleAutoSticky = "N";
+                    preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","N");
                 }
-                Preferences.savePreferences();
                 showStickyButtons();
             }
         });
@@ -179,20 +169,18 @@ public class PopUpExtraInfoFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    FullscreenActivity.toggleAutoSticky = "B";
+                    preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","B");
                 } else {
-                    FullscreenActivity.toggleAutoSticky = "T";
+                    preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","T");
                 }
-                Preferences.savePreferences();
             }
         });
         stickyNotesTime_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                FullscreenActivity.stickyNotesShowSecs = i;
                 String s;
                 if (i==0) {
-                    s = getActivity().getResources().getString(R.string.on);
+                    s = Objects.requireNonNull(getActivity()).getResources().getString(R.string.on);
                 } else {
                     s = i + " s";
                 }
@@ -204,24 +192,22 @@ public class PopUpExtraInfoFragment extends DialogFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Preferences.savePreferences();
+                preferences.setMyPreferenceInt(getActivity(),"timeToDisplaySticky",seekBar.getProgress());
             }
         });
         highlightNotesOnOff_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.toggleAutoHighlight = b;
-                Preferences.savePreferences();
+                preferences.setMyPreferenceBoolean(getActivity(),"drawingAutoDisplay",b);
                 showHighlightButtons();
             }
         });
         highlightTime_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                FullscreenActivity.highlightShowSecs = i;
                 String s;
                 if (i==0) {
-                    s = getActivity().getResources().getString(R.string.on);
+                    s = Objects.requireNonNull(getActivity()).getResources().getString(R.string.on);
                 } else {
                     s = i + " s";
                 }
@@ -233,55 +219,43 @@ public class PopUpExtraInfoFragment extends DialogFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Preferences.savePreferences();
+                preferences.setMyPreferenceInt(getActivity(),"timeToDisplayHighlighter",seekBar.getProgress());
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
 
-    public void showNextButtons() {
-        switch (FullscreenActivity.showNextInSet) {
-            case "off":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    nextSongOnOff_Switch.setChecked(false);
-                }
+    private void showNextButtons() {
+        switch (preferences.getMyPreferenceString(getActivity(),"displayNextInSet","B")) {
+            case "N":
+                nextSongOnOff_Switch.setChecked(false);
                 nextSongTopBottom_Switch.setVisibility(View.GONE);
                 break;
 
-            case "bottom":
+            case "B":
             default:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    nextSongOnOff_Switch.setChecked(true);
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    nextSongTopBottom_Switch.setChecked(true);
-                }
+                nextSongOnOff_Switch.setChecked(true);
+                nextSongTopBottom_Switch.setChecked(true);
                 nextSongTopBottom_Switch.setVisibility(View.VISIBLE);
                 break;
 
-            case "top":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    nextSongOnOff_Switch.setChecked(true);
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    nextSongTopBottom_Switch.setChecked(false);
-                }
+            case "T":
+                nextSongOnOff_Switch.setChecked(true);
+                nextSongTopBottom_Switch.setChecked(false);
                 nextSongTopBottom_Switch.setVisibility(View.VISIBLE);
                 break;
         }
     }
 
-    public void showStickyButtons() {
+    private void showStickyButtons() {
 
-        switch (FullscreenActivity.toggleAutoSticky) {
+        switch (preferences.getMyPreferenceString(getActivity(),"stickyAutoDisplay","F")) {
 
             case "N":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    stickyNotesOnOff_Switch.setChecked(false);
-                }
+                stickyNotesOnOff_Switch.setChecked(false);
                 stickyNotesFloat_Switch.setVisibility(View.GONE);
                 stickyNotesTime_SeekBar.setVisibility(View.GONE);
                 stickyNotesTime_TextView.setVisibility(View.GONE);
@@ -291,16 +265,10 @@ public class PopUpExtraInfoFragment extends DialogFragment {
 
             case "B":
             default:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    stickyNotesOnOff_Switch.setChecked(true);
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    stickyNotesTopBottom_Switch.setChecked(true);
-                }
+                stickyNotesOnOff_Switch.setChecked(true);
+                stickyNotesTopBottom_Switch.setChecked(true);
                 stickyNotesFloat_Switch.setVisibility(View.VISIBLE);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    stickyNotesFloat_Switch.setChecked(false);
-                }
+                stickyNotesFloat_Switch.setChecked(false);
                 stickyNotesTime_SeekBar.setVisibility(View.GONE);
                 stickyNotesTime_TextView.setVisibility(View.GONE);
                 stickNotesTimeInfo_TextView.setVisibility(View.GONE);
@@ -308,16 +276,10 @@ public class PopUpExtraInfoFragment extends DialogFragment {
                 break;
 
             case "T":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    stickyNotesOnOff_Switch.setChecked(true);
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    stickyNotesTopBottom_Switch.setChecked(false);
-                }
+                stickyNotesOnOff_Switch.setChecked(true);
+                stickyNotesTopBottom_Switch.setChecked(false);
                 stickyNotesFloat_Switch.setVisibility(View.VISIBLE);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    stickyNotesFloat_Switch.setChecked(false);
-                }
+                stickyNotesFloat_Switch.setChecked(false);
                 stickyNotesTime_SeekBar.setVisibility(View.GONE);
                 stickyNotesTime_TextView.setVisibility(View.GONE);
                 stickNotesTimeInfo_TextView.setVisibility(View.GONE);
@@ -325,20 +287,16 @@ public class PopUpExtraInfoFragment extends DialogFragment {
                 break;
 
             case "F":
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    stickyNotesOnOff_Switch.setChecked(true);
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    stickyNotesFloat_Switch.setChecked(true);
-                }
+                stickyNotesOnOff_Switch.setChecked(true);
+                stickyNotesFloat_Switch.setChecked(true);
                 stickyNotesFloat_Switch.setVisibility(View.VISIBLE);
                 stickyNotesTime_SeekBar.setVisibility(View.VISIBLE);
-                stickyNotesTime_SeekBar.setProgress(FullscreenActivity.stickyNotesShowSecs);
+                stickyNotesTime_SeekBar.setProgress(preferences.getMyPreferenceInt(getActivity(),"timeToDisplaySticky",5));
                 String s;
-                if (FullscreenActivity.stickyNotesShowSecs==0) {
-                    s = getActivity().getResources().getString(R.string.on);
+                if (preferences.getMyPreferenceInt(getActivity(),"timeToDisplaySticky",5)==0) {
+                    s = Objects.requireNonNull(getActivity()).getResources().getString(R.string.on);
                 } else {
-                    s = FullscreenActivity.stickyNotesShowSecs + " s";
+                    s = preferences.getMyPreferenceInt(getActivity(),"timeToDisplaySticky",5) + " s";
                 }
                 stickyNotesTime_TextView.setText(s);
                 stickyNotesTime_TextView.setVisibility(View.VISIBLE);
@@ -346,14 +304,11 @@ public class PopUpExtraInfoFragment extends DialogFragment {
                 stickyNotesTopBottom_Switch.setVisibility(View.GONE);
                 break;
         }
-
     }
 
-    public void showHighlightButtons() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            highlightNotesOnOff_Switch.setChecked(FullscreenActivity.toggleAutoHighlight);
-        }
-        if (!FullscreenActivity.toggleAutoHighlight) {
+    private void showHighlightButtons() {
+        highlightNotesOnOff_Switch.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"drawingAutoDisplay",true));
+        if (!preferences.getMyPreferenceBoolean(getActivity(),"drawingAutoDisplay",true)) {
             highlightTime_TextView.setVisibility(View.GONE);
             highlightTimeInfo_TextView.setVisibility(View.GONE);
             highlightTime_SeekBar.setVisibility(View.GONE);
@@ -362,12 +317,13 @@ public class PopUpExtraInfoFragment extends DialogFragment {
             highlightTimeInfo_TextView.setVisibility(View.VISIBLE);
             highlightTime_SeekBar.setVisibility(View.VISIBLE);
         }
-        highlightTime_SeekBar.setProgress(FullscreenActivity.highlightShowSecs);
+        int time = preferences.getMyPreferenceInt(getActivity(),"timeToDisplayHighlighter",0);
+        highlightTime_SeekBar.setProgress(time);
         String s;
-        if (FullscreenActivity.highlightShowSecs==0) {
-            s = getActivity().getResources().getString(R.string.on);
+        if (time==0) {
+            s = Objects.requireNonNull(getActivity()).getResources().getString(R.string.on);
         } else {
-            s = FullscreenActivity.highlightShowSecs + " s";
+            s = time + " s";
         }
         highlightTime_TextView.setText(s);
     }

@@ -1,17 +1,20 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.Objects;
 
 public class PopUpLongSongPressFragment extends DialogFragment {
 
@@ -42,20 +45,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         super.onDetach();
     }
 
-    Button addSongToSet_Button;
-    Button deleteSong_Button;
-    Button renameSong_Button;
-    Button shareSong_Button;
-    Button editSong_Button;
     Preferences preferences;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,58 +57,56 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         }
     }
 
-    public static void addtoSet(Context c, Preferences preferences) {
-        FullscreenActivity.addingtoset = true;
+    static void addtoSet(Context c, Preferences preferences) {
+        StaticVariables.addingtoset = true;
 
         // If the song is in .pro, .onsong, .txt format, tell the user to convert it first
         // This is done by viewing it (avoids issues with file extension renames)
         // Just in case users running older than lollipop, we don't want to open the file
         // In this case, store the current song as a string so we can go back to it
-        if (FullscreenActivity.songfilename.toLowerCase(FullscreenActivity.locale).endsWith(".pro") ||
-                FullscreenActivity.songfilename.toLowerCase(FullscreenActivity.locale).endsWith(".chopro") ||
-                FullscreenActivity.songfilename.toLowerCase(FullscreenActivity.locale).endsWith(".cho") ||
-                FullscreenActivity.songfilename.toLowerCase(FullscreenActivity.locale).endsWith(".chordpro") ||
-                FullscreenActivity.songfilename.toLowerCase(FullscreenActivity.locale).endsWith(".onsong") ||
-                FullscreenActivity.songfilename.toLowerCase(FullscreenActivity.locale).endsWith(".txt")) {
+        if (StaticVariables.songfilename.toLowerCase(StaticVariables.locale).endsWith(".pro") ||
+                StaticVariables.songfilename.toLowerCase(StaticVariables.locale).endsWith(".chopro") ||
+                StaticVariables.songfilename.toLowerCase(StaticVariables.locale).endsWith(".cho") ||
+                StaticVariables.songfilename.toLowerCase(StaticVariables.locale).endsWith(".chordpro") ||
+                StaticVariables.songfilename.toLowerCase(StaticVariables.locale).endsWith(".onsong") ||
+                StaticVariables.songfilename.toLowerCase(StaticVariables.locale).endsWith(".txt")) {
 
             // Don't add song yet, but tell the user
-            FullscreenActivity.myToastMessage = c.getResources().getString(R.string.convert_song);
+            StaticVariables.myToastMessage = c.getResources().getString(R.string.convert_song);
             ShowToast.showToast(c);
 
-        } else if (FullscreenActivity.songfilename.toLowerCase(FullscreenActivity.locale).endsWith(".doc") ||
-                FullscreenActivity.songfilename.toLowerCase(FullscreenActivity.locale).endsWith(".docx")) {
+        } else if (StaticVariables.songfilename.toLowerCase(StaticVariables.locale).endsWith(".doc") ||
+                StaticVariables.songfilename.toLowerCase(StaticVariables.locale).endsWith(".docx")) {
             // Don't add song yet, but tell the user it is unsupported
-            FullscreenActivity.myToastMessage = c.getResources().getString(R.string.file_type_unknown);
+            StaticVariables.myToastMessage = c.getResources().getString(R.string.file_type_unknown);
             ShowToast.showToast(c);
 
         } else {
-            if (FullscreenActivity.ccli_automatic) {
+            if (preferences.getMyPreferenceBoolean(c,"ccliAutomaticLogging",false)) {
                 // Now we need to get the song info quickly to log it correctly
                 // as this might not be the song loaded
-                String[] vals = LoadXML.getCCLILogInfo(c, preferences, FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+                String[] vals = LoadXML.getCCLILogInfo(c, preferences, StaticVariables.whichSongFolder, StaticVariables.songfilename);
                 if (vals.length == 4 && vals[0] != null && vals[1] != null && vals[2] != null && vals[3] != null) {
-                    PopUpCCLIFragment.addUsageEntryToLog(c, preferences, FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
+                    PopUpCCLIFragment.addUsageEntryToLog(c, preferences, StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename,
                             vals[0], vals[1], vals[2], vals[3], "6"); // Printed
                 }
             }
 
             // Set the appropriate song filename
-            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-                FullscreenActivity.whatsongforsetwork = "$**_" + FullscreenActivity.songfilename + "_**$";
+            if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername))) {
+                StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.songfilename + "_**$";
             } else {
-                FullscreenActivity.whatsongforsetwork = "$**_" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename + "_**$";
+                StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename + "_**$";
             }
 
             // Allow the song to be added, even if it is already there
-            FullscreenActivity.mySet = FullscreenActivity.mySet + FullscreenActivity.whatsongforsetwork;
+            String val = preferences.getMyPreferenceString(c,"setCurrent","") + StaticVariables.whatsongforsetwork;
+            preferences.setMyPreferenceString(c,"setCurrent",val);
 
             // Tell the user that the song has been added.
-            FullscreenActivity.myToastMessage = "\"" + FullscreenActivity.songfilename + "\" " +
+            StaticVariables.myToastMessage = "\"" + StaticVariables.songfilename + "\" " +
                     c.getResources().getString(R.string.addedtoset);
             ShowToast.showToast(c);
-
-            // Save the set and other preferences
-            Preferences.savePreferences();
         }
     }
 
@@ -128,14 +116,14 @@ public class PopUpLongSongPressFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         View V = inflater.inflate(R.layout.popup_longsongpress, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(FullscreenActivity.songfilename);
+        title.setText(StaticVariables.songfilename);
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,19 +134,19 @@ public class PopUpLongSongPressFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
 
         preferences = new Preferences();
 
         // Vibrate to let the user know something happened
-        DoVibrate.vibrate(getActivity(),50);
+        DoVibrate.vibrate(Objects.requireNonNull(getActivity()),50);
 
         // Initialise the views
-        addSongToSet_Button = V.findViewById(R.id.addSongToSet_Button);
-        deleteSong_Button = V.findViewById(R.id.deleteSong_Button);
-        renameSong_Button = V.findViewById(R.id.renameSong_Button);
-        shareSong_Button = V.findViewById(R.id.shareSong_Button);
-        editSong_Button = V.findViewById(R.id.editSong_Button);
+        Button addSongToSet_Button = V.findViewById(R.id.addSongToSet_Button);
+        Button deleteSong_Button = V.findViewById(R.id.deleteSong_Button);
+        Button renameSong_Button = V.findViewById(R.id.renameSong_Button);
+        Button shareSong_Button = V.findViewById(R.id.shareSong_Button);
+        Button editSong_Button = V.findViewById(R.id.editSong_Button);
 
         // Set up listeners for the buttons
         addSongToSet_Button.setOnClickListener(new View.OnClickListener() {
@@ -212,7 +200,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
@@ -31,7 +32,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Ab/G#"/>
+                android:text="Ab/G#"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padAb"
                 android:layout_width="match_parent"
@@ -50,7 +52,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="A"/>
+                android:text="A"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padA"
                 android:layout_width="match_parent"
@@ -69,7 +72,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Bb/A#"/>
+                android:text="Bb/A#"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padBb"
                 android:layout_width="match_parent"
@@ -88,7 +92,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="B"/>
+                android:text="B"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padB"
                 android:layout_width="match_parent"
@@ -107,7 +112,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="C"/>
+                android:text="C"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padC"
                 android:layout_width="match_parent"
@@ -126,7 +132,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Db/C#"/>
+                android:text="Db/C#"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padDb"
                 android:layout_width="match_parent"
@@ -145,7 +152,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="D"/>
+                android:text="D"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padD"
                 android:layout_width="match_parent"
@@ -164,7 +172,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Eb/D#"/>
+                android:text="Eb/D#"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padEb"
                 android:layout_width="match_parent"
@@ -183,7 +192,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="E"/>
+                android:text="E"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padE"
                 android:layout_width="match_parent"
@@ -202,7 +212,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="F"/>
+                android:text="F"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padF"
                 android:layout_width="match_parent"
@@ -221,7 +232,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Gb/F#"/>
+                android:text="Gb/F#"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padGb"
                 android:layout_width="match_parent"
@@ -240,7 +252,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="G"/>
+                android:text="G"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padG"
                 android:layout_width="match_parent"
@@ -259,7 +272,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Abm/G#m"/>
+                android:text="Abm/G#m"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padAbm"
                 android:layout_width="match_parent"
@@ -278,7 +292,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Am"/>
+                android:text="Am"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padAm"
                 android:layout_width="match_parent"
@@ -297,7 +312,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Bbm/A#m"/>
+                android:text="Bbm/A#m"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padBbm"
                 android:layout_width="match_parent"
@@ -316,7 +332,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Bm"/>
+                android:text="Bm"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padBm"
                 android:layout_width="match_parent"
@@ -335,7 +352,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Cm"/>
+                android:text="Cm"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padCm"
                 android:layout_width="match_parent"
@@ -354,7 +372,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Dbm/C#m"/>
+                android:text="Dbm/C#m"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padDbm"
                 android:layout_width="match_parent"
@@ -373,7 +392,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Dm"/>
+                android:text="Dm"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padDm"
                 android:layout_width="match_parent"
@@ -392,7 +412,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Ebm/D#m"/>
+                android:text="Ebm/D#m"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padEbm"
                 android:layout_width="match_parent"
@@ -411,7 +432,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Em"/>
+                android:text="Em"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padEm"
                 android:layout_width="match_parent"
@@ -430,7 +452,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Fm"/>
+                android:text="Fm"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padFm"
                 android:layout_width="match_parent"
@@ -449,7 +472,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Gbm/F#m"/>
+                android:text="Gbm/F#m"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padGbm"
                 android:layout_width="match_parent"
@@ -468,7 +492,8 @@
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Gm"/>
+                android:text="Gm"
+                tools:ignore="HardcodedText" />
             <Spinner
                 android:id="@+id/padGm"
                 android:layout_width="match_parent"

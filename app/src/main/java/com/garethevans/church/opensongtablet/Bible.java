@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -291,21 +292,27 @@ class Bible {
     String shortenTheLines(String originaltext, int charsperline, int linesbeforenewslide) {
         StringBuilder scripture = new StringBuilder();
         // Split the current string into a separate words array
+        originaltext = originaltext.replace("\n", "_nl_");
         String[] scripturewords = originaltext.split(" ");
         StringBuilder currentline= new StringBuilder();
         ArrayList<String> newimprovedscripture = new ArrayList<>();
         for (String words:scripturewords) {
+            Log.d("Bible","words="+words);
             if (currentline.length()<charsperline) {
                 currentline.append(" ").append(words);
             } else {
-                newimprovedscripture.add(currentline.toString().trim());
+                String lines = currentline.toString().trim();
+                lines = lines.replace("_nl_","\n");
+                newimprovedscripture.add(lines);
                 if (words.startsWith(";") || words.startsWith("|") || words.startsWith("[") || words.startsWith("]")) {
                     words = " " + words;
                 }
                 currentline = new StringBuilder(words);
             }
         }
-        newimprovedscripture.add(currentline.toString());
+        String lines = currentline.toString();
+        lines = lines.replace("_nl_","\n");
+        newimprovedscripture.add(lines);
 
         int newslideneeded = 0;
         for (int z=0;z<newimprovedscripture.size();z++) {

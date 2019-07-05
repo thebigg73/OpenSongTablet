@@ -2,7 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -67,14 +67,14 @@ class CustomAnimations {
         },100);
     }
 
-    static void animateSwipe(final ImageView img) {
+    static void animateSwipe(final ImageView img, final int distance, final int velocity) {
         Handler h1 = new Handler();
         h1.post(new Runnable() {
             @Override
             public void run() {
                 try {
                     ScaleAnimation grow = new ScaleAnimation(0.0f, 1.0f, 1, 1, 0.0f, 0.0f);
-                    int duration = (int) (((float)FullscreenActivity.SWIPE_MIN_DISTANCE / (float)FullscreenActivity.SWIPE_THRESHOLD_VELOCITY) *1000);
+                    int duration = (int) (((float)distance / (float)velocity) *1000);
                     grow.setDuration(duration);
                     grow.setRepeatMode(2);
                     grow.setRepeatCount(1);
@@ -127,14 +127,14 @@ class CustomAnimations {
         }
     }
 
-    static AlphaAnimation setUpAnimation(View v, float start, float end) {
+    static AlphaAnimation setUpAnimation(View v, int presoTransitionTime, float start, float end) {
         AlphaAnimation aa = new AlphaAnimation(start,end);
         if (start>end) {
             aa.setInterpolator(new DecelerateInterpolator());
         } else {
             aa.setInterpolator(new AccelerateInterpolator());
         }
-        aa.setDuration(FullscreenActivity.presoTransitionTime);
+        aa.setDuration(presoTransitionTime);
         aa.setAnimationListener(new CustomAnimations.MyAnimationListener(v,start,end));
         return aa;
     }

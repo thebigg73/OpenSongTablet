@@ -2,15 +2,15 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.provider.DocumentFile;
-import android.support.v7.widget.SwitchCompat;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +30,7 @@ import java.io.OutputStream;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -62,39 +63,26 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         super.onDetach();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-    }
-
-    LinearLayout importfilechooser;
-    LinearLayout zipcontents;
-    TextView chooseosbfile;
-    TextView currentFileWork;
-    ListView folderlist;
-    String selectednote;
+    private LinearLayout zipcontents;
+    private TextView currentFileWork;
+    private ListView folderlist;
+    private String selectednote;
     String mTitle;
-    ArrayAdapter<String> adapter;
-    PrepareFolderListImport prepare_folder_list_import;
-    SelectedFolderImport selected_folder_import;
-    ArrayList<String> foldersfoundinzip, createdfolders;
-    LinearLayout progressUpdate;
-    String[] foldersselectedtoimport;
+    private ArrayAdapter<String> adapter;
+    private ArrayList<String> foldersfoundinzip;
+    private LinearLayout progressUpdate;
+    private String[] foldersselectedtoimport;
     String message = "";
-    ProgressBar waiting;
+    private ProgressBar waiting;
     FloatingActionButton closeMe;
     FloatingActionButton saveMe;
-    SwitchCompat overwrite;
+    private SwitchCompat overwrite;
     StorageAccess storageAccess;
     ExportPreparer exportPreparer;
     Preferences preferences;
     ProgressBar progressBar;
+    private SongFolders songFolders;
     String error;
-    ArrayList<DocumentFile> documentFolders;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,18 +95,19 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Decide if we are importing or exporting
         if (FullscreenActivity.whattodo.equals("processimportosb")) {
-            mTitle = getActivity().getResources().getString(R.string.backup_import);
+            mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.backup_import);
         } else {
-            mTitle = getActivity().getResources().getString(R.string.backup_export);
+            mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.backup_export);
         }
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        getDialog().setCanceledOnTouchOutside(false);
 
         View V = inflater.inflate(R.layout.popup_importexportosb, container, false);
 
+        songFolders = new SongFolders();
         storageAccess = new StorageAccess();
         preferences = new Preferences();
         error = getActivity().getResources().getString(R.string.backup_error);
@@ -134,7 +123,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         });
         saveMe = V.findViewById(R.id.saveMe);
         if (FullscreenActivity.whattodo.equals("processimportosb")) {
-            saveMe.setVisibility(View.GONE);
+            saveMe.hide();
             saveMe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -155,9 +144,9 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         }
 
         // Initialise the views
-        importfilechooser = V.findViewById(R.id.importfilechooser);
+        LinearLayout importfilechooser = V.findViewById(R.id.importfilechooser);
         zipcontents = V.findViewById(R.id.zipcontents);
-        chooseosbfile = V.findViewById(R.id.chooseosbfile);
+        TextView chooseosbfile = V.findViewById(R.id.chooseosbfile);
         folderlist = V.findViewById(R.id.folderlist);
         waiting = V.findViewById(R.id.waiting);
         overwrite = V.findViewById(R.id.overwrite);
@@ -171,7 +160,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 if (mListener != null) {
-                    mListener.selectAFileUri(getActivity().getString(R.string.backup_import));
+                    mListener.selectAFileUri(Objects.requireNonNull(getActivity()).getString(R.string.backup_import));
                     mListener.openFragment();
                 }
                 PopUpImportExportOSBFragment.this.dismiss();
@@ -205,42 +194,39 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         // Reset the folders selected text note
         selectednote = "";
 
+        final ArrayList<String> songfolders = songFolders.prepareSongFolders(getActivity());
+
         folderlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (folderlist.isItemChecked(i)) {
                     // Add the folder if it isn't there already
-                    if (!selectednote.contains("%__" + FullscreenActivity.mSongFolderNames[i] + "__%")) {
-                        selectednote = selectednote + "%__" + FullscreenActivity.mSongFolderNames[i] + "__%";
+                    if (!selectednote.contains("%__" + songfolders.get(i) + "__%")) {
+                        selectednote = selectednote + "%__" + songfolders.get(i) + "__%";
                     }
 
                 } else {
                     // Remove the folder if it is there already
-                    if (selectednote.contains("%__" + FullscreenActivity.mSongFolderNames[i] + "__%")) {
-                        selectednote = selectednote.replace("%__" + FullscreenActivity.mSongFolderNames[i] + "__%", "");
+                    if (selectednote.contains("%__" + songfolders.get(i) + "__%")) {
+                        selectednote = selectednote.replace("%__" + songfolders.get(i) + "__%", "");
                     }
                 }
             }
         });
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
 
-    public void prepareFolderListExport() {
-        ArrayList<String> folders = new ArrayList<>();
-        for (String f : FullscreenActivity.mSongFolderNames) {
-            if (f != null && f.contains("OpenSong/Songs/")) {
-                f = f.substring(f.lastIndexOf("OpenSong/Songs/") + 15);
-            }
-            folders.add(f);
-        }
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, folders);
+    private void prepareFolderListExport() {
+
+        ArrayList<String> songfolders = songFolders.prepareSongFolders(getActivity());
+        adapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), android.R.layout.simple_list_item_multiple_choice, songfolders);
         folderlist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         folderlist.setAdapter(adapter);
     }
 
-    public void doTheExporting() {
+    private void doTheExporting() {
         // Get a note of the folders chosen and add them to a string
         progressBar.setVisibility(View.VISIBLE);
         exportPreparer = new ExportPreparer();
@@ -248,7 +234,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
             @Override
             public void run() {
                 exportPreparer.createSelectedOSB(getActivity(), preferences, selectednote, storageAccess);
-                getActivity().runOnUiThread(new Runnable() {
+                Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         progressBar.setVisibility(View.GONE);
@@ -263,9 +249,9 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         }).start();
     }
 
-    public void prepareFolderListImport() {
+    private void prepareFolderListImport() {
         // We need to parse the .osb (zip) file to extract a list of folders it contains as AsyncTask
-        prepare_folder_list_import = new PrepareFolderListImport();
+        PrepareFolderListImport prepare_folder_list_import = new PrepareFolderListImport();
         waiting.setVisibility(View.VISIBLE);
         prepare_folder_list_import.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
@@ -292,14 +278,14 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                message = getActivity().getResources().getString(R.string.backup_error);
+                message = Objects.requireNonNull(getActivity()).getResources().getString(R.string.backup_error);
             } finally {
                 if (zis!=null) {
                     try {
                         zis.close();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        message = getActivity().getString(R.string.backup_error);
+                        message = Objects.requireNonNull(getActivity()).getString(R.string.backup_error);
                     }
                 }
             }
@@ -311,17 +297,17 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
 
             if (s!=null && getActivity()!=null && !s.equals(getActivity().getResources().getString(R.string.backup_error))) {
                 // Sort the folders
-                Collator coll = Collator.getInstance(FullscreenActivity.locale);
+                Collator coll = Collator.getInstance(StaticVariables.locale);
                 coll.setStrength(Collator.SECONDARY);
                 Collections.sort(foldersfoundinzip, coll);
 
                 // Add the main folder
-                foldersfoundinzip.add(0, FullscreenActivity.mainfoldername);
+                foldersfoundinzip.add(0, getActivity().getString(R.string.mainfoldername));
                 waiting.setVisibility(View.GONE);
 
                 zipcontents.setVisibility(View.VISIBLE);
                 overwrite.setVisibility(View.VISIBLE);
-                saveMe.setVisibility(View.GONE);  // Will be available when a folder is selected
+                saveMe.hide();  // Will be available when a folder is selected
                 adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, foldersfoundinzip);
                 folderlist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
                 folderlist.setAdapter(adapter);
@@ -336,23 +322,23 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                             }
                         }
                         if (oktoproceed) {
-                            saveMe.setVisibility(View.VISIBLE);
+                            saveMe.show();
                         } else {
-                            saveMe.setVisibility(View.GONE);
+                            saveMe.hide();
                         }
                     }
                 });
             } else {
                 // There was an error, so show the message and hide the progressbar
                 waiting.setVisibility(View.GONE);
-                FullscreenActivity.myToastMessage = message;
+                StaticVariables.myToastMessage = message;
                 ShowToast.showToast(getActivity());
             }
         }
     }
-    public void doTheImporting() {
+    private void doTheImporting() {
         // Send an alert to the screen
-        FullscreenActivity.myToastMessage = getActivity().getString(R.string.wait);
+        StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.wait);
         ShowToast.showToast(getActivity());
         // Check the selected folders
         selectednote = "";
@@ -374,7 +360,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         }
 
         // Now import the stuff via an AsyncTask
-        selected_folder_import = new SelectedFolderImport();
+        SelectedFolderImport selected_folder_import = new SelectedFolderImport();
         selected_folder_import.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
@@ -416,18 +402,14 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
 
         @Override
         protected String doInBackground(String... strings) {
-            createdfolders = new ArrayList<>();
+            ArrayList<String> createdfolders = new ArrayList<>();
             createdfolders.clear();
-            documentFolders = new ArrayList<>();
-            documentFolders.clear();
 
             try {
                 ZipEntry ze;
 
                 // Create a reference to the main songs folder
-                Uri main_uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", "", "");
                 createdfolders.add("MAIN");
-                documentFolders.add(DocumentFile.fromSingleUri(getActivity(),main_uri));
 
                 byte[] buffer = new byte[8192];
                 while ((ze = zis.getNextEntry()) != null) {
@@ -438,7 +420,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
 
                     for (String aFoldersselectedtoimport : foldersselectedtoimport) {
                         // Is it in the main folder
-                        if (aFoldersselectedtoimport.equals(FullscreenActivity.mainfoldername + "/") && !ze.getName().contains("/")) {
+                        if (aFoldersselectedtoimport.equals(getString(R.string.mainfoldername) + "/") && !ze.getName().contains("/")) {
                             oktoimportthisone = true;
                             // Or another folder
                         } else if (ze.getName().contains(aFoldersselectedtoimport)) {
@@ -452,11 +434,10 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                         // If not, add it
                         if (ze.isDirectory()) {
                             if (!createdfolders.contains(ze.getName())) {
-                                Uri folder_uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", ze.getName(), "");
                                 storageAccess.createFile(getActivity(), preferences, DocumentsContract.Document.MIME_TYPE_DIR,
                                         "Songs", ze.getName(), "");
                                 createdfolders.add(ze.getName());
-                                documentFolders.add(DocumentFile.fromSingleUri(getActivity(),folder_uri));
+                                //documentFolders.add(DocumentFile.fromSingleUri(getActivity(),folder_uri));
                                 publishProgress(numfile + "&&_" + ze.getName());
                             }
                         }
@@ -469,47 +450,20 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
 
                             // If we are lollipop or later, we need to create a file for the output stream to work
                             boolean exists = storageAccess.uriExists(getActivity(), file_uri);
-                            if (!exists || canoverwrite) {
+                            if (!exists) {
                                 storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences,
                                         file_uri, null, "Songs", "", ze.getName());
                             }
 
-                            /*if (storageAccess.lollipopOrLater() && !storageAccess.uriExists(getActivity(),file_uri)) {
-                                // To speed this up, look for the documentfile of the folder and create the file
-                                if (ze.getName().contains("/")) {
-
-                                    storageAccess.createFile(getActivity(), preferences, null, "Songs", "", ze.getName());
-                                    justcreated = true;
-
-                                    //String subfolder = ze.getName().substring(0,ze.getName().lastIndexOf("/"));
-                                    //String zefilename = ze.getName().replace(subfolder+"/","");
-
-                                    *//*if (createdfolders.contains(subfolder+"/")) {
-                                        int pos = createdfolders.indexOf(subfolder+"/");
-                                        DocumentFile root = documentFolders.get(pos);
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                            storageAccess.createDocument(getActivity(),root.getUri(),zefilename);
-                                        }
-                                        justcreated = true;
-                                    } else {
-                                        // The long way...
-                                        storageAccess.createFile(getActivity(), preferences, null, "Songs", "", ze.getName());
-                                        justcreated = true;
-                                    }*//*
-                                } else {
-                                    // The long way..
-                                    int pos = createdfolders.indexOf("MAIN");
-                                    DocumentFile root = documentFolders.get(pos);
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                        storageAccess.createDocument(getActivity(),root.getUri(),ze.getName());
-                                    }
-                                    justcreated = true;
-                                }
-                            }*/
 
                             // If we have allowed overwriting, get an output stream and write it
                             if (!exists || canoverwrite) {
-                                OutputStream outputStream = storageAccess.getOutputStream(getActivity(),file_uri);
+                                OutputStream outputStream = null;
+                                if (file_uri!=null) {
+                                    Log.d("ImportExportOSB","file_uri="+file_uri);
+                                    outputStream = storageAccess.getOutputStream(getActivity(), file_uri);
+                                }
+
                                 // Write the contents
                                 try {
                                     if (outputStream!=null) {
@@ -533,6 +487,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                             }
                         }
                     }
+                    zis.closeEntry();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -569,6 +524,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                 dismiss();
             } catch (Exception e) {
                 e.printStackTrace();
+                dismiss();
             }
         }
     }

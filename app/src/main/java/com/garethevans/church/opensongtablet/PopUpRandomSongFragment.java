@@ -2,10 +2,11 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 
 public class PopUpRandomSongFragment extends DialogFragment {
@@ -48,14 +50,6 @@ public class PopUpRandomSongFragment extends DialogFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
@@ -63,25 +57,23 @@ public class PopUpRandomSongFragment extends DialogFragment {
         }
     }
 
-    LinearLayout foundSong_Button;
-    TextView foundSongTitle_TextView;
-    TextView foundSongFolder_TextView;
-    Button generateRandom_Button;
-    ListView chooseFolders_ListView;
-    boolean songisvalid = false;
-    boolean iserror = false;
+    private LinearLayout foundSong_Button;
+    private TextView foundSongTitle_TextView;
+    private TextView foundSongFolder_TextView;
+    private ListView chooseFolders_ListView;
+    private boolean songisvalid = false;
     StorageAccess storageAccess;
     Preferences preferences;
-    SongFolders songFolders;
+    private ArrayList<String> foldernames;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_randomsong, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.random_song));
+        title.setText(getString(R.string.random_song));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,22 +84,22 @@ public class PopUpRandomSongFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setVisibility(View.GONE);
+        saveMe.hide();
 
         storageAccess = new StorageAccess();
         preferences = new Preferences();
-        songFolders = new SongFolders();
+        SongFolders songFolders = new SongFolders();
 
         // Initialise the views
         foundSong_Button = V.findViewById(R.id.foundSong_Button);
         foundSongTitle_TextView = V.findViewById(R.id.foundSongTitle_TextView);
         foundSongFolder_TextView = V.findViewById(R.id.foundSongFolder_TextView);
-        generateRandom_Button = V.findViewById(R.id.generateRandom_Button);
+        Button generateRandom_Button = V.findViewById(R.id.generateRandom_Button);
         chooseFolders_ListView = V.findViewById(R.id.chooseFolders_ListView);
 
         // Update the song folders
-        FullscreenActivity.songfilelist = new SongFileList();
-        songFolders.prepareSongFolders(getActivity(), storageAccess, preferences);
+        //FullscreenActivity.songfilelist = new SongFileList();
+        foldernames = songFolders.prepareSongFolders(getActivity());
 
         // Try to generate the file folders available to choose from and highlight the ones already specified
         generateFolderList();
@@ -127,35 +119,38 @@ public class PopUpRandomSongFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 if (songisvalid) {
-                    FullscreenActivity.whichSongFolder = foundSongFolder_TextView.getText().toString();
-                    FullscreenActivity.songfilename = foundSongTitle_TextView.getText().toString();
-                    Preferences.savePreferences();
+                    StaticVariables.whichSongFolder = foundSongFolder_TextView.getText().toString();
+                    StaticVariables.songfilename = foundSongTitle_TextView.getText().toString();
                     if (mListener!=null) {
                         mListener.loadSong();
-                        dismiss();
+                        try {
+                            dismiss();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
 
-    public void generateFolderList() {
+    private void generateFolderList() {
         // Since users change their folders, update this chosen list with those actually available
         StringBuilder newRandomFoldersChosen = new StringBuilder();
-        if (FullscreenActivity.mSongFolderNames!=null) {
-            ArrayAdapter<String> songfolders = new ArrayAdapter<>(getActivity(),
-                    android.R.layout.simple_list_item_checked, FullscreenActivity.mSongFolderNames);
+        if (foldernames!=null) {
+            ArrayAdapter<String> songfolders = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
+                    android.R.layout.simple_list_item_checked, foldernames);
             chooseFolders_ListView.setAdapter(songfolders);
 
             // Go through each folder available and tick it if the folder is in the randomFolders string
-            for (int i = 0; i < FullscreenActivity.mSongFolderNames.length; i++) {
-                if (FullscreenActivity.randomFolders.contains("$$__"+FullscreenActivity.mSongFolderNames[i]+"__$$")) {
+            for (int i = 0; i < foldernames.size(); i++) {
+                if (preferences.getMyPreferenceString(getActivity(),"randomSongFolderChoice","").contains("$$__"+foldernames.get(i)+"__$$")) {
                     chooseFolders_ListView.setItemChecked(i,true);
-                    newRandomFoldersChosen.append("$$__").append(FullscreenActivity.mSongFolderNames[i]).append("__$$");
+                    newRandomFoldersChosen.append("$$__").append(foldernames.get(i)).append("__$$");
                 } else {
                     chooseFolders_ListView.setItemChecked(i,false);
                 }
@@ -165,26 +160,23 @@ public class PopUpRandomSongFragment extends DialogFragment {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     if (chooseFolders_ListView.isItemChecked(i)) {
-                        if (!FullscreenActivity.randomFolders.contains("$$__"+FullscreenActivity.mSongFolderNames[i]+"__$$")) {
+                        if (!preferences.getMyPreferenceString(getActivity(),"randomSongFolderChoice","").contains("$$__"+foldernames.get(i)+"__$$")) {
                             // Not there, so add it
-                            FullscreenActivity.randomFolders += "$$__"+FullscreenActivity.mSongFolderNames[i]+"__$$";
-                            Preferences.savePreferences();
+                            String rf = preferences.getMyPreferenceString(getActivity(),"randomSongFolderChoice","") +
+                                    foldernames.get(i)+"__$$";
+                            preferences.setMyPreferenceString(getActivity(),"randomSongFolderChoice",rf);
                         }
                     } else {
                         // Trying to remove it
-                        if (FullscreenActivity.randomFolders.contains("$$__"+FullscreenActivity.mSongFolderNames[i]+"__$$")) {
+                        if (preferences.getMyPreferenceString(getActivity(),"randomSongFolderChoice","").contains("$$__"+foldernames.get(i)+"__$$")) {
                             // There, so remove it
-                            FullscreenActivity.randomFolders =
-                                    FullscreenActivity.randomFolders.replace("$$__"+FullscreenActivity.mSongFolderNames[i]+"__$$","");
-                            Preferences.savePreferences();
+                            String rf = preferences.getMyPreferenceString(getActivity(),"randomSongFolderChoice","");
+                            rf = rf.replace("$$__"+foldernames.get(i)+"__$$","");
+                            preferences.setMyPreferenceString(getActivity(),"randomSongFolderChoice",rf);
                         }
                     }
                 }
             });
-
-            // Update the chosen folders based on what is actually available
-            FullscreenActivity.randomFolders = newRandomFoldersChosen.toString();
-            Preferences.savePreferences();
         }
     }
 
@@ -207,7 +199,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
         }
     }
 
-    public void updateRandomSong(String song) {
+    private void updateRandomSong(String song) {
         // Update the button with the randomly found song
         if (!song.equals("")) {
             String[] r_song = song.split("__");
@@ -219,40 +211,35 @@ public class PopUpRandomSongFragment extends DialogFragment {
 
             } else {
                 foundSong_Button.setVisibility(View.GONE);
-                foundSongTitle_TextView.setText(getActivity().getString(R.string.error));
+                foundSongTitle_TextView.setText(getString(R.string.error));
                 foundSongFolder_TextView.setText("");
                 songisvalid = false;
             }
         }
     }
 
-    public String getRandomSong() {
+    private String getRandomSong() {
         try {
             // This feature randomly picks a song from the user's database
             ArrayList<String> songstochoosefrom = new ArrayList<>();
-            if (FullscreenActivity.search_database != null && FullscreenActivity.search_database.size() > 0) {
-                for (String check : FullscreenActivity.search_database) {
-                    String[] bits = check.split("_%%%_");
-                    if (bits.length >= 2 && bits[0] != null && bits[1] != null &&
-                            FullscreenActivity.randomFolders.contains("$$__" + bits[1].trim() + "__$$")) {
-                        songstochoosefrom.add(bits[1].trim() + "__" + bits[0].trim());
-                    }
+            SQLiteHelper sqLiteHelper = new SQLiteHelper(getActivity());
+            ArrayList<SQLite> allsongs = sqLiteHelper.getAllSongs(getActivity());
+
+            for (SQLite check : allsongs) {
+                if (preferences.getMyPreferenceString(getActivity(), "randomSongFolderChoice", "").
+                        contains(check.getFolder())) {
+                    songstochoosefrom.add(check.getFolder() + "__" + check.getFilename());
                 }
-                iserror = false;
-                int rand = getRandomNumber(songstochoosefrom.size());
-                if (rand > -1 && songstochoosefrom.size() > rand) {
-                    return songstochoosefrom.get(rand);
-                } else {
-                    return "";
-                }
+            }
+            int rand = getRandomNumber(songstochoosefrom.size());
+            if (rand > -1 && songstochoosefrom.size() > rand) {
+                return songstochoosefrom.get(rand);
             } else {
-                FullscreenActivity.myToastMessage = getActivity().getString(R.string.search_index_error);
-                iserror = true;
                 return "";
             }
+
         } catch (Exception e) {
-            FullscreenActivity.myToastMessage = getActivity().getString(R.string.search_index_error);
-            iserror = true;
+            StaticVariables.myToastMessage = getString(R.string.search_index_error);
             return "";
         }
     }

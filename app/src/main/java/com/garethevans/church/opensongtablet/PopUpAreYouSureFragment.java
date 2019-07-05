@@ -1,10 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 public class PopUpAreYouSureFragment extends DialogFragment {
 
     static String dialog;
+    Preferences preferences;
 
     static PopUpAreYouSureFragment newInstance(String getdialog) {
         dialog = getdialog;
@@ -52,19 +54,9 @@ public class PopUpAreYouSureFragment extends DialogFragment {
         super.onDetach();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // safety check
-        if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-    }
-
-    public void noAction() {
+    private void noAction() {
         // Open back up the previous menu
-        if (FullscreenActivity.whichMode.equals("Stage")) {
+        if (StaticVariables.whichMode.equals("Stage")) {
             switch (FullscreenActivity.whattodo) {
                 case "wipeallsongs":
                     FullscreenActivity.whattodo = "managestorage";
@@ -89,7 +81,7 @@ public class PopUpAreYouSureFragment extends DialogFragment {
         dismiss();
     }
 
-    public void yesAction() {
+    private void yesAction() {
         // Tell the listener to do something
         if (mListener!=null) {
             mListener.confirmedAction();
@@ -100,7 +92,7 @@ public class PopUpAreYouSureFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
@@ -108,7 +100,9 @@ public class PopUpAreYouSureFragment extends DialogFragment {
         final View V = inflater.inflate(R.layout.popup_areyousure, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.areyousure));
+        if (getActivity()!=null) {
+            title.setText(getActivity().getString(R.string.areyousure));
+        }
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,10 +122,12 @@ public class PopUpAreYouSureFragment extends DialogFragment {
             }
         });
 
+        preferences = new Preferences();
+
         TextView areyousurePrompt = V.findViewById(R.id.areyousurePrompt);
         areyousurePrompt.setText(dialog);
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }

@@ -9,23 +9,28 @@ class FadeoutMediaPlayer extends AsyncTask<Object,Void,String> {
     @SuppressLint("StaticFieldLeak")
     Context c;
     int which;
-    FadeoutMediaPlayer(Context context, int player) {
+    private String pan;
+    private float vol;
+
+    FadeoutMediaPlayer(Context context, String padpan, float padvol, int player) {
         this.c = context;
         this.which = player;
+        pan = padpan;
+        vol = padvol;
     }
 
     @Override
     protected String doInBackground(Object... objects) {
-        float level1 = FullscreenActivity.padvol;
+        float level1 = vol;
         int i = 1;
         while (i < 50) {
             i++;
             level1 = level1 * 0.9f;
             float leftVol1 = level1;
             float rightVol1 = level1;
-            if (FullscreenActivity.padpan.equals("left")) {
+            if (pan.equals("L")) {
                 rightVol1 = 0.0f;
-            } else if (FullscreenActivity.padpan.equals("right")) {
+            } else if (pan.equals("R")) {
                 leftVol1 = 0.0f;
             }
             try {
@@ -56,35 +61,35 @@ class FadeoutMediaPlayer extends AsyncTask<Object,Void,String> {
         try {
             if (which==1 && FullscreenActivity.mPlayer1!=null) {
                 PadFunctions.getPad1Status();
-                if (FullscreenActivity.pad1Playing) {
+                if (StaticVariables.pad1Playing) {
                     FullscreenActivity.mPlayer1.stop();
                     FullscreenActivity.mPlayer1.reset();
                 }
-                FullscreenActivity.pad1Playing = false;
-                FullscreenActivity.pad1Fading = false;
+                StaticVariables.pad1Playing = false;
+                StaticVariables.pad1Fading = false;
 
             } else if (which==2 && FullscreenActivity.mPlayer2!=null) {
                 PadFunctions.getPad2Status();
-                if (FullscreenActivity.pad2Playing) {
+                if (StaticVariables.pad2Playing) {
                     FullscreenActivity.mPlayer2.stop();
                     FullscreenActivity.mPlayer2.reset();
                 }
-                FullscreenActivity.pad2Playing = false;
-                FullscreenActivity.pad2Fading = false;
+                StaticVariables.pad2Playing = false;
+                StaticVariables.pad2Fading = false;
 
             } else if (which==1) {
-                FullscreenActivity.pad1Playing = false;
-                FullscreenActivity.pad1Fading = false;
+                StaticVariables.pad1Playing = false;
+                StaticVariables.pad1Fading = false;
             } else if (which==2) {
-                FullscreenActivity.pad2Playing = false;
-                FullscreenActivity.pad2Fading = false;
+                StaticVariables.pad2Playing = false;
+                StaticVariables.pad2Fading = false;
             }
 
             if (which==0) {
-                FullscreenActivity.pad1Playing = false;
-                FullscreenActivity.pad1Fading = false;
-                FullscreenActivity.pad2Playing = false;
-                FullscreenActivity.pad2Fading = false;
+                StaticVariables.pad1Playing = false;
+                StaticVariables.pad1Fading = false;
+                StaticVariables.pad2Playing = false;
+                StaticVariables.pad2Fading = false;
             }
 
         } catch (Exception e) {
