@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 
 public class ProcessSong extends Activity {
 
@@ -925,7 +926,6 @@ public class ProcessSong extends Activity {
 
         if (exists && !FullscreenActivity.receiveHostFiles) {
             // It exists and we don't want host files
-            Log.d("ProcessSong","Sending location as song exists");
             StaticVariables.whichSongFolder = sent_folder;
             StaticVariables.songfilename = sent_file;
             FullscreenActivity.whichDirection = sent_direction;
@@ -933,7 +933,6 @@ public class ProcessSong extends Activity {
 
         } else if (haslyrics) {
             // Receive the lyrics sent since we need or want them
-            Log.d("ProcessSong","Sending file contents");
             FullscreenActivity.mySalutXML = string;
             return "HostFile";
 
@@ -1318,8 +1317,9 @@ public class ProcessSong extends Activity {
 
         for (String bit:lyrics) {
             String imagetext;
-            if ((bit.toLowerCase().endsWith(".png") || bit.toLowerCase().endsWith(".jpg") || bit.toLowerCase().endsWith(".gif")) ||
-                    (bit.toLowerCase().contains("content://") || bit.toLowerCase().contains("file://"))) {
+            if ((bit.toLowerCase(Locale.ROOT).endsWith(".png") || bit.toLowerCase(Locale.ROOT).endsWith(".jpg") ||
+                    bit.toLowerCase(Locale.ROOT).endsWith(".gif")) ||
+                    (bit.toLowerCase(Locale.ROOT).contains("content://") || bit.toLowerCase(Locale.ROOT).contains("file://"))) {
                 FullscreenActivity.isImageSection = true;
                 imagetext = bit.trim();
             } else {
@@ -2747,6 +2747,7 @@ public class ProcessSong extends Activity {
     RelativeLayout preparePerformanceBoxView(Context c, Preferences preferences, int lyricsTextColor, int lyricsBackgroundColor, int m, int padding) {
         RelativeLayout boxbit  = new RelativeLayout(c);
         LinearLayout.LayoutParams llp = linearlayout_params();
+        //LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,6000);
         llp.setMargins(0,0,m,0);
         boxbit.setLayoutParams(llp);
         boxbit.setBackgroundResource(R.drawable.lyrics_box);
@@ -2823,6 +2824,8 @@ public class ProcessSong extends Activity {
         songbit.setLayoutParams(linearlayout_params());
         songbit.setClipChildren(false);
         songbit.setClipToPadding(false);
+        songbit.setFocusable(true);
+        songbit.setFocusableInTouchMode(true);
         return songbit;
     }
     LinearLayout prepareStageSongBitView(Context c) {

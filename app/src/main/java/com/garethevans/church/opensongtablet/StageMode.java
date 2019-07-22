@@ -63,10 +63,12 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -78,7 +80,6 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.bluelinelabs.logansquare.LoganSquare;
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
@@ -155,10 +156,13 @@ public class StageMode extends AppCompatActivity implements
 
     // Song sections view
     RelativeLayout mypage;
-    ScrollView songscrollview;
+    int songwidth = 0;
+    int songheight = 0;
+    HorizontalScrollView horizontalscrollview, glideimage_HorizontalScrollView;
     RelativeLayout testpane, testpane1_2, testpane2_2, testpane1_3, testpane2_3, testpane3_3;
     LinearLayout column1_1, column1_2, column2_2, column1_3, column2_3, column3_3;
-    ScrollView glideimage_ScrollView;
+    ScrollView songscrollview, glideimage_ScrollView;
+    FrameLayout glideimage_FrameLayout;
     ImageView glideimage, highlightNotes;
     LinearLayout backingtrackProgress, playbackProgress, capoInfo, learnAutoScroll;
     TextView padcurrentTime_TextView, padTimeSeparator_TextView, padtotalTime_TextView,
@@ -394,6 +398,7 @@ public class StageMode extends AppCompatActivity implements
 
                         // Set up the gesture detector
                         scaleGestureDetector = new ScaleGestureDetector(StageMode.this, new simpleOnScaleGestureListener());
+                        //scaleGestureDetector = new ScaleGestureDetector(StageMode.this, new MyZoomLayout(StageMode.this,null));
                         gestureDetector = new GestureDetector(new SwipeDetector());
 
                         // Set up the toolbar and views
@@ -607,6 +612,7 @@ public class StageMode extends AppCompatActivity implements
         batteryimage = findViewById(R.id.batteryimage);
         batteryholder = findViewById(R.id.batteryholder);
         mypage = findViewById(R.id.mypage);
+        //mypage.init(StageMode.this);
         mypage.setBackgroundColor(lyricsBackgroundColor);
 
         // Set up the pad and autoscroll timing display
@@ -638,8 +644,11 @@ public class StageMode extends AppCompatActivity implements
 
         // Identify the views being used
         songscrollview = findViewById(R.id.songscrollview);
+        horizontalscrollview = findViewById(R.id.horizontalscrollview);
 
         glideimage_ScrollView = findViewById(R.id.glideimage_ScrollView);
+        glideimage_HorizontalScrollView = findViewById(R.id.glideimage_HorizontalScrollView);
+        glideimage_FrameLayout = findViewById(R.id.glideimage_FrameLayout);
         glideimage = findViewById(R.id.glideimage);
         testpane = findViewById(R.id.testpane);
         testpane1_2 = findViewById(R.id.testpane1_2);
@@ -650,6 +659,7 @@ public class StageMode extends AppCompatActivity implements
         highlightNotes = findViewById(R.id.highlightNotes);
 
         songscrollview.setBackgroundColor(lyricsBackgroundColor);
+        //songscrollview.setBackgroundColor(0xff0000ff);
 
         // Enable the song and author section to link to edit song
         songandauthor.setOnClickListener(new View.OnClickListener() {
@@ -1050,7 +1060,7 @@ public class StageMode extends AppCompatActivity implements
         if (data!=null) {
             try {
                 SalutMessage newMessage = LoganSquare.parse((String)data,SalutMessage.class);
-                Log.d("d","newMessage="+newMessage.description);
+                Log.d("StageMode","Salut Message = "+newMessage);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1143,7 +1153,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         MenuHandlers.actOnClicks(StageMode.this, preferences, item.getItemId());
         return super.onOptionsItemSelected(item);
     }
@@ -1565,6 +1575,7 @@ public class StageMode extends AppCompatActivity implements
                     @Override
                     public void run() {
                         try {
+                            glideimage_HorizontalScrollView.setVisibility(View.GONE);
                             glideimage_ScrollView.setVisibility(View.GONE);
                             songscrollview.setVisibility(View.GONE);
                             highlightNotes.setVisibility(View.GONE);
@@ -1602,53 +1613,6 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void loadPDF() {
-
-        Bitmap bmp = processSong.createPDFPage(StageMode.this, preferences, storageAccess,
-                getAvailableWidth(), getAvailableHeight(),
-                preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W"));
-
-        glideimage_ScrollView.setVisibility(View.VISIBLE);
-
-        // Set the ab title to include the page info if available
-        songtitle_ab.setText(StaticVariables.mTitle);
-        songkey_ab.setText("");
-        songcapo_ab.setText("");
-        if (bmp != null) {
-            String text = (FullscreenActivity.pdfPageCurrent + 1) + "/" + FullscreenActivity.pdfPageCount;
-            songauthor_ab.setText(text);
-
-            // Set the image to the view
-            glideimage.setBackgroundColor(StaticVariables.white);
-            glideimage.setImageBitmap(bmp);
-
-        } else {
-            songauthor_ab.setText(getResources().getString(R.string.nothighenoughapi));
-
-            // Set the image to the unhappy android
-            Drawable myDrawable = getResources().getDrawable(R.drawable.unhappy_android);
-            glideimage.setImageDrawable(myDrawable);
-
-            // Set an intent to try and open the pdf with an appropriate application
-            Intent target = new Intent(Intent.ACTION_VIEW);
-            // Run an intent to try to show the pdf externally
-            Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs",
-                    StaticVariables.whichSongFolder, StaticVariables.songfilename);
-            target.setDataAndType(uri, "application/pdf");
-            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            callIntent("openpdf", target);
-        }
-
-        songscrollview.removeAllViews();
-
-        // Animate the view in after a delay (waiting for slide out animation to complete
-        animateInSong();
-
-        // Check for scroll position
-        delaycheckscroll.postDelayed(checkScrollPosition, FullscreenActivity.checkscroll_time);
-
-        preferences.setMyPreferenceBoolean(StageMode.this,"songLoadSuccess",true);
-    }
     @Override
     public void doExport() {
         // This is called after the user has specified what should be exported.
@@ -2642,7 +2606,6 @@ public class StageMode extends AppCompatActivity implements
         // Based on the user's choices for the custom quicklaunch buttons,
         // set the appropriate icons and onClick listeners
         final String b1ac = preferences.getMyPreferenceString(StageMode.this,"pageButtonCustom1Action","");
-        Log.d("StageMode","b1ac="+b1ac);
         final String b2ac = preferences.getMyPreferenceString(StageMode.this,"pageButtonCustom2Action","");
         final String b3ac = preferences.getMyPreferenceString(StageMode.this,"pageButtonCustom3Action","");
         final String b4ac = preferences.getMyPreferenceString(StageMode.this,"pageButtonCustom4Action","");
@@ -3071,7 +3034,6 @@ public class StageMode extends AppCompatActivity implements
                                                     }
                                                     highlightNotes.setLayoutParams(rlp2);
                                                     highlightNotes.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                                    Log.d("StageMode", "Image size set on second pass");
                                                 }
                                             }
                                         });
@@ -3454,28 +3416,28 @@ public class StageMode extends AppCompatActivity implements
                 break;
 
             case "wipeallsongs":
-                // Wipe all songs - Getting rid of this!!!!!
-                Log.d("PresenterMode", "Trying wipe songs folder - ignoring");
-
-                /*// Wipe all songs
-                storageAccess.wipeFolder(StageMode.this, preferences, "Songs", "");
-                // Rebuild the song list
-                storageAccess.listSongs(StageMode.this, preferences);
-                listSongFiles.songUrisInFolder(StageMode.this, preferences);
-                refreshAll();*/
+                // Not needed anymore
                 break;
 
-            /*case "resetcolours":
-                // Reset the theme colours
-                PopUpThemeChooserFragment.getDefaultColours();
-                Preferences.savePreferences();
-                refreshAll();
-                FullscreenActivity.whattodo = "changetheme";
-                openFragment();
-                break;*/
         }
     }
 
+    private void resetImageViewSizes() {
+        glideimage_HorizontalScrollView.getLayoutParams().width = RelativeLayout.LayoutParams.MATCH_PARENT;
+        glideimage_HorizontalScrollView.getLayoutParams().height = RelativeLayout.LayoutParams.MATCH_PARENT;
+        glideimage_ScrollView.getLayoutParams().width = HorizontalScrollView.LayoutParams.WRAP_CONTENT;
+        glideimage_ScrollView.getLayoutParams().height = HorizontalScrollView.LayoutParams.MATCH_PARENT;
+        glideimage_FrameLayout.getLayoutParams().width = ScrollView.LayoutParams.MATCH_PARENT;
+        glideimage_FrameLayout.getLayoutParams().height = ScrollView.LayoutParams.WRAP_CONTENT;
+        glideimage.setPivotX(0.0f);
+        glideimage.setPivotY(0.0f);
+        glideimage.setScaleX(1.0f);
+        glideimage.setScaleY(1.0f);
+        glideimage.setTop(0);
+        glideimage.setLeft(0);
+        glideimage.getLayoutParams().width = FrameLayout.LayoutParams.MATCH_PARENT;
+        glideimage.getLayoutParams().height = FrameLayout.LayoutParams.MATCH_PARENT;
+    }
 
     public void loadImage() {
         // Process the image location into an URI
@@ -3483,6 +3445,7 @@ public class StageMode extends AppCompatActivity implements
                 StaticVariables.whichSongFolder, StaticVariables.songfilename);
 
         glideimage_ScrollView.setVisibility(View.VISIBLE);
+        glideimage_HorizontalScrollView.setVisibility(View.VISIBLE);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -3497,22 +3460,30 @@ public class StageMode extends AppCompatActivity implements
         int widthavail = getAvailableWidth();
         int heightavail = getAvailableHeight();
 
+        glideimage.setScaleX(1.0f);
+        glideimage.setScaleY(1.0f);
+        glideimage.setBackgroundColor(StaticVariables.transparent);
+        songwidth = widthavail;
+        songheight = heightavail;
+
+        // Reset the imageview
+        resetImageViewSizes();
+
         // Decide on the image size to use
         if (preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W").equals("Y")) {
             // Glide sorts the width vs height (keeps the image in the space available using fitCenter
-            glideimage.setBackgroundColor(StaticVariables.transparent);
             RequestOptions myOptions = new RequestOptions()
                     .fitCenter()
                     .override(widthavail, heightavail);
-            Glide.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
+            GlideApp.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
         } else {
             // Now decide on the scaling required....
             float xscale = (float) widthavail / (float) imgwidth;
             int glideheight = (int) ((float) imgheight * xscale);
-            glideimage.setBackgroundColor(StaticVariables.transparent);
             RequestOptions myOptions = new RequestOptions()
                     .override(widthavail, glideheight);
-            Glide.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
+            GlideApp.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
+
         }
 
         songscrollview.removeAllViews();
@@ -3525,6 +3496,93 @@ public class StageMode extends AppCompatActivity implements
 
         preferences.setMyPreferenceBoolean(StageMode.this,"songLoadSuccess",true);
     }
+
+    public void loadPDF() {
+
+        Bitmap bmp = processSong.createPDFPage(StageMode.this, preferences, storageAccess,
+                getAvailableWidth(), getAvailableHeight(),
+                preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W"));
+
+        glideimage_ScrollView.setVisibility(View.VISIBLE);
+        glideimage_HorizontalScrollView.setVisibility(View.VISIBLE);
+
+        // Set the ab title to include the page info if available
+        songtitle_ab.setText(StaticVariables.mTitle);
+        songkey_ab.setText("");
+        songcapo_ab.setText("");
+        if (bmp != null) {
+            int widthavail = getAvailableWidth();
+            int heightavail = getAvailableHeight();
+
+            glideimage.setScaleX(1.0f);
+            glideimage.setScaleY(1.0f);
+            glideimage.setBackgroundColor(StaticVariables.transparent);
+            songwidth = widthavail;
+            songheight = heightavail;
+
+            // Reset the imageview
+            resetImageViewSizes();
+
+            String text = (FullscreenActivity.pdfPageCurrent + 1) + "/" + FullscreenActivity.pdfPageCount;
+            songauthor_ab.setText(text);
+
+            glideimage.setBackgroundColor(0xffffffff);
+
+            // Decide on the image size to use
+            if (preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W").equals("Y")) {
+                // Glide sorts the width vs height (keeps the image in the space available using fitCenter
+                RequestOptions myOptions = new RequestOptions()
+                        .fitCenter()
+                        .override(widthavail, heightavail);
+                GlideApp.with(StageMode.this).load(bmp).apply(myOptions).into(glideimage);
+            } else {
+                // Now decide on the scaling required....
+                float xscale = (float) widthavail / (float) bmp.getWidth();
+                int glideheight = (int) ((float) bmp.getHeight() * xscale);
+                RequestOptions myOptions = new RequestOptions()
+                        .override(widthavail, glideheight);
+                GlideApp.with(StageMode.this).load(bmp).apply(myOptions).into(glideimage);
+
+            }
+
+            // Set the image to the view
+            /*RequestOptions myOptions = new RequestOptions()
+                    .fitCenter()
+                    .override(bmp.getWidth(), bmp.getHeight());
+            glideimage.setBackgroundColor(0xffffffff);
+            GlideApp.with(StageMode.this).load(bmp).apply(myOptions).into(glideimage);*/
+            //GlideApp.with(glideimage).load(bmp).fitCenter();
+            //glideimage.setBackgroundColor(StaticVariables.white);
+            //glideimage.setImageBitmap(bmp);
+
+        } else {
+            songauthor_ab.setText(getResources().getString(R.string.nothighenoughapi));
+
+            // Set the image to the unhappy android
+            Drawable myDrawable = getResources().getDrawable(R.drawable.unhappy_android);
+            glideimage.setImageDrawable(myDrawable);
+
+            // Set an intent to try and open the pdf with an appropriate application
+            Intent target = new Intent(Intent.ACTION_VIEW);
+            // Run an intent to try to show the pdf externally
+            Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs",
+                    StaticVariables.whichSongFolder, StaticVariables.songfilename);
+            target.setDataAndType(uri, "application/pdf");
+            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            callIntent("openpdf", target);
+        }
+
+        songscrollview.removeAllViews();
+
+        // Animate the view in after a delay (waiting for slide out animation to complete
+        animateInSong();
+
+        // Check for scroll position
+        delaycheckscroll.postDelayed(checkScrollPosition, FullscreenActivity.checkscroll_time);
+
+        preferences.setMyPreferenceBoolean(StageMode.this,"songLoadSuccess",true);
+    }
+
 
     public void getLearnedSongLengthValue() {
         int time = (int) (FullscreenActivity.time_passed - FullscreenActivity.time_start) / 1000;
@@ -3621,7 +3679,6 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.pdfPageCurrent = 0;
         }
 
-        Log.d("StageMode","setView="+StaticVariables.setView);
         // If this hasn't been dealt with
         if (!dealtwithaspdf && StaticVariables.setView) {
             // Is there another song in the set?  If so move, if not, do nothing
@@ -3839,7 +3896,6 @@ public class StageMode extends AppCompatActivity implements
         if (requestCode == StaticVariables.LINK_AUDIO || requestCode == StaticVariables.LINK_OTHER) {
             // This has been called from the popuplinks fragment
             try {
-                Log.d("StageMode","Trying to send result to fragment");
                 newFragment.onActivityResult(requestCode, resultCode, data);
             } catch (Exception e) {
                 Log.d("StageMode","Error sending activity result to fragment");
@@ -3847,7 +3903,6 @@ public class StageMode extends AppCompatActivity implements
         } else if (requestCode==StaticVariables.REQUEST_IMAGE_CODE) {
             // This has been called from the custom slides fragment
             try {
-                Log.d("StageMode","Trying to send result to fragment");
                 newFragment.onActivityResult(requestCode, resultCode, data);
             } catch (Exception e) {
                 Log.d("StageMode","Error sending activity result to fragment");
@@ -3900,6 +3955,7 @@ public class StageMode extends AppCompatActivity implements
             }
         } else {
             glideimage_ScrollView.setVisibility(View.GONE);
+            glideimage_HorizontalScrollView.setVisibility(View.GONE);
             songscrollview.setVisibility(View.VISIBLE);
             if (FullscreenActivity.whichDirection.equals("L2R")) {
                 songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left));
@@ -3925,12 +3981,43 @@ public class StageMode extends AppCompatActivity implements
         // Check the scroll buttons
         onScrollAction();
 
+        // Keep a note of the content size in case we pinch zoom
+
+        if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
+            ViewTreeObserver.OnGlobalLayoutListener vto = new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    songwidth = glideimage.getMeasuredWidth();
+                    songheight = glideimage.getMeasuredHeight();
+                    if (songwidth>0 && songheight>0) {
+                        Log.d("d","Got sizes");
+                        glideimage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                }
+            };
+
+            glideimage.getViewTreeObserver().addOnGlobalLayoutListener(vto);
+
+        } else {
+            final LinearLayout songbit = (LinearLayout) songscrollview.getChildAt(0);
+            songbit.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    songwidth = songbit.getMeasuredWidth();
+                    songheight = songbit.getMeasuredHeight();
+                    songbit.setScaleX(1.0f);
+                    songbit.setScaleY(1.0f);
+                }
+            }, 1000);
+        }
+
         songscrollview.scrollTo(0,0);
+        glideimage_ScrollView.scrollTo(0,0);
         FullscreenActivity.newPosFloat = 0.0f;
         // Automatically start the autoscroll
         if (preferences.getMyPreferenceBoolean(StageMode.this,"autoscrollAutoStart",false) &&
                 StaticVariables.clickedOnAutoScrollStart) {
-            if (!FullscreenActivity.isPDF && StaticVariables.autoscrollok) {
+            if (!FullscreenActivity.isPDF && !FullscreenActivity.isImage && StaticVariables.autoscrollok) {
                 songscrollview.post(new Runnable() {
                     @Override
                     public void run() {
@@ -5199,9 +5286,9 @@ public class StageMode extends AppCompatActivity implements
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ((HorizontalScrollView)findViewById(R.id.horizontalscrollview)).getLayoutParams();
             lp.addRule(RelativeLayout.BELOW, 0);
             findViewById(R.id.horizontalscrollview).setLayoutParams(lp);
-            RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) ((ScrollView)findViewById(R.id.glideimage_ScrollView)).getLayoutParams();
+            RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) ((HorizontalScrollView)findViewById(R.id.glideimage_HorizontalScrollView)).getLayoutParams();
             lp2.addRule(RelativeLayout.BELOW, 0);
-            findViewById(R.id.glideimage_ScrollView).setLayoutParams(lp2);
+            findViewById(R.id.glideimage_HorizontalScrollView).setLayoutParams(lp2);
             RelativeLayout.LayoutParams lp3 = (RelativeLayout.LayoutParams) ((ImageView)findViewById(R.id.highlightNotes)).getLayoutParams();
             lp3.addRule(RelativeLayout.BELOW, 0);
             findViewById(R.id.highlightNotes).setLayoutParams(lp3);
@@ -5215,9 +5302,9 @@ public class StageMode extends AppCompatActivity implements
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ((HorizontalScrollView)findViewById(R.id.horizontalscrollview)).getLayoutParams();
             lp.addRule(RelativeLayout.BELOW, ab_toolbar.getId());
             findViewById(R.id.horizontalscrollview).setLayoutParams(lp);
-            RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) ((ScrollView)findViewById(R.id.glideimage_ScrollView)).getLayoutParams();
+            RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) ((HorizontalScrollView)findViewById(R.id.glideimage_HorizontalScrollView)).getLayoutParams();
             lp2.addRule(RelativeLayout.BELOW,  ab_toolbar.getId());
-            findViewById(R.id.glideimage_ScrollView).setLayoutParams(lp2);
+            findViewById(R.id.glideimage_HorizontalScrollView).setLayoutParams(lp2);
             RelativeLayout.LayoutParams lp3 = (RelativeLayout.LayoutParams) ((ImageView)findViewById(R.id.highlightNotes)).getLayoutParams();
             lp3.addRule(RelativeLayout.BELOW,  ab_toolbar.getId());
             findViewById(R.id.highlightNotes).setLayoutParams(lp3);
@@ -5238,9 +5325,9 @@ public class StageMode extends AppCompatActivity implements
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ((HorizontalScrollView)findViewById(R.id.horizontalscrollview)).getLayoutParams();
             lp.addRule(RelativeLayout.BELOW, 0);
             findViewById(R.id.horizontalscrollview).setLayoutParams(lp);
-            RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) ((ScrollView)findViewById(R.id.glideimage_ScrollView)).getLayoutParams();
+            RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) ((HorizontalScrollView)findViewById(R.id.glideimage_HorizontalScrollView)).getLayoutParams();
             lp2.addRule(RelativeLayout.BELOW, 0);
-            findViewById(R.id.glideimage_ScrollView).setLayoutParams(lp2);
+            findViewById(R.id.glideimage_HorizontalScrollView).setLayoutParams(lp2);
             RelativeLayout.LayoutParams lp3 = (RelativeLayout.LayoutParams) ((ImageView)findViewById(R.id.highlightNotes)).getLayoutParams();
             lp3.addRule(RelativeLayout.BELOW, 0);
             findViewById(R.id.highlightNotes).setLayoutParams(lp3);
@@ -5254,9 +5341,9 @@ public class StageMode extends AppCompatActivity implements
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ((HorizontalScrollView)findViewById(R.id.horizontalscrollview)).getLayoutParams();
             lp.addRule(RelativeLayout.BELOW, ab_toolbar.getId());
             findViewById(R.id.horizontalscrollview).setLayoutParams(lp);
-            RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) ((ScrollView)findViewById(R.id.glideimage_ScrollView)).getLayoutParams();
+            RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) ((HorizontalScrollView)findViewById(R.id.glideimage_HorizontalScrollView)).getLayoutParams();
             lp2.addRule(RelativeLayout.BELOW,  ab_toolbar.getId());
-            findViewById(R.id.glideimage_ScrollView).setLayoutParams(lp2);
+            findViewById(R.id.glideimage_HorizontalScrollView).setLayoutParams(lp2);
             RelativeLayout.LayoutParams lp3 = (RelativeLayout.LayoutParams) ((ImageView)findViewById(R.id.highlightNotes)).getLayoutParams();
             lp3.addRule(RelativeLayout.BELOW,  ab_toolbar.getId());
             findViewById(R.id.highlightNotes).setLayoutParams(lp3);
@@ -5332,6 +5419,7 @@ public class StageMode extends AppCompatActivity implements
                     LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     if (StaticVariables.thisSongScale.equals("Y")) {
                         llp1_1 = new LinearLayout.LayoutParams(getAvailableWidth(), getAvailableHeight());
+                        //llp1_1 = new LinearLayout.LayoutParams(getAvailableWidth(), LinearLayout.LayoutParams.WRAP_CONTENT);
                     } else if (StaticVariables.thisSongScale.equals("W")) {
                         llp1_1 = new LinearLayout.LayoutParams(getAvailableWidth(), LinearLayout.LayoutParams.WRAP_CONTENT);
                     }
@@ -5854,6 +5942,8 @@ public class StageMode extends AppCompatActivity implements
                 rendercalled = false;
                 mypage.setBackgroundColor(lyricsBackgroundColor);
                 songscrollview.setBackgroundColor(lyricsBackgroundColor);
+                //songscrollview.setBackgroundColor(0xff0000ff);
+
                 biggestscale_1col = 0f;
                 biggestscale_2col = 0f;
                 biggestscale_3col = 0f;
@@ -7480,8 +7570,135 @@ public class StageMode extends AppCompatActivity implements
         return super.onKeyLongPress(keyCode, event);
     }
 
-    private class simpleOnScaleGestureListener extends
-            ScaleGestureDetector.SimpleOnScaleGestureListener {
+    private class simpleOnScaleGestureListener implements ScaleGestureDetector.OnScaleGestureListener {
+        float scaleFactor;
+        LinearLayout songbit;
+
+        @Override
+        public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
+            scaleFactor = scaleGestureDetector.getScaleFactor();
+            if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
+                glideimage.setScaleX(scaleFactor);
+                glideimage.setScaleY(scaleFactor);
+            } else {
+                songbit.setScaleX(scaleFactor);
+                songbit.setScaleY(scaleFactor);
+            }
+            return false;
+        }
+
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector scaleGestureDetector) {
+            if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                glideimage.getLayoutParams().width = songwidth;
+                glideimage.getLayoutParams().height = songheight;
+                //svlp.height = songheight;
+                //fl.setLayoutParams(svlp);
+                glideimage.setScaleX(1.0f);
+                glideimage.setScaleY(1.0f);
+                glideimage.setPivotX(glideimage.getLeft());
+                glideimage.setPivotY(glideimage.getTop());
+                resetImageViewSizes();
+            } else {
+                songbit = (LinearLayout) songscrollview.getChildAt(0);
+                songbit.setPivotX(songbit.getLeft());
+                songbit.setPivotY(songbit.getTop());
+            }
+            return true;
+        }
+
+        @Override
+        public void onScaleEnd(ScaleGestureDetector scaleGestureDetector) {
+            scaleFactor = scaleGestureDetector.getScaleFactor();
+
+            final int newwidth = (int) (songwidth * scaleFactor);
+            final int newheight = (int) (songheight * scaleFactor);
+            final int screenwidth = getAvailableWidth();
+            final int screenheight = getAvailableHeight();
+
+            if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+
+                final HorizontalScrollView.LayoutParams hsvlp = (HorizontalScrollView.LayoutParams) glideimage_ScrollView.getLayoutParams();
+                //final ScrollView.LayoutParams svlp = (ScrollView.LayoutParams) fl.getLayoutParams();
+                //svlp.width = newwidth;
+                //svlp.height = newheight;
+                //fl.setLayoutParams(svlp);
+                glideimage_FrameLayout.getLayoutParams().width = newwidth;
+                glideimage_FrameLayout.getLayoutParams().height = newheight;
+
+                glideimage.setAdjustViewBounds(true);
+                glideimage.getLayoutParams().width = newwidth;
+                glideimage.getLayoutParams().height = newheight;
+                // TODO check that this works if ab is hidden
+                // TODO still to figure out how to shrink the height if scaled dowm
+                glideimage_FrameLayout.requestLayout();
+                glideimage_FrameLayout.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        glideimage_ScrollView.scrollTo(0, 0);
+                        glideimage_HorizontalScrollView.scrollTo(0, 0);
+                        glideimage.setScaleX(1.0f);
+                        glideimage.setScaleY(1.0f);
+
+                        // If the width of the song is smaller than the screen width, make the scrollview the screen width
+                        // Otherwise make it expand to fit the song
+                        if (newwidth <= screenwidth) {
+                            hsvlp.width = screenwidth;
+
+                        } else {
+                            hsvlp.width = newwidth;
+                        }
+
+                        //Keep the scrollview the height of the page
+                        hsvlp.height = screenheight;
+
+                        glideimage_ScrollView.setLayoutParams(hsvlp);
+                    }
+                });
+
+            } else {
+                final HorizontalScrollView.LayoutParams hsvlp = (HorizontalScrollView.LayoutParams) songscrollview.getLayoutParams();
+                final ScrollView.LayoutParams lllp = new ScrollView.LayoutParams(newwidth, newheight);
+                lllp.width = newwidth;
+                lllp.height = newheight;
+                if (newheight<songheight) {
+                    // Resizing the height below the original size doesn't work in a linear layout!
+                    // Use a negative padding instead
+                    songbit.setPaddingRelative(0,0,0,newheight-songheight);
+                } else {
+                    songbit.setPadding(0,0,0,0);
+                }
+                songbit.setLayoutParams(lllp);
+
+                // The minimum height is for adding height to the bottom if it gets bigger
+                songbit.setMinimumHeight(newheight);
+                songscrollview.requestLayout();
+                songscrollview.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        songscrollview.scrollTo(0, 0);
+                        horizontalscrollview.scrollTo(0, 0);
+
+                        // If the width of the song is smaller than the screen width, make the scrollview the screen width
+                        // Otherwise make it expand to fit the song
+                        if (newwidth <= screenwidth) {
+                            hsvlp.width = screenwidth;
+                        } else {
+                            hsvlp.width = newwidth;
+                        }
+
+                        //Keep the scrollview the height of the page
+                        hsvlp.height = screenheight;
+
+                        songscrollview.setLayoutParams(hsvlp);
+                        songscrollview.requestLayout();
+
+                    }
+                });
+            }
+        }
     }
 
     @Override

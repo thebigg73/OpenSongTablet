@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -160,7 +161,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         if (FullscreenActivity.file_uri!=null && FullscreenActivity.file_uri.getPath()!=null) {
             ext = FullscreenActivity.file_uri.getPath();
             if (ext != null) {
-                ext = ext.toLowerCase();
+                ext = ext.toLowerCase(Locale.ROOT);
                 if (ext.endsWith(".backup")) {
                     s = getActivity().getString(R.string.import_onsong_choose);
                     what = "onsongbackup";
@@ -309,10 +310,10 @@ public class PopUpImportExternalFile extends DialogFragment {
         } else if (what.contains("onsong")) {
             folderlist = new ArrayList<>();
             folderlist.clear();
-            folderlist = songFolders.prepareSongFolders(getActivity());
+            folderlist = songFolders.prepareSongFolders(getActivity(),preferences);
             folderlist.add(0, "OnSong");
         } else {
-            folderlist = songFolders.prepareSongFolders(getActivity());
+            folderlist = songFolders.prepareSongFolders(getActivity(),preferences);
         }
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, folderlist);
         chooseFolder_Spinner.setAdapter(arrayAdapter);

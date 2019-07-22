@@ -417,7 +417,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                     songlist.get(i).getKey().equals(c.getString(R.string.songsinfolder))) {
                 index = "/";
             } else if (songlist.get(i)!=null && songlist.get(i).getFilename()!=null && !songlist.get(i).getFilename().equals("")) {
-                index = songlist.get(i).getFilename().substring(0, 1).toUpperCase();
+                index = songlist.get(i).getFilename().substring(0, 1).toUpperCase(StaticVariables.locale);
             }
 
             if (linkedHashMap.get(index) == null) {

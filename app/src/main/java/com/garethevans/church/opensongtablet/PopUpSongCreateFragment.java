@@ -346,7 +346,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
     private class GetFolders extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
-            foldernames = songFolders.prepareSongFolders(getActivity());
+            foldernames = songFolders.prepareSongFolders(getActivity(),preferences);
             return null;
         }
 

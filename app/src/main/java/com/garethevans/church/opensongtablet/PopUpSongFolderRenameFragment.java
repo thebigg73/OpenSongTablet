@@ -290,7 +290,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
 
         @Override
         protected String doInBackground(Object... params) {
-            ArrayList<String> initialoldtempfolders = songFolders.prepareSongFolders(getActivity());
+            ArrayList<String> initialoldtempfolders = songFolders.prepareSongFolders(getActivity(),preferences);
             // We don't want the main folder to show here
             oldtempfolders = new ArrayList<>();
             for (String s:initialoldtempfolders) {

@@ -94,6 +94,8 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         saveMe.hide();
 
         storageAccess = new StorageAccess();
+        preferences = new Preferences();
+
         // Initialise the basic views
         TextView pdftotext_found = V.findViewById(R.id.pdftotext_found);
         pdftotext_found.setTypeface(Typeface.MONOSPACE);

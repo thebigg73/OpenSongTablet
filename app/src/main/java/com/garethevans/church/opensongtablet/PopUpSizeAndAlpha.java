@@ -22,8 +22,8 @@ class PopUpSizeAndAlpha {
                 int height = metrics.heightPixels;
                 int width = metrics.widthPixels;
 
-                float myscale = preferences.getMyPreferenceFloat(ac,"popupScale",0.7f);
                 float myalpha = preferences.getMyPreferenceFloat(ac,"popupAlpha",0.8f);
+                float myscale = preferences.getMyPreferenceFloat(ac,"popupScale",0.7f);
                 float mydim = preferences.getMyPreferenceFloat(ac,"popupDim",0.8f);
                 String position = preferences.getMyPreferenceString(ac,"popupPosition","c");
 

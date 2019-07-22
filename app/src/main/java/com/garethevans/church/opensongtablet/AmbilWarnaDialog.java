@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import br.com.sapereaude.maskedEditText.MaskedEditText;
 class AmbilWarnaDialog {
 	interface OnAmbilWarnaListener {
@@ -77,7 +79,7 @@ class AmbilWarnaDialog {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 // Checks the textView matches the appropriate format
-                String gettext = textView.getText().toString().toUpperCase();
+                String gettext = textView.getText().toString().toUpperCase(Locale.ROOT);
                 int mycolor;
                 try {
                     mycolor = Color.parseColor("#FF"+gettext);

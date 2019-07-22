@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.Locale;
 
 public class LoadXML extends Activity {
 
@@ -51,19 +52,19 @@ public class LoadXML extends Activity {
         // Get the android version
         String filetype = "SONG";
         isxml = true;
-        if (StaticVariables.songfilename.toLowerCase().endsWith(".pdf")) {
+        if (StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".pdf")) {
             FullscreenActivity.isPDF = true;
             filetype = "PDF";
             isxml = false;
-        } else if (StaticVariables.songfilename.toLowerCase().endsWith(".doc") ||
-                StaticVariables.songfilename.toLowerCase().endsWith(".docx")) {
+        } else if (StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".doc") ||
+                StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".docx")) {
             filetype = "DOC";
             isxml = false;
-        } else if (StaticVariables.songfilename.toLowerCase().endsWith(".jpg") ||
-                StaticVariables.songfilename.toLowerCase().endsWith(".jpeg") ||
-                StaticVariables.songfilename.toLowerCase().endsWith(".png") ||
-                StaticVariables.songfilename.toLowerCase().endsWith(".gif") ||
-                StaticVariables.songfilename.toLowerCase().endsWith(".bmp")) {
+        } else if (StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".jpg") ||
+                StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".jpeg") ||
+                StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".png") ||
+                StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".gif") ||
+                StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".bmp")) {
             filetype = "IMG";
             FullscreenActivity.isImage = true;
             isxml = false;
@@ -110,6 +111,7 @@ public class LoadXML extends Activity {
                 // Song was loaded correctly and was xml format
                 preferences.setMyPreferenceBoolean(c,"songLoadSuccess",true);
                 preferences.setMyPreferenceString(c,"songfilename",StaticVariables.songfilename);
+                StaticVariables.whichSongFolder = folder;
                 preferences.setMyPreferenceString(c,"whichSongFolder",StaticVariables.whichSongFolder);
             } else {
                 Log.d("LoadXML", "Song wasn't loaded");
@@ -194,17 +196,15 @@ public class LoadXML extends Activity {
                         FullscreenActivity.myXML.contains("{c:") ||
                         FullscreenActivity.myXML.contains("{new_song") ||
                         FullscreenActivity.myXML.contains("{ns") ||
-                        StaticVariables.songfilename.toLowerCase().contains(".pro") ||
-                        StaticVariables.songfilename.toLowerCase().contains(".chopro") ||
-                        StaticVariables.songfilename.toLowerCase().contains(".chordpro")) {
+                        StaticVariables.songfilename.toLowerCase(Locale.ROOT).contains(".pro") ||
+                        StaticVariables.songfilename.toLowerCase(Locale.ROOT).contains(".chopro") ||
+                        StaticVariables.songfilename.toLowerCase(Locale.ROOT).contains(".chordpro")) {
                     // Run the ChordProConvert script
                     ChordProConvert chordProConvert = new ChordProConvert();
                     SongXML songXML = new SongXML();
                     //TODO check this works
                     chordProConvert.convertTextToTags(c,storageAccess,preferences,songXML,uri,FullscreenActivity.myXML);
-                    /*if (!chordProConvert.doExtract(c, preferences)) {
-                        Log.d("LoadXML", "Problem extracting chordpro");
-                    }*/
+
 
                     // Now read in the proper OpenSong xml file
                     try {
@@ -458,8 +458,6 @@ public class LoadXML extends Activity {
         Uri uri = storageAccess.getUriForItem(c, preferences, where, folder,
                 StaticVariables.songfilename);
 
-        Log.d("LoadXML","songfilename="+StaticVariables.songfilename);
-
         if (storageAccess.uriIsFile(c,uri)) {
             InputStream inputStream = storageAccess.getInputStream(c, uri);
             InputStreamReader lineReader = new InputStreamReader(inputStream);
@@ -676,14 +674,14 @@ public class LoadXML extends Activity {
 
         // Get the android version
         boolean fileisxml = true;
-        if (filename.toLowerCase().endsWith(".pdf") ||
-                filename.toLowerCase().endsWith(".doc") ||
-                filename.toLowerCase().endsWith(".docx") ||
-                filename.toLowerCase().endsWith(".jpg") ||
-                filename.toLowerCase().endsWith(".jpeg") ||
-                filename.toLowerCase().endsWith(".png") ||
-                filename.toLowerCase().endsWith(".gif") ||
-                filename.toLowerCase().endsWith(".bmp")) {
+        if (filename.toLowerCase(Locale.ROOT).endsWith(".pdf") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".doc") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".docx") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".jpg") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".jpeg") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".png") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".gif") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".bmp")) {
             fileisxml = false;
         }
 
@@ -882,14 +880,14 @@ public class LoadXML extends Activity {
 
         // Get the android version
         boolean nextisxml = true;
-        if (nextsong.toLowerCase().endsWith(".pdf") ||
-                nextsong.toLowerCase().endsWith(".doc") ||
-                nextsong.toLowerCase().endsWith(".docx") ||
-                nextsong.toLowerCase().endsWith(".jpg") ||
-                nextsong.toLowerCase().endsWith(".jpeg") ||
-                nextsong.toLowerCase().endsWith(".png") ||
-                nextsong.toLowerCase().endsWith(".gif") ||
-                nextsong.toLowerCase().endsWith(".bmp")) {
+        if (nextsong.toLowerCase(Locale.ROOT).endsWith(".pdf") ||
+                nextsong.toLowerCase(Locale.ROOT).endsWith(".doc") ||
+                nextsong.toLowerCase(Locale.ROOT).endsWith(".docx") ||
+                nextsong.toLowerCase(Locale.ROOT).endsWith(".jpg") ||
+                nextsong.toLowerCase(Locale.ROOT).endsWith(".jpeg") ||
+                nextsong.toLowerCase(Locale.ROOT).endsWith(".png") ||
+                nextsong.toLowerCase(Locale.ROOT).endsWith(".gif") ||
+                nextsong.toLowerCase(Locale.ROOT).endsWith(".bmp")) {
             nextisxml = false;
         }
 

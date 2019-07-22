@@ -8,5 +8,10 @@
         <domain includeSubdomains="true">ccli.com</domain>
         <domain includeSubdomains="true">ukutabs.com</domain>
         <domain includeSubdomains="true">holychords.com</domain>
+        <domain includeSubdomains="true">googleapis.com</domain>
+        <domain includeSubdomains="true">opensongapp.com</domain>
+        <domain includeSubdomains="true">twitter.com</domain>
+        <domain includeSubdomains="true">paypal.com</domain>
+        <domain includeSubdomains="true">google.com</domain>
     </domain-config>
 </network-security-config>

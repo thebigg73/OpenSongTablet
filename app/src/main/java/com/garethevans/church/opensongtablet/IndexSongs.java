@@ -10,6 +10,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Locale;
 
 // This class is used to index all of the songs in the user's folder
 // It builds the search index and prepares the required stuff for the song menus (name, author, key)
@@ -162,7 +163,7 @@ class IndexSongs {
     }
 
     private boolean filenameIsOk(String f) {
-        f = f.toLowerCase();
+        f = f.toLowerCase(Locale.ROOT);
         if (f.contains(".")) {
             f = f.substring(f.lastIndexOf("."));
             String badendings = ".pdf.png.jpg.jpeg.gif.jpeg.doc.docx.sqlite.db";
@@ -172,7 +173,7 @@ class IndexSongs {
     }
 
     private boolean isChordPro(String f) {
-        f = f.toLowerCase();
+        f = f.toLowerCase(Locale.ROOT);
         if (f.contains(".")) {
             f = f.substring(f.lastIndexOf("."));
             String chordproendings = ".chopro.crd.chordpro.pro.cho";
@@ -272,7 +273,7 @@ class IndexSongs {
                     e.printStackTrace();
                 }
 
-            } else if (filename.toLowerCase().endsWith(".onsong")) {
+            } else if (filename.toLowerCase(Locale.ROOT).endsWith(".onsong")) {
                 try {
                     String filecontents = storageAccess.readTextFileToString(inputStream);
                     bits = onSongConvert.convertTextToTags(c, storageAccess, preferences, songXML, chordProConvert,
@@ -282,7 +283,7 @@ class IndexSongs {
                     e.printStackTrace();
                 }
 
-            } else if (filename.toLowerCase().endsWith(".usr")) {
+            } else if (filename.toLowerCase(Locale.ROOT).endsWith(".usr")) {
                 try {
                     String filecontents = storageAccess.readTextFileToString(inputStream);
                     bits = usrConvert.convertTextToTags(c, storageAccess, preferences, songXML,

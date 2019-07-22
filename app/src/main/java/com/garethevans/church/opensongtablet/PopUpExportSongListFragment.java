@@ -76,7 +76,7 @@ public class PopUpExportSongListFragment extends DialogFragment {
         songDirectoy_ListView = V.findViewById(R.id.songDirectoy_ListView);
 
         // Prepare a list of the song directories
-        songfolders = songFolders.prepareSongFolders(getActivity());
+        songfolders = songFolders.prepareSongFolders(getActivity(),preferences);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, songfolders);
         songDirectoy_ListView.setAdapter(adapter);

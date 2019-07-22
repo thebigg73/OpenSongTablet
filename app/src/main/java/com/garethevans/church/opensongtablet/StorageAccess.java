@@ -1405,7 +1405,7 @@ class StorageAccess {
         // This lets us know if the file is appropriate to read the title/author/key from during indexing
         String filename;
         if (uri!=null && uri.getLastPathSegment()!=null) {
-            filename = uri.getLastPathSegment().toLowerCase();
+            filename = uri.getLastPathSegment().toLowerCase(Locale.ROOT);
         } else {
             filename = "";
         }
@@ -1414,7 +1414,7 @@ class StorageAccess {
         if (filename.lastIndexOf(".")>1 && filename.lastIndexOf(".")<filename.length()-1) {
             MimeTypeMap mime = MimeTypeMap.getSingleton();
             int index = filename.lastIndexOf('.')+1;
-            String ext = filename.substring(index).toLowerCase();
+            String ext = filename.substring(index).toLowerCase(Locale.ROOT);
             type = mime.getMimeTypeFromExtension(ext);
         }
 
@@ -1440,7 +1440,7 @@ class StorageAccess {
         FullscreenActivity.isPDF = false;
 
         if (file_ext!=null) {
-            file_ext = file_ext.toLowerCase();
+            file_ext = file_ext.toLowerCase(Locale.ROOT);
         } else {
             file_ext = "";
         }

@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.garethevans.church.opensongtablet"
     android:installLocation="auto"
-    android:versionCode="158"
-    android:versionName="4.8.8">
+    android:versionCode="160"
+    android:versionName="5.0.1">
 
     <!--Overrides are for Sdk=12/13 but library specifiesv Sdk=14+-->
     <uses-sdk
@@ -62,7 +62,8 @@
         android:roundIcon="@mipmap/ic_round_launcher"
         android:theme="@style/MyTheme"
         android:vmSafeMode="true"
-        tools:ignore="UnusedAttribute">
+        tools:ignore="UnusedAttribute"
+        android:supportsRtl="true">
 
         <receiver android:name=".BatteryMonitor">
             <intent-filter>

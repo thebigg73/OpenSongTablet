@@ -225,7 +225,7 @@ public class PopUpSongRenameFragment extends DialogFragment {
 
         @Override
         protected String doInBackground(Object... objects) {
-            foldernames = songFolders.prepareSongFolders(getActivity());
+            foldernames = songFolders.prepareSongFolders(getActivity(),preferences);
             return null;
         }
 

@@ -1700,7 +1700,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         @Override
         protected String doInBackground(Object... objects) {
             try {
-                newtempfolders = songFolders.prepareSongFolders(getActivity());
+                newtempfolders = songFolders.prepareSongFolders(getActivity(),preferences);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -194,7 +194,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         // Reset the folders selected text note
         selectednote = "";
 
-        final ArrayList<String> songfolders = songFolders.prepareSongFolders(getActivity());
+        final ArrayList<String> songfolders = songFolders.prepareSongFolders(getActivity(),preferences);
 
         folderlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -220,7 +220,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
 
     private void prepareFolderListExport() {
 
-        ArrayList<String> songfolders = songFolders.prepareSongFolders(getActivity());
+        ArrayList<String> songfolders = songFolders.prepareSongFolders(getActivity(),preferences);
         adapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), android.R.layout.simple_list_item_multiple_choice, songfolders);
         folderlist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         folderlist.setAdapter(adapter);

@@ -99,7 +99,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
 
         // Update the song folders
         //FullscreenActivity.songfilelist = new SongFileList();
-        foldernames = songFolders.prepareSongFolders(getActivity());
+        foldernames = songFolders.prepareSongFolders(getActivity(),preferences);
 
         // Try to generate the file folders available to choose from and highlight the ones already specified
         generateFolderList();

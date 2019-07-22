@@ -18,16 +18,16 @@
             android:layout_height="match_parent"
             android:clipChildren="false"
             android:clipToPadding="false"
-            android:focusable="true"
-            android:background="@color/black"
-            android:focusableInTouchMode="true">
+            android:background="@color/black">
 
             <ImageView
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:src="@mipmap/ic_round_launcher"
                 android:layout_centerInParent="true"
-                android:alpha="0.05"
+                android:alpha="0.08"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:contentDescription="@string/app_name" />
 
             <HorizontalScrollView
@@ -41,28 +41,44 @@
                 <ScrollView
                     android:id="@+id/songscrollview"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:clipChildren="false"
-                    android:clipToPadding="false" />
+                    android:clipToPadding="false"/>
 
             </HorizontalScrollView>
 
-            <ScrollView
-                android:id="@+id/glideimage_ScrollView"
+            <HorizontalScrollView
+                android:id="@+id/glideimage_HorizontalScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/mytoolbar">
+                android:layout_below="@+id/mytoolbar"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:visibility="gone">
 
+            <ScrollView
+                android:id="@+id/glideimage_ScrollView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
+                <FrameLayout
+                    android:id="@+id/glideimage_FrameLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
                 <ImageView
                     android:id="@+id/glideimage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:contentDescription="@string/image"
-                    android:isScrollContainer="true"
                     android:visibility="visible" />
+                </FrameLayout>
 
             </ScrollView>
+            </HorizontalScrollView>
 
             <RelativeLayout
                 android:id="@+id/testpane"

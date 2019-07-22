@@ -137,9 +137,15 @@ public class PopUpFullSearchFragment extends DialogFragment {
         EditText searchEditText2 = mSearchView.findViewById(id);
         searchFilters = V.findViewById(R.id.searchFilters);
         try {
-            mSearchView.clearFocus();
-            searchEditText.clearFocus();
-            searchEditText2.clearFocus();
+            if (mSearchView!=null) {
+                mSearchView.clearFocus();
+            }
+            if (searchEditText!=null) {
+                searchEditText.clearFocus();
+            }
+            if (searchEditText2!=null) {
+                searchEditText2.clearFocus();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -475,6 +481,13 @@ public class PopUpFullSearchFragment extends DialogFragment {
             StaticVariables.songfilename = mFilename.getText().toString();
             StaticVariables.whichSongFolder = mFoldername.getText().toString();
             StaticVariables.setView = false;
+
+            // Hide the keyboard if it is visible
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+
             if (mListener!=null) {
                 mListener.loadSong();
             }

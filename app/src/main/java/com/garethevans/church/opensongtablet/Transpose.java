@@ -1182,7 +1182,7 @@ class Transpose {
 		// Check if the user is using the same chord format as the song
 		// Go through the chord lines and look for clues
         for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
-            if (FullscreenActivity.myTransposedLyrics[x].indexOf(".") == 0) {
+            if (FullscreenActivity.myTransposedLyrics[x].startsWith(".")) {
                 // Chord line
                 if (FullscreenActivity.myTransposedLyrics[x].contains("es") || FullscreenActivity.myTransposedLyrics[x].contains("is") ||
                         FullscreenActivity.myTransposedLyrics[x].contains(" a") || FullscreenActivity.myTransposedLyrics[x].contains(".a") ||

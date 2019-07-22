@@ -11,12 +11,15 @@ import java.util.Collections;
 
 class SongFolders {
 
-    ArrayList<String> prepareSongFolders(Context c) {
+    ArrayList<String> prepareSongFolders(Context c, Preferences preferences) {
         // Use the database to get the available folders
         SQLiteHelper sqLiteHelper = new SQLiteHelper(c);
         ArrayList<String> folders = sqLiteHelper.getFolders(c);
 
         // Sort the list
+        if (StaticVariables.locale==null) {
+            FixLocale.fixLocale(c,preferences);
+        }
         Collator collator = Collator.getInstance(StaticVariables.locale);
         collator.setStrength(Collator.SECONDARY);
         Collections.sort(folders, collator);

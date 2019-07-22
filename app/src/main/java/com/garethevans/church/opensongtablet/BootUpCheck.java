@@ -97,10 +97,18 @@ public class BootUpCheck extends AppCompatActivity {
 
         showCurrentStorage(uriTreeHome);
 
+        StaticVariables.whichSongFolder = preferences.getMyPreferenceString(BootUpCheck.this, "whichSongFolder",
+                getString(R.string.mainfoldername));
+        StaticVariables.songfilename = preferences.getMyPreferenceString(BootUpCheck.this, "songfilename",
+                "Welcome to OpenSongApp");
+
         // Check if we have used the app already, but the last song didn't load
         if (!preferences.getMyPreferenceBoolean(BootUpCheck.this,"songLoadSuccess",false)) {
             StaticVariables.whichSongFolder = "";
             StaticVariables.songfilename = "Welcome to OpenSongApp";
+        } else {
+            StaticVariables.whichSongFolder = preferences.getMyPreferenceString(BootUpCheck.this, "whichSongFolder",
+                    getString(R.string.mainfoldername));
         }
 
         // If whichSongFolder is empty, reset to main

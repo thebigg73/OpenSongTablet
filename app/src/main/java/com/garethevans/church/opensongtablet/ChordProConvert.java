@@ -349,6 +349,9 @@ class ChordProConvert {
             s = s.replace("]", "");
             if (!s.startsWith(" ")) {
                 s = " " + s;
+                if (tempchordline.length() > 0) {
+                    tempchordline.insert(0, " ");
+                }
             }
             if (tempchordline.length() > 0) {
                 s = "." + tempchordline + "\n" + s;
@@ -430,6 +433,9 @@ class ChordProConvert {
             if (!line.startsWith("[") && !line.startsWith(".") && !line.startsWith(";") && !line.startsWith(" ") && !s.equals("")) {
                 // Must be a lyric line, so add a space
                 line = " " + line;
+            } else if (line.startsWith(".")) {
+                //the line contains chords, adjust for space inserted to lyrics
+                line = ". " + line.substring(1);
             }
             line = line + "\n";
             parsedLines.append(line);

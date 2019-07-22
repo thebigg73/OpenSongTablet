@@ -5,17 +5,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfWriter;
+//import com.itextpdf.text.Document;
+//import com.itextpdf.text.Font;
+//import com.itextpdf.text.Image;
+//import com.itextpdf.text.PageSize;
+//import com.itextpdf.text.Paragraph;
+//import com.itextpdf.text.pdf.BaseFont;
+//import com.itextpdf.text.pdf.PdfWriter;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -545,7 +548,69 @@ class ExportPreparer {
 	}
 
     private void makePDF(Context c, Bitmap bmp, Uri uri, StorageAccess storageAccess) {
-        Document document = new Document();
+        try {
+            PdfDocument pdfDocument = new PdfDocument();
+            if (bmp != null) {
+
+                // Decide width and height
+                PdfDocument.PageInfo pi;
+                int scaledWidth;
+                int scaledHeight;
+                int bmpWidth = bmp.getWidth();
+                int bmpHeight = bmp.getHeight();
+                int margin = 15;
+                int maxWidth;
+                int maxHeight;
+                float xscale;
+                float yscale;
+
+                // A4 size is 842x595 in postscript points.
+                // Figure out the best scaling to use
+                if (bmpWidth > bmpHeight) {
+                    // Landscape
+                    pi = new PdfDocument.PageInfo.Builder(842, 595, 1).create();
+                    maxWidth = 842 - (margin * 3);
+                    maxHeight = 595 - (margin * 3);
+
+                } else {
+                    // Portrait
+                    pi = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
+                    maxWidth = 595 - (margin * 3);
+                    maxHeight = 842 - (margin * 3);
+                }
+
+
+                PdfDocument.Page page = pdfDocument.startPage(pi);
+
+                Canvas canvas = page.getCanvas();
+                Paint paint = new Paint();
+                paint.setColor(0xff000000);
+                canvas.drawText(StaticVariables.mTitle + " (" + StaticVariables.mAuthor + ")", margin, margin, paint);
+
+                xscale = (float) maxWidth / (float) bmpWidth;
+                yscale = (float) maxHeight / (float) bmpHeight;
+                if (xscale > yscale) {
+                    xscale = yscale;
+                } else {
+                    yscale = xscale;
+                }
+
+                scaledWidth = (int) (xscale * bmpWidth);
+                scaledHeight = (int) (yscale * bmpHeight);
+                bmp = Bitmap.createScaledBitmap(bmp, scaledWidth, scaledHeight, true);
+
+                canvas.drawBitmap(bmp, margin, margin * 2, null);
+
+                pdfDocument.finishPage(page);
+
+                OutputStream outputStream = storageAccess.getOutputStream(c, uri);
+
+                pdfDocument.writeTo(outputStream);
+            }
+        } catch (Exception | OutOfMemoryError e) {
+            e.printStackTrace();
+        }
+        /*Document document = new Document();
         OutputStream outputStream = storageAccess.getOutputStream(c,uri);
         try {
             PdfWriter.getInstance(document, outputStream);
@@ -565,13 +630,10 @@ class ExportPreparer {
             document.add(new Paragraph(StaticVariables.mTitle,TitleFontName));
             document.add(new Paragraph(StaticVariables.mAuthor,AuthorFontName));
             addImage(document,bmp);
-            document.close();
-        } catch (Exception | OutOfMemoryError e) {
-            e.printStackTrace();
-        }
+            document.close();*/
     }
 
-    private void addImage(Document document, Bitmap bmp) {
+/*    private void addImage(Document document, Bitmap bmp) {
         try {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -603,7 +665,7 @@ class ExportPreparer {
         } catch (Exception | OutOfMemoryError e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     void createSelectedOSB(Context c, Preferences preferences, String selected, StorageAccess storageAccess) {
         folderstoexport = selected;
