@@ -148,7 +148,11 @@ class IndexSongs {
                                 SQLite.COLUMN_CCLI + "='" + ccli.replaceAll("'", "''") + "', " +
                                 SQLite.COLUMN_TIMESIG + "='" + timesig.replaceAll("'", "''") + "' " +
                                 "WHERE " + SQLite.COLUMN_SONGID + "='" + songid + "';";
-                        db.execSQL(updateQuery);
+                        try {
+                            db.execSQL(updateQuery);
+                        } catch (OutOfMemoryError | Exception e) {
+                            e.printStackTrace();
+                        }
                         // close the db connection
                     }
                 }

@@ -2738,6 +2738,18 @@ public class StageMode extends AppCompatActivity implements
             case "toggle_autoscroll_pause":
                 StaticVariables.autoscrollispaused = !StaticVariables.autoscrollispaused;
                 break;
+
+            case "exit":
+                try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        finishAndRemoveTask();
+                    } else {
+                        this.finishAffinity();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
         }
     }
 
@@ -8208,7 +8220,9 @@ public class StageMode extends AppCompatActivity implements
                         boolean custompad;
                         StaticVariables.padson = true;
                         if (StaticVariables.pad_filename != null && StaticVariables.mKey != null) {
+                            Log.d("StageMode","preparing pad");
                             custompad = !StaticVariables.pad_filename.endsWith("null") && StaticVariables.pad_filename.startsWith("custom_");
+                            Log.d("StageMode","custompad="+custompad);
                             AssetFileDescriptor afd = null;
                             String padpath = null;
                             if (custompad) {
@@ -8220,6 +8234,7 @@ public class StageMode extends AppCompatActivity implements
                             } else {
                                 // Prepare the default auto pad
                                 path = getResources().getIdentifier(StaticVariables.pad_filename, "raw", getPackageName());
+                                Log.d("StageMode","path="+path);
                                 try {
                                     afd = getResources().openRawResourceFd(path);
                                 } catch (Exception e) {
@@ -8242,6 +8257,8 @@ public class StageMode extends AppCompatActivity implements
                                         FullscreenActivity.mPlayer1.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
                                         afd.close();
                                     }
+                                    Log.d("StageMode","prepareAsync()");
+
                                     FullscreenActivity.mPlayer1.prepareAsync();
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -8315,6 +8332,7 @@ public class StageMode extends AppCompatActivity implements
 
                         if (!validlinkaudio) {
                             // Problem with link audio so don't use it
+                            Log.d("StageMode","Problme with link audio");
                             StaticVariables.myToastMessage = getResources().getString(R.string.link_audio) + " - " +
                                     getResources().getString(R.string.file_type_unknown);
                             StaticVariables.padson = false;

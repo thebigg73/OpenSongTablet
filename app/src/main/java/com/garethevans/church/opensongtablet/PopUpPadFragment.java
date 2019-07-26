@@ -100,7 +100,11 @@ public class PopUpPadFragment extends DialogFragment {
 
         getDialog().setCanceledOnTouchOutside(true);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mListener.pageButtonAlpha("pad");
+        try {
+            mListener.pageButtonAlpha("pad");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         preferences = new Preferences();
         storageAccess = new StorageAccess();

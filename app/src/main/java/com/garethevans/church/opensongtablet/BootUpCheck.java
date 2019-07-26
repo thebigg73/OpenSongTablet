@@ -279,6 +279,10 @@ public class BootUpCheck extends AppCompatActivity {
         CustomAnimations ca = new CustomAnimations();
         ca.pulse(BootUpCheck.this, goToSongsButton);
     }
+    void pulseStorageButton() {
+        CustomAnimations ca2 = new CustomAnimations();
+        ca2.pulse(BootUpCheck.this, chooseStorageButton);
+    }
     void showLoadingBar() {
         pulseStartButton();
         readUpdate.setClickable(true);
@@ -506,6 +510,9 @@ public class BootUpCheck extends AppCompatActivity {
         try {
             if (uriTree != null) {
                 DocumentFile df = storageAccess.documentFileFromRootUri(BootUpCheck.this, uriTree, uriTree.getPath());
+                if (df==null || !df.canWrite()) {
+                    previousStorageTextView.setText(R.string.notset);
+                }
                 return df != null && df.canWrite();
             }
         } catch (Exception e) {
@@ -607,9 +614,14 @@ public class BootUpCheck extends AppCompatActivity {
         if (checkStorageIsValid() && storageGranted && !skiptoapp) {
             // We're good to go, but need to wait for the user to click on the start button
             goToSongsLinearLayout.setVisibility(View.VISIBLE);
+            chooseStorageButton.clearAnimation();
+
         } else {
             // Not ready, so hide the start button
             goToSongsLinearLayout.setVisibility(View.GONE);
+            // Show the storage as a pulsing button
+            pulseStorageButton();
+
         }
     }
 

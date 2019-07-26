@@ -36,7 +36,7 @@ public class PopUpThemeChooserFragment extends DialogFragment {
             custom2_presoinfofont, custom2_presoshadow, custom2_presoalertfont, custom2_metronome,
             custom2_pagebuttons, custom2_stickytext, custom2_stickybg, custom2_extrainfobg, custom2_extrainfo;
 
-    Button resetcolours;
+    private Button resetcolours;
 
     private TextView dark_theme_heading;
     private TextView light_theme_heading;
@@ -252,28 +252,28 @@ public class PopUpThemeChooserFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 StaticVariables.mDisplayTheme = "dark";
-                doThemeSwitch();
+                doThemeSwitch("dark");
             }
         });
         light_theme_heading.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 StaticVariables.mDisplayTheme = "light";
-                doThemeSwitch();
+                doThemeSwitch("light");
             }
         });
         custom1_theme_heading.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 StaticVariables.mDisplayTheme = "custom1";
-                doThemeSwitch();
+                doThemeSwitch("custom1");
             }
         });
         custom2_theme_heading.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 StaticVariables.mDisplayTheme = "custom2";
-                doThemeSwitch();
+                doThemeSwitch("custom2");
             }
         });
     }
@@ -700,8 +700,9 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         custom2_extrainfo.setOnClickListener(new ChangeColorListener("custom2_extraInfoTextColor"));
     }
 
-    private void doThemeSwitch() {
+    private void doThemeSwitch(String which) {
         setUpButtons();
+        preferences.setMyPreferenceString(getActivity(),"appTheme",which);
         loadUpPreferences();
         if (mListener!=null) {
             mListener.refreshAll();

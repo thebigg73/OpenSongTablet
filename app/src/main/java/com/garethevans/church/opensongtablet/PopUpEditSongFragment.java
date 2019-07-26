@@ -948,10 +948,10 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         pad_file.setDropDownViewResource(R.layout.my_spinner);
         edit_song_pad_file.setAdapter(pad_file);
         // Only allow auto for now (first index)
-        if (StaticVariables.mPadFile.equals(auto)) {
-            edit_song_pad_file.setSelection(1);
-        } else if (StaticVariables.mPadFile.equals(link)) {
+        if (StaticVariables.mPadFile.equals(off)) {
             edit_song_pad_file.setSelection(2);
+        } else if (StaticVariables.mPadFile.equals(link)) {
+            edit_song_pad_file.setSelection(1);
         } else {
             edit_song_pad_file.setSelection(0);
         }

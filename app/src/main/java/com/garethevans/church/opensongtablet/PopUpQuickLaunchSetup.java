@@ -196,6 +196,8 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         actionOptions.add(getString(R.string.toggle_autoscroll_pause));
         //18
         actionOptions.add(getString(R.string.midi));
+        //19  Exit/close app
+        actionOptions.add(getString(R.string.drawer_close));
 
         ArrayAdapter<String> adapter_1 = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, actionOptions);
         ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
@@ -373,6 +375,9 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
             case 18:
                 t = "showmidicommands";
                 break;
+
+            case 19:
+                t = "exit";
         }
 
         return t;
@@ -452,6 +457,10 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
 
             case "showmidicommands":
                 i = 18;
+                break;
+
+            case "exit":
+                i = 19;
                 break;
         }
 
@@ -537,6 +546,10 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
 
             case "showmidicommands":
                 d = c.getResources().getDrawable(R.drawable.ic_midi_white_36dp);
+                break;
+
+            case "exit":
+                d = c.getResources().getDrawable(R.drawable.ic_exit_to_app_white_36dp);
                 break;
         }
         return d;

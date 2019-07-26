@@ -764,11 +764,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     @Override
     // The navigation drawers
     public void prepareSongMenu() {
-        doCancelAsyncTask(preparesongmenu_async);
-        song_list_view.setFastScrollEnabled(false);
-        song_list_view.setScrollingCacheEnabled(false);
-        preparesongmenu_async = new PrepareSongMenu();
+        if (song_list_view==null) {
+            song_list_view = findViewById(R.id.song_list_view);
+        }
         try {
+            doCancelAsyncTask(preparesongmenu_async);
+            song_list_view.setFastScrollEnabled(false);
+            song_list_view.setScrollingCacheEnabled(false);
+            preparesongmenu_async = new PrepareSongMenu();
             preparesongmenu_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
             e.printStackTrace();

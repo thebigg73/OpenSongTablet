@@ -2,11 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.garethevans.church.opensongtablet"
     android:installLocation="auto"
-    android:versionCode="160"
-    android:versionName="5.0.1">
+    android:versionCode="162"
+    android:versionName="5.0.2">
 
     <!--Overrides are for Sdk=12/13 but library specifiesv Sdk=14+-->
-    <uses-sdk
+    <!--<uses-sdk
         tools:ignore="OldTargetApi"
         tools:overrideLibrary="
         com.google.android.gms,
@@ -21,7 +21,7 @@
         com.google.android.gms.base.license,
         com.google.android.gms.common.license,
         com.google.android.gms.cast.license,
-        com.google.android.gms.tasks.license" />
+        com.google.android.gms.tasks.license" />-->
 
     <uses-feature
         android:name="android.hardware.touchscreen"
@@ -472,13 +472,12 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTop">
-            <!--android:launchMode="singleTask"-->
+
         </activity>
         <activity android:name=".Preferences" />
         <activity android:name=".LoadXML" />
         <activity android:name=".OptionMenuListeners" />
         <activity android:name=".ProcessSong" />
-        <!--<activity android:name=".SetActions" />-->
         <activity android:name=".SongMenuListeners" />
         <activity android:name=".ShowToast" />
 

@@ -624,12 +624,12 @@ class StorageAccess {
         Uri uri = uriTreeHome;
 
         // Now point to the specific folder (Songs, Sets, Backgrounds, etc.)
-        if (folder != null && !folder.isEmpty()) {
+        if (folder != null && !folder.isEmpty() && uri!=null) {
             uri = Uri.withAppendedPath(uri, Uri.encode(folder));
         }
 
         // Now go through the subfolder(s)
-        if (subfolder != null && !subfolder.equals(c.getString(R.string.mainfoldername))) {
+        if (subfolder != null && !subfolder.equals(c.getString(R.string.mainfoldername)) && uri!=null) {
             String[] sfs = subfolder.split("/");
             for (String sf : sfs) {
                 if (sf != null && !sf.equals("") && !sf.equals(c.getString(R.string.mainfoldername))) {
@@ -639,7 +639,7 @@ class StorageAccess {
         }
 
         // Now add the filename
-        if (filename != null && !filename.equals("")) {
+        if (filename != null && !filename.equals("") && uri!=null) {
             // Might have sent subfolder info
             String[] sfs = filename.split("/");
             for (String sf : sfs) {
@@ -1068,12 +1068,14 @@ class StorageAccess {
         dirNodes.add(children);
 
         while (!dirNodes.isEmpty()) {
-            children = dirNodes.remove(0); // get the item from top
-            Cursor cursor = contentResolver.query(children, new String[]{
+            try {
+
+                children = dirNodes.remove(0); // get the item from top
+                Cursor cursor = contentResolver.query(children, new String[]{
                     DocumentsContract.Document.COLUMN_DOCUMENT_ID,
                     DocumentsContract.Document.COLUMN_DISPLAY_NAME,
                     DocumentsContract.Document.COLUMN_MIME_TYPE}, null, null, null);
-            try {
+
                 if (cursor != null) {
                     while (cursor.moveToNext()) {
                         final String name = cursor.getString(1);
