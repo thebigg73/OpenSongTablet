@@ -100,7 +100,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         PopUpSetViewNew.MyInterface, IndexSongs.MyInterface, SearchView.OnQueryTextListener,
         OptionMenuListeners.MyInterface, PopUpFullSearchFragment.MyInterface,
         PopUpListSetsFragment.MyInterface, PopUpRebuildDatabaseFragment.MyInterface,
-        PopUpLongSongPressFragment.MyInterface, PopUpProfileFragment.MyInterface,
+        PopUpLongSongPressFragment.MyInterface,
         PopUpFileChooseFragment.MyInterface, PopUpBackupPromptFragment.MyInterface,
         PopUpSongFolderRenameFragment.MyInterface, PopUpSongCreateFragment.MyInterface,
         PopUpSongRenameFragment.MyInterface, PopUpImportExportOSBFragment.MyInterface,
@@ -142,6 +142,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     SQLiteHelper sqLiteHelper;
     SQLite sqLite;  // The song details from SQLite.  Used for menu and searches.
     ProcessSong processSong;
+    ProfileActions profileActions;
 
     // MIDI
     Midi midi;
@@ -264,6 +265,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         setTypeFace = new SetTypeFace();
         sqLiteHelper = new SQLiteHelper(PresenterMode.this);
         processSong = new ProcessSong();
+        profileActions = new ProfileActions();
 
         new Thread(new Runnable() {
             @Override
@@ -922,7 +924,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             callIntent("openpdf", target);
         }
-        if (autoproject || preferences.getMyPreferenceBoolean(PresenterMode.this,"presoAutoUpdateProjector",false)) {
+        if (autoproject || preferences.getMyPreferenceBoolean(PresenterMode.this,"presoAutoUpdateProjector",true)) {
             autoproject = false;
             presenter_project_group.performClick();
         }
@@ -1087,7 +1089,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         return true;
     }
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         MenuHandlers.actOnClicks(PresenterMode.this, preferences,item.getItemId());
         return super.onOptionsItemSelected(item);
     }
@@ -1286,7 +1288,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         presenter_songtitle.isFocusable();
         presenter_songtitle.requestFocus();
 
-        autoProject.setChecked(preferences.getMyPreferenceBoolean(PresenterMode.this,"presoAutoUpdateProjector",false));
+        autoProject.setChecked(preferences.getMyPreferenceBoolean(PresenterMode.this,"presoAutoUpdateProjector",true));
 
         // Set the button listeners
         presenter_set.setOnClickListener(new View.OnClickListener() {
@@ -2146,7 +2148,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     .override(glidewidth, glideheight);
             Glide.with(PresenterMode.this).load(StaticVariables.uriToLoad).apply(myOptions).into(presenter_lyrics_image);
 
-            if (autoproject || preferences.getMyPreferenceBoolean(PresenterMode.this,"presoAutoUpdateProjector",false)) {
+            if (autoproject || preferences.getMyPreferenceBoolean(PresenterMode.this,"presoAutoUpdateProjector",true)) {
                 autoproject = false;
                 presenter_project_group.performClick();
             }
@@ -2357,7 +2359,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         if (requestCode == StaticVariables.REQUEST_CAMERA_CODE && resultCode == Activity.RESULT_OK) {
             FullscreenActivity.whattodo = "savecameraimage";
             openFragment();
@@ -2386,6 +2388,51 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else if (requestCode == 4567 && data!=null && data.getData()!=null) {
+            // Loading in a profile
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    boolean success = profileActions.doLoadProfile(PresenterMode.this,preferences,storageAccess,data.getData());
+                    if (success) {
+                        StaticVariables.myToastMessage = getString(R.string.success);
+                    } else {
+                        StaticVariables.myToastMessage = getString(R.string.error);
+                    }
+                    // Once done, reload everything
+                    runOnUiThread(new Runnable() {
+                                      @Override
+                                      public void run() {
+                                          ShowToast.showToast(PresenterMode.this);
+                                          loadStartUpVariables();
+                                          refreshAll();
+                                      }
+                                  }
+                    );
+                }
+            }).start();
+
+        } else if (requestCode == 5678 && data!=null && data.getData()!=null) {
+            // Saving a profile
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    boolean success = profileActions.doSaveProfile(PresenterMode.this,preferences,storageAccess,data.getData());
+                    if (success) {
+                        StaticVariables.myToastMessage = getString(R.string.success);
+                    } else {
+                        StaticVariables.myToastMessage = getString(R.string.error);
+                    }
+                    // Once done, say so
+                    runOnUiThread(new Runnable() {
+                                      @Override
+                                      public void run() {
+                                          ShowToast.showToast(PresenterMode.this);
+                                      }
+                                  }
+                    );
+                }
+            }).start();
         }
     }
 
@@ -2486,7 +2533,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         // And write it
         presenter_lyrics.setText(s.toString());
 
-        if (autoproject || preferences.getMyPreferenceBoolean(PresenterMode.this,"presoAutoUpdateProjector",false)) {
+        if (autoproject || preferences.getMyPreferenceBoolean(PresenterMode.this,"presoAutoUpdateProjector",true)) {
             autoproject = false;
             presenter_project_group.performClick();
         }
@@ -2544,6 +2591,29 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     } catch (ActivityNotFoundException anfe) {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.pdfviewer")));
                     }
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void profileWork(String s) {
+        switch (s) {
+            case "load":
+                try {
+                    Intent i = profileActions.openProfile(PresenterMode.this,preferences,storageAccess);
+                    this.startActivityForResult(i, 4567);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case "save":
+                try {
+                    Intent i = profileActions.saveProfile(PresenterMode.this,preferences,storageAccess);
+                    this.startActivityForResult(i, 5678);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 break;
         }

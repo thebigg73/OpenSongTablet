@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,54 +11,67 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 public class PopUpThemeChooserFragment extends DialogFragment {
 
+    Preferences preferences;
     private View dark_font, dark_background, dark_verse, dark_chorus, dark_prechorus, dark_bridge,
             dark_comment, dark_tag, dark_chord, dark_custom, dark_capo, dark_presofont,
             dark_presoinfofont, dark_presoshadow, dark_presoalertfont, dark_metronome,
             dark_pagebuttons, dark_stickytext, dark_stickybg, dark_extrainfobg, dark_extrainfo;
-
     private View light_font, light_background, light_verse, light_chorus, light_prechorus, light_bridge,
             light_comment, light_tag, light_chord, light_custom, light_capo, light_presofont,
             light_presoinfofont, light_presoshadow, light_presoalertfont, light_metronome,
             light_pagebuttons, light_stickytext, light_stickybg, light_extrainfobg, light_extrainfo;
-
     private View custom1_font, custom1_background, custom1_verse, custom1_chorus, custom1_prechorus, custom1_bridge,
             custom1_comment, custom1_tag, custom1_chord, custom1_custom, custom1_capo, custom1_presofont,
             custom1_presoinfofont, custom1_presoshadow, custom1_presoalertfont, custom1_metronome,
             custom1_pagebuttons, custom1_stickytext, custom1_stickybg, custom1_extrainfobg, custom1_extrainfo;
-
     private View custom2_font, custom2_background, custom2_verse, custom2_chorus, custom2_prechorus, custom2_bridge,
             custom2_comment, custom2_tag, custom2_chord, custom2_custom, custom2_capo, custom2_presofont,
             custom2_presoinfofont, custom2_presoshadow, custom2_presoalertfont, custom2_metronome,
             custom2_pagebuttons, custom2_stickytext, custom2_stickybg, custom2_extrainfobg, custom2_extrainfo;
-
-    private Button resetcolours;
-
     private TextView dark_theme_heading;
     private TextView light_theme_heading;
     private TextView custom1_theme_heading;
     private TextView custom2_theme_heading;
-
     private int initialcolor = StaticVariables.black;
-
     private String buttonClicked = "";
-
-    Preferences preferences;
+    private MyInterface mListener;
+    private int dark_lyricsBackgroundColor, dark_lyricsBridgeColor, dark_lyricsCapoColor, dark_lyricsChordsColor,
+            dark_lyricsChorusColor, dark_lyricsCommentColor, dark_lyricsCustomColor, dark_lyricsPreChorusColor,
+            dark_lyricsTagColor, dark_lyricsTextColor, dark_lyricsVerseColor, dark_presoFontColor,
+            dark_presoShadowColor, dark_presoInfoColor, dark_presoAlertColor, dark_metronomeColor,
+            dark_pageButtonsColor, dark_stickyTextColor, dark_stickyBackgroundColor,
+            dark_extraInfoTextColor, dark_extraInfoBgColor;
+    private int light_lyricsBackgroundColor, light_lyricsBridgeColor, light_lyricsCapoColor, light_lyricsChordsColor,
+            light_lyricsChorusColor, light_lyricsCommentColor, light_lyricsCustomColor, light_lyricsPreChorusColor,
+            light_lyricsTagColor, light_lyricsTextColor, light_lyricsVerseColor, light_presoFontColor,
+            light_presoShadowColor, light_presoInfoColor, light_presoAlertColor, light_metronomeColor,
+            light_pageButtonsColor, light_stickyTextColor, light_stickyBackgroundColor,
+            light_extraInfoTextColor, light_extraInfoBgColor;
+    private int custom1_lyricsBackgroundColor, custom1_lyricsBridgeColor, custom1_lyricsCapoColor, custom1_lyricsChordsColor,
+            custom1_lyricsChorusColor, custom1_lyricsCommentColor, custom1_lyricsCustomColor, custom1_lyricsPreChorusColor,
+            custom1_lyricsTagColor, custom1_lyricsTextColor, custom1_lyricsVerseColor, custom1_presoFontColor,
+            custom1_presoShadowColor, custom1_presoInfoColor, custom1_presoAlertColor, custom1_metronomeColor,
+            custom1_pageButtonsColor, custom1_stickyTextColor, custom1_stickyBackgroundColor,
+            custom1_extraInfoTextColor, custom1_extraInfoBgColor;
+    private int custom2_lyricsBackgroundColor, custom2_lyricsBridgeColor, custom2_lyricsCapoColor, custom2_lyricsChordsColor,
+            custom2_lyricsChorusColor, custom2_lyricsCommentColor, custom2_lyricsCustomColor, custom2_lyricsPreChorusColor,
+            custom2_lyricsTagColor, custom2_lyricsTextColor, custom2_lyricsVerseColor, custom2_presoFontColor,
+            custom2_presoShadowColor, custom2_presoInfoColor, custom2_presoAlertColor, custom2_metronomeColor,
+            custom2_pageButtonsColor, custom2_stickyTextColor, custom2_stickyBackgroundColor,
+            custom2_extraInfoTextColor, custom2_extraInfoBgColor;
 
     static PopUpThemeChooserFragment newInstance() {
         PopUpThemeChooserFragment frag;
         frag = new PopUpThemeChooserFragment();
         return frag;
     }
-
-    public interface MyInterface {
-        //void prepareView();
-        void refreshAll();
-        void setUpPageButtonsColors();
-    }
-
-    private MyInterface mListener;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -98,7 +108,7 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                CustomAnimations.animateFAB(closeMe, getActivity());
                 closeMe.setEnabled(false);
                 doClose();
             }
@@ -120,7 +130,7 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         // Set the appropriate theme button based on what is already set
         setUpButtons();
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
         return V;
     }
 
@@ -235,7 +245,7 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         custom1_theme_heading = V.findViewById(R.id.custom1_theme_heading);
         custom2_theme_heading = V.findViewById(R.id.custom2_theme_heading);
 
-        resetcolours = V.findViewById(R.id.resetcolours);
+        Button resetcolours = V.findViewById(R.id.resetcolours);
         resetcolours.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -278,212 +288,184 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         });
     }
 
-    private int dark_lyricsBackgroundColor, dark_lyricsBridgeColor, dark_lyricsCapoColor, dark_lyricsChordsColor,
-            dark_lyricsChorusColor, dark_lyricsCommentColor, dark_lyricsCustomColor, dark_lyricsPreChorusColor,
-            dark_lyricsTagColor, dark_lyricsTextColor, dark_lyricsVerseColor, dark_presoFontColor,
-            dark_presoShadowColor, dark_presoInfoColor, dark_presoAlertColor, dark_metronomeColor,
-            dark_pageButtonsColor, dark_stickyTextColor, dark_stickyBackgroundColor,
-            dark_extraInfoTextColor, dark_extraInfoBgColor;
+    private void loadUpPreferences() {
+        dark_lyricsBackgroundColor = preferences.getMyPreferenceInt(getActivity(), "dark_lyricsBackgroundColor", StaticVariables.black);
+        dark_lyricsTextColor = preferences.getMyPreferenceInt(getActivity(), "dark_lyricsTextColor", StaticVariables.white);
+        dark_lyricsVerseColor = preferences.getMyPreferenceInt(getActivity(), "dark_lyricsVerseColor", StaticVariables.black);
+        dark_lyricsChorusColor = preferences.getMyPreferenceInt(getActivity(), "dark_lyricsChorusColor", StaticVariables.vdarkblue);
+        dark_lyricsPreChorusColor = preferences.getMyPreferenceInt(getActivity(), "dark_lyricsPreChorusColor", StaticVariables.darkishgreen);
+        dark_lyricsBridgeColor = preferences.getMyPreferenceInt(getActivity(), "dark_lyricsBridgeColor", StaticVariables.vdarkred);
+        dark_lyricsCommentColor = preferences.getMyPreferenceInt(getActivity(), "dark_lyricsCommentColor", StaticVariables.vdarkgreen);
+        dark_lyricsTagColor = preferences.getMyPreferenceInt(getActivity(), "dark_lyricsTagColor", StaticVariables.darkpurple);
+        dark_lyricsChordsColor = preferences.getMyPreferenceInt(getActivity(), "dark_lyricsChordsColor", StaticVariables.yellow);
+        dark_lyricsCustomColor = preferences.getMyPreferenceInt(getActivity(), "dark_lyricsCustomColor", StaticVariables.vdarkyellow);
+        dark_lyricsCapoColor = preferences.getMyPreferenceInt(getActivity(), "dark_lyricsCapoColor", StaticVariables.red);
+        dark_presoFontColor = preferences.getMyPreferenceInt(getActivity(), "dark_presoFontColor", StaticVariables.white);
+        dark_presoShadowColor = preferences.getMyPreferenceInt(getActivity(), "dark_presoShadowColor", StaticVariables.black);
+        dark_presoInfoColor = preferences.getMyPreferenceInt(getActivity(), "dark_presoInfoColor", StaticVariables.white);
+        dark_presoAlertColor = preferences.getMyPreferenceInt(getActivity(), "dark_presoAlertColor", StaticVariables.red);
+        dark_metronomeColor = preferences.getMyPreferenceInt(getActivity(), "dark_metronomeColor", StaticVariables.darkishred);
+        dark_pageButtonsColor = preferences.getMyPreferenceInt(getActivity(), "dark_pageButtonsColor", StaticVariables.purplyblue);
+        dark_stickyTextColor = preferences.getMyPreferenceInt(getActivity(), "dark_stickyTextColor", StaticVariables.black);
+        dark_stickyBackgroundColor = preferences.getMyPreferenceInt(getActivity(), "dark_stickyBackgroundColor", StaticVariables.lightyellow);
+        dark_extraInfoTextColor = preferences.getMyPreferenceInt(getActivity(), "dark_extraInfoTextColor", StaticVariables.white);
+        dark_extraInfoBgColor = preferences.getMyPreferenceInt(getActivity(), "dark_extraInfoBgColor", StaticVariables.grey);
 
-    private int light_lyricsBackgroundColor, light_lyricsBridgeColor, light_lyricsCapoColor, light_lyricsChordsColor,
-            light_lyricsChorusColor, light_lyricsCommentColor, light_lyricsCustomColor, light_lyricsPreChorusColor,
-            light_lyricsTagColor, light_lyricsTextColor, light_lyricsVerseColor, light_presoFontColor,
-            light_presoShadowColor, light_presoInfoColor, light_presoAlertColor, light_metronomeColor,
-            light_pageButtonsColor, light_stickyTextColor, light_stickyBackgroundColor,
-            light_extraInfoTextColor, light_extraInfoBgColor;
+        light_lyricsBackgroundColor = preferences.getMyPreferenceInt(getActivity(), "light_lyricsBackgroundColor", StaticVariables.white);
+        light_lyricsTextColor = preferences.getMyPreferenceInt(getActivity(), "light_lyricsTextColor", StaticVariables.black);
+        light_lyricsVerseColor = preferences.getMyPreferenceInt(getActivity(), "light_lyricsVerseColor", StaticVariables.white);
+        light_lyricsChorusColor = preferences.getMyPreferenceInt(getActivity(), "light_lyricsChorusColor", StaticVariables.vlightpurple);
+        light_lyricsPreChorusColor = preferences.getMyPreferenceInt(getActivity(), "light_lyricsPreChorusColor", StaticVariables.lightgreen);
+        light_lyricsBridgeColor = preferences.getMyPreferenceInt(getActivity(), "light_lyricsBridgeColor", StaticVariables.vlightcyan);
+        light_lyricsCommentColor = preferences.getMyPreferenceInt(getActivity(), "light_lyricsCommentColor", StaticVariables.vlightblue);
+        light_lyricsTagColor = preferences.getMyPreferenceInt(getActivity(), "light_lyricsTagColor", StaticVariables.vlightgreen);
+        light_lyricsChordsColor = preferences.getMyPreferenceInt(getActivity(), "light_lyricsChordsColor", StaticVariables.darkblue);
+        light_lyricsCustomColor = preferences.getMyPreferenceInt(getActivity(), "light_lyricsCustomColor", StaticVariables.lightishcyan);
+        light_lyricsCapoColor = preferences.getMyPreferenceInt(getActivity(), "light_lyricsCapoColor", StaticVariables.red);
+        light_presoFontColor = preferences.getMyPreferenceInt(getActivity(), "light_presoFontColor", StaticVariables.black);
+        light_presoShadowColor = preferences.getMyPreferenceInt(getActivity(), "light_presoShadowColor", StaticVariables.white);
+        light_presoInfoColor = preferences.getMyPreferenceInt(getActivity(), "light_presoInfoColor", StaticVariables.black);
+        light_presoAlertColor = preferences.getMyPreferenceInt(getActivity(), "light_presoAlertColor", StaticVariables.red);
+        light_metronomeColor = preferences.getMyPreferenceInt(getActivity(), "light_metronomeColor", StaticVariables.darkishred);
+        light_pageButtonsColor = preferences.getMyPreferenceInt(getActivity(), "light_pageButtonsColor", StaticVariables.purplyblue);
+        light_stickyTextColor = preferences.getMyPreferenceInt(getActivity(), "light_stickyTextColor", StaticVariables.black);
+        light_stickyBackgroundColor = preferences.getMyPreferenceInt(getActivity(), "light_stickyBackgroundColor", StaticVariables.lightyellow);
+        light_extraInfoTextColor = preferences.getMyPreferenceInt(getActivity(), "light_extraInfoTextColor", StaticVariables.white);
+        light_extraInfoBgColor = preferences.getMyPreferenceInt(getActivity(), "light_extraInfoBgColor", StaticVariables.grey);
 
-    private int custom1_lyricsBackgroundColor, custom1_lyricsBridgeColor, custom1_lyricsCapoColor, custom1_lyricsChordsColor,
-            custom1_lyricsChorusColor, custom1_lyricsCommentColor, custom1_lyricsCustomColor, custom1_lyricsPreChorusColor,
-            custom1_lyricsTagColor, custom1_lyricsTextColor, custom1_lyricsVerseColor, custom1_presoFontColor,
-            custom1_presoShadowColor, custom1_presoInfoColor, custom1_presoAlertColor, custom1_metronomeColor,
-            custom1_pageButtonsColor, custom1_stickyTextColor, custom1_stickyBackgroundColor,
-            custom1_extraInfoTextColor, custom1_extraInfoBgColor;
+        custom1_lyricsBackgroundColor = preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsBackgroundColor", StaticVariables.black);
+        custom1_lyricsTextColor = preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsTextColor", StaticVariables.white);
+        custom1_lyricsVerseColor = preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsVerseColor", StaticVariables.black);
+        custom1_lyricsChorusColor = preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsChorusColor", StaticVariables.black);
+        custom1_lyricsPreChorusColor = preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsPreChorusColor", StaticVariables.black);
+        custom1_lyricsBridgeColor = preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsBridgeColor", StaticVariables.black);
+        custom1_lyricsCommentColor = preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsCommentColor", StaticVariables.black);
+        custom1_lyricsTagColor = preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsTagColor", StaticVariables.black);
+        custom1_lyricsChordsColor = preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsChordsColor", StaticVariables.yellow);
+        custom1_lyricsCustomColor = preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsCustomColor", StaticVariables.black);
+        custom1_lyricsCapoColor = preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsCapoColor", StaticVariables.red);
+        custom1_presoFontColor = preferences.getMyPreferenceInt(getActivity(), "custom1_presoFontColor", StaticVariables.white);
+        custom1_presoShadowColor = preferences.getMyPreferenceInt(getActivity(), "custom1_presoShadowColor", StaticVariables.black);
+        custom1_presoInfoColor = preferences.getMyPreferenceInt(getActivity(), "custom1_presoInfoColor", StaticVariables.white);
+        custom1_presoAlertColor = preferences.getMyPreferenceInt(getActivity(), "custom1_presoAlertColor", StaticVariables.red);
+        custom1_metronomeColor = preferences.getMyPreferenceInt(getActivity(), "custom1_metronomeColor", StaticVariables.darkishred);
+        custom1_pageButtonsColor = preferences.getMyPreferenceInt(getActivity(), "custom1_pageButtonsColor", StaticVariables.purplyblue);
+        custom1_stickyTextColor = preferences.getMyPreferenceInt(getActivity(), "custom1_stickyTextColor", StaticVariables.black);
+        custom1_stickyBackgroundColor = preferences.getMyPreferenceInt(getActivity(), "custom1_stickyBackgroundColor", StaticVariables.lightyellow);
+        custom1_extraInfoTextColor = preferences.getMyPreferenceInt(getActivity(), "custom1_extraInfoTextColor", StaticVariables.white);
+        custom1_extraInfoBgColor = preferences.getMyPreferenceInt(getActivity(), "custom1_extraInfoBgColor", StaticVariables.grey);
 
-    private int custom2_lyricsBackgroundColor, custom2_lyricsBridgeColor, custom2_lyricsCapoColor, custom2_lyricsChordsColor,
-            custom2_lyricsChorusColor, custom2_lyricsCommentColor, custom2_lyricsCustomColor, custom2_lyricsPreChorusColor,
-            custom2_lyricsTagColor, custom2_lyricsTextColor, custom2_lyricsVerseColor, custom2_presoFontColor,
-            custom2_presoShadowColor, custom2_presoInfoColor, custom2_presoAlertColor, custom2_metronomeColor,
-            custom2_pageButtonsColor, custom2_stickyTextColor, custom2_stickyBackgroundColor,
-            custom2_extraInfoTextColor, custom2_extraInfoBgColor;
-
-    private void loadUpPreferences()  {
-        dark_lyricsBackgroundColor  =   preferences.getMyPreferenceInt(getActivity(), "dark_lyricsBackgroundColor", StaticVariables.black);
-        dark_lyricsTextColor        =   preferences.getMyPreferenceInt(getActivity(), "dark_lyricsTextColor",       StaticVariables.white);
-        dark_lyricsVerseColor       =   preferences.getMyPreferenceInt(getActivity(), "dark_lyricsVerseColor",      StaticVariables.black);
-        dark_lyricsChorusColor      =   preferences.getMyPreferenceInt(getActivity(), "dark_lyricsChorusColor",     StaticVariables.vdarkblue);
-        dark_lyricsPreChorusColor   =   preferences.getMyPreferenceInt(getActivity(), "dark_lyricsPreChorusColor",  StaticVariables.darkishgreen);
-        dark_lyricsBridgeColor      =   preferences.getMyPreferenceInt(getActivity(), "dark_lyricsBridgeColor",     StaticVariables.vdarkred);
-        dark_lyricsCommentColor     =   preferences.getMyPreferenceInt(getActivity(), "dark_lyricsCommentColor",    StaticVariables.vdarkgreen);
-        dark_lyricsTagColor         =   preferences.getMyPreferenceInt(getActivity(), "dark_lyricsTagColor",        StaticVariables.darkpurple);
-        dark_lyricsChordsColor      =   preferences.getMyPreferenceInt(getActivity(), "dark_lyricsChordsColor",     StaticVariables.yellow);
-        dark_lyricsCustomColor      =   preferences.getMyPreferenceInt(getActivity(), "dark_lyricsCustomColor",     StaticVariables.vdarkyellow);
-        dark_lyricsCapoColor        =   preferences.getMyPreferenceInt(getActivity(), "dark_lyricsCapoColor",       StaticVariables.red);
-        dark_presoFontColor         =   preferences.getMyPreferenceInt(getActivity(), "dark_presoFontColor",        StaticVariables.white);
-        dark_presoShadowColor       =   preferences.getMyPreferenceInt(getActivity(), "dark_presoShadowColor",      StaticVariables.black);
-        dark_presoInfoColor         =   preferences.getMyPreferenceInt(getActivity(), "dark_presoInfoColor",        StaticVariables.white);
-        dark_presoAlertColor        =   preferences.getMyPreferenceInt(getActivity(), "dark_presoAlertColor",       StaticVariables.red);
-        dark_metronomeColor         =   preferences.getMyPreferenceInt(getActivity(), "dark_metronomeColor",        StaticVariables.darkishred);
-        dark_pageButtonsColor       =   preferences.getMyPreferenceInt(getActivity(), "dark_pageButtonsColor",      StaticVariables.purplyblue);
-        dark_stickyTextColor        =   preferences.getMyPreferenceInt(getActivity(), "dark_stickyTextColor",       StaticVariables.black);
-        dark_stickyBackgroundColor  =   preferences.getMyPreferenceInt(getActivity(), "dark_stickyBackgroundColor",  StaticVariables.lightyellow);
-        dark_extraInfoTextColor     =   preferences.getMyPreferenceInt(getActivity(), "dark_extraInfoTextColor",    StaticVariables.white);
-        dark_extraInfoBgColor       =   preferences.getMyPreferenceInt(getActivity(), "dark_extraInfoBgColor",      StaticVariables.grey);
-
-        light_lyricsBackgroundColor  =   preferences.getMyPreferenceInt(getActivity(), "light_lyricsBackgroundColor", StaticVariables.white);
-        light_lyricsTextColor        =   preferences.getMyPreferenceInt(getActivity(), "light_lyricsTextColor",       StaticVariables.black);
-        light_lyricsVerseColor       =   preferences.getMyPreferenceInt(getActivity(), "light_lyricsVerseColor",      StaticVariables.white);
-        light_lyricsChorusColor      =   preferences.getMyPreferenceInt(getActivity(), "light_lyricsChorusColor",     StaticVariables.vlightpurple);
-        light_lyricsPreChorusColor   =   preferences.getMyPreferenceInt(getActivity(), "light_lyricsPreChorusColor",  StaticVariables.lightgreen);
-        light_lyricsBridgeColor      =   preferences.getMyPreferenceInt(getActivity(), "light_lyricsBridgeColor",     StaticVariables.vlightcyan);
-        light_lyricsCommentColor     =   preferences.getMyPreferenceInt(getActivity(), "light_lyricsCommentColor",    StaticVariables.vlightblue);
-        light_lyricsTagColor         =   preferences.getMyPreferenceInt(getActivity(), "light_lyricsTagColor",        StaticVariables.vlightgreen);
-        light_lyricsChordsColor      =   preferences.getMyPreferenceInt(getActivity(), "light_lyricsChordsColor",     StaticVariables.darkblue);
-        light_lyricsCustomColor      =   preferences.getMyPreferenceInt(getActivity(), "light_lyricsCustomColor",     StaticVariables.lightishcyan);
-        light_lyricsCapoColor        =   preferences.getMyPreferenceInt(getActivity(), "light_lyricsCapoColor",       StaticVariables.red);
-        light_presoFontColor         =   preferences.getMyPreferenceInt(getActivity(), "light_presoFontColor",        StaticVariables.white);
-        light_presoShadowColor       =   preferences.getMyPreferenceInt(getActivity(), "light_presoShadowColor",      StaticVariables.black);
-        light_presoInfoColor         =   preferences.getMyPreferenceInt(getActivity(), "light_presoInfoColor",        StaticVariables.white);
-        light_presoAlertColor        =   preferences.getMyPreferenceInt(getActivity(), "light_presoAlertColor",       StaticVariables.red);
-        light_metronomeColor         =   preferences.getMyPreferenceInt(getActivity(), "light_metronomeColor",        StaticVariables.darkishred);
-        light_pageButtonsColor       =   preferences.getMyPreferenceInt(getActivity(), "light_pageButtonsColor",      StaticVariables.purplyblue);
-        light_stickyTextColor        =   preferences.getMyPreferenceInt(getActivity(), "light_stickyTextColor",       StaticVariables.black);
-        light_stickyBackgroundColor  =   preferences.getMyPreferenceInt(getActivity(), "light_stickyBackgroundColor", StaticVariables.lightyellow);
-        light_extraInfoTextColor     =   preferences.getMyPreferenceInt(getActivity(), "light_extraInfoTextColor",    StaticVariables.white);
-        light_extraInfoBgColor       =   preferences.getMyPreferenceInt(getActivity(), "light_extraInfoBgColor",      StaticVariables.grey);
-
-        custom1_lyricsBackgroundColor  =   preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsBackgroundColor", StaticVariables.black);
-        custom1_lyricsTextColor        =   preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsTextColor",       StaticVariables.white);
-        custom1_lyricsVerseColor       =   preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsVerseColor",      StaticVariables.black);
-        custom1_lyricsChorusColor      =   preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsChorusColor",     StaticVariables.vdarkblue);
-        custom1_lyricsPreChorusColor   =   preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsPreChorusColor",  StaticVariables.darkishgreen);
-        custom1_lyricsBridgeColor      =   preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsBridgeColor",     StaticVariables.vdarkred);
-        custom1_lyricsCommentColor     =   preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsCommentColor",    StaticVariables.vdarkgreen);
-        custom1_lyricsTagColor         =   preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsTagColor",        StaticVariables.darkpurple);
-        custom1_lyricsChordsColor      =   preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsChordsColor",     StaticVariables.yellow);
-        custom1_lyricsCustomColor      =   preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsCustomColor",     StaticVariables.vdarkyellow);
-        custom1_lyricsCapoColor        =   preferences.getMyPreferenceInt(getActivity(), "custom1_lyricsCapoColor",       StaticVariables.red);
-        custom1_presoFontColor         =   preferences.getMyPreferenceInt(getActivity(), "custom1_presoFontColor",        StaticVariables.white);
-        custom1_presoShadowColor       =   preferences.getMyPreferenceInt(getActivity(), "custom1_presoShadowColor",      StaticVariables.black);
-        custom1_presoInfoColor         =   preferences.getMyPreferenceInt(getActivity(), "custom1_presoInfoColor",        StaticVariables.white);
-        custom1_presoAlertColor        =   preferences.getMyPreferenceInt(getActivity(), "custom1_presoAlertColor",       StaticVariables.red);
-        custom1_metronomeColor         =   preferences.getMyPreferenceInt(getActivity(), "custom1_metronomeColor",        StaticVariables.darkishred);
-        custom1_pageButtonsColor       =   preferences.getMyPreferenceInt(getActivity(), "custom1_pageButtonsColor",      StaticVariables.purplyblue);
-        custom1_stickyTextColor        =   preferences.getMyPreferenceInt(getActivity(), "custom1_stickyTextColor",       StaticVariables.black);
-        custom1_stickyBackgroundColor  =   preferences.getMyPreferenceInt(getActivity(), "custom1_stickyBackgroundColor", StaticVariables.lightyellow);
-        custom1_extraInfoTextColor     =   preferences.getMyPreferenceInt(getActivity(), "custom1_extraInfoTextColor",    StaticVariables.white);
-        custom1_extraInfoBgColor       =   preferences.getMyPreferenceInt(getActivity(), "custom1_extraInfoBgColor",      StaticVariables.grey);
-
-        custom2_lyricsBackgroundColor  =   preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsBackgroundColor", StaticVariables.white);
-        custom2_lyricsTextColor        =   preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsTextColor",       StaticVariables.black);
-        custom2_lyricsVerseColor       =   preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsVerseColor",      StaticVariables.white);
-        custom2_lyricsChorusColor      =   preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsChorusColor",     StaticVariables.white);
-        custom2_lyricsPreChorusColor   =   preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsPreChorusColor",  StaticVariables.white);
-        custom2_lyricsBridgeColor      =   preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsBridgeColor",     StaticVariables.white);
-        custom2_lyricsCommentColor     =   preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsCommentColor",    StaticVariables.white);
-        custom2_lyricsTagColor         =   preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsTagColor",        StaticVariables.white);
-        custom2_lyricsChordsColor      =   preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsChordsColor",     StaticVariables.darkblue);
-        custom2_lyricsCustomColor      =   preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsCustomColor",     StaticVariables.white);
-        custom2_lyricsCapoColor        =   preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsCapoColor",       StaticVariables.red);
-        custom2_presoFontColor         =   preferences.getMyPreferenceInt(getActivity(), "custom2_presoFontColor",        StaticVariables.white);
-        custom2_presoShadowColor       =   preferences.getMyPreferenceInt(getActivity(), "custom2_presoShadowColor",      StaticVariables.black);
-        custom2_presoInfoColor         =   preferences.getMyPreferenceInt(getActivity(), "custom2_presoInfoColor",        StaticVariables.white);
-        custom2_presoAlertColor        =   preferences.getMyPreferenceInt(getActivity(), "custom2_presoAlertColor",       StaticVariables.red);
-        custom2_metronomeColor         =   preferences.getMyPreferenceInt(getActivity(), "custom2_metronomeColor",        StaticVariables.darkishred);
-        custom2_pageButtonsColor       =   preferences.getMyPreferenceInt(getActivity(), "custom2_pageButtonsColor",      StaticVariables.purplyblue);
-        custom2_stickyTextColor        =   preferences.getMyPreferenceInt(getActivity(), "custom2_stickyTextColor",       StaticVariables.black);
-        custom2_stickyBackgroundColor  =   preferences.getMyPreferenceInt(getActivity(), "custom2_stickyBackgroundColor", StaticVariables.lightyellow);
-        custom2_extraInfoTextColor     =   preferences.getMyPreferenceInt(getActivity(), "custom2_extraInfoTextColor",    StaticVariables.white);
-        custom2_extraInfoBgColor       =   preferences.getMyPreferenceInt(getActivity(), "custom2_extraInfoBgColor",      StaticVariables.grey);
+        custom2_lyricsBackgroundColor = preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsBackgroundColor", StaticVariables.white);
+        custom2_lyricsTextColor = preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsTextColor", StaticVariables.black);
+        custom2_lyricsVerseColor = preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsVerseColor", StaticVariables.white);
+        custom2_lyricsChorusColor = preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsChorusColor", StaticVariables.white);
+        custom2_lyricsPreChorusColor = preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsPreChorusColor", StaticVariables.white);
+        custom2_lyricsBridgeColor = preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsBridgeColor", StaticVariables.white);
+        custom2_lyricsCommentColor = preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsCommentColor", StaticVariables.white);
+        custom2_lyricsTagColor = preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsTagColor", StaticVariables.white);
+        custom2_lyricsChordsColor = preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsChordsColor", StaticVariables.darkblue);
+        custom2_lyricsCustomColor = preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsCustomColor", StaticVariables.white);
+        custom2_lyricsCapoColor = preferences.getMyPreferenceInt(getActivity(), "custom2_lyricsCapoColor", StaticVariables.red);
+        custom2_presoFontColor = preferences.getMyPreferenceInt(getActivity(), "custom2_presoFontColor", StaticVariables.white);
+        custom2_presoShadowColor = preferences.getMyPreferenceInt(getActivity(), "custom2_presoShadowColor", StaticVariables.black);
+        custom2_presoInfoColor = preferences.getMyPreferenceInt(getActivity(), "custom2_presoInfoColor", StaticVariables.white);
+        custom2_presoAlertColor = preferences.getMyPreferenceInt(getActivity(), "custom2_presoAlertColor", StaticVariables.red);
+        custom2_metronomeColor = preferences.getMyPreferenceInt(getActivity(), "custom2_metronomeColor", StaticVariables.darkishred);
+        custom2_pageButtonsColor = preferences.getMyPreferenceInt(getActivity(), "custom2_pageButtonsColor", StaticVariables.purplyblue);
+        custom2_stickyTextColor = preferences.getMyPreferenceInt(getActivity(), "custom2_stickyTextColor", StaticVariables.black);
+        custom2_stickyBackgroundColor = preferences.getMyPreferenceInt(getActivity(), "custom2_stickyBackgroundColor", StaticVariables.lightyellow);
+        custom2_extraInfoTextColor = preferences.getMyPreferenceInt(getActivity(), "custom2_extraInfoTextColor", StaticVariables.white);
+        custom2_extraInfoBgColor = preferences.getMyPreferenceInt(getActivity(), "custom2_extraInfoBgColor", StaticVariables.grey);
     }
 
     private void resetColours() {
         preferences.setMyPreferenceInt(getActivity(), "dark_lyricsBackgroundColor", StaticVariables.black);
-        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsTextColor",       StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsVerseColor",      StaticVariables.black);
-        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsChorusColor",     StaticVariables.vdarkblue);
-        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsPreChorusColor",  StaticVariables.darkishgreen);
-        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsBridgeColor",     StaticVariables.vdarkred);
-        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsCommentColor",    StaticVariables.vdarkgreen);
-        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsTagColor",        StaticVariables.darkpurple);
-        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsChordsColor",     StaticVariables.yellow);
-        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsCustomColor",     StaticVariables.vdarkyellow);
-        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsCapoColor",       StaticVariables.red);
-        preferences.setMyPreferenceInt(getActivity(), "dark_presoFontColor",        StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "dark_presoShadowColor",      StaticVariables.black);
-        preferences.setMyPreferenceInt(getActivity(), "dark_presoInfoColor",        StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "dark_presoAlertColor",       StaticVariables.red);
-        preferences.setMyPreferenceInt(getActivity(), "dark_metronomeColor",        StaticVariables.darkishred);
-        preferences.setMyPreferenceInt(getActivity(), "dark_pageButtonsColor",      StaticVariables.purplyblue);
-        preferences.setMyPreferenceInt(getActivity(), "dark_stickyTextColor",       StaticVariables.black);
+        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsTextColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsVerseColor", StaticVariables.black);
+        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsChorusColor", StaticVariables.vdarkblue);
+        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsPreChorusColor", StaticVariables.darkishgreen);
+        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsBridgeColor", StaticVariables.vdarkred);
+        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsCommentColor", StaticVariables.vdarkgreen);
+        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsTagColor", StaticVariables.darkpurple);
+        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsChordsColor", StaticVariables.yellow);
+        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsCustomColor", StaticVariables.vdarkyellow);
+        preferences.setMyPreferenceInt(getActivity(), "dark_lyricsCapoColor", StaticVariables.red);
+        preferences.setMyPreferenceInt(getActivity(), "dark_presoFontColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "dark_presoShadowColor", StaticVariables.black);
+        preferences.setMyPreferenceInt(getActivity(), "dark_presoInfoColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "dark_presoAlertColor", StaticVariables.red);
+        preferences.setMyPreferenceInt(getActivity(), "dark_metronomeColor", StaticVariables.darkishred);
+        preferences.setMyPreferenceInt(getActivity(), "dark_pageButtonsColor", StaticVariables.purplyblue);
+        preferences.setMyPreferenceInt(getActivity(), "dark_stickyTextColor", StaticVariables.black);
         preferences.setMyPreferenceInt(getActivity(), "dark_stickyBackgroundColor", StaticVariables.lightyellow);
-        preferences.setMyPreferenceInt(getActivity(), "dark_extraInfoTextColor",    StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "dark_extraInfoBgColor",      StaticVariables.grey);
+        preferences.setMyPreferenceInt(getActivity(), "dark_extraInfoTextColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "dark_extraInfoBgColor", StaticVariables.grey);
 
         preferences.setMyPreferenceInt(getActivity(), "light_lyricsBackgroundColor", StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "light_lyricsTextColor",       StaticVariables.black);
-        preferences.setMyPreferenceInt(getActivity(), "light_lyricsVerseColor",      StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "light_lyricsChorusColor",     StaticVariables.vlightpurple);
-        preferences.setMyPreferenceInt(getActivity(), "light_lyricsPreChorusColor",  StaticVariables.lightgreen);
-        preferences.setMyPreferenceInt(getActivity(), "light_lyricsBridgeColor",     StaticVariables.vlightcyan);
-        preferences.setMyPreferenceInt(getActivity(), "light_lyricsCommentColor",    StaticVariables.vlightblue);
-        preferences.setMyPreferenceInt(getActivity(), "light_lyricsTagColor",        StaticVariables.vlightgreen);
-        preferences.setMyPreferenceInt(getActivity(), "light_lyricsChordsColor",     StaticVariables.darkblue);
-        preferences.setMyPreferenceInt(getActivity(), "light_lyricsCustomColor",     StaticVariables.lightishcyan);
-        preferences.setMyPreferenceInt(getActivity(), "light_lyricsCapoColor",       StaticVariables.red);
-        preferences.setMyPreferenceInt(getActivity(), "light_presoFontColor",        StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "light_presoShadowColor",      StaticVariables.black);
-        preferences.setMyPreferenceInt(getActivity(), "light_presoInfoColor",        StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "light_presoAlertColor",       StaticVariables.red);
-        preferences.setMyPreferenceInt(getActivity(), "light_metronomeColor",        StaticVariables.darkishred);
-        preferences.setMyPreferenceInt(getActivity(), "light_pageButtonsColor",      StaticVariables.purplyblue);
-        preferences.setMyPreferenceInt(getActivity(), "light_stickyTextColor",       StaticVariables.black);
+        preferences.setMyPreferenceInt(getActivity(), "light_lyricsTextColor", StaticVariables.black);
+        preferences.setMyPreferenceInt(getActivity(), "light_lyricsVerseColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "light_lyricsChorusColor", StaticVariables.vlightpurple);
+        preferences.setMyPreferenceInt(getActivity(), "light_lyricsPreChorusColor", StaticVariables.lightgreen);
+        preferences.setMyPreferenceInt(getActivity(), "light_lyricsBridgeColor", StaticVariables.vlightcyan);
+        preferences.setMyPreferenceInt(getActivity(), "light_lyricsCommentColor", StaticVariables.vlightblue);
+        preferences.setMyPreferenceInt(getActivity(), "light_lyricsTagColor", StaticVariables.vlightgreen);
+        preferences.setMyPreferenceInt(getActivity(), "light_lyricsChordsColor", StaticVariables.darkblue);
+        preferences.setMyPreferenceInt(getActivity(), "light_lyricsCustomColor", StaticVariables.lightishcyan);
+        preferences.setMyPreferenceInt(getActivity(), "light_lyricsCapoColor", StaticVariables.red);
+        preferences.setMyPreferenceInt(getActivity(), "light_presoFontColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "light_presoShadowColor", StaticVariables.black);
+        preferences.setMyPreferenceInt(getActivity(), "light_presoInfoColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "light_presoAlertColor", StaticVariables.red);
+        preferences.setMyPreferenceInt(getActivity(), "light_metronomeColor", StaticVariables.darkishred);
+        preferences.setMyPreferenceInt(getActivity(), "light_pageButtonsColor", StaticVariables.purplyblue);
+        preferences.setMyPreferenceInt(getActivity(), "light_stickyTextColor", StaticVariables.black);
         preferences.setMyPreferenceInt(getActivity(), "light_stickyBackgroundColor", StaticVariables.lightyellow);
-        preferences.setMyPreferenceInt(getActivity(), "light_extraInfoTextColor",    StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "light_extraInfoBgColor",      StaticVariables.grey);
+        preferences.setMyPreferenceInt(getActivity(), "light_extraInfoTextColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "light_extraInfoBgColor", StaticVariables.grey);
 
         preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsBackgroundColor", StaticVariables.black);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsTextColor",       StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsVerseColor",      StaticVariables.black);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsChorusColor",     StaticVariables.vdarkblue);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsPreChorusColor",  StaticVariables.darkishgreen);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsBridgeColor",     StaticVariables.vdarkred);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsCommentColor",    StaticVariables.vdarkgreen);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsTagColor",        StaticVariables.darkpurple);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsChordsColor",     StaticVariables.yellow);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsCustomColor",     StaticVariables.vdarkyellow);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsCapoColor",       StaticVariables.red);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_presoFontColor",        StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_presoShadowColor",      StaticVariables.black);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_presoInfoColor",        StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_presoAlertColor",       StaticVariables.red);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_metronomeColor",        StaticVariables.darkishred);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_pageButtonsColor",      StaticVariables.purplyblue);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_stickyTextColor",       StaticVariables.black);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsTextColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsVerseColor", StaticVariables.black);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsChorusColor", StaticVariables.vdarkblue);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsPreChorusColor", StaticVariables.darkishgreen);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsBridgeColor", StaticVariables.vdarkred);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsCommentColor", StaticVariables.vdarkgreen);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsTagColor", StaticVariables.darkpurple);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsChordsColor", StaticVariables.yellow);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsCustomColor", StaticVariables.vdarkyellow);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_lyricsCapoColor", StaticVariables.red);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_presoFontColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_presoShadowColor", StaticVariables.black);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_presoInfoColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_presoAlertColor", StaticVariables.red);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_metronomeColor", StaticVariables.darkishred);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_pageButtonsColor", StaticVariables.purplyblue);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_stickyTextColor", StaticVariables.black);
         preferences.setMyPreferenceInt(getActivity(), "custom1_stickyBackgroundColor", StaticVariables.lightyellow);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_extraInfoTextColor",    StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "custom1_extraInfoBgColor",      StaticVariables.grey);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_extraInfoTextColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "custom1_extraInfoBgColor", StaticVariables.grey);
 
         preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsBackgroundColor", StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsTextColor",       StaticVariables.black);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsVerseColor",      StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsChorusColor",     StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsPreChorusColor",  StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsBridgeColor",     StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsCommentColor",    StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsTagColor",        StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsChordsColor",     StaticVariables.darkblue);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsCustomColor",     StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsCapoColor",       StaticVariables.red);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_presoFontColor",        StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_presoShadowColor",      StaticVariables.black);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_presoInfoColor",        StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_presoAlertColor",       StaticVariables.red);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_metronomeColor",        StaticVariables.darkishred);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_pageButtonsColor",      StaticVariables.purplyblue);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_stickyTextColor",       StaticVariables.black);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_stickyBackgroundColor",  StaticVariables.lightyellow);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_extraInfoTextColor",    StaticVariables.white);
-        preferences.setMyPreferenceInt(getActivity(), "custom2_extraInfoBgColor",      StaticVariables.grey);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsTextColor", StaticVariables.black);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsVerseColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsChorusColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsPreChorusColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsBridgeColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsCommentColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsTagColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsChordsColor", StaticVariables.darkblue);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsCustomColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_lyricsCapoColor", StaticVariables.red);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_presoFontColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_presoShadowColor", StaticVariables.black);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_presoInfoColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_presoAlertColor", StaticVariables.red);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_metronomeColor", StaticVariables.darkishred);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_pageButtonsColor", StaticVariables.purplyblue);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_stickyTextColor", StaticVariables.black);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_stickyBackgroundColor", StaticVariables.lightyellow);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_extraInfoTextColor", StaticVariables.white);
+        preferences.setMyPreferenceInt(getActivity(), "custom2_extraInfoBgColor", StaticVariables.grey);
     }
 
     private void setUpButtons() {
@@ -702,16 +684,16 @@ public class PopUpThemeChooserFragment extends DialogFragment {
 
     private void doThemeSwitch(String which) {
         setUpButtons();
-        preferences.setMyPreferenceString(getActivity(),"appTheme",which);
+        preferences.setMyPreferenceString(getActivity(), "appTheme", which);
         loadUpPreferences();
-        if (mListener!=null) {
+        if (mListener != null) {
             mListener.refreshAll();
             mListener.setUpPageButtonsColors();
         }
     }
 
     private void doClose() {
-        if (mListener!=null) {
+        if (mListener != null) {
             mListener.refreshAll();
             mListener.setUpPageButtonsColors();
         }
@@ -811,6 +793,143 @@ public class PopUpThemeChooserFragment extends DialogFragment {
 
     }
 
+    private void doDisplay(final View v) {
+        Context c;
+        try {
+            if (getActivity() == null) {
+                c = FullscreenActivity.mContext;
+            } else {
+                c = getActivity();
+            }
+            AmbilWarnaDialog dialog = new AmbilWarnaDialog(c, initialcolor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+                @Override
+                public void onOk(AmbilWarnaDialog dialog, int color) {
+
+                    // Decide which one we're changing and save the appropriate value
+                    preferences.setMyPreferenceInt(getActivity(), buttonClicked, color);
+
+                    // Set the button colours up to match any changes
+                    //setButtonColors();
+                    v.setBackgroundColor(color);
+                }
+
+                @Override
+                public void onCancel(AmbilWarnaDialog dialog) {
+                    // User cancelled, do nothing
+                }
+            });
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+    }
+
+    private void saveTheColor(Preferences preferences, String whichColor, int value) {
+        preferences.setMyPreferenceInt(getActivity(), whichColor, value);
+    }
+
+    private void saveAllColors() {
+        saveTheColor(preferences, "dark_lyricsBackgroundColor", dark_lyricsBackgroundColor);
+        saveTheColor(preferences, "dark_lyricsBridgeColor", dark_lyricsBridgeColor);
+        saveTheColor(preferences, "dark_lyricsCapoColor", dark_lyricsCapoColor);
+        saveTheColor(preferences, "dark_lyricsChordsColor", dark_lyricsChordsColor);
+        saveTheColor(preferences, "dark_lyricsChorusColor", dark_lyricsChorusColor);
+        saveTheColor(preferences, "dark_lyricsCommentColor", dark_lyricsCommentColor);
+        saveTheColor(preferences, "dark_lyricsCustomColor", dark_lyricsCustomColor);
+        saveTheColor(preferences, "dark_lyricsPreChorusColor", dark_lyricsPreChorusColor);
+        saveTheColor(preferences, "dark_lyricsTagColor", dark_lyricsTagColor);
+        saveTheColor(preferences, "dark_lyricsTextColor", dark_lyricsTextColor);
+        saveTheColor(preferences, "dark_lyricsVerseColor", dark_lyricsVerseColor);
+        saveTheColor(preferences, "dark_presoFontColor", dark_presoFontColor);
+        saveTheColor(preferences, "dark_presoShadowColor", dark_presoShadowColor);
+        saveTheColor(preferences, "dark_presoInfoColor", dark_presoInfoColor);
+        saveTheColor(preferences, "dark_presoAlertColor", dark_presoAlertColor);
+        saveTheColor(preferences, "dark_metronomeColor", dark_metronomeColor);
+        saveTheColor(preferences, "dark_pageButtonsColor", dark_pageButtonsColor);
+        saveTheColor(preferences, "dark_stickyTextColor", dark_stickyTextColor);
+        saveTheColor(preferences, "dark_stickyBackgroundColor", dark_stickyBackgroundColor);
+        saveTheColor(preferences, "dark_extraInfoTextColor", dark_extraInfoTextColor);
+        saveTheColor(preferences, "dark_extraInfoBgColor", dark_extraInfoBgColor);
+
+        saveTheColor(preferences, "light_lyricsBackgroundColor", light_lyricsBackgroundColor);
+        saveTheColor(preferences, "light_lyricsBridgeColor", light_lyricsBridgeColor);
+        saveTheColor(preferences, "light_lyricsCapoColor", light_lyricsCapoColor);
+        saveTheColor(preferences, "light_lyricsChordsColor", light_lyricsChordsColor);
+        saveTheColor(preferences, "light_lyricsChorusColor", light_lyricsChorusColor);
+        saveTheColor(preferences, "light_lyricsCommentColor", light_lyricsCommentColor);
+        saveTheColor(preferences, "light_lyricsCustomColor", light_lyricsCustomColor);
+        saveTheColor(preferences, "light_lyricsPreChorusColor", light_lyricsPreChorusColor);
+        saveTheColor(preferences, "light_lyricsTagColor", light_lyricsTagColor);
+        saveTheColor(preferences, "light_lyricsTextColor", light_lyricsTextColor);
+        saveTheColor(preferences, "light_lyricsVerseColor", light_lyricsVerseColor);
+        saveTheColor(preferences, "light_presoFontColor", light_presoFontColor);
+        saveTheColor(preferences, "light_presoShadowColor", light_presoShadowColor);
+        saveTheColor(preferences, "light_presoInfoColor", light_presoInfoColor);
+        saveTheColor(preferences, "light_presoAlertColor", light_presoAlertColor);
+        saveTheColor(preferences, "light_metronomeColor", light_metronomeColor);
+        saveTheColor(preferences, "light_pageButtonsColor", light_pageButtonsColor);
+        saveTheColor(preferences, "light_stickyTextColor", light_stickyTextColor);
+        saveTheColor(preferences, "light_stickyBackgroundColor", light_stickyBackgroundColor);
+        saveTheColor(preferences, "light_extraInfoTextColor", light_extraInfoTextColor);
+        saveTheColor(preferences, "light_extraInfoBgColor", light_extraInfoBgColor);
+
+        saveTheColor(preferences, "custom1_lyricsBackgroundColor", custom1_lyricsBackgroundColor);
+        saveTheColor(preferences, "custom1_lyricsBridgeColor", custom1_lyricsBridgeColor);
+        saveTheColor(preferences, "custom1_lyricsCapoColor", custom1_lyricsCapoColor);
+        saveTheColor(preferences, "custom1_lyricsChordsColor", custom1_lyricsChordsColor);
+        saveTheColor(preferences, "custom1_lyricsChorusColor", custom1_lyricsChorusColor);
+        saveTheColor(preferences, "custom1_lyricsCommentColor", custom1_lyricsCommentColor);
+        saveTheColor(preferences, "custom1_lyricsCustomColor", custom1_lyricsCustomColor);
+        saveTheColor(preferences, "custom1_lyricsPreChorusColor", custom1_lyricsPreChorusColor);
+        saveTheColor(preferences, "custom1_lyricsTagColor", custom1_lyricsTagColor);
+        saveTheColor(preferences, "custom1_lyricsTextColor", custom1_lyricsTextColor);
+        saveTheColor(preferences, "custom1_lyricsVerseColor", custom1_lyricsVerseColor);
+        saveTheColor(preferences, "custom1_presoFontColor", custom1_presoFontColor);
+        saveTheColor(preferences, "custom1_presoShadowColor", custom1_presoShadowColor);
+        saveTheColor(preferences, "custom1_presoInfoColor", custom1_presoInfoColor);
+        saveTheColor(preferences, "custom1_presoAlertColor", custom1_presoAlertColor);
+        saveTheColor(preferences, "custom1_metronomeColor", custom1_metronomeColor);
+        saveTheColor(preferences, "custom1_pageButtonsColor", custom1_pageButtonsColor);
+        saveTheColor(preferences, "custom1_stickyTextColor", custom1_stickyTextColor);
+        saveTheColor(preferences, "custom1_stickyBackgroundColor", custom1_stickyBackgroundColor);
+        saveTheColor(preferences, "custom1_extraInfoTextColor", custom1_extraInfoTextColor);
+        saveTheColor(preferences, "custom1_extraInfoBgColor", custom1_extraInfoBgColor);
+
+        saveTheColor(preferences, "custom2_lyricsBackgroundColor", custom2_lyricsBackgroundColor);
+        saveTheColor(preferences, "custom2_lyricsBridgeColor", custom2_lyricsBridgeColor);
+        saveTheColor(preferences, "custom2_lyricsCapoColor", custom2_lyricsCapoColor);
+        saveTheColor(preferences, "custom2_lyricsChordsColor", custom2_lyricsChordsColor);
+        saveTheColor(preferences, "custom2_lyricsChorusColor", custom2_lyricsChorusColor);
+        saveTheColor(preferences, "custom2_lyricsCommentColor", custom2_lyricsCommentColor);
+        saveTheColor(preferences, "custom2_lyricsCustomColor", custom2_lyricsCustomColor);
+        saveTheColor(preferences, "custom2_lyricsPreChorusColor", custom2_lyricsPreChorusColor);
+        saveTheColor(preferences, "custom2_lyricsTagColor", custom2_lyricsTagColor);
+        saveTheColor(preferences, "custom2_lyricsTextColor", custom2_lyricsTextColor);
+        saveTheColor(preferences, "custom2_lyricsVerseColor", custom2_lyricsVerseColor);
+        saveTheColor(preferences, "custom2_presoFontColor", custom2_presoFontColor);
+        saveTheColor(preferences, "custom2_presoShadowColor", custom2_presoShadowColor);
+        saveTheColor(preferences, "custom2_presoInfoColor", custom2_presoInfoColor);
+        saveTheColor(preferences, "custom2_presoAlertColor", custom2_presoAlertColor);
+        saveTheColor(preferences, "custom2_metronomeColor", custom2_metronomeColor);
+        saveTheColor(preferences, "custom2_pageButtonsColor", custom2_pageButtonsColor);
+        saveTheColor(preferences, "custom2_stickyTextColor", custom2_stickyTextColor);
+        saveTheColor(preferences, "custom2_stickyBackgroundColor", custom2_stickyBackgroundColor);
+        saveTheColor(preferences, "custom2_extraInfoTextColor", custom2_extraInfoTextColor);
+        saveTheColor(preferences, "custom2_extraInfoBgColor", custom2_extraInfoBgColor);
+    }
+
+    public interface MyInterface {
+        //void prepareView();
+        void refreshAll();
+
+        void setUpPageButtonsColors();
+    }
+
     private class ChangeColorListener implements View.OnClickListener {
         ChangeColorListener(String which) {
             buttonClicked = which;
@@ -824,7 +943,7 @@ public class PopUpThemeChooserFragment extends DialogFragment {
                     initialcolor = dark_lyricsBackgroundColor;
                     break;
                 case "dark_lyricsTextColor":
-                    default:
+                default:
                     initialcolor = dark_lyricsTextColor;
                     break;
                 case "dark_lyricsVerseColor":
@@ -1079,135 +1198,5 @@ public class PopUpThemeChooserFragment extends DialogFragment {
             }
             doDisplay(view);
         }
-    }
-
-    private void doDisplay(final View v) {
-        Context c;
-        try {
-            if (getActivity()==null) {
-                c = FullscreenActivity.mContext;
-            } else {
-                c = getActivity();
-            }
-            AmbilWarnaDialog dialog = new AmbilWarnaDialog(c, initialcolor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
-                @Override
-                public void onOk(AmbilWarnaDialog dialog, int color) {
-
-                    // Decide which one we're changing and save the appropriate value
-                    preferences.setMyPreferenceInt(getActivity(),buttonClicked,color);
-
-                    // Set the button colours up to match any changes
-                    //setButtonColors();
-                    v.setBackgroundColor(color);
-                }
-
-                @Override
-                public void onCancel(AmbilWarnaDialog dialog) {
-                    // User cancelled, do nothing
-                }
-            });
-            dialog.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onCancel(DialogInterface dialog) {
-        this.dismiss();
-    }
-
-    private void saveTheColor(Preferences preferences, String whichColor, int value) {
-        preferences.setMyPreferenceInt(getActivity(),whichColor,value);
-    }
-
-    private void saveAllColors() {
-        saveTheColor(preferences, "dark_lyricsBackgroundColor", dark_lyricsBackgroundColor);
-        saveTheColor(preferences, "dark_lyricsBridgeColor", dark_lyricsBridgeColor);
-        saveTheColor(preferences, "dark_lyricsCapoColor", dark_lyricsCapoColor);
-        saveTheColor(preferences, "dark_lyricsChordsColor", dark_lyricsChordsColor);
-        saveTheColor(preferences, "dark_lyricsChorusColor", dark_lyricsChorusColor);
-        saveTheColor(preferences, "dark_lyricsCommentColor", dark_lyricsCommentColor);
-        saveTheColor(preferences, "dark_lyricsCustomColor", dark_lyricsCustomColor);
-        saveTheColor(preferences, "dark_lyricsPreChorusColor", dark_lyricsPreChorusColor);
-        saveTheColor(preferences, "dark_lyricsTagColor", dark_lyricsTagColor);
-        saveTheColor(preferences, "dark_lyricsTextColor", dark_lyricsTextColor);
-        saveTheColor(preferences, "dark_lyricsVerseColor", dark_lyricsVerseColor);
-        saveTheColor(preferences, "dark_presoFontColor", dark_presoFontColor);
-        saveTheColor(preferences, "dark_presoShadowColor", dark_presoShadowColor);
-        saveTheColor(preferences, "dark_presoInfoColor", dark_presoInfoColor);
-        saveTheColor(preferences, "dark_presoAlertColor", dark_presoAlertColor);
-        saveTheColor(preferences, "dark_metronomeColor", dark_metronomeColor);
-        saveTheColor(preferences, "dark_pageButtonsColor", dark_pageButtonsColor);
-        saveTheColor(preferences, "dark_stickyTextColor", dark_stickyTextColor);
-        saveTheColor(preferences, "dark_stickyBackgroundColor", dark_stickyBackgroundColor);
-        saveTheColor(preferences, "dark_extraInfoTextColor", dark_extraInfoTextColor);
-        saveTheColor(preferences, "dark_extraInfoBgColor", dark_extraInfoBgColor);
-
-        saveTheColor(preferences, "light_lyricsBackgroundColor", light_lyricsBackgroundColor);
-        saveTheColor(preferences, "light_lyricsBridgeColor", light_lyricsBridgeColor);
-        saveTheColor(preferences, "light_lyricsCapoColor", light_lyricsCapoColor);
-        saveTheColor(preferences, "light_lyricsChordsColor", light_lyricsChordsColor);
-        saveTheColor(preferences, "light_lyricsChorusColor", light_lyricsChorusColor);
-        saveTheColor(preferences, "light_lyricsCommentColor", light_lyricsCommentColor);
-        saveTheColor(preferences, "light_lyricsCustomColor", light_lyricsCustomColor);
-        saveTheColor(preferences, "light_lyricsPreChorusColor", light_lyricsPreChorusColor);
-        saveTheColor(preferences, "light_lyricsTagColor", light_lyricsTagColor);
-        saveTheColor(preferences, "light_lyricsTextColor", light_lyricsTextColor);
-        saveTheColor(preferences, "light_lyricsVerseColor", light_lyricsVerseColor);
-        saveTheColor(preferences, "light_presoFontColor", light_presoFontColor);
-        saveTheColor(preferences, "light_presoShadowColor", light_presoShadowColor);
-        saveTheColor(preferences, "light_presoInfoColor", light_presoInfoColor);
-        saveTheColor(preferences, "light_presoAlertColor", light_presoAlertColor);
-        saveTheColor(preferences, "light_metronomeColor", light_metronomeColor);
-        saveTheColor(preferences, "light_pageButtonsColor", light_pageButtonsColor);
-        saveTheColor(preferences, "light_stickyTextColor", light_stickyTextColor);
-        saveTheColor(preferences, "light_stickyBackgroundColor", light_stickyBackgroundColor);
-        saveTheColor(preferences, "light_extraInfoTextColor", light_extraInfoTextColor);
-        saveTheColor(preferences, "light_extraInfoBgColor", light_extraInfoBgColor);
-
-        saveTheColor(preferences, "custom1_lyricsBackgroundColor", custom1_lyricsBackgroundColor);
-        saveTheColor(preferences, "custom1_lyricsBridgeColor", custom1_lyricsBridgeColor);
-        saveTheColor(preferences, "custom1_lyricsCapoColor", custom1_lyricsCapoColor);
-        saveTheColor(preferences, "custom1_lyricsChordsColor", custom1_lyricsChordsColor);
-        saveTheColor(preferences, "custom1_lyricsChorusColor", custom1_lyricsChorusColor);
-        saveTheColor(preferences, "custom1_lyricsCommentColor", custom1_lyricsCommentColor);
-        saveTheColor(preferences, "custom1_lyricsCustomColor", custom1_lyricsCustomColor);
-        saveTheColor(preferences, "custom1_lyricsPreChorusColor", custom1_lyricsPreChorusColor);
-        saveTheColor(preferences, "custom1_lyricsTagColor", custom1_lyricsTagColor);
-        saveTheColor(preferences, "custom1_lyricsTextColor", custom1_lyricsTextColor);
-        saveTheColor(preferences, "custom1_lyricsVerseColor", custom1_lyricsVerseColor);
-        saveTheColor(preferences, "custom1_presoFontColor", custom1_presoFontColor);
-        saveTheColor(preferences, "custom1_presoShadowColor", custom1_presoShadowColor);
-        saveTheColor(preferences, "custom1_presoInfoColor", custom1_presoInfoColor);
-        saveTheColor(preferences, "custom1_presoAlertColor", custom1_presoAlertColor);
-        saveTheColor(preferences, "custom1_metronomeColor", custom1_metronomeColor);
-        saveTheColor(preferences, "custom1_pageButtonsColor", custom1_pageButtonsColor);
-        saveTheColor(preferences, "custom1_stickyTextColor", custom1_stickyTextColor);
-        saveTheColor(preferences, "custom1_stickyBackgroundColor", custom1_stickyBackgroundColor);
-        saveTheColor(preferences, "custom1_extraInfoTextColor", custom1_extraInfoTextColor);
-        saveTheColor(preferences, "custom1_extraInfoBgColor", custom1_extraInfoBgColor);
-
-        saveTheColor(preferences, "custom2_lyricsBackgroundColor", custom2_lyricsBackgroundColor);
-        saveTheColor(preferences, "custom2_lyricsBridgeColor", custom2_lyricsBridgeColor);
-        saveTheColor(preferences, "custom2_lyricsCapoColor", custom2_lyricsCapoColor);
-        saveTheColor(preferences, "custom2_lyricsChordsColor", custom2_lyricsChordsColor);
-        saveTheColor(preferences, "custom2_lyricsChorusColor", custom2_lyricsChorusColor);
-        saveTheColor(preferences, "custom2_lyricsCommentColor", custom2_lyricsCommentColor);
-        saveTheColor(preferences, "custom2_lyricsCustomColor", custom2_lyricsCustomColor);
-        saveTheColor(preferences, "custom2_lyricsPreChorusColor", custom2_lyricsPreChorusColor);
-        saveTheColor(preferences, "custom2_lyricsTagColor", custom2_lyricsTagColor);
-        saveTheColor(preferences, "custom2_lyricsTextColor", custom2_lyricsTextColor);
-        saveTheColor(preferences, "custom2_lyricsVerseColor", custom2_lyricsVerseColor);
-        saveTheColor(preferences, "custom2_presoFontColor", custom2_presoFontColor);
-        saveTheColor(preferences, "custom2_presoShadowColor", custom2_presoShadowColor);
-        saveTheColor(preferences, "custom2_presoInfoColor", custom2_presoInfoColor);
-        saveTheColor(preferences, "custom2_presoAlertColor", custom2_presoAlertColor);
-        saveTheColor(preferences, "custom2_metronomeColor", custom2_metronomeColor);
-        saveTheColor(preferences, "custom2_pageButtonsColor", custom2_pageButtonsColor);
-        saveTheColor(preferences, "custom2_stickyTextColor", custom2_stickyTextColor);
-        saveTheColor(preferences, "custom2_stickyBackgroundColor", custom2_stickyBackgroundColor);
-        saveTheColor(preferences, "custom2_extraInfoTextColor", custom2_extraInfoTextColor);
-        saveTheColor(preferences, "custom2_extraInfoBgColor", custom2_extraInfoBgColor);
     }
 }

@@ -115,7 +115,7 @@ public class StageMode extends AppCompatActivity implements
         PopUpImportExternalFile.MyInterface, PopUpRebuildDatabaseFragment.MyInterface,
         PopUpBackupPromptFragment.MyInterface,
         PopUpSongFolderRenameFragment.MyInterface, PopUpThemeChooserFragment.MyInterface,
-        PopUpProfileFragment.MyInterface, PopUpExtraInfoFragment.MyInterface,
+        PopUpExtraInfoFragment.MyInterface,
         PopUpPageButtonsFragment.MyInterface, PopUpScalingFragment.MyInterface,
         PopUpFontsFragment.MyInterface, PopUpTransposeFragment.MyInterface,
         PopUpEditStickyFragment.MyInterface, PopUpSongRenameFragment.MyInterface,
@@ -293,6 +293,7 @@ public class StageMode extends AppCompatActivity implements
     SQLiteDatabase db;
     SQLite sqLite;  // This is the song values for the sqlite database, search and menus
     Transpose transpose;
+    ProfileActions profileActions;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -320,6 +321,7 @@ public class StageMode extends AppCompatActivity implements
         sqLiteHelper = new SQLiteHelper(StageMode.this);
         processSong = new ProcessSong();
         transpose = new Transpose();
+        profileActions = new ProfileActions();
 
         new Thread(new Runnable() {
             @Override
@@ -1690,12 +1692,7 @@ public class StageMode extends AppCompatActivity implements
         // This is the check before animating in the highlight notes.
         String highlightfilename = processSong.getHighlighterName(StageMode.this);
         String where = "Highlighter";
-        String folder = StaticVariables.whichSongFolder;
-        if (StaticVariables.whichSongFolder.startsWith("../")) {
-            where = "";
-            folder = folder.replace("../", "");
-        }
-        Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, where, folder, highlightfilename);
+        Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, where, "", highlightfilename);
         return (FullscreenActivity.highlightOn || preferences.getMyPreferenceBoolean(StageMode.this,"drawingAutoDisplay",true)) &&
                 storageAccess.uriExists(StageMode.this, uri) && StaticVariables.whichMode.equals("Performance");
     }
@@ -2605,7 +2602,7 @@ public class StageMode extends AppCompatActivity implements
     public void setupQuickLaunchButtons() {
         // Based on the user's choices for the custom quicklaunch buttons,
         // set the appropriate icons and onClick listeners
-        final String b1ac = preferences.getMyPreferenceString(StageMode.this,"pageButtonCustom1Action","");
+        final String b1ac = preferences.getMyPreferenceString(StageMode.this,"pageButtonCustom1Action","transpose");
         final String b2ac = preferences.getMyPreferenceString(StageMode.this,"pageButtonCustom2Action","");
         final String b3ac = preferences.getMyPreferenceString(StageMode.this,"pageButtonCustom3Action","");
         final String b4ac = preferences.getMyPreferenceString(StageMode.this,"pageButtonCustom4Action","");
@@ -2966,6 +2963,10 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void displayHighlight(boolean fromautoshow) {
+
+        Log.d("StageMode", "Dealing with the highligther file");
+        Log.d("StageMode", "fromautoshow="+fromautoshow);
+
         if (!StaticVariables.whichMode.equals("Performance")) {
             FullscreenActivity.highlightOn = false;
             highlightNotes.setVisibility(View.GONE);
@@ -3474,6 +3475,8 @@ public class StageMode extends AppCompatActivity implements
 
         glideimage.setScaleX(1.0f);
         glideimage.setScaleY(1.0f);
+        highlightNotes.setScaleX(1.0f);
+        highlightNotes.setScaleY(1.0f);
         glideimage.setBackgroundColor(StaticVariables.transparent);
         songwidth = widthavail;
         songheight = heightavail;
@@ -3528,6 +3531,8 @@ public class StageMode extends AppCompatActivity implements
 
             glideimage.setScaleX(1.0f);
             glideimage.setScaleY(1.0f);
+            highlightNotes.setScaleX(1.0f);
+            highlightNotes.setScaleY(1.0f);
             glideimage.setBackgroundColor(StaticVariables.transparent);
             songwidth = widthavail;
             songheight = heightavail;
@@ -3903,7 +3908,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
         if (requestCode == StaticVariables.LINK_AUDIO || requestCode == StaticVariables.LINK_OTHER) {
             // This has been called from the popuplinks fragment
@@ -3948,6 +3953,51 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else if (requestCode == 4567 && data!=null && data.getData()!=null) {
+            // Loading in a profile
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    boolean success = profileActions.doLoadProfile(StageMode.this,preferences,storageAccess,data.getData());
+                    if (success) {
+                        StaticVariables.myToastMessage = getString(R.string.success);
+                    } else {
+                        StaticVariables.myToastMessage = getString(R.string.error);
+                    }
+                    // Once done, reload everything
+                    runOnUiThread(new Runnable() {
+                                      @Override
+                                      public void run() {
+                                          ShowToast.showToast(StageMode.this);
+                                          loadStartUpVariables();
+                                          refreshAll();
+                                      }
+                                  }
+                            );
+                }
+            }).start();
+
+        } else if (requestCode == 5678 && data!=null && data.getData()!=null) {
+            // Saving a profile
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    boolean success = profileActions.doSaveProfile(StageMode.this,preferences,storageAccess,data.getData());
+                    if (success) {
+                        StaticVariables.myToastMessage = getString(R.string.success);
+                    } else {
+                        StaticVariables.myToastMessage = getString(R.string.error);
+                    }
+                    // Once done, say so
+                    runOnUiThread(new Runnable() {
+                                      @Override
+                                      public void run() {
+                                          ShowToast.showToast(StageMode.this);
+                                      }
+                                  }
+                    );
+                }
+            }).start();
         }
     }
 
@@ -4003,6 +4053,8 @@ public class StageMode extends AppCompatActivity implements
                     songheight = glideimage.getMeasuredHeight();
                     if (songwidth>0 && songheight>0) {
                         Log.d("d","Got sizes");
+                        highlightNotes.setScaleX(1.0f);
+                        highlightNotes.setScaleY(1.0f);
                         glideimage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     }
                 }
@@ -4019,6 +4071,8 @@ public class StageMode extends AppCompatActivity implements
                     songheight = songbit.getMeasuredHeight();
                     songbit.setScaleX(1.0f);
                     songbit.setScaleY(1.0f);
+                    highlightNotes.setScaleX(1.0f);
+                    highlightNotes.setScaleY(1.0f);
                 }
             }, 1000);
         }
@@ -5489,6 +5543,30 @@ public class StageMode extends AppCompatActivity implements
                     } catch (ActivityNotFoundException anfe) {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.pdfviewer")));
                     }
+                }
+                break;
+
+        }
+    }
+
+    @Override
+    public void profileWork(String s) {
+        switch (s) {
+            case "load":
+                try {
+                    Intent i = profileActions.openProfile(StageMode.this,preferences,storageAccess);
+                    this.startActivityForResult(i, 4567);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case "save":
+                try {
+                    Intent i = profileActions.saveProfile(StageMode.this,preferences,storageAccess);
+                    this.startActivityForResult(i, 5678);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 break;
         }
@@ -7589,6 +7667,9 @@ public class StageMode extends AppCompatActivity implements
         @Override
         public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
             scaleFactor = scaleGestureDetector.getScaleFactor();
+            highlightNotes.setScaleX(scaleFactor);
+            highlightNotes.setScaleY(scaleFactor);
+
             if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
                 glideimage.setScaleX(scaleFactor);
                 glideimage.setScaleY(scaleFactor);
@@ -7601,11 +7682,14 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         public boolean onScaleBegin(ScaleGestureDetector scaleGestureDetector) {
+            highlightNotes.setPivotX(glideimage.getLeft());
+            highlightNotes.setPivotY(glideimage.getTop());
+            highlightNotes.setScaleX(1.0f);
+            highlightNotes.setScaleY(1.0f);
+
             if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
                 glideimage.getLayoutParams().width = songwidth;
                 glideimage.getLayoutParams().height = songheight;
-                //svlp.height = songheight;
-                //fl.setLayoutParams(svlp);
                 glideimage.setScaleX(1.0f);
                 glideimage.setScaleY(1.0f);
                 glideimage.setPivotX(glideimage.getLeft());
@@ -7631,18 +7715,12 @@ public class StageMode extends AppCompatActivity implements
             if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
 
                 final HorizontalScrollView.LayoutParams hsvlp = (HorizontalScrollView.LayoutParams) glideimage_ScrollView.getLayoutParams();
-                //final ScrollView.LayoutParams svlp = (ScrollView.LayoutParams) fl.getLayoutParams();
-                //svlp.width = newwidth;
-                //svlp.height = newheight;
-                //fl.setLayoutParams(svlp);
                 glideimage_FrameLayout.getLayoutParams().width = newwidth;
                 glideimage_FrameLayout.getLayoutParams().height = newheight;
 
                 glideimage.setAdjustViewBounds(true);
                 glideimage.getLayoutParams().width = newwidth;
                 glideimage.getLayoutParams().height = newheight;
-                // TODO check that this works if ab is hidden
-                // TODO still to figure out how to shrink the height if scaled dowm
                 glideimage_FrameLayout.requestLayout();
                 glideimage_FrameLayout.post(new Runnable() {
 

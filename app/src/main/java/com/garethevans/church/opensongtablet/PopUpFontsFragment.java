@@ -409,8 +409,13 @@ public class PopUpFontsFragment extends DialogFragment {
             if (response == null) {
                 // Set up the custom fonts - use my preferred Google font lists as local files no longer work!!!
                 ArrayList<String> customfontsavail = setTypeFace.googleFontsAllowed();
-                choose_fonts = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, customfontsavail);
-                choose_fonts.setDropDownViewResource(R.layout.my_spinner);
+                try {
+                    choose_fonts = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, customfontsavail);
+                    choose_fonts.setDropDownViewResource(R.layout.my_spinner);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
 
             } else {
                 // Split the returned JSON into lines

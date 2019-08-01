@@ -108,7 +108,7 @@
                 android:paddingLeft="@dimen/ambilwarna_spacer"
                 android:paddingRight="@dimen/ambilwarna_spacer"
                 android:contentDescription="@string/colorchooser"
-                android:src="@drawable/ambilwarna_arrow_right" />
+                android:src="@drawable/ic_arrow_right_white_36dp" />
 
             <FrameLayout
                 android:layout_width="60dp"

@@ -375,6 +375,7 @@ public class PopUpFullSearchFragment extends DialogFragment {
             public void run() {
                 try {
                     searchlist = sqLiteHelper.getAllSongs(getActivity());
+                    Log.d("FullSearchFragment","size of searchlist="+searchlist.size());
                     // Add the relevant stuff
                     for (int i=0;i<searchlist.size();i++) {
                         String searchableContent = "";

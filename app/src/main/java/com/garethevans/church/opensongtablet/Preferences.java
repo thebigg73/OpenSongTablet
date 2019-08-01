@@ -66,37 +66,37 @@ public class Preferences extends Activity {
     /*
 
     Variable name                   Type        What
-    addSectionSpace                 boolean     Should a spacing line be added between sections to improve readability
-    appTheme                        String      The theme to use (dark, light, custom1, custom2)
-    autoscrollAutoStart             boolean     Should autoscroll start on page load (needs to be started manually the first time)
-    autoscrollDefaultSongLength     int         The default length of a song to use for autoscroll
-    autoscrollDefaultSongPreDelay   int         The default length of the predelay to use with autoscroll
-    autoscrollDefaultMaxPreDelay    int         The default max of the autoscroll predelay slider
-    autoscrollLargeFontInfoBar      boolean     The text size of the floating autoscroll info bar (true is 20.0f false is 14.0f)
-    autoscrollUseDefaultTime        boolean     If not time has been set for the song, should we use the default when starting
-    backgroundImage1                String      The uri of the background image 1 for presentations
-    backgroundImage2                String      The uri of the background image 2 for presentations
-    backgroundVideo1                String      The uri of the background video 1 for presentations
-    backgroundVideo2                String      The uri of the background video 2 for presentations
-    backgroundToUse                 String      Which background are we using (img1, img2, vid1, vid2)
-    backgroundTypeToUse             String      Is the background an image or a video
-    batteryDialOn                   boolean     Should the battery circle be shown in the action bar
-    batteryDialThickness            int         The thickness of the battery dial in the action bar
-    batteryTextOn                   boolean     Should the battery percentage text be shown in the action bar
-    batteryTextSize                 float       The size of the battery text
-    bibleCurrentFile                String      The last used local bible XML file
-    capoInfoAsNumerals              boolean     Should the capo info bar use Roman numerals
-    capoLargeFontInfoBar            boolean     The text size of the floating capo info bar (true is 20.0f false is 14.0f)
-    ccliAutomaticLogging            boolean     Should we automatically write to the ccli log
-    ccliChurchName                  String      The name of the church for CCLI logging
-    ccliLicence                     String      The CCLI licence number
-    chordFormat                     int         My preferred chord format (1=normal, 2=Bb->B and B->H, 3=same as 2, but with is/es/as. 4=doremi, 5=nashvillenumber 6=nashvillenumeral)
-    chordFormatUsePreferred         boolean     When transposing, should we assume we are using preferred chord format
-    chordInstrument                 String      The default instrument for showing chords
-    chosenstorage                   String      The uri of the document tree (Storage Access Framework)
-    clock24hFormat                  boolean     Should the clock be shown in 24hr format
-    clockOn                         boolean     Should the clock be shown in the action bar
-    clockTextSize                   float       The size of the clock font
+    addSectionSpace                 boolean     Should a spacing line be added between sections to improve readability (def:false)
+    appTheme                        String      The theme to use (dark, light, custom1, custom2) (def:dark)
+    autoscrollAutoStart             boolean     Should autoscroll start on page load (needs to be started manually the first time) (def:false)
+    autoscrollDefaultSongLength     int         The default length of a song to use for autoscroll (def:180)
+    autoscrollDefaultSongPreDelay   int         The default length of the predelay to use with autoscroll (default:20)
+    autoscrollDefaultMaxPreDelay    int         The default max of the autoscroll predelay slider (default:30)
+    autoscrollLargeFontInfoBar      boolean     The text size of the floating autoscroll info bar (default:true = 20.0f.  false = 14.0f)
+    autoscrollUseDefaultTime        boolean     If not time has been set for the song, should we use the default when starting (def:false)
+    backgroundImage1                String      The uri of the background image 1 for presentations (def: ost_bg.png)
+    backgroundImage2                String      The uri of the background image 2 for presentations (def: ost_bg.png)
+    backgroundVideo1                String      The uri of the background video 1 for presentations (def:"")
+    backgroundVideo2                String      The uri of the background video 2 for presentations (def:"")
+    backgroundToUse                 String      Which background are we using (img1, img2, vid1, vid2) (def:img1)
+    backgroundTypeToUse             String      Is the background an image or a video (def:image)
+    batteryDialOn                   boolean     Should the battery circle be shown in the action bar (def:true)
+    batteryDialThickness            int         The thickness of the battery dial in the action bar (def:4)
+    batteryTextOn                   boolean     Should the battery percentage text be shown in the action bar (def:true)
+    batteryTextSize                 float       The size of the battery text (def:9.0f)
+    bibleCurrentFile                String      The last used local bible XML file (def:"")
+    capoInfoAsNumerals              boolean     Should the capo info bar use Roman numerals (def:false)
+    capoLargeFontInfoBar            boolean     The text size of the floating capo info bar (def:true is 20.0f false is 14.0f)
+    ccliAutomaticLogging            boolean     Should we automatically write to the ccli log (def:false)
+    ccliChurchName                  String      The name of the church for CCLI logging (def:"")
+    ccliLicence                     String      The CCLI licence number (def:"")
+    chordFormat                     int         My preferred chord format (1=normal, 2=Bb->B and B->H, 3=same as 2, but with is/es/as. 4=doremi, 5=nashvillenumber 6=nashvillenumeral) (def:1)
+    chordFormatUsePreferred         boolean     When transposing, should we assume we are using preferred chord format (def:true)
+    chordInstrument                 String      The default instrument for showing chords (def:g)
+    chosenstorage                   String      The uri of the document tree (Storage Access Framework) (def:null)
+    clock24hFormat                  boolean     Should the clock be shown in 24hr format (def:true)
+    clockOn                         boolean     Should the clock be shown in the action bar (def:true)
+    clockTextSize                   float       The size of the clock font (def:9.0f)
     custom1_lyricsBackgroundColor   int         The color for the lyrics background in the custom1 theme
     custom1_lyricsBridgeColor       int         The color for the background for the bridge in the custom1 theme
     custom1_lyricsCapoColor         int         The color for the capo text in the custom1 theme
@@ -139,7 +139,7 @@ public class Preferences extends Activity {
     custom2_stickyBackgroundColor   int         The color for the sticky note background info text in the custom2 theme
     custom2_extraInfoTextColor      int         The color for the extra info text in the custom2 theme
     custom2_extraInfoBgColor        int         The color for the extra info background in the custom2 theme
-    customLogo                      String      The uri of the user logo for presentations
+    customLogo                      String      The uri of the user logo for presentations (def:"")
     customLogoSize                  float       Size of the custom logo (% of screen)
     customPadAb                     String      Custom pad uri for the key specified
     customPadA                      String      Custom pad uri for the key specified
@@ -186,43 +186,43 @@ public class Preferences extends Activity {
     dark_stickyBackgroundColor      int         The color for the sticky note background info text in the dark theme
     dark_extraInfoTextColor         int         The color for the extra info text in the dark theme
     dark_extraInfoBgColor           int         The color for the extra info background in the dark theme
-    displayCapoChords               boolean     Should capo chords be shown
-    displayCapoAndNativeChords      boolean     Should both chords be shown at once
-    displayChords                   boolean     Decides if chords should be shown
-    displayLyrics                   boolean     Decides if lyrics should be shown
-    displayNextInSet                String      Should the next song in set be shown (N)o, (T)op inline, (B)ottom inline
-    drawingAutoDisplay              boolean     Should the highlighter drawings be shown on page load
-    drawingEraserSize               int         The default size of the eraser
-    drawingHighlighterColor         int         The color of the highlighter
-    drawingHighlighterSize          int         The default size of the highlighter
-    drawingPenColor                 int         The colour of the pen
-    drawingPenSize                  int         The default size of the pen
-    drawingTool                     String      The current drawing tool
-    editAsChordPro                  boolean     Should the song edit window be ChordPro format
-    exportOpenSongAppSet            boolean     Should we export .osts file
-    exportOpenSongApp               boolean     Should we export .ost file
-    exportDesktop                   boolean     Should we export desktop xml file
-    exportText                      boolean     Should we export .txt file
-    exportChordPro                  boolean     Should we export .chopro file
-    exportOnSong                    boolean     Should we export .onsong file
-    exportImage                     boolean     Should we export .png file
-    exportPDF                       boolean     Should we export .pdf file
-    fontSize                        float       The non-scaled font size
-    fontSizeMax                     float       The max font size
-    fontSizeMin                     float       The min font size
-    fontChord                       String      The name of the font used for the chords.  From fonts.google.com
-    fontCustom                      String      The name of the font used for custom fonts.  From fonts.google.com
-    fontLyric                       String      The name of the font used for the lyrics.  From fonts.google.com
-    fontPreso                       String      The name of the font used for the preso.  From fonts.google.com
-    fontPresoInfo                   String      The name of the font used for the presoinfo.  From fonts.google.com
-    fontSizePreso                   float       The non-scale presentation font size
-    fontSizePresoMax                float       The maximum autoscaled font size
+    displayCapoChords               boolean     Should capo chords be shown (def:true)
+    displayCapoAndNativeChords      boolean     Should both chords be shown at once (def:false)
+    displayChords                   boolean     Decides if chords should be shown (def:true)
+    displayLyrics                   boolean     Decides if lyrics should be shown (def:true)
+    displayNextInSet                String      Should the next song in set be shown (N)o, (T)op inline, (B)ottom inline (def:B)
+    drawingAutoDisplay              boolean     Should the highlighter drawings be shown on page load (def:true)
+    drawingEraserSize               int         The default size of the eraser (def:20)
+    drawingHighlighterColor         int         The color of the highlighter (StaticVariables.highlighteryellow)
+    drawingHighlighterSize          int         The default size of the highlighter (def:20)
+    drawingPenColor                 int         The colour of the pen (def:StaticVariables.black)
+    drawingPenSize                  int         The default size of the pen (def:20)
+    drawingTool                     String      The current drawing tool (def:hghlighter)
+    editAsChordPro                  boolean     Should the song edit window be ChordPro format (def:false)
+    exportOpenSongAppSet            boolean     Should we export .osts file (def:true)
+    exportOpenSongApp               boolean     Should we export .ost file (def:true)
+    exportDesktop                   boolean     Should we export desktop xml file (def:true)
+    exportText                      boolean     Should we export .txt file (def:false)
+    exportChordPro                  boolean     Should we export .chopro file (def:false)
+    exportOnSong                    boolean     Should we export .onsong file (def:false)
+    exportImage                     boolean     Should we export .png file (def:false)
+    exportPDF                       boolean     Should we export .pdf file (def:false)
+    fontSize                        float       The non-scaled font size (def:42.0f)
+    fontSizeMax                     float       The max font size (def:50.0f)
+    fontSizeMin                     float       The min font size (def:8.0f)
+    fontChord                       String      The name of the font used for the chords.  From fonts.google.com (def:Lato)
+    fontCustom                      String      The name of the font used for custom fonts.  From fonts.google.com (def:Lato)
+    fontLyric                       String      The name of the font used for the lyrics.  From fonts.google.com (def:Lato)
+    fontPreso                       String      The name of the font used for the preso.  From fonts.google.com (def:Lato)
+    fontPresoInfo                   String      The name of the font used for the presoinfo.  From fonts.google.com (def:Lato)
+    fontSizePreso                   float       The non-scale presentation font size (def:14.0f)
+    fontSizePresoMax                float       The maximum autoscaled font size (def:40.0f)
     gestureScreenDoubleTap          int         The action for double tapping on the song screen (def 2 = edit song - based on menu position)
     gestureScreenLongPress          int         The action for long pressing on the song screen (def 3 = add song to set - based on menu position)
-    hideActionBar                   boolean     Should the action bar auto hide
-    hideLyricsBox                   boolean     Should we hide the box around the lyrics
-    language                        String      The locale set in the menu
-    lastUsedVersion                 int         The app version number the last time the app ran
+    hideActionBar                   boolean     Should the action bar auto hide (def:false)
+    hideLyricsBox                   boolean     Should we hide the box around the lyrics (def:false)
+    language                        String      The locale set in the menu (def:en)
+    lastUsedVersion                 int         The app version number the last time the app ran (def:0)
     light_lyricsBackgroundColor     int         The color for the lyrics background in the light theme
     light_lyricsBridgeColor         int         The color for the background for the bridge in the light theme
     light_lyricsCapoColor           int         The color for the capo text in the light theme
@@ -244,43 +244,43 @@ public class Preferences extends Activity {
     light_stickyBackgroundColor     int         The color for the sticky note background info text in the light theme
     light_extraInfoTextColor        int         The color for the extra info text in the light theme
     light_extraInfoBgColor          int         The color for the extra info background in the light theme
-    lineSpacing                     float       The line spacing trim value to use
-    menuSize                        int         The width of the side menus (min 100 max 400)
-    metronomeAutoStart              boolean     Should the metronome autostart with song (after manually starting first time)
-    metronomePan                    String      The panning of the metronome sound L, C, R
-    metronomeVol                    float       The volume of the metronome
-    metronomeShowVisual             boolean     Should the metronome be visual (flash action bar)
-    midiSendAuto                    boolean     Should the midi info in the song be sent on song load automatically
-    multiLineVerseKeepCompact       boolean     Should multiline verses be kept compact
-    padAutoStart                    boolean     Should the pad autostart with song (after manually starting first time)
-    padLargeFontInfoBar             boolean     The text size of the floating pad info bar (true is 20.0f false is 14.0f)
-    padPan                          String      The panning of the pad (L, C or R)
-    PadVol                          float       The volume of the pad
-    pageButtonAlpha                 float       The opacity of the page/quicklaunnch button
-    pageButtonGroupCustom           boolean     Group the custom page buttons
-    pageButtonGroupExtra            boolean     Group the extra info page buttons
-    pageButtonGroupMain             boolean     Group the main page buttons
-    pageButtonSize                  int         The size of the page/quicklaunch buttons (SIZE_NORMAL or SIZE_MINI)
-    pageButtonShowAutoscroll        boolean     Should the autroscroll page button be shown
-    pageButtonShowChords            boolean     Should the chord symbol page button be shown
-    pageButtonShowCustom1           boolean     Should the custom1 page button be shown
-    pageButtonShowCustom2           boolean     Should the custom2 page button be shown
-    pageButtonShowCustom3           boolean     Should the custom3 page button be shown
-    pageButtonShowCustom4           boolean     Should the custom4 page button be shown
-    pageButtonShowHighlighter       boolean     Should the highlighter page button be shown
-    pageButtonShowLinks             boolean     Should the links page button be shown
-    pageButtonShowMetronome         boolean     Should the metronome page button be shown
-    pageButtonShowNotation          boolean     Should the notation page button be shown
-    pageButtonShowPad               boolean     Should the pad page button be shown
-    pageButtonShowPageSelect        boolean     Should the page select page button be shown
-    pageButtonShowScroll            boolean     Should the scroll page buttons be shown
-    pageButtonShowSet               boolean     Should the set page button be shown
-    pageButtonShowSetMove           boolean     Should the set forward/back page buttons be shown
-    pageButtonShowSticky            boolean     Should the sticky notes page button be shown
-    pageButtonCustom1Action         String      The action for custom button 1
-    pageButtonCustom2Action         String      The action for custom button 2
-    pageButtonCustom3Action         String      The action for custom button 3
-    pageButtonCustom4Action         String      The action for custom button 4
+    lineSpacing                     float       The line spacing trim value to use (def:0.1f)
+    menuSize                        int         The width of the side menus (min 100 max 400) (def:250)
+    metronomeAutoStart              boolean     Should the metronome autostart with song (after manually starting first time) (def:false)
+    metronomePan                    String      The panning of the metronome sound L, C, R (def:C)
+    metronomeVol                    float       The volume of the metronome (def:0.5f)
+    metronomeShowVisual             boolean     Should the metronome be visual (flash action bar) (def:false)
+    midiSendAuto                    boolean     Should the midi info in the song be sent on song load automatically (def:false)
+    multiLineVerseKeepCompact       boolean     Should multiline verses be kept compact (def:false)
+    padAutoStart                    boolean     Should the pad autostart with song (after manually starting first time) (def:false)
+    padLargeFontInfoBar             boolean     The text size of the floating pad info bar (def:true is 20.0f false is 14.0f)
+    padPan                          String      The panning of the pad (L, C or R) (def:C)
+    PadVol                          float       The volume of the pad (def:1.0f)
+    pageButtonAlpha                 float       The opacity of the page/quicklaunnch button (0.5f)
+    pageButtonGroupCustom           boolean     Group the custom page buttons (def:false)
+    pageButtonGroupExtra            boolean     Group the extra info page buttons (def:false)
+    pageButtonGroupMain             boolean     Group the main page buttons (def:false)
+    pageButtonSize                  int         The size of the page/quicklaunch buttons (SIZE_NORMAL or SIZE_MINI) (def:FloatingActionButton.SIZE_NORMAL)
+    pageButtonShowAutoscroll        boolean     Should the autroscroll page button be shown (def:true)
+    pageButtonShowChords            boolean     Should the chord symbol page button be shown (def:false)
+    pageButtonShowCustom1           boolean     Should the custom1 page button be shown (def:true)
+    pageButtonShowCustom2           boolean     Should the custom2 page button be shown (def:true)
+    pageButtonShowCustom3           boolean     Should the custom3 page button be shown (def:true)
+    pageButtonShowCustom4           boolean     Should the custom4 page button be shown (def:true)
+    pageButtonShowHighlighter       boolean     Should the highlighter page button be shown (def:false)
+    pageButtonShowLinks             boolean     Should the links page button be shown (def:false)
+    pageButtonShowMetronome         boolean     Should the metronome page button be shown (def:false)
+    pageButtonShowNotation          boolean     Should the notation page button be shown (def:false)
+    pageButtonShowPad               boolean     Should the pad page button be shown (def:true)
+    pageButtonShowPageSelect        boolean     Should the page select page button be shown (def:false)
+    pageButtonShowScroll            boolean     Should the scroll page buttons be shown (def:true)
+    pageButtonShowSet               boolean     Should the set page button be shown (def:true)
+    pageButtonShowSetMove           boolean     Should the set forward/back page buttons be shown (def:true)
+    pageButtonShowSticky            boolean     Should the sticky notes page button be shown (def:false)
+    pageButtonCustom1Action         String      The action for custom button 1 (def:transpose)
+    pageButtonCustom2Action         String      The action for custom button 2 (def:"")
+    pageButtonCustom3Action         String      The action for custom button 3 (def:"")
+    pageButtonCustom4Action         String      The action for custom button 4 (def:"")
     pedal1Code                      int         The keyboard int code assigned to pedal 1 (default is 21 - left arrow)
     pedal1LongPressAction           String      The action called when pedal 1 is long pressed (default is songmenu)
     pedal1ShortPressAction          String      The action called when pedal 1 is short pressed (default is prev)
@@ -299,88 +299,91 @@ public class Preferences extends Activity {
     pedal6Code                      int         The keyboard int code assigned to pedal 6 (default is 93 - page down)
     pedal6LongPressAction           String      The action called when pedal 6 is long pressed (default is set)
     pedal6ShortPressAction          String      The action called when pedal 6 is short pressed (default is next)
-    pedalScrollBeforeMove           boolean     Should the prev/next pedal buttons try to scroll first (makes 2 pedals into 4)
-    popupAlpha                      float       The opacity of the popup windows
-    popupDim                        float       The darkness of the main window when the popup is open
-    popupPosition                   String      The position of the popups (tl, tc, tr, l, c, r, bl, bc, br)
-    popupScale                      float       The size of the popup relative to the page size
-    prefKey_Ab                      boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps)
-    prefKey_Bb                      boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps)
-    prefKey_Db                      boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps)
-    prefKey_Eb                      boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps)
-    prefKey_Gb                      boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps)
-    prefKey_Abm                     boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps)
-    prefKey_Bbm                     boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps)
-    prefKey_Dbm                     boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps)
-    prefKey_Ebm                     boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps)
-    prefKey_Gbm                     boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps)
-    presoAlertText                  String      The text for the alert in Presentation mode
-    presoAlertTextSize              float       The size of the alert text in Presentation mode
-    presoAutoScale                  boolean     Should the presenter window use autoscale for text
-    presoAutoUpdateProjector        boolean     Should the projector be updated automatically in PresenterMode when something changes
-    presoBackgroundAlpha            float       The alpha value for the presentation background
-    presoInfoAlign                  int         The align gravity of the info in presentation mode
-    presoLyricsAlign                int         The align gravity of the lyrics in presentation mode
-    presoShowChords                 boolean     Should chords be shown in the presentation window
-    presoTransitionTime             int         The time for transitions between items in presenter mode (ms)
-    presoXMargin                    int         The margin for the X axis on the presentation window
-    presoYMargin                    int         The margin for the Y axis on the presentation window
-    profileName                     String      The last loaded or saved profile name
-    randomSongFolderChoice          String      A list of folders to include in the random song generation ($$_folder_$$)
-    runswithoutbackup               int         The number of times the app has opened without backup (prompt the user after 10)
-    scaleChords                     float       The scale factor for chords relative to the lyrics
-    scaleComments                   float       The scale factor for comments relative to the lyrics
-    scaleHeadings                   float       The scale factor for headings relative to the lyrics
-    scrollDistance                  float       The percentage of the screen that is scrolled using the scroll buttons/pedals
-    scrollSpeed                     int         How quick should the scroll animation be
-    searchAka                       boolean     Should the aka be included in the search
-    searchAuthor                    boolean     Should the author be included in the search
-    searchCCLI                      boolean     Should the ccli be included in the search
-    searchCopyright                 boolean     Should the copyright be included in the search
-    searchFilename                  boolean     Should the filename be included in the search
-    searchFolder                    boolean     Should the folder be included in the search
-    searchHymn                      boolean     Should the hymn number be included in the search
-    searchKey                       boolean     Should the key be included in the search
-    searchLyrics                    boolean     Should the lyrics be included in the search
-    searchTheme                     boolean     Should the theme be included in the search
-    searchTitle                     boolean     Should the title be included in the search
-    searchUser1                     boolean     Should the user1 be included in the search
-    searchUser2                     boolean     Should the user2 be included in the search
-    searchUser3                     boolean     Should the user3 be included in the search
-    setCurrent                      String      The current set (each item enclosed in $**_folder/song_**$) - gets parsed on loading app
-    setCurrentBeforeEdits           String      The current set before edits.  Used as a comparison to decide save action
-    setCurrentLastName              String      The last name used when saving or loading a set
-    songAuthorSize                  float       The size of the song author text in the action bar
-    songAutoScale                   String      Choice of autoscale mode (Y)es, (W)idth only or (N)one
+    pedalScrollBeforeMove           boolean     Should the prev/next pedal buttons try to scroll first (makes 2 pedals into 4) (def:true)
+    popupAlpha                      float       The opacity of the popup windows (def:0.8f)
+    popupDim                        float       The darkness of the main window when the popup is open (def:0.8f)
+    popupPosition                   String      The position of the popups (tl, tc, tr, l, c, r, bl, bc, br) (def:c)
+    popupScale                      float       The size of the popup relative to the page size (def:0.7f)
+    prefKey_Ab                      boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps) (def:true)
+    prefKey_Bb                      boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps) (def:true)
+    prefKey_Db                      boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps) (def:false)
+    prefKey_Eb                      boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps) (def:true)
+    prefKey_Gb                      boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps) (def:false)
+    prefKey_Abm                     boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps) (def:false)
+    prefKey_Bbm                     boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps) (def:true)
+    prefKey_Dbm                     boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps) (def:false)
+    prefKey_Ebm                     boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps) (def:true)
+    prefKey_Gbm                     boolean     Prefer the key using flats if true (otherwise prefer the alternative key using sharps) (def:false)
+    presoAlertText                  String      The text for the alert in Presentation mode (def:"")
+    presoAlertTextSize              float       The size of the alert text in Presentation mode (def:12.0f)
+    presoAuthorTextSize             float       The size of the alert text in Presentation mode (def:12.0f)
+    presoAutoScale                  boolean     Should the presenter window use autoscale for text (def:true)
+    presoAutoUpdateProjector        boolean     Should the projector be updated automatically in PresenterMode when something changes (def:true)
+    presoBackgroundAlpha            float       The alpha value for the presentation background (def:1.0f)
+    presoCopyrightTextSize          float       The size of the alert text in Presentation mode (def:12.0f)
+    presoInfoAlign                  int         The align gravity of the info in presentation mode (Gravity.END)
+    presoLyricsAlign                int         The align gravity of the lyrics in presentation mode (Gravity.HORIZONTAL_CENTER)
+    presoShowChords                 boolean     Should chords be shown in the presentation window (def:false)
+    presoTitleTextSize              float       The size of the alert text in Presentation mode (def:14.0f)
+    presoTransitionTime             int         The time for transitions between items in presenter mode (ms) (def:800)
+    presoXMargin                    int         The margin for the X axis on the presentation window (def:20)
+    presoYMargin                    int         The margin for the Y axis on the presentation window (def:10)
+    profileName                     String      The last loaded or saved profile name (def:"")
+    randomSongFolderChoice          String      A list of folders to include in the random song generation ($$_folder_$$) (def:"")
+    runswithoutbackup               int         The number of times the app has opened without backup (prompt the user after 10) (def:0)
+    scaleChords                     float       The scale factor for chords relative to the lyrics (def:0.8f)
+    scaleComments                   float       The scale factor for comments relative to the lyrics (def:0.8f)
+    scaleHeadings                   float       The scale factor for headings relative to the lyrics (def:0.6f)
+    scrollDistance                  float       The percentage of the screen that is scrolled using the scroll buttons/pedals (def:0.7f)
+    scrollSpeed                     int         How quick should the scroll animation be (def:1500)
+    searchAka                       boolean     Should the aka be included in the search (def:true)
+    searchAuthor                    boolean     Should the author be included in the search (def:true)
+    searchCCLI                      boolean     Should the ccli be included in the search (def:true)
+    searchCopyright                 boolean     Should the copyright be included in the search (def:true)
+    searchFilename                  boolean     Should the filename be included in the search (def:true)
+    searchFolder                    boolean     Should the folder be included in the search (def:true)
+    searchHymn                      boolean     Should the hymn number be included in the search (def:true)
+    searchKey                       boolean     Should the key be included in the search (def:true)
+    searchLyrics                    boolean     Should the lyrics be included in the search (def:true)
+    searchTheme                     boolean     Should the theme be included in the search (def:true)
+    searchTitle                     boolean     Should the title be included in the search (def:true)
+    searchUser1                     boolean     Should the user1 be included in the search (def:true)
+    searchUser2                     boolean     Should the user2 be included in the search (def:true)
+    searchUser3                     boolean     Should the user3 be included in the search (def:true)
+    setCurrent                      String      The current set (each item enclosed in $**_folder/song_**$) - gets parsed on loading app (def:"")
+    setCurrentBeforeEdits           String      The current set before edits.  Used as a comparison to decide save action(def:"")
+    setCurrentLastName              String      The last name used when saving or loading a set(def:"")
+    songAuthorSize                  float       The size of the song author text in the action bar (def:11.0f)
+    songAutoScale                   String      Choice of autoscale mode (Y)es, (W)idth only or (N)one (def:W)
     songAutoScaleOverrideFull       boolean     If the app can override full autoscale if the font is too small
     songAutoScaleOverrideWidth      boolean     If the app can override width autoscale if the font is too small
-    songfilename                    String      The name of the current song file
-    songLoadSuccess                 boolean     Indicates if the song loaded correctly (won't load a song next time if it crashed)
-    songMenuAlphaIndexShow          boolean     Should we show the alphabetical index in the song menu
-    songMenuAlphaIndexSize          float       The text size for the alphabetical index in the song menu
-    songMenuSetTicksShow            boolean     Should we show the ticks identifying song is in the set in the song menu
-    songTitleSize                   float       The size of the song title text in the action bar
-    soundMeterRange                 int         The volume range of the sound meter
-    stageModeScale                  float       The max height of each stage mode section (to allow next section to peek at bottom)
-    stickyAutoDisplay               String      Where should sticky notes be shown (N)one, (T)op inline, (B)ottom inline, (F)loating window
-    stickyWidth                     int         The width of popup sticky notes
-    stickyAlpha                     float       The alpha of popup sticky notes
-    stickyLargeFont                 boolean     The text size for the popup sticky notes (true=20.0f, false=14.0f)
-    swipeForMenus                   boolean     Can we swipe the menus in or out
-    swipeForSongs                   boolean     Can we swipe to move between song items
-    swipeMinimumDistance            int         The minimum distance for a swipe to be registered (dp)
-    swipeMinimumVelocity            int         The minimum speed for a swipe to be registered (dp/s)
-    swipeMaxDistanceYError          int         The maximum Y movement in a swipe allowed for it to be recognised
+    songfilename                    String      The name of the current song file (def:"")
+    songLoadSuccess                 boolean     Indicates if the song loaded correctly (won't load a song next time if it crashed) (def:false)
+    songMenuAlphaIndexShow          boolean     Should we show the alphabetical index in the song menu (def:true)
+    songMenuAlphaIndexSize          float       The text size for the alphabetical index in the song menu (def:14.0f)
+    songMenuSetTicksShow            boolean     Should we show the ticks identifying song is in the set in the song menu (def:true)
+    songTitleSize                   float       The size of the song title text in the action bar (def:13.0f)
+    soundMeterRange                 int         The volume range of the sound meter (def:400)
+    stageModeScale                  float       The max height of each stage mode section (to allow next section to peek at bottom) (def:0.70f)
+    stickyAutoDisplay               String      Where should sticky notes be shown (N)one, (T)op inline, (B)ottom inline, (F)loating window (def:F)
+    stickyWidth                     int         The width of popup sticky notes (def:400)
+    stickyAlpha                     float       The alpha of popup sticky notes (def:0.8f)
+    stickyLargeFont                 boolean     The text size for the popup sticky notes (true=20.0f, def:false=14.0f)
+    swipeForMenus                   boolean     Can we swipe the menus in or out (def:true)
+    swipeForSongs                   boolean     Can we swipe to move between song items (def:true)
+    swipeMinimumDistance            int         The minimum distance for a swipe to be registered (dp) (def:250)
+    swipeMinimumVelocity            int         The minimum speed for a swipe to be registered (dp/s) (def:600)
+    swipeMaxDistanceYError          int         The maximum Y movement in a swipe allowed for it to be recognised (def:200)
     timeToDisplayHighlighter        int         The time to show highlighter notes for before hiding (def=0 means keep on) ms
     timeToDisplaySticky             int         The time to show sticky notes for before hiding (def=0 means keep on) s
-    trimSections                    boolean     Should whitespace be removed from song sections
-    trimLines                       boolean     Should the lines be trimmed (using the lineSpacing) value
-    uriTree                         String      A string representation of the user root location (may be the OpenSong folder or its parent)
-    uriTreeHome                     String      A string representation of the user home location (The OpenSong folder)
+    trimSections                    boolean     Should whitespace be removed from song sections (def:true)
+    trimLines                       boolean     Should the lines be trimmed (using the lineSpacing) value (def:true)
+    uriTree                         String      A string representation of the user root location (may be the OpenSong folder or its parent) (def:"")
+    uriTreeHome                     String      A string representation of the user home location (The OpenSong folder) (def:"")
     usePresentationOrder            boolean     Should the song be parsed into the specified presentation order
-    whichSetCategory                String      Which set category are we browsing (category___setname)
-    whichMode                       String      Which app mode - Stage, Performance, Presentation
-    whichSongFolder                 String      The song folder we are currently in
+    whichSetCategory                String      Which set category are we browsing (category___setname) (def:c.getString(R.string.mainfoldername))
+    whichMode                       String      Which app mode - Stage, Performance, Presentation (def:Performance)
+    whichSongFolder                 String      The song folder we are currently in (def:c.getString(R.string.mainfoldername))
 
     */
 

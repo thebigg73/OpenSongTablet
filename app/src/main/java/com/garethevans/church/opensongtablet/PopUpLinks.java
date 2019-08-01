@@ -208,6 +208,7 @@ public class PopUpLinks extends DialogFragment {
             public void onClick(View v) {
                 String mytext = linkAudio_EditText.getText().toString();
                 uri = storageAccess.fixLocalisedUri(getActivity(), preferences, mytext);
+                Log.d("PopUpLinks","uri="+uri);
                 if (!mytext.equals("")) {
                     MimeTypeMap myMime = MimeTypeMap.getSingleton();
                     String mimeType = myMime.getMimeTypeFromExtension(mytext);
@@ -243,6 +244,7 @@ public class PopUpLinks extends DialogFragment {
                     MimeTypeMap myMime = MimeTypeMap.getSingleton();
                     Intent newIntent = new Intent(Intent.ACTION_VIEW);
                     uri = storageAccess.fixLocalisedUri(getActivity(), preferences, mytext);
+                    Log.d("PopUpLinks","uri="+uri);
                     String mimeType = myMime.getMimeTypeFromExtension(mytext);
 
                     if (mimeType == null) {
@@ -303,7 +305,7 @@ public class PopUpLinks extends DialogFragment {
         this.dismiss();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    //@RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void openDocumentPicker(String mimeType, int requestCode) {
         // This uses the new Storage Access Framework to return a uri for a file of the user's choice
         Intent intent;
@@ -329,10 +331,10 @@ public class PopUpLinks extends DialogFragment {
 
                 if (uri!=null) {
                     String uriPath = uri.getPath();
-                    if (uriPath != null && uriPath.contains("OpenSong/Media/")) {
+                    if (uriPath != null && uriPath.contains("OpenSong/")) {
                         // This will be a localised file
-                        uriPath = uriPath.substring(uriPath.indexOf("OpenSong/Media/") + 15);
-                        uriPath = "../OpenSong/Media/" + uriPath;
+                        uriPath = storageAccess.fixUriToLocal(getActivity(),uri);
+
                     } else {
                         uriPath = uri.toString();
                     }

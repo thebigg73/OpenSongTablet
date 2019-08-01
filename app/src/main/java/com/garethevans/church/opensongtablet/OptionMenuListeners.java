@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +25,8 @@ import android.widget.TextView;
 import com.peak.salut.Callbacks.SalutCallback;
 import com.peak.salut.Callbacks.SalutDeviceCallback;
 import com.peak.salut.SalutDevice;
+
+import static android.provider.DocumentsContract.EXTRA_INITIAL_URI;
 
 public class OptionMenuListeners extends AppCompatActivity {
 
@@ -53,6 +57,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         void doExport();
         void updateExtraInfoColorsAndSizes(String s);
         void selectAFileUri(String s);
+        void profileWork(String s);
     }
 
     public static MyInterface mListener;
@@ -75,6 +80,10 @@ public class OptionMenuListeners extends AppCompatActivity {
 
             case "SONG":
                 menu = createSongMenu(c);
+                break;
+
+            case "PROFILE":
+                menu = createProfileMenu(c);
                 break;
 
             case "FIND":
@@ -165,6 +174,17 @@ public class OptionMenuListeners extends AppCompatActivity {
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (inflater != null) {
             return (LinearLayout) inflater.inflate(R.layout.popup_option_song,null);
+        } else {
+            return null;
+        }
+    }
+
+    @SuppressWarnings("InflateParams")
+    private static LinearLayout createProfileMenu(Context c) {
+        LayoutInflater inflater;
+        inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (inflater != null) {
+            return (LinearLayout) inflater.inflate(R.layout.popup_option_profile,null);
         } else {
             return null;
         }
@@ -330,6 +350,10 @@ public class OptionMenuListeners extends AppCompatActivity {
                 songOptionListener(v,c,preferences);
                 break;
 
+            case "PROFILE":
+                profileOptionListener(v,c,preferences,storageAccess);
+                break;
+
             case "CHORDS":
                 chordOptionListener(v, c, preferences);
                 break;
@@ -389,6 +413,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         // Identify the buttons
         Button menuSetButton = v.findViewById(R.id.menuSetButton);
         Button menuSongButton = v.findViewById(R.id.menuSongButton);
+        Button menuProfileButton = v.findViewById(R.id.menuProfileButton);
         Button menuChordsButton = v.findViewById(R.id.menuChordsButton);
         Button menuDisplayButton = v.findViewById(R.id.menuDisplayButton);
         Button menuGesturesButton = v.findViewById(R.id.menuGesturesButton);
@@ -407,6 +432,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         // Capitalise all the text by locale
         menuSetButton.setText(c.getString(R.string.options_set).toUpperCase(StaticVariables.locale));
         menuSongButton.setText(c.getString(R.string.options_song).toUpperCase(StaticVariables.locale));
+        menuProfileButton.setText(c.getString(R.string.profile).toUpperCase(StaticVariables.locale));
         menuChordsButton.setText(c.getString(R.string.chords).toUpperCase(StaticVariables.locale));
         menuDisplayButton.setText(c.getString(R.string.options_display).toUpperCase(StaticVariables.locale));
         menuGesturesButton.setText(c.getString(R.string.options_gesturesandmenus).toUpperCase(StaticVariables.locale));
@@ -447,6 +473,15 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 StaticVariables.whichOptionMenu = "SONG";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+        menuProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StaticVariables.whichOptionMenu = "PROFILE";
                 if (mListener!=null) {
                     mListener.prepareOptionMenu();
                 }
@@ -1442,6 +1477,61 @@ public class OptionMenuListeners extends AppCompatActivity {
         });
     }
 
+    private static void profileOptionListener(View v, final Context c, final Preferences preferences, final StorageAccess storageAccess) {
+        mListener = (MyInterface) c;
+
+        // Identify the buttons
+        TextView menuup = v.findViewById(R.id.optionProfileTitle);
+        Button profileLoadButton = v.findViewById(R.id.profileLoadButton);
+        Button profileSaveButton = v.findViewById(R.id.profileSaveButton);
+
+        // Capitalise all the text by locale
+        menuup.setText(c.getString(R.string.profile).toUpperCase(StaticVariables.locale));
+        profileLoadButton.setText(c.getString(R.string.options_set_load).toUpperCase(StaticVariables.locale));
+        profileSaveButton.setText(c.getString(R.string.options_set_save).toUpperCase(StaticVariables.locale));
+
+        // Set the button listeners
+        menuup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StaticVariables.whichOptionMenu = "MAIN";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+        profileLoadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener!=null) {
+                    mListener.profileWork("load");
+                }
+            }
+        });
+        profileSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (mListener!=null) {
+                    mListener.profileWork("save");
+                }
+            }
+        });
+
+        /*displayProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener!=null) {
+                    FullscreenActivity.whattodo = "profiles";
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });*/
+
+    }
+
+
     private static void displayOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
 
@@ -1454,7 +1544,6 @@ public class OptionMenuListeners extends AppCompatActivity {
         Button displayPopUpsButton = v.findViewById(R.id.displayPopUpsButton);
         Button displayInfoButton = v.findViewById(R.id.displayInfoButton);
         Button displayActionBarButton = v.findViewById(R.id.displayActionBarButton);
-        //Button displayProfileButton = v.findViewById(R.id.displayProfileButton);
         Button displayConnectedDisplayButton = v.findViewById(R.id.displayConnectedDisplayButton);
         Button displayHDMIButton = v.findViewById(R.id.displayHDMIButton);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
@@ -1468,7 +1557,6 @@ public class OptionMenuListeners extends AppCompatActivity {
         displayPopUpsButton.setText(c.getString(R.string.options_display_popups).toUpperCase(StaticVariables.locale));
         displayInfoButton.setText(c.getString(R.string.extra).toUpperCase(StaticVariables.locale));
         displayActionBarButton.setText(c.getString(R.string.actionbar).toUpperCase(StaticVariables.locale));
-        //displayProfileButton.setText(c.getString(R.string.profile).toUpperCase(StaticVariables.locale));
         displayConnectedDisplayButton.setText(c.getString(R.string.connected_display).toUpperCase(StaticVariables.locale));
         displayHDMIButton.setText(c.getString(R.string.hdmi).toUpperCase(StaticVariables.locale));
 
@@ -1559,17 +1647,6 @@ public class OptionMenuListeners extends AppCompatActivity {
                 }
             }
         });
-
-        /*displayProfileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "profiles";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
-            }
-        });*/
 
         displayConnectedDisplayButton.setOnClickListener(new View.OnClickListener() {
             @Override

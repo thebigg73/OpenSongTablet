@@ -76,6 +76,19 @@
                 android:textSize="12sp" />
 
             <Button
+                android:id="@+id/menuProfileButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_account_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/profile"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
                 android:id="@+id/menuChordsButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

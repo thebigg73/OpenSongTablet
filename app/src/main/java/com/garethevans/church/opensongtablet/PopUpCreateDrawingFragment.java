@@ -368,7 +368,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
             case "highlighter":
                 color = "yellow";
-                val = preferences.getMyPreferenceInt(getActivity(),"drawingPenColor",StaticVariables.black);
+                val = preferences.getMyPreferenceInt(getActivity(),"drawingHighlighterColor",StaticVariables.yellow);
                 if (val==StaticVariables.highlighterblack) {
                     color = "black";
                 } else if (val==StaticVariables.highlighterwhite) {
@@ -424,7 +424,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
     private void setCurrentSize() {
         int size = 0;
-        switch (preferences.getMyPreferenceString(getActivity(),"drawingTool","pen")) {
+        switch (preferences.getMyPreferenceString(getActivity(),"drawingTool","highlighter")) {
             case "pen":
                 size = (preferences.getMyPreferenceInt(getActivity(),"drawingPenSize",20) / 5) - 1;
                 break;

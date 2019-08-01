@@ -197,7 +197,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         customButtonGroup_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                saveValue("pageButtonGroupExtra",b);
+                saveValue("pageButtonGroupCustom",b);
             }
         });
         setVisible_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

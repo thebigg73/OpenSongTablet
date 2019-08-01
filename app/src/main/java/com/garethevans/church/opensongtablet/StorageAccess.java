@@ -437,7 +437,12 @@ class StorageAccess {
                 e2.printStackTrace();
                 return "";
             }
-            return outputStream.toString();
+            try {
+                return outputStream.toString();
+            } catch (Exception | OutOfMemoryError e) {
+                return "";
+            }
+
         } else {
             return "";
         }
@@ -969,7 +974,9 @@ class StorageAccess {
     private boolean uriExists_SAF(Context c, Uri uri) {
         try {
             InputStream is = c.getContentResolver().openInputStream(uri);
-            is.close();
+            if (is != null) {
+                is.close();
+            }
             return true;
         } catch (Exception e){
             return false;
@@ -1034,11 +1041,40 @@ class StorageAccess {
         if (uriString.startsWith("../OpenSong/Media/")) {
             // Remove this and get the proper location
             uriString = uriString.replace("../OpenSong/Media/","");
+            uriString = uriString.replace("%20"," ");
+            uriString = uriString.replace("%2F","/");
             // Now get the actual uri
             return getUriForItem(c, preferences, "Media", "", uriString);
+        } else if (uriString.startsWith("../OpenSong/Pads/")) {
+            uriString = uriString.replace("../OpenSong/Pads/", "");
+            uriString = uriString.replace("%20"," ");
+            uriString = uriString.replace("%2F","/");
+            // Now get the actual uri
+            return getUriForItem(c, preferences, "Pads", "", uriString);
+        } else if (uriString.startsWith("../OpenSong/")) {
+            uriString = uriString.replace("../OpenSong/", "");
+            uriString = uriString.replace("%20"," ");
+            uriString = uriString.replace("%2F","/");
+            // Now get the actual uri
+            return getUriForItem(c, preferences, "Pads", "", uriString);
         } else {
+            // Now get the actual uri
             return Uri.parse(uriString);
         }
+    }
+
+    String fixUriToLocal(Context c, Uri uri) {
+        // If a file is in the OpenSong/ folder, let's localise it (important for sync)
+        String path = "";
+        if (uri!=null && uri.getPath()!=null) {
+            path = uri.getPath();
+            Log.d("StorageAccess","path="+path);
+            if (path.contains("OpenSong/Media/") || path.contains("OpenSong/Pads/")) {
+                path = path.substring(path.indexOf("OpenSong/") + 9);
+            }
+            path = "../OpenSong/" + path;
+        }
+        return path;
     }
 
     @SuppressLint("NewApi")

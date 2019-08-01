@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -223,12 +224,18 @@ class SearchViewAdapter extends BaseAdapter implements Filterable {
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();
 
-            if (constraint != null && constraint.length() > 0) {
+            if (constraint != null && constraint.toString()!=null && constraint.length() > 0) {
                 ArrayList<SQLite> filterList = new ArrayList<>();
                 for (int i = 0; i < mStringFilterList.size(); i++) {
 
-                    if ( (mStringFilterList.get(i).getLyrics().toUpperCase(StaticVariables.locale) )
-                            .contains(constraint.toString().toUpperCase(StaticVariables.locale))) {
+                    String foundlyrics = mStringFilterList.get(i).getLyrics();
+                    if (foundlyrics!=null) {
+                        foundlyrics = foundlyrics.toUpperCase(StaticVariables.locale);
+                    } else {
+                        foundlyrics = "";
+                        Log.d("d","foundlyrics = null");
+                    }
+                    if (foundlyrics.contains(constraint.toString().toUpperCase(StaticVariables.locale))) {
 
                         SQLite song = new SQLite();
                         song.setSongid(mStringFilterList.get(i).getSongid());

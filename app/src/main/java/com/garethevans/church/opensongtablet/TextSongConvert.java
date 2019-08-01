@@ -16,23 +16,26 @@ class TextSongConvert {
     String convertText(Context c, String oldtext) {
         StringBuilder newtext = new StringBuilder();
 
-        // Split the whole thing into lines
-        String[] lines = oldtext.split("\n");
-        for (String l:lines) {
+        try {
+            // Split the whole thing into lines
+            String[] lines = oldtext.split("\n");
+            for (String l : lines) {
 
-            // Fix lines that have tags [ ]
-            l = fixTags(c, l);
+                // Fix lines that have tags [ ]
+                l = fixTags(c, l);
 
-            // Fix chord lines
-            l = fixChordLines(l);
+                // Fix chord lines
+                l = fixChordLines(l);
 
-            // Fix tab lines
-            l = fixTabLines(l);
+                // Fix tab lines
+                l = fixTabLines(l);
 
-            // Add the lines back
-            newtext.append(l).append("\n");
+                // Add the lines back
+                newtext.append(l).append("\n");
+            }
+        } catch (Exception | OutOfMemoryError e) {
+            e.printStackTrace();
         }
-
         String compiledtext = newtext.toString();
 
         // Remove any blank headings if they are redundant

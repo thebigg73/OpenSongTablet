@@ -1496,6 +1496,10 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         if ((FullscreenActivity.whattodo.equals("chordie") || FullscreenActivity.whattodo.equals("songselect") ||
                 FullscreenActivity.whattodo.equals("worshiptogether")) && !nameoffile.endsWith(".chopro")) {
             // Fix the title line in the lyrics
+
+            if (filecontents == null) {
+                filecontents = "";
+            }
             String[] lines = filecontents.split("\n");
             StringBuilder sb = new StringBuilder();
             for (String l:lines) {

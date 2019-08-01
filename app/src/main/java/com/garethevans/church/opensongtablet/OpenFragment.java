@@ -194,10 +194,6 @@ class OpenFragment {
                 newFragment = PopUpActionBarInfoFragment.newInstance();
                 break;
 
-            case "profiles":
-                newFragment = PopUpProfileFragment.newInstance();
-                break;
-
             case "footpedal":
                 newFragment = PopUpPedalsFragment.newInstance();
                 break;
