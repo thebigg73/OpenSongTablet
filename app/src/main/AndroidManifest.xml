@@ -2,8 +2,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.garethevans.church.opensongtablet"
     android:installLocation="auto"
-    android:versionCode="164"
-    android:versionName="5.0.4">
+    android:versionCode="165"
+    android:versionName="5.0.5">
+
+    <!--Overrides are for Sdk=12/13 but library specifiesv Sdk=14+-->
+    <!--<uses-sdk
+        tools:overrideLibrary="
+        com.google.android.gms,
+        com.google.android.gms.nearby,
+        com.google.android.gms.cast.framework,
+        com.google.android.gms.cast,
+        com.google.android.gms.base,
+        com.google.android.gms.tasks,
+        com.peak.salut,
+        com.google.android.gms.nearby.license,
+        com.google.android.gms.cast.framework.license,
+        com.google.android.gms.base.license,
+        com.google.android.gms.common.license,
+        com.google.android.gms.cast.license,
+        com.google.android.gms.tasks.license" />-->
 
     <uses-feature
         android:name="android.hardware.touchscreen"

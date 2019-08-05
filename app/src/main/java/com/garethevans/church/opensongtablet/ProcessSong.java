@@ -1179,7 +1179,7 @@ public class ProcessSong extends Activity {
         caporow.setPadding(0, 0, 0, 0);
         int trimval = (int) (fontsize * preferences.getMyPreferenceFloat(c,"scaleChords",1.0f) * preferences.getMyPreferenceFloat(c,"lineSpacing",0.1f));
 
-        if (preferences.getMyPreferenceBoolean(c,"trimLines",true)) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT && preferences.getMyPreferenceBoolean(c,"trimLines",false)) {
             caporow.setPadding(0, -trimval, 0, -trimval);
             caporow.setGravity(Gravity.CENTER_VERTICAL);
         }
@@ -1221,7 +1221,7 @@ public class ProcessSong extends Activity {
                 }
                 capobit.setShadowLayer(shadow, 4, 4, lyricsBackgroundColor);
             }
-            if (preferences.getMyPreferenceBoolean(c,"trimLines",true)) {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT && preferences.getMyPreferenceBoolean(c,"trimLines",false)) {
                 capobit.setSingleLine();
                 capobit.setIncludeFontPadding(false);
                 capobit.setGravity(Gravity.CENTER_VERTICAL);
@@ -1240,7 +1240,7 @@ public class ProcessSong extends Activity {
         chordrow.setPadding(0, 0, 0, 0);
         int trimval = (int) (fontsize * preferences.getMyPreferenceFloat(c,"scaleChords",1.0f) * preferences.getMyPreferenceFloat(c,"lineSpacing",0.1f));
 
-        if (preferences.getMyPreferenceBoolean(c,"trimLines",true)) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT && preferences.getMyPreferenceBoolean(c,"trimLines",false)) {
             chordrow.setPadding(0, -trimval, 0, -trimval);
             chordrow.setGravity(Gravity.CENTER_VERTICAL);
         }
@@ -1280,7 +1280,7 @@ public class ProcessSong extends Activity {
                 }
                 chordbit.setShadowLayer(shadow, 4, 4, lyricsBackgroundColor);
             }
-            if (preferences.getMyPreferenceBoolean(c,"trimLines",true)) {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT && preferences.getMyPreferenceBoolean(c,"trimLines",false)) {
                 chordbit.setSingleLine();
                 chordbit.setIncludeFontPadding(false);
                 chordbit.setGravity(Gravity.CENTER_VERTICAL);
@@ -1306,7 +1306,7 @@ public class ProcessSong extends Activity {
 
         int trimval = (int) (fontsize * preferences.getMyPreferenceFloat(c,"lineSpacing",0.1f));
         lyricrow.setPadding(0, 0, 0, 0);
-        if (preferences.getMyPreferenceBoolean(c,"trimLines",true)) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT && preferences.getMyPreferenceBoolean(c,"trimLines",false)) {
             lyricrow.setPadding(0, -trimval, 0, -trimval);
             lyricrow.setGravity(Gravity.CENTER_VERTICAL);
         }
@@ -1444,7 +1444,7 @@ public class ProcessSong extends Activity {
                 }
                 lyricrow.addView(img);
             } else {
-                if (preferences.getMyPreferenceBoolean(c,"trimLines",true)) {
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT && preferences.getMyPreferenceBoolean(c,"trimLines",false)) {
                     lyricbit.setIncludeFontPadding(false);
                     lyricbit.setGravity(Gravity.CENTER_VERTICAL);
                     lyricbit.setPadding(0, -trimval, 0, -trimval);
@@ -1463,7 +1463,7 @@ public class ProcessSong extends Activity {
 
         int trimval = (int) (fontsize * preferences.getMyPreferenceFloat(c,"lineSpacing",0.1f));
         commentrow.setPadding(0, 0, 0, 0);
-        if (preferences.getMyPreferenceBoolean(c,"trimLines",true)) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT && preferences.getMyPreferenceBoolean(c,"trimLines",false)) {
             commentrow.setPadding(0, -trimval, 0, -trimval);
             commentrow.setGravity(Gravity.CENTER_VERTICAL);
         }
@@ -1497,7 +1497,7 @@ public class ProcessSong extends Activity {
             if (StaticVariables.whichMode.equals("Presentation")) {
                 lyricbit.setTextColor(presoFontColor);
                 lyricbit.setTypeface(StaticVariables.typefacePreso);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
                     lyricbit.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
                 }
                 float shadow = fontsize/2.0f;
@@ -1508,7 +1508,7 @@ public class ProcessSong extends Activity {
             } else {
                 lyricbit.setTextColor(lyricsTextColor);
                 lyricbit.setTypeface(StaticVariables.typefaceLyrics);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
                     lyricbit.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
                 }
                 float shadow = fontsize/2.0f;
@@ -1521,7 +1521,7 @@ public class ProcessSong extends Activity {
                 // Set the comment text as monospaced to make it fit
                 lyricbit.setTypeface(StaticVariables.typefaceMono);
             }
-            if (preferences.getMyPreferenceBoolean(c,"trimLines",true)) {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT && preferences.getMyPreferenceBoolean(c,"trimLines",false)) {
                 lyricbit.setIncludeFontPadding(false);
                 lyricbit.setGravity(Gravity.CENTER_VERTICAL);
                 lyricbit.setPadding(0, -trimval, 0, -trimval);
@@ -2882,7 +2882,7 @@ public class ProcessSong extends Activity {
         StringBuilder stickyNotes = new StringBuilder();
         String sad = preferences.getMyPreferenceString(c,"stickyAutoDisplay","F");
         if (sad.equals("T")||sad.equals("B")) {
-            String notes[] = StaticVariables.mNotes.split("\n");
+            String[] notes = StaticVariables.mNotes.split("\n");
             stickyNotes.append(";__").append(c.getString(R.string.note)).append(": ");
             for (String line:notes) {
                 stickyNotes.append(";__").append(line).append("\n");
@@ -3025,7 +3025,6 @@ public class ProcessSong extends Activity {
             // Because pdf files can have multiple pages, this allows different notes.
             page = "_" + FullscreenActivity.pdfPageCurrent;
         }
-        Log.d("ProcessSong","highlighterfile="+highlighterfile + layout + page + ".png");
         return highlighterfile + layout + page + ".png";
 
     }

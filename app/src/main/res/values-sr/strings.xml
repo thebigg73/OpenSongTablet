@@ -696,7 +696,7 @@
     <string name="date">"Datum"</string>
     <string name="editpdf">"Urediti u spoljnom PDF programu"</string>
     <string name="existing">"Pronaći lokacije prethodnih OpenSong datoteka"</string>
-    <string name="found">"Već ste iskoristili sledeće lokacije za instalaciju.  Molim odaberite koju ponovo da koristite."</string>
+    <string name="found">Već ste iskoristili sledeće lokacije za instalaciju.  Ovo ćete ipak morati da locirate i podesite ručno koristeći gornji crveni taster.</string>
     <string name="longpress">"Dugi pritisak/Držanje"</string>
     <string name="nofound">"Nije pronađena prethodna instalacija"</string>
     <string name="nothere">"Ako ste unutar OpenSong fascikle, ne koristite ovu lokaciju. Umesto toga vratite se jedan nivo i odaberite fasciklu koja sadrži ovu fasciklu"</string>

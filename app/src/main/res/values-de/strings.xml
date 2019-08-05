@@ -647,7 +647,7 @@
 	<string name="date">"Datum"</string>
 	<string name="editpdf">"Im externen PDF-Programm bearbeiten"</string>
 	<string name="existing">"Nach früheren Installationsorten für OpenSong-Dateien suchen"</string>
-	<string name="found">"Sie haben bereits die folgenden Installationsverzeichnisse verwendet.  Bitte wählen Sie eines aus, um es erneut zu verwenden."</string>
+	<string name="found">Sie haben bereits die folgenden Installationsverzeichnisse verwendet.  Sie müssen dies weiterhin manuell mit der roten Taste oben suchen und einstellen.</string>
 	<string name="longpress">"Lang drücken/halten"</string>
 	<string name="nofound">"Keine vorherigen Installationen gefunden."</string>
 	<string name="nothere">"Sie befinden sich in einem OpenSong-Ordner. Verwenden Sie diesen Speicherort nicht! Gehen Sie stattdessen eine Ebene nach oben und wählen Sie dann den Ordner aus, der diesen Ordner hier enthält."</string>

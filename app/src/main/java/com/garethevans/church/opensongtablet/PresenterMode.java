@@ -4305,10 +4305,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     // Page buttons not officially used in PresenterMode, although some features are
     @Override
-    public void setupPageButtons(String s) {
-        // Not using page buttons as FABs on the screen, so do nothing
-    }
-    @Override
     public void setUpPageButtonsColors() {
         // Not using page buttons as FABs on the screen, so do nothing
     }

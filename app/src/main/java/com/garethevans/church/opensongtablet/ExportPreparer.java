@@ -624,7 +624,7 @@ class ExportPreparer {
             }
             document.addTitle(StaticVariables.mTitle);
             document.open();//document.add(new Header("Song title",FullscreenActivity.mTitle.toString()));
-            BaseFont urName = BaseFont.createFont("assets/fonts/Lato-Reg.ttf", "UTF-8",BaseFont.EMBEDDED);
+            BaseFont urName = BaseFont.createFont("assets/fonts/lato-Reg.ttf", "UTF-8",BaseFont.EMBEDDED);
             Font TitleFontName  = new Font(urName, 14);
             Font AuthorFontName = new Font(urName, 10);
             document.add(new Paragraph(StaticVariables.mTitle,TitleFontName));

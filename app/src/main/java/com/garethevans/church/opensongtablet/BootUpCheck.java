@@ -6,6 +6,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -15,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -34,7 +36,6 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import lib.folderpicker.FolderPicker;
 
@@ -47,7 +48,6 @@ public class BootUpCheck extends AppCompatActivity {
     Preferences preferences;
     StorageAccess storageAccess;
     IndexSongs indexSongs;
-    //FullscreenActivity fullscreenActivity;
     SongXML songXML;
     ChordProConvert chordProConvert;
     OnSongConvert onSongConvert;
@@ -55,12 +55,9 @@ public class BootUpCheck extends AppCompatActivity {
     TextSongConvert textSongConvert;
     SetTypeFace setTypeFace;
 
-    // Handlers for fonts
-    //Handler lyrichandler, chordhandler, presohandler, presoinfohandler, customhandler, monohandler;
-
     // Declare views
     //ProgressBar progressBar;
-    TextView progressText, version, previousStorageTextView, previousStorageHeading, currentAction;
+    TextView progressText, version, previousStorageTextView, previousStorageLocationsTextView, previousStorageHeading, currentAction;
     Button chooseStorageButton, goToSongsButton, userGuideButton, previousStorageButton, resetCacheButton;
     LinearLayout storageLinearLayout, readUpdate, userGuideLinearLayout, goToSongsLinearLayout;
     Spinner appMode, previousStorageSpinner;
@@ -88,6 +85,8 @@ public class BootUpCheck extends AppCompatActivity {
         textSongConvert = new TextSongConvert();
         setTypeFace = new SetTypeFace();
 
+        // Initialise the font
+        setTypeFace.setUpAppFonts(BootUpCheck.this,preferences,new Handler(),new Handler(), new Handler(),new Handler(), new Handler(),new Handler());
         // This will do one of 2 things - it will either show the splash screen or the welcome screen
         // To determine which one, we need to check the storage is set and is valid
         // The last version used must be the same or greater than the current app version
@@ -164,6 +163,7 @@ public class BootUpCheck extends AppCompatActivity {
         previousStorageSpinner = findViewById(R.id.previousStorageSpinner);
         previousStorageButton = findViewById(R.id.previousStorageButton);
         previousStorageTextView = findViewById(R.id.previousStorageTextView);
+        previousStorageLocationsTextView = findViewById(R.id.previousStorageLocationsTextView);
         previousStorageHeading = findViewById(R.id.previousStorageHeading);
         resetCacheButton = findViewById(R.id.resetCacheButton);
         currentAction = findViewById(R.id.currentAction);
@@ -392,7 +392,7 @@ public class BootUpCheck extends AppCompatActivity {
             }
 
         } else {
-            text = "";
+            text = getString(R.string.notset);
         }
 
         if (progressText!=null) {
@@ -511,7 +511,7 @@ public class BootUpCheck extends AppCompatActivity {
             if (uriTree != null) {
                 DocumentFile df = storageAccess.documentFileFromRootUri(BootUpCheck.this, uriTree, uriTree.getPath());
                 if (df==null || !df.canWrite()) {
-                    previousStorageTextView.setText(R.string.notset);
+                    progressText.setText(R.string.notset);
                 }
                 return df != null && df.canWrite();
             }
@@ -540,14 +540,30 @@ public class BootUpCheck extends AppCompatActivity {
         }
 
         // If this is a fresh install (or updating from before V4.8.5) clear the cache in case
-        if (lastUsedVersion==0) {
-            clearTheCaches();
-        }
+
         return lastUsedVersion >= thisVersion;
     }
 
     void clearTheCaches() {
         // Clear the user preferences
+        File cacheDirectory = getCacheDir();
+        File applicationDirectory;
+        if (cacheDirectory!=null && cacheDirectory.getParent()!=null) {
+            applicationDirectory = new File(cacheDirectory.getParent());
+        } else {
+            applicationDirectory = cacheDirectory;
+        }
+        if (applicationDirectory!=null && applicationDirectory.exists()) {
+            String[] fileNames = applicationDirectory.list();
+            if (fileNames!=null) {
+                for (String fileName : fileNames) {
+                    if (!fileName.equals("lib")) {
+                        File ftodel = new File(applicationDirectory,fileName);
+                        doDeleteFile(ftodel);
+                    }
+                }
+            }
+        }
         try {
             PreferenceManager.getDefaultSharedPreferences(BootUpCheck.this).edit().clear().apply();
         } catch (Exception e) {
@@ -562,19 +578,11 @@ public class BootUpCheck extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
         // Clear the cache and data folder
         try {
-            File cacheDirectory = getCacheDir();
-            File applicationDirectory = new File(Objects.requireNonNull(cacheDirectory.getParent()));
-            if (applicationDirectory.exists()) {
-                String[] fileNames = applicationDirectory.list();
-                assert fileNames != null;
-                for (String fileName : fileNames) {
-                    if (!fileName.equals("lib")) {
-                        doDeleteCacheFile(new File(applicationDirectory, fileName));
-                    }
-                }
-            }
+            File dir = BootUpCheck.this.getCacheDir();
+            doDeleteCacheFile(dir);
 
             // Set the last used version to 1 (otherwise we get stuck in a loop!)
             preferences.setMyPreferenceInt(BootUpCheck.this,"lastUsedVersion",1);
@@ -585,22 +593,54 @@ public class BootUpCheck extends AppCompatActivity {
             Log.d("d","Error clearing the cache directory");
             e.printStackTrace();
         }
+
+        try {
+            ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+            Log.d("BootUpCheck","Clearing data");
+            if (am!=null) {
+                am.clearApplicationUserData();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public boolean doDeleteCacheFile(File file) {
+    public static boolean doDeleteFile(File file) {
         boolean deletedAll = true;
         if (file != null) {
             if (file.isDirectory()) {
                 String[] children = file.list();
-                assert children != null;
-                for (String aChildren : children) {
-                    deletedAll = doDeleteCacheFile(new File(file, aChildren)) && deletedAll;
+                if (children!=null) {
+                    for (String child : children) {
+                        deletedAll = doDeleteFile(new File(file, child)) && deletedAll;
+                    }
                 }
             } else {
                 deletedAll = file.delete();
             }
         }
         return deletedAll;
+    }
+
+    public boolean doDeleteCacheFile(File file) {
+
+        if (file != null && file.isDirectory()) {
+            String[] children = file.list();
+            if (children!=null) {
+                for (String child : children) {
+                    boolean success = doDeleteCacheFile(new File(file, child));
+                    if (!success) {
+                        return false;
+                    }
+                }
+            }
+            return file.delete();
+        } else if(file!= null && file.isFile()) {
+            return file.delete();
+        } else {
+            return false;
+        }
     }
 
     void checkReadiness() {
@@ -855,11 +895,20 @@ public class BootUpCheck extends AppCompatActivity {
                     // No previous installations found
                     previousStorageTextView.setText(getString(R.string.nofound));
                     previousStorageTextView.setVisibility(View.VISIBLE);
-                    previousStorageSpinner.setVisibility(View.GONE);
+                    //previousStorageSpinner.setVisibility(View.GONE);
                     previousStorageHeading.setVisibility(View.GONE);
                 } else {
                     // Listen for the clicks!
                     previousStorageHeading.setVisibility(View.VISIBLE);
+                    // Add the locations to the textview
+                    StringBuilder sb = new StringBuilder();
+                    for (String str:locations) {
+                        if (!sb.toString().contains(str+" ")) {
+                            sb.append(str).append(" \n");
+                        }
+                    }
+                    previousStorageTextView.setVisibility(View.GONE);
+                    previousStorageLocationsTextView.setText(sb.toString().trim());
                     locations.add(0,"");
                     previousStorageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
@@ -881,8 +930,7 @@ public class BootUpCheck extends AppCompatActivity {
                     });
                     ArrayAdapter<String> listAdapter = new ArrayAdapter<>(BootUpCheck.this, R.layout.my_spinner, locations);
                     previousStorageSpinner.setAdapter(listAdapter);
-                    previousStorageSpinner.setVisibility(View.VISIBLE);
-                    previousStorageTextView.setVisibility(View.GONE);
+                    previousStorageSpinner.setVisibility(View.GONE);
                 }
             }
         }

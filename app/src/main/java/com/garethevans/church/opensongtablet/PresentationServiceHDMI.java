@@ -823,7 +823,8 @@ class PresentationServiceHDMI extends Presentation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cast_screen);
+        try {
+            setContentView(R.layout.cast_screen);
 
         storageAccess = new StorageAccess();
         preferences = new Preferences();
@@ -886,6 +887,10 @@ class PresentationServiceHDMI extends Presentation
                 }
             }
         }, 2000);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -428,7 +428,7 @@ public class StageMode extends AppCompatActivity implements
                         prepareOptionMenu();
 
                         // Set up the page buttons
-                        setupPageButtons(null);
+                        setupPageButtons();
 
                         // Load the song and get started
                         loadSong();
@@ -873,7 +873,7 @@ public class StageMode extends AppCompatActivity implements
                     }
                 }, FullscreenActivity.delayswipe_time); // 1800ms delay
                 hideActionBar();
-                setupPageButtons("");
+                setupPageButtons();
             }
 
             // Called when a drawer has settled in a completely open state.
@@ -1784,8 +1784,8 @@ public class StageMode extends AppCompatActivity implements
         };
     }
 
-    @Override
-    public void setupPageButtons(String s) {
+    //@Override
+    public void setupPageButtons() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -3696,6 +3696,7 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.pdfPageCurrent = 0;
         }
 
+        Log.d("StageMode","setView="+StaticVariables.setView);
         // If this hasn't been dealt with
         if (!dealtwithaspdf && StaticVariables.setView) {
             // Is there another song in the set?  If so move, if not, do nothing
@@ -4867,7 +4868,6 @@ public class StageMode extends AppCompatActivity implements
                         public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
                             Log.d("StageMode", "onRemoteDisplaySessionEnded");
                         }
-
                     });
         } else {
             // Might be a hdmi connection
@@ -5135,13 +5135,15 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void prepareSongMenu() {
         doCancelAsyncTask(preparesongmenu_async);
-        try {
-            song_list_view.setFastScrollEnabled(false);
-            song_list_view.setScrollingCacheEnabled(false);
-            preparesongmenu_async = new PrepareSongMenu();
-            preparesongmenu_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (song_list_view!=null) {
+            try {
+                song_list_view.setFastScrollEnabled(false);
+                song_list_view.setScrollingCacheEnabled(false);
+                preparesongmenu_async = new PrepareSongMenu();
+                preparesongmenu_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

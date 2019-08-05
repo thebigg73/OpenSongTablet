@@ -645,7 +645,7 @@
 	<string name="date">"Encontro"</string>
 	<string name="editpdf">"Editar no programa PDF externo"</string>
 	<string name="existing">"Encontre locais de instalação anteriores para arquivos OpenSong"</string>
-	<string name="found">"Você já usou os seguintes locais de instalação. Selecione um para usá-lo novamente."</string>
+	<string name="found">Você já usou os seguintes locais de instalação. Você ainda precisará localizar e definir isso manualmente usando o botão vermelho acima.</string>
 	<string name="longpress">"Pressione / mantenha pressionado prolongadamente"</string>
 	<string name="nofound">"Não foram encontradas instalações anteriores."</string>
 	<string name="nothere">"Você está dentro de uma pasta OpenSong, não use essa localização. Em vez disso, avance um nível e especifique a pasta que contém esta pasta"</string>

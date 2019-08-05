@@ -644,7 +644,7 @@
 	<string name="date">"日付"</string>
 	<string name="editpdf">"外部PDFプログラムで編集"</string>
 	<string name="existing">"OpenSongファイルの以前のインストール場所を見つける"</string>
-	<string name="found">"既に以下のインストール場所を使用しています。再度使用するには、1つを選択してください。"</string>
+	<string name="found">既に以下のインストール場所を使用しています。上記の赤いボタンを使って手動でこれを見つけて設定する必要があります。</string>
 	<string name="longpress">"長押し/長押し"</string>
 	<string name="nofound">"以前のインストールは見つかりませんでした。"</string>
 	<string name="nothere">"あなたはOpenSongフォルダの中にいますが、この場所は使用しないでください。代わりに1つ上のレベルに移動し、このフォルダを含むフォルダを指定します"</string>

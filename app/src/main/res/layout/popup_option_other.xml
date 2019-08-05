@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -75,7 +76,8 @@
                 android:gravity="center_vertical"
                 android:text="\@OpenSongApp"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="HardcodedText" />
 
             <Button
                 android:id="@+id/otherEmailButton"
@@ -84,7 +86,7 @@
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
                 android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_email_white_36dp"
+                android:drawableStart="@drawable/ic_forum_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/email"
                 android:textColor="#fff"

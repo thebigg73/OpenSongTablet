@@ -59,15 +59,15 @@ class SetTypeFace {
                 break;
             case 7:
                 // lato light
-                fontcode += "@font-face  {font-family: 'latolight'; src: url('fonts/Lato-Lig.ttf');}\n";
-                fontcode += "@font-face  {font-family: 'latolightitalic'; src: url('fonts/Lato-LigIta.ttf');}\n";
+                fontcode += "@font-face  {font-family: 'latolight'; src: url('fonts/lato-Lig.ttf');}\n";
+                fontcode += "@font-face  {font-family: 'latolightitalic'; src: url('fonts/lato-LigIta.ttf');}\n";
                 fontcode += ".lyric      {font-family: 'latolight'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
                 fontcode += ".comment    {font-family: 'latolightitalic'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
                 break;
             case 8:
                 // lato regular
-                fontcode += "@font-face  {font-family: 'latoreg'; src: url('fonts/Lato-Reg.ttf');}\n";
-                fontcode += "@font-face  {font-family: 'latoregitalic'; src: url('fonts/Lato-RegIta.ttf');}\n";
+                fontcode += "@font-face  {font-family: 'latoreg'; src: url('fonts/lato-Reg.ttf');}\n";
+                fontcode += "@font-face  {font-family: 'latoregitalic'; src: url('fonts/lato-RegIta.ttf');}\n";
                 fontcode += ".lyric      {font-family: 'latoreg'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
                 fontcode += ".comment    {font-family: 'latoregitalic'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
                 break;
@@ -101,8 +101,8 @@ class SetTypeFace {
                 break;
             default:
                 // lato light
-                fontcode += "@font-face  {font-family: 'latolight'; src: url('fonts/Lato-Lig.ttf');}\n";
-                fontcode += "@font-face  {font-family: 'latolightitalic'; src: url('fonts/Lato-LigIta.ttf');}\n";
+                fontcode += "@font-face  {font-family: 'latolight'; src: url('fonts/lato-Lig.ttf');}\n";
+                fontcode += "@font-face  {font-family: 'latolightitalic'; src: url('fonts/lato-LigIta.ttf');}\n";
                 fontcode += ".lyric      {font-family: 'latolight'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
                 fontcode += ".comment    {font-family: 'latolightitalic'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
                 break;
@@ -160,14 +160,14 @@ class SetTypeFace {
             case 7:
                 // lato light
                 if (!already) {
-                    fontcode += "@font-face  {font-family: 'latolight'; src: url('fonts/Lato-Lig.ttf');}\n";
+                    fontcode += "@font-face  {font-family: 'latolight'; src: url('fonts/lato-Lig.ttf');}\n";
                 }
                 fontcode += ".chord      {font-family: 'latolight'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsChordsColor)) + "; padding: 0px;}\n";
                 break;
             case 8:
                 // lato regular
                 if (!already) {
-                    fontcode += "@font-face  {font-family: 'latoreg'; src: url('fonts/Lato-Reg.ttf');}\n";
+                    fontcode += "@font-face  {font-family: 'latoreg'; src: url('fonts/lato-Reg.ttf');}\n";
                 }
                 fontcode += ".chord      {font-family: 'latoreg'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsChordsColor)) + "; padding: 0px;}\n";
                 break;
@@ -202,7 +202,7 @@ class SetTypeFace {
             default:
                 // lato light
                 if (!already) {
-                    fontcode += "@font-face  {font-family: 'latolight'; src: url('fonts/Lato-Lig.ttf');}\n";
+                    fontcode += "@font-face  {font-family: 'latolight'; src: url('fonts/lato-Lig.ttf');}\n";
                 }
                 fontcode += ".chord      {font-family: 'latolight'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
                 break;
@@ -222,31 +222,39 @@ class SetTypeFace {
         String fontPresoInfo = preferences.getMyPreferenceString(c, "fontPresoInfo", "Lato");
         String fontCustom = preferences.getMyPreferenceString(c, "fontCustom", "Lato");
 
-        /*// Set the values to the custom font if they are set to Custom...
-        fontLyric = fixFont(c, fontLyric, fontCustom);
-        fontChord = fixFont(c, fontChord, fontCustom);
-        fontPreso = fixFont(c, fontPreso, fontCustom);
-        fontPresoInfo = fixFont(c, fontPresoInfo, fontCustom);*/
-
-        // Set the values
-        setChosenFont(c, preferences, fontLyric, "lyric", null, null, lyrichandler);
-        setChosenFont(c, preferences, fontChord, "chord", null, null, chordhandler);
-        setChosenFont(c, preferences, fontPreso, "preso", null, null, presohandler);
-        setChosenFont(c, preferences, fontPresoInfo, "presoinfo", null, null, presoinfohandler);
-        setChosenFont(c, preferences, fontCustom, "custom", null, null, customhandler);
-
-        // The monospace font for tab
-        setChosenFont(c, preferences, "Fira Mono", "mono", null, null, monohandler);
-    }
-
-    /*private String fixFont(Context c, String which, String custom) {
-        if (which.equals(c.getString(R.string.custom) + "...")) {
-            return custom;
+        // Set the values  (if Lato, use the bundled font
+        // The reason is that KiKat devices don't load the Google Font resource automatically (it requires manually selecting it).
+        if (fontLyric.equals("Lato")) {
+            StaticVariables.typefaceLyrics = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
-            return which;
+            setChosenFont(c, preferences, fontLyric, "lyric", null, null, lyrichandler);
         }
+        if (fontChord.equals("Lato")) {
+            StaticVariables.typefaceChords = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
+        } else {
+            setChosenFont(c, preferences, fontChord, "chord", null, null, chordhandler);
+        }
+        if (fontPreso.equals("Lato")) {
+            StaticVariables.typefacePreso = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
+        } else {
+            setChosenFont(c, preferences, fontPreso, "preso", null, null, presohandler);
+        }
+        if (fontPresoInfo.equals("Lato")) {
+            StaticVariables.typefacePresoInfo = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
+        } else {
+            setChosenFont(c, preferences, fontPresoInfo, "presoinfo", null, null, presoinfohandler);
+        }
+        if (fontCustom.equals("Lato")) {
+            StaticVariables.typefaceCustom = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
+        } else {
+            setChosenFont(c, preferences, fontCustom, "custom", null, null, customhandler);
+        }
+
+        StaticVariables.typefaceMono = Typeface.MONOSPACE;
+
     }
-*/
+
+
     private FontRequest getFontRequest(String fontnamechosen) {
         return new FontRequest("com.google.android.gms.fonts",
                 "com.google.android.gms", fontnamechosen,
@@ -296,8 +304,13 @@ class SetTypeFace {
             @Override
             public void onTypefaceRequestFailed(int reason) {
                 // Your code to deal with the failure goes here
-                Typeface typeface = Typeface.createFromAsset(c.getAssets(), "font/lato.ttf");
-                StaticVariables.myToastMessage = fontname + ": " + c.getString(R.string.file_type_unknown);
+                Typeface typeface;
+                if (what.equals("mono")) {
+                    typeface = Typeface.MONOSPACE;
+                } else {
+                    typeface = Typeface.createFromAsset(c.getAssets(), "font/lato.ttf");
+                }
+                StaticVariables.myToastMessage = fontname + ": " + c.getString(R.string.error);
                 ShowToast.showToast(c);
 
                 switch (what) {
@@ -335,6 +348,7 @@ class SetTypeFace {
 
     void setChosenFont(final Context c, final Preferences preferences, String fontnamechosen, String which,
                        final TextView textView, final ProgressBar progressBar, Handler handler) {
+
         FontRequest fontRequest = getFontRequest(fontnamechosen);
         FontRequestCallback fontRequestCallback = getFontRequestCallback(c, preferences, which,
                 fontnamechosen, textView, progressBar);

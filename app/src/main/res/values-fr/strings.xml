@@ -645,7 +645,7 @@
 	<string name="date">"Rendez-vous amoureux"</string>
 	<string name="editpdf">"Modifier dans un programme PDF externe"</string>
 	<string name="existing">"Trouver les emplacements d'installation précédents pour les fichiers OpenSong"</string>
-	<string name="found">"Vous avez déjà utilisé les emplacements d'installation suivants. Veuillez en sélectionner un pour l'utiliser à nouveau."</string>
+	<string name="found">Vous avez déjà utilisé les emplacements d\'installation suivants. Vous aurez toujours besoin de localiser et de régler ceci manuellement en utilisant le bouton rouge ci-dessus.</string>
 	<string name="longpress">"Appuyez longuement / maintenez"</string>
 	<string name="nofound">"Aucune installation précédente trouvée."</string>
 	<string name="nothere">"Vous êtes dans un dossier OpenSong, n'utilisez pas cet emplacement. Au lieu de remonter d'un niveau, spécifiez le dossier contenant ce dossier"</string>

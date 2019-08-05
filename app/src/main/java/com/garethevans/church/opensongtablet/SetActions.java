@@ -309,15 +309,15 @@ public class SetActions {
         String val;
         if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername))) {
             val = StaticVariables.songfilename;
-        } else if (StaticVariables.whichSongFolder.equals("../Scripture/_cache")) {
+        } else if (StaticVariables.whichSongFolder.contains("Scripture/_cache")) {
             val = c.getResources().getString(R.string.scripture) + "/" + StaticVariables.songfilename;
-        } else if (StaticVariables.whichSongFolder.equals("../Slides/_cache")) {
+        } else if (StaticVariables.whichSongFolder.contains("Slides/_cache")) {
             val = c.getResources().getString(R.string.slide) + "/" + StaticVariables.songfilename;
-        } else if (StaticVariables.whichSongFolder.equals("../Notes/_cache")) {
+        } else if (StaticVariables.whichSongFolder.contains("Notes/_cache")) {
             val = c.getResources().getString(R.string.note) + "/" + StaticVariables.songfilename;
-        } else if (StaticVariables.whichSongFolder.equals("../Images/_cache")) {
+        } else if (StaticVariables.whichSongFolder.contains("Images/_cache")) {
             val = c.getResources().getString(R.string.image) + "/" + StaticVariables.songfilename;
-        } else if (StaticVariables.whichSongFolder.equals("../Variations")) {
+        } else if (StaticVariables.whichSongFolder.contains("Variations")) {
             val = c.getResources().getString(R.string.variation) + "/" + StaticVariables.songfilename;
         } else {
             val = StaticVariables.whichSongFolder + "/"
@@ -349,24 +349,38 @@ public class SetActions {
         return whattolookfor;
     }
 
+    private boolean isCustomSlide(String folder) {
+        return folder.startsWith("Notes/") || folder.startsWith("Note/") || folder.startsWith("..") ||
+                folder.startsWith("Slides/") || folder.startsWith("Slide/") ||
+                folder.startsWith("Images/") || folder.startsWith("Image/") ||
+                folder.startsWith("Scriptures/") || folder.startsWith("Scripture/") ||
+                folder.startsWith("Variations/") || folder.startsWith("Variation/");
+    }
+
     boolean isSongInSet(Context c, Preferences preferences) {
         if (StaticVariables.setSize > 0) {
             // Get the name of the song to look for (including folders if need be)
             String songforsetwork;
-            if (StaticVariables.whichSongFolder.startsWith("../")) {
+            Log.d("d","whichSongFolder="+StaticVariables.whichSongFolder);
+            if (isCustomSlide(StaticVariables.whichSongFolder)) {
+                Log.d("d","is a custom slide");
                 songforsetwork = "$**_**" + getSongForSetWork(c) + "_**$";
             } else {
+                Log.d("d","not a custom slide");
                 songforsetwork ="$**_" + getSongForSetWork(c) + "_**$";
             }
             String currset = preferences.getMyPreferenceString(c,"setCurrent","");
-
+            Log.d("d","songforsetwork="+songforsetwork);
+            Log.d("d","currset="+currset);
             if (StaticVariables.setView && currset.contains(songforsetwork)) {
                 // If we are currently in set mode, check if the new song is there, in which case do nothing else
+                Log.d("d","Staying in set mode");
                 indexSongInSet();
                 return true;
 
             } else if (StaticVariables.setView && !currset.contains(songforsetwork)) {
                 // If we are currently in set mode, but the new song isn't there, leave set mode
+                Log.d("d","Leaving in set mode");
                 StaticVariables.setView = false;
                 StaticVariables.previousSongInSet = "";
                 StaticVariables.nextSongInSet = "";
@@ -915,6 +929,8 @@ public class SetActions {
             StaticVariables.whichSongFolder = c.getString(R.string.mainfoldername);
         }
 
+        Log.d("SetActions","whichSongFolder="+StaticVariables.whichSongFolder);
+
         // If the folder length isn't 0, it is a folder
         if (StaticVariables.whichSongFolder.length() > 0 &&
                 StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.scripture)) &&
@@ -987,6 +1003,7 @@ public class SetActions {
 
         if (!justmovingsections) {
             // Moving to a different song
+            Log.d("SetActions","indexSongInSet="+StaticVariables.indexSongInSet);
             if (StaticVariables.setMoveDirection.equals("back")) {
                 if (StaticVariables.indexSongInSet>0) {
                     StaticVariables.indexSongInSet -= 1;
@@ -1009,6 +1026,8 @@ public class SetActions {
                     }
                 }
             }
+
+            Log.d("SetActions","whatsongforsetwork+"+StaticVariables.whatsongforsetwork);
 
             StaticVariables.setMoveDirection = "";
 

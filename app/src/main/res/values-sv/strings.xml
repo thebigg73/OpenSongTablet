@@ -700,7 +700,7 @@
     <string name="date">"Datum"</string>
     <string name="editpdf">"Redigera i externt PDF-program"</string>
     <string name="existing">"Hitta tidigare installationsplatser för OpenSong-filer"</string>
-    <string name="found">"Du har redan använt följande installationsplatser. Vänligen välj en för att använda den igen."</string>
+    <string name="found">Du har redan använt följande installationsplatser. Du måste fortfarande hitta och ställa in detta manuellt med den röda knappen ovan.</string>
     <string name="longpress">"Långt tryck / håll intryckt"</string>
     <string name="nofound">"Inga tidigare installationer hittades."</string>
     <string name="nothere">"Du är inne i en OpenSong-mapp, använd inte den här platsen. Flytta istället en nivå och ange mappen som innehåller den här mappen"</string>

@@ -3007,9 +3007,12 @@ public class OptionMenuListeners extends AppCompatActivity {
         otherEmailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String url = "https://www.opensongapp.com/forum";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
-                    mListener.callIntent("forum",null);
+                    mListener.callIntent("web",i);
                 }
             }
         });

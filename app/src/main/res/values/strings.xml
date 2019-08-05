@@ -71,7 +71,7 @@
     <string name="date">Date</string>
     <string name="editpdf">Edit in external PDF program</string>
     <string name="existing">Find previous installation locations for OpenSong files</string>
-    <string name="found">You have already used the following install locations.  Please select one to use it again.</string>
+    <string name="found">You have already used the following install locations.  You will still need to locate and set this manually using the red button above.</string>
     <string name="longpress">Long press/hold</string>
     <string name="nofound">No previous installations found.</string>
     <string name="nothere">You are inside an OpenSong folder, do not use this location.  Instead move up one level and specify the folder containing this folder</string>

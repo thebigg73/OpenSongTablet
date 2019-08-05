@@ -917,27 +917,27 @@ class ProfileActions {
 
                         case "fontChord":        // New preference only
                             //fontChord                       String      The name of the font used for the chords.  From fonts.google.com
-                            preferences.setMyPreferenceString(c,"fontChord",getTextValue(xppValue,"Lato"));
+                            preferences.setMyPreferenceString(c,"fontChord",getTextValue(xppValue,"lato"));
                             break;
 
                         case "fontCustom":        // New preference only
                             //fontCustom                      String      The name of the font used for custom fonts.  From fonts.google.com
-                            preferences.setMyPreferenceString(c,"fontCustom",getTextValue(xppValue,"Lato"));
+                            preferences.setMyPreferenceString(c,"fontCustom",getTextValue(xppValue,"lato"));
                             break;
 
                         case "fontLyric":        // New preference only
                             //fontLyric                       String      The name of the font used for the lyrics.  From fonts.google.com
-                            preferences.setMyPreferenceString(c,"fontLyric",getTextValue(xppValue,"Lato"));
+                            preferences.setMyPreferenceString(c,"fontLyric",getTextValue(xppValue,"lato"));
                             break;
 
                         case "fontPreso":           // New preference only
                             //fontPreso                       String      The name of the font used for the preso.  From fonts.google.com
-                            preferences.setMyPreferenceString(c,"fontPreso",getTextValue(xppValue,"Lato"));
+                            preferences.setMyPreferenceString(c,"fontPreso",getTextValue(xppValue,"lato"));
                             break;
 
                         case "fontPresoInfo":        // New preference only
                             // fontPresoInfo                   String      The name of the font used for the presoinfo.  From fonts.google.com
-                            preferences.setMyPreferenceString(c,"fontPresoInfo",getTextValue(xppValue,"Lato"));
+                            preferences.setMyPreferenceString(c,"fontPresoInfo",getTextValue(xppValue,"lato"));
                             break;
 
                         case "fontSizePreso":        // New preference

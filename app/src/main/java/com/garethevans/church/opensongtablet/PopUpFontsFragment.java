@@ -100,6 +100,7 @@ public class PopUpFontsFragment extends DialogFragment {
         // Initialise the helper classes
         preferences = new Preferences();
         setTypeFace = new SetTypeFace();
+        storageAccess = new StorageAccess();
 
         // Initialise the font handlers
         lyrichandler = new Handler();
@@ -150,7 +151,6 @@ public class PopUpFontsFragment extends DialogFragment {
         trimsections_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"addSectionSpace",true));
         trimlinespacing_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"trimLines",false));
         lineSpacing_SeekBar.setEnabled(preferences.getMyPreferenceBoolean(getActivity(),"trimLines",false));
-
 
         // Listen for seekbar changes
         scaleHeading_SeekBar.setMax(200);
@@ -261,6 +261,13 @@ public class PopUpFontsFragment extends DialogFragment {
             }
         });
 
+        // If we are running kitkat, hide the trim options
+        if (!storageAccess.lollipopOrLater()) {
+            lineSpacing_SeekBar.setVisibility(View.GONE);
+            lineSpacing_TextView.setVisibility(View.GONE);
+            trimlines_SwitchCompat.setVisibility(View.GONE);
+        }
+
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         // Try to get a list of fonts from Google
@@ -345,7 +352,7 @@ public class PopUpFontsFragment extends DialogFragment {
     }
 
     private int getPositionInList(String what) {
-        String valToFind = preferences.getMyPreferenceString(getActivity(), what, "Lato");
+        String valToFind = preferences.getMyPreferenceString(getActivity(), what, "lato");
         return choose_fonts.getPosition(valToFind);
     }
 

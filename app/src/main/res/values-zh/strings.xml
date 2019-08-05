@@ -649,7 +649,7 @@
 	<string name="date">"日期"</string>
 	<string name="editpdf">"在外部PDF程序中编辑"</string>
 	<string name="existing">"查找OpenSong文件的以前的安装位置"</string>
-	<string name="found">"您已经使用了以下安装位置。请选择一个再次使用它。"</string>
+	<string name="found">您已经使用了以下安装位置。您仍然需要使用上面的红色按钮手动定位和设置。</string>
 	<string name="longpress">"长按/按住"</string>
 	<string name="nofound">"没有找到以前的安装。"</string>
 	<string name="nothere">"您位于OpenSong文件夹内，请勿使用此位置。而是向上移动一个级别并指定包含此文件夹的文件夹"</string>

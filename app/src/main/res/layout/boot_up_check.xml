@@ -116,6 +116,12 @@
                     style="@style/MyWhiteHeadingText"
                     android:visibility="gone"/>
 
+                <TextView
+                    android:id="@+id/previousStorageLocationsTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyInfoText"/>
+
                 <Spinner
                     android:id="@+id/previousStorageSpinner"
                     android:layout_width="wrap_content"

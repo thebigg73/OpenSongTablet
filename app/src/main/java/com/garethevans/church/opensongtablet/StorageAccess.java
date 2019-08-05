@@ -117,7 +117,7 @@ class StorageAccess {
     }
     private Uri homeFolder_File(String uriTree_String) {
         File f;
-        if (!uriTree_String.endsWith("OpenSong") || !uriTree_String.endsWith("OpenSong/")) {
+        if (!uriTree_String.endsWith("OpenSong") && !uriTree_String.endsWith("OpenSong/")) {
             uriTree_String = uriTree_String + "/OpenSong/";
             uriTree_String = uriTree_String.replace("//OpenSong/","/OpenSong/");
             f = new File(uriTree_String);

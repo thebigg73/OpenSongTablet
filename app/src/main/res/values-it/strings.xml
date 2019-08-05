@@ -645,7 +645,7 @@
 	<string name="date">"Data"</string>
 	<string name="editpdf">"Modifica nel programma PDF esterno"</string>
 	<string name="existing">"Trova le posizioni di installazione precedenti per i file OpenSong"</string>
-	<string name="found">"Hai già utilizzato le seguenti posizioni di installazione. Si prega di selezionarne uno per usarlo di nuovo."</string>
+	<string name="found">Hai già utilizzato le seguenti posizioni di installazione. Sarà comunque necessario localizzarlo e impostarlo manualmente utilizzando il pulsante rosso sopra.</string>
 	<string name="longpress">"Tenere premuto a lungo"</string>
 	<string name="nofound">"Nessuna installazione precedente trovata."</string>
 	<string name="nothere">"Sei all'interno di una cartella OpenSong, non usare questa posizione. Piuttosto vai su di un livello e specifica la cartella che contiene questa cartella"</string>

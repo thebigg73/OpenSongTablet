@@ -644,7 +644,7 @@
 	<string name="date">"datum"</string>
 	<string name="editpdf">"Wysig in eksterne PDF-program"</string>
 	<string name="existing">"Vind vorige installasie plekke vir OpenSong lêers"</string>
-	<string name="found">"Jy het al die volgende installeer plekke gebruik. Kies asseblief een om dit weer te gebruik."</string>
+	<string name="found">Jy het al die volgende installeer plekke gebruik. U sal dit steeds met die hand van die rooi knoppie hierbo moet opspoor en instel.</string>
 	<string name="longpress">"Lang druk / hou"</string>
 	<string name="nofound">"Geen vorige installasies gevind nie."</string>
 	<string name="nothere">"Jy is in 'n OpenSong-gids, moenie hierdie plek gebruik nie. Plaas eerder een vlak op en spesifiseer die gids wat hierdie vouer bevat"</string>
