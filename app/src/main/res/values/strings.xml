@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="maximise_columns">Scale columns independently</string>
     <string name="reset_text">If you are having difficulties with the app, try resetting your settings using the button below.
         This will clear your settings, but will not delete your songs.</string>
     <string name="extracting">Extracting</string>

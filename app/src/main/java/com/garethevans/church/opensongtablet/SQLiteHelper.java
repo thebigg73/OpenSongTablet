@@ -25,8 +25,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     SQLiteDatabase getDB (Context c) {
-        File f = new File(c.getExternalFilesDir("Database"), SQLite.DATABASE_NAME);
-        return SQLiteDatabase.openOrCreateDatabase(f,null);
+        try {
+            File f = new File(c.getExternalFilesDir("Database"), SQLite.DATABASE_NAME);
+            return SQLiteDatabase.openOrCreateDatabase(f, null);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override

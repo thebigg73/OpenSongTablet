@@ -11,52 +11,69 @@ public class Preferences extends Activity {
     // Get the saved preference values
     String getMyPreferenceString (Context c, String prefname, String fallback) {
         // Return a string from saved preference
-        // Identify the preferences
-        sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
-        return sharedPref.getString(prefname, fallback);
+        if (c!=null && prefname!=null) {
+            sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
+            return sharedPref.getString(prefname, fallback);
+        } else {
+            return fallback;
+        }
     }
     int getMyPreferenceInt (Context c, String prefname, int fallback) {
         // Return an int from saved preference
-        // Identify the preferences
-        //sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
-        sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
-        return sharedPref.getInt(prefname, fallback);
+        if (c!=null && prefname!=null) {
+            sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
+            return sharedPref.getInt(prefname, fallback);
+        } else {
+            return fallback;
+        }
     }
     float getMyPreferenceFloat (Context c, String prefname, float fallback) {
         // Return a float from saved preferences
-        sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
-        return sharedPref.getFloat(prefname, fallback);
+        if (c!=null && prefname!=null) {
+            sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
+            return sharedPref.getFloat(prefname, fallback);
+        } else {
+            return fallback;
+        }
     }
     boolean getMyPreferenceBoolean(Context c, String prefname, boolean fallback) {
         // Return a boolean from saved preference
-        // Identify the preferences
-        //sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
-        sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
-        return sharedPref.getBoolean(prefname, fallback);
+        if (c!=null && prefname!=null) {
+            sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
+            return sharedPref.getBoolean(prefname, fallback);
+        } else {
+            return fallback;
+        }
     }
 
     // Set the preference values
     void setMyPreferenceString (Context c, String prefname, String value) {
         // Identify the preferences
-        sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
-        sharedPref.edit().putString(prefname, value).apply();
+        if (c!=null && prefname!=null) {
+            sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
+            sharedPref.edit().putString(prefname, value).apply();
+        }
     }
     void setMyPreferenceInt (Context c, String prefname, int value) {
         // Identify the preferences
-        //sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
-        sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
-        sharedPref.edit().putInt(prefname, value).apply();
+        if (c!=null && prefname!=null) {
+            sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
+            sharedPref.edit().putInt(prefname, value).apply();
+        }
     }
     void setMyPreferenceFloat (Context c, String prefname, float value) {
         // Identify the preferences
-        sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
-        sharedPref.edit().putFloat(prefname, value).apply();
+        if (c!=null && prefname!=null) {
+            sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
+            sharedPref.edit().putFloat(prefname, value).apply();
+        }
     }
     void setMyPreferenceBoolean (Context c, String prefname, boolean value) {
         // Identify the preferences
-        //sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
-        sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
-        sharedPref.edit().putBoolean(prefname, value).apply();
+        if (c!=null && prefname!=null) {
+            sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
+            sharedPref.edit().putBoolean(prefname, value).apply();
+        }
     }
 
 
@@ -355,6 +372,7 @@ public class Preferences extends Activity {
     setCurrentLastName              String      The last name used when saving or loading a set(def:"")
     songAuthorSize                  float       The size of the song author text in the action bar (def:11.0f)
     songAutoScale                   String      Choice of autoscale mode (Y)es, (W)idth only or (N)one (def:W)
+    songAutoScaleColumnMaximise     boolean     When autoscale is on full and columns are used, should each column scale independently to maximise font size
     songAutoScaleOverrideFull       boolean     If the app can override full autoscale if the font is too small
     songAutoScaleOverrideWidth      boolean     If the app can override width autoscale if the font is too small
     songfilename                    String      The name of the current song file (def:"")

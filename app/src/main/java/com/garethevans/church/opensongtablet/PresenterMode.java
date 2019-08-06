@@ -511,29 +511,35 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         setWindowFlagsAdvanced();
     }
     public void setWindowFlags() {
-        View v = getWindow().getDecorView();
-        v.setOnSystemUiVisibilityChangeListener(null);
-        v.setOnFocusChangeListener(null);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        try {
+            View v = getWindow().getDecorView();
+            v.setOnSystemUiVisibilityChangeListener(null);
+            v.setOnFocusChangeListener(null);
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
     public void setWindowFlagsAdvanced() {
-        View v = getWindow().getDecorView();
-        v.setOnSystemUiVisibilityChangeListener(null);
-        v.setOnFocusChangeListener(null);
+        try {
+            View v = getWindow().getDecorView();
+            v.setOnSystemUiVisibilityChangeListener(null);
+            v.setOnFocusChangeListener(null);
 
-        v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     | View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LOW_PROFILE);
 
-        v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+            v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
                     View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public void tryCancelAsyncTasks() {
         doCancelAsyncTask(loadsong_async);
@@ -766,10 +772,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     @Override
     // The navigation drawers
     public void prepareSongMenu() {
-        if (song_list_view==null) {
-            song_list_view = findViewById(R.id.song_list_view);
-        }
         try {
+            if (song_list_view==null) {
+                song_list_view = findViewById(R.id.song_list_view);
+            }
             doCancelAsyncTask(preparesongmenu_async);
             song_list_view.setFastScrollEnabled(false);
             song_list_view.setScrollingCacheEnabled(false);
@@ -1833,11 +1839,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
     public void enabledisableButton(FloatingActionButton fab, boolean enable) {
-        fab.setEnabled(enable);
-        if (enable) {
-            fab.setAlpha(1.0f);
-        } else {
-            fab.setAlpha(0.5f);
+        if (fab!=null) {
+            fab.setEnabled(enable);
+            if (enable) {
+                fab.setAlpha(1.0f);
+            } else {
+                fab.setAlpha(0.5f);
+            }
         }
     }
     @Override
@@ -3757,7 +3765,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     }
                     showCorrectViews();
                     findSongInFolders();
-                    setupSongButtons();
+
 
                     // Send WiFiP2P intent
                     if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {

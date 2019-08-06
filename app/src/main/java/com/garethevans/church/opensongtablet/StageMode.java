@@ -32,7 +32,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import androidx.annotation.NonNull;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
@@ -135,123 +134,193 @@ public class StageMode extends AppCompatActivity implements
         PopUpBibleXMLFragment.MyInterface, PopUpShowMidiMessageFragment.MyInterface {
 
     // The toolbar and menu
-    public Toolbar ab_toolbar;
+    private Toolbar ab_toolbar;
     public static ActionBar ab;
-    public ActionBarDrawerToggle actionBarDrawerToggle;
-    public RelativeLayout songandauthor, batteryholder;
-    public TextView digitalclock, songtitle_ab, songkey_ab, songcapo_ab, songauthor_ab, batterycharge;
-    public ImageView batteryimage;
+    private TextView digitalclock;
+    private TextView songtitle_ab;
+    private TextView songkey_ab;
+    private TextView songcapo_ab;
+    private TextView songauthor_ab;
+    private TextView batterycharge;
+    private ImageView batteryimage;
     Menu menu;
 
     // The popup window (sticky)
-    PopupWindow stickyPopUpWindow;
+    private PopupWindow stickyPopUpWindow;
 
     // The left and right menu
-    DrawerLayout mDrawerLayout;
-    TextView menuFolder_TextView, menuCount_TextView;
-    FloatingActionButton closeSongFAB;
-    LinearLayout songmenu, optionmenu, changefolder_LinearLayout;
-    ScrollView optionsdisplayscrollview;
-    ListView song_list_view;
+    private DrawerLayout mDrawerLayout;
+    private TextView menuFolder_TextView;
+    private TextView menuCount_TextView;
+    private LinearLayout songmenu;
+    private LinearLayout optionmenu;
+    private ListView song_list_view;
 
     // Song sections view
-    RelativeLayout mypage;
-    int songwidth = 0;
-    int songheight = 0;
-    HorizontalScrollView horizontalscrollview, glideimage_HorizontalScrollView;
-    RelativeLayout testpane, testpane1_2, testpane2_2, testpane1_3, testpane2_3, testpane3_3;
-    LinearLayout column1_1, column1_2, column2_2, column1_3, column2_3, column3_3;
-    ScrollView songscrollview, glideimage_ScrollView;
-    FrameLayout glideimage_FrameLayout;
-    ImageView glideimage, highlightNotes;
-    LinearLayout backingtrackProgress, playbackProgress, capoInfo, learnAutoScroll;
-    TextView padcurrentTime_TextView, padTimeSeparator_TextView, padtotalTime_TextView,
-            currentTime_TextView, timeSeparator_TextView, totalTime_TextView, capoinfo,
-            capoinfonewkey, learnAutoScroll_TextView, learnAutoScrollTime_TextView;
-    float width_scale = 0f, biggestscale_1col = 0.0f, biggestscale_2col = 0.0f, biggestscale_3col = 0.0f;
-    boolean overridingfull, overridingwidth, rendercalled = false, sectionpresented = false;
+    private RelativeLayout mypage;
+    private int songwidth = 0;
+    private int songheight = 0;
+    private HorizontalScrollView horizontalscrollview;
+    private HorizontalScrollView glideimage_HorizontalScrollView;
+    private RelativeLayout testpane;
+    private RelativeLayout testpane1_2;
+    private RelativeLayout testpane2_2;
+    private RelativeLayout testpane1_3;
+    private RelativeLayout testpane2_3;
+    private RelativeLayout testpane3_3;
+    private LinearLayout column1_1;
+    private LinearLayout column1_2;
+    private LinearLayout column2_2;
+    private LinearLayout column1_3;
+    private LinearLayout column2_3;
+    private LinearLayout column3_3;
+    private ScrollView songscrollview;
+    private ScrollView glideimage_ScrollView;
+    private FrameLayout glideimage_FrameLayout;
+    private ImageView glideimage;
+    private ImageView highlightNotes;
+    private LinearLayout backingtrackProgress;
+    private LinearLayout playbackProgress;
+    private LinearLayout capoInfo;
+    private LinearLayout learnAutoScroll;
+    private TextView padcurrentTime_TextView;
+    private TextView padTimeSeparator_TextView;
+    private TextView padtotalTime_TextView;
+    private TextView currentTime_TextView;
+    private TextView timeSeparator_TextView;
+    private TextView totalTime_TextView;
+    private TextView capoinfo;
+    private TextView capoinfonewkey;
+    private TextView learnAutoScroll_TextView;
+    private TextView learnAutoScrollTime_TextView;
+    private float width_scale = 0f;
+    private boolean sectionpresented = false;
 
-    int coltouse = 1;
-    boolean longKeyPress = false, shortKeyPress = false;
+    private int coltouse = 1;
+    private boolean longKeyPress = false;
+    private boolean shortKeyPress = false;
 
     // Page buttons
-    FloatingActionButton setButton, padButton, autoscrollButton, metronomeButton, extraButton,
-            chordButton, stickyButton, notationButton, highlightButton, pageselectButton, linkButton,
-            chordButton_ungrouped, stickyButton_ungrouped, notationButton_ungrouped, highlightButton_ungrouped,
-            pageselectButton_ungrouped, linkButton_ungrouped, customButton, custom1Button,
-            custom2Button, custom3Button, custom4Button, custom1Button_ungrouped,
-            custom2Button_ungrouped, custom3Button_ungrouped, custom4Button_ungrouped,
-            scrollDownButton, scrollUpButton, setBackButton, setForwardButton;
-    ScrollView extrabuttons, extrabuttons2;
+    private FloatingActionButton setButton;
+    private FloatingActionButton padButton;
+    private FloatingActionButton autoscrollButton;
+    private FloatingActionButton metronomeButton;
+    private FloatingActionButton extraButton;
+    private FloatingActionButton chordButton;
+    private FloatingActionButton stickyButton;
+    private FloatingActionButton notationButton;
+    private FloatingActionButton highlightButton;
+    private FloatingActionButton pageselectButton;
+    private FloatingActionButton linkButton;
+    private FloatingActionButton chordButton_ungrouped;
+    private FloatingActionButton stickyButton_ungrouped;
+    private FloatingActionButton notationButton_ungrouped;
+    private FloatingActionButton highlightButton_ungrouped;
+    private FloatingActionButton pageselectButton_ungrouped;
+    private FloatingActionButton linkButton_ungrouped;
+    private FloatingActionButton customButton;
+    private FloatingActionButton custom1Button;
+    private FloatingActionButton custom2Button;
+    private FloatingActionButton custom3Button;
+    private FloatingActionButton custom4Button;
+    private FloatingActionButton custom1Button_ungrouped;
+    private FloatingActionButton custom2Button_ungrouped;
+    private FloatingActionButton custom3Button_ungrouped;
+    private FloatingActionButton custom4Button_ungrouped;
+    private FloatingActionButton scrollDownButton;
+    private FloatingActionButton scrollUpButton;
+    private FloatingActionButton setBackButton;
+    private FloatingActionButton setForwardButton;
+    private ScrollView extrabuttons;
+    private ScrollView extrabuttons2;
 
-    CoordinatorLayout coordinator_layout;
+    //private CoordinatorLayout coordinator_layout;
 
     // MIDI
-    Midi midi;
+    private Midi midi;
 
     // Casting
-    MediaRouter mMediaRouter;
-    MediaRouteSelector mMediaRouteSelector;
-    MyMediaRouterCallback mMediaRouterCallback = new MyMediaRouterCallback();
-    CastDevice mSelectedDevice;
-    PresentationServiceHDMI hdmi;
-    boolean newsongloaded = false;
+    private MediaRouter mMediaRouter;
+    private MediaRouteSelector mMediaRouteSelector;
+    private final MyMediaRouterCallback mMediaRouterCallback = new MyMediaRouterCallback();
+    private CastDevice mSelectedDevice;
+    private PresentationServiceHDMI hdmi;
+    private boolean newsongloaded = false;
 
     // Dialogue fragments and stuff
-    DialogFragment newFragment;
+    private DialogFragment newFragment;
 
     // Gestures
-    ScaleGestureDetector scaleGestureDetector;
-    GestureDetector gestureDetector;
+    private ScaleGestureDetector scaleGestureDetector;
+    private GestureDetector gestureDetector;
 
     // ASyncTask stuff
-    AsyncTask<Object, Void, String> loadsong_async, preparesongview_async,
-            createperformanceview1col_async, createperformanceview2col_async,
-            createperformanceview3col_async, preparesongmenu_async, prepareoptionmenu_async,
-            createstageview1col_async, fadeout_media1, fadeout_media2, check_storage,
-            sharesong_async, shareset_async, load_customreusable, open_drawers, close_drawers,
-            resize_drawers, do_moveinset, indexing_done, add_slidetoset, dualscreenwork_async,
-            show_sticky,show_highlight, mtask_learnautoscroll, shareactivitylog_async;
-    AsyncTask<Void, Void, String> resizeperformance_async, resizestage_async;
-    AsyncTask<String, Integer, String> mtask_autoscroll_music;
-    AsyncTask<Void, Void, Integer> prepare_pad, play_pads;
-    AsyncTask<String, Integer, String> do_download;
-    AsyncTask<Object, Integer, String> get_scrollheight;
+    private AsyncTask<Object, Void, String> loadsong_async;
+    private AsyncTask<Object, Void, String> preparesongview_async;
+    private AsyncTask<Object, Void, String> createperformanceview1col_async;
+    private AsyncTask<Object, Void, String> createperformanceview2col_async;
+    private AsyncTask<Object, Void, String> createperformanceview3col_async;
+    private AsyncTask<Object, Void, String> preparesongmenu_async;
+    private AsyncTask<Object, Void, String> prepareoptionmenu_async;
+    private AsyncTask<Object, Void, String> createstageview1col_async;
+    private AsyncTask<Object, Void, String> fadeout_media1;
+    private AsyncTask<Object, Void, String> fadeout_media2;
+    private AsyncTask<Object, Void, String> check_storage;
+    private AsyncTask<Object, Void, String> sharesong_async;
+    private AsyncTask<Object, Void, String> shareset_async;
+    private AsyncTask<Object, Void, String> load_customreusable;
+    private AsyncTask<Object, Void, String> open_drawers;
+    private AsyncTask<Object, Void, String> close_drawers;
+    private AsyncTask<Object, Void, String> resize_drawers;
+    private AsyncTask<Object, Void, String> do_moveinset;
+    private AsyncTask<Object, Void, String> add_slidetoset;
+    private AsyncTask<Object, Void, String> dualscreenwork_async;
+    private AsyncTask<Object, Void, String> show_sticky;
+    private AsyncTask<Object, Void, String> show_highlight;
+    private AsyncTask<Object, Void, String> shareactivitylog_async;
+    private AsyncTask<Void, Void, String> resizeperformance_async;
+    private AsyncTask<Void, Void, String> resizestage_async;
+    private AsyncTask<String, Integer, String> mtask_autoscroll_music;
+    private AsyncTask<Void, Void, Integer> prepare_pad;
+    private AsyncTask<Void, Void, Integer> play_pads;
+    private AsyncTask<String, Integer, String> do_download;
+    private AsyncTask<Object, Integer, String> get_scrollheight;
 
     // Allow the menus to flash open to show where they are on first run
-    boolean firstrun_option = true, firstrun_song = true;
+    private boolean firstrun_option = true;
+    private boolean firstrun_song = true;
 
     // Handlers and Runnables
-    Runnable padoncheck = new Runnable() {
+    private final Runnable padoncheck = new Runnable() {
         @Override
         public void run() {
             getPadsOnStatus();
         }
     };
-    Handler handle = new Handler();
-    Handler dopadProgressTime = new Handler();
-    Runnable padprogressTimeRunnable = new Runnable() {
+    private final Handler handle = new Handler();
+    private final Handler dopadProgressTime = new Handler();
+    private final Runnable padprogressTimeRunnable = new Runnable() {
         @Override
         public void run() {
             getPadProgress();
         }
     };
-    Runnable onEverySecond = new Runnable() {
+    private final Runnable onEverySecond = new Runnable() {
         @Override
         public void run() {
             preparePadProgress();
         }
     };
-    Handler delaycheckscroll;
-    Runnable checkScrollPosition;
-    Handler mRestoreImmersiveModeHandler = new Handler();
-    Runnable restoreImmersiveModeRunnable = new Runnable() {
+    private Handler delaycheckscroll;
+    private Runnable checkScrollPosition;
+    private final Handler mRestoreImmersiveModeHandler = new Handler();
+    private final Runnable restoreImmersiveModeRunnable = new Runnable() {
         public void run() {
             restoreTransparentBars();
         }
     };
-    Handler delayactionBarHide = new Handler();
-    Runnable hideActionBarRunnable = new Runnable() {
+    private final Handler delayactionBarHide = new Handler();
+    private final Runnable hideActionBarRunnable = new Runnable() {
         @Override
         public void run() {
             if (ab != null && ab.isShowing()) {
@@ -260,40 +329,46 @@ public class StageMode extends AppCompatActivity implements
         }
     };
     // Handlers for fonts
-    Handler lyrichandler, chordhandler, presohandler, presoinfohandler, customhandler, monohandler;
+    private Handler lyrichandler;
+    private Handler chordhandler;
+    private Handler presohandler;
+    private Handler presoinfohandler;
+    private Handler customhandler;
+    private Handler monohandler;
 
     // Network discovery / connections
-    public static final String TAG = "StageMode";
-    SalutMessage myMessage, mySongMessage, mySectionMessage;
+    private static final String TAG = "StageMode";
+    private SalutMessage myMessage;
+    private SalutMessage mySongMessage;
+    private SalutMessage mySectionMessage;
 
     // NFC
-    FileUriCallback mFileUriCallback;
+    private FileUriCallback mFileUriCallback;
 
     // Battery
-    BroadcastReceiver br;
+    private BroadcastReceiver br;
 
     // Songs in this folder for swiping
-    ArrayList<String> filenamesSongsInFolder;
+    private ArrayList<String> filenamesSongsInFolder;
 
     // Helper classes
-    ExportPreparer exportPreparer;
-    SetActions setActions;
-    StorageAccess storageAccess;
-    IndexSongs indexSongs;
-    Preferences preferences;
-    LoadXML loadXML;
-    SongXML songXML;
-    ChordProConvert chordProConvert;
-    OnSongConvert onSongConvert;
-    UsrConvert usrConvert;
-    TextSongConvert textSongConvert;
-    SetTypeFace setTypeFace;
-    SQLiteHelper sqLiteHelper;
-    ProcessSong processSong;
+    private ExportPreparer exportPreparer;
+    private SetActions setActions;
+    private StorageAccess storageAccess;
+    private IndexSongs indexSongs;
+    private Preferences preferences;
+    private SongXML songXML;
+    private ChordProConvert chordProConvert;
+    private OnSongConvert onSongConvert;
+    private UsrConvert usrConvert;
+    private TextSongConvert textSongConvert;
+    private SetTypeFace setTypeFace;
+    private SQLiteHelper sqLiteHelper;
+    private ProcessSong processSong;
     SQLiteDatabase db;
-    SQLite sqLite;  // This is the song values for the sqlite database, search and menus
-    Transpose transpose;
-    ProfileActions profileActions;
+    private SQLite sqLite;  // This is the song values for the sqlite database, search and menus
+    private Transpose transpose;
+    private ProfileActions profileActions;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -311,7 +386,6 @@ public class StageMode extends AppCompatActivity implements
         storageAccess = new StorageAccess();
         indexSongs = new IndexSongs();
         preferences = new Preferences();
-        loadXML = new LoadXML();
         songXML = new SongXML();
         chordProConvert = new ChordProConvert();
         onSongConvert = new OnSongConvert();
@@ -471,7 +545,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     // Load the variables we need
-    void loadStartUpVariables() {
+    private void loadStartUpVariables() {
 
         StaticVariables.mDisplayTheme = preferences.getMyPreferenceString(StageMode.this, "appTheme", "dark");
 
@@ -482,7 +556,7 @@ public class StageMode extends AppCompatActivity implements
         loadFileLocation();
     }
 
-    public void setUpToolbar() {
+    private void setUpToolbar() {
         ab_toolbar = findViewById(R.id.mytoolbar); // Attaching the layout to the toolbar object
         setSupportActionBar(ab_toolbar);                     // Setting toolbar as the ActionBar with setSupportActionBar() call
         ab = getSupportActionBar();
@@ -495,12 +569,26 @@ public class StageMode extends AppCompatActivity implements
     }
 
     // Set the colours from preferences
-    int lyricsTextColor,  lyricsBackgroundColor, lyricsCapoColor, lyricsVerseColor,
-            lyricsChorusColor, lyricsBridgeColor, lyricsCommentColor, lyricsPreChorusColor,
-            lyricsTagColor, lyricsChordsColor, lyricsCustomColor, presoFontColor, presoShadowColor,
-            defmetronomecolor, defpagebuttoncolor, defstickytextcolor,
-            defstickybgcolor, defextrainfobgcolor, defextrainfotextcolor;
-    void getDefaultColors() {
+    private int lyricsTextColor;
+    private int lyricsBackgroundColor;
+    private int lyricsCapoColor;
+    private int lyricsVerseColor;
+    private int lyricsChorusColor;
+    private int lyricsBridgeColor;
+    private int lyricsCommentColor;
+    private int lyricsPreChorusColor;
+    private int lyricsTagColor;
+    private int lyricsChordsColor;
+    private int lyricsCustomColor;
+    private int presoFontColor;
+    private int presoShadowColor;
+    private int defmetronomecolor;
+    private int defpagebuttoncolor;
+    private int defstickytextcolor;
+    private int defstickybgcolor;
+    private int defextrainfobgcolor;
+    private int defextrainfotextcolor;
+    private void getDefaultColors() {
         switch (StaticVariables.mDisplayTheme) {
             case "dark":
             default:
@@ -517,7 +605,7 @@ public class StageMode extends AppCompatActivity implements
                 break;
         }
     }
-    void setThemeDark() {
+    private void setThemeDark() {
         defmetronomecolor = preferences.getMyPreferenceInt(StageMode.this, "dark_metronomeColor", StaticVariables.darkishred);
         defpagebuttoncolor = preferences.getMyPreferenceInt(StageMode.this, "dark_pageButtonsColor", StaticVariables.purplyblue);
         defstickytextcolor = preferences.getMyPreferenceInt(StageMode.this, "dark_stickyTextColor", StaticVariables.black);
@@ -538,7 +626,7 @@ public class StageMode extends AppCompatActivity implements
         presoFontColor = preferences.getMyPreferenceInt(StageMode.this, "dark_presoFontColor", StaticVariables.white);
         presoShadowColor = preferences.getMyPreferenceInt(StageMode.this, "dark_presoShadowColor", StaticVariables.black);
     }
-    void setThemeLight() {
+    private void setThemeLight() {
         defmetronomecolor       = preferences.getMyPreferenceInt(StageMode.this,"light_metronomeColor",         StaticVariables.darkishred);
         defpagebuttoncolor      = preferences.getMyPreferenceInt(StageMode.this,"light_pageButtonsColor",       StaticVariables.purplyblue);
         defstickytextcolor      = preferences.getMyPreferenceInt(StageMode.this,"light_stickyTextColor",        StaticVariables.black);
@@ -559,7 +647,7 @@ public class StageMode extends AppCompatActivity implements
         presoFontColor          = preferences.getMyPreferenceInt(StageMode.this,"light_presoFontColor",         StaticVariables.white);
         presoShadowColor        = preferences.getMyPreferenceInt(StageMode.this,"light_presoShadowColor",       StaticVariables.black);
     }
-    void setThemeCustom1() {
+    private void setThemeCustom1() {
         defmetronomecolor       = preferences.getMyPreferenceInt(StageMode.this,"custom1_metronomeColor",       StaticVariables.darkishred);
         defpagebuttoncolor      = preferences.getMyPreferenceInt(StageMode.this,"custom1_pageButtonsColor",     StaticVariables.purplyblue);
         defstickytextcolor      = preferences.getMyPreferenceInt(StageMode.this,"custom1_stickyTextColor",      StaticVariables.black);
@@ -580,7 +668,7 @@ public class StageMode extends AppCompatActivity implements
         presoFontColor          = preferences.getMyPreferenceInt(StageMode.this,"custom1_presoFontColor",       StaticVariables.white);
         presoShadowColor        = preferences.getMyPreferenceInt(StageMode.this,"custom1_presoShadowColor",     StaticVariables.black);
     }
-    void setThemeCustom2() {
+    private void setThemeCustom2() {
         defmetronomecolor       = preferences.getMyPreferenceInt(StageMode.this,"custom2_metronomeColor",       StaticVariables.darkishred);
         defpagebuttoncolor      = preferences.getMyPreferenceInt(StageMode.this,"custom2_pageButtonsColor",     StaticVariables.purplyblue);
         defstickytextcolor      = preferences.getMyPreferenceInt(StageMode.this,"custom2_stickyTextColor",      StaticVariables.black);
@@ -602,9 +690,9 @@ public class StageMode extends AppCompatActivity implements
         presoShadowColor        = preferences.getMyPreferenceInt(StageMode.this,"custom2_presoShadowColor",     StaticVariables.black);
     }
 
-    public void setUpViews() {
+    private void setUpViews() {
         getDefaultColors();
-        songandauthor = findViewById(R.id.songandauthor);
+        RelativeLayout songandauthor = findViewById(R.id.songandauthor);
         digitalclock = findViewById(R.id.digitalclock);
         songtitle_ab = findViewById(R.id.songtitle_ab);
         songkey_ab = findViewById(R.id.songkey_ab);
@@ -612,7 +700,7 @@ public class StageMode extends AppCompatActivity implements
         songauthor_ab = findViewById(R.id.songauthor_ab);
         batterycharge = findViewById(R.id.batterycharge);
         batteryimage = findViewById(R.id.batteryimage);
-        batteryholder = findViewById(R.id.batteryholder);
+        RelativeLayout batteryholder = findViewById(R.id.batteryholder);
         mypage = findViewById(R.id.mypage);
         //mypage.init(StageMode.this);
         mypage.setBackgroundColor(lyricsBackgroundColor);
@@ -689,12 +777,11 @@ public class StageMode extends AppCompatActivity implements
         songmenu = findViewById(R.id.songmenu);
         optionmenu = findViewById(R.id.optionmenu);
         song_list_view = findViewById(R.id.song_list_view);
-        closeSongFAB = findViewById(R.id.closeSongsFAB);
-        optionsdisplayscrollview = findViewById(R.id.optionsdisplayscrollview);
+        FloatingActionButton closeSongFAB = findViewById(R.id.closeSongsFAB);
         menuFolder_TextView = findViewById(R.id.menuFolder_TextView);
         menuFolder_TextView.setText(getString(R.string.wait));
         menuCount_TextView = findViewById(R.id.menuCount_TextView);
-        changefolder_LinearLayout = findViewById(R.id.changefolder_LinearLayout);
+        LinearLayout changefolder_LinearLayout = findViewById(R.id.changefolder_LinearLayout);
         changefolder_LinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -710,7 +797,7 @@ public class StageMode extends AppCompatActivity implements
         });
     }
 
-    public void getBluetoothName() {
+    private void getBluetoothName() {
         try {
             if(FullscreenActivity.mBluetoothAdapter == null){
                 FullscreenActivity.mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -724,7 +811,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void startRegistration() {
+    private void startRegistration() {
         try {
             FullscreenActivity.dataReceiver = new SalutDataReceiver(StageMode.this, StageMode.this);
             FullscreenActivity.serviceData = new SalutServiceData("OpenSongApp", 60606,
@@ -749,7 +836,7 @@ public class StageMode extends AppCompatActivity implements
         setWindowFlags();
         setWindowFlagsAdvanced();
     }
-    public void setWindowFlags() {
+    private void setWindowFlags() {
         View v = getWindow().getDecorView();
         v.setOnSystemUiVisibilityChangeListener(null);
         v.setOnFocusChangeListener(null);
@@ -761,7 +848,7 @@ public class StageMode extends AppCompatActivity implements
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
-    public void setWindowFlagsAdvanced() {
+    private void setWindowFlagsAdvanced() {
         View v = getWindow().getDecorView();
         v.setOnSystemUiVisibilityChangeListener(null);
         v.setOnFocusChangeListener(null);
@@ -795,7 +882,7 @@ public class StageMode extends AppCompatActivity implements
         Handler waitandtest = new Handler();
         waitandtest.postDelayed(testnavbar, 1000);
     }
-    public void restoreTranslucentBarsDelayed() {
+    private void restoreTranslucentBarsDelayed() {
         // we restore it now and after 500 ms!
         restoreTransparentBars();
         mRestoreImmersiveModeHandler.postDelayed(restoreImmersiveModeRunnable, 500);
@@ -810,7 +897,7 @@ public class StageMode extends AppCompatActivity implements
             restoreTranslucentBarsDelayed();
         }
     }
-    public void restoreTransparentBars() {
+    private void restoreTransparentBars() {
         // Set runnable
         Runnable delhide = new Runnable() {
             @Override
@@ -833,8 +920,10 @@ public class StageMode extends AppCompatActivity implements
 
     // Action bar stuff
     private void toggleActionBar() {
-        if (delayactionBarHide != null && hideActionBarRunnable != null) {
+        try {
             delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         if (ab != null) {
             if (FullscreenActivity.wasscrolling || FullscreenActivity.scrollbutton) {
@@ -857,9 +946,14 @@ public class StageMode extends AppCompatActivity implements
         }
     }
     @SuppressWarnings("deprecation")
-    public void setupAbHide() {
+    private void setupAbHide() {
         // What happens when the navigation drawers are opened
-        actionBarDrawerToggle = new ActionBarDrawerToggle(StageMode.this, mDrawerLayout, ab_toolbar, R.string.drawer_open, R.string.drawer_close) {
+        // Called when a drawer has settled in a completely closed state.
+        // Set a runnable to re-enable swipe
+        // enable swipe after short delay
+        // 1800ms delay
+        // Called when a drawer has settled in a completely open state.
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(StageMode.this, mDrawerLayout, ab_toolbar, R.string.drawer_open, R.string.drawer_close) {
             // Called when a drawer has settled in a completely closed state.
             @Override
             public void onDrawerClosed(View view) {
@@ -1008,7 +1102,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void checkStorage() {
+    private void checkStorage() {
         if (check_storage!=null) {
             check_storage.cancel(true);
         }
@@ -1025,7 +1119,7 @@ public class StageMode extends AppCompatActivity implements
         //super.onNewIntent(intent);
         dealWithIntent();
     }
-    public void dealWithIntent() {
+    private void dealWithIntent() {
         if (FullscreenActivity.whattodo!=null) {
             try {
                 switch (FullscreenActivity.whattodo) {
@@ -1162,29 +1256,32 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-
-        if (mDrawerLayout.isDrawerOpen(songmenu)) {
-            mDrawerLayout.closeDrawer(songmenu);
-            return;
-        }
-        if (mDrawerLayout.isDrawerOpen(optionmenu)) {
-            mDrawerLayout.closeDrawer(optionmenu);
-            return;
-        }
-
-        String message = getResources().getString(R.string.exit);
-        FullscreenActivity.whattodo = "exit";
-
-        newFragment = PopUpAreYouSureFragment.newInstance(message);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(newFragment,message);
-
-        if (newFragment != null && !StageMode.this.isFinishing()) {
-            try {
-                ft.commitAllowingStateLoss();
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            if (mDrawerLayout.isDrawerOpen(songmenu)) {
+                mDrawerLayout.closeDrawer(songmenu);
+                return;
             }
+            if (mDrawerLayout.isDrawerOpen(optionmenu)) {
+                mDrawerLayout.closeDrawer(optionmenu);
+                return;
+            }
+
+            String message = getResources().getString(R.string.exit);
+            FullscreenActivity.whattodo = "exit";
+
+            newFragment = PopUpAreYouSureFragment.newInstance(message);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.add(newFragment, message);
+
+            if (newFragment != null && !StageMode.this.isFinishing()) {
+                try {
+                    ft.commitAllowingStateLoss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         //newFragment = PopUpAreYouSureFragment.newInstance(message);
@@ -1195,9 +1292,13 @@ public class StageMode extends AppCompatActivity implements
     public void onStart() {
         super.onStart();
         FullscreenActivity.appRunning = true;
-        if (mMediaRouter!=null && mMediaRouteSelector!=null && mMediaRouterCallback!=null) {
-            mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
-                    MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
+        if (mMediaRouter != null && mMediaRouteSelector != null) {
+            try {
+                mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
+                        MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         // Fix the page flags
         windowFlags();
@@ -1292,7 +1393,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void tryCancelAsyncTasks() {
+    private void tryCancelAsyncTasks() {
         doCancelAsyncTask(loadsong_async);
         doCancelAsyncTask(preparesongview_async);
         doCancelAsyncTask(createperformanceview1col_async);
@@ -1305,7 +1406,6 @@ public class StageMode extends AppCompatActivity implements
         doCancelAsyncTask(createstageview1col_async);
         doCancelAsyncTask(fadeout_media1);
         doCancelAsyncTask(fadeout_media2);
-        doCancelAsyncTask(mtask_learnautoscroll);
         doCancelAsyncTask(mtask_autoscroll_music);
         doCancelAsyncTask(check_storage);
         doCancelAsyncTask(sharesong_async);
@@ -1316,7 +1416,6 @@ public class StageMode extends AppCompatActivity implements
         doCancelAsyncTask(close_drawers);
         doCancelAsyncTask(resize_drawers);
         doCancelAsyncTask(do_moveinset);
-        doCancelAsyncTask(indexing_done);
         doCancelAsyncTask(add_slidetoset);
         doCancelAsyncTask(dualscreenwork_async);
         doCancelAsyncTask(prepare_pad);
@@ -1326,7 +1425,7 @@ public class StageMode extends AppCompatActivity implements
         doCancelAsyncTask(show_highlight);
         doCancelAsyncTask(get_scrollheight);
     }
-    public void doCancelAsyncTask(AsyncTask ast) {
+    private void doCancelAsyncTask(AsyncTask ast) {
         try {
             if (ast!=null) {
                 ast.cancel(true);
@@ -1359,7 +1458,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void sendSongLocationToConnected() {
+    private void sendSongLocationToConnected() {
         String messageString = StaticVariables.whichSongFolder + "_____" +
                 StaticVariables.songfilename + "_____" +
                 FullscreenActivity.whichDirection;
@@ -1369,7 +1468,7 @@ public class StageMode extends AppCompatActivity implements
         holdBeforeSending();
     }
 
-    public void sendAutoscrollTriggerToConnected() {
+    private void sendAutoscrollTriggerToConnected() {
         String messageString = "autoscroll_";
 
         if (StaticVariables.isautoscrolling) {
@@ -1382,7 +1481,7 @@ public class StageMode extends AppCompatActivity implements
         holdBeforeSendingAutoscroll(sm);
     }
 
-    public void sendSongXMLToConnected() {
+    private void sendSongXMLToConnected() {
         String myXML;
         if (FullscreenActivity.isSong && FullscreenActivity.myXML!=null) {
             myXML = FullscreenActivity.myXML;
@@ -1394,7 +1493,7 @@ public class StageMode extends AppCompatActivity implements
         holdBeforeSendingXML();
     }
 
-    public void sendSongSectionToConnected() {
+    private void sendSongSectionToConnected() {
         int sectionval;
         if (StaticVariables.whichMode.equals("Stage") || StaticVariables.whichMode.equals("Presentation")) {
             sectionval = StaticVariables.currentSection;
@@ -1442,7 +1541,7 @@ public class StageMode extends AppCompatActivity implements
         loadSong();
     }
 
-    public void shareActivityLog() {
+    private void shareActivityLog() {
         doCancelAsyncTask(shareactivitylog_async);
         shareactivitylog_async = new ShareActivityLog();
         try {
@@ -1452,7 +1551,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    void checkBackupState() {
+    private void checkBackupState() {
         // Check for the number of times the app has run without the user backing up his songs
         // If this is 10 (or more) show the backup prompt window.
         int runssincebackup = preferences.getMyPreferenceInt(StageMode.this, "runssincebackup", 0) + 1;
@@ -1465,7 +1564,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    void indexOfSongInMenu() {
+    private void indexOfSongInMenu() {
         int position = filenamesSongsInFolder.indexOf(StaticVariables.songfilename);
         if (position<=0) {
             FullscreenActivity.currentSongIndex = 0;
@@ -1605,7 +1704,7 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
-    public void shareSet() {
+    private void shareSet() {
         doCancelAsyncTask(shareset_async);
         shareset_async = new ShareSet();
         try {
@@ -1645,7 +1744,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void dualScreenWork() {
+    private void dualScreenWork() {
         if (FullscreenActivity.isPresenting || FullscreenActivity.isHDMIConnected) {
             // If we are autologging CCLI information
             if (newsongloaded && preferences.getMyPreferenceBoolean(StageMode.this,"ccliAutomaticLogging",false)) {
@@ -1688,7 +1787,7 @@ public class StageMode extends AppCompatActivity implements
         //newFragment.show(getSupportFragmentManager(), "dialog");
     }
 
-    public boolean shouldHighlightsBeShown() {
+    private boolean shouldHighlightsBeShown() {
         // This is the check before animating in the highlight notes.
         String highlightfilename = processSong.getHighlighterName(StageMode.this);
         String where = "Highlighter";
@@ -1699,55 +1798,60 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void updateExtraInfoColorsAndSizes(String what) {
-        switch (what) {
-            case "capo":
-                capoInfo.setBackgroundColor(defextrainfobgcolor);
-                capoinfo.setTextColor(defextrainfotextcolor);
-                capoinfonewkey.setTextColor(defextrainfotextcolor);
-                if (preferences.getMyPreferenceBoolean(StageMode.this,"capoLargeFontInfoBar",true)) {
-                    capoinfo.setTextSize(StaticVariables.infoBarLargeTextSize);
-                    capoinfonewkey.setTextSize(StaticVariables.infoBarLargeTextSize);
-                } else {
-                    capoinfo.setTextSize(StaticVariables.infoBarSmallTextSize);
-                    capoinfonewkey.setTextSize(StaticVariables.infoBarSmallTextSize);
-                }
-                break;
-            case "autoscroll":
-                playbackProgress.setBackgroundColor(defextrainfobgcolor);
-                currentTime_TextView.setTextColor(defextrainfotextcolor);
-                timeSeparator_TextView.setTextColor(defextrainfotextcolor);
-                totalTime_TextView.setTextColor(defextrainfotextcolor);
-                learnAutoScroll_TextView.setTextColor(defextrainfotextcolor);
-                learnAutoScrollTime_TextView.setTextColor(defextrainfotextcolor);
-                if (preferences.getMyPreferenceBoolean(StageMode.this,"autoscrollLargeFontInfoBar",true)) {
-                    currentTime_TextView.setTextSize(StaticVariables.infoBarLargeTextSize);
-                    timeSeparator_TextView.setTextSize(StaticVariables.infoBarLargeTextSize);
-                    totalTime_TextView.setTextSize(StaticVariables.infoBarLargeTextSize);
-                    learnAutoScroll_TextView.setTextSize(StaticVariables.infoBarLargeTextSize);
-                    learnAutoScrollTime_TextView.setTextSize(StaticVariables.infoBarLargeTextSize);
-                } else {
-                    currentTime_TextView.setTextSize(StaticVariables.infoBarSmallTextSize);
-                    timeSeparator_TextView.setTextSize(StaticVariables.infoBarSmallTextSize);
-                    totalTime_TextView.setTextSize(StaticVariables.infoBarSmallTextSize);
-                    learnAutoScroll_TextView.setTextSize(StaticVariables.infoBarSmallTextSize);
-                    learnAutoScrollTime_TextView.setTextSize(StaticVariables.infoBarSmallTextSize);
-                }
-                break;
-            case "pad":
-                backingtrackProgress.setBackgroundColor(defextrainfobgcolor);
-                padcurrentTime_TextView.setTextColor(defextrainfotextcolor);
-                padTimeSeparator_TextView.setTextColor(defextrainfotextcolor);
-                padtotalTime_TextView.setTextColor(defextrainfotextcolor);
-                if (preferences.getMyPreferenceBoolean(StageMode.this,"padLargeFontInfoBar",true)) {
-                    padcurrentTime_TextView.setTextSize(StaticVariables.infoBarLargeTextSize);
-                    padTimeSeparator_TextView.setTextSize(StaticVariables.infoBarLargeTextSize);
-                    padtotalTime_TextView.setTextSize(StaticVariables.infoBarLargeTextSize);
-                } else {
-                    padcurrentTime_TextView.setTextSize(StaticVariables.infoBarSmallTextSize);
-                    padTimeSeparator_TextView.setTextSize(StaticVariables.infoBarSmallTextSize);
-                    padtotalTime_TextView.setTextSize(StaticVariables.infoBarSmallTextSize);
-                }
-                break;
+
+        try {
+            switch (what) {
+                case "capo":
+                    capoInfo.setBackgroundColor(defextrainfobgcolor);
+                    capoinfo.setTextColor(defextrainfotextcolor);
+                    capoinfonewkey.setTextColor(defextrainfotextcolor);
+                    if (preferences.getMyPreferenceBoolean(StageMode.this, "capoLargeFontInfoBar", true)) {
+                        capoinfo.setTextSize(StaticVariables.infoBarLargeTextSize);
+                        capoinfonewkey.setTextSize(StaticVariables.infoBarLargeTextSize);
+                    } else {
+                        capoinfo.setTextSize(StaticVariables.infoBarSmallTextSize);
+                        capoinfonewkey.setTextSize(StaticVariables.infoBarSmallTextSize);
+                    }
+                    break;
+                case "autoscroll":
+                    playbackProgress.setBackgroundColor(defextrainfobgcolor);
+                    currentTime_TextView.setTextColor(defextrainfotextcolor);
+                    timeSeparator_TextView.setTextColor(defextrainfotextcolor);
+                    totalTime_TextView.setTextColor(defextrainfotextcolor);
+                    learnAutoScroll_TextView.setTextColor(defextrainfotextcolor);
+                    learnAutoScrollTime_TextView.setTextColor(defextrainfotextcolor);
+                    if (preferences.getMyPreferenceBoolean(StageMode.this, "autoscrollLargeFontInfoBar", true)) {
+                        currentTime_TextView.setTextSize(StaticVariables.infoBarLargeTextSize);
+                        timeSeparator_TextView.setTextSize(StaticVariables.infoBarLargeTextSize);
+                        totalTime_TextView.setTextSize(StaticVariables.infoBarLargeTextSize);
+                        learnAutoScroll_TextView.setTextSize(StaticVariables.infoBarLargeTextSize);
+                        learnAutoScrollTime_TextView.setTextSize(StaticVariables.infoBarLargeTextSize);
+                    } else {
+                        currentTime_TextView.setTextSize(StaticVariables.infoBarSmallTextSize);
+                        timeSeparator_TextView.setTextSize(StaticVariables.infoBarSmallTextSize);
+                        totalTime_TextView.setTextSize(StaticVariables.infoBarSmallTextSize);
+                        learnAutoScroll_TextView.setTextSize(StaticVariables.infoBarSmallTextSize);
+                        learnAutoScrollTime_TextView.setTextSize(StaticVariables.infoBarSmallTextSize);
+                    }
+                    break;
+                case "pad":
+                    backingtrackProgress.setBackgroundColor(defextrainfobgcolor);
+                    padcurrentTime_TextView.setTextColor(defextrainfotextcolor);
+                    padTimeSeparator_TextView.setTextColor(defextrainfotextcolor);
+                    padtotalTime_TextView.setTextColor(defextrainfotextcolor);
+                    if (preferences.getMyPreferenceBoolean(StageMode.this, "padLargeFontInfoBar", true)) {
+                        padcurrentTime_TextView.setTextSize(StaticVariables.infoBarLargeTextSize);
+                        padTimeSeparator_TextView.setTextSize(StaticVariables.infoBarLargeTextSize);
+                        padtotalTime_TextView.setTextSize(StaticVariables.infoBarLargeTextSize);
+                    } else {
+                        padcurrentTime_TextView.setTextSize(StaticVariables.infoBarSmallTextSize);
+                        padTimeSeparator_TextView.setTextSize(StaticVariables.infoBarSmallTextSize);
+                        padtotalTime_TextView.setTextSize(StaticVariables.infoBarSmallTextSize);
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -1762,7 +1866,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void scrollButtons() {
+    private void scrollButtons() {
         delaycheckscroll = new Handler();
         checkScrollPosition = new Runnable() {
             @Override
@@ -1785,11 +1889,11 @@ public class StageMode extends AppCompatActivity implements
     }
 
     //@Override
-    public void setupPageButtons() {
+    private void setupPageButtons() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                coordinator_layout = findViewById(R.id.coordinator_layout);
+                //coordinator_layout = findViewById(R.id.coordinator_layout);
 
                 setButton = findViewById(R.id.setButton);
                 padButton = findViewById(R.id.padButton);
@@ -2202,13 +2306,13 @@ public class StageMode extends AppCompatActivity implements
         setForwardButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
     }
 
-    public void onScrollAction() {
+    private void onScrollAction() {
         // Reshow the scroll arrows if needed
         scrollButtons();
         delaycheckscroll.post(checkScrollPosition);
     }
 
-    public void doScrollUp() {
+    private void doScrollUp() {
         // Scroll the screen up
 
         if (StaticVariables.whichMode.equals("Stage")) {
@@ -2259,7 +2363,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void doScrollDown() {
+    private void doScrollDown() {
 
         if (StaticVariables.whichMode.equals("Stage")) {
             try {
@@ -2311,7 +2415,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void showFAB(final View fab, boolean show) {
+    private void showFAB(final View fab, boolean show) {
         // Could use the default show() and hide() but the default animation keeps getting fired
         // Treating them as a generic view fixes that!
         if (show) {
@@ -2323,7 +2427,7 @@ public class StageMode extends AppCompatActivity implements
 
         }
     }
-    public void hideAllFABs() {
+    private void hideAllFABs() {
         showFAB(setButton, false);
         showFAB(padButton, false);
         showFAB(autoscrollButton, false);
@@ -2429,173 +2533,177 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void pageButtonAlpha(final String s) {
-        // This is called at run, if the user changes a preference and if action is running
+        try {
+            // This is called at run, if the user changes a preference and if action is running
 
-        // Get the default alpha value
-        float val = preferences.getMyPreferenceFloat(StageMode.this, "pageButtonAlpha", 0.5f);
+            // Get the default alpha value
+            float val = preferences.getMyPreferenceFloat(StageMode.this, "pageButtonAlpha", 0.5f);
 
-        // Set the on vaule (if a popup is running)
-        float onval = val + 0.3f;
-        if (onval > 1.0f) {
-            onval = 1.0f;
-        }
-
-        // Prepare the default values
-        float setAlpha = val;
-        float padAlpha = val;
-        float autoscrollAlpha = val;
-        float metronomeAlpha = val;
-        float extraAlpha = val;
-        float chordsAlpha = val;
-        float stickyAlpha = val;
-        float highlightAlpha = val;
-        float pageselectAlpha = val;
-        float linkAlpha = val;
-        float customAlpha = val;
-        float custom1Alpha = val;
-        float custom2Alpha = val;
-        float custom3Alpha = val;
-        float custom4Alpha = val;
-
-        // Check the extrabuttons and custombuttons views are hidden to start with
-        extrabuttons.setVisibility(View.GONE);
-        extrabuttons2.setVisibility(View.GONE);
-
-        // If we have sent a button 'on' state, set the alpha to match
-        if (s != null && !s.isEmpty()) {
-            switch (s) {
-                case "set":
-                    setAlpha = onval;
-                    break;
-                case "pad":
-                    padAlpha = onval;
-                    break;
-                case "autoscroll":
-                    autoscrollAlpha = onval;
-                    break;
-                case "metronome":
-                    metronomeAlpha = onval;
-                    break;
-                case "extra":
-                    extraAlpha = onval;
-                    extrabuttons.setVisibility(View.VISIBLE);
-                    break;
-                case "chord":
-                    extraAlpha = onval;
-                    extrabuttons.setVisibility(View.VISIBLE);
-                    chordsAlpha = onval;
-                    break;
-                case "sticky":
-                    extraAlpha = onval;
-                    extrabuttons.setVisibility(View.VISIBLE);
-                    stickyAlpha = onval;
-                    break;
-                case "highlight":
-                    extraAlpha = onval;
-                    extrabuttons.setVisibility(View.VISIBLE);
-                    highlightAlpha = onval;
-                    break;
-                case "pageselect":
-                    extraAlpha = onval;
-                    extrabuttons.setVisibility(View.VISIBLE);
-                    pageselectAlpha = onval;
-                    break;
-                case "link":
-                    extraAlpha = onval;
-                    extrabuttons.setVisibility(View.VISIBLE);
-                    linkAlpha = onval;
-                    break;
-                case "custom":
-                    customAlpha = onval;
-                    extrabuttons2.setVisibility(View.VISIBLE);
-                    break;
-                case "custom1":
-                    customAlpha = onval;
-                    custom1Alpha = onval;
-                    extrabuttons2.setVisibility(View.VISIBLE);
-                    break;
-                case "custom2":
-                    customAlpha = onval;
-                    custom2Alpha = onval;
-                    extrabuttons2.setVisibility(View.VISIBLE);
-                    break;
-                case "custom3":
-                    customAlpha = onval;
-                    custom3Alpha = onval;
-                    extrabuttons2.setVisibility(View.VISIBLE);
-                    break;
-                case "custom4":
-                    customAlpha = onval;
-                    custom4Alpha = onval;
-                    extrabuttons2.setVisibility(View.VISIBLE);
-                    break;
+            // Set the on vaule (if a popup is running)
+            float onval = val + 0.3f;
+            if (onval > 1.0f) {
+                onval = 1.0f;
             }
+
+            // Prepare the default values
+            float setAlpha = val;
+            float padAlpha = val;
+            float autoscrollAlpha = val;
+            float metronomeAlpha = val;
+            float extraAlpha = val;
+            float chordsAlpha = val;
+            float stickyAlpha = val;
+            float highlightAlpha = val;
+            float pageselectAlpha = val;
+            float linkAlpha = val;
+            float customAlpha = val;
+            float custom1Alpha = val;
+            float custom2Alpha = val;
+            float custom3Alpha = val;
+            float custom4Alpha = val;
+
+            // Check the extrabuttons and custombuttons views are hidden to start with
+            extrabuttons.setVisibility(View.GONE);
+            extrabuttons2.setVisibility(View.GONE);
+
+            // If we have sent a button 'on' state, set the alpha to match
+            if (s != null && !s.isEmpty()) {
+                switch (s) {
+                    case "set":
+                        setAlpha = onval;
+                        break;
+                    case "pad":
+                        padAlpha = onval;
+                        break;
+                    case "autoscroll":
+                        autoscrollAlpha = onval;
+                        break;
+                    case "metronome":
+                        metronomeAlpha = onval;
+                        break;
+                    case "extra":
+                        extraAlpha = onval;
+                        extrabuttons.setVisibility(View.VISIBLE);
+                        break;
+                    case "chord":
+                        extraAlpha = onval;
+                        extrabuttons.setVisibility(View.VISIBLE);
+                        chordsAlpha = onval;
+                        break;
+                    case "sticky":
+                        extraAlpha = onval;
+                        extrabuttons.setVisibility(View.VISIBLE);
+                        stickyAlpha = onval;
+                        break;
+                    case "highlight":
+                        extraAlpha = onval;
+                        extrabuttons.setVisibility(View.VISIBLE);
+                        highlightAlpha = onval;
+                        break;
+                    case "pageselect":
+                        extraAlpha = onval;
+                        extrabuttons.setVisibility(View.VISIBLE);
+                        pageselectAlpha = onval;
+                        break;
+                    case "link":
+                        extraAlpha = onval;
+                        extrabuttons.setVisibility(View.VISIBLE);
+                        linkAlpha = onval;
+                        break;
+                    case "custom":
+                        customAlpha = onval;
+                        extrabuttons2.setVisibility(View.VISIBLE);
+                        break;
+                    case "custom1":
+                        customAlpha = onval;
+                        custom1Alpha = onval;
+                        extrabuttons2.setVisibility(View.VISIBLE);
+                        break;
+                    case "custom2":
+                        customAlpha = onval;
+                        custom2Alpha = onval;
+                        extrabuttons2.setVisibility(View.VISIBLE);
+                        break;
+                    case "custom3":
+                        customAlpha = onval;
+                        custom3Alpha = onval;
+                        extrabuttons2.setVisibility(View.VISIBLE);
+                        break;
+                    case "custom4":
+                        customAlpha = onval;
+                        custom4Alpha = onval;
+                        extrabuttons2.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+
+            // Set the button alphas as required
+            setButton.setAlpha(setAlpha);
+            padButton.setAlpha(padAlpha);
+            autoscrollButton.setAlpha(autoscrollAlpha);
+            metronomeButton.setAlpha(metronomeAlpha);
+            extraButton.setAlpha(extraAlpha);
+            chordButton.setAlpha(chordsAlpha);
+            stickyButton.setAlpha(stickyAlpha);
+            notationButton.setAlpha(stickyAlpha);
+            highlightButton.setAlpha(highlightAlpha);
+            pageselectButton.setAlpha(pageselectAlpha);
+            linkButton.setAlpha(linkAlpha);
+            chordButton_ungrouped.setAlpha(chordsAlpha);
+            stickyButton_ungrouped.setAlpha(stickyAlpha);
+            notationButton_ungrouped.setAlpha(stickyAlpha);
+            highlightButton_ungrouped.setAlpha(highlightAlpha);
+            pageselectButton_ungrouped.setAlpha(pageselectAlpha);
+            linkButton_ungrouped.setAlpha(linkAlpha);
+            customButton.setAlpha(customAlpha);
+            custom1Button.setAlpha(custom1Alpha);
+            custom2Button.setAlpha(custom2Alpha);
+            custom3Button.setAlpha(custom3Alpha);
+            custom4Button.setAlpha(custom4Alpha);
+            custom1Button_ungrouped.setAlpha(custom1Alpha);
+            custom2Button_ungrouped.setAlpha(custom2Alpha);
+            custom3Button_ungrouped.setAlpha(custom3Alpha);
+            custom4Button_ungrouped.setAlpha(custom4Alpha);
+            scrollDownButton.setAlpha(val);
+            scrollUpButton.setAlpha(val);
+            setBackButton.setAlpha(val);
+            setForwardButton.setAlpha(val);
+
+            // Now set the sizes of the FAB buttons
+            int fabSize = preferences.getMyPreferenceInt(StageMode.this, "pageButtonSize", FloatingActionButton.SIZE_NORMAL);
+            setButton.setSize(fabSize);
+            padButton.setSize(fabSize);
+            autoscrollButton.setSize(fabSize);
+            metronomeButton.setSize(fabSize);
+            extraButton.setSize(fabSize);
+            chordButton.setSize(fabSize);
+            stickyButton.setSize(fabSize);
+            notationButton.setSize(fabSize);
+            highlightButton.setSize(fabSize);
+            pageselectButton.setSize(fabSize);
+            linkButton.setSize(fabSize);
+            chordButton_ungrouped.setSize(fabSize);
+            stickyButton_ungrouped.setSize(fabSize);
+            notationButton_ungrouped.setSize(fabSize);
+            highlightButton_ungrouped.setSize(fabSize);
+            pageselectButton_ungrouped.setSize(fabSize);
+            linkButton_ungrouped.setSize(fabSize);
+            customButton.setSize(fabSize);
+            custom1Button.setSize(fabSize);
+            custom2Button.setSize(fabSize);
+            custom3Button.setSize(fabSize);
+            custom4Button.setSize(fabSize);
+            custom1Button_ungrouped.setSize(fabSize);
+            custom2Button_ungrouped.setSize(fabSize);
+            custom3Button_ungrouped.setSize(fabSize);
+            custom4Button_ungrouped.setSize(fabSize);
+            scrollDownButton.setSize(fabSize);
+            scrollUpButton.setSize(fabSize);
+            setBackButton.setSize(fabSize);
+            setForwardButton.setSize(fabSize);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        // Set the button alphas as required
-        setButton.setAlpha(setAlpha);
-        padButton.setAlpha(padAlpha);
-        autoscrollButton.setAlpha(autoscrollAlpha);
-        metronomeButton.setAlpha(metronomeAlpha);
-        extraButton.setAlpha(extraAlpha);
-        chordButton.setAlpha(chordsAlpha);
-        stickyButton.setAlpha(stickyAlpha);
-        notationButton.setAlpha(stickyAlpha);
-        highlightButton.setAlpha(highlightAlpha);
-        pageselectButton.setAlpha(pageselectAlpha);
-        linkButton.setAlpha(linkAlpha);
-        chordButton_ungrouped.setAlpha(chordsAlpha);
-        stickyButton_ungrouped.setAlpha(stickyAlpha);
-        notationButton_ungrouped.setAlpha(stickyAlpha);
-        highlightButton_ungrouped.setAlpha(highlightAlpha);
-        pageselectButton_ungrouped.setAlpha(pageselectAlpha);
-        linkButton_ungrouped.setAlpha(linkAlpha);
-        customButton.setAlpha(customAlpha);
-        custom1Button.setAlpha(custom1Alpha);
-        custom2Button.setAlpha(custom2Alpha);
-        custom3Button.setAlpha(custom3Alpha);
-        custom4Button.setAlpha(custom4Alpha);
-        custom1Button_ungrouped.setAlpha(custom1Alpha);
-        custom2Button_ungrouped.setAlpha(custom2Alpha);
-        custom3Button_ungrouped.setAlpha(custom3Alpha);
-        custom4Button_ungrouped.setAlpha(custom4Alpha);
-        scrollDownButton.setAlpha(val);
-        scrollUpButton.setAlpha(val);
-        setBackButton.setAlpha(val);
-        setForwardButton.setAlpha(val);
-
-        // Now set the sizes of the FAB buttons
-        int fabSize = preferences.getMyPreferenceInt(StageMode.this,"pageButtonSize",FloatingActionButton.SIZE_NORMAL);
-        setButton.setSize(fabSize);
-        padButton.setSize(fabSize);
-        autoscrollButton.setSize(fabSize);
-        metronomeButton.setSize(fabSize);
-        extraButton.setSize(fabSize);
-        chordButton.setSize(fabSize);
-        stickyButton.setSize(fabSize);
-        notationButton.setSize(fabSize);
-        highlightButton.setSize(fabSize);
-        pageselectButton.setSize(fabSize);
-        linkButton.setSize(fabSize);
-        chordButton_ungrouped.setSize(fabSize);
-        stickyButton_ungrouped.setSize(fabSize);
-        notationButton_ungrouped.setSize(fabSize);
-        highlightButton_ungrouped.setSize(fabSize);
-        pageselectButton_ungrouped.setSize(fabSize);
-        linkButton_ungrouped.setSize(fabSize);
-        customButton.setSize(fabSize);
-        custom1Button.setSize(fabSize);
-        custom2Button.setSize(fabSize);
-        custom3Button.setSize(fabSize);
-        custom4Button.setSize(fabSize);
-        custom1Button_ungrouped.setSize(fabSize);
-        custom2Button_ungrouped.setSize(fabSize);
-        custom3Button_ungrouped.setSize(fabSize);
-        custom4Button_ungrouped.setSize(fabSize);
-        scrollDownButton.setSize(fabSize);
-        scrollUpButton.setSize(fabSize);
-        setBackButton.setSize(fabSize);
-        setForwardButton.setSize(fabSize);
     }
 
     @Override
@@ -2672,7 +2780,7 @@ public class StageMode extends AppCompatActivity implements
         });
     }
 
-    public void customButtonAction(String s) {
+    private void customButtonAction(String s) {
         boolean val;
         switch (s) {
             case "":
@@ -2750,7 +2858,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void increaseAutoScrollSpeed() {
+    private void increaseAutoScrollSpeed() {
         if (StaticVariables.autoscrollispaused) {
             StaticVariables.autoscrollispaused = false;
             StaticVariables.autoscroll_modifier = 0;
@@ -2759,7 +2867,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void decreaseAutoScrollSpeed() {
+    private void decreaseAutoScrollSpeed() {
         if (FullscreenActivity.autoscroll_pixels + StaticVariables.autoscroll_modifier >= 4) {
             StaticVariables.autoscroll_modifier = StaticVariables.autoscroll_modifier - 4;
         }
@@ -2809,7 +2917,7 @@ public class StageMode extends AppCompatActivity implements
     @SuppressLint("StaticFieldLeak")
     private class OpenMyDrawers extends AsyncTask<Object, Void, String> {
 
-        String which;
+        final String which;
 
         OpenMyDrawers(String w) {
             which = w;
@@ -2851,7 +2959,7 @@ public class StageMode extends AppCompatActivity implements
     @SuppressLint("StaticFieldLeak")
     private class CloseMyDrawers extends AsyncTask<Object, Void, String> {
 
-        String which;
+        final String which;
 
         CloseMyDrawers(String w) {
             which = w;
@@ -2884,8 +2992,8 @@ public class StageMode extends AppCompatActivity implements
     public void findSongInFolders() {
         //scroll to the song in the song menu
         try {
-            song_list_view.setSelection(FullscreenActivity.currentSongIndex);
             indexOfSongInMenu();
+            song_list_view.setSelection(FullscreenActivity.currentSongIndex);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -3164,7 +3272,7 @@ public class StageMode extends AppCompatActivity implements
 
 
     // Salut (Connected devices logic)
-    public void holdBeforeLoading() {
+    private void holdBeforeLoading() {
         // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
         // As soon as we receive if, check this is the first time
         if (FullscreenActivity.firstReceivingOfSalut) {
@@ -3187,7 +3295,7 @@ public class StageMode extends AppCompatActivity implements
             }, 800);
         }
     }
-    public void holdBeforeSending() {
+    private void holdBeforeSending() {
         // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
         // As soon as we send it, check this is the first time
         if (FullscreenActivity.firstSendingOfSalut) {
@@ -3217,7 +3325,7 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
-    public void holdBeforeSendingAutoscroll(SalutMessage sm) {
+    private void holdBeforeSendingAutoscroll(SalutMessage sm) {
         // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
         // As soon as we send it, check this is the first time
         if (FullscreenActivity.firstSendingOfSalutAutoscroll) {
@@ -3247,7 +3355,7 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
-    public void holdBeforeSendingXML() {
+    private void holdBeforeSendingXML() {
         // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
         // As soon as we send it, check this is the first time
         if (FullscreenActivity.firstSendingOfSalutXML) {
@@ -3278,7 +3386,7 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
-    public void holdBeforeSendingSection() {
+    private void holdBeforeSendingSection() {
         // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
         // As soon as we send it, check this is the first time
         if (FullscreenActivity.firstSendingOfSalutSection) {
@@ -3309,7 +3417,7 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
-    public void holdBeforeLoadingXML() {
+    private void holdBeforeLoadingXML() {
         // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
         // As soon as we receive if, check this is the first time
         if (FullscreenActivity.firstReceivingOfSalutXML) {
@@ -3345,7 +3453,7 @@ public class StageMode extends AppCompatActivity implements
             },800);
         }
     }
-    public void holdBeforeLoadingSection(int s) {
+    private void holdBeforeLoadingSection(int s) {
         if (FullscreenActivity.firstReceivingOfSalutSection) {
             // Now turn it off
             FullscreenActivity.firstReceivingOfSalutSection = false;
@@ -3361,7 +3469,7 @@ public class StageMode extends AppCompatActivity implements
             }, 800);
         }
     }
-    public void holdBeforeAutoscrolling() {
+    private void holdBeforeAutoscrolling() {
         // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
         // As soon as we receive if, check this is the first time
         if (FullscreenActivity.firstReceivingOfSalutAutoscroll) {
@@ -3452,7 +3560,7 @@ public class StageMode extends AppCompatActivity implements
         glideimage.getLayoutParams().height = FrameLayout.LayoutParams.MATCH_PARENT;
     }
 
-    public void loadImage() {
+    private void loadImage() {
         // Process the image location into an URI
         Uri imageUri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs",
                 StaticVariables.whichSongFolder, StaticVariables.songfilename);
@@ -3512,7 +3620,7 @@ public class StageMode extends AppCompatActivity implements
         preferences.setMyPreferenceBoolean(StageMode.this,"songLoadSuccess",true);
     }
 
-    public void loadPDF() {
+    private void loadPDF() {
 
         Bitmap bmp = processSong.createPDFPage(StageMode.this, preferences, storageAccess,
                 getAvailableWidth(), getAvailableHeight(),
@@ -3601,7 +3709,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
 
-    public void getLearnedSongLengthValue() {
+    private void getLearnedSongLengthValue() {
         int time = (int) (FullscreenActivity.time_passed - FullscreenActivity.time_start) / 1000;
         if (time < 0) {
             time = 0;
@@ -3610,14 +3718,6 @@ public class StageMode extends AppCompatActivity implements
         StaticVariables.learnPreDelay = false;
         StaticVariables.learnSongLength = false;
 
-        if (mtask_learnautoscroll != null) {
-            try {
-                mtask_learnautoscroll.cancel(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
         // Save the learned values to the song
         PopUpEditSongFragment.justSaveSongXML(StageMode.this, preferences);
 
@@ -3625,7 +3725,7 @@ public class StageMode extends AppCompatActivity implements
         openFragment();
     }
 
-    public void fixSetActionButtons() {
+    private void fixSetActionButtons() {
         StaticVariables.setView = setActions.isSongInSet(StageMode.this,preferences);
 
         if (StaticVariables.setView) {
@@ -3657,7 +3757,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void getPadProgress() {
+    private void getPadProgress() {
         int pos;
         boolean pad1status = PadFunctions.getPad1Status();
         boolean pad2status = PadFunctions.getPad2Status();
@@ -3679,7 +3779,7 @@ public class StageMode extends AppCompatActivity implements
 
     }
 
-    public void goToNextItem() {
+    private void goToNextItem() {
         FullscreenActivity.whichDirection = "R2L";
         boolean dealtwithaspdf = false;
         StaticVariables.showstartofpdf = true;
@@ -3789,7 +3889,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void createPerformanceView1col() {
+    private void createPerformanceView1col() {
         doCancelAsyncTask(createperformanceview1col_async);
         createperformanceview1col_async = new CreatePerformanceView1Col();
         try {
@@ -3855,7 +3955,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void createPerformanceView2col() {
+    private void createPerformanceView2col() {
         doCancelAsyncTask(createperformanceview2col_async);
         createperformanceview2col_async = new CreatePerformanceView2Col();
         try {
@@ -3898,7 +3998,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void createPerformanceView3col() {
+    private void createPerformanceView3col() {
         doCancelAsyncTask(createperformanceview3col_async);
         createperformanceview3col_async = new CreatePerformanceView3Col();
         try {
@@ -4002,7 +4102,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void animateInSong() {
+    private void animateInSong() {
         // If autoshowing highlighter notes
         if (preferences.getMyPreferenceBoolean(StageMode.this,"drawingAutoDisplay",true)) {
             showHighlight();
@@ -4028,8 +4128,6 @@ public class StageMode extends AppCompatActivity implements
         }
 
         // Set the overrides back
-        overridingwidth = false;
-        overridingfull = false;
 
         // Check for dual screen presentation
         if (StaticVariables.whichMode.equals("Performance")) {
@@ -4100,7 +4198,7 @@ public class StageMode extends AppCompatActivity implements
         // a song is added to a set.
     }
 
-    public void setUpCapoInfo() {
+    private void setUpCapoInfo() {
         updateExtraInfoColorsAndSizes("capo");
         boolean bothempty = true;
         StringBuilder allcapodetails = new StringBuilder();
@@ -4146,7 +4244,7 @@ public class StageMode extends AppCompatActivity implements
         songcapo_ab.setText(capotext);
     }
 
-    public void goToPreviousItem() {
+    private void goToPreviousItem() {
         FullscreenActivity.whichDirection = "L2R";
         boolean dealtwithaspdf = false;
         StaticVariables.showstartofpdf = true; // Default value - change later if need be
@@ -4241,7 +4339,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void prepareView() {
+    private void prepareView() {
         doCancelAsyncTask(preparesongview_async);
         preparesongview_async = new PrepareSongView();
         try {
@@ -4251,7 +4349,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void selectSection(int whichone) {
+    private void selectSection(int whichone) {
         if (whichone < 0) {
             whichone = 0;
         }
@@ -4299,7 +4397,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void resizeStageView() {
+    private void resizeStageView() {
         doCancelAsyncTask(resizestage_async);
         resizestage_async = new ResizeStageView();
         try {
@@ -4372,7 +4470,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void createStageView1col() {
+    private void createStageView1col() {
         doCancelAsyncTask(createstageview1col_async);
         createstageview1col_async = new CreateStageView1Col();
         try {
@@ -4382,7 +4480,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void getPadsOnStatus() {
+    private void getPadsOnStatus() {
         StaticVariables.padson = StaticVariables.pad1Playing || StaticVariables.pad2Playing;
         if (!StaticVariables.padson) {
             try {
@@ -4395,7 +4493,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void resizePerformanceView() {
+    private void resizePerformanceView() {
         doCancelAsyncTask(resizeperformance_async);
         resizeperformance_async = new ResizePerformanceView();
         try {
@@ -4459,6 +4557,37 @@ public class StageMode extends AppCompatActivity implements
                 float myscale_1_3_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[3];
                 float myscale_2_3_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[4];
                 float myscale_3_3_col_y = (float) availableheight / (float) FullscreenActivity.viewheight[5];
+
+                // If users don't want to maximise the size of every column
+                if (preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W").equals("Y") &&
+                        preferences.getMyPreferenceBoolean(StageMode.this,"songAutoScaleColumnMaximise",true)) {
+                    // Two columns
+                    if (myscale_1_2_col_x < myscale_2_2_col_x) {
+                        myscale_2_2_col_x = myscale_1_2_col_x;
+                        myscale_2_2_col_y = myscale_1_2_col_y;
+                    } else {
+                        myscale_1_2_col_x = myscale_2_2_col_x;
+                        myscale_1_2_col_y = myscale_2_2_col_y;
+                    }
+
+                    // Three columns
+                    if (myscale_1_3_col_x < myscale_2_3_col_x) {
+                        myscale_2_3_col_x = myscale_1_3_col_x;
+                        myscale_2_3_col_y = myscale_1_3_col_y;
+                    } else {
+                        myscale_1_3_col_x = myscale_2_3_col_x;
+                        myscale_1_3_col_y = myscale_2_3_col_y;
+                    }
+                    if (myscale_1_3_col_x < myscale_3_3_col_x) {
+                        myscale_3_3_col_x = myscale_1_3_col_x;
+                        myscale_3_3_col_y = myscale_1_3_col_y;
+                    } else {
+                        myscale_1_3_col_x = myscale_3_3_col_x;
+                        myscale_2_3_col_x = myscale_3_3_col_x;
+                        myscale_1_3_col_y = myscale_3_3_col_y;
+                        myscale_2_3_col_y = myscale_3_3_col_y;
+                    }
+                }
 
                 StaticVariables.sectionScaleValue[0] = processSong.getScaleValue(StageMode.this,
                         preferences, myscale_1_1_col_x, myscale_1_1_col_y, 12.0f);
@@ -4600,7 +4729,7 @@ public class StageMode extends AppCompatActivity implements
 
     }
 
-    public int getAvailableWidth() {
+    private int getAvailableWidth() {
         int val;
         DisplayMetrics metrics = new DisplayMetrics();
         Display display = getWindowManager().getDefaultDisplay();
@@ -4620,7 +4749,7 @@ public class StageMode extends AppCompatActivity implements
         return val;
     }
 
-    public int getAvailableHeight() {
+    private int getAvailableHeight() {
         int val;
         DisplayMetrics metrics = new DisplayMetrics();
         Display display = getWindowManager().getDefaultDisplay();
@@ -4643,7 +4772,7 @@ public class StageMode extends AppCompatActivity implements
         return val;
     }
 
-    public int getPixelsFromDpi(int dps) {
+    private int getPixelsFromDpi(int dps) {
         return dps * (int) (getResources().getDisplayMetrics().densityDpi / 160f);
     }
 
@@ -4655,7 +4784,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void showSticky() {
+    private void showSticky() {
         doCancelAsyncTask(show_sticky);
         show_sticky = new ShowSticky();
         try {
@@ -4742,7 +4871,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    public void displaySticky() {
+    private void displaySticky() {
         if (stickyPopUpWindow!=null && stickyPopUpWindow.isShowing()) {
             try {
                 stickyPopUpWindow.dismiss();
@@ -4831,7 +4960,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @SuppressLint("ServiceCast")
-    public void updateDisplays() {
+    private void updateDisplays() {
         // This is called when display devices are changed (connected, disconnected, etc.)
         Intent intent = new Intent(StageMode.this,
                 StageMode.class);
@@ -4884,7 +5013,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void doPedalAction(String action) {
+    private void doPedalAction(String action) {
         boolean val;
         switch (action) {
             default:
@@ -5029,9 +5158,9 @@ public class StageMode extends AppCompatActivity implements
                 break;
         }
     }
-    public void showHighlight() {
+    private void showHighlight() {
         doCancelAsyncTask(show_highlight);
-        show_highlight = new ShowHighlight(true);
+        show_highlight = new ShowHighlight();
         try {
             show_highlight.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
@@ -5044,10 +5173,10 @@ public class StageMode extends AppCompatActivity implements
         long highlightcurrtime;
         long highlighttimetohide;
         boolean highlightdonthide;
-        boolean fromautoshow;
+        final boolean fromautoshow;
 
-        ShowHighlight(boolean fa) {
-            fromautoshow = fa;
+        ShowHighlight() {
+            fromautoshow = true;
         }
 
         @Override
@@ -5184,8 +5313,8 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void displayIndex(ArrayList<SongMenuViewItems> songMenuViewItems,
-                             SongMenuAdapter songMenuAdapter) {
+    private void displayIndex(ArrayList<SongMenuViewItems> songMenuViewItems,
+                              SongMenuAdapter songMenuAdapter) {
         LinearLayout indexLayout = findViewById(R.id.side_index);
         if (preferences.getMyPreferenceBoolean(StageMode.this,"songMenuAlphaIndexShow",true)) {
             indexLayout.setVisibility(View.VISIBLE);
@@ -5306,11 +5435,11 @@ public class StageMode extends AppCompatActivity implements
         openFragment();
     }
 
-    void loadFileLocation() {
+    private void loadFileLocation() {
         StaticVariables.songfilename = preferences.getMyPreferenceString(StageMode.this,"songfilename","Welcome to OpenSongApp");
         StaticVariables.whichSongFolder = preferences.getMyPreferenceString(StageMode.this, "whichSongFolder", getString(R.string.mainfoldername));
     }
-    void saveFileLocation(String loc_name, String loc_folder) {
+    private void saveFileLocation(String loc_name, String loc_folder) {
         StaticVariables.songfilename = loc_name;
         StaticVariables.whichSongFolder = loc_folder;
         preferences.setMyPreferenceString(StageMode.this, "songfilename", loc_name);
@@ -5607,11 +5736,10 @@ public class StageMode extends AppCompatActivity implements
         newFragment = OpenFragment.openFragment(StageMode.this);
         String message = OpenFragment.getMessage(StageMode.this);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(newFragment,message);
-
 
         if (newFragment != null && !this.isFinishing()) {
             try {
+                ft.add(newFragment,message);
                 ft.commitAllowingStateLoss();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -5646,7 +5774,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void startCamera() {
+    private void startCamera() {
         closeMyDrawers("option");
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -6031,14 +6159,9 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onPreExecute() {
             try {
-                rendercalled = false;
                 mypage.setBackgroundColor(lyricsBackgroundColor);
                 songscrollview.setBackgroundColor(lyricsBackgroundColor);
                 //songscrollview.setBackgroundColor(0xff0000ff);
-
-                biggestscale_1col = 0f;
-                biggestscale_2col = 0f;
-                biggestscale_3col = 0f;
 
                 width_scale = 0f;
 
@@ -6307,7 +6430,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void playPads(int which) {
+    private void playPads(int which) {
         doCancelAsyncTask(play_pads);
         play_pads = new PlayPads(which);
         try {
@@ -6357,7 +6480,7 @@ public class StageMode extends AppCompatActivity implements
         FileUriCallback() {
         }
 
-        private Uri[] mFileUris = new Uri[1]; // Send one at a time
+        private final Uri[] mFileUris = new Uri[1]; // Send one at a time
 
         @Override
         public Uri[] createBeamUris(NfcEvent event) {
@@ -6367,7 +6490,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public void preparePadProgress() {
+    private void preparePadProgress() {
         if (StaticVariables.padson) {
             dopadProgressTime.post(padprogressTimeRunnable);
             dopadProgressTime.postDelayed(onEverySecond, 1000);
@@ -6546,7 +6669,7 @@ public class StageMode extends AppCompatActivity implements
         learnAutoScrollTime_TextView.setText(TimeTools.timeFormatFixer(0));
     }
 
-    public void startLearnAutoScroll() {
+    private void startLearnAutoScroll() {
         StaticVariables.learnPreDelay = true;
         StaticVariables.learnSongLength = false;
         learnAutoScroll.setOnClickListener(new View.OnClickListener() {
@@ -6560,7 +6683,7 @@ public class StageMode extends AppCompatActivity implements
         LearnAutoScroll mtask_learnautoscroll = new LearnAutoScroll();
         mtask_learnautoscroll.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
-    public void getLearnedPreDelayValue() {
+    private void getLearnedPreDelayValue() {
         int time = (int) (FullscreenActivity.time_passed - FullscreenActivity.time_start)/1000;
         if (time<0) {
             time = 0;
@@ -6679,7 +6802,6 @@ public class StageMode extends AppCompatActivity implements
                 if (!cancelled) {
                     StaticVariables.learnPreDelay = false;
                     StaticVariables.learnSongLength = false;
-                    doCancelAsyncTask(mtask_learnautoscroll);
                     learnAutoScroll.setVisibility(View.GONE);
                 }
             } catch (Exception e) {
@@ -6693,7 +6815,6 @@ public class StageMode extends AppCompatActivity implements
             StaticVariables.learnPreDelay = false;
             StaticVariables.learnSongLength = false;
             cancelled = true;
-            doCancelAsyncTask(mtask_learnautoscroll);
         }
     }
 
@@ -6929,7 +7050,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public boolean checkCanScrollDown() {
+    private boolean checkCanScrollDown() {
         boolean showscrolldown = false;
         if (StaticVariables.whichMode!=null && StaticVariables.whichMode.equals("Stage")) {
             if (StaticVariables.currentSection>-1 && StaticVariables.songSections!=null) {
@@ -6963,7 +7084,7 @@ public class StageMode extends AppCompatActivity implements
         return showscrolldown && preferences.getMyPreferenceBoolean(StageMode.this,"PageButtonShowScroll",true);
     }
 
-    public boolean checkCanScrollUp() {
+    private boolean checkCanScrollUp() {
         boolean showscrollup = false;
         if (StaticVariables.whichMode!=null && StaticVariables.whichMode.equals("Stage")) {
             showscrollup = StaticVariables.currentSection > 0;
@@ -6984,7 +7105,7 @@ public class StageMode extends AppCompatActivity implements
         return showscrollup && preferences.getMyPreferenceBoolean(StageMode.this,"PageButtonShowScroll",true);
     }
 
-    public void scrollMenu(String direction) {
+    private void scrollMenu(String direction) {
         if (direction.equals("up")) {
             song_list_view.smoothScrollBy((int) (-0.8f * songmenu.getHeight()), 1600);
         } else {
@@ -7057,7 +7178,7 @@ public class StageMode extends AppCompatActivity implements
         //return false;
     }
 
-    public boolean justSong(Context c) {
+    private boolean justSong(Context c) {
         boolean isallowed = true;
         if (FullscreenActivity.isImage || FullscreenActivity.isPDF || !FullscreenActivity.isSong) {
             showToastMessage(c.getResources().getString(R.string.not_allowed));
@@ -7074,7 +7195,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     // The page action gestures stuff is below
-    public boolean oktoregistergesture() {
+    private boolean oktoregistergesture() {
 
         boolean oktogo = false;
 
@@ -7232,7 +7353,7 @@ public class StageMode extends AppCompatActivity implements
                     if (menuFolder_TextView.getText() != null) {
                         if (menuFolder_TextView.getText().toString().equals(StaticVariables.whichSongFolder)) {
                             // Just move to the correct song
-                            findSongInFolders();
+                            indexOfSongInMenu();
 
                         } else {
                             prepareSongMenu();
@@ -7244,8 +7365,10 @@ public class StageMode extends AppCompatActivity implements
                     setWindowFlagsAdvanced();
 
                     // Show the ActionBar
-                    if (delayactionBarHide != null && hideActionBarRunnable != null) {
+                    try {
                         delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
                     if (ab != null) {
@@ -7253,8 +7376,10 @@ public class StageMode extends AppCompatActivity implements
                     }
 
                     if (preferences.getMyPreferenceBoolean(StageMode.this,"hideActionBar",false)) {
-                        if (delayactionBarHide != null) {
+                        try {
                             delayactionBarHide.postDelayed(hideActionBarRunnable, 1000);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
 
@@ -7562,7 +7687,7 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
-    public void pedalPrevious() {
+    private void pedalPrevious() {
         if (preferences.getMyPreferenceBoolean(StageMode.this,"pedalScrollBeforeMove",true)) {
             if (mDrawerLayout.isDrawerOpen(songmenu)) {
                 // Scroll the song menu up
@@ -7582,7 +7707,7 @@ public class StageMode extends AppCompatActivity implements
             goToPreviousItem();
         }
     }
-    public void pedalNext() {
+    private void pedalNext() {
         if (preferences.getMyPreferenceBoolean(StageMode.this,"pedalScrollBeforeMove",true)) {
             if (mDrawerLayout.isDrawerOpen(songmenu)) {
                 // Scroll the song menu down
@@ -7602,7 +7727,7 @@ public class StageMode extends AppCompatActivity implements
             goToNextItem();
         }
     }
-    public void pedalUp() {
+    private void pedalUp() {
         if (mDrawerLayout.isDrawerOpen(songmenu)) {
             // Scroll the song menu up
             scrollMenu("up");
@@ -7613,7 +7738,7 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
-    public void pedalDown() {
+    private void pedalDown() {
         if (mDrawerLayout.isDrawerOpen(songmenu)) {
             // Scroll the song menu down
             scrollMenu("down");
@@ -7815,8 +7940,10 @@ public class StageMode extends AppCompatActivity implements
                         FullscreenActivity.wasscrolling = false;
 
                     } else {
-                        if (delayactionBarHide != null && hideActionBarRunnable != null) {
+                        try {
                             delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                     FullscreenActivity.wasscrolling = false;
@@ -7887,20 +8014,22 @@ public class StageMode extends AppCompatActivity implements
     }
 
     // Open/close the drawers
-    public void gesture1() {
+    private void gesture1() {
         if (mDrawerLayout.isDrawerOpen(songmenu)) {
             closeMyDrawers("song");
         } else {
             openMyDrawers("song");
         }
         FullscreenActivity.wasscrolling = false;
-        if (delayactionBarHide != null && hideActionBarRunnable != null) {
+        try {
             delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     // Edit song
-    public void gesture2() {
+    private void gesture2() {
         if (FullscreenActivity.isPDF) {
             FullscreenActivity.whattodo = "extractPDF";
             openFragment();
@@ -7912,7 +8041,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     // Add to set
-    public void gesture3() {
+    private void gesture3() {
         if (StaticVariables.whichSongFolder.equals(getString(R.string.mainfoldername))) {
             StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.songfilename + "_**$";
         } else {
@@ -7947,7 +8076,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     // Redraw the lyrics page
-    public void gesture4() {
+    private void gesture4() {
         loadSong();
     }
 

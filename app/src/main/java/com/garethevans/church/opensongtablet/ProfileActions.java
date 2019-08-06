@@ -1816,6 +1816,10 @@ class ProfileActions {
                             preferences.setMyPreferenceString(c,"songAutoScale",getTextValue(xppValue,"W"));
                             break;
 
+                        case "songAutoScaleColumnMaximise":     // New preference only
+                            preferences.setMyPreferenceBoolean(c,"songAutoScaleColumnMaximise",getBooleanValue(xppValue,true));
+                            break;
+
                         case "songAutoScaleOverrideFull":        // New preference
                         case "override_fullscale":        // Old preference
                             //songAutoScaleOverrideFull       boolean     If the app can override full autoscale if the font is too small
@@ -2030,7 +2034,9 @@ class ProfileActions {
 
     Intent saveProfile(Context c, Preferences preferences, StorageAccess storageAccess) {
         Intent intent = new Intent();
-        intent.setType("application/xml");
+        intent.setType("application/*");
+        String [] mimeTypes = {"application/xml", "text/xml"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         intent.setAction(Intent.ACTION_CREATE_DOCUMENT);
         if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
             Uri uri = storageAccess.getUriForItem(c, preferences, "Profiles", "", "");

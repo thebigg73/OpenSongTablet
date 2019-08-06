@@ -186,77 +186,82 @@ class IndexSongs {
         return false;
     }
 
-    private void getXMLStuff() throws Exception {
-        XmlPullParserFactory factory;
-        factory = XmlPullParserFactory.newInstance();
-        factory.setNamespaceAware(true);
-        XmlPullParser xpp;
-        xpp = factory.newPullParser();
-        xpp.setInput(inputStream, utf);
-        int eventType;
+    private void getXMLStuff() throws Exception{
+        try {
+            XmlPullParserFactory factory;
+            factory = XmlPullParserFactory.newInstance();
+            factory.setNamespaceAware(true);
+            XmlPullParser xpp;
+            xpp = factory.newPullParser();
+            xpp.setInput(inputStream, utf);
+            int eventType;
 
-        // Extract the title, author, key, lyrics, theme
-        eventType = xpp.getEventType();
-        while (eventType != XmlPullParser.END_DOCUMENT) {
-            if (eventType == XmlPullParser.START_TAG) {
-                switch (xpp.getName()) {
-                    case "author":
-                        author = xpp.nextText();
-                        break;
+            // Extract the title, author, key, lyrics, theme
+            eventType = xpp.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                if (eventType == XmlPullParser.START_TAG) {
+                    switch (xpp.getName()) {
+                        case "author":
+                            author = xpp.nextText();
+                            break;
 
-                    case "title":
-                        title = xpp.nextText();
-                        break;
+                        case "title":
+                            title = xpp.nextText();
+                            break;
 
-                    case "lyrics":
-                        lyrics = xpp.nextText();
-                        break;
+                        case "lyrics":
+                            lyrics = xpp.nextText();
+                            break;
 
-                    case "key":
-                        key = xpp.nextText();
-                        break;
+                        case "key":
+                            key = xpp.nextText();
+                            break;
 
-                    case "theme":
-                        theme = xpp.nextText();
-                        break;
+                        case "theme":
+                            theme = xpp.nextText();
+                            break;
 
-                    case "copyright":
-                        copyright = xpp.nextText();
-                        break;
+                        case "copyright":
+                            copyright = xpp.nextText();
+                            break;
 
-                    case "ccli":
-                        ccli = xpp.nextText();
-                        break;
+                        case "ccli":
+                            ccli = xpp.nextText();
+                            break;
 
-                    case "alttheme":
-                        alttheme = xpp.nextText();
-                        break;
+                        case "alttheme":
+                            alttheme = xpp.nextText();
+                            break;
 
-                    case "user1":
-                        user1 = xpp.nextText();
-                        break;
+                        case "user1":
+                            user1 = xpp.nextText();
+                            break;
 
-                    case "user2":
-                        user1 = xpp.nextText();
-                        break;
+                        case "user2":
+                            user1 = xpp.nextText();
+                            break;
 
-                    case "user3":
-                        user1 = xpp.nextText();
-                        break;
+                        case "user3":
+                            user1 = xpp.nextText();
+                            break;
 
-                    case "aka":
-                        aka = xpp.nextText();
-                        break;
+                        case "aka":
+                            aka = xpp.nextText();
+                            break;
 
-                    case "hymn_number":
-                        hymnnum = xpp.nextText();
-                        break;
+                        case "hymn_number":
+                            hymnnum = xpp.nextText();
+                            break;
+                    }
                 }
+                // This next line will throw an error if the song isn't xml
+                eventType = xpp.next();
             }
-            // This next line will throw an error if the song isn't xml
-            eventType = xpp.next();
+
+            // If we got this far, the song information was extracted!
+        } catch (OutOfMemoryError e1) {
+            e1.printStackTrace();
         }
-        // If we got this far, the song information was extracted!
     }
 
     private ArrayList<String> tryToFixSong(Context c, StorageAccess storageAccess, Preferences preferences,

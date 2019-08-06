@@ -349,9 +349,14 @@ class StorageAccess {
 
     @SuppressLint("NewApi")
     private String getDocumentsContractId(Uri uri) {
-        if (lollipopOrLater()) {
-            return DocumentsContract.getDocumentId(uri);
-        } else {
+        try {
+            if (lollipopOrLater()) {
+                return DocumentsContract.getDocumentId(uri);
+            } else {
+                return null;
+            }
+        }
+        catch (Exception e) {
             return null;
         }
     }
@@ -920,7 +925,7 @@ class StorageAccess {
             utf = ubis.getBOM().toString();
 
         } catch (Exception e) {
-            Log.d("d", "Unable to get encoding for " + uri.getLastPathSegment());
+            Log.d("d", "Unable to get encoding for " + uri);
         }
         try {
             if (is != null) {

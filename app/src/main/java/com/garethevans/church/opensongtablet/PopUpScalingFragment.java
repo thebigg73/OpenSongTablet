@@ -18,17 +18,26 @@ import android.widget.TextView;
 
 public class PopUpScalingFragment extends DialogFragment {
 
+    private MyInterface mListener;
+    private LinearLayout maxAutoScale_Group;
+    private SeekBar fontsize_seekbar;
+    private SeekBar maxAutoScale_seekBar;
+    private SeekBar minAutoScale_seekBar;
+    private TextView fontsize_TextView;
+    private TextView maxAutoScale_TextView;
+    private TextView minAutoScale_TextView;
+    private SwitchCompat switchAutoScaleOnOff_SwitchCompat;
+    private SwitchCompat switchAutoScaleWidthFull_SwitchCompat;
+    private SeekBar stagemode_scale_SeekBar;
+    private TextView stagemode_scale_TextView;
+    private SwitchCompat switchAutoScaleMaxColumns_SwitchCompat;
+    private Preferences preferences;
+
     static PopUpScalingFragment newInstance() {
         PopUpScalingFragment frag;
         frag = new PopUpScalingFragment();
         return frag;
     }
-
-    public interface MyInterface {
-        void refreshAll();
-    }
-
-    private MyInterface mListener;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -42,20 +51,6 @@ public class PopUpScalingFragment extends DialogFragment {
         mListener = null;
         super.onDetach();
     }
-
-    private LinearLayout maxAutoScale_Group;
-    private SeekBar fontsize_seekbar;
-    private SeekBar maxAutoScale_seekBar;
-    private SeekBar minAutoScale_seekBar;
-    private TextView fontsize_TextView;
-    private TextView maxAutoScale_TextView;
-    private TextView minAutoScale_TextView;
-    private SwitchCompat switchAutoScaleOnOff_SwitchCompat;
-    private SwitchCompat switchAutoScaleWidthFull_SwitchCompat;
-    private SeekBar stagemode_scale_SeekBar;
-    private TextView stagemode_scale_TextView;
-
-    Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,6 +94,7 @@ public class PopUpScalingFragment extends DialogFragment {
         fontsize_TextView = V.findViewById(R.id.fontsize_TextView);
         switchAutoScaleOnOff_SwitchCompat = V.findViewById(R.id.switchAutoScaleOnOff_SwitchCompat);
         switchAutoScaleWidthFull_SwitchCompat = V.findViewById(R.id.switchAutoScaleWidthFull_SwitchCompat);
+        switchAutoScaleMaxColumns_SwitchCompat = V.findViewById(R.id.switchAutoScaleMaxColumns_SwitchCompat);
         SwitchCompat overrideFull_Switch = V.findViewById(R.id.overrideFull_Switch);
         SwitchCompat overrideWidth_Switch = V.findViewById(R.id.overrideWidth_Switch);
         LinearLayout stagemode_scale = V.findViewById(R.id.stagemode_scale);
@@ -136,6 +132,13 @@ public class PopUpScalingFragment extends DialogFragment {
                 maxAutoScale_Group.setVisibility(View.GONE);
                 break;
         }
+        switchAutoScaleMaxColumns_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"songAutoScaleColumnMaximise",true));
+        switchAutoScaleMaxColumns_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                preferences.setMyPreferenceBoolean(getActivity(),"songAutoScaleColumnMaximise",b);
+            }
+        });
 
         overrideFull_Switch.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideFull",true));
         overrideWidth_Switch.setChecked(preferences.getMyPreferenceBoolean(getActivity(), "songAutoScaleOverrideWidth", false));
@@ -217,6 +220,7 @@ public class PopUpScalingFragment extends DialogFragment {
                     switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.GONE);
                     maxAutoScale_Group.setVisibility(View.GONE);
                 }
+                maxColsSwitchVisibilty();
             }
         });
 
@@ -233,6 +237,7 @@ public class PopUpScalingFragment extends DialogFragment {
                     preferences.setMyPreferenceString(getActivity(),"songAutoScale","N");
                     maxAutoScale_Group.setVisibility(View.GONE);
                 }
+                maxColsSwitchVisibilty();
             }
         });
 
@@ -255,6 +260,14 @@ public class PopUpScalingFragment extends DialogFragment {
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
+    }
+
+    private void maxColsSwitchVisibilty() {
+        if (preferences.getMyPreferenceString(getActivity(), "songAutoScale", "W").equals("Y")) {
+            switchAutoScaleMaxColumns_SwitchCompat.setVisibility(View.VISIBLE);
+        } else {
+            switchAutoScaleMaxColumns_SwitchCompat.setVisibility(View.GONE);
+        }
     }
 
     private void setupfontsizeseekbar() {
@@ -367,6 +380,10 @@ public class PopUpScalingFragment extends DialogFragment {
     @Override
     public void onCancel(DialogInterface dialog) {
         this.dismiss();
+    }
+
+    public interface MyInterface {
+        void refreshAll();
     }
 
 }
