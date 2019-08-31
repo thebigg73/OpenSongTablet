@@ -1,17 +1,18 @@
 package com.garethevans.church.opensongtablet;
 
-public class SearchViewItems {
+class SearchViewItems {
 
-    String filename;
-    String title;
-    String folder;
-    String author;
-    String key;
-    String theme;
-    String lyrics;
+    private String filename;
+    private String title;
+    private String folder;
+    private String author;
+    private String key;
+    private String theme;
+    private String lyrics;
     //private String hymnnum;
 
-    SearchViewItems(String filename, String title, String folder, String author, String key, String theme, String lyrics, String hymnnum) {
+    // TODO Not sure if any of this gets used anymore?
+    SearchViewItems(String filename, String title, String folder, String author, String key, String theme, String lyrics) {
         this.filename = filename;
         this.title = title;
         this.folder = folder;

@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/editsticky"
             android:layout_margin="8dp"
-            android:text="@string/set_edit"
+            android:text="@string/edit"
             android:background="@drawable/grey_button"/>
 
     </LinearLayout>

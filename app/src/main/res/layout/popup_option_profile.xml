@@ -51,6 +51,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/MyInfoText"
+                android:layout_margin="4dp"
+                android:text="@string/profile_description"/>
+
             <Button
                 android:id="@+id/profileLoadButton"
                 android:layout_width="match_parent"
@@ -60,7 +67,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_file_xml_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_set_load"
+                android:text="@string/load"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
@@ -73,7 +80,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_content_save_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/savesong"
+                android:text="@string/save"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 

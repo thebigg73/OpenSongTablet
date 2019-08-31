@@ -130,9 +130,9 @@ class AutoScrollFunctions {
         }
     }
 
-    static Handler doautoScroll = new Handler();
+    static final Handler doautoScroll = new Handler();
     static class AutoScrollRunnable implements Runnable {
-        ScrollView sv;
+        final ScrollView sv;
         AutoScrollRunnable(ScrollView s) {
             sv = s;
         }
@@ -155,13 +155,13 @@ class AutoScrollFunctions {
         }
     }
 
-    static Handler doProgressTime = new Handler();
+    static final Handler doProgressTime = new Handler();
     static class ProgressTimeRunnable implements Runnable {
-        TextView tv;
-        TextView tvt;
-        TextView tvs;
-        Context c;
-        Preferences preferences;
+        final TextView tv;
+        final TextView tvt;
+        final TextView tvs;
+        final Context c;
+        final Preferences preferences;
         ProgressTimeRunnable(Context ctx, Preferences pref, TextView t, TextView tt, TextView ts) {
             tv = t;
             tvt = tt;
@@ -200,9 +200,9 @@ class AutoScrollFunctions {
             }
         }
     }
-    static Handler doautoScrollLearn = new Handler();
+    static final Handler doautoScrollLearn = new Handler();
     static class LearnTimeRunnable implements Runnable {
-        TextView tv;
+        final TextView tv;
         LearnTimeRunnable(TextView t) {
             tv = t;
         }

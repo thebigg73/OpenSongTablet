@@ -44,7 +44,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
 
     public interface MyInterface {
         void openFragment();
-        void backupInstall(String m);
+        void backupInstall();
         void selectAFileUri(String s);
     }
 
@@ -67,22 +67,20 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
     private TextView currentFileWork;
     private ListView folderlist;
     private String selectednote;
-    String mTitle;
     private ArrayAdapter<String> adapter;
     private ArrayList<String> foldersfoundinzip;
     private LinearLayout progressUpdate;
     private String[] foldersselectedtoimport;
-    String message = "";
+    private String message = "";
     private ProgressBar waiting;
-    FloatingActionButton closeMe;
-    FloatingActionButton saveMe;
+    private FloatingActionButton saveMe;
     private SwitchCompat overwrite;
-    StorageAccess storageAccess;
-    ExportPreparer exportPreparer;
-    Preferences preferences;
-    ProgressBar progressBar;
+    private StorageAccess storageAccess;
+    private ExportPreparer exportPreparer;
+    private Preferences preferences;
+    private ProgressBar progressBar;
     private SongFolders songFolders;
-    String error;
+    private String error;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,6 +95,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Decide if we are importing or exporting
+        String mTitle;
         if (FullscreenActivity.whattodo.equals("processimportosb")) {
             mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.backup_import);
         } else {
@@ -519,7 +518,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         protected void onPostExecute(String s) {
             try {
                 if (mListener != null) {
-                    mListener.backupInstall(s);
+                    mListener.backupInstall();
                 }
                 dismiss();
             } catch (Exception e) {

@@ -49,7 +49,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
     private SeekBar stickyNotesTime_SeekBar, highlightTime_SeekBar;
     private TextView stickyNotesTime_TextView, stickNotesTimeInfo_TextView, highlightTime_TextView,
             highlightTimeInfo_TextView;
-    Preferences preferences;
+    private Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

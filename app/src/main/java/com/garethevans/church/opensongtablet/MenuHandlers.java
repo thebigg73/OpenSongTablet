@@ -14,31 +14,27 @@ import java.lang.reflect.Method;
 class MenuHandlers {
 
     public interface MyInterface {
-        void callIntent(String what, Intent i);
         void openMyDrawers(String what);
         void openFragment();
         void prepareOptionMenu();
-        void doMoveInSet();
     }
 
-    public static MyInterface mListener;
-
     static void actOnClicks(Context c, Preferences preferences, int menuitem) {
-        mListener = (MyInterface) c;
+        MyInterface mListener = (MyInterface) c;
         StaticVariables.setMoveDirection = "";
 
         switch (menuitem) {
 
             case R.id.action_search:
                 // Open/close the song drawer
-                if (mListener!=null) {
+                if (mListener !=null) {
                     mListener.openMyDrawers("song_toggle");
                 }
                 break;
 
             case R.id.action_settings:
                 // Open/close the option drawer
-                if (mListener!=null) {
+                if (mListener !=null) {
                     mListener.openMyDrawers("option_toggle");
                 }
                 break;
@@ -67,8 +63,10 @@ class MenuHandlers {
                     // Vibrate to indicate something has happened
                     DoVibrate.vibrate(c,50);
 
-                    if (mListener!=null) {
+                    try {
                         mListener.prepareOptionMenu();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
                 break;

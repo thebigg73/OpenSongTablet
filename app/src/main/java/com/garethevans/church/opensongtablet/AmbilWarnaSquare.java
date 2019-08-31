@@ -14,9 +14,9 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class AmbilWarnaSquare extends View {
-        Paint paint;
-        Shader luar;
-        final float[] color = { 1.f, 1.f, 1.f };
+        private Paint paint;
+        private Shader luar;
+        private final float[] color = { 1.f, 1.f, 1.f };
 
         public AmbilWarnaSquare(Context context, AttributeSet attrs) {
                 super(context, attrs);

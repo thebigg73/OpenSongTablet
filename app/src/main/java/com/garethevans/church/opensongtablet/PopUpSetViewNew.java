@@ -112,12 +112,9 @@ public class PopUpSetViewNew extends DialogFragment {
     static ArrayList<String> mFolderName = new ArrayList<>();
     private RecyclerView mRecyclerView;
 
-    static ItemTouchHelper.Callback callback;
-    static ItemTouchHelper helper;
-    FloatingActionButton saveMe;
-    StorageAccess storageAccess;
-    Preferences preferences;
-    SetActions setActions;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
+    private SetActions setActions;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -151,7 +148,7 @@ public class PopUpSetViewNew extends DialogFragment {
         setfrag.dismiss();
     }
 
-    public void doSave() {
+    private void doSave() {
         StringBuilder tempmySet = new StringBuilder();
         String tempItem;
         if (StaticVariables.mTempSetList == null) {
@@ -168,13 +165,13 @@ public class PopUpSetViewNew extends DialogFragment {
                 " - " + getActivity().getString(R.string.ok);
     }
 
-    public void refresh() {
+    private void refresh() {
         if (mListener != null) {
             mListener.refreshAll();
         }
     }
 
-    public void close() {
+    private void close() {
         try {
             dismiss();
         } catch (Exception e) {
@@ -231,7 +228,7 @@ public class PopUpSetViewNew extends DialogFragment {
         final View V = inflater.inflate(R.layout.popup_setview_new, container, false);
         setfrag = getDialog();
         TextView title = V.findViewById(R.id.dialogtitle);
-        String titletext = Objects.requireNonNull(getActivity()).getResources().getString(R.string.options_set) + displaySetName();
+        String titletext = Objects.requireNonNull(getActivity()).getResources().getString(R.string.set) + displaySetName();
         title.setText(titletext);
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
@@ -242,7 +239,7 @@ public class PopUpSetViewNew extends DialogFragment {
                 PopUpSetViewNew.this.dismiss();
             }
         });
-        saveMe = V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -292,8 +289,8 @@ public class PopUpSetViewNew extends DialogFragment {
 
         SetListAdapter ma = new SetListAdapter(createList(StaticVariables.mTempSetList.size()), getActivity(), preferences);
         mRecyclerView.setAdapter(ma);
-        callback = new SetListItemTouchHelper(ma);
-        helper = new ItemTouchHelper(callback);
+        ItemTouchHelper.Callback callback = new SetListItemTouchHelper(ma);
+        ItemTouchHelper helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(mRecyclerView);
 
         FloatingActionButton listSetTweetButton = V.findViewById(R.id.listSetTweetButton);
@@ -367,7 +364,7 @@ public class PopUpSetViewNew extends DialogFragment {
                     // Load the are you sure prompt
                     FullscreenActivity.whattodo = "saveset";
                     String setnamenice = lastSetName.replace("__"," / ");
-                    String message = getResources().getString(R.string.options_set_save) + " \'" + setnamenice + "\"?";
+                    String message = getResources().getString(R.string.save) + " \'" + setnamenice + "\"?";
                     StaticVariables.myToastMessage = message;
                     DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
                     newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
@@ -432,7 +429,7 @@ public class PopUpSetViewNew extends DialogFragment {
                 } else if (mSongName.get(i - 1).contains(".pdf") || mSongName.get(i - 1).contains(".PDF")) {
                     si.songicon = ".pdf";
                 } else {
-                    si.songicon = getActivity().getResources().getString(R.string.options_song);
+                    si.songicon = getActivity().getResources().getString(R.string.song);
                 }
                 result.add(si);
             }
@@ -565,7 +562,7 @@ public class PopUpSetViewNew extends DialogFragment {
         });
     }
 
-    public void doPedalAction(String action) {
+    private void doPedalAction(String action) {
         switch (action) {
             case "prev":
                 if (preferences.getMyPreferenceBoolean(getActivity(),"pedalScrollBeforeMove",true)) {

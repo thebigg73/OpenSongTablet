@@ -1,22 +1,19 @@
 package com.garethevans.church.opensongtablet;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.AsyncTask;
 
 class FadeoutMediaPlayer extends AsyncTask<Object,Void,String> {
 
-    @SuppressLint("StaticFieldLeak")
-    Context c;
-    int which;
-    private String pan;
-    private float vol;
+    private final int which;
+    private final String pan;
+    private final float vol;
+    private final int time;
 
-    FadeoutMediaPlayer(Context context, String padpan, float padvol, int player) {
-        this.c = context;
+    FadeoutMediaPlayer(String padpan, float padvol, int player, int fadetime) {
         this.which = player;
         pan = padpan;
         vol = padvol;
+        time = fadetime;
     }
 
     @Override
@@ -46,7 +43,7 @@ class FadeoutMediaPlayer extends AsyncTask<Object,Void,String> {
 
             // Pause before next fade increment
             long nowtime = System.currentTimeMillis();
-            long thentime = nowtime + FullscreenActivity.crossFadeTime / 50;
+            long thentime = nowtime + time / 50;
             while (System.currentTimeMillis() < thentime) {
                 // Do nothing......
                 System.currentTimeMillis();

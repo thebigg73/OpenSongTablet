@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:contentDescription="@string/set_back"
+                android:contentDescription="@string/back"
                 android:src="@drawable/ic_arrow_left_white_36dp"
                 app:backgroundTint="@color/grey"
                 app:borderWidth="0dp"
@@ -152,7 +152,7 @@
                 android:layout_gravity="end"
                 android:layout_margin="8dp"
                 android:background="@drawable/green_button"
-                android:text="@string/savesong" />
+                android:text="@string/save" />
 
         </LinearLayout>
 

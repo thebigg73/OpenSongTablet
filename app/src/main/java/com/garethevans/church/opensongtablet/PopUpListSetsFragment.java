@@ -55,12 +55,12 @@ public class PopUpListSetsFragment extends DialogFragment {
     private LinearLayout newCategory_LinearLayout;
     private LinearLayout newSetTitle_LinearLayout;
     private RelativeLayout setCategory;
-    View V;
-    ProgressBar progressBar;
+    private View V;
+    private ProgressBar progressBar;
 
-    StorageAccess storageAccess;
-    SetActions setActions;
-    Preferences preferences;
+    private StorageAccess storageAccess;
+    private SetActions setActions;
+    private Preferences preferences;
 
     public interface MyInterface {
         void refreshAll();
@@ -141,7 +141,6 @@ public class PopUpListSetsFragment extends DialogFragment {
 
                 // Reset the setname chosen
                 StaticVariables.setnamechosen = "";
-                FullscreenActivity.abort = false;
 
                 // Get a record of all the sets available in the SETS folder
                 listOfAllSets();
@@ -243,24 +242,24 @@ public class PopUpListSetsFragment extends DialogFragment {
     }
 
     private String getTheTitle() {
-        String myTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.options_set);
+        String myTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.set);
         String mTitle;
         switch (FullscreenActivity.whattodo) {
             default:
             case "loadset":
-                mTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_load);
+                mTitle = myTitle + " - " + getActivity().getResources().getString(R.string.load);
                 break;
 
             case "saveset":
-                mTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_save);
+                mTitle = myTitle + " - " + getActivity().getResources().getString(R.string.save);
                 break;
 
             case "deleteset":
-                mTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_delete);
+                mTitle = myTitle + " - " + getActivity().getResources().getString(R.string.delete);
                 break;
 
             case "exportset":
-                mTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_export);
+                mTitle = myTitle + " - " + getActivity().getResources().getString(R.string.export);
                 break;
 
             case "managesets":
@@ -573,7 +572,7 @@ public class PopUpListSetsFragment extends DialogFragment {
             if (!StaticVariables.setnamechosen.equals("") && !setListName.getText().toString().equals("")) {
                 doRenameSet();
             } else {
-                StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.error_notset);
+                StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.notset);
             }
         }
     }
@@ -623,10 +622,7 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         // Initialise the saved set
         StaticVariables.settoload = null;
-        FullscreenActivity.abort = false;
         preferences.setMyPreferenceString(getActivity(), "setCurrent", "");
-        StaticVariables.mySetXML = "";
-        StaticVariables.myParsedSet = null;
 
         StaticVariables.settoload = StaticVariables.setnamechosen;
         preferences.setMyPreferenceString(getActivity(), "setCurrentLastName", setListName.getText().toString().replace("%_%", "_"));
@@ -673,7 +669,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                     public void run() {
                         // New structure, only give the are you sure prompt if the set name already exists.
                         if (storageAccess.uriExists(getActivity(), newsetname)) {
-                            String message = getResources().getString(R.string.options_set_save) + " \'" + setListName.getText().toString().trim() + "\"?";
+                            String message = getResources().getString(R.string.save) + " \'" + setListName.getText().toString().trim() + "\"?";
                             StaticVariables.myToastMessage = message;
                             DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
                             newFragment.show(getActivity().getSupportFragmentManager(), "dialog");
@@ -741,10 +737,10 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         if (success) {
             updateAvailableSets();
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.renametitle) + " - " +
+            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.rename) + " - " +
                     getActivity().getResources().getString(R.string.success);
         } else {
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.renametitle) + " - " +
+            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.rename) + " - " +
                     getActivity().getResources().getString(R.string.file_exists);
         }
 
@@ -776,7 +772,6 @@ public class PopUpListSetsFragment extends DialogFragment {
         protected String doInBackground(String... args) {
             setActions.emptyCacheDirectories(getActivity(), preferences, storageAccess);
             StaticVariables.mSet = null;
-            StaticVariables.myParsedSet = null;
 
             // Now users can load multiple sets and merge them, we need to load each one it turn
             // We then add the items to a temp string 'allsongsinset'
@@ -826,7 +821,6 @@ public class PopUpListSetsFragment extends DialogFragment {
                 mListener.refreshAll();
                 FullscreenActivity.whattodo = "editset";
                 mListener.openFragment();
-                FullscreenActivity.abort = false;
                 //Close this dialog
                 hideKeyboard(newCategory_EditText);
                 hideKeyboard(setListName);
@@ -866,7 +860,7 @@ public class PopUpListSetsFragment extends DialogFragment {
             setstodelete = setstodelete.substring(0, setstodelete.length() - 2);
         }
 
-        String message = getResources().getString(R.string.options_set_delete) + " \"" + setstodelete + "\"?";
+        String message = getResources().getString(R.string.delete) + " \"" + setstodelete + "\"?";
         StaticVariables.myToastMessage = message;
         DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
         newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), message);

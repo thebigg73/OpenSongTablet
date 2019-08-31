@@ -19,14 +19,15 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
         void openFragment();
     }
 
-    private MyInterface mListener;
-    private String address;
-    private String filename;
-    StorageAccess storageAccess;
+    private final MyInterface mListener;
+    private final String address;
+    private final String filename;
+    private final StorageAccess storageAccess;
     @SuppressLint("StaticFieldLeak")
+    private final
     Preferences preferences;
     @SuppressLint("StaticFieldLeak")
-    private Context c;
+    private final Context c;
     private Uri uri;
 
         DownloadTask(Context context, String address) {

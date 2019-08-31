@@ -22,7 +22,7 @@ public class PopUpAlertFragment extends DialogFragment {
 
     private EditText alertMessage;
     private MyInterface mListener;
-    Preferences preferences;
+    private Preferences preferences;
 
     static PopUpAlertFragment newInstance() {
         PopUpAlertFragment frag;

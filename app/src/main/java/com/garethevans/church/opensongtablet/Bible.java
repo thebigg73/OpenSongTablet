@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -297,7 +296,6 @@ class Bible {
         StringBuilder currentline= new StringBuilder();
         ArrayList<String> newimprovedscripture = new ArrayList<>();
         for (String words:scripturewords) {
-            Log.d("Bible","words="+words);
             if (currentline.length()<charsperline) {
                 currentline.append(" ").append(words);
             } else {
@@ -328,7 +326,7 @@ class Bible {
         return scripture.toString().trim();
     }
 
-    private String[] bibleBooks = {"Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy",
+    private final String[] bibleBooks = {"Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy",
             "Joshua", "Judges", "Ruth", "1 Samuel", "2 Samuel", "1 Kings", "2 Kings",
             "1 Chronicles", "2 Chronicles", "Ezra", "Nehemiah", "Esther", "Job", "Psalms",
             "Proverbs", "Ecclesiastes", "Song of Solomon", "Isaiah", "Jeremiah",

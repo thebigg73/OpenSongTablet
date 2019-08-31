@@ -1,5 +1,8 @@
 package com.garethevans.church.opensongtablet;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Handler;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -9,6 +12,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 
@@ -88,11 +92,11 @@ class CustomAnimations {
 
     private static class MyAnimationListener implements Animation.AnimationListener {
 
-        View v;
-        float start;
-        float end;
-        int startvis;
-        int endvis;
+        final View v;
+        final float start;
+        final float end;
+        final int startvis;
+        final int endvis;
 
         MyAnimationListener (View which, float a, float b) {
             v = which;
@@ -127,12 +131,103 @@ class CustomAnimations {
         }
     }
 
+    static void faderAnimation(final View v, int time, boolean fadeIn) {
+        float startAlpha;
+        float endAlpha;
+        final int startVisibility;
+        final int endVisibility;
+
+        if (fadeIn) {
+            startAlpha = 0f;
+            endAlpha = 1f;
+            startVisibility = View.VISIBLE;
+            endVisibility = View.VISIBLE;
+        } else {
+            startAlpha = 1f;
+            endAlpha = 0f;
+            startVisibility = View.VISIBLE;
+            endVisibility = View.GONE;
+        }
+        AnimatorSet mAnimationSet = new AnimatorSet();
+
+        final ObjectAnimator fadeView = ObjectAnimator.ofFloat(v, View.ALPHA,  startAlpha, endAlpha);
+
+        fadeView.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                v.setVisibility(startVisibility);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                v.setVisibility(endVisibility);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        });
+        //fadeView.setInterpolator(new LinearInterpolator());
+        fadeView.setInterpolator(new AccelerateInterpolator());
+
+        mAnimationSet.setDuration(time);
+        mAnimationSet.play(fadeView);
+        mAnimationSet.start();
+    }
+
+    static void faderAnimationCustomAlpha(final View v, int time, float startAlpha, float endAlpha) {
+        final int startVisibility;
+        final int endVisibility;
+
+        if (endAlpha>=startAlpha) {
+            startVisibility = View.VISIBLE;
+            endVisibility = View.VISIBLE;
+        } else {
+            startVisibility = View.VISIBLE;
+            endVisibility = View.GONE;
+        }
+        AnimatorSet mAnimationSet = new AnimatorSet();
+
+        final ObjectAnimator fadeView = ObjectAnimator.ofFloat(v, View.ALPHA,  startAlpha, endAlpha);
+
+        fadeView.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                v.setVisibility(startVisibility);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                v.setVisibility(endVisibility);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        });
+        fadeView.setInterpolator(new AccelerateInterpolator());
+
+        mAnimationSet.setDuration(time);
+        mAnimationSet.play(fadeView);
+        mAnimationSet.start();
+    }
+
     static AlphaAnimation setUpAnimation(View v, int presoTransitionTime, float start, float end) {
         AlphaAnimation aa = new AlphaAnimation(start,end);
         if (start>end) {
-            aa.setInterpolator(new DecelerateInterpolator());
-        } else {
+            // Fade out
             aa.setInterpolator(new AccelerateInterpolator());
+        } else {
+            // Fade in
+            aa.setInterpolator(new DecelerateInterpolator());
         }
         aa.setDuration(presoTransitionTime);
         aa.setAnimationListener(new CustomAnimations.MyAnimationListener(v,start,end));

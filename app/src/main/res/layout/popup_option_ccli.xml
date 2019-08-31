@@ -113,7 +113,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_share_variant_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_export"
+                android:text="@string/export"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 

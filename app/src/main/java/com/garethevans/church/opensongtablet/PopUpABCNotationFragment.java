@@ -32,21 +32,10 @@ public class PopUpABCNotationFragment extends DialogFragment {
         return frag;
     }
 
-    public interface MyInterface {
-        void refreshAll();
-    }
-
     @Override
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
-        //mListener = (MyInterface) activity;
         super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        //mListener = null;
-        super.onDetach();
     }
 
     @Override
@@ -73,7 +62,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
     }
 
     private WebView abcWebView;
-    Preferences preferences;
+    private Preferences preferences;
 
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
@@ -165,7 +154,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
         return V;
     }
 
-    public void doSave() {
+    private void doSave() {
         // Try to get the text
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             abcWebView.evaluateJavascript("getTextVal()", null);
@@ -237,9 +226,6 @@ public class PopUpABCNotationFragment extends DialogFragment {
                 PopUpEditSongFragment.prepareSongXML();
                 PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
                 try {
-                    /*if (mListener!=null) {
-                        mListener.refreshAll();
-                    }*/
                     dismiss();
                 } catch (Exception e) {
                     Log.d("d","Problem closing");

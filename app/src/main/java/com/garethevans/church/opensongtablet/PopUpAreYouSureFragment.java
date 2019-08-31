@@ -14,8 +14,7 @@ import android.widget.TextView;
 
 public class PopUpAreYouSureFragment extends DialogFragment {
 
-    static String dialog;
-    Preferences preferences;
+    private static String dialog;
 
     static PopUpAreYouSureFragment newInstance(String getdialog) {
         dialog = getdialog;
@@ -122,7 +121,7 @@ public class PopUpAreYouSureFragment extends DialogFragment {
             }
         });
 
-        preferences = new Preferences();
+        Preferences preferences = new Preferences();
 
         TextView areyousurePrompt = V.findViewById(R.id.areyousurePrompt);
         areyousurePrompt.setText(dialog);

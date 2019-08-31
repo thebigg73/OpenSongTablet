@@ -19,7 +19,7 @@
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:gravity="center"
-            android:text="@string/options_options"
+            android:text="@string/options"
             style="@style/MyMenuHeadingText" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -58,7 +58,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_format_list_numbers_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_set"
+                android:text="@string/set"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
@@ -71,7 +71,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_music_note_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song"
+                android:text="@string/song"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
@@ -110,7 +110,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_monitor_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_display"
+                android:text="@string/display"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
@@ -123,7 +123,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_fingerprint_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_gesturesandmenus"
+                android:text="@string/gesturesandmenus"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
@@ -149,7 +149,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_sd_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_storage"
+                android:text="@string/storage"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
@@ -162,7 +162,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_google_nearby_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_connections"
+                android:text="@string/connections_connect"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 android:visibility="visible"/>
@@ -190,7 +190,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_remote_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_modes"
+                android:text="@string/choose_app_mode"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 android:visibility="visible"/>
@@ -256,7 +256,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_information_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_other"
+                android:text="@string/other"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 

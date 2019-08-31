@@ -41,10 +41,9 @@ public class PopUpMediaStoreFragment extends DialogFragment {
     private SeekBar scrubbar_SeekBar;
     private TextView scrubbar_TextView;
     private int mptotaltimesecs = 0;
-    String[] from;
-    int[] to;
+    private String[] from;
+    private int[] to;
     private Handler seekHandler;
-    Preferences preferences;
 
     static PopUpMediaStoreFragment newInstance() {
         PopUpMediaStoreFragment frag;
@@ -52,7 +51,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
         return frag;
     }
 
-    private Uri sourceUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+    private final Uri sourceUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,7 +84,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        Preferences preferences = new Preferences();
 
         from = new String[] {MediaStore.MediaColumns.TITLE};
         to = new int[] {android.R.id.text1};
@@ -165,7 +164,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
         return V;
     }
 
-    Runnable run = new Runnable() {
+    private final Runnable run = new Runnable() {
         @Override
         public void run() {
             seekUpdate();

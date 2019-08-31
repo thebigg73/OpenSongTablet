@@ -27,9 +27,6 @@ public class PopUpSongDetailsFragment extends DialogFragment {
 
     private MyInterface mListener;
 
-    ProcessSong processSong;
-    Preferences preferences;
-
     @Override
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
@@ -73,8 +70,8 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        processSong = new ProcessSong();
-        preferences = new Preferences();
+        ProcessSong processSong = new ProcessSong();
+        Preferences preferences = new Preferences();
 
         Button editSongDetails = V.findViewById(R.id.editSongDetails);
         editSongDetails.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +104,7 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         k = k.replace(")","");
 
         // Get the capo key if it exitst
-        String ck = processSong.getCapoInfo(getActivity(),preferences);
+        String ck = processSong.getCapoInfo(getActivity(), preferences);
         if (!ck.equals("")) {
             ck = " (" + getString(R.string.edit_song_capo) + " " + ck + ")";
             k += ck;

@@ -30,43 +30,7 @@
     <item android:id="@+id/media_route_menu_item"
         android:title="Chromecast"
         app:actionProviderClass="androidx.mediarouter.app.MediaRouteActionProvider"
-        app:showAsAction="always" />
-
-<!--    <item android:id="@+id/song_share"
-        android:icon="@drawable/ic_share_variant_white_36dp"
-        android:title="@string/options_song_export"
-        app:showAsAction="ifRoom"/>-->
-
-<!--    <item android:id="@+id/youtube_websearch"
-        android:title="@string/youtube"
-        android:icon="@drawable/ic_youtube_play_white_36dp"
-        android:label="@string/youtube"
-        android:hint="@string/youtube"
-        app:showAsAction="never"/>-->
-
-<!--
-    <item android:id="@+id/web_search"
-        android:title="@string/websearch"
-        android:icon="@drawable/ic_cloud_white_36dp"
-        android:label="@string/websearch"
-        android:hint="@string/websearch"
-        app:showAsAction="never"/>
-    
-
-    <item android:id="@+id/perform_mode"
-        android:icon="@drawable/ic_microphone_variant_white_36dp"
-        android:title="@string/switchtoperformmode"
-        app:showAsAction="ifRoom"/>
-
-    <item android:id="@+id/stage_mode"
-        android:icon="@drawable/ic_lan_connect_white_36dp"
-        android:title="@string/switchtostagemode"
-        app:showAsAction="ifRoom"/>
-
-    <item android:id="@+id/present_mode"
-        android:icon="@drawable/ic_projector_white_36dp"
-        android:title="@string/switchtopresentmode"
-        app:showAsAction="ifRoom"/>
--->
+        app:showAsAction="always"
+        tools:ignore="HardcodedText" />
 
 </menu>

@@ -22,8 +22,6 @@ public class PopUpCrossFadeFragment extends DialogFragment {
         return frag;
     }
 
-    Preferences preferences;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -33,6 +31,8 @@ public class PopUpCrossFadeFragment extends DialogFragment {
             this.dismiss();
         }
     }
+
+    private Preferences preferences;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,16 +59,16 @@ public class PopUpCrossFadeFragment extends DialogFragment {
         // Initialise the views
         final SeekBar crossFadeSeekBar = V.findViewById(R.id.crossFadeSeekBar);
         crossFadeSeekBar.setMax(10);
-        crossFadeSeekBar.setProgress((FullscreenActivity.crossFadeTime/1000)-2);
+        int val = (preferences.getMyPreferenceInt(getActivity(),"padCrossFadeTime",8000)/1000);
+        crossFadeSeekBar.setProgress(val-2);
         final TextView crossFadeText = V.findViewById(R.id.crossFadeText);
-        String newtext = (FullscreenActivity.crossFadeTime/1000)+ " s";
+        String newtext = val+ " s";
         crossFadeText.setText(newtext);
 
         // Set Listeners
         crossFadeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                FullscreenActivity.crossFadeTime = (progress + 2) * 1000;
                 String newtext = (progress+2)+ "s";
                 crossFadeText.setText(newtext);
             }
@@ -79,7 +79,9 @@ public class PopUpCrossFadeFragment extends DialogFragment {
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                preferences.setMyPreferenceInt(getActivity(),"padCrossFadeTime",(seekBar.getProgress() +2)*1000);
+            }
         });
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 

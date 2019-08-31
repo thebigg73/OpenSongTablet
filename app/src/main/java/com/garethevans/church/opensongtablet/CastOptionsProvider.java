@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
-
 import com.google.android.gms.cast.framework.CastOptions;
 import com.google.android.gms.cast.framework.OptionsProvider;
 import com.google.android.gms.cast.framework.SessionProvider;
@@ -16,7 +15,6 @@ class CastOptionsProvider implements OptionsProvider {
                 .setReceiverApplicationId(context.getString(R.string.app_id)).build();
 
     }
-
 
     @Override
     public List<SessionProvider> getAdditionalSessionProviders(Context context) {

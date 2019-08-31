@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.garethevans.church.opensongtablet"
     android:installLocation="auto"
-    android:versionCode="165"
-    android:versionName="5.0.5">
+    android:versionCode="167"
+    android:versionName="5.0.7">
 
     <!--Overrides are for Sdk=12/13 but library specifiesv Sdk=14+-->
     <!--<uses-sdk
@@ -111,6 +111,8 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
 
         <activity

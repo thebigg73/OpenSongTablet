@@ -104,20 +104,21 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     static ArrayList<String> bibleVerses, bibleText;
     private ArrayAdapter<String> blank_array, aa, b_aa, c_aa, v_aa;
     private Spinner bibleFileSpinner, bibleBookSpinner, bibleChapterSpinner, bibleVerseFromSpinner, bibleVerseToSpinner;
-    FloatingActionButton closeMe, saveMe;
-    ProgressBar progressBar;
+    private FloatingActionButton closeMe;
+    private FloatingActionButton saveMe;
+    private ProgressBar progressBar;
     private TextView previewTextView;
     private String bible;
     private WebView webViewBibleDownload;
     private FloatingActionButton webViewCloseFAB;
-    View V;
+    private View V;
     private ScrollView xmlscrollview;
     private Uri bibleFile;
     private Uri downloadedFile;
     private int selectedItem;
 
-    StorageAccess storageAccess;
-    Preferences preferences;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
     private Bible bibleC;
     private boolean includeVersNums = false;
 
@@ -254,7 +255,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                 });
 
                 // Initialise the spinners
-                initialiseTheSpinners(true,true,true,true);
+                initialiseTheSpinners(true,true,true);
                 quickUpdate = null;
 
                 // Get a list of the bible files in the folder
@@ -305,7 +306,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                                 } else {
                                     // Blank line selected (0 or 2)
                                     preferences.setMyPreferenceString(getActivity(),"bibleCurrentFile","");
-                                    initialiseTheSpinners(false,true,true,true);
+                                    initialiseTheSpinners(false,true,true);
                                 }
                             }
 
@@ -385,7 +386,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                     @Override
                     public void run() {
                         progressBar.setVisibility(View.VISIBLE);
-                        initialiseTheSpinners(false,true,true,true);
+                        initialiseTheSpinners(false,true,true);
                         previewTextView.setText("");
                     }
                 });
@@ -439,7 +440,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                         previewTextView.setText("");
                     }
                 });
-                initialiseTheSpinners(false,false,true,true);
+                initialiseTheSpinners(false,false,true);
 
                 quickUpdate = null;
 
@@ -486,7 +487,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                     }
                 });
 
-                initialiseTheSpinners(false,false,false,true);
+                initialiseTheSpinners(false,false,false);
 
                 quickUpdate = null;
 
@@ -623,7 +624,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         }).start();
     }
 
-    public void doSave() {
+    private void doSave() {
         try {
             FullscreenActivity.whattodo = "customreusable_scripture";
             if (mListener != null) {
@@ -636,7 +637,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         }
     }
 
-    private void initialiseTheSpinners(final boolean bibles, final boolean books, final boolean chapters, final boolean verses) {
+    private void initialiseTheSpinners(final boolean bibles, final boolean books, final boolean chapters) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -670,19 +671,17 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                         }
                     });
                 }
-                if (verses) {
-                    Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            bibleVerseFromSpinner.setAdapter(blank_array);
-                            bibleVerseToSpinner.setAdapter(blank_array);
-                            bibleVerseFromSpinner.setOnItemSelectedListener(null);
-                            bibleVerseToSpinner.setOnItemSelectedListener(null);
-                            bibleVerseFromSpinner.setEnabled(false);
-                            bibleVerseToSpinner.setEnabled(false);
-                        }
-                    });
-                }
+                Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bibleVerseFromSpinner.setAdapter(blank_array);
+                        bibleVerseToSpinner.setAdapter(blank_array);
+                        bibleVerseFromSpinner.setOnItemSelectedListener(null);
+                        bibleVerseToSpinner.setOnItemSelectedListener(null);
+                        bibleVerseFromSpinner.setEnabled(false);
+                        bibleVerseToSpinner.setEnabled(false);
+                    }
+                });
             }
         }).start();
     }
@@ -765,7 +764,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
             storageAccess.deleteFile(getActivity(), newuri);
     }
 
-    private BroadcastReceiver onComplete = new BroadcastReceiver() {
+    private final BroadcastReceiver onComplete = new BroadcastReceiver() {
         public void onReceive(Context ctxt, Intent intent) {
             hideViewsIfNeeded(false);
             StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.wait);

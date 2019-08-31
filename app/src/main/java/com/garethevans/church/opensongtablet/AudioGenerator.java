@@ -7,7 +7,7 @@ import android.util.Log;
 
 class AudioGenerator {
 
-	private int sampleRate;
+	private final int sampleRate;
 	private AudioTrack audioTrack;
 
 	AudioGenerator(int sampleRate) {

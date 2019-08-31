@@ -67,7 +67,7 @@ public class PopUpScalingFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_scaling, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getResources().getString(R.string.options_options_scale));
+        title.setText(getResources().getString(R.string.autoscale_toggle));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override

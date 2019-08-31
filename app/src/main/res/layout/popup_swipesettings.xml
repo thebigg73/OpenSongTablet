@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/SwitchStyle"
-                android:text="@string/options_options_songswipe"
+                android:text="@string/song_swipe_toggle"
                 style="@style/MyHeadingText"
                 app:showText="false" />
 

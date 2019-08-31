@@ -64,7 +64,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
     private int total_counts = 0;
     private int metronomecolor;
 
-    Preferences preferences;
+    private Preferences preferences;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -234,7 +234,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
                         Metronome.metroTask.stop();
                     }
                 } else {
-                    StaticVariables.myToastMessage = getString(R.string.error_notset);
+                    StaticVariables.myToastMessage = getString(R.string.notset);
                     ShowToast.showToast(getActivity());
                 }
             }
@@ -245,7 +245,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         return V;
     }
 
-    public void doSave() {
+    private void doSave() {
         PopUpEditSongFragment.prepareSongXML();
         try {
             PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
@@ -253,7 +253,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
                     getResources().getString(R.string.ok);
         } catch (Exception e) {
             e.printStackTrace();
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.savesong) + " - " +
+            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.save) + " - " +
                     getActivity().getResources().getString(R.string.error);
         }
         ShowToast.showToast(getActivity());

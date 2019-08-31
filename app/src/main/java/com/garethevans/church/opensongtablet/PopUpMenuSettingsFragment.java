@@ -51,9 +51,8 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
     private TextView scalemenu_TextView;
     private TextView alphabeticalSize_TextView;
     private LinearLayout alphabeticalSizeGroup;
-    int pos;
-    String scale;
-    Preferences preferences;
+    private String scale;
+    private Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,9 +94,9 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         alphabeticalSize_TextView = V.findViewById(R.id.alphabeticalSize_TextView);
         alphabeticalSizeGroup = V.findViewById(R.id.alphabeticalSizeGroup);
 
-        pos = preferences.getMyPreferenceInt(getActivity(),"menuSize",250);
+        int pos = preferences.getMyPreferenceInt(getActivity(), "menuSize", 250);
         scale = pos + " px";
-        pos = (int) (((float)pos-150)/50.0f);
+        pos = (int) (((float) pos -150)/50.0f);
         scalemenu_SeekBar.setProgress(pos);
         scalemenu_TextView.setText(scale);
         gesturesMenuSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"swipeForMenus",true));

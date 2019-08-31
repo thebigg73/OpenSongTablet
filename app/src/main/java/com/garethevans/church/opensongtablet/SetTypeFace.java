@@ -6,8 +6,6 @@ import android.os.Handler;
 import androidx.core.provider.FontRequest;
 import androidx.core.provider.FontsContractCompat;
 import androidx.core.provider.FontsContractCompat.FontRequestCallback;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -214,7 +212,7 @@ class SetTypeFace {
 */
 
     void setUpAppFonts(Context c, Preferences preferences, Handler lyrichandler, Handler chordhandler,
-                       Handler presohandler, Handler presoinfohandler, Handler customhandler, Handler monohandler) {
+                       Handler presohandler, Handler presoinfohandler, Handler customhandler) {
         // Load up the user preferences
         String fontLyric = preferences.getMyPreferenceString(c, "fontLyric", "Lato");
         String fontChord = preferences.getMyPreferenceString(c, "fontChord", "Lato");
@@ -227,27 +225,27 @@ class SetTypeFace {
         if (fontLyric.equals("Lato")) {
             StaticVariables.typefaceLyrics = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
-            setChosenFont(c, preferences, fontLyric, "lyric", null, null, lyrichandler);
+            setChosenFont(c, preferences, fontLyric, "lyric", null, lyrichandler);
         }
         if (fontChord.equals("Lato")) {
             StaticVariables.typefaceChords = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
-            setChosenFont(c, preferences, fontChord, "chord", null, null, chordhandler);
+            setChosenFont(c, preferences, fontChord, "chord", null, chordhandler);
         }
         if (fontPreso.equals("Lato")) {
             StaticVariables.typefacePreso = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
-            setChosenFont(c, preferences, fontPreso, "preso", null, null, presohandler);
+            setChosenFont(c, preferences, fontPreso, "preso", null, presohandler);
         }
         if (fontPresoInfo.equals("Lato")) {
             StaticVariables.typefacePresoInfo = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
-            setChosenFont(c, preferences, fontPresoInfo, "presoinfo", null, null, presoinfohandler);
+            setChosenFont(c, preferences, fontPresoInfo, "presoinfo", null, presoinfohandler);
         }
         if (fontCustom.equals("Lato")) {
             StaticVariables.typefaceCustom = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
-            setChosenFont(c, preferences, fontCustom, "custom", null, null, customhandler);
+            setChosenFont(c, preferences, fontCustom, "custom", null, customhandler);
         }
 
         StaticVariables.typefaceMono = Typeface.MONOSPACE;
@@ -263,7 +261,7 @@ class SetTypeFace {
 
     private FontRequestCallback getFontRequestCallback(final Context c, final Preferences preferences, final String what,
                                                        final String fontname,
-                                                       final TextView textView, final ProgressBar progressBar) {
+                                                       final TextView textView) {
         return new FontRequestCallback() {
             @Override
             public void onTypefaceRetrieved(Typeface typeface) {
@@ -295,9 +293,6 @@ class SetTypeFace {
                 // If we are previewing the font, update the text and hide the progressBar (these will be null otherwise)
                 if (textView != null) {
                     textView.setTypeface(typeface);
-                }
-                if (progressBar != null) {
-                    progressBar.setVisibility(View.GONE);
                 }
             }
 
@@ -339,19 +334,19 @@ class SetTypeFace {
                 if (textView != null) {
                     textView.setTypeface(StaticVariables.typefaceCustom);
                 }
-                if (progressBar != null) {
-                    progressBar.setVisibility(View.GONE);
-                }
+
             }
         };
     }
 
     void setChosenFont(final Context c, final Preferences preferences, String fontnamechosen, String which,
-                       final TextView textView, final ProgressBar progressBar, Handler handler) {
-
+                       final TextView textView, Handler handler) {
+        if (handler==null) {
+            handler = new Handler();
+        }
         FontRequest fontRequest = getFontRequest(fontnamechosen);
         FontRequestCallback fontRequestCallback = getFontRequestCallback(c, preferences, which,
-                fontnamechosen, textView, progressBar);
+                fontnamechosen, textView);
         FontsContractCompat.requestFont(c, fontRequest, fontRequestCallback, handler);
     }
 

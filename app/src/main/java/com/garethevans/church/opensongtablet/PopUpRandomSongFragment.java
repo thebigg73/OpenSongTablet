@@ -62,8 +62,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
     private TextView foundSongFolder_TextView;
     private ListView chooseFolders_ListView;
     private boolean songisvalid = false;
-    StorageAccess storageAccess;
-    Preferences preferences;
+    private Preferences preferences;
     private ArrayList<String> foldernames;
 
     @Override
@@ -86,7 +85,6 @@ public class PopUpRandomSongFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        storageAccess = new StorageAccess();
         preferences = new Preferences();
         SongFolders songFolders = new SongFolders();
 

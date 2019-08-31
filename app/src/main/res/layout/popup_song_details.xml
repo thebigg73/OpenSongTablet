@@ -166,7 +166,7 @@
         android:layout_margin="8dp"
         android:background="@drawable/green_button"
         android:enabled="true"
-        android:text="@string/options_song_edit"
+        android:text="@string/edit"
         android:textColor="#fff" />
 
 </RelativeLayout>

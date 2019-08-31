@@ -29,7 +29,6 @@ public class PopUpAutoscrollFragment extends DialogFragment {
 
     public interface MyInterface {
         void pageButtonAlpha(String s);
-        void loadSong();
         void startAutoScroll();
         void stopAutoScroll();
         void prepareLearnAutoScroll();
@@ -55,12 +54,12 @@ public class PopUpAutoscrollFragment extends DialogFragment {
     private TextView popupautoscroll_delay_text;
     private EditText popupautoscroll_duration;
     private FloatingActionButton uselinkaudiolength_ImageButton;
-    Preferences preferences;
-    ProcessSong processSong;
+    private Preferences preferences;
+    private ProcessSong processSong;
 
     private boolean mStopHandler = false;
-    private Handler mHandler = new Handler();
-    Runnable runnable = new Runnable() {
+    private final Handler mHandler = new Handler();
+    private final Runnable runnable = new Runnable() {
         @Override
         public void run() {
             try {
@@ -222,7 +221,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         this.dismiss();
     }
 
-    public void doSave() {
+    private void doSave() {
         try {
             StaticVariables.mPreDelay = popupautoscroll_delay.getProgress()+"";
             StaticVariables.mDuration = popupautoscroll_duration.getText().toString();
@@ -233,12 +232,12 @@ public class PopUpAutoscrollFragment extends DialogFragment {
             }
             PopUpEditSongFragment.prepareSongXML();
             PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.savesong) + " - " +
+            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.save) + " - " +
                     getActivity().getResources().getString(R.string.ok);
             ShowToast.showToast(getActivity());
         } catch (Exception e) {
             e.printStackTrace();
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.savesong) + " - " +
+            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.save) + " - " +
                     getActivity().getResources().getString(R.string.error);
             ShowToast.showToast(getActivity());
         }

@@ -59,7 +59,7 @@ public class PopUpPedalsFragment extends DialogFragment {
     private Spinner pedallong6choice;
 
     private ArrayList<String> availableactions;
-    Preferences preferences;
+    private Preferences preferences;
 
     private int assignWhich = -1;
 
@@ -78,7 +78,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_pedals, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.options_options_pedal));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.footpedal));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,10 +176,10 @@ public class PopUpPedalsFragment extends DialogFragment {
         availableactions.add(getString(R.string.padPedalText) + " & " + getString(R.string.autoscrollPedalText) + " & " + getString(R.string.metronomePedalText));
 
         //12
-        availableactions.add(getString(R.string.options_song_edit));
+        availableactions.add(getString(R.string.edit));
 
         //13
-        availableactions.add(getString(R.string.options_options_theme));
+        availableactions.add(getString(R.string.choose_theme));
 
         //14
         availableactions.add(getString(R.string.autoscale));
@@ -643,7 +643,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         } else {
             t = getString(R.string.currentkeycode) + "=" + i;
         }
-        t = t + "\n" + getString(R.string.options_options_pedal);
+        t = t + "\n" + getString(R.string.footpedal);
         b.setText(t);
 
         b.setOnClickListener(new View.OnClickListener() {

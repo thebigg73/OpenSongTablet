@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
-            android:contentDescription="@string/options_song" />
+            android:contentDescription="@string/song" />
 
         <com.garethevans.church.opensongtablet.DrawNotes
             android:id="@+id/drawView"

@@ -16,17 +16,11 @@ import android.util.Log;
 
 public class BatteryMonitor extends BroadcastReceiver {
 
-    public static int level, scale, status, chargePlug;
-    public static IntentFilter ifilter;
-    public static Intent batteryStatus;
-    public static float batteryPct;
-    public static boolean usbCharge, acCharge, isCharging;
+    private static boolean isCharging;
 
     public interface MyInterface {
         void setUpBatteryMonitor();
     }
-
-    public static MyInterface mListener;
 
     @SuppressLint("UnsafeProtectedBroadcastReceiver")
     @Override
@@ -36,17 +30,13 @@ public class BatteryMonitor extends BroadcastReceiver {
             isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
                     status == BatteryManager.BATTERY_STATUS_FULL;
 
-            chargePlug = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
-            usbCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_USB;
-            acCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_AC;
-
             if (FullscreenActivity.mContext == null) {
                 FullscreenActivity.mContext = context;
             }
 
             if (FullscreenActivity.mContext != null) {
                 try {
-                    mListener = (MyInterface) FullscreenActivity.mContext;
+                    MyInterface mListener = (MyInterface) FullscreenActivity.mContext;
                     mListener.setUpBatteryMonitor();
                 } catch (Exception e) {
                     Log.d("BatteryMonitor", "Problem setting up the battery monitor");
@@ -57,26 +47,22 @@ public class BatteryMonitor extends BroadcastReceiver {
 
     public static float getBatteryStatus (Context context) {
 
-        ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        batteryStatus = context.registerReceiver(null, ifilter);
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = context.registerReceiver(null, ifilter);
 
         if (batteryStatus != null) {
-            level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-            scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+            int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+            int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
-            batteryPct = level / (float)scale;
+            float batteryPct = level / (float) scale;
 
             // Are we charging / charged?
-            status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+            int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
             isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
                     status == BatteryManager.BATTERY_STATUS_FULL;
 
-            // How are we charging?
-            chargePlug = batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
-            usbCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_USB;
-            acCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_AC;
-
             return batteryPct;
+
         } else {
             return 0;
         }

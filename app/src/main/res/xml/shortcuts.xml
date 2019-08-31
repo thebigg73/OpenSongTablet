@@ -4,9 +4,9 @@
         android:shortcutId="Performance"
         android:enabled="true"
         android:icon="@drawable/ic_microphone_variant_white_36dp"
-        android:shortcutShortLabel="@string/perform"
+        android:shortcutShortLabel="@string/performancemode"
         android:shortcutLongLabel="@string/performancemode"
-        android:shortcutDisabledMessage="@string/perform"
+        android:shortcutDisabledMessage="@string/performancemode"
         tools:targetApi="n_mr1">
         <intent
             android:action="android.intent.action.VIEW"
@@ -18,9 +18,9 @@
         android:shortcutId="Stage"
         android:enabled="true"
         android:icon="@drawable/ic_lan_connect_white_36dp"
-        android:shortcutShortLabel="@string/stage"
+        android:shortcutShortLabel="@string/stagemode"
         android:shortcutLongLabel="@string/stagemode"
-        android:shortcutDisabledMessage="@string/stage"
+        android:shortcutDisabledMessage="@string/stagemode"
         tools:targetApi="n_mr1">
         <intent
             android:action="android.intent.action.VIEW"
@@ -32,9 +32,9 @@
         android:shortcutId="Presentation"
         android:enabled="true"
         android:icon="@drawable/ic_projector_white_36dp"
-        android:shortcutShortLabel="@string/present"
+        android:shortcutShortLabel="@string/presentermode"
         android:shortcutLongLabel="@string/presentermode"
-        android:shortcutDisabledMessage="@string/present"
+        android:shortcutDisabledMessage="@string/presentermode"
         tools:targetApi="n_mr1">
         <intent
             android:action="android.intent.action.VIEW"

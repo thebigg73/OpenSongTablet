@@ -34,7 +34,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
 
     private MyInterface mListener;
 
-    Preferences preferences;
+    private Preferences preferences;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -51,7 +51,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
 
     private Spinner button1_spinner, button2_spinner, button3_spinner, button4_spinner;
     private Button showAll_Button;
-    View V;
+    private View V;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -161,17 +161,17 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         actionOptions.add("");
 
         //1
-        actionOptions.add(getResources().getString(R.string.options_song_edit));
+        actionOptions.add(getResources().getString(R.string.edit));
 
         //2,3,4,5
-        actionOptions.add(getResources().getString(R.string.options_options_theme));
-        actionOptions.add(getResources().getString(R.string.options_options_scale));
-        actionOptions.add(getResources().getString(R.string.options_options_fonts));
+        actionOptions.add(getResources().getString(R.string.choose_theme));
+        actionOptions.add(getResources().getString(R.string.autoscale_toggle));
+        actionOptions.add(getResources().getString(R.string.choose_fonts));
         actionOptions.add(getResources().getString(R.string.profile));
 
         //6,7
-        actionOptions.add(getResources().getString(R.string.options_options_gestures));
-        actionOptions.add(getResources().getString(R.string.options_options_pedal));
+        actionOptions.add(getResources().getString(R.string.custom_gestures));
+        actionOptions.add(getResources().getString(R.string.footpedal));
 
         //8,9,10,11
         actionOptions.add(getResources().getString(R.string.transpose));
@@ -285,7 +285,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         void openFragment();
     }
 
-    public void doSave() {
+    private void doSave() {
         preferences.setMyPreferenceString(getActivity(),"pageButtonCustom1Action", decideOnItemText(button1_spinner.getSelectedItemPosition()));
         preferences.setMyPreferenceString(getActivity(),"pageButtonCustom2Action", decideOnItemText(button2_spinner.getSelectedItemPosition()));
         preferences.setMyPreferenceString(getActivity(),"pageButtonCustom3Action", decideOnItemText(button3_spinner.getSelectedItemPosition()));

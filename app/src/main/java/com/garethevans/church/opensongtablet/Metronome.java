@@ -16,7 +16,7 @@ class Metronome {
 	private double beatSound, sound;
     private boolean play = true;
 	
-	private AudioGenerator audioGenerator = new AudioGenerator(8000);
+	private final AudioGenerator audioGenerator = new AudioGenerator(8000);
     private double[] soundTickArray, soundTockArray, silenceSoundArray;
 	private int currentBeat = 1;
 
@@ -100,7 +100,7 @@ class Metronome {
 			silenceSoundArray[i] = 0;
 	}
 	
-	public void play(String pan, float vol) {
+	private void play(String pan, float vol) {
 		calcSilence();
 		do {
 			if(currentBeat == 1) {
@@ -116,7 +116,7 @@ class Metronome {
 		} while(play);
 	}
 	
-	public void stop() {
+	private void stop() {
 		play = false;
 		audioGenerator.destroyAudioTrack();
 	}
@@ -125,7 +125,7 @@ class Metronome {
 		return PopUpMetronomeFragment.bpm;
 	}
 
-	void setBpm(int bpm) {
+	private void setBpm(int bpm) {
 		this.bpm = bpm;
 	}
 
@@ -152,7 +152,7 @@ class Metronome {
 		this.sound = sound2;
 	}
 
-	public void setVolume (float metrovol_set) {
+	private void setVolume(float metrovol_set) {
 		this.metrovol = metrovol_set;
 	}
 	public float getVolume () {
@@ -290,14 +290,13 @@ class Metronome {
 	        this.showvisual = showvis;
         }
 
-        boolean on = false;
-        int beatmultiplier = FullscreenActivity.noteValue;
-        long time_in_millisecs = (long) (((60.0f / (float) PopUpMetronomeFragment.bpm) * (4.0f / (float) beatmultiplier))* 1000);
+        final int beatmultiplier = FullscreenActivity.noteValue;
+        final long time_in_millisecs = (long) (((60.0f / (float) PopUpMetronomeFragment.bpm) * (4.0f / (float) beatmultiplier))* 1000);
         long oldtime = System.currentTimeMillis();
         long nexttime = oldtime + time_in_millisecs;
-        boolean showvisual;
+        final boolean showvisual;
 
-        int metronomeColor;
+        final int metronomeColor;
 
         @Override
         protected String doInBackground(Void... voids) {
@@ -341,8 +340,8 @@ class Metronome {
     static class MetronomeAsyncTask extends AsyncTask<Void, Void, String> {
 
         Metronome metronome;
-        String pan;
-        float vol;
+        final String pan;
+        final float vol;
 
         MetronomeAsyncTask(String pan, float vol) {
             metronome = new Metronome(pan,vol);
@@ -442,7 +441,7 @@ class Metronome {
             }
         }
 
-        public void play(String pan,float vol) {
+        void play(String pan, float vol) {
             if (metronome != null) {
                 metronome.play(pan,vol);
                 metronome = null;

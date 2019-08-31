@@ -32,7 +32,7 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
 
     private MyInterface mListener;
 
-    Preferences preferences;
+    private Preferences preferences;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -280,7 +280,7 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         int s = (int) preferences.getMyPreferenceFloat(getActivity(),"clockTextSize",9.0f) - 6;
         clockTextSize.setProgress(s);
     }
-    public int getClockTextSize() {
+    private int getClockTextSize() {
         // Min size is 6, this is 0 on the seekBar
         return clockTextSize.getProgress() + 6;
     }

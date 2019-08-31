@@ -82,15 +82,14 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
     private TextView size_TextView;
     private int screenshot_width;
     private int screenshot_height;
-    float scale;
-    private float off_alpha = 0.4f;
-    private int isvis = View.VISIBLE;
-    private int isgone = View.GONE;
+    private final float off_alpha = 0.4f;
+    private final int isvis = View.VISIBLE;
+    private final int isgone = View.GONE;
 
-    StorageAccess storageAccess;
-    Preferences preferences;
-    ProcessSong processSong;
-    Uri uri;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
+    private ProcessSong processSong;
+    private Uri uri;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -497,14 +496,15 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         float max_w_scale = (float)wa/(float)w;
         float max_h_scale = (float)ha/(float)h;
 
+        float scale;
         if (max_h_scale>max_w_scale) {
             scale = max_w_scale;
         } else {
             scale = max_h_scale;
         }
 
-        screenshot_width = (int) (w*scale);
-        screenshot_height = (int) (h*scale);
+        screenshot_width = (int) (w* scale);
+        screenshot_height = (int) (h* scale);
 
         RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(screenshot_width,screenshot_height);
         RelativeLayout.LayoutParams rlp2 = new RelativeLayout.LayoutParams(screenshot_width,screenshot_height);
@@ -512,7 +512,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         drawView.setLayoutParams(rlp2);
     }
 
-    public void doSave() {
+    private void doSave() {
         AsyncTask<Object,Void,Void> do_save = new DoSave();
         try {
             do_save.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

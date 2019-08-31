@@ -22,11 +22,6 @@ public class PopUpWebViewFragment extends DialogFragment {
         return frag;
     }
 
-    TextView textview;
-    String mTitle = "";
-
-    Preferences preferences;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -40,6 +35,7 @@ public class PopUpWebViewFragment extends DialogFragment {
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        String mTitle;
         switch (FullscreenActivity.whattodo) {
             case "errorlog":
                 mTitle = getResources().getString(R.string.search_log);
@@ -56,7 +52,7 @@ public class PopUpWebViewFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_webview, container, false);
 
-        preferences = new Preferences();
+        Preferences preferences = new Preferences();
 
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(mTitle);
@@ -73,7 +69,7 @@ public class PopUpWebViewFragment extends DialogFragment {
         saveMe.hide();
 
         WebView webview = V.findViewById(R.id.webview);
-        textview = V.findViewById(R.id.textview);
+        TextView textview = V.findViewById(R.id.textview);
 
         webview.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -125,6 +121,5 @@ public class PopUpWebViewFragment extends DialogFragment {
     public void onCancel(DialogInterface dialog) {
         this.dismiss();
     }
-
 
 }

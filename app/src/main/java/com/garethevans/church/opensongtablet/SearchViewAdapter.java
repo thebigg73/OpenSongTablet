@@ -16,13 +16,13 @@ import java.util.ArrayList;
 
 class SearchViewAdapter extends BaseAdapter implements Filterable {
 
-    Context context;
+    private final Context context;
     private ArrayList<SQLite> searchlist;
-    private ArrayList<SQLite> mStringFilterList;
+    private final ArrayList<SQLite> mStringFilterList;
     private ValueFilter valueFilter;
-    String what;
+    private final String what;
     //private HashMap<String, Integer> mapIndex;
-    String[] sections;
+    //String[] sections;
 
     SearchViewAdapter(Context context , ArrayList<SQLite> searchlist, String what) {
         this.context = context;
@@ -224,7 +224,7 @@ class SearchViewAdapter extends BaseAdapter implements Filterable {
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();
 
-            if (constraint != null && constraint.toString()!=null && constraint.length() > 0) {
+            if (constraint != null && constraint.length() > 0) {
                 ArrayList<SQLite> filterList = new ArrayList<>();
                 for (int i = 0; i < mStringFilterList.size(); i++) {
 

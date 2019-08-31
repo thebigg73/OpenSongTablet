@@ -79,7 +79,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_transpose_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_transpose"
+                android:text="@string/transpose"
                 android:textColor="#fff"
             android:textSize="12sp"
             tools:ignore="RtlHardcoded" />
@@ -94,7 +94,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_sharp_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_sharp"
+                android:text="@string/chords_sharp"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 tools:ignore="RtlHardcoded" />
@@ -109,7 +109,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_flat_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_flat"
+                android:text="@string/chords_flat"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 tools:ignore="RtlHardcoded" />
@@ -230,7 +230,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_chordformat_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_options_chordformat"
+                android:text="@string/choose_chordformat"
                 android:textColor="#fff"
             android:textSize="12sp"
             tools:ignore="RtlHardcoded" />
@@ -245,7 +245,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_chordconvert_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_convert"
+                android:text="@string/chord_convert"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 tools:ignore="RtlHardcoded" />

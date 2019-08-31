@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/green_button"
         android:layout_margin="8dp"
-        android:text="@string/set_edit"
+        android:text="@string/edit"
         android:layout_above="@+id/sendAll"/>
 
     <Button

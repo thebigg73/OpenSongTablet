@@ -9,7 +9,7 @@ import java.io.PushbackInputStream;
 
 class UnicodeBOMInputStream extends InputStream {
 
-    public static final class BOM {
+    static final class BOM {
 
         static final BOM NONE = new BOM(new byte[]{}, "UTF-8");
 
@@ -47,7 +47,7 @@ class UnicodeBOMInputStream extends InputStream {
         }
 
         //Returns the bytes corresponding to this <code>BOM</code> value.
-        public final byte[] getBytes() {
+        /*public final byte[] getBytes() {
             final int length = bytes.length;
             final byte[] result = new byte[length];
 
@@ -55,7 +55,7 @@ class UnicodeBOMInputStream extends InputStream {
             System.arraycopy(bytes, 0, result, 0, length);
 
             return result;
-        }
+        }*/
 
         @SuppressLint("Assert")
         private BOM(final byte[] bom, final String description) {

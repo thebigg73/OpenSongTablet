@@ -1,13 +1,9 @@
 <resources>
 
     <color name="colorAccent">#ff0000</color>
-    <color name="colorControlActivated">#f00</color>
     <color name="toolbar">#232333</color>
     <color name="accent">#ff0000</color>
     <color name="text">#FFFFFF</color>
-    <color name="tint">#0000ff</color>
-    <color name="icons">#FFFFFF</color>
-    <color name="divider">#B6B6B6</color>
     <color name="black">#000000</color>
     <color name="purple">#452277</color>
     <color name="blue">#0000aa</color>
@@ -17,7 +13,6 @@
     <color name="dark">#222233</color>
     <color name="white">#FFFFFF</color>
     <color name="yellow">#FFFF00</color>
-    <color name="tranparent">#00ffffff</color>
     <color name="popupcolor">#232333</color>
 
 </resources>

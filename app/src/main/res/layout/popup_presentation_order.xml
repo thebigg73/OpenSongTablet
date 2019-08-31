@@ -61,7 +61,7 @@
                 android:minHeight="0dp"
                 android:minWidth="0dp"
                 android:padding="5dp"
-                android:text="@string/options_song_delete"
+                android:text="@string/delete"
                 android:textAppearance="@android:style/TextAppearance.Small"
                 android:textColor="#fff" />
 

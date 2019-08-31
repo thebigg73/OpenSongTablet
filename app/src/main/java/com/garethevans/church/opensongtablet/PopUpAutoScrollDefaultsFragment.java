@@ -32,7 +32,7 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
     private EditText default_delaymax_EditText;
     private EditText default_duration_EditText;
     private RadioButton autoscroll_default_RadioButton;
-    Preferences preferences;
+    private Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -122,7 +122,7 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
         return V;
     }
 
-    public void doSave(){
+    private void doSave(){
         int i;
         try {
             String s = default_delaymax_EditText.getText().toString();

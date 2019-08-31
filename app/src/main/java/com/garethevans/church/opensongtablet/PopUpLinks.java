@@ -5,10 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.util.Log;
@@ -31,10 +30,10 @@ public class PopUpLinks extends DialogFragment {
     private EditText linkAudio_EditText;
     private EditText linkOther_EditText;
 
-    StorageAccess storageAccess;
-    Preferences preferences;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
 
-    Uri uri;
+    private Uri uri;
 
     static PopUpLinks newInstance() {
         PopUpLinks frag;
@@ -45,7 +44,6 @@ public class PopUpLinks extends DialogFragment {
     public interface MyInterface {
         void refreshAll();
         void pageButtonAlpha(String s);
-        void openFragment();
     }
 
     private MyInterface mListener;
@@ -55,11 +53,6 @@ public class PopUpLinks extends DialogFragment {
     public void onAttach(Activity activity) {
         mListener = (MyInterface) activity;
         super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     @Override
@@ -180,7 +173,7 @@ public class PopUpLinks extends DialogFragment {
                             Uri.parse(linkYouTube_EditText.getText().toString())));
                 } catch (Exception e) {
                     e.printStackTrace();
-                    StaticVariables.myToastMessage = getResources().getString(R.string.error_notset);
+                    StaticVariables.myToastMessage = getResources().getString(R.string.notset);
                     ShowToast.showToast(getActivity());
                 }
             }
@@ -198,7 +191,7 @@ public class PopUpLinks extends DialogFragment {
                             Uri.parse(weblink)));
                 } catch (Exception e) {
                     e.printStackTrace();
-                    StaticVariables.myToastMessage = getResources().getString(R.string.error_notset);
+                    StaticVariables.myToastMessage = getResources().getString(R.string.notset);
                     ShowToast.showToast(getActivity());
                 }
             }
@@ -231,7 +224,7 @@ public class PopUpLinks extends DialogFragment {
                         e.printStackTrace();
                     }
                 } else {
-                    StaticVariables.myToastMessage = getResources().getString(R.string.error_notset);
+                    StaticVariables.myToastMessage = getResources().getString(R.string.notset);
                     ShowToast.showToast(getActivity());
                 }
             }
@@ -261,7 +254,7 @@ public class PopUpLinks extends DialogFragment {
                         e.printStackTrace();
                     }
                 } else {
-                    StaticVariables.myToastMessage = getResources().getString(R.string.error_notset);
+                    StaticVariables.myToastMessage = getResources().getString(R.string.notset);
                     ShowToast.showToast(getActivity());
                 }
             }
@@ -272,7 +265,7 @@ public class PopUpLinks extends DialogFragment {
         return V;
     }
 
-    public void doSave() {
+    private void doSave() {
         // Get the values from the page
         StaticVariables.mLinkYouTube = linkYouTube_EditText.getText().toString();
         StaticVariables.mLinkWeb = linkWeb_EditText.getText().toString();
@@ -286,7 +279,7 @@ public class PopUpLinks extends DialogFragment {
             mListener.refreshAll();
             dismiss();
         } catch (Exception e) {
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.savesong) + " - " +
+            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.save) + " - " +
                     getActivity().getResources().getString(R.string.error);
             ShowToast.showToast(getActivity());
             e.printStackTrace();
@@ -333,7 +326,7 @@ public class PopUpLinks extends DialogFragment {
                     String uriPath = uri.getPath();
                     if (uriPath != null && uriPath.contains("OpenSong/")) {
                         // This will be a localised file
-                        uriPath = storageAccess.fixUriToLocal(getActivity(),uri);
+                        uriPath = storageAccess.fixUriToLocal(uri);
 
                     } else {
                         uriPath = uri.toString();

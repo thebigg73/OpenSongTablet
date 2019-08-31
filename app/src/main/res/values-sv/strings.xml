@@ -1,18 +1,183 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-
+    <string name="action">"Handling"</string>
+    <string name="action_search">"Söka låtar"</string>
+    <string name="action_settings">"OpenSong-inställningar"</string>
     <string name="actionbar">"Menyraden info"</string>
+    <string name="actions">"Handlingar"</string>
+    <string name="activated">"Aktiverad / körning"</string>
+    <string name="add_custom_slide">"Lägg till anpassad bild för att ställa in"</string>
+    <string name="add_reusable">"Spara som en återanvändbar bild"</string>
+    <string name="add_song_to_set">"Lägg till aktuell sång för att ställa in"</string>
+    <string name="addedtoset">"Har lagts till i slutet av din nuvarande uppsättning."</string>
+    <string name="alert">"Varna"</string>
+    <string name="alert_text">"Ange meddelandetext"</string>
+    <string name="alphabetical">Alfabetiskt låtindex</string>
+    <string name="app_name">"OpenSongApp"</string>
+    <string name="areyousure">"Är du säker?"</string>
+    <string name="ask">"Fråga varje gång"</string>
+    <string name="autoscale">"Autoscale"</string>
+    <string name="autoscale_toggle">"Växla autoskala"</string>
+    <string name="autoscroll">"Auto-scrolla"</string>
+    <string name="autoscrollPedalText">"Starta / stoppa autoscroll"</string>
+    <string name="autoscroll_default_or_prompt">"Om du inte har angett en låtperiod bör standardvärdena användas eller vill du bli frågad varje gång?"</string>
+    <string name="autoscroll_time">"Autoscroll fördröjningstid"</string>
+    <string name="autoshow_highlight">"Autoshow highlighter anteckningar"</string>
+    <string name="autostart_autoscroll">"Autostart autoscroll"</string>
+    <string name="autostartmetronome">"Autostart-metronom"</string>
+    <string name="autostartpad">"Autostart pad"</string>
+    <string name="average">"Genomsnitt"</string>
+    <string name="back">"Tillbaka"</string>
+    <string name="backing_track">"Välj backing track"</string>
+    <string name="backup_error">"Ingen OpenSongApp-backupfil finns i OpenSong-mappen"</string>
+    <string name="backup_export">"Exportera OpenSongApp-säkerhetskopiering"</string>
+    <string name="backup_import">"Importera OpenSongApp-säkerhetskopiering"</string>
+    <string name="backup_info">"OpenSongApp Backup-fil"</string>
+    <string name="backup_success">"OpenSongApp backup skapad"</string>
+    <string name="backupnow">"Skapa en säkerhetskopia nu"</string>
+    <string name="bad_time">"Bildtid har inte ställts in korrekt"</string>
+    <string name="banjo4">"Banjo (4)"</string>
+    <string name="banjo5">"Banjo (5)"</string>
     <string name="battery">"Batteri"</string>
-    <string name="text">"Text"</string>
-    <string name="timeformat">"24h"</string>
-
-    <string name="scrollbuttons">"Rullningsinställningar"</string>
-    <string name="scrollbuttons_distance">"Rulla beloppet"</string>
-    <string name="speed">"Fart"</string>
-    <string name="swipe">"Rita in inställningar"</string>
-    <string name="swipe_allowance">"Vertikal rörelse tillåten"</string>
-    <string name="swipe_distance">"Dra avstånd"</string>
-
+    <string name="bibleXML">"OpenSong XML Bible"</string>
+    <string name="bible_search">"Fras eller vers att söka"</string>
+    <string name="bible_translation">"Bibelversionskod (t.ex. NIV, MSG)"</string>
+    <string name="black_screen">"Svart skärm"</string>
+    <string name="book">"bok"</string>
+    <string name="bottom">"Botten"</string>
+    <string name="bridge_background">"Bro bakgrund"</string>
+    <string name="camera">"Kamera"</string>
+    <string name="cancel">"Annullera"</string>
+    <string name="capo_color">"Capo typsnitt"</string>
+    <string name="capo_style">"Capo fret som tal"</string>
+    <string name="capo_toggle_bothcapo">"Visa både capo och native ackord om det är tillgängligt"</string>
+    <string name="category">"Kategori"</string>
+    <string name="cavaquinho">"cavaquinho"</string>
+    <string name="ccli_automatic">"Spela in användningsstatistik automatiskt"</string>
+    <string name="ccli_church">"Kyrkans namn"</string>
+    <string name="ccli_licence">"Licensnummer"</string>
+    <string name="ccli_reset">"Återställ CCLI-logg"</string>
+    <string name="ccli_view">"Visa CCLI-logg"</string>
+    <string name="changestorage">"Ändra lagringsplats"</string>
+    <string name="chapter">"Kapitel"</string>
+    <string name="choose_app_mode">"Välj appläge"</string>
+    <string name="choose_chordformat">"Välj ackordformat"</string>
+    <string name="choose_fonts">"Ändra teckensnitt"</string>
+    <string name="choose_fontsize">"Välj teckenstorlek"</string>
+    <string name="choose_image1">"Välj bakgrundsbild 1"</string>
+    <string name="choose_image2">"Välj bakgrundsbild 2"</string>
+    <string name="choose_theme">"Byt tema"</string>
+    <string name="choose_video1">"Välj bakgrundsvideo 1"</string>
+    <string name="choose_video2">"Välj bakgrunds video 2"</string>
+    <string name="choosechordfont">"Välj ackordfont"</string>
+    <string name="choosechordformat">"Välj ackordformat (viktigt när du överför en låt)"</string>
+    <string name="choosefolder">"Välj mapp för att spara fil i"</string>
+    <string name="choosefolders">"Välj mappar"</string>
+    <string name="chooselyricfont">"Välj lyrisk typsnitt"</string>
+    <string name="choosesongname">"Välj ett namn för den här låten"</string>
+    <string name="chord_color">"Ackord typsnitt"</string>
+    <string name="chord_convert">"Konvertera sång till mitt föredragna ackordformat"</string>
+    <string name="chordformat_default">"Anta alltid att låtar finns i mitt föredragna ackordformat"</string>
+    <string name="chordiesearch">"Online sökning på Chordie.com"</string>
+    <string name="chordline_scale">"Skala ackord"</string>
+    <string name="chordpro_false">"Ingen ChordPro-låt upptäckt!"</string>
+    <string name="chordproprogress">"Letar du efter ChordPro-låtdata på sidan …"</string>
+    <string name="chords">"Chords"</string>
+    <string name="chords_flat">"Använd b ackord"</string>
+    <string name="chords_sharp">"Använd # ackord"</string>
+    <string name="chorus_background">"Kor bakgrund"</string>
+    <string name="colorchooser">"Färgväljare"</string>
+    <string name="comment_background">"Kommentar bakgrund"</string>
+    <string name="commentline_scale">"Skal kommentartext"</string>
+    <string name="connected_display">"Ansluten display"</string>
+    <string name="connections_broadcast">"Sändningsenhet:"</string>
+    <string name="connections_connect">"Anslut enheter"</string>
+    <string name="connections_connected">"Ansluten till"</string>
+    <string name="connections_disconnect">"Koppla ifrån"</string>
+    <string name="connections_discover">"Upptäck tjänster"</string>
+    <string name="connections_discover_stop">"Sluta upptäckt"</string>
+    <string name="connections_failure">"Anslutningsfel"</string>
+    <string name="connections_host">"Hittade värd:"</string>
+    <string name="connections_log">"Anslutningslogg (klicka för att rensa). Om du har några problem, återställ WiFi och starta om appen."</string>
+    <string name="connections_receive_host">"Ta emot värdlåt"</string>
+    <string name="connections_searching">"Sökande…"</string>
+    <string name="connections_service_start">"Starta service"</string>
+    <string name="connections_service_stop">"Stoppa tjänsten"</string>
+    <string name="connections_success">"Anslutning framgång"</string>
+    <string name="content">"Innehåll"</string>
+    <string name="convert_song">"Vänligen konvertera den här låten till OpenSong-format (genom att se det) innan du lägger till det i en uppsättning"</string>
+    <string name="converting">"Konvertera"</string>
+    <string name="createanewsong">"Skapa ny låt"</string>
+    <string name="createfoldererror">"Det uppstod ett fel vid skapandet av den nya mappen!"</string>
+    <string name="crossfade_time">"Cross-blekna tid"</string>
+    <string name="current_category">"Aktuell kategori"</string>
+    <string name="currentkeycode">"Nuvarande nyckelkod"</string>
+    <string name="currentset">"Aktuell uppsättning"</string>
+    <string name="currentstorage">"Nuvarande position"</string>
+    <string name="custom">"Beställnings"</string>
+    <string name="custom1_theme">"Anpassad 1"</string>
+    <string name="custom2_theme">"Anpassad 2"</string>
+    <string name="custom_background">"Anpassad taggbakgrund"</string>
+    <string name="custom_gestures">"Tilldela anpassade gester"</string>
+    <string name="custom_slide">"Anpassad bild (med innehåll)"</string>
+    <string name="customchords">"Anpassade ackord"</string>
+    <string name="customchords_code">"Anpassad kod"</string>
+    <string name="customchords_fret">"Etikett för första fret"</string>
+    <string name="customchords_name">"Ackordnamn"</string>
+    <string name="customchords_nochordname">"Akkordnamn har inte ställts in"</string>
+    <string name="customchords_noinstrument">"Instrumentet har inte valts"</string>
+    <string name="customchords_save">"Spara ny anpassad ackord till sång"</string>
+    <string name="customchords_saved">"För tillfället sparas anpassade ackord"</string>
+    <string name="customgestures">"Tilldela anpassade gester"</string>
+    <string name="customise_set_item">"Gör en uppsättning variabler"</string>
+    <string name="dark_theme">"Mörkt tema"</string>
+    <string name="date">"Datum"</string>
+    <string name="dec_autoscroll_speed">"Minska Autoscroll Speed"</string>
+    <string name="default_autoscroll">"Standard autoscroll gånger"</string>
+    <string name="delete">"Radera"</string>
+    <string name="device_list">"Tillgängliga enheter"</string>
+    <string name="dim">"Bakgrunden mörknar"</string>
+    <string name="display">"Visa"</string>
+    <string name="display_popups">"Anpassa popup-fönster"</string>
+    <string name="doubleTap">"Välj dubbelknappsåtgärd"</string>
+    <string name="download_new">"Klicka här för att ladda ner en ny Bibel"</string>
+    <string name="drawer_close">"Stänga"</string>
+    <string name="drawer_open">"Öppen"</string>
+    <string name="edit">"Redigera"</string>
+    <string name="edit_default_delaymax">"Max fördröjning (sekunder)"</string>
+    <string name="edit_save">"Spara ändringar"</string>
+    <string name="edit_song_aka">"Också känd som"</string>
+    <string name="edit_song_author">"Författare"</string>
+    <string name="edit_song_availabletags">"[V] = Vers, [V1] = Vers 1, [C] = Kor, [C1] för kör 1, [P] = Prechorus, [T] = Tagg, [B] = Bro, [… ) …] = Anpassad tagg. \ N Lyriska linjer börjar med ett mellanslag, ackordlinjer med fullstop, kommentarlinjer med en semikolon."</string>
+    <string name="edit_song_books">"Böcker sång tillhör"</string>
+    <string name="edit_song_capo">"Capo Fret"</string>
+    <string name="edit_song_capo_print">"Skriv ut kapokord"</string>
+    <string name="edit_song_ccli">"CCLI"</string>
+    <string name="edit_song_copyright">"Upphovsrättsinformation"</string>
+    <string name="edit_song_duration">"Song duration (sekunder)"</string>
+    <string name="edit_song_hymn">"Sångnummer"</string>
+    <string name="edit_song_key">"Nyckel"</string>
+    <string name="edit_song_keyline">"Nyckelrad"</string>
+    <string name="edit_song_lyrics">"Text"</string>
+    <string name="edit_song_midi">"MIDI-meddelande skickat från låt"</string>
+    <string name="edit_song_midi_index">"MIDI-meddelande för att aktivera låt"</string>
+    <string name="edit_song_notes">"Sånghäftor"</string>
+    <string name="edit_song_pitch">"Pitch pip notes för låt"</string>
+    <string name="edit_song_presentation">"Presentationsorder"</string>
+    <string name="edit_song_restrictions">"begränsningar"</string>
+    <string name="edit_song_tempo">"Tempo"</string>
+    <string name="edit_song_theme">"Tema"</string>
+    <string name="edit_song_timesig">"Tidssignatur"</string>
+    <string name="edit_song_title">"Sång titel"</string>
+    <string name="edit_song_user1">"Användare 1"</string>
+    <string name="edit_song_user2">"Användare 2"</string>
+    <string name="edit_song_user3">"Användare 3"</string>
+    <string name="editpdf">"Redigera i externt PDF-program"</string>
+    <string name="error">"Fel"</string>
+    <string name="error_missingsection">"Saknade avsnitt"</string>
+    <string name="existing">"Hitta tidigare installationsplatser för OpenSong-filer"</string>
+    <string name="exit">"Är du säker på att du vill avsluta programmet?"</string>
+    <string name="export">"Exportera"</string>
     <string name="export_chordpro">"ChordPro-låten (.cho)"</string>
     <string name="export_desktop">"Skrivbordsfil (ingen filtillägg)"</string>
     <string name="export_onsong">"OnSong Song (.onsong)"</string>
@@ -21,705 +186,90 @@
     <string name="export_png">"Skärmdump (.png)"</string>
     <string name="export_set">"OpenSongApp set (.osts)"</string>
     <string name="export_text">"Text (.txt)"</string>
-    <string name="floating_window">"Flytande fönster"</string>
-    <string name="timer_size">"Timerns storlek"</string>
-
-    <string name="autoscale">"Autoscale"</string>
-    <string name="camera">"Kamera"</string>
-    <string name="category">"Kategori"</string>
-    <string name="choosefolders">"Välj mappar"</string>
-    <string name="chordline_scale">"Skala ackord"</string>
-    <string name="connected_display">"Ansluten display"</string>
-    <string name="current_category">"Aktuell kategori"</string>
-    <string name="device_list">"Tillgängliga enheter"</string>
-    <string name="dim">"Bakgrunden mörknar"</string>
+    <string name="exportcurrentsong">"Dela den aktuella låten"</string>
+    <string name="exportsavedset">"Dela den sparade uppsättningen"</string>
     <string name="exportsongdirectory">"Exportera listan med låtar"</string>
-    <string name="fab_mini">"Mini sidoknappar"</string>
-    <string name="findnewsongs">"Hitta nya låtar"</string>
-    <string name="full">"Full"</string>
-    <string name="logo">"Logotyp"</string>
-    <string name="managesets">"Byt namn på uppsättningar"</string>
-    <string name="menu_settings">"Menyinställningar"</string>
-    <string name="menu_width">"Menybredd (procent av skärmens bredd)"</string>
-    <string name="my_band">"Importera bandprov låtar"</string>
-    <string name="my_church">"Importera kyrkans provlåtar"</string>
-    <string name="navigate">"Snabbnavigera"</string>
-    <string name="new_category">"Ny kategori"</string>
-    <string name="nowifidirect">"Tyvärr, den här enheten stöder inte WiFi direkt"</string>
-    <string name="options_connections">"Anslut enheter"</string>
-    <string name="options_connections_broadcast">"Sändningsenhet:"</string>
-    <string name="options_connections_connected">"Ansluten till"</string>
-    <string name="options_connections_host">"Hittade värd:"</string>
-    <string name="options_connections_log">"Anslutningslogg (klicka för att rensa). Om du har några problem, återställ WiFi och starta om appen."</string>
-    <string name="options_connections_disconnect">"Koppla ifrån"</string>
-    <string name="options_connections_discover_start">"Upptäck tjänster"</string>
-    <string name="options_connections_discover_stop">"Sluta upptäckt"</string>
-    <string name="options_connections_failure">"Anslutningsfel"</string>
-    <string name="options_connections_receive_host">"Ta emot värdlåt"</string>
-    <string name="options_connections_searching">"Sökande…"</string>
-    <string name="options_connections_service_start">"Starta service"</string>
-    <string name="options_connections_service_stop">"Stoppa tjänsten"</string>
-    <string name="options_connections_success">"Anslutning framgång"</string>
-    <string name="options_display_popups">"Anpassa popup-fönster"</string>
-    <string name="options_modes">"Välj appläge"</string>
-    <string name="pagebutton_custom_group">"Grupp anpassade knappar"</string>
-    <string name="pagebutton_extrainfo_group">"Grupp extra informationsknappar"</string>
-    <string name="pagebutton_group">"Gruppera alla sidoknappar"</string>
-    <string name="pagebutton_visibility">"Visa / dölj sidoknappar"</string>
-    <string name="perform">"Utföra"</string>
-    <string name="performancemode">"Prestanda läge"</string>
-    <string name="present">"Närvarande"</string>
-    <string name="presoFont">"Presentation typsnitt"</string>
-    <string name="presoInfoFont">"Presentation information typsnitt"</string>
-    <string name="presoFontShadow">"Presentation font skugga"</string>
-    <string name="quicklaunch_button1">"Knapp 1"</string>
-    <string name="quicklaunch_button2">"Knapp 2"</string>
-    <string name="quicklaunch_button3">"Knapp 3"</string>
-    <string name="quicklaunch_button4">"Knapp 4"</string>
-    <string name="quicklaunch_currentaction">"Aktuell åtgärd"</string>
-    <string name="quicklaunch_title">"Anpassa snabbstartknapparna"</string>
-    <string name="scale_style">"Skala stil"</string>
-    <string name="setquickcheck">"Visa inställda kryssrutor i låtmenyn"</string>
-    <string name="size_mini">"Mini"</string>
-    <string name="size_normal">"Vanligt"</string>
-    <string name="songsinfolder">"Song mapp"</string>
-    <string name="stage">"Skede"</string>
-    <string name="storage_notwritable">"Kan inte användas"</string>
-    <string name="subscription">"(Prenumeration krävs)"</string>
-    <string name="transparency">"Genomskinlighet"</string>
-    <string name="width">"Bredd"</string>
-
-    <string name="longPressUp">"Lång presspedal"</string>
-    <string name="longPressDown">"Lång tryck ner pedalen"</string>
-    <string name="longPressNext">"Lång tryck på nästa pedal"</string>
-    <string name="longPressPrevious">"Lång tryck på föregående pedal"</string>
-
-    <string name="songfolder">"Välj låtmapp"</string>
-    <string name="stagemode">"Scenläge"</string>
-    <string name="switchtostagemode">"Byt till scenläge"</string>
-    <string name="toobig">"Vänligen byt autoskala på för png / pdf-export"</string>
-    <string name="showcapo">"Visa capo ackord"</string>
-    <string name="showchords">"Visa ackord"</string>
-    <string name="showlyrics">"Visa texter"</string>
-    <string name="backup_export">"Exportera OpenSongApp-säkerhetskopiering"</string>
-    <string name="backup_info">"OpenSongApp Backup-fil"</string>
-    <string name="backup_success">"OpenSongApp backup skapad"</string>
-    <string name="backup_import">"Importera OpenSongApp-säkerhetskopiering"</string>
-    <string name="backup_error">"Ingen OpenSongApp-backupfil finns i OpenSong-mappen"</string>
-    <string name="processing">"Filerna behandlas"</string>
-    <string name="success">"Framgång"</string>
-    <string name="error">"Fel"</string>
-    <string name="takeawhile">"Det kan ta lite tid!"</string>
-
-    <string name="websearch">"Sök internet för den här låten"</string>
     <string name="extra">"Extra information"</string>
-    <string name="minfontsize">"Föredragen autoskala typstorlek"</string>
-    <string name="override_scale_explanation">"Om autoscale-teckensnittstorleken är mindre än önskad minsta teckensnittstorlek, vill du att appen ska åsidosättas till en annan skaleringsmetod? Användning av dessa alternativ kan tvinga dig att rulla horisontellt och vertikalt i en låt"</string>
-    <string name="override_fullautoscale">"Åsidosätt fullständig autoskala till bredd bara"</string>
-    <string name="override_widthautoscale">"Åsidosätt bredd endast skalning utan autoskala"</string>
-    <string name="pagebuttons">"Sidoknappar"</string>
-    <string name="position">"Placera"</string>
-    <string name="profile">"Profil"</string>
-    <string name="profile_choose">"Välj en profil att ladda"</string>
-    <string name="profile_description">"Profiler används för att lagra dina visningsinställningar."</string>
-    <string name="profile_name">"Välj ett profilnamn"</string>
-    <string name="size">"Storlek"</string>
-
-    <string name="customise_set_item">"Gör en uppsättning variabler"</string>
-    <string name="select_item_variation">"Välj sången för att skapa en bestämd variation"</string>
-    <string name="variation">"Variation"</string>
-    <string name="variation_edit">"Detta objekt kan redigeras. Originalen kommer inte att påverkas."</string>
-
-    <string name="bible_search">"Fras eller vers att söka"</string>
-    <string name="bible_translation">"Bibelversionskod (t.ex. NIV, MSG)"</string>
-    <string name="commentline_scale">"Skal kommentartext"</string>
     <string name="extract">"Extrahera text"</string>
-    <string name="headingline_scale">"Skala rubrik text"</string>
-    <string name="search_biblegateway">"Sök BibleGateway.com"</string>
-
-    <string name="search_index_end">"Alla låtar har blivit fullt indexerade"</string>
-    <string name="search_index_error">"Det uppstod ett fel vid att bygga din sökdatabas"</string>
-    <string name="search_index_start">"Bygga din sångdatabas"</string>
-    <string name="search_log">"Kontrollera sökdatabasfelloggen"</string>
-    <string name="search_rebuild">"Återuppbygga låtdatabasen"</string>
-    <string name="pref_key_text">"Välj dina önskade nyckelinställningar"</string>
-    <string name="pref_key_flatsorsharps">"Använd lägenheter eller skarvar?"</string>
-    <string name="rate">"Betygsätt denna app"</string>
-    <string name="right">"Höger"</string>
-
-    <string name="set_manage_swipe">"Dra för att ta bort ett objekt från din uppsättningslista"</string>
-    <string name="set_manage_shuffle">"Blanda"</string>
-    <string name="set_manage_click">"Klicka på ett objekt i uppsättningen för att visa den"</string>
-    <string name="storage_rationale">"Tillgång till din lagring krävs för att läsa och skriva sånger och uppsättningar."</string>
-    <string name="microphone_rationale">"Mikrofon / ljudinspelning krävs för att komma åt ljudnivåmätaren."</string>
-    <string name="default_autoscroll">"Standard autoscroll gånger"</string>
-    <string name="autoscroll_default_or_prompt">"Om du inte har angett en låtperiod bör standardvärdena användas eller vill du bli frågad varje gång?"</string>
-    <string name="use_default">"Använd standard"</string>
-    <string name="ask">"Fråga varje gång"</string>
-
-    <string name="maxvolrange">"Indikatorområde för grafiskt volym"</string>
-    <string name="volval">"Aktuellt volymvärde"</string>
-    <string name="average">"Genomsnitt"</string>
-    <string name="reset">"Återställa"</string>
-
-    <string name="warning">"Detta alternativ bör endast användas för presentationsläge. Var medveten om att den här funktionen använder mycket minne och kan orsaka kraschar. Du har blivit varnad!"</string>
-    <string name="loop">"Slinga"</string>
-    <string name="time">"Tid"</string>
-    <string name="bad_time">"Bildtid har inte ställts in korrekt"</string>
-    <string name="add_reusable">"Spara som en återanvändbar bild"</string>
-    <string name="load_reusable">"Ladda en återanvändbar bild"</string>
-    <string name="image_slide">"Bildspel"</string>
-    <string name="time_slide_pages">"Tid för varje bild (er)"</string>
-    <string name="time_slide_pages_help">"Lämna tomt för manuellt bildspel"</string>
-
-    <string name="set_loading">"Laddar set"</string>
-    <string name="set_processing">"bearbetning"</string>
-    <string name="image">"Bild"</string>
-    <string name="slide_add_page">"Infoga ny sida till anpassad bild"</string>
-    <string name="loop_slide_pages">"Loop sidor i anpassade bildrutor"</string>
-    <string name="tap_tempo">"Tryck för att ställa in tempo"</string>
-    <string name="convert_song">"Vänligen konvertera den här låten till OpenSong-format (genom att se det) innan du lägger till det i en uppsättning"</string>
-    <string name="no_filemanager">"Ingen filhanterare installerad"</string>
-    <string name="no_audioplayer">"Ingen ljudspelare installerad"</string>
-    <string name="link_youtube">"YouTube-länk"</string>
-    <string name="link_web">"Online länk"</string>
-    <string name="link_audio">"Ljudfillänk"</string>
-    <string name="link_file">"Annan fil"</string>
-    <string name="overwrite">"Skriv om befintligt objekt"</string>
-    <string name="storage_issues">"Om du får problem med att köra appen, vänligen växla till internt minne"</string>
-    <string name="toggle_autoshow_stickynotes">"Autoshow klisterlappar"</string>
+    <string name="extracting">"Extrahera"</string>
+    <string name="extradisplay">"Sekundär display upptäckt. Sångar kommer att visas på den sekundära skärmen."</string>
+    <string name="file_chooser">"Filvalare"</string>
+    <string name="file_exists">"Filen finns redan. Vänligen byt namn på den."</string>
     <string name="file_type">"Filtyp"</string>
     <string name="file_type_unknown">"Okänd"</string>
-    <string name="file_exists">"Filen finns redan. Vänligen byt namn på den."</string>
-
-    <string name="options_display">"Visa"</string>
-    <string name="options_gesturesandmenus">"Gester och menyer"</string>
-    <string name="options_storage">"Lagring"</string>
-    <string name="options_other">"Andra"</string>
-    <string name="not_allowed">"Den här funktionen är inte tillåten för det här objektet"</string>
-    <string name="add_custom_slide">"Lägg till anpassad bild för att ställa in"</string>
-    <string name="simple_note">"Enkel anteckning / platshållare"</string>
-    <string name="custom_slide">"Anpassad bild (med innehåll)"</string>
-    <string name="title">"Titel"</string>
-    <string name="content">"Innehåll"</string>
-    <string name="slide_separator">"Lägg till bildskärmsseparator (för projektion)"</string>
-    <string name="note">"Notera"</string>
-
-    <string name="crossfade_time">"Cross-blekna tid"</string>
-    <string name="scrollbuttons_toggle">"Växla bläddringsknapparna"</string>
-    <string name="scrollbuttons_single">"Enstaka pilar"</string>
-    <string name="scrollbuttons_double">"Dubbelpilar"</string>
-    <string name="page_toggles">"Sidan växlar"</string>
-    <string name="options_options_autostartscroll">"Autostart autoscroll"</string>
-    <string name="media_chooser">"Media chooser"</string>
-    <string name="media_selected">"Media laddad"</string>
-    <string name="media_play">"Spela"</string>
-    <string name="media_pause">"Paus"</string>
-    <string name="media_stop">"Sluta"</string>
-    <string name="media">"Audio"</string>
-
-    <string name="preso_alpha">"Bakgrundsopacitet"</string>
-    <string name="file_chooser">"Filvalare"</string>
-    <string name="display_manager">"Återanslut skärmen"</string>
-    <string name="song_sections">"Song sektioner"</string>
-    <string name="actions">"Handlingar"</string>
-    <string name="settings">"inställningar"</string>
-    <string name="alert">"Varna"</string>
-    <string name="alert_text">"Ange meddelandetext"</string>
-    <string name="layout">"Layout"</string>
-
-    <string name="error_notset">"Inte inställd"</string>
-    <string name="error_missingsection">"Saknade avsnitt"</string>
-    <string name="tag_verse">"Vers"</string>
-    <string name="tag_chorus">"Kör"</string>
-    <string name="tag_bridge">"Bro"</string>
-    <string name="tag_prechorus">"Pre-Chorus"</string>
-    <string name="tag_tag">"Märka"</string>
-
-    <string name="maxfontsize">"Maximal skriftstorlek för autoskala"</string>
-    <string name="custom">"Beställnings"</string>
-    <string name="customchords">"Anpassade ackord"</string>
-    <string name="customchords_saved">"För tillfället sparas anpassade ackord"</string>
-    <string name="customchords_name">"Ackordnamn"</string>
-    <string name="customchords_save">"Spara ny anpassad ackord till sång"</string>
-    <string name="customchords_code">"Anpassad kod"</string>
-    <string name="customchords_fret">"Etikett för första fret"</string>
-    <string name="customchords_noinstrument">"Instrumentet har inte valts"</string>
-    <string name="customchords_nochordname">"Akkordnamn har inte ställts in"</string>
-    <string name="shownextinset">"Visa nästa låt i uppsättningen"</string>
-    <string name="top">"Topp"</string>
-    <string name="bottom">"Botten"</string>
-    <string name="next">"Nästa"</string>
-    <string name="instrument">"Instrument"</string>
-    <string name="chords">"Chords"</string>
-    <string name="guitar">"Gitarr"</string>
-    <string name="ukulele">"ukulele"</string>
-    <string name="mandolin">"Mandolin"</string>
-    <string name="cavaquinho">"cavaquinho"</string>
-    <string name="banjo4">"Banjo (4)"</string>
-    <string name="banjo5">"Banjo (5)"</string>
-    <string name="piano">"Piano"</string>
-
-    <string name="capo_toggle">"Capo ackord växlar"</string>
-    <string name="capo_toggle_onlycapo">"Visa endast kapokord om det finns tillgängligt"</string>
-    <string name="capo_toggle_bothcapo">"Visa både capo och native ackord om det är tillgängligt"</string>
-    <string name="capo_toggle_native">"Visa bara inbyggda ackord"</string>
-    <string name="language">"Språk"</string>
-    <string name="refreshsongs">"Uppdatera låtmenyn"</string>
-    <string name="custom1_theme">"Anpassad 1"</string>
-    <string name="custom2_theme">"Anpassad 2"</string>
-    <string name="scripture">"skriften"</string>
-    <string name="slide">"Glida"</string>
-
-    <string name="visualmetronome">"Visuell"</string>
-    <string name="onsonglocation">"Du måste placera din OnSong-backupfil i / Dokument / OpenSong / mapp för att den ska vara tillgänglig för import"</string>
-    <string name="opensonglocation">"Du måste placera din OpenSongApp-backupfil i / Documents / OpenSong / mappen för att den ska vara tillgänglig för import"</string>
-    <string name="savesong">"Spara"</string>
-    <string name="metronomepadsettings">"Metronom och pad inställningar"</string>
-    <string name="metronome">"Metronom"</string>
-    <string name="temponotset">"Tempo har inte ställts in för den här låten"</string>
-    <string name="timesignotset">"Tidssignaturen har inte ställts in för den här låten"</string>
-    <string name="pad">"Vaddera"</string>
-    <string name="wait">"Vänta...."</string>
-    <string name="volume">"Volym"</string>
-    <string name="pan">"Panorera"</string>
-    <string name="linespacing">"Trim linjespacing av"</string>
-    <string name="currently">"För närvarande"</string>
-    <string name="currentkeycode">"Nuvarande nyckelkod"</string>
-    <string name="notset">"Inte inställd"</string>
-    <string name="songactionsbuttons">"Knappar för att starta / stoppa låtåtgärder"</string>
-    <string name="padPedalText">"Start / stoppplatta"</string>
-    <string name="autoscrollPedalText">"Starta / stoppa autoscroll"</string>
-    <string name="metronomePedalText">"Starta / stoppa metronomen"</string>
-
-    <string name="autoscroll_time">"Autoscroll fördröjningstid"</string>
-
-    <string name="songbuttons_toggle">"Växla genvägar på sidknappar"</string>
-    <string name="song_functionnotavailable">"Den här funktionen är inte tillgänglig för låtar"</string>
-
-    <string name="latest_updates">"Senaste uppdateringarna"</string>
-
-    <string name="storage_choose">"Hantera lagring"</string>
-    <string name="storage_help">"Välj standard lagringsplats för dina OpenSong-filer. Du kan ändra detta när som helst från menyn Alternativ."</string>
-    <string name="storage_space">"Tillgängligt utrymme"</string>
-    <string name="storage_notavailable">"Inte tillgänglig"</string>
-    <string name="storage_int">"Emulerad extern / intern lagring"</string>
-    <string name="storage_ext">"Extern lagring"</string>
-
-    <string name="link">"Länk"</string>
-    <string name="link_choose">"Välj en fil att länka med den här låten"</string>
-
-    <string name="autoscroll">"Auto-scrolla"</string>
-
-    <string name="import_onsong_done">"Framgång -On sång låtar har lagts till / dokument / OpenSong / Songs / OnSong"</string>
-    <string name="import_onsong_error">"Ingen OnSong backup fil finns i / dokument / OpenSong /"</string>
-    <string name="import_onsong_choose">"Importera OnSong backup-fil"</string>
-
-    <string name="pad_playing">"Bakgrundsspåret har börjat spela"</string>
-    <string name="pad_stopped">"Bakgrundsspåret stannar (vänta på att blekna ut)"</string>
-    <string name="pad_choose_key">"Vänligen välj nyckeln till den här låten"</string>
-    <string name="pad_error">"Nyckeln till den här låten har inte ställts in"</string>
-    <string name="backing_track">"Välj backing track"</string>
-    <string name="pad_onoroff">"Använd en kudde med den här låten"</string>
-    <string name="pad_auto">"Bil"</string>
-    <array name="key_choice">
-        <item/>
-        <item>A</item>
-        <item>A#</item>
-        <item>Bb</item>
-        <item>B</item>
-        <item>C</item>
-        <item>C#</item>
-        <item>Db</item>
-        <item>D</item>
-        <item>D#</item>
-        <item>Eb</item>
-        <item>E</item>
-        <item>F</item>
-        <item>F#</item>
-        <item>Gb</item>
-        <item>G</item>
-        <item>G#</item>
-        <item>Ab</item>
-        <item>Am</item>
-        <item>A#m</item>
-        <item>Bbm</item>
-        <item>Bm</item>
-        <item>Cm</item>
-        <item>C#m</item>
-        <item>Dbm</item>
-        <item>Dm</item>
-        <item>D#m</item>
-        <item>Ebm</item>
-        <item>Em</item>
-        <item>Fm</item>
-        <item>F#m</item>
-        <item>Gbm</item>
-        <item>Gm</item>
-        <item>G#m</item>
-        <item>Abm</item>
-    </array>
-
-    <string name="stickynotes">"Sånganteckningar"</string>
-
-    <string name="youtube">"Sök på YouTube för aktuell sång"</string>
-
-    <string name="pdf_functionnotavailable">"Den här funktionen är inte tillgänglig för PDF-dokument"</string>
-    <string name="pdf_selectpage">"Välj sida"</string>
-
-    <string name="options_set">"UPPSÄTTNING"</string>
-    <string name="options_set_load">"Ladda"</string>
-    <string name="options_set_save">"Spara"</string>
-    <string name="options_set_nameofset">"Nytt inställt namn"</string>
-    <string name="options_set_clear">"Skapa en ny uppsättning"</string>
-    <string name="options_set_delete">"Radera"</string>
-    <string name="options_set_export">"Exportera"</string>
-    <string name="options_set_edit">"Redigera"</string>
-
-    <string name="options_song">"LÅT"</string>
-    <string name="options_song_transpose">"införliva"</string>
-    <string name="options_song_convert">"Konvertera sång till mitt föredragna ackordformat"</string>
-    <string name="options_song_sharp">"Använd # ackord"</string>
-    <string name="options_song_flat">"Använd b ackord"</string>
-    <string name="options_song_edit">"Redigera"</string>
-    <string name="options_song_rename">"Döpa om"</string>
-    <string name="options_song_delete">"Radera"</string>
-    <string name="options_song_new">"Ny"</string>
-    <string name="options_song_export">"Exportera"</string>
-    <string name="options_song_stickynotes">"Redigera låtnota"</string>
-    <string name="options_song_newfolder">"Skapa ny låtmapp"</string>
-    <string name="options_song_editfolder">"Redigera låtmappsnamn"</string>
-
-    <string name="options_options">"ALTERNATIV"</string>
-    <string name="options_options_theme">"Byt tema"</string>
-    <string name="options_options_scale">"Växla autoskala"</string>
-    <string name="options_options_fontsize">"Välj teckenstorlek"</string>
-    <string name="options_options_showchords">"Visa / Dölj ackord"</string>
-    <string name="options_options_chordformat">"Välj ackordformat"</string>
-    <string name="options_options_gestures">"Tilldela anpassade gester"</string>
-    <string name="options_options_songswipe">"Byt svep för att flytta mellan låtar på / av"</string>
-    <string name="options_options_menuswipe">"Växla låtlista och alternativmenyer svep på / av"</string>
-    <string name="options_options_hidebar">"Dölj top menyraden på / av"</string>
-    <string name="options_options_colors">"Ändra färger"</string>
-    <string name="options_options_fonts">"Ändra teckensnitt"</string>
-    <string name="options_options_pedal">"Tilldela fotpedalen"</string>
-    <string name="options_options_help">"Hjälp (Online)"</string>
-    <string name="options_options_start">"Gå tillbaka till startskärmen"</string>
-
-    <string name="customgestures">"Tilldela anpassade gester"</string>
-    <string name="doubleTap">"Välj dubbelknappsåtgärd"</string>
-    <string name="longPress">"Välj lång pressåtgärd"</string>
+    <string name="findnewsongs">"Hitta nya låtar"</string>
+    <string name="firstsong">"Visar första objektet"</string>
+    <string name="fix">"Automatisk korrigering"</string>
+    <string name="floating_window">"Flytande fönster"</string>
+    <string name="folder_new">"Skapa ny låtmapp"</string>
+    <string name="folder_rename">"Redigera låtmappsnamn"</string>
+    <string name="folderexists">"Den här mappen finns redan!"</string>
+    <string name="fontsize">"Du måste stänga av automatisk skala låt."</string>
+    <string name="footpedal">"Tilldela fotpedalen"</string>
+    <string name="found">Du har redan använt följande installationsplatser. Du måste fortfarande hitta och ställa in detta manuellt med den röda knappen ovan.</string>
+    <string name="full">"Full"</string>
     <string name="gesture1">"Öppna låtmenyn"</string>
     <string name="gesture2">"Redigera låt"</string>
     <string name="gesture3">"Lägg till sång för att ställa in"</string>
     <string name="gesture4">"Uppdatera aktuell sång"</string>
-
-    <string name="transpose">"införliva"</string>
-    <string name="docontinue">"Fortsätta"</string>
-    <string name="chordformat_help">"När du överför en låt vill du att appen ska upptäcka ackordformatet som en låt finns i varje gång?"</string>
-    <string name="chordformat_check">"Upptäck ackordformat varje gång du transponerar"</string>
-    <string name="chordformat_default">"Anta alltid att låtar finns i mitt föredragna ackordformat"</string>
-    <string name="chordformat_check_short">"Kontrollera alltid"</string>
-    <string name="chordformat_default_short">"Fråga mig inte"</string>
-
-    <string name="nothighenoughapi">"Du behöver en nyare version av Android för detta!"</string>
-
-    <string name="checkchordformat">"Är du säker på att den här låten är i ditt föredragna ackordformat?"</string>
-    <string name="oldchordformat">"Upptäckt nuvarande ackordformat"</string>
-
-    <string name="firstsong">"Visar första objektet"</string>
-    <string name="lastsong">"Visar sista föremålet"</string>
-
-    <string name="set_edit">"REDIGERA"</string>
-    <string name="set_edit_title">"Redigera din nuvarande uppsättning"</string>
-    <string name="set_help">"Dra sånger runt för att ändra ordning på din uppsättning"</string>
-
-    <string name="currentset">"Aktuell uppsättning"</string>
-    <string name="setmargins">"Justera \ nmargins"</string>
-    <string name="setxmargins">"Horisontell marginalstorlek"</string>
-    <string name="setymargins">"Vertikal marginalstorlek"</string>
-    <string name="update_projector">"Update \ nprojector"</string>
-    <string name="black_screen">"Svart skärm"</string>
-    <string name="choose_image1">"Välj bakgrundsbild 1"</string>
-    <string name="choose_image2">"Välj bakgrundsbild 2"</string>
-    <string name="choose_video1">"Välj bakgrundsvideo 1"</string>
-    <string name="choose_video2">"Välj bakgrunds video 2"</string>
-
-    <string name="choosechordformat">"Välj ackordformat (viktigt när du överför en låt)"</string>
-
-    <string name="switchtopresentmode">"Byt till presentationsläge"</string>
-    <string name="switchtoperformmode">"Byt till prestanda läge"</string>
-    <string name="presentermode">"Presentationsläge"</string>
-    <string name="sendtoprojector">"Projekt"</string>
-    <string name="presoBackground">"Bakgrund"</string>
-    <string name="presoShowLogo">"Visa logotyp"</string>
-    <string name="notcompatible">"Tyvärr behöver du Android 4.2 eller senare för att använda funktionen med dubbla skärmpresentationer!"</string>
-    <string name="nodisplays">"Inga externa bildskärmar anslutna. Anslut till en sekundär bildskärm med hjälp av en HDMI-utgång eller en MiraCast-kompatibel trådlös skärm."</string>
-    <string name="extradisplay">"Sekundär display upptäckt. Sångar kommer att visas på den sekundära skärmen."</string>
-    <string name="beta">"Beta-funktionen - har fortfarande fel och bild / bildskärmskonfiguration är inte tillgänglig än."</string>
-
-    <string name="songnamealreadytaken">"Tyvärr har denna sångtitel / filnamn redan använts (ett förslag kan vara att lägga till ett versionsnummer till slutet)."</string>
-    <string name="chordiesearch">"Online sökning på Chordie.com"</string>
-    <string name="ultimateguitarsearch">"Online sökning på Ultimate-Guitar.com"</string>
-    <string name="phrasesearch">"Ange sökord (titel, författare, texter etc.)"</string>
+    <string name="gesturesandmenus">"Gester och menyer"</string>
+    <string name="googlefontbrowse">"Bläddra bland alla Google Fonts"</string>
     <string name="grabchordpro">"Extrahera ChordPro-data"</string>
-    <string name="chordproprogress">"Letar du efter ChordPro-låtdata på sidan …"</string>
-    <string name="closesearch">"Stäng sökningen"</string>
-    <string name="chordpro_false">"Ingen ChordPro-låt upptäckt!"</string>
-    <string name="chordpro_true">"ChordPro-låten upptäckt!"</string>
-    <string name="choosefolder">"Välj mapp för att spara fil i"</string>
-    <string name="choosesongname">"Välj ett namn för den här låten"</string>
-    <string name="newfolder">"Ny mapp"</string>
-    <string name="newfoldername">"Ange ett nytt mappnamn"</string>
-    <string name="folderexists">"Den här mappen finns redan!"</string>
-    <string name="createfoldererror">"Det uppstod ett fel vid skapandet av den nya mappen!"</string>
-    <string name="createfoldersuccess">"Ny mapp skapad!"</string>
-
-    <string name="welcome">"OpenSongApp \ n Skrivet av Gareth Evans"</string>
-
-    <string name="intro">"OpenSongApp använder låtar som skapats i OpenSong och visar dem på skärmdisplayen."</string>
-
-    <string name="user_guide_text">"Var god och läs användarhandboken innan du använder appen."</string>
-    <string name="user_guide">"Användarguide"</string>
-
-    <string name="intro_songsfolder">"Applikationen söker efter en mapp i dina dokument som heter \"OpenSong / Songs\" och om den inte kan hitta den skapar den den för dig. Det sparar sedan en enda sång som heter \"Love everlasting\", en av mina egna låtar, till mappen (annars skulle du inte kunna göra någonting med appen!). Om du vill använda egna OpenSong-låtar kopierar du dem till Dokument / OpenSong / Songs / folder. Du kan ha en nivå av undermappar i din sång-mapp. \ N \ n Appen följer också med min tolkning av 700 + låtar som du kan använda, men tänk på att du är ansvarig för att följa eventuella upphovsrättsfrågor och du använder Dem på egen risk!"</string>
-
-    <string name="intro_dropbox">"Om du vill använda Song / Set via ett dropbox-konto (tillåter grupper att få tillgång till samma information) måste du installera en app som möjliggör synkronisering av Dropbox-filer med din surfplatta. Tyvärr använder den officiella Dropbox-appen inte en lokal mapp på samma sätt som skrivbordsprogrammet gör. \ N \ n En (gratis) app som jag skulle rekommendera är DropSync vilket gör det här för dig. Om du vill göra det, rekommenderar jag att du återställer mappen sånger på din surfplatta (knappen ovan) först så att du inte skriver över några låtar på ditt Dropbox-konto med mina versioner! \ N \ n När du konfigurerar DropSync synkroniserar du DropBox OpenSong-mappen med dina / dokument / OpenSong / folder och tillåter 2-vägssynkronisering (plockning av den huvudsakliga OpenSong-mappen låter både låtar och uppsättningar synkroniseras). Detta kommer att ta en Några minuter (beroende på antalet låtar du har) på första loppet. Standard ansvarsfriskrivning - Jag ansvarar inte för förlust av låtar i din DropBox-mapp! Du gör detta på egen risk. \ N \ n Jag har dock ställt upp det här på min enhet och det verkar som om det fungerar sömlöst (standard synkroniseringsschema är 1 timme) i DropSync-appen, men du kan ändra det här)."</string>
-
-    <string name="intro_future">"Tyvärr äger jag inte en iPad / Mac, så jag kan inte utvecklas på den plattformen (donationer välkommen … ..), men jag tänker fortsätta att förbättra den här appen med tiden. Jag ville verkligen bara dela det jag har gjort redan i hopp om att någon annan finner det här användbart."</string>
-
-    <string name="intro_help">"När du använder appen, svep menyn till vänster för att välja en låt och \"svep\" menyn från höger för olika andra alternativ. \ N \ n Långtryck på en låt i den vänstra menyn lägger till sången till din uppsättning. Långt tryck på en låt i din uppsättning tar bort den. \ N \ n Inställningar kan laddas från eller sparas i mappen \"OpenSong / Sets\". Långt tryck på en sparad uppsättning raderar den från enheten. \ N \ n Nu kan du dela sparade set och någon av dina låtar via e-post, DropBox, etc.
-	"</string>
-
-    <string name="rename">"Ange ett nytt filnamn för den här låten (så här visas den i din låtmeny)"</string>
-    <string name="renametitle">"Döpa om"</string>
-
-    <string name="copyresources">"Klicka här för att installera / uppdatera olika låtar \ n Du är ansvarig för upphovsrätten"</string>
-    <string name="gotosong">"KLICKA HÄR FÖR ATT STARTA \ OPEN SONG VIEWER"</string>
-    <string name="wipesongs">"Återställ min lokala låtar mapp"</string>
-    <string name="dropsync">"Hämta DropSync App (gratis)"</string>
-    <string name="app_name">"OpenSongApp"</string>
-    <string name="drawer_open">"Öppen"</string>
-    <string name="drawer_close">"Stänga"</string>
-    <string name="set_back">"Tillbaka"</string>
-    <string name="set_forward">"Fram"</string>
-    <string name="backtohome">"Tillbaka till hemmet"</string>
-    <string name="exit">"Är du säker på att du vill avsluta programmet?"</string>
-
-    <string name="on_width">"PÅ - Endast bredd"</string>
-    <string name="on_set">"PÅ - Endast set"</string>
-    <string name="on">"PÅ"</string>
-    <string name="off">"AV"</string>
-    <string name="scaleY">"Skal sång för att passa sidan är nu"</string>
-    <string name="swipeSet">"Swipe mellan låtar är nu"</string>
-    <string name="fontsize">"Du måste stänga av automatisk skala låt."</string>
-    <string name="drawerswipe">"Öppna låtlistan och alternativmenyerna genom att svepa är nu"</string>
-    <string name="toggleScrollBeforeSwipe">"Växla bläddra före nästa / föregående låt"</string>
-    <string name="toggleScrollBeforeSwipeToggle">"Föregående / Nästa knappar är också bläddra först är nu"</string>
-    <string name="toggleLandscapeColumns">"Landskapets kolumnvy är nu"</string>
-
-    <string name="exportcurrentsong">"Dela den aktuella låten"</string>
-    <string name="exportsavedset">"Dela den sparade uppsättningen"</string>
-    <string name="importnewsong">"Importera en låt"</string>
-    <string name="importnewset">"Importera en uppsättning"</string>
-    <string name="hasbeenexported">"Har exporterats"</string>
-    <string name="hasbeenimported">"Har importerats"</string>
-    <string name="hasnotbeenexported">"Har inte exporterats - det var ett problem!"</string>
-    <string name="hasnotbeenimported">"Har inte importerats - det var ett problem!"</string>
-
-    <string name="add_song_to_set">"Lägg till aktuell sång för att ställa in"</string>
-
-    <string name="edit_song_title">"Sång titel"</string>
-    <string name="edit_song_author">"Författare"</string>
-    <string name="edit_song_lyrics">"Text"</string>
-    <string name="edit_song_copyright">"Upphovsrättsinformation"</string>
-    <string name="edit_song_presentation">"Presentationsorder"</string>
-    <string name="edit_song_ccli">"CCLI"</string>
-    <string name="edit_song_capo">"Capo Fret"</string>
-    <string name="edit_song_key">"Nyckel"</string>
-    <string name="edit_song_aka">"Också känd som"</string>
-    <string name="edit_song_keyline">"Nyckelrad"</string>
-    <string name="edit_song_user1">"Användare 1"</string>
-    <string name="edit_song_user2">"Användare 2"</string>
-    <string name="edit_song_user3">"Användare 3"</string>
-    <string name="edit_song_theme">"Tema"</string>
-    <string name="edit_song_tempo">"Tempo"</string>
-    <string name="edit_song_timesig">"Tidssignatur"</string>
-    <string name="edit_song_hymn">"Sångnummer"</string>
-    <string name="edit_song_availabletags">"[V] = Vers, [V1] = Vers 1, [C] = Kor, [C1] för kör 1, [P] = Prechorus, [T] = Tagg, [B] = Bro, [… ) …] = Anpassad tagg. \ N Lyriska linjer börjar med ett mellanslag, ackordlinjer med fullstop, kommentarlinjer med en semikolon."</string>
-    <string name="edit_song_duration">"Song duration (sekunder)"</string>
-    <string name="edit_song_notes">"Sånghäftor"</string>
-    <string name="edit_song_midi">"MIDI-meddelande skickat från låt"</string>
-    <string name="edit_song_midi_index">"MIDI-meddelande för att aktivera låt"</string>
-    <string name="edit_song_restrictions">"begränsningar"</string>
-    <string name="edit_song_books">"Böcker sång tillhör"</string>
-    <string name="edit_song_pitch">"Pitch pip notes för låt"</string>
-
-    <string name="show_general_advanced">"Växla allmänna / avancerade fält"</string>
-    <string name="edit_song_capo_print">"Skriv ut kapokord"</string>
-
-    <string name="search_top">"Sången överst i söklistan vald"</string>
-    <string name="search_here">"Sök här"</string>
-
-    <string name="edit_cancel">"Avsluta utan att spara"</string>
-    <string name="edit_save">"Spara ändringar"</string>
-    <string name="edit_delete">"Ta bort den här låten"</string>
-
-    <string name="areyousure">"Är du säker?"</string>
-    <string name="overwritecurrentset">"Detta kommer att överskriva din nuvarande uppsättning."</string>
-    <string name="removesavedset">"Detta kommer att ta bort den här uppsättningen från mappen \"Sets\"."</string>
-
-    <string name="yes">"Ja"</string>
-    <string name="no">"Nej"</string>
-    <string name="ok">"ok"</string>
-    <string name="cancel">"Annullera"</string>
-
-    <string name="songfolderexists">"OpenSong 'Songs' Folder finns redan. Excellent!"</string>
-    <string name="songfoldercreate">"Skapa OpenSong \"Songs\" Folder"</string>
-    <string name="setsfolderexists">"OpenSong 'Sets' mapp finns redan. Excellent!"</string>
-    <string name="setsfoldercreate">"Skapa OpenSong 'Sets' Folder"</string>
-    <string name="initialisesongs_start">"Initialisering av \"Songs\" -mappen -"</string>
-    <string name="initialisesongs_end">"Sång (er) hittades!"</string>
-    <string name="initialisesets_start">"Initialising 'Sets' mapp -"</string>
-    <string name="initialisesets_end">"Uppsättning (er) hittades!"</string>
-    <string name="installingsongs">"Installerar låtar ...."</string>
-    <string name="assetcopydone">"OpenSong Songs har kopierats till mappen \"Songs\"."</string>
-
-    <string name="createanewsong">"Skapa ny låt"</string>
-    <string name="createanewset">"Skapa ny uppsättning"</string>
-    <string name="newsongtitleprompt">"Var god ange en titel för din nya sång"</string>
-    <string name="newsettitleprompt">"Ange en titel för din nya uppsättning"</string>
-    <string name="shouldnotbedeleted">"Bör inte raderas från din \"Songs\" -mapp!"</string>
-    <string name="songhasbeendeleted">"Har tagits bort från din \"Songs\" -mapp."</string>
-    <string name="sethasbeendeleted">"Har tagits bort från mappen \"Sets\"."</string>
-    <string name="deleteerror_start">"Det gick inte att ta bort något"</string>
-    <string name="deleteerror_end_song">"Från mappen \"Songs\"."</string>
-    <string name="deleteerror_end_sets">"Från mappen \"Sets\"."</string>
-    <string name="songdoesntexist">"Den sången finns inte på din enhet. Har du raderat det?"</string>
-    <string name="addedtoset">"Har lagts till i slutet av din nuvarande uppsättning."</string>
-    <string name="removedfromset">"Har tagits bort från din uppsättning."</string>
-
-    <string name="soundLink">"Lyssna på \"Älska evigt\""</string>
-    <string name="stop">"Sluta"</string>
-    <string name="start">"Start"</string>
-    <string name="action_search">"Söka låtar"</string>
-    <string name="action_settings">"OpenSong-inställningar"</string>
-
-    <string name="toastmessage_maxfont">"Maximal teckenstorlek uppnått"</string>
-    <string name="toastmessage_minfont">"Minsta teckenstorlek uppnått"</string>
-
-    <string name="options_backtooptions">"TILLBAKA TILL OPTIONS"</string>
-    <string name="options_savethisset">"SPARA DENNA INSTÄLLNING"</string>
-    <string name="options_clearthisset">"Rensa den nuvarande inställningen och skapa en ny en"</string>
-
-    <string name="mainfoldername">"HUVUDSAKLIG"</string>
-
-
-    <string name="colorchooser">"Färgväljare"</string>
-    <string name="dark_theme">"Mörkt tema"</string>
-    <string name="light_theme">"Lätt tema"</string>
-    <string name="item">"Artikel"</string>
-    <string name="page_background">"Sidan bakgrund"</string>
-    <string name="lyrics_color">"Lyrics font"</string>
-    <string name="chord_color">"Ackord typsnitt"</string>
-    <string name="capo_color">"Capo typsnitt"</string>
-    <string name="verse_background">"Vers bakgrund"</string>
-    <string name="chorus_background">"Kor bakgrund"</string>
-    <string name="prechorus_background">"Prechorus bakgrund"</string>
-    <string name="bridge_background">"Bro bakgrund"</string>
-    <string name="tag_background">"Tag bakgrund"</string>
-    <string name="comment_background">"Kommentar bakgrund"</string>
-    <string name="custom_background">"Anpassad taggbakgrund"</string>
-    <string name="reset_colours">"Återställ färger"</string>
-
-    <string name="pageturn_title">"Tilldela sidomkopplingsknappar"</string>
-    <string name="pageturn_instructions">"På den här sidan kan du tilldela knappar från en sidvändande enhet (t.ex. en bluetooth fotströmbrytare) för att styra rörelser genom uppsättningar eller bläddra upp och ner på en sångsida. \ N \ nDu måste se till att enheten redan är ansluten till din Android-surfplatta Och slås på. \ N \ nKlicka på de gröna eller blå knapparna nedan och tryck sedan på önskad kontrollknapp på fotkontakten etc."</string>
-    <string name="pageturn_set">"Knappar för att flytta genom en uppsättning"</string>
-    <string name="pageturn_song">"Knappar för att bläddra i ett låtfönster"</string>
-    <string name="pageturn_next">"Ange \"Nästa\" -knappen"</string>
-    <string name="pageturn_previous">"Ange \"Föregående\" -knappen"</string>
-    <string name="pageturn_up">"Ange \"Scroll up\" -knappen"</string>
-    <string name="pageturn_down">"Ange \"Scroll down\" -knappen"</string>
-    <string name="pageturn_waiting">"Väntar på knappen ...."</string>
-    <string name="pageturn_needset">"Du måste visa en låt som är listad i nuvarande uppsättning för att använda sidvändningsfunktionen"</string>
-    <string name="pageturn_attempt">"Öppnar första sången i nuvarande uppsättning ...."</string>
-
-    <string name="changefonts">"Ändra teckensnitt"</string>
-    <string name="chooselyricfont">"Välj lyrisk typsnitt"</string>
-    <string name="choosechordfont">"Välj ackordfont"</string>
-    <string name="font_default">"Standard"</string>
-    <string name="font_monospace">"Droid Monospace"</string>
-    <string name="font_sans">"Droid Sans"</string>
-    <string name="font_serif">"Droid Serif"</string>
-    <string name="font_firasanslight">"FiraSansOT-Light"</string>
-    <string name="font_firasansregular">"FiraSansOT-Regular"</string>
-    <string name="font_kaushanscript">"KaushanScript"</string>
-    <string name="font_latolight">"Lato Light"</string>
-    <string name="font_latoregular">"Lato Regular"</string>
-    <string name="font_lyrics_line1">"Älska evigt, "</string>
-    <string name="font_lyrics_line2">"Kärlek utan åtgärd"</string>
-    <string name="font_chords_line1">"G"</string>
-    <string name="font_chords_line2">"D / F #"</string>
-
-    <string name="autoshow_highlight">"Autoshow highlighter anteckningar"</string>
+    <string name="guitar">"Gitarr"</string>
+    <string name="headingline_scale">"Skala rubrik text"</string>
+    <string name="help">"Hjälp (Online)"</string>
+    <string name="hide_actionbar">"Dölj top menyraden på / av"</string>
+    <string name="hidelyricsbox">"Dölj textrutan"</string>
     <string name="highlight">"Highlighter"</string>
     <string name="highlight_notallowed">"Autoscale måste ställas in för fullt för denna funktion"</string>
-    <string name="stage_section_max">"Max sektionshöjd (scenläge)"</string>
-    <string name="trim_sections">"Trim sektioner"</string>
-
-    <string name="section_space">"Lägg till sektionsutrymme"</string>
-    <string name="alphabetical">Alfabetiskt låtindex</string>
-
-    <string name="pdfonly">"Ingen ChordPro, bara PDF"</string>
-    <string name="random_song">"Hitta en slumpmässig sång"</string>
-    <string name="tag_ending">"Slut"</string>
-    <string name="tag_instrumental">"Instrumental"</string>
-    <string name="tag_interlude">"Mellanspel"</string>
-    <string name="tag_intro">"Intro"</string>
-    <string name="tag_introduction">"Introduktion"</string>
-    <string name="tag_refrain">"Avstå"</string>
-    <string name="tag_reprise">"Reprise"</string>
-
-    <string name="music_score">"Noter"</string>
-    <string name="pdftotext_extract">"Extrahera text från PDF"</string>
-    <string name="pdftotext_found">"Text hittades:"</string>
-
-    <string name="capo_style">"Capo fret som tal"</string>
-    <string name="fix">"Automatisk korrigering"</string>
-    <string name="timer_learn">"Lär dig autoscroll tid"</string>
-
-    <string name="action">"Handling"</string>
-    <string name="activated">"Aktiverad / körning"</string>
-    <string name="autostartmetronome">"Autostart-metronom"</string>
-    <string name="autostartpad">"Autostart pad"</string>
-    <string name="ccli_automatic">"Spela in användningsstatistik automatiskt"</string>
-    <string name="ccli_church">"Kyrkans namn"</string>
-    <string name="ccli_licence">"Licensnummer"</string>
-    <string name="ccli_view">"Visa CCLI-logg"</string>
-    <string name="ccli_reset">"Återställ CCLI-logg"</string>
-    <string name="date">"Datum"</string>
-    <string name="editpdf">"Redigera i externt PDF-program"</string>
-    <string name="existing">"Hitta tidigare installationsplatser för OpenSong-filer"</string>
-    <string name="found">Du har redan använt följande installationsplatser. Du måste fortfarande hitta och ställa in detta manuellt med den röda knappen ovan.</string>
-    <string name="longpress">"Långt tryck / håll intryckt"</string>
-    <string name="nofound">"Inga tidigare installationer hittades."</string>
-    <string name="nothere">"Du är inne i en OpenSong-mapp, använd inte den här platsen. Flytta istället en nivå och ange mappen som innehåller den här mappen"</string>
-    <string name="pedal">"Trampa"</string>
-    <string name="previouslyused">"Tidigare installationsplats hittades. Klicka på den gröna fältet för att använda det här"</string>
-    <string name="songsheet">"Songsheet"</string>
-    <string name="tap">"Kort tryck / tryck"</string>
-
+    <string name="image">"Bild"</string>
+    <string name="image_slide">"Bildspel"</string>
+    <string name="import_onsong_choose">"Importera OnSong backup-fil"</string>
+    <string name="import_onsong_error">"Ingen OnSong backup fil finns i / dokument / OpenSong /"</string>
+    <string name="importnewset">"Importera en uppsättning"</string>
+    <string name="importnewsong">"Importera en låt"</string>
     <string name="inc_autoscroll_speed">"Öka Autoscroll Speed"</string>
-    <string name="dec_autoscroll_speed">"Minska Autoscroll Speed"</string>
-    <string name="edit_default_delaymax">"Max fördröjning (sekunder)"</string>
-    <string name="toggle_autoscroll_pause">"Växla Autoscroll paus"</string>
-
-    <string name="bibleXML">"OpenSong XML Bible"</string>
-    <string name="book">"bok"</string>
-    <string name="changestorage">"Ändra lagringsplats"</string>
-    <string name="chapter">"Kapitel"</string>
-    <string name="currentstorage">"Nuvarande position"</string>
-    <string name="hidelyricsbox">"Dölj textrutan"</string>
+    <string name="initialisesongs_start">"Initialisering av \"Songs\" -mappen -"</string>
+    <string name="instrument">"Instrument"</string>
+    <string name="intro">"OpenSongApp använder låtar som skapats i OpenSong och visar dem på skärmdisplayen."</string>
+    <string name="item">"Artikel"</string>
+    <string name="keepmultiline">"Håll multilinkompakt "</string>
+    <string name="language">"Språk"</string>
+    <string name="lastsong">"Visar sista föremålet"</string>
+    <string name="latest_updates">"Senaste uppdateringarna"</string>
+    <string name="light_theme">"Lätt tema"</string>
+    <string name="linespacing">"Trim linjespacing av"</string>
+    <string name="link">"Länk"</string>
+    <string name="link_audio">"Ljudfillänk"</string>
+    <string name="link_choose">"Välj en fil att länka med den här låten"</string>
+    <string name="link_file">"Annan fil"</string>
+    <string name="link_web">"Online länk"</string>
+    <string name="link_youtube">"YouTube-länk"</string>
+    <string name="load">"Ladda"</string>
+    <string name="load_preferences">"Laddar inställningar"</string>
+    <string name="load_reusable">"Ladda en återanvändbar bild"</string>
+    <string name="logo">"Logotyp"</string>
+    <string name="longPress">"Välj lång pressåtgärd"</string>
+    <string name="longpress">"Långt tryck / håll intryckt"</string>
+    <string name="loop">"Slinga"</string>
+    <string name="loop_slide_pages">"Loop sidor i anpassade bildrutor"</string>
+    <string name="lyrics_color">"Lyrics font"</string>
+    <string name="mainfoldername">"HUVUDSAKLIG"</string>
+    <string name="managesets">"Byt namn på uppsättningar"</string>
+    <string name="mandolin">"Mandolin"</string>
+    <string name="maxfontsize">"Maximal skriftstorlek för autoskala"</string>
+    <string name="maximise_columns">Skala kolumner oberoende av varandra.</string>
+    <string name="maxvolrange">"Indikatorområde för grafiskt volym"</string>
+    <string name="media">"Audio"</string>
+    <string name="media_chooser">"Media chooser"</string>
+    <string name="media_play">"Spela"</string>
+    <string name="media_selected">"Media laddad"</string>
+    <string name="menu_settings">"Menyinställningar"</string>
+    <string name="menu_swipe_toggle">"Växla låtlista och alternativmenyer svep på / av"</string>
+    <string name="menu_width">"Menybredd (procent av skärmens bredd)"</string>
+    <string name="metronome">"Metronom"</string>
+    <string name="metronomePedalText">"Starta / stoppa metronomen"</string>
+    <string name="microphone_rationale">"Mikrofon / ljudinspelning krävs för att komma åt ljudnivåmätaren."</string>
     <string name="midi">"MIDI"</string>
     <string name="midi_add">"Lägg till kommando"</string>
     <string name="midi_auto">"Auto skicka MIDI"</string>
@@ -728,40 +278,219 @@
     <string name="midi_commands">"Redigera låtkommandon"</string>
     <string name="midi_controller">"Controller förändring"</string>
     <string name="midi_error">"Kontrollera MIDI-anslutningen"</string>
-    <string name="midi_inputport">"Ingångsport"</string>
     <string name="midi_list">"Klicka på ett objekt som ska testas och länge klicka för att ta bort det"</string>
-    <string name="midi_listen">"Lyssna"</string>
     <string name="midi_note">"Notera"</string>
-    <string name="midi_outputport">"Outport-porten"</string>
     <string name="midi_program">"Programändring"</string>
     <string name="midi_send">"Skicka MIDI"</string>
     <string name="midi_test">"Testa"</string>
     <string name="midi_usb">"Anslut USB-enhet"</string>
     <string name="midi_value">"Värde"</string>
     <string name="midi_velocity">"Hastighet"</string>
-    <string name="location_rationale">"Åtkomst krävs för att upptäcka Bluetooth-enheter"</string>
-    <string name="permissionerror">"Tillstånd ej beviljat"</string>
-    <string name="pleaseselect">"Vänligen välj"</string>
-    <string name="sdroot">"SD-kort rot"</string>
-    <string name="search">"Sök"</string>
-    <string name="verse">"Vers"</string>
-    <string name="keepmultiline">"Håll multilinkompakt "</string>
-    <string name="notsaved">Ej sparat</string>
-
-    <string name="extracting">"Extrahera"</string>
-    <string name="converting">"Konvertera"</string>
-
-    <string name="promptbackup">"Du har inte säkerhetskopierat ditt låtbibliotek under de senaste 10 gånger du har använt den här appen. Detta rekommenderas starkt eftersom du kan återställa dina låtar om något går fel. Helst bör du hålla en kopia av din säkerhetskopia på molnet (t.ex. Google Drive) eller maila det till dig själv."</string>
-    <string name="backupnow">"Skapa en säkerhetskopia nu"</string>
-    <string name="remindme">"Påminn mig senare"</string>
-
-    <string name="connected_device_song">"Sång från ansluten enhet"</string>
+    <string name="minfontsize">"Föredragen autoskala typstorlek"</string>
+    <string name="music_score">"Noter"</string>
+    <string name="my_band">"Importera bandprov låtar"</string>
+    <string name="my_church">"Importera kyrkans provlåtar"</string>
+    <string name="navigate">"Snabbnavigera"</string>
     <string name="network_error">"Nätverksfel"</string>
-    <string name="download_new">"Klicka här för att ladda ner en ny Bibel"</string>
-    <string name="storage_check">"Kontrollerar lagring"</string>
-    <string name="load_preferences">"Laddar inställningar"</string>
-
-    <string name="googlefontcustom">"Annat Google-teckensnamn"</string>
-    <string name="googlefontbrowse">"Bläddra bland alla Google Fonts"</string>
+    <string name="new_category">"Ny kategori"</string>
+    <string name="new_something">Ny</string>
+    <string name="newfolder">"Ny mapp"</string>
+    <string name="newfoldername">"Ange ett nytt mappnamn"</string>
+    <string name="next">"Nästa"</string>
+    <string name="no">"Nej"</string>
+    <string name="nodisplays">"Inga externa bildskärmar anslutna. Anslut till en sekundär bildskärm med hjälp av en HDMI-utgång eller en MiraCast-kompatibel trådlös skärm."</string>
+    <string name="nofound">"Inga tidigare installationer hittades."</string>
+    <string name="not_allowed">"Den här funktionen är inte tillåten för det här objektet"</string>
+    <string name="note">"Notera"</string>
+    <string name="nothighenoughapi">"Du behöver en nyare version av Android för detta!"</string>
+    <string name="notsaved">Ej sparat</string>
+    <string name="notset">"Inte inställd"</string>
+    <string name="nowifidirect">"Tyvärr, den här enheten stöder inte WiFi direkt"</string>
+    <string name="off">"AV"</string>
+    <string name="ok">"ok"</string>
+    <string name="oldchordformat">"Upptäckt nuvarande ackordformat"</string>
+    <string name="on">"PÅ"</string>
+    <string name="options">"ALTERNATIV"</string>
+    <string name="options_clearthisset">"Rensa den nuvarande inställningen och skapa en ny en"</string>
+    <string name="other">"Andra"</string>
+    <string name="override_fullautoscale">"Åsidosätt fullständig autoskala till bredd bara"</string>
+    <string name="override_scale_explanation">"Om autoscale-teckensnittstorleken är mindre än önskad minsta teckensnittstorlek, vill du att appen ska åsidosättas till en annan skaleringsmetod? Användning av dessa alternativ kan tvinga dig att rulla horisontellt och vertikalt i en låt"</string>
+    <string name="override_widthautoscale">"Åsidosätt bredd endast skalning utan autoskala"</string>
+    <string name="overwrite">"Skriv om befintligt objekt"</string>
+    <string name="pad">"Vaddera"</string>
+    <string name="padPedalText">"Start / stoppplatta"</string>
+    <string name="pad_auto">"Bil"</string>
+    <string name="pad_choose_key">"Vänligen välj nyckeln till den här låten"</string>
+    <string name="pad_error">"Nyckeln till den här låten har inte ställts in"</string>
+    <string name="pad_onoroff">"Använd en kudde med den här låten"</string>
+    <string name="page_background">"Sidan bakgrund"</string>
+    <string name="pagebutton_custom_group">"Grupp anpassade knappar"</string>
+    <string name="pagebutton_extrainfo_group">"Grupp extra informationsknappar"</string>
+    <string name="pagebutton_group">"Gruppera alla sidoknappar"</string>
+    <string name="pagebutton_visibility">"Visa / dölj sidoknappar"</string>
+    <string name="pagebuttons">"Sidoknappar"</string>
+    <string name="pageturn_down">"Ange \"Scroll down\" -knappen"</string>
+    <string name="pageturn_instructions">"På den här sidan kan du tilldela knappar från en sidvändande enhet (t.ex. en bluetooth fotströmbrytare) för att styra rörelser genom uppsättningar eller bläddra upp och ner på en sångsida. \ N \ nDu måste se till att enheten redan är ansluten till din Android-surfplatta Och slås på. \ N \ nKlicka på de gröna eller blå knapparna nedan och tryck sedan på önskad kontrollknapp på fotkontakten etc."</string>
+    <string name="pageturn_next">"Ange \"Nästa\" -knappen"</string>
+    <string name="pageturn_previous">"Ange \"Föregående\" -knappen"</string>
+    <string name="pageturn_up">"Ange \"Scroll up\" -knappen"</string>
+    <string name="pageturn_waiting">"Väntar på knappen ...."</string>
+    <string name="pan">"Panorera"</string>
+    <string name="pdf_functionnotavailable">"Den här funktionen är inte tillgänglig för PDF-dokument"</string>
+    <string name="pdf_selectpage">"Välj sida"</string>
+    <string name="pdfonly">"Ingen ChordPro, bara PDF"</string>
+    <string name="pdftotext_extract">"Extrahera text från PDF"</string>
+    <string name="pdftotext_found">"Text hittades:"</string>
+    <string name="pedal">"Trampa"</string>
+    <string name="performancemode">"Prestanda läge"</string>
+    <string name="phrasesearch">"Ange sökord (titel, författare, texter etc.)"</string>
+    <string name="piano">"Piano"</string>
+    <string name="pleaseselect">"Vänligen välj"</string>
+    <string name="position">"Placera"</string>
+    <string name="prechorus_background">"Prechorus bakgrund"</string>
+    <string name="pref_key_text">"Välj dina önskade nyckelinställningar"</string>
+    <string name="presentermode">"Presentationsläge"</string>
+    <string name="presoBackground">"Bakgrund"</string>
+    <string name="presoFont">"Presentation typsnitt"</string>
+    <string name="presoFontShadow">"Presentation font skugga"</string>
+    <string name="presoInfoFont">"Presentation information typsnitt"</string>
+    <string name="presoShowLogo">"Visa logotyp"</string>
+    <string name="preso_alpha">"Bakgrundsopacitet"</string>
+    <string name="processing">"Filerna behandlas"</string>
+    <string name="profile">"Profil"</string>
+    <string name="profile_description">"Profiler används för att lagra dina visningsinställningar."</string>
+    <string name="promptbackup">"Du har inte säkerhetskopierat ditt låtbibliotek under de senaste 10 gånger du har använt den här appen. Detta rekommenderas starkt eftersom du kan återställa dina låtar om något går fel. Helst bör du hålla en kopia av din säkerhetskopia på molnet (t.ex. Google Drive) eller maila det till dig själv."</string>
+    <string name="quicklaunch_button1">"Knapp 1"</string>
+    <string name="quicklaunch_button2">"Knapp 2"</string>
+    <string name="quicklaunch_button3">"Knapp 3"</string>
+    <string name="quicklaunch_button4">"Knapp 4"</string>
+    <string name="quicklaunch_currentaction">"Aktuell åtgärd"</string>
+    <string name="quicklaunch_title">"Anpassa snabbstartknapparna"</string>
+    <string name="random_song">"Hitta en slumpmässig sång"</string>
+    <string name="rate">"Betygsätt denna app"</string>
+    <string name="refreshsongs">"Uppdatera låtmenyn"</string>
+    <string name="remindme">"Påminn mig senare"</string>
+    <string name="removedfromset">"Har tagits bort från din uppsättning."</string>
+    <string name="rename">"Döpa om"</string>
+    <string name="reset">"Återställa"</string>
+    <string name="reset_colours">"Återställ färger"</string>
     <string name="reset_text">Om du har problem med appen kan du försöka återställa inställningarna med knappen nedan. Detta kommer att rensa dina inställningar, men kommer inte att ta bort dina låtar.</string>
+    <string name="save">"Spara"</string>
+    <string name="scale_style">"Skala stil"</string>
+    <string name="scripture">"skriften"</string>
+    <string name="scrollbuttons">"Rullningsinställningar"</string>
+    <string name="scrollbuttons_distance">"Rulla beloppet"</string>
+    <string name="scrollbuttons_toggle">"Växla bläddringsknapparna"</string>
+    <string name="search">"Sök"</string>
+    <string name="search_biblegateway">"Sök BibleGateway.com"</string>
+    <string name="search_index_end">"Alla låtar har blivit fullt indexerade"</string>
+    <string name="search_index_error">"Det uppstod ett fel vid att bygga din sökdatabas"</string>
+    <string name="search_index_start">"Bygga din sångdatabas"</string>
+    <string name="search_log">"Kontrollera sökdatabasfelloggen"</string>
+    <string name="search_rebuild">"Återuppbygga låtdatabasen"</string>
+    <string name="section_space">"Lägg till sektionsutrymme"</string>
+    <string name="select_item_variation">"Välj sången för att skapa en bestämd variation"</string>
+    <string name="sendtoprojector">"Projekt"</string>
+    <string name="set">"UPPSÄTTNING"</string>
+    <string name="set_help">"Dra sånger runt för att ändra ordning på din uppsättning"</string>
+    <string name="set_manage_click">"Klicka på ett objekt i uppsättningen för att visa den"</string>
+    <string name="set_manage_swipe">"Dra för att ta bort ett objekt från din uppsättningslista"</string>
+    <string name="set_name">"Nytt inställt namn"</string>
+    <string name="set_new">"Skapa en ny uppsättning"</string>
+    <string name="sethasbeendeleted">"Har tagits bort från mappen \"Sets\"."</string>
+    <string name="setquickcheck">"Visa inställda kryssrutor i låtmenyn"</string>
+    <string name="setxmargins">"Horisontell marginalstorlek"</string>
+    <string name="setymargins">"Vertikal marginalstorlek"</string>
+    <string name="show_general_advanced">"Växla allmänna / avancerade fält"</string>
+    <string name="showcapo">"Visa capo ackord"</string>
+    <string name="showchords">"Visa ackord"</string>
+    <string name="showlyrics">"Visa texter"</string>
+    <string name="shownextinset">"Visa nästa låt i uppsättningen"</string>
+    <string name="simple_note">"Enkel anteckning / platshållare"</string>
+    <string name="size">"Storlek"</string>
+    <string name="size_mini">"Mini"</string>
+    <string name="size_normal">"Vanligt"</string>
+    <string name="slide">"Glida"</string>
+    <string name="slide_add_page">"Infoga ny sida till anpassad bild"</string>
+    <string name="song">"LÅT"</string>
+    <string name="song_functionnotavailable">"Den här funktionen är inte tillgänglig för låtar"</string>
+    <string name="song_new_name">"Ange ett nytt filnamn för den här låten (så här visas den i din låtmeny)"</string>
+    <string name="song_sections">"Song sektioner"</string>
+    <string name="song_swipe_toggle">"Byt svep för att flytta mellan låtar på / av"</string>
+    <string name="songdoesntexist">"Den sången finns inte på din enhet. Har du raderat det?"</string>
+    <string name="songfolder">"Välj låtmapp"</string>
+    <string name="songnamealreadytaken">"Tyvärr har denna sångtitel / filnamn redan använts (ett förslag kan vara att lägga till ett versionsnummer till slutet)."</string>
+    <string name="songsheet">"Songsheet"</string>
+    <string name="songsinfolder">"Song mapp"</string>
+    <string name="speed">"Fart"</string>
+    <string name="stage_section_max">"Max sektionshöjd (scenläge)"</string>
+    <string name="stagemode">"Scenläge"</string>
+    <string name="start">"Start"</string>
+    <string name="start_screen">"Gå tillbaka till startskärmen"</string>
+    <string name="stickynotes">"Sånganteckningar"</string>
+    <string name="stickynotes_edit">"Redigera låtnota"</string>
+    <string name="stop">"Sluta"</string>
+    <string name="storage">"Lagring"</string>
+    <string name="storage_check">"Kontrollerar lagring"</string>
+    <string name="storage_choose">"Hantera lagring"</string>
+    <string name="storage_ext">"Extern lagring"</string>
+    <string name="storage_help">"Välj standard lagringsplats för dina OpenSong-filer. Du kan ändra detta när som helst från menyn Alternativ."</string>
+    <string name="storage_notwritable">"Kan inte användas"</string>
+    <string name="storage_rationale">"Tillgång till din lagring krävs för att läsa och skriva sånger och uppsättningar."</string>
+    <string name="subscription">"(Prenumeration krävs)"</string>
+    <string name="success">"Framgång"</string>
+    <string name="swipe">"Rita in inställningar"</string>
+    <string name="swipe_allowance">"Vertikal rörelse tillåten"</string>
+    <string name="swipe_distance">"Dra avstånd"</string>
+    <string name="switchtoperformmode">"Byt till prestanda läge"</string>
+    <string name="tag_background">"Tag bakgrund"</string>
+    <string name="tag_bridge">"Bro"</string>
+    <string name="tag_chorus">"Kör"</string>
+    <string name="tag_ending">"Slut"</string>
+    <string name="tag_instrumental">"Instrumental"</string>
+    <string name="tag_interlude">"Mellanspel"</string>
+    <string name="tag_intro">"Intro"</string>
+    <string name="tag_prechorus">"Pre-Chorus"</string>
+    <string name="tag_refrain">"Avstå"</string>
+    <string name="tag_reprise">"Reprise"</string>
+    <string name="tag_tag">"Märka"</string>
+    <string name="tag_verse">"Vers"</string>
+    <string name="tap">"Kort tryck / tryck"</string>
+    <string name="tap_tempo">"Tryck för att ställa in tempo"</string>
+    <string name="text">"Text"</string>
+    <string name="time">"Tid"</string>
+    <string name="time_slide_pages">"Tid för varje bild (er)"</string>
+    <string name="time_slide_pages_help">"Lämna tomt för manuellt bildspel"</string>
+    <string name="timeformat">"24h"</string>
+    <string name="timer_learn">"Lär dig autoscroll tid"</string>
+    <string name="timer_size">"Timerns storlek"</string>
+    <string name="title">"Titel"</string>
+    <string name="toggleScrollBeforeSwipe">"Växla bläddra före nästa / föregående låt"</string>
+    <string name="toggle_autoscroll_pause">"Växla Autoscroll paus"</string>
+    <string name="toggle_autoshow_stickynotes">"Autoshow klisterlappar"</string>
+    <string name="toobig">"Vänligen byt autoskala på för png / pdf-export"</string>
+    <string name="top">"Topp"</string>
+    <string name="transparency">"Genomskinlighet"</string>
+    <string name="transpose">"införliva"</string>
+    <string name="trim_sections">"Trim sektioner"</string>
+    <string name="ukulele">"ukulele"</string>
+    <string name="ultimateguitarsearch">"Online sökning på Ultimate-Guitar.com"</string>
+    <string name="update_projector">"Update \ nprojector"</string>
+    <string name="use_default">"Använd standard"</string>
+    <string name="user_guide">"Användarguide"</string>
+    <string name="user_guide_text">"Var god och läs användarhandboken innan du använder appen."</string>
+    <string name="variation">"Variation"</string>
+    <string name="variation_edit">"Detta objekt kan redigeras. Originalen kommer inte att påverkas."</string>
+    <string name="verse">"Vers"</string>
+    <string name="verse_background">"Vers bakgrund"</string>
+    <string name="visualmetronome">"Visuell"</string>
+    <string name="volume">"Volym"</string>
+    <string name="volval">"Aktuellt volymvärde"</string>
+    <string name="wait">"Vänta...."</string>
+    <string name="warning">"Detta alternativ bör endast användas för presentationsläge. Var medveten om att den här funktionen använder mycket minne och kan orsaka kraschar. Du har blivit varnad!"</string>
+    <string name="websearch">"Sök internet för den här låten"</string>
+    <string name="width">"Bredd"</string>
+    <string name="youtube">"Sök på YouTube för aktuell sång"</string>
+    <string name="duplicate">Duplicera</string>
+    <string name="storage_warning">Välj inte mappen \"Songs\" som din lagringsplats. Du bör i stället välja den överordnade \"OpenSong\" -mappsplatsen.</string>
 </resources>

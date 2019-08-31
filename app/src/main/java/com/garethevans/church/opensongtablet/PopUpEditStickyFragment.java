@@ -35,7 +35,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
 
     private TextView stickyNotesWidth_TextView, stickyNotesOpacity_TextView;
     private EditText editStickyText;
-    Preferences preferences;
+    private Preferences preferences;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -67,7 +67,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_editsticky, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.options_song_stickynotes));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.stickynotes_edit));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,7 +159,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
         return V;
     }
 
-    public void doSave() {
+    private void doSave() {
         StaticVariables.mNotes = editStickyText.getText().toString();
         // Save the file
         PopUpEditSongFragment.prepareSongXML();

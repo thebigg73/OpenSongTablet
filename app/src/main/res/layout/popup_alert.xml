@@ -48,7 +48,7 @@
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/alertToggleButton"
-        android:text="@string/options_display"
+        android:text="@string/display"
         android:padding="8dp"
         style="@style/MyHeadingText"
         android:layout_width="match_parent"

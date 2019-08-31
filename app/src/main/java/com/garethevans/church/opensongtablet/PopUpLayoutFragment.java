@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.SwitchCompat;
+
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,7 +26,6 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.Objects;
@@ -39,10 +40,9 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     public interface MyInterface {
         void refreshSecondaryDisplay(String what);
-        void openFragment();
     }
 
-    public static MyInterface mListener;
+    private static MyInterface mListener;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -58,7 +58,6 @@ public class PopUpLayoutFragment extends DialogFragment {
     }
 
     private boolean firsttime = true;
-    String newtext = "";
 
     private SwitchCompat toggleChordsButton, toggleAutoScaleButton;
     private LinearLayout group_maxfontsize;
@@ -67,17 +66,18 @@ public class PopUpLayoutFragment extends DialogFragment {
             setXMarginProgressBar, setYMarginProgressBar, presoTitleSizeSeekBar,
             presoAuthorSizeSeekBar, presoCopyrightSizeSeekBar,
             presoAlertSizeSeekBar, presoTransitionTimeSeekBar;
-    private TextView maxfontSizePreview, fontSizePreview, presoAlphaText, lyrics_title_align,
-            presoTransitionTimeTextView;
+    private TextView maxfontSizePreview;
+    private TextView fontSizePreview;
+    private TextView presoAlphaText;
+    private TextView lyrics_title_align;
+    private TextView presoTransitionTimeTextView;
     private FloatingActionButton lyrics_left_align, lyrics_center_align, lyrics_right_align,
             info_left_align, info_center_align, info_right_align;
     private ImageView chooseLogoButton, chooseImage1Button, chooseImage2Button, chooseVideo1Button,
             chooseVideo2Button;
     private CheckBox image1CheckBox, image2CheckBox, video1CheckBox, video2CheckBox;
-    StorageAccess storageAccess;
-    Preferences preferences;
-    SetTypeFace setTypeFace;
-    private String backgroundFileType;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,7 +112,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
         storageAccess = new StorageAccess();
         preferences = new Preferences();
-        setTypeFace = new SetTypeFace();
+        SetTypeFace setTypeFace = new SetTypeFace();
 
         identifyViews(V);
 
@@ -123,11 +123,9 @@ public class PopUpLayoutFragment extends DialogFragment {
         Handler presohandler = new Handler();
         Handler presoinfohandler = new Handler();
         Handler customhandler = new Handler();
-        Handler monohandler = new Handler();
 
         setTypeFace.setUpAppFonts(getActivity(), preferences, lyrichandler, chordhandler,
-                presohandler, presoinfohandler, customhandler, monohandler);
-        //SetTypeFace.setTypeface(getActivity(), preferences);
+                presohandler, presoinfohandler, customhandler);
 
         prepareViews();
 
@@ -176,6 +174,11 @@ public class PopUpLayoutFragment extends DialogFragment {
         video2CheckBox = V.findViewById(R.id.video2CheckBox);
         setXMarginProgressBar = V.findViewById(R.id.setXMarginProgressBar);
         setYMarginProgressBar = V.findViewById(R.id.setYMarginProgressBar);
+        TextView modes_TextView = V.findViewById(R.id.modes_TextView);
+        String s = getString(R.string.performancemode) + " " + getString(R.string.separator) + " " +
+                getString(R.string.stagemode) +" " + getString(R.string.separator) + " " +
+                getString (R.string.presentermode);
+        modes_TextView.setText(s);
     }
 
     private void prepareViews() {
@@ -199,7 +202,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         presoAlertSizeSeekBar.setProgress((int)preferences.getMyPreferenceFloat(getActivity(),"presoAlertTextSize", 12.0f));
         float alphaval = preferences.getMyPreferenceFloat(getActivity(),"presoBackgroundAlpha",0.8f);
         presoAlphaProgressBar.setProgress((int)(alphaval*100.0f));
-        newtext = (int) (alphaval * 100.0f) + " %";
+        String newtext = (int) (alphaval * 100.0f) + " %";
         presoAlphaText.setText(newtext);
         presoTransitionTimeSeekBar.setMax(23);
         presoTransitionTimeSeekBar.setProgress(timeToSeekBarProgress());
@@ -315,8 +318,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View v) {
                 // Open another popup listing the files to choose from
                 PresenterMode.whatBackgroundLoaded = "logo";
-                backgroundFileType = "image";
-                chooseFile();
+                chooseFile("image/*",StaticVariables.REQUEST_CUSTOM_LOGO);
             }
         });
         chooseImage1Button.setOnClickListener(new View.OnClickListener() {
@@ -324,8 +326,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View v) {
                 // Open another popup listing the files to choose from
                 PresenterMode.whatBackgroundLoaded = "image1";
-                backgroundFileType = "image";
-                chooseFile();
+                chooseFile("image/*",StaticVariables.REQUEST_BACKGROUND_IMAGE1);
             }
         });
         chooseImage2Button.setOnClickListener(new View.OnClickListener() {
@@ -333,8 +334,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View v) {
                 // Open another popup listing the files to choose from
                 PresenterMode.whatBackgroundLoaded = "image2";
-                backgroundFileType = "image";
-                chooseFile();
+                chooseFile("image/*",StaticVariables.REQUEST_BACKGROUND_IMAGE2);
             }
         });
         chooseVideo1Button.setOnClickListener(new View.OnClickListener() {
@@ -342,8 +342,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View v) {
                 // Open another popup listing the files to choose from
                 PresenterMode.whatBackgroundLoaded = "video1";
-                backgroundFileType = "video";
-                chooseFile();
+                chooseFile("video/*",StaticVariables.REQUEST_BACKGROUND_VIDEO1);
             }
         });
         chooseVideo2Button.setOnClickListener(new View.OnClickListener() {
@@ -351,8 +350,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View v) {
                 // Open another popup listing the files to choose from
                 PresenterMode.whatBackgroundLoaded = "video2";
-                backgroundFileType = "video";
-                chooseFile();
+                chooseFile("video/*",StaticVariables.REQUEST_BACKGROUND_VIDEO2);
             }
         });
         image1CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -415,7 +413,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     private int timeToSeekBarProgress() {
         // Min time is 200ms, max is 2000ms
-        return (preferences.getMyPreferenceInt(getActivity(),"presoTransitionTime",800)/1000) - 2;
+        return (preferences.getMyPreferenceInt(getActivity(),"presoTransitionTime",800)/100) - 2;
     }
 
     private int seekBarProgressToTime() {
@@ -512,40 +510,16 @@ public class PopUpLayoutFragment extends DialogFragment {
         }
     }
 
-    private void chooseFile() {
-        // This calls an intent to choose a file
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+    private void chooseFile(String mimeType, int requestCode) {
+        // This calls an intent to choose a file (image or video)
         Uri uri = storageAccess.getUriForItem(getActivity(),preferences,"Backgrounds","","");
-        if (backgroundFileType.equals("video")) {
-            intent.setDataAndType(uri,"video/*");
-        } else {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT,uri);
+        if (mimeType.equals("image/*")) {
             intent.setDataAndType(uri,"image/*");
+        } else {
+            intent.setDataAndType(uri,"video/*");
         }
-        startActivityForResult(intent, 26);
-    }
-
-    private void setButtonBackground(ImageView v, String background) {
-        // The default uri is just as it is saved
-        Uri uri = Uri.parse(background);
-
-        if (background.equals("ost_logo.png") || background.equals("ost_bg.png")) {
-            // The built in logo or background
-            uri = storageAccess.getUriForItem(getActivity(), preferences, "Backgrounds", "", background);
-
-        } else if (background.contains("OpenSong/Backgrounds/")) {
-            // Decide if the image is a localised OpenSong/Backgrounds file
-            background = storageAccess.getPartOfUri(uri, "OpenSong/Backgrounds/");
-            background = background.substring("OpenSong/Backgrounds/".length());
-            uri = storageAccess.getUriForItem(getActivity(), preferences, "Backgrounds", "", background);
-        }
-        Log.d("d", "image uri=" + uri);
-        Log.d("d", "uriExists=" + storageAccess.uriExists(getActivity(), uri));
-        if (storageAccess.uriExists(getActivity(),uri)) {
-            v.setBackgroundColor(0x00000000);
-            RequestOptions myOptions = new RequestOptions()
-                    .override(120,90);
-            Glide.with(Objects.requireNonNull(getActivity())).load(uri).apply(myOptions).into(v);
-        }
+        startActivityForResult(intent, requestCode);
     }
 
     private void showorhideView(View v, boolean show) {
@@ -568,7 +542,6 @@ public class PopUpLayoutFragment extends DialogFragment {
                 mListener.refreshSecondaryDisplay("logo");
             }
         }
-
     }
 
     private class setMargin_Listener implements SeekBar.OnSeekBarChangeListener {
@@ -643,7 +616,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
         public void onStopTrackingTouch(SeekBar seekBar) {
 
-            preferences.getMyPreferenceFloat(getActivity(),"presoBackgroundAlpha",((float)seekBar.getProgress() / 100f));
+            preferences.setMyPreferenceFloat(getActivity(),"presoBackgroundAlpha",((float)seekBar.getProgress() / 100f));
             sendUpdateToScreen("backgrounds");
         }
     }
@@ -655,42 +628,65 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     private void setupPreviews() {
         // This sets the background thumbnails for the images/videos/logo
-        setButtonBackground(chooseLogoButton,preferences.getMyPreferenceString(getActivity(),"customLogo","ost_logo.png"));
-        setButtonBackground(chooseImage1Button,preferences.getMyPreferenceString(getActivity(),"backgroundImage1","ost_bg.png"));
-        setButtonBackground(chooseImage2Button,preferences.getMyPreferenceString(getActivity(),"backgroundImage2","ost_bg.png"));
-        setButtonBackground(chooseVideo1Button,preferences.getMyPreferenceString(getActivity(),"backgroundVideo1",""));
-        setButtonBackground(chooseVideo2Button,preferences.getMyPreferenceString(getActivity(),"backgroundVideo2",""));
+        Uri img1Uri = storageAccess.fixLocalisedUri(getActivity(),preferences,preferences.getMyPreferenceString(getActivity(),"backgroundImage1","ost_bg.png"));
+        updatePreview(getActivity(),chooseImage1Button, img1Uri);
+        Uri img2Uri = storageAccess.fixLocalisedUri(getActivity(),preferences,preferences.getMyPreferenceString(getActivity(),"backgroundImage2","ost_bg.png"));
+        updatePreview(getActivity(),chooseImage2Button, img2Uri);
+        Uri vid1Uri = storageAccess.fixLocalisedUri(getActivity(),preferences,preferences.getMyPreferenceString(getActivity(),"backgroundVideo1",""));
+        updatePreview(getActivity(),chooseVideo1Button, vid1Uri);
+        Uri vid2Uri = storageAccess.fixLocalisedUri(getActivity(),preferences,preferences.getMyPreferenceString(getActivity(),"backgroundVideo2",""));
+        updatePreview(getActivity(),chooseVideo2Button, vid2Uri);
+        Uri logoUri = storageAccess.fixLocalisedUri(getActivity(),preferences,preferences.getMyPreferenceString(getActivity(),"customLogo","ost_logo.png"));
+        updatePreview(getActivity(),chooseLogoButton, logoUri);
+    }
+
+    private void updatePreview (Context c, ImageView view, Uri uri) {
+        Log.d("PopUpLayout","updatePreview, uri="+uri);
+        if (uri==null || !storageAccess.uriExists(getActivity(),uri)) {
+            view.setBackgroundColor(0xff000000);
+        } else {
+            view.setBackgroundColor(0x00000000);
+            RequestOptions myOptions = new RequestOptions().fitCenter().override(120, 90);
+            GlideApp.with(c).load(uri).apply(myOptions).into(view);
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        // This gets sent back here from the parent activity
+        Log.d("PopUpLayout","onActivityResult triggered");
+        Log.d("PopUpLayout","requestCode="+requestCode);
         if (resultData!=null && resultData.getData()!=null) {
             Uri uri = resultData.getData();
+            if (getActivity()!=null && uri!=null) {
+                Log.d("PopUpLayout","uri="+uri);
+                String uriString = storageAccess.fixUriToLocal(uri);
+                Log.d("PopUpLayout","uriString="+uriString);
 
-            if (resultCode == -1 && uri != null) {
+                if (requestCode == StaticVariables.REQUEST_BACKGROUND_IMAGE1) {
+                    preferences.setMyPreferenceString(getActivity(), "backgroundImage1", uriString);
+                    updatePreview(getActivity(),chooseImage1Button,uri);
+                    sendUpdateToScreen("backgrounds");
 
-                if (PresenterMode.whatBackgroundLoaded != null) {
-                    // Save the location
-                    switch (PresenterMode.whatBackgroundLoaded) {
-                        case "logo":
-                            preferences.setMyPreferenceString(getActivity(), "customLogo", uri.toString());
-                            break;
-                        case "image1":
-                            preferences.setMyPreferenceString(getActivity(), "backgroundImage1", uri.toString());
-                            break;
-                        case "image2":
-                            preferences.setMyPreferenceString(getActivity(), "backgroundImage2", uri.toString());
-                            break;
-                        case "video1":
-                            preferences.setMyPreferenceString(getActivity(), "backgroundVideo1", uri.toString());
-                            break;
-                        case "video2":
-                            preferences.setMyPreferenceString(getActivity(), "backgroundVideo2", uri.toString());
-                            break;
-                    }
+                } else if (requestCode == StaticVariables.REQUEST_BACKGROUND_IMAGE2) {
+                    preferences.setMyPreferenceString(getActivity(), "backgroundImage2", uriString);
+                    updatePreview(getActivity(),chooseImage2Button,uri);
+                    sendUpdateToScreen("backgrounds");
+
+                } else if (requestCode == StaticVariables.REQUEST_BACKGROUND_VIDEO1) {
+                    preferences.setMyPreferenceString(getActivity(), "backgroundVideo1", uriString);
+                    updatePreview(getActivity(),chooseVideo1Button,uri);
+                    sendUpdateToScreen("backgrounds");
+
+                } else if (requestCode == StaticVariables.REQUEST_BACKGROUND_VIDEO2) {
+                    preferences.setMyPreferenceString(getActivity(), "backgroundVideo2", uriString);
+                    updatePreview(getActivity(),chooseVideo2Button,uri);
+                    sendUpdateToScreen("backgrounds");
+
+                } else if (requestCode == StaticVariables.REQUEST_CUSTOM_LOGO) {
+                    preferences.setMyPreferenceString(getActivity(), "customLogo", uriString);
+                    updatePreview(getActivity(),chooseLogoButton,uri);
+                    sendUpdateToScreen("logo");
                 }
-
-                // Update the storage text
-                setupPreviews();
             }
         }
     }

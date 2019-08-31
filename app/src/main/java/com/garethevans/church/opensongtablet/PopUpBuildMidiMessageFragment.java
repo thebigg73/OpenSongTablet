@@ -24,7 +24,7 @@ import java.util.Objects;
 
 public class PopUpBuildMidiMessageFragment extends DialogFragment {
 
-    Midi m;
+    private Midi m;
     private ArrayList<String> songMidiMessages;
     private ArrayList<String> songMidiMessagesToSave;
     private ArrayAdapter<String> midiCommandsAdapter, midiNotesAdapter, midiMessagesAdapter;
@@ -34,12 +34,12 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
     private Spinner midiValue2Spinner;
     private TextView valueOrVelocity, noteOrValue, midiMessage;
     private ListView midiActionList;
-    String action = "PC";
+    private String action = "PC";
     private int channel = 1;
     private int byte2 = 0;
     private int byte3 = 0;
 
-    Preferences preferences;
+    private Preferences preferences;
 
     static PopUpBuildMidiMessageFragment newInstance() {
         PopUpBuildMidiMessageFragment frag;
@@ -51,11 +51,6 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     @Override
@@ -335,7 +330,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
         // Add what is there already
         String[] bits = StaticVariables.mMidi.trim().split("\n");
         for (String s : bits) {
-            if (s!=null && !s.equals("") && !s.isEmpty()) {
+            if (s!=null && !s.equals("") && !s.isEmpty() && getActivity()!=null) {
                 // Get a human readable version of the midi code
                 String hr = m.getReadableStringFromHex(s,getActivity());
                 String message = hr + "\n" + "(" + s + ")";
@@ -383,15 +378,17 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void addMidiToList() {
-        try {
-            String s = midiMessage.getText().toString();
-            String hr = m.getReadableStringFromHex(s, getActivity());
-            String message = hr + "\n" + "(" + s + ")";
-            songMidiMessagesToSave.add(s);
-            songMidiMessages.add(message);
-            updateCurrentMessages();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (getActivity()!=null) {
+            try {
+                String s = midiMessage.getText().toString();
+                String hr = m.getReadableStringFromHex(s, getActivity());
+                String message = hr + "\n" + "(" + s + ")";
+                songMidiMessagesToSave.add(s);
+                songMidiMessages.add(message);
+                updateCurrentMessages();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

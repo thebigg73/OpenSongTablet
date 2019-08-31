@@ -83,10 +83,9 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     private AsyncTask<Object,Void,String> update_fields;
 
     private Bible bibleC;
-    Preferences preferences;
 
     // Declare views
-    View V;
+    private View V;
     private RadioGroup customRadioGroup;
     private RadioButton noteRadioButton, slideRadioButton, imageRadioButton, scriptureRadioButton;
     private TextView timeTextView;
@@ -102,7 +101,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
 
     // Declare variables used
     private static String whattype = "note";
-    StorageAccess storageAccess;
+    private StorageAccess storageAccess;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,7 +122,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         // Initialise the helper classes
         storageAccess = new StorageAccess();
         bibleC = new Bible();
-        preferences = new Preferences();
+        Preferences preferences = new Preferences();
 
         V = inflater.inflate(R.layout.popup_customslidecreator, container, false);
 
@@ -397,7 +396,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         warningTextView.setVisibility(View.VISIBLE);
     }
 
-    public void doSave() {
+    private void doSave() {
         FullscreenActivity.noteorslide = whattype;
         StringBuilder text = new StringBuilder(slideContentEditText.getText().toString().trim());
         FullscreenActivity.customreusable = saveReusableCheckBox.isChecked();
@@ -576,7 +575,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     @SuppressLint("StaticFieldLeak")
     private class GrabBibleText extends AsyncTask<Object, Void, String> {
 
-        String weblink;
+        final String weblink;
         StringBuilder sb;
         URL url;
         HttpURLConnection urlConnection = null;

@@ -44,16 +44,16 @@ import java.util.zip.ZipInputStream;
 
 class StorageAccess {
 
-    String appFolder = "OpenSong";
+    final String appFolder = "OpenSong";
     private Uri uriTree = null, uriTreeHome = null; // This is the home folder.  Set as required from preferences.
-    private String[] rootFolders = {"Backgrounds", "Export", "Highlighter", "Images", "Media",
+    private final String[] rootFolders = {"Backgrounds", "Export", "Highlighter", "Images", "Media",
             "Notes", "OpenSong Scripture", "Pads", "Profiles", "Received", "Scripture",
             "Sets", "Settings", "Slides", "Songs", "Variations"};
-    private String[] cacheFolders = {"Backgrounds/_cache", "Images/_cache", "Notes/_cache",
+    private final String[] cacheFolders = {"Backgrounds/_cache", "Images/_cache", "Notes/_cache",
             "OpenSong Scripture/_cache", "Scripture/_cache", "Slides/_cache"};
 
     // These are used primarily on start up to initialise stuff
-    String getStoragePreference(Context c, Preferences preferences) {
+    private String getStoragePreference(Context c, Preferences preferences) {
         return preferences.getMyPreferenceString(c, "uriTree", null);
     }
 
@@ -214,6 +214,7 @@ class StorageAccess {
         copyAssets(c, preferences);
         return "Success";
     }
+    @SuppressWarnings("SameReturnValue")
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private String createOrCheckRootFolders_SAF(Context c, Uri uri, Preferences preferences) {
         uriTreeHome = homeFolder(c,uri,preferences);
@@ -1043,6 +1044,10 @@ class StorageAccess {
 
     Uri fixLocalisedUri(Context c, Preferences preferences, String uriString) {
         // This checks for localised filenames first and fixes the Uri
+        if (uriString.equals("ost_logo.png") || uriString.equals("ost_bg.png")) {
+            uriString = "../OpenSong/Backgrounds/" + uriString;
+        }
+
         if (uriString.startsWith("../OpenSong/Media/")) {
             // Remove this and get the proper location
             uriString = uriString.replace("../OpenSong/Media/","");
@@ -1056,28 +1061,36 @@ class StorageAccess {
             uriString = uriString.replace("%2F","/");
             // Now get the actual uri
             return getUriForItem(c, preferences, "Pads", "", uriString);
-        } else if (uriString.startsWith("../OpenSong/")) {
-            uriString = uriString.replace("../OpenSong/", "");
+        } else if (uriString.startsWith("../OpenSong/Backgrounds/")) {
+            uriString = uriString.replace("../OpenSong/Backgrounds/", "");
             uriString = uriString.replace("%20"," ");
             uriString = uriString.replace("%2F","/");
             // Now get the actual uri
-            return getUriForItem(c, preferences, "Pads", "", uriString);
+            return getUriForItem(c, preferences, "Backgrounds", "", uriString);
+        } else if (uriString.startsWith("../OpenSong/Songs/")) {
+            uriString = uriString.replace("../OpenSong/Songs/", "");
+            uriString = uriString.replace("%20"," ");
+            uriString = uriString.replace("%2F","/");
+            // Now get the actual uri
+            return getUriForItem(c, preferences, "Songs", "", uriString);
         } else {
             // Now get the actual uri
             return Uri.parse(uriString);
         }
     }
 
-    String fixUriToLocal(Context c, Uri uri) {
+    String fixUriToLocal(Uri uri) {
         // If a file is in the OpenSong/ folder, let's localise it (important for sync)
         String path = "";
         if (uri!=null && uri.getPath()!=null) {
             path = uri.getPath();
             Log.d("StorageAccess","path="+path);
-            if (path.contains("OpenSong/Media/") || path.contains("OpenSong/Pads/")) {
-                path = path.substring(path.indexOf("OpenSong/") + 9);
+            if (path.contains("OpenSong/Media/") || path.contains("OpenSong/Pads/") || path.contains("OpenSong/Backgrounds/")) {
+                path = path.substring(path.lastIndexOf("OpenSong/") + 9);
+                path = "../OpenSong/" + path;
+            } else {
+                path = uri.toString();
             }
-            path = "../OpenSong/" + path;
         }
         return path;
     }
@@ -1254,22 +1267,22 @@ class StorageAccess {
                 File oldfile = new File(oldUri.getPath());
                 File newfile = new File(newUri.getPath());
                 if (oldfile.renameTo(newfile)) {
-                    StaticVariables.myToastMessage = c.getString(R.string.renametitle) + " - " +
+                    StaticVariables.myToastMessage = c.getString(R.string.rename) + " - " +
                             c.getString(R.string.ok);
                     StaticVariables.whichSongFolder = newsubfolder;
                     return true;
                 } else {
-                    StaticVariables.myToastMessage = c.getString(R.string.renametitle) + " - " +
+                    StaticVariables.myToastMessage = c.getString(R.string.rename) + " - " +
                             c.getString(R.string.createfoldererror);
                     return false;
                 }
             } else {
-                StaticVariables.myToastMessage = c.getString(R.string.renametitle) + " - " +
+                StaticVariables.myToastMessage = c.getString(R.string.rename) + " - " +
                         c.getString(R.string.createfoldererror);
                 return false;
             }
         } else {
-            StaticVariables.myToastMessage = c.getString(R.string.renametitle) +
+            StaticVariables.myToastMessage = c.getString(R.string.rename) +
                     " - " + c.getString(R.string.folderexists);
             return false;
         }
@@ -1282,19 +1295,19 @@ class StorageAccess {
         if (!newsubfolder.contains("/")) {
             try {
                 DocumentsContract.renameDocument(c.getContentResolver(), oldUri, newsubfolder);
-                StaticVariables.myToastMessage = c.getString(R.string.renametitle) + " - " +
+                StaticVariables.myToastMessage = c.getString(R.string.rename) + " - " +
                         c.getString(R.string.ok);
                 StaticVariables.whichSongFolder = newsubfolder;
                 return true;
             } catch (Exception e) {
-                StaticVariables.myToastMessage = c.getString(R.string.renametitle) + " - " +
+                StaticVariables.myToastMessage = c.getString(R.string.rename) + " - " +
                         c.getString(R.string.createfoldererror);
                 return false;
             }
         } else {
             // TODO write a script that iterates through the directory and subdirectories it contains
             // And copy them to the new location one at a time, then delete the old folder
-            StaticVariables.myToastMessage = c.getString(R.string.renametitle) + " - " +
+            StaticVariables.myToastMessage = c.getString(R.string.rename) + " - " +
                     c.getString(R.string.createfoldererror);
             return false;
         }

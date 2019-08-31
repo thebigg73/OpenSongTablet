@@ -21,7 +21,7 @@
             android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:gravity="center"
-            android:text="@string/options_display"
+            android:text="@string/display"
             style="@style/MyMenuHeadingText" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -60,7 +60,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_theme_light_dark_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_options_theme"
+                android:text="@string/choose_theme"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
@@ -73,7 +73,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_arrow_expand_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_options_scale"
+                android:text="@string/autoscale_toggle"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
@@ -86,7 +86,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_format_text_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_options_fonts"
+                android:text="@string/choose_fonts"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
@@ -112,7 +112,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_settings_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_display_popups"
+                android:text="@string/display_popups"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 

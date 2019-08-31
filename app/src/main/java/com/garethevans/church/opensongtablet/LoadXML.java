@@ -23,7 +23,7 @@ import java.util.Locale;
 public class LoadXML extends Activity {
 
     private static boolean isxml = true;
-    static String utf = "UTF-8";
+    private static String utf = "UTF-8";
     private static boolean needtoloadextra = false;
 
     // This bit loads the lyrics from the required file
@@ -149,10 +149,12 @@ public class LoadXML extends Activity {
                 } catch (java.io.FileNotFoundException e) {
                     e.printStackTrace();
                     setNotFound(c);
+                } catch (OutOfMemoryError e1) {
+                    e1.printStackTrace();
                 }
 
                 // If the song is OnSong format - try to import it
-                if (StaticVariables.songfilename.contains(".onsong")) {
+                if (StaticVariables.songfilename.toLowerCase(Locale.ROOT).contains(".onsong")) {
                     // Run the OnSongConvert script
                     OnSongConvert onSongConvert = new OnSongConvert();
                     SongXML songXML = new SongXML();
@@ -391,7 +393,7 @@ public class LoadXML extends Activity {
         StaticVariables.mLyrics = temp_mLyrics;
     }
 
-    static void initialiseSongTags(Context c) {
+    private static void initialiseSongTags(Context c) {
         StaticVariables.mTitle = StaticVariables.songfilename;
         StaticVariables.mAuthor = "";
         StaticVariables.mCopyright = "";
@@ -784,7 +786,7 @@ public class LoadXML extends Activity {
         }
     }
 
-    static boolean validReadableFile(Context c, StorageAccess storageAccess, Uri uri) {
+    private static boolean validReadableFile(Context c, StorageAccess storageAccess, Uri uri) {
         boolean isvalid = false;
         // Get length of file in Kb
         float filesize = storageAccess.getFileSizeFromUri(c, uri);
@@ -804,7 +806,7 @@ public class LoadXML extends Activity {
         return isvalid;
     }
 
-    static String fixXML(Context c, Preferences preferences, String section) {
+    private static String fixXML(Context c, Preferences preferences, String section) {
 
         // Error in the xml - tell the user we're trying to fix it!
         StorageAccess storageAccess = new StorageAccess();
@@ -941,7 +943,7 @@ public class LoadXML extends Activity {
         return nextkey;
     }
 
-    static String doFix(String tofix) {
+    private static String doFix(String tofix) {
         tofix = tofix.replace("&amp;", "&");
         tofix = tofix.replace("&apos;", "'");  // ' are actually fine - no need
         tofix = tofix.replace("&quot;", "\"");
@@ -962,10 +964,10 @@ public class LoadXML extends Activity {
     @SuppressLint("StaticFieldLeak")
     private static class SideTask extends AsyncTask<String, Void, String> {
 
-        InputStream inputStream;
+        final InputStream inputStream;
         StorageAccess storageAccess;
-        Uri uri;
-        Context c;
+        final Uri uri;
+        final Context c;
 
         SideTask(Context ctx, InputStream is, Uri u) {
             inputStream = is;

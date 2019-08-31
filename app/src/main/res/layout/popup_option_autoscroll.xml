@@ -93,7 +93,7 @@
                 android:drawableLeft="@drawable/ic_slow_motion_video_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_slow_motion_video_white_36dp"
-                android:text="@string/options_options_autostartscroll"
+                android:text="@string/autostart_autoscroll"
                 android:textColor="#fff"
                 android:theme="@style/SwitchStyle"
                 android:textSize="12sp"

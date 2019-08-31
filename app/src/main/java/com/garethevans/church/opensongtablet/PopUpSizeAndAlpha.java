@@ -9,7 +9,7 @@ import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 
-class PopUpSizeAndAlpha {
+public class PopUpSizeAndAlpha {
 
     static void decoratePopUp(Activity ac, Dialog dialog, Preferences preferences) {
 
@@ -104,63 +104,5 @@ class PopUpSizeAndAlpha {
             }
         }
     }
-
-    // Not using the bits below as it messed with the soft keyboard overlapping everything!
-
-    /*private static void setWindowFlags(Window w, View v) {
-        //v.setOnSystemUiVisibilityChangeListener(null);
-        //v.setOnFocusChangeListener(null);
-        w.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-        w.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        w.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    }*/
-
-    /*private static void setWindowFlagsAdvanced(final Window w, final View v) {
-        v.setOnSystemUiVisibilityChangeListener(null);
-        v.setOnFocusChangeListener(null);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LOW_PROFILE);
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
-
-        Runnable testnavbar = () -> {
-            //v.setOnSystemUiVisibilityChangeListener(visibility -> restoreTransparentBars(w, v));
-
-            //v.setOnFocusChangeListener((v1, hasFocus) -> restoreTransparentBars(w, v1));
-        };
-
-        Handler waitandtest = new Handler();
-        waitandtest.postDelayed(testnavbar, 1000);
-    }*/
-
-    /*private static void restoreTransparentBars(final Window w, final View v) {
-        // Set runnable
-        Runnable delhide = () -> {
-            // Hide them
-            setWindowFlags(w,v);
-            setWindowFlagsAdvanced(w,v);
-            View rf = w.getCurrentFocus();
-            if (rf!=null) {
-                rf.clearFocus();
-            }
-        };
-
-        // Wait for 1000ms then check for Navigation bar visibility
-        // If it is there, hide it
-        Handler delayhidehandler = new Handler();
-        delayhidehandler.postDelayed(delhide, 1000);
-    }*/
 
 }

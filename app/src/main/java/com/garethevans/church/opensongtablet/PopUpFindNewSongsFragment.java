@@ -72,9 +72,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     private ArrayList<String> newtempfolders;
     private MyInterface mListener;
     private boolean downloadcomplete = false;
-    TextSongConvert textSongConvert;
-    StorageAccess storageAccess;
-    Preferences preferences;
+    private TextSongConvert textSongConvert;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
     private SongFolders songFolders;
     private Uri downloadedFile;
 
@@ -347,7 +347,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         webresults_WebView.loadUrl(weblink);
     }
 
-    private BroadcastReceiver onComplete=new BroadcastReceiver() {
+    private final BroadcastReceiver onComplete=new BroadcastReceiver() {
         public void onReceive(Context ctxt, Intent intent) {
             downloadcomplete = true;
             saveSong_Button.setEnabled(true);
@@ -384,7 +384,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
     }
 
-    public void grabchordpro() {
+    private void grabchordpro() {
         // Need to run a async task to grab html text
         grabSongData_ProgressBar.setVisibility(View.VISIBLE);
         weblink = webresults_WebView.getUrl();
@@ -871,8 +871,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         StringBuilder sb = new StringBuilder();
 
         for (int q = 0; q < numlines; q++) {
-            if (templines[q].contains("<span>") || templines[q].contains("<span class=\"text-chord js-tab-ch\">") ||
-                    templines[q].contains("<span class=\"text-chord js-tab-ch js-tapped\">")) {
+            if (templines[q].contains("<span>") || templines[q].contains("text-chord") ||
+                    templines[q].contains("js-tab-ch") || templines[q].contains("js-tapped") ||
+                    templines[q].contains("colorful-chord")) {
                 // Identify chord lines
                 templines[q] = "." + templines[q];
             }
@@ -899,8 +900,42 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         newtext = newtext.replace("[/ch]","");
         newtext = newtext.replace("<div class=\"text-tab js-tab-tab\">","");
         newtext = newtext.replace("</div>","");
-        newtext = newtext.replace("<span class=\"text-chord js-tab-ch\">", "");
-        newtext = newtext.replace("<span class=\"text-chord js-tab-ch js-tapped\">", "");
+        // Rather than trying to just remove randomly updated chord classes:
+        try {
+            while (newtext.contains("<span")) {
+                int spanstart = newtext.indexOf("<span");
+                int spanend = newtext.indexOf(">", spanstart);
+                String spanbit = newtext.substring(spanstart, spanend);
+                Log.d("d","newtext="+newtext);
+                Log.d("d","Removing "+spanbit);
+                newtext = newtext.replace(spanbit, "");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            while (newtext.contains("<pre")) {
+                int prestart = newtext.indexOf("<pre");
+                int preend = newtext.indexOf(">",prestart);
+                String prebit = newtext.substring(prestart,preend);
+                newtext = newtext.replace(prebit,"");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            while (newtext.contains("<div")) {
+                int divstart = newtext.indexOf("<div");
+                int divend = newtext.indexOf(">",divstart);
+                String divbit = newtext.substring(divstart,divend);
+                newtext = newtext.replace(divbit,"");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //newtext = newtext.replace("<span class=\"text-chord js-tab-ch js-tapped \">", "");
+        //newtext = newtext.replace("<span class=\"text-chord js-tab-ch js-tapped\">", "");
+        //newtext = newtext.replace("<span class=\"text-chord js-tab-ch\">", "");
         newtext = newtext.replace("</span>", "");
         newtext = newtext.replace("[[", "[");
         newtext = newtext.replace("]]", "]");
@@ -1745,7 +1780,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     @SuppressLint("StaticFieldLeak")
     private class GetSourceCode extends AsyncTask<Object, String, String> {
 
-        String html;
+        final String html;
         GetSourceCode(String s) {
             html = s;
         }

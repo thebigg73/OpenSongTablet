@@ -22,8 +22,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 
@@ -33,24 +31,22 @@ public class PopUpFullSearchFragment extends DialogFragment {
 
     private androidx.appcompat.widget.SearchView mSearchView;
     private ListView mListView;
-    ProcessSong processSong;
-    Preferences preferences;
-    SQLiteHelper sqLiteHelper;
-    private String searchPhrase = "";
+    private ProcessSong processSong;
+    private Preferences preferences;
+    private SQLiteHelper sqLiteHelper;
+    private final String searchPhrase = "";
 
     // TODO allow user to set these (switch on/off)
     private boolean searchTitle, searchAuthor, searchCopyright, searchLyrics, searchTheme, searchKey,
     searchHymn, searchUser1, searchUser2, searchUser3, searchCCLI, searchFolder, searchAka;
 
-    View V;
+    private View V;
     private SearchViewAdapter adapter;
     private LinearLayout searchFilters, filtersLayout, mainSearchStuff;
     private FloatingActionButton filtersFAB1, filtersFAB2;
 
     // The array that holds the search information
     private ArrayList<SQLite> searchlist = new ArrayList<>();
-
-    public static List<Map<String, String>> data;
 
     public interface MyInterface {
         void loadSong();

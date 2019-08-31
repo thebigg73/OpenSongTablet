@@ -69,17 +69,16 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     private RelativeLayout transposeDown_RelativeLayout, transposeUp_RelativeLayout;
 
     private static int temposlider;
-    View V;
-    String title;
+    private View V;
 
-    TextSongConvert textSongConvert;
-    ChordProConvert chordProConvert;
-    StorageAccess storageAccess;
-    Preferences preferences;
-    ProcessSong processSong;
-    SQLite sqLite;
-    SQLiteHelper sqLiteHelper;
-    Transpose transpose;
+    private TextSongConvert textSongConvert;
+    private ChordProConvert chordProConvert;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
+    private ProcessSong processSong;
+    private SQLite sqLite;
+    private SQLiteHelper sqLiteHelper;
+    private Transpose transpose;
 
     private boolean keyboardopen = false;
 
@@ -280,7 +279,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         }
     }
 
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+    private final ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
         // Called when the action mode is created; startActionMode() was called
         @Override
@@ -442,7 +441,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     }
 
     public interface MyInterface {
-        void rebuildSearchIndex();
         void prepareSongMenu();
         void loadSong();
     }
@@ -536,7 +534,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         sqLite = sqLiteHelper.getSong(getActivity(),songid);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getResources().getString(R.string.options_song_edit));
+        title.setText(getResources().getString(R.string.edit));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -622,7 +620,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 if (startSelection > 0 && endSelection > startSelection) {
                     String selectedText = edit_song_lyrics.getText().toString().substring(startSelection, endSelection);
                     // Transpose it
-                    selectedText = transpose.transposeThisString(getActivity(),preferences,false,false,false,"+1", 1, selectedText);
+                    selectedText = transpose.transposeThisString(getActivity(),preferences,"+1",  selectedText);
 
                     // Replace the old text
                     String lyricsinfront = edit_song_lyrics.getText().toString().substring(0, startSelection);
@@ -644,7 +642,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 if (startSelection > 0 && endSelection > startSelection) {
                     String selectedText = edit_song_lyrics.getText().toString().substring(startSelection, endSelection);
                     // Transpose it
-                    selectedText = transpose.transposeThisString(getActivity(),preferences,false,false,false,"-1", 1, selectedText);
+                    selectedText = transpose.transposeThisString(getActivity(),preferences,"-1",  selectedText);
 
                     // Replace the old text
                     String lyricsinfront = edit_song_lyrics.getText().toString().substring(0, startSelection);

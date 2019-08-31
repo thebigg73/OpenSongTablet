@@ -4,6 +4,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,9 @@ import java.util.List;
 
 class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHolder> {
 
-    private List<SetItemInfo> setList;
-    Context c;
-    Preferences preferences;
+    private final List<SetItemInfo> setList;
+    private final Context c;
+    private final Preferences preferences;
 
     SetListAdapter(List<SetItemInfo> setList, Context context, Preferences p) {
         this.setList = setList;
@@ -38,6 +39,7 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
         if (!key.equals("")) {
             titlesongname = titlesongname + " ("+key+")";
         }
+
         setitemViewHolder.vItem.setText(si.songitem);
         String newfoldername = si.songfolder;
         if (newfoldername.startsWith("**")) {
@@ -128,7 +130,7 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
             }
         });
 
-        if (FullscreenActivity.whattodo.equals("setitemvariation") || !issong) {
+        if (FullscreenActivity.whattodo.equals("setitemvariation") && !issong) {
             // Only songs should be able to have variations
             setitemViewHolder.vCard.setOnClickListener(null);
         }
@@ -146,11 +148,11 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
 
     static class SetItemViewHolder extends RecyclerView.ViewHolder {
 
-        TextView vItem;
-        TextView vSongTitle;
-        TextView vSongFolder;
-        FloatingActionButton vIcon;
-        RelativeLayout vCard;
+        final TextView vItem;
+        final TextView vSongTitle;
+        final TextView vSongFolder;
+        final FloatingActionButton vIcon;
+        final RelativeLayout vCard;
 
         SetItemViewHolder(View v) {
             super(v);

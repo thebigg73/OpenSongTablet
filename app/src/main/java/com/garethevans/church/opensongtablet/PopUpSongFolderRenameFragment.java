@@ -31,17 +31,17 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
     // Once it has been completed positively (i.e. ok was clicked) it sends a refreshAll() interface call
 
     private static String myTask;
-    String mTitle;
+    private String mTitle;
     private static ArrayList<String> oldtempfolders;
     private GetFoldersAsync getFolders_async;
     private String tempNewFolder;
     private String tempOldFolder;
-    TextView title;
-    ProgressBar progressBar;
-    StorageAccess storageAccess;
-    Preferences preferences;
+    private TextView title;
+    private ProgressBar progressBar;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
     private SongFolders songFolders;
-    SQLiteHelper sqLiteHelper;
+    private SQLiteHelper sqLiteHelper;
 
     static PopUpSongFolderRenameFragment newInstance(String message) {
         myTask = message;
@@ -52,11 +52,11 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getString(R.string.options_song_rename));
+        getDialog().setTitle(getString(R.string.rename));
         if ("create".equals(myTask)) {
-            mTitle = getString(R.string.options_song_newfolder);
+            mTitle = getString(R.string.folder_new);
         } else {
-            mTitle = getString(R.string.options_song_rename);
+            mTitle = getString(R.string.rename);
         }
         getDialog().setCanceledOnTouchOutside(true);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -230,6 +230,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
     }
 
     public interface MyInterface {
+        void rebuildSearchIndex();
         void loadSong();
     }
 
@@ -251,13 +252,23 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
 
             @Override
             protected void onPostExecute(String s) {
-                ShowToast.showToast(getActivity());
+                if (mListener != null) {
+                    mListener.loadSong();
+                    mListener.rebuildSearchIndex();
+                }
+                try {
+                    dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                /*//ShowToast.showToast(getActivity());
                 if (s.equals("success")) {
                     // Let the app know we need to rebuild the database
                     FullscreenActivity.needtorefreshsongmenu = true;
 
                     if (mListener != null) {
                         mListener.loadSong();
+                        mListener.rebuildSearchIndex();
                     }
                     try {
                         dismiss();
@@ -266,7 +277,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
                     }
                 } else {
                     progressBar.setVisibility(View.GONE);
-                }
+                }*/
             }
         };
         renamefolders.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

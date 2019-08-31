@@ -68,17 +68,15 @@ public class PopUpPadFragment extends DialogFragment {
     private SeekBar popupPad_pan;
     private TextView popupPad_pan_text;
     private Button start_stop_padplay;
-    String text;
+    private String text;
     private boolean validpad;
-    Preferences preferences;
-    StorageAccess storageAccess;
-    ProcessSong processSong;
+    private Preferences preferences;
 
     private AsyncTask<Object,Void,String> set_pad;
 
     private boolean mStopHandler = false;
-    private Handler mHandler = new Handler();
-    Runnable runnable = new Runnable() {
+    private final Handler mHandler = new Handler();
+    private final Runnable runnable = new Runnable() {
         @Override
         public void run() {
             try {
@@ -107,8 +105,8 @@ public class PopUpPadFragment extends DialogFragment {
         }
 
         preferences = new Preferences();
-        storageAccess = new StorageAccess();
-        processSong = new ProcessSong();
+        StorageAccess storageAccess = new StorageAccess();
+        ProcessSong processSong = new ProcessSong();
 
         View V = inflater.inflate(R.layout.popup_page_pad, container, false);
 
@@ -183,7 +181,7 @@ public class PopUpPadFragment extends DialogFragment {
         return V;
     }
 
-    public void doSave() {
+    private void doSave() {
         PopUpEditSongFragment.prepareSongXML();
         PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
         try {

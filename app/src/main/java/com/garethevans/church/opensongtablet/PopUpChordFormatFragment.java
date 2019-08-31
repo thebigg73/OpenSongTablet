@@ -30,7 +30,7 @@ public class PopUpChordFormatFragment extends DialogFragment {
     private SwitchCompat switchAb, switchBb, switchDb, switchEb, switchGb, switchAbm, switchBbm,
             switchDbm, switchEbm, switchGbm, assumePreferred_SwitchCompat;
 
-    Preferences preferences;
+    private Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

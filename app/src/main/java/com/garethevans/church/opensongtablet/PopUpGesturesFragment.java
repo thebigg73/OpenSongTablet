@@ -23,7 +23,7 @@ public class PopUpGesturesFragment extends DialogFragment {
     private Spinner screenDoubleTap;
     private Spinner screenLongPress;
 
-    Preferences preferences;
+    private Preferences preferences;
 
     static PopUpGesturesFragment newInstance() {
         PopUpGesturesFragment frag;
@@ -35,11 +35,6 @@ public class PopUpGesturesFragment extends DialogFragment {
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     @Override
@@ -116,7 +111,7 @@ public class PopUpGesturesFragment extends DialogFragment {
         return V;
     }
 
-    public void doSave() {
+    private void doSave() {
         int val_doubletap = screenDoubleTap.getSelectedItemPosition();
         int val_longpress = screenLongPress.getSelectedItemPosition();
 

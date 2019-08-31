@@ -59,7 +59,7 @@ public class PopUpCCLIFragment extends DialogFragment {
         void prepareOptionMenu();
     }
 
-    public static MyInterface mListener;
+    private static MyInterface mListener;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -71,19 +71,16 @@ public class PopUpCCLIFragment extends DialogFragment {
     private TextView title, churchNameTextView, licenceTextView, logTextView, resetText;
     private EditText churchNameEditText,licenceEditText;
     private WebView logWebView;
-    FloatingActionButton saveMe;
+    private FloatingActionButton saveMe;
     private ArrayList<String> songfile;
-    ArrayList<String> song;
-    ArrayList<String> author;
-    ArrayList<String> copyright;
-    ArrayList<String> ccli;
-    ArrayList<String> date;
-    ArrayList<String> time;
-    ArrayList<String> action;
-    //static File activitylogfile;
-    StorageAccess storageAccess;
-    Preferences preferences;
-    Uri uri;
+    private ArrayList<String> song;
+    private ArrayList<String> author;
+    private ArrayList<String> copyright;
+    private ArrayList<String> ccli;
+    private ArrayList<String> date;
+    private ArrayList<String> time;
+    private ArrayList<String> action;
+    private Preferences preferences;
 
     static boolean createBlankXML(Context c, Preferences preferences) {
         String blankXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -198,9 +195,8 @@ public class PopUpCCLIFragment extends DialogFragment {
         saveMe = V.findViewById(R.id.saveMe);
 
         // Set the log file
-        storageAccess = new StorageAccess();
+        //static File activitylogfile;
         preferences = new Preferences();
-        uri = storageAccess.getUriForItem(getActivity(), preferences, "Settings", "", "ActivityLog.xml");
 
         // Initialise the views
         churchNameTextView = V.findViewById(R.id.churchNameTextView);
@@ -271,11 +267,11 @@ public class PopUpCCLIFragment extends DialogFragment {
                 "Settings", "", "ActivityLog.xml");
         InputStream inputStream = storageAccess.getInputStream(c, uri);
         String actfilesize = getLogFileSize(c, uri);
-        BuildTable do_buildTable = new BuildTable(uri, inputStream, actfilesize);
+        BuildTable do_buildTable = new BuildTable(inputStream, actfilesize);
         do_buildTable.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    public void doSave() {
+    private void doSave() {
         if (mListener!=null) {
             mListener.prepareOptionMenu();
         }
@@ -322,11 +318,12 @@ public class PopUpCCLIFragment extends DialogFragment {
 
     private static class AddUsageEntryToLog extends AsyncTask<Object, Void, String> {
         @SuppressLint("StaticFieldLeak")
+        final
         Context ctx;
-        Uri uri;
-        InputStream inputStream;
-        OutputStream outputStream;
-        StorageAccess storageAccess;
+        final Uri uri;
+        //InputStream inputStream;
+        //OutputStream outputStream;
+        final StorageAccess storageAccess;
         String date;
         String time;
         String fname = "";
@@ -384,7 +381,6 @@ public class PopUpCCLIFragment extends DialogFragment {
                 String last = "Entry0";
                 try {
                     document = documentBuilder.parse(new InputSource(new StringReader(myString)));
-                    //Document document = documentBuilder.parse(inputStream);
                     root = document.getDocumentElement();
 
                     if (root!=null && root.getLastChild()!=null && root.getLastChild().getNodeName()!=null) {
@@ -484,14 +480,13 @@ public class PopUpCCLIFragment extends DialogFragment {
 
     @SuppressLint("StaticFieldLeak")
     private class BuildTable extends AsyncTask<Object, Void, String> {
-        Uri uri;
-        InputStream inputStream;
-        OutputStream outputStream;
-        String sizeoffile;
+        //final Uri uri;
+        final InputStream inputStream;
+        //OutputStream outputStream;
+        final String sizeoffile;
 
-        BuildTable(Uri u, InputStream is, String filesize) {
+        BuildTable(InputStream is, String filesize) {
             sizeoffile = filesize;
-            uri = u;
             inputStream = is;
         }
 
@@ -666,20 +661,20 @@ public class PopUpCCLIFragment extends DialogFragment {
                         8 Copied - when duplicate is called
                         */
                     default:
-                        table.append("<td>").append(getString(R.string.options_other)).append("</td>");
+                        table.append("<td>").append(getString(R.string.other)).append("</td>");
                         break;
                     case "1":
-                        table.append("<td>").append(getString(R.string.options_song_new)).append("</td>");
+                        table.append("<td>").append(getString(R.string.new_something)).append("</td>");
                         break;
                     case "2":
-                        table.append("<td>").append(getString(R.string.options_set_delete)).append("</td>");
+                        table.append("<td>").append(getString(R.string.delete)).append("</td>");
                         break;
                     case "3":
-                        table.append("<td>").append(getString(R.string.options_set_edit)).append("</td>");
+                        table.append("<td>").append(getString(R.string.edit)).append("</td>");
                         break;
                     case "4":
                     case "7":
-                        table.append("<td>").append(getString(R.string.options_song_rename)).append("</td>");
+                        table.append("<td>").append(getString(R.string.rename)).append("</td>");
                         break;
                     case "5":
                         table.append("<td>").append(getString(R.string.sendtoprojector)).append("</td>");

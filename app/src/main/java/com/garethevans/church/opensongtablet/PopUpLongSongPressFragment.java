@@ -45,7 +45,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         super.onDetach();
     }
 
-    Preferences preferences;
+    private Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,6 @@ public class PopUpLongSongPressFragment extends DialogFragment {
     }
 
     static void addtoSet(Context c, Preferences preferences) {
-        StaticVariables.addingtoset = true;
 
         // If the song is in .pro, .onsong, .txt format, tell the user to convert it first
         // This is done by viewing it (avoids issues with file extension renames)
@@ -145,6 +144,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         Button addSongToSet_Button = V.findViewById(R.id.addSongToSet_Button);
         Button deleteSong_Button = V.findViewById(R.id.deleteSong_Button);
         Button renameSong_Button = V.findViewById(R.id.renameSong_Button);
+        Button duplicateSong_Button = V.findViewById(R.id.duplicateSong_Button);
         Button shareSong_Button = V.findViewById(R.id.shareSong_Button);
         Button editSong_Button = V.findViewById(R.id.editSong_Button);
 
@@ -183,6 +183,16 @@ public class PopUpLongSongPressFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 FullscreenActivity.whattodo = "renamesong";
+                if (mListener!=null) {
+                    mListener.openFragment();
+                }
+                dismiss();
+            }
+        });
+        duplicateSong_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "duplicate";
                 if (mListener!=null) {
                     mListener.openFragment();
                 }

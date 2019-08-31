@@ -1,46 +1,34 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.cast.CastPresentation;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 
-import java.io.InputStream;
-
 public class PresentationService extends CastRemoteDisplayLocalService {
 
-    ExternalDisplay myPresentation;
-
-    private void createPresentation(Display display) {
+    private ExternalDisplay myPresentation;
+    private ProcessSong processSong;
+    private Activity activity;
+    private void createPresentation(Display display, ProcessSong pS, Activity act) {
         dismissPresentation();
-        myPresentation = new ExternalDisplay(this, display);
+        activity = StaticVariables.activity;
+        processSong = pS;
+        //myPresentation = new ExternalDisplay(this, display);
+        myPresentation = new ExternalDisplay(this, display, pS, act);
         try {
             myPresentation.show();
             FullscreenActivity.isPresenting = true;
@@ -53,8 +41,12 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
     @Override
     public void onCreatePresentation(Display display) {
+        if (processSong == null) {
+            processSong = new ProcessSong();
+        }
+
         FullscreenActivity.isPresenting = true;
-        createPresentation(display);
+        createPresentation(display, processSong, activity);
     }
 
     @Override
@@ -82,18 +74,247 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         FullscreenActivity.isPresenting = false;
     }
 
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     static class ExternalDisplay extends CastPresentation
             implements MediaPlayer.OnVideoSizeChangedListener,
             MediaPlayer.OnPreparedListener,
             MediaPlayer.OnCompletionListener, SurfaceHolder.Callback {
 
-        ExternalDisplay(Context c, Display display) {
+
+        ExternalDisplay(Context context, Display display, ProcessSong pS, Activity act) {
+            super(context, display);
+            c = context;
+            myscreen = display;
+            processSong = pS;
+            activity = act;
+        }
+
+        // Define the variables and views
+        private static Display myscreen;
+        @SuppressLint("StaticFieldLeak")
+        private static RelativeLayout pageHolder, projectedPage_RelativeLayout;
+        @SuppressLint("StaticFieldLeak")
+        private static LinearLayout projected_LinearLayout, presentermode_bottombit;
+        @SuppressLint("StaticFieldLeak")
+        private static ImageView projected_ImageView, projected_Logo, projected_BackgroundImage;
+        @SuppressLint("StaticFieldLeak")
+        private static TextView songinfo_TextView, presentermode_title, presentermode_author, presentermode_copyright, presentermode_alert;
+        @SuppressLint("StaticFieldLeak")
+        private static LinearLayout bottom_infobar, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3;
+        @SuppressLint("StaticFieldLeak")
+        private static SurfaceView projected_SurfaceView;
+        private static SurfaceHolder projected_SurfaceHolder;
+        private static StorageAccess storageAccess;
+        private static Preferences preferences;
+        private static ProcessSong processSong;
+        private static PresentationCommon presentationCommon;
+        @SuppressLint("StaticFieldLeak")
+        private static Context c;
+        @SuppressLint("StaticFieldLeak")
+        private static Activity activity;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            try {
+                setContentView(R.layout.cast_screen);
+
+                storageAccess = new StorageAccess();
+                preferences = new Preferences();
+                presentationCommon = new PresentationCommon();
+
+                getDefaultColors();
+
+                // Identify the views
+                identifyViews();
+
+                c = projectedPage_RelativeLayout.getContext();
+
+                // Set the default background image
+                setDefaultBackgroundImage();
+
+                // Based on the mode we are in, hide the appropriate stuff at the bottom of the page
+                matchPresentationToMode();
+
+                // Change margins
+                changeMargins();
+
+                // Decide on screen sizes
+                getScreenSizes();
+
+                // Set up the logo
+                setUpLogo();
+
+                // Prepare the display after 2 secs (a chance for stuff to be measured and show the logo
+                Handler h = new Handler();
+                h.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!StaticVariables.whichMode.equals("Presentation")) {
+                            normalStartUp();
+                        } else {
+                            // Switch to the user background and logo
+                            presenterStartUp();
+                        }
+                    }
+                }, 2000);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        // The screen and layout defaults
+        private void identifyViews() {
+            pageHolder = findViewById(R.id.pageHolder);
+            projectedPage_RelativeLayout = findViewById(R.id.projectedPage_RelativeLayout);
+            projected_LinearLayout = findViewById(R.id.projected_LinearLayout);
+            projected_ImageView = findViewById(R.id.projected_ImageView);
+            projected_BackgroundImage = findViewById(R.id.projected_BackgroundImage);
+            projected_SurfaceView = findViewById(R.id.projected_SurfaceView);
+            projected_SurfaceHolder = projected_SurfaceView.getHolder();
+            projected_SurfaceHolder.addCallback(this);
+            projected_Logo = findViewById(R.id.projected_Logo);
+            songinfo_TextView = findViewById(R.id.songinfo_TextView);
+            presentermode_bottombit = findViewById(R.id.presentermode_bottombit);
+            presentermode_title = findViewById(R.id.presentermode_title);
+            presentermode_author = findViewById(R.id.presentermode_author);
+            presentermode_copyright = findViewById(R.id.presentermode_copyright);
+            presentermode_alert = findViewById(R.id.presentermode_alert);
+            bottom_infobar = findViewById(R.id.bottom_infobar);
+            col1_1 = findViewById(R.id.col1_1);
+            col1_2 = findViewById(R.id.col1_2);
+            col2_2 = findViewById(R.id.col2_2);
+            col1_3 = findViewById(R.id.col1_3);
+            col2_3 = findViewById(R.id.col2_3);
+            col3_3 = findViewById(R.id.col3_3);
+        }
+        private static void getScreenSizes() {
+            presentationCommon.getScreenSizes(myscreen,bottom_infobar,projectedPage_RelativeLayout);
+        }
+        private void setDefaultBackgroundImage() {
+            presentationCommon.setDefaultBackgroundImage(c);
+        }
+        private static void matchPresentationToMode() {
+            if (presentationCommon.matchPresentationToMode(songinfo_TextView,presentermode_bottombit,projected_SurfaceView,projected_BackgroundImage,projected_ImageView)) {
+                fixBackground();
+            }
+        }
+        static void changeMargins() {
+            presentationCommon.changeMargins(c,preferences,songinfo_TextView,projectedPage_RelativeLayout,StaticVariables.cast_presoInfoColor);
+        }
+        static void fixBackground() {
+            presentationCommon.fixBackground(c,preferences,storageAccess,projected_BackgroundImage,projected_SurfaceHolder,projected_SurfaceView);
+            updateAlpha();
+        }
+        private static void getDefaultColors() {
+            presentationCommon.getDefaultColors(c,preferences);
+        }
+        private static void updateAlpha() {
+            presentationCommon.updateAlpha(c,preferences,projected_BackgroundImage,projected_SurfaceView);
+        }
+        private void normalStartUp() {
+            // Animate out the default logo
+            getDefaultColors();
+            presentationCommon.normalStartUp(c,preferences,projected_Logo);
+            doUpdate();
+        }
+        private void presenterStartUp() {
+            getDefaultColors();
+            // Set up the text styles and fonts for the bottom info bar
+            presenterThemeSetUp();
+            presentationCommon.presenterStartUp(c,preferences,storageAccess,projected_BackgroundImage,projected_SurfaceHolder,projected_SurfaceView);
+        }
+        private static void presenterThemeSetUp() {
+            getDefaultColors();
+            // Set the text at the bottom of the page to match the presentation text colour
+            presentationCommon.presenterThemeSetUp(c,preferences,presentermode_bottombit, presentermode_title, presentermode_author,
+                    presentermode_copyright,presentermode_alert);
+        }
+        static void updateFonts() {
+            getDefaultColors();
+            presenterThemeSetUp(); // Sets the bottom info bar for presentation
+            doUpdate(); // Updates the page
+        }
+
+        // Video
+        @Override
+        public void surfaceCreated(SurfaceHolder holder) {
+            getScreenSizes();
+            presentationCommon.prepareMediaPlayer(c, preferences, projected_SurfaceHolder, myscreen, bottom_infobar, projectedPage_RelativeLayout);
+            StaticVariables.cast_mediaPlayer.setOnPreparedListener(this);
+            StaticVariables.cast_mediaPlayer.setOnCompletionListener(this);
+        }
+        @Override
+        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+        }
+        @Override
+        public void surfaceDestroyed(SurfaceHolder holder) {
+
+        }
+        @Override
+        public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+        }
+        private static void reloadVideo() {
+            presentationCommon.reloadVideo(c,preferences,projected_SurfaceHolder,projected_SurfaceView);
+        }
+        @Override
+        public void onPrepared(MediaPlayer mp) {
+            presentationCommon.mediaPlayerIsPrepared(projected_SurfaceView);
+        }
+        @Override
+        public void onCompletion(MediaPlayer mp) {
+            if (mp != null) {
+                if (mp.isPlaying()) {
+                    mp.stop();
+                }
+                mp.reset();
+            }
+            try {
+                reloadVideo();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Update the screen content
+        static void doUpdate() {
+            presentationCommon.doUpdate(activity, c,preferences,storageAccess,processSong,myscreen,songinfo_TextView,presentermode_bottombit,projected_SurfaceView,
+                    projected_BackgroundImage, pageHolder,projected_Logo,projected_ImageView,projected_LinearLayout,bottom_infobar,projectedPage_RelativeLayout,
+                    presentermode_title, presentermode_author, presentermode_copyright, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3);
+        }
+        static void updateAlert(boolean show) {
+            presentationCommon.updateAlert(c, preferences, myscreen, bottom_infobar,projectedPage_RelativeLayout,show, presentermode_alert);
+        }
+        static void setUpLogo() {
+            presentationCommon.setUpLogo(c,preferences,storageAccess,projected_Logo,StaticVariables.cast_availableWidth_1col,StaticVariables.cast_availableScreenHeight);
+        }
+        static void showLogo() {
+            presentationCommon.showLogo(c,preferences,projected_ImageView,projected_LinearLayout,pageHolder,bottom_infobar,projected_Logo);
+        }
+        static void hideLogo() {
+            presentationCommon.hideLogo(c,preferences,projected_ImageView,projected_LinearLayout,projected_Logo,bottom_infobar);
+        }
+        static void blankUnblankDisplay(boolean unblank) {
+            presentationCommon.blankUnblankDisplay(c,preferences,pageHolder,unblank);
+        }
+
+
+
+
+
+
+
+
+
+        /*ExternalDisplay(Context c, Display display) {
             super(c, display);
             context = c;
             myscreen = display;
-        }
-        static Display myscreen;
+        }*/
+
+
+        /*static Display myscreen;
         @SuppressLint("StaticFieldLeak")
         static RelativeLayout pageHolder;
         @SuppressLint("StaticFieldLeak")
@@ -138,11 +359,17 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
         @SuppressLint("StaticFieldLeak")
         static Context context;
-        static int screenWidth, screenHeight, availableScreenWidth, availableScreenHeight, density,
-                padding, availableWidth_1col, availableWidth_2col, availableWidth_3col;
+        public static int screenWidth;
+        static int screenHeight;
+        static int availableScreenWidth;
+        static int availableScreenHeight;
+        public static int padding;
+        static int availableWidth_1col;
+        static int availableWidth_2col;
+        static int availableWidth_3col;
         static int[] projectedviewwidth;
         static int[] projectedviewheight;
-        static float[] projectedSectionScaleValue;
+        //static float[] projectedSectionScaleValue;
 
         static AsyncTask<Object, Void, String> preparefullprojected_async;
         static AsyncTask<Object, Void, String> preparestageprojected_async;
@@ -164,21 +391,18 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         static Uri vid2Uri;
         static Uri vidUri;
 
-        static StorageAccess storageAccess;
-        static Preferences preferences;
-        static ProcessSong processSong;
+        //static StorageAccess storageAccess;
+        //static Preferences preferences;
+        //static ProcessSong processSong;
 
         static Drawable defimage;
-        static Bitmap myBitmap;
-        static Drawable dr;
         static Animation mypage_fadein;
         static Animation mypage_fadeout;
         static Animation background_fadein;
-        static Animation background_fadeout;
         static Animation image_fadein;
         static Animation image_fadeout;
-        static Animation video_fadein;
-        static Animation video_fadeout;
+        //static Animation video_fadein;
+        //static Animation video_fadeout;
         static Animation logo_fadein;
         static Animation logo_fadeout;
         static Animation lyrics_fadein;
@@ -193,6 +417,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         static Animation songcopyright_fadeout;
         static Animation songalert_fadein;
         static Animation songalert_fadeout;
+        static Animation infobar_fadein;
+        static Animation infobar_fadeout;
 
         static int lyricsBackgroundColor;
         static int lyricsTextColor;
@@ -212,8 +438,10 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
         @SuppressLint("StaticFieldLeak")
         static Context c;
+*/
 
-        // The logo stuff
+
+        /*// The logo stuff
         static void setUpLogo() {
             // If the customLogo doesn't exist, use the default one
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -223,7 +451,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             float xscale;
             float yscale;
             boolean usingcustom = false;
-            Uri customLogo = Uri.parse(preferences.getMyPreferenceString(c,"customLogo","ost_logo.png"));
+            Uri customLogo = storageAccess.fixLocalisedUri(c,preferences,preferences.getMyPreferenceString(c,"customLogo","ost_logo.png"));
             if (storageAccess.uriExists(c, customLogo)) {
                 InputStream inputStream = storageAccess.getInputStream(c, customLogo);
                 // Get the sizes of the custom logo
@@ -255,7 +483,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                 RequestOptions myOptions = new RequestOptions()
                         .fitCenter()
                         .override(logowidth, logoheight);
-                Glide.with(c).load(customLogo).apply(myOptions).into(projected_Logo);
+                //Glide.with(c).load(customLogo).apply(myOptions).into(projected_Logo);
+                GlideApp.with(c).load(customLogo).apply(myOptions).into(projected_Logo);
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     projected_Logo.setImageDrawable(c.getResources().getDrawable(R.drawable.ost_logo, c.getTheme()));
@@ -266,9 +495,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             if (PresenterMode.logoButton_isSelected) {
                 projected_Logo.startAnimation(logo_fadein);
             }
-        }
+        }*/
 
-        // Setup some default stuff
+        /*// Setup some default stuff
         static void matchPresentationToMode() {
             switch (StaticVariables.whichMode) {
                 case "Stage":
@@ -288,10 +517,10 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     fixBackground();
                     break;
             }
-            FullscreenActivity.forcecastupdate = false;
-        }
+            StaticVariables.forcecastupdate = false;
+        }*/
 
-        @SuppressLint("NewApi")
+       /* @SuppressLint("NewApi")
         static void getScreenSizes() {
             DisplayMetrics metrics = new DisplayMetrics();
             myscreen.getMetrics(metrics);
@@ -300,8 +529,6 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             if (icon!=null) {
                 bottombarheight= icon.getIntrinsicHeight();
             }
-
-            density = metrics.densityDpi;
 
             padding = 8;
 
@@ -317,9 +544,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             availableWidth_1col = availableScreenWidth - (padding*2);
             availableWidth_2col = (int) ((float)availableScreenWidth / 2.0f) - (padding*3);
             availableWidth_3col = (int) ((float)availableScreenWidth / 3.0f) - (padding*4);
-        }
+        }*/
 
-        void setDefaultBackgroundImage() {
+        /*void setDefaultBackgroundImage() {
             getDefaultColors();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 defimage = getResources().getDrawable(R.drawable.preso_default_bg, null);
@@ -327,26 +554,60 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                 defimage = getResources().getDrawable(R.drawable.preso_default_bg);
             }
         }
-
-        // Get and setup screen sizes
+*/
+        /*// Get and setup screen sizes
         static void changeMargins() {
             getDefaultColors();
             songinfo_TextView.setTextColor(presoInfoColor);
             projectedPage_RelativeLayout.setPadding(preferences.getMyPreferenceInt(c,"presoXMargin",20),
                     preferences.getMyPreferenceInt(c,"presoYMargin",10), preferences.getMyPreferenceInt(c,"presoXMargin",20),
                     preferences.getMyPreferenceInt(c,"presoYMargin",10));
-        }
+        }*/
 
-        // Change background images/videos
+        /*// Change background images/videos
         static void fixBackground() {
             getDefaultColors();
 
-            img1Uri = Uri.parse(preferences.getMyPreferenceString(c,"backgroundImage1","ost_bg.png"));
-            img2Uri = Uri.parse(preferences.getMyPreferenceString(c,"backgroundImage2","ost_bg.png"));
-            vid1Uri = Uri.parse(preferences.getMyPreferenceString(c,"backgroundVideo1",""));
-            vid2Uri = Uri.parse(preferences.getMyPreferenceString(c,"backgroundVideo2",""));
+            String img1 = preferences.getMyPreferenceString(c,"backgroundImage1","ost_bg.png");
+            if (img1.equals("ost_bg.png") || img1.startsWith("../")) {
+                // This is a localised file, so get the properlocation
+                if (img1.equals("ost_bg.png")) {
+                    img1 = "../Backgrounds/ost_bg.png";
+                }
+                img1Uri = storageAccess.fixLocalisedUri(c,preferences,img1);
+            } else {
+                img1Uri = Uri.parse(preferences.getMyPreferenceString(c,"backgroundImage1","ost_bg.png"));
+            }
+            String img2 = preferences.getMyPreferenceString(c,"backgroundImage2","ost_bg.png");
+            if (img2.equals("ost_bg.png") || img2.startsWith("../")) {
+                // This is a localised file, so get the properlocation
+                if (img2.equals("ost_bg.png")) {
+                    img2 = "../Backgrounds/ost_bg.png";
+                }
+                img2Uri = storageAccess.fixLocalisedUri(c,preferences,img2);
+            } else {
+                img2Uri = Uri.parse(preferences.getMyPreferenceString(c,"backgroundImage2","ost_bg.png"));
+            }
+            String vid1 = preferences.getMyPreferenceString(c,"backgroundVideo1","");
+            if (vid1.startsWith("../")) {
+                // This is a localised file, so get the properlocation
+                vid1Uri = storageAccess.fixLocalisedUri(c,preferences,vid1);
+            } else if (vid1.isEmpty()) {
+                vid1Uri = null;
+            } else {
+                vid1Uri = Uri.parse(preferences.getMyPreferenceString(c,"backgroundVideo1",""));
+            }
+            String vid2 = preferences.getMyPreferenceString(c,"backgroundVideo2","");
+            if (vid2.startsWith("../")) {
+                // This is a localised file, so get the properlocation
+                vid2Uri = storageAccess.fixLocalisedUri(c,preferences,vid2);
+            } else if (vid2.isEmpty()) {
+                vid2Uri = null;
+            } else {
+                vid2Uri = Uri.parse(preferences.getMyPreferenceString(c,"backgroundVideo2",""));
+            }
 
-
+            Log.d("PresentationService","img1Uri="+img1Uri);
             // Decide if user is using video or image for background
             switch (preferences.getMyPreferenceString(c,"backgroundTypeToUse","image")) {
                 case "image":
@@ -367,7 +628,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         } else {
                             RequestOptions myOptions = new RequestOptions()
                                     .centerCrop();
-                            Glide.with(c).load(imgUri).apply(myOptions).into(projected_BackgroundImage);
+                            GlideApp.with(c).load(imgUri).apply(myOptions).into(projected_BackgroundImage);
                         }
                         projected_BackgroundImage.setVisibility(View.VISIBLE);
                     }
@@ -387,22 +648,18 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    myBitmap = null;
-                    dr = null;
                     projected_BackgroundImage.setImageDrawable(null);
                     projected_BackgroundImage.setVisibility(View.GONE);
                     break;
                 default:
-                    myBitmap = null;
-                    dr = null;
                     projected_BackgroundImage.setImageDrawable(null);
                     projected_BackgroundImage.setVisibility(View.GONE);
                     break;
             }
             updateAlpha();
-        }
+        }*/
 
-        static void panicShowViews() {
+        /*static void panicShowViews() {
             // After 3x the transition times, make sure the correct view is visible regardless of animations
             if (StaticVariables.whichMode.equals("Presentation")) {
                 if (FullscreenActivity.isImage || FullscreenActivity.isPDF || FullscreenActivity.isImageSlide) {
@@ -420,8 +677,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     projected_LinearLayout.setAlpha(1.0f);
                 }
             }
-        }
-        static void showLogo() {
+        }*/
+        /*static void showLogo() {
             // Animate out the lyrics if they were visible and animate in the logo
             if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
                 projected_ImageView.startAnimation(image_fadeout);
@@ -438,6 +695,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             presentermode_author.startAnimation(songauthor_fadeout);
             presentermode_copyright.startAnimation(songcopyright_fadeout);
             projected_Logo.startAnimation(logo_fadein);
+            bottom_infobar.startAnimation(infobar_fadeout);
         }
         static void hideLogo() {
             // Animate out the logo and animate in the lyrics if they were visible
@@ -451,26 +709,30 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             presentermode_author.startAnimation(songauthor_fadein);
             presentermode_copyright.startAnimation(songcopyright_fadein);
             projected_Logo.startAnimation(logo_fadeout);
-        }
-        static void blankDisplay() {
+            bottom_infobar.startAnimation(infobar_fadein);
+        }*/
+        /*static void blankDisplay() {
             pageHolder.startAnimation(mypage_fadeout);
         }
         static void unblankDisplay() {
             pageHolder.startAnimation(mypage_fadein);
-        }
+        }*/
 
-        static void updateAlpha() {
+        /*static void updateAlpha() {
             projected_BackgroundImage.setAlpha(preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
             projected_SurfaceView.setAlpha(preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
         }
-        void normalStartUp() {
+        */
+
+        /*void normalStartUp() {
             getDefaultColors();
 
             // Animate out the default logo
             projected_Logo.startAnimation(logo_fadeout);
             doUpdate();
-        }
-        static void presenterThemeSetUp() {
+        }*/
+
+        /*static void presenterThemeSetUp() {
             getDefaultColors();
             // Set the text at the bottom of the page to match the presentation text colour
             presentermode_title.setTypeface(StaticVariables.typefacePresoInfo);
@@ -498,9 +760,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             } else {
                 presentermode_alert.setVisibility(View.GONE);
             }
-        }
+        }*/
 
-        private static void reloadVideo() {
+       /* static void reloadVideo() {
             if (mMediaPlayer == null) {
                 mMediaPlayer = new MediaPlayer();
                 try {
@@ -574,9 +836,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                 }
             }
 
-        }
+        }*/
 
-        private static void getDefaultColors() {
+        /*static void getDefaultColors() {
             switch (StaticVariables.mDisplayTheme) {
                 case "dark":
                 default:
@@ -649,14 +911,14 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     lyricsCustomColor = preferences.getMyPreferenceInt(c,"custom2_lyricsCustomColor",StaticVariables.white);
                     break;
             }
-        }
+        }*/
 
-        static void doUpdate() {
+        /*static void doUpdate() {
             // First up, animate everything away
             animateOut();
 
             // If we have forced an update due to switching modes, set that up
-            if (FullscreenActivity.forcecastupdate) {
+            if (StaticVariables.forcecastupdate) {
                 matchPresentationToMode();
             }
 
@@ -703,7 +965,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     if (FullscreenActivity.isPDF) {
                         doPDFPage();
                     } else if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide) {
-                        doImagePage(StaticVariables.uriToLoad);
+                        doImagePage();
                     } else {
                         projected_ImageView.setVisibility(View.GONE);
                         switch (StaticVariables.whichMode) {
@@ -720,19 +982,19 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     }
                 }
             }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
-        }
+        }*/
 
-        static void doPDFPage() {
+        /*static void doPDFPage() {
             Bitmap bmp = processSong.createPDFPage(c, preferences, storageAccess, availableScreenWidth, availableScreenHeight, "Y");
             projected_ImageView.setVisibility(View.GONE);
             projected_ImageView.setBackgroundColor(StaticVariables.white);
             projected_ImageView.setImageBitmap(bmp);
             projected_ImageView.setVisibility(View.VISIBLE);
             animateIn();
-        }
+        }*/
 
         // Change the song info at the bottom of the page
-        static void setSongTitle() {
+        /*static void setSongTitle() {
             String old_title = songinfo_TextView.getText().toString();
             String new_title = StaticVariables.mTitle;
             if (!StaticVariables.mAuthor.equals("")) {
@@ -800,20 +1062,20 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         }
         static void presenterFadeInSongInfo(TextView tv, Animation in) {
             tv.startAnimation(in);
-        }
+        }*/
 
-        void prepareBackgroundAnimations() {
+        /*void prepareBackgroundAnimations() {
             int t = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
             mypage_fadein = CustomAnimations.setUpAnimation(pageHolder, t, 0.0f, 1.0f);
             mypage_fadeout = CustomAnimations.setUpAnimation(pageHolder, t, 1.0f, 0.0f);
             background_fadein = CustomAnimations.setUpAnimation(projected_BackgroundImage, t, 0.0f, 1.0f);
-            background_fadeout = CustomAnimations.setUpAnimation(projected_BackgroundImage, t, 1.0f, 0.0f);
+            //background_fadeout = CustomAnimations.setUpAnimation(projected_BackgroundImage, t, 1.0f, 0.0f);
             logo_fadein = CustomAnimations.setUpAnimation(projected_Logo, t, 0.0f, 1.0f);
             logo_fadeout = CustomAnimations.setUpAnimation(projected_Logo, t, 1.0f, 0.0f);
             image_fadein = CustomAnimations.setUpAnimation(projected_ImageView, t, 0.0f, 1.0f);
             image_fadeout = CustomAnimations.setUpAnimation(projected_ImageView, t, 1.0f, 0.0f);
-            video_fadein = CustomAnimations.setUpAnimation(projected_SurfaceView, t, 0.0f, 1.0f);
-            video_fadeout = CustomAnimations.setUpAnimation(projected_SurfaceView, t, 1.0f, 0.0f);
+            //video_fadein = CustomAnimations.setUpAnimation(projected_SurfaceView, t, 0.0f, 1.0f);
+            //video_fadeout = CustomAnimations.setUpAnimation(projected_SurfaceView, t, 1.0f, 0.0f);
             lyrics_fadein = CustomAnimations.setUpAnimation(projected_LinearLayout, t, 0.0f, 1.0f);
             lyrics_fadeout = CustomAnimations.setUpAnimation(projected_LinearLayout, t, 1.0f, 0.0f);
             songinfo_fadein = CustomAnimations.setUpAnimation(songinfo_TextView, t, 0.0f, 1.0f);
@@ -826,15 +1088,25 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             songcopyright_fadeout = CustomAnimations.setUpAnimation(presentermode_copyright, t, 1.0f, 0.0f);
             songalert_fadein = CustomAnimations.setUpAnimation(presentermode_alert, t, 0.0f, 1.0f);
             songalert_fadeout = CustomAnimations.setUpAnimation(presentermode_alert, t, 1.0f, 0.0f);
+            infobar_fadein = CustomAnimations.setUpAnimation(bottom_infobar, t, 0.0f, 1.0f);
+            infobar_fadeout = CustomAnimations.setUpAnimation(bottom_infobar, t, 1.0f, 0.0f);
         }
 
-        static void doImagePage(Uri imageUri) {
+        static void doImagePage() {
+            Uri imageUri;
+            if (StaticVariables.uriToLoad==null) {
+                imageUri = storageAccess.getUriForItem(c, preferences, "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
+            } else {
+                imageUri = StaticVariables.uriToLoad;
+            }
+            Log.d("PresentationService","imageURi="+imageUri);
             projected_ImageView.setVisibility(View.GONE);
             projected_ImageView.setBackgroundColor(StaticVariables.transparent);
             // Process the image location into an URI
             RequestOptions myOptions = new RequestOptions()
                     .fitCenter();
-            Glide.with(c).load(imageUri).apply(myOptions).into(projected_ImageView);
+            GlideApp.with(c).load(imageUri).apply(myOptions).into(projected_ImageView);
+            //Glide.with(c).load(imageUri).apply(myOptions).into(projected_ImageView);
             projected_ImageView.setVisibility(View.VISIBLE);
             animateIn();
         }
@@ -859,9 +1131,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
-        // Set up the screen changes
+        /*// Set up the screen changes
         void presenterStartUp() {
             getDefaultColors();
 
@@ -883,9 +1155,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     }
                 }
             }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
-        }
+        }*/
 
-        @Override
+        /*@Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.cast_screen);
@@ -909,6 +1181,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             presentermode_copyright = findViewById(R.id.presentermode_copyright);
             presentermode_alert = findViewById(R.id.presentermode_alert);
             bottom_infobar = findViewById(R.id.bottom_infobar);
+
             col1_1 = findViewById(R.id.col1_1);
             col1_2 = findViewById(R.id.col1_2);
             col2_2 = findViewById(R.id.col2_2);
@@ -949,9 +1222,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     }
                 }
             }, 2000);
-        }
+        }*/
 
-        @Override
+       /* @Override
         public void surfaceCreated(SurfaceHolder holder) {
             // Get the size of the SurfaceView
             getScreenSizes();
@@ -971,9 +1244,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     Log.d("PresentationService", "Error setting data source for video");
                 }
             }
-        }
+        }*/
 
-        private static class PrepareStageProjected extends AsyncTask<Object, Void, String> {
+        /*static class PrepareStageProjected extends AsyncTask<Object, Void, String> {
             @SuppressLint("StaticFieldLeak")
             LinearLayout test1_1 = processSong.createLinearLayout(context);
 
@@ -990,7 +1263,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             @Override
             protected String doInBackground(Object... objects) {
                 try {
-                    projectedSectionScaleValue = new float[1];
+                    //projectedSectionScaleValue = new float[1];
                     projectedviewwidth = new int[1];
                     projectedviewheight = new int[1];
                 } catch (Exception e) {
@@ -1043,6 +1316,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             @SuppressLint("StaticFieldLeak")
             LinearLayout lyrics1_1 = processSong.createLinearLayout(context);
             @SuppressLint("StaticFieldLeak")
+            final
             LinearLayout box1_1    = processSong.prepareProjectedBoxView(context,preferences,lyricsTextColor,
                     lyricsBackgroundColor,0,padding);
             float scale;
@@ -1119,7 +1393,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                 e.printStackTrace();
             }
         }
-        private static class PreparePresenterProjected extends AsyncTask<Object, Void, String> {
+        static class PreparePresenterProjected extends AsyncTask<Object, Void, String> {
             @SuppressLint("StaticFieldLeak")
             LinearLayout test1_1 = processSong.createLinearLayout(context);
 
@@ -1136,7 +1410,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             @Override
             protected String doInBackground(Object... objects) {
                 try {
-                    projectedSectionScaleValue = new float[1];
+                    //projectedSectionScaleValue = new float[1];
                     projectedviewwidth = new int[1];
                     projectedviewheight = new int[1];
                 } catch (Exception e) {
@@ -1189,6 +1463,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             @SuppressLint("StaticFieldLeak")
             LinearLayout lyrics1_1 = processSong.createLinearLayout(context);
             @SuppressLint("StaticFieldLeak")
+            final
             LinearLayout box1_1    = processSong.prepareProjectedBoxView(context,preferences,lyricsTextColor,
                     lyricsBackgroundColor,0,padding);
             float scale;
@@ -1370,7 +1645,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                 e.printStackTrace();
             }
         }
-        private static class PrepareFullProjected extends AsyncTask<Object, Void, String> {
+        static class PrepareFullProjected extends AsyncTask<Object, Void, String> {
             @SuppressLint("StaticFieldLeak")
             LinearLayout test1_1 = processSong.createLinearLayout(context);
             @SuppressLint("StaticFieldLeak")
@@ -1402,7 +1677,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             @Override
             protected String doInBackground(Object... objects) {
                 try {
-                    projectedSectionScaleValue = new float[6];
+                    //projectedSectionScaleValue = new float[6];
                     projectedviewwidth = new int[6];
                     projectedviewheight = new int[6];
                 } catch (Exception e) {
@@ -1505,14 +1780,15 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                 e.printStackTrace();
             }
         }
-        private static class ProjectedPerformanceView1Col extends AsyncTask<Object, Void, String> {
+        static class ProjectedPerformanceView1Col extends AsyncTask<Object, Void, String> {
             @SuppressLint("StaticFieldLeak")
             LinearLayout lyrics1_1 = processSong.createLinearLayout(context);
             @SuppressLint("StaticFieldLeak")
+            final
             LinearLayout box1_1    = processSong.prepareProjectedBoxView(context,preferences,lyricsTextColor,
                     lyricsBackgroundColor,0,padding);
-            float scale1_1;
-            float fontsize1_1;
+            final float scale1_1;
+            final float fontsize1_1;
 
             ProjectedPerformanceView1Col(float s1_1) {
                 scale1_1 = s1_1;
@@ -1583,19 +1859,21 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                 e.printStackTrace();
             }
         }
-        private static class ProjectedPerformanceView2Col extends AsyncTask<Object, Void, String> {
-            float scale1_2;
-            float scale2_2;
-            float fontsize1_2;
-            float fontsize2_2;
+        static class ProjectedPerformanceView2Col extends AsyncTask<Object, Void, String> {
+            final float scale1_2;
+            final float scale2_2;
+            final float fontsize1_2;
+            final float fontsize2_2;
             @SuppressLint("StaticFieldLeak")
             LinearLayout lyrics1_2 = processSong.createLinearLayout(context);
             @SuppressLint("StaticFieldLeak")
             LinearLayout lyrics2_2 = processSong.createLinearLayout(context);
             @SuppressLint("StaticFieldLeak")
+            final
             LinearLayout box1_2    = processSong.prepareProjectedBoxView(context,preferences,lyricsTextColor,
                     lyricsBackgroundColor,0,padding);
             @SuppressLint("StaticFieldLeak")
+            final
             LinearLayout box2_2    = processSong.prepareProjectedBoxView(context,preferences,lyricsTextColor,
                     lyricsBackgroundColor,0,padding);
 
@@ -1688,13 +1966,13 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                 e.printStackTrace();
             }
         }
-        private static class ProjectedPerformanceView3Col extends AsyncTask<Object, Void, String> {
-            float scale1_3;
-            float scale2_3;
-            float scale3_3;
-            float fontsize1_3;
-            float fontsize2_3;
-            float fontsize3_3;
+        static class ProjectedPerformanceView3Col extends AsyncTask<Object, Void, String> {
+            final float scale1_3;
+            final float scale2_3;
+            final float scale3_3;
+            final float fontsize1_3;
+            final float fontsize2_3;
+            final float fontsize3_3;
             @SuppressLint("StaticFieldLeak")
             LinearLayout lyrics1_3 = processSong.createLinearLayout(context);
             @SuppressLint("StaticFieldLeak")
@@ -1702,12 +1980,15 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             @SuppressLint("StaticFieldLeak")
             LinearLayout lyrics3_3 = processSong.createLinearLayout(context);
             @SuppressLint("StaticFieldLeak")
+            final
             LinearLayout box1_3    = processSong.prepareProjectedBoxView(context,preferences,lyricsTextColor,
                     lyricsBackgroundColor,0,padding);
             @SuppressLint("StaticFieldLeak")
+            final
             LinearLayout box2_3    = processSong.prepareProjectedBoxView(context,preferences,lyricsTextColor,
                     lyricsBackgroundColor,0,padding);
             @SuppressLint("StaticFieldLeak")
+            final
             LinearLayout box3_3    = processSong.prepareProjectedBoxView(context,preferences,lyricsTextColor,
                     lyricsBackgroundColor,0,padding);
 
@@ -1807,12 +2088,12 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     e.printStackTrace();
                 }
             }
-        }
+        }*/
 
 
 
 
-        static void animateOut() {
+        /*static void animateOut() {
             // If the logo is showing, fade it away
             if (projected_Logo.getAlpha()>0.0f) {
                 projected_Logo.startAnimation(logo_fadeout);
@@ -1837,9 +2118,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         static void wipeAllViews() {
             projected_LinearLayout.removeAllViews();
             projected_ImageView.setImageBitmap(null);
-        }
+        }*/
 
-        @Override
+       /* @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
         }
@@ -1847,9 +2128,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         @Override
         public void surfaceDestroyed(SurfaceHolder holder) {
 
-        }
+        }*/
 
-        static void updateAlert(boolean show){
+        /*static void updateAlert(boolean show){
             if (show) {
                 PresenterMode.alert_on = "Y";
                 fadeinAlert();
@@ -1857,8 +2138,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                 PresenterMode.alert_on = "N";
                 fadeoutAlert();
             }
-        }
-        static void fadeinAlert() {
+        }*/
+        /*static void fadeinAlert() {
             getDefaultColors();
             presentermode_alert.setText(preferences.getMyPreferenceString(c,"presoAlertText",""));
             presentermode_alert.setTypeface(StaticVariables.typefacePresoInfo);
@@ -1879,14 +2160,14 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     getScreenSizes();
                 }
             }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800)*2);
-        }
+        }*/
 
-        static void updateFonts() {
+        /*static void updateFonts() {
             presenterThemeSetUp(); // Sets the bottom info bar for presentation
             doUpdate(); // Updates the page
-        }
+        }*/
 
-        @Override
+        /*@Override
         public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
         }
 
@@ -1919,9 +2200,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
-        @Override
+        /*@Override
         public void onCompletion(MediaPlayer mp) {
             if (mp!=null) {
                 if (mp.isPlaying()) {
@@ -1934,7 +2215,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
     }
 }

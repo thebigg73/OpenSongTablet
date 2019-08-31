@@ -21,7 +21,7 @@
             android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:gravity="center"
-            android:text="@string/options_modes"
+            android:text="@string/choose_app_mode"
             style="@style/MyMenuHeadingText" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

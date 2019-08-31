@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 
 class SetListItemTouchHelper extends ItemTouchHelper.SimpleCallback {
-    private SetListAdapter mAdapter;
+    private final SetListAdapter mAdapter;
 
     SetListItemTouchHelper(SetListAdapter mAdapter){
             super(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);

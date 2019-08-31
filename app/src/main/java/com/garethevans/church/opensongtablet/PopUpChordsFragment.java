@@ -62,8 +62,8 @@ public class PopUpChordsFragment extends DialogFragment {
     private Drawable f1, f2, f3, f4, f5, f6, f7, f8, f9, lx, l0, l1, l2, l3, l4, l5,
             mx, m0, m1, m2, m3, m4, m5, rx, r0, r1, r2, r3, r4, r5;
 
-    ProcessSong processSong;
-    Preferences preferences;
+    private ProcessSong processSong;
+    private Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

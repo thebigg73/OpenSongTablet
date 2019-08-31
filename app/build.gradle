@@ -93,5 +93,5 @@ dependencies {
     implementation 'ru.egslava:MaskedEditText:1.0.5'
     implementation 'com.annimon:stream:1.1.9'
     implementation 'lib.kashif:folderpicker:2.4'
-
+    implementation 'com.github.mmin18:realtimeblurview:1.2.1'
 }

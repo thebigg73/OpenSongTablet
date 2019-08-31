@@ -93,8 +93,8 @@ public class PopUpCustomChordsFragment extends DialogFragment {
             string6_f4, string5_f4, string4_f4, string3_f4, string2_f4, string1_f4,
             string6_f5, string5_f5, string4_f5, string3_f5, string2_f5, string1_f5;
 
-    StorageAccess storageAccess;
-    Preferences preferences;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -613,7 +613,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
                     String newtext = "\n\n" + chorddetails;
                     chordvalue.setText(newtext);
                     deleteChord.setTransformationMethod(null);
-                    newtext = getResources().getString(R.string.options_song_delete) + "\n" + tempCustomChords[q];
+                    newtext = getResources().getString(R.string.delete) + "\n" + tempCustomChords[q];
                     deleteChord.setText(newtext);
                     deleteChord.setBackgroundDrawable(getResources().getDrawable(R.drawable.red_button));
                     deleteChord.setOnClickListener(new OnDelete(deleteChord));
@@ -1654,7 +1654,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         }
     }
 
-    public void doSave() {
+    private void doSave() {
         // Add the custom chord code to the xml
         Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", StaticVariables.whichSongFolder,
                 StaticVariables.songfilename);
@@ -1668,7 +1668,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
     }
 
     private class OnDelete implements View.OnClickListener {
-        Button b;
+        final Button b;
         OnDelete(Button deleteChord) {
             b = deleteChord;
         }
@@ -1676,7 +1676,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         @Override
         public void onClick(View view) {
             String buttonText = b.getText().toString();
-            buttonText = buttonText.replace(getResources().getString(R.string.options_song_delete),"");
+            buttonText = buttonText.replace(getResources().getString(R.string.delete),"");
             buttonText = buttonText.replace("\n","");
             StaticVariables.mCustomChords = StaticVariables.mCustomChords.replace(buttonText,"");
             // Save the song

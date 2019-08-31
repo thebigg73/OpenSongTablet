@@ -18,23 +18,12 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
 
     // This class is called when users click on compatible files outwith the app and choose to open them with OpenSongApp
 
-    // Declare helper classes:
-    Preferences preferences;
-    StorageAccess storageAccess;
-    IndexSongs indexSongs;
-    FullscreenActivity fullscreenActivity;
-    SongXML songXML;
-    ChordProConvert chordProConvert;
-    OnSongConvert onSongConvert;
-    UsrConvert usrConvert;
-    TextSongConvert textSongConvert;
-    ProcessSong processSong;
+    private StorageAccess storageAccess;
+    private ProcessSong processSong;
 
     // Variables
-    boolean storageGranted = false;
-    DialogFragment newFragment;
-    Uri uriTree;
-    String storagePath = "";
+    private boolean storageGranted = false;
+    private DialogFragment newFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,24 +31,12 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
         setContentView(R.layout.activity_logosplash);
 
         // Load the helper classes (preferences)
-        preferences = new Preferences();
+        // Declare helper classes:
         storageAccess = new StorageAccess();
-        indexSongs = new IndexSongs();
-        fullscreenActivity = new FullscreenActivity();
-        songXML = new SongXML();
-        chordProConvert = new ChordProConvert();
-        onSongConvert = new OnSongConvert();
-        usrConvert = new UsrConvert();
-        textSongConvert = new TextSongConvert();
         processSong = new ProcessSong();
 
         // Load up the user preferences
         //Preferences.loadPreferences(ImportIntent.this);
-
-        // Load up all of the preferences and the user specified storage location if it exists
-        storagePath = storageAccess.getStoragePreference(ImportIntent.this, preferences);
-        uriTree = storageAccess.homeFolder(ImportIntent.this, null,preferences);
-
 
         // Check we have the required permissions for storage
         checkStoragePermission();
@@ -69,7 +46,7 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
         dealWithIntent(i);
     }
 
-    void checkStoragePermission() {
+    private void checkStoragePermission() {
         Log.d("ImportIntent", "checkStoragePermission");
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -123,7 +100,7 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
         dealWithIntent(intent);
     }
 
-    public void dealWithIntent(Intent intent) {
+    private void dealWithIntent(Intent intent) {
         try {
             String action = intent.getAction();
             String type = intent.getType();
@@ -149,7 +126,6 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
                 if (file_name != null) {
                     // Check the file exists!
                     if (storageAccess.uriExists(ImportIntent.this, file_uri)) {
-                        FullscreenActivity.incomingfile = intent;
                         if (file_name.endsWith(".osb")) {
                             // This is an OpenSong backup file
                             FullscreenActivity.whattodo = "processimportosb";
@@ -159,9 +135,6 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
                             FullscreenActivity.whattodo = "doimport";
                             showFragment();
                         }
-                    } else {
-                        // Cancel the intent
-                        FullscreenActivity.incomingfile = null;
                     }
                 }
 
@@ -170,11 +143,10 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
             // No file or intent data
             e.printStackTrace();
             // Clear the current intent data as we've dealt with it
-            FullscreenActivity.incomingfile = null;
         }
     }
 
-    public void handleSendText(Intent intent) {
+    private void handleSendText(Intent intent) {
         StringBuilder sharedText = new StringBuilder(intent.getStringExtra(Intent.EXTRA_TEXT));
         String title;
         // Fix line breaks (if they exist)
@@ -222,7 +194,7 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
         }
     }
 
-    public void showFragment() {
+    private void showFragment() {
         // Initialise the newFragment
         Log.d("d", "showFragment called");
         try {
@@ -254,12 +226,7 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
         rebuildSearchIndex();
     }
 
-    @Override
-    public void prepareSongMenu() {
-
-    }
-
-    public void rebuildSearchIndex() {
+    private void rebuildSearchIndex() {
         Log.d("d", "rebuildSearchIndex called");
         FullscreenActivity.whattodo = "";
         FullscreenActivity.needtorefreshsongmenu = false;
@@ -282,7 +249,7 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
     }
 
     @Override
-    public void onSongImportDone(String message) {
+    public void onSongImportDone() {
         Log.d("d", "onSongImportDone called");
         rebuildSearchIndex();
     }
@@ -299,7 +266,7 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
     }
 
     @Override
-    public void backupInstall(String m) {
+    public void backupInstall() {
         Log.d("d", "backupInstall called");
         rebuildSearchIndex();
     }

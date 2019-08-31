@@ -31,7 +31,6 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         return frag;
     }
 
-    View V;
     private String foundText = "";
     private String foundCopyright = "";
     private String foundAuthor = "";
@@ -40,12 +39,11 @@ public class PopUpPDFToTextFragment extends DialogFragment {
     private String foundKey = "";
     private String foundTempo = "";
     private String foundTimeSig = "";
-    StorageAccess storageAccess;
-    Preferences preferences;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
 
     public interface MyInterface {
         void refreshAll();
-        void openFragment();
         void allowPDFEditViaExternal();
     }
 
@@ -77,11 +75,11 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
-        V = inflater.inflate(R.layout.popup_pdftotext, container, false);
+        View v = inflater.inflate(R.layout.popup_pdftotext, container, false);
 
-        TextView title = V.findViewById(R.id.dialogtitle);
+        TextView title = v.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.pdftotext_extract));
-        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = v.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,17 +88,17 @@ public class PopUpPDFToTextFragment extends DialogFragment {
                 cancelEdit();
             }
         });
-        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = v.findViewById(R.id.saveMe);
         saveMe.hide();
 
         storageAccess = new StorageAccess();
         preferences = new Preferences();
 
         // Initialise the basic views
-        TextView pdftotext_found = V.findViewById(R.id.pdftotext_found);
+        TextView pdftotext_found = v.findViewById(R.id.pdftotext_found);
         pdftotext_found.setTypeface(Typeface.MONOSPACE);
-        Button externalPDF = V.findViewById(R.id.externalPDF);
-        Button doextractbutton = V.findViewById(R.id.doextractbutton);
+        Button externalPDF = v.findViewById(R.id.externalPDF);
+        Button doextractbutton = v.findViewById(R.id.doextractbutton);
         doextractbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,7 +125,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
-        return V;
+        return v;
     }
 
     @Override
@@ -200,7 +198,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
             }
         } catch (Exception e) {
             Log.d("d","Error saving");
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.savesong) + " - " +
+            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.save) + " - " +
                     getActivity().getResources().getString(R.string.error);
             ShowToast.showToast(getActivity());
         }

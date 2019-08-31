@@ -33,11 +33,11 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
     private HashMap<Integer,Integer> sectionPositions;
     @SuppressLint("UseSparseArrays")
     private HashMap<Integer,Integer> positionsForSection;
-    String[] sections;
-    Context context;
-    String[] songs;
-    private ArrayList<SongMenuViewItems> songList;
-    Preferences preferences;
+    private String[] sections;
+    private final Context context;
+    private String[] songs;
+    private final ArrayList<SongMenuViewItems> songList;
+    private final Preferences preferences;
     private ViewHolder viewHolder;
 
     @SuppressLint("UseSparseArrays")
@@ -253,7 +253,6 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
 
                             } else {
                                 // Trying to add to the set
-                                StaticVariables.addingtoset = true;
                                 if (userShouldConvertSongFormat(item_filename)) {
                                     // Tried to add a ChordPro song - Don't add song yet, but tell the user
                                     StaticVariables.myToastMessage = c.getResources().getString(R.string.convert_song);
@@ -354,11 +353,6 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
             e.printStackTrace();
             return 0;
         }
-    }
-
-    @Override
-    public void notifyDataSetInvalidated() {
-        super.notifyDataSetInvalidated();
     }
 
     @Override

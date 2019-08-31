@@ -58,18 +58,12 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
     private TextView currentDeviceName, currentDeviceAddress;
     private Handler selected;
     private Runnable runnable;
-    Midi m;
-    Preferences preferences;
+    private Midi m;
 
     @Override
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     @Override
@@ -105,7 +99,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        Preferences preferences = new Preferences();
 
         // Initialise the basic views
         progressBar = V.findViewById(R.id.progressBar);
@@ -211,42 +205,44 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
                         StaticVariables.midiDeviceAddress = bd.get(i).getAddress();
                         //displayCurrentDevice();
                         StaticVariables.midiManager = (MidiManager) Objects.requireNonNull(getActivity()).getSystemService(Context.MIDI_SERVICE);
-                        StaticVariables.midiManager.openBluetoothDevice(bd.get(i),
-                                new MidiManager.OnDeviceOpenedListener() {
-                                    @Override
-                                    public void onDeviceOpened(MidiDevice midiDevice) {
-                                        StaticVariables.midiDevice = midiDevice;
-                                        Log.d("d", "Device opened = " + midiDevice);
-                                        MidiDeviceInfo midiDeviceInfo = midiDevice.getInfo();
-                                        int numInputs = midiDeviceInfo.getInputPortCount();
-                                        int numOutputs = midiDeviceInfo.getOutputPortCount();
-                                        Log.d("d", "Input ports = " + numInputs + ", Output ports = " + numOutputs);
+                        if (StaticVariables.midiManager != null) {
+                            StaticVariables.midiManager.openBluetoothDevice(bd.get(i),
+                                    new MidiManager.OnDeviceOpenedListener() {
+                                        @Override
+                                        public void onDeviceOpened(MidiDevice midiDevice) {
+                                            StaticVariables.midiDevice = midiDevice;
+                                            Log.d("d", "Device opened = " + midiDevice);
+                                            MidiDeviceInfo midiDeviceInfo = midiDevice.getInfo();
+                                            int numInputs = midiDeviceInfo.getInputPortCount();
+                                            int numOutputs = midiDeviceInfo.getOutputPortCount();
+                                            Log.d("d", "Input ports = " + numInputs + ", Output ports = " + numOutputs);
 
-                                        boolean foundinport = false;  // We will only grab the first one
-                                        boolean foundoutport = false; // We will only grab the first one
+                                            boolean foundinport = false;  // We will only grab the first one
+                                            boolean foundoutport = false; // We will only grab the first one
 
-                                        MidiDeviceInfo.PortInfo[] portInfos = midiDeviceInfo.getPorts();
-                                        for (MidiDeviceInfo.PortInfo pi : portInfos) {
-                                            switch (pi.getType()) {
-                                                case MidiDeviceInfo.PortInfo.TYPE_INPUT:
-                                                    if (!foundinport) {
-                                                        Log.d("d", "Input port found = " + pi.getPortNumber());
-                                                        StaticVariables.midiInputPort = StaticVariables.midiDevice.openInputPort(pi.getPortNumber());
-                                                        foundinport = true;
-                                                    }
-                                                    break;
-                                                case MidiDeviceInfo.PortInfo.TYPE_OUTPUT:
-                                                    if (!foundoutport) {
-                                                        Log.d("d", "Output port found = " + pi.getPortNumber());
-                                                        StaticVariables.midiOutputPort = StaticVariables.midiDevice.openOutputPort(pi.getPortNumber());
-                                                        foundoutport = true;
-                                                    }
-                                                    break;
+                                            MidiDeviceInfo.PortInfo[] portInfos = midiDeviceInfo.getPorts();
+                                            for (MidiDeviceInfo.PortInfo pi : portInfos) {
+                                                switch (pi.getType()) {
+                                                    case MidiDeviceInfo.PortInfo.TYPE_INPUT:
+                                                        if (!foundinport) {
+                                                            Log.d("d", "Input port found = " + pi.getPortNumber());
+                                                            StaticVariables.midiInputPort = StaticVariables.midiDevice.openInputPort(pi.getPortNumber());
+                                                            foundinport = true;
+                                                        }
+                                                        break;
+                                                    case MidiDeviceInfo.PortInfo.TYPE_OUTPUT:
+                                                        if (!foundoutport) {
+                                                            Log.d("d", "Output port found = " + pi.getPortNumber());
+                                                            StaticVariables.midiOutputPort = StaticVariables.midiDevice.openOutputPort(pi.getPortNumber());
+                                                            foundoutport = true;
+                                                        }
+                                                        break;
+                                                }
                                             }
+                                            selected.postDelayed(runnable, 1000);
                                         }
-                                        selected.postDelayed(runnable, 1000);
-                                    }
-                                }, null);
+                                    }, null);
+                        }
                     }
                 });
             }
@@ -297,7 +293,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private ScanCallback scanCallback = new ScanCallback() {
+    private final ScanCallback scanCallback = new ScanCallback() {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
             super.onScanResult(callbackType, result);
@@ -336,7 +332,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
             currentDevice.setVisibility(View.VISIBLE);
             currentDeviceName.setText(StaticVariables.midiDeviceName);
             currentDeviceAddress.setText(StaticVariables.midiDeviceAddress);
-            String d = getString(R.string.options_connections_disconnect) + " " + StaticVariables.midiDeviceName;
+            String d = getString(R.string.connections_disconnect) + " " + StaticVariables.midiDeviceName;
             disconnectDevice.setText(d);
         } else {
             currentDevice.setVisibility(View.GONE);

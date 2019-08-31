@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="@string/rename" />
+                android:text="@string/song_new_name" />
 
             <EditText
                 android:id="@+id/newSongNameEditText"

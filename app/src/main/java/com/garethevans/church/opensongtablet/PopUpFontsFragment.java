@@ -20,7 +20,6 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -66,11 +65,9 @@ public class PopUpFontsFragment extends DialogFragment {
     private TextView presoPreviewTextView;
     private TextView presoinfoPreviewTextView;
     private ArrayAdapter<String> choose_fonts;
-    ProgressBar progressBar;
     private SeekBar scaleHeading_SeekBar, scaleComment_SeekBar, scaleChords_SeekBar, lineSpacing_SeekBar;
-    SetTypeFace setTypeFace;
-    StorageAccess storageAccess;
-    Preferences preferences;
+    private SetTypeFace setTypeFace;
+    private Preferences preferences;
     // Handlers for fonts
     private Handler lyrichandler;
     private Handler chordhandler;
@@ -84,7 +81,7 @@ public class PopUpFontsFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_font, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.options_options_fonts));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.choose_fonts));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.hide();
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
@@ -100,7 +97,7 @@ public class PopUpFontsFragment extends DialogFragment {
         // Initialise the helper classes
         preferences = new Preferences();
         setTypeFace = new SetTypeFace();
-        storageAccess = new StorageAccess();
+        StorageAccess storageAccess = new StorageAccess();
 
         // Initialise the font handlers
         lyrichandler = new Handler();
@@ -108,7 +105,6 @@ public class PopUpFontsFragment extends DialogFragment {
         presohandler = new Handler();
         presoinfohandler = new Handler();
         Handler customhandler = new Handler();
-        Handler monohandler = new Handler();
 
         // Initialise the views
         lyricsFontSpinner = V.findViewById(R.id.lyricsFontSpinner);
@@ -140,11 +136,10 @@ public class PopUpFontsFragment extends DialogFragment {
         SwitchCompat hideBox_SwitchCompat = V.findViewById(R.id.hideBox_SwitchCompat);
         SwitchCompat trimlines_SwitchCompat = V.findViewById(R.id.trimlines_SwitchCompat);
         SwitchCompat trimsections_SwitchCompat = V.findViewById(R.id.trimsections_SwitchCompat);
-        progressBar = V.findViewById(R.id.progressBar);
 
         // Set up the typefaces
         setTypeFace.setUpAppFonts(getActivity(), preferences, lyrichandler, chordhandler,
-                presohandler, presoinfohandler, customhandler, monohandler);
+                presohandler, presoinfohandler, customhandler);
 
         trimlines_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"trimSections",true));
         hideBox_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"hideLyricsBox",false));
@@ -348,7 +343,7 @@ public class PopUpFontsFragment extends DialogFragment {
         String fontchosen = choose_fonts.getItem(position);
         preferences.setMyPreferenceString(getActivity(), prefname, fontchosen);
         setTypeFace.setChosenFont(getActivity(), preferences, fontchosen, what,
-                textView, null, handler);
+                textView, handler);
     }
 
     private int getPositionInList(String what) {
@@ -356,7 +351,7 @@ public class PopUpFontsFragment extends DialogFragment {
         return choose_fonts.getPosition(valToFind);
     }
 
-    public void doSave() {
+    private void doSave() {
         float num = (float) scaleHeading_SeekBar.getProgress()/100.0f;
         preferences.setMyPreferenceFloat(getActivity(),"scaleHeadings", num);
         num = (float) scaleComment_SeekBar.getProgress()/100.0f;
@@ -371,10 +366,7 @@ public class PopUpFontsFragment extends DialogFragment {
 
     public interface MyInterface {
         void refreshAll();
-
         void refreshSecondaryDisplay(String which);
-
-        void openFragment();
     }
 
     @Override

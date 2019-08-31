@@ -20,7 +20,7 @@ import java.util.Objects;
 public class PopUpLanguageFragment extends DialogFragment {
 
     private String tempLanguage;
-    Preferences preferences;
+    private Preferences preferences;
 
     static PopUpLanguageFragment newInstance() {
         PopUpLanguageFragment frag;
@@ -32,11 +32,6 @@ public class PopUpLanguageFragment extends DialogFragment {
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     @Override
@@ -206,7 +201,7 @@ public class PopUpLanguageFragment extends DialogFragment {
         return V;
     }
 
-    public void doSave() {
+    private void doSave() {
         preferences.setMyPreferenceString(getActivity(),"language",tempLanguage);
         // Unfortunately this means the MAIN folder name isn't right!
         dismiss();

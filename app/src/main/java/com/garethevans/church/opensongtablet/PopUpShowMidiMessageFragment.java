@@ -22,11 +22,9 @@ import java.util.Objects;
 
 public class PopUpShowMidiMessageFragment extends DialogFragment {
 
-    Midi m;
+    private Midi m;
     private ArrayList<String> songMidiMessages;
     private ArrayAdapter<String> midiMessagesAdapter;
-
-    Preferences preferences;
 
     static PopUpShowMidiMessageFragment newInstance() {
         PopUpShowMidiMessageFragment frag;
@@ -92,7 +90,7 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
         // Initialise the Midi - this is only available for Marshmallow+
         m = new Midi();
 
-        preferences = new Preferences();
+        Preferences preferences = new Preferences();
 
         // Initialise the views
         ListView songMessages = V.findViewById(R.id.songMessages);
@@ -184,7 +182,7 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
         String[] bits = StaticVariables.mMidi.trim().split("\n");
         try {
             for (String s : bits) {
-                if (s!=null && !s.equals("") && !s.isEmpty()) {
+                if (s!=null && !s.equals("") && !s.isEmpty() && getActivity()!=null) {
                     // Get a human readable version of the midi code
                     String hr = m.getReadableStringFromHex(s,getActivity());
                     String message = hr + "\n" + "(" + s + ")";

@@ -28,9 +28,9 @@ public class PopUpExportSongListFragment extends DialogFragment {
     }
 
     private ListView songDirectoy_ListView;
-    StorageAccess storageAccess;
-    Preferences preferences;
-    ArrayList<String> songfolders;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
+    private ArrayList<String> songfolders;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -140,7 +140,7 @@ public class PopUpExportSongListFragment extends DialogFragment {
                 getActivity().getString(R.string.exportsongdirectory));
         intent.putExtra(Intent.EXTRA_TEXT, songContents.toString());
 
-        String title = getActivity().getResources().getString(R.string.options_song_export);
+        String title = getActivity().getResources().getString(R.string.export);
         Intent chooser = Intent.createChooser(intent, title);
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             getActivity().startActivity(chooser);

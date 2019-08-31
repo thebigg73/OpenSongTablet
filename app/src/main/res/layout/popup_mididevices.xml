@@ -47,21 +47,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/MyHeadingText"
-                android:text="@string/options_connections_connected"/>
+                android:text="@string/connections_connected"/>
 
             <TextView
                 android:id="@+id/currentDeviceName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/MyWhiteHeadingText"
-                android:text="@string/options_connections_connected"/>
+                android:text="@string/connections_connected"/>
 
             <TextView
                 android:id="@+id/currentDeviceAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/MyWhiteHeadingText"
-                android:text="@string/options_connections_connected"/>
+                android:text="@string/connections_connected"/>
 
             <Button
                 android:id="@+id/testDevice"

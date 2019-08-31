@@ -5,7 +5,10 @@ package com.garethevans.church.opensongtablet;
 // Many have been removed as they can just be loaded from preferences as required
 // These are the ones that are frequently accessed, so easier just to be static
 
+import android.app.Activity;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.media.midi.MidiDevice;
 import android.media.midi.MidiInputPort;
 import android.media.midi.MidiManager;
@@ -18,10 +21,6 @@ import java.util.Locale;
 
 class StaticVariables {
 
-    static String temptranspChords = "";
-    static String pad_filename = "null";
-
-
     // The song fields
     static String mTitle = "Welcome to OpenSongApp", mAuthor = "Gareth Evans", mCopyright = "",
             mLyrics = "", mCCLI = "", mAltTheme = "", mPresentation = "", mHymnNumber = "",
@@ -33,11 +32,19 @@ class StaticVariables {
             mLinkAudio = "", mLoopAudio = "false", mLinkOther = "", mNotation = "", mEncoding = "UTF-8";
 
     // Set stuff
-    static String previousSongInSet = "", nextSongInSet = "", nextSongKeyInSet = "",
-            whatsongforsetwork = "", newSetContents = "", settoload = "", setMoveDirection = "",
-            mySetXML = "", setnamechosen = "";
-    static String[] mSet, mSetList, myParsedSet;
-    static boolean setView, doneshuffle = false, addingtoset = false, setchanged = false;
+    static String previousSongInSet = "";
+    static String nextSongInSet = "";
+    static String nextSongKeyInSet = "";
+    static String whatsongforsetwork = "";
+    static String newSetContents = "";
+    static String settoload = "";
+    static String setMoveDirection = "";
+    static String setnamechosen = "";
+    static String[] mSet;
+    static String[] mSetList;
+    static boolean setView;
+    static boolean doneshuffle = false;
+    static boolean setchanged = false;
     static int setSize, indexSongInSet;
     static ArrayList<String> mTempSetList;
     
@@ -48,7 +55,8 @@ class StaticVariables {
     static Locale locale;
 
     // Default text sizes
-    static float infoBarLargeTextSize = 20.0f, infoBarSmallTextSize = 14.0f;
+    static final float infoBarLargeTextSize = 20.0f;
+    static final float infoBarSmallTextSize = 14.0f;
 
     // Song locations.  These are also saved as preferences if the song loads correctly (without crashing midway)
     static String whichSongFolder = "", songfilename = "";
@@ -77,15 +85,37 @@ class StaticVariables {
     static String whichMode = "";
 
     // Default colours
-    static int darkblue = 0xff0000dd, vdarkblue = 0xff000022, purplyblue = 0xff452277, vlightcyan = 0xffeeffff,
-            vlightblue = 0xffeeeeff, blue = 0xff0000ff;
-    static int black = 0xff000000, white = 0xffffffff, grey = 0xff666666, lightgrey = 0xff222222;
-    static int lightyellow = 0xffddaa00, yellow = 0xffffff00, vdarkyellow = 0xff111100;
-    static int red = 0xffff0000, vdarkred = 0xff220000, darkishred = 0xffaa1212, transparent = 0x00000000;
-    static int vdarkgreen = 0xff002200, darkishgreen = 0xff112211, lightgreen = 0xffeeddee, vlightgreen = 0xffeeffee, green = 0xff00ff00;
-    static int darkpurple = 0xff220022, vlightpurple = 0xffffeeff, lightishcyan = 0xffddeeff;
-    static int highlighterblack = 0x66000000, highlighterwhite = 0x66ffffff, highlighterblue = 0x660000ff,
-            highlighterred = 0x66ff0000, highlightergreen = 0x6600ff00, highighteryellow = 0x66ffff00;
+    static final int darkblue = 0xff0000dd;
+    static final int vdarkblue = 0xff000022;
+    static final int purplyblue = 0xff452277;
+    static final int vlightcyan = 0xffeeffff;
+    static final int vlightblue = 0xffeeeeff;
+    static final int blue = 0xff0000ff;
+    static final int black = 0xff000000;
+    static final int white = 0xffffffff;
+    static final int grey = 0xff666666;
+    static final int lightgrey = 0xff222222;
+    static final int lightyellow = 0xffddaa00;
+    static final int yellow = 0xffffff00;
+    static final int vdarkyellow = 0xff111100;
+    static final int red = 0xffff0000;
+    static final int vdarkred = 0xff220000;
+    static final int darkishred = 0xffaa1212;
+    static final int transparent = 0x00000000;
+    static final int vdarkgreen = 0xff002200;
+    static final int darkishgreen = 0xff112211;
+    static final int lightgreen = 0xffeeddee;
+    static final int vlightgreen = 0xffeeffee;
+    static final int green = 0xff00ff00;
+    static final int darkpurple = 0xff220022;
+    static final int vlightpurple = 0xffffeeff;
+    static final int lightishcyan = 0xffddeeff;
+    static final int highlighterblack = 0x66000000;
+    static final int highlighterwhite = 0x66ffffff;
+    static final int highlighterblue = 0x660000ff;
+    static final int highlighterred = 0x66ff0000;
+    static final int highlightergreen = 0x6600ff00;
+    static final int highighteryellow = 0x66ffff00;
 
     // Option menu defines which menu we are in
     static String whichOptionMenu = "MAIN";
@@ -109,23 +139,62 @@ class StaticVariables {
     static Uri uriToLoad;
 
     // Metronome, pad and autoscroll stuff
-    static boolean metronomeok, padok, autoscrollok, pad1Playing, pad2Playing, pad1Fading,
-            pad2Fading, padson = false, clickedOnAutoScrollStart = false,
-            pauseautoscroll = true, autoscrollispaused = false, isautoscrolling = false,
-            mTimeSigValid = false, usingdefaults = false, learnPreDelay = false, learnSongLength = false,
-            clickedOnMetronomeStart = false, clickedOnPadStart = false;
-    static int scrollpageHeight,  total_pixels_to_scroll = 0, autoscroll_pause_time = 500,
-            autoScrollDelay, autoScrollDuration, audiolength = -1, fadeWhichPad,
-            padtime_length = 0, autoscroll_modifier = 0;
-    static String popupAutoscroll_stoporstart = "stop", whichbeat = "a", metronomeonoff = "off";
+    static boolean metronomeok;
+    static boolean autoscrollok;
+    static boolean pad1Playing;
+    static boolean pad2Playing;
+    static boolean pad1Fading;
+    static boolean pad2Fading;
+    static boolean padson = false;
+    static boolean clickedOnAutoScrollStart = false;
+    static boolean pauseautoscroll = true;
+    static boolean autoscrollispaused = false;
+    static boolean isautoscrolling = false;
+    static boolean mTimeSigValid = false;
+    static boolean usingdefaults = false;
+    static boolean learnPreDelay = false;
+    static boolean learnSongLength = false;
+    static boolean clickedOnMetronomeStart = false;
+    static boolean clickedOnPadStart = false;
+    static int scrollpageHeight;
+    static int total_pixels_to_scroll = 0;
+    static final int autoscroll_pause_time = 500;
+    static int autoScrollDelay;
+    static int autoScrollDuration;
+    static int audiolength = -1;
+    static int fadeWhichPad;
+    static int padtime_length = 0;
+    static int autoscroll_modifier = 0;
+    static String whichbeat = "a";
+    static String metronomeonoff = "off";
+    static String pad_filename = "null";
 
     // PDF stuff
     static boolean showstartofpdf = true;
 
     // Used for the chord image display
     static String allchords = "", chordnotes = "";
+    static String temptranspChords = "";
 
     // Request codes for callbacks
     static final int REQUEST_CAMERA_CODE = 1973, REQUEST_MICROPHONE_CODE = 1974, REQUEST_PDF_CODE = 1975,
-            LINK_AUDIO = 1000, LINK_OTHER = 1001, REQUEST_IMAGE_CODE = 1111;
+            LINK_AUDIO = 1000, LINK_OTHER = 1001, REQUEST_IMAGE_CODE = 1111,
+            REQUEST_BACKGROUND_IMAGE1 = 1544, REQUEST_BACKGROUND_IMAGE2 = 1555,
+            REQUEST_BACKGROUND_VIDEO1 = 1556, REQUEST_BACKGROUND_VIDEO2 = 1557,
+            REQUEST_CUSTOM_LOGO = 1558, REQUEST_FILE_CHOOSER = 7789,
+            REQUEST_PROFILE_LOAD = 4567, REQUEST_PROFILE_SAVE = 5678;
+
+    // PresentationService(HDMI) variables
+    static int cast_padding, cast_screenWidth, cast_availableScreenWidth, cast_screenHeight, cast_availableScreenHeight,
+        cast_availableWidth_1col, cast_availableWidth_2col, cast_availableWidth_3col,
+            cast_lyricsCapoColor, cast_lyricsChordsColor, cast_presoFontColor, cast_lyricsBackgroundColor,
+            cast_lyricsTextColor, cast_presoInfoColor, cast_presoAlertColor, cast_presoShadowColor, cast_lyricsVerseColor,
+            cast_lyricsChorusColor, cast_lyricsPreChorusColor, cast_lyricsBridgeColor, cast_lyricsTagColor,
+            cast_lyricsCommentColor, cast_lyricsCustomColor;
+    static Drawable cast_defimage;
+    static boolean forcecastupdate;
+    static Uri cast_vidUri;
+    static MediaPlayer cast_mediaPlayer;
+    static Activity activity;
+
 }

@@ -1153,6 +1153,11 @@ class ProfileActions {
                             preferences.setMyPreferenceBoolean(c,"padAutoStart",getBooleanValue(xppValue,false));
                             break;
 
+                        case "padCrossFadeTime":    // New preference
+                            // padCrossFadeTime                int         The time in ms used to fade out a pad.  Set in the PopUpCrossFade fragment (def:8000)
+                            preferences.setMyPreferenceInt(c,"padCrossFadeTime",getIntegerValue(xppValue,8000));
+                            break;
+
                         case "padLargeFontInfoBar":        // New preference
                         case "timerFontSizePad":        // Old preference
                             //padLargeFontInfoBar             boolean     The text size of the floating pad info bar (true is 20.0f false is 14.0f)
@@ -2016,7 +2021,7 @@ class ProfileActions {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("application/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        String [] mimeTypes = {"application/xml", "text/xml"};
+        String [] mimeTypes = {"application/*", "application/xml", "text/xml"};
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
             Uri uri = storageAccess.getUriForItem(c, preferences, "Profiles", "", "");
@@ -2035,7 +2040,7 @@ class ProfileActions {
     Intent saveProfile(Context c, Preferences preferences, StorageAccess storageAccess) {
         Intent intent = new Intent();
         intent.setType("application/*");
-        String [] mimeTypes = {"application/xml", "text/xml"};
+        String [] mimeTypes = {"application/*", "application/xml", "text/xml"};
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         intent.setAction(Intent.ACTION_CREATE_DOCUMENT);
         if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {

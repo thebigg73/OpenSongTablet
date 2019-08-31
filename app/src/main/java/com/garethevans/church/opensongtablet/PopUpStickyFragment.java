@@ -28,8 +28,6 @@ public class PopUpStickyFragment extends DialogFragment {
 
     private MyInterface mListener;
 
-    Preferences preferences;
-
     @Override
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
@@ -75,7 +73,7 @@ public class PopUpStickyFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        Preferences preferences = new Preferences();
 
         // Initialise the views
         TextView mySticky = V.findViewById(R.id.mySticky);

@@ -23,7 +23,7 @@
             android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:gravity="center"
-            android:text="@string/options_set"
+            android:text="@string/set"
             style="@style/MyMenuHeadingText"
             tools:ignore="RtlHardcoded" />
 
@@ -65,7 +65,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_upload_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_set_load"
+                android:text="@string/load"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 tools:ignore="RtlHardcoded" />
@@ -80,7 +80,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_download_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_set_save"
+                android:text="@string/save"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 tools:ignore="RtlHardcoded" />
@@ -110,7 +110,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_plus_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_set_clear"
+                android:text="@string/set_new"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 tools:ignore="RtlHardcoded" />
@@ -125,7 +125,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_delete_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_set_delete"
+                android:text="@string/delete"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 tools:ignore="RtlHardcoded" />
@@ -155,7 +155,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_share_variant_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_set_export"
+                android:text="@string/export"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 tools:ignore="RtlHardcoded" />
@@ -200,7 +200,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_table_edit_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_set_edit"
+                android:text="@string/edit"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 tools:ignore="RtlHardcoded" />

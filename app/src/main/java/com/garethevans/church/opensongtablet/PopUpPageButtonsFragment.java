@@ -51,7 +51,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
     private SwitchCompat extraButtonGroup_Switch;
     private SwitchCompat customButtonGroup_Switch;
 
-    Preferences preferences;
+    private Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

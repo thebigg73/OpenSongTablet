@@ -12,18 +12,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-//import com.itextpdf.text.Document;
-//import com.itextpdf.text.Font;
-//import com.itextpdf.text.Image;
-//import com.itextpdf.text.PageSize;
-//import com.itextpdf.text.Paragraph;
-//import com.itextpdf.text.pdf.BaseFont;
-//import com.itextpdf.text.pdf.PdfWriter;
+import androidx.core.content.FileProvider;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -41,7 +34,8 @@ class ExportPreparer {
     private String song_hymnnumber;
     private String song_key;
     private String folderstoexport = "";
-    private ArrayList<String> filesinset = new ArrayList<>(), filesinset_ost = new ArrayList<>();
+    private final ArrayList<String> filesinset = new ArrayList<>();
+    private final ArrayList<String> filesinset_ost = new ArrayList<>();
     private Backup_Create_Selected backup_create_selected;
     private ZipOutputStream outSelected;
 
@@ -745,10 +739,10 @@ class ExportPreparer {
 
     @SuppressLint("StaticFieldLeak")
     private class Backup_Create_Selected extends AsyncTask<String, Void, String> {
-        Context c;
+        final Context c;
         Intent emailIntent;
-        StorageAccess storageAccess;
-        Preferences preferences;
+        final StorageAccess storageAccess;
+        final Preferences preferences;
 
         Backup_Create_Selected(Context context, Preferences p, StorageAccess sA) {
             c = context;
@@ -774,7 +768,8 @@ class ExportPreparer {
                 try {
                     //Uri uri = storageAccess.getUriForItem(c, preferences, "", "", s);
                     File tempbackup = new File(c.getExternalFilesDir("Backup"),s);
-                    Uri uri = Uri.fromFile(tempbackup);
+                    Uri uri = FileProvider.getUriForFile(c,"OpenSongAppFiles",tempbackup);
+
                     StaticVariables.myToastMessage = c.getString(R.string.backup_success);
                     ShowToast.showToast(c);
                     emailIntent = exportBackup(c, uri);

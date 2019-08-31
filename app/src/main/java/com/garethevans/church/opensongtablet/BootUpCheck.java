@@ -4,7 +4,6 @@ package com.garethevans.church.opensongtablet;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -45,30 +44,38 @@ import static com.google.android.material.snackbar.Snackbar.make;
 public class BootUpCheck extends AppCompatActivity {
 
     // Declare helper classes:
-    Preferences preferences;
-    StorageAccess storageAccess;
-    IndexSongs indexSongs;
-    SongXML songXML;
-    ChordProConvert chordProConvert;
-    OnSongConvert onSongConvert;
-    UsrConvert usrConvert;
-    TextSongConvert textSongConvert;
-    SetTypeFace setTypeFace;
+    private Preferences preferences;
+    private StorageAccess storageAccess;
 
     // Declare views
-    //ProgressBar progressBar;
-    TextView progressText, version, previousStorageTextView, previousStorageLocationsTextView, previousStorageHeading, currentAction;
-    Button chooseStorageButton, goToSongsButton, userGuideButton, previousStorageButton, resetCacheButton;
-    LinearLayout storageLinearLayout, readUpdate, userGuideLinearLayout, goToSongsLinearLayout;
-    Spinner appMode, previousStorageSpinner;
-    Toolbar toolbar;
-    // Declare variables
-    String text="", versionCode="", whichMode;
-    Uri uriTree, uriTreeHome;
-    boolean foldersok, storageGranted, skiptoapp, changed;
-    int lastUsedVersion, thisVersion;
-    ArrayList<String> locations;
-    File folder;
+    private TextView progressText;
+    private TextView version;
+    private TextView previousStorageTextView;
+    private TextView previousStorageLocationsTextView;
+    private TextView previousStorageHeading;
+    private TextView currentAction;
+    private TextView warningText;
+    private Button chooseStorageButton;
+    private Button goToSongsButton;
+    private Button userGuideButton;
+    private Button previousStorageButton;
+    private Button resetCacheButton;
+    private LinearLayout storageLinearLayout;
+    private LinearLayout readUpdate;
+    private LinearLayout userGuideLinearLayout;
+    private LinearLayout goToSongsLinearLayout;
+    private Spinner appMode;
+    private Spinner previousStorageSpinner;
+    private String versionCode="";
+    private String whichMode;
+    private Uri uriTree;
+    private Uri uriTreeHome;
+    private boolean storageGranted;
+    private boolean skiptoapp;
+    private boolean changed;
+    private int thisVersion;
+    private ArrayList<String> locations;
+    private File folder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,17 +83,10 @@ public class BootUpCheck extends AppCompatActivity {
         // Load the helper classes (preferences)
         preferences = new Preferences();
         storageAccess = new StorageAccess();
-        indexSongs = new IndexSongs();
-        //fullscreenActivity = new FullscreenActivity();
-        songXML = new SongXML();
-        chordProConvert = new ChordProConvert();
-        onSongConvert = new OnSongConvert();
-        usrConvert = new UsrConvert();
-        textSongConvert = new TextSongConvert();
-        setTypeFace = new SetTypeFace();
+        SetTypeFace setTypeFace = new SetTypeFace();
 
         // Initialise the font
-        setTypeFace.setUpAppFonts(BootUpCheck.this,preferences,new Handler(),new Handler(), new Handler(),new Handler(), new Handler(),new Handler());
+        setTypeFace.setUpAppFonts(BootUpCheck.this,preferences,new Handler(),new Handler(), new Handler(),new Handler(), new Handler());
         // This will do one of 2 things - it will either show the splash screen or the welcome screen
         // To determine which one, we need to check the storage is set and is valid
         // The last version used must be the same or greater than the current app version
@@ -145,8 +145,8 @@ public class BootUpCheck extends AppCompatActivity {
 
     }
 
-    void identifyViews() {
-        //progressBar = findViewById(R.id.progressBar);
+    private void identifyViews() {
+        warningText = findViewById(R.id.warningText);
         progressText = findViewById(R.id.progressText);
         goToSongsButton = findViewById(R.id.goToSongsButton);
         chooseStorageButton = findViewById(R.id.chooseStorageButton);
@@ -157,7 +157,7 @@ public class BootUpCheck extends AppCompatActivity {
         version.setText(versionCode);
         userGuideLinearLayout = findViewById(R.id.userGuideLinearLayout);
         userGuideButton = findViewById(R.id.userGuideButton);
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.app_name));
         appMode = findViewById(R.id.appMode);
         previousStorageSpinner = findViewById(R.id.previousStorageSpinner);
@@ -191,7 +191,7 @@ public class BootUpCheck extends AppCompatActivity {
                 break;
         }
     }
-    void setButtonActions() {
+    private void setButtonActions() {
         showLoadingBar();
         goToSongsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -275,15 +275,15 @@ public class BootUpCheck extends AppCompatActivity {
             }
         });
     }
-    void pulseStartButton() {
+    private void pulseStartButton() {
         CustomAnimations ca = new CustomAnimations();
         ca.pulse(BootUpCheck.this, goToSongsButton);
     }
-    void pulseStorageButton() {
+    private void pulseStorageButton() {
         CustomAnimations ca2 = new CustomAnimations();
         ca2.pulse(BootUpCheck.this, chooseStorageButton);
     }
-    void showLoadingBar() {
+    private void showLoadingBar() {
         pulseStartButton();
         readUpdate.setClickable(true);
         storageLinearLayout.setClickable(true);
@@ -294,7 +294,7 @@ public class BootUpCheck extends AppCompatActivity {
         userGuideLinearLayout.setClickable(true);
         userGuideButton.setClickable(true);
     }
-    void checkPreferencesForStorage() {
+    private void checkPreferencesForStorage() {
         String uT  = preferences.getMyPreferenceString(BootUpCheck.this,"uriTree","");
         String uTH = preferences.getMyPreferenceString(BootUpCheck.this,"uriTreeHome","");
         if (!uT.equals("")) {
@@ -311,7 +311,7 @@ public class BootUpCheck extends AppCompatActivity {
             uriTreeHome = storageAccess.homeFolder(BootUpCheck.this,uriTree,preferences);
         }
     }
-    void checkStoragePermission() {
+    private void checkStoragePermission() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             // Storage permission has not been granted.
@@ -355,8 +355,10 @@ public class BootUpCheck extends AppCompatActivity {
         checkReadiness();
     }
 
-    void showCurrentStorage(Uri u) {
+    private void showCurrentStorage(Uri u) {
         // This tries to make the uri more user readable!
+        // Declare variables
+        String text;
         if (u!=null) {
             if (storageAccess.lollipopOrLater()) {
                 try {
@@ -395,13 +397,23 @@ public class BootUpCheck extends AppCompatActivity {
             text = getString(R.string.notset);
         }
 
+        // Decide if the user needs warned that they have selected the Songs folder.
+        if (warningText!=null) {
+            if (text!=null && (text.endsWith("OpenSong/Songs/") || text.endsWith("OpenSong/Songs") ||
+                    text.endsWith("OpenSong/Songs/OpenSong/") || text.endsWith("OpenSong/Songs/OpenSong"))) {
+                warningText.setVisibility(View.VISIBLE);
+            } else {
+                warningText.setVisibility(View.GONE);
+            }
+        }
+
         if (progressText!=null) {
             // We aren't just passing through, so we can set the text
             progressText.setText(text);
         }
     }
     @SuppressLint("InlinedApi")
-    void chooseStorageLocation() {
+    private void chooseStorageLocation() {
         if (storageGranted) {
             Intent intent;
             if (storageAccess.lollipopOrLater()) {
@@ -419,7 +431,6 @@ public class BootUpCheck extends AppCompatActivity {
             requestStoragePermission();
         }
     }
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         if (resultCode == Activity.RESULT_OK) {
 
@@ -440,7 +451,7 @@ public class BootUpCheck extends AppCompatActivity {
         }
     }
 
-    void kitKatDealWithUri(Intent resultData) {
+    private void kitKatDealWithUri(Intent resultData) {
         String folderLocation;
         if (resultData!=null && resultData.getExtras()!=null) {
             // This is for Android KitKat - deprecated file method
@@ -465,7 +476,7 @@ public class BootUpCheck extends AppCompatActivity {
             notWriteable();
         }
     }
-    void lollipopDealWithUri(Intent resultData) {
+    private void lollipopDealWithUri(Intent resultData) {
         // This is the newer version for Lollipop+ This is preferred!
         if (resultData!=null) {
             uriTree = resultData.getData();
@@ -483,7 +494,7 @@ public class BootUpCheck extends AppCompatActivity {
         }
     }
 
-    void notWriteable() {
+    private void notWriteable() {
         uriTree = null;
         uriTreeHome = null;
         ShowToast showToast = new ShowToast();
@@ -493,7 +504,7 @@ public class BootUpCheck extends AppCompatActivity {
             previousStorageSpinner.setSelection(0);
         }
     }
-    void saveUriLocation() {
+    private void saveUriLocation() {
         if (uriTree!=null) {
             // Save the preferences
             preferences.setMyPreferenceString(BootUpCheck.this, "uriTree", uriTree.toString());
@@ -504,7 +515,7 @@ public class BootUpCheck extends AppCompatActivity {
         }
     }
 
-    boolean checkStorageIsValid() {
+    private boolean checkStorageIsValid() {
         // Check that the location exists and is writeable
         // Since the OpenSong folder may not yet exist, we check for the uriTree and if it is writeable
         try {
@@ -520,9 +531,9 @@ public class BootUpCheck extends AppCompatActivity {
         }
         return false;
     }
-    boolean versionCheck() {
+    private boolean versionCheck() {
         // Do this as a separate thread.  0 is for fresh installs.  1 is for user choice to return to menu
-        lastUsedVersion = preferences.getMyPreferenceInt(BootUpCheck.this, "lastUsedVersion", 0);
+        int lastUsedVersion = preferences.getMyPreferenceInt(BootUpCheck.this, "lastUsedVersion", 0);
         PackageInfo pInfo;
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -544,7 +555,7 @@ public class BootUpCheck extends AppCompatActivity {
         return lastUsedVersion >= thisVersion;
     }
 
-    void clearTheCaches() {
+    private void clearTheCaches() {
         // Clear the user preferences
         File cacheDirectory = getCacheDir();
         File applicationDirectory;
@@ -606,7 +617,7 @@ public class BootUpCheck extends AppCompatActivity {
 
     }
 
-    public static boolean doDeleteFile(File file) {
+    private static boolean doDeleteFile(File file) {
         boolean deletedAll = true;
         if (file != null) {
             if (file.isDirectory()) {
@@ -623,7 +634,7 @@ public class BootUpCheck extends AppCompatActivity {
         return deletedAll;
     }
 
-    public boolean doDeleteCacheFile(File file) {
+    private boolean doDeleteCacheFile(File file) {
 
         if (file != null && file.isDirectory()) {
             String[] children = file.list();
@@ -643,7 +654,7 @@ public class BootUpCheck extends AppCompatActivity {
         }
     }
 
-    void checkReadiness() {
+    private void checkReadiness() {
         if (skiptoapp) {
             try {
                 goToSongsLinearLayout.setVisibility(View.VISIBLE);
@@ -665,7 +676,7 @@ public class BootUpCheck extends AppCompatActivity {
         }
     }
 
-    void goToSongs() {
+    private void goToSongs() {
         // Intialise the views needed
         currentAction = findViewById(R.id.currentAction);
         currentAction.setVisibility(View.VISIBLE);
@@ -680,7 +691,7 @@ public class BootUpCheck extends AppCompatActivity {
 
         int numSongs;
         String message;
-        boolean cancelled = false;
+        final boolean cancelled = false;
         Intent intent;
 
         @Override
@@ -688,6 +699,7 @@ public class BootUpCheck extends AppCompatActivity {
             // Set the preferred storage - it must be good, otherwise we couldn't click the button!
             preferences.setMyPreferenceString(BootUpCheck.this,"uriTree",uriTree.toString());
             preferences.setMyPreferenceString(BootUpCheck.this,"uriTreeHome",uriTreeHome.toString());
+
         }
 
         @Override
@@ -696,7 +708,7 @@ public class BootUpCheck extends AppCompatActivity {
             message = getString(R.string.storage_check);
             publishProgress("setmessage");
             final String progress = storageAccess.createOrCheckRootFolders(BootUpCheck.this, uriTree, preferences);
-            foldersok = !progress.contains("Error");
+            boolean foldersok = !progress.contains("Error");
 
             if (foldersok) {
                 // Load up all of the preferences into FullscreenActivity (static variables)
@@ -739,8 +751,11 @@ public class BootUpCheck extends AppCompatActivity {
                 intent = new Intent();
 
                 if (whichMode==null) {
-                    whichMode = "Performance";
+                    whichMode = preferences.getMyPreferenceString(BootUpCheck.this,"whichMode","Performance");
                 }
+
+                // Set the app mode
+                StaticVariables.whichMode = whichMode;
 
                 switch (whichMode) {
                     case "Performance":
@@ -801,7 +816,7 @@ public class BootUpCheck extends AppCompatActivity {
         }
     }
 
-    public void startSearch() {
+    private void startSearch() {
         // Deactivate the stuff we shouldn't click on while it is being prepared
         setEnabledOrDisabled(false);
 
@@ -812,7 +827,7 @@ public class BootUpCheck extends AppCompatActivity {
         findlocations.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    void setEnabledOrDisabled(boolean what) {
+    private void setEnabledOrDisabled(boolean what) {
         goToSongsButton.setEnabled(what);
         chooseStorageButton.setEnabled(what);
         readUpdate.setEnabled(what);
@@ -827,7 +842,7 @@ public class BootUpCheck extends AppCompatActivity {
             previousStorageTextView.setVisibility(View.GONE);
         }
     }
-    public void openFragment() {
+    private void openFragment() {
         Intent intent = new Intent(this, FolderPicker.class);
         intent.putExtra("title", getString(R.string.changestorage));
         intent.putExtra("pickFiles", false);
@@ -837,7 +852,7 @@ public class BootUpCheck extends AppCompatActivity {
         startActivityForResult(intent, 7789);
     }
 
-    public void walkFiles(File root) {
+    private void walkFiles(File root) {
         if (root!=null && root.exists() && root.isDirectory()) {
             File[] list = root.listFiles();
             if (list != null) {
@@ -858,7 +873,7 @@ public class BootUpCheck extends AppCompatActivity {
         }
     }
 
-    public void displayWhere(String msg) {
+    private void displayWhere(String msg) {
         final String str = msg;
         runOnUiThread(new Runnable() {
                 @Override
@@ -870,8 +885,6 @@ public class BootUpCheck extends AppCompatActivity {
 
     @SuppressLint("StaticFieldLeak")
     private class FindLocations extends AsyncTask<Object, String, String> {
-
-        String s;
 
         @Override
         protected String doInBackground(Object... objects) {

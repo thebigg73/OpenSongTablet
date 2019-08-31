@@ -9,71 +9,50 @@
     <string name="image_slide">"Slajd-šou slika"</string>
     <string name="time_slide_pages">"Vreme za svaki slajd (s)"</string>
     <string name="time_slide_pages_help">"Ostaviti prazno za ručni slajd-šou"</string>
-
-    <string name="set_loading">"Učitavanje set liste"</string>
-    <string name="set_processing">"Obrada"</string>
     <string name="image">"Slika"</string>
     <string name="slide_add_page">"Ubaciti novu stranu za ručni slajd"</string>
     <string name="loop_slide_pages">"Napravi petlju stranica u ručnom slajdu"</string>
     <string name="tap_tempo">"Tapnuti za određivanje tempa"</string>
     <string name="convert_song">"Molimo prebacite ovu pesmu u OpenSong format (pregledajući je) pre nego što je dodate na set listu"</string>
-    <string name="no_filemanager">"Nema instaliranog menadžera datoteka"</string>
-    <string name="no_audioplayer">"Nema instaliranog audio plejera"</string>
     <string name="link_youtube">"YouTube veza"</string>
     <string name="link_web">"Online veza"</string>
     <string name="link_audio">"Audio datoteka veza"</string>
     <string name="link_file">"Druga datoteka"</string>
     <string name="overwrite">"Prepisati preko postojeće stavke"</string>
-    <string name="storage_issues">"Ako budete imali problema sa aplikacijom, molimo prebacite se na unutrašnju memoriju"</string>
     <string name="toggle_autoshow_stickynotes">"Uključiti automatsko prikazivanje lepljivih beleški"</string>
     <string name="file_type">"Tip datoteke"</string>
     <string name="file_type_unknown">"Nepoznato"</string>
     <string name="file_exists">"Datoteka već postoji. Molimo promenite ime."</string>
-
-    <string name="options_display">"Prikaz"</string>
-    <string name="options_gesturesandmenus">"Gestovi i meniji"</string>
-    <string name="options_storage">"Memorija"</string>
-    <string name="options_other">"Drugo"</string>
+    <string name="display">"Prikaz"</string>
+    <string name="gesturesandmenus">"Gestovi i meniji"</string>
+    <string name="storage">"Memorija"</string>
+    <string name="other">"Drugo"</string>
     <string name="not_allowed">"Ta funkcija nije dozvoljena za ovu stavku"</string>
     <string name="add_custom_slide">"Dodati prilagođeni slajd na set listu"</string>
     <string name="simple_note">"Jednostavna beleška / rezervisano mesto"</string>
     <string name="custom_slide">"Prilagođeni slajd (sa sadržajem)"</string>
     <string name="title">"Naslov"</string>
     <string name="content">"Sadržaj"</string>
-    <string name="slide_separator">"Dodati slajd razdelnik (za projekcije)"</string>
     <string name="note">"Beleška"</string>
-
     <string name="crossfade_time">"Vreme cross-fade"</string>
     <string name="scrollbuttons_toggle">"Uključiti opcije skrolovanja"</string>
-    <string name="scrollbuttons_single">"Jedna strelica"</string>
-    <string name="scrollbuttons_double">"Dupla strelica"</string>
-    <string name="page_toggles">"Uključiti opcije strane"</string>
-    <string name="options_options_autostartscroll">"Automatski započeti automatsko skrolovanje"</string>
+    <string name="autostart_autoscroll">"Automatski započeti automatsko skrolovanje"</string>
     <string name="media_chooser">"Odabir medija"</string>
     <string name="media_selected">"Učitavanje medija"</string>
     <string name="media_play">"Reprodukcija"</string>
-    <string name="media_pause">"Pauza"</string>
-    <string name="media_stop">"Zaustavljanje"</string>
     <string name="media">"Audio"</string>
-
     <string name="preso_alpha">"Neprozirnost pozadine"</string>
     <string name="file_chooser">"Odabir datoteke"</string>
-    <string name="display_manager">"Ponovo spoji ekran"</string>
     <string name="song_sections">"Delovi pesme"</string>
     <string name="actions">"Akcije"</string>
-    <string name="settings">"Podešavanja"</string>
     <string name="alert">"Upozorenje"</string>
     <string name="alert_text">"Uneti tekstualnu poruku"</string>
-    <string name="layout">"Izgled"</string>
-
-    <string name="error_notset">"Nije podešeno"</string>
     <string name="error_missingsection">"Nedostaju sekcije"</string>
     <string name="tag_verse">"Strofa"</string>
     <string name="tag_chorus">"Refren"</string>
     <string name="tag_bridge">"Most"</string>
     <string name="tag_prechorus">"Pred-Refren"</string>
     <string name="tag_tag">"Oznaka"</string>
-
     <string name="maxfontsize">"Najveća moguća veličina fonta za automatsku promenu veličine"</string>
     <string name="custom">"Prilagođeno"</string>
     <string name="customchords">"Prilagođeni akordi"</string>
@@ -94,183 +73,89 @@
     <string name="ukulele">"Ukulele"</string>
     <string name="mandolin">"Mandolina"</string>
     <string name="piano">"Klavir"</string>
-    
-    <string name="capo_toggle">"Uključiti opcije kapo akorda"</string>
-    <string name="capo_toggle_onlycapo">"Prikazati samo ako su dostupni kapo akordi"</string>
     <string name="capo_toggle_bothcapo">"Prikazati i kapo i prirodne akorde ako je dostupno"</string>
-    <string name="capo_toggle_native">"Prikazati samo prirodne akorde"</string>
     <string name="language">"Jezik"</string>
     <string name="refreshsongs">"Osvežiti meni pesama"</string>
     <string name="custom1_theme">"Prilagođeno 1"</string>
     <string name="custom2_theme">"Prilagođeno 2"</string>
     <string name="scripture">"Skripta"</string>
     <string name="slide">"Slajd"</string>
-    
     <string name="visualmetronome">"Vidljiv"</string>
-    <string name="onsonglocation">"Treba da smestite Vašu rezervnu datoteku OnSong u /documents/OpenSong/ fasciklu da bi bila dostupna za uvoz"</string>
-    <string name="opensonglocation">"Treba da smestite Vašu rezervnu datoteku OpenSongApp u /documents/OpenSong/ fasciklu da bi bila dostupna za uvoz"</string>
-    <string name="savesong">"Sačuvaj"</string>
-    <string name="metronomepadsettings">"Podešavanja metronoma i pad-a"</string>
+    <string name="save">"Sačuvaj"</string>
     <string name="metronome">"Metronom"</string>
-    <string name="temponotset">"Tempo nije podešen za ovu pesmu"</string>
-    <string name="timesignotset">"Vremenska oznaka nije podešena za ovu pesmu"</string>
     <string name="pad">"Pad"</string>
     <string name="wait">"Sačekajte...."</string>
     <string name="volume">"Jačina"</string>
     <string name="pan">"Pan"</string>
     <string name="linespacing">"Skratiti razmak za"</string>
-    <string name="currently">"Trenutno"</string>
     <string name="currentkeycode">"Trenutni kod tastature"</string>
     <string name="notset">"Nije zadato"</string>
-    <string name="songactionsbuttons">"Taster za početak/kraj akcija pesme"</string>
     <string name="padPedalText">"Početak/kraj pad"</string>
-    <string name="autoscrollPedalText">"Početak/kraj automatski skrol"</string>"    
+    <string name="autoscrollPedalText">"Početak/kraj automatski skrol"</string>"
     <string name="metronomePedalText">"Početak/kraj metronom"</string>
-    
     <string name="autoscroll_time">"Odloženi početak automatskog skrola"</string>
-    
-    <string name="songbuttons_toggle">"Uključiti opcije skraćenica za taster stranice"</string>
     <string name="song_functionnotavailable">"Ova funkcija nije moguća za pesme"</string>
-    
     <string name="latest_updates">"Poslednje izmene"</string>
-    
     <string name="storage_choose">"Rad sa memorijom"</string>
     <string name="storage_help">"Molimo odaberite podrazumevanu lokaciju memorije za Vaše OpenSong datoteke. Možete ovo promeniti u svakom trenutku iz menija Opcije."</string>
-    <string name="storage_space">"Dostupni prostor"</string>
-    <string name="storage_notavailable">"Nije dostupno"</string>
-    <string name="storage_int">"Emulirana spoljna/unutrašnja memorija"</string>
     <string name="storage_ext">"Spoljna memorija"</string>
-    
     <string name="link">"Veza"</string>
     <string name="link_choose">"Odabrati datoteku za vezu sa ovom pesmom"</string>
-    
     <string name="autoscroll">"Automatski skrol"</string>
-    
-    <string name="import_onsong_done">"Uspešno -OnSong pesme su dodate na /documents/OpenSong/Songs/OnSong"</string>
     <string name="import_onsong_error">"Nije pronađena OnSong rezervna kopija u /documents/OpenSong/"</string>
     <string name="import_onsong_choose">"Uvezi OnSong rezervnu kopiju"</string>
-    
-    <string name="pad_playing">"Matrica je počela sa reprodukcijom"</string>
-    <string name="pad_stopped">"Matrica je zaustavljena (sačekajte na fade out)"</string>
     <string name="pad_choose_key">"Odaberite tonalitet za ovu pesmu"</string>
     <string name="pad_error">"Tonalitet ove pesme nije odabran"</string>
     <string name="backing_track">"Odaberite matricu"</string>
     <string name="pad_onoroff">"Koristiti pad sa ovom pesmom"</string>
     <string name="pad_auto">"Auto"</string>
-    <array name="key_choice">
-        <item />
-        <item>"A"</item>
-        <item>"A#"</item>
-        <item>"B"</item>
-        <item>"H"</item>
-        <item>"C"</item>
-        <item>"C#"</item>
-        <item>"Db"</item>
-        <item>"D"</item>
-        <item>"D#"</item>
-        <item>"Eb"</item>
-        <item>"E"</item>
-        <item>"F"</item>
-        <item>"F#"</item>
-        <item>"Gb"</item>
-        <item>"G"</item>
-        <item>"G#"</item>
-        <item>"Ab"</item>
-        <item>"Am"</item>
-        <item>"A#m"</item>
-        <item>"Bm"</item>
-        <item>"Hm"</item>
-        <item>"Cm"</item>
-        <item>"C#m"</item>
-        <item>"Dbm"</item>
-        <item>"Dm"</item>
-        <item>"D#m"</item>
-        <item>"Ebm"</item>
-        <item>"Em"</item>
-        <item>"Fm"</item>
-        <item>"F#m"</item>
-        <item>"Gbm"</item>
-        <item>"Gm"</item>
-        <item>"G#m"</item>
-        <item>"Abm"</item>
-    </array>
-    
     <string name="stickynotes">"Beleške pesme"</string>
-    
     <string name="youtube">"Pretražiti YouTube za trenutnu pesmu"</string>
-    
     <string name="pdf_functionnotavailable">"Ova funkcija nije dostupna za PDF dokumenta"</string>
     <string name="pdf_selectpage">"Odabrati stranu"</string>
-    
-    <string name="options_set">"SET LISTA"</string>
-    <string name="options_set_load">"Učitati"</string>
-    <string name="options_set_save">"Sačuvati"</string>
-    <string name="options_set_nameofset">"Novo ime set liste"</string>
-    <string name="options_set_clear">"Očistiti"</string>
-    <string name="options_set_delete">"Obrisati"</string>
-    <string name="options_set_export">"Izvoz"</string>
-    <string name="options_set_edit">"Izmeniti"</string>
-       
-    <string name="options_song">"Pesma"</string>
-    <string name="options_song_transpose">"Transponovati"</string>
-    <string name="options_song_convert">"Prebaciti pesmu u moj omiljeni format akorda"</string>
-    <string name="options_song_sharp">"Koristiti # akorde"</string>
-    <string name="options_song_flat">"Koristiti b akorde"</string>
-    <string name="options_song_edit">"Izmeniti"</string>
-    <string name="options_song_rename">"Promeniti ime"</string>
-    <string name="options_song_delete">"Obrisati"</string>
-    <string name="options_song_new">"Nova"</string>
-    <string name="options_song_export">"Izvoz"</string>
-    <string name="options_song_stickynotes">"Izmeniti lepljive beleške pesme"</string>
-    <string name="options_song_newfolder">"Napraviti novu fasciklu pesama"</string>
-    <string name="options_song_editfolder">"Promeniti ime fascikle pesama"</string>
-        
-    <string name="options_options">"OPCIJE"</string>
-    <string name="options_options_theme">"Promeniti temu"</string>
-    <string name="options_options_scale">"Uključiti opcije automatskog skaliranja"</string>
-    <string name="options_options_fontsize">"Odabrati veličinu fonta"</string>
-    <string name="options_options_showchords">"Prikazati/Sakriti akorde"</string>
-    <string name="options_options_chordformat">"Prikazati format akorada"</string>
-    <string name="options_options_gestures">"Dodeliti prilagođene gestove"</string>
-    <string name="options_options_songswipe">"Uklj/isklj. swipe za pomeranje između pesama"</string>
-    <string name="options_options_menuswipe">"Uklj/isklj. swipe za listu pesama i meni opcija"</string>
-    <string name="options_options_hidebar">"Uklj/isklj. sakrivanje gornjeg menija"</string>
-    <string name="options_options_colors">"Promeniti boje"</string>
-    <string name="options_options_fonts">"Promeniti font"</string>
-    <string name="options_options_pedal">"Dodeliti nožnu pedalu"</string>
-    <string name="options_options_help">"Pomoć (Online)"</string>
-    <string name="options_options_start">"Povratak na početni ekran"</string>
-
-    <string name="customgestures">"Dodeliti prilagođene gestove"</string>"   
+    <string name="set">"SET LISTA"</string>
+    <string name="load">"Učitati"</string>
+    <string name="set_name">"Novo ime set liste"</string>
+    <string name="set_new">"Očistiti"</string>
+    <string name="delete">"Obrisati"</string>
+    <string name="export">"Izvoz"</string>
+    <string name="song">"Pesma"</string>
+    <string name="chord_convert">"Prebaciti pesmu u moj omiljeni format akorda"</string>
+    <string name="chords_sharp">"Koristiti # akorde"</string>
+    <string name="chords_flat">"Koristiti b akorde"</string>
+    <string name="edit">"Izmeniti"</string>
+    <string name="rename">"Promeniti ime"</string>
+    <string name="stickynotes_edit">"Izmeniti lepljive beleške pesme"</string>
+    <string name="folder_new">"Napraviti novu fasciklu pesama"</string>
+    <string name="folder_rename">"Promeniti ime fascikle pesama"</string>
+    <string name="options">"OPCIJE"</string>
+    <string name="choose_theme">"Promeniti temu"</string>
+    <string name="autoscale_toggle">"Uključiti opcije automatskog skaliranja"</string>
+    <string name="choose_fontsize">"Odabrati veličinu fonta"</string>
+    <string name="choose_chordformat">"Prikazati format akorada"</string>
+    <string name="custom_gestures">"Dodeliti prilagođene gestove"</string>
+    <string name="song_swipe_toggle">"Uklj/isklj. swipe za pomeranje između pesama"</string>
+    <string name="menu_swipe_toggle">"Uklj/isklj. swipe za listu pesama i meni opcija"</string>
+    <string name="hide_actionbar">"Uklj/isklj. sakrivanje gornjeg menija"</string>
+    <string name="choose_fonts">"Promeniti font"</string>
+    <string name="footpedal">"Dodeliti nožnu pedalu"</string>
+    <string name="help">"Pomoć (Online)"</string>
+    <string name="start_screen">"Povratak na početni ekran"</string>
+    <string name="customgestures">"Dodeliti prilagođene gestove"</string>"
     <string name="doubleTap">"Odaberi akciju za dupli tap"</string>
     <string name="longPress">"Odaberi akciju za dugi pritisak"</string>
     <string name="gesture1">"Otvoriti pesma meni"</string>
     <string name="gesture2">"Izmena pesme"</string>
     <string name="gesture3">"Dodati pesmu na set listu"</string>
     <string name="gesture4">"Osvežiti trenutnu pesmu"</string>
-    
     <string name="transpose">"Transponovati"</string>
-    <string name="docontinue">"Nastaviti"</string>
-    <string name="chordformat_help">"Kada se transponuje pesma, da li želite da aplikacija svaki put detektuje format akorda u kojem je pesma?"</string>
-    <string name="chordformat_check">"Detektovati format akorda svaki put kada se transponuje"</string>
     <string name="chordformat_default">"Uvek pretpostaviti da su pesme u mom izabranom formatu akorda"</string>
-    <string name="chordformat_check_short">"Uvek proveriti"</string>
-    <string name="chordformat_default_short">"Ne pitati me"</string>
-    
     <string name="nothighenoughapi">"Potrebna Vam je novija verzija Androida za ovo!"</string>
-    
-    <string name="checkchordformat">"Da li ste sigurni da je ova pesma u Vašem prioritetnom formatu akorda?"</string>
     <string name="oldchordformat">"Detektovati trenutni format akorda"</string>
-    
     <string name="firstsong">"Prikazivanje prve pesme"</string>
     <string name="lastsong">"Prikazivanje poslednje stavke na set listi"</string>
-        
-    <string name="set_edit">"IZMENITI"</string>
-    <string name="set_edit_title">"Izmeniti trenutnu set listu"</string>
     <string name="set_help">"Prevlačite pesme da bi promenili redosled na set listi"</string>
-    
     <string name="currentset">"Trenutna set lista"</string>
-    <string name="setmargins">"Podesiti\nmargine"</string>
     <string name="setxmargins">"Horizontalna margina"</string>
     <string name="setymargins">"Vertikalna margina"</string>
     <string name="update_projector">"Ažuriranje\nprojektora"</string>
@@ -279,93 +164,43 @@
     <string name="choose_image2">"Odabrati pozadinsku sliku 2"</string>
     <string name="choose_video1">"Odabrati pozadinski video 1"</string>
     <string name="choose_video2">"Odabrati pozadinski video 2"</string>
-    
     <string name="choosechordformat">"Odabrati format akorda (bitno kada se transponuje pesma)"</string>
-
-    <string name="switchtopresentmode">"Prebaciti na mod prezentacije"</string>
     <string name="switchtoperformmode">"Prebaciti na mod izvođenja"</string>
     <string name="presentermode">"Mod prezentacije"</string>
     <string name="sendtoprojector">"Projektovati"</string>
     <string name="presoBackground">"Pozadina"</string>
     <string name="presoShowLogo">"Prikazati logo"</string>
-    <string name="notcompatible">"Nažalost potreban Vam je Android 4.2 ili jači da bi koristili opciju za dupli ekran tokom prezentacije!"</string>
     <string name="nodisplays">"Nema priključenih spoljnih ekrana. Molimo Vas da priključite sekundarni ekran korišćenjem HDMI izlaza ili MiraCast kompatibilnog wireless ekrana."</string>
     <string name="extradisplay">"Otkriven sekundarni ekran. Pesme će biti prikazane na sekundarnom ekranu."</string>
-    <string name="beta">"Beta opcija - još uvek ima bagova i konfiguracija slike/ekrana nije još dostupna."</string>
-    
     <string name="songnamealreadytaken">"Nažalost ovaj naziv pesme / ime datoteke se već koristi (preporuka je dodati broj verzije na kraju)."</string>
     <string name="chordiesearch">"Online pretraga na Chordie.com"</string>
     <string name="ultimateguitarsearch">"Online pretraga na Ultimate-Guitar.com"</string>
     <string name="phrasesearch">"Uneti frazu za pretragu(naziv pesme, autor, tekst, itd.)"</string>
     <string name="grabchordpro">"Otpakovati ChordPro podatke"</string>
     <string name="chordproprogress">"Tražim ChordPro podatke o pesmi na strani&#8230;"</string>
-    <string name="closesearch">"Zatvoriti pretragu"</string>
     <string name="chordpro_false">"Nije pronađena ChordPro pesma!"</string>
-    <string name="chordpro_true">"ChordPro pesma je pronađena!"</string>
     <string name="choosefolder">"Odaberite fasciklu u koju bi sačuvali datoteku"</string>
     <string name="choosesongname">"Odaberite ime za ovu pesmu"</string>
     <string name="newfolder">"Nova fascikla"</string>
     <string name="newfoldername">"Uneti novo ime fascikle"</string>
     <string name="folderexists">"Ova fascikla već postoji!"</string>
     <string name="createfoldererror">"Nastala je greška tokom pravljenja nove fascikle!"</string>
-    <string name="createfoldersuccess">"Nova fascikla je napravljena!"</string>
-        
-    
-    
-    <string name="welcome">"OpenSongApp\nWritten by Gareth Evans"</string>
-        
     <string name="intro">"OpenSongApp koristi pesme kreirane sa OpenSong i prikazuje ih na Vašem tablet ekranu."</string>
-        
-    <string name="intro_songsfolder">"Aplikacija traži fasciklu unutar Documents fascikle koja se zove \'OpenSong/Songs\' i ako je ne može pronaći, pravi novu fasciklu sa ovim imenom. Zatim smešta jednu pesmu sa nazivom \'Love everlasting\', jednu od mojih autorskih pesama, u tu fasciklu (u suprotnom ne bi ništa mogli da radite sa aplikacijom). Da bi koristili Vaše OpenSong pesme, kopirajte ih u fasciklu Documents/OpenSong/Songs/ . Možete imati jedan nivo podfascikli unutar Vaše Songs fascikle.\n\n Aplikacija takođe dolazi sa mojom interpretacijom preko 700 pesama koje možete koristiti, ali imajte na umu da ste sami odgovorni za sve moguće copyright rizike koji mogu nastati!"</string>
-        
-    <string name="intro_dropbox">"Ako želite koristiti Songs/Sets preko dropbox naloga dozvoljava grupni pristup istim informacijama), trebalo bi da instalirate aplikaciju koja omogućava sinhronizaciju Dropbox datoteka sa Vašim tabletom. Nažalost, zvanična Dropbox aplikacija ne koristi lokalnu fasciklu na isti način kao što to radi desktop aplikacija.\n\n (Besplatna) Aplikacija koju bih preporučio je DropSync koja radi ovo za Vas. Ako želite da to radite, preporučujem da najpre obrišete Songs fasciklu na Vašem tabletu (gornje dugme) da ne bi prepisali nijednu od pesama sa Vašeg Dropbox naloga sa mojim verzijama! \n\n Kada se postavlja DropSync, sinhronizujte Vašu Dropbox OpenSong fasciklu sa Vašom /documents/OpenSong/ fasciklom i dopustite 2-smerno sinhronizovanje (odabir glavne OpenSong fascikle će omogućiti da se sinhronizuju i pesma i set lista).\n Ovo će potrajati par minuta (u zavisnosti od količine pesama koje imate) tokom prvog izvođenja. Standardno odricanje odgovornosti: Ne mogu biti odgovoran za gubljenje pesama iz Vaše Dropbox fascikle! Ovo radite na Vaš rizik. \n\n Ipak, ovo sam sve postavio na svom uređaju, i sve radi kako treba (standardna sinhronizacija je 1 sat sa DropSync aplikacijom, ali se ovo može promeniti)."</string>
-        
-    <string name="intro_future">"Nažalost, nemam iPad/Mac, tako da nisam u mogućnosti da razvijam aplikacije na ovoj platformi (donacije su dobrodošle&#8230;..), ali nameravam da nastavim sa unapređivanjem ove aplikacije u dogledno vreme. Namera mi je da podelim šta sam do sada uradio u nadi da će neko to pronaći korisnim."</string>
-        
-    <string name="intro_help">"Tokom korišćenja aplikacije, \'swipe\' meni sa leve strane da bi odabrali pesmu i \'swipe\' meni sa desne strane za razne ostale opcije.\n\n
-        Dugački pritisak na pesmu u levom meniju će je dodati na set listu.
-        Dugački pritisak na pesmu u set listi će je ukloniti sa set liste. \n\n Set liste će se učitavati ili snimati u Vašu \'OpenSong/Sets\' fasciklu. Dugačak pritisak na snimljenu set listu će je izbrisati sa Vašeg uređaja. \n\n
-        Sada možete da delite Vaše pesme ili set liste preko eMail-a, DropBox-a, i sl.
-    "</string>
-    
-    <string name="rename">"Unesite novo ime datoteke za ovu pesmu (tako će se prikazati u Vašem meniju pesama)"</string>
-    <string name="renametitle">"Promena imena"</string>
-    
-    <string name="copyresources">"Kliknite ovde da bi instalirali / ažurirali razne pesme \n Vi ste odgovorni za Copyright"</string>
-    <string name="gotosong">"KLIKNUTI OVDE DA POKRENETE \n OPEN SONG VIEWER"</string>
-    <string name="wipesongs">"Brisanje moje lokalne fascikle sa pesmama"</string>
-    <string name="dropsync">"Preuzimanje DropSync aplikacije (besplatno)"</string>
+    <string name="song_new_name">"Unesite novo ime datoteke za ovu pesmu (tako će se prikazati u Vašem meniju pesama)"</string>
     <string name="app_name">"OpenSongApp"</string>
     <string name="drawer_open">"Otvoriti"</string>
     <string name="drawer_close">"Zatvoriti"</string>
-    <string name="set_back">"Nazad"</string>
-    <string name="set_forward">"Napred"</string>
-    <string name="backtohome">"Natrag na početak"</string>
+    <string name="back">"Nazad"</string>
     <string name="exit">"Da li ste sigurni da želite da izađete iz programa?"</string>
-    
-    <string name="on_width">"UKLJ - Samo širina"</string>
-    <string name="on_set">"UKLJ - Samo set liste"</string>
     <string name="on">"UKLJ"</string>
     <string name="off">"ISKLJ"</string>
-    <string name="scaleY">"Uključeno skaliranje pesme da stane na stranicu"</string>
-    <string name="swipeSet">"Uključeno prevlačenje (swipe) između pesama"</string>
-    <string name="fontsize">"Trebalo bi da isključite automatsko skaliranje pesama."</string>"    
-    <string name="drawerswipe">"Uključeno otvaranje prevlačenjem (swipe) set liste i menija za opcije"</string>
+    <string name="fontsize">"Trebalo bi da isključite automatsko skaliranje pesama."</string>"
     <string name="toggleScrollBeforeSwipe">"Uklj/Isklj skrolovanje pre sledeće/prethodne pesme"</string>
-    <string name="toggleScrollBeforeSwipeToggle">"Uključeno da sledeća/prethodna dugmad takođe skroluju"</string>
-    <string name="toggleLandscapeColumns">"Uključen horizontalni prikaz u kolonama"</string>
-    
     <string name="exportcurrentsong">"Podeliti trenutnu pesmu"</string>
     <string name="exportsavedset">"Podeliti snimljenu set listu"</string>
     <string name="importnewsong">"Učitati pesmu"</string>
     <string name="importnewset">"Učitati set listu"</string>
-    <string name="hasbeenexported">"je izvezeno"</string>
-    <string name="hasbeenimported">"je učitano"</string>
-    <string name="hasnotbeenexported">"nije izvezeno - postoji problem!"</string>"            
-    <string name="hasnotbeenimported">"nije učitano - postoji problem!"</string>"            
-        
     <string name="add_song_to_set">"Dodati trenutnu pesmu na set listu"</string>
-
     <string name="edit_song_title">"Ime pesme"</string>
     <string name="edit_song_author">"Autor"</string>
     <string name="edit_song_lyrics">"Tekst"</string>
@@ -383,76 +218,33 @@
     <string name="edit_song_tempo">"Tempo"</string>
     <string name="edit_song_timesig">"Vremenska oznaka"</string>
     <string name="edit_song_hymn">"Broj himne"</string>
-    <string name="edit_song_availabletags">"[V] = Strofa (Verse), [V1] = Strofa 1 (Verse 1), [C] = Refren (Chorus), [C1] za
-        Refren 1 (Chorus 1), [P] = Predrefren, [T] = Oznaka (Tag), [B] = Most (Bridge), [&#8230;(šta god želite)&#8230;] = prilagođena oznaka.\n Linije teksta počinju sa razmakom, linije akroda sa tačkom, linije komentara sa zarezom."</string>
+    <string name="edit_song_availabletags">"[V] = Strofa (Verse), [V1] = Strofa 1 (Verse 1), [C] = Refren (Chorus), [C1] za Refren 1 (Chorus 1), [P] = Predrefren, [T] = Oznaka (Tag), [B] = Most (Bridge), [&#8230;(šta god želite)&#8230;] = prilagođena oznaka.\n Linije teksta počinju sa razmakom, linije akroda sa tačkom, linije komentara sa zarezom."</string>
     <string name="edit_song_duration">"Dužina pesme (sec)"</string>
     <string name="edit_song_notes">"Beleška uz pesmu"</string>
     <string name="edit_song_midi">"MIDI poruka poslata od pesme"</string>
     <string name="edit_song_midi_index">"MIDI poruka da se aktivira pesma"</string>
     <string name="edit_song_restrictions">"Restrikcije"</string>
     <string name="edit_song_books">"Knjige kojima pesma pripada"</string>
-    <string name="edit_song_pitch">"Promene tonaliteta za pesmu"</string>"  
-    
+    <string name="edit_song_pitch">"Promene tonaliteta za pesmu"</string>"
     <string name="show_general_advanced">"UKLJ/ISKLJ osnovna ili napredna polja"</string>
     <string name="edit_song_capo_print">"Štampati kapo akorde"</string>
-    
-    <string name="search_top">"Odabrati pesmu sa vrha pretrage"</string>
-    <string name="search_here">"Pojam za pretragu"</string>
-    
-    <string name="edit_cancel">"Izaći bez čuvanja"</string>
     <string name="edit_save">"Sačuvati izmene"</string>
-    <string name="edit_delete">"Obrisati ovu pesmu"</string>
-    
     <string name="areyousure">"Da li ste sigurni?"</string>
-    <string name="overwritecurrentset">"Ovo će zameniti trenutnu set listu."</string>
-    <string name="removesavedset">"Ovo će obrisati ovu set listu iz Vaše \'Sets\' fascikle."</string>
-    
-    <string name="yes">"Da"</string>
     <string name="no">"Ne"</string>
     <string name="ok">"OK"</string>
     <string name="cancel">"Poništi"</string>
-        
-    <string name="songfolderexists">"OpenSong \'Songs\' Fascikla već postoji. Odlično!"</string>
-    <string name="songfoldercreate">"Pravim OpenSong \'Songs\' fasciklu"</string>
-    <string name="setsfolderexists">"OpenSong \'Sets\' Fascikla već postoji. Odlično!"</string>
-    <string name="setsfoldercreate">"Pravim OpenSong \'Sets\' fasciklu"</string>
-    <string name="initialisesongs_start">"Učitavam \'Songs\' fasciklu -"</string>"        
-    <string name="initialisesongs_end">"pesama pronađeno!"</string>"        
-    <string name="initialisesets_start">"Učitavam \'Sets\' fasciklu -"</string>"        
-    <string name="initialisesets_end">"set listi pronađeno!"</string>"        
-    <string name="installingsongs">"Upisujem pesme&#8230;."</string>
-    <string name="assetcopydone">"OpenSong pesme su dodate u Vašu \'Songs\' fasciklu.."</string>
-    
+    <string name="initialisesongs_start">"Učitavam \'Songs\' fasciklu -"</string>
     <string name="createanewsong">"Napraviti novu pesmu"</string>
-    <string name="createanewset">"Napraviti novu set listu"</string>
-    <string name="newsongtitleprompt">"Molimo unestite naziv za novu pesmu"</string>
-    <string name="newsettitleprompt">"Molimo unesite naziv za Vašu novu set listu"</string>
-    <string name="shouldnotbedeleted">"ne bi trebalo da bude obrisana iz Vaše \'Songs\' fascikle!"</string>
-    <string name="songhasbeendeleted">"je obrisana iz Vaše \'Songs\' fascikle."</string>
     <string name="sethasbeendeleted">"je obrisana iz Vaše \'Sets\' fascikle."</string>
-    <string name="deleteerror_start">"Postoji problem prilikom brisanja"</string>
-    <string name="deleteerror_end_song">"iz Vaše \'Songs\' fascikle."</string>
-    <string name="deleteerror_end_sets">"iz Vaše \'Sets\' fascikle."</string>
     <string name="songdoesntexist">"Ta pesma nije na Vašem uređaju. Da li ste je obrisali?"</string>
     <string name="addedtoset">"je dodata na kraj trenutne set liste."</string>
     <string name="removedfromset">"je uklonjena sa set liste."</string>
-        
-    <string name="soundLink">"Slušajte \'Love everlasting\'"</string>
     <string name="stop">"Zaustavi"</string>
     <string name="start">"Započni"</string>
     <string name="action_search">"Pretraga pesama"</string>
     <string name="action_settings">"OpenSong postavke"</string>
-    
-    <string name="toastmessage_maxfont">"Maksimalna veličina fonta"</string>
-    <string name="toastmessage_minfont">"Minimalna veličina fonta"</string>
-    
-    <string name="options_backtooptions">"NATRAG NA OPCIJE"</string>
-    <string name="options_savethisset">"Sauvati ovu set listu"</string>
     <string name="options_clearthisset">"OBRISATI OVU SET LISTU"</string>
-    
-    
     <string name="mainfoldername">"PESME"</string>
-    
     <string name="colorchooser">"Odabir boja"</string>
     <string name="dark_theme">"Tamna tema"</string>
     <string name="light_theme">"Svetla tema"</string>
@@ -469,35 +261,14 @@
     <string name="comment_background">"Pozadina komentara"</string>
     <string name="custom_background">"Pozadina prilagođene oznake"</string>
     <string name="reset_colours">"Resetovanje boja"</string>
-                            
-    <string name="pageturn_title">"Dodeliti dugme za promenu strane"</string>
     <string name="pageturn_instructions">"Ova strana Vam omogućava da dodelite dugme sa uređaja za promenu strane (kao npr bluetooth pedala) za kontrolu pomeranja po set listi ili skrolovanja gore ili dole prikaza pesme. \n\nMorate osigurati da je uređaj već povezan sa Vašim Android tabletom i uključen. \n\nKliknuti na zelenu ili plavu dugmad ispod, zatim pritisnuti željeno kontrolno dugme na Vašoj pedali, itd"</string>
-    <string name="pageturn_set">"Dugmad za pomeranje kroz set listu"</string>
-    <string name="pageturn_song">"Dugmad za skrolovanje kroz pesmu"</string>
     <string name="pageturn_next">"Postaviti 'Sledeće' dugme"</string>
     <string name="pageturn_previous">"Postaviti 'Prethodno' dugme"</string>
     <string name="pageturn_up">"Postaviti 'Gore' dugme"</string>
     <string name="pageturn_down">"Postaviti 'Dole' dugme"</string>
     <string name="pageturn_waiting">"Čekanje na dugme&#8230;."</string>
-    <string name="pageturn_needset">"Trebalo bi da prikažete pesmu iz set liste da bi koristili mogućnost promene stranice prikaza"</string>
-    <string name="pageturn_attempt">"Otvaram prvu pesmu u set listi&#8230;."</string>
-        
-    <string name="changefonts">"Promena fonta"</string>
     <string name="chooselyricfont">"Promena fonta teksta"</string>
     <string name="choosechordfont">"Promena fonta akroda"</string>
-    <string name="font_default">"Podrazumevano"</string>
-    <string name="font_monospace">"Droid Monospace"</string>
-    <string name="font_sans">"Droid Sans"</string>
-    <string name="font_serif">"Droid Serif"</string>
-    <string name="font_firasanslight">"FiraSansOT-Light"</string>
-    <string name="font_firasansregular">"FiraSansOT-Regular"</string>
-    <string name="font_kaushanscript">"KaushanScript"</string>
-    <string name="font_latolight">"Lato Light"</string>
-    <string name="font_latoregular">"Lato Regular"</string>
-    <string name="font_lyrics_line1">"Love everlasting, "</string>
-    <string name="font_lyrics_line2">"love without measure"</string>
-    <string name="font_chords_line1">"G"</string>
-    <string name="font_chords_line2">"D/F#"</string>
     <string name="user_guide">"Uputstvo</string>
     <string name="user_guide_text">"Molimo Vas da odvojite vreme da pročitate uputstvo pre korišćenja aplikacije.."</string>
     <string name="average">"Prosečno"</string>
@@ -505,7 +276,6 @@
     <string name="reset">"Reset"</string>
     <string name="volval">"Trenutna jačina zvuka"</string>
     <string name="set_manage_swipe">"Prevuci za uklanjanje stavke iz set liste"</string>
-    <string name="set_manage_shuffle">"Izmešati redosled"</string>
     <string name="set_manage_click">"Kliknuti na stavku u set listi za pregled"</string>
     <string name="storage_rationale">"Pristup Vašoj memoriji je neophodno za čitanje i zapisivanje pesmi i set listi."</string>
     <string name="microphone_rationale">"Mikrofon / snimanje zvuka je neophodno za pristupanje merenju nivoa zvuka."</string>
@@ -518,10 +288,8 @@
     <string name="search_index_start">"Formira se baza pesama"</string>
     <string name="search_log">"Proverite log datoteku grešaka tokom pretrage"</string>
     <string name="search_rebuild">"Osvežavanje biblioteke pesama"</string>
-    <string name="pref_key_flatsorsharps">"Koristiti snizilice ili povisilice?"</string>
     <string name="pref_key_text">"Odaberite prioritetne postavke tonaliteta"</string>
     <string name="rate">"Ocenite ovu aplikaciju"</string>
-    <string name="right">"Desno"</string>
     <string name="cavaquinho">"Cavakuinho"</string>
     <string name="banjo4">"Bendžo (4)"</string>
     <string name="banjo5">"Bendžo (5)"</string>
@@ -543,15 +311,11 @@
     <string name="pagebuttons">"Tasteri na stranici"</string>
     <string name="position">"Pozicija"</string>
     <string name="profile">"Profil"</string>
-    <string name="profile_choose">"Odabrati profil za učitavanje"</string>
     <string name="profile_description">"Profili se koriste da sačuvate postavke prikaza"</string>
-    <string name="profile_name">"Unesite ime profila"</string>
     <string name="size">"Veličina"</string>
     <string name="websearch">"Pretražiti Internet za trenutnu pesmu"</string>
-
     <string name="songfolder">"Odaberite fasciklu pesama"</string>
     <string name="stagemode">"Mod na bini"</string>
-    <string name="switchtostagemode">"Prebacivanje u mod na bini"</string>
     <string name="toobig">"Potrebno je uključiti automatsko podešavanje veličine za png/pdf izvoz"</string>
     <string name="showcapo">"Prikazivanje kapo akorda"</string>
     <string name="showchords">"Prikazivanje akorda"</string>
@@ -564,12 +328,6 @@
     <string name="processing">"Datoteke se obrađuju"</string>
     <string name="success">"Uspešno"</string>
     <string name="error">"Greška"</string>
-    <string name="takeawhile">"Ovo može potrajati neko vreme!   "</string>
-    <string name="longPressDown">"Dug pritisak dole pedale"</string>
-    <string name="longPressNext">"Dugo pritisnite sledeći pedala"</string>
-    <string name="longPressPrevious">"Dugo pritisnite prethodna pedala"</string>
-    <string name="longPressUp">"Dug pritisak gore pedale"</string>
-
     <string name="autoscale">"Autoskaliranje"</string>
     <string name="camera">"Kamera"</string>
     <string name="category">"Kategorija"</string>
@@ -580,7 +338,6 @@
     <string name="device_list">"Dostupni uređaji"</string>
     <string name="dim">"Zatamniti pozadinu"</string>
     <string name="exportsongdirectory">"Izvoz liste pesama"</string>
-    <string name="fab_mini">"Mini dugmad stranice"</string>
     <string name="findnewsongs">"Pronalaženje novih pesama"</string>
     <string name="full">"Pun"</string>
     <string name="logo">"Logo"</string>
@@ -592,29 +349,27 @@
     <string name="navigate">"Brza navigacija"</string>
     <string name="new_category">"Nova kategorija"</string>
     <string name="nowifidirect">"Izvinite, ovaj uređaj ne podržava WiFi direct"</string>
-    <string name="options_connections">"Povezivanje uređaja"</string>
-    <string name="options_connections_broadcast">"Uređaj za odašiljanje"</string>
-    <string name="options_connections_connected">"Povezan sa"</string>
-    <string name="options_connections_host">"Pronađen domaćin:"</string>
-    <string name="options_connections_log">"Log veze (kliknite da se očisti). Ako imate problema, resetujte WiFi i pokrenite ponovo program"</string>
-    <string name="options_connections_disconnect">"Odvojite od"</string>
-    <string name="options_connections_discover_start">"Pronalaženje servisa"</string>
-    <string name="options_connections_discover_stop">"Zaustavljanje pronalaženja"</string>
-    <string name="options_connections_failure">"Greška kod povezivanja"</string>
-    <string name="options_connections_receive_host">"Prijem pesama od domaćina"</string>
-    <string name="options_connections_searching">"Pretraga…"</string>
-    <string name="options_connections_service_start">"Pokretanje servisa"</string>
-    <string name="options_connections_service_stop">"Zaustavljanje servisa"</string>
-    <string name="options_connections_success">"Povezivanje uspelo"</string>
-    <string name="options_display_popups">"Prilagođavanje iskačućih prozora"</string>
-    <string name="options_modes">"Odabir moda aplikacije"</string>
+    <string name="connections_connect">"Povezivanje uređaja"</string>
+    <string name="connections_broadcast">"Uređaj za odašiljanje"</string>
+    <string name="connections_connected">"Povezan sa"</string>
+    <string name="connections_host">"Pronađen domaćin:"</string>
+    <string name="connections_log">"Log veze (kliknite da se očisti). Ako imate problema, resetujte WiFi i pokrenite ponovo program"</string>
+    <string name="connections_disconnect">"Odvojite od"</string>
+    <string name="connections_discover">"Pronalaženje servisa"</string>
+    <string name="connections_discover_stop">"Zaustavljanje pronalaženja"</string>
+    <string name="connections_failure">"Greška kod povezivanja"</string>
+    <string name="connections_receive_host">"Prijem pesama od domaćina"</string>
+    <string name="connections_searching">"Pretraga…"</string>
+    <string name="connections_service_start">"Pokretanje servisa"</string>
+    <string name="connections_service_stop">"Zaustavljanje servisa"</string>
+    <string name="connections_success">"Povezivanje uspelo"</string>
+    <string name="display_popups">"Prilagođavanje iskačućih prozora"</string>
+    <string name="choose_app_mode">"Odabir moda aplikacije"</string>
     <string name="pagebutton_custom_group">"Grupisanje prilagođenih dugmadi"</string>
     <string name="pagebutton_extrainfo_group">"Dodatno grupisanje info dugmadi"</string>
     <string name="pagebutton_group">"Grupisanje svih dugmadi strane"</string>
     <string name="pagebutton_visibility">"Prikaz/sakrivanje svih dugmadi strane"</string>
-    <string name="perform">"Nastup"</string>
     <string name="performancemode">"Mod nastupa"</string>
-    <string name="present">"Prikaz"</string>
     <string name="presoFont">"Font prikaza"</string>
     <string name="presoInfoFont">"Font informacija kod prikaza"</string>
     <string name="presoFontShadow">"Senka fonta prikaza"</string>
@@ -628,13 +383,11 @@
     <string name="size_mini">"Mini"</string>
     <string name="size_normal">"Normalno"</string>
     <string name="songsinfolder">"Fascikla pesama"</string>
-    <string name="stage">"Bina"</string>
     <string name="storage_notwritable">"Nije moguć upis"</string>
     <string name="subscription">"(Potrebna prijava)"</string>
     <string name="transparency">"Providnost"</string>
     <string name="width">"Širina"</string>
     <string name="quicklaunch_button4">"Dugme 4"</string>
-
     <string name="export_chordpro">"ChordPro song (.cho)"</string>
     <string name="export_desktop">"Desktop file (no file extension)"</string>
     <string name="export_onsong">"OnSong song (.onsong)"</string>
@@ -645,7 +398,6 @@
     <string name="export_text">"Text (.txt)"</string>
     <string name="floating_window">"Floating window"</string>
     <string name="timer_size">"Timer size"</string>
-
     <string name="scrollbuttons">"Pomicanje postavki"</string>
     <string name="scrollbuttons_distance">"Pomični iznos"</string>
     <string name="speed">"Ubrzati"</string>
@@ -656,34 +408,27 @@
     <string name="battery">"Baterija"</string>
     <string name="timeformat">"24-satna"</string>
     <string name="text">"Tekst"</string>
-
     <string name="autoshow_highlight">"Napomene za automatsko izoštravanje"</string>
     <string name="highlight">"Alat za isticanje"</string>
     <string name="highlight_notallowed">"Automatska skala mora biti postavljena na punu za ovu značajku"</string>
     <string name="stage_section_max">"Maksimalna visina sekcije (Stage Mode)"</string>
     <string name="trim_sections">"Trim dijelove"</string>
-
     <string name="section_space">"Dodajte prostor odjeljka"</string>
     <string name="alphabetical">Indeks abecedijske glazbe</string>
-
     <string name="pdfonly">"Nema ChordPro, samo PDF"</string>
     <string name="random_song">"Pronađite slučajnu pjesmu"</string>
     <string name="tag_ending">"završni"</string>
     <string name="tag_instrumental">"instrumental"</string>
     <string name="tag_interlude">"međuigra"</string>
     <string name="tag_intro">"Uvod"</string>
-    <string name="tag_introduction">"Uvod"</string>
     <string name="tag_refrain">"Refren"</string>
     <string name="tag_reprise">"Repriza"</string>
-
     <string name="music_score">"Ocjena glazbe"</string>
     <string name="pdftotext_extract">"Ekstrakt teksta iz PDF-a"</string>
     <string name="pdftotext_found">"Pronađeno je tekst:"</string>
-
     <string name="capo_style">"Capo se smije kao brojčanik"</string>
     <string name="fix">"Automatski popravak"</string>
     <string name="timer_learn">"Saznajte vrijeme automatskog pregleda"</string>
-
     <string name="action">"Radnja"</string>
     <string name="activated">"Aktivirano / radi"</string>
     <string name="autostartmetronome">"Auto pokretanje metronoma"</string>
@@ -699,17 +444,13 @@
     <string name="found">Već ste iskoristili sledeće lokacije za instalaciju.  Ovo ćete ipak morati da locirate i podesite ručno koristeći gornji crveni taster.</string>
     <string name="longpress">"Dugi pritisak/Držanje"</string>
     <string name="nofound">"Nije pronađena prethodna instalacija"</string>
-    <string name="nothere">"Ako ste unutar OpenSong fascikle, ne koristite ovu lokaciju. Umesto toga vratite se jedan nivo i odaberite fasciklu koja sadrži ovu fasciklu"</string>
     <string name="pedal">"Pedala"</string>
-    <string name="previouslyused">"Lokacija prethodne instalacije pronađena. Kliknite na zeleni tik da biste je koristili"</string>
     <string name="songsheet">"Notni zapis"</string>
     <string name="tap">"Kratak pritisak/Tap"</string>
-
     <string name="inc_autoscroll_speed">"Uvećati brzinu automatskog pomeranja"</string>
     <string name="dec_autoscroll_speed">"Smanjiti brzinu automatskog pomeranja"</string>
     <string name="edit_default_delaymax">"Maksimalno odlaganje (sekundi)"</string>
     <string name="toggle_autoscroll_pause">"Pauziranje automatskog pomeranja"</string>
-
     <string name="bibleXML">"OpenSong XML Biblija"</string>
     <string name="book">"Knjiga"</string>
     <string name="changestorage">"Promena lokacije skladišta"</string>
@@ -724,41 +465,32 @@
     <string name="midi_commands">"Uređivanje MIDI komandi"</string>
     <string name="midi_controller">"Promena MIDI kontrolera"</string>
     <string name="midi_error">"Molim proverite MIDI povezivanje"</string>
-    <string name="midi_inputport">"Unos MIDI porta"</string>
     <string name="midi_list">"Kliknite na MIDI stavku da se testira i dugo pritisnite da je uklonite"</string>
-    <string name="midi_listen">"MIDI osluškivanje"</string>
     <string name="midi_note">"MIDI beleška"</string>
-    <string name="midi_outputport">"MIDI outport port"</string>
     <string name="midi_program">"MIDI promena programa"</string>
     <string name="midi_send">"Slanje MIDI"</string>
     <string name="midi_test">"Testiranje MIDI"</string>
     <string name="midi_usb">"Povezivanje MIDI USB uređaja"</string>
     <string name="midi_value">"MIDI Vrednost"</string>
     <string name="midi_velocity">"MIDI brzina"</string>
-    <string name="location_rationale">"Potrebno je odobrenje da bi se otkrili Bluetooth uređaji"</string>
-    <string name="permissionerror">"Odobrenje nije dobijeno"</string>
     <string name="pleaseselect">"Molim odaberite"</string>
-    <string name="sdroot">"SD kartica root"</string>
     <string name="search">"Pretraga"</string>
     <string name="verse">"Strofa"</string>
     <string name="keepmultiline">Zadržite višeslojno kompaktno</string>
     <string name="notsaved">Nije spremljeno</string>
-
     <string name="extracting">"Izvlačenje"</string>
     <string name="converting">"Pretvaranje"</string>
-
     <string name="promptbackup">"Niste napravili sigurnosnu kopiju svoje biblioteke pjesama u zadnjih 10 puta koje ste koristili ovu aplikaciju. To je vrlo preporučljivo jer možete oporaviti svoje pjesme ako nešto pođe po zlu. U idealnom slučaju trebate čuvati kopiju datoteke sigurnosne kopije na oblaku (npr. Google pogon) ili je poslati e-poštom."</string>
     <string name="backupnow">"Odmah izradite sigurnosnu kopiju"</string>
     <string name="remindme">"Podsjeti me kasnije"</string>
-
-    <string name="connected_device_song">"Pjesma s povezanog uređaja"</string>
     <string name="network_error">"Pogreška mreže"</string>
     <string name="download_new">"Kliknite ovdje da biste preuzeli novu Bibliju"</string>
     <string name="storage_check">"Provjera pohrane"</string>
     <string name="load_preferences">"Učitavanje postavki"</string>
-
-    <string name="googlefontcustom">"Drugo ime fonta Google"</string>
     <string name="googlefontbrowse">"Pregledajte sve Google fontove"</string>
     <string name="reset_text">Ako imate problema sa aplikacijom, pokušajte ponovo da podesite postavke pomoću dugmeta u nastavku. Ovo će obrisati vaše postavke, ali neće izbrisati vaše pjesme.</string>
-
+    <string name="maximise_columns">Skala kolona nezavisno.</string>
+    <string name="new_something">Novo</string>
+    <string name="duplicate">Duplikat</string>
+    <string name="storage_warning">Nemojte odabrati direktorijum „Pesme“ kao lokaciju za skladištenje. Umesto toga, trebate odabrati roditeljsku lokaciju „OpenSong“.</string>
 </resources>

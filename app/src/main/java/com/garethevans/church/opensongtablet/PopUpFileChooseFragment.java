@@ -24,8 +24,8 @@ import java.util.Objects;
 public class PopUpFileChooseFragment extends DialogFragment {
 
     private static String[] foundFiles;
-    StorageAccess storageAccess;
-    Preferences preferences;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
 
     static PopUpFileChooseFragment newInstance() {
         PopUpFileChooseFragment frag;
@@ -35,7 +35,6 @@ public class PopUpFileChooseFragment extends DialogFragment {
 
     public interface MyInterface {
         void loadCustomReusable();
-        void openFragment();
     }
 
     private MyInterface mListener;
@@ -53,9 +52,8 @@ public class PopUpFileChooseFragment extends DialogFragment {
         super.onDetach();
     }
 
-    TextView location;
-    private static String[] imagefiletypes = {".jpg",".jpeg",".JPG","JPEG",".png",".PNG",".gif",".GIF"};
-    private static String[] videofiletypes = {".mp4",".MP4",".mpg","MPG",".mpeg",".MPEG",".mov",".MOV",".m4v","M4V"};
+    private static final String[] imagefiletypes = {".jpg",".jpeg",".JPG","JPEG",".png",".PNG",".gif",".GIF"};
+    private static final String[] videofiletypes = {".mp4",".MP4",".mpg","MPG",".mpeg",".MPEG",".mov",".MOV",".m4v","M4V"};
     private static String[] filechecks;
     private String myTitle = "";
     private ArrayList<String> filesfound;
@@ -81,7 +79,7 @@ public class PopUpFileChooseFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_file_chooser, container, false);
         ListView fileListView = V.findViewById(R.id.fileListView);
-        location = V.findViewById(R.id.location);
+        TextView location = V.findViewById(R.id.location);
 
         storageAccess = new StorageAccess();
         preferences = new Preferences();
@@ -129,28 +127,28 @@ public class PopUpFileChooseFragment extends DialogFragment {
                 break;
 
             case "customnote":
-                myTitle = getResources().getString(R.string.options_set_load) + " - " + getResources().getString(R.string.note);
+                myTitle = getResources().getString(R.string.load) + " - " + getResources().getString(R.string.note);
                 filechecks = null;
                 location.setText("OpenSong/Notes/");
                 listnotes();
                 break;
 
             case "customslide":
-                myTitle = getResources().getString(R.string.options_set_load) + " - " + getResources().getString(R.string.slide);
+                myTitle = getResources().getString(R.string.load) + " - " + getResources().getString(R.string.slide);
                 filechecks = null;
                 location.setText("OpenSong/Slides/");
                 listslides();
                 break;
 
             case "customimage":
-                myTitle = getResources().getString(R.string.options_set_load) + " - " + getResources().getString(R.string.image_slide);
+                myTitle = getResources().getString(R.string.load) + " - " + getResources().getString(R.string.image_slide);
                 filechecks = null;
                 location.setText("OpenSong/Images/");
                 listimageslides();
                 break;
 
             case "customscripture":
-                myTitle = getResources().getString(R.string.options_set_load) + " - " + getResources().getString(R.string.scripture);
+                myTitle = getResources().getString(R.string.load) + " - " + getResources().getString(R.string.scripture);
                 filechecks = null;
                 location.setVisibility(View.GONE);
                 listscriptures();

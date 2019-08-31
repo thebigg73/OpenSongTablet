@@ -58,8 +58,6 @@ public class PopUpPagesFragment extends DialogFragment {
     private TextView pagetextView;
     private int temppos = 1;
 
-    Preferences preferences;
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setCanceledOnTouchOutside(true);
@@ -81,7 +79,7 @@ public class PopUpPagesFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        Preferences preferences = new Preferences();
 
         // Initialise the views
         TextView pages_notavailable = V.findViewById(R.id.pages_notavailable);

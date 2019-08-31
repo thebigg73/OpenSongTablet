@@ -18,9 +18,6 @@ import java.util.Objects;
 
 public class PopUpBackupPromptFragment extends DialogFragment {
 
-    Preferences preferences;
-    int runssincebackup = 0;
-
     private MyInterface mListener;
 
     static PopUpBackupPromptFragment newInstance() {
@@ -80,7 +77,8 @@ public class PopUpBackupPromptFragment extends DialogFragment {
         saveMe.hide();
 
         // Reset the counter to 0 (value set when this popup loads) and save to preferences
-        preferences = new Preferences();
+        Preferences preferences = new Preferences();
+        int runssincebackup = 0;
         preferences.setMyPreferenceInt(getActivity(), "runssincebackup", runssincebackup);
 
         Button backupNow_Button = v.findViewById(R.id.backupNow_Button);

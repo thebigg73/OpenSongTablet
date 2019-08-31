@@ -20,8 +20,7 @@ public class PopUpCustomPadsFragment extends DialogFragment {
     private ArrayList<String> padfiles;
     private Spinner padAb, padA, padBb, padB, padC, padDb, padD, padEb, padE, padF, padGb, padG,
             padAbm, padAm, padBbm, padBm, padCm, padDbm, padDm, padEbm, padEm, padFm, padGbm, padGm;
-    StorageAccess storageAccess;
-    Preferences preferences;
+    private Preferences preferences;
 
     static PopUpCustomPadsFragment newInstance() {
         PopUpCustomPadsFragment frag;
@@ -84,7 +83,7 @@ public class PopUpCustomPadsFragment extends DialogFragment {
         padGm = V.findViewById(R.id.padGm);
 
         // Set up the spinners
-        storageAccess = new StorageAccess();
+        StorageAccess storageAccess = new StorageAccess();
         preferences = new Preferences();
 
         padfiles = storageAccess.listFilesInFolder(getActivity(), preferences, "Pads", "");
@@ -181,7 +180,7 @@ public class PopUpCustomPadsFragment extends DialogFragment {
         return v;
     }
 
-    void doSave() {
+    private void doSave() {
         try {
             // Get the spinner values and save them
             preferences.setMyPreferenceString(getActivity(),"customPadAb",getSpinnerVal(padAb));

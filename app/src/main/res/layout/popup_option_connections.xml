@@ -22,7 +22,7 @@
             android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:gravity="center"
-            android:text="@string/options_connections"
+            android:text="@string/connections_connect"
             style="@style/MyMenuHeadingText" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -61,7 +61,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_access_point_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_connections_service_start"
+                android:text="@string/connections_service_start"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
@@ -74,7 +74,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_access_point_network_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_connections_discover_start"
+                android:text="@string/connections_discover"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
@@ -87,7 +87,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_download_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_connections_receive_host"
+                android:text="@string/connections_receive_host"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
@@ -98,7 +98,7 @@
                 style="@style/MyInfoText"
                 android:layout_margin="4dp"
                 android:padding="4dp"
-                android:text="@string/options_connections_log"/>
+                android:text="@string/connections_log"/>
 
         </LinearLayout>
     </ScrollView>

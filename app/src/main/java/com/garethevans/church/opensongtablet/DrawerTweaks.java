@@ -9,8 +9,8 @@ import static androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
 
 class DrawerTweaks {
 
-    private static Handler songMenuFlickClosed = new Handler();
-    private static Handler optionMenuFlickClosed = new Handler();
+    private static final Handler songMenuFlickClosed = new Handler();
+    private static final Handler optionMenuFlickClosed = new Handler();
 
     static DrawerLayout.LayoutParams resizeMenu(View thismenu, int width) {
         if (thismenu!=null) {

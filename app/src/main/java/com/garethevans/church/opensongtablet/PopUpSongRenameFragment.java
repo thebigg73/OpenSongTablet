@@ -26,23 +26,22 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class PopUpSongRenameFragment extends DialogFragment {
-    // This is a quick popup to enter a new song folder name, or rename a current one
+    // This is a quick popup to enter a new song folder name, or rename a current one, or duplicate
     // Once it has been completed positively (i.e. ok was clicked) it sends a rebuildSongIndex() interface call
 
     private static ArrayList<String> foldernames;
     private Spinner newFolderSpinner;
     private EditText newSongNameEditText;
-    boolean isPDF;
+    private boolean isPDF;
     private String oldsongname;
     private AsyncTask<Object, Void, String> getfolders;
-    StorageAccess storageAccess;
-    Preferences preferences;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
     private SongFolders songFolders;
-    SQLite sqLite;
-    SQLiteHelper sqLiteHelper;
-    String songId;
+    private SQLite sqLite;
+    private SQLiteHelper sqLiteHelper;
 
-    public void doSave() {
+    private void doSave() {
         // Get the variables
         String tempNewSong = newSongNameEditText.getText().toString().trim();
 
@@ -76,8 +75,8 @@ public class PopUpSongRenameFragment extends DialogFragment {
                 // Copy
                 storageAccess.copyFile(inputStream, outputStream);
 
-                // Remove the original if it is a new file location
-                if (to.getPath() != null && !to.getPath().equals(from.getPath())) {
+                // Remove the original if it is a new file location and we aren't duplicating
+                if (!FullscreenActivity.whattodo.equals("duplicate") && to.getPath() != null && !to.getPath().equals(from.getPath())) {
                     storageAccess.deleteFile(getActivity(), from);
                 }
 
@@ -85,11 +84,35 @@ public class PopUpSongRenameFragment extends DialogFragment {
                 StaticVariables.songfilename = tempNewSong;
 
                 // Update the SQLite database
-                songId = StaticVariables.whichSongFolder+"/"+StaticVariables.songfilename;
-                sqLite.setSongid(songId);
-                sqLite.setFolder(StaticVariables.whichSongFolder);
-                sqLite.setFilename(StaticVariables.songfilename);
-                sqLiteHelper.updateSong(getActivity(),sqLite);
+                if (FullscreenActivity.whattodo.equals("duplicate")) {
+                    sqLiteHelper.createSong(getActivity(),StaticVariables.whichSongFolder,StaticVariables.songfilename);
+                    String songId = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
+                    sqLite = sqLiteHelper.getSong(getActivity(), songId);
+                    sqLite.setFolder(StaticVariables.whichSongFolder);
+                    sqLite.setLyrics(StaticVariables.mLyrics);
+                    sqLite.setTitle(StaticVariables.mTitle);
+                    sqLite.setFilename(StaticVariables.songfilename);
+                    sqLite.setAka(StaticVariables.mAka);
+                    sqLite.setAlttheme(StaticVariables.mAltTheme);
+                    sqLite.setAuthor(StaticVariables.mAuthor);
+                    sqLite.setCcli(StaticVariables.mCCLI);
+                    sqLite.setCopyright(StaticVariables.mCopyright);
+                    sqLite.setHymn_num(StaticVariables.mHymnNumber);
+                    sqLite.setKey(StaticVariables.mKey);
+                    sqLite.setTheme(StaticVariables.mTheme);
+                    sqLite.setTimesig(StaticVariables.mTimeSig);
+                    sqLite.setUser1(StaticVariables.mUser1);
+                    sqLite.setUser2(StaticVariables.mUser2);
+                    sqLite.setUser3(StaticVariables.mUser3);
+                    sqLite.setSongid(songId);
+                } else {
+                    String songId = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
+                    sqLite.setSongid(songId);
+                    sqLite.setFolder(StaticVariables.whichSongFolder);
+                    sqLite.setFilename(StaticVariables.songfilename);
+                    sqLiteHelper.updateSong(getActivity(), sqLite);
+                }
+
                 FullscreenActivity.needtorefreshsongmenu = true;
                 if (mListener!=null) {
                     mListener.loadSong();
@@ -150,7 +173,11 @@ public class PopUpSongRenameFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_songrename, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getResources().getString(R.string.options_song_rename));
+        if (FullscreenActivity.whattodo.equals("duplicate")) {
+            title.setText(R.string.duplicate);
+        } else {
+            title.setText(getResources().getString(R.string.rename));
+        }
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override

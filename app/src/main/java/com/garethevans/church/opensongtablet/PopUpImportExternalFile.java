@@ -43,7 +43,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         return frag;
     }
 
-    SetActions setActions;
+    private SetActions setActions;
 
     private MyInterface mListener;
 
@@ -66,19 +66,18 @@ public class PopUpImportExternalFile extends DialogFragment {
     private CheckBox overWrite_CheckBox;
     private ProgressBar progressBarH;
     private LinearLayout progressLinearLayout;
-    FloatingActionButton saveMe, closeMe;
-    View V;
+    private FloatingActionButton saveMe;
+    private FloatingActionButton closeMe;
 
     // Helper classes
     private Bible bibleC;
-    StorageAccess storageAccess;
-    Preferences preferences;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
     private SongFolders songFolders;
-    OnSongConvert onSongConvert;
-    ChordProConvert chordProConvert;
-    SongXML songXML;
-    SQLiteHelper sqLiteHelper;
-    SQLite sqLite;
+    private OnSongConvert onSongConvert;
+    private ChordProConvert chordProConvert;
+    private SongXML songXML;
+    private SQLiteHelper sqLiteHelper;
 
     private String what, errormessage = "", filetype, chosenfolder;
 
@@ -100,11 +99,11 @@ public class PopUpImportExternalFile extends DialogFragment {
         songXML = new SongXML();
         sqLiteHelper = new SQLiteHelper(getActivity());
 
-        V = inflater.inflate(R.layout.popup_importexternalfile, container, false);
+        View v = inflater.inflate(R.layout.popup_importexternalfile, container, false);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(false);
 
-        initialiseViews(V);
+        initialiseViews(v);
 
         setAction();
 
@@ -114,21 +113,7 @@ public class PopUpImportExternalFile extends DialogFragment {
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
 
-        return V;
-    }
-
-    public void setTitle(String s) {
-        try {
-            if (title != null) {
-                title.setText(s);
-            } else {
-                if (getDialog() != null) {
-                    getDialog().setTitle(s);
-                }
-            }
-        } catch (Exception e) {
-            Log.d("d","Problem with title");
-        }
+        return v;
     }
 
     @Override
@@ -153,10 +138,10 @@ public class PopUpImportExternalFile extends DialogFragment {
         if (FullscreenActivity.whattodo.equals("doimportset")) {
             s = getActivity().getString(R.string.importnewset);
             what = "set";
-            filetype = getActivity().getString(R.string.options_set);
+            filetype = getActivity().getString(R.string.set);
         } else {
             what = "song";
-            filetype = getActivity().getString(R.string.options_song);
+            filetype = getActivity().getString(R.string.song);
         }
         if (FullscreenActivity.file_uri!=null && FullscreenActivity.file_uri.getPath()!=null) {
             ext = FullscreenActivity.file_uri.getPath();
@@ -204,10 +189,10 @@ public class PopUpImportExternalFile extends DialogFragment {
                     if (storageAccess.containsXMLTags(getActivity(), FullscreenActivity.file_uri)) {
                         if (StaticVariables.myToastMessage.equals("foundset")) {
                             what = "set";
-                            filetype = getActivity().getString(R.string.options_set);
+                            filetype = getActivity().getString(R.string.set);
                         } else {
                             what = "song";
-                            filetype = getActivity().getString(R.string.options_song);
+                            filetype = getActivity().getString(R.string.song);
                         }
                     } else {
                         notValid();
@@ -306,7 +291,7 @@ public class PopUpImportExternalFile extends DialogFragment {
     private void initialiseLocationsToSave() {
         if (what.equals("set")) {
             folderlist = new ArrayList<>();
-            folderlist.add(Objects.requireNonNull(getActivity()).getString(R.string.options_set));
+            folderlist.add(Objects.requireNonNull(getActivity()).getString(R.string.set));
         } else if (what.contains("onsong")) {
             folderlist = new ArrayList<>();
             folderlist.clear();
@@ -450,7 +435,6 @@ public class PopUpImportExternalFile extends DialogFragment {
             try {
                 mListener.showToastMessage(StaticVariables.myToastMessage);
                 mListener.refreshAll();
-                //mListener.prepareSongMenu();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -469,8 +453,7 @@ public class PopUpImportExternalFile extends DialogFragment {
 
     public interface MyInterface {
         void refreshAll();
-        void prepareSongMenu();
-        void onSongImportDone(String message);
+        void onSongImportDone();
         void openFragment();
         void showToastMessage(String message);
     }
@@ -478,7 +461,7 @@ public class PopUpImportExternalFile extends DialogFragment {
     @SuppressLint("StaticFieldLeak")
     private class ImportSet extends AsyncTask<String, Void, String> {
 
-        String setname;
+        final String setname;
 
         ImportSet(String set) {
             setname = set;
@@ -503,8 +486,6 @@ public class PopUpImportExternalFile extends DialogFragment {
                     setActions.prepareFirstItem(getActivity());
 
                     StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.success);
-
-                    FullscreenActivity.abort = false;
 
                 } else {
 
@@ -541,7 +522,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         InputStream is;
         ZipInputStream zis;
         String filename;
-        Uri zipUri;
+        final Uri zipUri;
         int numitems;
         int curritem;
 
@@ -730,7 +711,7 @@ public class PopUpImportExternalFile extends DialogFragment {
             try {
                 ShowToast.showToast(getActivity());
                 if (mListener != null) {
-                    mListener.onSongImportDone(s);
+                    mListener.onSongImportDone();
                 }
                 dismiss();
             } catch (Exception e) {

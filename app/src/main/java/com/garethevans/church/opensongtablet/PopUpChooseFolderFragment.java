@@ -34,10 +34,8 @@ public class PopUpChooseFolderFragment extends DialogFragment {
     }
 
     private MyInterface mListener;
-    StorageAccess storageAccess;
-    Preferences preferences;
-    SQLiteHelper sqLiteHelper;
-    ArrayList<String> songfolders;
+    private SQLiteHelper sqLiteHelper;
+    private ArrayList<String> songfolders;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -87,8 +85,7 @@ public class PopUpChooseFolderFragment extends DialogFragment {
 
         lv = V.findViewById(R.id.songfolders_ListView);
 
-        storageAccess = new StorageAccess();
-        preferences = new Preferences();
+        Preferences preferences = new Preferences();
         sqLiteHelper = new SQLiteHelper(getActivity());
 
         // Update the song folders
@@ -118,7 +115,7 @@ public class PopUpChooseFolderFragment extends DialogFragment {
     @SuppressLint("StaticFieldLeak")
     class UpDateList extends AsyncTask<Object, String, String> {
 
-        Context c;
+        final Context c;
 
         UpDateList(Context ctx) {
             c = ctx;

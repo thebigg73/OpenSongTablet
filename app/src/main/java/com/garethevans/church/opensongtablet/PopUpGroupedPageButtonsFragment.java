@@ -29,7 +29,6 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         void gesture6();
         void gesture7();
         void displayHighlight(boolean fromautoshow);
-        void takeScreenShot();
     }
 
     private PopUpGroupedPageButtonsFragment.MyInterface mListener;
@@ -52,7 +51,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
     private FloatingActionButton group_custom3;
     private FloatingActionButton group_custom4;
 
-    Preferences preferences;
+    private Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -296,7 +295,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         return V;
     }
 
-    public void setupQuickLaunchButtons() {
+    private void setupQuickLaunchButtons() {
         // Based on the user's choices for the custom quicklaunch buttons,
         // set the appropriate icons and onClick listeners
         group_custom1.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(getActivity(), preferences.getMyPreferenceString(getActivity(),"pageButtonCustom1Action","")));

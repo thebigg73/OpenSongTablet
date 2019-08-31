@@ -47,18 +47,12 @@ public class PopUpUSBMidiFragment extends DialogFragment {
     private LinearLayout currentDevice;
     private TextView currentDeviceName, currentDeviceAddress;
     private MidiDeviceInfo[] infos;
-    Midi m;
-    Preferences preferences;
+    private Midi m;
 
     @Override
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     @Override
@@ -94,7 +88,7 @@ public class PopUpUSBMidiFragment extends DialogFragment {
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        Preferences preferences = new Preferences();
 
         // Initialise the basic views
         progressBar = V.findViewById(R.id.progressBar);
@@ -288,7 +282,7 @@ public class PopUpUSBMidiFragment extends DialogFragment {
             currentDevice.setVisibility(View.VISIBLE);
             currentDeviceName.setText(StaticVariables.midiDeviceName);
             currentDeviceAddress.setText(StaticVariables.midiDeviceAddress);
-            String d = getString(R.string.options_connections_disconnect) + " " + StaticVariables.midiDeviceName;
+            String d = getString(R.string.connections_disconnect) + " " + StaticVariables.midiDeviceName;
             disconnectDevice.setText(d);
         } else {
             currentDevice.setVisibility(View.GONE);

@@ -48,9 +48,9 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
     private int counts = 0;
     private float avvol = 0.0f;
 
-    Preferences preferences;
+    private Preferences preferences;
 
-    Runnable r = new Runnable() {
+    private final Runnable r = new Runnable() {
         @Override
         public void run() {
             sampleSound();
@@ -131,11 +131,6 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 mytext = "0 - 100";
                 break;
 
-            case 200:
-                myprogress = 2;
-                mytext = "0 - 200";
-                break;
-
             case 400:
                 myprogress = 3;
                 mytext = "0 - 400";
@@ -161,6 +156,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 mytext = "0 - 3000";
                 break;
 
+            case 200:
             default:
                 myprogress = 2;
                 mytext = "0 - 200";

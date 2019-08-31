@@ -27,7 +27,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
     private Button bc_button;
     private Button br_button;
 
-    Preferences preferences;
+    private Preferences preferences;
 
     static PopUpDefaultsFragment newInstance() {
         PopUpDefaultsFragment frag;
@@ -52,7 +52,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.options_display_popups));
+        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.display_popups));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override

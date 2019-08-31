@@ -26,26 +26,96 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/toggleChordsButton"
-                style="@style/MyHeadingText"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:layout_marginTop="12dp"
-                android:text="@string/showchords"
-                android:theme="@style/SwitchStyle" />
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/section_box"
+                android:orientation="vertical">
 
-            <TextView
+                <TextView
+                    android:id="@+id/modes_TextView"
                     style="@style/MyHeadingText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
+                    android:text="@string/performancemode" />
+
+                <LinearLayout
+                    android:id="@+id/group_margins"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/MyWhiteHeadingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="0dp"
+                        android:text="@string/setxmargins" />
+
+                    <SeekBar
+                        android:id="@+id/setXMarginProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+                    <TextView
+                        style="@style/MyWhiteHeadingText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="0dp"
+                        android:text="@string/setymargins" />
+
+                    <SeekBar
+                        android:id="@+id/setYMarginProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="24dp"
+                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/toggleChordsButton"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
                     android:layout_marginTop="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="@string/showchords"
+                    android:theme="@style/SwitchStyle" />
+
+                <TextView
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginBottom="0dp"
                     android:text="@string/crossfade_time" />
 
                 <SeekBar
@@ -54,10 +124,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="0dp"
                     android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
                     android:layout_marginTop="0dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginBottom="0dp"
                     android:background="@drawable/apptheme_scrubber_primary_holo"
                     android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                     android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
@@ -67,616 +137,576 @@
                     style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginBottom="12dp"
                     android:gravity="center_horizontal"
-                    android:layout_marginBottom="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="0dp"
-                    android:text="@string/setymargins" />
-
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/toggleAutoScaleButton"
-                style="@style/MyHeadingText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:layout_marginTop="12dp"
-                android:text="@string/options_options_scale"
-                android:theme="@style/SwitchStyle" />
-
-            <LinearLayout
-                android:id="@+id/group_maxfontsize"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/MyHeadingText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/maxfontsize" />
-
-                <SeekBar
-                    android:id="@+id/setMaxFontSizeProgressBar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="0dp"
-                    android:background="@drawable/apptheme_scrubber_primary_holo"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
-
-                <TextView
-                    android:id="@+id/maxfontSizePreview"
-                    style="@style/MyInfoText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="12dp" />
+                    android:text="@string/zerotime" />
 
             </LinearLayout>
 
 
             <LinearLayout
-                android:id="@+id/group_manualfontsize"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/section_box"
                 android:orientation="vertical">
 
                 <TextView
                     style="@style/MyHeadingText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
+                    android:text="@string/performancemode" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/toggleAutoScaleButton"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
                     android:layout_marginTop="12dp"
-                    android:text="@string/options_options_fontsize" />
-
-                <SeekBar
-                    android:id="@+id/setFontSizeProgressBar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginLeft="12dp"
                     android:layout_marginRight="12dp"
-                    android:layout_marginTop="0dp"
-                    android:background="@drawable/apptheme_scrubber_primary_holo"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
-
-                <TextView
-                    android:id="@+id/fontSizePreview"
-                    style="@style/MyInfoText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="24dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="12dp" />
+                    android:text="@string/autoscale_toggle"
+                    android:theme="@style/SwitchStyle" />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/group_alignment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/lyrics_title_align"
-                    style="@style/MyHeadingText"
+                <LinearLayout
+                    android:id="@+id/group_maxfontsize"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    android:text="@string/edit_song_lyrics" />
+                    android:orientation="vertical">
 
-                <HorizontalScrollView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-
-                    <LinearLayout
+                    <TextView
+                        style="@style/MyWhiteHeadingText"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="0dp"
+                        android:text="@string/maxfontsize" />
+
+                    <SeekBar
+                        android:id="@+id/setMaxFontSizeProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="0dp"
+                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+                    <TextView
+                        android:id="@+id/maxfontSizePreview"
+                        style="@style/MyInfoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="24dp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/group_manualfontsize"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/MyWhiteHeadingText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="0dp"
+                        android:text="@string/choose_fontsize" />
+
+                    <SeekBar
+                        android:id="@+id/setFontSizeProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="0dp"
+                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+                    <TextView
+                        android:id="@+id/fontSizePreview"
+                        style="@style/MyInfoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="24dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/group_alignment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/lyrics_title_align"
+                        style="@style/MyWhiteHeadingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="12dp"
+                        android:text="@string/edit_song_lyrics" />
+
+                    <HorizontalScrollView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/lyrics_left_align"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginBottom="0dp"
+                                android:src="@drawable/ic_format_align_left_white_36dp"
+                                app:backgroundTint="#555555"
+                                app:elevation="0dp"
+                                app:fabSize="mini"
+                                app:useCompatPadding="true" />
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/lyrics_center_align"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginBottom="0dp"
+                                android:src="@drawable/ic_format_align_center_white_36dp"
+                                app:backgroundTint="#555555"
+                                app:elevation="0dp"
+                                app:fabSize="mini"
+                                app:useCompatPadding="true" />
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/lyrics_right_align"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginBottom="0dp"
+                                android:src="@drawable/ic_format_align_right_white_36dp"
+                                app:backgroundTint="#555555"
+                                app:elevation="0dp"
+                                app:fabSize="mini"
+                                app:useCompatPadding="true" />
+
+
+                        </LinearLayout>
+
+                    </HorizontalScrollView>
+
+                    <TextView
+                        style="@style/MyWhiteHeadingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="12dp"
+                        android:text="@string/presoInfoFont" />
+
+                    <HorizontalScrollView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/info_left_align"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginBottom="0dp"
+                                android:src="@drawable/ic_format_align_left_white_36dp"
+                                app:backgroundTint="#555555"
+                                app:elevation="0dp"
+                                app:fabSize="mini"
+                                app:useCompatPadding="true" />
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/info_center_align"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginBottom="0dp"
+                                android:src="@drawable/ic_format_align_center_white_36dp"
+                                app:backgroundTint="#555555"
+                                app:elevation="0dp"
+                                app:fabSize="mini"
+                                app:useCompatPadding="true" />
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/info_right_align"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginBottom="0dp"
+                                android:src="@drawable/ic_format_align_right_white_36dp"
+                                app:backgroundTint="#555555"
+                                app:elevation="0dp"
+                                app:fabSize="mini"
+                                app:useCompatPadding="true" />
+
+
+                        </LinearLayout>
+
+                    </HorizontalScrollView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/group_songinfofontsizes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/MyWhiteHeadingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="0dp"
+                        android:text="@string/edit_song_title" />
+
+                    <SeekBar
+                        android:id="@+id/presoTitleSizeSeekBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:focusableInTouchMode="false"
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+                    <TextView
+                        style="@style/MyWhiteHeadingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="0dp"
+                        android:text="@string/edit_song_author" />
+
+                    <SeekBar
+                        android:id="@+id/presoAuthorSizeSeekBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+                    <TextView
+                        style="@style/MyWhiteHeadingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="0dp"
+                        android:text="@string/edit_song_copyright" />
+
+                    <SeekBar
+                        android:id="@+id/presoCopyrightSizeSeekBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo" />
+
+                    <TextView
+                        style="@style/MyWhiteHeadingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="0dp"
+                        android:text="@string/alert" />
+
+                    <SeekBar
+                        android:id="@+id/presoAlertSizeSeekBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="24dp"
+                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/group_backgrounds"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/MyWhiteHeadingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="0dp"
+                        android:text="@string/preso_alpha" />
+
+
+                    <SeekBar
+                        android:id="@+id/presoAlphaProgressBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+                    <TextView
+                        android:id="@+id/presoAlphaText"
+                        style="@style/MyInfoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="24dp" />
+
+                    <TableLayout
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/lyrics_left_align"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="0dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:layout_marginTop="0dp"
-                            android:src="@drawable/ic_format_align_left_white_36dp"
-                            app:backgroundTint="#555555"
-                            app:elevation="0dp"
-                            app:fabSize="mini"
-                            app:useCompatPadding="true" />
+                        <TableRow>
 
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/lyrics_center_align"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="0dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:layout_marginTop="0dp"
-                            android:src="@drawable/ic_format_align_center_white_36dp"
-                            app:backgroundTint="#555555"
-                            app:elevation="0dp"
-                            app:fabSize="mini"
-                            app:useCompatPadding="true" />
+                            <TextView
+                                style="@style/MyWhiteHeadingText"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="12dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginBottom="0dp"
+                                android:layout_weight="1"
+                                android:text="@string/logo" />
 
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/lyrics_right_align"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="0dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:layout_marginTop="0dp"
-                            android:src="@drawable/ic_format_align_right_white_36dp"
-                            app:backgroundTint="#555555"
-                            app:elevation="0dp"
-                            app:fabSize="mini"
-                            app:useCompatPadding="true" />
+                            <ImageView
+                                android:id="@+id/chooseLogoButton"
+                                android:layout_width="120dp"
+                                android:layout_height="90dp"
+                                android:layout_column="1"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="12dp"
+                                android:contentDescription="@string/logo"
+                                android:src="@drawable/ic_image_white_36dp" />
 
+                        </TableRow>
 
-                    </LinearLayout>
+                        <TableRow>
 
-                </HorizontalScrollView>
+                            <TextView
+                                style="@style/MyWhiteHeadingText"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="12dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginBottom="0dp"
+                                android:layout_weight="1"
+                                android:text="@string/choose_image1" />
 
-                <TextView
-                    style="@style/MyHeadingText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
-                    android:text="@string/presoInfoFont" />
+                            <ImageView
+                                android:id="@+id/chooseImage1Button"
+                                android:layout_width="120dp"
+                                android:layout_height="90dp"
+                                android:layout_column="1"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="12dp"
+                                android:contentDescription="@string/choose_image1"
+                                android:src="@drawable/ic_image_white_36dp" />
 
-                <HorizontalScrollView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
+                            <CheckBox
+                                android:id="@+id/image1CheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="3"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="24dp" />
+                        </TableRow>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:orientation="horizontal">
+                        <TableRow>
 
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/info_left_align"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="0dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:layout_marginTop="0dp"
-                            android:src="@drawable/ic_format_align_left_white_36dp"
-                            app:backgroundTint="#555555"
-                            app:elevation="0dp"
-                            app:fabSize="mini"
-                            app:useCompatPadding="true" />
+                            <TextView
+                                style="@style/MyWhiteHeadingText"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="12dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginBottom="0dp"
+                                android:layout_weight="1"
+                                android:text="@string/choose_image2" />
 
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/info_center_align"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="0dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:layout_marginTop="0dp"
-                            android:src="@drawable/ic_format_align_center_white_36dp"
-                            app:backgroundTint="#555555"
-                            app:elevation="0dp"
-                            app:fabSize="mini"
-                            app:useCompatPadding="true" />
+                            <ImageView
+                                android:id="@+id/chooseImage2Button"
+                                android:layout_width="120dp"
+                                android:layout_height="90dp"
+                                android:layout_column="1"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="12dp"
+                                android:contentDescription="@string/choose_image2"
+                                android:src="@drawable/ic_image_white_36dp" />
 
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/info_right_align"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="0dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:layout_marginTop="0dp"
-                            android:src="@drawable/ic_format_align_right_white_36dp"
-                            app:backgroundTint="#555555"
-                            app:elevation="0dp"
-                            app:fabSize="mini"
-                            app:useCompatPadding="true" />
+                            <CheckBox
+                                android:id="@+id/image2CheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="3"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="24dp" />
+                        </TableRow>
 
+                        <TableRow>
 
-                    </LinearLayout>
+                            <TextView
+                                style="@style/MyWhiteHeadingText"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="12dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginBottom="0dp"
+                                android:layout_weight="1"
+                                android:text="@string/choose_video1" />
 
-                </HorizontalScrollView>
+                            <ImageView
+                                android:id="@+id/chooseVideo1Button"
+                                android:layout_width="120dp"
+                                android:layout_height="90dp"
+                                android:layout_column="1"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="12dp"
+                                android:contentDescription="@string/choose_video1"
+                                android:src="@drawable/ic_image_white_36dp" />
 
-            </LinearLayout>
+                            <CheckBox
+                                android:id="@+id/video1CheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="3"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="24dp" />
+                        </TableRow>
 
-            <LinearLayout
-                android:id="@+id/group_songinfofontsizes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                        <TableRow>
 
-                <TextView
-                    style="@style/MyHeadingText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/edit_song_title" />
+                            <TextView
+                                style="@style/MyWhiteHeadingText"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_column="0"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="12dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginBottom="0dp"
+                                android:layout_weight="1"
+                                android:text="@string/choose_video2" />
 
-                <SeekBar
-                    android:id="@+id/presoTitleSizeSeekBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="0dp"
-                    android:background="@drawable/apptheme_scrubber_primary_holo"
-                    android:focusableInTouchMode="false"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+                            <ImageView
+                                android:id="@+id/chooseVideo2Button"
+                                android:layout_width="120dp"
+                                android:layout_height="90dp"
+                                android:layout_column="1"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="12dp"
+                                android:contentDescription="@string/choose_video2"
+                                android:src="@drawable/ic_image_white_36dp" />
 
-                <TextView
-                    style="@style/MyHeadingText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/edit_song_author" />
+                            <CheckBox
+                                android:id="@+id/video2CheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="3"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="24dp" />
+                        </TableRow>
 
-                <SeekBar
-                    android:id="@+id/presoAuthorSizeSeekBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="0dp"
-                    android:background="@drawable/apptheme_scrubber_primary_holo"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+                    </TableLayout>
 
-                <TextView
-                    style="@style/MyHeadingText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/edit_song_copyright" />
-
-                <SeekBar
-                    android:id="@+id/presoCopyrightSizeSeekBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="0dp"
-                    android:background="@drawable/apptheme_scrubber_primary_holo"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo" />
-
-                <TextView
-                    style="@style/MyHeadingText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/alert" />
-
-                <SeekBar
-                    android:id="@+id/presoAlertSizeSeekBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="0dp"
-                    android:background="@drawable/apptheme_scrubber_primary_holo"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
-
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/group_backgrounds"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/MyHeadingText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/preso_alpha" />
-
-
-                <SeekBar
-                    android:id="@+id/presoAlphaProgressBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="0dp"
-                    android:background="@drawable/apptheme_scrubber_primary_holo"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
-
-                <TextView
-                    android:id="@+id/presoAlphaText"
-                    style="@style/MyInfoText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="12dp" />
-
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TableRow>
-
-                        <TextView
-                            style="@style/MyHeadingText"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_column="0"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="0dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:layout_marginTop="12dp"
-                            android:layout_weight="1"
-                            android:text="@string/logo" />
-
-                        <ImageView
-                            android:id="@+id/chooseLogoButton"
-                            android:layout_width="120dp"
-                            android:layout_height="90dp"
-                            android:layout_column="1"
-                            android:layout_gravity="center_vertical"
-                            android:layout_margin="12dp"
-                            android:contentDescription="@string/logo"
-                            android:src="@drawable/ic_image_white_36dp" />
-
-                    </TableRow>
-
-                    <TableRow>
-
-                        <TextView
-                            style="@style/MyHeadingText"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_column="0"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="0dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:layout_marginTop="12dp"
-                            android:layout_weight="1"
-                            android:text="@string/choose_image1" />
-
-                        <ImageView
-                            android:id="@+id/chooseImage1Button"
-                            android:layout_width="120dp"
-                            android:layout_height="90dp"
-                            android:layout_column="1"
-                            android:layout_gravity="center_vertical"
-                            android:layout_margin="12dp"
-                            android:contentDescription="@string/choose_image1"
-                            android:src="@drawable/ic_image_white_36dp" />
-
-                        <CheckBox
-                            android:id="@+id/image1CheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="3"
-                            android:layout_gravity="center_vertical"
-                            android:layout_margin="24dp" />
-                    </TableRow>
-
-                    <TableRow>
-
-                        <TextView
-                            style="@style/MyHeadingText"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_column="0"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="0dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:layout_marginTop="12dp"
-                            android:layout_weight="1"
-                            android:text="@string/choose_image2" />
-
-                        <ImageView
-                            android:id="@+id/chooseImage2Button"
-                            android:layout_width="120dp"
-                            android:layout_height="90dp"
-                            android:layout_column="1"
-                            android:layout_gravity="center_vertical"
-                            android:layout_margin="12dp"
-                            android:contentDescription="@string/choose_image2"
-                            android:src="@drawable/ic_image_white_36dp" />
-
-                        <CheckBox
-                            android:id="@+id/image2CheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="3"
-                            android:layout_gravity="center_vertical"
-                            android:layout_margin="24dp" />
-                    </TableRow>
-
-                    <TableRow>
-
-                        <TextView
-                            style="@style/MyHeadingText"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_column="0"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="0dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:layout_marginTop="12dp"
-                            android:layout_weight="1"
-                            android:text="@string/choose_video1" />
-
-                        <ImageView
-                            android:id="@+id/chooseVideo1Button"
-                            android:layout_width="120dp"
-                            android:layout_height="90dp"
-                            android:layout_column="1"
-                            android:layout_gravity="center_vertical"
-                            android:layout_margin="12dp"
-                            android:contentDescription="@string/choose_video1"
-                            android:src="@drawable/ic_image_white_36dp" />
-
-                        <CheckBox
-                            android:id="@+id/video1CheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="3"
-                            android:layout_gravity="center_vertical"
-                            android:layout_margin="24dp" />
-                    </TableRow>
-
-                    <TableRow>
-
-                        <TextView
-                            style="@style/MyHeadingText"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_column="0"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="0dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:layout_marginTop="12dp"
-                            android:layout_weight="1"
-                            android:text="@string/choose_video2" />
-
-                        <ImageView
-                            android:id="@+id/chooseVideo2Button"
-                            android:layout_width="120dp"
-                            android:layout_height="90dp"
-                            android:layout_column="1"
-                            android:layout_gravity="center_vertical"
-                            android:layout_margin="12dp"
-                            android:contentDescription="@string/choose_video2"
-                            android:src="@drawable/ic_image_white_36dp" />
-
-                        <CheckBox
-                            android:id="@+id/video2CheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="3"
-                            android:layout_gravity="center_vertical"
-                            android:layout_margin="24dp" />
-                    </TableRow>
-
-                </TableLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/group_margins"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/MyHeadingText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/setxmargins" />
-
-                <SeekBar
-                    android:id="@+id/setXMarginProgressBar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="12dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="0dp"
-                    android:background="@drawable/apptheme_scrubber_primary_holo"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
-
-                <TextView
-                    style="@style/MyHeadingText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="12dp"
-                    android:text="@string/setymargins" />
-
-                <SeekBar
-                    android:id="@+id/setYMarginProgressBar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="0dp"
-                    android:background="@drawable/apptheme_scrubber_primary_holo"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+                </LinearLayout>
 
             </LinearLayout>
 

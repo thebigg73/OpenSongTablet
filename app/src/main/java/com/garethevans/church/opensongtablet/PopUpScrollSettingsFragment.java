@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 public class PopUpScrollSettingsFragment extends DialogFragment {
 
-    Activity a;
     private String speed;
     private String distance;
     private SeekBar scrollspeed_SeekBar;
@@ -24,7 +22,7 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
     private TextView scrollspeed_TextView;
     private TextView scrolldistance_TextView;
 
-    Preferences preferences;
+    private Preferences preferences;
 
     static PopUpScrollSettingsFragment newInstance() {
         PopUpScrollSettingsFragment frag;
@@ -44,7 +42,6 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        a = getActivity();
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 

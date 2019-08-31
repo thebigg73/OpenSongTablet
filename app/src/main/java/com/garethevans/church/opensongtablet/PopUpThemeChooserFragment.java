@@ -18,7 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class PopUpThemeChooserFragment extends DialogFragment {
 
-    Preferences preferences;
+    private Preferences preferences;
     private View dark_font, dark_background, dark_verse, dark_chorus, dark_prechorus, dark_bridge,
             dark_comment, dark_tag, dark_chord, dark_custom, dark_capo, dark_presofont,
             dark_presoinfofont, dark_presoshadow, dark_presoalertfont, dark_metronome,
@@ -103,7 +103,7 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_themechooser, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getResources().getString(R.string.options_options_theme));
+        title.setText(getResources().getString(R.string.choose_theme));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override

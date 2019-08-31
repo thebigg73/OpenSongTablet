@@ -54,7 +54,7 @@ public class PopUpExportFragment extends DialogFragment {
     private CheckBox exportImageCheckBox;
     private CheckBox exportPDFCheckBox;
 
-    Preferences preferences;
+    private Preferences preferences;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

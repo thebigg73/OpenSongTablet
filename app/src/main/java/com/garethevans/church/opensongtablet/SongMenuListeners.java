@@ -14,7 +14,7 @@ public class SongMenuListeners extends Activity {
         void prepareSongMenu();
     }
 
-    public static MyInterface mListener;
+    private static MyInterface mListener;
 
     public static TextView.OnClickListener itemShortClickListener(final String clickedfilename,
                                                                   final String clickedkey,

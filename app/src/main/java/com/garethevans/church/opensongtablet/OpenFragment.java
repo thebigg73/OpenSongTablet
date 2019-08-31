@@ -51,7 +51,7 @@ class OpenFragment {
                 break;
 
             case "deletesong":
-                message = c.getResources().getString(R.string.options_song_delete) +
+                message = c.getResources().getString(R.string.delete) +
                         " \"" + StaticVariables.songfilename + "\"?";
                 newFragment = PopUpAreYouSureFragment.newInstance(message);
                 break;
@@ -141,6 +141,7 @@ class OpenFragment {
                 break;
 
             case "renamesong":
+            case "duplicate":
                 newFragment = PopUpSongRenameFragment.newInstance();
                 break;
 
@@ -233,11 +234,6 @@ class OpenFragment {
 
             case "choosefile": //For connected display backgrounds
                 newFragment = PopUpFileChooseFragment.newInstance();
-                break;
-
-
-            case "wipeallsongs":
-                newFragment = PopUpAreYouSureFragment.newInstance(c.getResources().getString(R.string.wipesongs));
                 break;
 
             case "errorlog":
@@ -352,9 +348,6 @@ class OpenFragment {
                 newFragment = PopUpSongCreateFragment.newInstance();
                 break;
 
-            case "rebuildindex":
-                newFragment = PopUpRebuildDatabaseFragment.newInstance();
-                break;
         }
         return newFragment;
     }
@@ -368,7 +361,7 @@ class OpenFragment {
                 break;
 
             case "deletesong":
-                message = c.getResources().getString(R.string.options_song_delete) +
+                message = c.getResources().getString(R.string.delete) +
                         " \"" + StaticVariables.songfilename + "\"?";
                 break;
 

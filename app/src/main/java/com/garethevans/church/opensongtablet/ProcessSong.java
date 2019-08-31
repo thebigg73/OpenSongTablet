@@ -404,7 +404,7 @@ public class ProcessSong extends Activity {
         }
         return what;
     }
-    String removeAnnotatedSections(String s) {
+    private String removeAnnotatedSections(String s) {
         // List things to remove
         String[] removethisbit = {
                 "V-", "V1-", "V2-", "V3-", "V4-", "V5-", "V6-", "V7-", "V8-", "V9-", "V10-",
@@ -566,8 +566,6 @@ public class ProcessSong extends Activity {
             FullscreenActivity.splitpoint = splitpoint_2ndhalf;
         }
 
-        FullscreenActivity.botherwithcolumns = true;
-
         // Which is the best split point to use (closest to thirdway) for 3 columns
         int splitprethirddiff = Math.abs(thirdwaypoint - splitpoint_beforethirdway);
         int splitpastthirddiff = Math.abs(thirdwaypoint - splitpoint_pastthirdway);
@@ -621,7 +619,7 @@ public class ProcessSong extends Activity {
         return string;
     }
 
-    String validCustomPadString(Context c, Preferences preferences, StorageAccess storageAccess, String s, String custom) {
+    private String validCustomPadString(Context c, Preferences preferences, StorageAccess storageAccess, String s, String custom) {
         if (custom!=null && !custom.isEmpty()) {
             // Null is the built in auto pad.  So, not using that.  Test it exists.
             Uri uri = storageAccess.getUriForItem(c, preferences, "Pads", "", custom);
@@ -1192,7 +1190,7 @@ public class ProcessSong extends Activity {
             capobit.setLayoutParams(tablerow_params());
             StaticVariables.temptranspChords = bit;
             try {
-                transpose.capoTranspose(c,preferences, false, false);
+                transpose.capoTranspose(c,preferences);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1362,7 +1360,7 @@ public class ProcessSong extends Activity {
                 }
                 lyricbit.setShadowLayer(shadow, 4, 4, presoShadowColor);
 
-                int w = PresentationService.ExternalDisplay.availableWidth_1col;
+                int w = StaticVariables.cast_availableWidth_1col;
                 // If we have turned off autoscale and aren't showing the chords, allow wrapping
                 if (!preferences.getMyPreferenceBoolean(c,"presoAutoScale",true) &&
                         !preferences.getMyPreferenceBoolean(c,"presoShowChords",false) && w>0) {
@@ -1703,7 +1701,7 @@ public class ProcessSong extends Activity {
             return string;
         }
     }
-    boolean isMultiLine(String l, String l_1, String l_2, String type) {
+    private boolean isMultiLine(String l, String l_1, String l_2, String type) {
         boolean isit = false;
         l = l.toLowerCase(StaticVariables.locale);
 
@@ -2065,7 +2063,7 @@ public class ProcessSong extends Activity {
         }
         return s;
     }
-    String numberToNumeral(int num) {
+    private String numberToNumeral(int num) {
         String s;
         switch (num) {
             default:
@@ -2383,12 +2381,10 @@ public class ProcessSong extends Activity {
                 }
                 try {
                     ll.addView(tl);
-                } catch (Exception e) {
+                } catch (Exception | OutOfMemoryError e) {
                     e.printStackTrace();
-                } catch (OutOfMemoryError e2) {
-                    e2.printStackTrace();
                 }
-            }
+        }
         TextView emptyline = new TextView(c);
         emptyline.setLayoutParams(linearlayout_params());
         emptyline.setText(" ");
@@ -2613,7 +2609,6 @@ public class ProcessSong extends Activity {
             // Open page 0
             PdfRenderer.Page mCurrentPage = null;
             if (mPdfRenderer != null) {
-                //noinspection AndroidLintNewApi
                 // If we have used the move back option from a previous set item (page button, foot pedal, etc.), we should show the last page
                 if (!StaticVariables.showstartofpdf) {
                     FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCount - 1;

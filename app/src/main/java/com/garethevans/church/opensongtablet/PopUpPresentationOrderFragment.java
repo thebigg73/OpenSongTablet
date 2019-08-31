@@ -30,9 +30,9 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
     }
 
     private MyInterface mListener;
-    StorageAccess storageAccess;
-    Preferences preferences;
-    ProcessSong processSong;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
+    private ProcessSong processSong;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -149,7 +149,7 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
         return V;
     }
 
-    public void doSave() {
+    private void doSave() {
         StaticVariables.mPresentation = m_mPresentation.getText().toString().trim();
         PopUpEditSongFragment.prepareSongXML();
         PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);

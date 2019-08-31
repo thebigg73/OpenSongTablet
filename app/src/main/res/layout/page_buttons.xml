@@ -184,7 +184,7 @@
                 app:fabSize="mini"
                 app:backgroundTint="@color/purple"
                 app:borderWidth="0dp"
-                android:contentDescription="@string/options_set"
+                android:contentDescription="@string/set"
                 android:tag="togglePlayPads"
                 android:src="@drawable/ic_format_list_numbers_white_36dp"
                 android:alpha="0.4"

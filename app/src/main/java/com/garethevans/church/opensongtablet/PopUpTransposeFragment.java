@@ -51,8 +51,8 @@ public class PopUpTransposeFragment extends DialogFragment {
     private SwitchCompat assumePreferred_SwitchCompat;
     private LinearLayout chooseFormat_LinearLayout;
 
-    Preferences preferences;
-    Transpose transpose;
+    private Preferences preferences;
+    private Transpose transpose;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -254,7 +254,7 @@ public class PopUpTransposeFragment extends DialogFragment {
                 break;
         }
 
-        boolean usePreferred = preferences.getMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",false);
+        boolean usePreferred = preferences.getMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",true);
         assumePreferred_SwitchCompat.setChecked(usePreferred);
 
         if (usePreferred) {

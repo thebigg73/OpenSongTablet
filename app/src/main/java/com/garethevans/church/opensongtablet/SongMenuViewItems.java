@@ -3,10 +3,10 @@ package com.garethevans.church.opensongtablet;
 
 class SongMenuViewItems {
 
-    String filename;
-    String title;
-    String author;
-    String key;
+    private final String filename;
+    private final String title;
+    private final String author;
+    private final String key;
     private boolean inset;
 
     SongMenuViewItems(String filename, String title, String author, String key, boolean inset) {
@@ -20,17 +20,17 @@ class SongMenuViewItems {
     public String getFilename() {
         return filename;
     }
-    public void setFilename(String filename) {
+    /*public void setFilename(String filename) {
         this.filename = filename;
     }
-
+*/
     public String getTitle() {
         return title;
     }
-    public void setTitle(String title) {
+    /*public void setTitle(String title) {
         this.title = title;
     }
-
+*/
     boolean getInSet() {
         return inset;
     }
@@ -39,15 +39,15 @@ class SongMenuViewItems {
     public String getAuthor() {
         return author;
     }
-    public void setAuthor(String author) {
+    /*public void setAuthor(String author) {
         this.author = author;
-    }
+    }*/
 
     public String getKey() {
         return key;
     }
-    public void setKey(String key) {
+    /*public void setKey(String key) {
         this.key = key;
     }
-
+*/
 }

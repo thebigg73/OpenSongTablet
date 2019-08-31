@@ -4,7 +4,7 @@ import com.bluelinelabs.logansquare.annotation.JsonField;
 import com.bluelinelabs.logansquare.annotation.JsonObject;
 
 @JsonObject
-public class SalutMessage {
+class SalutMessage {
     @JsonField
     String description;
     //public int nonJsonField;

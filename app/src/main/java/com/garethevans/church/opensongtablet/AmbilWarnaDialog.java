@@ -26,9 +26,9 @@ class AmbilWarnaDialog {
 		void onOk(AmbilWarnaDialog dialog, int color);
 		}
 
-	final AlertDialog dialog;
+	private final AlertDialog dialog;
 	private final boolean supportsAlpha;
-	final OnAmbilWarnaListener listener;
+	private final OnAmbilWarnaListener listener;
 	private final View viewHue, viewNewColor, viewAlphaOverlay;
 	private final AmbilWarnaSquare viewSatVal;
 	private final ImageView viewCursor, viewAlphaCursor, viewTarget, viewAlphaCheckered;
@@ -37,7 +37,7 @@ class AmbilWarnaDialog {
     private static String hexColor;
 	private final float[] currentColorHsv = new float[3], newColorHsv = new float[3];
 	private int alpha, mColor;
-    Context context;
+    //Context context;
 
 	AmbilWarnaDialog(final Context context, int color, OnAmbilWarnaListener listener) {
 		this(context, color, false, listener);
@@ -345,15 +345,16 @@ class AmbilWarnaDialog {
 		dialog.show();
 		}
 
-	public AlertDialog getDialog() {
+	/*public AlertDialog getDialog() {
 		return dialog;
-		}
+		}*/
 
-	@SuppressWarnings("deprecation")
+	//@SuppressWarnings("deprecation")
 	private void updateAlphaView() {
 		final GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[] {
 				Color.HSVToColor(currentColorHsv), 0x0
 				});
-		viewAlphaOverlay.setBackgroundDrawable(gd);
+		//viewAlphaOverlay.setBackgroundDrawable(gd);
+		viewAlphaOverlay.setBackground(gd);
 		}
 }

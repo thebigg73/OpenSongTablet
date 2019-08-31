@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -23,7 +22,6 @@ import java.util.Objects;
 
 public class PopUpSwipeSettingsFragment extends DialogFragment {
 
-    Activity a;
     private String speed;
     private String distance;
     private String errordistance;
@@ -36,9 +34,7 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
     private ImageView swipesimulateion_ImageView;
     private LinearLayout swipesettings;
 
-    LinearLayout.LayoutParams llp;
-
-    Preferences preferences;
+    private Preferences preferences;
 
     static PopUpSwipeSettingsFragment newInstance() {
         PopUpSwipeSettingsFragment frag;
@@ -58,7 +54,6 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        a = getActivity();
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
@@ -256,8 +251,8 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
     }
 
     private void swipeAnimate() {
-        llp = new LinearLayout.LayoutParams(preferences.getMyPreferenceInt(getActivity(),"swipeMinimumDistance",250),
-                preferences.getMyPreferenceInt(getActivity(),"swipeMaxDistanceYError",200));
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(preferences.getMyPreferenceInt(getActivity(), "swipeMinimumDistance", 250),
+                preferences.getMyPreferenceInt(getActivity(), "swipeMaxDistanceYError", 200));
         swipesimulateion_ImageView.setLayoutParams(llp);
         CustomAnimations.animateSwipe(swipesimulateion_ImageView,
                 preferences.getMyPreferenceInt(getActivity(),"swipeMinimumDistance",250),

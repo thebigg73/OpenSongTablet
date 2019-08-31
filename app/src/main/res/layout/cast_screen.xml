@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/projectedPage_RelativeLayout"
+<RelativeLayout android:id="@+id/projectedPage_RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000">
+    android:background="#000"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:id="@+id/pageHolder"
@@ -51,12 +51,15 @@
         android:layout_above="@+id/bottom_infobar"
         android:visibility="visible"/>
 
+
+
     <LinearLayout
         android:id="@+id/bottom_infobar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true">
+
 
         <TextView
             android:id="@+id/songinfo_TextView"
@@ -98,6 +101,8 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
+
+
 
     <LinearLayout
         android:id="@+id/col1_1"

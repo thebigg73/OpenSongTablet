@@ -33,13 +33,13 @@ public class PopUpSongCreateFragment extends DialogFragment {
     private ArrayList<String> foldernames;
     private Spinner newFolderSpinner;
     private EditText newSongNameEditText;
-    ProgressBar progressBar;
+    private ProgressBar progressBar;
     private MyInterface mListener;
     private AsyncTask<Object, Void, String> getfolders;
-    StorageAccess storageAccess;
-    Preferences preferences;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
     private SongFolders songFolders;
-    SongXML songXML;
+    private SongXML songXML;
 
     static PopUpSongCreateFragment newInstance() {
         PopUpSongCreateFragment frag;
@@ -48,7 +48,6 @@ public class PopUpSongCreateFragment extends DialogFragment {
     }
 
     public interface MyInterface {
-        void doEdit();
         void loadSong();
         void prepareSongMenu();
     }
@@ -160,7 +159,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
     }
 
-    public void doSave() {
+    private void doSave() {
         // Show the progressBar (to indicate something is happening)
         progressBar.setVisibility(View.VISIBLE);
 
@@ -302,7 +301,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
                         SQLiteHelper sqLiteHelper = new SQLiteHelper(getActivity());
                         sqLiteHelper.createSong(getActivity(),StaticVariables.whichSongFolder,StaticVariables.songfilename);
                     } else {
-                        StaticVariables.myToastMessage = getResources().getString(R.string.error_notset);
+                        StaticVariables.myToastMessage = getResources().getString(R.string.notset);
                     }
                 }
             }
@@ -313,7 +312,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
         protected void onPostExecute(String s) {
             try {
                 if (!StaticVariables.myToastMessage.equals(getString(R.string.error)) &&
-                        !StaticVariables.myToastMessage.equals(getString(R.string.error_notset)) &&
+                        !StaticVariables.myToastMessage.equals(getString(R.string.notset)) &&
                         !StaticVariables.myToastMessage.equals(getString(R.string.songnamealreadytaken))) {
 
                     if (mListener != null) {

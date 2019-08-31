@@ -17,14 +17,12 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class SetActions {
+class SetActions {
 
     public interface MyInterface {
         void doMoveSection();
         void loadSong();
     }
-
-    public MyInterface mListener;
 
     private boolean encodedimage;
     private String title = "", author = "", lyrics = "", hymn_number = "";
@@ -263,14 +261,14 @@ public class SetActions {
         if (StaticVariables.mSetList!=null && StaticVariables.mSetList.length>0) {
             CreateNewSet createNewSet = new CreateNewSet();
             if (!createNewSet.doCreation(c, preferences, storageAccess, processSong)) {
-                StaticVariables.myToastMessage = c.getString(R.string.error_notset);
+                StaticVariables.myToastMessage = c.getString(R.string.notset);
             }
         } else if (StaticVariables.mSetList!=null) {
-            StaticVariables.myToastMessage = c.getString(R.string.error_notset);
+            StaticVariables.myToastMessage = c.getString(R.string.notset);
         }
 
         if (StaticVariables.myToastMessage.equals("yes")) {
-            StaticVariables.myToastMessage = c.getString(R.string.set_save)
+            StaticVariables.myToastMessage = c.getString(R.string.save)
                     + " - " + c.getString(R.string.ok);
         }
     }
@@ -282,7 +280,7 @@ public class SetActions {
 
         preferences.setMyPreferenceString(c,"setCurrentLastName","");
 
-        StaticVariables.myToastMessage = c.getString(R.string.options_set_clear) + " " +
+        StaticVariables.myToastMessage = c.getString(R.string.set_new) + " " +
                 c.getString(R.string.ok);
     }
 
@@ -361,26 +359,19 @@ public class SetActions {
         if (StaticVariables.setSize > 0) {
             // Get the name of the song to look for (including folders if need be)
             String songforsetwork;
-            Log.d("d","whichSongFolder="+StaticVariables.whichSongFolder);
             if (isCustomSlide(StaticVariables.whichSongFolder)) {
-                Log.d("d","is a custom slide");
                 songforsetwork = "$**_**" + getSongForSetWork(c) + "_**$";
             } else {
-                Log.d("d","not a custom slide");
                 songforsetwork ="$**_" + getSongForSetWork(c) + "_**$";
             }
             String currset = preferences.getMyPreferenceString(c,"setCurrent","");
-            Log.d("d","songforsetwork="+songforsetwork);
-            Log.d("d","currset="+currset);
             if (StaticVariables.setView && currset.contains(songforsetwork)) {
                 // If we are currently in set mode, check if the new song is there, in which case do nothing else
-                Log.d("d","Staying in set mode");
                 indexSongInSet();
                 return true;
 
             } else if (StaticVariables.setView && !currset.contains(songforsetwork)) {
                 // If we are currently in set mode, but the new song isn't there, leave set mode
-                Log.d("d","Leaving in set mode");
                 StaticVariables.setView = false;
                 StaticVariables.previousSongInSet = "";
                 StaticVariables.nextSongInSet = "";
@@ -929,8 +920,6 @@ public class SetActions {
             StaticVariables.whichSongFolder = c.getString(R.string.mainfoldername);
         }
 
-        Log.d("SetActions","whichSongFolder="+StaticVariables.whichSongFolder);
-
         // If the folder length isn't 0, it is a folder
         if (StaticVariables.whichSongFolder.length() > 0 &&
                 StaticVariables.whichSongFolder.contains("**"+c.getResources().getString(R.string.scripture)) &&
@@ -976,8 +965,7 @@ public class SetActions {
     }
 
     void doMoveInSet(Context c) {
-        mListener = (MyInterface) c;
-
+        MyInterface mListener = (MyInterface) c;
         boolean justmovingsections = false;
 
         // If we are in Stage Mode, check the sections first
@@ -1003,7 +991,6 @@ public class SetActions {
 
         if (!justmovingsections) {
             // Moving to a different song
-            Log.d("SetActions","indexSongInSet="+StaticVariables.indexSongInSet);
             if (StaticVariables.setMoveDirection.equals("back")) {
                 if (StaticVariables.indexSongInSet>0) {
                     StaticVariables.indexSongInSet -= 1;
@@ -1026,8 +1013,6 @@ public class SetActions {
                     }
                 }
             }
-
-            Log.d("SetActions","whatsongforsetwork+"+StaticVariables.whatsongforsetwork);
 
             StaticVariables.setMoveDirection = "";
 
