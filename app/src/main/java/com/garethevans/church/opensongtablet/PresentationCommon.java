@@ -783,193 +783,195 @@ class PresentationCommon {
     private void prepareFullProjected (final Activity activity, final Context c, final Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
                  final LinearLayout col1_1, final LinearLayout col1_2, final LinearLayout col2_2, final LinearLayout col1_3,
                  final LinearLayout col2_3, final LinearLayout col3_3, final LinearLayout projected_LinearLayout, final ImageView projected_ImageView) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+        if (StaticVariables.activity!=null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
 
-                // Updating views on the UI
-                //activity.runOnUiThread(new Runnable() {
-                StaticVariables.activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Remove the old view contents
-                        try {
-                            col1_1.removeAllViews();
-                            col1_2.removeAllViews();
-                            col2_2.removeAllViews();
-                            col1_3.removeAllViews();
-                            col2_3.removeAllViews();
-                            col3_3.removeAllViews();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        LinearLayout test1_1, test1_2, test2_2, test1_3, test2_3, test3_3;
-
-                        // Prepare the new views to add to 1,2 and 3 colums ready for measuring
-                        // Go through each section
-                        for (int x = 0; x < StaticVariables.songSections.length; x++) {
-
-                            test1_1 = processSong.projectedSectionView(c, x, 12.0f,
-                                    storageAccess, preferences,
-                                    StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                                    StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
-                            col1_1.addView(test1_1);
-
-                            if (x < FullscreenActivity.halfsplit_section) {
-                                test1_2 = processSong.projectedSectionView(c, x, 12.0f,
-                                        storageAccess, preferences,
-                                        StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                                        StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
-                                col1_2.addView(test1_2);
-                            } else {
-                                test2_2 = processSong.projectedSectionView(c, x, 12.0f,
-                                        storageAccess, preferences,
-                                        StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                                        StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
-                                col2_2.addView(test2_2);
+                    // Updating views on the UI
+                    //activity.runOnUiThread(new Runnable() {
+                    StaticVariables.activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Remove the old view contents
+                            try {
+                                col1_1.removeAllViews();
+                                col1_2.removeAllViews();
+                                col2_2.removeAllViews();
+                                col1_3.removeAllViews();
+                                col2_3.removeAllViews();
+                                col3_3.removeAllViews();
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
 
-                            if (x < FullscreenActivity.thirdsplit_section) {
-                                test1_3 = processSong.projectedSectionView(c, x, 12.0f,
+                            LinearLayout test1_1, test1_2, test2_2, test1_3, test2_3, test3_3;
+
+                            // Prepare the new views to add to 1,2 and 3 colums ready for measuring
+                            // Go through each section
+                            for (int x = 0; x < StaticVariables.songSections.length; x++) {
+
+                                test1_1 = processSong.projectedSectionView(c, x, 12.0f,
                                         storageAccess, preferences,
                                         StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
                                         StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
-                                col1_3.addView(test1_3);
-                            } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
-                                test2_3 = processSong.projectedSectionView(c, x, 12.0f,
-                                        storageAccess, preferences,
-                                        StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                                        StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
-                                col2_3.addView(test2_3);
-                            } else {
-                                test3_3 = processSong.projectedSectionView(c, x, 12.0f,
-                                        storageAccess, preferences,
-                                        StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                                        StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
-                                col3_3.addView(test3_3);
+                                col1_1.addView(test1_1);
+
+                                if (x < FullscreenActivity.halfsplit_section) {
+                                    test1_2 = processSong.projectedSectionView(c, x, 12.0f,
+                                            storageAccess, preferences,
+                                            StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
+                                            StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                                    col1_2.addView(test1_2);
+                                } else {
+                                    test2_2 = processSong.projectedSectionView(c, x, 12.0f,
+                                            storageAccess, preferences,
+                                            StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
+                                            StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                                    col2_2.addView(test2_2);
+                                }
+
+                                if (x < FullscreenActivity.thirdsplit_section) {
+                                    test1_3 = processSong.projectedSectionView(c, x, 12.0f,
+                                            storageAccess, preferences,
+                                            StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
+                                            StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                                    col1_3.addView(test1_3);
+                                } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
+                                    test2_3 = processSong.projectedSectionView(c, x, 12.0f,
+                                            storageAccess, preferences,
+                                            StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
+                                            StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                                    col2_3.addView(test2_3);
+                                } else {
+                                    test3_3 = processSong.projectedSectionView(c, x, 12.0f,
+                                            storageAccess, preferences,
+                                            StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
+                                            StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                                    col3_3.addView(test3_3);
+                                }
+                            }
+
+                            // Now premeasure the views
+                            col1_1.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                            col1_2.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                            col2_2.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                            col1_3.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                            col2_3.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                            col3_3.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+                            // Get the widths and heights of the sections
+                            int widthofsection1_1 = col1_1.getMeasuredWidth();
+                            int heightofsection1_1 = col1_1.getMeasuredHeight();
+                            int widthofsection1_2 = col1_2.getMeasuredWidth();
+                            int heightofsection1_2 = col1_2.getMeasuredHeight();
+                            int widthofsection2_2 = col2_2.getMeasuredWidth();
+                            int heightofsection2_2 = col2_2.getMeasuredHeight();
+                            int widthofsection1_3 = col1_3.getMeasuredWidth();
+                            int heightofsection1_3 = col1_3.getMeasuredHeight();
+                            int widthofsection2_3 = col2_3.getMeasuredWidth();
+                            int heightofsection2_3 = col2_3.getMeasuredHeight();
+                            int widthofsection3_3 = col3_3.getMeasuredWidth();
+                            int heightofsection3_3 = col3_3.getMeasuredHeight();
+
+                            // Now display the song!
+                            projected_LinearLayout.removeAllViews();
+
+                            // We know the widths and heights of all of the view (1,2 and 3 columns).
+                            // Decide which is best by looking at the scaling
+
+                            int colstouse = 1;
+                            // We know the size of each section, so we just need to know which one to display
+                            float maxwidth_scale1_1 = ((float) StaticVariables.cast_availableWidth_1col) / (float) widthofsection1_1;
+                            float maxwidth_scale1_2 = ((float) StaticVariables.cast_availableWidth_2col) / (float) widthofsection1_2;
+                            float maxwidth_scale2_2 = ((float) StaticVariables.cast_availableWidth_2col) / (float) widthofsection2_2;
+                            float maxwidth_scale1_3 = ((float) StaticVariables.cast_availableWidth_3col) / (float) widthofsection1_3;
+                            float maxwidth_scale2_3 = ((float) StaticVariables.cast_availableWidth_3col) / (float) widthofsection2_3;
+                            float maxwidth_scale3_3 = ((float) StaticVariables.cast_availableWidth_3col) / (float) widthofsection3_3;
+                            float maxheight_scale1_1 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_1;
+                            float maxheight_scale1_2 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_2;
+                            float maxheight_scale2_2 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection2_2;
+                            float maxheight_scale1_3 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_3;
+                            float maxheight_scale2_3 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection2_3;
+                            float maxheight_scale3_3 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection3_3;
+
+                            if (maxheight_scale1_1 < maxwidth_scale1_1) {
+                                maxwidth_scale1_1 = maxheight_scale1_1;
+                            }
+                            if (maxheight_scale1_2 < maxwidth_scale1_2) {
+                                maxwidth_scale1_2 = maxheight_scale1_2;
+                            }
+                            if (maxheight_scale2_2 < maxwidth_scale2_2) {
+                                maxwidth_scale2_2 = maxheight_scale2_2;
+                            }
+                            if (maxheight_scale1_3 < maxwidth_scale1_3) {
+                                maxwidth_scale1_3 = maxheight_scale1_3;
+                            }
+                            if (maxheight_scale2_3 < maxwidth_scale2_3) {
+                                maxwidth_scale2_3 = maxheight_scale2_3;
+                            }
+                            if (maxheight_scale3_3 < maxwidth_scale3_3) {
+                                maxwidth_scale3_3 = maxheight_scale3_3;
+                            }
+
+                            // Decide on the best scaling to use
+                            float myfullscale = maxwidth_scale1_1;
+
+                            if (maxwidth_scale1_2 > myfullscale && maxwidth_scale2_2 > myfullscale) {
+                                colstouse = 2;
+                                if (maxwidth_scale1_2 > maxwidth_scale2_2) {
+                                    myfullscale = maxwidth_scale2_2;
+                                } else {
+                                    myfullscale = maxwidth_scale1_2;
+                                }
+                            }
+
+                            if (maxwidth_scale1_3 > myfullscale && maxwidth_scale2_3 > myfullscale && maxwidth_scale3_3 > myfullscale) {
+                                colstouse = 3;
+                            }
+
+                            // Now we know how many columns we should use, let's do it!
+                            float maxscale = preferences.getMyPreferenceFloat(c, "fontSizePresoMax", 40.0f) / 12.0f;
+
+                            switch (colstouse) {
+                                case 1:
+                                    if (maxwidth_scale1_1 > maxscale) {
+                                        maxwidth_scale1_1 = maxscale;
+                                    }
+                                    projectedPerformanceView1col(c, preferences, storageAccess, processSong, maxwidth_scale1_1,
+                                            projected_LinearLayout, projected_ImageView);
+                                    break;
+
+                                case 2:
+                                    if (maxwidth_scale1_2 > maxscale) {
+                                        maxwidth_scale1_2 = maxscale;
+                                    }
+                                    if (maxwidth_scale2_2 > maxscale) {
+                                        maxwidth_scale2_2 = maxscale;
+                                    }
+                                    projectedPerformanceView2col(c, preferences, storageAccess, processSong, maxwidth_scale1_2, maxwidth_scale2_2,
+                                            projected_LinearLayout, projected_ImageView);
+                                    break;
+
+                                case 3:
+                                    if (maxwidth_scale1_3 > maxscale) {
+                                        maxwidth_scale1_3 = maxscale;
+                                    }
+                                    if (maxwidth_scale2_3 > maxscale) {
+                                        maxwidth_scale2_3 = maxscale;
+                                    }
+                                    if (maxwidth_scale3_3 > maxscale) {
+                                        maxwidth_scale3_3 = maxscale;
+                                    }
+                                    projectedPerformanceView3col(c, preferences, storageAccess, processSong, maxwidth_scale1_3, maxwidth_scale2_3, maxwidth_scale3_3,
+                                            projected_LinearLayout, projected_ImageView);
+                                    break;
                             }
                         }
-
-                        // Now premeasure the views
-                        col1_1.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                        col1_2.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                        col2_2.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                        col1_3.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                        col2_3.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                        col3_3.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-                        // Get the widths and heights of the sections
-                        int widthofsection1_1 = col1_1.getMeasuredWidth();
-                        int heightofsection1_1 = col1_1.getMeasuredHeight();
-                        int widthofsection1_2 = col1_2.getMeasuredWidth();
-                        int heightofsection1_2 = col1_2.getMeasuredHeight();
-                        int widthofsection2_2 = col2_2.getMeasuredWidth();
-                        int heightofsection2_2 = col2_2.getMeasuredHeight();
-                        int widthofsection1_3 = col1_3.getMeasuredWidth();
-                        int heightofsection1_3 = col1_3.getMeasuredHeight();
-                        int widthofsection2_3 = col2_3.getMeasuredWidth();
-                        int heightofsection2_3 = col2_3.getMeasuredHeight();
-                        int widthofsection3_3 = col3_3.getMeasuredWidth();
-                        int heightofsection3_3 = col3_3.getMeasuredHeight();
-
-                        // Now display the song!
-                        projected_LinearLayout.removeAllViews();
-
-                        // We know the widths and heights of all of the view (1,2 and 3 columns).
-                        // Decide which is best by looking at the scaling
-
-                        int colstouse = 1;
-                        // We know the size of each section, so we just need to know which one to display
-                        float maxwidth_scale1_1 = ((float) StaticVariables.cast_availableWidth_1col) / (float) widthofsection1_1;
-                        float maxwidth_scale1_2 = ((float) StaticVariables.cast_availableWidth_2col) / (float) widthofsection1_2;
-                        float maxwidth_scale2_2 = ((float) StaticVariables.cast_availableWidth_2col) / (float) widthofsection2_2;
-                        float maxwidth_scale1_3 = ((float) StaticVariables.cast_availableWidth_3col) / (float) widthofsection1_3;
-                        float maxwidth_scale2_3 = ((float) StaticVariables.cast_availableWidth_3col) / (float) widthofsection2_3;
-                        float maxwidth_scale3_3 = ((float) StaticVariables.cast_availableWidth_3col) / (float) widthofsection3_3;
-                        float maxheight_scale1_1 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_1;
-                        float maxheight_scale1_2 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_2;
-                        float maxheight_scale2_2 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection2_2;
-                        float maxheight_scale1_3 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_3;
-                        float maxheight_scale2_3 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection2_3;
-                        float maxheight_scale3_3 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection3_3;
-
-                        if (maxheight_scale1_1 < maxwidth_scale1_1) {
-                            maxwidth_scale1_1 = maxheight_scale1_1;
-                        }
-                        if (maxheight_scale1_2 < maxwidth_scale1_2) {
-                            maxwidth_scale1_2 = maxheight_scale1_2;
-                        }
-                        if (maxheight_scale2_2 < maxwidth_scale2_2) {
-                            maxwidth_scale2_2 = maxheight_scale2_2;
-                        }
-                        if (maxheight_scale1_3 < maxwidth_scale1_3) {
-                            maxwidth_scale1_3 = maxheight_scale1_3;
-                        }
-                        if (maxheight_scale2_3 < maxwidth_scale2_3) {
-                            maxwidth_scale2_3 = maxheight_scale2_3;
-                        }
-                        if (maxheight_scale3_3 < maxwidth_scale3_3) {
-                            maxwidth_scale3_3 = maxheight_scale3_3;
-                        }
-
-                        // Decide on the best scaling to use
-                        float myfullscale = maxwidth_scale1_1;
-
-                        if (maxwidth_scale1_2 > myfullscale && maxwidth_scale2_2 > myfullscale) {
-                            colstouse = 2;
-                            if (maxwidth_scale1_2 > maxwidth_scale2_2) {
-                                myfullscale = maxwidth_scale2_2;
-                            } else {
-                                myfullscale = maxwidth_scale1_2;
-                            }
-                        }
-
-                        if (maxwidth_scale1_3 > myfullscale && maxwidth_scale2_3 > myfullscale && maxwidth_scale3_3 > myfullscale) {
-                            colstouse = 3;
-                        }
-
-                        // Now we know how many columns we should use, let's do it!
-                        float maxscale = preferences.getMyPreferenceFloat(c, "fontSizePresoMax", 40.0f) / 12.0f;
-
-                        switch (colstouse) {
-                            case 1:
-                                if (maxwidth_scale1_1 > maxscale) {
-                                    maxwidth_scale1_1 = maxscale;
-                                }
-                                projectedPerformanceView1col(c,preferences,storageAccess,processSong,maxwidth_scale1_1,
-                                        projected_LinearLayout, projected_ImageView);
-                                break;
-
-                            case 2:
-                                if (maxwidth_scale1_2 > maxscale) {
-                                    maxwidth_scale1_2 = maxscale;
-                                }
-                                if (maxwidth_scale2_2 > maxscale) {
-                                    maxwidth_scale2_2 = maxscale;
-                                }
-                                projectedPerformanceView2col(c,preferences,storageAccess,processSong,maxwidth_scale1_2, maxwidth_scale2_2,
-                                        projected_LinearLayout, projected_ImageView);
-                                break;
-
-                            case 3:
-                                if (maxwidth_scale1_3 > maxscale) {
-                                    maxwidth_scale1_3 = maxscale;
-                                }
-                                if (maxwidth_scale2_3 > maxscale) {
-                                    maxwidth_scale2_3 = maxscale;
-                                }
-                                if (maxwidth_scale3_3 > maxscale) {
-                                    maxwidth_scale3_3 = maxscale;
-                                }
-                                projectedPerformanceView3col(c,preferences,storageAccess,processSong,maxwidth_scale1_3, maxwidth_scale2_3, maxwidth_scale3_3,
-                                        projected_LinearLayout, projected_ImageView);
-                                break;
-                        }
-                    }
-                });
-            }
-        }).start();
+                    });
+                }
+            }).start();
+        }
     }
     private void projectedPerformanceView1col(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
                                               float scale1_1, LinearLayout projected_LinearLayout, ImageView projected_ImageView) {
@@ -1175,66 +1177,67 @@ class PresentationCommon {
                                        final LinearLayout col1_1, final LinearLayout col1_2, final LinearLayout col2_2, final LinearLayout col1_3,
                                        final LinearLayout col2_3, final LinearLayout col3_3, final LinearLayout projected_LinearLayout, final ImageView projected_ImageView) {
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // Updating views on the UI
-                    //activity.runOnUiThread(new Runnable() {
-                    StaticVariables.activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Remove the old views
-                            col1_1.removeAllViews();
-                            col1_2.removeAllViews();
-                            col2_2.removeAllViews();
-                            col1_3.removeAllViews();
-                            col2_3.removeAllViews();
-                            col3_3.removeAllViews();
+        if (StaticVariables.activity!=null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        // Updating views on the UI
+                        //activity.runOnUiThread(new Runnable() {
+                        StaticVariables.activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Remove the old views
+                                col1_1.removeAllViews();
+                                col1_2.removeAllViews();
+                                col2_2.removeAllViews();
+                                col1_3.removeAllViews();
+                                col2_3.removeAllViews();
+                                col3_3.removeAllViews();
 
-                            LinearLayout test1_1;
+                                LinearLayout test1_1;
 
-                            // Prepare the new view ready for measuring
-                            // Go through each section
-                            test1_1 = processSong.projectedSectionView(c, StaticVariables.currentSection, 12.0f,
+                                // Prepare the new view ready for measuring
+                                // Go through each section
+                                test1_1 = processSong.projectedSectionView(c, StaticVariables.currentSection, 12.0f,
                                         storageAccess, preferences,
                                         StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
                                         StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
-                            col1_1.addView(test1_1);
+                                col1_1.addView(test1_1);
 
-                            // Now premeasure the views
-                            col1_1.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                // Now premeasure the views
+                                col1_1.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-                            // Get the widths and heights of the sections
-                            int widthofsection1_1 = col1_1.getMeasuredWidth();
-                            int heightofsection1_1 = col1_1.getMeasuredHeight();
+                                // Get the widths and heights of the sections
+                                int widthofsection1_1 = col1_1.getMeasuredWidth();
+                                int heightofsection1_1 = col1_1.getMeasuredHeight();
 
-                            // We know the size of each section, so we just need to know which one to display
-                            float maxwidth_scale1_1 = ((float) StaticVariables.cast_availableWidth_1col) / (float) widthofsection1_1;
-                            float maxheight_scale1_1 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_1;
+                                // We know the size of each section, so we just need to know which one to display
+                                float maxwidth_scale1_1 = ((float) StaticVariables.cast_availableWidth_1col) / (float) widthofsection1_1;
+                                float maxheight_scale1_1 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_1;
 
-                            if (maxheight_scale1_1 < maxwidth_scale1_1) {
-                                maxwidth_scale1_1 = maxheight_scale1_1;
+                                if (maxheight_scale1_1 < maxwidth_scale1_1) {
+                                    maxwidth_scale1_1 = maxheight_scale1_1;
+                                }
+
+                                // Now we know how many columns we should use, let's do it!
+                                float maxscale = preferences.getMyPreferenceFloat(c, "fontSizePresoMax", 40.0f) / 12.0f;
+
+                                if (maxwidth_scale1_1 > maxscale) {
+                                    maxwidth_scale1_1 = maxscale;
+                                }
+                                projectedStageView1Col(c, preferences, storageAccess, processSong, maxwidth_scale1_1,
+                                        projected_LinearLayout, projected_ImageView);
                             }
 
-                            // Now we know how many columns we should use, let's do it!
-                            float maxscale = preferences.getMyPreferenceFloat(c, "fontSizePresoMax", 40.0f) / 12.0f;
+                        });
 
-                            if (maxwidth_scale1_1 > maxscale) {
-                                maxwidth_scale1_1 = maxscale;
-                            }
-                            projectedStageView1Col(c, preferences, storageAccess, processSong, maxwidth_scale1_1,
-                                    projected_LinearLayout, projected_ImageView);
-                        }
-
-                    });
-
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }).start();
-
+            }).start();
+        }
     }
     private void projectedStageView1Col(Context c, Preferences preferences,StorageAccess storageAccess,ProcessSong processSong,
                                         float scale1_1, LinearLayout projected_LinearLayout, ImageView projected_ImageView) {
@@ -1282,63 +1285,65 @@ class PresentationCommon {
     private void preparePresenterProjected(final Activity activity, final Context c, final Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
                                            final LinearLayout col1_1, final LinearLayout col1_2, final LinearLayout col2_2, final LinearLayout col1_3,
                                            final LinearLayout col2_3, final LinearLayout col3_3, final LinearLayout projected_LinearLayout, final ImageView projected_ImageView) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    //activity.runOnUiThread(new Runnable() {
-                    StaticVariables.activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Remove the old views
-                            col1_1.removeAllViews();
-                            col1_2.removeAllViews();
-                            col2_2.removeAllViews();
-                            col1_3.removeAllViews();
-                            col2_3.removeAllViews();
-                            col3_3.removeAllViews();
+        if (StaticVariables.activity != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        //activity.runOnUiThread(new Runnable() {
+                        StaticVariables.activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Remove the old views
+                                col1_1.removeAllViews();
+                                col1_2.removeAllViews();
+                                col2_2.removeAllViews();
+                                col1_3.removeAllViews();
+                                col2_3.removeAllViews();
+                                col3_3.removeAllViews();
 
-                            LinearLayout test1_1;
+                                LinearLayout test1_1;
 
-                            // Prepare the new view ready for measuring
-                            // Go through each section
-                            test1_1 = processSong.projectedSectionView(c, StaticVariables.currentSection, 12.0f,
-                                    storageAccess, preferences,
-                                    StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                                    StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
-                            col1_1.addView(test1_1);
+                                // Prepare the new view ready for measuring
+                                // Go through each section
+                                test1_1 = processSong.projectedSectionView(c, StaticVariables.currentSection, 12.0f,
+                                        storageAccess, preferences,
+                                        StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
+                                        StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                                col1_1.addView(test1_1);
 
-                            // Now premeasure the views
-                            col1_1.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                // Now premeasure the views
+                                col1_1.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-                            // Get the widths and heights of the sections
-                            int widthofsection1_1 = col1_1.getMeasuredWidth();
-                            int heightofsection1_1 = col1_1.getMeasuredHeight();
+                                // Get the widths and heights of the sections
+                                int widthofsection1_1 = col1_1.getMeasuredWidth();
+                                int heightofsection1_1 = col1_1.getMeasuredHeight();
 
-                            // We know the size of each section, so we just need to know which one to display
-                            float maxwidth_scale1_1 = ((float) StaticVariables.cast_availableWidth_1col) / (float) widthofsection1_1;
-                            float maxheight_scale1_1 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_1;
+                                // We know the size of each section, so we just need to know which one to display
+                                float maxwidth_scale1_1 = ((float) StaticVariables.cast_availableWidth_1col) / (float) widthofsection1_1;
+                                float maxheight_scale1_1 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_1;
 
-                            if (maxheight_scale1_1 < maxwidth_scale1_1) {
-                                maxwidth_scale1_1 = maxheight_scale1_1;
+                                if (maxheight_scale1_1 < maxwidth_scale1_1) {
+                                    maxwidth_scale1_1 = maxheight_scale1_1;
+                                }
+
+                                // Now we know how many columns we should use, let's do it!
+                                float maxscale = preferences.getMyPreferenceFloat(c, "fontSizePresoMax", 40.0f) / 12.0f;
+
+                                if (maxwidth_scale1_1 > maxscale) {
+                                    maxwidth_scale1_1 = maxscale;
+                                }
+                                projectedPresenterView1Col(c, preferences, storageAccess, processSong, maxwidth_scale1_1,
+                                        projected_LinearLayout, projected_ImageView);
+
                             }
-
-                            // Now we know how many columns we should use, let's do it!
-                            float maxscale = preferences.getMyPreferenceFloat(c, "fontSizePresoMax", 40.0f) / 12.0f;
-
-                            if (maxwidth_scale1_1 > maxscale) {
-                                maxwidth_scale1_1 = maxscale;
-                            }
-                            projectedPresenterView1Col(c, preferences, storageAccess, processSong, maxwidth_scale1_1,
-                                    projected_LinearLayout, projected_ImageView);
-
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }).start();
+            }).start();
+        }
     }
     private void projectedPresenterView1Col(Context c, Preferences preferences,StorageAccess storageAccess,ProcessSong processSong,
                                             float scale1_1, LinearLayout projected_LinearLayout, ImageView projected_ImageView) {

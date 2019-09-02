@@ -266,7 +266,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("d", "Welcome to Presentation Mode");
-
+        StaticVariables.activity = PresenterMode.this;
         FullscreenActivity.mContext = PresenterMode.this;
         FullscreenActivity.appRunning = true;
 
@@ -414,6 +414,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public void onStart() {
         super.onStart();
         FullscreenActivity.appRunning = true;
+        StaticVariables.activity = PresenterMode.this;
         mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                 MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
         // Fix the page flags
@@ -440,6 +441,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     @Override
     protected void onResume() {
         FullscreenActivity.appRunning = true;
+        StaticVariables.activity = PresenterMode.this;
         resizeDrawers();
         // Fix the page flags
         windowFlags();
@@ -3931,6 +3933,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     private void updateDisplays() {
         // This is called when display devices are changed (connected, disconnected, etc.)
+        StaticVariables.activity = PresenterMode.this;
+
         Intent intent = new Intent(PresenterMode.this,
                 PresenterMode.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -3942,7 +3946,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         .setNotificationPendingIntent(notificationPendingIntent).build();
 
         if (mSelectedDevice!=null) {
-            StaticVariables.activity = PresenterMode.this;
             CastRemoteDisplayLocalService.startService(
                     getApplicationContext(),
                     PresentationService.class, getString(R.string.app_id),

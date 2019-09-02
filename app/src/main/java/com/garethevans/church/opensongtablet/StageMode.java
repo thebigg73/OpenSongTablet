@@ -371,6 +371,7 @@ public class StageMode extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
 
         Log.d("StageMode", "Welcome to Stage Mode");
+        StaticVariables.activity = StageMode.this;
         FullscreenActivity.mContext = StageMode.this;
         FullscreenActivity.appRunning = true;
 
@@ -1276,6 +1277,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void onStart() {
         super.onStart();
+        StaticVariables.activity = StageMode.this;
         FullscreenActivity.appRunning = true;
         if (mMediaRouter != null && mMediaRouteSelector != null) {
             try {
@@ -1312,6 +1314,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        StaticVariables.activity = StageMode.this;
         FullscreenActivity.appRunning = true;
         // Make the drawers match half the width of the screen
         resizeDrawers();
@@ -1621,13 +1624,13 @@ public class StageMode extends AppCompatActivity implements
                 if (FullscreenActivity.whichDirection.equals("L2R")) {
                     if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
                         glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
-                    } else {
+                    } else if (songscrollview!=null){
                         songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
                     }
                 } else {
                     if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
                         glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
-                    } else {
+                    } else if (songscrollview!=null){
                         songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
                     }
                 }
@@ -1635,7 +1638,7 @@ public class StageMode extends AppCompatActivity implements
                 if (StaticVariables.whichMode.equals("Performance") && highlightNotes != null && highlightNotes.getVisibility() == View.VISIBLE) {
                     if (FullscreenActivity.whichDirection.equals("L2R")) {
                         highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
-                    } else {
+                    } else if (highlightNotes!=null){
                         highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
                     }
                 }
@@ -4961,6 +4964,7 @@ public class StageMode extends AppCompatActivity implements
     //@SuppressLint("ServiceCast")
     private void updateDisplays() {
         // This is called when display devices are changed (connected, disconnected, etc.)
+        StaticVariables.activity = StageMode.this;
         Intent intent = new Intent(StageMode.this,
                 StageMode.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -4972,7 +4976,6 @@ public class StageMode extends AppCompatActivity implements
                         .setNotificationPendingIntent(notificationPendingIntent).build();
 
         if (mSelectedDevice != null) {
-            StaticVariables.activity = StageMode.this;
             CastRemoteDisplayLocalService.startService(
                     getApplicationContext(),
                     PresentationService.class, getString(R.string.app_id),

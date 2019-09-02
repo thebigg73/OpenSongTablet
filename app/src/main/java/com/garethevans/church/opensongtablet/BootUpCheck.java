@@ -84,6 +84,7 @@ public class BootUpCheck extends AppCompatActivity {
         preferences = new Preferences();
         storageAccess = new StorageAccess();
         SetTypeFace setTypeFace = new SetTypeFace();
+        StaticVariables.activity = BootUpCheck.this;
 
         // Initialise the font
         setTypeFace.setUpAppFonts(BootUpCheck.this,preferences,new Handler(),new Handler(), new Handler(),new Handler(), new Handler());

@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.garethevans.church.opensongtablet"
     android:installLocation="auto"
-    android:versionCode="167"
-    android:versionName="5.0.7">
+    android:versionCode="168"
+    android:versionName="5.0.8">
 
     <!--Overrides are for Sdk=12/13 but library specifiesv Sdk=14+-->
     <!--<uses-sdk

@@ -855,9 +855,13 @@ public class OptionMenuListeners extends AppCompatActivity {
                 tv.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
-                        FullscreenActivity.linkclicked = StaticVariables.mSetList[val];
-                        if (mListener!=null) {
-                            mListener.removeSongFromSet(val);
+                        try {
+                            FullscreenActivity.linkclicked = StaticVariables.mSetList[val];
+                            if (mListener != null) {
+                                mListener.removeSongFromSet(val);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                         return false;
                     }

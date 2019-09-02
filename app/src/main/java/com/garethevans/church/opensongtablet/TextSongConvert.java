@@ -192,14 +192,19 @@ class TextSongConvert {
     }
 
     private String fixBlankHeadings(Context c, String compiledtext) {
-        compiledtext = compiledtext.replace("[]\n[", "[");
-        compiledtext = compiledtext.replace("[]\n\n[", "[");
-        compiledtext = compiledtext.replace("[]\n \n[", "[");
+        try {
+            compiledtext = compiledtext.replace("[]\n[", "[");
+            compiledtext = compiledtext.replace("[]\n\n[", "[");
+            compiledtext = compiledtext.replace("[]\n \n[", "[");
 
-        // If there isn't any tags declared, set up a verse tag
-        if (!compiledtext.contains("[")) {
-            compiledtext = "[" + c.getString(R.string.tag_verse) + "]" + "\n" + compiledtext;
+            // If there isn't any tags declared, set up a verse tag
+            if (!compiledtext.contains("[")) {
+                compiledtext = "[" + c.getString(R.string.tag_verse) + "]" + "\n" + compiledtext;
+            }
+            return compiledtext;
+        } catch (Exception | OutOfMemoryError e) {
+            e.printStackTrace();
+            return "";
         }
-        return compiledtext;
     }
 }
