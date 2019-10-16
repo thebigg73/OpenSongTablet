@@ -493,4 +493,9 @@
     <string name="youtube">"Rechercher la chanson actuelle sur YouTube"</string>
     <string name="duplicate">Dupliquer</string>
     <string name="storage_warning">Veuillez ne pas sélectionner le dossier \"Songs\" comme emplacement de stockage. Vous devez plutôt sélectionner l\'emplacement du dossier parent «OpenSong».</string>
+    <string name="choosestickyfont">Choisissez la police de notes autocollantes</string>
+    <string name="block_shadow_opacity">Opacité</string>
+    <string name="block_text_shadow">Bloquer l\'ombre du texte</string>
+    <string name="continuous">Continu</string>
+    <string name="metronome_duration">Durée du métronome (barres)</string>
 </resources>

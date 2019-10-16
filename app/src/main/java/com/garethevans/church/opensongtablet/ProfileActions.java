@@ -239,6 +239,16 @@ class ProfileActions {
                             preferences.setMyPreferenceString(c,"bibleCurrentFile",getTextValue(xppValue,""));
                             break;
 
+                        case "blockShadow":             // New preference
+                            //blockShadow                       boolean     Should second screen text be displayed on block shadowed text boxes (def:false)
+                            preferences.setMyPreferenceBoolean(c,"blockShadow",getBooleanValue(xppValue,false));
+                            break;
+
+                        case "blockShadowAlpha":
+                            //blockShadowAlpha                float       Alpha of block shadow (def:0.7f)
+                            preferences.setMyPreferenceFloat(c,"blockShadowAlpha",getFloatValue(xppValue,0.7f));
+                            break;
+
                         case "capoInfoAsNumerals":        // New preference
                         case "showCapoAsNumerals":        // Old preference
                             //capoInfoAsNumerals              boolean     Should the capo info bar use Roman numerals
@@ -952,6 +962,11 @@ class ProfileActions {
                             preferences.setMyPreferenceFloat(c,"fontSizePresoMax",getFloatValue(xppValue,40.0f));
                             break;
 
+                        case "fontSticky":        // New preference only
+                            //fontSticky                      String      The name of the font used for the sticky notes.  From fonts.google.com
+                            preferences.setMyPreferenceString(c,"fontSticky",getTextValue(xppValue,"lato"));
+                            break;
+
                         case "gestureScreenDoubleTap":        // New preference
                         case "gesture_doubletap":             // Old preference
                             //gestureScreenDoubleTap          int         The action for double tapping on the song screen (def 2 = edit song - based on menu position)
@@ -1104,6 +1119,11 @@ class ProfileActions {
                         case "autostartmetronome":        // Old preference
                             //metronomeAutoStart              boolean     Should the metronome autostart with song (after manually starting first time)
                             preferences.setMyPreferenceBoolean(c,"metronomeAutoStart",getBooleanValue(xppValue,false));
+                            break;
+
+                        case "metronomeLength":             // New preference
+                            //metronomeLength                 int         Number of bars the metronome stays on for (0=indefinitely) (def:0)
+                            preferences.setMyPreferenceInt(c,"metronomeLength",getIntegerValue(xppValue,0));
                             break;
 
                         case "metronomePan":        // New preference

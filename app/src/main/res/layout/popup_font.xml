@@ -109,6 +109,36 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
+                    android:text="@string/choosestickyfont" />
+
+                <Spinner
+                    android:id="@+id/stickyFontSpinner"
+                    style="@style/MySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp" />
+
+                <TextView
+                    android:id="@+id/stickyPreviewTextView"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lorem" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/section_box"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
                     android:text="@string/presoFont" />
 
                 <Spinner

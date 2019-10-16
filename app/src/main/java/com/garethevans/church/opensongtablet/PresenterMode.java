@@ -1460,6 +1460,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                 // Call the script to get the song location.
                 setActions.getSongFileAndFolder(PresenterMode.this);
+                preferences.setMyPreferenceString(PresenterMode.this,"whichSongFolder",StaticVariables.whichSongFolder);
+                preferences.setMyPreferenceString(PresenterMode.this, "songfilename",StaticVariables.songfilename);
                 findSongInFolders();
                 prepareSongMenu();
 
@@ -1615,28 +1617,32 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     private void selectSectionButtonInSong(int which) {
 
-        StaticVariables.currentSection = which;
-        if (StaticVariables.songSections != null && StaticVariables.songSections.length > 0) {
-            // if which=-1 then we want to pick the first section of the previous song in set
-            // Otherwise, move to the next one.
-            // If we are at the end, move to the nextsonginset
+        try {
+            StaticVariables.currentSection = which;
+            if (StaticVariables.songSections != null && StaticVariables.songSections.length > 0) {
+                // if which=-1 then we want to pick the first section of the previous song in set
+                // Otherwise, move to the next one.
+                // If we are at the end, move to the nextsonginset
 
-            if (StaticVariables.currentSection < 0 && !isplayingautoslideshow) {
-                StaticVariables.currentSection = 0;
-                tryClickPreviousSongInSet();
-            } else if (StaticVariables.currentSection >= StaticVariables.songSections.length && !isplayingautoslideshow) {
-                StaticVariables.currentSection = 0;
-                tryClickNextSongInSet();
-            } else if (StaticVariables.currentSection < 0 || StaticVariables.currentSection >= StaticVariables.songSections.length) {
-                StaticVariables.currentSection = 0;
+                if (StaticVariables.currentSection < 0 && !isplayingautoslideshow) {
+                    StaticVariables.currentSection = 0;
+                    tryClickPreviousSongInSet();
+                } else if (StaticVariables.currentSection >= StaticVariables.songSections.length && !isplayingautoslideshow) {
+                    StaticVariables.currentSection = 0;
+                    tryClickNextSongInSet();
+                } else if (StaticVariables.currentSection < 0 || StaticVariables.currentSection >= StaticVariables.songSections.length) {
+                    StaticVariables.currentSection = 0;
+                }
+
+                // enable or disable the quick nav buttons
+                fixNavButtons();
+
+                LinearLayout row = (LinearLayout) presenter_song_buttonsListView.getChildAt(StaticVariables.currentSection);
+                Button thisbutton = (Button) row.getChildAt(1);
+                thisbutton.performClick();
             }
-
-            // enable or disable the quick nav buttons
-            fixNavButtons();
-
-            LinearLayout row = (LinearLayout) presenter_song_buttonsListView.getChildAt(StaticVariables.currentSection);
-            Button thisbutton = (Button) row.getChildAt(1);
-            thisbutton.performClick();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     private void unhighlightAllSetButtons() {
@@ -1827,8 +1833,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                 // Remove the item from the SQL database
                 // Get the SQLite stuff
-                sqLiteHelper.deleteSong(PresenterMode.this, sqLite.getSongid());
-                prepareSongMenu();
+                try {
+                    sqLiteHelper.deleteSong(PresenterMode.this, sqLite.getSongid());
+                    prepareSongMenu();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
 
             case "deleteset":
@@ -3787,6 +3797,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         String whattolookfor; // not going to find this by accident...
                         whattolookfor = setActions.whatToLookFor(PresenterMode.this, StaticVariables.whichSongFolder, foundsongfilename);
 
+                        // Fix for variations, etc
+                        whattolookfor = setActions.fixIsInSetSearch(whattolookfor);
+
                         boolean isinset = preferences.getMyPreferenceString(PresenterMode.this,"setCurrent","").contains(whattolookfor);
 
                         SongMenuViewItems song = new SongMenuViewItems(foundsongfilename,
@@ -3852,7 +3865,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     FullscreenActivity.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
                     StaticVariables.whatsongforsetwork = FullscreenActivity.linkclicked;
                     StaticVariables.setMoveDirection = ""; // Expects back or forward for Stage/Performance, but not here
-                    setActions.doMoveInSet(PresenterMode.this);
+                    setActions.doMoveInSet(PresenterMode.this, preferences);
 
                     // Set indexSongInSet position has moved
                     //invalidateOptionsMenu();

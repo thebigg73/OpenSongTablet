@@ -162,6 +162,9 @@ class IndexSongs {
 
         } catch (Exception e) {
             e.printStackTrace();
+        } catch (OutOfMemoryError oom) {
+            StaticVariables.myToastMessage = "Out of memory: "+folder+"/"+filename;
+            ShowToast.showToast(c);
         }
 
     }

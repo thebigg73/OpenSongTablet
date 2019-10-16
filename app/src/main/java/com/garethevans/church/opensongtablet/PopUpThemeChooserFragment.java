@@ -516,8 +516,8 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         dark_custom.setTag("dark_lyricsCustomColor");
         dark_presofont.setTag("dark_presoFontColor");
         dark_presoinfofont.setTag("dark_presoInfoFontColor");
-        dark_presoalertfont.setTag("dark_presoAlertFontColor");
-        dark_presoshadow.setTag("dark_presoShadowFontColor");
+        dark_presoalertfont.setTag("dark_presoAlertColor");
+        dark_presoshadow.setTag("dark_presoShadowColor");
         dark_capo.setTag("dark_lyricsCapoColor");
         dark_metronome.setTag("dark_metronomeColor");
         dark_pagebuttons.setTag("dark_pageButtonsColor");
@@ -539,8 +539,8 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         light_capo.setTag("light_lyricsCapoColor");
         light_presofont.setTag("light_presoFontColor");
         light_presoinfofont.setTag("light_presoInfoFontColor");
-        light_presoalertfont.setTag("light_presoAlertFontColor");
-        light_presoshadow.setTag("light_presoShadowFontColor");
+        light_presoalertfont.setTag("light_presoAlertColor");
+        light_presoshadow.setTag("light_presoShadowColor");
         light_metronome.setTag("light_metronomeColor");
         light_pagebuttons.setTag("light_pageButtonsColor");
         light_stickytext.setTag("light_stickyTextColor");
@@ -561,8 +561,8 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         custom1_capo.setTag("custom1_lyricsCapoColor");
         custom1_presofont.setTag("custom1_presoFontColor");
         custom1_presoinfofont.setTag("custom1_presoInfoFontColor");
-        custom1_presoalertfont.setTag("custom1_presoAlertFontColor");
-        custom1_presoshadow.setTag("custom1_presoShadowFontColor");
+        custom1_presoalertfont.setTag("custom1_presoAlertColor");
+        custom1_presoshadow.setTag("custom1_presoShadowColor");
         custom1_metronome.setTag("custom1_metronomeColor");
         custom1_pagebuttons.setTag("custom1_pageButtonsColor");
         custom1_stickytext.setTag("custom1_stickyTextColor");
@@ -583,8 +583,8 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         custom2_capo.setTag("custom2_lyricsCapoColor");
         custom2_presofont.setTag("custom2_presoFontColor");
         custom2_presoinfofont.setTag("custom2_presoInfoFontColor");
-        custom2_presoalertfont.setTag("custom2_presoAlertFontColor");
-        custom2_presoshadow.setTag("custom2_presoShadowFontColor");
+        custom2_presoalertfont.setTag("custom2_presoAlertColor");
+        custom2_presoshadow.setTag("custom2_presoShadowColor");
         custom2_metronome.setTag("custom2_metronomeColor");
         custom2_pagebuttons.setTag("custom2_pageButtonsColor");
         custom2_stickytext.setTag("custom2_stickyTextColor");
@@ -606,8 +606,8 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         dark_capo.setOnClickListener(new ChangeColorListener("dark_lyricsCapoColor"));
         dark_presofont.setOnClickListener(new ChangeColorListener("dark_presoFontColor"));
         dark_presoinfofont.setOnClickListener(new ChangeColorListener("dark_presoInfoFontColor"));
-        dark_presoalertfont.setOnClickListener(new ChangeColorListener("dark_presoAlertFontColor"));
-        dark_presoshadow.setOnClickListener(new ChangeColorListener("dark_presoShadowFontColor"));
+        dark_presoalertfont.setOnClickListener(new ChangeColorListener("dark_presoAlertColor"));
+        dark_presoshadow.setOnClickListener(new ChangeColorListener("dark_presoShadowColor"));
         dark_metronome.setOnClickListener(new ChangeColorListener("dark_metronomeColor"));
         dark_pagebuttons.setOnClickListener(new ChangeColorListener("dark_pageButtonsColor"));
         dark_stickytext.setOnClickListener(new ChangeColorListener("dark_stickyTextColor"));
@@ -628,8 +628,8 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         light_capo.setOnClickListener(new ChangeColorListener("light_lyricsCapoColor"));
         light_presofont.setOnClickListener(new ChangeColorListener("light_presoFontColor"));
         light_presoinfofont.setOnClickListener(new ChangeColorListener("light_presoInfoFontColor"));
-        light_presoalertfont.setOnClickListener(new ChangeColorListener("light_presoAlertFontColor"));
-        light_presoshadow.setOnClickListener(new ChangeColorListener("light_presoShadowFontColor"));
+        light_presoalertfont.setOnClickListener(new ChangeColorListener("light_presoAlertColor"));
+        light_presoshadow.setOnClickListener(new ChangeColorListener("light_presoShadowColor"));
         light_metronome.setOnClickListener(new ChangeColorListener("light_metronomeColor"));
         light_pagebuttons.setOnClickListener(new ChangeColorListener("light_pageButtonsColor"));
         light_stickytext.setOnClickListener(new ChangeColorListener("light_stickyTextColor"));
@@ -650,8 +650,8 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         custom1_capo.setOnClickListener(new ChangeColorListener("custom1_lyricsCapoColor"));
         custom1_presofont.setOnClickListener(new ChangeColorListener("custom1_presoFontColor"));
         custom1_presoinfofont.setOnClickListener(new ChangeColorListener("custom1_presoInfoFontColor"));
-        custom1_presoalertfont.setOnClickListener(new ChangeColorListener("custom1_presoAlertFontColor"));
-        custom1_presoshadow.setOnClickListener(new ChangeColorListener("custom1_presoShadowFontColor"));
+        custom1_presoalertfont.setOnClickListener(new ChangeColorListener("custom1_presoAlertColor"));
+        custom1_presoshadow.setOnClickListener(new ChangeColorListener("custom1_presoShadowColor"));
         custom1_metronome.setOnClickListener(new ChangeColorListener("custom1_metronomeColor"));
         custom1_pagebuttons.setOnClickListener(new ChangeColorListener("custom1_pageButtonsColor"));
         custom1_stickytext.setOnClickListener(new ChangeColorListener("custom1_stickyTextColor"));
@@ -672,8 +672,8 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         custom2_capo.setOnClickListener(new ChangeColorListener("custom2_lyricsCapoColor"));
         custom2_presofont.setOnClickListener(new ChangeColorListener("custom2_presoFontColor"));
         custom2_presoinfofont.setOnClickListener(new ChangeColorListener("custom2_presoInfoFontColor"));
-        custom2_presoalertfont.setOnClickListener(new ChangeColorListener("custom2_presoAlertFontColor"));
-        custom2_presoshadow.setOnClickListener(new ChangeColorListener("custom2_presoShadowFontColor"));
+        custom2_presoalertfont.setOnClickListener(new ChangeColorListener("custom2_presoAlertColor"));
+        custom2_presoshadow.setOnClickListener(new ChangeColorListener("custom2_presoShadowColor"));
         custom2_metronome.setOnClickListener(new ChangeColorListener("custom2_metronomeColor"));
         custom2_pagebuttons.setOnClickListener(new ChangeColorListener("custom2_pageButtonsColor"));
         custom2_stickytext.setOnClickListener(new ChangeColorListener("custom2_stickyTextColor"));

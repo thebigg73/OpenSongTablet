@@ -203,6 +203,7 @@ class SetActions {
                 } else {
                     StaticVariables.nextSongInSet = "";
                 }
+
             } else {
                 StaticVariables.previousSongInSet = "";
                 StaticVariables.nextSongInSet = "";
@@ -217,10 +218,8 @@ class SetActions {
             if (!alreadythere) {
                 for (int x = 0; x < StaticVariables.setSize; x++) {
 //		for (int x = FullscreenActivity.setSize-1; x<1; x--) {
-
-                    if (StaticVariables.mSet[x].equals(StaticVariables.whatsongforsetwork) ||
-                            StaticVariables.mSet[x].equals("**" + StaticVariables.whatsongforsetwork)) {
-
+                    if (StaticVariables.mSet[x].contains(StaticVariables.whatsongforsetwork) ||
+                            StaticVariables.mSet[x].contains("**" + StaticVariables.whatsongforsetwork)) {
                         StaticVariables.indexSongInSet = x;
                         if (x > 0) {
                             StaticVariables.previousSongInSet = StaticVariables.mSet[x - 1];
@@ -364,7 +363,9 @@ class SetActions {
             } else {
                 songforsetwork ="$**_" + getSongForSetWork(c) + "_**$";
             }
+            songforsetwork = fixIsInSetSearch(songforsetwork);
             String currset = preferences.getMyPreferenceString(c,"setCurrent","");
+
             if (StaticVariables.setView && currset.contains(songforsetwork)) {
                 // If we are currently in set mode, check if the new song is there, in which case do nothing else
                 indexSongInSet();
@@ -428,6 +429,7 @@ class SetActions {
         String subfoldername;
         String setprefix;
 
+        Log.d("SetActions","where="+where+"  what="+what);
         if (where.equals(c.getResources().getString(R.string.scripture))) {
             foldername = "Scripture";
             subfoldername = "_cache";
@@ -865,20 +867,20 @@ class SetActions {
         return s;
     }
 
-    void prepareFirstItem(Context c) {
+    void prepareFirstItem(Context c,Preferences preferences) {
         // If we have just loaded a set, and it isn't empty,  load the first item
         if (StaticVariables.mSetList.length>0) {
             StaticVariables.whatsongforsetwork = StaticVariables.mSetList[0];
             StaticVariables.setView = true;
 
+            Log.d("SetActions","whatsongforsetwork="+StaticVariables.whatsongforsetwork);
             FullscreenActivity.linkclicked = StaticVariables.mSetList[0];
             FullscreenActivity.pdfPageCurrent = 0;
 
             // Get the song and folder names from the item clicked in the set list
             getSongFileAndFolder(c);
-
-            // Match the song folder
-            //listSongFiles.getAllSongFiles(c, preferences, storageAccess);
+            preferences.setMyPreferenceString(c,"whichSongFolder",StaticVariables.whichSongFolder);
+            preferences.setMyPreferenceString(c, "songfilename",StaticVariables.songfilename);
 
             // Get the index of the song in the current set
             indexSongInSet();
@@ -886,6 +888,7 @@ class SetActions {
     }
 
     void getSongFileAndFolder(Context c) {
+        Log.d("SetActions","linkclicked="+FullscreenActivity.linkclicked);
         if (!FullscreenActivity.linkclicked.contains("/")) {
             FullscreenActivity.linkclicked = "/" + FullscreenActivity.linkclicked;
         }
@@ -964,7 +967,7 @@ class SetActions {
         }
     }
 
-    void doMoveInSet(Context c) {
+    void doMoveInSet(Context c, Preferences preferences) {
         MyInterface mListener = (MyInterface) c;
         boolean justmovingsections = false;
 
@@ -1018,6 +1021,8 @@ class SetActions {
 
             // Get the song and folder names from the item clicked in the set list
             getSongFileAndFolder(c);
+            preferences.setMyPreferenceString(c,"whichSongFolder",StaticVariables.whichSongFolder);
+            preferences.setMyPreferenceString(c, "songfilename",StaticVariables.songfilename);
 
             StaticVariables.setMoveDirection = "";
             mListener.loadSong();
@@ -1025,4 +1030,12 @@ class SetActions {
 
     }
 
+    String fixIsInSetSearch(String s) {
+        if (s.contains("**_Variations/")) {
+            s = s.replace("**_Variations/","**_**Variation/");
+        } else if (s.contains("**_Variation/")) {
+            s = s.replace("**_Variation/","**_**Variation/");
+        }
+        return s;
+    }
 }

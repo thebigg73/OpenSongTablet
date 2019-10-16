@@ -506,7 +506,7 @@ class ChordProConvert {
     }
 
     String getSongFolderLocation(StorageAccess storageAccess, Uri uri, String oldSongFileName) {
-        String sf = storageAccess.getPartOfUri(uri, "OpenSong/Songs");
+        String sf = storageAccess.getPartOfUri(uri);
         sf = sf.replace("OpenSong/Songs/", "");
         sf = sf.replace(oldSongFileName, "");
         sf = sf.replace("//", "/");

@@ -72,7 +72,7 @@ class StaticVariables {
     static int currentSection;
 
     // The fonts used.  They are preloaded in SetTypeFace
-    static Typeface typefaceLyrics, typefaceChords, typefacePreso, typefacePresoInfo, typefaceCustom, typefaceMono;
+    static Typeface typefaceLyrics, typefaceChords, typefaceSticky, typefacePreso, typefacePresoInfo, typefaceCustom, typefaceMono;
 
 
     // Song scaling used for scaling overrides if appropriate (matches to user preference)

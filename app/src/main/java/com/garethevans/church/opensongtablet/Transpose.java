@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +24,6 @@ class Transpose {
     private final String[] sharpchords3b      = {" ais",    " his",    " cis",    " dis",    " eis",    " fis",    " gis"};
     private final String[] sharpchords3c      = {".ais",    ".his",    ".cis",    ".dis",    ".eis",    ".fis",    ".gis"};
     private final String[] sharpchords4       = {"La#",     "Si#",     "Do#",     "Ré#",     "Mi#",     "Fa#",     "Sol#"};
-    private final String[] sharpchords5       = {"A#",      "B#",      "C#",      "D#",      "E#",      "F#",      "G#"};
 
     private final String[] properchordsharpsnumsa   = {"$.2.$",   "$.5.$",   "$.7.$",   "$.10.$",  "$.12.$"};  // For number to chord
     private final String[] properchordsharpsnumsb   = {"$.32.$",  "$.35.$",  "$.37.$",  "$.40.$",  "$.42.$"};  // For number to chord
@@ -35,7 +35,6 @@ class Transpose {
     private final String[] propersharpchords3b      = {" ais",    " cis",    " dis",    " fis",    " gis"};    // For number to chord
     private final String[] propersharpchords3c      = {".ais",    ".cis",    ".dis",    ".fis",    ".gis"};    // For number to chord
     private final String[] propersharpchords4       = {"La#",     "Do#",     "Ré#",     "Fa#",     "Sol#"};    // For number to chord
-    private final String[] propersharpchords5       = {"A#",      "C#",      "D#",      "F#",      "G#"};      // For number to chord
 
     // Flat chords next
     private final String[] chordflatsnumsa    = {"$.12.$",  "$.2.$",   "$.3.$",   "$.5.$",   "$.7.$",   "$.8.$",   "$.10.$"};
@@ -48,7 +47,6 @@ class Transpose {
     private final String[] flatchords3b       = {" as",     " b",      " ces",    " des",    " es",     " fes",    " ges"};
     private final String[] flatchords3c       = {".as",     ".b",      ".ces",    ".des",    ".es",     ".fes",    ".ges"};
     private final String[] flatchords4        = {"Lab",     "Sib",     "Dob",     "Réb",     "Mib",     "Fab",     "Solb"};
-    private final String[] flatchords5        = {"Ab",      "Bb",      "Cb",      "Db",      "Eb",      "Fb",      "Gb"};
 
     private final String[] properchordflatsnumsa    = {"$.12.$",  "$.2.$",   "$.5.$",   "$.7.$",   "$.10.$"};// For number to chord
     private final String[] properchordflatsnumsb    = {"$.42.$",  "$.32.$",  "$.35.$",  "$.37.$",  "$.40.$"};// For number to chord
@@ -59,7 +57,6 @@ class Transpose {
     private final String[] properflatchords3b       = {" as",     " b",      " des",    " es",     " ges"};  // For number to chord
     private final String[] properflatchords3c       = {".as",     ".b",      ".des",    ".es",     ".ges"};  // For number to chord
     private final String[] properflatchords4        = {"Lab",     "Sib",     "Réb",     "Mib",     "Solb"};  // For number to chord
-    private final String[] properflatchords5        = {"Ab",      "Bb",      "Db",      "Eb",      "Gb"};    // For number to chord
 
     // Finally the natural chords
     private final String[] chordnaturalnumsa  = {"$.1.$",   "$.3.$",   "$.4.$",   "$.6.$",   "$.8.$",   "$.9.$",   "$.11.$"};
@@ -72,7 +69,6 @@ class Transpose {
     private final String[] naturalchords3b    = {" a",      " h",      " c",      " d",      " e",      " f",      " g"};
     private final String[] naturalchords3c    = {".a",      ".h",      ".c",      ".d",      ".e",      ".f",      ".g"};
     private final String[] naturalchords4     = {"La",      "Si",      "Do",      "Ré",      "Mi",      "Fa",      "Sol"};
-    private final String[] naturalchords5     = {"A",       "B",       "C",       "D",       "E",       "F",       "G"};
 
     private final String originalkey = StaticVariables.mKey;
 
@@ -171,6 +167,7 @@ class Transpose {
                         case 4:
                             FullscreenActivity.myTransposedLyrics[x] = numberToChord4(FullscreenActivity.myTransposedLyrics[x],forceflats,forcesharps,usesflats);
                             break;
+
                     }
                 }
 
@@ -249,7 +246,8 @@ class Transpose {
                             break;
 
                         case 5:
-                            FullscreenActivity.myTransposedLyrics[x] = chordToNumber5(FullscreenActivity.myTransposedLyrics[x]);
+                            boolean numeral = true;
+                            FullscreenActivity.myTransposedLyrics[x] = fromNashville(FullscreenActivity.myTransposedLyrics[x], numeral);
                             break;
 
                     }
@@ -290,7 +288,8 @@ class Transpose {
                             break;
 
                         case 5:
-                            FullscreenActivity.myTransposedLyrics[x] = numberToChord5(FullscreenActivity.myTransposedLyrics[x],false,false,usesflats);
+                            boolean numeral = true;
+                            FullscreenActivity.myTransposedLyrics[x] = toNashville(FullscreenActivity.myTransposedLyrics[x],numeral);
                     }
                 }
 
@@ -440,28 +439,183 @@ class Transpose {
         return line;
     }
 
-    private String chordToNumber5(String line) {
+    void convertChords(Context c, Preferences preferences) {
+        int convertTo = preferences.getMyPreferenceInt(c,"chordFormat",1);
+        checkChordFormat(c,preferences);
+
+        Log.d("Transpose","convertTo="+convertTo+"\ndetetctedChordFormat="+StaticVariables.detectedChordFormat);
+        if (convertTo>=5) {
+            // We want to convert to a numeral.  If it is normal format, just do it, otherwise, convert to a normal format
+            if (StaticVariables.detectedChordFormat >= 5) {
+                convertFromNumerals(c, preferences);
+            }
+            // Now convert to the correct value
+            convertToNumerals(c, preferences);
+        } else {
+            if (StaticVariables.detectedChordFormat >= 5) {
+                // Convert to a normal format to start with
+                convertFromNumerals(c, preferences);
+            }
+            StaticVariables.transposeDirection = "0";
+            checkChordFormat(c, preferences);
+            try {
+                doTranspose(c, preferences, false, false, true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void convertToNumerals(Context c, Preferences preferences) {
+        boolean numeral = false;
+        if (preferences.getMyPreferenceInt(c,"chordFormat",1)==6) {
+            numeral = true;
+        }
+        StaticVariables.transposedLyrics = null;
+        StaticVariables.transposedLyrics = "";
+        FullscreenActivity.myTransposedLyrics = null;
+        FullscreenActivity.myTransposedLyrics = StaticVariables.mLyrics.split("\n");
+
+        StringBuilder sb = new StringBuilder();
+        // Convert these into standard chord format to start with
+        for (String line:FullscreenActivity.myTransposedLyrics) {
+            if (line.startsWith(".")) {
+                // Chord line, so sort it
+                Log.d("Transpose","old line="+line);
+                line = toNashville(line,numeral);
+                Log.d("Transpose","new line="+line);
+            }
+            // Add it back up
+            sb.append(line).append("\n");
+        }
+
+        StaticVariables.transposedLyrics = sb.toString();
+
+        // Now that the chords have been changed, replace the myTransposedLyrics
+        // into the file
+        FullscreenActivity.mynewXML = null;
+        FullscreenActivity.mynewXML = "";
+
+        // Write the new improved XML file
+        StaticVariables.mLyrics = StaticVariables.transposedLyrics;
+
+        PopUpEditSongFragment.prepareSongXML();
+        PopUpEditSongFragment.justSaveSongXML(c, preferences);
+
+        StaticVariables.transposedLyrics = null;
+        StaticVariables.transposedLyrics = "";
+        if (FullscreenActivity.myTransposedLyrics!=null) {
+            Arrays.fill(FullscreenActivity.myTransposedLyrics, null);
+        }
+        if (FullscreenActivity.myParsedLyrics!=null) {
+            Arrays.fill(FullscreenActivity.myParsedLyrics, null);
+        }
+        FullscreenActivity.myLyrics = null;
+        FullscreenActivity.myLyrics = "";
+        FullscreenActivity.mynewXML = null;
+        FullscreenActivity.mynewXML = "";
+        FullscreenActivity.myXML = null;
+        FullscreenActivity.myXML = "";
+    }
+
+    private void convertFromNumerals(Context c, Preferences preferences) {
+        // This goes through the song and converts from Nashville numbering or numerals to standard chord format first
+        if (StaticVariables.detectedChordFormat==5 || StaticVariables.detectedChordFormat==6) {
+            // We currently have either a nashville system (numbers or numerals)
+            StaticVariables.transposedLyrics = null;
+            StaticVariables.transposedLyrics = "";
+            FullscreenActivity.myTransposedLyrics = null;
+            FullscreenActivity.myTransposedLyrics = StaticVariables.mLyrics.split("\n");
+
+            boolean numeral = StaticVariables.detectedChordFormat==6;
+            StringBuilder sb = new StringBuilder();
+            Log.d("Transpose","Converting from numerals first");
+            // Convert these into standard chord format to start with
+            for (String line:FullscreenActivity.myTransposedLyrics) {
+                if (line.startsWith(".")) {
+                    // Chord line, so sort it
+                    Log.d("Transpose","old line="+line);
+                    line = fromNashville(line,numeral);
+                    Log.d("Transpose","new line="+line);
+
+                }
+                // Add it back up
+                sb.append(line).append("\n");
+            }
+
+            StaticVariables.transposedLyrics = sb.toString();
+
+            // Now that the chords have been changed, replace the myTransposedLyrics
+            // into the file
+            FullscreenActivity.mynewXML = null;
+            FullscreenActivity.mynewXML = "";
+
+            // Write the new improved XML file
+            StaticVariables.mLyrics = StaticVariables.transposedLyrics;
+
+            PopUpEditSongFragment.prepareSongXML();
+            PopUpEditSongFragment.justSaveSongXML(c, preferences);
+
+            StaticVariables.transposedLyrics = null;
+            StaticVariables.transposedLyrics = "";
+            if (FullscreenActivity.myTransposedLyrics!=null) {
+                Arrays.fill(FullscreenActivity.myTransposedLyrics, null);
+            }
+            if (FullscreenActivity.myParsedLyrics!=null) {
+                Arrays.fill(FullscreenActivity.myParsedLyrics, null);
+            }
+            FullscreenActivity.myLyrics = null;
+            FullscreenActivity.myLyrics = "";
+            FullscreenActivity.mynewXML = null;
+            FullscreenActivity.mynewXML = "";
+            FullscreenActivity.myXML = null;
+            FullscreenActivity.myXML = "";
+
+            // If the new chordformat desired is also a numeral or number system, convert it to that
+            if (preferences.getMyPreferenceInt(c,"chordFormat",1)==5 ||
+                    preferences.getMyPreferenceInt(c, "chordFormat",1)==6) {
+                convertToNumerals(c, preferences);
+            }
+        } else {
+            StaticVariables.myToastMessage = "No Nashville/Numeral chord format detected.";
+            ShowToast.showToast(c);
+        }
+    }
+
+    private String toNashville(String line, boolean numeral) {
         //  This compares the chords with the song key
-        String[] bits;
+
+        Log.d("Transpose","Converting to nashville");
+
+        // A  A#/Bb  B/H  C  C#/Db  D  D#/Eb  E  F  F#/Gb  G  G#/Ab
+        // 0    1     2   3    4    5    6    7  8    9    10   11
+
+        String[] bitssharp;
+        String[] bitsflat;
         switch(oldchordformat) {
             case 1:
             default:
-                bits = "A A# B C C# D D# E F F# G G# A A# B C C# D D# E F F# G".split(" ");
+                bitssharp = "A A# B C C# D D# E F F# G G# A A# B C C# D D# E F F# G G#".split(" ");
+                bitsflat  = "A Bb B C Db D Eb E F Gb G Ab A Bb B C Db D Eb E F Gb G Ab".split(" ");
                 break;
 
             case 2:
             case 3:
-                bits = "A B H C C# D D# E F F# G G# A B H C C# D D# E F F# G".split(" ");
+                bitssharp = "A B H C C# D D# E F F# G G# A B H C C# D D# E F F# G G#".split(" ");
+                bitsflat  = "A B H C Db D Eb E F Gb G Ab A B H C Db D Eb E F Gb G Ab".split(" ");
                 break;
 
             case 4:
-                bits = "La La# Si Do Do# Ré Ré# Mi Fa Fa# Sol Sol# La La# Si".split(" ");
+                bitssharp = "La La# Si Do Do# Ré Ré# Mi Fa Fa# Sol Sol# La La# Si Do Do# Ré Ré# Mi Fa Fa# Sol Sol#".split(" ");
+                bitsflat =  "La Sib Si Do Réb Ré Mib Mi Fa Solb Sol Lab La Sib Si Do Réb Ré Mib Mi Fa Solb Sol Lab".split(" ");
+                break;
         }
 
         int root = 0;
         boolean stilllooking = true;
-        for (int i=0;i<bits.length;i++) {
-            if (stilllooking && bits[i].equals(originalkey)) {
+        for (int i=0;i<bitssharp.length;i++) {
+            if (stilllooking && (bitssharp[i].equals(originalkey) || (bitssharp[i]+"m").equals(originalkey) ||
+                    bitsflat[i].equals(originalkey) || (bitsflat[i]+"m").equals(originalkey))) {
                 root = i;
                 stilllooking = false;
             }
@@ -482,15 +636,311 @@ class Transpose {
             num7 = root+10;
         }
 
-        String nash1 = bits[root];
-        String nash2 = bits[num2];
-        String nash3 = bits[num3];
-        String nash4 = bits[num4];
-        String nash5 = bits[num5];
-        String nash6 = bits[num6];
-        String nash7 = bits[num7];
+        String nash1_sharp = bitssharp[root];
+        String nash1s_sharp = bitssharp[root+1];
+        String nash2_sharp = bitssharp[num2];
+        String nash2s_sharp = bitssharp[num2+1];
+        String nash3_sharp = bitssharp[num3];
+        String nash4_sharp = bitssharp[num4];
+        String nash4s_sharp = bitssharp[num4+1];
+        String nash5_sharp = bitssharp[num5];
+        String nash5s_sharp = bitssharp[num5+1];
+        String nash6_sharp = bitssharp[num6];
+        String nash6s_sharp = bitssharp[num6+1];
+        String nash7_sharp = bitssharp[num7];
+        String nash1_flat = bitsflat[root];
+        String nash2_flat = bitsflat[num2];
+        String nash2b_flat = bitsflat[num2-1];
+        String nash3_flat = bitsflat[num3];
+        String nash3b_flat = bitsflat[num3-1];
+        String nash4_flat = bitsflat[num4];
+        String nash5_flat = bitsflat[num5];
+        String nash5b_flat = bitsflat[num5-1];
+        String nash6_flat = bitsflat[num6];
+        String nash6b_flat = bitsflat[num6-1];
+        String nash7_flat = bitsflat[num7];
+        String nash7b_flat = bitsflat[num7-1];
 
-        return "";
+        if (numeral) {
+            line = fixDiminished(line);
+            line = fixAugmented(line);
+            line = fixMajorSeventh(line);
+
+            String[] conditions = {"sharp","flat","natural"};
+            for (String condition: conditions) {
+                line = replaceBits(line,nash1_sharp,"I",condition);
+                line = replaceBits(line,nash2_sharp,"II",condition);
+                line = replaceBits(line,nash3_sharp,"III",condition);
+                line = replaceBits(line,nash4_sharp,"IV",condition);
+                line = replaceBits(line,nash5_sharp,"V",condition);
+                line = replaceBits(line,nash6_sharp,"VI",condition);
+                line = replaceBits(line,nash7_sharp,"VII",condition);
+                line = replaceBits(line,nash1s_sharp,"#I",condition);
+                line = replaceBits(line,nash2s_sharp,"#II",condition);
+                line = replaceBits(line,nash4s_sharp,"#IV",condition);
+                line = replaceBits(line,nash5s_sharp,"#V",condition);
+                line = replaceBits(line,nash6s_sharp,"#VI",condition);
+                line = replaceBits(line,nash1_flat,"I",condition);
+                line = replaceBits(line,nash2_flat,"II",condition);
+                line = replaceBits(line,nash3_flat,"III",condition);
+                line = replaceBits(line,nash4_flat,"IV",condition);
+                line = replaceBits(line,nash5_flat,"V",condition);
+                line = replaceBits(line,nash6_flat,"VI",condition);
+                line = replaceBits(line,nash7_flat,"VII",condition);
+                line = replaceBits(line,nash2b_flat,"bII",condition);
+                line = replaceBits(line,nash3b_flat,"bIII",condition);
+                line = replaceBits(line,nash5b_flat,"bV",condition);
+                line = replaceBits(line,nash6b_flat,"bVI",condition);
+                line = replaceBits(line,nash7b_flat,"bVII",condition);
+
+            }
+            // Fix minor chords
+            line = line.replace("IVm", "iv");
+            line = line.replace("VIIm", "vii");
+            line = line.replace("VIIo", "vii");
+            line = line.replace("VIm", "vi");
+            line = line.replace("Vm", "v");
+            line = line.replace("IIIm", "iii");
+            line = line.replace("IIm", "ii");
+            line = line.replace("Im", "i");
+
+        } else {
+            line = line.replace(nash1_sharp, "1");
+            line = line.replace(nash1s_sharp, "#1");
+            line = line.replace(nash2_sharp, "2");
+            line = line.replace(nash2s_sharp, "#2");
+            line = line.replace(nash3_sharp, "3");
+            line = line.replace(nash4_sharp, "4");
+            line = line.replace(nash4s_sharp, "#4");
+            line = line.replace(nash5_sharp, "5");
+            line = line.replace(nash5s_sharp, "#5");
+            line = line.replace(nash6_sharp, "6");
+            line = line.replace(nash6s_sharp, "#6");
+            line = line.replace(nash7_sharp, "7");
+            line = line.replace(nash1_flat, "1");
+            line = line.replace(nash2_flat, "2");
+            line = line.replace(nash2b_flat, "b2");
+            line = line.replace(nash3_flat, "3");
+            line = line.replace(nash3b_flat, "b3");
+            line = line.replace(nash4_flat, "4");
+            line = line.replace(nash5_flat, "5");
+            line = line.replace(nash5b_flat, "b5");
+            line = line.replace(nash6_flat, "6");
+            line = line.replace(nash6b_flat, "b6");
+            line = line.replace(nash7_flat, "7");
+            line = line.replace(nash7b_flat, "b7");
+        }
+
+        return line;
+    }
+
+    private String replaceBits(String line, String what, String with, String condition) {
+        if (condition.equals("sharp") && what.contains("#")) {
+            Log.d("Transpose", "replace '"+what+"' with '"+with+"'");
+            return line.replace(what,with);
+        } else if (condition.equals("flat") && what.contains("b")) {
+            Log.d("Transpose", "Fixing "+condition+": replace '"+what+"' with '"+with+"'");return line.replace(what,with);
+        } else if (condition.equals("natural") && !what.contains("#") && !what.contains("b")) {
+            Log.d("Transpose", "Fixing "+condition+": replace '"+what+"' with '"+with+"'");return line.replace(what,with);
+        } else {
+            Log.d("Transpose", "Fixing "+condition+": not replacing '"+what+"' with '"+with+"'");
+            return line;
+        }
+    }
+    private String fromNashville(String line, boolean numeral) {
+        String[] bitssharp;
+        String[] bitsflat;
+        switch(oldchordformat) {
+            case 1:
+            default:
+                bitssharp = "A A# B C C# D D# E F F# G G# A A# B C C# D D# E F F# G G#".split(" ");
+                bitsflat  = "A Bb B C Db D Eb E F Gb G Ab A Bb B C Db D Eb E F Gb G Ab".split(" ");
+                break;
+
+            case 2:
+            case 3:
+                bitssharp = "A B H C C# D D# E F F# G G# A B H C C# D D# E F F# G G#".split(" ");
+                bitsflat  = "A B H C Db D Eb E F Gb G Ab A B H C Db D Eb E F Gb G Ab".split(" ");
+                break;
+
+            case 4:
+                bitssharp = "La La# Si Do Do# Ré Ré# Mi Fa Fa# Sol Sol# La La# Si Do Do# Ré Ré# Mi Fa Fa# Sol Sol#".split(" ");
+                bitsflat =  "La Sib Si Do Réb Ré Mib Mi Fa Solb Sol Lab La Sib Si Do Réb Ré Mib Mi Fa Solb Sol Lab".split(" ");
+        }
+
+        int root = 0;
+        boolean stilllooking = true;
+        for (int i=0;i<bitssharp.length;i++) {
+            if (stilllooking && (bitssharp[i].equals(originalkey) || (bitssharp[i]+"m").equals(originalkey) ||
+                    bitsflat[i].equals(originalkey) || (bitsflat[i]+"m").equals(originalkey))) {
+                root = i;
+                stilllooking = false;
+            }
+        }
+
+        boolean ismajor = true;
+        if (originalkey.contains("m")) {
+            ismajor = false;
+        }
+        int num2=root+2, num3, num4=root+5, num5=root+7, num6, num7;
+        if (ismajor) {
+            num3 = root+4;
+            num6 = root+9;
+            num7 = root+11;
+        } else {
+            num3 = root+3;
+            num6 = root+8;
+            num7 = root+10;
+        }
+
+        String[] bitsdefault;
+        String[] conditions;
+        if (originalkey.contains("b")) {
+            bitsdefault = bitsflat.clone();
+            conditions = new String[]{"flat","sharp","natural"};
+        } else {
+            bitsdefault = bitssharp.clone();
+            conditions = new String[]{"sharp","flat","natural"};
+        }
+
+        if (numeral) {
+            for (String condition: conditions) {
+
+                    line = replaceBits(line,"#VII",bitssharp[root],condition);
+                    line = replaceBits(line,"#VI",bitssharp[num6+1],condition);
+                    line = replaceBits(line,"#IV",bitssharp[num4+1],condition);
+                    line = replaceBits(line,"#V",bitssharp[num5+1],condition);
+                    line = replaceBits(line,"#III",bitssharp[num3+1],condition);
+                    line = replaceBits(line,"#II",bitssharp[num2+1],condition);
+                    line = replaceBits(line,"#I",bitssharp[root+1],condition);
+
+                    line = replaceBits(line,"bVII",bitsflat[num7-1],condition);
+                    line = replaceBits(line,"bVI",bitsflat[num6-1],condition);
+                    line = replaceBits(line,"bIV",bitsflat[num4-1],condition);
+                    line = replaceBits(line,"bV",bitsflat[num5-1],condition);
+                    line = replaceBits(line,"bIII",bitsflat[num3-1],condition);
+                    line = replaceBits(line,"bII",bitsflat[num2-1],condition);
+                    line = replaceBits(line,"bI",bitsflat[root+11],condition);
+
+                    line = replaceBits(line,"VII",bitsdefault[num7],condition);
+                    line = replaceBits(line,"VI",bitsdefault[num6],condition);
+                    line = replaceBits(line,"IV",bitsdefault[num4],condition);
+                    line = replaceBits(line,"V",bitsdefault[num5],condition);
+                    line = replaceBits(line,"III",bitsdefault[num3],condition);
+                    line = replaceBits(line,"II",bitsdefault[num2],condition);
+                    line = replaceBits(line,"I",bitsdefault[root],condition);
+
+                    line = replaceBits(line, "#vii", bitssharp[num7+1]+"m", condition);
+                    line = replaceBits(line, "#vi", bitssharp[num6+1]+"m", condition);
+                    line = replaceBits(line, "#iv", bitssharp[num4+1]+"m", condition);
+                    line = replaceBits(line, "#v", bitssharp[num5+1]+"m", condition);
+                    line = replaceBits(line, "#iii", bitssharp[num3+1]+"m", condition);
+                    line = replaceBits(line, "#ii", bitssharp[num2+1]+"m", condition);
+                    line = replaceBits(line, "#i", bitssharp[root+1]+"m", condition);
+
+                    line = replaceBits(line, "bvii", bitsflat[num7-1]+"m", condition);
+                    line = replaceBits(line, "bvi", bitsflat[num6-1]+"m", condition);
+                    line = replaceBits(line, "biv", bitsflat[num4-1]+"m", condition);
+                    line = replaceBits(line, "bv", bitsflat[num5-1]+"m", condition);
+                    line = replaceBits(line, "biii", bitsflat[num3-1]+"m", condition);
+                    line = replaceBits(line, "bii", bitsflat[num2-1]+"m", condition);
+                    line = replaceBits(line, "bi", bitsflat[root+11]+"m", condition);
+
+                    if (originalkey.endsWith("m")) {
+                        line = replaceBits(line,"vii", bitsdefault[num7]+"m",condition);
+                    } else {
+                        line = replaceBits(line,"vii", bitsdefault[num7]+"o",condition);
+                    }
+                    line = replaceBits(line, "vi", bitsdefault[num6]+"m", condition);
+                    line = replaceBits(line, "iv", bitsdefault[num4]+"m", condition);
+                    line = replaceBits(line, "v", bitsdefault[num5]+"m", condition);
+                    line = replaceBits(line, "iii", bitsdefault[num3]+"m", condition);
+                    if (originalkey.endsWith("m")) {
+                        line = replaceBits(line, "ii", bitsdefault[num2]+"o", condition);
+                    } else {
+                        line = replaceBits(line, "ii", bitsdefault[num2]+"m", condition);
+                    }
+                    line = replaceBits(line, "i", bitsdefault[root]+"m", condition);
+
+                }
+
+
+        } else {
+
+            for (String condition: conditions) {
+
+                line = replaceBits(line,".#7","."+bitssharp[root],condition);
+                line = replaceBits(line," #7"," "+bitssharp[root],condition);
+                line = replaceBits(line,"/#7","/"+bitssharp[root],condition);
+                line = replaceBits(line,".#6","."+bitssharp[num6+1],condition);
+                line = replaceBits(line," #6"," "+bitssharp[num6+1],condition);
+                line = replaceBits(line,"/#6","/"+bitssharp[num6+1],condition);
+                line = replaceBits(line,".#5","."+bitssharp[num5+1],condition);
+                line = replaceBits(line," #5"," "+bitssharp[num5+1],condition);
+                line = replaceBits(line,"/#5","/"+bitssharp[num5+1],condition);
+                line = replaceBits(line,".#4","."+bitssharp[num4+1],condition);
+                line = replaceBits(line," #4"," "+bitssharp[num4+1],condition);
+                line = replaceBits(line,"/#4","/"+bitssharp[num4+1],condition);
+                line = replaceBits(line,".#3","."+bitssharp[num3+1],condition);
+                line = replaceBits(line," #3"," "+bitssharp[num3+1],condition);
+                line = replaceBits(line,"/#3","/"+bitssharp[num3+1],condition);
+                line = replaceBits(line,".#2","."+bitssharp[num2+1],condition);
+                line = replaceBits(line," #2"," "+bitssharp[num2+1],condition);
+                line = replaceBits(line,"/#2","/"+bitssharp[num2+1],condition);
+                line = replaceBits(line,".#1","."+bitssharp[root+1],condition);
+                line = replaceBits(line," #1"," "+bitssharp[root+1],condition);
+                line = replaceBits(line," /1","/"+bitssharp[root+1],condition);
+
+                line = replaceBits(line,".b7","."+bitssharp[num7-1],condition);
+                line = replaceBits(line," b7"," "+bitssharp[num7-1],condition);
+                line = replaceBits(line,"/b7","/"+bitssharp[num7-1],condition);
+                line = replaceBits(line,".b6","."+bitssharp[num6-1],condition);
+                line = replaceBits(line," b6"," "+bitssharp[num6-1],condition);
+                line = replaceBits(line,"/b6","/"+bitssharp[num6-1],condition);
+                line = replaceBits(line,".b5","."+bitssharp[num5-1],condition);
+                line = replaceBits(line," b5"," "+bitssharp[num5-1],condition);
+                line = replaceBits(line,"/b5","/"+bitssharp[num5-1],condition);
+                line = replaceBits(line,".b4","."+bitssharp[num4-1],condition);
+                line = replaceBits(line," b4"," "+bitssharp[num4-1],condition);
+                line = replaceBits(line,"/b4","/"+bitssharp[num4-1],condition);
+                line = replaceBits(line,".b3","."+bitssharp[num3-1],condition);
+                line = replaceBits(line," b3"," "+bitssharp[num3-1],condition);
+                line = replaceBits(line,"/b3","/"+bitssharp[num3-1],condition);
+                line = replaceBits(line,".b2","."+bitssharp[num2-1],condition);
+                line = replaceBits(line," b2"," "+bitssharp[num2-1],condition);
+                line = replaceBits(line,"/b2","/"+bitssharp[num2-1],condition);
+                line = replaceBits(line,".b1","."+bitssharp[root+11],condition);
+                line = replaceBits(line," b1"," "+bitssharp[root+11],condition);
+                line = replaceBits(line,"/b1","/"+bitssharp[root+11],condition);
+
+                line = replaceBits(line,".7","."+bitsdefault[num7],condition);
+                line = replaceBits(line," 7"," "+bitsdefault[num7],condition);
+                line = replaceBits(line,"/7","/"+bitsdefault[num7],condition);
+                line = replaceBits(line,".6","."+bitsdefault[num6],condition);
+                line = replaceBits(line," 6"," "+bitsdefault[num6],condition);
+                line = replaceBits(line,"/6","/"+bitsdefault[num6],condition);
+                line = replaceBits(line,".5","."+bitsdefault[num5],condition);
+                line = replaceBits(line," 5"," "+bitsdefault[num5],condition);
+                line = replaceBits(line,"/5","/"+bitsdefault[num5],condition);
+                line = replaceBits(line,".4","."+bitsdefault[num4],condition);
+                line = replaceBits(line," 4"," "+bitsdefault[num4],condition);
+                line = replaceBits(line,"/4","/"+bitsdefault[num4],condition);
+                line = replaceBits(line,".3","."+bitsdefault[num3],condition);
+                line = replaceBits(line," 3"," "+bitsdefault[num3],condition);
+                line = replaceBits(line,"/3","/"+bitsdefault[num3],condition);
+                line = replaceBits(line,".2","."+bitsdefault[num2],condition);
+                line = replaceBits(line," 2"," "+bitsdefault[num2],condition);
+                line = replaceBits(line,"/2","/"+bitsdefault[num2],condition);
+                line = replaceBits(line,".1","."+bitsdefault[root],condition);
+                line = replaceBits(line," 1"," "+bitsdefault[root],condition);
+                line = replaceBits(line,"/1","/"+bitsdefault[root],condition);
+
+            }
+        }
+        if (!line.startsWith(".")) {
+            line = "."+line;
+        }
+        return line;
     }
 
     String transposeKey(String getkeynum, String direction, int transposetimes) {
@@ -762,7 +1212,7 @@ class Transpose {
         return line;
     }
 
-    private  String numberToChord2(String line, boolean forceflats, boolean forcesharps, boolean thisorcapousesflats) {
+    private String numberToChord2(String line, boolean forceflats, boolean forcesharps, boolean thisorcapousesflats) {
         // If we are forcing sharps or flats do that, otherwise use our key preferences
         if (forceflats || (thisorcapousesflats && !forcesharps)) {
             line = useFlats2(line);
@@ -774,7 +1224,7 @@ class Transpose {
         return line;
     }
 
-    private  String numberToChord3(String line, boolean forceflats, boolean forcesharps, boolean thisorcapousesflats) {
+    private String numberToChord3(String line, boolean forceflats, boolean forcesharps, boolean thisorcapousesflats) {
         // If we are forcing sharps or flats do that, otherwise use our key preferences
         if (forceflats || (thisorcapousesflats && !forcesharps)) {
             line = useFlats3(line);
@@ -786,7 +1236,7 @@ class Transpose {
         return line;
     }
 
-    private  String numberToChord4(String line, boolean forceflats, boolean forcesharps, boolean thisorcapousesflats) {
+    private String numberToChord4(String line, boolean forceflats, boolean forcesharps, boolean thisorcapousesflats) {
         // If we are forcing sharps or flats do that, otherwise use our key preferences
         if (forceflats || (thisorcapousesflats && !forcesharps)) {
             line = useFlats4(line);
@@ -798,20 +1248,7 @@ class Transpose {
         return line;
     }
 
-    private  String numberToChord5(String line, boolean forceflats, boolean forcesharps, boolean thisorcapousesflats) {
-        // If we are forcing sharps or flats do that, otherwise use our key preferences
-        if (forceflats || (thisorcapousesflats && !forcesharps)) {
-            line = useFlats5(line);
-        } else {
-            line = useSharps5(line);
-        }
-        // Replace the naturals
-        line = useNaturals5(line);
-
-        return line;
-    }
-
-    private  boolean keyUsesFlats(Context c, Preferences preferences, String testkey) {
+    private boolean keyUsesFlats(Context c, Preferences preferences, String testkey) {
 
         boolean result;
         result = (testkey.equals("Ab") && preferences.getMyPreferenceBoolean(c,"prefKeyAb",true)) ||
@@ -831,21 +1268,21 @@ class Transpose {
         return result;
     }
 
-    private  String useFlats1(String line) {
+    private String useFlats1(String line) {
         for (int z=0; z<properchordflatsnumsa.length; z++) {
             line = line.replace(properchordflatsnumsa[z],properflatchords1a[z]);
         }
         return line;
     }
 
-    private  String useFlats2(String line) {
+    private String useFlats2(String line) {
         for (int z=0; z<properchordflatsnumsa.length; z++) {
             line = line.replace(properchordflatsnumsa[z],properflatchords2[z]);
         }
         return line;
     }
 
-    private  String useFlats3(String line) {
+    private String useFlats3(String line) {
         for (int z=0; z<properchordflatsnumsc.length; z++) {
             line = line.replace(properchordflatsnumsc[z],properflatchords3c[z]);
         }
@@ -858,35 +1295,28 @@ class Transpose {
         return line;
     }
 
-    private  String useFlats4(String line) {
+    private String useFlats4(String line) {
         for (int z=0; z<properchordflatsnumsa.length; z++) {
             line = line.replace(properchordflatsnumsa[z],properflatchords4[z]);
         }
         return line;
     }
 
-    private  String useFlats5(String line) {
-        for (int z=0; z<properchordflatsnumsa.length; z++) {
-            line = line.replace(properchordflatsnumsa[z],properflatchords5[z]);
-        }
-        return line;
-    }
-
-    private  String useSharps1(String line) {
+    private String useSharps1(String line) {
         for (int z=0; z<properchordsharpsnumsa.length; z++) {
             line = line.replace(properchordsharpsnumsa[z],propersharpchords1a[z]);
         }
         return line;
     }
 
-    private  String useSharps2(String line) {
+    private String useSharps2(String line) {
         for (int z=0; z<properchordsharpsnumsa.length; z++) {
             line = line.replace(properchordsharpsnumsa[z],propersharpchords2[z]);
         }
         return line;
     }
 
-    private  String useSharps3(String line) {
+    private String useSharps3(String line) {
         for (int z=0; z<properchordsharpsnumsc.length; z++) {
             line = line.replace(properchordsharpsnumsc[z],propersharpchords3c[z]);
         }
@@ -899,35 +1329,28 @@ class Transpose {
         return line;
     }
 
-    private  String useSharps4(String line) {
+    private String useSharps4(String line) {
         for (int z=0; z<properchordsharpsnumsa.length; z++) {
             line = line.replace(properchordsharpsnumsa[z],propersharpchords4[z]);
         }
         return line;
     }
 
-    private  String useSharps5(String line) {
-        for (int z=0; z<properchordsharpsnumsa.length; z++) {
-            line = line.replace(properchordsharpsnumsa[z],propersharpchords5[z]);
-        }
-        return line;
-    }
-
-    private  String useNaturals1(String line) {
+    private String useNaturals1(String line) {
         for (int z=0; z<chordnaturalnumsa.length; z++) {
             line = line.replace(chordnaturalnumsa[z],naturalchords1a[z]);
         }
         return line;
     }
 
-    private  String useNaturals2(String line) {
+    private String useNaturals2(String line) {
         for (int z=0; z<chordnaturalnumsa.length; z++) {
             line = line.replace(chordnaturalnumsa[z],naturalchords2[z]);
         }
         return line;
     }
 
-    private  String useNaturals3(String line) {
+    private String useNaturals3(String line) {
         for (int z=0; z<chordnaturalnumsc.length; z++) {
             line = line.replace(chordnaturalnumsc[z],naturalchords3c[z]);
         }
@@ -940,17 +1363,32 @@ class Transpose {
         return line;
     }
 
-    private  String useNaturals4(String line) {
+    private String useNaturals4(String line) {
         for (int z=0; z<chordnaturalnumsa.length; z++) {
             line = line.replace(chordnaturalnumsa[z],naturalchords4[z]);
         }
         return line;
     }
 
-    private  String useNaturals5(String line) {
-        for (int z=0; z<chordnaturalnumsa.length; z++) {
-            line = line.replace(chordnaturalnumsa[z],naturalchords5[z]);
-        }
+    private String fixDiminished(String line) {
+        line = line.replace("m7b5", "ø"); // Half diminished
+        line = line.replace("-7b5", "ø"); // Half diminished
+
+        line = line.replace("dim7", "o"); // Diminished
+        line = line.replace("dim", "o");
+        line = line.replace("o7", "o");
+        return line;
+    }
+
+    private String fixMajorSeventh(String line) {
+        line = line.replace("maj7","Δ7");
+        line = line.replace("ma7", "Δ7");
+        return line;
+    }
+
+    private String fixAugmented(String line) {
+        line = line.replace("aug","+");
+        line = line.replace("#5","+");
         return line;
     }
 
@@ -1052,7 +1490,7 @@ class Transpose {
         }
     }
 
-     ArrayList<String> quickCapoKey(Context c, Preferences preferences, String key) {
+    ArrayList<String> quickCapoKey(Context c, Preferences preferences, String key) {
         // This is used to give the user a list of either simple fret number or fret number with new capo key
         ArrayList<String> al = new ArrayList<>();
         // Add a blank entry
@@ -1082,76 +1520,154 @@ class Transpose {
         return al;
     }
 
-	 void checkChordFormat(Context c, Preferences preferences) {
-		StaticVariables.transposedLyrics = null;
-		StaticVariables.transposedLyrics = "";
-		FullscreenActivity.myTransposedLyrics = null;
-		FullscreenActivity.myTransposedLyrics = StaticVariables.mLyrics.split("\n");
+    void checkChordFormat(Context c, Preferences preferences) {
+        StaticVariables.transposedLyrics = null;
+        StaticVariables.transposedLyrics = "";
+        FullscreenActivity.myTransposedLyrics = null;
+        FullscreenActivity.myTransposedLyrics = StaticVariables.mLyrics.split("\n");
 
-		StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(c,"chordFormat",1);
+        StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(c, "chordFormat", 1);
 
-		if (!preferences.getMyPreferenceBoolean(c,"chordFormatUsePreferred",true)) {
-		    // The user wants the app to guess the chord formatting, so we will detect formatting
-            boolean contains_es_is = false;
-            boolean contains_H = false;
-            boolean contains_do = false;
-            boolean contains_nash = false;
-            boolean contains_nashnumeral = false;
+        // The user wants the app to guess the chord formatting, so we will detect formatting
+        boolean contains_es_is = false;
+        boolean contains_H = false;
+        boolean contains_do = false;
+        boolean contains_nash = false;
+        boolean contains_nashnumeral = false;
 
-            // Check if the user is using the same chord format as the song
-            // Go through the chord lines and look for clues
-            for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
-                if (FullscreenActivity.myTransposedLyrics[x].startsWith(".")) {
-                    // Chord line
-                    if (FullscreenActivity.myTransposedLyrics[x].contains("es") || FullscreenActivity.myTransposedLyrics[x].contains("is") ||
-                            FullscreenActivity.myTransposedLyrics[x].contains(" a") || FullscreenActivity.myTransposedLyrics[x].contains(".a") ||
-                            FullscreenActivity.myTransposedLyrics[x].contains(" b") || FullscreenActivity.myTransposedLyrics[x].contains(".b") ||
-                            FullscreenActivity.myTransposedLyrics[x].contains(" h") || FullscreenActivity.myTransposedLyrics[x].contains(".h") ||
-                            FullscreenActivity.myTransposedLyrics[x].contains(" c") || FullscreenActivity.myTransposedLyrics[x].contains(".c") ||
-                            FullscreenActivity.myTransposedLyrics[x].contains(" d") || FullscreenActivity.myTransposedLyrics[x].contains(".d") ||
-                            FullscreenActivity.myTransposedLyrics[x].contains(" e") || FullscreenActivity.myTransposedLyrics[x].contains(".e") ||
-                            FullscreenActivity.myTransposedLyrics[x].contains(" f") || FullscreenActivity.myTransposedLyrics[x].contains(".f") ||
-                            FullscreenActivity.myTransposedLyrics[x].contains(" g") || FullscreenActivity.myTransposedLyrics[x].contains(".g")) {
-                        contains_es_is = true;
-                    } else if (FullscreenActivity.myTransposedLyrics[x].contains("H")) {
-                        contains_H = true;
-                    } else if (FullscreenActivity.myTransposedLyrics[x].contains("Do") || FullscreenActivity.myTransposedLyrics[x].contains("Re") || FullscreenActivity.myTransposedLyrics[x].contains("Ré") ||
-                            FullscreenActivity.myTransposedLyrics[x].contains("Me") || FullscreenActivity.myTransposedLyrics[x].contains("Fa") ||
-                            FullscreenActivity.myTransposedLyrics[x].contains("Sol") || FullscreenActivity.myTransposedLyrics[x].contains("La") ||
-                            FullscreenActivity.myTransposedLyrics[x].contains("Si")) {
-                        contains_do = true;
-                    } else if (FullscreenActivity.myTransposedLyrics[x].contains(".2") || FullscreenActivity.myTransposedLyrics[x].contains(" 2") ||
-                            FullscreenActivity.myTransposedLyrics[x].contains(".3") || FullscreenActivity.myTransposedLyrics[x].contains(" 3") ||
-                            FullscreenActivity.myTransposedLyrics[x].contains(".4") || FullscreenActivity.myTransposedLyrics[x].contains(" 4") ||
-                            FullscreenActivity.myTransposedLyrics[x].contains(".5") || FullscreenActivity.myTransposedLyrics[x].contains(" 5") ||
-                            FullscreenActivity.myTransposedLyrics[x].contains(".6") || FullscreenActivity.myTransposedLyrics[x].contains(" 6") ||
-                            FullscreenActivity.myTransposedLyrics[x].contains(".7") || FullscreenActivity.myTransposedLyrics[x].contains(" 7")) {
-                        contains_nash = true;
-                    } else if (FullscreenActivity.myTransposedLyrics[x].contains(".I") || FullscreenActivity.myTransposedLyrics[x].contains(" I") ||
-                            FullscreenActivity.myTransposedLyrics[x].contains(".V") || FullscreenActivity.myTransposedLyrics[x].contains(" V") ||
-                            FullscreenActivity.myTransposedLyrics[x].contains(".IV") || FullscreenActivity.myTransposedLyrics[x].contains(" IV")) {
-                        contains_nashnumeral = true;
-                    }
+        // Check if the user is using the same chord format as the song
+        // Go through the chord lines and look for clues
+        for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
+            if (FullscreenActivity.myTransposedLyrics[x].startsWith(".")) {
+                // Chord line
+                if (FullscreenActivity.myTransposedLyrics[x].contains("es") || FullscreenActivity.myTransposedLyrics[x].contains("is") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains(" a") || FullscreenActivity.myTransposedLyrics[x].contains(".a") ||
+                        //FullscreenActivity.myTransposedLyrics[x].contains(" b") || FullscreenActivity.myTransposedLyrics[x].contains(".b") || // Can't use for flat numeral chords
+                        FullscreenActivity.myTransposedLyrics[x].contains(" h") || FullscreenActivity.myTransposedLyrics[x].contains(".h") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains(" c") || FullscreenActivity.myTransposedLyrics[x].contains(".c") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains(" d") || FullscreenActivity.myTransposedLyrics[x].contains(".d") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains(" e") || FullscreenActivity.myTransposedLyrics[x].contains(".e") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains(" f") || FullscreenActivity.myTransposedLyrics[x].contains(".f") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains(" g") || FullscreenActivity.myTransposedLyrics[x].contains(".g")) {
+                    contains_es_is = true;
+                } else if (FullscreenActivity.myTransposedLyrics[x].contains("H")) {
+                    contains_H = true;
+                } else if (FullscreenActivity.myTransposedLyrics[x].contains("Do") || FullscreenActivity.myTransposedLyrics[x].contains("Re") || FullscreenActivity.myTransposedLyrics[x].contains("Ré") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains("Me") || FullscreenActivity.myTransposedLyrics[x].contains("Fa") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains("Sol") || FullscreenActivity.myTransposedLyrics[x].contains("La") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains("Si")) {
+                    contains_do = true;
+                } else if (FullscreenActivity.myTransposedLyrics[x].contains(".2") || FullscreenActivity.myTransposedLyrics[x].contains(" 2") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains(".3") || FullscreenActivity.myTransposedLyrics[x].contains(" 3") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains(".4") || FullscreenActivity.myTransposedLyrics[x].contains(" 4") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains(".5") || FullscreenActivity.myTransposedLyrics[x].contains(" 5") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains(".6") || FullscreenActivity.myTransposedLyrics[x].contains(" 6") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains(".7") || FullscreenActivity.myTransposedLyrics[x].contains(" 7")) {
+                    contains_nash = true;
+                } else if (FullscreenActivity.myTransposedLyrics[x].contains(".I") || FullscreenActivity.myTransposedLyrics[x].contains(" I") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains(".V") || FullscreenActivity.myTransposedLyrics[x].contains(" V") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains(".IV") || FullscreenActivity.myTransposedLyrics[x].contains(" IV")) {
+                    contains_nashnumeral = true;
                 }
             }
-
-            //int detected = 0;
-            // Set the chord style detected
-            if (contains_do && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
-                StaticVariables.detectedChordFormat = 4;
-            } else if (contains_H && !contains_es_is && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
-                StaticVariables.detectedChordFormat = 2;
-            } else if (contains_H || contains_es_is && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
-                StaticVariables.detectedChordFormat = 3;
-            } else if (contains_nash && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
-                StaticVariables.detectedChordFormat = 5;
-            } else if (contains_nashnumeral && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
-                StaticVariables.detectedChordFormat = 6;
-            } else {
-                StaticVariables.detectedChordFormat = 1;
-            }
         }
+
+        //int detected = 0;
+        // Set the chord style detected
+        if (contains_do && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
+            StaticVariables.detectedChordFormat = 4;
+        } else if (contains_H && !contains_es_is && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
+            StaticVariables.detectedChordFormat = 2;
+        } else if ((contains_H || contains_es_is) && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
+            StaticVariables.detectedChordFormat = 3;
+        } else if (contains_nash && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
+            StaticVariables.detectedChordFormat = 5;
+        } else if (contains_nashnumeral && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
+            StaticVariables.detectedChordFormat = 6;
+        } else {
+            StaticVariables.detectedChordFormat = 1;
+        }
+
         // Ok so the user chord format may not quite match the song - it might though!
-	}
+    }
 
 }
+
+
+/*} else {
+
+                String[] conditions = {"sharp","flat","natural"};
+                for (String condition: conditions) {
+                    line = replaceBits(line,"VII",bitssharp[num7],condition);
+                    line = replaceBits(line,"VI",bitssharp[num6],condition);
+                    line = replaceBits(line,"IV",bitssharp[num4],condition);
+                    line = replaceBits(line,"V",bitssharp[num5],condition);
+                    line = replaceBits(line,"III",bitssharp[num3],condition);
+                    line = replaceBits(line,"II",bitssharp[num2],condition);
+                    line = replaceBits(line,"I",bitssharp[root],condition);
+
+                    line = replaceBits(line,"#VII",bitssharp[root],condition);
+                    line = replaceBits(line,"#VI",bitssharp[num6+1],condition);
+                    line = replaceBits(line,"#IV",bitssharp[num4+1],condition);
+                    line = replaceBits(line,"#V",bitssharp[num5+1],condition);
+                    line = replaceBits(line,"#III",bitssharp[num3+1],condition);
+                    line = replaceBits(line,"#II",bitssharp[num2+1],condition);
+                    line = replaceBits(line,"#I",bitssharp[root+1],condition);
+
+                    line = replaceBits(line,"VII",bitsflat[num7],condition);
+                    line = replaceBits(line,"VI",bitsflat[num6],condition);
+                    line = replaceBits(line,"IV",bitsflat[num4],condition);
+                    line = replaceBits(line,"V",bitsflat[num5],condition);
+                    line = replaceBits(line,"III",bitsflat[num3],condition);
+                    line = replaceBits(line,"II",bitsflat[num2],condition);
+                    line = replaceBits(line,"I",bitsflat[root],condition);
+
+                    line = replaceBits(line,"bVII",bitsflat[num7-1],condition);
+                    line = replaceBits(line,"bVI",bitsflat[num6-1],condition);
+                    line = replaceBits(line,"bIV",bitsflat[num4-1],condition);
+                    line = replaceBits(line,"bV",bitsflat[num5-1],condition);
+                    line = replaceBits(line,"bIII",bitsflat[num3-1],condition);
+                    line = replaceBits(line,"bII",bitsflat[num2-1],condition);
+                    line = replaceBits(line,"bI",bitsflat[root+11],condition);
+
+                    line = replaceBits(line, "#vii", bitssharp[num7+1]+"m", condition);
+                    line = replaceBits(line, "#vi", bitssharp[num6+1]+"m", condition);
+                    line = replaceBits(line, "#iv", bitssharp[num4+1]+"m", condition);
+                    line = replaceBits(line, "#v", bitssharp[num5+1]+"m", condition);
+                    line = replaceBits(line, "#iii", bitssharp[num3+1]+"m", condition);
+                    line = replaceBits(line, "#ii", bitssharp[num2+1]+"m", condition);
+                    line = replaceBits(line, "#i", bitssharp[root+1]+"m", condition);
+
+                    line = replaceBits(line, "bvii", bitsflat[num7-1]+"m", condition);
+                    line = replaceBits(line, "bvi", bitsflat[num6-1]+"m", condition);
+                    line = replaceBits(line, "biv", bitsflat[num4-1]+"m", condition);
+                    line = replaceBits(line, "bv", bitsflat[num5-1]+"m", condition);
+                    line = replaceBits(line, "biii", bitsflat[num3-1]+"m", condition);
+                    line = replaceBits(line, "bii", bitsflat[num2-1]+"m", condition);
+                    line = replaceBits(line, "bi", bitsflat[root+11]+"m", condition);
+
+                    line = replaceBits(line, "vii", bitssharp[num7]+"m", condition);
+                    line = replaceBits(line, "vi", bitssharp[num6]+"m", condition);
+                    line = replaceBits(line, "iv", bitssharp[num4]+"m", condition);
+                    line = replaceBits(line, "v", bitssharp[num5]+"m", condition);
+                    line = replaceBits(line, "iii", bitssharp[num3]+"m", condition);
+                    line = replaceBits(line, "ii", bitssharp[num2]+"m", condition);
+                    line = replaceBits(line, "i", bitssharp[root]+"m", condition);
+                    if (originalkey.endsWith("m")) {
+                        line = replaceBits(line,"vii", bitssharp[num7]+"m",condition);
+                    } else {
+                        line = replaceBits(line,"vii", bitssharp[num7]+"o",condition);
+                    }
+                    line = replaceBits(line, "vi", bitsflat[num6]+"m", condition);
+                    line = replaceBits(line, "iv", bitsflat[num4]+"m", condition);
+                    line = replaceBits(line, "v", bitsflat[num5]+"m", condition);
+                    line = replaceBits(line, "iii", bitsflat[num3]+"m", condition);
+                    if (originalkey.endsWith("m")) {
+                        line = replaceBits(line, "ii", bitsflat[num2]+"o", condition);
+                    } else {
+                        line = replaceBits(line, "ii", bitsflat[num2]+"m", condition);
+                    }
+
+                    line = replaceBits(line, "i", bitsflat[root]+"m", condition);
+                }
+            }*/

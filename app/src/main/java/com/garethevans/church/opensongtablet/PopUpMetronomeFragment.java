@@ -50,7 +50,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         super.onDetach();
     }
 
-    private NumberPicker bpm_numberPicker, timesig_numberPicker;
+    private NumberPicker bpm_numberPicker, timesig_numberPicker, bar_numberPicker;
     private TextView bpmtext, popupmetronome_volume_text, popupmetronome_pan_text;
     private Button popupmetronome_startstopbutton;
     private SeekBar popupmetronome_pan;
@@ -118,6 +118,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         // Initialise the views
         bpm_numberPicker = V.findViewById(R.id.bpm_numberPicker);
         timesig_numberPicker = V.findViewById(R.id.timesig_numberPicker);
+        bar_numberPicker = V.findViewById(R.id.bar_numberPicker);
         bpmtext = V.findViewById(R.id.bpmtext);
         Button taptempo_Button = V.findViewById(R.id.taptempo_Button);
         SeekBar popupmetronome_volume = V.findViewById(R.id.popupmetronome_volume);
@@ -144,6 +145,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         visualmetronome.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"metronomeShowVisual",false));
         getTimeSigValues();
         getBPMValues();
+        getDurationValues();
 
         // Set the listeners for changes
         taptempo_Button.setOnClickListener(new View.OnClickListener() {
@@ -216,7 +218,8 @@ public class PopUpMetronomeFragment extends DialogFragment {
                     StaticVariables.clickedOnMetronomeStart = true;
                     StaticVariables.whichbeat = "b";
                     Metronome.metroTask = new Metronome.MetronomeAsyncTask(preferences.getMyPreferenceString(getActivity(),"metronomePan","C"),
-                            preferences.getMyPreferenceFloat(getActivity(),"metronomeVol",0.5f));
+                            preferences.getMyPreferenceFloat(getActivity(),"metronomeVol",0.5f),
+                            preferences.getMyPreferenceInt(getActivity(),"metronomeLength",0));
                     try {
                         Metronome.metroTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                     } catch (Exception e) {
@@ -293,16 +296,16 @@ public class PopUpMetronomeFragment extends DialogFragment {
 
         int av_bpm = Math.round((float) total_calc_bpm / (float) total_counts);
 
-        if (av_bpm < 200 && av_bpm >= 40) {
+        if (av_bpm < 300 && av_bpm >= 40) {
             bpmtext.setText(getResources().getString(R.string.bpm));
             bpm_numberPicker.setValue(av_bpm -40);
             StaticVariables.mTempo = "" + av_bpm;
         } else if (av_bpm <40) {
-            bpm_numberPicker.setValue(160);
+            bpm_numberPicker.setValue(40);
             bpmtext.setText("<40 bpm");
         }  else {
-            bpm_numberPicker.setValue(160);
-            bpmtext.setText(">199 bpm");
+            bpm_numberPicker.setValue(260);
+            bpmtext.setText(">299 bpm");
         }
 
         bpm = (short) av_bpm;
@@ -349,14 +352,117 @@ public class PopUpMetronomeFragment extends DialogFragment {
         return (int) (v*100.0f);
     }
 
+    private void getDurationValues() {
+        String[] durationValues = new String[8];
+        durationValues[0]=getString(R.string.continuous);
+        durationValues[1]="1";
+        durationValues[2]="2";
+        durationValues[3]="4";
+        durationValues[4]="8";
+        durationValues[5]="16";
+        durationValues[6]="32";
+        durationValues[7]="64";
+        bar_numberPicker.setMinValue(0);
+        bar_numberPicker.setMaxValue(durationValues.length-1);
+        bar_numberPicker.setDisplayedValues(durationValues);
+        int val = preferences.getMyPreferenceInt(getActivity(),"metronomeLength",0);
+        int pos = getLengthPosition(val);
+        bar_numberPicker.setValue(pos);
+        bar_numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                i1 = getBarValues(i1);
+                preferences.setMyPreferenceInt(getActivity(),"metronomeLength",i1);
+            }
+        });
+    }
+
+    private int getBarValues(int val) {
+        int newval;
+        switch (val) {
+            case 0:
+            default:
+                newval = 0;
+                break;
+
+            case 1:
+                newval = 1;
+                break;
+
+            case 2:
+                newval = 2;
+                break;
+
+            case 3:
+                newval = 4;
+                break;
+
+            case 4:
+                newval = 8;
+                break;
+
+            case 5:
+                newval = 16;
+                break;
+
+            case 6:
+                newval = 32;
+                break;
+
+            case 7:
+                newval = 64;
+                break;
+        }
+        return newval;
+    }
+    private int getLengthPosition(int val) {
+        int pos;
+
+        switch(val) {
+            case 0:
+            default:
+                pos = 0;
+                break;
+
+            case 1:
+                pos = 1;
+                break;
+
+            case 2:
+                pos = 2;
+                break;
+
+            case 4:
+                pos = 3;
+                break;
+
+            case 8:
+                pos = 4;
+                break;
+
+            case 16:
+                pos = 5;
+                break;
+
+            case 32:
+                pos = 6;
+                break;
+
+            case 64:
+                pos = 7;
+                break;
+        }
+        return pos;
+    }
+
     private void getBPMValues() {
-        String[] bpmValues = new String[161];
-        // Add the values 40 to 199 bpm
-        for (int z=0;z<160;z++) {
+        String[] bpmValues = new String[261];
+        // Add the values 40 to 299 bpm
+        for (int z=0;z<260;z++) {
             bpmValues[z] = "" + (z+40);
         }
         // Now add the 'Not set' value
-        bpmValues[160] = getResources().getString(R.string.notset);
+        bpmValues[260] = getResources().getString(R.string.notset);
 
         bpm_numberPicker.setMinValue(0); //from array first value
 
@@ -369,9 +475,9 @@ public class PopUpMetronomeFragment extends DialogFragment {
         bpm_numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                if (i1==160) {
+                if (i1==260) {
                     // This is the not set value
-                    tempo = 161;
+                    tempo = 261;
                     bpm = 0;
                     StaticVariables.mTempo = "";
                 } else {
@@ -379,6 +485,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
                     bpm = (short) (i1+40);
                 }
                 StaticVariables.metronomeok = Metronome.isMetronomeValid();
+
             }
         });
     }
@@ -396,9 +503,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         // Set the defaut value:
         int defpos = 0;
 
-        Log.d("PopUpMetronome","mTimeSig="+StaticVariables.mTimeSig);
         for (int i=0;i<timesigvals.length;i++) {
-            Log.d("PopUpMetronome","timesigvals["+i+"]="+timesigvals[i]);
             if (StaticVariables.mTimeSig.equals(timesigvals[i])) {
                 defpos = i;
             }

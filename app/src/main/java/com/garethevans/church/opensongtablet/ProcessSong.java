@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -27,7 +28,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -2551,6 +2551,9 @@ public class ProcessSong extends Activity {
                     break;
 
             }
+            if (preferences.getMyPreferenceBoolean(c,"blockShadow",false)) {
+                tl.setBackgroundColor(getColorWithAlpha(presoShadowColor,preferences.getMyPreferenceFloat(c,"blockShadowAlpha",0.7f)));
+            }
             ll.addView(tl);
         }
         TextView emptyline = new TextView(c);
@@ -2559,6 +2562,15 @@ public class ProcessSong extends Activity {
         emptyline.setTextSize(fontsize*0.5f);
         ll.addView(emptyline);
         return ll;
+    }
+
+    public static int getColorWithAlpha(int color, float ratio) {
+        int alpha = Math.round(Color.alpha(color) * ratio);
+        int r = Color.red(color);
+        int g = Color.green(color);
+        int b = Color.blue(color);
+        int newColor = Color.argb(alpha, r, g, b);
+        return newColor;
     }
 
     LinearLayout createLinearLayout(Context c) {
@@ -2591,19 +2603,21 @@ public class ProcessSong extends Activity {
             // FileDescriptor for file, it allows you to close file when you are done with it
             ParcelFileDescriptor mFileDescriptor = null;
             PdfRenderer mPdfRenderer = null;
-            try {
-                mFileDescriptor = c.getContentResolver().openFileDescriptor(uri, "r");
-                if (mFileDescriptor != null) {
-                    mPdfRenderer = new PdfRenderer(mFileDescriptor);
-                    FullscreenActivity.pdfPageCount = mPdfRenderer.getPageCount();
+            if (uri!=null) {
+                try {
+                    mFileDescriptor = c.getContentResolver().openFileDescriptor(uri, "r");
+                    if (mFileDescriptor != null) {
+                        mPdfRenderer = new PdfRenderer(mFileDescriptor);
+                        FullscreenActivity.pdfPageCount = mPdfRenderer.getPageCount();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    FullscreenActivity.pdfPageCount = 0;
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-                FullscreenActivity.pdfPageCount = 0;
-            }
 
-            if (FullscreenActivity.pdfPageCurrent >= FullscreenActivity.pdfPageCount) {
-                FullscreenActivity.pdfPageCurrent = 0;
+                if (FullscreenActivity.pdfPageCurrent >= FullscreenActivity.pdfPageCount) {
+                    FullscreenActivity.pdfPageCurrent = 0;
+                }
             }
 
             // Open page 0

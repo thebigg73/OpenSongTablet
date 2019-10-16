@@ -74,7 +74,10 @@ class SQLiteHelper extends SQLiteOpenHelper {
 
     private String unescapedSQL(String s) {
         if (s!=null) {
-            return s.replace("''", "'");
+            while (s.contains("''")) {
+                s = s.replace("''","'");
+            }
+            return s;
         } else {
             return s;
         }
@@ -190,55 +193,58 @@ class SQLiteHelper extends SQLiteOpenHelper {
 
     SQLite getSong(Context c, String songid) {
         SQLiteDatabase db = getDB(c);
-        Cursor cursor = db.query(SQLite.TABLE_NAME,
-                new String[]{SQLite.COLUMN_ID,SQLite.COLUMN_SONGID, SQLite.COLUMN_FILENAME, SQLite.COLUMN_FOLDER,
-                SQLite.COLUMN_TITLE, SQLite.COLUMN_AUTHOR, SQLite.COLUMN_COPYRIGHT, SQLite.COLUMN_LYRICS,
-                        SQLite.COLUMN_HYMNNUM, SQLite.COLUMN_CCLI, SQLite.COLUMN_THEME,
-                        SQLite.COLUMN_ALTTHEME, SQLite.COLUMN_USER1, SQLite.COLUMN_USER2,
-                        SQLite.COLUMN_USER3, SQLite.COLUMN_KEY, SQLite.COLUMN_TIMESIG, SQLite.COLUMN_AKA},
-                SQLite.COLUMN_SONGID + "=?",
-                new String[]{String.valueOf(escapedSQL(songid))}, null, null, SQLite.COLUMN_FILENAME, null);
+        try {
+            Cursor cursor = db.query(SQLite.TABLE_NAME,
+                    new String[]{SQLite.COLUMN_ID, SQLite.COLUMN_SONGID, SQLite.COLUMN_FILENAME, SQLite.COLUMN_FOLDER,
+                            SQLite.COLUMN_TITLE, SQLite.COLUMN_AUTHOR, SQLite.COLUMN_COPYRIGHT, SQLite.COLUMN_LYRICS,
+                            SQLite.COLUMN_HYMNNUM, SQLite.COLUMN_CCLI, SQLite.COLUMN_THEME,
+                            SQLite.COLUMN_ALTTHEME, SQLite.COLUMN_USER1, SQLite.COLUMN_USER2,
+                            SQLite.COLUMN_USER3, SQLite.COLUMN_KEY, SQLite.COLUMN_TIMESIG, SQLite.COLUMN_AKA},
+                    SQLite.COLUMN_SONGID + "=?",
+                    new String[]{String.valueOf((songid))}, null, null, SQLite.COLUMN_FILENAME, null);
 
-        if (cursor != null) {
-            cursor.moveToFirst();
+            if (cursor != null) {
+                cursor.moveToFirst();
 
-            try {
-                // prepare note object
-                SQLite sqLite = new SQLite(
-                        cursor.getInt(cursor.getColumnIndex(SQLite.COLUMN_ID)),
-                        unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_SONGID))),
-                        unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME))),
-                        unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER))),
-                        unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_TITLE))),
-                        unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AUTHOR))),
-                        unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_COPYRIGHT))),
-                        unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_LYRICS))),
-                        unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_HYMNNUM))),
-                        unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_CCLI))),
-                        unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_THEME))),
-                        unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_ALTTHEME))),
-                        unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_USER1))),
-                        unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_USER2))),
-                        unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_USER3))),
-                        unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_KEY))),
-                        unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_TIMESIG))),
-                        unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AKA))));
+                try {
+                    // prepare note object
+                    SQLite sqLite = new SQLite(
+                            cursor.getInt(cursor.getColumnIndex(SQLite.COLUMN_ID)),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_SONGID))),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME))),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER))),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_TITLE))),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AUTHOR))),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_COPYRIGHT))),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_LYRICS))),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_HYMNNUM))),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_CCLI))),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_THEME))),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_ALTTHEME))),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_USER1))),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_USER2))),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_USER3))),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_KEY))),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_TIMESIG))),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AKA))));
 
-                // close the db connection
-                cursor.close();
-                db.close();
-                return sqLite;
-            } catch (Exception e) {
-                Log.d("SQLiteHelper","Song not found");
+                    // close the db connection
+                    cursor.close();
+                    db.close();
+                    return sqLite;
+                } catch (Exception e) {
+                    Log.d("SQLiteHelper", "Song not found");
+                    return null;
+                } finally {
+                    db.close();
+                }
+            } else {
                 return null;
-            } finally {
-                db.close();
             }
-        } else {
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
-
-
     }
 
     void updateFolderName(Context c, String oldFolder, String newFolder) {
@@ -280,7 +286,6 @@ class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     void deleteSong(Context c, String songId) {
-        Log.d("d","TRying to delete "+songId);
         try (SQLiteDatabase db = getDB(c)) {
             db.delete(SQLite.TABLE_NAME, SQLite.COLUMN_SONGID + " = ?",
                     new String[]{String.valueOf(escapedSQL(songId))});
@@ -290,6 +295,8 @@ class SQLiteHelper extends SQLiteOpenHelper {
     ArrayList<SQLite> getSongsInFolder(Context c, String whichSongFolder) {
         ArrayList<SQLite> songs = new ArrayList<>();
         ArrayList<String> files = new ArrayList<>();
+
+
 
         // Select matching folder Query
         String selectQuery = "SELECT "+SQLite.COLUMN_FILENAME + ", " +
@@ -317,13 +324,13 @@ class SQLiteHelper extends SQLiteOpenHelper {
                 } while (cursor.moveToNext());
             }
 
+            // close db connection
             try {
                 cursor.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        // close db connection
 
         // return songs in this folder
         return songs;
@@ -478,7 +485,11 @@ class SQLiteHelper extends SQLiteOpenHelper {
 
     private void emptyTable(SQLiteDatabase db) {
         // This drops the table if it exists (wipes it ready to start again)
-        db.execSQL("DROP TABLE IF EXISTS "+SQLite.TABLE_NAME);
+        try {
+            db.execSQL("DROP TABLE IF EXISTS " + SQLite.TABLE_NAME);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     void resetDatabase(Context c) {
@@ -503,27 +514,30 @@ class SQLiteHelper extends SQLiteOpenHelper {
                 String filename;
                 String foldername;
                 //if (!s.endsWith("/")) {
-                    // Only add song files, so if it ends with / this loop skips
-                    if (s.endsWith("/")) {
-                        filename = "";
-                        foldername = s.substring(0,s.lastIndexOf("/"));
-                    } else if (s.contains("/")) {
-                            filename = s.substring(s.lastIndexOf("/"));
-                            foldername = s.replace(filename, "");
-                    } else {
-                            filename = s;
-                            foldername = c.getString(R.string.mainfoldername);
-                        }
-                    //}
-                    filename = filename.replace("/", "");
+                // Only add song files, so if it ends with / this loop skips
+                if (s.endsWith("/")) {
+                    filename = "";
+                    foldername = s.substring(0, s.lastIndexOf("/"));
+                } else if (s.contains("/")) {
+                    filename = s.substring(s.lastIndexOf("/"));
+                    foldername = s.replace(filename, "");
+                } else {
+                    filename = s;
+                    foldername = c.getString(R.string.mainfoldername);
+                }
 
-                    stmt.bindString(1, escapedSQL(s));
-                    stmt.bindString(2, escapedSQL(filename));
-                    stmt.bindString(3, escapedSQL(foldername));
+                filename = filename.replace("/", "");
 
-                    stmt.execute();
-                    stmt.clearBindings();
-                //}
+                //stmt.bindString(1, escapedSQL(s));
+                //stmt.bindString(2, escapedSQL(filename));
+                //stmt.bindString(3, escapedSQL(foldername));
+
+                stmt.bindString(1, s);
+                stmt.bindString(2, filename);
+                stmt.bindString(3, foldername);
+
+                stmt.execute();
+                stmt.clearBindings();
             }
 
             db.setTransactionSuccessful();

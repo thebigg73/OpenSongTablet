@@ -329,6 +329,7 @@ public class StageMode extends AppCompatActivity implements
     // Handlers for fonts
     private Handler lyrichandler;
     private Handler chordhandler;
+    private Handler stickyhandler;
     private Handler presohandler;
     private Handler presoinfohandler;
     private Handler customhandler;
@@ -424,6 +425,7 @@ public class StageMode extends AppCompatActivity implements
         // Initialise the font handlers
         lyrichandler = new Handler();
         chordhandler = new Handler();
+        stickyhandler = new Handler();
         presohandler = new Handler();
         presoinfohandler = new Handler();
         customhandler = new Handler();
@@ -438,7 +440,7 @@ public class StageMode extends AppCompatActivity implements
         loadStartUpVariables();
 
         // Set up the fonts
-        setTypeFace.setUpAppFonts(StageMode.this, preferences, lyrichandler, chordhandler,
+        setTypeFace.setUpAppFonts(StageMode.this, preferences, lyrichandler, chordhandler, stickyhandler,
                 presohandler, presoinfohandler, customhandler);
 
         // Setup the CastContext
@@ -1513,6 +1515,7 @@ public class StageMode extends AppCompatActivity implements
         }
         lyrichandler = new Handler();
         chordhandler = new Handler();
+        stickyhandler = new Handler();
         presohandler = new Handler();
         presoinfohandler = new Handler();
         customhandler = new Handler();
@@ -1520,7 +1523,7 @@ public class StageMode extends AppCompatActivity implements
         getDefaultColors();
         mypage.setBackgroundColor(lyricsBackgroundColor);
         songscrollview.setBackgroundColor(lyricsBackgroundColor);
-        setTypeFace.setUpAppFonts(StageMode.this, preferences, lyrichandler, chordhandler,
+        setTypeFace.setUpAppFonts(StageMode.this, preferences, lyrichandler, chordhandler, stickyhandler,
                 presohandler, presoinfohandler, customhandler);
 
         prepareOptionMenu();
@@ -1569,128 +1572,134 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void loadSong() {
-        // Only do this once - if we are the process of loading a song already, don't try to do it again!
-        if (!FullscreenActivity.alreadyloading) {
-            FullscreenActivity.alreadyloading = true;
-            // It will get set back to false in the post execute of the async task
+        try {
+            // Only do this once - if we are the process of loading a song already, don't try to do it again!
+            if (!FullscreenActivity.alreadyloading) {
+                FullscreenActivity.alreadyloading = true;
+                // It will get set back to false in the post execute of the async task
 
-            // Check for set song
-            StaticVariables.setView = setActions.isSongInSet(StageMode.this,preferences);
+                // Check for set song
+                StaticVariables.setView = setActions.isSongInSet(StageMode.this, preferences);
 
-            // Sort the text size and colour of the info stuff
-            updateExtraInfoColorsAndSizes("capo");
-            updateExtraInfoColorsAndSizes("pad");
-            updateExtraInfoColorsAndSizes("metronome");
-
-            // Set the focus
-            // Don't do this for a blacklisted filetype (application, video, audio)
-            String where = "Songs";
-            String folder = StaticVariables.whichSongFolder;
-
-            // Watch out for custom items
-            if (StaticVariables.whichSongFolder.startsWith("../")) {
-                where = "";
-                folder = folder.replace("../", "");
-            }
-            Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, where, folder,
-                    StaticVariables.songfilename);
-
-            if (!storageAccess.checkFileExtensionValid(uri) && !storageAccess.determineFileTypeByExtension()) {
-                StaticVariables.myToastMessage = getResources().getString(R.string.file_type_unknown);
-                ShowToast.showToast(StageMode.this);
-            } else {
-                // Declare this as a new song for CCLI autologging
-                newsongloaded = true;
-
-                // Send WiFiP2P intent
-                if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
-                    try {
-                        sendSongLocationToConnected();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                // If there is a sticky note showing, remove it
-                if (stickyPopUpWindow != null && stickyPopUpWindow.isShowing()) {
-                    try {
-                        stickyPopUpWindow.dismiss();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                // Animate out the current song
-                if (FullscreenActivity.whichDirection.equals("L2R")) {
-                    if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-                        glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
-                    } else if (songscrollview!=null){
-                        songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
-                    }
-                } else {
-                    if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-                        glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
-                    } else if (songscrollview!=null){
-                        songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
-                    }
-                }
-                // If there were highlight notes showing, move them away
-                if (StaticVariables.whichMode.equals("Performance") && highlightNotes != null && highlightNotes.getVisibility() == View.VISIBLE) {
-                    if (FullscreenActivity.whichDirection.equals("L2R")) {
-                        highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
-                    } else if (highlightNotes!=null){
-                        highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
-                    }
-                }
-
-                // Remove any capokey
-                FullscreenActivity.capokey = "";
-
-                // End any current autscrolling
-                stopAutoScroll();
-
-                if ((StaticVariables.pad1Playing || StaticVariables.pad2Playing)) {
-                    StaticVariables.fadeWhichPad = 0; // Fade both pads if required
-                    fadeoutPad();
-                }
+                // Sort the text size and colour of the info stuff
+                updateExtraInfoColorsAndSizes("capo");
                 updateExtraInfoColorsAndSizes("pad");
-                padcurrentTime_TextView.setText(getString(R.string.zerotime));
-                backingtrackProgress.setVisibility(View.GONE);
+                updateExtraInfoColorsAndSizes("metronome");
 
-                // After animate out, load the song
-                Handler h = new Handler();
-                h.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+                // Set the focus
+                // Don't do this for a blacklisted filetype (application, video, audio)
+                String where = "Songs";
+                String folder = StaticVariables.whichSongFolder;
+
+                // Watch out for custom items
+                if (folder.startsWith("../")) {
+                    where = "";
+                    folder = folder.replace("../", "");
+                }
+
+                Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, where, folder,
+                        StaticVariables.songfilename);
+
+                if (!storageAccess.checkFileExtensionValid(uri) && !storageAccess.determineFileTypeByExtension()) {
+                    StaticVariables.myToastMessage = getResources().getString(R.string.file_type_unknown);
+                    ShowToast.showToast(StageMode.this);
+                } else {
+                    // Declare this as a new song for CCLI autologging
+                    newsongloaded = true;
+
+                    // Send WiFiP2P intent
+                    if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
                         try {
-                            glideimage_HorizontalScrollView.setVisibility(View.GONE);
-                            glideimage_ScrollView.setVisibility(View.GONE);
-                            songscrollview.setVisibility(View.GONE);
-                            highlightNotes.setVisibility(View.GONE);
-                            FullscreenActivity.highlightOn = false;
-                            glideimage_ScrollView.scrollTo(0, 0);
-                            songscrollview.scrollTo(0, 0);
-
-                            // Hide the image, cause we might be loading a proper song!
-                            glideimage.setBackgroundColor(StaticVariables.transparent);
-                            glideimage.setImageDrawable(null);
-
-                        } catch (Exception e) {
-                            Log.d("StageMode", "error updating the views");
-                        }
-                        // Load the song
-                        doCancelAsyncTask(loadsong_async);
-                        loadsong_async = new LoadSongAsync();
-                        try {
-                            loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                            sendSongLocationToConnected();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
-                }, 300);
+
+                    // If there is a sticky note showing, remove it
+                    if (stickyPopUpWindow != null && stickyPopUpWindow.isShowing()) {
+                        try {
+                            stickyPopUpWindow.dismiss();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    // Animate out the current song
+                    if (FullscreenActivity.whichDirection.equals("L2R")) {
+                        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                            glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
+                        } else if (songscrollview != null) {
+                            songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
+                        }
+                    } else {
+                        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                            glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
+                        } else if (songscrollview != null) {
+                            songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
+                        }
+                    }
+                    // If there were highlight notes showing, move them away
+                    if (StaticVariables.whichMode.equals("Performance") && highlightNotes != null && highlightNotes.getVisibility() == View.VISIBLE) {
+                        if (FullscreenActivity.whichDirection.equals("L2R")) {
+                            highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
+                        } else if (highlightNotes != null) {
+                            highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
+                        }
+                    }
+
+                    // Remove any capokey
+                    FullscreenActivity.capokey = "";
+
+                    // End any current autscrolling
+                    stopAutoScroll();
+
+                    if ((StaticVariables.pad1Playing || StaticVariables.pad2Playing)) {
+                        StaticVariables.fadeWhichPad = 0; // Fade both pads if required
+                        fadeoutPad();
+                    }
+                    updateExtraInfoColorsAndSizes("pad");
+                    padcurrentTime_TextView.setText(getString(R.string.zerotime));
+                    backingtrackProgress.setVisibility(View.GONE);
+
+                    // After animate out, load the song
+                    Handler h = new Handler();
+                    h.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                glideimage_HorizontalScrollView.setVisibility(View.GONE);
+                                glideimage_ScrollView.setVisibility(View.GONE);
+                                songscrollview.setVisibility(View.GONE);
+                                highlightNotes.setVisibility(View.GONE);
+                                FullscreenActivity.highlightOn = false;
+                                glideimage_ScrollView.scrollTo(0, 0);
+                                songscrollview.scrollTo(0, 0);
+
+                                // Hide the image, cause we might be loading a proper song!
+                                glideimage.setBackgroundColor(StaticVariables.transparent);
+                                glideimage.setImageDrawable(null);
+
+                            } catch (Exception e) {
+                                Log.d("StageMode", "error updating the views");
+                            }
+                            // Load the song
+                            doCancelAsyncTask(loadsong_async);
+                            loadsong_async = new LoadSongAsync();
+                            try {
+                                loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, 300);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
     private void shareSet() {
         doCancelAsyncTask(shareset_async);
         shareset_async = new ShareSet();
@@ -3057,9 +3066,6 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void displayHighlight(boolean fromautoshow) {
 
-        Log.d("StageMode", "Dealing with the highligther file");
-        Log.d("StageMode", "fromautoshow="+fromautoshow);
-
         if (!StaticVariables.whichMode.equals("Performance")) {
             FullscreenActivity.highlightOn = false;
             highlightNotes.setVisibility(View.GONE);
@@ -3714,7 +3720,6 @@ public class StageMode extends AppCompatActivity implements
 
     private void fixSetActionButtons() {
         StaticVariables.setView = setActions.isSongInSet(StageMode.this,preferences);
-
         if (StaticVariables.setView) {
             // Now get the position in the set and decide on the set move buttons
             if (StaticVariables.indexSongInSet < 0) {
@@ -3783,7 +3788,6 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.pdfPageCurrent = 0;
         }
 
-        Log.d("StageMode","setView="+StaticVariables.setView);
         // If this hasn't been dealt with
         if (!dealtwithaspdf && StaticVariables.setView) {
             // Is there another song in the set?  If so move, if not, do nothing
@@ -3796,32 +3800,41 @@ public class StageMode extends AppCompatActivity implements
             // Try to move to the next song alphabetically
             // However, only do this if the previous item isn't a subfolder!
             boolean isfolder = false;
-            if (FullscreenActivity.nextSongIndex < filenamesSongsInFolder.size()) {
-                Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", "",
-                        filenamesSongsInFolder.get(FullscreenActivity.nextSongIndex));
-                if (storageAccess.uriExists(StageMode.this, uri) && !storageAccess.uriIsFile(StageMode.this, uri)) {
-                    isfolder = true;
+            try {
+                if (FullscreenActivity.nextSongIndex < filenamesSongsInFolder.size() && FullscreenActivity.nextSongIndex>-1) {
+
+                    Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", "",
+                            filenamesSongsInFolder.get(FullscreenActivity.nextSongIndex));
+                    if (storageAccess.uriExists(StageMode.this, uri) && !storageAccess.uriIsFile(StageMode.this, uri)) {
+                        isfolder = true;
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-            if (FullscreenActivity.nextSongIndex < filenamesSongsInFolder.size()
-                    && FullscreenActivity.nextSongIndex != -1
-                    && !StaticVariables.songfilename.equals(filenamesSongsInFolder.get(FullscreenActivity.nextSongIndex)) &&
-                    !isfolder) {
-                FullscreenActivity.tempswipeSet = "disable";
-                StaticVariables.songfilename = filenamesSongsInFolder.get(FullscreenActivity.nextSongIndex);
-                loadSong();
+            try {
+                if (FullscreenActivity.nextSongIndex < filenamesSongsInFolder.size()
+                        && FullscreenActivity.nextSongIndex != -1
+                        && !StaticVariables.songfilename.equals(filenamesSongsInFolder.get(FullscreenActivity.nextSongIndex)) &&
+                        !isfolder) {
+                    FullscreenActivity.tempswipeSet = "disable";
+                    StaticVariables.songfilename = filenamesSongsInFolder.get(FullscreenActivity.nextSongIndex);
+                    loadSong();
 
-                // Set a runnable to reset swipe back to original value after 1 second
-                Handler delayfadeinredraw = new Handler();
-                delayfadeinredraw.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        FullscreenActivity.tempswipeSet = "enable";
-                    }
-                }, FullscreenActivity.delayswipe_time);
-            } else {
-                showToastMessage(getResources().getString(R.string.lastsong));
+                    // Set a runnable to reset swipe back to original value after 1 second
+                    Handler delayfadeinredraw = new Handler();
+                    delayfadeinredraw.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            FullscreenActivity.tempswipeSet = "enable";
+                        }
+                    }, FullscreenActivity.delayswipe_time);
+                } else {
+                    showToastMessage(getResources().getString(R.string.lastsong));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -4155,7 +4168,6 @@ public class StageMode extends AppCompatActivity implements
                     songwidth = glideimage.getMeasuredWidth();
                     songheight = glideimage.getMeasuredHeight();
                     if (songwidth>0 && songheight>0) {
-                        Log.d("d","Got sizes");
                         highlightNotes.setScaleX(1.0f);
                         highlightNotes.setScaleY(1.0f);
                         glideimage.getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -4276,31 +4288,39 @@ public class StageMode extends AppCompatActivity implements
             // However, only do this if the previous item isn't a subfolder!
             boolean isfolder = false;
             if (FullscreenActivity.previousSongIndex >= 0) {
-                Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", "",
-                        filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex));
-                if (storageAccess.uriExists(StageMode.this, uri) && !storageAccess.uriIsFile(StageMode.this, uri)) {
-                    isfolder = true;
+                try {
+                    Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", "",
+                            filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex));
+                    if (storageAccess.uriExists(StageMode.this, uri) && !storageAccess.uriIsFile(StageMode.this, uri)) {
+                        isfolder = true;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
-            if (FullscreenActivity.previousSongIndex >= 0
-                    && !StaticVariables.songfilename.equals(filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex))
-                    && !isfolder) {
-                FullscreenActivity.tempswipeSet = "disable";
+            try {
+                if (FullscreenActivity.previousSongIndex >= 0
+                        && !StaticVariables.songfilename.equals(filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex))
+                        && !isfolder) {
+                    FullscreenActivity.tempswipeSet = "disable";
 
-                StaticVariables.songfilename = filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex);
-                loadSong();
+                    StaticVariables.songfilename = filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex);
+                    loadSong();
 
-                // Set a runnable to reset swipe back to original value after 1 second
-                Handler delayfadeinredraw = new Handler();
-                delayfadeinredraw.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        FullscreenActivity.tempswipeSet = "enable";
-                    }
-                }, FullscreenActivity.delayswipe_time);
-            } else {
-                showToastMessage(getResources().getString(R.string.firstsong));
+                    // Set a runnable to reset swipe back to original value after 1 second
+                    Handler delayfadeinredraw = new Handler();
+                    delayfadeinredraw.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            FullscreenActivity.tempswipeSet = "enable";
+                        }
+                    }, FullscreenActivity.delayswipe_time);
+                } else {
+                    showToastMessage(getResources().getString(R.string.firstsong));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -4912,6 +4932,7 @@ public class StageMode extends AppCompatActivity implements
                     sts = StaticVariables.infoBarSmallTextSize;
                 }
                 mySticky.setTextSize(sts);
+                mySticky.setTypeface(StaticVariables.typefaceSticky);
                 mySticky.setText(StaticVariables.mNotes);
                 popupView.setBackgroundResource(R.drawable.popup_sticky);
                 GradientDrawable drawable = (GradientDrawable) popupView.getBackground();
@@ -5006,7 +5027,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 Display mDisplay = mMediaRouter.getSelectedRoute().getPresentationDisplay();
                 if (mDisplay != null) {
-                    hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong, (Activity)this);
+                    hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong, this);
                     hdmi.show();
                     FullscreenActivity.isHDMIConnected = true;
                 }
@@ -7000,18 +7021,22 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void stopAutoScroll() {
-        updateExtraInfoColorsAndSizes("autoscroll");
-        playbackProgress.setVisibility(View.GONE);
-        doCancelAsyncTask(mtask_autoscroll_music);
-        StaticVariables.isautoscrolling = false;
-        currentTime_TextView.setText(getString(R.string.zerotime));
-        // Send WiFiP2P intent
-        if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
-            try {
-                sendAutoscrollTriggerToConnected();
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            updateExtraInfoColorsAndSizes("autoscroll");
+            playbackProgress.setVisibility(View.GONE);
+            doCancelAsyncTask(mtask_autoscroll_music);
+            StaticVariables.isautoscrolling = false;
+            currentTime_TextView.setText(getString(R.string.zerotime));
+            // Send WiFiP2P intent
+            if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
+                try {
+                    sendAutoscrollTriggerToConnected();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -7022,7 +7047,8 @@ public class StageMode extends AppCompatActivity implements
             Metronome.startstopMetronome(StageMode.this, StageMode.this,
                     preferences.getMyPreferenceBoolean(StageMode.this,"metronomeShowVisual",false),
                     defmetronomecolor, preferences.getMyPreferenceString(StageMode.this,"metronomePan","C"),
-                    preferences.getMyPreferenceFloat(StageMode.this,"metronomeVol",0.5f));
+                    preferences.getMyPreferenceFloat(StageMode.this,"metronomeVol",0.5f),
+                    preferences.getMyPreferenceInt(StageMode.this,"metronomeLength",0));
         }
     }
 
@@ -7122,7 +7148,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 // Get the next set positions and song
                 if (!cancelled) {
-                    setActions.doMoveInSet(StageMode.this);
+                    setActions.doMoveInSet(StageMode.this, preferences);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -7230,6 +7256,9 @@ public class StageMode extends AppCompatActivity implements
                     // Check the chord format
                     try {
                         transpose.checkChordFormat(StageMode.this,preferences);
+                        if (preferences.getMyPreferenceBoolean(StageMode.this,"chordFormatUsePreferred",true)) {
+                            StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(StageMode.this,"chordFormat",1);
+                        }
                     } catch (Exception e) {
                         Log.d("StageMode", "Error checking the chord format");
                     }
@@ -7407,7 +7436,8 @@ public class StageMode extends AppCompatActivity implements
                         Metronome.startstopMetronome(StageMode.this, StageMode.this,
                                 preferences.getMyPreferenceBoolean(StageMode.this,"metronomeShowVisual",false),
                                 defmetronomecolor, preferences.getMyPreferenceString(StageMode.this,"metronomePan","C"),
-                                preferences.getMyPreferenceFloat(StageMode.this,"metronomeVol",0.5f));
+                                preferences.getMyPreferenceFloat(StageMode.this,"metronomeVol",0.5f),
+                                preferences.getMyPreferenceInt(StageMode.this,"metronomeLength",0));
                     }
                     // Start it again with the new values if we chose to
                     if (preferences.getMyPreferenceBoolean(StageMode.this,"metronomeAutoStart",false) &&
@@ -7493,6 +7523,7 @@ public class StageMode extends AppCompatActivity implements
                 e.printStackTrace();
             }
             FullscreenActivity.alreadyloading = false;
+            Log.d("StageMode","whichSongFolder="+StaticVariables.whichSongFolder+"\nsongfilename="+StaticVariables.songfilename);
         }
     }
 
@@ -7626,6 +7657,9 @@ public class StageMode extends AppCompatActivity implements
 
                         String whattolookfor; // not going to find this by accident...
                         whattolookfor = setActions.whatToLookFor(StageMode.this, StaticVariables.whichSongFolder, foundsongfilename);
+
+                        // Fix for variations, etc
+                        whattolookfor = setActions.fixIsInSetSearch(whattolookfor);
 
                         boolean isinset = setcurrent.contains(whattolookfor);
 
@@ -8297,7 +8331,8 @@ public class StageMode extends AppCompatActivity implements
                 Metronome.startstopMetronome(StageMode.this, StageMode.this,
                         preferences.getMyPreferenceBoolean(StageMode.this,"metronomeShowVisual",false),
                         defmetronomecolor, preferences.getMyPreferenceString(StageMode.this,"metronomePan","C"),
-                        preferences.getMyPreferenceFloat(StageMode.this,"metronomeVol",0.5f));
+                        preferences.getMyPreferenceFloat(StageMode.this,"metronomeVol",0.5f),
+                        preferences.getMyPreferenceInt(StageMode.this, "metronomeLength",0));
             } else {
                 showToastMessage(getResources().getString(R.string.metronome) + " - " +
                         getResources().getString(R.string.notset));
@@ -8405,9 +8440,7 @@ public class StageMode extends AppCompatActivity implements
                         boolean custompad;
                         StaticVariables.padson = true;
                         if (StaticVariables.pad_filename != null && StaticVariables.mKey != null) {
-                            Log.d("StageMode","preparing pad");
                             custompad = !StaticVariables.pad_filename.endsWith("null") && StaticVariables.pad_filename.startsWith("custom_");
-                            Log.d("StageMode","custompad="+custompad);
                             AssetFileDescriptor afd = null;
                             String padpath = null;
                             if (custompad) {
@@ -8419,7 +8452,6 @@ public class StageMode extends AppCompatActivity implements
                             } else {
                                 // Prepare the default auto pad
                                 path = getResources().getIdentifier(StaticVariables.pad_filename, "raw", getPackageName());
-                                Log.d("StageMode","path="+path);
                                 try {
                                     afd = getResources().openRawResourceFd(path);
                                 } catch (Exception e) {
@@ -8442,7 +8474,6 @@ public class StageMode extends AppCompatActivity implements
                                         FullscreenActivity.mPlayer1.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
                                         afd.close();
                                     }
-                                    Log.d("StageMode","prepareAsync()");
 
                                     FullscreenActivity.mPlayer1.prepareAsync();
                                 } catch (Exception e) {
@@ -8517,7 +8548,6 @@ public class StageMode extends AppCompatActivity implements
 
                         if (!validlinkaudio) {
                             // Problem with link audio so don't use it
-                            Log.d("StageMode","Problme with link audio");
                             StaticVariables.myToastMessage = getResources().getString(R.string.link_audio) + " - " +
                                     getResources().getString(R.string.file_type_unknown);
                             StaticVariables.padson = false;

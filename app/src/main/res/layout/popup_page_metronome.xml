@@ -176,6 +176,31 @@
                     android:layout_margin="8dp" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="8dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/menu_button"
+                android:gravity="center_horizontal|top"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/metronome_duration" />
+
+                <NumberPicker
+                    android:id="@+id/bar_numberPicker"
+                    style="@style/MyInfoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/visualmetronome"
                 style="@style/MyHeadingText"

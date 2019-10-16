@@ -814,22 +814,31 @@ public class PopUpListSetsFragment extends DialogFragment {
             StaticVariables.setView = true;
 
             if (result.equals("LOADED") && !dataTask.isCancelled()) {
-                // Get the set first item
-                setActions.prepareFirstItem(getActivity());
+                try {
+                    // Get the set first item
+                    setActions.prepareFirstItem(getActivity(),preferences);
 
-                // Tell the listener to do something
-                mListener.refreshAll();
-                FullscreenActivity.whattodo = "editset";
-                mListener.openFragment();
-                //Close this dialog
-                hideKeyboard(newCategory_EditText);
-                hideKeyboard(setListName);
-                hideKeyboard(originalSetCategory_Spinner);
-                hideKeyboard(setCategory_Spinner);
-                dismiss();
+                    // Tell the listener to do something
+                    mListener.refreshAll();
+                    FullscreenActivity.whattodo = "editset";
+                    mListener.openFragment();
+                    //Close this dialog
+                    hideKeyboard(newCategory_EditText);
+                    hideKeyboard(setListName);
+                    hideKeyboard(originalSetCategory_Spinner);
+                    hideKeyboard(setCategory_Spinner);
+                    dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            //prog.dismiss();
-            progressBar.setVisibility(View.GONE);
+            if (progressBar!=null) {
+                try {
+                    progressBar.setVisibility(View.GONE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

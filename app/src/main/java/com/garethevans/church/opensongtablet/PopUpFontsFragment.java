@@ -39,7 +39,7 @@ public class PopUpFontsFragment extends DialogFragment {
         return frag;
     }
 
-    private Spinner lyricsFontSpinner, chordsFontSpinner, presoFontSpinner, presoInfoFontSpinner;
+    private Spinner lyricsFontSpinner, chordsFontSpinner, stickyFontSpinner, presoFontSpinner, presoInfoFontSpinner;
 
     private MyInterface mListener;
 
@@ -62,6 +62,7 @@ public class PopUpFontsFragment extends DialogFragment {
     private TextView lineSpacing_TextView;
     private TextView lyricPreviewTextView;
     private TextView chordPreviewTextView;
+    private TextView stickyPreviewTextView;
     private TextView presoPreviewTextView;
     private TextView presoinfoPreviewTextView;
     private ArrayAdapter<String> choose_fonts;
@@ -71,6 +72,7 @@ public class PopUpFontsFragment extends DialogFragment {
     // Handlers for fonts
     private Handler lyrichandler;
     private Handler chordhandler;
+    private Handler stickyhandler;
     private Handler presohandler;
     private Handler presoinfohandler;
 
@@ -102,6 +104,7 @@ public class PopUpFontsFragment extends DialogFragment {
         // Initialise the font handlers
         lyrichandler = new Handler();
         chordhandler = new Handler();
+        stickyhandler = new Handler();
         presohandler = new Handler();
         presoinfohandler = new Handler();
         Handler customhandler = new Handler();
@@ -109,10 +112,12 @@ public class PopUpFontsFragment extends DialogFragment {
         // Initialise the views
         lyricsFontSpinner = V.findViewById(R.id.lyricsFontSpinner);
         chordsFontSpinner = V.findViewById(R.id.chordsFontSpinner);
+        stickyFontSpinner = V.findViewById(R.id.stickyFontSpinner);
         presoFontSpinner = V.findViewById(R.id.presoFontSpinner);
         presoInfoFontSpinner = V.findViewById(R.id.presoInfoFontSpinner);
         lyricPreviewTextView = V.findViewById(R.id.lyricPreviewTextView);
         chordPreviewTextView = V.findViewById(R.id.chordPreviewTextView);
+        stickyPreviewTextView = V.findViewById(R.id.stickyPreviewTextView);
         presoPreviewTextView = V.findViewById(R.id.presoPreviewTextView);
         presoinfoPreviewTextView = V.findViewById(R.id.presoinfoPreviewTextView);
         TextView fontBrowse = V.findViewById(R.id.fontBrowse);
@@ -138,7 +143,7 @@ public class PopUpFontsFragment extends DialogFragment {
         SwitchCompat trimsections_SwitchCompat = V.findViewById(R.id.trimsections_SwitchCompat);
 
         // Set up the typefaces
-        setTypeFace.setUpAppFonts(getActivity(), preferences, lyrichandler, chordhandler,
+        setTypeFace.setUpAppFonts(getActivity(), preferences, lyrichandler, chordhandler, stickyhandler,
                 presohandler, presoinfohandler, customhandler);
 
         trimlines_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"trimSections",true));
@@ -285,12 +290,14 @@ public class PopUpFontsFragment extends DialogFragment {
     private void setSpinners() {
         lyricsFontSpinner.setAdapter(choose_fonts);
         chordsFontSpinner.setAdapter(choose_fonts);
+        stickyFontSpinner.setAdapter(choose_fonts);
         presoFontSpinner.setAdapter(choose_fonts);
         presoInfoFontSpinner.setAdapter(choose_fonts);
 
         // Select the appropriate items in the list
         lyricsFontSpinner.setSelection(getPositionInList("fontLyric"));
         chordsFontSpinner.setSelection(getPositionInList("fontChord"));
+        stickyFontSpinner.setSelection(getPositionInList("fontSticky"));
         presoFontSpinner.setSelection(getPositionInList("fontPreso"));
         presoInfoFontSpinner.setSelection(getPositionInList("fontPresoInfo"));
 
@@ -307,6 +314,15 @@ public class PopUpFontsFragment extends DialogFragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 updateItem(position, "fontChord", "chord", chordPreviewTextView, chordhandler);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        stickyFontSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                updateItem(position, "fontSticky", "sticky", stickyPreviewTextView, stickyhandler);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -348,20 +364,28 @@ public class PopUpFontsFragment extends DialogFragment {
 
     private int getPositionInList(String what) {
         String valToFind = preferences.getMyPreferenceString(getActivity(), what, "lato");
-        return choose_fonts.getPosition(valToFind);
+        try {
+            return choose_fonts.getPosition(valToFind);
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
     private void doSave() {
-        float num = (float) scaleHeading_SeekBar.getProgress()/100.0f;
-        preferences.setMyPreferenceFloat(getActivity(),"scaleHeadings", num);
-        num = (float) scaleComment_SeekBar.getProgress()/100.0f;
-        preferences.setMyPreferenceFloat(getActivity(),"scaleComments", num);
-        num = (float) scaleChords_SeekBar.getProgress()/100.0f;
-        preferences.setMyPreferenceFloat(getActivity(),"scaleChords",num);
-        num = (float) lineSpacing_SeekBar.getProgress() / 100.0f;
-        preferences.setMyPreferenceFloat(getActivity(),"lineSpacing",num);
-        mListener.refreshAll();
-        dismiss();
+        try {
+            float num = (float) scaleHeading_SeekBar.getProgress() / 100.0f;
+            preferences.setMyPreferenceFloat(getActivity(), "scaleHeadings", num);
+            num = (float) scaleComment_SeekBar.getProgress() / 100.0f;
+            preferences.setMyPreferenceFloat(getActivity(), "scaleComments", num);
+            num = (float) scaleChords_SeekBar.getProgress() / 100.0f;
+            preferences.setMyPreferenceFloat(getActivity(), "scaleChords", num);
+            num = (float) lineSpacing_SeekBar.getProgress() / 100.0f;
+            preferences.setMyPreferenceFloat(getActivity(), "lineSpacing", num);
+            mListener.refreshAll();
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public interface MyInterface {
@@ -371,7 +395,11 @@ public class PopUpFontsFragment extends DialogFragment {
 
     @Override
     public void onCancel(DialogInterface dialog) {
-        this.dismiss();
+        try {
+            this.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressLint("StaticFieldLeak")

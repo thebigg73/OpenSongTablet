@@ -493,4 +493,9 @@
     <string name="youtube">"Sök på YouTube för aktuell sång"</string>
     <string name="duplicate">Duplicera</string>
     <string name="storage_warning">Välj inte mappen \"Songs\" som din lagringsplats. Du bör i stället välja den överordnade \"OpenSong\" -mappsplatsen.</string>
+    <string name="choosestickyfont">Välj typsnitt för klisterlappar</string>
+    <string name="block_shadow_opacity">Opacitet</string>
+    <string name="block_text_shadow">Blockera textskugga</string>
+    <string name="continuous">Kontinuerlig</string>
+    <string name="metronome_duration">Metronome varaktighet (staplar)</string>
 </resources>

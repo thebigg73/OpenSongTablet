@@ -72,8 +72,11 @@ public class LoadXML extends Activity {
 
         String where = "Songs";
         String folder = StaticVariables.whichSongFolder;
+        String origfolder = StaticVariables.whichSongFolder;
+        boolean iscustom = false;
         if (StaticVariables.whichSongFolder.startsWith("../")) {
             folder = folder.replace("../", "");
+            iscustom = true;
             where = "";
         }
         // Determine the file encoding
@@ -83,6 +86,7 @@ public class LoadXML extends Activity {
             utf = storageAccess.getUTFEncoding(c, uri);
         }
 
+        Log.d("LoadXML","uri="+uri);
         if (StaticVariables.songfilename.equals("Welcome to OpenSongApp")) {
             setWelcome(c);
         }
@@ -111,7 +115,11 @@ public class LoadXML extends Activity {
                 // Song was loaded correctly and was xml format
                 preferences.setMyPreferenceBoolean(c,"songLoadSuccess",true);
                 preferences.setMyPreferenceString(c,"songfilename",StaticVariables.songfilename);
-                StaticVariables.whichSongFolder = folder;
+                if (iscustom) {
+                    StaticVariables.whichSongFolder = origfolder;
+                } else {
+                    StaticVariables.whichSongFolder = folder;
+                }
                 preferences.setMyPreferenceString(c,"whichSongFolder",StaticVariables.whichSongFolder);
             } else {
                 Log.d("LoadXML", "Song wasn't loaded");

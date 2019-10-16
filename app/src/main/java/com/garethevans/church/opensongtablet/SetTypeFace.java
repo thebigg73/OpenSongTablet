@@ -211,11 +211,12 @@ class SetTypeFace {
     }
 */
 
-    void setUpAppFonts(Context c, Preferences preferences, Handler lyrichandler, Handler chordhandler,
+    void setUpAppFonts(Context c, Preferences preferences, Handler lyrichandler, Handler chordhandler, Handler stickyHandler,
                        Handler presohandler, Handler presoinfohandler, Handler customhandler) {
         // Load up the user preferences
         String fontLyric = preferences.getMyPreferenceString(c, "fontLyric", "Lato");
         String fontChord = preferences.getMyPreferenceString(c, "fontChord", "Lato");
+        String fontSticky = preferences.getMyPreferenceString(c, "fontSticky", "Lato");
         String fontPreso = preferences.getMyPreferenceString(c, "fontPreso", "Lato");
         String fontPresoInfo = preferences.getMyPreferenceString(c, "fontPresoInfo", "Lato");
         String fontCustom = preferences.getMyPreferenceString(c, "fontCustom", "Lato");
@@ -231,6 +232,11 @@ class SetTypeFace {
             StaticVariables.typefaceChords = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
             setChosenFont(c, preferences, fontChord, "chord", null, chordhandler);
+        }
+        if (fontSticky.equals("Lato")) {
+            StaticVariables.typefaceSticky = Typeface.createFromAsset(c.getAssets(), "font/lato.ttf");
+        } else {
+            setChosenFont(c, preferences, fontSticky, "sticky", null, stickyHandler);
         }
         if (fontPreso.equals("Lato")) {
             StaticVariables.typefacePreso = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
@@ -277,6 +283,10 @@ class SetTypeFace {
                         StaticVariables.typefaceChords = typeface;
                         preferences.setMyPreferenceString(c, "fontChord", fontname);
                         break;
+                    case "sticky":
+                        StaticVariables.typefaceSticky = typeface;
+                        preferences.setMyPreferenceString(c, "fontSticky", fontname);
+                        break;
                     case "preso":
                         StaticVariables.typefacePreso = typeface;
                         preferences.setMyPreferenceString(c, "fontPreso", fontname);
@@ -316,6 +326,10 @@ class SetTypeFace {
                     case "chord":
                         StaticVariables.typefaceChords = typeface;
                         preferences.setMyPreferenceString(c, "fontChord", "Lato");
+                        break;
+                    case "sticky":
+                        StaticVariables.typefaceSticky = typeface;
+                        preferences.setMyPreferenceString(c, "fontSticky", "Lato");
                         break;
                     case "preso":
                         StaticVariables.typefacePreso = typeface;

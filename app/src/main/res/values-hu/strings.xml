@@ -493,4 +493,9 @@
     <string name="youtube">"Keresés YouTube aktuális dal"</string>
     <string name="duplicate">Másolat</string>
     <string name="storage_warning">Kérjük, ne válassza a \'Dalok\' mappát tárhelyének. Ehelyett inkább a szülő \'OpenSong\' mappát kell kiválasztania.</string>
+    <string name="choosestickyfont">Válasszon cetlik betűtípust</string>
+    <string name="block_shadow_opacity">Átlátszatlanság</string>
+    <string name="block_text_shadow">Blokkolja a szöveg árnyékát</string>
+    <string name="continuous">Folyamatos</string>
+    <string name="metronome_duration">Metronóm időtartam (sávok)</string>
 </resources>

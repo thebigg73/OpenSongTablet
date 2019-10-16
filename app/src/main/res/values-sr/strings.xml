@@ -493,4 +493,9 @@
     <string name="new_something">Novo</string>
     <string name="duplicate">Duplikat</string>
     <string name="storage_warning">Nemojte odabrati direktorijum „Pesme“ kao lokaciju za skladištenje. Umesto toga, trebate odabrati roditeljsku lokaciju „OpenSong“.</string>
+    <string name="choosestickyfont">Izaberite font lepljivih nota</string>
+    <string name="block_shadow_opacity">Neprozirnost</string>
+    <string name="block_text_shadow">Blokiraj senku teksta</string>
+    <string name="continuous">Kontinuirano</string>
+    <string name="metronome_duration">Metronome trajanje (barovi)</string>
 </resources>

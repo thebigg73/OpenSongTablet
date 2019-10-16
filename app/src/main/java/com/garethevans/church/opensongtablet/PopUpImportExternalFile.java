@@ -483,7 +483,7 @@ public class PopUpImportExternalFile extends DialogFragment {
                     StaticVariables.setView = true;
 
                     // Get the set first item
-                    setActions.prepareFirstItem(getActivity());
+                    setActions.prepareFirstItem(getActivity(),preferences);
 
                     StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.success);
 

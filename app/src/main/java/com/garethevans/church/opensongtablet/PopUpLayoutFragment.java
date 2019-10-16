@@ -59,13 +59,14 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     private boolean firsttime = true;
 
-    private SwitchCompat toggleChordsButton, toggleAutoScaleButton;
+    private SwitchCompat toggleChordsButton, toggleAutoScaleButton, blockShadow;
     private LinearLayout group_maxfontsize;
     private LinearLayout group_manualfontsize;
+    private LinearLayout blockShadowAlphaLayout;
     private SeekBar setMaxFontSizeProgressBar, setFontSizeProgressBar, presoAlphaProgressBar,
             setXMarginProgressBar, setYMarginProgressBar, presoTitleSizeSeekBar,
             presoAuthorSizeSeekBar, presoCopyrightSizeSeekBar,
-            presoAlertSizeSeekBar, presoTransitionTimeSeekBar;
+            presoAlertSizeSeekBar, presoTransitionTimeSeekBar, blockShadowAlpha;
     private TextView maxfontSizePreview;
     private TextView fontSizePreview;
     private TextView presoAlphaText;
@@ -120,11 +121,12 @@ public class PopUpLayoutFragment extends DialogFragment {
         // Handlers for fonts
         Handler lyrichandler = new Handler();
         Handler chordhandler = new Handler();
+        Handler stickyhandler = new Handler();
         Handler presohandler = new Handler();
         Handler presoinfohandler = new Handler();
         Handler customhandler = new Handler();
 
-        setTypeFace.setUpAppFonts(getActivity(), preferences, lyrichandler, chordhandler,
+        setTypeFace.setUpAppFonts(getActivity(), preferences, lyrichandler, chordhandler, stickyhandler,
                 presohandler, presoinfohandler, customhandler);
 
         prepareViews();
@@ -140,6 +142,9 @@ public class PopUpLayoutFragment extends DialogFragment {
     }
 
     private void identifyViews(View V) {
+        blockShadow = V.findViewById(R.id.blockShadow);
+        blockShadowAlphaLayout = V.findViewById(R.id.blockShadowAlphaLayout);
+        blockShadowAlpha = V.findViewById(R.id.blockShadowAlpha);
         toggleChordsButton = V.findViewById(R.id.toggleChordsButton);
         toggleAutoScaleButton = V.findViewById(R.id.toggleAutoScaleButton);
         group_maxfontsize = V.findViewById(R.id.group_maxfontsize);
@@ -183,6 +188,10 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     private void prepareViews() {
         // Set the stuff up to what it should be from preferences
+        blockShadow.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"blockShadow",false));
+        setBlockAlphaVisibility();
+        blockShadowAlpha.setMax(100);
+        blockShadowAlpha.setProgress((int)(preferences.getMyPreferenceFloat(getActivity(),"blockShadowAlpha",0.7f)*100));
         toggleChordsButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"presoShowChords",false));
         toggleAutoScaleButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"presoAutoscale",true));
         setMaxFontSizeProgressBar.setMax(70);
@@ -217,6 +226,28 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     private void setupListeners() {
         // Set listeners
+        blockShadow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                preferences.setMyPreferenceBoolean(getActivity(),"blockShadow",b);
+                setBlockAlphaVisibility();
+                sendUpdateToScreen("all");
+            }
+        });
+        blockShadowAlpha.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) { }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) { }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                preferences.setMyPreferenceFloat(getActivity(),"blockShadowAlpha",(float)seekBar.getProgress()/100.0f);
+                sendUpdateToScreen("all");
+            }
+        });
+
         toggleChordsButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -409,6 +440,14 @@ public class PopUpLayoutFragment extends DialogFragment {
                 }
             }
         });
+    }
+
+    private void setBlockAlphaVisibility() {
+        if (preferences.getMyPreferenceBoolean(getActivity(), "blockShadow", false)) {
+            blockShadowAlphaLayout.setVisibility(View.VISIBLE);
+        } else {
+            blockShadowAlphaLayout.setVisibility(View.GONE);
+        }
     }
 
     private int timeToSeekBarProgress() {

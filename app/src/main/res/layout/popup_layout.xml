@@ -157,7 +157,7 @@
                     style="@style/MyHeadingText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/performancemode" />
+                    android:text="@string/presentermode" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/toggleAutoScaleButton"
@@ -255,6 +255,47 @@
                         android:layout_marginTop="12dp"
                         android:layout_marginRight="12dp"
                         android:layout_marginBottom="24dp" />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/blockShadow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/block_text_shadow"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="24dp"/>
+
+                <LinearLayout
+                    android:id="@+id/blockShadowAlphaLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/MyWhiteHeadingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="0dp"
+                        android:text="@string/block_shadow_opacity" />
+
+                    <SeekBar
+                        android:id="@+id/blockShadowAlpha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="24dp"
+                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
                 </LinearLayout>
 
@@ -487,7 +528,7 @@
                         android:layout_marginLeft="12dp"
                         android:layout_marginTop="0dp"
                         android:layout_marginRight="12dp"
-                        android:layout_marginBottom="24dp"
+                        android:layout_marginBottom="12dp"
                         android:background="@drawable/apptheme_scrubber_primary_holo"
                         android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                         android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />

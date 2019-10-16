@@ -168,12 +168,14 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&", "&amp;");
 
         // Now write the modified song
-        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", StaticVariables.whichSongFolder,
-                StaticVariables.songfilename);
+        String where = getLocation();
+        String folder = getFolder();
 
+        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, where, folder, StaticVariables.songfilename);
+        Log.d("PopUpEditSong","where="+where+"\nfolder="+folder+"\nsongfilename="+StaticVariables.songfilename);
         // Check the uri exists for the outputstream to be valid
         storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
-                "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
+                where, folder, StaticVariables.songfilename);
 
         OutputStream outputStream = storageAccess.getOutputStream(getActivity(), uri);
         storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream);
@@ -217,7 +219,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
 
         FullscreenActivity.mynewXML = "";
 
-        Log.d("d","ended="+ended);
         if (ended) {
             // If we were sent here because we needed to edit the song, we can now reset that
             FullscreenActivity.needtoeditsong = false;
@@ -267,12 +268,17 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 !FullscreenActivity.mynewXML.contains("Welcome to OpenSongApp")) {
             // Now write the modified song
             StorageAccess storageAccess = new StorageAccess();
-            Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", StaticVariables.whichSongFolder,
-                    StaticVariables.songfilename);
+
+            String where = getLocation();
+            String folder = getFolder();
+
+            Uri uri = storageAccess.getUriForItem(c, preferences, where, folder, StaticVariables.songfilename);
+
+            Log.d("PopUpEditSong","uri="+uri);
 
             // Check the uri exists for the outputstream to be valid
             storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null,
-                    "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
+                    where, folder, StaticVariables.songfilename);
 
             OutputStream outputStream = storageAccess.getOutputStream(c, uri);
             storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream);
@@ -533,6 +539,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         sqLiteHelper = new SQLiteHelper(getActivity());
         sqLite = sqLiteHelper.getSong(getActivity(),songid);
 
+        Log.d("PopUpEditSong","whichSongFolder="+StaticVariables.whichSongFolder+"\nsongfilename="+StaticVariables.songfilename);
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getResources().getString(R.string.edit));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
@@ -1029,5 +1036,21 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             } catch (Exception e) {
                 e.printStackTrace();
             }
+    }
+
+    private static String getLocation() {
+        if (StaticVariables.whichSongFolder.startsWith("../")) {
+            return StaticVariables.whichSongFolder.replace("../","");
+        } else {
+            return "Songs";
+        }
+    }
+
+    private static String getFolder() {
+        if (StaticVariables.whichSongFolder.startsWith("../")) {
+            return "";
+        } else {
+            return StaticVariables.whichSongFolder;
+        }
     }
 }

@@ -1448,11 +1448,11 @@ class StorageAccess {
         return istext;
     }
 
-    String getPartOfUri(Uri uri, String from) {
+    String getPartOfUri(Uri uri) {
         // This gets the filename
         String path = uri.getPath();
-        if (path!=null && path.contains(from)) {
-            path = path.substring(path.lastIndexOf(from));
+        if (path!=null && path.contains("OpenSong/Songs")) {
+            path = path.substring(path.lastIndexOf("OpenSong/Songs"));
         }
         return path;
     }

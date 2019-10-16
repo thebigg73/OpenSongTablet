@@ -19,6 +19,8 @@ class Metronome {
 	private final AudioGenerator audioGenerator = new AudioGenerator(8000);
     private double[] soundTickArray, soundTockArray, silenceSoundArray;
 	private int currentBeat = 1;
+	private int runningBeatCount;
+	static private int maxBeatCount;
 
     // Variables for metronome to work
     // Keeping them as public/static to allow them to be accessed without the dialogfragment
@@ -51,11 +53,6 @@ class Metronome {
         // First number is the number of beats and is the easiest bit
         // The second number is the length of each beat
         // 2 = half notes, 4 = quarter notes, 8 = eigth notes
-
-
-        Log.d("Metronome","noteValue="+noteValue);
-        Log.d("Metronome","beat="+beat);
-        Log.d("Metronome","bpm="+bpm);
 
         if (beat==6 || beat==9) {
             noteValue = (short)(noteValue/(beat/3));
@@ -111,6 +108,11 @@ class Metronome {
 			audioGenerator.writeSound(pan,vol,silenceSoundArray);
 
 			currentBeat++;
+			runningBeatCount++;
+			if (maxBeatCount>0 && runningBeatCount>=maxBeatCount) { // This is if the user has specified max metronome time
+			    play=false;
+                StaticVariables.metronomeonoff = "off";
+            }
 			if(currentBeat > beat)
 				currentBeat = 1;
 		} while(play);
@@ -176,9 +178,9 @@ class Metronome {
             PopUpMetronomeFragment.bpm = 0;
         }
 
-        if (PopUpMetronomeFragment.bpm<40 || PopUpMetronomeFragment.bpm>199) {
-            PopUpMetronomeFragment.bpm = 200;
-            PopUpMetronomeFragment.tempo = 200;
+        if (PopUpMetronomeFragment.bpm<40 || PopUpMetronomeFragment.bpm>299) {
+            PopUpMetronomeFragment.bpm = 260;  // These are the 'not set' values
+            PopUpMetronomeFragment.tempo = 260;
         } else {
             PopUpMetronomeFragment.tempo = PopUpMetronomeFragment.bpm;
         }
@@ -218,12 +220,12 @@ class Metronome {
         FullscreenActivity.noteValue = r;
     }
 
-    static void startstopMetronome(Activity activity, Context c, boolean showvisual, int metronomeColor, String pan, float vol) {
+    static void startstopMetronome(Activity activity, Context c, boolean showvisual, int metronomeColor, String pan, float vol, int barlength) {
         if (checkMetronomeValid(c) && StaticVariables.metronomeonoff.equals("off")) {
             // Start the metronome
             StaticVariables.metronomeonoff = "on";
             StaticVariables.whichbeat = "b";
-            metroTask = new MetronomeAsyncTask(pan,vol);
+            metroTask = new MetronomeAsyncTask(pan,vol,barlength);
             try {
                 metroTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             } catch (Exception e) {
@@ -244,6 +246,9 @@ class Metronome {
             if (PopUpMetronomeFragment.mListener!=null) {
                 PopUpMetronomeFragment.mListener.openFragment();
             } else {
+
+
+                
                 PopUpMetronomeFragment.MyInterface mListener;
                 mListener = (PopUpMetronomeFragment.MyInterface) activity;
                 mListener.openFragment();
@@ -256,7 +261,7 @@ class Metronome {
         boolean validBPM = true;
         boolean validMetro = false;
 
-        if (getTempo(StaticVariables.mTempo)==160) {
+        if (getTempo(StaticVariables.mTempo)==260) {
             validBPM = false;
         }
 
@@ -342,11 +347,19 @@ class Metronome {
         Metronome metronome;
         final String pan;
         final float vol;
+        int barsrequired;
 
-        MetronomeAsyncTask(String pan, float vol) {
+        @Override
+        protected void onPreExecute() {
+            // Figure out how many beats we should use
+            maxBeatCount = FullscreenActivity.beats * barsrequired;
+        }
+
+        MetronomeAsyncTask(String pan, float vol, int barlength) {
             metronome = new Metronome(pan,vol);
             this.pan = pan;
             this.vol = vol;
+            barsrequired = barlength;
         }
 
         void setNoteValue(short noteVal) {
@@ -462,7 +475,7 @@ class Metronome {
             t = 39;
         }
         ProcessSong.processTimeSig();
-        return t >= 40 && t < 199 && StaticVariables.mTimeSigValid;
+        return t >= 40 && t < 299 && StaticVariables.mTimeSigValid;
 
     }
 }

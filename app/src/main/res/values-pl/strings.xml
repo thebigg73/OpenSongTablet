@@ -493,4 +493,9 @@
     <string name="youtube">"Szukaj YouTube dla bieżącego utworu"</string>
     <string name="duplicate">Duplikować</string>
     <string name="storage_warning">Nie wybieraj folderu „Songs” jako lokalizacji przechowywania. Zamiast tego należy wybrać lokalizację folderu nadrzędnego „OpenSong”.</string>
+    <string name="choosestickyfont">Wybierz czcionkę karteczek samoprzylepnych</string>
+    <string name="block_shadow_opacity">Nieprzezroczystość</string>
+    <string name="block_text_shadow">Zablokuj cień tekstu</string>
+    <string name="continuous">Ciągły</string>
+    <string name="metronome_duration">Czas trwania metronomu (słupki)</string>
 </resources>

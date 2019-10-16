@@ -22,7 +22,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
     }
 
-
     defaultConfig {
         applicationId "com.garethevans.church.opensongtablet"
         //multiDexEnabled false
@@ -30,7 +29,6 @@ android {
         targetSdkVersion 29
         multiDexEnabled true
     }
-
 
     dexOptions {
         jumboMode = true
@@ -47,10 +45,9 @@ android {
             jcenter()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:3.4.2'
+            classpath 'com.android.tools.build:gradle:3.5.1'
             classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
             classpath 'me.tatarka:gradle-retrolambda:3.7.0'
-
         }
     }
 
@@ -61,14 +58,11 @@ android {
         jcenter()
     }
 
-
-    //apply plugin: 'com.neenbedankt.android-apt'
-
 }
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-cast:17.0.0'
-    implementation 'com.google.android.gms:play-services-cast-framework:17.0.0'
+    implementation 'com.google.android.gms:play-services-cast:17.1.0'
+    implementation 'com.google.android.gms:play-services-cast-framework:17.1.0'
     implementation 'com.google.android.gms:play-services-nearby:17.0.0'
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')

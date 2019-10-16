@@ -87,7 +87,7 @@ public class BootUpCheck extends AppCompatActivity {
         StaticVariables.activity = BootUpCheck.this;
 
         // Initialise the font
-        setTypeFace.setUpAppFonts(BootUpCheck.this,preferences,new Handler(),new Handler(), new Handler(),new Handler(), new Handler());
+        setTypeFace.setUpAppFonts(BootUpCheck.this,preferences,new Handler(),new Handler(), new Handler(),new Handler(), new Handler(), new Handler());
         // This will do one of 2 things - it will either show the splash screen or the welcome screen
         // To determine which one, we need to check the storage is set and is valid
         // The last version used must be the same or greater than the current app version

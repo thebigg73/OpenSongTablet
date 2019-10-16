@@ -44,6 +44,8 @@
     <string name="bible_search">Phrase or verse to search</string>
     <string name="bible_translation">Bible version code (e.g. NIV, MSG)</string>
     <string name="black_screen">Black screen</string>
+    <string name="block_text_shadow">Block text shadow</string>
+    <string name="block_shadow_opacity">Opacity</string>
     <string name="book">Book</string>
     <string name="bottom">Bottom</string>
     <string name="bpm" translatable="false">bpm</string>
@@ -96,6 +98,7 @@
     <string name="choosefolder">Choose folder to save file in</string>
     <string name="choosefolders">Choose folders</string>
     <string name="chooselyricfont">Choose lyric font</string>
+    <string name="choosestickyfont">Choose sticky notes font</string>
     <string name="choosesongname">Choose a name for this song</string>
     <string name="chordFormat1" translatable="false">C  C#/Db  D  D#/Eb  E  F  F#/Gb  G  G#/Ab  A  A#/Bb  B</string>
     <string name="chordFormat2" translatable="false">C  C#/Db  D  D#/Eb  E  F  F#/Gb  G  G#/Ab  A  B   H</string>
@@ -133,6 +136,7 @@
     <string name="connections_service_stop">Stop service</string>
     <string name="connections_success">Connection success</string>
     <string name="content">Content</string>
+    <string name="continuous">Continuous</string>
     <string name="convert_song">Please convert this song into OpenSong format (by viewing it) before adding it to a set</string>
     <string name="converting">Converting</string>
     <string name="createanewsong">Create new song</string>
@@ -358,6 +362,7 @@
     <string name="menu_swipe_toggle">Toggle song list and option menus swipe on/off</string>
     <string name="menu_width">Menu width (percentage of screen width)</string>
     <string name="metronome">Metronome</string>
+    <string name="metronome_duration">Metronome duration (bars)</string>
     <string name="metronomePedalText">Start/stop metronome</string>
     <string name="microphone_rationale">Microphone / audio recording is required to access the sound level meter.</string>
     <string name="midi">MIDI</string>

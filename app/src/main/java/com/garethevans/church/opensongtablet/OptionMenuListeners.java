@@ -843,6 +843,8 @@ public class OptionMenuListeners extends AppCompatActivity {
                             SetActions setActions = new SetActions();
                             setActions.songIndexClickInSet();
                             setActions.getSongFileAndFolder(c);
+                            preferences.setMyPreferenceString(c,"whichSongFolder",StaticVariables.whichSongFolder);
+                            preferences.setMyPreferenceString(c, "songfilename",StaticVariables.songfilename);
                             if (mListener != null) {
                                 mListener.closeMyDrawers("option");
                                 mListener.loadSong();
@@ -1321,6 +1323,9 @@ public class OptionMenuListeners extends AppCompatActivity {
                 } else {
                     StaticVariables.transposeDirection = "0";
                     transpose.checkChordFormat(c,preferences);
+                    if (preferences.getMyPreferenceBoolean(c,"chordFormatUsePreferred",true)) {
+                        StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(c,"chordFormat",1);
+                    }
                     try {
                         transpose.doTranspose(c, preferences, true, false, false);
                     } catch (Exception e) {
@@ -1349,6 +1354,9 @@ public class OptionMenuListeners extends AppCompatActivity {
                 } else {
                     StaticVariables.transposeDirection = "0";
                     transpose.checkChordFormat(c,preferences);
+                    if (preferences.getMyPreferenceBoolean(c,"chordFormatUsePreferred",true)) {
+                        StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(c,"chordFormat",1);
+                    }
                     try {
                         transpose.doTranspose(c, preferences, false, true, false);
                     } catch (Exception e) {
@@ -1464,13 +1472,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                     StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
                     ShowToast.showToast(c);
                 } else {
-                    StaticVariables.transposeDirection = "0";
-                    transpose.checkChordFormat(c,preferences);
-                    try {
-                        transpose.doTranspose(c, preferences,false,false, true);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    transpose.convertChords(c,preferences);
                 }
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
@@ -2783,6 +2785,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         // Identify the buttons
         TextView menuup = v.findViewById(R.id.optionMetronomeTitle);
         Button metronomeButton = v.findViewById(R.id.metronomeButton);
+        Button metronomeLengthButton = v.findViewById(R.id.metronomeLengthButton);
         SwitchCompat metronomeStartButton = v.findViewById(R.id.metronomeStartButton);
         SwitchCompat metronomeActivatedSwitch = v.findViewById(R.id.metronomeActivatedSwitch);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
@@ -2790,6 +2793,14 @@ public class OptionMenuListeners extends AppCompatActivity {
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.metronome).toUpperCase(StaticVariables.locale));
         metronomeButton.setText(c.getString(R.string.metronome).toUpperCase(StaticVariables.locale));
+        int val = preferences.getMyPreferenceInt(c,"metronomeLength",0);
+        String str;
+        if (val==0) {
+            str = c.getString(R.string.metronome_duration) + ": " + c.getString(R.string.continuous);
+        } else {
+            str = c.getString(R.string.metronome_duration) + ": "+val;
+        }
+        metronomeLengthButton.setText(str.toUpperCase(StaticVariables.locale));
         metronomeActivatedSwitch.setText(c.getString(R.string.activated).toUpperCase(StaticVariables.locale));
         metronomeStartButton.setText(c.getString(R.string.autostartmetronome).toUpperCase(StaticVariables.locale));
 
@@ -2816,6 +2827,21 @@ public class OptionMenuListeners extends AppCompatActivity {
                     if (mListener != null) {
                         mListener.closeMyDrawers("option");
                         mListener.openFragment();
+                    }
+                }
+            }
+        });
+        metronomeLengthButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "page_metronome";
+                if (mListener!=null) {
+                    try {
+                        mListener.closeMyDrawers("option");
+                        mListener.openFragment();
+                        mListener.prepareOptionMenu();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }

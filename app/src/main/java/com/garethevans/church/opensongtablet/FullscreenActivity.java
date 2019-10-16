@@ -154,8 +154,6 @@ public class FullscreenActivity extends AppCompatActivity {
     public static boolean orientationchanged = false;
     public static boolean sortAlphabetically = true;
 
-    // Long and short key presses
-
 
     // Updated scaled view stuff
     public static int[] viewwidth, viewheight;

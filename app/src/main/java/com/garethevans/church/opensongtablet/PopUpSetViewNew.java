@@ -73,8 +73,9 @@ public class PopUpSetViewNew extends DialogFragment {
         StaticVariables.whichSongFolder = "../Variations";
         StaticVariables.whatsongforsetwork = "\"$**_**" + c.getResources().getString(R.string.variation) + "/" + newsongname + "_**$";
 
-        // Replace the set item with the variation item
+        // Replace the set item with the variation
         StaticVariables.mSetList[StaticVariables.indexSongInSet] = "**" + c.getResources().getString(R.string.variation) + "/" + newsongname;
+        StaticVariables.mTempSetList.set(StaticVariables.indexSongInSet,"**" + c.getResources().getString(R.string.variation) + "/" + newsongname);
         // Rebuild the mySet variable
         StringBuilder new_mySet = new StringBuilder();
         for (String thisitem : StaticVariables.mSetList) {
