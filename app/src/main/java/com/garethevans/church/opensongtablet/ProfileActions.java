@@ -1663,6 +1663,11 @@ class ProfileActions {
                             preferences.setMyPreferenceInt(c,"presoLyricsAlign",getIntegerValue(xppValue,Gravity.CENTER_HORIZONTAL));
                             break;
 
+                        case "presoLyricsVAlign":        // New preference
+                            //presoLyricsVAlign                int         The vertical align gravity of the lyrics in presentation mode
+                            preferences.setMyPreferenceInt(c,"presoLyricsVAlign",getIntegerValue(xppValue,Gravity.TOP));
+                            break;
+
                         case "presoShowChords":        // New preference
                         case "presenterChords":        // Old preference
                             //presoShowChords                 boolean     Should chords be shown in the presentation window

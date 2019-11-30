@@ -47,7 +47,9 @@ class MenuHandlers {
 
             case R.id.set_add:
                 if ((FullscreenActivity.isSong || FullscreenActivity.isPDF) && !StaticVariables.whichSongFolder.startsWith("..")) {
-                    if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername))) {
+                    if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
+                            StaticVariables.whichSongFolder.equals("MAIN") ||
+                            StaticVariables.whichSongFolder.equals("")) {
                         StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.songfilename + "_**$";
                     } else {
                         StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.whichSongFolder + "/"

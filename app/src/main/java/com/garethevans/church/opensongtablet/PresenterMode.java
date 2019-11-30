@@ -544,7 +544,15 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private void setWindowFlagsAdvanced() {
         try {
             View v = getWindow().getDecorView();
-            v.setOnSystemUiVisibilityChangeListener(null);
+            v.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+                @Override
+                public void onSystemUiVisibilityChange(int i) {
+                    if (i!=0) {
+                        setWindowFlags();
+                        setWindowFlagsAdvanced();
+                    }
+                }
+            });
             v.setOnFocusChangeListener(null);
 
             v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -1398,7 +1406,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         setActions.prepareSetList(PresenterMode.this,preferences);
         presenter_set_buttonsListView.removeAllViews();
         try {
-            if (StaticVariables.mSetList != null && StaticVariables.mSetList.length > 0) {
+            if (StaticVariables.mSet != null && StaticVariables.mSet.length > 0) {
                 for (int x = 0; x < StaticVariables.mSet.length; x++) {
                     // Button for the song and set
                     Button newSetButton = processSong.makePresenterSetButton(x, PresenterMode.this);

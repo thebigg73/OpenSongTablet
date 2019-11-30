@@ -94,7 +94,7 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
             @Override
             public void onClick(View v) {
                 StaticVariables.songfilename = songname;
-                if (songfolder.equals(c.getString(R.string.mainfoldername))) {
+                if (songfolder.equals(c.getString(R.string.mainfoldername)) || songfolder.equals("MAIN") || songfolder.equals("")) {
                     StaticVariables.whatsongforsetwork = "$**_" + songname + "_**$";
                 } else {
                     StaticVariables.whatsongforsetwork = "$**_" + songfolder + "/" + songname + "_**$";

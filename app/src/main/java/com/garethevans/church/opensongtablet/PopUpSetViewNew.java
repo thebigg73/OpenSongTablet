@@ -186,6 +186,9 @@ public class PopUpSetViewNew extends DialogFragment {
         mSongName = new ArrayList<>();
         mFolderName = new ArrayList<>();
 
+        if (StaticVariables.mTempSetList==null) {
+            Log.d("PopUpSetView","mTempSetList is null");
+        }
         String tempTitle;
         if (StaticVariables.mTempSetList != null && StaticVariables.mTempSetList.size() > 0) {
             for (int i = 0; i < StaticVariables.mTempSetList.size(); i++) {
@@ -396,8 +399,6 @@ public class PopUpSetViewNew extends DialogFragment {
 
         // If the song is found (indexSongInSet>-1 and lower than the number of items shown), smooth scroll to it
         if (StaticVariables.indexSongInSet>-1 && StaticVariables.indexSongInSet< StaticVariables.mTempSetList.size()) {
-            //mRecyclerView.scrollToPosition(FullscreenActivity.indexSongInSet);
-            //LinearLayoutManager llm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
             llm.scrollToPositionWithOffset(StaticVariables.indexSongInSet , 0);
         }
 

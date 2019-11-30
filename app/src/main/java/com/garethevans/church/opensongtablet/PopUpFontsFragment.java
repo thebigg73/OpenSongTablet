@@ -139,16 +139,16 @@ public class PopUpFontsFragment extends DialogFragment {
         lineSpacing_SeekBar = V.findViewById(R.id.lineSpacing_SeekBar);
         SwitchCompat trimlinespacing_SwitchCompat = V.findViewById(R.id.trimlinespacing_SwitchCompat);
         SwitchCompat hideBox_SwitchCompat = V.findViewById(R.id.hideBox_SwitchCompat);
-        SwitchCompat trimlines_SwitchCompat = V.findViewById(R.id.trimlines_SwitchCompat);
-        SwitchCompat trimsections_SwitchCompat = V.findViewById(R.id.trimsections_SwitchCompat);
+        SwitchCompat trimSections_SwitchCompat = V.findViewById(R.id.trimSections_SwitchCompat);
+        SwitchCompat addSectionSpace_SwitchCompat = V.findViewById(R.id.addSectionSpace_SwitchCompat);
 
         // Set up the typefaces
         setTypeFace.setUpAppFonts(getActivity(), preferences, lyrichandler, chordhandler, stickyhandler,
                 presohandler, presoinfohandler, customhandler);
 
-        trimlines_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"trimSections",true));
+        trimSections_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"trimSections",true));
         hideBox_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"hideLyricsBox",false));
-        trimsections_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"addSectionSpace",true));
+        addSectionSpace_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"addSectionSpace",true));
         trimlinespacing_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"trimLines",false));
         lineSpacing_SeekBar.setEnabled(preferences.getMyPreferenceBoolean(getActivity(),"trimLines",false));
 
@@ -247,17 +247,17 @@ public class PopUpFontsFragment extends DialogFragment {
                 preferences.setMyPreferenceBoolean(getActivity(),"hideLyricsBox",b);
             }
         });
-        trimlines_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        trimSections_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 preferences.setMyPreferenceBoolean(getActivity(),"trimSections",b);
             }
         });
-        trimsections_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        addSectionSpace_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 // Historic button name - actually asks if space should be added
-                preferences.setMyPreferenceBoolean(getActivity(),"addSectionSpace",true);
+                preferences.setMyPreferenceBoolean(getActivity(),"addSectionSpace",b);
             }
         });
 
@@ -265,7 +265,7 @@ public class PopUpFontsFragment extends DialogFragment {
         if (!storageAccess.lollipopOrLater()) {
             lineSpacing_SeekBar.setVisibility(View.GONE);
             lineSpacing_TextView.setVisibility(View.GONE);
-            trimlines_SwitchCompat.setVisibility(View.GONE);
+            trimlinespacing_SwitchCompat.setVisibility(View.GONE);
         }
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);

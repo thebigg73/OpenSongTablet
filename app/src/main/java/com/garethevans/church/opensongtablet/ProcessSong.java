@@ -2478,6 +2478,9 @@ public class ProcessSong extends Activity {
 
 
             String what = howToProcessLines(y, linenums, linetypes[y], nextlinetype, previouslinetype);
+            if (what==null) {
+                what = "";
+            }
             switch (what) {
                 // If this is a chord line followed by a lyric line.
 
@@ -2569,8 +2572,7 @@ public class ProcessSong extends Activity {
         int r = Color.red(color);
         int g = Color.green(color);
         int b = Color.blue(color);
-        int newColor = Color.argb(alpha, r, g, b);
-        return newColor;
+        return Color.argb(alpha, r, g, b);
     }
 
     LinearLayout createLinearLayout(Context c) {
@@ -2782,7 +2784,8 @@ public class ProcessSong extends Activity {
         }
         if (StaticVariables.whichMode.equals("Presentation")) {
             boxbit.setBackground(null);
-            boxbit.setGravity(Gravity.CENTER);
+            boxbit.setHorizontalGravity(preferences.getMyPreferenceInt(c,"presoLyricsAlign",Gravity.CENTER_HORIZONTAL));
+            boxbit.setVerticalGravity(preferences.getMyPreferenceInt(c,"presoLyricsVAlign",Gravity.CENTER_VERTICAL));
         } else {
             boxbit.setBackgroundResource(R.drawable.lyrics_box);
             GradientDrawable drawable = (GradientDrawable) boxbit.getBackground();
@@ -3014,7 +3017,7 @@ public class ProcessSong extends Activity {
         String layout;
         String highlighterfile;
 
-        if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
+        if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername)) || StaticVariables.whichSongFolder.equals("MAIN") ||
                 StaticVariables.whichSongFolder.equals("")) {
             highlighterfile = c.getString(R.string.mainfoldername) + "_" + StaticVariables.songfilename;
         } else if (StaticVariables.whichSongFolder.startsWith("../")) {

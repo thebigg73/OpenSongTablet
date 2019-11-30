@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
@@ -366,6 +367,53 @@
                                 app:fabSize="mini"
                                 app:useCompatPadding="true" />
 
+                            <View
+                                android:id="@+id/divider"
+                                android:layout_width="18dp"
+                                android:layout_height="match_parent"
+                                android:background="?android:attr/listDivider" />
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/lyrics_top_valign"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginBottom="0dp"
+                                android:src="@drawable/ic_format_vertical_align_top_white_36dp"
+                                app:backgroundTint="#555555"
+                                app:elevation="0dp"
+                                app:fabSize="mini"
+                                app:useCompatPadding="true" />
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/lyrics_center_valign"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginBottom="0dp"
+                                android:src="@drawable/ic_format_vertical_align_center_white_36dp"
+                                app:backgroundTint="#555555"
+                                app:elevation="0dp"
+                                app:fabSize="mini"
+                                app:useCompatPadding="true" />
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/lyrics_bottom_valign"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_marginBottom="0dp"
+                                android:src="@drawable/ic_format_vertical_align_bottom_white_36dp"
+                                app:backgroundTint="#555555"
+                                app:elevation="0dp"
+                                app:fabSize="mini"
+                                app:useCompatPadding="true" />
 
                         </LinearLayout>
 
@@ -734,7 +782,8 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_margin="12dp"
                                 android:contentDescription="@string/choose_video2"
-                                android:src="@drawable/ic_image_white_36dp" />
+                                android:src="@drawable/ic_image_white_36dp"
+                                tools:ignore="TooManyViews" />
 
                             <CheckBox
                                 android:id="@+id/video2CheckBox"

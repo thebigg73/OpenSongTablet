@@ -368,8 +368,8 @@ class SQLiteHelper extends SQLiteOpenHelper {
         // Iterate through all the folders
         for (String f:allFolders) {
 
-            if (!f.equals(c.getString(R.string.mainfoldername)) &&
-                    (whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
+            if (!f.equals(c.getString(R.string.mainfoldername)) && !f.equals("MAIN") &&
+                    (whichSongFolder.equals(c.getString(R.string.mainfoldername)) || whichSongFolder.equals("MAIN") ||
                 whichSongFolder.equals(""))) {
                 // We are viewing items in the MAIN folder and the found folder isn't MAIN
                 if (f.contains("/")) {
@@ -391,7 +391,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
                     folderadded.append("$__").append(f).append("__$");
                 }
 
-            } else if (!f.equals(c.getString(R.string.mainfoldername)) && !f.equals(whichSongFolder) &&
+            } else if (!f.equals(c.getString(R.string.mainfoldername)) && !f.equals("MAIN") && !f.equals(whichSongFolder) &&
                 f.contains("/") && f.contains(whichSongFolder)) {
                 // The found folder includes the current folder, but isn't just the current folder
                 // Strip out the current folder prefix

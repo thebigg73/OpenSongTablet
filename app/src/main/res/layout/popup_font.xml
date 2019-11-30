@@ -294,7 +294,7 @@
                 style="@style/MyHeadingText"
                 android:layout_margin="8dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/trimlines_SwitchCompat"/>
+                android:id="@+id/trimSections_SwitchCompat"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:text="@string/section_space"
@@ -302,7 +302,7 @@
                 style="@style/MyHeadingText"
                 android:layout_margin="8dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/trimsections_SwitchCompat"/>
+                android:id="@+id/addSectionSpace_SwitchCompat"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/trimlinespacing_SwitchCompat"

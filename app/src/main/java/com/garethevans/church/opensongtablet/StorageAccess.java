@@ -252,7 +252,11 @@ class StorageAccess {
                 Uri dirUri = getUriForItem(c, preferences, bits[0], "", "");
                 Uri thisFolder = getUriForItem(c, preferences, bits[0], bits[1], "");
                 if (!uriExists(c, thisFolder)) {
-                    DocumentsContract.createDocument(c.getContentResolver(), dirUri, DocumentsContract.Document.MIME_TYPE_DIR, bits[1]);
+                    try {
+                        DocumentsContract.createDocument(c.getContentResolver(), dirUri, DocumentsContract.Document.MIME_TYPE_DIR, bits[1]);
+                    } catch (Exception e3) {
+                        Log.d("StorageAccess","Error creating folder at "+thisFolder);
+                    }
                 }
             } catch (Exception e2) {
                 Log.d("d", "error creating cache: " + folder);
@@ -317,10 +321,10 @@ class StorageAccess {
     private Uri getFileProviderUri_File(Context c, Preferences preferences, String folder, String subfolder, String filename) {
         String s = stringForFile(c,preferences, folder);
         File f = new File(s);
-        if (subfolder != null && !subfolder.isEmpty() && !subfolder.equals(c.getString(R.string.mainfoldername))) {
+        if (subfolder != null && !subfolder.isEmpty() && !subfolder.equals(c.getString(R.string.mainfoldername)) && !subfolder.equals("MAIN")) {
             f = new File(f, subfolder);
         }
-        if (filename != null && !filename.isEmpty() && !filename.equals(c.getString(R.string.mainfoldername))) {
+        if (filename != null && !filename.isEmpty() && !filename.equals(c.getString(R.string.mainfoldername)) && !filename.equals("MAIN")) {
             f = new File(f, filename);
         }
         // Convert to a FileProvider uri
@@ -640,10 +644,10 @@ class StorageAccess {
         }
 
         // Now go through the subfolder(s)
-        if (subfolder != null && !subfolder.equals(c.getString(R.string.mainfoldername)) && uri!=null) {
+        if (subfolder != null && !subfolder.equals(c.getString(R.string.mainfoldername)) && !subfolder.equals("MAIN") && uri!=null) {
             String[] sfs = subfolder.split("/");
             for (String sf : sfs) {
-                if (sf != null && !sf.equals("") && !sf.equals(c.getString(R.string.mainfoldername))) {
+                if (sf != null && !sf.equals("") && !sf.equals(c.getString(R.string.mainfoldername)) && !sf.equals("MAIN")) {
                     uri = Uri.withAppendedPath(uri, Uri.encode(sf));
                 }
             }
@@ -654,7 +658,7 @@ class StorageAccess {
             // Might have sent subfolder info
             String[] sfs = filename.split("/");
             for (String sf : sfs) {
-                if (sf != null && !sf.equals("") && !sf.equals(c.getString(R.string.mainfoldername))) {
+                if (sf != null && !sf.equals("") && !sf.equals(c.getString(R.string.mainfoldername)) && !sf.equals("MAIN")) {
                     uri = Uri.withAppendedPath(uri, Uri.encode(sf));
                 }
             }
@@ -679,10 +683,10 @@ class StorageAccess {
     private Uri getUriForItem_File(Context c, Preferences preferences, String folder, String subfolder, String filename) {
         String s = stringForFile(c,preferences,folder);
         File f = new File(s);
-        if (subfolder != null && !subfolder.isEmpty() && !subfolder.equals(c.getString(R.string.mainfoldername))) {
+        if (subfolder != null && !subfolder.isEmpty() && !subfolder.equals(c.getString(R.string.mainfoldername)) && !subfolder.equals("MAIN")) {
             f = new File(f, subfolder);
         }
-        if (filename != null && !filename.isEmpty() && !filename.equals(c.getString(R.string.mainfoldername))) {
+        if (filename != null && !filename.isEmpty() && !filename.equals(c.getString(R.string.mainfoldername)) && !filename.equals("MAIN")) {
             f = new File(f, filename);
         }
         return Uri.fromFile(f);
@@ -726,11 +730,11 @@ class StorageAccess {
                 subfolder = "";
                 break;
         }
-        if (folder==null || folder.equals(c.getResources().getString(R.string.mainfoldername))) {
+        if (folder==null || folder.equals(c.getResources().getString(R.string.mainfoldername)) || folder.equals("MAIN")) {
             folder = "";
         }
 
-        if (subfolder.equals(c.getResources().getString(R.string.mainfoldername))) {
+        if (subfolder.equals(c.getResources().getString(R.string.mainfoldername)) || subfolder.equals("MAIN")) {
             subfolder = "";
         }
 
@@ -1226,7 +1230,7 @@ class StorageAccess {
                 return false;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.d("StorageAccess","Unable to delete "+uri);
             return false;
         }
     }

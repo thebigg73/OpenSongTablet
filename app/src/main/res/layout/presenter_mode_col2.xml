@@ -79,9 +79,16 @@
                 <LinearLayout
                     android:id="@+id/loopandtimeLinearLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:gravity="center_vertical"
+                    android:layout_gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <CheckBox
@@ -89,8 +96,20 @@
                         style="@style/MyHeadingText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="12dp"
                         android:text="@string/loop" />
 
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/startstopSlideShow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_play_white_36dp"
+                        app:elevation="0dp"
+                        app:fabSize="mini"
+                        android:layout_margin="12dp"
+                        app:useCompatPadding="true" />
+
+                </LinearLayout>
                     <TextView
                         android:id="@+id/timeTextView"
                         style="@style/MyHeadingText"
@@ -102,22 +121,12 @@
                     <EditText
                         android:id="@+id/timeEditText"
                         style="@style/MyEditText"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:layout_weight="1"
                         android:inputType="number"
                         android:minWidth="16dp"
                         tools:ignore="Autofill,LabelFor" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/startstopSlideShow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_play_white_36dp"
-                        app:elevation="0dp"
-                        app:fabSize="mini"
-                        app:useCompatPadding="true" />
 
                 </LinearLayout>
 

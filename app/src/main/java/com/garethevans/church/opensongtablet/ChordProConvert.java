@@ -58,12 +58,6 @@ class ChordProConvert {
         // Prepare the new song filename
         newSongFileName = getNewSongFileName(uri, title);
 
-        Log.d("ChordProConvert","uri="+uri);
-        Log.d("ChordProConvert","oldSongFileName="+oldSongFileName);
-        Log.d("ChordProConvert","title="+title);
-        Log.d("ChordProConvert","newSongFileName="+newSongFileName);
-        Log.d("ChordProConvert","songSubFolder="+songSubFolder);
-
         // Initialise the variables
         songXML.initialiseSongTags();
 
@@ -813,7 +807,7 @@ class ChordProConvert {
                     break;
 
                 case "comment_no_chord":
-                    newlyrics.append("{c:").append(lines[y]).append("}");
+                    newlyrics.append("{c:").append(lines[y].replaceFirst(";","")).append("}");
                     break;
 
                 case "heading":
@@ -852,6 +846,18 @@ class ChordProConvert {
         return newlyrics.toString();
     }
 
+    String extractCommentLines(String line) {
+        if (line.startsWith("{comments") || line.startsWith("{c:")) {
+            line = line.replace("{comments:","");
+            line = line.replace("{comments :","");
+            line = line.replace("{c:","");
+            line = line.replace("{c :","");
+            line = line.replace("}","");
+            line = ";"+line;
+        }
+        return line;
+    }
+
     String fromChordProToOpenSong(String lyrics) {
         // This receives the text from the edit song lyrics editor and changes the format
         // This changes ChordPro formatted songs back to OpenSong format
@@ -869,6 +875,7 @@ class ChordProConvert {
             line[x] = extractChordLines(line[x]);
             line[x] = fixHeadings(line[x]);
             line[x] = guessTags(line[x]);
+            line[x] = extractCommentLines(line[x]);
 
 
             // Join the individual lines back up (unless they are start/end of chorus)

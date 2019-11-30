@@ -211,7 +211,8 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                         public void onClick(View v) {
 
                             // Don't save the folder preference yet until a song is clicked.
-                            if (StaticVariables.whichSongFolder.equals("")||StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername))) {
+                            if (StaticVariables.whichSongFolder.equals("")||StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername))||
+                            StaticVariables.whichSongFolder.equals("MAIN")) {
                                 StaticVariables.whichSongFolder = item_filename;
                             } else {
                                 StaticVariables.whichSongFolder = StaticVariables.whichSongFolder + "/" + item_filename;
@@ -331,7 +332,8 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
 
     private void convertSongToSetItemText(Context c, String filename) {
         // Set the appropriate song filename
-        if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername))) {
+        if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername)) || StaticVariables.whichSongFolder.equals("MAIN") ||
+                StaticVariables.whichSongFolder.equals("")) {
             StaticVariables.whatsongforsetwork = "$**_" + filename + "_**$";
         } else {
             StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.whichSongFolder + "/" + filename + "_**$";

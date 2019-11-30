@@ -74,10 +74,6 @@ class OnSongConvert {
         // Prepare the new song filename
         newSongFileName = chordProConvert.getNewSongFileName(uri, title);
 
-        Log.d("OnSongConvert","oldSongFileName="+oldSongFileName);
-        Log.d("OnSongConvert","songSubFolder="+songSubFolder);
-        Log.d("OnSongConvert","newSongFileName="+newSongFileName);
-
         // By default, set the title to the new filename
         StaticVariables.songfilename = newSongFileName;
 

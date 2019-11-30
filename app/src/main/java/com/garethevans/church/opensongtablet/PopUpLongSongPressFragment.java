@@ -92,7 +92,9 @@ public class PopUpLongSongPressFragment extends DialogFragment {
             }
 
             // Set the appropriate song filename
-            if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername))) {
+            if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
+                    StaticVariables.whichSongFolder.equals("MAIN") ||
+                    StaticVariables.whichSongFolder.equals("")) {
                 StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.songfilename + "_**$";
             } else {
                 StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename + "_**$";

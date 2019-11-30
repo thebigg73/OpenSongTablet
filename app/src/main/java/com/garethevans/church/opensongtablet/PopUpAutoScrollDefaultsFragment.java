@@ -103,7 +103,11 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
         default_delaytime_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                seekBar.setMax(Integer.parseInt(default_delaymax_EditText.getText().toString()));
+                try {
+                    seekBar.setMax(Integer.parseInt(default_delaymax_EditText.getText().toString()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 String text = progress + " s";
                 default_delaytime_TextView.setText(text);
             }

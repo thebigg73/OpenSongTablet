@@ -110,7 +110,7 @@ public class PopUpExportSongListFragment extends DialogFragment {
         StringBuilder songContents = new StringBuilder();
 
         for (String directory : directories) {
-            if (directory.equals(getString(R.string.mainfoldername))) {
+            if (directory.equals(getString(R.string.mainfoldername)) || directory.equals("MAIN")) {
                 directory = "";
             }
             ArrayList<String> files_ar = storageAccess.listFilesInFolder(getActivity(), preferences, "Songs", directory);

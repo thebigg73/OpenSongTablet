@@ -8052,7 +8052,8 @@ public class StageMode extends AppCompatActivity implements
 
     // Add to set
     private void gesture3() {
-        if (StaticVariables.whichSongFolder.equals(getString(R.string.mainfoldername))) {
+        if (StaticVariables.whichSongFolder.equals(getString(R.string.mainfoldername)) || StaticVariables.whichSongFolder.equals("MAIN") ||
+                StaticVariables.whichSongFolder.equals("")) {
             StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.songfilename + "_**$";
         } else {
             StaticVariables.whatsongforsetwork = "$**_" + StaticVariables.whichSongFolder + "/"

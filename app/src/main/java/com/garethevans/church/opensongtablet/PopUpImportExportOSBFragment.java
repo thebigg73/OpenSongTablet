@@ -419,7 +419,8 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
 
                     for (String aFoldersselectedtoimport : foldersselectedtoimport) {
                         // Is it in the main folder
-                        if (aFoldersselectedtoimport.equals(getString(R.string.mainfoldername) + "/") && !ze.getName().contains("/")) {
+                        if ((aFoldersselectedtoimport.equals(getString(R.string.mainfoldername) + "/") ||
+                                (aFoldersselectedtoimport.equals("MAIN" + "/"))) && !ze.getName().contains("/")) {
                             oktoimportthisone = true;
                             // Or another folder
                         } else if (ze.getName().contains(aFoldersselectedtoimport)) {

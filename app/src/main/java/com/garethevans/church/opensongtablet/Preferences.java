@@ -345,6 +345,7 @@ public class Preferences extends Activity {
     presoCopyrightTextSize          float       The size of the alert text in Presentation mode (def:12.0f)
     presoInfoAlign                  int         The align gravity of the info in presentation mode (Gravity.END)
     presoLyricsAlign                int         The align gravity of the lyrics in presentation mode (Gravity.HORIZONTAL_CENTER)
+    presoLyricsVAlign               int         The vertical align gravity of the lyrics in presentation mode (Gravity.TOP)
     presoShowChords                 boolean     Should chords be shown in the presentation window (def:false)
     presoTitleTextSize              float       The size of the alert text in Presentation mode (def:14.0f)
     presoTransitionTime             int         The time for transitions between items in presenter mode (ms) (def:800)

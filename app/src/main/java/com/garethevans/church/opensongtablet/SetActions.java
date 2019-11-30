@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 class SetActions {
@@ -59,7 +60,7 @@ class SetActions {
         return cats;
     }
     ArrayList<String> listFilteredSets(Context c, ArrayList<String> allsets, String cat) {
-        if (cat==null || cat.equals(c.getString(R.string.mainfoldername))) {
+        if (cat==null || cat.equals(c.getString(R.string.mainfoldername)) || cat.equals("MAIN")) {
             cat = "";
         }
 
@@ -88,6 +89,8 @@ class SetActions {
         return filtered;
     }
 
+    private String currentSet;
+
     void loadASet(Context c, Preferences preferences, StorageAccess storageAccess) throws XmlPullParserException, IOException {
 
         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
@@ -97,6 +100,11 @@ class SetActions {
         String utf = storageAccess.getUTFEncoding(c,uri);
         InputStream inputStream = storageAccess.getInputStream(c,uri);
         xpp.setInput(inputStream, utf);
+
+        // Initialise the current set to the stored one (may be loading multiple sets, so not necessarily empty
+        // The set is initialised before this routine runs for the first time
+
+        currentSet = preferences.getMyPreferenceString(c,"setCurrent","");
 
         int eventType;
         eventType = xpp.getEventType();
@@ -127,13 +135,17 @@ class SetActions {
             try {
                 eventType = xpp.next();
             } catch (Exception e) {
+                e.printStackTrace();
                 Log.d("d","End of XML file");
             }
         }
 
+        preferences.setMyPreferenceString(c, "setCurrent", currentSet);
         // Save the loaded set contents so we can compare to the current set to see if it has changed
         // On the set list popup it will compare these and display unsaved if it is different.
-        preferences.setMyPreferenceString(c,"setCurrentBeforeEdits",preferences.getMyPreferenceString(c,"setCurrent",""));
+        //preferences.setMyPreferenceString(c,"setCurrentBeforeEdits",preferences.getMyPreferenceString(c,"setCurrent",""));
+        preferences.setMyPreferenceString(c, "setCurrentBeforeEdits", currentSet);
+        Log.d("SetActions","setCurrent="+preferences.getMyPreferenceString(c,"setCurrent",""));
     }
 
     void prepareSetList(Context c, Preferences preferences) {
@@ -150,9 +162,24 @@ class SetActions {
 
             // Break the saved set up into a new String[]
             StaticVariables.mSet = setparse.split("%%%");
-            StaticVariables.mSetList = StaticVariables.mSet;
+
+            Log.d("SetActions","Preparing Set list.  setparse="+setparse);
+            for (String str:StaticVariables.mSet) {
+                Log.d("SetActions","mSet item="+str);
+            }
+
+            // Fix any MAIN folder saved in set
+            for (int s=0; s<StaticVariables.mSet.length; s++) {
+                StaticVariables.mSet[s] = StaticVariables.mSet[s].replace("MAIN/","");
+                StaticVariables.mSet[s] = StaticVariables.mSet[s].replace(c.getString(R.string.mainfoldername)+"/","");
+            }
+
+            StaticVariables.mSetList = StaticVariables.mSet.clone();
 
             StaticVariables.setSize = StaticVariables.mSetList.length;
+
+            Log.d("SetActions","mSet.length="+StaticVariables.mSet.length);
+            Log.d("SetActions","mSetList.length="+StaticVariables.mSetList.length);
 
             // Get rid of tags before and after folder/filenames
             for (int x = 0; x < StaticVariables.mSetList.length; x++) {
@@ -161,6 +188,10 @@ class SetActions {
                 StaticVariables.mSetList[x] = StaticVariables.mSetList[x]
                         .replace("_**$", "");
             }
+
+            StaticVariables.mTempSetList = new ArrayList<>();
+            StaticVariables.mTempSetList.addAll(Arrays.asList(StaticVariables.mSetList));
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -168,7 +199,61 @@ class SetActions {
 
     void indexSongInSet() {
         try {
-            // Initialise variables if they are null
+            if (StaticVariables.mSet!=null && StaticVariables.mSetList!=null && StaticVariables.whatsongforsetwork!=null) {
+                boolean alreadythere = false;
+                if (StaticVariables.indexSongInSet > -1 && StaticVariables.indexSongInSet < StaticVariables.mSetList.length) {
+                    if (StaticVariables.mSetList[StaticVariables.indexSongInSet].contains(StaticVariables.whatsongforsetwork)) {
+                        alreadythere = true;
+                    }
+                }
+
+                StaticVariables.setSize = StaticVariables.mSetList.length;
+
+                if (alreadythere) {
+                    if (StaticVariables.indexSongInSet > 0) {
+                        StaticVariables.previousSongInSet = StaticVariables.mSetList[StaticVariables.indexSongInSet - 1];
+                    } else {
+                        StaticVariables.previousSongInSet = "";
+                    }
+                    if (StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) {
+                        StaticVariables.nextSongInSet = StaticVariables.mSetList[StaticVariables.indexSongInSet + 1];
+                    } else {
+                        StaticVariables.nextSongInSet = "";
+                    }
+
+                } else {
+                    StaticVariables.previousSongInSet = "";
+                    StaticVariables.nextSongInSet = "";
+                }
+
+                // Go backwards through the setlist - this finishes with the first occurrence
+                // Useful for duplicate items, otherwise it returns the last occurrence
+                // Not yet tested, so left
+
+                StaticVariables.mSet = StaticVariables.mSetList.clone();
+
+                if (!alreadythere) {
+                    for (int x = 0; x < StaticVariables.setSize; x++) {
+//		for (int x = FullscreenActivity.setSize-1; x<1; x--) {
+                        if (StaticVariables.mSet[x].contains(StaticVariables.whatsongforsetwork) ||
+                                StaticVariables.mSet[x].contains("**" + StaticVariables.whatsongforsetwork)) {
+                            StaticVariables.indexSongInSet = x;
+                            if (x > 0) {
+                                StaticVariables.previousSongInSet = StaticVariables.mSet[x - 1];
+                            }
+                            if (x != StaticVariables.setSize - 1) {
+                                StaticVariables.nextSongInSet = StaticVariables.mSet[x + 1];
+                            }
+
+                        }
+                    }
+                }
+            } else {
+                StaticVariables.indexSongInSet = -1;
+                StaticVariables.previousSongInSet = "";
+                StaticVariables.nextSongInSet = "";
+            }
+            /*// Initialise variables if they are null
             if (StaticVariables.mSetList == null) {
                 StaticVariables.mSetList = new String[1];
                 StaticVariables.mSetList[0] = "";
@@ -182,55 +267,8 @@ class SetActions {
             if (StaticVariables.whatsongforsetwork == null) {
                 StaticVariables.whatsongforsetwork = "";
             }
-            // See if we are already there!
-            boolean alreadythere = false;
-            if (StaticVariables.indexSongInSet > -1 && StaticVariables.indexSongInSet < StaticVariables.mSetList.length) {
-                if (StaticVariables.mSetList[StaticVariables.indexSongInSet].contains(StaticVariables.whatsongforsetwork)) {
-                    alreadythere = true;
-                }
-            }
+            // See if we are already there!*/
 
-            StaticVariables.setSize = StaticVariables.mSetList.length;
-
-            if (alreadythere) {
-                if (StaticVariables.indexSongInSet > 0) {
-                    StaticVariables.previousSongInSet = StaticVariables.mSetList[StaticVariables.indexSongInSet - 1];
-                } else {
-                    StaticVariables.previousSongInSet = "";
-                }
-                if (StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) {
-                    StaticVariables.nextSongInSet = StaticVariables.mSetList[StaticVariables.indexSongInSet + 1];
-                } else {
-                    StaticVariables.nextSongInSet = "";
-                }
-
-            } else {
-                StaticVariables.previousSongInSet = "";
-                StaticVariables.nextSongInSet = "";
-            }
-
-            // Go backwards through the setlist - this finishes with the first occurrence
-            // Useful for duplicate items, otherwise it returns the last occurrence
-            // Not yet tested, so left
-
-            StaticVariables.mSet = StaticVariables.mSetList;
-
-            if (!alreadythere) {
-                for (int x = 0; x < StaticVariables.setSize; x++) {
-//		for (int x = FullscreenActivity.setSize-1; x<1; x--) {
-                    if (StaticVariables.mSet[x].contains(StaticVariables.whatsongforsetwork) ||
-                            StaticVariables.mSet[x].contains("**" + StaticVariables.whatsongforsetwork)) {
-                        StaticVariables.indexSongInSet = x;
-                        if (x > 0) {
-                            StaticVariables.previousSongInSet = StaticVariables.mSet[x - 1];
-                        }
-                        if (x != StaticVariables.setSize - 1) {
-                            StaticVariables.nextSongInSet = StaticVariables.mSet[x + 1];
-                        }
-
-                    }
-                }
-            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -304,7 +342,8 @@ class SetActions {
 
     String getSongForSetWork(Context c) {
         String val;
-        if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername))) {
+        if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername)) || StaticVariables.whichSongFolder.equals("MAIN") ||
+                StaticVariables.whichSongFolder.equals("")) {
             val = StaticVariables.songfilename;
         } else if (StaticVariables.whichSongFolder.contains("Scripture/_cache")) {
             val = c.getResources().getString(R.string.scripture) + "/" + StaticVariables.songfilename;
@@ -326,7 +365,7 @@ class SetActions {
 
     String whatToLookFor(Context c, String folder, String filename) {
         String whattolookfor;
-        if (folder.equals("") || folder.equals(c.getString(R.string.mainfoldername))) {
+        if (folder.equals("") || folder.equals(c.getString(R.string.mainfoldername)) || folder.equals("MAIN")) {
             whattolookfor = "$**_" + filename + "_**$";
         } else if (folder.startsWith("**"+c.getString(R.string.variation)) ||
                 folder.startsWith("../Variations")) {
@@ -482,8 +521,9 @@ class SetActions {
         }
 
         storageAccess.writeFileFromString(my_NEW_XML,outputStream);
-        String val = preferences.getMyPreferenceString(c,"setCurrent","") + set_item;
-        preferences.setMyPreferenceString(c,"setCurrent",val);
+        //String val = preferences.getMyPreferenceString(c,"setCurrent","") + set_item;
+        //preferences.setMyPreferenceString(c,"setCurrent",val);
+        currentSet = currentSet + set_item;
     }
 
     private void getSong(Context c, Preferences preferences) {
@@ -494,7 +534,7 @@ class SetActions {
             if (p_name.startsWith("/")) {
                 p_name = p_name.replaceFirst("/","");
             }
-            if (p_name.endsWith("/")) {
+            if (p_name.endsWith("/") && p_name.length()>1) {
                 p_name = p_name.substring(0,p_name.length()-1);
             }
             if (s_name.startsWith("/")) {
@@ -511,8 +551,9 @@ class SetActions {
                 location = location.substring(0,location.length()-1);
             }
 
-            String val = preferences.getMyPreferenceString(c,"setCurrent","") + "$**_" + location + "_**$";
-            preferences.setMyPreferenceString(c,"setCurrent",val);
+            //String val = preferences.getMyPreferenceString(c,"setCurrent","") + "$**_" + location + "_**$";
+            currentSet = currentSet + "$**_" + location + "_**$";
+            //preferences.setMyPreferenceString(c, "setCurrent", val);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -895,7 +936,8 @@ class SetActions {
 
         if (FullscreenActivity.linkclicked.equals("/")) {
             // There was no song clicked, so just reload the current one
-            if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername))) {
+            if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername)) || StaticVariables.whichSongFolder.equals("MAIN") ||
+                    StaticVariables.whichSongFolder.equals("")) {
                 FullscreenActivity.linkclicked = "/"+ StaticVariables.songfilename;
             } else {
                 FullscreenActivity.linkclicked = StaticVariables.whichSongFolder + "/" +

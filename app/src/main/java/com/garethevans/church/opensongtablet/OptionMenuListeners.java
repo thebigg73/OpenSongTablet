@@ -851,6 +851,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                             }
                         } catch (Exception e) {
                             Log.d("OptionMenuListeners", "Something went wrong with the set item");
+                            e.printStackTrace();
                         }
                     }
                 });

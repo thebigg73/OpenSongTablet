@@ -20,7 +20,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -127,7 +126,9 @@ public class PopUpFullSearchFragment extends DialogFragment {
         filtersFAB2 = V.findViewById(R.id.filtersFAB2);
         filtersLayout = V.findViewById(R.id.filtersLayout);
         mSearchView = V.findViewById(R.id.search_view);
-        EditText searchEditText = mSearchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        //EditText searchEditText = mSearchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        EditText searchEditText = mSearchView.findViewById(R.id.search_src_text);
+
         int id = mSearchView.getContext().getResources().
                 getIdentifier("android:id/search_src_text", null, null);
         EditText searchEditText2 = mSearchView.findViewById(id);
@@ -507,7 +508,7 @@ public class PopUpFullSearchFragment extends DialogFragment {
             String tfolder = mFoldername.getText().toString();
 
             // We need to figure out the file name and the folder (if any) it is in
-            if (tfolder.equals(getActivity().getString(R.string.mainfoldername)) || tfolder.equals("")) {
+            if (tfolder.equals(getActivity().getString(R.string.mainfoldername)) || tfolder.equals("MAIN") || tfolder.equals("")) {
                 StaticVariables.whatsongforsetwork = "$**_" + tsong + "_**$";
             } else {
                 StaticVariables.whatsongforsetwork = "$**_" + tfolder + "/"	+ tsong + "_**$";

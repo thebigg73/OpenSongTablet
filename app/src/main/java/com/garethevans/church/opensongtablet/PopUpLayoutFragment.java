@@ -40,6 +40,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     public interface MyInterface {
         void refreshSecondaryDisplay(String what);
+        void loadSong();
     }
 
     private static MyInterface mListener;
@@ -73,7 +74,7 @@ public class PopUpLayoutFragment extends DialogFragment {
     private TextView lyrics_title_align;
     private TextView presoTransitionTimeTextView;
     private FloatingActionButton lyrics_left_align, lyrics_center_align, lyrics_right_align,
-            info_left_align, info_center_align, info_right_align;
+            info_left_align, info_center_align, info_right_align, lyrics_top_valign, lyrics_center_valign, lyrics_bottom_valign;
     private ImageView chooseLogoButton, chooseImage1Button, chooseImage2Button, chooseVideo1Button,
             chooseVideo2Button;
     private CheckBox image1CheckBox, image2CheckBox, video1CheckBox, video2CheckBox;
@@ -157,6 +158,9 @@ public class PopUpLayoutFragment extends DialogFragment {
         lyrics_left_align = V.findViewById(R.id.lyrics_left_align);
         lyrics_center_align = V.findViewById(R.id.lyrics_center_align);
         lyrics_right_align = V.findViewById(R.id.lyrics_right_align);
+        lyrics_top_valign = V.findViewById(R.id.lyrics_top_valign);
+        lyrics_center_valign = V.findViewById(R.id.lyrics_center_valign);
+        lyrics_bottom_valign = V.findViewById(R.id.lyrics_bottom_valign);
         info_left_align = V.findViewById(R.id.info_left_align);
         info_center_align = V.findViewById(R.id.info_center_align);
         info_right_align = V.findViewById(R.id.info_right_align);
@@ -221,7 +225,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         setXMarginProgressBar.setMax(50);
         setYMarginProgressBar.setMax(50);
         setXMarginProgressBar.setProgress(preferences.getMyPreferenceInt(getActivity(),"presoXMargin",20));
-        setYMarginProgressBar.setProgress(preferences.getMyPreferenceInt(getActivity(),"presoXMargin",10));
+        setYMarginProgressBar.setProgress(preferences.getMyPreferenceInt(getActivity(),"presoYMargin",10));
     }
 
     private void setupListeners() {
@@ -252,6 +256,13 @@ public class PopUpLayoutFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 preferences.setMyPreferenceBoolean(getActivity(),"presoShowChords",b);
+                if (mListener!=null) {
+                    try {
+                        mListener.loadSong();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
                 sendUpdateToScreen("chords");
                 setUpAlignmentButtons();
             }
@@ -290,6 +301,33 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View view) {
                 CustomAnimations.animateFAB(lyrics_right_align, getActivity());
                 preferences.setMyPreferenceInt(getActivity(),"presoLyricsAlign",Gravity.END);
+                setUpAlignmentButtons();
+                sendUpdateToScreen("all");
+            }
+        });
+        lyrics_top_valign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(lyrics_top_valign, getActivity());
+                preferences.setMyPreferenceInt(getActivity(),"presoLyricsVAlign",Gravity.TOP);
+                setUpAlignmentButtons();
+                sendUpdateToScreen("all");
+            }
+        });
+        lyrics_center_valign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(lyrics_center_valign, getActivity());
+                preferences.setMyPreferenceInt(getActivity(),"presoLyricsVAlign",Gravity.CENTER_VERTICAL);
+                setUpAlignmentButtons();
+                sendUpdateToScreen("all");
+            }
+        });
+        lyrics_bottom_valign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(lyrics_bottom_valign, getActivity());
+                preferences.setMyPreferenceInt(getActivity(),"presoLyricsVAlign",Gravity.BOTTOM);
                 setUpAlignmentButtons();
                 sendUpdateToScreen("all");
             }
@@ -464,20 +502,34 @@ public class PopUpLayoutFragment extends DialogFragment {
     }
 
     private void setUpAlignmentButtons() {
-        int lyralign = preferences.getMyPreferenceInt(getActivity(),"presoLyricsAlign",Gravity.CENTER);
+        int lyralign = preferences.getMyPreferenceInt(getActivity(),"presoLyricsAlign",Gravity.CENTER_HORIZONTAL);
+        int lyrvalign = preferences.getMyPreferenceInt(getActivity(),"presoLyricsVAlign",Gravity.CENTER_VERTICAL);
         int infalign = preferences.getMyPreferenceInt(getActivity(),"presoInfoAlign",Gravity.END);
         if (lyralign == Gravity.START) {
             lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
             lyrics_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
             lyrics_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-        } else if (lyralign == Gravity.CENTER) {
-            lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-            lyrics_center_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-            lyrics_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-        } else {
+        } else if (lyralign == Gravity.END) {
             lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
             lyrics_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
             lyrics_right_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
+        } else { // CENTER_HORIZONTAL
+            lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            lyrics_center_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
+            lyrics_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+        }
+        if (lyrvalign == Gravity.TOP) {
+            lyrics_top_valign.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
+            lyrics_center_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            lyrics_bottom_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+        } else if (lyrvalign == Gravity.BOTTOM) {
+            lyrics_top_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            lyrics_center_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            lyrics_bottom_valign.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
+        } else { // CENTER_VERTICAL
+            lyrics_top_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            lyrics_center_valign.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
+            lyrics_bottom_valign.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
         }
         if (infalign == Gravity.START) {
             info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
@@ -487,7 +539,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
             info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
             info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-        } else {
+        } else { // CENTER_HORIZONTAL
             info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
             info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
             info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));

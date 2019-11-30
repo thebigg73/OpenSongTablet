@@ -48,7 +48,7 @@ public class SongMenuListeners extends Activity {
                             s = s.substring(0, s.lastIndexOf("/"));
                         }
 
-                        if (whichSongFolder.equals(c.getString(R.string.mainfoldername)) || whichSongFolder.equals("")) {
+                        if (whichSongFolder.equals(c.getString(R.string.mainfoldername)) || whichSongFolder.equals("MAIN") || whichSongFolder.equals("")) {
                             StaticVariables.whichSongFolder =  s;
                         } else {
                             // Add subdirectory on to the current whichsongfolder

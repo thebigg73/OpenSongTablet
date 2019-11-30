@@ -597,7 +597,7 @@ public class PopUpListSetsFragment extends DialogFragment {
     }
 
     private void tickSelectedSetsInCategory(String filter) {
-        if (filter != null && !filter.equals(getString(R.string.mainfoldername))) {
+        if (filter != null && !filter.equals(getString(R.string.mainfoldername)) && !filter.equals("MAIN") && !filter.equals("")) {
             filter = filter + "__";
         } else {
             filter = "";
@@ -711,7 +711,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         String newsetname;
         if (!newcat_edittext.equals("")) {
             newsetname = newcat_edittext + "__" + newsettitle;
-        } else if (newcat_spinner.equals(getString(R.string.mainfoldername))) {
+        } else if (newcat_spinner.equals(getString(R.string.mainfoldername)) || newcat_spinner.equals("MAIN")) {
             newsetname = newsettitle;
         } else {
             newsetname = newcat_spinner + "__" + newsettitle;
@@ -770,7 +770,11 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         @Override
         protected String doInBackground(String... args) {
-            setActions.emptyCacheDirectories(getActivity(), preferences, storageAccess);
+            try {
+                setActions.emptyCacheDirectories(getActivity(), preferences, storageAccess);
+            } catch (Exception e) {
+                Log.d("PopUpListSets","Error clearing cache");
+            }
             StaticVariables.mSet = null;
 
             // Now users can load multiple sets and merge them, we need to load each one it turn
@@ -798,7 +802,7 @@ public class PopUpListSetsFragment extends DialogFragment {
             preferences.setMyPreferenceString(getActivity(), "setCurrent", allsongsinset.toString());
 
             // Reset the options menu
-            setActions.prepareSetList(getActivity(), preferences);
+            //setActions.prepareSetList(getActivity(), preferences);
             setActions.indexSongInSet();
 
             return "LOADED";

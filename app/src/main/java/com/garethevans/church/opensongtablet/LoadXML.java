@@ -869,7 +869,7 @@ public class LoadXML extends Activity {
 
     static String getTempFileLocation(Context c, String folder, String file) {
         String where = folder + "/" + file;
-        if (folder.equals(c.getString(R.string.mainfoldername))) {
+        if (folder.equals(c.getString(R.string.mainfoldername)) || folder.equals("MAIN") || folder.equals("")) {
             where = file;
         } else if (folder.contains("**" + c.getResources().getString(R.string.note))) {
             where = "../Notes/_cache/" + file;
@@ -944,7 +944,7 @@ public class LoadXML extends Activity {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.d("LoadXML","Error trying to read XML from "+uri);
             // Ooops
         }
 

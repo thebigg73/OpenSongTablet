@@ -718,7 +718,7 @@ class ExportPreparer {
                 try {
                     InputStream inputStream = storageAccess.getInputStream(c, uri);
                     ZipEntry ze;
-                    if (subfolder.equals(c.getString(R.string.mainfoldername))) {
+                    if (subfolder.equals(c.getString(R.string.mainfoldername)) || subfolder.equals("MAIN")) {
                         ze = new ZipEntry(s);
                     } else {
                         ze = new ZipEntry(subfolder + "/" + s);

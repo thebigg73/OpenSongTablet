@@ -250,7 +250,8 @@ public class PopUpSongCreateFragment extends DialogFragment {
                 } else {
                     if (!tempNewSong.equals("") && !tempNewSong.isEmpty()
                             && !tempNewSong.contains("/") && !storageAccess.uriExists(getActivity(), to)
-                            && !tempNewSong.equals(getString(R.string.mainfoldername))) {
+                            && !tempNewSong.equals(getString(R.string.mainfoldername))
+                            && !tempNewSong.equals("MAIN")) {
 
                         StaticVariables.whichSongFolder = FullscreenActivity.newFolder;
 

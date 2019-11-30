@@ -118,7 +118,8 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
             currentFolder_TextView.setVisibility(View.VISIBLE);
             String s;
             if (StaticVariables.whichSongFolder.equals("") ||
-                    StaticVariables.whichSongFolder.equals(getString(R.string.mainfoldername))) {
+                    StaticVariables.whichSongFolder.equals(getString(R.string.mainfoldername)) ||
+                    StaticVariables.whichSongFolder.equals("MAIN")) {
                 s = "../OpenSong/Songs/";
             } else {
                 s = "../OpenSong/Songs/" + StaticVariables.whichSongFolder + "/";
@@ -190,7 +191,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
             @Override
             protected String doInBackground(Object... objects) {
                 if (!StaticVariables.whichSongFolder.equals(getString(R.string.mainfoldername)) &&
-                        !StaticVariables.whichSongFolder.equals("")) {
+                        !StaticVariables.whichSongFolder.equals("") && !StaticVariables.whichSongFolder.equals("MAIN")) {
                     tempNewFolder = StaticVariables.whichSongFolder + "/" + tempNewFolder;
                 }
                 if (storageAccess.createFile(getActivity(), preferences, MIME_TYPE_DIR, "Songs", tempNewFolder, null)) {
@@ -290,7 +291,8 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
 
         if (!tempNewFolder.equals("") && !tempNewFolder.isEmpty() && !tempNewFolder.contains("/") &&
                 !storageAccess.uriExists(getActivity(),uri) &&
-                !tempNewFolder.equals(getString(R.string.mainfoldername))) {
+                !tempNewFolder.equals(getString(R.string.mainfoldername)) &&
+                !tempNewFolder.equals("MAIN")) {
             FullscreenActivity.newFolder = tempNewFolder;
             tempOldFolder = FullscreenActivity.currentFolder;
         }
@@ -305,7 +307,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
             // We don't want the main folder to show here
             oldtempfolders = new ArrayList<>();
             for (String s:initialoldtempfolders) {
-                if (!s.equals(getString(R.string.mainfoldername))) {
+                if (!s.equals(getString(R.string.mainfoldername)) && !s.equals("MAIN") && !s.equals((""))) {
                     oldtempfolders.add(s);
                 }
             }
