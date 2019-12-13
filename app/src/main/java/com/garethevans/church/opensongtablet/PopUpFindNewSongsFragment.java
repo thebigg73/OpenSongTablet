@@ -49,7 +49,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Objects;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
@@ -491,11 +490,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     private void fixWTContent(String resultposted) {
         // From Worship Together
 
-        String[] linest = resultposted.split("\n");
-        for (String l:linest) {
-            Log.d("FindNewSongs",l);
-        }
-
         grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
 
         // Try to find the title
@@ -578,10 +572,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         }
 
-        Log.d("FindNewSongs","title_resultposted="+title_resultposted);
-        Log.d("FindNewSongs","author="+authorname);
-        Log.d("FindNewSongs","copyright="+copyright);
-
         // Now try to get the chordpro file contents
         startpos = resultposted.indexOf("<div class='chord-pro-line'");
         endpos = resultposted.indexOf("<div class=\"song_taxonomy\">",startpos);
@@ -595,7 +585,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             // Go through each line and do what we need
             for (String l : lines) {
                 l = l.trim();
-                Log.d("FindNewSongs",l);
                 boolean emptystuff = false;
                 if (l.equals("</div") || l.contains("<div class='chord-pro-br'>") ||
                         l.contains("<div class='chord-pro-segment'>") || l.contains("<div class=\"inner_col")) {
@@ -681,278 +670,114 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         return s;
     }
 
+    private String getContentUG(String s) {
+        int startpos = s.indexOf("&quot;content&quot;:");
+        int endpos = s.indexOf("[/tab]&quot;");
+        if (startpos>-1 && endpos>-1 && endpos>-startpos) {
+            s = s.substring(startpos,endpos);
+        }
+        return s;
+    }
+    private String getTitleUG(String s) {
+        int startpos = s.indexOf("Song:");
+        int endpos = s.indexOf("NEW_LINE_OS",startpos);
+        if (startpos > -1 && endpos > -1 && startpos < endpos) {
+            s = s.substring(startpos + 5, endpos);
+            s = stripExtraUG(s);
+            return s;
+        } else {
+            try {
+                return FullscreenActivity.phrasetosearchfor;
+            } catch (Exception e) {
+                return "UG song";
+            }
+        }
+    }
+    private String getAuthorUG(String s) {
+        int startpos = s.indexOf("Artist:");
+        int endpos = s.indexOf("NEW_LINE_OS",startpos);
+        if (startpos > -1 && endpos > -1 && endpos > startpos) {
+            s = s.substring(startpos+7, endpos);
+            s = stripExtraUG(s);
+            return s;
+        } else {
+            return "";
+        }
+    }
+    private String getLyricsUG(String s) {
+        s = s.replace("&quot;", "");
+        String[] lines = s.split("NEW_LINE_OS");
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String line : lines) {
+            line = line.replace("[tab]", "");
+            line = line.replace("[/tab]", "");
+            if (line.contains("[ch]")) {
+                // Chord line
+                line = line.replace("[ch]", "");
+                line = line.replace("[/ch]", "");
+                line = "." + line;
+            } else {
+                if (!line.startsWith("[") && !line.startsWith(" ")) {
+                    line = " " + line;
+                }
+            }
+            stringBuilder.append(line).append("\n");
+        }
+
+        String string = stringBuilder.toString();
+        string = PopUpEditSongFragment.parseToHTMLEntities(string);
+
+        return string;
+    }
+
+    private String stripExtraUG(String s) {
+        s = s.replace(" @ Ultimate-Guitar.Com", "");
+        s = s.replace("&amp;","&");
+        s = s.replace("&","&amp;");
+        s = s.replace("\r", "");
+        s = s.replace("\n", "");
+        s = PopUpEditSongFragment.parseToHTMLEntities(s);
+        s = s.trim();
+        return s;
+    }
     private void fixUGContent(String resultposted) {
         // From ultimate guitar
 
+        String[] tl = resultposted.split("\n");
+        StringBuilder sb = new StringBuilder();
+        for (String t:tl) {
+            sb.append(t).append("NEW_LINE_OS");
+        }
+        resultposted = sb.toString();
+
+        // Shorten down what we need
+        if (resultposted.contains("<div class=\"js-store\"")) {
+            resultposted = resultposted.substring(resultposted.indexOf("<div class=\"js-store\""));
+        }
+
+        if (resultposted.contains("</div")) {
+            resultposted = resultposted.substring(0,resultposted.indexOf("</div>"));
+        }
+
+        resultposted = resultposted.replace("\\r\\n","NEW_LINE_OS");
+
         grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
 
-        // Try to find the title
-        // By default use the title of the page as a default
-
         String title_resultposted;
-        String filenametosave = "UG Song";
-        authorname = "";
-        String author_resultposted;
+        String filenametosave;
 
+        // Get the content we need from the rest of the page
+        resultposted = getContentUG(resultposted);
 
-        int startpos = resultposted.indexOf("<title>");
-        int endpos = resultposted.indexOf("</title>");
-        if (startpos > -1 && endpos > -1 && startpos < endpos) {
-            title_resultposted = resultposted.substring(startpos + 7, endpos);
-            title_resultposted = title_resultposted.replace("\r", "");
-            title_resultposted = title_resultposted.replace("\n", "");
-            title_resultposted = title_resultposted.trim();
-            title_resultposted = title_resultposted.replace("&amp;","&");
-            title_resultposted = title_resultposted.replace("&","&amp;");
-            filenametosave = title_resultposted.replace("&amp","");
-            filenametosave = filenametosave.replace(" @ Ultimate-Guitar.Com", "");
-            filenametosave = filenametosave.replace(" Chords", "");
-            int authstart = filenametosave.indexOf(" by ");
-            if (authstart > -1) {
-                authorname = filenametosave.substring(authstart + 4);
-                filenametosave = filenametosave.substring(0, authstart);
-            }
-        }
+        // Get the title and filename
+        title_resultposted = getTitleUG(resultposted);
+        filenametosave = title_resultposted;
 
-        // Look for a better title
-        // Normal site
-        startpos = resultposted.indexOf("song:");
-        if (startpos > -1) {
-            // Remove everything before this position
-            if (startpos != 0) {
-                title_resultposted = resultposted.substring(startpos);
-                title_resultposted = title_resultposted.replace("&amp;","&");
-                title_resultposted = title_resultposted.replace("&","&amp;");
-                endpos = title_resultposted.indexOf(",\n");
-                if (endpos < 0) {
-                    endpos = 0;
-                }
-                //Bit with song title is in here hopefully
-                if (endpos > 5) {
-                    filenametosave = title_resultposted.substring(5, endpos);
-                    filenametosave = filenametosave.replace("\"", "");
-                    filenametosave = filenametosave.replace("&amp;","");
-                    filenametosave = filenametosave.trim();
-                } else {
-                    filenametosave = "*temp*";
-                }
-            }
-        }
+        // Get the author
+        authorname = getAuthorUG(resultposted);
 
-        // Mobile site
-        startpos = resultposted.indexOf("song_name:") + 12;
-        endpos = resultposted.indexOf("',", startpos);
-        if (endpos < startpos + 40) {
-            title_resultposted = resultposted.substring(startpos, endpos);
-            title_resultposted = title_resultposted.replace("&amp;","&");
-            title_resultposted = title_resultposted.replace("&","&amp;");
-            filenametosave = title_resultposted.replace("&amp;","");
-        }
-
-        // Look for a better author
-        // Desktop site
-        startpos = resultposted.indexOf("artist:");
-        if (startpos > -1) {
-
-            // Remove everything before this position
-            if (startpos != 0) {
-                author_resultposted = resultposted.substring(startpos);
-                author_resultposted = author_resultposted.replace("&amp;","&");
-                author_resultposted = author_resultposted.replace("&","&amp;");
-                endpos = author_resultposted.indexOf(",\n");
-                if (endpos < 0) {
-                    endpos = 0;
-                }
-                //Bit with song author is in here hopefully
-                if (endpos > 6) {
-                    authorname = author_resultposted.substring(6, endpos);
-                    authorname = authorname.replace("\"", "");
-                    authorname = authorname.replace("&amp;","&");
-                    authorname = authorname.replace("&","&amp;");
-                    authorname = PopUpEditSongFragment.parseToHTMLEntities(authorname.trim());
-                } else {
-                    authorname = "";
-                }
-            }
-        }
-
-        // Mobile site
-        startpos = resultposted.indexOf("artist_name:") + 14;
-        endpos = resultposted.indexOf("',", startpos);
-        if (endpos < startpos + 80) {
-            author_resultposted = resultposted.substring(startpos, endpos);
-            author_resultposted = author_resultposted.replace("&amp;","&");
-            author_resultposted = author_resultposted.replace("&","&amp;");
-            authorname = PopUpEditSongFragment.parseToHTMLEntities(author_resultposted);
-        }
-
-        // Try to find the title of the song from the keywords
-        startpos = resultposted.indexOf("<meta name=\"keywords\" content=\"");
-        endpos = resultposted.indexOf("\">", startpos + 31);
-        if (startpos > -1 && endpos > startpos) {
-            String tempkeywords = resultposted.substring(startpos + 31, endpos);
-            // Split the keywords by commas
-            String[] keywords = tempkeywords.split(",");
-            if (keywords.length > 0) {
-                title_resultposted = keywords[0];
-                title_resultposted = title_resultposted.replace("&amp;","&");
-                title_resultposted = title_resultposted.replace("&","&amp;");
-                title_resultposted = title_resultposted.replace(" @ Ultimate-Guitar.Com", "");
-                title_resultposted = title_resultposted.replace(" Chords", "");
-                filenametosave = title_resultposted.replace("&amp;","");
-            }
-        }
-
-        // Find the position of the start of this section
-        startpos = resultposted.indexOf("<div class=\"tb_ct\">");
-        if (startpos < 0) {
-            startpos = 0;
-        }
-        // Remove everything before this position
-        resultposted = resultposted.substring(startpos);
-
-        // Find the ultimate guitar promo text start
-        startpos = resultposted.indexOf("<pre class=\"print-visible\">");
-        if (startpos < 0) {
-            startpos = 0;
-        }
-        // Remove everything before this position
-        resultposted = resultposted.substring(startpos + 27);
-
-        // Mobile version
-        startpos = resultposted.indexOf("<div class=\"ugm-b-tab--content js-tab-content\">");
-        if (startpos < 0) {
-            startpos = 0;
-        }
-        // Remove everything before this position
-        resultposted = resultposted.substring(startpos + 47);
-
-        // Find the text start
-        startpos = resultposted.indexOf("<pre>");
-        if (startpos > -1 && startpos < 500) {
-            // Remove everything before this position
-            resultposted = resultposted.substring(startpos + 5);
-        }
-
-        // For the mobile version
-        startpos = resultposted.indexOf("<pre class=\"js-tab-content\">");
-        if (startpos >= 0) {
-            resultposted = resultposted.substring(startpos + 28);
-        }
-
-        // For the mobile version
-        startpos = resultposted.indexOf("<pre class=\"js-tab-content\">");
-        if (startpos >= 0) {
-            resultposted = resultposted.substring(startpos + 28);
-        }
-
-        // Alternative start point
-        startpos = resultposted.indexOf("<pre class=\"\">");
-        if (startpos >= 0) {
-            resultposted = resultposted.substring(startpos + 14);
-        }
-
-        // Find the position of the end of the form
-        endpos = resultposted.indexOf("</pre>");
-        if (endpos < 0) {
-            endpos = resultposted.length();
-        }
-        resultposted = resultposted.substring(0, endpos);
-
-        //Replace all \r with \n
-        resultposted = resultposted.replace("\r", "\n");
-
-        // Split into lines
-        String[] templines = resultposted.split("\n");
-
-        // Go through each line and look for chord lines
-        // These have <span> in them
-        int numlines = templines.length;
-        StringBuilder sb = new StringBuilder();
-
-        for (int q = 0; q < numlines; q++) {
-            if (templines[q].contains("<span>") || templines[q].contains("text-chord") ||
-                    templines[q].contains("js-tab-ch") || templines[q].contains("js-tapped") ||
-                    templines[q].contains("colorful-chord")) {
-                // Identify chord lines
-                templines[q] = "." + templines[q];
-            }
-            if (StaticVariables.locale==null) {
-                StaticVariables.locale = Locale.getDefault();
-            }
-            if (templines[q] != null && !templines[q].startsWith(".") && (templines[q].toLowerCase(StaticVariables.locale).contains(Objects.requireNonNull(getActivity()).getResources().getString(R.string.tag_verse).toLowerCase(StaticVariables.locale)) && templines[q].length() < 12 || templines[q].toLowerCase(StaticVariables.locale).contains(getActivity().getResources().getString(R.string.tag_chorus).toLowerCase(StaticVariables.locale)) && templines[q].length() < 12 || templines[q].toLowerCase(StaticVariables.locale).contains(getActivity().getResources().getString(R.string.tag_bridge).toLowerCase(StaticVariables.locale)) && templines[q].length() < 12)) {
-                // Looks like a tag
-                templines[q] = "[" + templines[q].trim() + "]";
-            }
-            if (templines[q]!=null && templines[q].indexOf("[") != 0 && templines[q].indexOf(".") != 0) {
-                // Identify lyrics lines
-                templines[q] = " " + templines[q];
-            }
-            sb.append(templines[q]).append("\n");
-        }
-
-        newtext = sb.toString();
-
-        // Ok remove all html tags
-        newtext = newtext.replace("<span>", "");
-        // The desktop version of the site has chords inside [ch] [/ch] sections
-        newtext = newtext.replace("[ch]","");
-        newtext = newtext.replace("[/ch]","");
-        newtext = newtext.replace("<div class=\"text-tab js-tab-tab\">","");
-        newtext = newtext.replace("</div>","");
-        // Rather than trying to just remove randomly updated chord classes:
-        try {
-            while (newtext.contains("<span")) {
-                int spanstart = newtext.indexOf("<span");
-                int spanend = newtext.indexOf(">", spanstart);
-                String spanbit = newtext.substring(spanstart, spanend);
-                Log.d("d","newtext="+newtext);
-                Log.d("d","Removing "+spanbit);
-                newtext = newtext.replace(spanbit, "");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            while (newtext.contains("<pre")) {
-                int prestart = newtext.indexOf("<pre");
-                int preend = newtext.indexOf(">",prestart);
-                String prebit = newtext.substring(prestart,preend);
-                newtext = newtext.replace(prebit,"");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            while (newtext.contains("<div")) {
-                int divstart = newtext.indexOf("<div");
-                int divend = newtext.indexOf(">",divstart);
-                String divbit = newtext.substring(divstart,divend);
-                newtext = newtext.replace(divbit,"");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //newtext = newtext.replace("<span class=\"text-chord js-tab-ch js-tapped \">", "");
-        //newtext = newtext.replace("<span class=\"text-chord js-tab-ch js-tapped\">", "");
-        //newtext = newtext.replace("<span class=\"text-chord js-tab-ch\">", "");
-        newtext = newtext.replace("</span>", "");
-        newtext = newtext.replace("[[", "[");
-        newtext = newtext.replace("]]", "]");
-        newtext = newtext.replace("\n [", "\n[");
-        newtext = newtext.replace("]\n \n", "]\n");
-        newtext = newtext.replace("<i>", "");
-        newtext = newtext.replace("</i>", "");
-        newtext = newtext.replace("<b>", "");
-        newtext = newtext.replace("</b>", "");
-        newtext = newtext.replace("</", "");
-        newtext = newtext.replace("/>", "");
-        newtext = newtext.replace("<", "");
-        newtext = newtext.replace(">", "");
-        newtext = newtext.replace("&#039;","'");
-        newtext = newtext.replace("&amp;","&");
-        newtext = newtext.replace("&quot;","\"");
-        newtext = TextUtils.htmlEncode(newtext);
+        // Get the lyrics and chords
+        newtext = getLyricsUG(resultposted);
 
         if (!filenametosave.equals("")) {
             filename = filenametosave.trim();
@@ -1139,10 +964,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         // from holychords.com
         grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
 
-        String[] lines = resultposted.split("\n");
-        for (String line:lines) {
-            Log.d("FindNewSongs","line: "+line);
-        }
         // Try to find the title
         // By default use the title of the page as a default
 
@@ -1347,12 +1168,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         if (start>-1 && end>-1 && end>start) {
             String lyrics = s.substring(start+26,end);
 
-            // Look at the lyrics
-            String[] lines = lyrics.split("\n");
-            for (String line:lines) {
-                Log.d("FindNewSongs","line: "+line);
-            }
-
             // Fix the song section headers
             while (lyrics.contains("<span class=\"cproSongSection\"><span class=\"cproComment\">")) {
                 start = lyrics.indexOf("<span class=\"cproSongSection\"><span class=\"cproComment\">");
@@ -1473,12 +1288,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         // Get rid of any superscripts or subscripts
         lyrics = lyrics.replace("<sup>","");
         lyrics = lyrics.replace("</sup>","");
-
-        // Look at the lyrics
-        String[] lines = lyrics.split("\n");
-        for (String line:lines) {
-            Log.d("FindNewSongs","fixed: "+line);
-        }
 
         // Finally, trim the lyrics
         return lyrics.trim();

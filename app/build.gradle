@@ -45,7 +45,7 @@ android {
             jcenter()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:3.5.2'
+            classpath 'com.android.tools.build:gradle:3.5.3'
             classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
             classpath 'me.tatarka:gradle-retrolambda:3.7.0'
         }
@@ -61,8 +61,8 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-cast:17.1.0'
-    implementation 'com.google.android.gms:play-services-cast-framework:17.1.0'
+    implementation 'com.google.android.gms:play-services-cast:18.0.0'
+    implementation 'com.google.android.gms:play-services-cast-framework:18.0.0'
     implementation 'com.google.android.gms:play-services-nearby:17.0.0'
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
