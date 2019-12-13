@@ -747,6 +747,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         ShowToast.showToast(getActivity());
         preferences.setMyPreferenceString(getActivity(), "setCurrentLastName", StaticVariables.setnamechosen);
         StaticVariables.setnamechosen = "";
+
         // Close the window
         try {
             hideKeyboard(newCategory_EditText);
