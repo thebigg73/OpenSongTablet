@@ -275,7 +275,13 @@ public class PopUpLinks extends DialogFragment {
         // Now resave the song with these new links
         PopUpEditSongFragment.prepareSongXML();
         try {
-            PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+            if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
+                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+                nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
+            } else {
+                PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+            }
             mListener.refreshAll();
             dismiss();
         } catch (Exception e) {

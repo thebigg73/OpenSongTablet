@@ -152,7 +152,15 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
     private void doSave() {
         StaticVariables.mPresentation = m_mPresentation.getText().toString().trim();
         PopUpEditSongFragment.prepareSongXML();
-        PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+
+        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+            NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
+            NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+            nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
+        } else {
+            PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+        }
+
         try {
             LoadXML.loadXML(getActivity(), preferences, storageAccess, processSong);
         } catch (Exception e) {

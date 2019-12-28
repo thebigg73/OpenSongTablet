@@ -18,8 +18,6 @@ import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -56,6 +54,10 @@ public class ProcessSong extends Activity {
         myLyrics = myLyrics.replace("&lt;", "<");
         myLyrics = myLyrics.replace("&gt;", ">");
         myLyrics = myLyrics.replace("&quot;", "\"");
+        myLyrics = myLyrics.replace("&rdquo;","'");
+        myLyrics = myLyrics.replace("&rdquor;","'");
+        myLyrics = myLyrics.replace("&rsquo;","'");
+        myLyrics = myLyrics.replace("&rdquor;","'");
         myLyrics = myLyrics.replaceAll("\u0092", "'");
         myLyrics = myLyrics.replaceAll("\u0093", "'");
         myLyrics = myLyrics.replaceAll("\u2018", "'");
@@ -869,7 +871,7 @@ public class ProcessSong extends Activity {
                 StaticVariables.mTimeSigValid = true;
                 break;
             case "1/4":
-                FullscreenActivity.beats = 4;
+                FullscreenActivity.beats = 1;
                 FullscreenActivity.noteValue = 4;
                 StaticVariables.mTimeSigValid = true;
                 break;
@@ -1168,8 +1170,8 @@ public class ProcessSong extends Activity {
         }
     }
 
-    private TableRow capolinetoTableRow(Context c, Preferences preferences, int lyricsBackgroundColor, int lyricsCapoColor,
-                                               int presoShadowColor, String[] chords, float fontsize) {
+    private TableRow capolinetoTableRow(Context c, Preferences preferences, int lyricsCapoColor,
+                                        String[] chords, float fontsize) {
         Transpose transpose = new Transpose();
         TableRow caporow  = new TableRow(c);
         caporow.setClipChildren(false);
@@ -1196,30 +1198,10 @@ public class ProcessSong extends Activity {
             }
             capobit.setText(StaticVariables.temptranspChords);
             capobit.setTextSize(fontsize * preferences.getMyPreferenceFloat(c,"scaleChords",1.0f));
-            if (StaticVariables.whichMode.equals("Presentation")) {
-                capobit.setTextColor(lyricsCapoColor);
-                capobit.setTypeface(StaticVariables.typefaceChords);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    capobit.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                }
-                float shadow = fontsize/2.0f;
-                if (shadow>24.0f) {
-                    shadow = 24.0f;
-                }
-                capobit.setShadowLayer(shadow, 4, 4, presoShadowColor);
-            } else {
-                capobit.setTextColor(lyricsCapoColor);
-                capobit.setTypeface(StaticVariables.typefaceChords);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    capobit.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                }
-                float shadow = fontsize/2.0f;
-                if (shadow>24.0f) {
-                    shadow = 24.0f;
-                }
-                capobit.setShadowLayer(shadow, 4, 4, lyricsBackgroundColor);
-            }
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT && preferences.getMyPreferenceBoolean(c,"trimLines",false)) {
+            capobit.setTextColor(lyricsCapoColor);
+            capobit.setTypeface(StaticVariables.typefaceChords);
+
+            if (preferences.getMyPreferenceBoolean(c,"trimLines",false)) {
                 capobit.setSingleLine();
                 capobit.setIncludeFontPadding(false);
                 capobit.setGravity(Gravity.CENTER_VERTICAL);
@@ -1230,8 +1212,9 @@ public class ProcessSong extends Activity {
         }
         return caporow;
     }
-    private TableRow chordlinetoTableRow(Context c, Preferences preferences, int lyricsBackgroundColor, int lyricsChordsColor,
-                                         int presoShadowColor, String[] chords, float fontsize) {
+
+    private TableRow chordlinetoTableRow(Context c, Preferences preferences, int lyricsChordsColor,
+                                         String[] chords, float fontsize) {
         TableRow chordrow = new TableRow(c);
         chordrow.setLayoutParams(tablelayout_params());
 
@@ -1251,33 +1234,11 @@ public class ProcessSong extends Activity {
             }
             TextView chordbit = new TextView(c);
 
-            //bit = bit.replace("b","\u266d"); //Gives the proper b symbol if available in font
             chordbit.setText(bit);
             chordbit.setTextSize(fontsize * preferences.getMyPreferenceFloat(c,"scaleChords",1.0f));
-            if (StaticVariables.whichMode.equals("Presentation")) {
-                chordbit.setTextColor(lyricsChordsColor);
-                chordbit.setTypeface(StaticVariables.typefaceChords);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    chordbit.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                }
-                float shadow = fontsize/2.0f;
-                if (shadow>24.0f) {
-                    shadow = 24.0f;
-                }
-                chordbit.setShadowLayer(shadow, 4, 4, presoShadowColor);
+            chordbit.setTextColor(lyricsChordsColor);
+            chordbit.setTypeface(StaticVariables.typefaceChords);
 
-            } else {
-                chordbit.setTextColor(lyricsChordsColor);
-                chordbit.setTypeface(StaticVariables.typefaceChords);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    chordbit.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                }
-                float shadow = fontsize/2.0f;
-                if (shadow>24.0f) {
-                    shadow = 24.0f;
-                }
-                chordbit.setShadowLayer(shadow, 4, 4, lyricsBackgroundColor);
-            }
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT && preferences.getMyPreferenceBoolean(c,"trimLines",false)) {
                 chordbit.setSingleLine();
                 chordbit.setIncludeFontPadding(false);
@@ -1289,8 +1250,9 @@ public class ProcessSong extends Activity {
         }
         return chordrow;
     }
+
     private TableRow lyriclinetoTableRow(Context c, int lyricsTextColor, int presoFontColor,
-                                         int presoShadowColor, String[] lyrics, float fontsize,
+                                         String[] lyrics, float fontsize,
                                          StorageAccess storageAccess, Preferences preferences) {
         TableRow lyricrow = new TableRow(c);
         if (StaticVariables.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout &&
@@ -1351,14 +1313,6 @@ public class ProcessSong extends Activity {
 
                 lyricbit.setTextColor(presoFontColor);
                 lyricbit.setTypeface(StaticVariables.typefacePreso);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    lyricbit.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                }
-                float shadow = fontsize/2.0f;
-                if (shadow>24.0f) {
-                    shadow = 24.0f;
-                }
-                lyricbit.setShadowLayer(shadow, 4, 4, presoShadowColor);
 
                 int w = StaticVariables.cast_availableWidth_1col;
                 // If we have turned off autoscale and aren't showing the chords, allow wrapping
@@ -1375,13 +1329,6 @@ public class ProcessSong extends Activity {
             } else {
                 lyricbit.setTextColor(lyricsTextColor);
                 lyricbit.setTypeface(StaticVariables.typefaceLyrics);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    lyricbit.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                }
-                /*float shadow = fontsize/2.0f;
-                if (shadow>24.0f) {
-                    shadow = 24.0f;
-                }*/
             }
 
             if (FullscreenActivity.isImageSection) {
@@ -1435,7 +1382,7 @@ public class ProcessSong extends Activity {
                         e1.printStackTrace();
                         img.setImageDrawable(drw);
                     } catch (OutOfMemoryError e2) {
-                            e2.printStackTrace();
+                        e2.printStackTrace();
                     }
                 } else {
                     img.setImageDrawable(drw);
@@ -1453,9 +1400,10 @@ public class ProcessSong extends Activity {
         }
         return lyricrow;
     }
+
     private TableRow commentlinetoTableRow(Context c, Preferences preferences,
-                                           int presoFontColor, int lyricsTextColor, int lyricsBackgroundColor,
-                                           int presoShadowColor, String[] comment, float fontsize, boolean tab) {
+                                           int presoFontColor, int lyricsTextColor,
+                                           String[] comment, float fontsize, boolean tab) {
         TableRow commentrow = new TableRow(c);
         commentrow.setLayoutParams(tablelayout_params());
 
@@ -1495,25 +1443,11 @@ public class ProcessSong extends Activity {
             if (StaticVariables.whichMode.equals("Presentation")) {
                 lyricbit.setTextColor(presoFontColor);
                 lyricbit.setTypeface(StaticVariables.typefacePreso);
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-                    lyricbit.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                }
-                float shadow = fontsize/2.0f;
-                if (shadow>24.0f) {
-                    shadow = 24.0f;
-                }
-                lyricbit.setShadowLayer(shadow, 4, 4, presoShadowColor);
+
             } else {
                 lyricbit.setTextColor(lyricsTextColor);
                 lyricbit.setTypeface(StaticVariables.typefaceLyrics);
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-                    lyricbit.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-                }
-                float shadow = fontsize/2.0f;
-                if (shadow>24.0f) {
-                    shadow = 24.0f;
-                }
-                lyricbit.setShadowLayer(shadow, 4, 4, lyricsBackgroundColor);
+
             }
             if (tab) {
                 // Set the comment text as monospaced to make it fit
@@ -1529,6 +1463,7 @@ public class ProcessSong extends Activity {
         }
         return commentrow;
     }
+
     private TextView titletoTextView(Context c, Preferences preferences, int lyricsTextColor, String title, float fontsize) {
         TextView titleview = new TextView(c);
         titleview.setLayoutParams(linearlayout_params());
@@ -1539,6 +1474,7 @@ public class ProcessSong extends Activity {
         titleview.setPaintFlags(titleview.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
         return titleview;
     }
+
 
     int getSectionColors(String type, int lyricsVerseColor, int lyricsChorusColor, int lyricsPreChorusColor,
                                 int lyricsBridgeColor, int lyricsTagColor, int lyricsCommentColor, int lyricsCustomColor) {
@@ -2222,12 +2158,13 @@ public class ProcessSong extends Activity {
         }
         return text.toString();
     }
+
     LinearLayout songSectionView(Context c, int x, float fontsize, boolean projected,
                                  StorageAccess storageAccess, Preferences preferences,
-                                 int lyricsTextColor, int lyricsBackgroundColor, int lyricsChordsColor, 
+                                 int lyricsTextColor, int lyricsBackgroundColor, int lyricsChordsColor,
                                  int lyricsCommentColor, int lyricsCustomColor,
-                                 int lyricsCapoColor, int presoFontColor, int presoShadowColor) {
-        
+                                 int lyricsCapoColor, int presoFontColor) {
+
         final LinearLayout ll = new LinearLayout(c);
 
         ll.setLayoutParams(linearlayout_params());
@@ -2270,90 +2207,83 @@ public class ProcessSong extends Activity {
         boolean donativechords = showchords && !justcapo;
 
         for (int y = 0; y < linenums; y++) {
-                // Go through the section a line at a time
-                String nextlinetype = "";
-                String previouslinetype = "";
-                if (y < linenums - 1) {
-                    nextlinetype = StaticVariables.sectionLineTypes[x][y + 1];
-                }
-                if (y > 0) {
-                    previouslinetype = StaticVariables.sectionLineTypes[x][y - 1];
-                }
+            // Go through the section a line at a time
+            String nextlinetype = "";
+            String previouslinetype = "";
+            if (y < linenums - 1) {
+                nextlinetype = StaticVariables.sectionLineTypes[x][y + 1];
+            }
+            if (y > 0) {
+                previouslinetype = StaticVariables.sectionLineTypes[x][y - 1];
+            }
 
-                String[] positions_returned;
-                String[] chords_returned;
-                String[] lyrics_returned;
-                TableLayout tl = createTableLayout(c);
+            String[] positions_returned;
+            String[] chords_returned;
+            String[] lyrics_returned;
+            TableLayout tl = createTableLayout(c);
 
             switch (howToProcessLines(y, linenums, StaticVariables.sectionLineTypes[x][y], nextlinetype, previouslinetype)) {
-                    // If this is a chord line followed by a lyric line.
-                    case "chord_then_lyric":
-                        if (StaticVariables.sectionContents[x][y].length() > StaticVariables.sectionContents[x][y + 1].length()) {
-                            StaticVariables.sectionContents[x][y + 1] = fixLineLength(StaticVariables.sectionContents[x][y + 1], StaticVariables.sectionContents[x][y].length());
-                        }
-                        positions_returned = getChordPositions(StaticVariables.sectionContents[x][y]);
-                        chords_returned = getChordSections(StaticVariables.sectionContents[x][y], positions_returned);
-                        lyrics_returned = getLyricSections(StaticVariables.sectionContents[x][y + 1], positions_returned);
-                        if (docapochords) {
-                            tl.addView(capolinetoTableRow(c, preferences, lyricsBackgroundColor, lyricsCapoColor,
-                                    presoShadowColor, chords_returned, fontsize));
-                        }
-                        if (!justcapo && donativechords) {
-                            tl.addView(chordlinetoTableRow(c, preferences, lyricsBackgroundColor, lyricsChordsColor,
-                                    presoShadowColor, chords_returned, fontsize));
-                        }
-                        if (preferences.getMyPreferenceBoolean(c,"displayLyrics",true)) {
-                            tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor, presoShadowColor,
-                                    lyrics_returned, fontsize, storageAccess, preferences));
-                        }
-                        break;
+                // If this is a chord line followed by a lyric line.
+                case "chord_then_lyric":
+                    if (StaticVariables.sectionContents[x][y].length() > StaticVariables.sectionContents[x][y + 1].length()) {
+                        StaticVariables.sectionContents[x][y + 1] = fixLineLength(StaticVariables.sectionContents[x][y + 1], StaticVariables.sectionContents[x][y].length());
+                    }
+                    positions_returned = getChordPositions(StaticVariables.sectionContents[x][y]);
+                    chords_returned = getChordSections(StaticVariables.sectionContents[x][y], positions_returned);
+                    lyrics_returned = getLyricSections(StaticVariables.sectionContents[x][y + 1], positions_returned);
+                    if (docapochords) {
+                        tl.addView(capolinetoTableRow(c, preferences, lyricsCapoColor, chords_returned, fontsize));
+                    }
+                    if (!justcapo && donativechords) {
+                        tl.addView(chordlinetoTableRow(c, preferences, lyricsChordsColor, chords_returned, fontsize));
+                    }
+                    if (preferences.getMyPreferenceBoolean(c,"displayLyrics",true)) {
+                        tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor,
+                                lyrics_returned, fontsize, storageAccess, preferences));
+                    }
+                    break;
 
-                    case "chord_only":
-                        chords_returned = new String[1];
-                        chords_returned[0] = StaticVariables.sectionContents[x][y];
-                        if (docapochords) {
-                            tl.addView(capolinetoTableRow(c, preferences, lyricsBackgroundColor, lyricsCapoColor,
-                                    presoShadowColor, chords_returned, fontsize));
-                        }
-                        if (!justcapo && donativechords) {
-                            tl.addView(chordlinetoTableRow(c, preferences, lyricsBackgroundColor, lyricsChordsColor,
-                                    presoShadowColor, chords_returned, fontsize));
-                        }
-                        break;
+                case "chord_only":
+                    chords_returned = new String[1];
+                    chords_returned[0] = StaticVariables.sectionContents[x][y];
+                    if (docapochords) {
+                        tl.addView(capolinetoTableRow(c, preferences, lyricsCapoColor, chords_returned, fontsize));
+                    }
+                    if (!justcapo && donativechords) {
+                        tl.addView(chordlinetoTableRow(c, preferences, lyricsChordsColor, chords_returned, fontsize));
+                    }
+                    break;
 
-                    case "lyric_no_chord":
-                        lyrics_returned = new String[1];
-                        lyrics_returned[0] = StaticVariables.sectionContents[x][y];
-                        if (preferences.getMyPreferenceBoolean(c,"displayLyrics",true)) {
-                            tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor, presoShadowColor,
-                                    lyrics_returned, fontsize, storageAccess, preferences));
-                        }
-                        break;
+                case "lyric_no_chord":
+                    lyrics_returned = new String[1];
+                    lyrics_returned[0] = StaticVariables.sectionContents[x][y];
+                    if (preferences.getMyPreferenceBoolean(c,"displayLyrics",true)) {
+                        tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor,
+                                lyrics_returned, fontsize, storageAccess, preferences));
+                    }
+                    break;
 
-                    case "comment_no_chord":
-                        lyrics_returned = new String[1];
-                        lyrics_returned[0] = StaticVariables.sectionContents[x][y];
-                        tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyricsBackgroundColor,
-                                presoShadowColor, lyrics_returned, fontsize, false));
-                        tl.setBackgroundColor(lyricsCommentColor);
-                        break;
+                case "comment_no_chord":
+                    lyrics_returned = new String[1];
+                    lyrics_returned[0] = StaticVariables.sectionContents[x][y];
+                    tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, false));
+                    tl.setBackgroundColor(lyricsCommentColor);
+                    break;
 
-                    case "extra_info":
-                        lyrics_returned = new String[1];
-                        lyrics_returned[0] = StaticVariables.sectionContents[x][y];
-                        TableRow tr = commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyricsBackgroundColor,
-                                presoShadowColor, lyrics_returned, fontsize, false);
-                        tr.setGravity(Gravity.END);
-                        tl.addView(tr);
-                        tl.setGravity(Gravity.END);
-                        tl.setBackgroundColor(lyricsCustomColor);
-                        break;
+                case "extra_info":
+                    lyrics_returned = new String[1];
+                    lyrics_returned[0] = StaticVariables.sectionContents[x][y];
+                    TableRow tr = commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, false);
+                    tr.setGravity(Gravity.END);
+                    tl.addView(tr);
+                    tl.setGravity(Gravity.END);
+                    tl.setBackgroundColor(lyricsCustomColor);
+                    break;
 
                 case "capo_info":
                     lyrics_returned = new String[1];
                     lyrics_returned[0] = StaticVariables.sectionContents[x][y];
-                    TableRow trc = commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyricsBackgroundColor,
-                            presoShadowColor, lyrics_returned, fontsize, false);
+                    TableRow trc = commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, false);
                     if (trc.getChildAt(0)!=null) {
                         TextView tvcapo = (TextView) trc.getChildAt(0);
                         tvcapo.setTextColor(lyricsCapoColor);
@@ -2368,7 +2298,7 @@ public class ProcessSong extends Activity {
                     lyrics_returned = new String[1];
                     lyrics_returned[0] = StaticVariables.sectionContents[x][y];
                     tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor,
-                            lyricsBackgroundColor, presoShadowColor, lyrics_returned, fontsize, true));
+                            lyrics_returned, fontsize, true));
                     tl.setBackgroundColor(lyricsCommentColor);
                     break;
 
@@ -2378,12 +2308,12 @@ public class ProcessSong extends Activity {
                         tl.addView(wv);
                     }
                     break;*/
-                }
-                try {
-                    ll.addView(tl);
-                } catch (Exception | OutOfMemoryError e) {
-                    e.printStackTrace();
-                }
+            }
+            try {
+                ll.addView(tl);
+            } catch (Exception | OutOfMemoryError e) {
+                e.printStackTrace();
+            }
         }
         TextView emptyline = new TextView(c);
         emptyline.setLayoutParams(linearlayout_params());
@@ -2397,9 +2327,9 @@ public class ProcessSong extends Activity {
 
     LinearLayout projectedSectionView(Context c, int x, float fontsize, StorageAccess storageAccess,
                                       Preferences preferences,
-                                      int lyricsTextColor, int lyricsBackgroundColor, int lyricsChordsColor,
+                                      int lyricsTextColor, int lyricsChordsColor,
                                       int lyricsCapoColor, int presoFontColor, int presoShadowColor) {
-        
+
         final LinearLayout ll = new LinearLayout(c);
 
         if (StaticVariables.whichMode.equals("Presentation") && !preferences.getMyPreferenceBoolean(c,"presoShowChords",false)) {
@@ -2471,11 +2401,10 @@ public class ProcessSong extends Activity {
             String[] lyrics_returned;
             TableLayout tl = createTableLayout(c);
 
-            if (StaticVariables.whichMode.equals("Presentation") && !preferences.getMyPreferenceBoolean(c,"presoShowChords",false)) {
+            if (StaticVariables.whichMode.equals("Presentation") && !showchordspreso) {
                 tl.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT));
             }
-
 
             String what = howToProcessLines(y, linenums, linetypes[y], nextlinetype, previouslinetype);
             if (what==null) {
@@ -2493,16 +2422,14 @@ public class ProcessSong extends Activity {
                     lyrics_returned = getLyricSections(whattoprocess[y + 1], positions_returned);
 
                     if (docapochords) {
-                        tl.addView(capolinetoTableRow(c, preferences, lyricsBackgroundColor, lyricsCapoColor,
-                                presoShadowColor, chords_returned, fontsize));
+                        tl.addView(capolinetoTableRow(c, preferences, lyricsCapoColor, chords_returned, fontsize));
                     }
                     if (!justcapo && donativechords) {
-                        tl.addView(chordlinetoTableRow(c, preferences, lyricsBackgroundColor, lyricsChordsColor,
-                                presoShadowColor, chords_returned, fontsize));
+                        tl.addView(chordlinetoTableRow(c, preferences, lyricsChordsColor, chords_returned, fontsize));
                     }
                     if (preferences.getMyPreferenceBoolean(c,"displayLyrics",true)) {
-                        tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor, 
-                                presoShadowColor, lyrics_returned, fontsize, storageAccess, preferences));
+                        tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor,
+                                lyrics_returned, fontsize, storageAccess, preferences));
                     }
                     break;
 
@@ -2510,12 +2437,10 @@ public class ProcessSong extends Activity {
                     chords_returned = new String[1];
                     chords_returned[0] = whattoprocess[y];
                     if (docapochords) {
-                        tl.addView(capolinetoTableRow(c, preferences, lyricsBackgroundColor, lyricsCapoColor,
-                                presoShadowColor, chords_returned, fontsize));
+                        tl.addView(capolinetoTableRow(c, preferences, lyricsCapoColor, chords_returned, fontsize));
                     }
                     if (!justcapo && donativechords) {
-                        tl.addView(chordlinetoTableRow(c, preferences, lyricsBackgroundColor, lyricsChordsColor,
-                                presoShadowColor, chords_returned, fontsize));
+                        tl.addView(chordlinetoTableRow(c, preferences, lyricsChordsColor, chords_returned, fontsize));
                     }
                     break;
 
@@ -2525,22 +2450,20 @@ public class ProcessSong extends Activity {
                     lyrics_returned[0] = whattoprocess[y];
                     if (preferences.getMyPreferenceBoolean(c,"displayLyrics",true)) {
                         tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor,
-                                presoShadowColor, lyrics_returned, fontsize, storageAccess, preferences));
+                                lyrics_returned, fontsize, storageAccess, preferences));
                     }
                     break;
 
                 case "comment_no_chord":
                     lyrics_returned = new String[1];
                     lyrics_returned[0] = whattoprocess[y];
-                    tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyricsBackgroundColor,
-                            presoShadowColor, lyrics_returned, fontsize, false));
+                    tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, false));
                     break;
 
                 case "extra_info":
                     lyrics_returned = new String[1];
                     lyrics_returned[0] = whattoprocess[y];
-                    TableRow tr = commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyricsBackgroundColor,
-                            presoShadowColor, lyrics_returned, fontsize, false);
+                    TableRow tr = commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, false);
                     tr.setGravity(Gravity.END);
                     tl.addView(tr);
                     tl.setGravity(Gravity.END);
@@ -2549,8 +2472,7 @@ public class ProcessSong extends Activity {
                 case "guitar_tab":
                     lyrics_returned = new String[1];
                     lyrics_returned[0] = whattoprocess[y];
-                    tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyricsBackgroundColor,
-                            presoShadowColor, lyrics_returned, fontsize, true));
+                    tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, true));
                     break;
 
             }
@@ -2755,11 +2677,10 @@ public class ProcessSong extends Activity {
         return scale;
     }
 
-    RelativeLayout preparePerformanceBoxView(Context c, Preferences preferences, int lyricsTextColor, int lyricsBackgroundColor, int m, int padding) {
+    RelativeLayout preparePerformanceBoxView(Context c, Preferences preferences, int lyricsTextColor, int lyricsBackgroundColor, int padding) {
         RelativeLayout boxbit  = new RelativeLayout(c);
         LinearLayout.LayoutParams llp = linearlayout_params();
-        //LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,6000);
-        llp.setMargins(0,0,m,0);
+        llp.setMargins(0,0, 0,0);
         boxbit.setLayoutParams(llp);
         boxbit.setBackgroundResource(R.drawable.lyrics_box);
         GradientDrawable drawable = (GradientDrawable) boxbit.getBackground();
@@ -2774,10 +2695,10 @@ public class ProcessSong extends Activity {
         boxbit.setPadding(padding-linewidth,padding-linewidth,padding-linewidth,padding-linewidth);
         return boxbit;
     }
-    LinearLayout prepareProjectedBoxView(Context c, Preferences preferences, int lyricsTextColor, int lyricsBackgroundColor, int m, int padding) {
+    LinearLayout prepareProjectedBoxView(Context c, Preferences preferences, int lyricsTextColor, int lyricsBackgroundColor, int padding) {
         LinearLayout boxbit  = createLinearLayout(c);
         LinearLayout.LayoutParams llp = linearlayout_params();
-        llp.setMargins(0,0,m,0);
+        llp.setMargins(0,0, 0,0);
         boxbit.setLayoutParams(llp);
         if (StaticVariables.whichMode.equals("Presentation") || StaticVariables.whichMode.equals("Stage")) {
             boxbit.setGravity(Gravity.CENTER_VERTICAL);
@@ -2860,6 +2781,7 @@ public class ProcessSong extends Activity {
             return (float) start + 0.4f;
         }
     }
+
     float getProjectedFontSize(float scale) {
         float tempfontsize = 12.0f * scale;
         int start = (int) tempfontsize;
@@ -3054,9 +2976,10 @@ public class ProcessSong extends Activity {
 
 
     // Stuff I might eventually use...
+    /*
     @SuppressWarnings("unused")
     public static WebView abcnotationtoWebView(Context c, final String s) {
-        /*
+        *//*
         boolean oktouse = false;
         if (!s.equals("")) {
             TableLayout.LayoutParams lp = new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -3089,7 +3012,7 @@ public class ProcessSong extends Activity {
         } else {
             return null;
         }
-        */
+        *//*
         return new WebView(c);
     }
     @SuppressWarnings("unused")
@@ -3101,30 +3024,98 @@ public class ProcessSong extends Activity {
         return lyrichtml.toString();
     }
     @SuppressWarnings("unused")
-    public static String songHTML (String string) {
-        /*return  "" +
+    String songHTML (Context c, StorageAccess storageAccess, Preferences preferences,
+                     int lyricsBackgroundColor, int lyricsTextColor, int lyricsChordColor) {
+        return  "" +
                 "<html>\n" +
                 "<head>\n" +
                 "<style>\n" +
+                getHTMLFontImports(c,preferences,lyricsTextColor,lyricsChordColor) +
                 ".page       {background-color:" + String.format("#%06X", (StaticVariables.white & lyricsBackgroundColor)) + ";}\n" +
-                ".heading    {color:" + String.format("#%06X", (StaticVariables.white & lyricsTextColor)) + "; text-decoration:underline}\n" +
                 ".lyrictable {border-spacing:0; border-collapse: collapse; border:0px;}\n" +
-                SetTypeFace.setupWebViewLyricFont(FullscreenActivity.mylyricsfontnum) +
-                SetTypeFace.setupWebViewChordFont(FullscreenActivity.mychordsfontnum) +
                 "</style>\n" +
                 "</head>\n" +
                 "<body class=\"page\"\">\n" +
                 "<table id=\"mysection\">\n" +
-                "<tr>\n" +
-                "<td>\n" +
-
-                string +
-
-                "</td>\n" +
-                "</tr>\n" +
+                processHTMLLyrics(c,preferences,lyricsTextColor,lyricsChordColor) +
                 "</table>\n" +
                 "</body>\n" +
-                "</html>";*/
-        return "";
+                "</html>";
     }
+    String getHTMLFontImports(Context c, Preferences preferences,
+                              int lyricsTextColor, int lyricsChordColor) {
+        // This prepares the import code for the top of the html file that locates the fonts from Google
+        // If they've been downloaded already, they are cached on the device, so no need to redownload.
+        String base1 = "@import url('https://fonts.googleapis.com/css?family=";
+        String base2 = "&swap=true');\n";
+        String fontLyric = preferences.getMyPreferenceString(c,"fontLyric","Lato");
+        String fontChord = preferences.getMyPreferenceString(c,"fontChord","Lato");
+        String fontPreso = preferences.getMyPreferenceString(c,"fontPreso","Lato");
+        String fontPresoInfo = preferences.getMyPreferenceString(c,"fontPresoInfo","Lato");
+        float scaleChords = preferences.getMyPreferenceFloat(c,"scaleChords",1.0f);
+        float scaleHeadings = preferences.getMyPreferenceFloat(c,"scaleHeadings",0.6f);
+        String importString = base1+fontLyric+base2;
+        importString += base1+fontChord+base2;
+        importString += base1+fontPreso+base2;
+        importString += base1+fontPresoInfo+base2;
+        importString += ".lyric {font-family:"+fontLyric+"; color:" +
+                String.format("#%06X", (0xFFFFFF & lyricsTextColor)) + "; " +
+                "padding: 0px; text-size:12.0pt;}\n";
+        importString += ".chord {font-family:"+fontChord+"; color:" +
+                String.format("#%06X", (0xFFFFFF & lyricsChordColor)) + "; " +
+                "padding: 0px; text-size:"+(12.0f*scaleChords)+"pt;}\n";
+        importString += ".heading {font-family:"+fontLyric+"; color:" +
+                String.format("#%06X", (0xFFFFFF & lyricsTextColor)) + "; " +
+                "padding: 0px; text-size:"+(12.0f*scaleHeadings)+"pt; "+
+                "text-decoration:underline;}\n";
+        return importString;
+    }
+    String processHTMLLyrics(Context c, Preferences preferences,
+                             int lyricsTextColor, int lyricsChordColor) {
+        // This goes through the song a section at a time and prepares the table contents
+        String[] lines = StaticVariables.mLyrics.split("\n");
+        String previousline, previouslineType;
+        String thisline, thislineType;
+        String nextline, nextlineType;
+        String
+
+        StringBuilder htmltext = new StringBuilder();
+        for (int i = 0; i < lines.length; i++) {
+            if (i > 0) {
+                previousline = lines[i - 1];
+            } else {
+                previousline = "";
+            }
+            previouslineType = getLineType(previousline);
+            thisline = lines[i];
+            thislineType = getLineType(thisline);
+            if (i < lines.length - 1) {
+                nextline = lines[i + 1];
+            } else {
+                nextline = "";
+            }
+            nextlineType = getLineType(nextline);
+
+            if (thislineType.equals("heading")) {
+                htmltext.append(beautifyHeadings(thisline,c)[0]);
+            }
+
+        }
+    }
+
+    String getLineType(String line) {
+        if (line==null) {
+            return "null";
+        } else if (line.startsWith("[")) {
+            return "heading";
+        } else if (line.startsWith(".")) {
+            return "chord";
+        } else if (line.startsWith(";") && line.contains(":")) {
+            return "tab";
+        } else if (line.startsWith(";")) {
+            return "comment";
+        } else {
+            return "lyric";
+        }
+    }*/
 }

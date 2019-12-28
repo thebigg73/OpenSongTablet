@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -78,9 +77,11 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     private ProcessSong processSong;
     private SQLite sqLite;
     private SQLiteHelper sqLiteHelper;
+    private NonOpenSongSQLite nonOpenSongSQLite;
+    private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
     private Transpose transpose;
 
-    private boolean keyboardopen = false;
+    //private boolean keyboardopen = false;
 
     @Override
     public void updatePresentationOrder() {
@@ -90,7 +91,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     private void saveEdit(boolean ended) {
 
         // If we are editing as chordpro, convert to OpenSong
-        if (preferences.getMyPreferenceBoolean(getActivity(),"editAsChordPro",false)) {
+        if (preferences.getMyPreferenceBoolean(getActivity(), "editAsChordPro", false)) {
             String textLyrics = edit_song_lyrics.getText().toString();
             edit_song_lyrics.setText(chordProConvert.fromChordProToOpenSong(textLyrics));
         }
@@ -171,19 +172,37 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         String where = getLocation();
         String folder = getFolder();
 
-        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, where, folder, StaticVariables.songfilename);
-        Log.d("PopUpEditSong","where="+where+"\nfolder="+folder+"\nsongfilename="+StaticVariables.songfilename);
-        // Check the uri exists for the outputstream to be valid
-        storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
-                where, folder, StaticVariables.songfilename);
+        if (!FullscreenActivity.isPDF && !FullscreenActivity.isImage) {
+            Uri uri = storageAccess.getUriForItem(getActivity(), preferences, where, folder, StaticVariables.songfilename);
+            Log.d("PopUpEditSong", "where=" + where + "\nfolder=" + folder + "\nsongfilename=" + StaticVariables.songfilename);
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
+                    where, folder, StaticVariables.songfilename);
 
-        OutputStream outputStream = storageAccess.getOutputStream(getActivity(), uri);
-        storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream);
+            OutputStream outputStream = storageAccess.getOutputStream(getActivity(), uri);
+            storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream);
+
+        }
 
         // If this isn't a song (a set item, variation, etc, it won't be in the database, so the following will fail
         // That's ok though!!  We don't want to update search indexes or song menus
         try {
-            if (sqLite!=null && sqLite.getId()>-1) {
+            if ((FullscreenActivity.isPDF || FullscreenActivity.isImage) && nonOpenSongSQLite == null) {
+                nonOpenSongSQLiteHelper.createBasicSong(getActivity(),storageAccess,preferences,
+                        StaticVariables.whichSongFolder,StaticVariables.songfilename);
+                nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,
+                        StaticVariables.whichSongFolder+"/"+StaticVariables.songfilename);
+            }
+
+            if ((FullscreenActivity.isPDF || FullscreenActivity.isImage) && nonOpenSongSQLite!=null && nonOpenSongSQLite.getId()>-1) {
+                Log.d("d", "id=" + nonOpenSongSQLite.getId());
+                nonOpenSongSQLite.setId(nonOpenSongSQLite.getId());
+                nonOpenSongSQLite.setFolder(StaticVariables.whichSongFolder);
+                nonOpenSongSQLite.setFilename(StaticVariables.songfilename);
+                nonOpenSongSQLite.setSongid(StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename);
+                nonOpenSongSQLiteHelper.updateSong(getActivity(), storageAccess, preferences, nonOpenSongSQLite);
+
+            } else if (sqLite!=null && sqLite.getId()>-1) {
                 Log.d("d", "id=" + sqLite.getId());
                 sqLite.setId(sqLite.getId());
                 sqLite.setFolder(StaticVariables.whichSongFolder);
@@ -265,7 +284,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     public static void justSaveSongXML(Context c, Preferences preferences) {
         // Only do this if the title or song file doesn't identify it as the 'welcome to opensongapp' file
         if (!StaticVariables.mTitle.equals("Welcome to OpenSongApp") &&
-                !FullscreenActivity.mynewXML.contains("Welcome to OpenSongApp")) {
+                !FullscreenActivity.mynewXML.contains("Welcome to OpenSongApp") &&
+                !FullscreenActivity.isImage && !FullscreenActivity.isPDF) {
             // Now write the modified song
             StorageAccess storageAccess = new StorageAccess();
 
@@ -534,10 +554,21 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         V = inflater.inflate(R.layout.popup_editsong, container, false);
+        storageAccess = new StorageAccess();
+        textSongConvert = new TextSongConvert();
+        chordProConvert = new ChordProConvert();
+        preferences = new Preferences();
+        processSong = new ProcessSong();
+        transpose = new Transpose();
 
         String songid = StaticVariables.whichSongFolder.replace("'","''") + "/" + StaticVariables.songfilename.replace("'","''");
-        sqLiteHelper = new SQLiteHelper(getActivity());
-        sqLite = sqLiteHelper.getSong(getActivity(),songid);
+        if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
+            nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
+            nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,songid);
+        } else {
+            sqLiteHelper = new SQLiteHelper(getActivity());
+            sqLite = sqLiteHelper.getSong(getActivity(), songid);
+        }
 
         Log.d("PopUpEditSong","whichSongFolder="+StaticVariables.whichSongFolder+"\nsongfilename="+StaticVariables.songfilename);
         TextView title = V.findViewById(R.id.dialogtitle);
@@ -565,15 +596,9 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             }
         });
 
-        textSongConvert = new TextSongConvert();
-        chordProConvert = new ChordProConvert();
-        storageAccess = new StorageAccess();
-        preferences = new Preferences();
-        processSong = new ProcessSong();
-        transpose = new Transpose();
-
         // Initialise the basic views
         availabletags = V.findViewById(R.id.availabletags);
+        hideIfPDF(availabletags);
         edit_song_title = V.findViewById(R.id.edit_song_title);
         edit_song_author = V.findViewById(R.id.edit_song_author);
         edit_song_copyright = V.findViewById(R.id.edit_song_copyright);
@@ -586,6 +611,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         edit_song_timesig = V.findViewById(R.id.edit_song_timesig);
         edit_song_capo = V.findViewById(R.id.edit_song_capo);
         edit_song_capo_print = V.findViewById(R.id.edit_song_capo_print);
+        hideIfPDF(edit_song_capo_print);
         edit_song_presentation = V.findViewById(R.id.edit_song_presentation);
         edit_song_presentation.setFocusable(false);
         edit_song_presentation.setOnClickListener(new View.OnClickListener() {
@@ -600,6 +626,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 dismiss();
             }
         });
+        hideIfPDF(V.findViewById(R.id.myPresentation));
+        hideIfPDF(edit_song_presentation);
         edit_song_notes = V.findViewById(R.id.edit_song_notes);
         addBrackets = V.findViewById(R.id.addBrackets);
         addBrackets.hide();
@@ -677,7 +705,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     addBrackets.show();
-                    keyboardopen = false;
+                    //keyboardopen = false;
                     forceShowKeyboard();
                 } else {
                     addBrackets.hide();
@@ -691,7 +719,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             @Override
             public void onClick(View v) {
                 // Show the keyboard
-                keyboardopen = false;
+                //keyboardopen = false;
                 forceShowKeyboard();
                 transposeDown_RelativeLayout.setVisibility(View.GONE);
                 transposeUp_RelativeLayout.setVisibility(View.GONE);
@@ -723,6 +751,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 FullscreenActivity.whattodo = "abcnotation_edit";
                 DialogFragment newFragment = PopUpABCNotationFragment.newInstance();
                 newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
+                forceHideKeyboard(edit_song_lyrics);
                 dismiss();
             }
         });
@@ -750,6 +779,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         edit_song_CCLI = V.findViewById(R.id.edit_song_ccli);
         edit_song_aka = V.findViewById(R.id.edit_song_aka);
         edit_song_key_line = V.findViewById(R.id.edit_song_keyline);
+        hideIfPDF(V.findViewById(R.id.myKeyLine));
+        hideIfPDF(edit_song_key_line);
         edit_song_hymn = V.findViewById(R.id.edit_song_hymn);
         edit_song_user1 = V.findViewById(R.id.edit_song_user1);
         edit_song_user2 = V.findViewById(R.id.edit_song_user2);
@@ -757,9 +788,17 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         edit_song_pad_file = V.findViewById(R.id.edit_pad_file);
         edit_song_midi = V.findViewById(R.id.edit_song_midi);
         edit_song_midi_index = V.findViewById(R.id.edit_song_midi_index);
+        hideIfPDF(V.findViewById(R.id.myMidiIndex)); // Not using this
+        hideIfPDF(edit_song_midi_index);
         edit_song_restrictions = V.findViewById(R.id.edit_song_restrictions);
+        hideIfPDF(V.findViewById(R.id.myRestrictions));
+        hideIfPDF(edit_song_restrictions);
         edit_song_books = V.findViewById(R.id.edit_song_books);
+        hideIfPDF(V.findViewById(R.id.myBooks));
+        hideIfPDF(edit_song_books);
         edit_song_pitch = V.findViewById(R.id.edit_song_pitch);
+        hideIfPDF(V.findViewById(R.id.myPitch));
+        hideIfPDF(edit_song_pitch);
         customTheme = V.findViewById(R.id.customTheme);
         advancedSettings = V.findViewById(R.id.advanced_settings);
 
@@ -1009,24 +1048,51 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         return V;
     }
 
+    private void hideIfPDF(View v) {
+        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+            v.setVisibility(View.GONE);
+        }
+    }
     private void forceShowKeyboard() {
-        if (!keyboardopen && edit_song_lyrics.hasFocus()) {
+        /*if (!keyboardopen && edit_song_lyrics.hasFocus()) {
             try {
                 keyboardopen=true;
                 Log.d("d", "Force show keyboard");
-                InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm!=null) {
-                    imm.showSoftInput(edit_song_lyrics,0);
-                    //imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                }
+                edit_song_lyrics.requestFocus();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (getActivity()!=null) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (getActivity() != null) {
+                                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                        if (imm != null) {
+                                            imm.showSoftInput(edit_song_lyrics, 0);
+                                            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+                                            //imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }, 200);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     private void forceHideKeyboard(View v) {
-            try {
+            /*try {
+                if (v==null && getActivity()!=null) {
+                    v = new TextView(getActivity());
+                } else if (v==null) {
+                    v = new TextView(getActivity());
+                }
                 Log.d("d", "Force hide keyboard");
                 InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm!=null) {
@@ -1035,7 +1101,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 keyboardopen = false;
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }*/
     }
 
     private static String getLocation() {
@@ -1052,5 +1118,10 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         } else {
             return StaticVariables.whichSongFolder;
         }
+    }
+
+    @Override
+    public void onDismiss(final DialogInterface dialog) {
+        forceHideKeyboard(null);
     }
 }

@@ -86,7 +86,6 @@ public class LoadXML extends Activity {
             utf = storageAccess.getUTFEncoding(c, uri);
         }
 
-        Log.d("LoadXML","uri="+uri);
         if (StaticVariables.songfilename.equals("Welcome to OpenSongApp")) {
             setWelcome(c);
         }
@@ -286,6 +285,21 @@ public class LoadXML extends Activity {
             }
             // Initialise the variables
             initialiseSongTags(c);
+
+            // Try to load in any details from the NonOpenSongDatabase
+            try {
+                NonOpenSongSQLite nonOpenSongSQLite;
+                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(c);
+                String songid = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
+                nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(c, storageAccess, preferences, songid);
+                if (nonOpenSongSQLite == null) {
+                    nonOpenSongSQLiteHelper.createBasicSong(c, storageAccess, preferences, StaticVariables.whichSongFolder, StaticVariables.songfilename);
+                    nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(c, storageAccess, preferences, songid);
+                }
+                updateNonOpenSongDetails(nonOpenSongSQLite);
+            } catch (Exception | OutOfMemoryError e) {
+                e.printStackTrace();
+            }
         }
 
         String loc = "";
@@ -304,6 +318,53 @@ public class LoadXML extends Activity {
         }
 
         StaticVariables.thisSongScale = preferences.getMyPreferenceString(c,"songAutoScale","W");
+    }
+
+    private static void updateNonOpenSongDetails(NonOpenSongSQLite nonOpenSongSQLite) {
+        StaticVariables.mAka = nonOpenSongSQLite.getAka();
+        StaticVariables.mAltTheme = nonOpenSongSQLite.getAlttheme();
+        StaticVariables.mAuthor = nonOpenSongSQLite.getAuthor();
+        StaticVariables.mPreDelay = nonOpenSongSQLite.getAutoscrolldelay();
+        StaticVariables.mDuration = nonOpenSongSQLite.getAutoscrollLength();
+        StaticVariables.mCCLI = nonOpenSongSQLite.getCcli();
+        StaticVariables.mCopyright = nonOpenSongSQLite.getCopyright();
+        StaticVariables.mHymnNumber = nonOpenSongSQLite.getHymn_num();
+        StaticVariables.mKey = nonOpenSongSQLite.getKey();
+        StaticVariables.mLyrics = nonOpenSongSQLite.getLyrics();
+        StaticVariables.mTempo = nonOpenSongSQLite.getMetronomebpm();
+        StaticVariables.mTimeSig = nonOpenSongSQLite.getMetronomeSig();
+        StaticVariables.mTheme = nonOpenSongSQLite.getTheme();
+        StaticVariables.mTitle = nonOpenSongSQLite.getTitle();
+        StaticVariables.mUser1 = nonOpenSongSQLite.getUser1();
+        StaticVariables.mUser2 = nonOpenSongSQLite.getUser2();
+        StaticVariables.mUser3 = nonOpenSongSQLite.getUser3();
+        StaticVariables.mPadFile = nonOpenSongSQLite.getPadfile();
+        StaticVariables.mMidi = nonOpenSongSQLite.getMidi();
+        StaticVariables.mMidiIndex = nonOpenSongSQLite.getMidiindex();
+        StaticVariables.mCapo = nonOpenSongSQLite.getCapo();
+        StaticVariables.mNotes = nonOpenSongSQLite.getNotes();
+        StaticVariables.mNotation = nonOpenSongSQLite.getAbc();
+        StaticVariables.mLinkYouTube = nonOpenSongSQLite.getLinkyoutube();
+        StaticVariables.mLinkWeb = nonOpenSongSQLite.getLinkweb();
+        StaticVariables.mLinkAudio = nonOpenSongSQLite.getLinkaudio();
+        StaticVariables.mLinkOther = nonOpenSongSQLite.getLinkother();
+        StaticVariables.mPresentation = nonOpenSongSQLite.getPresentationorder();
+
+        if (!StaticVariables.mDuration.isEmpty()) {
+            try {
+                StaticVariables.autoScrollDuration = Integer.parseInt(StaticVariables.mDuration.replaceAll("[\\D]",""));
+            } catch (Exception e) {
+                StaticVariables.autoScrollDuration = -1;
+            }
+        }
+
+        if (!StaticVariables.mPreDelay.isEmpty()) {
+            try {
+                StaticVariables.autoScrollDelay = Integer.parseInt(StaticVariables.mPreDelay.replaceAll("[\\D]",""));
+            } catch (Exception e) {
+                StaticVariables.autoScrollDelay = -1;
+            }
+        }
     }
 
     private static void setNotFound(Context c) {

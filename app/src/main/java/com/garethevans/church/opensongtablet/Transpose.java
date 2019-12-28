@@ -75,7 +75,7 @@ class Transpose {
     private boolean usesflats;
     private boolean capousesflats;
 
-    void doTranspose(Context c, Preferences preferences, boolean forcesharps, boolean forceflats, boolean convertchords) {
+    void doTranspose(Context c, StorageAccess storageAccess, Preferences preferences, boolean forcesharps, boolean forceflats, boolean convertchords) {
 
         try {
             // Go through each line and change each chord to $..$
@@ -186,7 +186,15 @@ class Transpose {
             StaticVariables.mLyrics = StaticVariables.transposedLyrics;
 
             PopUpEditSongFragment.prepareSongXML();
-            PopUpEditSongFragment.justSaveSongXML(c, preferences);
+
+            if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(c);
+                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(c,storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+                nonOpenSongSQLiteHelper.updateSong(c,storageAccess,preferences,nonOpenSongSQLite);
+
+            } else {
+                PopUpEditSongFragment.justSaveSongXML(c, preferences);
+            }
 
             StaticVariables.transposedLyrics = null;
             StaticVariables.transposedLyrics = "";
@@ -439,7 +447,7 @@ class Transpose {
         return line;
     }
 
-    void convertChords(Context c, Preferences preferences) {
+    void convertChords(Context c, StorageAccess storageAccess, Preferences preferences) {
         int convertTo = preferences.getMyPreferenceInt(c,"chordFormat",1);
         checkChordFormat(c,preferences);
 
@@ -447,26 +455,26 @@ class Transpose {
         if (convertTo>=5) {
             // We want to convert to a numeral.  If it is normal format, just do it, otherwise, convert to a normal format
             if (StaticVariables.detectedChordFormat >= 5) {
-                convertFromNumerals(c, preferences);
+                convertFromNumerals(c, storageAccess, preferences);
             }
             // Now convert to the correct value
-            convertToNumerals(c, preferences);
+            convertToNumerals(c, storageAccess, preferences);
         } else {
             if (StaticVariables.detectedChordFormat >= 5) {
                 // Convert to a normal format to start with
-                convertFromNumerals(c, preferences);
+                convertFromNumerals(c, storageAccess, preferences);
             }
             StaticVariables.transposeDirection = "0";
             checkChordFormat(c, preferences);
             try {
-                doTranspose(c, preferences, false, false, true);
+                doTranspose(c, storageAccess, preferences, false, false, true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void convertToNumerals(Context c, Preferences preferences) {
+    private void convertToNumerals(Context c, StorageAccess storageAccess, Preferences preferences) {
         boolean numeral = false;
         if (preferences.getMyPreferenceInt(c,"chordFormat",1)==6) {
             numeral = true;
@@ -500,7 +508,14 @@ class Transpose {
         StaticVariables.mLyrics = StaticVariables.transposedLyrics;
 
         PopUpEditSongFragment.prepareSongXML();
-        PopUpEditSongFragment.justSaveSongXML(c, preferences);
+
+        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+            NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(c);
+            NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(c,storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+            nonOpenSongSQLiteHelper.updateSong(c,storageAccess,preferences,nonOpenSongSQLite);
+        } else {
+            PopUpEditSongFragment.justSaveSongXML(c, preferences);
+        }
 
         StaticVariables.transposedLyrics = null;
         StaticVariables.transposedLyrics = "";
@@ -518,7 +533,7 @@ class Transpose {
         FullscreenActivity.myXML = "";
     }
 
-    private void convertFromNumerals(Context c, Preferences preferences) {
+    private void convertFromNumerals(Context c, StorageAccess storageAccess, Preferences preferences) {
         // This goes through the song and converts from Nashville numbering or numerals to standard chord format first
         if (StaticVariables.detectedChordFormat==5 || StaticVariables.detectedChordFormat==6) {
             // We currently have either a nashville system (numbers or numerals)
@@ -554,7 +569,14 @@ class Transpose {
             StaticVariables.mLyrics = StaticVariables.transposedLyrics;
 
             PopUpEditSongFragment.prepareSongXML();
-            PopUpEditSongFragment.justSaveSongXML(c, preferences);
+
+            if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(c);
+                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(c,storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+                nonOpenSongSQLiteHelper.updateSong(c,storageAccess,preferences,nonOpenSongSQLite);
+            } else {
+                PopUpEditSongFragment.justSaveSongXML(c, preferences);
+            }
 
             StaticVariables.transposedLyrics = null;
             StaticVariables.transposedLyrics = "";
@@ -574,7 +596,7 @@ class Transpose {
             // If the new chordformat desired is also a numeral or number system, convert it to that
             if (preferences.getMyPreferenceInt(c,"chordFormat",1)==5 ||
                     preferences.getMyPreferenceInt(c, "chordFormat",1)==6) {
-                convertToNumerals(c, preferences);
+                convertToNumerals(c, storageAccess, preferences);
             }
         } else {
             StaticVariables.myToastMessage = "No Nashville/Numeral chord format detected.";

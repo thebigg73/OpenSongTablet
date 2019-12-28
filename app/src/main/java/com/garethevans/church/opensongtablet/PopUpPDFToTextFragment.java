@@ -45,6 +45,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
     public interface MyInterface {
         void refreshAll();
         void allowPDFEditViaExternal();
+        void openFragment();
     }
 
     private MyInterface mListener;
@@ -99,6 +100,21 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         pdftotext_found.setTypeface(Typeface.MONOSPACE);
         Button externalPDF = v.findViewById(R.id.externalPDF);
         Button doextractbutton = v.findViewById(R.id.doextractbutton);
+        Button justeditbutton = v.findViewById(R.id.justeditbutton);
+        justeditbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FullscreenActivity.whattodo = "editsongpdf";
+                if (mListener!=null) {
+                    try {
+                        mListener.openFragment();
+                        dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
         doextractbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -184,14 +200,29 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("<ccli></ccli>",
                 "<ccli>"+foundCCLI+"</ccli>");
 
+        Log.d("d","mynewXML="+FullscreenActivity.mynewXML);
+
         // Change the file name
         FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace(".pdf","_from_pdf");
         FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace(".PDF","_from_pdf");
         StaticVariables.songfilename = StaticVariables.songfilename.replace(".pdf","_from_pdf");
         StaticVariables.songfilename = StaticVariables.songfilename.replace(".PDF","_from_pdf");
+
+        FullscreenActivity.isPDF = false;
+        FullscreenActivity.isImage = false;
+
         try {
             if (mListener!=null) {
+
                 PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+                /*if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                    NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
+                    nonOpenSongSQLiteHelper.createBasicSong(getActivity(),storageAccess,preferences,StaticVariables.whichSongFolder,StaticVariables.songfilename);
+                    NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+                    nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
+                } else {
+
+                }*/
                 StaticVariables.myToastMessage = "";
                 mListener.refreshAll();
                 dismiss();
@@ -261,7 +292,6 @@ public class PopUpPDFToTextFragment extends DialogFragment {
                 s = s.replace("Song","");
                 s = s.replace("#","");
                 foundCCLI = s.trim();
-                Log.d("d","foundCCLI="+foundCCLI);
                 // Now remove this line
                 s = "";
 
@@ -269,13 +299,11 @@ public class PopUpPDFToTextFragment extends DialogFragment {
                 // If this is the 2nd line and the 1st line isn't blank, the first line will be the title
                 if (lines.length>1 && lines[1].equals(s) && !lines[0].equals("")) {
                     foundTitle = lines[0].trim();
-                    Log.d("d","foundTitle="+foundTitle);
                 }
                 // Likely coming from a song select pdf file line - add to the key
                 s = s.replace("Key","");
                 s = s.replace("-","");
                 foundKey = s.trim();
-                Log.d("d","foundKey="+foundKey);
                 // Now remove this line
                 s = "";
 
@@ -289,7 +317,6 @@ public class PopUpPDFToTextFragment extends DialogFragment {
                     // Remove this from the string
                     s = s.replace(foundAuthor,"");
                     foundAuthor = foundAuthor.trim();
-                    Log.d("d","foundAuthor="+foundAuthor);
                     String[] bits = s.split("\\|");
                     if (bits.length>0) {
                         s = s.replace(bits[0],"");
@@ -297,14 +324,12 @@ public class PopUpPDFToTextFragment extends DialogFragment {
                         bits[0] = bits[0].replace("Tempo","");
                         bits[0] = bits[0].replace("-","");
                         foundTempo = bits[0].trim();
-                        Log.d("d","foundTempo="+foundTempo);
                     }
                     if (bits.length>1) {
                         s = s.replace(bits[1],"");
                         bits[1] = bits[1].replace("Time","");
                         bits[1] = bits[1].replace("-","");
                         foundTimeSig = bits[1].trim();
-                        Log.d("d","foundTimeSig="+foundTimeSig);
                     }
                     // We can remove this line now if it is empty, if not keep the remainder as a comment
                     s = s.trim();
@@ -330,9 +355,9 @@ public class PopUpPDFToTextFragment extends DialogFragment {
             } else {
                 s = " " + s;
             }
-            Log.d("d", "s=" + s);
             fixedtext.append(s).append("\n");
         }
         return fixedtext.toString().trim();
     }
+
 }

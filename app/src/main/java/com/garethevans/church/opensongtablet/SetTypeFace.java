@@ -11,15 +11,19 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 class SetTypeFace {
+
+
 /*
-
     // Not using this, but keep kust on case
-    static String setupWebViewLyricFont(int fontnum) {
+    static String setupWebViewLyricFont(Context c, StorageAccess storageAccess, Preferences preferences, int lyricsTextColor,) {
 
-        String fontcode = "";
+        String fontcode = ".lyric      {font-family:"+preferences.getMyPreferenceString(c,"fontLyric","Lato")+"; color:" +
+                String.format("#%06X", (0xFFFFFF & lyricsTextColor)) + "; padding: 0px; text-size:12.0pt;}\n";
 
-        */
-/*switch (fontnum) {
+
+        fontcode += ".comment   {font-family:"+preferences.getMyPreferenceString(c,"fontLyric","Lato")+"; color:" +
+                String.format("#%06X", (0xFFFFFF & lyricsTextColor)) + "; padding: 0px; text-size:12.0pt;}\n";
+        switch (fontnum) {
             case 1:
                 // Monospace
                 fontcode += ".lyric      {font-family: Monospace; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
@@ -104,18 +108,19 @@ class SetTypeFace {
                 fontcode += ".lyric      {font-family: 'latolight'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
                 fontcode += ".comment    {font-family: 'latolightitalic'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
                 break;
-        }*//*
+        }
 
 
         return fontcode;
     }
+*/
 
     // Not used, but keeping just in case!
+/*
     static String setupWebViewChordFont(int fontnum) {
 
         String fontcode = "";
-        */
-/*
+
         boolean already = false;
         if (FullscreenActivity.mylyricsfontnum==FullscreenActivity.mychordsfontnum) {
             already = true;
@@ -205,10 +210,10 @@ class SetTypeFace {
                 fontcode += ".chord      {font-family: 'latolight'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
                 break;
         }
-*//*
 
         return fontcode;
     }
+
 */
 
     void setUpAppFonts(Context c, Preferences preferences, Handler lyrichandler, Handler chordhandler, Handler stickyHandler,

@@ -1578,4 +1578,10 @@ class StorageAccess {
         }
     }
 
+    void updateNonOpenSongDB(Context c, StorageAccess storageAccess, Preferences preferences, String what, String with) {
+        NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(c);
+        NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(c,storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+        nonOpenSongSQLiteHelper.updateSong(c,storageAccess,preferences,nonOpenSongSQLite);
+    }
+
 }

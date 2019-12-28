@@ -72,6 +72,9 @@ class AutoScrollFunctions {
         }
 
         if (StaticVariables.autoScrollDuration > -1 && StaticVariables.autoScrollDelay > -1) {
+
+            getMultiPagePDFValues();
+
             // If it duration is less than the predelay, stop!
             if (StaticVariables.autoScrollDuration < StaticVariables.autoScrollDelay) {
                 StaticVariables.isautoscrolling = false;
@@ -80,6 +83,8 @@ class AutoScrollFunctions {
                 // Remove the autoScrollDelay
                 StaticVariables.autoScrollDuration = StaticVariables.autoScrollDuration - StaticVariables.autoScrollDelay;
             }
+
+
 
             // Ok figure out the size of amount of scrolling needed
             int height;
@@ -103,6 +108,17 @@ class AutoScrollFunctions {
         }
     }
 
+    static void getMultiPagePDFValues() {
+        // If we have a multiple page pdf, then each page duration is a fraction of the total
+        if (FullscreenActivity.isPDF &&FullscreenActivity.pdfPageCount>0) {
+            try {
+                StaticVariables.autoScrollDuration = (int) ((float) Integer.parseInt(StaticVariables.mDuration.replaceAll("[\\D]", "")) / (float) FullscreenActivity.pdfPageCount);
+            } catch (Exception e) {
+                e.printStackTrace();
+                StaticVariables.autoScrollDuration = -1;
+            }
+        }
+    }
     static void getAudioLength(Context c, Preferences preferences) {
         MediaPlayer mediafile = new MediaPlayer();
 

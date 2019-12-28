@@ -5,7 +5,9 @@
     android:orientation="vertical"
     android:layout_margin="2dp"
     android:background="@drawable/presenter_box_blue"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <TextView
         android:id="@+id/preso_actions_title"

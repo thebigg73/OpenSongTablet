@@ -65,6 +65,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
     private int metronomecolor;
 
     private Preferences preferences;
+    private StorageAccess storageAccess;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         }
 
         preferences = new Preferences();
+        storageAccess = new StorageAccess();
 
         switch (StaticVariables.mDisplayTheme) {
             case "dark":
@@ -251,7 +253,14 @@ public class PopUpMetronomeFragment extends DialogFragment {
     private void doSave() {
         PopUpEditSongFragment.prepareSongXML();
         try {
-            PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+            if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
+                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+                nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
+            } else {
+                PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+            }
+
             StaticVariables.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
                     getResources().getString(R.string.ok);
         } catch (Exception e) {

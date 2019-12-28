@@ -495,7 +495,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         // Try to find the title
         // By default use the title of the page as a default
 
-        String title_resultposted = null;
+        String title_resultposted;
         String filenametosave = "WT Song";
         authorname = "";
         String copyright = "";
@@ -678,30 +678,63 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
         return s;
     }
-    private String getTitleUG(String s) {
+    private String getPageTitleUG(String s) {
+        int startpos = s.indexOf("<title");
+        startpos = s.indexOf(">",startpos);
+        int endpos = s.indexOf("</title",startpos);
+        if (startpos>-1 && endpos>startpos) {
+            s = s.substring(startpos+1,endpos);
+            s = s.replace("(Chords)","");
+            s = stripExtraUG(s);
+            return s;
+        } else {
+            return "";
+        }
+    }
+    private String getShortenedPageTitleUG(String s) {
+        if (s.contains("By")) {
+            s = s.substring(0,s.indexOf("By"));
+            s = s.trim();
+        }
+        return s;
+    }
+    private String getPageAuthorUG(String s) {
+        if (s.contains("By")) {
+            s = s.substring(s.indexOf("By")+2);
+            s = s.trim();
+            return s;
+        } else {
+            return "";
+        }
+    }
+    private String getTitleUG(String s,String pagetitle) {
         int startpos = s.indexOf("Song:");
         int endpos = s.indexOf("NEW_LINE_OS",startpos);
         if (startpos > -1 && endpos > -1 && startpos < endpos) {
             s = s.substring(startpos + 5, endpos);
             s = stripExtraUG(s);
             return s;
-        } else {
+        } else if (pagetitle==null || pagetitle.equals("")){
             try {
                 return FullscreenActivity.phrasetosearchfor;
             } catch (Exception e) {
                 return "UG song";
             }
+        } else {
+            return pagetitle;
         }
     }
-    private String getAuthorUG(String s) {
+    private String getAuthorUG(String s,String pageauthor) {
         int startpos = s.indexOf("Artist:");
         int endpos = s.indexOf("NEW_LINE_OS",startpos);
         if (startpos > -1 && endpos > -1 && endpos > startpos) {
             s = s.substring(startpos+7, endpos);
             s = stripExtraUG(s);
             return s;
-        } else {
+        } else if (pageauthor==null) {
             return "";
+        } else {
+            return pageauthor;
         }
     }
     private String getLyricsUG(String s) {
@@ -709,6 +742,11 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         String[] lines = s.split("NEW_LINE_OS");
         StringBuilder stringBuilder = new StringBuilder();
         for (String line : lines) {
+            if (line.contains("ultimate-guitar.com") && line.contains("{") &&
+                    (line.contains(":true") || line.contains(":false")) && line.contains("content:")) {
+                // No artist/author tags, so strip out div code line
+                line = line.substring(line.indexOf("content:")+8);
+            }
             line = line.replace("[tab]", "");
             line = line.replace("[/tab]", "");
             if (line.contains("[ch]")) {
@@ -721,15 +759,26 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     line = " " + line;
                 }
             }
+            if (line.contains("tab_access_type:")) {
+                int upto = line.indexOf("tab_access_type:");
+                if (upto>0) {
+                    line = line.substring(0,upto);
+                    if (line.endsWith(",") && line.length()>1) {
+                        line = line.substring(0,line.length()-1);
+                    }
+                } else {
+                    line = "";
+                }
+            }
             stringBuilder.append(line).append("\n");
         }
 
         String string = stringBuilder.toString();
         string = PopUpEditSongFragment.parseToHTMLEntities(string);
 
+
         return string;
     }
-
     private String stripExtraUG(String s) {
         s = s.replace(" @ Ultimate-Guitar.Com", "");
         s = s.replace("&amp;","&");
@@ -742,6 +791,10 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     }
     private void fixUGContent(String resultposted) {
         // From ultimate guitar
+
+        String pagetitle = getPageTitleUG(resultposted);
+        String pageauthor = getPageAuthorUG(pagetitle);
+        pagetitle = getShortenedPageTitleUG(pagetitle);
 
         String[] tl = resultposted.split("\n");
         StringBuilder sb = new StringBuilder();
@@ -770,11 +823,11 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         resultposted = getContentUG(resultposted);
 
         // Get the title and filename
-        title_resultposted = getTitleUG(resultposted);
+        title_resultposted = getTitleUG(resultposted,pagetitle);
         filenametosave = title_resultposted;
 
         // Get the author
-        authorname = getAuthorUG(resultposted);
+        authorname = getAuthorUG(resultposted,pageauthor);
 
         // Get the lyrics and chords
         newtext = getLyricsUG(resultposted);

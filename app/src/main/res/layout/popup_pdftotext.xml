@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/myTitle"
-        android:layout_above="@+id/externalPDF">
+        android:layout_above="@+id/justeditbutton">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -71,7 +71,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="8dp"
-        android:text="@string/createanewsong"
+        android:text="@string/pdftotext_extract"
         android:background="@drawable/green_button"/>
+
+    <!--android:text="@string/createanewsong"-->
+
+    <Button
+        android:id="@+id/justeditbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/doextractbutton"
+        android:layout_margin="8dp"
+        android:text="@string/edit"
+        android:background="@drawable/blue_button"/>
 
 </RelativeLayout>

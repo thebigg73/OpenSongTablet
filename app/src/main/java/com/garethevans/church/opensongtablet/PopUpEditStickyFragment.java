@@ -36,6 +36,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
     private TextView stickyNotesWidth_TextView, stickyNotesOpacity_TextView;
     private EditText editStickyText;
     private Preferences preferences;
+    private StorageAccess storageAccess;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -88,6 +89,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
         });
 
         preferences = new Preferences();
+        storageAccess = new StorageAccess();
 
         // Initialise the views
         editStickyText = V.findViewById(R.id.editStickyText);
@@ -163,7 +165,15 @@ public class PopUpEditStickyFragment extends DialogFragment {
         StaticVariables.mNotes = editStickyText.getText().toString();
         // Save the file
         PopUpEditSongFragment.prepareSongXML();
-        PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+
+        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+            NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
+            NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+            nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
+        } else {
+            PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+        }
+
         if (mListener!=null) {
             mListener.loadSong();
         }

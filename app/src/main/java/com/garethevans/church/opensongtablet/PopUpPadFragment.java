@@ -71,6 +71,7 @@ public class PopUpPadFragment extends DialogFragment {
     private String text;
     private boolean validpad;
     private Preferences preferences;
+    private StorageAccess storageAccess;
 
     private AsyncTask<Object,Void,String> set_pad;
 
@@ -105,7 +106,7 @@ public class PopUpPadFragment extends DialogFragment {
         }
 
         preferences = new Preferences();
-        StorageAccess storageAccess = new StorageAccess();
+        storageAccess = new StorageAccess();
         ProcessSong processSong = new ProcessSong();
 
         View V = inflater.inflate(R.layout.popup_page_pad, container, false);
@@ -183,7 +184,14 @@ public class PopUpPadFragment extends DialogFragment {
 
     private void doSave() {
         PopUpEditSongFragment.prepareSongXML();
-        PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+
+        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+            NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
+            NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+            nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
+        } else {
+            PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+        }
         try {
             mListener.loadSong();
             dismiss();
@@ -206,7 +214,6 @@ public class PopUpPadFragment extends DialogFragment {
 
     private void startenabled() {
         validpad = false;
-        StorageAccess storageAccess = new StorageAccess();
         Uri uri = storageAccess.fixLocalisedUri(getActivity(), preferences, StaticVariables.mLinkAudio);
         boolean isvalid = storageAccess.uriExists(getActivity(), uri);
 
@@ -373,7 +380,13 @@ public class PopUpPadFragment extends DialogFragment {
                 StaticVariables.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
             }
             PopUpEditSongFragment.prepareSongXML();
-            PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+            if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
+                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+                nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
+            } else {
+                PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+            }
         }
 
         @Override

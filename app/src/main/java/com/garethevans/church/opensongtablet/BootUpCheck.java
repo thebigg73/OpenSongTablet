@@ -734,9 +734,11 @@ public class BootUpCheck extends AppCompatActivity {
                 // Write a crude text file (line separated) with the song Ids (folder/file)
                 storageAccess.writeSongIDFile(BootUpCheck.this, preferences, songIds);
 
-                // Try to create the basic database
+                // Try to create the basic databases
                 SQLiteHelper sqLiteHelper = new SQLiteHelper(BootUpCheck.this);
                 sqLiteHelper.resetDatabase(BootUpCheck.this);
+                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(BootUpCheck.this);
+                nonOpenSongSQLiteHelper.initialise(BootUpCheck.this,storageAccess,preferences);
 
                 // Add entries to the database that have songid, folder and filename fields
                 // This is the minimum that we need for the song menu.

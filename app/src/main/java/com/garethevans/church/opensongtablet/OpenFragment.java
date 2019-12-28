@@ -114,23 +114,18 @@ class OpenFragment {
                 break;
 
             case "editsong":
-                if (justSong(c)) {
-                    newFragment = PopUpEditSongFragment.newInstance();
-                }
+            case "editsongpdf":
+                newFragment = PopUpEditSongFragment.newInstance();
                 break;
 
             case "editnotes":
-                if (justSong(c)) {
-                    newFragment = PopUpEditStickyFragment.newInstance();
-                }
+                newFragment = PopUpEditStickyFragment.newInstance();
                 break;
 
             case "abcnotation":
             case "abcnotation_edit":
             case "abcnotation_editsong":
-                if (justSong(c)) {
-                    newFragment = PopUpABCNotationFragment.newInstance();
-                }
+                newFragment = PopUpABCNotationFragment.newInstance();
                 break;
 
             case "ccli_church":
@@ -150,9 +145,7 @@ class OpenFragment {
                 break;
 
             case "transpose":
-                if (justSong(c)) {
-                    newFragment = PopUpTransposeFragment.newInstance();
-                }
+                newFragment = PopUpTransposeFragment.newInstance();
                 break;
 
             case "chordformat":
@@ -293,33 +286,23 @@ class OpenFragment {
                 break;
 
             case "page_metronome":
-                if (justSong(c)) {
-                    newFragment = PopUpMetronomeFragment.newInstance();
-                }
+                newFragment = PopUpMetronomeFragment.newInstance();
                 break;
 
             case "page_chords":
-                if (justSong(c)) {
-                    newFragment = PopUpChordsFragment.newInstance();
-                }
+                newFragment = PopUpChordsFragment.newInstance();
                 break;
 
             case "customchords":
-                if (justSong(c)) {
-                    newFragment = PopUpCustomChordsFragment.newInstance();
-                }
+                newFragment = PopUpCustomChordsFragment.newInstance();
                 break;
 
             case "page_links":
-                if (justSong(c)) {
-                    newFragment = PopUpLinks.newInstance();
-                }
+                newFragment = PopUpLinks.newInstance();
                 break;
 
             case "page_sticky":
-                if (justSong(c)) {
-                    newFragment = PopUpStickyFragment.newInstance();
-                }
+                newFragment = PopUpStickyFragment.newInstance();
                 break;
 
             case "drawnotes":
@@ -376,15 +359,4 @@ class OpenFragment {
         }
         return message;
     }
-
-    private static boolean justSong(Context c) {
-        boolean isallowed = true;
-        if (FullscreenActivity.isImage || FullscreenActivity.isPDF || !FullscreenActivity.isSong) {
-            StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
-            ShowToast.showToast(c);
-            isallowed = false;
-        }
-        return isallowed;
-    }
-
 }

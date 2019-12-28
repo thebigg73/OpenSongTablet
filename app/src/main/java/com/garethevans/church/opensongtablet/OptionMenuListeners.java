@@ -350,7 +350,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                 break;
 
             case "CHORDS":
-                chordOptionListener(v, c, preferences);
+                chordOptionListener(v, c, storageAccess, preferences);
                 break;
 
             case "DISPLAY":
@@ -1202,7 +1202,7 @@ public class OptionMenuListeners extends AppCompatActivity {
 
     }
 
-    private static void chordOptionListener(View v, final Context c, final Preferences preferences) {
+    private static void chordOptionListener(View v, final Context c, final StorageAccess storageAccess, final Preferences preferences) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -1328,7 +1328,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                         StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(c,"chordFormat",1);
                     }
                     try {
-                        transpose.doTranspose(c, preferences, true, false, false);
+                        transpose.doTranspose(c,storageAccess, preferences, true, false, false);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1359,7 +1359,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                         StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(c,"chordFormat",1);
                     }
                     try {
-                        transpose.doTranspose(c, preferences, false, true, false);
+                        transpose.doTranspose(c, storageAccess, preferences, false, true, false);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1473,7 +1473,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                     StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
                     ShowToast.showToast(c);
                 } else {
-                    transpose.convertChords(c,preferences);
+                    transpose.convertChords(c,storageAccess,preferences);
                 }
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");

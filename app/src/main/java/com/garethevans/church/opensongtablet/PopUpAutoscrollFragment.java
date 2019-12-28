@@ -55,6 +55,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
     private EditText popupautoscroll_duration;
     private FloatingActionButton uselinkaudiolength_ImageButton;
     private Preferences preferences;
+    private StorageAccess storageAccess;
     private ProcessSong processSong;
 
     private boolean mStopHandler = false;
@@ -100,10 +101,15 @@ public class PopUpAutoscrollFragment extends DialogFragment {
 
         preferences = new Preferences();
         processSong = new ProcessSong();
+        storageAccess = new StorageAccess();
 
         // Initialise the views
         popupautoscroll_startstopbutton = V.findViewById(R.id.popupautoscroll_startstopbutton);
         Button popupautoscroll_learnbutton = V.findViewById(R.id.popupautoscroll_learnbutton);
+        // Don't allow the learn feature for multipage pdfs - too complex for noe
+        if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCount>1) {
+            popupautoscroll_learnbutton.setVisibility(View.GONE);
+        }
         popupautoscroll_delay = V.findViewById(R.id.popupautoscroll_delay);
         popupautoscroll_delay_text = V.findViewById(R.id.popupautoscroll_delay_text);
         popupautoscroll_duration = V.findViewById(R.id.popupautoscroll_duration);
@@ -231,7 +237,13 @@ public class PopUpAutoscrollFragment extends DialogFragment {
                 StaticVariables.autoScrollDuration = -1;
             }
             PopUpEditSongFragment.prepareSongXML();
-            PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+            if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
+                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+                nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
+            } else {
+                PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+            }
             StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.save) + " - " +
                     getActivity().getResources().getString(R.string.ok);
             ShowToast.showToast(getActivity());

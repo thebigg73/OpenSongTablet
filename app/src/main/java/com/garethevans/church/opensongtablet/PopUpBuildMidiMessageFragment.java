@@ -40,6 +40,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
     private int byte3 = 0;
 
     private Preferences preferences;
+    private StorageAccess storageAccess;
 
     static PopUpBuildMidiMessageFragment newInstance() {
         PopUpBuildMidiMessageFragment frag;
@@ -67,6 +68,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
 
         preferences = new Preferences();
+        storageAccess = new StorageAccess();
 
         View V = inflater.inflate(R.layout.popup_buildmidicommand, container, false);
 
@@ -219,7 +221,15 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
             Log.d("d","s="+s);
             StaticVariables.mMidi = s.toString();
             PopUpEditSongFragment.prepareSongXML();
-            PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+
+            if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
+                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+                nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
+            } else {
+                PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+            }
+
             dismiss();
         } catch (Exception e) {
             e.printStackTrace();

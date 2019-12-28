@@ -104,6 +104,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
 
             // Insert the new row, returning the primary key value of the new row
             db.insert(SQLite.TABLE_NAME, null, values);
+
         }
     }
 

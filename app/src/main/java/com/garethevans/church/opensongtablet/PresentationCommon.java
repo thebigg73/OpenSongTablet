@@ -1,10 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
-
 // This contains all of the scripts for the PresentationService and PresentationServiceHDMI
 
-
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -163,7 +160,6 @@ class PresentationCommon {
                     imgUri = img2Uri;
                 }
 
-                Log.d("PResentationCommon","imgUri="+imgUri);
                 if (storageAccess.uriExists(c, imgUri)) {
                     if (imgUri != null && imgUri.getLastPathSegment() != null && imgUri.getLastPathSegment().contains("ost_bg.png")) {
                         projected_BackgroundImage.setImageDrawable(StaticVariables.cast_defimage);
@@ -473,7 +469,7 @@ class PresentationCommon {
 
 
     // Update the screen content
-    void doUpdate(final Activity activity, final Context c, final Preferences preferences, final StorageAccess storageAccess, final ProcessSong processSong,
+    void doUpdate(final Context c, final Preferences preferences, final StorageAccess storageAccess, final ProcessSong processSong,
                   final Display myscreen, final TextView songinfo_TextView, LinearLayout presentermode_bottombit, final SurfaceView projected_SurfaceView,
                   ImageView projected_BackgroundImage, RelativeLayout pageHolder, ImageView projected_Logo, final ImageView projected_ImageView,
                   final LinearLayout projected_LinearLayout, LinearLayout bottom_infobar, final RelativeLayout projectedPage_RelativeLayout,
@@ -534,15 +530,15 @@ class PresentationCommon {
                     projected_ImageView.setVisibility(View.GONE);
                     switch (StaticVariables.whichMode) {
                         case "Stage":
-                            prepareStageProjected(activity, c,preferences,processSong,storageAccess,col1_1,col1_2,col2_2,col1_3,col2_3,col3_3,
+                            prepareStageProjected(c,preferences,processSong,storageAccess,col1_1,col1_2,col2_2,col1_3,col2_3,col3_3,
                                     projected_LinearLayout,projected_ImageView);
                             break;
                         case "Performance":
-                            prepareFullProjected(activity, c,preferences,processSong,storageAccess,col1_1,col1_2,col2_2,col1_3,col2_3,col3_3,
+                            prepareFullProjected(c,preferences,processSong,storageAccess,col1_1,col1_2,col2_2,col1_3,col2_3,col3_3,
                                     projected_LinearLayout,projected_ImageView);
                             break;
                         default:
-                            preparePresenterProjected(activity, c,preferences,processSong,storageAccess,col1_1,col1_2,col2_2,col1_3,col2_3,col3_3,
+                            preparePresenterProjected(c,preferences,processSong,storageAccess,col1_1,col1_2,col2_2,col1_3,col2_3,col3_3,
                                     projected_LinearLayout,projected_ImageView);
                             break;
                     }
@@ -780,7 +776,7 @@ class PresentationCommon {
 
 
     // Writing the views for PerformanceMode
-    private void prepareFullProjected (final Activity activity, final Context c, final Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
+    private void prepareFullProjected (final Context c, final Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
                  final LinearLayout col1_1, final LinearLayout col1_2, final LinearLayout col2_2, final LinearLayout col1_3,
                  final LinearLayout col2_3, final LinearLayout col3_3, final LinearLayout projected_LinearLayout, final ImageView projected_ImageView) {
         if (StaticVariables.activity!=null) {
@@ -812,42 +808,36 @@ class PresentationCommon {
                             for (int x = 0; x < StaticVariables.songSections.length; x++) {
 
                                 test1_1 = processSong.projectedSectionView(c, x, 12.0f,
-                                        storageAccess, preferences,
-                                        StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                                        StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                                        storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                                        StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
                                 col1_1.addView(test1_1);
 
                                 if (x < FullscreenActivity.halfsplit_section) {
                                     test1_2 = processSong.projectedSectionView(c, x, 12.0f,
-                                            storageAccess, preferences,
-                                            StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                                            StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                                            storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                                            StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
                                     col1_2.addView(test1_2);
                                 } else {
                                     test2_2 = processSong.projectedSectionView(c, x, 12.0f,
-                                            storageAccess, preferences,
-                                            StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                                            StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                                            storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                                            StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
                                     col2_2.addView(test2_2);
                                 }
 
                                 if (x < FullscreenActivity.thirdsplit_section) {
                                     test1_3 = processSong.projectedSectionView(c, x, 12.0f,
-                                            storageAccess, preferences,
-                                            StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                                            StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                                            storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                                            StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
                                     col1_3.addView(test1_3);
                                 } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
                                     test2_3 = processSong.projectedSectionView(c, x, 12.0f,
-                                            storageAccess, preferences,
-                                            StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                                            StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                                            storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                                            StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
                                     col2_3.addView(test2_3);
                                 } else {
                                     test3_3 = processSong.projectedSectionView(c, x, 12.0f,
-                                            storageAccess, preferences,
-                                            StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                                            StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                                            storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                                            StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
                                     col3_3.addView(test3_3);
                                 }
                             }
@@ -979,7 +969,7 @@ class PresentationCommon {
         try {
             LinearLayout lyrics1_1 = processSong.createLinearLayout(c);
             LinearLayout box1_1 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor,
-                    StaticVariables.cast_lyricsBackgroundColor, 0, StaticVariables.cast_padding);
+                    StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_padding);
             float fontsize1_1 = processSong.getProjectedFontSize(scale1_1);
 
             // Remove all views from the projector
@@ -990,9 +980,8 @@ class PresentationCommon {
             // Go through each section
             for (int x = 0; x < StaticVariables.songSections.length; x++) {
                 lyrics1_1 = processSong.projectedSectionView(c, x, fontsize1_1,
-                        storageAccess, preferences,
-                        StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                        StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                        storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                        StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
                 LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(StaticVariables.cast_availableWidth_1col, LinearLayout.LayoutParams.WRAP_CONTENT);
                 llp1_1.setMargins(0, 0, 0, 0);
                 lyrics1_1.setLayoutParams(llp1_1);
@@ -1022,9 +1011,9 @@ class PresentationCommon {
             LinearLayout lyrics1_2 = processSong.createLinearLayout(c);
             LinearLayout lyrics2_2 = processSong.createLinearLayout(c);
             LinearLayout box1_2 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor,
-                    StaticVariables.cast_lyricsBackgroundColor, 0, StaticVariables.cast_padding);
+                    StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_padding);
             LinearLayout box2_2 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor,
-                    StaticVariables.cast_lyricsBackgroundColor, 0, StaticVariables.cast_padding);
+                    StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_padding);
             float fontsize1_2 = processSong.getProjectedFontSize(scale1_2);
             float fontsize2_2 = processSong.getProjectedFontSize(scale2_2);
 
@@ -1039,9 +1028,8 @@ class PresentationCommon {
 
                 if (x < FullscreenActivity.halfsplit_section) {
                     lyrics1_2 = processSong.projectedSectionView(c, x, fontsize1_2,
-                            storageAccess, preferences,
-                            StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                            StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                            storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                            StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
                     LinearLayout.LayoutParams llp1_2 = new LinearLayout.LayoutParams(StaticVariables.cast_availableWidth_2col, LinearLayout.LayoutParams.WRAP_CONTENT);
                     llp1_2.setMargins(0, 0, 0, 0);
                     lyrics1_2.setLayoutParams(llp1_2);
@@ -1052,9 +1040,8 @@ class PresentationCommon {
                     box1_2.addView(lyrics1_2);
                 } else {
                     lyrics2_2 = processSong.projectedSectionView(c, x, fontsize2_2,
-                            storageAccess, preferences,
-                            StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                            StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                            storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                            StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
                     LinearLayout.LayoutParams llp2_2 = new LinearLayout.LayoutParams(StaticVariables.cast_availableWidth_2col, LinearLayout.LayoutParams.WRAP_CONTENT);
                     llp2_2.setMargins(0, 0, 0, 0);
                     lyrics2_2.setLayoutParams(llp2_2);
@@ -1090,11 +1077,11 @@ class PresentationCommon {
             LinearLayout lyrics2_3 = processSong.createLinearLayout(c);
             LinearLayout lyrics3_3 = processSong.createLinearLayout(c);
             LinearLayout box1_3 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor,
-                    StaticVariables.cast_lyricsBackgroundColor, 0, StaticVariables.cast_padding);
+                    StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_padding);
             LinearLayout box2_3 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor,
-                    StaticVariables.cast_lyricsBackgroundColor, 0, StaticVariables.cast_padding);
+                    StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_padding);
             LinearLayout box3_3 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor,
-                    StaticVariables.cast_lyricsBackgroundColor, 0, StaticVariables.cast_padding);
+                    StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_padding);
             float fontsize1_3 = processSong.getProjectedFontSize(scale1_3);
             float fontsize2_3 = processSong.getProjectedFontSize(scale2_3);
             float fontsize3_3 = processSong.getProjectedFontSize(scale3_3);
@@ -1110,9 +1097,8 @@ class PresentationCommon {
             for (int x = 0; x < StaticVariables.songSections.length; x++) {
                 if (x < FullscreenActivity.thirdsplit_section) {
                     lyrics1_3 = processSong.projectedSectionView(c, x, fontsize1_3,
-                            storageAccess, preferences,
-                            StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                            StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                            storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                            StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
                     LinearLayout.LayoutParams llp1_3 = new LinearLayout.LayoutParams(StaticVariables.cast_availableWidth_3col, LinearLayout.LayoutParams.WRAP_CONTENT);
                     llp1_3.setMargins(0, 0, 0, 0);
                     lyrics1_3.setLayoutParams(llp1_3);
@@ -1123,9 +1109,8 @@ class PresentationCommon {
                     box1_3.addView(lyrics1_3);
                 } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
                     lyrics2_3 = processSong.projectedSectionView(c, x, fontsize2_3,
-                            storageAccess, preferences,
-                            StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                            StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                            storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                            StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
                     LinearLayout.LayoutParams llp2_3 = new LinearLayout.LayoutParams(StaticVariables.cast_availableWidth_3col, LinearLayout.LayoutParams.WRAP_CONTENT);
                     llp2_3.setMargins(0, 0, 0, 0);
                     lyrics2_3.setLayoutParams(llp2_3);
@@ -1136,9 +1121,8 @@ class PresentationCommon {
                     box2_3.addView(lyrics2_3);
                 } else {
                     lyrics3_3 = processSong.projectedSectionView(c, x, fontsize3_3,
-                            storageAccess, preferences,
-                            StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                            StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                            storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                            StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
                     LinearLayout.LayoutParams llp3_3 = new LinearLayout.LayoutParams(StaticVariables.cast_availableWidth_3col, LinearLayout.LayoutParams.WRAP_CONTENT);
                     llp3_3.setMargins(0, 0, 0, 0);
                     lyrics3_3.setLayoutParams(llp3_3);
@@ -1173,7 +1157,7 @@ class PresentationCommon {
 
 
     // Writing the views for StageMode
-    private void prepareStageProjected(final Activity activity, final Context c, final Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
+    private void prepareStageProjected(final Context c, final Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
                                        final LinearLayout col1_1, final LinearLayout col1_2, final LinearLayout col2_2, final LinearLayout col1_3,
                                        final LinearLayout col2_3, final LinearLayout col3_3, final LinearLayout projected_LinearLayout, final ImageView projected_ImageView) {
 
@@ -1200,9 +1184,8 @@ class PresentationCommon {
                                 // Prepare the new view ready for measuring
                                 // Go through each section
                                 test1_1 = processSong.projectedSectionView(c, StaticVariables.currentSection, 12.0f,
-                                        storageAccess, preferences,
-                                        StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                                        StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                                        storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                                        StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
                                 col1_1.addView(test1_1);
 
                                 // Now premeasure the views
@@ -1246,7 +1229,7 @@ class PresentationCommon {
 
             LinearLayout lyrics1_1 = processSong.createLinearLayout(c);
             LinearLayout box1_1 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor,
-                    StaticVariables.cast_lyricsBackgroundColor, 0, StaticVariables.cast_padding);
+                    StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_padding);
             float fontsize1_1 = processSong.getProjectedFontSize(scale1_1);
 
             // Remove all views from the projector
@@ -1256,9 +1239,8 @@ class PresentationCommon {
             // Add this section
             lyrics1_1 = processSong.projectedSectionView(c, StaticVariables.currentSection,
                     fontsize1_1,
-                    storageAccess, preferences,
-                    StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                    StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                    storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                    StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
             LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(StaticVariables.cast_availableWidth_1col, LinearLayout.LayoutParams.WRAP_CONTENT);
             llp1_1.setMargins(0, 0, 0, 0);
             lyrics1_1.setLayoutParams(llp1_1);
@@ -1282,7 +1264,7 @@ class PresentationCommon {
 
 
     // Writing the views for PresenterMode
-    private void preparePresenterProjected(final Activity activity, final Context c, final Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
+    private void preparePresenterProjected(final Context c, final Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
                                            final LinearLayout col1_1, final LinearLayout col1_2, final LinearLayout col2_2, final LinearLayout col1_3,
                                            final LinearLayout col2_3, final LinearLayout col3_3, final LinearLayout projected_LinearLayout, final ImageView projected_ImageView) {
         if (StaticVariables.activity != null) {
@@ -1307,9 +1289,8 @@ class PresentationCommon {
                                 // Prepare the new view ready for measuring
                                 // Go through each section
                                 test1_1 = processSong.projectedSectionView(c, StaticVariables.currentSection, 12.0f,
-                                        storageAccess, preferences,
-                                        StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                                        StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                                        storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                                        StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
                                 col1_1.addView(test1_1);
 
                                 // Now premeasure the views
@@ -1351,7 +1332,7 @@ class PresentationCommon {
         try {
             LinearLayout lyrics1_1 = processSong.createLinearLayout(c);
             LinearLayout box1_1 = processSong.prepareProjectedBoxView(c, preferences, StaticVariables.cast_lyricsTextColor,
-                    StaticVariables.cast_lyricsBackgroundColor, 0, StaticVariables.cast_padding);
+                    StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_padding);
             float fontsize1_1 = processSong.getProjectedFontSize(scale1_1);
 
             // Remove all views from the projector
@@ -1361,9 +1342,8 @@ class PresentationCommon {
             // Add this section
             lyrics1_1 = processSong.projectedSectionView(c, StaticVariables.currentSection,
                     fontsize1_1,
-                    storageAccess, preferences,
-                    StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsBackgroundColor, StaticVariables.cast_lyricsChordsColor,
-                    StaticVariables.cast_lyricsCapoColor, StaticVariables.cast_presoFontColor, StaticVariables.cast_presoShadowColor);
+                    storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                    StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
             LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(StaticVariables.cast_availableWidth_1col, LinearLayout.LayoutParams.WRAP_CONTENT);
             llp1_1.setMargins(0, 0, 0, 0);
             lyrics1_1.setLayoutParams(llp1_1);

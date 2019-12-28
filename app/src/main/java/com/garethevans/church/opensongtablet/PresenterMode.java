@@ -51,6 +51,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -138,6 +139,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private TextSongConvert textSongConvert;
     private SQLiteHelper sqLiteHelper;
     private SQLite sqLite;  // The song details from SQLite.  Used for menu and searches.
+    private NonOpenSongSQLite nonOpenSongSQLite; // For pdf and image files
+    private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
     private ProcessSong processSong;
     private ProfileActions profileActions;
 
@@ -282,6 +285,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         usrConvert = new UsrConvert();
         textSongConvert = new TextSongConvert();
         sqLiteHelper = new SQLiteHelper(PresenterMode.this);
+        nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(PresenterMode.this);
         processSong = new ProcessSong();
         profileActions = new ProfileActions();
 
@@ -407,6 +411,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         // Check if we need to remind the user to backup their songs
         checkBackupState();
+
+        setDummyFocus();
     }
 
     // Handlers for main page on/off/etc. and window flags
@@ -641,6 +647,35 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         // Song location
         loadFileLocation();
+    }
+
+    private void setDummyFocus() {
+        try {
+            // This simply makes all of the blank space focusable
+            // This is to allow removing the view from the edittext to hide the keyboard
+            findViewById(R.id.coordinator_layout).setOnClickListener(new RemoveFocus());
+            findViewById(R.id.pres_col1).setOnClickListener(new RemoveFocus());
+            findViewById(R.id.pres_col2).setOnClickListener(new RemoveFocus());
+            findViewById(R.id.pres_col3).setOnClickListener(new RemoveFocus());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private class RemoveFocus implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            try {
+                presenter_lyrics.clearFocus();
+                InputMethodManager imm =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                setWindowFlags();
+                setWindowFlagsAdvanced();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -1842,6 +1877,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 // Remove the item from the SQL database
                 // Get the SQLite stuff
                 try {
+                    if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
+                        nonOpenSongSQLiteHelper.deleteSong(PresenterMode.this, storageAccess, preferences, nonOpenSongSQLite.getSongid());
+                    }
                     sqLiteHelper.deleteSong(PresenterMode.this, sqLite.getSongid());
                     prepareSongMenu();
                 } catch (Exception e) {
@@ -3723,6 +3761,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         String songId = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
                         sqLite = sqLiteHelper.getSong(PresenterMode.this, songId);
 
+                        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                            nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(PresenterMode.this,storageAccess,preferences,songId);
+                        }
+
                         // If this song isn't indexed, set its details
                         if (sqLite.getLyrics()==null || sqLite.getLyrics().equals("")) {
                             sqLite = sqLiteHelper.setSong(sqLite);
@@ -3998,7 +4040,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 Display mDisplay = mMediaRouter.getSelectedRoute().getPresentationDisplay();
                 if (mDisplay != null) {
-                    hdmi = new PresentationServiceHDMI(PresenterMode.this, mDisplay, processSong, this);
+                    hdmi = new PresentationServiceHDMI(PresenterMode.this, mDisplay, processSong);
                     hdmi.show();
                     isSecondScreen();
                     logoButton_isSelected = true;

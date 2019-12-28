@@ -63,6 +63,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
 
     private WebView abcWebView;
     private Preferences preferences;
+    private StorageAccess storageAccess;
 
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
@@ -98,6 +99,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
         });
 
         preferences = new Preferences();
+        storageAccess = new StorageAccess();
 
         // Initialise the views
         abcWebView = V.findViewById(R.id.abcWebView);
@@ -224,7 +226,13 @@ public class PopUpABCNotationFragment extends DialogFragment {
                     FullscreenActivity.mLyrics = ABCPlaceHolder + "\n\n" + FullscreenActivity.mLyrics;
                 }*/
                 PopUpEditSongFragment.prepareSongXML();
-                PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+                if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                    NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
+                    NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+                    nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
+                } else {
+                    PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+                }
                 try {
                     dismiss();
                 } catch (Exception e) {

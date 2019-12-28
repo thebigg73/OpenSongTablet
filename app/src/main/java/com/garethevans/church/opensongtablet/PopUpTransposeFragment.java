@@ -52,6 +52,7 @@ public class PopUpTransposeFragment extends DialogFragment {
     private LinearLayout chooseFormat_LinearLayout;
 
     private Preferences preferences;
+    private StorageAccess storageAccess;
     private Transpose transpose;
 
     @Override
@@ -94,6 +95,7 @@ public class PopUpTransposeFragment extends DialogFragment {
         });
 
         preferences = new Preferences();
+        storageAccess = new StorageAccess();
         transpose = new Transpose();
 
         // Initialise views
@@ -288,7 +290,7 @@ public class PopUpTransposeFragment extends DialogFragment {
 
         // Do the transpose
         try {
-            transpose.doTranspose(getActivity(), preferences, false, false, false);
+            transpose.doTranspose(getActivity(), storageAccess, preferences, false, false, false);
         } catch (Exception e) {
             e.printStackTrace();
         }

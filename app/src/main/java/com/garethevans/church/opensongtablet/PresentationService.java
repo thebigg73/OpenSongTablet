@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -22,13 +21,10 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
     private ExternalDisplay myPresentation;
     private ProcessSong processSong;
-    private Activity activity;
-    private void createPresentation(Display display, ProcessSong pS, Activity act) {
+    private void createPresentation(Display display, ProcessSong pS) {
         dismissPresentation();
-        activity = StaticVariables.activity;
         processSong = pS;
-        //myPresentation = new ExternalDisplay(this, display);
-        myPresentation = new ExternalDisplay(this, display, pS, act);
+        myPresentation = new ExternalDisplay(this, display, pS);
         try {
             myPresentation.show();
             FullscreenActivity.isPresenting = true;
@@ -46,7 +42,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         }
 
         FullscreenActivity.isPresenting = true;
-        createPresentation(display, processSong, activity);
+        createPresentation(display, processSong);
     }
 
     @Override
@@ -80,12 +76,11 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             MediaPlayer.OnCompletionListener, SurfaceHolder.Callback {
 
 
-        ExternalDisplay(Context context, Display display, ProcessSong pS, Activity act) {
+        ExternalDisplay(Context context, Display display, ProcessSong pS) {
             super(context, display);
             c = context;
             myscreen = display;
             processSong = pS;
-            activity = act;
         }
 
         // Define the variables and views
@@ -110,7 +105,6 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         @SuppressLint("StaticFieldLeak")
         private static Context c;
         @SuppressLint("StaticFieldLeak")
-        private static Activity activity;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -279,7 +273,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
         // Update the screen content
         static void doUpdate() {
-            presentationCommon.doUpdate(activity, c,preferences,storageAccess,processSong,myscreen,songinfo_TextView,presentermode_bottombit,projected_SurfaceView,
+            presentationCommon.doUpdate(c,preferences,storageAccess,processSong,myscreen,songinfo_TextView,presentermode_bottombit,projected_SurfaceView,
                     projected_BackgroundImage, pageHolder,projected_Logo,projected_ImageView,projected_LinearLayout,bottom_infobar,projectedPage_RelativeLayout,
                     presentermode_title, presentermode_author, presentermode_copyright, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3);
         }
