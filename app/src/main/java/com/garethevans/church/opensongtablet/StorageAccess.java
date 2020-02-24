@@ -1227,6 +1227,7 @@ class StorageAccess {
             if (df!=null) {
                 return df.delete();
             } else {
+                Log.d("StorageAccess","documentfile is null so can't delete");
                 return false;
             }
         } catch (Exception e) {

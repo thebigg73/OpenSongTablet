@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.garethevans.church.opensongtablet"
     android:installLocation="auto"
-    android:versionCode="174"
-    android:versionName="5.1.4">
+    android:versionCode="175"
+    android:versionName="5.1.5">
 
     <uses-feature
         android:name="android.hardware.touchscreen"
@@ -456,7 +456,7 @@
 
         <activity
             android:name="com.garethevans.church.opensongtablet.StageMode"
-            android:configChanges="orientation|screenSize"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTop">
 

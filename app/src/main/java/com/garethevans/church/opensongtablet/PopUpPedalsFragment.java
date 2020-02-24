@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -29,35 +30,14 @@ public class PopUpPedalsFragment extends DialogFragment {
         return frag;
     }
 
-    private SwitchCompat pedalToggleScrollBeforeSwipeButton;
-
-    private Button pedal1button;
-    private Button pedal2button;
-    private Button pedal3button;
-    private Button pedal4button;
-    private Button pedal5button;
-    private Button pedal6button;
-
-    private TextView pedal1text;
-    private TextView pedal2text;
-    private TextView pedal3text;
-    private TextView pedal4text;
-    private TextView pedal5text;
-    private TextView pedal6text;
-
-    private Spinner pedal1choice;
-    private Spinner pedal2choice;
-    private Spinner pedal3choice;
-    private Spinner pedal4choice;
-    private Spinner pedal5choice;
-    private Spinner pedal6choice;
-    private Spinner pedallong1choice;
-    private Spinner pedallong2choice;
-    private Spinner pedallong3choice;
-    private Spinner pedallong4choice;
-    private Spinner pedallong5choice;
-    private Spinner pedallong6choice;
-
+    private SwitchCompat pedalToggleScrollBeforeSwipeButton, autoRepeatLongPress_Switch;
+    private SeekBar autoRepeatCount_SeekBar;
+    private Button pedal1button, pedal2button, pedal3button, pedal4button, pedal5button, pedal6button;
+    private TextView pedal1text, pedal2text, pedal3text, pedal4text, pedal5text, pedal6text, autoRepeatCount_TextView;
+    private Spinner pedal1choice, pedal2choice, pedal3choice, pedal4choice, pedal5choice, pedal6choice,
+            pedallong1choice, pedallong2choice, pedallong3choice, pedallong4choice, pedallong5choice, pedallong6choice;
+    private int keyRepeatCount = 20;
+    private String keyRepeatCountText = "20";
     private ArrayList<String> availableactions;
     private Preferences preferences;
 
@@ -102,6 +82,9 @@ public class PopUpPedalsFragment extends DialogFragment {
         // Initialise the buttons, text, listeners and set defaults
         resetButtons();
 
+        // Set AirTurnMode actions
+        airTurnModeActions();
+
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
@@ -134,6 +117,41 @@ public class PopUpPedalsFragment extends DialogFragment {
         pedallong5choice = V.findViewById(R.id.pedallong5choice);
         pedallong6choice = V.findViewById(R.id.pedallong6choice);
         pedalToggleScrollBeforeSwipeButton = V.findViewById(R.id.pedalToggleScrollBeforeSwipeButton);
+        autoRepeatLongPress_Switch = V.findViewById(R.id.autoRepeatLongPress_Switch);
+        autoRepeatCount_SeekBar = V.findViewById(R.id.autoRepeatCount_SeekBar);
+        autoRepeatCount_TextView = V.findViewById(R.id.autoRepeatCount_TextView);
+    }
+
+    private void airTurnModeActions() {
+        autoRepeatLongPress_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                preferences.setMyPreferenceBoolean(getActivity(),"airTurnMode",isChecked);
+            }
+        });
+        autoRepeatCount_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                keyRepeatCount = progress;
+                keyRepeatCountText = "" + progress;
+                autoRepeatCount_TextView.setText(keyRepeatCountText);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Save the value
+                preferences.setMyPreferenceInt(getActivity(),"keyRepeatCount",keyRepeatCount);
+                // If 0 or 1, then no point, so switch off the AirTurn mode
+                if (keyRepeatCount<2) {
+                    autoRepeatLongPress_Switch.setChecked(false);
+                } else if (!autoRepeatLongPress_Switch.isChecked()) {
+                    autoRepeatLongPress_Switch.setChecked(true);
+                }
+            }
+        });
     }
 
     private void setAvailableActions() {
@@ -591,7 +609,7 @@ public class PopUpPedalsFragment extends DialogFragment {
                 savedoption = preferences.getMyPreferenceString(getActivity(),"pedal4ShortPressAction","next");
                 break;
             case "5s":
-                savedoption = preferences.getMyPreferenceString(getActivity(),"peda15ShortPressAction","prev");
+                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal5ShortPressAction","prev");
                 break;
             case "6s":
                 savedoption = preferences.getMyPreferenceString(getActivity(),"pedal6ShortPressAction","next");
@@ -713,6 +731,11 @@ public class PopUpPedalsFragment extends DialogFragment {
                 preferences.setMyPreferenceBoolean(getActivity(),"pedalScrollBeforeMove",isChecked);
             }
         });
+        autoRepeatLongPress_Switch.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"airTurnMode",false));
+        keyRepeatCount = preferences.getMyPreferenceInt(getActivity(),"keyRepeatCount",20);
+        keyRepeatCountText = "" + keyRepeatCount;
+        autoRepeatCount_TextView.setText(keyRepeatCountText);
+        autoRepeatCount_SeekBar.setProgress(keyRepeatCount);
 
         setGroupText(pedal1text, 1);
         setGroupText(pedal2text, 2);

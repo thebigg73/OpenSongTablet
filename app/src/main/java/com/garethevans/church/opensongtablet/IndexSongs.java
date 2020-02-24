@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -107,14 +108,31 @@ class IndexSongs {
                                 // OK, so this wasn't an XML file.  Try to extract as something else
                                 ArrayList<String> bits = tryToFixSong(c, storageAccess, preferences, songXML, chordProConvert, onSongConvert,
                                         usrConvert, textSongConvert, uri);
-                                filename = bits.get(0);
-                                title = bits.get(1);
-                                author = bits.get(2);
-                                copyright = bits.get(3);
-                                key = bits.get(4);
-                                timesig = bits.get(5);
-                                ccli = bits.get(6);
-                                lyrics = bits.get(7);
+                                // Remove the original filename from the database
+                                if (bits!=null) {
+                                    String songIdtoRemove = folder + "/" + filename;
+                                    //Log.d("IndexSong", "songIdtoRemove=" + songIdtoRemove);
+                                    //sqLiteHelper.deleteSong(c, songIdtoRemove);
+                                }
+
+                                if (bits==null || bits.size()==0) {
+                                    title = filename;
+                                    author = "";
+                                    copyright = "";
+                                    key = "";
+                                    timesig = "";
+                                    ccli = "";
+                                    lyrics = "";
+                                } else {
+                                    filename = bits.get(0);
+                                    title = bits.get(1);
+                                    author = bits.get(2);
+                                    copyright = bits.get(3);
+                                    key = bits.get(4);
+                                    timesig = bits.get(5);
+                                    ccli = bits.get(6);
+                                    lyrics = bits.get(7);
+                                }
                             }
                         }
 

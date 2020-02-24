@@ -498,4 +498,7 @@
     <string name="block_text_shadow">Blocca l\'ombra del testo</string>
     <string name="continuous">Continuo</string>
     <string name="metronome_duration">Metronóm időtartam (sávok)...</string>
+    <string name="airTurnLongPress">AirTurn modalità di pressione lunga</string>
+    <string name="autoRepeatCount">Numero di ripetizioni dei tasti richieste per emulare la pressione prolungata</string>
+    <string name="autoRepeatRationale">Alcuni pedali (come AirTurn) inviano segnali del tasto di ripetizione automatica che interrompe il funzionamento delle azioni di pressione prolungata. Se si utilizza uno di questi pedali, attivare la modalità di pressione prolungata AirTurn e regolare il dispositivo di scorrimento in base al numero di segnali ripetuti necessari per un\'azione di pressione prolungata simulata. La maggior parte delle tastiere ha un ritardo di 500 ms e una frequenza di ripetizione di circa 25 ms. Ciò significa che tenere premuto un tasto per 1 secondo registrerà 20 pressioni di tasti. I pedali AirTurn ti consentono di regolare la frequenza di ripetizione e il tempo di ritardo usando la loro app di accompagnamento. Numeri più alti per il conteggio delle ripetizioni dei tasti significano tenere premuto il pedale più a lungo per registrarsi come una pressione lunga.</string>
 </resources>

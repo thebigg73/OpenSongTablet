@@ -20,6 +20,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.hardware.display.DisplayManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
@@ -231,6 +232,7 @@ public class StageMode extends AppCompatActivity implements
     private FloatingActionButton setForwardButton;
     private ScrollView extrabuttons;
     private ScrollView extrabuttons2;
+    private int keyRepeatCount = 0;
 
     //private CoordinatorLayout coordinator_layout;
 
@@ -4896,16 +4898,25 @@ public class StageMode extends AppCompatActivity implements
                 assert layoutInflater != null;
                 @SuppressLint("InflateParams") final View popupView = layoutInflater.inflate(R.layout.popup_float_sticky, null);
                 // Decide on the popup position
+                int hp = preferences.getMyPreferenceInt(StageMode.this,"stickyXPosition",-1);
+                int vp = preferences.getMyPreferenceInt(StageMode.this,"stickyYPosition",-1);
                 int sw = getAvailableWidth();
+                int sh = getAvailableHeight();
                 int stickywidth = preferences.getMyPreferenceInt(StageMode.this,"stickyWidth",400);
-                int hp = sw - stickywidth - (int) ((float) setButton.getMeasuredWidth() * 1.2f);
+                if (hp==-1 || hp>sw) {
+                    hp = sw - stickywidth - (int) ((float) setButton.getMeasuredWidth() * 1.2f);
+                }
                 if (hp < 0) {
                     hp = 0;
                 }
-                int vp = (int) ((float) ab_toolbar.getMeasuredHeight() * 1.2f);
+                if (vp==-1 || hp>sh) {
+                    vp = (int) ((float) ab_toolbar.getMeasuredHeight() * 1.2f);
+                }
                 if (vp < 0) {
                     vp = 0;
                 }
+                preferences.setMyPreferenceInt(StageMode.this,"stickyXPosition",hp);
+                preferences.setMyPreferenceInt(StageMode.this,"stickyYPosition",vp);
                 stickyPopUpWindow = new PopupWindow(popupView);
                 stickyPopUpWindow.setFocusable(false);
                 stickyPopUpWindow.setWidth(stickywidth);
@@ -4960,6 +4971,9 @@ public class StageMode extends AppCompatActivity implements
                                 offsetY = (int) event.getRawY() - orgY;
                                 stickyPopUpWindow.update(offsetX, offsetY, -1, -1, true);
                                 break;
+                            case MotionEvent.ACTION_UP:
+                                preferences.setMyPreferenceInt(StageMode.this,"stickyXPosition",offsetX);
+                                preferences.setMyPreferenceInt(StageMode.this,"stickyYPosition",offsetY);
                         }
                         return true;
                     }
@@ -5014,7 +5028,7 @@ public class StageMode extends AppCompatActivity implements
                     });
         } else {
             // Might be a hdmi connection
-            try {
+            /*try {
                 Display mDisplay = mMediaRouter.getSelectedRoute().getPresentationDisplay();
                 if (mDisplay != null) {
                     hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong);
@@ -5023,6 +5037,22 @@ public class StageMode extends AppCompatActivity implements
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            }*/
+
+            // Try this code (Alternative to use HDMI as Chromebooks not coping with above
+            try {
+                DisplayManager dm = (DisplayManager) getSystemService(DISPLAY_SERVICE);
+                if (dm!=null) {
+                    Display[] displays = dm.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
+                    for (Display mDisplay : displays) {
+                        hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong);
+                        hdmi.show();
+                        FullscreenActivity.isHDMIConnected = true;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d("d","Error"+e);
             }
         }
     }
@@ -7198,6 +7228,18 @@ public class StageMode extends AppCompatActivity implements
     // This bit listens for long key presses (disables the menu long press action)
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // AirTurn pedals don't do long press, but instead autorepeat.  To deal with, count onKeyDown
+        // If the app detects more than a set number (reset when onKeyUp/onLongPress) it triggers onLongPress
+
+        keyRepeatCount++;
+        if (preferences.getMyPreferenceBoolean(StageMode.this,"airTurnMode",false) && keyRepeatCount>preferences.getMyPreferenceInt(StageMode.this,"keyRepeatCount",20)) {
+            keyRepeatCount = 0;
+            shortKeyPress = false;
+            longKeyPress = true;
+            doLongKeyPressAction(keyCode);
+            return true;
+        }
+
         if (keyCode == KeyEvent.KEYCODE_MENU && event.isLongPress()) {
             // Open up the song search intent instead of bringing up the keyboard
             shortKeyPress = !longKeyPress;
@@ -7573,6 +7615,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
 
+        keyRepeatCount = 0;
         event.startTracking();
         View rf = getCurrentFocus();
         if (rf!=null) {
@@ -7651,6 +7694,16 @@ public class StageMode extends AppCompatActivity implements
         protected String doInBackground(Object... params) {
             try {
                 songsInFolder = sqLiteHelper.getSongsInFolder(StageMode.this, StaticVariables.whichSongFolder);
+                // Remove any that aren't there (due to updating something) - permanently fixed on reboot
+                for (SQLite s:songsInFolder) {
+                    if (s!=null && s.getFolder()!=null && s.getFilename()!=null) {
+                        Uri u = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", s.getFolder(), s.getFilename());
+                        if (!storageAccess.uriExists(StageMode.this, u)) {
+                            Log.d("StageMode", s.getFolder() + "/" + s.getFilename() + " doesn't exist - remove it");
+                            songsInFolder.remove(s);
+                        }
+                    }
+                }
                 // Get a list of the child folders
                 childFolders = sqLiteHelper.getChildFolders(StageMode.this, StaticVariables.whichSongFolder);
                 songsInFolder.addAll(0,childFolders);
@@ -7804,32 +7857,7 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-
-        boolean actionrecognised = false;
-        if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal1Code",21)) {
-            actionrecognised = true;
-            doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal1LongPressAction","songmenu"));
-
-        } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal2Code",22)) {
-            actionrecognised = true;
-            doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal2LongPressAction","set"));
-
-        } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal3Code",19)) {
-            actionrecognised = true;
-            doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal3LongPressAction","songmenu"));
-
-        } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal4Code",20)) {
-            actionrecognised = true;
-            doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal4LongPressAction","set"));
-
-        } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal5Code",92)) {
-            actionrecognised = true;
-            doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal5LongPressAction","songmenu"));
-
-        } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal6Code",93)) {
-            actionrecognised = true;
-            doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal6LongPressAction","set"));
-        }
+        boolean actionrecognised = doLongKeyPressAction(keyCode);
 
         if (actionrecognised) {
             shortKeyPress = false;
@@ -7837,6 +7865,36 @@ public class StageMode extends AppCompatActivity implements
             return true;
         }
         return super.onKeyLongPress(keyCode, event);
+    }
+
+    private boolean doLongKeyPressAction(int keyCode) {
+        keyRepeatCount = 0;
+        boolean actionrecognised = false;
+        if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal1Code",21)) {
+            actionrecognised = true;
+            doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal1LongPressAction","songmenu"));
+
+        } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal2Code",22)) {
+            actionrecognised = true;
+            doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal2LongPressAction","editset"));
+
+        } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal3Code",19)) {
+            actionrecognised = true;
+            doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal3LongPressAction","songmenu"));
+
+        } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal4Code",20)) {
+            actionrecognised = true;
+            doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal4LongPressAction","editset"));
+
+        } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal5Code",92)) {
+            actionrecognised = true;
+            doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal5LongPressAction","songmenu"));
+
+        } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal6Code",93)) {
+            actionrecognised = true;
+            doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal6LongPressAction","editset"));
+        }
+        return actionrecognised;
     }
 
     private class simpleOnScaleGestureListener implements ScaleGestureDetector.OnScaleGestureListener {

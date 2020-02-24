@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-
 android {
 
     compileSdkVersion 29
@@ -61,8 +60,8 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-cast:18.0.0'
-    implementation 'com.google.android.gms:play-services-cast-framework:18.0.0'
+    implementation 'com.google.android.gms:play-services-cast:18.1.0'
+    implementation 'com.google.android.gms:play-services-cast-framework:18.1.0'
     implementation 'com.google.android.gms:play-services-nearby:17.0.0'
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')

@@ -45,7 +45,7 @@
                     android:layout_margin="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/apptheme_scrubber_primary_holo"
-                    android:max="5"
+                    android:max="10"
                     android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                     android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 

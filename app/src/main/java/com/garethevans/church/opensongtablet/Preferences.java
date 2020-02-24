@@ -84,6 +84,7 @@ public class Preferences extends Activity {
 
     Variable name                   Type        What
     addSectionSpace                 boolean     Should a spacing line be added between sections to improve readability (def:false)
+    airTurnMode                     boolean     Should autorepeat onKeyDown (multiple from keyRepeatCount variable) be converted to longKeyPress actions for AirTurn pedals (def:false)
     appTheme                        String      The theme to use (dark, light, custom1, custom2) (def:dark)
     autoscrollAutoStart             boolean     Should autoscroll start on page load (needs to be started manually the first time) (def:false)
     autoscrollDefaultSongLength     int         The default length of a song to use for autoscroll (def:180)
@@ -241,6 +242,7 @@ public class Preferences extends Activity {
     gestureScreenLongPress          int         The action for long pressing on the song screen (def 3 = add song to set - based on menu position)
     hideActionBar                   boolean     Should the action bar auto hide (def:false)
     hideLyricsBox                   boolean     Should we hide the box around the lyrics (def:false)
+    keyRepeatCount                  int         The number of key repeats to count as a long press for AirTurn pedals (def:20)
     language                        String      The locale set in the menu (def:en)
     lastUsedVersion                 int         The app version number the last time the app ran (def:0)
     light_lyricsBackgroundColor     int         The color for the lyrics background in the light theme
@@ -393,6 +395,8 @@ public class Preferences extends Activity {
     stickyWidth                     int         The width of popup sticky notes (def:400)
     stickyAlpha                     float       The alpha of popup sticky notes (def:0.8f)
     stickyLargeFont                 boolean     The text size for the popup sticky notes (true=20.0f, def:false=14.0f)
+    stickyXPosition                 int         The x position of the popup sticky note (def: -1 which means figure it out first)
+    stickyYPosition                 int         The y position of the popup sticky note (def: -1 which means figure it out first)
     swipeForMenus                   boolean     Can we swipe the menus in or out (def:true)
     swipeForSongs                   boolean     Can we swipe to move between song items (def:true)
     swipeMinimumDistance            int         The minimum distance for a swipe to be registered (dp) (def:250)

@@ -38,7 +38,9 @@ import java.util.Objects;
 public class PopUpSetViewNew extends DialogFragment {
 
     private static Dialog setfrag;
-    private boolean islongpressing = false;
+    private boolean longKeyPress = false;
+    private int keyRepeatCount = 0;
+
 
     static PopUpSetViewNew newInstance() {
         PopUpSetViewNew frag;
@@ -503,88 +505,132 @@ public class PopUpSetViewNew extends DialogFragment {
         getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                islongpressing = event.isLongPress();
-                if (event.getAction() == KeyEvent.ACTION_UP) {
-                    if (keyCode == preferences.getMyPreferenceInt(getActivity(),"pedal1Code",21)) {
-                        if (islongpressing) {
-                            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal1LongPressAction","songmenu"));
-                        } else {
-                            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal1ShortPressAction","prev"));
-                        }
-                        return true;
-                    } else if (keyCode == preferences.getMyPreferenceInt(getActivity(),"pedal2Code",22)) {
-                        if (islongpressing) {
-                            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal2LongPressAction","set"));
-                        } else {
-                            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal2ShortPressAction","next"));
-                        }
-                        return true;
-                    } else if (keyCode == preferences.getMyPreferenceInt(getActivity(),"pedal3Code",19)) {
-                        if (islongpressing) {
-                            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal3LongPressAction","songmenu"));
-                        } else {
-                            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal3ShortPressAction","prev"));
-                        }
-                        return true;
-                    } else if (keyCode == preferences.getMyPreferenceInt(getActivity(),"pedal4Code",20)) {
-                        if (islongpressing) {
-                            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal4LongPressAction","set"));
-                        } else {
-                            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal4ShortPressAction","next"));
-                        }
-                        return true;
-                    } else if (keyCode == preferences.getMyPreferenceInt(getActivity(),"pedal5Code",92)) {
-                        if (islongpressing) {
-                            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal5LongPressAction","songmenu"));
-                        } else {
-                            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal5ShortPressAction","prev"));
-                        }
-                        return true;
-                    } else if (keyCode == preferences.getMyPreferenceInt(getActivity(),"pedal6Code",93)) {
-                        if (islongpressing) {
-                            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal6LongPressAction","set"));
-                        } else {
-                            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal6ShortPressAction","next"));
-                        }
+                event.startTracking();
+                longKeyPress = event.isLongPress();
+                boolean actionrecognised;
+                if (event.getAction() == KeyEvent.ACTION_DOWN && !longKeyPress) {
+                    Log.d("PopUpSetViewNew", "Pedal listener onKeyDown:" + keyCode);
+                    event.startTracking();
+                    // AirTurn pedals don't do long press, but instead autorepeat.  To deal with, count onKeyDown
+                    // If the app detects more than a set number (reset when onKeyUp/onLongPress) it triggers onLongPress
+                    keyRepeatCount++;
+                    if (preferences.getMyPreferenceBoolean(getActivity(), "airTurnMode", false) && keyRepeatCount > preferences.getMyPreferenceInt(getActivity(), "keyRepeatCount", 20)) {
+                        keyRepeatCount = 0;
+                        longKeyPress = true;
+                        doLongKeyPressAction(keyCode);
                         return true;
                     }
+                    return true;
+                } else if (event.getAction() == KeyEvent.ACTION_UP || longKeyPress) {
+                    if (longKeyPress) {
+                        event.startTracking();
+                        actionrecognised = doLongKeyPressAction(keyCode);
+                        Log.d("PopUpSetViewNew", "Is long press!!!");
+                        longKeyPress = false;
+                        keyRepeatCount = 0;
+                        if (actionrecognised) {
+                            longKeyPress = true;
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        // onKeyUp
+                        keyRepeatCount = 0;
 
-                    /*    if ((keyCode == FullscreenActivity.pageturner_PREVIOUS && FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) ||
-                            keyCode == FullscreenActivity.pageturner_UP) {
-                        PopUpSetViewNew.this.doScroll("up");
-                        return true;
-                    } else if ((keyCode == FullscreenActivity.pageturner_NEXT && FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) ||
-                            keyCode == FullscreenActivity.pageturner_DOWN) {
-                        PopUpSetViewNew.this.doScroll("down");
-                        return true;
-                    }*/
+                        Log.d("PopUpSetViewNew", "Pedal listener onKeyUp:" + keyCode);
+                        if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal1Code", 21)) {
+                            doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal1ShortPressAction", "prev"));
+                            return true;
+                        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal2Code", 22)) {
+                            doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal2ShortPressAction", "next"));
+                            return true;
+                        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal3Code", 19)) {
+                            doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal3ShortPressAction", "prev"));
+                            return true;
+                        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal4Code", 20)) {
+                            doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal4ShortPressAction", "next"));
+                            return true;
+                        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal5Code", 92)) {
+                            doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal5LongPressAction", "songmenu"));
+                            return true;
+                        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal6Code", 93)) {
+                            doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal6ShortPressAction", "next"));
+                            return true;
+                        }
+                        return false;
+                    }
                 }
-                return false;
+                return true;
             }
         });
     }
 
+    private boolean doLongKeyPressAction(int keyCode) {
+        keyRepeatCount = 0;
+        boolean actionrecognised = false;
+        if (keyCode == preferences.getMyPreferenceInt(getActivity(),"pedal1Code",21)) {
+            actionrecognised = true;
+            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal1LongPressAction","songmenu"));
+
+        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(),"pedal2Code",22)) {
+            actionrecognised = true;
+            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal2LongPressAction","editset"));
+
+        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(),"pedal3Code",19)) {
+            actionrecognised = true;
+            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal3LongPressAction","songmenu"));
+
+        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(),"pedal4Code",20)) {
+            actionrecognised = true;
+            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal4LongPressAction","editset"));
+
+        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(),"pedal5Code",92)) {
+            actionrecognised = true;
+            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal5LongPressAction","songmenu"));
+
+        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(),"pedal6Code",93)) {
+            actionrecognised = true;
+            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal6LongPressAction","editset"));
+        }
+        Log.d("d","actionrecognised="+actionrecognised);
+        return actionrecognised;
+    }
+
+
     private void doPedalAction(String action) {
-        switch (action) {
-            case "prev":
-                if (preferences.getMyPreferenceBoolean(getActivity(),"pedalScrollBeforeMove",true)) {
+        Log.d("d","doPedalAction(\""+action+"\")");
+        try {
+            switch (action) {
+                case "prev":
+                    if (preferences.getMyPreferenceBoolean(getActivity(), "pedalScrollBeforeMove", true)) {
+                        PopUpSetViewNew.this.doScroll("up");
+                    }
+                    break;
+
+                case "next":
+                    if (preferences.getMyPreferenceBoolean(getActivity(), "pedalScrollBeforeMove", true)) {
+                        PopUpSetViewNew.this.doScroll("down");
+                    }
+                    break;
+
+                case "up":
                     PopUpSetViewNew.this.doScroll("up");
-                }
-                break;
+                    break;
 
-            case "next":
-                if (preferences.getMyPreferenceBoolean(getActivity(),"pedalScrollBeforeMove",true)) {
+                case "down":
                     PopUpSetViewNew.this.doScroll("down");
-                }
-                break;
+                    break;
 
-            case "up":
-                PopUpSetViewNew.this.doScroll("up");
-                break;
-
-            case "down":
-                PopUpSetViewNew.this.doScroll("down");
-                break;
+                case "editset":
+                    try {
+                        dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

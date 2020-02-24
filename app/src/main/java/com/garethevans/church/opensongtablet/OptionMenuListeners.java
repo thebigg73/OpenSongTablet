@@ -58,6 +58,7 @@ public class OptionMenuListeners extends AppCompatActivity {
     private static MyInterface mListener;
 
     private static FragmentManager fm;
+    private static float textSize = 14.0f;
 
     static LinearLayout prepareOptionMenu(Context c, FragmentManager fragman) {
         mListener = (MyInterface) c;
@@ -330,6 +331,8 @@ public class OptionMenuListeners extends AppCompatActivity {
 
     static void optionListeners(View v, Context c, Preferences preferences, StorageAccess storageAccess) {
 
+        textSize = preferences.getMyPreferenceFloat(c,"songMenuAlphaIndexSize",14.0f);
+
         // Decide which listeners we need based on the menu
         switch (StaticVariables.whichOptionMenu) {
             case "MAIN":
@@ -403,6 +406,15 @@ public class OptionMenuListeners extends AppCompatActivity {
         }
     }
 
+    private static void setTextButtons(Button b, String text) {
+        b.setTextSize(textSize);
+        b.setText(text.toUpperCase(StaticVariables.locale));
+    }
+    private static void setTextTextView(TextView t, String text) {
+        t.setTextSize(textSize);
+        t.setText(text.toUpperCase(StaticVariables.locale));
+    }
+
     private static void mainOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
         // Identify the buttons
@@ -425,30 +437,28 @@ public class OptionMenuListeners extends AppCompatActivity {
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         // Capitalise all the text by locale
-        menuSetButton.setText(c.getString(R.string.set).toUpperCase(StaticVariables.locale));
-        menuSongButton.setText(c.getString(R.string.song).toUpperCase(StaticVariables.locale));
-        menuProfileButton.setText(c.getString(R.string.profile).toUpperCase(StaticVariables.locale));
-        menuChordsButton.setText(c.getString(R.string.chords).toUpperCase(StaticVariables.locale));
-        menuDisplayButton.setText(c.getString(R.string.display).toUpperCase(StaticVariables.locale));
-        menuGesturesButton.setText(c.getString(R.string.gesturesandmenus).toUpperCase(StaticVariables.locale));
-        menuConnectButton.setText(c.getString(R.string.connections_connect).toUpperCase(StaticVariables.locale));
-        menuMidiButton.setText(c.getString(R.string.midi).toUpperCase(StaticVariables.locale));
-        menuModeButton.setText(c.getString(R.string.choose_app_mode).toUpperCase(StaticVariables.locale));
-        menuFindSongsButton.setText(c.getString(R.string.findnewsongs).toUpperCase(StaticVariables.locale));
-        menuStorageButton.setText(c.getString(R.string.storage).toUpperCase(StaticVariables.locale));
-        menuPadButton.setText(c.getString(R.string.pad).toUpperCase(StaticVariables.locale));
-        menuAutoScrollButton.setText(c.getString(R.string.autoscroll).toUpperCase(StaticVariables.locale));
-        menuMetronomeButton.setText(c.getString(R.string.metronome).toUpperCase(StaticVariables.locale));
-        menuCCLIButton.setText(c.getString(R.string.edit_song_ccli).toUpperCase(StaticVariables.locale));
-        menuOtherButton.setText(c.getString(R.string.other).toUpperCase(StaticVariables.locale));
+        setTextButtons(menuSetButton,c.getString(R.string.set));
+        setTextButtons(menuSongButton,c.getString(R.string.song));
+        setTextButtons(menuProfileButton,c.getString(R.string.profile));
+        setTextButtons(menuChordsButton,c.getString(R.string.chords));
+        setTextButtons(menuDisplayButton,c.getString(R.string.display));
+        setTextButtons(menuGesturesButton,c.getString(R.string.gesturesandmenus));
+        setTextButtons(menuConnectButton,c.getString(R.string.connections_connect));
+        setTextButtons(menuMidiButton,c.getString(R.string.midi));
+        setTextButtons(menuModeButton,c.getString(R.string.choose_app_mode));
+        setTextButtons(menuFindSongsButton,c.getString(R.string.findnewsongs));
+        setTextButtons(menuStorageButton,c.getString(R.string.storage));
+        setTextButtons(menuPadButton,c.getString(R.string.pad));
+        setTextButtons(menuAutoScrollButton,c.getString(R.string.autoscroll));
+        setTextButtons(menuMetronomeButton,c.getString(R.string.metronome));
+        setTextButtons(menuCCLIButton,c.getString(R.string.edit_song_ccli));
+        setTextButtons(menuOtherButton,c.getString(R.string.other));
 
         // Only allow connection menu for JellyBean+
         menuConnectButton.setVisibility(View.VISIBLE);
 
         // Only allow MIDI menu for Marshmallow+ and if it is available
         if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-        /*if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M &&
-                c.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI)) {*/
             menuMidiButton.setVisibility(View.VISIBLE);
         } else {
             menuMidiButton.setVisibility(View.GONE);
@@ -527,6 +537,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                 }
             }
         });
+
         if (c.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI)) {
             menuMidiButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -546,7 +557,6 @@ public class OptionMenuListeners extends AppCompatActivity {
                 }
             });
         }
-
         menuConnectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -643,17 +653,17 @@ public class OptionMenuListeners extends AppCompatActivity {
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.set).toUpperCase(StaticVariables.locale));
-        setLoadButton.setText(c.getString(R.string.load).toUpperCase(StaticVariables.locale));
-        setSaveButton.setText(c.getString(R.string.save).toUpperCase(StaticVariables.locale));
-        setNewButton.setText(c.getString(R.string.set_new).toUpperCase(StaticVariables.locale));
-        setDeleteButton.setText(c.getString(R.string.delete).toUpperCase(StaticVariables.locale));
-        setOrganiseButton.setText(c.getString(R.string.managesets).toUpperCase(StaticVariables.locale));
-        setImportButton.setText(c.getString(R.string.importnewset).toUpperCase(StaticVariables.locale));
-        setExportButton.setText(c.getString(R.string.export).toUpperCase(StaticVariables.locale));
-        setCustomButton.setText(c.getString(R.string.add_custom_slide).toUpperCase(StaticVariables.locale));
-        setVariationButton.setText(c.getString(R.string.customise_set_item).toUpperCase(StaticVariables.locale));
-        setEditButton.setText(c.getString(R.string.edit).toUpperCase(StaticVariables.locale));
-        showSetTickBoxInSongMenu.setText(c.getString(R.string.setquickcheck).toUpperCase(StaticVariables.locale));
+        setTextButtons(setLoadButton,c.getString(R.string.load));
+        setTextButtons(setSaveButton,c.getString(R.string.save));
+        setTextButtons(setNewButton,c.getString(R.string.set_new));
+        setTextButtons(setDeleteButton,c.getString(R.string.delete));
+        setTextButtons(setOrganiseButton,c.getString(R.string.managesets));
+        setTextButtons(setImportButton,c.getString(R.string.importnewset));
+        setTextButtons(setExportButton,c.getString(R.string.export));
+        setTextButtons(setCustomButton,c.getString(R.string.add_custom_slide));
+        setTextButtons(setVariationButton,c.getString(R.string.customise_set_item));
+        setTextButtons(setEditButton,c.getString(R.string.edit));
+        setTextButtons(showSetTickBoxInSongMenu,c.getString(R.string.setquickcheck));
 
         showSetTickBoxInSongMenu.setChecked(preferences.getMyPreferenceBoolean(c,"songMenuSetTicksShow",true));
 
@@ -903,25 +913,25 @@ public class OptionMenuListeners extends AppCompatActivity {
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.song).toUpperCase(StaticVariables.locale));
-        songPadButton.setText(c.getString(R.string.pad).toUpperCase(StaticVariables.locale));
-        songAutoScrollButton.setText(c.getString(R.string.autoscroll).toUpperCase(StaticVariables.locale));
-        songMetronomeButton.setText(c.getString(R.string.metronome).toUpperCase(StaticVariables.locale));
-        songChordsButton.setText(c.getString(R.string.chords).toUpperCase(StaticVariables.locale));
-        songLinksButton.setText(c.getString(R.string.link).toUpperCase(StaticVariables.locale));
-        songDuplicateButton.setText(c.getString(R.string.duplicate).toUpperCase(StaticVariables.locale));
-        songEditButton.setText(c.getString(R.string.edit).toUpperCase(StaticVariables.locale));
-        songStickyButton.setText(c.getString(R.string.stickynotes_edit).toUpperCase(StaticVariables.locale));
-        songDrawingButton.setText(c.getString(R.string.highlight).toUpperCase(StaticVariables.locale));
-        songScoreButton.setText(c.getString(R.string.music_score).toUpperCase(StaticVariables.locale));
-        songOnYouTubeButton.setText(c.getString(R.string.youtube).toUpperCase(StaticVariables.locale));
-        songOnWebButton.setText(c.getString(R.string.websearch).toUpperCase(StaticVariables.locale));
-        songRenameButton.setText(c.getString(R.string.rename).toUpperCase(StaticVariables.locale));
-        songNewButton.setText(c.getString(R.string.new_something).toUpperCase(StaticVariables.locale));
-        songDeleteButton.setText(c.getString(R.string.delete).toUpperCase(StaticVariables.locale));
-        songImportButton.setText(c.getString(R.string.importnewsong).toUpperCase(StaticVariables.locale));
-        songExportButton.setText(c.getString(R.string.export).toUpperCase(StaticVariables.locale));
-        songPresentationOrderButton.setText(c.getString(R.string.edit_song_presentation).toUpperCase(StaticVariables.locale));
-        songKeepMultiLineCompactButton.setText(c.getString(R.string.keepmultiline).toUpperCase(StaticVariables.locale));
+        setTextButtons(songPadButton,c.getString(R.string.pad));
+        setTextButtons(songAutoScrollButton,c.getString(R.string.autoscroll));
+        setTextButtons(songMetronomeButton,c.getString(R.string.metronome));
+        setTextButtons(songChordsButton,c.getString(R.string.chords));
+        setTextButtons(songLinksButton,c.getString(R.string.link));
+        setTextButtons(songDuplicateButton,c.getString(R.string.duplicate));
+        setTextButtons(songEditButton,c.getString(R.string.edit));
+        setTextButtons(songStickyButton,c.getString(R.string.stickynotes_edit));
+        setTextButtons(songDrawingButton,c.getString(R.string.highlight));
+        setTextButtons(songScoreButton,c.getString(R.string.music_score));
+        setTextButtons(songOnYouTubeButton,c.getString(R.string.youtube));
+        setTextButtons(songOnWebButton,c.getString(R.string.websearch));
+        setTextButtons(songRenameButton,c.getString(R.string.rename));
+        setTextButtons(songNewButton,c.getString(R.string.new_something));
+        setTextButtons(songDeleteButton,c.getString(R.string.delete));
+        setTextButtons(songImportButton,c.getString(R.string.importnewsong));
+        setTextButtons(songExportButton,c.getString(R.string.export));
+        setTextButtons(songPresentationOrderButton,c.getString(R.string.edit_song_presentation));
+        setTextButtons(songKeepMultiLineCompactButton,c.getString(R.string.keepmultiline));
 
         // Hide the drawing option unless we are in performance mode
         if (StaticVariables.whichMode.equals("Performance")) {
@@ -1221,24 +1231,26 @@ public class OptionMenuListeners extends AppCompatActivity {
         Button chordsConvertButton = v.findViewById(R.id.chordsConvertButton);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
+        // Get text for b button by adjusting the b button to use the unicode character instead
+        String newflat = c.getString(R.string.chords_flat).replace(" b "," \u266d ");
+        String newsharp = c.getString(R.string.chords_sharp).replace(" # "," \u266f ");
+
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.chords).toUpperCase(StaticVariables.locale));
-        chordsButton.setText(c.getString(R.string.chords).toUpperCase(StaticVariables.locale));
-        chordsTransposeButton.setText(c.getString(R.string.transpose).toUpperCase(StaticVariables.locale));
-        chordsSharpButton.setText(c.getString(R.string.chords_sharp).toUpperCase(StaticVariables.locale));
-        String temp = c.getString(R.string.chords_flat).replace("b","#");
-        temp = temp.toUpperCase(StaticVariables.locale);
-        temp = temp.replace("#","\u266d");
+        setTextButtons(chordsButton,c.getString(R.string.chords));
+        setTextButtons(chordsTransposeButton,c.getString(R.string.transpose));
+        chordsSharpButton.setTransformationMethod(null);
         chordsFlatButton.setTransformationMethod(null);
-        chordsFlatButton.setText(temp);
-        chordsToggleSwitch.setText(c.getString(R.string.showchords).toUpperCase(StaticVariables.locale));
-        chordsLyricsToggleSwitch.setText(c.getString(R.string.showlyrics).toUpperCase(StaticVariables.locale));
-        chordsCapoToggleSwitch.setText(c.getString(R.string.showcapo).toUpperCase(StaticVariables.locale));
-        chordsNativeAndCapoToggleSwitch.setText(c.getString(R.string.capo_toggle_bothcapo).toUpperCase(StaticVariables.locale));
-        capoAsNumeralsToggleSwitch.setText(c.getString(R.string.capo_style).toUpperCase(StaticVariables.locale));
-        switchCapoTextSize.setText(c.getString(R.string.size).toUpperCase(StaticVariables.locale));
-        chordsFormatButton.setText(c.getString(R.string.choose_chordformat).toUpperCase(StaticVariables.locale));
-        chordsConvertButton.setText(c.getString(R.string.chord_convert).toUpperCase(StaticVariables.locale));
+        setTextButtons(chordsSharpButton,newsharp);
+        setTextButtons(chordsFlatButton,newflat);
+        setTextButtons(chordsToggleSwitch,c.getString(R.string.showchords));
+        setTextButtons(chordsLyricsToggleSwitch,c.getString(R.string.showlyrics));
+        setTextButtons(chordsCapoToggleSwitch,c.getString(R.string.showcapo));
+        setTextButtons(chordsNativeAndCapoToggleSwitch,c.getString(R.string.capo_toggle_bothcapo));
+        setTextButtons(capoAsNumeralsToggleSwitch,c.getString(R.string.capo_style));
+        setTextButtons(switchCapoTextSize,c.getString(R.string.size));
+        setTextButtons(chordsFormatButton,c.getString(R.string.choose_chordformat));
+        setTextButtons(chordsConvertButton,c.getString(R.string.chord_convert));
 
         // Set the switches up based on preferences
         if (preferences.getMyPreferenceBoolean(c,"displayChords",true)) {
@@ -1503,8 +1515,8 @@ public class OptionMenuListeners extends AppCompatActivity {
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.profile).toUpperCase(StaticVariables.locale));
-        profileLoadButton.setText(c.getString(R.string.load).toUpperCase(StaticVariables.locale));
-        profileSaveButton.setText(c.getString(R.string.save).toUpperCase(StaticVariables.locale));
+        setTextButtons(profileLoadButton,c.getString(R.string.load));
+        setTextButtons(profileSaveButton,c.getString(R.string.save));
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -1562,15 +1574,15 @@ public class OptionMenuListeners extends AppCompatActivity {
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.display).toUpperCase(StaticVariables.locale));
-        displayThemeButton.setText(c.getString(R.string.choose_theme).toUpperCase(StaticVariables.locale));
-        displayAutoScaleButton.setText(c.getString(R.string.autoscale_toggle).toUpperCase(StaticVariables.locale));
-        displayFontButton.setText(c.getString(R.string.choose_fonts).toUpperCase(StaticVariables.locale));
-        displayButtonsButton.setText(c.getString(R.string.pagebuttons).toUpperCase(StaticVariables.locale));
-        displayPopUpsButton.setText(c.getString(R.string.display_popups).toUpperCase(StaticVariables.locale));
-        displayInfoButton.setText(c.getString(R.string.extra).toUpperCase(StaticVariables.locale));
-        displayActionBarButton.setText(c.getString(R.string.actionbar).toUpperCase(StaticVariables.locale));
-        displayConnectedDisplayButton.setText(c.getString(R.string.connected_display).toUpperCase(StaticVariables.locale));
-        displayHDMIButton.setText(c.getString(R.string.hdmi).toUpperCase(StaticVariables.locale));
+        setTextButtons(displayThemeButton,c.getString(R.string.choose_theme));
+        setTextButtons(displayAutoScaleButton,c.getString(R.string.autoscale_toggle));
+        setTextButtons(displayFontButton,c.getString(R.string.choose_fonts));
+        setTextButtons(displayButtonsButton,c.getString(R.string.pagebuttons));
+        setTextButtons(displayPopUpsButton,c.getString(R.string.display_popups));
+        setTextButtons(displayInfoButton,c.getString(R.string.extra));
+        setTextButtons(displayActionBarButton,c.getString(R.string.actionbar));
+        setTextButtons(displayConnectedDisplayButton,c.getString(R.string.connected_display));
+        setTextButtons(displayHDMIButton,c.getString(R.string.hdmi));
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -1719,20 +1731,17 @@ public class OptionMenuListeners extends AppCompatActivity {
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.findnewsongs).toUpperCase(StaticVariables.locale));
-        ugSearchButton.setText(c.getString(R.string.ultimateguitarsearch).toUpperCase(StaticVariables.locale));
-        chordieSearchButton.setText(c.getString(R.string.chordiesearch).toUpperCase(StaticVariables.locale));
-        String ss = c.getString(R.string.songselect) + " " + c.getString(R.string.subscription);
-        songselectSearchButton.setText(ss.toUpperCase(StaticVariables.locale));
-        String wt = c.getString(R.string.worshiptogether) + " " + c.getString(R.string.subscription);
-        worshiptogetherSearchButton.setText(wt.toUpperCase(StaticVariables.locale));
-        String wr = c.getString(R.string.worshipready) + " " + c.getString(R.string.subscription);
-        worshipreadySearchButton.setText(wr.toUpperCase(StaticVariables.locale));
-        ukutabsSearchButton.setText(c.getString(R.string.ukutabs).toUpperCase(StaticVariables.locale));
-        holychordsSearchButton.setText(c.getString(R.string.holychords).toUpperCase(StaticVariables.locale));
-        bandDownloadButton.setText(c.getString(R.string.my_band).toUpperCase(StaticVariables.locale));
-        churchDownloadButton.setText(c.getString(R.string.my_church).toUpperCase(StaticVariables.locale));
-        songImportButton.setText(c.getString(R.string.importnewsong).toUpperCase(StaticVariables.locale));
-        cameraButton.setText(c.getString(R.string.camera).toUpperCase(StaticVariables.locale));
+        setTextButtons(ugSearchButton,c.getString(R.string.ultimateguitarsearch));
+        setTextButtons(chordieSearchButton,c.getString(R.string.chordiesearch));
+        setTextButtons(songselectSearchButton,c.getString(R.string.songselect)+ " " + c.getString(R.string.subscription));
+        setTextButtons(worshiptogetherSearchButton,c.getString(R.string.worshiptogether)+ " " + c.getString(R.string.subscription));
+        setTextButtons(worshipreadySearchButton,c.getString(R.string.worshipready)+ " " + c.getString(R.string.subscription));
+        setTextButtons(ukutabsSearchButton,c.getString(R.string.ukutabs));
+        setTextButtons(holychordsSearchButton,c.getString(R.string.holychords));
+        setTextButtons(bandDownloadButton,c.getString(R.string.my_band));
+        setTextButtons(churchDownloadButton,c.getString(R.string.my_church));
+        setTextButtons(songImportButton,c.getString(R.string.importnewsong));
+        setTextButtons(cameraButton,c.getString(R.string.camera));
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -1889,16 +1898,16 @@ public class OptionMenuListeners extends AppCompatActivity {
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.storage).toUpperCase(StaticVariables.locale));
-        storageNewFolderButton.setText(c.getString(R.string.folder_new).toUpperCase(StaticVariables.locale));
-        storageEditButton.setText(c.getString(R.string.folder_rename).toUpperCase(StaticVariables.locale));
-        storageManageButton.setText(c.getString(R.string.storage_choose).toUpperCase(StaticVariables.locale));
-        exportSongListButton.setText(c.getString(R.string.exportsongdirectory).toUpperCase(StaticVariables.locale));
-        storageImportOSBButton.setText(c.getString(R.string.backup_import).toUpperCase(StaticVariables.locale));
-        storageExportOSBButton.setText(c.getString(R.string.backup_export).toUpperCase(StaticVariables.locale));
-        storageImportOnSongButton.setText(c.getString(R.string.import_onsong_choose).toUpperCase(StaticVariables.locale));
-        storageSongMenuButton.setText(c.getString(R.string.refreshsongs).toUpperCase(StaticVariables.locale));
-        storageDatabaseButton.setText(c.getString(R.string.search_rebuild).toUpperCase(StaticVariables.locale));
-        storageLogButton.setText(c.getString(R.string.search_log).toUpperCase(StaticVariables.locale));
+        setTextButtons(storageNewFolderButton,c.getString(R.string.folder_new));
+        setTextButtons(storageEditButton,c.getString(R.string.folder_rename));
+        setTextButtons(storageManageButton,c.getString(R.string.storage_choose));
+        setTextButtons(exportSongListButton,c.getString(R.string.exportsongdirectory));
+        setTextButtons(storageImportOSBButton,c.getString(R.string.backup_import));
+        setTextButtons(storageExportOSBButton,c.getString(R.string.backup_export));
+        setTextButtons(storageImportOnSongButton,c.getString(R.string.import_onsong_choose));
+        setTextButtons(storageSongMenuButton,c.getString(R.string.refreshsongs));
+        setTextButtons(storageDatabaseButton,c.getString(R.string.search_rebuild));
+        setTextButtons(storageLogButton,c.getString(R.string.search_log));
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -2046,22 +2055,23 @@ public class OptionMenuListeners extends AppCompatActivity {
         if (FullscreenActivity.salutLog==null || FullscreenActivity.salutLog.equals("")) {
             FullscreenActivity.salutLog = c.getResources().getString(R.string.connections_log) + "\n\n";
         }
-        FullscreenActivity.connectionsLog.setText(FullscreenActivity.salutLog);
+        setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
 
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
-        // Capitalise all the text by locale
-        connectionsReceiveHostFile.setText(c.getResources().getString(R.string.connections_receive_host).toUpperCase(StaticVariables.locale));
-        menuUp.setText(c.getString(R.string.connections_connect).toUpperCase(StaticVariables.locale));
+        // Get host/slave text
         if (FullscreenActivity.hostButtonText==null || FullscreenActivity.hostButtonText.equals("")) {
             FullscreenActivity.hostButtonText = c.getResources().getString(R.string.connections_service_start).toUpperCase(StaticVariables.locale);
         }
-        FullscreenActivity.hostButton.setText(FullscreenActivity.hostButtonText);
         if (FullscreenActivity.clientButtonText==null || FullscreenActivity.clientButtonText.equals("")) {
             FullscreenActivity.clientButtonText = c.getResources().getString(R.string.connections_discover).toUpperCase(StaticVariables.locale);
         }
-        FullscreenActivity.clientButton.setText(FullscreenActivity.clientButtonText);
 
+        // Capitalise all the text by locale
+        menuUp.setText(c.getString(R.string.connections_connect).toUpperCase(StaticVariables.locale));
+        setTextButtons(connectionsReceiveHostFile,c.getString(R.string.connections_receive_host));
+        setTextButtons(FullscreenActivity.hostButton,FullscreenActivity.hostButtonText);
+        setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
         connectionsReceiveHostFile.setChecked(FullscreenActivity.receiveHostFiles);
 
         // Set the button listeners
@@ -2084,7 +2094,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 FullscreenActivity.salutLog = c.getResources().getString(R.string.connections_log) + "\n\n";
-                FullscreenActivity.connectionsLog.setText(FullscreenActivity.salutLog);
+                setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
             }
         });
         FullscreenActivity.hostButton.setOnClickListener(new View.OnClickListener() {
@@ -2124,12 +2134,12 @@ public class OptionMenuListeners extends AppCompatActivity {
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         // Capitalise all the text by locale
-        midiBluetooth.setText(c.getResources().getString(R.string.midi_bluetooth).toUpperCase(StaticVariables.locale));
-        midiUSB.setText(c.getResources().getString(R.string.midi_usb).toUpperCase(StaticVariables.locale));
-        midiCommands.setText(c.getString(R.string.midi_commands).toUpperCase(StaticVariables.locale));
-        midiSend.setText(c.getString(R.string.midi_send).toUpperCase(StaticVariables.locale));
-        midiAuto.setText(c.getString(R.string.midi_auto).toUpperCase(StaticVariables.locale));
         menuUp.setText(c.getString(R.string.midi).toUpperCase(StaticVariables.locale));
+        setTextButtons(midiBluetooth,c.getString(R.string.midi_bluetooth));
+        setTextButtons(midiUSB,c.getString(R.string.midi_usb));
+        setTextButtons(midiCommands,c.getString(R.string.midi_commands));
+        setTextButtons(midiSend,c.getString(R.string.midi_send));
+        setTextButtons(midiAuto,c.getString(R.string.midi_auto));
 
         // Set the default
         midiAuto.setChecked(preferences.getMyPreferenceBoolean(c,"midiSendAuto",false));
@@ -2214,7 +2224,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                         StaticVariables.myToastMessage = salutDevice.readableName + " - " +
                                 c.getResources().getString(R.string.connections_success);
                         FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-                        FullscreenActivity.connectionsLog.setText(FullscreenActivity.salutLog);
+                        setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
                         ShowToast.showToast(c);
                     }
                 });
@@ -2223,13 +2233,13 @@ public class OptionMenuListeners extends AppCompatActivity {
             }
 
             FullscreenActivity.hostButtonText = c.getResources().getString(R.string.connections_service_stop).toUpperCase(StaticVariables.locale);
-            FullscreenActivity.hostButton.setText(FullscreenActivity.hostButtonText);
+            setTextButtons(FullscreenActivity.hostButton,FullscreenActivity.hostButtonText);
             FullscreenActivity.clientButton.setAlpha(0.5f);
             FullscreenActivity.clientButton.setClickable(false);
             StaticVariables.myToastMessage = c.getResources().getString(R.string.connections_broadcast) +
                     " " + FullscreenActivity.mBluetoothName;
             FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-            FullscreenActivity.connectionsLog.setText(FullscreenActivity.salutLog);
+            setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
             ShowToast.showToast(c);
         } else {
             try {
@@ -2237,9 +2247,9 @@ public class OptionMenuListeners extends AppCompatActivity {
                     FullscreenActivity.network.stopNetworkService(false);
                 }
                 FullscreenActivity.hostButtonText = c.getResources().getString(R.string.connections_service_start).toUpperCase(StaticVariables.locale);
-                FullscreenActivity.hostButton.setText(FullscreenActivity.hostButtonText);
+                setTextButtons(FullscreenActivity.hostButton,FullscreenActivity.hostButtonText);
                 FullscreenActivity.salutLog += "\n" + c.getResources().getString(R.string.connections_service_stop);
-                FullscreenActivity.connectionsLog.setText(FullscreenActivity.salutLog);
+                setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
                 FullscreenActivity.clientButton.setAlpha(1f);
                 FullscreenActivity.clientButton.setClickable(true);
             } catch (Exception e) {
@@ -2258,7 +2268,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                         StaticVariables.myToastMessage = c.getResources().getString(R.string.connections_host) +
                                 " " + hostname.readableName;
                         FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-                        FullscreenActivity.connectionsLog.setText(FullscreenActivity.salutLog);
+                        setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
                         ShowToast.showToast(c);
                         registerWithHost(c,hostname);
                     }
@@ -2267,21 +2277,21 @@ public class OptionMenuListeners extends AppCompatActivity {
                 e.printStackTrace();
             }
             FullscreenActivity.salutLog += "\n" + c.getResources().getString(R.string.connections_searching);
-            FullscreenActivity.connectionsLog.setText(FullscreenActivity.salutLog);
+            setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
             FullscreenActivity.clientButtonText = c.getResources().getString(R.string.connections_discover_stop).toUpperCase(StaticVariables.locale);
-            FullscreenActivity.clientButton.setText(FullscreenActivity.clientButtonText);
+            setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
             FullscreenActivity.hostButton.setAlpha(0.5f);
             FullscreenActivity.hostButton.setClickable(false);
         } else {
             FullscreenActivity.salutLog += "\n" +c.getResources().getString(R.string.connections_discover_stop);
-            FullscreenActivity.connectionsLog.setText(FullscreenActivity.salutLog);
+            setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
             try {
                 FullscreenActivity.network.stopServiceDiscovery(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             FullscreenActivity.clientButtonText = c.getResources().getString(R.string.connections_discover).toUpperCase(StaticVariables.locale);
-            FullscreenActivity.clientButton.setText(FullscreenActivity.clientButtonText);
+            setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
             FullscreenActivity.hostButton.setAlpha(1f);
             FullscreenActivity.hostButton.setClickable(true);
         }
@@ -2297,11 +2307,11 @@ public class OptionMenuListeners extends AppCompatActivity {
                     StaticVariables.myToastMessage = c.getResources().getString(R.string.connections_connected) +
                             " " + possibleHost.readableName;
                     FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-                    FullscreenActivity.connectionsLog.setText(FullscreenActivity.salutLog);
+                    setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
                     ShowToast.showToast(c);
                     FullscreenActivity.clientButtonText = (c.getResources().getString(R.string.connections_disconnect) +
                             " " + possibleHost.readableName).toUpperCase(StaticVariables.locale);
-                    FullscreenActivity.clientButton.setText(FullscreenActivity.clientButtonText);
+                    setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
 
                 }
             }, new SalutCallback() {
@@ -2310,7 +2320,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                     StaticVariables.myToastMessage = possibleHost.readableName + ": " +
                             c.getResources().getString(R.string.connections_failure);
                     FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-                    FullscreenActivity.connectionsLog.setText(FullscreenActivity.salutLog);
+                    setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
                     ShowToast.showToast(c);
                     try {
                         FullscreenActivity.network.stopServiceDiscovery(true);
@@ -2318,7 +2328,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     FullscreenActivity.clientButtonText = c.getResources().getString(R.string.connections_discover).toUpperCase(StaticVariables.locale);
-                    FullscreenActivity.clientButton.setText(FullscreenActivity.clientButtonText);
+                    setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
                     FullscreenActivity.hostButton.setAlpha(1f);
                     FullscreenActivity.hostButton.setClickable(true);
                 }
@@ -2341,9 +2351,9 @@ public class OptionMenuListeners extends AppCompatActivity {
 
         // Capitalise all the text by locale
         menuUp.setText(c.getString(R.string.choose_app_mode).toUpperCase(StaticVariables.locale));
-        modePerformanceButton.setText(c.getString(R.string.performancemode).toUpperCase(StaticVariables.locale));
-        modeStageButton.setText(c.getString(R.string.stagemode).toUpperCase(StaticVariables.locale));
-        modePresentationButton.setText(c.getString(R.string.presentermode).toUpperCase(StaticVariables.locale));
+        setTextButtons(modePerformanceButton,c.getString(R.string.performancemode));
+        setTextButtons(modeStageButton,c.getString(R.string.stagemode));
+        setTextButtons(modePresentationButton,c.getString(R.string.presentermode));
 
         // Set a tick next to the current mode
         switch (StaticVariables.whichMode) {
@@ -2452,13 +2462,13 @@ public class OptionMenuListeners extends AppCompatActivity {
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.gesturesandmenus).toUpperCase(StaticVariables.locale));
-        gesturesPedalButton.setText(c.getString(R.string.footpedal).toUpperCase(StaticVariables.locale));
-        gesturesPageButton.setText(c.getString(R.string.quicklaunch_title).toUpperCase(StaticVariables.locale));
-        gesturesCustomButton.setText(c.getString(R.string.custom_gestures).toUpperCase(StaticVariables.locale));
-        gesturesMenuOptions.setText(c.getString(R.string.menu_settings).toUpperCase(StaticVariables.locale));
-        gesturesScrollButton.setText(c.getString(R.string.scrollbuttons).toUpperCase(StaticVariables.locale));
-        displayMenuToggleSwitch.setText(c.getString(R.string.hide_actionbar).toUpperCase(StaticVariables.locale));
-        gesturesSongSwipeButton.setText(c.getString(R.string.swipe).toUpperCase(StaticVariables.locale));
+        setTextButtons(gesturesPedalButton,c.getString(R.string.footpedal));
+        setTextButtons(gesturesPageButton,c.getString(R.string.quicklaunch_title));
+        setTextButtons(gesturesCustomButton,c.getString(R.string.custom_gestures));
+        setTextButtons(gesturesMenuOptions,c.getString(R.string.menu_settings));
+        setTextButtons(gesturesScrollButton,c.getString(R.string.scrollbuttons));
+        setTextButtons(displayMenuToggleSwitch,c.getString(R.string.hide_actionbar));
+        setTextButtons(gesturesSongSwipeButton,c.getString(R.string.swipe));
 
         // Set the switches up based on preferences
         displayMenuToggleSwitch.setChecked(preferences.getMyPreferenceBoolean(c,"hideActionBar",false));
@@ -2580,12 +2590,12 @@ public class OptionMenuListeners extends AppCompatActivity {
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.autoscroll).toUpperCase(StaticVariables.locale));
-        autoScrollButton.setText(c.getString(R.string.autoscroll).toUpperCase(StaticVariables.locale));
-        autoScrollTimeDefaultsButton.setText(c.getString(R.string.default_autoscroll).toUpperCase(StaticVariables.locale));
-        autoScrollStartButton.setText(c.getString(R.string.autostart_autoscroll).toUpperCase(StaticVariables.locale));
-        autoscrollActivatedSwitch.setText(c.getString(R.string.activated).toUpperCase(StaticVariables.locale));
-        switchTimerSize.setText(c.getString(R.string.timer_size).toUpperCase(StaticVariables.locale));
-        autoScrollLearnButton.setText(c.getString(R.string.timer_learn).toUpperCase(StaticVariables.locale));
+        setTextButtons(autoScrollButton,c.getString(R.string.autoscroll));
+        setTextButtons(autoScrollTimeDefaultsButton,c.getString(R.string.default_autoscroll));
+        setTextButtons(autoScrollStartButton,c.getString(R.string.autostart_autoscroll));
+        setTextButtons(autoscrollActivatedSwitch,c.getString(R.string.activated));
+        setTextButtons(switchTimerSize,c.getString(R.string.timer_size));
+        setTextButtons(autoScrollLearnButton,c.getString(R.string.timer_learn));
 
         // Set the switches up based on preferences
         autoScrollStartButton.setChecked(preferences.getMyPreferenceBoolean(c,"autoscrollAutoStart",false));
@@ -2687,13 +2697,13 @@ public class OptionMenuListeners extends AppCompatActivity {
 
 
         // Capitalise all the text by locale
-        padButton.setText(c.getString(R.string.pad).toUpperCase(StaticVariables.locale));
         menuup.setText(c.getString(R.string.pad).toUpperCase(StaticVariables.locale));
-        padStartButton.setText(c.getString(R.string.autostartpad).toUpperCase(StaticVariables.locale));
-        padCustomButton.setText(c.getString(R.string.custom).toUpperCase(StaticVariables.locale));
-        padCrossFadeButton.setText(c.getString(R.string.crossfade_time).toUpperCase(StaticVariables.locale));
-        padActivatedSwitch.setText(c.getString(R.string.activated).toUpperCase(StaticVariables.locale));
-        switchTimerSize.setText(c.getString(R.string.timer_size).toUpperCase(StaticVariables.locale));
+        setTextButtons(padButton,c.getString(R.string.pad));
+        setTextButtons(padStartButton,c.getString(R.string.autostartpad));
+        setTextButtons(padCustomButton,c.getString(R.string.custom));
+        setTextButtons(padCrossFadeButton,c.getString(R.string.crossfade_time));
+        setTextButtons(padActivatedSwitch,c.getString(R.string.activated));
+        setTextButtons(switchTimerSize,c.getString(R.string.timer_size));
 
         // Set the switch
         switchTimerSize.setChecked(preferences.getMyPreferenceBoolean(c,"padLargeFontInfoBar",true));
@@ -2791,9 +2801,6 @@ public class OptionMenuListeners extends AppCompatActivity {
         SwitchCompat metronomeActivatedSwitch = v.findViewById(R.id.metronomeActivatedSwitch);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
-        // Capitalise all the text by locale
-        menuup.setText(c.getString(R.string.metronome).toUpperCase(StaticVariables.locale));
-        metronomeButton.setText(c.getString(R.string.metronome).toUpperCase(StaticVariables.locale));
         int val = preferences.getMyPreferenceInt(c,"metronomeLength",0);
         String str;
         if (val==0) {
@@ -2801,9 +2808,13 @@ public class OptionMenuListeners extends AppCompatActivity {
         } else {
             str = c.getString(R.string.metronome_duration) + ": "+val;
         }
-        metronomeLengthButton.setText(str.toUpperCase(StaticVariables.locale));
-        metronomeActivatedSwitch.setText(c.getString(R.string.activated).toUpperCase(StaticVariables.locale));
-        metronomeStartButton.setText(c.getString(R.string.autostartmetronome).toUpperCase(StaticVariables.locale));
+
+        // Capitalise all the text by locale
+        menuup.setText(c.getString(R.string.metronome).toUpperCase(StaticVariables.locale));
+        setTextButtons(metronomeButton,c.getString(R.string.metronome));
+        setTextButtons(metronomeLengthButton,str);
+        setTextButtons(metronomeActivatedSwitch,c.getString(R.string.activated));
+        setTextButtons(metronomeStartButton,c.getString(R.string.autostartmetronome));
 
         // Set the switches up based on preferences
         metronomeStartButton.setChecked(preferences.getMyPreferenceBoolean(c,"metronomeAutoStart",false));
@@ -2889,7 +2900,6 @@ public class OptionMenuListeners extends AppCompatActivity {
         Button ccliResetButton = v.findViewById(R.id.ccliResetButton);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
-        // Capitalise all the text by locale
         String mcname = preferences.getMyPreferenceString(c,"ccliChurchName","");
         String mcnum  = preferences.getMyPreferenceString(c,"ccliLicence","");
         if (!mcname.isEmpty()) {
@@ -2900,13 +2910,16 @@ public class OptionMenuListeners extends AppCompatActivity {
         }
         String cname = c.getString(R.string.ccli_church).toUpperCase(StaticVariables.locale) + mcname;
         String clice = c.getString(R.string.ccli_licence).toUpperCase(StaticVariables.locale) + mcnum;
+
+        // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.edit_song_ccli).toUpperCase(StaticVariables.locale));
-        ccliChurchButton.setText(cname);
-        ccliLicenceButton.setText(clice);
-        ccliAutoButton.setText(c.getString(R.string.ccli_automatic).toUpperCase(StaticVariables.locale));
-        ccliViewButton.setText(c.getString(R.string.ccli_view).toUpperCase(StaticVariables.locale));
-        ccliExportButton.setText(c.getString(R.string.export).toUpperCase(StaticVariables.locale));
-        ccliResetButton.setText(c.getString(R.string.ccli_reset).toUpperCase(StaticVariables.locale));
+
+        setTextButtons(ccliChurchButton,cname);
+        setTextButtons(ccliLicenceButton,clice);
+        setTextButtons(ccliAutoButton,c.getString(R.string.ccli_automatic));
+        setTextButtons(ccliViewButton,c.getString(R.string.ccli_view));
+        setTextButtons(ccliExportButton,c.getString(R.string.export));
+        setTextButtons(ccliResetButton,c.getString(R.string.ccli_reset));
 
         // Set the switches up based on preferences
         ccliAutoButton.setChecked(preferences.getMyPreferenceBoolean(c,"ccliAutomaticLogging",false));
@@ -2999,12 +3012,13 @@ public class OptionMenuListeners extends AppCompatActivity {
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.other).toUpperCase(StaticVariables.locale));
-        otherHelpButton.setText(c.getString(R.string.help).toUpperCase(StaticVariables.locale));
-        otherLanguageButton.setText(c.getString(R.string.language).toUpperCase(StaticVariables.locale));
-        otherStartButton.setText(c.getString(R.string.start_screen).toUpperCase(StaticVariables.locale));
-        otherRateButton.setText(c.getString(R.string.rate).toUpperCase(StaticVariables.locale));
-        otherEmailButton.setText(c.getString(R.string.forum).toUpperCase(StaticVariables.locale));
-        otherPayPalButton.setText(c.getString(R.string.paypal).toUpperCase(StaticVariables.locale));
+        setTextButtons(otherHelpButton,c.getString(R.string.help));
+        setTextButtons(otherTweetButton,c.getString(R.string.twitteruser));
+        setTextButtons(otherLanguageButton,c.getString(R.string.language));
+        setTextButtons(otherStartButton,c.getString(R.string.start_screen));
+        setTextButtons(otherRateButton,c.getString(R.string.rate));
+        setTextButtons(otherEmailButton,c.getString(R.string.forum));
+        setTextButtons(otherPayPalButton,c.getString(R.string.paypal));
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {

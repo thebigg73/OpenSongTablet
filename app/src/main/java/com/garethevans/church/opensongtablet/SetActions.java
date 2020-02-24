@@ -145,7 +145,7 @@ class SetActions {
         // On the set list popup it will compare these and display unsaved if it is different.
         //preferences.setMyPreferenceString(c,"setCurrentBeforeEdits",preferences.getMyPreferenceString(c,"setCurrent",""));
         preferences.setMyPreferenceString(c, "setCurrentBeforeEdits", currentSet);
-        Log.d("SetActions","setCurrent="+preferences.getMyPreferenceString(c,"setCurrent",""));
+        //Log.d("SetActions","setCurrent="+preferences.getMyPreferenceString(c,"setCurrent",""));
     }
 
     void prepareSetList(Context c, Preferences preferences) {
@@ -163,10 +163,10 @@ class SetActions {
             // Break the saved set up into a new String[]
             StaticVariables.mSet = setparse.split("%%%");
 
-            Log.d("SetActions","Preparing Set list.  setparse="+setparse);
-            for (String str:StaticVariables.mSet) {
+            //Log.d("SetActions","Preparing Set list.  setparse="+setparse);
+            /*for (String str:StaticVariables.mSet) {
                 Log.d("SetActions","mSet item="+str);
-            }
+            }*/
 
             // Fix any MAIN folder saved in set
             for (int s=0; s<StaticVariables.mSet.length; s++) {
@@ -178,8 +178,8 @@ class SetActions {
 
             StaticVariables.setSize = StaticVariables.mSetList.length;
 
-            Log.d("SetActions","mSet.length="+StaticVariables.mSet.length);
-            Log.d("SetActions","mSetList.length="+StaticVariables.mSetList.length);
+            /*Log.d("SetActions","mSet.length="+StaticVariables.mSet.length);
+            Log.d("SetActions","mSetList.length="+StaticVariables.mSetList.length);*/
 
             // Get rid of tags before and after folder/filenames
             for (int x = 0; x < StaticVariables.mSetList.length; x++) {
@@ -468,7 +468,7 @@ class SetActions {
         String subfoldername;
         String setprefix;
 
-        Log.d("SetActions","where="+where+"  what="+what);
+        //Log.d("SetActions","where="+where+"  what="+what);
         if (where.equals(c.getResources().getString(R.string.scripture))) {
             foldername = "Scripture";
             subfoldername = "_cache";
@@ -914,7 +914,7 @@ class SetActions {
             StaticVariables.whatsongforsetwork = StaticVariables.mSetList[0];
             StaticVariables.setView = true;
 
-            Log.d("SetActions","whatsongforsetwork="+StaticVariables.whatsongforsetwork);
+            //Log.d("SetActions","whatsongforsetwork="+StaticVariables.whatsongforsetwork);
             FullscreenActivity.linkclicked = StaticVariables.mSetList[0];
             FullscreenActivity.pdfPageCurrent = 0;
 
@@ -929,7 +929,7 @@ class SetActions {
     }
 
     void getSongFileAndFolder(Context c) {
-        Log.d("SetActions","linkclicked="+FullscreenActivity.linkclicked);
+        //Log.d("SetActions","linkclicked="+FullscreenActivity.linkclicked);
         if (!FullscreenActivity.linkclicked.contains("/")) {
             FullscreenActivity.linkclicked = "/" + FullscreenActivity.linkclicked;
         }

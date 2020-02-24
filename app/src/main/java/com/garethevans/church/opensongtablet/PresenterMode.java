@@ -17,6 +17,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.hardware.display.DisplayManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -3753,7 +3754,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         FullscreenActivity.needtorefreshsongmenu = true;
                     } else if (FullscreenActivity.needtorefreshsongmenu) {
                         FullscreenActivity.needtorefreshsongmenu = false;
-                        rebuildSearchIndex();
+                        prepareSongMenu();
                     }
 
                     // Get the SQLite stuff if the song exists.  Otherwise throws an exception (which is ok)
@@ -4037,19 +4038,28 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     });
         } else {
             // Might be a hdmi connection
-            try {
+            /*try {
                 Display mDisplay = mMediaRouter.getSelectedRoute().getPresentationDisplay();
                 if (mDisplay != null) {
                     hdmi = new PresentationServiceHDMI(PresenterMode.this, mDisplay, processSong);
                     hdmi.show();
-                    isSecondScreen();
-                    logoButton_isSelected = true;
-                    highlightButtonClicked(presenter_logo_group);
                     FullscreenActivity.isHDMIConnected = true;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-               // Ooops
+            }*/
+
+            // Try this code (Alternative to use HDMI as Chromebooks not coping with above
+            try {
+                DisplayManager dm = (DisplayManager) getSystemService(DISPLAY_SERVICE);
+                Display[] displays = dm.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
+                for (Display mDisplay : displays) {
+                    hdmi = new PresentationServiceHDMI(PresenterMode.this, mDisplay, processSong);
+                    hdmi.show();
+                    FullscreenActivity.isHDMIConnected = true;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

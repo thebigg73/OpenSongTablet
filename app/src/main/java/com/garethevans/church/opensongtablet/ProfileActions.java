@@ -122,6 +122,11 @@ class ProfileActions {
                             preferences.setMyPreferenceBoolean(c,"addSectionSpace", getBooleanValue(xppValue, false));
                             break;
 
+                        case "airTurnMode":
+                            // airTurnMode                     boolean     Should autorepeat onKeyDown (multiple from keyRepeatCount variable) be converted to longKeyPress actions for AirTurn pedals (def:false)
+                            preferences.setMyPreferenceBoolean(c, "airTurnMode", getBooleanValue(xppValue, false));
+                            break;
+
                         case "appTheme":                        // New preference
                         case "mDisplayTheme":                   // Old preference
                             //appTheme                        String      The theme to use (dark, light, custom1, custom2
@@ -987,6 +992,11 @@ class ProfileActions {
                         case "hideLyricsBox":        // New and old preference
                             //hideLyricsBox                   boolean     Should we hide the box around the lyrics
                             preferences.setMyPreferenceBoolean(c,"hideLyricsBox",getBooleanValue(xppValue,false));
+                            break;
+
+                        case "keyRepeatCount":
+                            // keyRepeatCount                  int         The number of key repeats to count as a long press for AirTurn pedals (def:20)
+                            preferences.setMyPreferenceInt(c, "keyRepeatCount",getIntegerValue(xppValue,20));
                             break;
 
                         case "language":        // New preference
@@ -1935,6 +1945,16 @@ class ProfileActions {
                                 xppValue = "false";
                             }
                             preferences.setMyPreferenceBoolean(c,"stickyLargeFont",getBooleanValue(xppValue,false));
+                            break;
+
+                        case "stickyXPosition":
+                            // stickyXPosition                  int         The x position of the sticky popup (def=-1 which means figure it out)
+                            preferences.setMyPreferenceInt(c,"stickyXPosition",getIntegerValue(xppValue,-1));
+                            break;
+
+                        case "stickyYPosition":
+                            // stickyYPosition                  int         The y position of the sticky popup (def=-1 which means figure it out)
+                            preferences.setMyPreferenceInt(c,"stickyYPosition",getIntegerValue(xppValue,-1));
                             break;
 
                         case "swipeForMenus":        // New preference

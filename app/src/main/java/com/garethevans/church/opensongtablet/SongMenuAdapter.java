@@ -39,12 +39,15 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
     private final ArrayList<SongMenuViewItems> songList;
     private final Preferences preferences;
     private ViewHolder viewHolder;
+    private float textSize = 14.0f;
 
     @SuppressLint("UseSparseArrays")
     SongMenuAdapter(Context context, Preferences p, ArrayList<SongMenuViewItems> songList) {
         //super(context, R.layout.songlistitem, songList);
         this.context = context;
         this.songList = songList;
+        this.textSize = p.getMyPreferenceFloat(context,"songMenuAlphaIndexSize",14.0f);
+
         preferences = p;
         songs = new String[songList.size()];
         this.songs = new String[songList.size()];
@@ -196,6 +199,8 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                 }
 
                 final String item = item_title + item_key;
+                viewHolder.lblListItem.setTextSize(textSize);
+                viewHolder.lblListItem.setTextSize(textSize);
                 viewHolder.lblListItem.setText(item);
                 viewHolder.lblListItemAuthor.setText(item_author);
 

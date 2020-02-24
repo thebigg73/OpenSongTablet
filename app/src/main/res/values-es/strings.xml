@@ -498,4 +498,7 @@
     <string name="block_text_shadow">Bloquear sombra de texto</string>
     <string name="continuous">Continuo</string>
     <string name="metronome_duration">Duración del metrónomo (barras)</string>
+    <string name="airTurnLongPress">Modo de pulsación larga AirTurn</string>
+    <string name="autoRepeatCount">Número de repeticiones de teclas necesarias para emular una pulsación larga</string>
+    <string name="autoRepeatRationale">Algunos pedales (como AirTurn) envían señales de tecla de repetición automática que detiene el funcionamiento de las acciones de pulsación larga. Si está utilizando uno de estos pedales, active el modo de pulsación larga AirTurn y ajuste el control deslizante a la cantidad de señales repetidas necesarias para una acción de presión prolongada simulada. La mayoría de los teclados tienen un retraso de 500 ms y una frecuencia de repetición de aproximadamente 25 ms. Esto significa que mantener presionada una tecla durante 1 segundo registrará 20 pulsaciones de teclas. Los pedales AirTurn le permiten ajustar la frecuencia de repetición y el tiempo de retraso utilizando su aplicación complementaria. Los números más altos para el recuento de repetición de teclas significan mantener presionado el pedal durante más tiempo para registrarse como una pulsación larga.</string>
 </resources>

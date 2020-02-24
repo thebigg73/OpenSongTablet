@@ -373,7 +373,6 @@ public class PopUpImportExternalFile extends DialogFragment {
         Uri newfile = storageAccess.getUriForItem(getActivity(), preferences, folder, subfolder, filename);
         if (!storageAccess.uriExists(getActivity(), newfile) || overwrite) {
 
-            Log.d("ImportExternalFile","file_uri="+FullscreenActivity.file_uri);
             InputStream inputStream = storageAccess.getInputStream(getActivity(), FullscreenActivity.file_uri);
 
             // Check the uri exists for the outputstream to be valid

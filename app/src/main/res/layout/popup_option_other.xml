@@ -74,7 +74,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_twitter_white_36dp"
                 android:gravity="center_vertical"
-                android:text="\@OpenSongApp"
+                android:text="@string/twitteruser"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 tools:ignore="HardcodedText" />

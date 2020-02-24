@@ -10,6 +10,8 @@
     <string name="add_reusable">Save as a reusable slide</string>
     <string name="add_song_to_set">Add current song to set</string>
     <string name="addedtoset">has been added to the end of your current set.</string>
+    <string name="airTurn" translatable="false">AirTurn</string>
+    <string name="airTurnLongPress">AirTurn long press mode</string>
     <string name="alert">Alert</string>
     <string name="alert_text">Enter message text</string>
     <string name="alphabetical">Alphabetical song index</string>
@@ -17,6 +19,8 @@
     <string name="app_name">OpenSongApp</string>
     <string name="areyousure">Are you sure?</string>
     <string name="ask">Ask each time</string>
+    <string name="autoRepeatCount">Number of key repeats required to emulate long press</string>
+    <string name="autoRepeatRationale">Some pedals (such as AirTurn) send auto repeat key signals which stops the long press actions working. If you are using one of these pedals, switch on the AirTurn long press mode and adjust the slider to the number of repeated signals needed for a simulated long press action.  Most keyboards have a delay of 500ms and a repeat rate of about 25ms. This means that holding down a key for 1 second will record 20 key presses. AirTurn pedals allow you to adjust the repeat rate and delay time using their companion app. Higher numbers for the key repeat count mean holding the pedal for longer to register as a long press.</string>
     <string name="autoscale">Autoscale</string>
     <string name="autoscale_toggle">Toggle autoscale</string>
     <string name="autoscroll">Autoscroll</string>
@@ -591,6 +595,7 @@
     <string name="transparency">Transparency</string>
     <string name="transpose">Transpose</string>
     <string name="trim_sections">Trim sections</string>
+    <string name="twitteruser" translatable="false">\@OpenSongApp</string>
     <string name="ukulele">Ukulele</string>
     <string name="ukutabs" translatable="false">UkuTabs.com</string>
     <string name="ultimateguitarsearch">Online search at Ultimate-Guitar.com</string>

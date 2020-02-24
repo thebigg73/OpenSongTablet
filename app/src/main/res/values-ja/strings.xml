@@ -498,4 +498,7 @@
     <string name="block_text_shadow">テキストの影をブロックする</string>
     <string name="continuous">連続的</string>
     <string name="metronome_duration">メトロノームの長さ（バー）</string>
+    <string name="airTurnLongPress">AirTurn長押しモード</string>
+    <string name="autoRepeatCount">長押しをエミュレートするために必要なキーリピートの数</string>
+    <string name="autoRepeatRationale">一部のペダル（AirTurnなど）は、長押し操作の動作を停止する自動リピートキー信号を送信します。 これらのペダルのいずれかを使用している場合は、AirTurnの長押しモードをオンにして、シミュレートされた長押しアクションに必要な繰り返し信号の数にスライダーを調整します。 ほとんどのキーボードの遅延は500ミリ秒で、リピートレートは約25ミリ秒です。 つまり、キーを1秒間押し続けると、20回のキー押下が記録されます。 AirTurnペダルを使用すると、コンパニオンアプリを使用してリピートレートと遅延時間を調整できます。 キーリピートカウントの数値が大きいほど、長押しとして登録するためにペダルをより長く保持することを意味します。</string>
 </resources>

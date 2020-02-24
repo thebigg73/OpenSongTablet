@@ -117,18 +117,32 @@ class SQLiteHelper extends SQLiteOpenHelper {
             filename = escapedSQL(filename);
             folder = escapedSQL(folder);
             String songid = escapedSQL(folder) + "/" + escapedSQL(filename);
-            ContentValues values = new ContentValues();
-            values.put(SQLite.COLUMN_SONGID, escapedSQL(songid));
-            values.put(SQLite.COLUMN_FOLDER, escapedSQL(folder));
-            values.put(SQLite.COLUMN_FILENAME, escapedSQL(filename));
 
-            // Insert the new row, returning the primary key value of the new row
-            try {
-                db.insert(SQLite.TABLE_NAME, null, values);
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (!songIdExists(db,songid)) {
+                ContentValues values = new ContentValues();
+                values.put(SQLite.COLUMN_SONGID, escapedSQL(songid));
+                values.put(SQLite.COLUMN_FOLDER, escapedSQL(folder));
+                values.put(SQLite.COLUMN_FILENAME, escapedSQL(filename));
+
+                // Insert the new row, returning the primary key value of the new row
+                try {
+                    db.insert(SQLite.TABLE_NAME, null, values);
+                } catch (Exception e) {
+                    Log.d("SQLiteHelper",songid + " already exists in the table, not able to create.");
+                }
             }
         }
+    }
+
+    boolean songIdExists(SQLiteDatabase db, String songid) {
+        String Query = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + " = \"" + escapedSQL(songid) + "\"";
+        Cursor cursor = db.rawQuery(Query, null);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
     }
 
     private String shortenLyrics(String lyrics) {
@@ -165,6 +179,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
 
         try (SQLiteDatabase db = getDB(c)) {
             ContentValues values = new ContentValues();
+
             values.put(SQLite.COLUMN_ID, sqLite.getId());
             values.put(SQLite.COLUMN_SONGID, escapedSQL(sqLite.getSongid()));
             values.put(SQLite.COLUMN_FILENAME, escapedSQL(sqLite.getFilename()));
@@ -296,7 +311,6 @@ class SQLiteHelper extends SQLiteOpenHelper {
     ArrayList<SQLite> getSongsInFolder(Context c, String whichSongFolder) {
         ArrayList<SQLite> songs = new ArrayList<>();
         ArrayList<String> files = new ArrayList<>();
-
 
 
         // Select matching folder Query

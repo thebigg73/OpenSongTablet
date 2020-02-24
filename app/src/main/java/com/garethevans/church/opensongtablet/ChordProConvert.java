@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
@@ -69,6 +70,8 @@ class ChordProConvert {
 
         // Get a unique uri for the new song
         Uri newUri = getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);
+
+        Log.d("ChordProConvert","newUri="+newUri);
 
         // Now write the modified song
         writeTheImprovedSong(c, storageAccess, preferences, oldSongFileName, newSongFileName,
@@ -438,8 +441,9 @@ class ChordProConvert {
         return parsedLines.toString();
     }
 
-    Uri getNewSongUri(Context c, StorageAccess storageAccess, Preferences preferences, String songSubFolder, String newSongFileName) {
+    Uri getNewSongUri(Context c, StorageAccess storageAccess, Preferences preferences, String songSubFolder, String nsf) {
         // Prepare a new uri based on the best filename, but make it unique so as not to overwrite existing files
+        newSongFileName = nsf;
         Uri n = storageAccess.getUriForItem(c, preferences, "Songs", songSubFolder, newSongFileName);
         int attempts = 0;
         while (storageAccess.uriExists(c, n) && attempts < 4) {
@@ -513,9 +517,10 @@ class ChordProConvert {
         return sf;
     }
 
-    ArrayList<String> bitsForIndexing(String newSongFileName, String title, String author, String copyright,
+    ArrayList<String> bitsForIndexing(String nsf, String title, String author, String copyright,
                                       String key, String time_sig, String ccli, String lyrics) {
         // Finally return the appropriate stuff to the IndexSong
+        newSongFileName = nsf;
         ArrayList<String> bits = new ArrayList<>();
         bits.add(newSongFileName);
         bits.add(title);
@@ -529,19 +534,34 @@ class ChordProConvert {
     }
 
     void writeTheImprovedSong(Context c, StorageAccess storageAccess, Preferences preferences,
-                              String oldSongFileName, String newSongFileName, String songSubFolder,
+                              String oldSongFileName, String nsf, String songSubFolder,
                               Uri newUri, Uri oldUri) {
 
+        newSongFileName = nsf;
         // Only do this for songs that exist!
+        Log.d("ChordProConvert","oldSongFileName="+oldSongFileName);
+        Log.d("ChordProConvert","newSongFileName="+newSongFileName);
+        Log.d("ChordProConvert","oldUri="+oldUri);
+        Log.d("ChordProConvert","newUri="+newUri);
+        Log.d("ChordProConvert","storageAccess.uriExists(c, oldUri)="+storageAccess.uriExists(c, oldUri));
+
         if (oldSongFileName != null && !oldSongFileName.equals("") && newSongFileName != null && !newSongFileName.equals("")
                 && oldUri != null && newUri != null && storageAccess.uriExists(c, oldUri)) {
             storageAccess.lollipopCreateFileForOutputStream(c,preferences,newUri,null,"Songs",songSubFolder,newSongFileName);
-
             OutputStream outputStream = storageAccess.getOutputStream(c, newUri);
-            if (outputStream != null && storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream)) {
+
+            Log.d("ChordProConvert","outputStream="+outputStream);
+
+            if (outputStream != null) {
                 // Change the songId (references to the uri)
                 // Now remove the old chordpro file
-                storageAccess.deleteFile(c, oldUri);
+                storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream);
+                Log.d("ChordProConvert","attempt to deletefile="+storageAccess.deleteFile(c, oldUri));
+
+                // Remove old song from database
+                SQLiteHelper sqLiteHelper = new SQLiteHelper(c);
+                String songid = songSubFolder+"/"+oldSongFileName;
+                sqLiteHelper.deleteSong(c,songid);
             }
 
             // Update the song filename
@@ -555,14 +575,23 @@ class ChordProConvert {
                 songSubFolder = c.getString(R.string.mainfoldername);
             }
 
-            sqLiteHelper.createSong(c,songSubFolder,newSongFileName);
+            SQLiteDatabase tdb = sqLiteHelper.getDB(c);
+            if (!sqLiteHelper.songIdExists(tdb,songSubFolder+"/"+newSongFileName)) {
+                try {
+                    sqLiteHelper.createSong(c, songSubFolder, newSongFileName);
+                } catch (Exception e) {
+                    Log.d("ChordProConvert", "Unable to create song in database - likely already exists!");
+                }
+            }
+            tdb.close();
 
             SQLite sqLite = sqLiteHelper.getSong(c,songSubFolder+"/"+newSongFileName);
-            sqLite.setTitle(StaticVariables.mTitle);
-            sqLite.setLyrics(StaticVariables.mLyrics);
-            sqLite.setFolder(songSubFolder);
-
-            sqLiteHelper.updateSong(c,sqLite);
+            if (sqLite!=null) {
+                sqLite.setTitle(StaticVariables.mTitle);
+                sqLite.setLyrics(StaticVariables.mLyrics);
+                sqLite.setFolder(songSubFolder);
+                sqLiteHelper.updateSong(c,sqLite);
+            }
         }
     }
 

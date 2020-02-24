@@ -88,13 +88,19 @@ class OnSongConvert {
 
         // Get a unique uri for the new song
         Uri newUri = chordProConvert.getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);
+        newSongFileName = newUri.getLastPathSegment();
+        // Just in case it had _ appended due to name conflict.
+        // Get rid of the rubbish...
+        if (newSongFileName.contains("/")) {
+            newSongFileName = newSongFileName.substring(newSongFileName.lastIndexOf("/"));
+            newSongFileName = newSongFileName.replace("/","");
+        }
 
         // Now write the modified song
         chordProConvert.writeTheImprovedSong(c, storageAccess, preferences, oldSongFileName, newSongFileName,
                 songSubFolder, newUri, uri);
 
         // Add it to the database
-
         return chordProConvert.bitsForIndexing(newSongFileName, title, author, copyright, key, time_sig, ccli, lyrics);
     }
 
