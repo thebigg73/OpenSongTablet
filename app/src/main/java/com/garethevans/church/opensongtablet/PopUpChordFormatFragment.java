@@ -139,61 +139,61 @@ public class PopUpChordFormatFragment extends DialogFragment {
         switchAb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyAb",isChecked);
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyAb",!isChecked);
             }
         });
         switchBb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyBb",isChecked);
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyBb",!isChecked);
             }
         });
         switchDb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyDb",isChecked);
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyDb",!isChecked);
             }
         });
         switchEb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyEb",isChecked);
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyEb",!isChecked);
             }
         });
         switchGb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyGb",isChecked);
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyGb",!isChecked);
             }
         });
         switchAbm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyAbm",isChecked);
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyAbm",!isChecked);
             }
         });
         switchBbm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyBbm",isChecked);
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyBbm",!isChecked);
             }
         });
         switchDbm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyDbm",isChecked);
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyDbm",!isChecked);
             }
         });
         switchEbm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyEbm",isChecked);
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyEbm",!isChecked);
             }
         });
         switchGbm.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyGbm",isChecked);
+                preferences.setMyPreferenceBoolean(getActivity(),"prefKeyGbm",!isChecked);
             }
         });
         assumePreferred_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -230,7 +230,7 @@ public class PopUpChordFormatFragment extends DialogFragment {
     }
 
     private void setSwitches(boolean prefb, SwitchCompat myswitch) {
-        myswitch.setChecked(prefb);
+        myswitch.setChecked(!prefb);
     }
 
     private void exitChordFormat() {

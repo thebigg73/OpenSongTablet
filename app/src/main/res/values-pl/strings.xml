@@ -501,4 +501,5 @@
     <string name="airTurnLongPress">Tryb długiego naciśnięcia AirTurn</string>
     <string name="autoRepeatCount">Liczba powtórzeń klawiszy wymaganych do emulacji długiego naciśnięcia</string>
     <string name="autoRepeatRationale">Niektóre pedały (takie jak AirTurn) wysyłają sygnały klawiszy automatycznego powtarzania, które zatrzymują działanie długich naciśnięć. Jeśli używasz jednego z tych pedałów, włącz tryb długiego naciśnięcia AirTurn i dostosuj suwak do liczby powtarzanych sygnałów potrzebnych do symulacji długiego naciśnięcia. Większość klawiatur ma opóźnienie 500 ms i częstotliwość powtarzania około 25 ms. Oznacza to, że przytrzymanie klawisza przez 1 sekundę spowoduje zarejestrowanie 20 naciśnięć klawiszy. Pedały AirTurn umożliwiają dostosowanie częstotliwości powtarzania i czasu opóźnienia za pomocą aplikacji towarzyszącej. Wyższe liczby dla liczby powtórzeń klawiszy oznaczają dłuższe przytrzymanie pedału, aby zarejestrować się jako długie naciśnięcie.</string>
+    <string name="rotate_display">Obróć wyświetlacz</string>
 </resources>

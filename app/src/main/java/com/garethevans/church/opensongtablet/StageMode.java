@@ -17,6 +17,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -233,6 +234,8 @@ public class StageMode extends AppCompatActivity implements
     private ScrollView extrabuttons;
     private ScrollView extrabuttons2;
     private int keyRepeatCount = 0;
+    Handler airTurn;
+    boolean airTurnCheckRunning;
 
     //private CoordinatorLayout coordinator_layout;
 
@@ -5043,11 +5046,34 @@ public class StageMode extends AppCompatActivity implements
             try {
                 DisplayManager dm = (DisplayManager) getSystemService(DISPLAY_SERVICE);
                 if (dm!=null) {
-                    Display[] displays = dm.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
+                    Log.d("StageMode","dm="+dm);
+
+                    // If a Chromebook HDMI, need to do this
+                    Display[] displays = dm.getDisplays();
                     for (Display mDisplay : displays) {
-                        hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong);
-                        hdmi.show();
-                        FullscreenActivity.isHDMIConnected = true;
+                        if (mDisplay.getDisplayId()==1) {
+                            Point size = new Point();
+                            mDisplay. getRealSize(size);
+                            int width = size. x;
+                            int height = size. y;
+                            Log. e("Width", "" + width);
+                            Log. e("height", "" + height);
+                            Log.d("StageMode","mDisplay="+mDisplay);
+                            hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong);
+                            hdmi.show();
+                            FullscreenActivity.isHDMIConnected = true;
+                        }
+                    }
+
+                    if (!FullscreenActivity.isHDMIConnected) {
+                        // For non-Chromebooks
+                        displays = dm.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
+                        for (Display mDisplay : displays) {
+                            Log.d("StageMode", "mDisplay=" + mDisplay);
+                            hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong);
+                            hdmi.show();
+                            FullscreenActivity.isHDMIConnected = true;
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -7614,13 +7640,68 @@ public class StageMode extends AppCompatActivity implements
     // This bit listens for key presses (for page turn and scroll)
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+        keyRepeatCount ++;
+        // If we are using an AirTurn pedal it will send repeated signals (onKeyDown then onKeyUp)
+        // I'd like to listen for multiple signals and treat them as a longpress instead.
+        // Each time on keyUp is detected, we add one to the counter.
+        // Set a listener for 200ms.  If the counter has increased again (and AirTurn mode is on)
+        // Set it to a longpress action instead.  If not, run the short press action
+        if (preferences.getMyPreferenceBoolean(StageMode.this, "airTurnMode", false)) {
+            doAirTurnShortOrLongPressListen(keyCode, event);
+            return false;
+        } else {
+            doShortPressAction(keyCode, event);
+            return true;
+        }
+    }
 
+    private void doAirTurnShortOrLongPressListen(final int keyCode, final KeyEvent event) {
+        airTurn = new Handler();
+        if (!airTurnCheckRunning) {
+            final int initialAirTurnCount = keyRepeatCount;
+            airTurnCheckRunning = true;
+            airTurn.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (keyRepeatCount>=initialAirTurnCount+preferences.getMyPreferenceInt(StageMode.this, "keyRepeatCount",4)) {
+                        // Must be repeat press on AirTurn pedal
+                        keyRepeatCount = 0;
+                        // In the long press action, set the airTurnCheckRunning boolean to false
+                        stopAirTurnCheckRunning();
+                        doLongKeyPressAction(keyCode);
+                    } else {
+                        // Check in another 200ms to see if the count has increased.  If it hasn't, short press action should be called.
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (initialAirTurnCount==keyRepeatCount) {
+                                    doShortPressAction(keyCode, event);
+                                }
+                            }
+                        },200);
+                    }
+                }
+            }, 200);
+        }
+    }
+
+    private void stopAirTurnCheckRunning() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                keyRepeatCount = 0;
+                airTurnCheckRunning = false;
+            }
+        },500);
+    }
+    private void doShortPressAction(int keyCode, KeyEvent event) {
         keyRepeatCount = 0;
         event.startTracking();
         View rf = getCurrentFocus();
-        if (rf!=null) {
+        if (rf != null) {
             rf.clearFocus();
         }
+
         if (shortKeyPress) {
             FullscreenActivity.pressing_button = false;
 
@@ -7635,7 +7716,7 @@ public class StageMode extends AppCompatActivity implements
             if (keyCode == KeyEvent.KEYCODE_MENU) {
                 if (event.isLongPress()) {
                     // Open up the song search intent instead of bringing up the keyboard
-                    return true;
+                    // return true;
                 } else {
                     // User wants the menu opened/closed
                     if (mDrawerLayout.isDrawerOpen(optionmenu)) {
@@ -7650,28 +7731,27 @@ public class StageMode extends AppCompatActivity implements
             if (keyCode == KeyEvent.KEYCODE_BACK) {
                 onBackPressed();
 
-            } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal1Code",21)) {
-                doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal1ShortPressAction","prev"));
+            } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal1Code", 21)) {
+                doPedalAction(preferences.getMyPreferenceString(StageMode.this, "pedal1ShortPressAction", "prev"));
 
-            } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal2Code",22)) {
-                doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal2ShortPressAction","next"));
+            } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal2Code", 22)) {
+                doPedalAction(preferences.getMyPreferenceString(StageMode.this, "pedal2ShortPressAction", "next"));
 
-            } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal3Code",19)) {
-                doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal3ShortPressAction","prev"));
+            } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal3Code", 19)) {
+                doPedalAction(preferences.getMyPreferenceString(StageMode.this, "pedal3ShortPressAction", "prev"));
 
-            } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal4Code",20)) {
-                doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal4ShortPressAction","next"));
+            } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal4Code", 20)) {
+                doPedalAction(preferences.getMyPreferenceString(StageMode.this, "pedal4ShortPressAction", "next"));
 
-            } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal5Code",92)) {
-                doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal5ShortPressAction","prev"));
+            } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal5Code", 92)) {
+                doPedalAction(preferences.getMyPreferenceString(StageMode.this, "pedal5ShortPressAction", "prev"));
 
-            } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal6Code",93)) {
-                doPedalAction(preferences.getMyPreferenceString(StageMode.this,"pedal6ShortPressAction","next"));
+            } else if (keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal6Code", 93)) {
+                doPedalAction(preferences.getMyPreferenceString(StageMode.this, "pedal6ShortPressAction", "next"));
             }
         }
         shortKeyPress = true;
         longKeyPress = false;
-        return true;
     }
 
     @SuppressLint("StaticFieldLeak")

@@ -501,4 +501,5 @@
     <string name="airTurnLongPress">AirTurn režim dlouhého stisknutí</string>
     <string name="autoRepeatCount">Počet opakování kláves potřebných k emulaci dlouhého stisknutí</string>
     <string name="autoRepeatRationale">Některé pedály (například AirTurn) vysílají klíčové signály automatického opakování, které zastaví činnost dlouhého stisknutí. Pokud používáte jeden z těchto pedálů, zapněte režim dlouhého stisknutí AirTurn a nastavte posuvník na počet opakovaných signálů potřebných pro simulovanou akci dlouhého stisknutí. Většina klávesnic má zpoždění 500ms a opakovací rychlost asi 25ms. To znamená, že podržením tlačítka po dobu 1 sekundy se zaznamená 20 stisknutí tlačítka. Pedály AirTurn vám umožňují upravit rychlost opakování a dobu zpoždění pomocí jejich doprovodné aplikace. Vyšší čísla pro počet opakování tlačítek znamenají, že se pedál drží déle, aby se zaregistroval jako dlouhý stisk.</string>
+    <string name="rotate_display">Otočení displeje</string>
 </resources>

@@ -146,7 +146,7 @@ public class ProcessSong extends Activity {
             if (!line.startsWith("[") && !line.startsWith(";") && !line.startsWith(".") && !line.startsWith(" ") &&
                     !line.startsWith("1") && !line.startsWith("2") && !line.startsWith("3") && !line.startsWith("4") &&
                     !line.startsWith("5") && !line.startsWith("6") && !line.startsWith("7") && !line.startsWith("8") &&
-                    !line.startsWith("9")) {
+                    !line.startsWith("9") && !line.startsWith("-")) {
                 line = " " + line;
             }
             fixedlyrics.append(line).append("\n");
@@ -983,21 +983,14 @@ public class ProcessSong extends Activity {
             type = "capoinfo";
         } else if (string.indexOf(";__")==0) {
             type = "extra";
-        //} else if (string.startsWith(";"+c.getString(R.string.music_score))) {
-        //    type = "abcnotation";
-        } else if (string.startsWith(";E |") || string.startsWith(";A |") ||
-                string.startsWith(";D |") || string.startsWith(";G |") ||
-                string.startsWith(";B |") || string.startsWith(";e |") ||
-                string.startsWith(";E|") || string.startsWith(";A|") ||
-                string.startsWith(";D|") || string.startsWith(";G|") ||
-                string.startsWith(";B|") || string.startsWith(";e|") ||
-                string.startsWith(";Ab|") || string.startsWith(";A#|") ||
-                string.startsWith(";Bb|") || string.startsWith(";Cb|") ||
-                string.startsWith(";C#|") || string.startsWith(";Db|") ||
-                string.startsWith(";D#|") || string.startsWith(";Eb|") || string.startsWith(";eb|") ||
-                string.startsWith(";Fb|") || string.startsWith(";F#|") ||
-                string.startsWith(";Gb|") || string.startsWith(";G#|") ||
-                string.startsWith("; ||")) {
+            //} else if (string.startsWith(";"+c.getString(R.string.music_score))) {
+            //    type = "abcnotation";
+        } else if (string.startsWith(";") && string.length()>4 && (string.indexOf("|")==2 || string.indexOf("|")==3)) {
+            // Used to do this by identifying type of string start or drum start
+            // Now just look for ;*| or ;**| where * is anything such as ;e | or ;BD|
+            type = "tab";
+        } else if (string.startsWith(";") && string.contains("1") && string.contains("+") && string.contains("2")) {
+            // Drum tab count line
             type = "tab";
         } else if (string.startsWith(";")) {
             type = "comment";
@@ -1304,6 +1297,7 @@ public class ProcessSong extends Activity {
                 lyricbit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT));
                 lyricbit.setGravity(preferences.getMyPreferenceInt(c,"presoLyricsAlign",Gravity.CENTER));
+                lyricbit.setLayoutParams(tablerow_params());
             } else {
                 lyricbit.setLayoutParams(tablerow_params());
             }
@@ -1414,13 +1408,14 @@ public class ProcessSong extends Activity {
             commentrow.setGravity(Gravity.CENTER_VERTICAL);
         }
 
+
         commentrow.setClipChildren(false);
         commentrow.setClipToPadding(false);
 
         for (String bit:comment) {
-            if (bit.startsWith(" ") && bit.length() > 1) {
+            /*if (bit.startsWith(" ") && bit.length() > 1) {
                 bit = bit.substring(1);
-            }
+            }*/
             if (bit.startsWith("__")) {
                 bit = bit.replace("__", "");
             }
@@ -2295,6 +2290,7 @@ public class ProcessSong extends Activity {
                     break;
 
                 case "guitar_tab":
+                case "tab":
                     lyrics_returned = new String[1];
                     lyrics_returned[0] = StaticVariables.sectionContents[x][y];
                     tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor,
@@ -2646,11 +2642,7 @@ public class ProcessSong extends Activity {
         float maxscale = preferences.getMyPreferenceFloat(c,"fontSizeMax",50)/fontsize;
         switch (StaticVariables.thisSongScale) {
             case "Y":
-                if (x > y) {
-                    scale = y;
-                } else {
-                    scale = x;
-                }
+                scale = Math.min(x, y);
                 if (scale > maxscale) {
                     scale = maxscale;
                 }
@@ -2668,13 +2660,13 @@ public class ProcessSong extends Activity {
         return scale;
     }
     float getStageScaleValue(float x, float y) {
-        float scale;
-        if (x>y) {
+        float scale = Math.min(x, y);
+        return scale;
+        /*if (x>y) {
             scale = y;
         } else {
             scale = x;
-        }
-        return scale;
+        }*/
     }
 
     RelativeLayout preparePerformanceBoxView(Context c, Preferences preferences, int lyricsTextColor, int lyricsBackgroundColor, int padding) {

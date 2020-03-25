@@ -84,7 +84,7 @@ public class Preferences extends Activity {
 
     Variable name                   Type        What
     addSectionSpace                 boolean     Should a spacing line be added between sections to improve readability (def:false)
-    airTurnMode                     boolean     Should autorepeat onKeyDown (multiple from keyRepeatCount variable) be converted to longKeyPress actions for AirTurn pedals (def:false)
+    airTurnMode                     boolean     Should autorepeat onKeyUp (multiple from keyRepeatCount variable) be converted to longKeyPress actions for AirTurn pedals (def:false)
     appTheme                        String      The theme to use (dark, light, custom1, custom2) (def:dark)
     autoscrollAutoStart             boolean     Should autoscroll start on page load (needs to be started manually the first time) (def:false)
     autoscrollDefaultSongLength     int         The default length of a song to use for autoscroll (def:180)
@@ -107,6 +107,7 @@ public class Preferences extends Activity {
     blockShadowAlpha                float       Alpha of block shadow (def:0.7f)
     capoInfoAsNumerals              boolean     Should the capo info bar use Roman numerals (def:false)
     capoLargeFontInfoBar            boolean     The text size of the floating capo info bar (def:true is 20.0f false is 14.0f)
+    castRotation                    float       The rotation of the cast display 0, 90, 180, 270.  (def:0.0f)
     ccliAutomaticLogging            boolean     Should we automatically write to the ccli log (def:false)
     ccliChurchName                  String      The name of the church for CCLI logging (def:"")
     ccliLicence                     String      The CCLI licence number (def:"")

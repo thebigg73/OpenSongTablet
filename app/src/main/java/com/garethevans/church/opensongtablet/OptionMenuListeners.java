@@ -648,7 +648,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         Button setVariationButton = v.findViewById(R.id.setVariationButton);
         Button setEditButton = v.findViewById(R.id.setEditButton);
         SwitchCompat showSetTickBoxInSongMenu = v.findViewById(R.id.showSetTickBoxInSongMenu);
-        LinearLayout setLinearLayout = v.findViewById(R.id.setLinearLayout);
+        //LinearLayout setLinearLayout = v.findViewById(R.id.setLinearLayout);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         // Capitalise all the text by locale
@@ -830,7 +830,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         });
 
         // Add the set list to the menu
-        if (StaticVariables.mSetList!=null) {
+        /*if (StaticVariables.mSetList!=null) {
             for (int x = 0; x< StaticVariables.mSetList.length; x++) {
                 TextView tv = new TextView(c);
                 tv.setText(StaticVariables.mSetList[x]);
@@ -881,7 +881,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                 });
                 setLinearLayout.addView(tv);
             }
-        }
+        }*/
 
     }
 

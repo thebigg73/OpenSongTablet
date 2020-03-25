@@ -18,6 +18,7 @@ import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -33,9 +34,9 @@ import java.io.InputStream;
 class PresentationCommon {
 
     // The screen and layout defaults starting the projected display
-    void getScreenSizes(Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout) {
+    void getScreenSizes(Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout, float rotation) {
         DisplayMetrics metrics = new DisplayMetrics();
-        myscreen.getMetrics(metrics);
+        myscreen.getRealMetrics(metrics);
         Drawable icon = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             icon = bottom_infobar.getContext().getDrawable(R.mipmap.ic_round_launcher);
@@ -46,20 +47,42 @@ class PresentationCommon {
         }
 
         StaticVariables.cast_padding = 8;
-        StaticVariables.cast_screenWidth = metrics.widthPixels;
-
         int leftpadding = projectedPage_RelativeLayout.getPaddingLeft();
         int rightpadding = projectedPage_RelativeLayout.getPaddingRight();
-        StaticVariables.cast_availableScreenWidth = StaticVariables.cast_screenWidth - leftpadding - rightpadding;
-
-        StaticVariables.cast_screenHeight = metrics.heightPixels;
         int toppadding = projectedPage_RelativeLayout.getPaddingTop();
         int bottompadding = projectedPage_RelativeLayout.getPaddingBottom();
+
+        projectedPage_RelativeLayout.setRotation(rotation);
+        int originalWidth = metrics.widthPixels;
+        int originalHeight = metrics.heightPixels;
+        int newWidth, newHeight;
+        ViewGroup.LayoutParams lp = projectedPage_RelativeLayout.getLayoutParams();
+
+        if (rotation == 90.0f || rotation == 270.0f) {  // Switch width for height and vice versa
+            newWidth = metrics.heightPixels;
+            newHeight = metrics.widthPixels;
+
+        } else {
+            newWidth = metrics.widthPixels;
+            newHeight = metrics.heightPixels;
+        }
+
+        StaticVariables.cast_screenWidth = newWidth;
+        StaticVariables.cast_screenHeight = newHeight;
+
+        projectedPage_RelativeLayout.setTranslationX((originalWidth - newWidth)/2.0f);
+        projectedPage_RelativeLayout.setTranslationY((originalHeight - newHeight)/2.0f);
+        lp.height = StaticVariables.cast_screenHeight;
+        lp.width = StaticVariables.cast_screenWidth;
+        projectedPage_RelativeLayout.requestLayout();
+
+        StaticVariables.cast_availableScreenWidth = StaticVariables.cast_screenWidth - leftpadding - rightpadding;
         StaticVariables.cast_availableScreenHeight = StaticVariables.cast_screenHeight - toppadding - bottompadding - bottombarheight - (StaticVariables.cast_padding * 4);
         StaticVariables.cast_availableWidth_1col = StaticVariables.cast_availableScreenWidth - (StaticVariables.cast_padding * 2);
         StaticVariables.cast_availableWidth_2col = (int) ((float) StaticVariables.cast_availableScreenWidth / 2.0f) - (StaticVariables.cast_padding * 3);
         StaticVariables.cast_availableWidth_3col = (int) ((float) StaticVariables.cast_availableScreenWidth / 3.0f) - (StaticVariables.cast_padding * 4);
     }
+
     void setDefaultBackgroundImage(Context c) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             StaticVariables.cast_defimage = c.getResources().getDrawable(R.drawable.preso_default_bg, null);
@@ -444,7 +467,7 @@ class PresentationCommon {
         } else {
             CustomAnimations.faderAnimation(projected_LinearLayout,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
         }
-        getScreenSizes(myscreen,bottom_infobar, projectedPage_RelativeLayout);  // Just in case something changed
+        getScreenSizes(myscreen,bottom_infobar, projectedPage_RelativeLayout, preferences.getMyPreferenceFloat(c,"castRotation",0.0f));  // Just in case something changed
     }
     private void presenterFadeOutSongInfo(final Context c, final Preferences preferences, final TextView tv, final String s, final LinearLayout bottom_infobar) {
         if (tv.getAlpha() > 0.0f) {
@@ -652,7 +675,7 @@ class PresentationCommon {
         presentermode_alert.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f) / 2.0f, 4, 4, StaticVariables.cast_presoShadowColor);
 
         presentermode_alert.setVisibility(View.VISIBLE);
-        getScreenSizes(myscreen,bottom_infobar,projectedPage_RelativeLayout);
+        getScreenSizes(myscreen,bottom_infobar,projectedPage_RelativeLayout,preferences.getMyPreferenceFloat(c,"castRotation",0.0f));
         CustomAnimations.faderAnimation(presentermode_alert,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
     }
     private void fadeoutAlert(Context c, Preferences preferences, TextView presentermode_alert) {
@@ -665,7 +688,7 @@ class PresentationCommon {
     // MediaPlayer stuff
     void prepareMediaPlayer(Context c, Preferences preferences, SurfaceHolder projected_SurfaceHolder, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout) {
         // Get the size of the SurfaceView
-        getScreenSizes(myscreen,bottom_infobar,projectedPage_RelativeLayout);
+        getScreenSizes(myscreen,bottom_infobar,projectedPage_RelativeLayout,preferences.getMyPreferenceFloat(c,"castRotation",0.0f));
         StaticVariables.cast_mediaPlayer = new MediaPlayer();
         StaticVariables.cast_mediaPlayer.setDisplay(projected_SurfaceHolder);
         if (preferences.getMyPreferenceString(c,"backgroundTypeToUse","image").equals("video")) {
@@ -719,6 +742,7 @@ class PresentationCommon {
 
         if (preferences.getMyPreferenceString(c,"backgroundTypeToUse","image").equals("video")) {
             try {
+                Log.d("Presemttion Common","cast_viUri="+StaticVariables.cast_vidUri);
                 StaticVariables.cast_mediaPlayer.setDataSource(c, StaticVariables.cast_vidUri);
                 StaticVariables.cast_mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
@@ -909,11 +933,7 @@ class PresentationCommon {
 
                             if (maxwidth_scale1_2 > myfullscale && maxwidth_scale2_2 > myfullscale) {
                                 colstouse = 2;
-                                if (maxwidth_scale1_2 > maxwidth_scale2_2) {
-                                    myfullscale = maxwidth_scale2_2;
-                                } else {
-                                    myfullscale = maxwidth_scale1_2;
-                                }
+                                myfullscale = Math.min(maxwidth_scale1_2, maxwidth_scale2_2);
                             }
 
                             if (maxwidth_scale1_3 > myfullscale && maxwidth_scale2_3 > myfullscale && maxwidth_scale3_3 > myfullscale) {

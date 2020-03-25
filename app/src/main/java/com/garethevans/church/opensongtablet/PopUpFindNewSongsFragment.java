@@ -799,6 +799,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         String[] tl = resultposted.split("\n");
         StringBuilder sb = new StringBuilder();
         for (String t:tl) {
+            Log.d("FindNewSongs",t);
             sb.append(t).append("NEW_LINE_OS");
         }
         resultposted = sb.toString();
@@ -831,6 +832,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         // Get the lyrics and chords
         newtext = getLyricsUG(resultposted);
+
+        // Get the key
+
 
         if (!filenametosave.equals("")) {
             filename = filenametosave.trim();
@@ -1131,6 +1135,11 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
     }
     private String getKeySongSelectChordPro(String s) {
+
+        String[] lines = s.split("\n");
+        for (String l:lines) {
+            Log.d("FindNewSong", l);
+        }
         int start = s.indexOf("<code class=\"cproSongKey\"");
         int end = s.indexOf("</code></span>",start);
         if (start>-1 && end>-1 && end>start) {
@@ -1661,7 +1670,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         protected void onPostExecute(String s) {
             if (getActivity()!=null) {
                 if (filecontents != null && !filecontents.equals("")) {
-                    setFileNameAndFolder();
+                    //TODO
+                    // setFileNameAndFolder();
                 } else {
                     if (downloadcomplete) {
                         StaticVariables.myToastMessage = getActivity().getString(R.string.pdfonly);

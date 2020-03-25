@@ -271,6 +271,11 @@ class ProfileActions {
                             preferences.setMyPreferenceBoolean(c,"capoLargeFontInfoBar",getBooleanValue(xppValue,true));
                             break;
 
+                        case "castRotation":
+                            //castRotation                    float       The rotation of the cast display 0, 90, 180, 270.  (def:0.0f)
+                            preferences.setMyPreferenceFloat(c,"castRotation",getFloatValue(xppValue,0.0f));
+                            break;
+
                         case "ccliAutomaticLogging":        // New preference
                         case "ccli_automatic":              // Old preference
                             //ccliAutomaticLogging            boolean     Should we automatically write to the ccli log

@@ -501,4 +501,5 @@
     <string name="airTurnLongPress">Modo de pressão longa do AirTurn</string>
     <string name="autoRepeatCount">Número de repetições de teclas necessárias para emular a pressão longa</string>
     <string name="autoRepeatRationale">Alguns pedais (como o AirTurn) enviam sinais automáticos de teclas de repetição, o que interrompe o funcionamento prolongado da pressão. Se você estiver usando um desses pedais, ative o modo de pressão longa do AirTurn e ajuste o controle deslizante para o número de sinais repetidos necessários para uma ação simulada de pressão longa. A maioria dos teclados possui um atraso de 500 ms e uma taxa de repetição de cerca de 25 ms. Isso significa que pressionar uma tecla por 1 segundo registrará 20 pressionamentos de tecla. Os pedais AirTurn permitem ajustar a taxa de repetição e o tempo de atraso usando o aplicativo complementar. Números mais altos para a contagem de repetição de tecla significam manter o pedal pressionado por mais tempo para registrar como um toque longo.</string>
+    <string name="rotate_display">Girar exibição</string>
 </resources>

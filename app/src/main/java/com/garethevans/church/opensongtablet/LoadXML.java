@@ -86,11 +86,13 @@ public class LoadXML extends Activity {
             utf = storageAccess.getUTFEncoding(c, uri);
         }
 
-        if (StaticVariables.songfilename.equals("Welcome to OpenSongApp")) {
+        if (StaticVariables.songfilename.equals("Welcome to OpenSongApp") || StaticVariables.songfilename.equals("")) {
             setWelcome(c);
+            preferences.setMyPreferenceBoolean(c,"songLoadSuccess",true);
+            isxml = true;
         }
 
-        if (!filetype.equals("PDF") && !filetype.equals("DOC") && (!filetype.equals("IMG")) &&
+        if (!filetype.equals("PDF") && !filetype.equals("DOC") && !filetype.equals("IMG") &&
                 !StaticVariables.songfilename.equals("Welcome to OpenSongApp")) {
             // Initialise all the xml tags a song should have
             initialiseSongTags(c);
@@ -269,7 +271,7 @@ public class LoadXML extends Activity {
                 }
             }
 
-        } else {
+        } else if (!StaticVariables.songfilename.equals("Welcome to OpenSongApp")){
             if (filetype.equals("PDF")) {
                 FullscreenActivity.isPDF = true;
                 FullscreenActivity.isSong = false;
@@ -699,9 +701,6 @@ public class LoadXML extends Activity {
                             StaticVariables.mNotation = parseFromHTMLEntities(xpp.nextText());
                             break;
                         case "style":
-                            // Simplest way to get this is to load the file in line by line as asynctask
-                            needtoloadextra = true;
-                            break;
                         case "backgrounds":
                             //FullscreenActivity.mExtraStuff2 = xpp.nextText();
                             // Simplest way to get this is to load the file in line by line as asynctask

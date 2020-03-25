@@ -113,7 +113,7 @@ class TextSongConvert {
 
     private String fixChordLines(String l) {
         // Look for chord lines
-        if (!l.startsWith(".") && !l.startsWith("[") && !l.startsWith(";")) {
+        if (!l.startsWith(".") && !l.startsWith("[") && !l.startsWith(";") && !l.startsWith("-")) {
             // Do this by splitting the line into sections split by space
             String[] possiblechordline = l.split(" ");
             // Go through each split bit and get the length of the non empty ones.  We'll then average the lengths
@@ -156,14 +156,19 @@ class TextSongConvert {
             // Does line start with string tuning?
             String b = l.trim().replaceFirst(";","");
             boolean isstring = (b.startsWith("A") || b.startsWith("B") || b.startsWith("D") ||
-                    b.startsWith("E") || b.startsWith("e") || b.startsWith("G"));
+                    b.startsWith("E") || b.startsWith("e") || b.startsWith("G") || b.startsWith("C"));
+
+            boolean isdrum = b.startsWith("Bd") || b.startsWith("BD") || b.startsWith("Sn") || b.startsWith("SN") ||
+                    b.startsWith("CC") || b.startsWith("HH") || b.startsWith("Rd") || b.startsWith("T1") ||
+                    b.startsWith("T2") || b.startsWith("T2") || b.startsWith("FT") || b.startsWith("Hf") ||
+                    b.startsWith("FH");
 
             if (l.startsWith(";")) {
                 l = l.replaceFirst(";","");
             }
 
             // Check we have a tab start of | after the string tuning and before -
-            if (isstring && l.indexOf("-")<4 && l.indexOf("|")>l.indexOf("-")) {
+            if ((isstring || isdrum) && l.indexOf("-")<4 && l.indexOf("|")>l.indexOf("-")) {
                 if (l.indexOf("-")<4) {
                     l = l.replaceFirst("-", "|-");
                 } else if (l.indexOf(" ")<4) {
@@ -171,7 +176,7 @@ class TextSongConvert {
                 }
             }
 
-            if (l.trim().indexOf("|") < 4 || isstring) {
+            if (l.trim().indexOf("|") < 4 || isstring || isdrum) {
                 String gstring = l.substring(0, l.indexOf("|")).trim();
                 String tab = l.substring(l.indexOf("|")).trim();
                 // make sure string is two characters long

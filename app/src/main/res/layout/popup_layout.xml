@@ -51,6 +51,42 @@
                         style="@style/MyWhiteHeadingText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginBottom="0dp"
+                        android:text="@string/rotate_display" />
+
+                    <SeekBar
+                        android:id="@+id/setRotationProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+                    <TextView
+                        android:id="@+id/rotationTextView"
+                        style="@style/MyInfoText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/zerotime" />
+
+                    <TextView
+                        style="@style/MyWhiteHeadingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="12dp"
                         android:layout_marginTop="12dp"
                         android:layout_marginRight="12dp"
@@ -317,12 +353,11 @@
                     <HorizontalScrollView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center">
+                        android:layout_gravity="start|center_horizontal">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
+                            android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
                             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -756,7 +791,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_column="3"
                                 android:layout_gravity="center_vertical"
-                                android:layout_margin="24dp" />
+                                android:layout_margin="24dp"
+                                tools:ignore="TooManyViews" />
                         </TableRow>
 
                         <TableRow>

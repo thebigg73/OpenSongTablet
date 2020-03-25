@@ -501,4 +501,5 @@
     <string name="airTurnLongPress">Mode appui long AirTurn</string>
     <string name="autoRepeatCount">Nombre de répétitions de touches nécessaires pour émuler un appui long</string>
     <string name="autoRepeatRationale">Certaines pédales (comme AirTurn) envoient des signaux de touche de répétition automatique, ce qui empêche les actions de pression longue de fonctionner. Si vous utilisez l\'une de ces pédales, activez le mode AirTurn appui long et réglez le curseur sur le nombre de signaux répétés nécessaires pour une action de pression longue simulée. La plupart des claviers ont un retard de 500 ms et un taux de répétition d\'environ 25 ms. Cela signifie qu\'en maintenant une touche enfoncée pendant 1 seconde, 20 pressions de touches seront enregistrées. Les pédales AirTurn vous permettent d\'ajuster le taux de répétition et le temps de retard à l\'aide de leur application compagnon. Des nombres plus élevés pour le nombre de répétitions de touches signifient que vous maintenez la pédale plus longtemps pour vous enregistrer en tant que pression longue.</string>
+    <string name="rotate_display">Faire pivoter l\'affichage</string>
 </resources>

@@ -183,7 +183,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             col3_3 = findViewById(R.id.col3_3);
         }
         private static void getScreenSizes() {
-            presentationCommon.getScreenSizes(myscreen,bottom_infobar,projectedPage_RelativeLayout);
+            presentationCommon.getScreenSizes(myscreen,bottom_infobar,projectedPage_RelativeLayout, preferences.getMyPreferenceFloat(c,"castRotation",0.0f));
         }
         private void setDefaultBackgroundImage() {
             presentationCommon.setDefaultBackgroundImage(c);

@@ -66,13 +66,14 @@ public class PopUpLayoutFragment extends DialogFragment {
     private LinearLayout blockShadowAlphaLayout;
     private SeekBar setMaxFontSizeProgressBar, setFontSizeProgressBar, presoAlphaProgressBar,
             setXMarginProgressBar, setYMarginProgressBar, presoTitleSizeSeekBar,
-            presoAuthorSizeSeekBar, presoCopyrightSizeSeekBar,
+            presoAuthorSizeSeekBar, presoCopyrightSizeSeekBar, setRotationProgressBar,
             presoAlertSizeSeekBar, presoTransitionTimeSeekBar, blockShadowAlpha;
     private TextView maxfontSizePreview;
     private TextView fontSizePreview;
     private TextView presoAlphaText;
     private TextView lyrics_title_align;
     private TextView presoTransitionTimeTextView;
+    private TextView rotationTextView;
     private FloatingActionButton lyrics_left_align, lyrics_center_align, lyrics_right_align,
             info_left_align, info_center_align, info_right_align, lyrics_top_valign, lyrics_center_valign, lyrics_bottom_valign;
     private ImageView chooseLogoButton, chooseImage1Button, chooseImage2Button, chooseVideo1Button,
@@ -188,6 +189,8 @@ public class PopUpLayoutFragment extends DialogFragment {
                 getString(R.string.stagemode) +" " + getString(R.string.separator) + " " +
                 getString (R.string.presentermode);
         modes_TextView.setText(s);
+        rotationTextView = V.findViewById(R.id.rotationTextView);
+        setRotationProgressBar = V.findViewById(R.id.setRotationProgressBar);
     }
 
     private void prepareViews() {
@@ -226,6 +229,60 @@ public class PopUpLayoutFragment extends DialogFragment {
         setYMarginProgressBar.setMax(50);
         setXMarginProgressBar.setProgress(preferences.getMyPreferenceInt(getActivity(),"presoXMargin",20));
         setYMarginProgressBar.setProgress(preferences.getMyPreferenceInt(getActivity(),"presoYMargin",10));
+        setRotationProgressBar.setMax(3);
+        setRotationProgressBar.setProgress(getRotationProgressValue());
+        rotationTextView.setText(getRotationAngleText(getRotationProgressValue()));
+    }
+
+    private String getRotationAngleText(int pos) {
+        String angle;
+        switch (pos) {
+            case 0:
+            default:
+                angle = "0°";
+                break;
+            case 1:
+                angle = "90°";
+                break;
+            case 2:
+                angle = "180°";
+                break;
+            case 3:
+                angle = "270°";
+                break;
+        }
+        return angle;
+    }
+    private int getRotationProgressValue() {
+        float f = preferences.getMyPreferenceFloat(getActivity(),"castRotation",0.0f);
+        if (f==90.0f) {
+            return 1;
+        } else if (f==180.0f) {
+            return 2;
+        } else if (f==270.0f) {
+            return 3;
+        } else {
+            return 0;
+        }
+    }
+    private void saveRotationValue(int progress) {
+        float angle;
+        switch (progress) {
+            case 0:
+            default:
+                angle = 0.0f;
+                break;
+            case 1:
+                angle = 90.0f;
+                break;
+            case 2:
+                angle = 180.0f;
+                break;
+            case 3:
+                angle = 270.0f;
+                break;
+        }
+        preferences.setMyPreferenceFloat(getActivity(),"castRotation",angle);
     }
 
     private void setupListeners() {
@@ -476,6 +533,21 @@ public class PopUpLayoutFragment extends DialogFragment {
                     preferences.setMyPreferenceString(getActivity(),"backgroundToUse","vid2");
                     sendUpdateToScreen("backgrounds");
                 }
+            }
+        });
+        setRotationProgressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                rotationTextView.setText(getRotationAngleText(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                saveRotationValue(seekBar.getProgress());
+                sendUpdateToScreen("all");
             }
         });
     }

@@ -222,7 +222,7 @@
                 app:showText="false"
                 tools:ignore="RtlHardcoded" />
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:id="@+id/setLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -231,7 +231,7 @@
                 android:layout_marginRight="4dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/menu_button"
-                android:orientation="vertical" />
+                android:orientation="vertical" />-->
 
         </LinearLayout>
     </ScrollView>

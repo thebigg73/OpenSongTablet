@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.display.DisplayManager;
@@ -4052,14 +4053,32 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // Try this code (Alternative to use HDMI as Chromebooks not coping with above
             try {
                 DisplayManager dm = (DisplayManager) getSystemService(DISPLAY_SERVICE);
-                Display[] displays = dm.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
-                for (Display mDisplay : displays) {
-                    hdmi = new PresentationServiceHDMI(PresenterMode.this, mDisplay, processSong);
-                    hdmi.show();
-                    FullscreenActivity.isHDMIConnected = true;
+                if (dm!=null) {
+                    Log.d("StageMode","dm="+dm);
+
+                    // If a Chromebook HDMI, need to do this
+                    Display[] displays = dm.getDisplays();
+                    for (Display mDisplay : displays) {
+                        if (mDisplay.getDisplayId()==1) {
+                            hdmi = new PresentationServiceHDMI(PresenterMode.this, mDisplay, processSong);
+                            hdmi.show();
+                            FullscreenActivity.isHDMIConnected = true;
+                        }
+                    }
+
+                    if (!FullscreenActivity.isHDMIConnected) {
+                        // For non-Chromebooks
+                        displays = dm.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
+                        for (Display mDisplay : displays) {
+                            hdmi = new PresentationServiceHDMI(PresenterMode.this, mDisplay, processSong);
+                            hdmi.show();
+                            FullscreenActivity.isHDMIConnected = true;
+                        }
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                Log.d("d","Error"+e);
             }
         }
     }

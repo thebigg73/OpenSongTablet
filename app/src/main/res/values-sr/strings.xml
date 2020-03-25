@@ -501,4 +501,5 @@
     <string name="airTurnLongPress">AirTurn režim dugog pritiska</string>
     <string name="autoRepeatCount">Број понављања типки потребних за опонашање дугог притиска</string>
     <string name="autoRepeatRationale">Neke papučice (poput AirTurna) šalju automatsko ponavljanje signala tastera što zaustavlja rad duge pritiske. Ako koristite neku od ovih papučica, uključite AirTurn režim dugog pritiska i prilagodite klizač broju ponovljenih signala potrebnih za simuliranu dugu radnju pritiska. Većina klavijatura ima kašnjenje od 500 ms i ponavljanje od oko 25 ms. To znači da će držanje tipke u trajanju od 1 sekunde snimiti 20 pritiska tipki. AirTurn papučice omogućavaju podešavanje brzine ponavljanja i odlaganja pomoću njihove aplikacije za prateću upotrebu. Veći brojevi brojača ponavljanja ključa znače duže držanje papučice da biste se registrovali kao dugo pritiskanje.</string>
+    <string name="rotate_display">Rotirajte displej</string>
 </resources>
