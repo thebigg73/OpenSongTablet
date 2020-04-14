@@ -164,6 +164,14 @@ class OpenFragment {
                 newFragment = PopUpFontsFragment.newInstance();
                 break;
 
+            case "lyricssettings":
+                newFragment = PopUpLyricsSettings.newInstance();
+                break;
+
+            case "chordsettings":
+                newFragment = PopUpChordSettings.newInstance();
+                break;
+
             case "connecteddisplay":
                 newFragment = PopUpLayoutFragment.newInstance();
                 break;
@@ -178,6 +186,10 @@ class OpenFragment {
 
             case "popupsettings":
                 newFragment = PopUpDefaultsFragment.newInstance();
+                break;
+
+            case "displayother":
+                newFragment = PopUpDisplayOther.newInstance();
                 break;
 
             case "extra":

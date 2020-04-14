@@ -11,20 +11,22 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
-class SQLiteHelper extends SQLiteOpenHelper {
+public class SQLiteHelper extends SQLiteOpenHelper {
 
     // Database Version
     private static final int DATABASE_VERSION = 1;
 
-    SQLiteHelper(Context context) {
+    public SQLiteHelper(Context context) {
         super(context,  SQLite.DATABASE_NAME, null, DATABASE_VERSION);
         // Don't create the database here as we don't want to recreate on each call.
     }
 
-    SQLiteDatabase getDB (Context c) {
+    public SQLiteDatabase getDB(Context c) {
         try {
             File f = new File(c.getExternalFilesDir("Database"), SQLite.DATABASE_NAME);
             return SQLiteDatabase.openOrCreateDatabase(f, null);
@@ -108,7 +110,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    void createSong(Context c, String folder, String filename) {
+    public void createSong(Context c, String folder, String filename) {
         // Creates a basic song entry to the database (id, songid, folder, file)
         try (SQLiteDatabase db = getDB(c)) {
             if (folder == null || folder.isEmpty()) {
@@ -134,7 +136,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    boolean songIdExists(SQLiteDatabase db, String songid) {
+    public boolean songIdExists(SQLiteDatabase db, String songid) {
         String Query = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + " = \"" + escapedSQL(songid) + "\"";
         Cursor cursor = db.rawQuery(Query, null);
         if(cursor.getCount() <= 0){
@@ -175,7 +177,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
         return sqLite;
     }
 
-    void updateSong(Context c, SQLite sqLite) {
+    public void updateSong(Context c, SQLite sqLite) {
 
         try (SQLiteDatabase db = getDB(c)) {
             ContentValues values = new ContentValues();
@@ -207,7 +209,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    SQLite getSong(Context c, String songid) {
+    public SQLite getSong(Context c, String songid) {
         SQLiteDatabase db = getDB(c);
         try {
             Cursor cursor = db.query(SQLite.TABLE_NAME,
@@ -242,7 +244,8 @@ class SQLiteHelper extends SQLiteOpenHelper {
                             unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_USER3))),
                             unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_KEY))),
                             unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_TIMESIG))),
-                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AKA))));
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AKA))),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_INSET))));
 
                     // close the db connection
                     cursor.close();
@@ -301,25 +304,21 @@ class SQLiteHelper extends SQLiteOpenHelper {
 
     }
 
-    void deleteSong(Context c, String songId) {
+    public void deleteSong(Context c, String songId) {
         try (SQLiteDatabase db = getDB(c)) {
             db.delete(SQLite.TABLE_NAME, SQLite.COLUMN_SONGID + " = ?",
                     new String[]{String.valueOf(escapedSQL(songId))});
         }
     }
 
-    ArrayList<SQLite> getSongsInFolder(Context c, String whichSongFolder) {
-        ArrayList<SQLite> songs = new ArrayList<>();
-        ArrayList<String> files = new ArrayList<>();
-
+    public ArrayList<String> getThemes(Context c, Preferences preferences, StorageAccess storageAccess) {
+        ArrayList<String> themes = new ArrayList<>();
 
         // Select matching folder Query
         String selectQuery = "SELECT "+SQLite.COLUMN_FILENAME + ", " +
-                SQLite.COLUMN_AUTHOR + ", " +
-                SQLite.COLUMN_KEY + " " +
+                SQLite.COLUMN_THEME + " " +
                 "FROM " + SQLite.TABLE_NAME +
-                " WHERE " + SQLite.COLUMN_FOLDER + "='" + escapedSQL(whichSongFolder) + "'" +
-                " ORDER BY " + SQLite.COLUMN_FILENAME + " COLLATE NOCASE ASC";
+                " ORDER BY " + SQLite.COLUMN_THEME + " COLLATE NOCASE ASC";
 
         try (SQLiteDatabase db = getDB(c)) {
             Cursor cursor = db.rawQuery(selectQuery, null);
@@ -328,15 +327,238 @@ class SQLiteHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                     SQLite sqLite = new SQLite();
-                    sqLite.setFilename(unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME))));
-                    sqLite.setAuthor(unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AUTHOR))));
-                    sqLite.setKey(unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_KEY))));
-                    if (!sqLite.getFilename().equals("") && !files.contains("$__" + sqLite.getFolder() + "/" + sqLite.getFilename() + "__$")) {
-                        // This avoids adding references to folders more than once
-                        songs.add(sqLite);
-                        files.add("$__" + sqLite.getFolder() + "/" + sqLite.getFilename() + "__$");
+                    sqLite.setTheme(unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_THEME))));
+                    String t = sqLite.getTheme();
+                    if (t==null) {
+                        t="";
+                    }
+                    // Song may have multiple themes, so split them by new lines (preferred), semicolons, commas
+                    t = t.replace("\n\n","__SPLIT__");
+                    t = t.replace("\n","__SPLIT__");
+                    t = t.replace(";","__SPLIT__");
+                    t = t.replace(",","__SPLIT__");
+                    String[] split = t.split("__SPLIT__");
+                    for (String t_split:split) {
+                        if (!t_split.trim().equals("") && !themes.contains("$__" + t_split.trim() + "__$")) {
+                            // This avoids adding references to themes more than once
+                            // Enclosing in $__ __$ so that 'Church' isn't seen as 'not Church'
+                            themes.add("$__" + t_split.trim() + "__$");
+                            Log.d("SQLiteHelper","Song:"+sqLite.getFilename()+" Theme:"+sqLite.getTheme());
+                        }
                     }
                 } while (cursor.moveToNext());
+            }
+
+            // close db connection
+            try {
+                cursor.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Now add in any themes saved in the settings directory
+        Uri uri = storageAccess.getUriForItem(c,preferences,"Settings","","userthemes.txt");
+        InputStream is = storageAccess.getInputStream(c,uri);
+        String savedthemes = storageAccess.readTextFileToString(is);
+        if (savedthemes==null) {
+            savedthemes = "";
+        }
+        String[] st = savedthemes.split("\n");
+        for (String savedtheme : st) {
+            if (!themes.contains("$__" + savedtheme + "__$")) {
+                // This avoids adding references to themes more than once
+                themes.add("$__" + savedtheme + "__$");
+            }
+        }
+
+        // Sort the array
+        Collections.sort(themes, String.CASE_INSENSITIVE_ORDER);
+
+        // If we have new ones, update the saved file
+        String fs = arrayListToString(themes);
+        fs = fs.replace("$__","");
+        fs = fs.replace("__$","");
+        if (!fs.equals(savedthemes)) {
+            OutputStream os = storageAccess.getOutputStream(c,uri);
+            storageAccess.writeFileFromString(fs,os);
+        }
+
+        // return songs in this folder without the $__ __$
+        for (int i=0; i<themes.size();i++) {
+            themes.set(i,themes.get(i).replace("$__","").replace("__$",""));
+        }
+        return themes;
+    }
+
+    private String arrayListToString(ArrayList<String> arrayList) {
+        if (arrayList!=null && arrayList.size()>0) {
+            StringBuilder sb = new StringBuilder();
+            for (String line : arrayList) {
+                sb.append(line).append("\n");
+            }
+            return sb.toString();
+        } else {
+            return "";
+        }
+    }
+
+    void updateThemes(Context c, Preferences preferences, StorageAccess storageAccess, ArrayList<String> themes) {
+        String fs = arrayListToString(themes);
+        fs = fs.replace("$__","");
+        fs = fs.replace("__$","");
+        Uri uri = storageAccess.getUriForItem(c, preferences,"Settings", "", "userthemes.txt");
+        OutputStream os = storageAccess.getOutputStream(c,uri);
+        storageAccess.writeFileFromString(fs,os);
+    }
+
+    int countWithTheme(Context c, String theme) {
+        String selectQuery = "SELECT "+SQLite.COLUMN_FILENAME+", " +
+                "FROM " + SQLite.TABLE_NAME +
+                " WHERE " + SQLite.COLUMN_THEME + " CONTAINS ['" + escapedSQL(theme) + "']";
+
+        int i;
+        try (SQLiteDatabase db = getDB(c)) {
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            if (cursor==null) {
+                i = 0;
+            } else {
+                i = cursor.getCount();
+            }
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return i;
+    }
+
+    private String getBasicSQLQueryStart() {
+        return "SELECT " + SQLite.COLUMN_FILENAME + ", " + SQLite.COLUMN_AUTHOR + ", " +
+                SQLite.COLUMN_KEY + ", " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_THEME + ", " +
+                SQLite.COLUMN_ALTTHEME + ", " + SQLite.COLUMN_USER1 + ", " + SQLite.COLUMN_USER2 + ", " +
+                SQLite.COLUMN_USER3 + ", " + SQLite.COLUMN_LYRICS + " FROM " + SQLite.TABLE_NAME + " ";
+    }
+    private String getOrderBySQL() {
+        return "ORDER BY " + SQLite.COLUMN_FILENAME + " COLLATE NOCASE ASC";
+    }
+
+    public ArrayList<SQLite> getSongsByArtist(Context c, String whichArtist, String filter) {
+        ArrayList<SQLite> songs = new ArrayList<>();
+        ArrayList<String> files = new ArrayList<>();
+        StaticVariables.songsInList = new ArrayList<>();
+
+        String where;
+        if (whichArtist==null || whichArtist.isEmpty()) {
+            where = "";
+        } else {
+            where = SQLite.COLUMN_AUTHOR + " LIKE '%" + escapedSQL(whichArtist) + "%'";
+        }
+
+        // Now for the filter AND matches
+        where = getFilterSearch(where, filter);
+
+        if (!where.isEmpty()) {
+            where = "WHERE " + where + " AND ";
+        } else {
+            where = "WHERE ";
+        }
+
+        where += SQLite.COLUMN_FILENAME + " !=''";
+
+        String selectQuery = getBasicSQLQueryStart() + where + getOrderBySQL();
+
+        Log.d("getSongByArtists","selectQuery="+selectQuery);
+
+        try (SQLiteDatabase db = getDB(c)) {
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    String fi = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME)));
+                    String fo = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER)));
+                    String au = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AUTHOR)));
+                    String ke = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_KEY)));
+
+                    SQLite sqLite = new SQLite();
+                    sqLite.setFilename(fi);
+                    sqLite.setFolder(fo);
+                    sqLite.setAuthor(au);
+                    sqLite.setKey(ke);
+
+                    songs.add(sqLite);
+
+                    String setString = getSetString(c,fo,fi);
+                    sqLite.setInSet(isItInSet(setString,StaticVariables.currentSet));
+
+                    StaticVariables.songsInList.add(setString);
+                    if (!fi.equals("") && !files.contains("$__" + fo + "/" + fi + "__$")) {
+                        // This avoids adding references to folders more than once
+                        files.add("$__" + fo + "/" + fi + "__$");
+                    }
+                }
+                while (cursor.moveToNext());
+            }
+            // close db connection
+            try {
+                cursor.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        // return songs in this folder
+        return songs;
+    }
+
+    public ArrayList<SQLite> getSongsInFolder(Context c, String whichSongFolder, String filter) {
+        ArrayList<SQLite> songs = new ArrayList<>();
+        ArrayList<String> files = new ArrayList<>();
+        StaticVariables.songsInList = new ArrayList<>();
+
+        String where = SQLite.COLUMN_FOLDER + "='" + escapedSQL(whichSongFolder) + "'";
+
+        // Now for the filter AND matches
+        where = getFilterSearch(where, filter);
+        where = "WHERE " + where + " AND ";
+
+        where += SQLite.COLUMN_FILENAME + "!=''";
+
+        // Select matching folder Query
+        String selectQuery = getBasicSQLQueryStart() + where + getOrderBySQL();
+
+        Log.d("getSongByFolder","selectQuery="+selectQuery);
+
+        try (SQLiteDatabase db = getDB(c)) {
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    String fi = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME)));
+                    String fo = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER)));
+                    String au = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AUTHOR)));
+                    String ke = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_KEY)));
+
+                    SQLite sqLite = new SQLite();
+                    sqLite.setFilename(fi);
+                    sqLite.setFolder(fo);
+                    sqLite.setAuthor(au);
+                    sqLite.setKey(ke);
+
+                    songs.add(sqLite);
+
+                    // Is this in the set?  This will add a tick for the songlist checkbox
+                    String setString = getSetString(c,fo,fi);
+                    StaticVariables.songsInList.add(setString);
+                    sqLite.setInSet(isItInSet(setString,StaticVariables.currentSet));
+
+                    // Add it to the files list (for swiping).  This ignores filtered songs
+                    if (!fi.equals("") && !files.contains("$__" + fo + "/" + fi + "__$")) {
+                        // This avoids adding references to folders more than once
+                        files.add("$__" + fo + "/" + fi + "__$");
+                    }
+                }
+                while (cursor.moveToNext());
             }
 
             // close db connection
@@ -351,21 +573,202 @@ class SQLiteHelper extends SQLiteOpenHelper {
         return songs;
     }
 
-    ArrayList<String> getFolders(Context c) {
+    private String getSetString(Context c, String folder, String filename) {
+        if (folder == null || folder.equals(c.getString(R.string.mainfoldername))) {
+            return "$**_" + filename + "_**$";
+        } else {
+            return "$**_" + folder + "/" + filename + "_**$";
+        }
+    }
+
+    private String isItInSet(String setString, String currentSet) {
+        if (currentSet.contains(setString)) {
+            return "true";
+        } else {
+            return "false";
+        }
+    }
+
+    public ArrayList<SQLite> getSongsByCustom(Context c,boolean searchFolder, boolean searchAuthor, boolean searchKey,
+                                              boolean searchTheme, boolean searchOther, String folderSearch,
+                                              String authorSearch, String keySearch, String themeSearch,
+                                              String otherSearch, String filter) {
+
+        // This is used for either a custom search or updating the current found list by filter text
+        ArrayList<SQLite> songs = new ArrayList<>();
+        ArrayList<String> files = new ArrayList<>();
+        StaticVariables.songsInList = new ArrayList<>();
+
+        // Get the search phrase
+        // These will be split by "S:title S:folder S:lyrics S:author S:key S:theme S:user1 S:user2 S:user3 PHRASE:XXX"
+
+        String searchMatches = "";
+        if (searchFolder && folderSearch!=null && !folderSearch.equals("")) {
+            searchMatches += SQLite.COLUMN_FOLDER + "='" + escapedSQL(folderSearch) + "' AND ";
+        }
+        if (searchAuthor && authorSearch!=null && !authorSearch.equals("")) {
+            searchMatches += SQLite.COLUMN_AUTHOR + "='" + escapedSQL(authorSearch) + "' AND ";
+        }
+        if (searchKey && keySearch!=null && !keySearch.equals("")) {
+            searchMatches += SQLite.COLUMN_KEY+ "='" + escapedSQL(keySearch) + "' AND ";
+        }
+        if (searchTheme && themeSearch!=null && !themeSearch.equals("")) {
+            searchMatches += "(" + SQLite.COLUMN_THEME+ " LIKE '%" + escapedSQL(themeSearch) + "%' OR ";
+            searchMatches += SQLite.COLUMN_ALTTHEME+ " LIKE '%" + escapedSQL(themeSearch) + "%')";
+            searchMatches = searchMatches.replace("((","("); // If we are only searching themes
+            searchMatches = searchMatches.replace("))",")"); // Remove the double (( )) that is created
+        }
+        // Group and fix the AND searches
+        if (!searchMatches.isEmpty()) {
+            if (searchMatches.endsWith(" AND ")) {
+                searchMatches = searchMatches.substring(0,searchMatches.lastIndexOf(" AND "));
+            }
+            searchMatches = "(" + searchMatches + ")";
+        }
+
+        // Now for the OR matches
+        if (searchOther && otherSearch!=null && !otherSearch.equals("")) {
+            if (!searchMatches.isEmpty()) {
+                searchMatches += " AND " + "(";
+            } else {
+                searchMatches += "(";
+            }
+            searchMatches += SQLite.COLUMN_LYRICS + " LIKE '%" + escapedSQL(otherSearch) + "%' OR ";
+            searchMatches += SQLite.COLUMN_USER1 + " LIKE '%" + escapedSQL(otherSearch) + "%' OR ";
+            searchMatches += SQLite.COLUMN_USER2 + " LIKE '%" + escapedSQL(otherSearch) + "%' OR ";
+            searchMatches += SQLite.COLUMN_USER3 + " LIKE '%" + escapedSQL(otherSearch) + "%' OR ";
+            searchMatches += SQLite.COLUMN_HYMNNUM + " LIKE '%" + escapedSQL(otherSearch) + "%'";
+            searchMatches += ")";
+        }
+
+        // Now for the filter AND matches
+        searchMatches = getFilterSearch(searchMatches, filter);
+
+        if (!searchMatches.isEmpty()) {
+            searchMatches = "WHERE " + searchMatches + " AND ";
+        } else {
+            searchMatches = "WHERE ";
+        }
+
+        searchMatches += SQLite.COLUMN_FILENAME + " !=''";
+
+        // Select matching folder Query
+        String selectQuery = getBasicSQLQueryStart() + searchMatches + " " + getOrderBySQL();
+
+        try (SQLiteDatabase db = getDB(c)) {
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    String fi = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME)));
+                    String fo = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER)));
+                    String au = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AUTHOR)));
+                    String ke = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_KEY)));
+
+                    SQLite sqLite = new SQLite();
+                    sqLite.setFilename(fi);
+                    sqLite.setFolder(fo);
+                    sqLite.setAuthor(au);
+                    sqLite.setKey(ke);
+
+                    songs.add(sqLite);
+
+                    // Is this in the set?  This will add a tick for the songlist checkbox
+                    String setString = getSetString(c,fo,fi);
+                    StaticVariables.songsInList.add(setString);
+                    sqLite.setInSet(isItInSet(setString,StaticVariables.currentSet));
+
+                    // Add it to the files list (for swiping).  This ignores filtered songs
+                    if (!fi.equals("") && !files.contains("$__" + fo + "/" + fi + "__$")) {
+                        // This avoids adding references to folders more than once
+                        files.add("$__" + fo + "/" + fi + "__$");
+                    }
+
+                }
+                while (cursor.moveToNext());
+            }
+
+            // close db connection
+            try {
+                cursor.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        //Return the songs
+        return songs;
+    }
+
+    public ArrayList<String> getFolders(Context c) {
         // Get the database
+        ArrayList<String> folders = new ArrayList<>();
         try (SQLiteDatabase db = getDB(c)) {
             String q = "SELECT DISTINCT " + SQLite.COLUMN_FOLDER + " FROM " + SQLite.TABLE_NAME + " ORDER BY " +
                     SQLite.COLUMN_FOLDER + " ASC";
-            ArrayList<String> folders = new ArrayList<>();
 
             Cursor cursor = db.rawQuery(q, null);
             cursor.moveToFirst();
             do {
-                folders.add(unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER))));
+                String s = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER));
+                if (s!=null && !s.isEmpty()) {
+                    folders.add(unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER))));
+                }
             } while (cursor.moveToNext());
             cursor.close();
             //db.close();
             return folders;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    private String getFilterSearch(String searchMatches, String filter) {
+        if (filter!=null && !filter.isEmpty()) {
+            if (!searchMatches.isEmpty()) {
+                searchMatches += " AND (";
+            } else {
+                searchMatches += " (";
+            }
+            searchMatches += SQLite.COLUMN_FILENAME + " LIKE '%" + escapedSQL(filter) + "%' OR ";
+            searchMatches += SQLite.COLUMN_TITLE + " LIKE '%" + escapedSQL(filter) + "%' OR ";
+            searchMatches += SQLite.COLUMN_FOLDER + " LIKE '%" + escapedSQL(filter) + "%' OR ";
+            searchMatches += SQLite.COLUMN_AUTHOR+ " LIKE '%" + escapedSQL(filter) + "%' OR ";
+            searchMatches += SQLite.COLUMN_KEY+ " LIKE '%" + escapedSQL(filter) + "%' OR ";
+            searchMatches += SQLite.COLUMN_THEME+ " LIKE '%" + escapedSQL(filter) + "%' OR ";
+            searchMatches += SQLite.COLUMN_ALTTHEME+ " LIKE '%" + escapedSQL(filter) + "%' OR ";
+            searchMatches += SQLite.COLUMN_HYMNNUM+ " LIKE '%" + escapedSQL(filter) + "%' OR ";
+            searchMatches += SQLite.COLUMN_LYRICS + " LIKE '%" + escapedSQL(filter) + "%' OR ";
+            searchMatches += SQLite.COLUMN_USER1 + " LIKE '%" + escapedSQL(filter) + "%' OR ";
+            searchMatches += SQLite.COLUMN_USER2 + " LIKE '%" + escapedSQL(filter) + "%' OR ";
+            searchMatches += SQLite.COLUMN_USER3 + " LIKE '%" + escapedSQL(filter) + "%' OR ";
+            searchMatches += SQLite.COLUMN_HYMNNUM+ " LIKE '%" + escapedSQL(filter) + "%')";
+        }
+        return searchMatches;
+    }
+
+    public ArrayList<String> getAuthors(Context c) {
+        // Get the database
+        ArrayList<String> authors = new ArrayList<>();
+        authors.add("");
+        try (SQLiteDatabase db = getDB(c)) {
+            String q = "SELECT DISTINCT " + SQLite.COLUMN_AUTHOR + " FROM " + SQLite.TABLE_NAME + " ORDER BY " +
+                    SQLite.COLUMN_AUTHOR + " ASC";
+            Cursor cursor = db.rawQuery(q, null);
+            cursor.moveToFirst();
+            do {
+                try {
+                    String s = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AUTHOR));
+                    if (s!=null && !s.isEmpty()) {
+                        authors.add(unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AUTHOR))));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } while (cursor.moveToNext());
+            cursor.close();
+            return authors;
         } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();
@@ -507,7 +910,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    void resetDatabase(Context c) {
+    public void resetDatabase(Context c) {
         try (SQLiteDatabase db = getDB(c)) {
             emptyTable(db);
             onCreate(db);
@@ -515,7 +918,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     // insert data using transaction and prepared statement
-    void insertFast(Context c, StorageAccess storageAccess) {
+    public void insertFast(Context c, StorageAccess storageAccess) {
         SQLiteDatabase db = getDB(c);
         try {
             // Insert new values or ignore rows that exist already
@@ -567,4 +970,29 @@ class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
+    // Comparing strings (case insensitive .contains().  Much faster than comparing toLowerCase()
+    private static boolean containsIgnoreCase(String src, String what) {
+        if (src == null || what == null) { // Shouldn't be null, but if so, don't use this
+            return true;
+        } else {
+            final int length = what.length();
+            if (length == 0)
+                return true; // Empty string is contained
+
+            final char firstLo = Character.toLowerCase(what.charAt(0));
+            final char firstUp = Character.toUpperCase(what.charAt(0));
+
+            for (int i = src.length() - length; i >= 0; i--) {
+                // Quick check before calling the more expensive regionMatches() method:
+                final char ch = src.charAt(i);
+                if (ch != firstLo && ch != firstUp)
+                    continue;
+
+                if (src.regionMatches(true, i, what, 0, length))
+                    return true;
+            }
+
+            return false;
+        }
+    }
 }

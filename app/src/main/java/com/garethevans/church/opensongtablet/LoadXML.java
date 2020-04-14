@@ -737,7 +737,7 @@ public class LoadXML extends Activity {
         }
     }
 
-    static String[] getCCLILogInfo(Context c, Preferences preferences, String folder, String filename) {
+    public static String[] getCCLILogInfo(Context c, Preferences preferences, String folder, String filename) {
         StorageAccess storageAccess = new StorageAccess();
 
         String[] vals = new String[4];

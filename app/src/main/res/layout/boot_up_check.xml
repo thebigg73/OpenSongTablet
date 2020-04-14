@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/popup_bg"
     android:id="@+id/page">
 
@@ -103,7 +104,7 @@
 
                 <Button
                     android:id="@+id/chooseStorageButton"
-                    android:background="@drawable/red_button"
+                    app:backgroundTint="@color/red"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -114,7 +115,7 @@
 
                 <Button
                     android:id="@+id/previousStorageButton"
-                    android:background="@drawable/yellow_button"
+                    app:backgroundTint="@color/darkyellow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -167,7 +168,7 @@
 
                 <Button
                     android:id="@+id/goToSongsButton"
-                    android:background="@drawable/green_button"
+                    app:backgroundTint="@color/green"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
@@ -214,7 +215,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="8dp"
-                    android:background="@drawable/yellow_button"
+                    app:backgroundTint="@color/darkyellow"
                     android:text="@string/reset"
                     android:textColor="#ff0" />
 
@@ -247,7 +248,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp"
-                    android:background="@drawable/blue_button"
+                    app:backgroundTint="@color/blue"
                     android:text="@string/user_guide"
                     android:textColor="#ff0" />
 

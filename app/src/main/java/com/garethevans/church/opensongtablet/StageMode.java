@@ -112,10 +112,10 @@ public class StageMode extends AppCompatActivity implements
         SetActions.MyInterface, PopUpFullSearchFragment.MyInterface, IndexSongs.MyInterface,
         SearchView.OnQueryTextListener, PopUpSetViewNew.MyInterface,
         PopUpChooseFolderFragment.MyInterface, PopUpCustomSlideFragment.MyInterface,
-        PopUpImportExternalFile.MyInterface,
-        PopUpBackupPromptFragment.MyInterface,
+        PopUpImportExternalFile.MyInterface, PopUpDisplayOther.MyInterface,
+        PopUpBackupPromptFragment.MyInterface, PopUpLyricsSettings.MyInterface,
         PopUpSongFolderRenameFragment.MyInterface, PopUpThemeChooserFragment.MyInterface,
-        PopUpExtraInfoFragment.MyInterface,
+        PopUpExtraInfoFragment.MyInterface, PopUpChordSettings.MyInterface,
         PopUpPageButtonsFragment.MyInterface, PopUpScalingFragment.MyInterface,
         PopUpFontsFragment.MyInterface, PopUpTransposeFragment.MyInterface,
         PopUpEditStickyFragment.MyInterface, PopUpSongRenameFragment.MyInterface,
@@ -6320,10 +6320,15 @@ public class StageMode extends AppCompatActivity implements
                                 lyricsCapoColor, presoFontColor);
                         section.setClipChildren(false);
                         section.setClipToPadding(false);
-                        section.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        FullscreenActivity.viewwidth[x] = section.getMeasuredWidth();
-                        FullscreenActivity.viewheight[x] = section.getMeasuredHeight();
-
+                        try {
+                            section.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            FullscreenActivity.viewwidth[x] = section.getMeasuredWidth();
+                            FullscreenActivity.viewheight[x] = section.getMeasuredHeight();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            FullscreenActivity.viewwidth[x] = 0;
+                            FullscreenActivity.viewheight[x] = 0;
+                        }
                         // The other views for 2 or 3 column mode
                         section1_1 = processSong.songSectionView(StageMode.this, x, 12.0f, false,
                                 storageAccess, preferences,
@@ -7773,7 +7778,7 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected String doInBackground(Object... params) {
             try {
-                songsInFolder = sqLiteHelper.getSongsInFolder(StageMode.this, StaticVariables.whichSongFolder);
+                songsInFolder = sqLiteHelper.getSongsInFolder(StageMode.this, StaticVariables.whichSongFolder, "");
                 // Remove any that aren't there (due to updating something) - permanently fixed on reboot
                 for (SQLite s:songsInFolder) {
                     if (s!=null && s.getFolder()!=null && s.getFilename()!=null) {

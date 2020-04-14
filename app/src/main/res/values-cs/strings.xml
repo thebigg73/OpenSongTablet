@@ -266,7 +266,7 @@
     <string name="media_selected">Media naloženo</string>
     <string name="menu_settings">"Nastavení nabídky"</string>
     <string name="menu_swipe_toggle">"Přepnout Seznam písní a volba menu přejeďte zap / vyp"</string>
-    <string name="menu_width">"Šířka nabídky (procento šířky obrazovky)"</string>
+    <string name="menu_width">Šířka nabídky</string>
     <string name="metronome">"Metronom"</string>
     <string name="metronomePedalText">"Start / zastavit metronom"</string>
     <string name="microphone_rationale">"Mikrofon / zvukový záznam je vyžadován pro přístup Zvukoměr."</string>

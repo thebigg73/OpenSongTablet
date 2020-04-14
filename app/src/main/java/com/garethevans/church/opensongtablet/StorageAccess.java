@@ -42,7 +42,7 @@ import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-class StorageAccess {
+public class StorageAccess {
 
     final String appFolder = "OpenSong";
     private Uri uriTree = null, uriTreeHome = null; // This is the home folder.  Set as required from preferences.
@@ -60,7 +60,7 @@ class StorageAccess {
 
     // This gets the uri for the uriTreeHome (the uri of the ..../OpenSong folder
     // This may or may not be the same as uriTree as this could be the parent folder
-    Uri homeFolder(Context c, Uri uri, Preferences preferences) {
+    public Uri homeFolder(Context c, Uri uri, Preferences preferences) {
         // The user specified a storage folder when they started the app
         // However, this might not be the OpenSong folder, but the folder containing it
         // This function is called once when the app starts and fixes that
@@ -178,7 +178,7 @@ class StorageAccess {
     }*/
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    String createOrCheckRootFolders(Context c, Uri uri, Preferences preferences) {
+    public String createOrCheckRootFolders(Context c, Uri uri, Preferences preferences) {
         // uri if the uriTree.  If not sent/null, load from preferences
         if (uri==null) {
             uri = Uri.parse(preferences.getMyPreferenceString(c,"uriTree",""));
@@ -398,7 +398,7 @@ class StorageAccess {
         }
     }
 
-    boolean writeFileFromString(String s, OutputStream os) {
+    public boolean writeFileFromString(String s, OutputStream os) {
         try {
             os.write(s.getBytes());
             os.flush();
@@ -428,7 +428,7 @@ class StorageAccess {
             e.printStackTrace();
         }
     }
-    String readTextFileToString(InputStream in) {
+    public String readTextFileToString(InputStream in) {
         if (in != null) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             byte[] buf = new byte[1024];
@@ -459,14 +459,14 @@ class StorageAccess {
     }
 
     // Input and output streams for reading and writing files.
-    InputStream getInputStream(Context c, Uri uri) {
+    public InputStream getInputStream(Context c, Uri uri) {
         try {
             return c.getContentResolver().openInputStream(uri);
         } catch (Exception e) {
             return null;
         }
     }
-    OutputStream getOutputStream(Context c, Uri uri) {
+    public OutputStream getOutputStream(Context c, Uri uri) {
         if (uriExists(c, uri) || !lollipopOrLater()) {
             try {
                 return c.getContentResolver().openOutputStream(uri);
@@ -479,7 +479,7 @@ class StorageAccess {
         return null;
     }
 
-    void lollipopCreateFileForOutputStream(Context c, Preferences preferences, Uri uri, String mimeType, String folder, String subfolder, String filename) {
+    public void lollipopCreateFileForOutputStream(Context c, Preferences preferences, Uri uri, String mimeType, String folder, String subfolder, String filename) {
         if (lollipopOrLater() && !uriExists(c, uri)) {
             // Only need to do this for Lollipop or later
             createFile(c, preferences, mimeType, folder, subfolder, filename);
@@ -515,7 +515,7 @@ class StorageAccess {
 
     // This builds an index of all the songs on the device
     @SuppressLint("NewApi")
-    ArrayList<String> listSongs(Context c, Preferences preferences) {
+    public ArrayList<String> listSongs(Context c, Preferences preferences) {
         ArrayList<String> noSongs = new ArrayList<>();
         try {
             // Decide if we are using storage access framework or not
@@ -622,7 +622,7 @@ class StorageAccess {
     }*/
 
     // Here are all the file accesses used in the app!!!
-    Uri getUriForItem(Context c, Preferences preferences, String folder, String subfolder, String filename) {
+    public Uri getUriForItem(Context c, Preferences preferences, String folder, String subfolder, String filename) {
         String[] fixedfolders = fixFoldersAndFiles(c, folder, subfolder, filename);
         if (lollipopOrLater()) {
             return getUriForItem_SAF(c, preferences, fixedfolders[0], fixedfolders[1], fixedfolders[2]);
@@ -919,7 +919,7 @@ class StorageAccess {
         return s;
     }
 
-    String getUTFEncoding (Context c, Uri uri) {
+    public String getUTFEncoding(Context c, Uri uri) {
         // Try to determine the BOM for UTF encoding
         String utf = "UTF-8";
         InputStream is = null;
@@ -945,7 +945,7 @@ class StorageAccess {
         return utf;
     }
 
-    float getFileSizeFromUri(Context c, Uri uri) {
+    public float getFileSizeFromUri(Context c, Uri uri) {
         if (lollipopOrLater()) {
             return getFileSizeFromUri_SAF(c, uri);
         } else {
@@ -974,7 +974,7 @@ class StorageAccess {
         }
     }
 
-    boolean uriExists(Context c, Uri uri) {
+    public boolean uriExists(Context c, Uri uri) {
         if (lollipopOrLater()) {
             return uriExists_SAF(c, uri);
         } else {
@@ -1018,7 +1018,7 @@ class StorageAccess {
         }
     }
 
-    boolean uriIsFile(Context c, Uri uri) {
+    public boolean uriIsFile(Context c, Uri uri) {
         if (lollipopOrLater()) {
             return uriIsFile_SAF(c,uri);
         } else {
@@ -1214,7 +1214,7 @@ class StorageAccess {
         }
     }
 
-    boolean deleteFile(Context c, Uri uri) {
+    public boolean deleteFile(Context c, Uri uri) {
         if (lollipopOrLater()) {
             return deleteFile_SAF(c, uri);
         } else {
@@ -1435,7 +1435,7 @@ class StorageAccess {
         }
     }
 
-    boolean isTextFile(Uri uri) {
+    public boolean isTextFile(Uri uri) {
         boolean istext = false;
         if (uri!=null && uri.getLastPathSegment()!=null) {
             String name = uri.getLastPathSegment().toLowerCase(StaticVariables.locale);
@@ -1453,7 +1453,7 @@ class StorageAccess {
         return istext;
     }
 
-    String getPartOfUri(Uri uri) {
+    public String getPartOfUri(Uri uri) {
         // This gets the filename
         String path = uri.getPath();
         if (path!=null && path.contains("OpenSong/Songs")) {
@@ -1546,7 +1546,7 @@ class StorageAccess {
         return uriString;
     }
 
-    void writeSongIDFile(Context c, Preferences preferences, ArrayList<String> songIds) {
+    public void writeSongIDFile(Context c, Preferences preferences, ArrayList<String> songIds) {
         // This creates a file in the app storage with a list of song folders/filenames
         StringBuilder stringBuilder = new StringBuilder();
 

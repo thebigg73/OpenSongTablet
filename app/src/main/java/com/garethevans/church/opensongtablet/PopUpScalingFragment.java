@@ -19,18 +19,13 @@ import android.widget.TextView;
 public class PopUpScalingFragment extends DialogFragment {
 
     private MyInterface mListener;
-    private LinearLayout maxAutoScale_Group;
-    private SeekBar fontsize_seekbar;
-    private SeekBar maxAutoScale_seekBar;
-    private SeekBar minAutoScale_seekBar;
-    private TextView fontsize_TextView;
-    private TextView maxAutoScale_TextView;
-    private TextView minAutoScale_TextView;
-    private SwitchCompat switchAutoScaleOnOff_SwitchCompat;
-    private SwitchCompat switchAutoScaleWidthFull_SwitchCompat;
+    private LinearLayout maxAutoScale_Group, stagemode_scale, fontsize_change_group;
+    private SeekBar fontsize_seekbar, maxAutoScale_seekBar, minAutoScale_seekBar;
+    private TextView title, fontsize_TextView, maxAutoScale_TextView, minAutoScale_TextView, stagemode_scale_TextView,
+            maxSize_TextView, minSize_TextView, override_TextView, manualFontSize_TextView, warning_TextView;
+    private SwitchCompat switchAutoScaleOnOff_SwitchCompat, switchAutoScaleWidthFull_SwitchCompat,
+            overrideFull_Switch, overrideWidth_Switch, switchAutoScaleMaxColumns_SwitchCompat;
     private SeekBar stagemode_scale_SeekBar;
-    private TextView stagemode_scale_TextView;
-    private SwitchCompat switchAutoScaleMaxColumns_SwitchCompat;
     private Preferences preferences;
 
     static PopUpScalingFragment newInstance() {
@@ -66,7 +61,7 @@ public class PopUpScalingFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_scaling, container, false);
 
-        TextView title = V.findViewById(R.id.dialogtitle);
+        title = V.findViewById(R.id.dialogtitle);
         title.setText(getResources().getString(R.string.autoscale_toggle));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
@@ -84,9 +79,34 @@ public class PopUpScalingFragment extends DialogFragment {
         preferences = new Preferences();
 
         // Initialise the views
+        initialiseViews(V);
+
+        // Hide the unwanted views
+        hideUnwantedViews();
+
+        // Set up views and buttons to saved values
+        updateButtonsAndSeekbars();
+
+        // Set up listener actions
+        setUpListeners();
+
+        // Resize the menu text
+        updateFontSizes();
+
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+
+        return V;
+    }
+
+    private void initialiseViews(View V) {
+        maxSize_TextView = V.findViewById(R.id.maxSize_TextView);
+        minSize_TextView = V.findViewById(R.id.minSize_TextView);
+        override_TextView = V.findViewById(R.id.override_TextView);
+        manualFontSize_TextView = V.findViewById(R.id.manualFontSize_TextView);
+        warning_TextView = V.findViewById(R.id.warning_TextView);
         maxAutoScale_seekBar = V.findViewById(R.id.maxAutoScale_seekBar);
         minAutoScale_seekBar = V.findViewById(R.id.minAutoScale_seekBar);
-        LinearLayout fontsize_change_group = V.findViewById(R.id.fontsize_change_group);
+        fontsize_change_group = V.findViewById(R.id.fontsize_change_group);
         maxAutoScale_Group = V.findViewById(R.id.maxAutoScale_Group);
         fontsize_seekbar = V.findViewById(R.id.fontsize_seekbar);
         maxAutoScale_TextView = V.findViewById(R.id.maxAutoScale_TextView);
@@ -95,19 +115,19 @@ public class PopUpScalingFragment extends DialogFragment {
         switchAutoScaleOnOff_SwitchCompat = V.findViewById(R.id.switchAutoScaleOnOff_SwitchCompat);
         switchAutoScaleWidthFull_SwitchCompat = V.findViewById(R.id.switchAutoScaleWidthFull_SwitchCompat);
         switchAutoScaleMaxColumns_SwitchCompat = V.findViewById(R.id.switchAutoScaleMaxColumns_SwitchCompat);
-        SwitchCompat overrideFull_Switch = V.findViewById(R.id.overrideFull_Switch);
-        SwitchCompat overrideWidth_Switch = V.findViewById(R.id.overrideWidth_Switch);
-        LinearLayout stagemode_scale = V.findViewById(R.id.stagemode_scale);
+        overrideFull_Switch = V.findViewById(R.id.overrideFull_Switch);
+        overrideWidth_Switch = V.findViewById(R.id.overrideWidth_Switch);
+        stagemode_scale = V.findViewById(R.id.stagemode_scale);
         stagemode_scale_SeekBar = V.findViewById(R.id.stagemode_scale_SeekBar);
         stagemode_scale_TextView = V.findViewById(R.id.stagemode_scale_TextView);
+    }
 
+    private void hideUnwantedViews() {
         if (!StaticVariables.whichMode.equals("Stage")) {
             stagemode_scale.setVisibility(View.GONE);
         } else {
             stagemode_scale.setVisibility(View.VISIBLE);
         }
-
-        // Set the seekbars to the currently chosen values;
         switch (preferences.getMyPreferenceString(getActivity(),"songAutoScale","W")) {
             case "W":
             default:
@@ -132,23 +152,27 @@ public class PopUpScalingFragment extends DialogFragment {
                 maxAutoScale_Group.setVisibility(View.GONE);
                 break;
         }
-        switchAutoScaleMaxColumns_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"songAutoScaleColumnMaximise",true));
-        switchAutoScaleMaxColumns_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(getActivity(),"songAutoScaleColumnMaximise",b);
-            }
-        });
+        fontsize_change_group.setVisibility(View.VISIBLE);
 
+    }
+
+    private void updateButtonsAndSeekbars() {
+        switchAutoScaleMaxColumns_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"songAutoScaleColumnMaximise",true));
         overrideFull_Switch.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideFull",true));
         overrideWidth_Switch.setChecked(preferences.getMyPreferenceBoolean(getActivity(), "songAutoScaleOverrideWidth", false));
         setupfontsizeseekbar();
         setupmaxfontsizeseekbar();
         setupminfontsizeseekbar();
         setupstagemodescaleseekbar();
+    }
 
-        fontsize_change_group.setVisibility(View.VISIBLE);
-
+    private void setUpListeners() {
+        switchAutoScaleMaxColumns_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                preferences.setMyPreferenceBoolean(getActivity(),"songAutoScaleColumnMaximise",b);
+            }
+        });
         fontsize_seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -201,7 +225,7 @@ public class PopUpScalingFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 preferences.setMyPreferenceBoolean(getActivity(), "songAutoScaleOverrideWidth", isChecked);
-             }
+            }
         });
         switchAutoScaleOnOff_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -257,9 +281,29 @@ public class PopUpScalingFragment extends DialogFragment {
                 }
             }
         });
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+    }
 
-        return V;
+    private void updateFontSizes() {
+        float menuFontSize = preferences.getMyPreferenceFloat(getActivity(),"songMenuAlphaIndexSize",14.0f);
+        ResizeMenuItems resizeMenuItems = new ResizeMenuItems();
+        resizeMenuItems.updateTextViewSize(title,menuFontSize,"L",false);
+        resizeMenuItems.updateTextViewSize(fontsize_TextView,menuFontSize,"",false);
+        resizeMenuItems.updateTextViewSize(maxSize_TextView,menuFontSize,"",false);
+        resizeMenuItems.updateTextViewSize(minSize_TextView,menuFontSize,"",false);
+        resizeMenuItems.updateTextViewSize(override_TextView,menuFontSize,"s",false);
+        resizeMenuItems.updateTextViewSize(manualFontSize_TextView,menuFontSize,"",false);
+        resizeMenuItems.updateTextViewSize(warning_TextView,menuFontSize,"s",false);
+
+        resizeMenuItems.updateSwitchTextSize(switchAutoScaleOnOff_SwitchCompat,menuFontSize,"",false);
+        resizeMenuItems.updateSwitchTextSize(switchAutoScaleWidthFull_SwitchCompat,menuFontSize,"",false);
+        resizeMenuItems.updateSwitchTextSize(switchAutoScaleMaxColumns_SwitchCompat,menuFontSize,"",false);
+        resizeMenuItems.updateSwitchTextSize(overrideWidth_Switch,menuFontSize,"",false);
+        resizeMenuItems.updateSwitchTextSize(overrideFull_Switch,menuFontSize,"",false);
+
+        /*
+        resizeMenuItems.updateButtonTextSize(VIEWID,menuFontSize,"S",false);
+        resizeMenuItems.updateEditTextSize(VIEWID,menuFontSize,"",false);
+        */
     }
 
     private void maxColsSwitchVisibilty() {

@@ -266,7 +266,7 @@
     <string name="media_selected">Медиафайл загружен</string>
     <string name="menu_settings">"Установки меню"</string>
     <string name="menu_swipe_toggle">"Закрыть список песни и опция меню проведите вкл / выкл"</string>
-    <string name="menu_width">"Ширина меню (в процентах от ширины экрана)"</string>
+    <string name="menu_width">Ширина меню</string>
     <string name="metronome">"Метроном"</string>
     <string name="metronomePedalText">"Старт / стоп метронома"</string>
     <string name="microphone_rationale">"Доступ к Микрофону/ аудио записи требуется работы измерителя уровня."</string>

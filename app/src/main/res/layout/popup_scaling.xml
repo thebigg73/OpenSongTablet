@@ -32,11 +32,9 @@
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchAutoScaleOnOff_SwitchCompat"
-                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:padding="12dp"
+                android:layout_margin="4dp"
                 android:text="@string/autoscale"
                 android:textOff="@string/off"
                 android:textOn="@string/on"
@@ -50,11 +48,9 @@
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchAutoScaleWidthFull_SwitchCompat"
-                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:padding="12dp"
+                android:layout_margin="4dp"
                 android:text="@string/scale_style"
                 android:textOff="@string/width"
                 android:textOn="@string/full"
@@ -70,35 +66,31 @@
                 android:id="@+id/switchAutoScaleMaxColumns_SwitchCompat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:padding="12dp"
+                android:layout_margin="4dp"
                 android:text="@string/maximise_columns"
-                android:theme="@style/SwitchStyle"
-                style="@style/MyHeadingText"/>
+                android:theme="@style/SwitchStyle" />
 
             <LinearLayout
                 android:id="@+id/maxAutoScale_Group"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="12dp">
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp">
 
                 <TextView
-                    android:id="@+id/textView42"
-                    style="@style/MyHeadingText"
+                    android:id="@+id/maxSize_TextView"
+                    style="@style/MyWhiteHeadingText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
                     android:text="@string/maxfontsize" />
 
                 <SeekBar
                     android:id="@+id/maxAutoScale_seekBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginRight="0dp"
-                    android:layout_marginTop="12dp"
                     android:background="@drawable/apptheme_scrubber_primary_holo"
                     android:max="60"
                     android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
@@ -109,24 +101,20 @@
                     style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal" />
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"/>
 
                 <TextView
-                    android:id="@+id/textView67"
-                    style="@style/MyHeadingText"
+                    android:id="@+id/minSize_TextView"
+                    style="@style/MyWhiteHeadingText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
                     android:text="@string/minfontsize" />
 
                 <SeekBar
                     android:id="@+id/minAutoScale_seekBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginRight="0dp"
-                    android:layout_marginTop="12dp"
                     android:background="@drawable/apptheme_scrubber_primary_holo"
                     android:max="28"
                     android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
@@ -137,22 +125,20 @@
                     style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal" />
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"/>
 
                 <TextView
-                    android:id="@+id/textView69"
+                    android:id="@+id/override_TextView"
                     style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
                     android:text="@string/override_scale_explanation" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/overrideFull_Switch"
-                    style="@style/MyHeadingText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
                     android:text="@string/override_fullautoscale"
                     android:textOff="@string/off"
                     android:textOn="@string/on"
@@ -162,14 +148,14 @@
                     app:switchTextAppearance="@style/MyTextSwitch"
                     app:textAllCaps="true"
                     app:thumbTextPadding="4dp"
-                    app:thumbTint="#444488" />
+                    app:thumbTint="#444488"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"/>
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/overrideWidth_Switch"
-                    style="@style/MyHeadingText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="12dp"
                     android:text="@string/override_widthautoscale"
                     android:textOff="@string/off"
                     android:textOn="@string/on"
@@ -179,7 +165,9 @@
                     app:switchTextAppearance="@style/MyTextSwitch"
                     app:textAllCaps="true"
                     app:thumbTextPadding="4dp"
-                    app:thumbTint="#444488" />
+                    app:thumbTint="#444488"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"/>
 
             </LinearLayout>
 
@@ -187,19 +175,20 @@
                 android:id="@+id/fontsize_change_group"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="4dp"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView52"
-                    style="@style/MyHeadingText"
+                    android:id="@+id/manualFontSize_TextView"
+                    style="@style/MyWhiteHeadingText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="16dp"
                     android:text="@string/choose_fontsize" />
 
                 <TextView
-                    android:id="@+id/textView65"
-                    style="@style/MyHeadingText"
+                    android:id="@+id/warning_TextView"
+                    style="@style/MyInfoText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/fontsize" />
@@ -208,10 +197,6 @@
                     android:id="@+id/fontsize_seekbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginRight="0dp"
-                    android:layout_marginTop="12dp"
                     android:background="@drawable/apptheme_scrubber_primary_holo"
                     android:max="79"
                     android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
@@ -222,30 +207,28 @@
                     style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal" />
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"/>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/stagemode_scale"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_margin="4dp">
 
                 <TextView
-                    style="@style/MyHeadingText"
+                    style="@style/MyWhiteHeadingText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="8dp"
                     android:text="@string/stage_section_max" />
 
                 <SeekBar
                     android:id="@+id/stagemode_scale_SeekBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginRight="0dp"
-                    android:layout_marginTop="12dp"
                     android:background="@drawable/apptheme_scrubber_primary_holo"
                     android:max="80"
                     android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"

@@ -343,7 +343,7 @@
     <string name="logo">"Logo"</string>
     <string name="managesets">"Preimenovanje setova"</string>
     <string name="menu_settings">"Postavke menija"</string>
-    <string name="menu_width">"Širina menija (procenat širine ekrana)"</string>
+    <string name="menu_width">Širina menija</string>
     <string name="my_band">"Uvoz primera pesama bendova"</string>
     <string name="my_church">"Uvoz primera crkvenih pesama"</string>
     <string name="navigate">"Brza navigacija"</string>

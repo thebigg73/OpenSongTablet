@@ -266,7 +266,7 @@
     <string name="media_selected">"Media loaded"</string>
     <string name="menu_settings">"Ρυθμίσεις μενού"</string>
     <string name="menu_swipe_toggle">"Toggle song list and option menus swipe on/off"</string>
-    <string name="menu_width">"Εύρος μενού (ποσοστό του πλάτους οθόνης)"</string>
+    <string name="menu_width">Εύρος μενού</string>
     <string name="metronome">"Metronome"</string>
     <string name="metronomePedalText">"Start/stop metronome"</string>
     <string name="microphone_rationale">"Για πρόσβαση στον έλεγχο έντασης ήχου απαιτείται Μικρόφωνο / εγγραφή ήχου."</string>

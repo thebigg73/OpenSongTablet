@@ -266,7 +266,7 @@
     <string name="media_selected">"Media laddad"</string>
     <string name="menu_settings">"Menyinställningar"</string>
     <string name="menu_swipe_toggle">"Växla låtlista och alternativmenyer svep på / av"</string>
-    <string name="menu_width">"Menybredd (procent av skärmens bredd)"</string>
+    <string name="menu_width">Menybredd</string>
     <string name="metronome">"Metronom"</string>
     <string name="metronomePedalText">"Starta / stoppa metronomen"</string>
     <string name="microphone_rationale">"Mikrofon / ljudinspelning krävs för att komma åt ljudnivåmätaren."</string>

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-class SetActions {
+public class SetActions {
 
     public interface MyInterface {
         void doMoveSection();
@@ -148,7 +148,7 @@ class SetActions {
         //Log.d("SetActions","setCurrent="+preferences.getMyPreferenceString(c,"setCurrent",""));
     }
 
-    void prepareSetList(Context c, Preferences preferences) {
+    public void prepareSetList(Context c, Preferences preferences) {
         try {
             StaticVariables.mSet = null;
             StaticVariables.mSetList = null;
@@ -197,7 +197,7 @@ class SetActions {
         }
     }
 
-    void indexSongInSet() {
+    public void indexSongInSet() {
         try {
             if (StaticVariables.mSet!=null && StaticVariables.mSetList!=null && StaticVariables.whatsongforsetwork!=null) {
                 boolean alreadythere = false;
@@ -363,7 +363,7 @@ class SetActions {
         return val;
     }
 
-    String whatToLookFor(Context c, String folder, String filename) {
+    public String whatToLookFor(Context c, String folder, String filename) {
         String whattolookfor;
         if (folder.equals("") || folder.equals(c.getString(R.string.mainfoldername)) || folder.equals("MAIN")) {
             whattolookfor = "$**_" + filename + "_**$";
@@ -1072,7 +1072,7 @@ class SetActions {
 
     }
 
-    String fixIsInSetSearch(String s) {
+    public String fixIsInSetSearch(String s) {
         if (s.contains("**_Variations/")) {
             s = s.replace("**_Variations/","**_**Variation/");
         } else if (s.contains("**_Variation/")) {

@@ -266,7 +266,7 @@
     <string name="media_selected">Medien geladen</string>
     <string name="menu_settings">"Menüeinstellungen"</string>
     <string name="menu_swipe_toggle">"Wischen um seitliche Menüs anzuzeigen ein / aus"</string>
-    <string name="menu_width">"Menübreite (in Prozent der Bildschirmbreite)"</string>
+    <string name="menu_width">Menübreite</string>
     <string name="metronome">"Metronom"</string>
     <string name="metronomePedalText">"Metronom start/stop"</string>
     <string name="microphone_rationale">"Um den Schallpegelmesser benutzen zu können ist der Zugriff auf Mikrofon bzw. Audioaufnahme erforderlich."</string>

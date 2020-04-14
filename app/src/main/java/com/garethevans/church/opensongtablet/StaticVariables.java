@@ -19,10 +19,10 @@ import android.net.Uri;
 import java.util.ArrayList;
 import java.util.Locale;
 
-class StaticVariables {
+public class StaticVariables {
 
     // The song fields
-    static String mTitle = "Welcome to OpenSongApp", mAuthor = "Gareth Evans", mCopyright = "",
+    public static String mTitle = "Welcome to OpenSongApp", mAuthor = "Gareth Evans", mCopyright = "",
             mLyrics = "", mCCLI = "", mAltTheme = "", mPresentation = "", mHymnNumber = "",
             mUser1 = "", mUser2 = "", mUser3 = "", mKey = "", mAka = "", mKeyLine = "",
             mStyle = "", mCapo = "", mCapoPrint = "", mTempo = "", mTimeSig = "", mTheme = "",
@@ -31,38 +31,46 @@ class StaticVariables {
             mExtraStuff2 = "", mPadFile = "", mCustomChords = "", mLinkYouTube = "", mLinkWeb = "",
             mLinkAudio = "", mLoopAudio = "false", mLinkOther = "", mNotation = "", mEncoding = "UTF-8";
 
+    // For moving through songs in list with swipe
+    public static ArrayList<String> songsInList = new ArrayList<>();
+
     // Set stuff
-    static String previousSongInSet = "";
-    static String nextSongInSet = "";
+    public static String previousSongInSet = "";
+    public static String nextSongInSet = "";
+    public static String myNewXML;
+    public static boolean homeFragment;
     static String nextSongKeyInSet = "";
-    static String whatsongforsetwork = "";
+    public static String whatsongforsetwork = "";
     static String newSetContents = "";
     static String settoload = "";
     static String setMoveDirection = "";
     static String setnamechosen = "";
-    static String[] mSet;
+    public static String[] mSet;
     static String[] mSetList;
     static boolean setView;
     static boolean doneshuffle = false;
     static boolean setchanged = false;
-    static int setSize, indexSongInSet;
+    public static int setSize;
+    public static int indexSongInSet;
     static ArrayList<String> mTempSetList;
+    public static String currentSet;
     
     // Storage variables
     static Uri uriTree;
 
     // The important starting up ones
-    static Locale locale;
+    public static Locale locale;
 
     // Default text sizes
     static final float infoBarLargeTextSize = 20.0f;
     static final float infoBarSmallTextSize = 14.0f;
 
     // Song locations.  These are also saved as preferences if the song loads correctly (without crashing midway)
-    static String whichSongFolder = "", songfilename = "";
+    public static String whichSongFolder = "";
+    public static String songfilename = "";
 
     // The action bar size (used to work out song space available)
-    static int ab_height;
+    public static int ab_height;
 
     // The song secions.  Used when paring songs into bits
     static String[] songSections, songSectionsLabels, songSectionsTypes;
@@ -82,7 +90,7 @@ class StaticVariables {
     static String mDisplayTheme = "dark";
 
     // The app mode
-    static String whichMode = "";
+    public static String whichMode = "";
 
     // Default colours
     static final int darkblue = 0xff0000dd;
@@ -92,7 +100,7 @@ class StaticVariables {
     static final int vlightblue = 0xffeeeeff;
     static final int blue = 0xff0000ff;
     static final int black = 0xff000000;
-    static final int white = 0xffffffff;
+    public static final int white = 0xffffffff;
     static final int grey = 0xff666666;
     static final int lightgrey = 0xff222222;
     static final int lightyellow = 0xffddaa00;
@@ -133,7 +141,7 @@ class StaticVariables {
     static String transposeDirection = "0", transposedLyrics = "";
 
     // The toast message - sometimes used to identify next steps for the app, sometimes just to display
-    static String myToastMessage = "";
+    public static String myToastMessage = "";
 
     // Uri of external files (image from image file) clicked to present
     static Uri uriToLoad;
@@ -195,6 +203,6 @@ class StaticVariables {
     static boolean forcecastupdate;
     static Uri cast_vidUri;
     static MediaPlayer cast_mediaPlayer;
-    static Activity activity;
+    public static Activity activity;
 
 }

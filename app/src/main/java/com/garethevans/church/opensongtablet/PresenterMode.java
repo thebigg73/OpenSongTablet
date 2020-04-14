@@ -101,13 +101,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         SetActions.MyInterface, PopUpPresentationOrderFragment.MyInterface,
         PopUpSetViewNew.MyInterface, IndexSongs.MyInterface, SearchView.OnQueryTextListener,
         OptionMenuListeners.MyInterface, PopUpFullSearchFragment.MyInterface,
-        PopUpListSetsFragment.MyInterface,
-        PopUpLongSongPressFragment.MyInterface,
+        PopUpListSetsFragment.MyInterface,  PopUpDisplayOther.MyInterface,
+        PopUpLongSongPressFragment.MyInterface, PopUpLyricsSettings.MyInterface,
         PopUpFileChooseFragment.MyInterface, PopUpBackupPromptFragment.MyInterface,
         PopUpSongFolderRenameFragment.MyInterface, PopUpSongCreateFragment.MyInterface,
         PopUpSongRenameFragment.MyInterface, PopUpImportExportOSBFragment.MyInterface,
         PopUpImportExternalFile.MyInterface, PopUpCustomSlideFragment.MyInterface,
-        PopUpFindNewSongsFragment.MyInterface,
+        PopUpFindNewSongsFragment.MyInterface, PopUpChordSettings.MyInterface,
         PopUpThemeChooserFragment.MyInterface, PopUpGroupedPageButtonsFragment.MyInterface,
         PopUpQuickLaunchSetup.MyInterface, PopUpPagesFragment.MyInterface,
         PopUpExtraInfoFragment.MyInterface, PopUpPageButtonsFragment.MyInterface,
@@ -3805,7 +3805,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 // Get a list of the songs in the current folder
                 // TODO
-                songsInFolder = sqLiteHelper.getSongsInFolder(PresenterMode.this, StaticVariables.whichSongFolder);
+                songsInFolder = sqLiteHelper.getSongsInFolder(PresenterMode.this, StaticVariables.whichSongFolder, "");
 
             } catch (Exception e) {
                 e.printStackTrace();

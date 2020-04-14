@@ -266,7 +266,7 @@
     <string name="media_selected">Media caricati</string>
     <string name="menu_settings">"Impostazioni del menu"</string>
     <string name="menu_swipe_toggle">"Toggle song list e opzioni menu strisciare accendere / spegnere"</string>
-    <string name="menu_width">"Larghezza del menu (percentuale della larghezza dello schermo)"</string>
+    <string name="menu_width">Larghezza del menu</string>
     <string name="metronome">"Metronomo"</string>
     <string name="metronomePedalText">"Avviare / fermare metronomo"</string>
     <string name="microphone_rationale">"Registrazione con microfono / audio è necessario per accedere al fonometro."</string>

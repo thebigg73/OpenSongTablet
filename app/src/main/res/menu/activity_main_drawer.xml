@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:id="@+id/appPages"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_songlist"
+            android:icon="@drawable/ic_music_note_white_36dp"
+            android:title="Songs" />
+        <item
+            android:id="@+id/nav_setlist"
+            android:icon="@drawable/ic_format_list_bulleted_white_36dp"
+            android:title="Sets" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_white_36dp"
+            android:title="Settings" />
+    </group>
+
+    <group android:id="@+id/appMode"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_performance"
+            android:icon="@drawable/ic_microphone_variant_white_36dp"
+            android:title="@string/performancemode" />
+
+        <item
+            android:id="@+id/nav_stage"
+            android:icon="@drawable/ic_projector_screen_white_36dp"
+            android:title="@string/stagemode" />
+
+        <item
+            android:id="@+id/nav_presentation"
+            android:icon="@drawable/ic_projector_white_36dp"
+            android:title="@string/presentermode" />
+
+    </group>
+</menu>

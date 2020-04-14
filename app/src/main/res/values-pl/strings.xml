@@ -266,7 +266,7 @@
     <string name="media_selected">załadowane nośniki</string>
     <string name="menu_settings">"Ustawienia menu"</string>
     <string name="menu_swipe_toggle">"Przełącz listy utworów i opcji menu przesuń włącz / wyłącz"</string>
-    <string name="menu_width">"Szerokość menu (procent szerokości ekranu)"</string>
+    <string name="menu_width">Szerokość menu</string>
     <string name="metronome">"Metronom"</string>
     <string name="metronomePedalText">"Rozpocząć / Zatrzymać metronom"</string>
     <string name="microphone_rationale">"Mikrofon / nagrywanie dźwięku jest niezbędny do korzystania z miernika poziomu dźwięku."</string>
