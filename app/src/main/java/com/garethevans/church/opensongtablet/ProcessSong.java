@@ -928,7 +928,7 @@ public class ProcessSong extends Activity {
             // It exists and we don't want host files
             StaticVariables.whichSongFolder = sent_folder;
             StaticVariables.songfilename = sent_file;
-            FullscreenActivity.whichDirection = sent_direction;
+            StaticVariables.whichDirection = sent_direction;
             return "Location";
 
         } else if (haslyrics) {
@@ -2528,15 +2528,15 @@ public class ProcessSong extends Activity {
                     mFileDescriptor = c.getContentResolver().openFileDescriptor(uri, "r");
                     if (mFileDescriptor != null) {
                         mPdfRenderer = new PdfRenderer(mFileDescriptor);
-                        FullscreenActivity.pdfPageCount = mPdfRenderer.getPageCount();
+                        StaticVariables.pdfPageCount = mPdfRenderer.getPageCount();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    FullscreenActivity.pdfPageCount = 0;
+                    StaticVariables.pdfPageCount = 0;
                 }
 
-                if (FullscreenActivity.pdfPageCurrent >= FullscreenActivity.pdfPageCount) {
-                    FullscreenActivity.pdfPageCurrent = 0;
+                if (StaticVariables.pdfPageCurrent >= StaticVariables.pdfPageCount) {
+                    StaticVariables.pdfPageCurrent = 0;
                 }
             }
 
@@ -2545,10 +2545,10 @@ public class ProcessSong extends Activity {
             if (mPdfRenderer != null) {
                 // If we have used the move back option from a previous set item (page button, foot pedal, etc.), we should show the last page
                 if (!StaticVariables.showstartofpdf) {
-                    FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCount - 1;
+                    StaticVariables.pdfPageCurrent = StaticVariables.pdfPageCount - 1;
                     StaticVariables.showstartofpdf = true;
                 }
-                mCurrentPage = mPdfRenderer.openPage(FullscreenActivity.pdfPageCurrent);
+                mCurrentPage = mPdfRenderer.openPage(StaticVariables.pdfPageCurrent);
             }
 
             // Get pdf size from page
@@ -2949,7 +2949,7 @@ public class ProcessSong extends Activity {
         String page = "";
         if (FullscreenActivity.isPDF) {
             // Because pdf files can have multiple pages, this allows different notes.
-            page = "_" + FullscreenActivity.pdfPageCurrent;
+            page = "_" + StaticVariables.pdfPageCurrent;
         }
         return highlighterfile + layout + page + ".png";
 

@@ -465,7 +465,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         where += SQLite.COLUMN_FILENAME + " !=''";
 
-        String selectQuery = getBasicSQLQueryStart() + where + getOrderBySQL();
+        String selectQuery = getBasicSQLQueryStart() + where + " " + getOrderBySQL();
 
         Log.d("getSongByArtists","selectQuery="+selectQuery);
 
@@ -550,6 +550,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                     // Is this in the set?  This will add a tick for the songlist checkbox
                     String setString = getSetString(c,fo,fi);
                     StaticVariables.songsInList.add(setString);
+                    if (StaticVariables.currentSet==null) {
+                        StaticVariables.currentSet="";
+                    }
                     sqLite.setInSet(isItInSet(setString,StaticVariables.currentSet));
 
                     // Add it to the files list (for swiping).  This ignores filtered songs
@@ -700,6 +703,97 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return songs;
     }
 
+    public ArrayList<SQLite> getSongsByFilters(Context c, boolean searchByFolder, boolean searchByArtist,
+                                               boolean searchByKey, boolean searchByTag,
+                                               boolean searchByFilter, String folderVal, String artistVal,
+                                               String keyVal, String tagVal, String filterVal) {
+        ArrayList<SQLite> songs = new ArrayList<>();
+        ArrayList<String> files = new ArrayList<>();
+        StaticVariables.songsInList = new ArrayList<>();
+
+        String sqlMatch = "";
+        if (searchByFolder && folderVal.length()>0) {
+            sqlMatch += SQLite.COLUMN_FOLDER + "=\"" + folderVal + "\" AND ";
+        }
+        if (searchByArtist && artistVal.length()>0) {
+            sqlMatch += SQLite.COLUMN_AUTHOR + " LIKE \"%" + artistVal + "%\" AND ";
+        }
+        if (searchByKey && keyVal.length()>0) {
+            sqlMatch += SQLite.COLUMN_KEY + "=\"" + keyVal + "\" AND ";
+        }
+        if (searchByTag && tagVal.length()>0) {
+            sqlMatch += SQLite.COLUMN_THEME + "=\"" + tagVal + "\" AND ";
+        }
+        if (searchByFilter && filterVal.length()>0) {
+            sqlMatch += "(" + SQLite.COLUMN_LYRICS + " LIKE \"%" + filterVal + "%\" OR ";
+            sqlMatch += SQLite.COLUMN_FILENAME + " LIKE \"%" + filterVal + "%\" OR ";
+            sqlMatch += SQLite.COLUMN_TITLE + " LIKE \"%" + filterVal + "%\")";
+        }
+
+        if (!sqlMatch.isEmpty()) {
+            if (sqlMatch.endsWith(" AND ")) {
+                sqlMatch = "WHERE " + sqlMatch;
+            } else {
+                sqlMatch = "WHERE " + sqlMatch + " AND ";
+            }
+        } else {
+            sqlMatch = "WHERE ";
+        }
+        sqlMatch += SQLite.COLUMN_FILENAME + " !=''";
+
+        // Select matching folder Query
+        String selectQuery = getBasicSQLQueryStart() + sqlMatch + " " + getOrderBySQL();
+
+        try (SQLiteDatabase db = getDB(c)) {
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    String fi = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME)));
+                    String fo = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER)));
+                    String au = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AUTHOR)));
+                    String ke = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_KEY)));
+
+                    SQLite sqLite = new SQLite();
+                    sqLite.setFilename(fi);
+                    sqLite.setFolder(fo);
+                    sqLite.setAuthor(au);
+                    sqLite.setKey(ke);
+
+                    songs.add(sqLite);
+
+                    // Is this in the set?  This will add a tick for the songlist checkbox
+                    String setString = getSetString(c,fo,fi);
+                    StaticVariables.songsInList.add(setString);
+
+                    if (StaticVariables.currentSet==null) {
+                        StaticVariables.currentSet="";
+                    }
+                    sqLite.setInSet(isItInSet(setString,StaticVariables.currentSet));
+
+                    // Add it to the files list (for swiping).  This ignores filtered songs
+                    if (!fi.equals("") && !files.contains("$__" + fo + "/" + fi + "__$")) {
+                        // This avoids adding references to folders more than once
+                        files.add("$__" + fo + "/" + fi + "__$");
+                    }
+
+                }
+                while (cursor.moveToNext());
+            }
+
+            // close db connection
+            try {
+                cursor.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        //Return the songs
+        Log.d("SQLiteHelper","QUERY:  "+selectQuery);
+        return songs;
+    }
+
     public ArrayList<String> getFolders(Context c) {
         // Get the database
         ArrayList<String> folders = new ArrayList<>();
@@ -775,7 +869,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    ArrayList<SQLite> getChildFolders(Context c, String whichSongFolder) {
+    public ArrayList<SQLite> getChildFolders(Context c, String whichSongFolder) {
         // This skims through all of the folders and displays folders that are children of the current folder
         // These are added to the top of the song menu
         ArrayList<SQLite> childFolders = new ArrayList<>();

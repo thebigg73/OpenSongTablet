@@ -44,7 +44,7 @@ import java.util.zip.ZipInputStream;
 
 public class StorageAccess {
 
-    final String appFolder = "OpenSong";
+    public final String appFolder = "OpenSong";
     private Uri uriTree = null, uriTreeHome = null; // This is the home folder.  Set as required from preferences.
     private final String[] rootFolders = {"Backgrounds", "Export", "Highlighter", "Images", "Media",
             "Notes", "OpenSong Scripture", "Pads", "Profiles", "Received", "Scripture",
@@ -90,6 +90,20 @@ public class StorageAccess {
             uri = null;
         }
         return uri;
+    }
+
+    public boolean uriTreeValid(Context c, Uri uri) {
+        if (uri==null) {
+            return false;
+        } else {
+            if (lollipopOrLater()) {
+                DocumentFile df = DocumentFile.fromTreeUri(c, uri);
+                return df.canWrite();
+            } else {
+                File f = new File(uri.getPath());
+                return f.canWrite();
+            }
+        }
     }
     private Uri homeFolder_SAF(Context c, String uriTree_String) {
         // When using a document tree, the uri needed for DocumentsContract is more complex than the uri chosen.
@@ -331,7 +345,7 @@ public class StorageAccess {
         return FileProvider.getUriForFile(c,"OpenSongAppFiles",f);
     }
 
-    DocumentFile documentFileFromRootUri(Context c, Uri uri, String path) {
+    public DocumentFile documentFileFromRootUri(Context c, Uri uri, String path) {
         if (uri != null && lollipopOrLater()) {
             return DocumentFile.fromTreeUri(c, uri);
         } else if (path != null && !lollipopOrLater()) {
@@ -377,7 +391,7 @@ public class StorageAccess {
     }
 
     // Basic file actions
-    boolean copyFile(InputStream in, OutputStream out) {
+    public boolean copyFile(InputStream in, OutputStream out) {
         if (in != null && out != null) {
             try {
                 byte[] buffer = new byte[1024];
@@ -408,7 +422,7 @@ public class StorageAccess {
             return false;
         }
     }
-    void writeFileFromDecodedImageString(OutputStream os, byte[] bytes) {
+    public void writeFileFromDecodedImageString(OutputStream os, byte[] bytes) {
         try {
             os.write(bytes);
             os.flush();
@@ -507,7 +521,7 @@ public class StorageAccess {
     }
 
     // Used to decide on the best storage method (using tree or not)
-    boolean lollipopOrLater() {
+    public boolean lollipopOrLater() {
         //boolean testingKitKat = true;
         //return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !testingKitKat;
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
@@ -1100,7 +1114,7 @@ public class StorageAccess {
     }
 
     @SuppressLint("NewApi")
-    ArrayList<String> listFilesInFolder(Context c, Preferences preferences, String folder, String subfolder) {
+    public ArrayList<String> listFilesInFolder(Context c, Preferences preferences, String folder, String subfolder) {
         String[] fixedfolders = fixFoldersAndFiles(c,folder,subfolder,"");
         if (lollipopOrLater()) {
             return listFilesInFolder_SAF(c, preferences, fixedfolders[0], fixedfolders[1]);
@@ -1354,7 +1368,7 @@ public class StorageAccess {
         }
     }
 
-    boolean canWrite(Context c, Uri uri) {
+    public boolean canWrite(Context c, Uri uri) {
         if (lollipopOrLater()) {
             return canWrite_SAF(c, uri);
         } else {
@@ -1378,7 +1392,7 @@ public class StorageAccess {
         }
     }
 
-    void wipeFolder(Context c, Preferences preferences, String folder, String subfolder) {
+    public void wipeFolder(Context c, Preferences preferences, String folder, String subfolder) {
         Uri uri = getUriForItem(c, preferences, folder, subfolder, "");
         // Delete the contents of this folder
         deleteFile(c,uri);
@@ -1515,7 +1529,7 @@ public class StorageAccess {
         return FullscreenActivity.isPDF || FullscreenActivity.isImage;
     }
 
-    String getImageSlide(Context c, String loc) {
+    public String getImageSlide(Context c, String loc) {
         String b = "";
         Uri uri = Uri.parse(loc);
         if (uriExists(c, uri)) {

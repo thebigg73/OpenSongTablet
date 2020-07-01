@@ -1,13 +1,17 @@
 <resources>
-    <color name="mainPrimary">#232333</color>
-    <color name="secPrimary">#0F1130</color>
-    <color name="altPrimary">#F4E7F4</color>
-    <color name="mainSecondary">#485868</color>
-    <color name="altSecondary">#BBBFCE</color>
-    <color name="primary">#483A5C</color>
+    <color name="transparent">#00000000</color>
+    <color name="colorPrimary">#1F1B24</color>
+    <color name="primaryDark">#010D12</color>
+    <color name="darkBackground">#121212</color>
+    <color name="altPrimary">#0F1130</color>
+    <color name="secPrimary">#D2C5D2</color>
+    <color name="mainSecondary">#E87700</color>
+    <color name="colorSecondary">#596979</color>
+    <color name="lightSecondary">#9DADBD</color>
+    <color name="darkSecondary">#152535</color>
     <color name="primarylight">#E8E3FF</color>
     <color name="secondary">#606060</color>
-    <color name="colorAccent">#ff0000</color>
+    <color name="colorAccent">#d4bff9</color>
     <color name="toolbar">#232333</color>
     <color name="accent">#485868</color>
     <color name="text">#FFFFFF</color>
@@ -19,10 +23,12 @@
     <color name="grey">#555555</color>
     <color name="dark">#222233</color>
     <color name="lightgrey">#888888</color>
+    <color name="vlightgrey">#BBBBBB</color>
     <color name="white">#FFFFFF</color>
     <color name="yellow">#FFFF00</color>
     <color name="darkyellow">#BBBB00</color>
     <color name="popupcolor">#232333</color>
+
 
 
 </resources>

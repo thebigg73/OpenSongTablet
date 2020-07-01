@@ -138,7 +138,7 @@ public class PopUpChordsFragment extends DialogFragment {
         customchordedit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "customchords";
+                StaticVariables.whattodo = "customchords";
                 mListener.openFragment();
                 dismiss();
             }

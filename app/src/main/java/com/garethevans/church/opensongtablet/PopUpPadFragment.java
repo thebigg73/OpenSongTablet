@@ -369,7 +369,7 @@ public class PopUpPadFragment extends DialogFragment {
                     ShowToast.showToast(getActivity());
                     // Try opening the link file popup to get the user to set one
                     if (mListener != null) {
-                        FullscreenActivity.whattodo = "page_links";
+                        StaticVariables.whattodo = "page_links";
                         mListener.openFragment();
                         //dismiss();
                     }

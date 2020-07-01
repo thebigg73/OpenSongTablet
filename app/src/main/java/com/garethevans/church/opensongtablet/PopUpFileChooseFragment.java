@@ -88,7 +88,7 @@ public class PopUpFileChooseFragment extends DialogFragment {
         if (PresenterMode.whatBackgroundLoaded!=null) {
             myswitch = PresenterMode.whatBackgroundLoaded;
         } else {
-            myswitch = FullscreenActivity.whattodo;
+            myswitch = StaticVariables.whattodo;
         }
         switch (myswitch) {
             case "logo":
@@ -163,10 +163,10 @@ public class PopUpFileChooseFragment extends DialogFragment {
             public void onClick(View view) {
                 CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
-                if (FullscreenActivity.whattodo.equals("customnote") ||
-                        FullscreenActivity.whattodo.equals("customslide") ||
-                        FullscreenActivity.whattodo.equals("customimage") ||
-                        FullscreenActivity.whattodo.equals("customscripture")) {
+                if (StaticVariables.whattodo.equals("customnote") ||
+                        StaticVariables.whattodo.equals("customslide") ||
+                        StaticVariables.whattodo.equals("customimage") ||
+                        StaticVariables.whattodo.equals("customscripture")) {
                     dismiss();
                     DialogFragment newFragment = PopUpCustomSlideFragment.newInstance();
                     newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");

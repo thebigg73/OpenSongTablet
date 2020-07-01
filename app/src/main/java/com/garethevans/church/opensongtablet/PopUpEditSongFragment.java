@@ -750,7 +750,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 // Save the song first - false to stop everything reloading
                 saveEdit(false);
 
-                FullscreenActivity.whattodo = "abcnotation_edit";
+                StaticVariables.whattodo = "abcnotation_edit";
                 DialogFragment newFragment = PopUpABCNotationFragment.newInstance();
                 newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
                 forceHideKeyboard(edit_song_lyrics);

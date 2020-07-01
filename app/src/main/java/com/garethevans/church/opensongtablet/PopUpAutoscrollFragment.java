@@ -107,7 +107,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         popupautoscroll_startstopbutton = V.findViewById(R.id.popupautoscroll_startstopbutton);
         Button popupautoscroll_learnbutton = V.findViewById(R.id.popupautoscroll_learnbutton);
         // Don't allow the learn feature for multipage pdfs - too complex for noe
-        if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCount>1) {
+        if (FullscreenActivity.isPDF && StaticVariables.pdfPageCount>1) {
             popupautoscroll_learnbutton.setVisibility(View.GONE);
         }
         popupautoscroll_delay = V.findViewById(R.id.popupautoscroll_delay);

@@ -419,19 +419,19 @@ public class LoadXML extends Activity {
         // Get the new whichSongFolder
         if (what.contains(c.getResources().getString(R.string.note)+"/")) {
             StaticVariables.whichSongFolder = "../Notes";
-            FullscreenActivity.whattodo = "customreusable_note";
+            StaticVariables.whattodo = "customreusable_note";
         } else if (what.contains(c.getResources().getString(R.string.slide)+"/")) {
             StaticVariables.whichSongFolder = "../Slides";
-            FullscreenActivity.whattodo = "customreusable_slide";
+            StaticVariables.whattodo = "customreusable_slide";
         } else if (what.contains(c.getResources().getString(R.string.scripture)+"/")) {
             StaticVariables.whichSongFolder = "../Scripture";
-            FullscreenActivity.whattodo = "customreusable_scripture";
+            StaticVariables.whattodo = "customreusable_scripture";
         } else if (what.contains(c.getResources().getString(R.string.image)+"/")) {
             StaticVariables.whichSongFolder = "../Images";
-            FullscreenActivity.whattodo = "customreusable_image";
+            StaticVariables.whattodo = "customreusable_image";
         } else if (what.contains(c.getResources().getString(R.string.variation)+"/")) {
             StaticVariables.whichSongFolder = "../Variations";
-            FullscreenActivity.whattodo = "customreusable_variation";
+            StaticVariables.whattodo = "customreusable_variation";
         }
 
         // Load up the XML
@@ -842,14 +842,14 @@ public class LoadXML extends Activity {
                 mFileDescriptor = c.getContentResolver().openFileDescriptor(uri, "r");
                 if (mFileDescriptor != null) {
                     mPdfRenderer = new PdfRenderer(mFileDescriptor);
-                    FullscreenActivity.pdfPageCount = mPdfRenderer.getPageCount();
+                    StaticVariables.pdfPageCount = mPdfRenderer.getPageCount();
                     preferences.setMyPreferenceBoolean(c,"songLoadSuccess",true);
                     preferences.setMyPreferenceString(c,"songfilename",StaticVariables.songfilename);
                     preferences.setMyPreferenceString(c,"whichSongFolder",StaticVariables.whichSongFolder);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                FullscreenActivity.pdfPageCount = 0;
+                StaticVariables.pdfPageCount = 0;
             }
         }
     }

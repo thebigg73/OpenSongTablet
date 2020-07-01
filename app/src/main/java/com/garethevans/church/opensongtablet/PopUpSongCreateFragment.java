@@ -113,7 +113,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
         newSongNameEditText = V.findViewById(R.id.newSongNameEditText);
         progressBar = V.findViewById(R.id.progressBar);
 
-        if (FullscreenActivity.whattodo.equals("savecameraimage")) {
+        if (StaticVariables.whattodo.equals("savecameraimage")) {
             try {
                 Log.d("PopUpSongCreate", "mCurrentPhotoPath=" + FullscreenActivity.mCurrentPhotoPath);
                 String currimagename = FullscreenActivity.mCurrentPhotoPath.
@@ -193,7 +193,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
                 StaticVariables.myToastMessage = getString(R.string.songnamealreadytaken);
             } else {
 
-                if (FullscreenActivity.whattodo.equals("savecameraimage")) {
+                if (StaticVariables.whattodo.equals("savecameraimage")) {
                     Uri from = Uri.parse(FullscreenActivity.mCurrentPhotoPath);
                     Log.d("PopUpCreate", "from=" + from);
                     String currimagename = from.getLastPathSegment();
@@ -318,7 +318,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
                     if (mListener != null) {
                         mListener.prepareSongMenu();
-                        if (FullscreenActivity.whattodo.equals("savecameraimage")) {
+                        if (StaticVariables.whattodo.equals("savecameraimage")) {
                             mListener.loadSong();
                         } else {
                             // Prepare the app to open the edit page after loading

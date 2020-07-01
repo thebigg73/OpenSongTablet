@@ -14,44 +14,23 @@
             android:id="@+id/action_nav_boot_to_nav_performance"
             app:destination="@id/nav_performance" />
         <action
-            android:id="@+id/action_nav_boot_to_nav_presentation"
-            app:destination="@id/nav_presentation" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_presentation"
-        android:name="com.garethevans.church.opensongtablet.presentation.PresentationFragment"
-        android:label="@string/presentermode"
-        tools:layout="@layout/fragment_songlist">
-        <action
-            android:id="@+id/action_nav_presentation_to_nav_songlist"
-            app:destination="@id/nav_songlist" />
+            android:id="@+id/action_nav_boot_to_nav_storage"
+            app:destination="@id/nav_storage" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_performance"
         android:name="com.garethevans.church.opensongtablet.performance.PerformanceFragment"
         android:label="@string/performancemode"
-        tools:layout="@layout/fragment_presentation" >
-        <action
-            android:id="@+id/action_nav_performance_to_nav_songlist"
-            app:destination="@id/nav_songlist" />
-    </fragment>
-
+        tools:layout="@layout/fragment_performance" />
     <fragment
-        android:id="@+id/nav_songlist"
-        android:name="com.garethevans.church.opensongtablet.songlist.SongListFragment"
-        android:label="@string/song_list"
-        tools:layout="@layout/fragment_songlist" >
+        android:id="@+id/nav_storage"
+        android:name="com.garethevans.church.opensongtablet.filemanagement.SetStorageLocationFragment"
+        android:label="SetStorageLocationFragment"
+        tools:layout="@layout/fragment_setstoragelocation">
         <action
-            android:id="@+id/action_nav_songlist_to_nav_songlist_custom"
-            app:destination="@id/nav_songlist_custom" />
+            android:id="@+id/action_nav_storage_to_nav_boot"
+            app:destination="@id/nav_boot" />
     </fragment>
-
-    <fragment
-        android:id="@+id/nav_songlist_custom"
-        android:name="com.garethevans.church.opensongtablet.songlist.CustomSearchFragment"
-        android:label="@string/custom"
-        tools:layout="@layout/fragment_songlist_custom" />
 
 </navigation>

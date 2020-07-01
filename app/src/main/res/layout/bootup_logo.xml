@@ -3,7 +3,7 @@
     android:id="@+id/pagesplash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mainPrimary"
+    android:background="@color/colorPrimary"
     android:padding="12dp">
 
     <ImageView
@@ -16,10 +16,10 @@
 
         <TextView
             android:id="@+id/currentAction"
-            style="@style/AppSubHeading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:text="@string/load"/>
 
 </RelativeLayout>

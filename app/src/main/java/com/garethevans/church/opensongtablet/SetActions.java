@@ -47,7 +47,7 @@ public class SetActions {
             }
         }
         // Sort the categories alphabetically
-        if (!FullscreenActivity.sortAlphabetically) {
+        if (!StaticVariables.sortAlphabetically) {
             Collections.sort(cats);
             Collections.reverse(cats);
         } else {
@@ -80,7 +80,7 @@ public class SetActions {
         collator.setStrength(Collator.SECONDARY);
 
         // Sort the categories alphabetically
-        if (!FullscreenActivity.sortAlphabetically) {
+        if (!StaticVariables.sortAlphabetically) {
             Collections.sort(filtered,collator);
             Collections.reverse(filtered);
         } else {
@@ -289,12 +289,12 @@ public class SetActions {
         } else {
             StaticVariables.nextSongInSet = StaticVariables.mSetList[StaticVariables.indexSongInSet + 1];
         }
-        FullscreenActivity.whichDirection = "R2L";
+        StaticVariables.whichDirection = "R2L";
     }
 
     void saveSetMessage(Context c, Preferences preferences,
                         StorageAccess storageAccess, ProcessSong processSong) {
-        FullscreenActivity.whattodo = "";
+        StaticVariables.whattodo = "";
         if (StaticVariables.mSetList!=null && StaticVariables.mSetList.length>0) {
             CreateNewSet createNewSet = new CreateNewSet();
             if (!createNewSet.doCreation(c, preferences, storageAccess, processSong)) {
@@ -915,8 +915,8 @@ public class SetActions {
             StaticVariables.setView = true;
 
             //Log.d("SetActions","whatsongforsetwork="+StaticVariables.whatsongforsetwork);
-            FullscreenActivity.linkclicked = StaticVariables.mSetList[0];
-            FullscreenActivity.pdfPageCurrent = 0;
+            StaticVariables.linkclicked = StaticVariables.mSetList[0];
+            StaticVariables.pdfPageCurrent = 0;
 
             // Get the song and folder names from the item clicked in the set list
             getSongFileAndFolder(c);
@@ -930,35 +930,35 @@ public class SetActions {
 
     void getSongFileAndFolder(Context c) {
         //Log.d("SetActions","linkclicked="+FullscreenActivity.linkclicked);
-        if (!FullscreenActivity.linkclicked.contains("/")) {
-            FullscreenActivity.linkclicked = "/" + FullscreenActivity.linkclicked;
+        if (!StaticVariables.linkclicked.contains("/")) {
+            StaticVariables.linkclicked = "/" + StaticVariables.linkclicked;
         }
 
-        if (FullscreenActivity.linkclicked.equals("/")) {
+        if (StaticVariables.linkclicked.equals("/")) {
             // There was no song clicked, so just reload the current one
             if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername)) || StaticVariables.whichSongFolder.equals("MAIN") ||
                     StaticVariables.whichSongFolder.equals("")) {
-                FullscreenActivity.linkclicked = "/"+ StaticVariables.songfilename;
+                StaticVariables.linkclicked = "/"+ StaticVariables.songfilename;
             } else {
-                FullscreenActivity.linkclicked = StaticVariables.whichSongFolder + "/" +
+                StaticVariables.linkclicked = StaticVariables.whichSongFolder + "/" +
                         StaticVariables.songfilename;
             }
         }
 
         // The song is the bit after the last /
-        int songpos = FullscreenActivity.linkclicked.lastIndexOf("/");
+        int songpos = StaticVariables.linkclicked.lastIndexOf("/");
         if (songpos==0) {
             // Empty folder
             StaticVariables.whichSongFolder = c.getString(R.string.mainfoldername);
         } else {
-            StaticVariables.whichSongFolder = FullscreenActivity.linkclicked.substring(0,songpos);
+            StaticVariables.whichSongFolder = StaticVariables.linkclicked.substring(0,songpos);
         }
 
-        if (songpos>=FullscreenActivity.linkclicked.length()) {
+        if (songpos>= StaticVariables.linkclicked.length()) {
             // Empty song
             StaticVariables.songfilename = "";
         } else {
-            StaticVariables.songfilename = FullscreenActivity.linkclicked.substring(songpos + 1);
+            StaticVariables.songfilename = StaticVariables.linkclicked.substring(songpos + 1);
         }
 
         if (StaticVariables.whichSongFolder.equals("")) {
@@ -1039,10 +1039,10 @@ public class SetActions {
             if (StaticVariables.setMoveDirection.equals("back")) {
                 if (StaticVariables.indexSongInSet>0) {
                     StaticVariables.indexSongInSet -= 1;
-                    FullscreenActivity.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
-                    StaticVariables.whatsongforsetwork = FullscreenActivity.linkclicked;
-                    if (FullscreenActivity.linkclicked == null) {
-                        FullscreenActivity.linkclicked = "";
+                    StaticVariables.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
+                    StaticVariables.whatsongforsetwork = StaticVariables.linkclicked;
+                    if (StaticVariables.linkclicked == null) {
+                        StaticVariables.linkclicked = "";
                         StaticVariables.whatsongforsetwork = "";
                     }
                 }
@@ -1050,10 +1050,10 @@ public class SetActions {
             } else if (StaticVariables.setMoveDirection.equals("forward")) {
                 if (StaticVariables.indexSongInSet< StaticVariables.mSetList.length-1) {
                     StaticVariables.indexSongInSet += 1;
-                    FullscreenActivity.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
-                    StaticVariables.whatsongforsetwork = FullscreenActivity.linkclicked;
-                    if (FullscreenActivity.linkclicked == null) {
-                        FullscreenActivity.linkclicked = "";
+                    StaticVariables.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
+                    StaticVariables.whatsongforsetwork = StaticVariables.linkclicked;
+                    if (StaticVariables.linkclicked == null) {
+                        StaticVariables.linkclicked = "";
                         StaticVariables.whatsongforsetwork = "";
                     }
                 }

@@ -564,4 +564,89 @@ public class LoadSong {
         }
         return s;
     }
+
+    public String getTempFileLocation(Context c, String folder, String file) {
+        String where = folder + "/" + file;
+        if (folder.equals(c.getString(R.string.mainfoldername)) || folder.equals("MAIN") || folder.equals("")) {
+            where = file;
+        } else if (folder.contains("**" + c.getResources().getString(R.string.note))) {
+            where = "../Notes/_cache/" + file;
+        } else if (folder.contains("**" + c.getResources().getString(R.string.image))) {
+            where = "../Images/_cache/" + file;
+        } else if (folder.contains("**" + c.getResources().getString(R.string.scripture))) {
+            where = "../Scripture/_cache/" + file;
+        } else if (folder.contains("**" + c.getResources().getString(R.string.slide))) {
+            where = "../Slides/_cache/" + file;
+        } else if (folder.contains("**" + c.getResources().getString(R.string.variation))) {
+            where = "../Variations/" + file;
+        }
+        return where;
+    }
+
+    public String grabNextSongInSetKey(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong, String nextsong) {
+        String nextkey = "";
+
+        // Get the android version
+        boolean nextisxml = true;
+        if (nextsong.toLowerCase(Locale.ROOT).endsWith(".pdf") ||
+                nextsong.toLowerCase(Locale.ROOT).endsWith(".doc") ||
+                nextsong.toLowerCase(Locale.ROOT).endsWith(".docx") ||
+                nextsong.toLowerCase(Locale.ROOT).endsWith(".jpg") ||
+                nextsong.toLowerCase(Locale.ROOT).endsWith(".jpeg") ||
+                nextsong.toLowerCase(Locale.ROOT).endsWith(".png") ||
+                nextsong.toLowerCase(Locale.ROOT).endsWith(".gif") ||
+                nextsong.toLowerCase(Locale.ROOT).endsWith(".bmp")) {
+            nextisxml = false;
+        }
+
+        String nextutf = null;
+
+        Uri uri = null;
+        String subfolder = "";
+        if (nextisxml) {
+            if (nextsong.contains("**") || nextsong.contains("../")) {
+                subfolder = nextsong;
+                nextsong = "";
+            }
+            uri = storageAccess.getUriForItem(c, preferences, "Songs", subfolder, nextsong);
+            nextutf = storageAccess.getUTFEncoding(c, uri);
+        }
+
+        try {
+            if (nextisxml && nextutf != null && !nextutf.equals("")) {
+                // Extract all of the key bits of the song
+                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                factory.setNamespaceAware(true);
+                XmlPullParser xpp = factory.newPullParser();
+
+                nextkey = "";
+
+                InputStream inputStream = storageAccess.getInputStream(c, uri);
+                if (inputStream != null) {
+                    xpp.setInput(inputStream, nextutf);
+
+                    int eventType;
+                    eventType = xpp.getEventType();
+                    while (eventType != XmlPullParser.END_DOCUMENT) {
+                        if (eventType == XmlPullParser.START_TAG) {
+                            if (xpp.getName().equals("key")) {
+                                nextkey = processSong.parseFromHTMLEntities(xpp.nextText());
+                            }
+                        }
+                        try {
+                            eventType = xpp.next();
+                        } catch (Exception e) {
+                            //Ooops!
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.d("LoadXML","Error trying to read XML from "+uri);
+            // Ooops
+        }
+
+        return nextkey;
+    }
+
 }

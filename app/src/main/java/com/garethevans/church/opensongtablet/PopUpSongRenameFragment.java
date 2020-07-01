@@ -76,7 +76,7 @@ public class PopUpSongRenameFragment extends DialogFragment {
                 storageAccess.copyFile(inputStream, outputStream);
 
                 // Remove the original if it is a new file location and we aren't duplicating
-                if (!FullscreenActivity.whattodo.equals("duplicate") && to.getPath() != null && !to.getPath().equals(from.getPath())) {
+                if (!StaticVariables.whattodo.equals("duplicate") && to.getPath() != null && !to.getPath().equals(from.getPath())) {
                     storageAccess.deleteFile(getActivity(), from);
                 }
 
@@ -84,7 +84,7 @@ public class PopUpSongRenameFragment extends DialogFragment {
                 StaticVariables.songfilename = tempNewSong;
 
                 // Update the SQLite database
-                if (FullscreenActivity.whattodo.equals("duplicate")) {
+                if (StaticVariables.whattodo.equals("duplicate")) {
                     sqLiteHelper.createSong(getActivity(),StaticVariables.whichSongFolder,StaticVariables.songfilename);
                     String songId = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
                     sqLite = sqLiteHelper.getSong(getActivity(), songId);
@@ -173,7 +173,7 @@ public class PopUpSongRenameFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_songrename, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        if (FullscreenActivity.whattodo.equals("duplicate")) {
+        if (StaticVariables.whattodo.equals("duplicate")) {
             title.setText(R.string.duplicate);
         } else {
             title.setText(getResources().getString(R.string.rename));

@@ -46,7 +46,7 @@ public class ShowToast extends Activity {
 		}
 	}
 
-    void showToastMessage(Context c, String message) {
+    public void showToastMessage(Context c, String message) {
         try {
             Toast toast = Toast.makeText(c, message, Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, 0, 0);

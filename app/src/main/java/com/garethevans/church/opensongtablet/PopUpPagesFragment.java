@@ -95,17 +95,17 @@ public class PopUpPagesFragment extends DialogFragment {
             pages_available.setVisibility(View.VISIBLE);
 
             // Get the pdf page info
-            pagetextView.setText(pageInfo(FullscreenActivity.pdfPageCurrent+1));
-            pageseekbar.setMax(FullscreenActivity.pdfPageCount - 1);
-            pageseekbar.setProgress(FullscreenActivity.pdfPageCurrent);
+            pagetextView.setText(pageInfo(StaticVariables.pdfPageCurrent+1));
+            pageseekbar.setMax(StaticVariables.pdfPageCount - 1);
+            pageseekbar.setProgress(StaticVariables.pdfPageCurrent);
 
             // Set the listeners
             nextpage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int newpos = pageseekbar.getProgress()+1;
-                    if (newpos<FullscreenActivity.pdfPageCount) {
-                        FullscreenActivity.whichDirection = "R2L";
+                    if (newpos< StaticVariables.pdfPageCount) {
+                        StaticVariables.whichDirection = "R2L";
                         pageseekbar.setProgress(newpos);
                         moveToSelectedPage(newpos);
                     }
@@ -116,7 +116,7 @@ public class PopUpPagesFragment extends DialogFragment {
                 public void onClick(View view) {
                     int newpos = pageseekbar.getProgress()-1;
                     if (newpos>-1) {
-                        FullscreenActivity.whichDirection = "L2R";
+                        StaticVariables.whichDirection = "L2R";
                         pageseekbar.setProgress(newpos);
                         moveToSelectedPage(newpos);
                     }
@@ -150,17 +150,17 @@ public class PopUpPagesFragment extends DialogFragment {
 
     private void moveToSelectedPage(int newpos) {
         String dir = "R2L";
-        if (newpos < FullscreenActivity.pdfPageCurrent) {
+        if (newpos < StaticVariables.pdfPageCurrent) {
             dir = "L2R";
         }
-        FullscreenActivity.pdfPageCurrent = newpos;
+        StaticVariables.pdfPageCurrent = newpos;
         if (mListener!=null) {
-            mListener.changePDFPage(FullscreenActivity.pdfPageCurrent, dir);
+            mListener.changePDFPage(StaticVariables.pdfPageCurrent, dir);
         }
     }
 
     private String pageInfo(int current) {
-        return current + " / " + FullscreenActivity.pdfPageCount;
+        return current + " / " + StaticVariables.pdfPageCount;
     }
 
     @Override

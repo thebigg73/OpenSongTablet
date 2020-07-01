@@ -41,7 +41,7 @@ import lib.folderpicker.FolderPicker;
 import static com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE;
 import static com.google.android.material.snackbar.Snackbar.make;
 
-public class BootUpCheck extends AppCompatActivity {
+public class _BootUpCheck extends AppCompatActivity {
 
     // Declare helper classes:
     private Preferences preferences;
@@ -68,10 +68,10 @@ public class BootUpCheck extends AppCompatActivity {
         preferences = new Preferences();
         storageAccess = new StorageAccess();
         SetTypeFace setTypeFace = new SetTypeFace();
-        StaticVariables.activity = BootUpCheck.this;
+        StaticVariables.activity = _BootUpCheck.this;
 
         // Initialise the font
-        setTypeFace.setUpAppFonts(BootUpCheck.this,preferences,new Handler(),new Handler(), new Handler(),new Handler(), new Handler(), new Handler());
+        setTypeFace.setUpAppFonts(_BootUpCheck.this,preferences,new Handler(),new Handler(), new Handler(),new Handler(), new Handler(), new Handler());
         // This will do one of 2 things - it will either show the splash screen or the welcome screen
         // To determine which one, we need to check the storage is set and is valid
         // The last version used must be the same or greater than the current app version
@@ -81,24 +81,24 @@ public class BootUpCheck extends AppCompatActivity {
 
         showCurrentStorage(uriTreeHome);
 
-        StaticVariables.whichSongFolder = preferences.getMyPreferenceString(BootUpCheck.this, "whichSongFolder",
+        StaticVariables.whichSongFolder = preferences.getMyPreferenceString(_BootUpCheck.this, "whichSongFolder",
                 getString(R.string.mainfoldername));
-        StaticVariables.songfilename = preferences.getMyPreferenceString(BootUpCheck.this, "songfilename",
+        StaticVariables.songfilename = preferences.getMyPreferenceString(_BootUpCheck.this, "songfilename",
                 "Welcome to OpenSongApp");
 
         // Check if we have used the app already, but the last song didn't load
-        if (!preferences.getMyPreferenceBoolean(BootUpCheck.this,"songLoadSuccess",false)) {
+        if (!preferences.getMyPreferenceBoolean(_BootUpCheck.this,"songLoadSuccess",false)) {
             StaticVariables.whichSongFolder = "";
             StaticVariables.songfilename = "Welcome to OpenSongApp";
         } else {
-            StaticVariables.whichSongFolder = preferences.getMyPreferenceString(BootUpCheck.this, "whichSongFolder",
+            StaticVariables.whichSongFolder = preferences.getMyPreferenceString(_BootUpCheck.this, "whichSongFolder",
                     getString(R.string.mainfoldername));
         }
 
         // If whichSongFolder is empty, reset to main
         if (StaticVariables.whichSongFolder == null || StaticVariables.whichSongFolder.isEmpty()) {
             StaticVariables.whichSongFolder = getString(R.string.mainfoldername);
-            preferences.setMyPreferenceString(BootUpCheck.this,"whichSongFolder",StaticVariables.whichSongFolder);
+            preferences.setMyPreferenceString(_BootUpCheck.this,"whichSongFolder",StaticVariables.whichSongFolder);
         }
 
         // Check we have the required storage permission
@@ -108,11 +108,11 @@ public class BootUpCheck extends AppCompatActivity {
         skiptoapp = versionCheck();
 
         if (checkStorageIsValid() && storageGranted && skiptoapp) {
-            setContentView(R.layout.activity_logosplash);
+            setContentView(R.layout._activity_logosplash);
             goToSongs();
 
         } else {
-            setContentView(R.layout.boot_up_check);
+            setContentView(R.layout._boot_up_check);
 
             // Identify the views
             identifyViews();
@@ -157,10 +157,10 @@ public class BootUpCheck extends AppCompatActivity {
         appModes.add(getString(R.string.performancemode));
         appModes.add(getString(R.string.stagemode));
         appModes.add(getString(R.string.presentermode));
-        ArrayAdapter<String> aa = new ArrayAdapter<>(BootUpCheck.this,R.layout.my_spinner,appModes);
+        ArrayAdapter<String> aa = new ArrayAdapter<>(_BootUpCheck.this,R.layout.my_spinner,appModes);
         appMode.setAdapter(aa);
         if (whichMode==null) {
-            whichMode = preferences.getMyPreferenceString(BootUpCheck.this, "whichMode", "Performance");
+            whichMode = preferences.getMyPreferenceString(_BootUpCheck.this, "whichMode", "Performance");
         }
         // Select the appropriate one
         switch (whichMode) {
@@ -185,17 +185,17 @@ public class BootUpCheck extends AppCompatActivity {
                     case 0:
                     default:
                         whichMode = "Performance";
-                        preferences.setMyPreferenceString(BootUpCheck.this,"whichMode",whichMode);
+                        preferences.setMyPreferenceString(_BootUpCheck.this,"whichMode",whichMode);
                         break;
 
                     case 1:
                         whichMode = "Stage";
-                        preferences.setMyPreferenceString(BootUpCheck.this,"whichMode",whichMode);
+                        preferences.setMyPreferenceString(_BootUpCheck.this,"whichMode",whichMode);
                         break;
 
                     case 2:
                         whichMode = "Presentation";
-                        preferences.setMyPreferenceString(BootUpCheck.this,"whichMode",whichMode);
+                        preferences.setMyPreferenceString(_BootUpCheck.this,"whichMode",whichMode);
                         break;
                 }
                 goToSongs();
@@ -262,11 +262,11 @@ public class BootUpCheck extends AppCompatActivity {
     }
     private void pulseStartButton() {
         CustomAnimations ca = new CustomAnimations();
-        ca.pulse(BootUpCheck.this, goToSongsButton);
+        ca.pulse(_BootUpCheck.this, goToSongsButton);
     }
     private void pulseStorageButton() {
         CustomAnimations ca2 = new CustomAnimations();
-        ca2.pulse(BootUpCheck.this, chooseStorageButton);
+        ca2.pulse(_BootUpCheck.this, chooseStorageButton);
     }
     private void showLoadingBar() {
         pulseStartButton();
@@ -280,8 +280,8 @@ public class BootUpCheck extends AppCompatActivity {
         userGuideButton.setClickable(true);
     }
     private void checkPreferencesForStorage() {
-        String uT  = preferences.getMyPreferenceString(BootUpCheck.this,"uriTree","");
-        String uTH = preferences.getMyPreferenceString(BootUpCheck.this,"uriTreeHome","");
+        String uT  = preferences.getMyPreferenceString(_BootUpCheck.this,"uriTree","");
+        String uTH = preferences.getMyPreferenceString(_BootUpCheck.this,"uriTreeHome","");
         if (!uT.equals("")) {
             uriTree = Uri.parse(uT);
         } else {
@@ -293,7 +293,7 @@ public class BootUpCheck extends AppCompatActivity {
             uriTreeHome = null;
         }
         if (uriTree!=null && uriTreeHome==null) {
-            uriTreeHome = storageAccess.homeFolder(BootUpCheck.this,uriTree,preferences);
+            uriTreeHome = storageAccess.homeFolder(_BootUpCheck.this,uriTree,preferences);
         }
     }
     private void checkStoragePermission() {
@@ -313,7 +313,7 @@ public class BootUpCheck extends AppCompatActivity {
                         LENGTH_INDEFINITE).setAction(R.string.ok, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ActivityCompat.requestPermissions(BootUpCheck.this,
+                        ActivityCompat.requestPermissions(_BootUpCheck.this,
                                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
                     }
                 }).show();
@@ -323,7 +323,7 @@ public class BootUpCheck extends AppCompatActivity {
         } else {
             try {
                 // Storage permission has not been granted yet. Request it directly.
-                ActivityCompat.requestPermissions(BootUpCheck.this,
+                ActivityCompat.requestPermissions(_BootUpCheck.this,
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -452,10 +452,10 @@ public class BootUpCheck extends AppCompatActivity {
         }
         if (folderLocation!=null) {
             uriTree = Uri.parse(folderLocation);
-            uriTreeHome = storageAccess.homeFolder(BootUpCheck.this,uriTree,preferences);
+            uriTreeHome = storageAccess.homeFolder(_BootUpCheck.this,uriTree,preferences);
 
             // If we can write to this all is good, if not, tell the user (likely to be SD card)
-            if (!storageAccess.canWrite(BootUpCheck.this, uriTree)) {
+            if (!storageAccess.canWrite(_BootUpCheck.this, uriTree)) {
                 notWriteable();
             }
         } else {
@@ -474,7 +474,7 @@ public class BootUpCheck extends AppCompatActivity {
                     Intent.FLAG_GRANT_READ_URI_PERMISSION |
                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         }
-        uriTreeHome = storageAccess.homeFolder(BootUpCheck.this,uriTree,preferences);
+        uriTreeHome = storageAccess.homeFolder(_BootUpCheck.this,uriTree,preferences);
         if (uriTree==null || uriTreeHome==null) {
             notWriteable();
         }
@@ -484,7 +484,7 @@ public class BootUpCheck extends AppCompatActivity {
         uriTree = null;
         uriTreeHome = null;
         ShowToast showToast = new ShowToast();
-        showToast.showToastMessage(BootUpCheck.this, getString(R.string.storage_notwritable));
+        showToast.showToastMessage(_BootUpCheck.this, getString(R.string.storage_notwritable));
         if (locations != null && locations.size() > 0) {
             // Revert back to the blank selection as the one chosen can't be used
             previousStorageSpinner.setSelection(0);
@@ -493,11 +493,11 @@ public class BootUpCheck extends AppCompatActivity {
     private void saveUriLocation() {
         if (uriTree!=null) {
             // Save the preferences
-            preferences.setMyPreferenceString(BootUpCheck.this, "uriTree", uriTree.toString());
-            preferences.setMyPreferenceString(BootUpCheck.this, "uriTreeHome", uriTreeHome.toString());
+            preferences.setMyPreferenceString(_BootUpCheck.this, "uriTree", uriTree.toString());
+            preferences.setMyPreferenceString(_BootUpCheck.this, "uriTreeHome", uriTreeHome.toString());
         } else {
-            preferences.setMyPreferenceString(BootUpCheck.this, "uriTree", "");
-            preferences.setMyPreferenceString(BootUpCheck.this, "uriTreeHome", "");
+            preferences.setMyPreferenceString(_BootUpCheck.this, "uriTree", "");
+            preferences.setMyPreferenceString(_BootUpCheck.this, "uriTreeHome", "");
         }
     }
 
@@ -506,7 +506,7 @@ public class BootUpCheck extends AppCompatActivity {
         // Since the OpenSong folder may not yet exist, we check for the uriTree and if it is writeable
         try {
             if (uriTree != null) {
-                DocumentFile df = storageAccess.documentFileFromRootUri(BootUpCheck.this, uriTree, uriTree.getPath());
+                DocumentFile df = storageAccess.documentFileFromRootUri(_BootUpCheck.this, uriTree, uriTree.getPath());
                 if (df==null || !df.canWrite()) {
                     progressText.setText(R.string.notset);
                 }
@@ -519,7 +519,7 @@ public class BootUpCheck extends AppCompatActivity {
     }
     private boolean versionCheck() {
         // Do this as a separate thread.  0 is for fresh installs.  1 is for user choice to return to menu
-        int lastUsedVersion = preferences.getMyPreferenceInt(BootUpCheck.this, "lastUsedVersion", 0);
+        int lastUsedVersion = preferences.getMyPreferenceInt(_BootUpCheck.this, "lastUsedVersion", 0);
         PackageInfo pInfo;
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -562,14 +562,14 @@ public class BootUpCheck extends AppCompatActivity {
             }
         }
         try {
-            PreferenceManager.getDefaultSharedPreferences(BootUpCheck.this).edit().clear().apply();
+            PreferenceManager.getDefaultSharedPreferences(_BootUpCheck.this).edit().clear().apply();
         } catch (Exception e) {
             Log.d("d","Error clearing new preferences");
         }
 
         // Clear the old preferences (that will eventually get phased out!)
         try {
-            BootUpCheck.this.getSharedPreferences("OpenSongApp", Context.MODE_PRIVATE).edit().clear().apply();
+            _BootUpCheck.this.getSharedPreferences("OpenSongApp", Context.MODE_PRIVATE).edit().clear().apply();
         } catch (Exception e) {
             Log.d("d","Error clearing old preferences");
             e.printStackTrace();
@@ -578,13 +578,13 @@ public class BootUpCheck extends AppCompatActivity {
 
         // Clear the cache and data folder
         try {
-            File dir = BootUpCheck.this.getCacheDir();
+            File dir = _BootUpCheck.this.getCacheDir();
             doDeleteCacheFile(dir);
 
             // Set the last used version to 1 (otherwise we get stuck in a loop!)
-            preferences.setMyPreferenceInt(BootUpCheck.this,"lastUsedVersion",1);
+            preferences.setMyPreferenceInt(_BootUpCheck.this,"lastUsedVersion",1);
             // Now restart the BootUp activity
-            BootUpCheck.this.recreate();
+            _BootUpCheck.this.recreate();
 
         } catch (Exception e) {
             Log.d("d","Error clearing the cache directory");
@@ -683,8 +683,8 @@ public class BootUpCheck extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             // Set the preferred storage - it must be good, otherwise we couldn't click the button!
-            preferences.setMyPreferenceString(BootUpCheck.this,"uriTree",uriTree.toString());
-            preferences.setMyPreferenceString(BootUpCheck.this,"uriTreeHome",uriTreeHome.toString());
+            preferences.setMyPreferenceString(_BootUpCheck.this,"uriTree",uriTree.toString());
+            preferences.setMyPreferenceString(_BootUpCheck.this,"uriTreeHome",uriTreeHome.toString());
 
         }
 
@@ -693,7 +693,7 @@ public class BootUpCheck extends AppCompatActivity {
             // Check if the folders exist, if not, create them
             message = getString(R.string.storage_check);
             publishProgress("setmessage");
-            final String progress = storageAccess.createOrCheckRootFolders(BootUpCheck.this, uriTree, preferences);
+            final String progress = storageAccess.createOrCheckRootFolders(_BootUpCheck.this, uriTree, preferences);
             boolean foldersok = !progress.contains("Error");
 
             if (foldersok) {
@@ -706,7 +706,7 @@ public class BootUpCheck extends AppCompatActivity {
                 publishProgress("setmessage");
                 ArrayList<String> songIds = new ArrayList<>();
                 try {
-                    songIds = storageAccess.listSongs(BootUpCheck.this, preferences);
+                    songIds = storageAccess.listSongs(_BootUpCheck.this, preferences);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -717,19 +717,19 @@ public class BootUpCheck extends AppCompatActivity {
                 message = numSongs + " " + getString(R.string.processing) + "\n" + getString(R.string.wait);
                 publishProgress("setmessage");
                 // Write a crude text file (line separated) with the song Ids (folder/file)
-                storageAccess.writeSongIDFile(BootUpCheck.this, preferences, songIds);
+                storageAccess.writeSongIDFile(_BootUpCheck.this, preferences, songIds);
 
                 // Try to create the basic databases
-                SQLiteHelper sqLiteHelper = new SQLiteHelper(BootUpCheck.this);
-                sqLiteHelper.resetDatabase(BootUpCheck.this);
-                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(BootUpCheck.this);
-                nonOpenSongSQLiteHelper.initialise(BootUpCheck.this,storageAccess,preferences);
+                SQLiteHelper sqLiteHelper = new SQLiteHelper(_BootUpCheck.this);
+                sqLiteHelper.resetDatabase(_BootUpCheck.this);
+                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(_BootUpCheck.this);
+                nonOpenSongSQLiteHelper.initialise(_BootUpCheck.this,storageAccess,preferences);
 
                 // Add entries to the database that have songid, folder and filename fields
                 // This is the minimum that we need for the song menu.
                 // It can be upgraded asynchronously in StageMode/PresenterMode to include author/key
                 // Also will later include all the stuff for the search index as well
-                sqLiteHelper.insertFast(BootUpCheck.this, storageAccess);
+                sqLiteHelper.insertFast(_BootUpCheck.this, storageAccess);
 
                 // Finished indexing
                 message = getString(R.string.success);
@@ -739,7 +739,7 @@ public class BootUpCheck extends AppCompatActivity {
                 intent = new Intent();
 
                 if (whichMode==null) {
-                    whichMode = preferences.getMyPreferenceString(BootUpCheck.this,"whichMode","Performance");
+                    whichMode = preferences.getMyPreferenceString(_BootUpCheck.this,"whichMode","Performance");
                 }
 
                 // Set the app mode
@@ -749,20 +749,20 @@ public class BootUpCheck extends AppCompatActivity {
                     case "Performance":
                     case "Stage":
                     default:
-                        intent.setClass(BootUpCheck.this, StageMode.class);
+                        intent.setClass(_BootUpCheck.this, StageMode.class);
                         break;
 
                     case "Presentation":
-                        intent.setClass(BootUpCheck.this, PresenterMode.class);
+                        intent.setClass(_BootUpCheck.this, PresenterMode.class);
                         break;
                 }
 
-                intent.setClass(BootUpCheck.this, MainActivity.class);
+                intent.setClass(_BootUpCheck.this, MainActivity.class);
 
             } else {
                 // There was a problem with the folders, so restart the app!
                 Log.d("BootUpCheck", "problem with folders");
-                BootUpCheck.this.recreate();
+                _BootUpCheck.this.recreate();
             }
             return null;
         }
@@ -787,7 +787,7 @@ public class BootUpCheck extends AppCompatActivity {
                 try {
                     // Now save the appropriate variables and then start the intent
                     // Set the current version
-                    preferences.setMyPreferenceInt(BootUpCheck.this, "lastUsedVersion", thisVersion);
+                    preferences.setMyPreferenceInt(_BootUpCheck.this, "lastUsedVersion", thisVersion);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -931,7 +931,7 @@ public class BootUpCheck extends AppCompatActivity {
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) { }
                     });
-                    ArrayAdapter<String> listAdapter = new ArrayAdapter<>(BootUpCheck.this, R.layout.my_spinner, locations);
+                    ArrayAdapter<String> listAdapter = new ArrayAdapter<>(_BootUpCheck.this, R.layout.my_spinner, locations);
                     previousStorageSpinner.setAdapter(listAdapter);
                     previousStorageSpinner.setVisibility(View.GONE);
                 }

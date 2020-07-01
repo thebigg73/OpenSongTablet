@@ -83,7 +83,7 @@ public class Preferences extends Activity {
     /*
 
     Variable name                   Type        What
-    addSectionSpace                 boolean     Should a spacing line be added between sections to improve readability (def:false)
+    addSectionSpace                 boolean     Should a spacing line be added between sections to improve readability (def:true)
     airTurnMode                     boolean     Should autorepeat onKeyUp (multiple from keyRepeatCount variable) be converted to longKeyPress actions for AirTurn pedals (def:false)
     appTheme                        String      The theme to use (dark, light, custom1, custom2) (def:dark)
     autoscrollAutoStart             boolean     Should autoscroll start on page load (needs to be started manually the first time) (def:false)
@@ -381,22 +381,15 @@ public class Preferences extends Activity {
     setCurrentLastName              String      The last name used when saving or loading a set(def:"")
     songAuthorSize                  float       The size of the song author text in the action bar (def:11.0f)
     songAutoScale                   String      Choice of autoscale mode (Y)es, (W)idth only or (N)one (def:W)
-    songAutoScaleColumnMaximise     boolean     When autoscale is on full and columns are used, should each column scale independently to maximise font size
-    songAutoScaleOverrideFull       boolean     If the app can override full autoscale if the font is too small
-    songAutoScaleOverrideWidth      boolean     If the app can override width autoscale if the font is too small
+    songAutoScaleColumnMaximise     boolean     When autoscale is on full and columns are used, should each column scale independently to maximise font size (def:true)
+    songAutoScaleOverrideFull       boolean     If the app can override full autoscale if the font is too small (def:true)
+    songAutoScaleOverrideWidth      boolean     If the app can override width autoscale if the font is too small (def:false)
     songfilename                    String      The name of the current song file (def:"")
-    songListBy                      String      When searching the song list, how should we show the values: folder, artist, custom (def:folder)
-    songListCustomAuthorVal         String      Text from last custom author search (def:"")
-    songListCustomFolderVal         String      Text from last custom author search (def:"")
-    songListCustomKeyVal            String      Text from last custom author search (def:"")
-    songListCustomThemeVal          String      Text from last custom author search (def:"")
-    songListCustomOtherVal          String      Text from last custom author search (def:"")
-    songListSearchCustomAuthor      boolean     Should we search in the song list using a custom author (def:false)
-    songListSearchCustomFolder      boolean     Should we search in the song list using a custom folder (def:false)
-    songListSearchCustomKey         boolean     Should we search in the song list using a custom folder (def:false)
-    songListSearchCustomOther       boolean     Should we search in the song list using a custom folder (def:false)
-    songListSearchCustomTheme       boolean     Should we search in the song list using a custom folder (def:true)
-    songListSearchArtist            String      When searching the song list by artist, what value should be used? (def:"")
+    songListSearchByFolder          boolean     Should we search in the song list using a custom folder (def:true)
+    songListSearchByArtist          boolean     Should we search in the song list using a custom artist (def:false)
+    songListSearchByKey             boolean     Should we search in the song list using a custom key (def:false)
+    songListSearchByTag             boolean     Should we search in the song list using a custom folder (def:false)
+    songListSearchByFilter          boolean     Should we search in the song list using a custom filter (def:false)
     songLoadSuccess                 boolean     Indicates if the song loaded correctly (won't load a song next time if it crashed) (def:false)
     songMenuAlphaIndexShow          boolean     Should we show the alphabetical index in the song menu (def:true)
     songMenuAlphaIndexSize          float       The text size for the alphabetical index in the song menu (def:14.0f)

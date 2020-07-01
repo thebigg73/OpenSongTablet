@@ -1,21 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".performance.PerformanceFragment">
-
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/textView"
-    android:textColor="@color/white"
-    app:layout_constraintTop_toTopOf="parent"/>
-
-    <WebView
-        android:id="@+id/webView"
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/mypage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        tools:context=".performance.PerformanceFragment">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_centerInParent="true"
+            android:alpha="0.08"
+            android:contentDescription="@string/app_name"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:src="@mipmap/ic_round_launcher" />
+
+        <RelativeLayout
+            android:id="@+id/testPane"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
+        <HorizontalScrollView
+            android:id="@+id/horizontalscrollview"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:scrollbarStyle="insideOverlay"
+            android:padding="0dp">
+
+            <ScrollView
+                android:id="@+id/songscrollview"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:scrollbarStyle="outsideOverlay"
+                android:padding="0dp">
+
+                <RelativeLayout
+                    android:id="@+id/pageHolder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false" >
+
+                    <LinearLayout
+                        android:id="@+id/songView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:baselineAligned="true"
+                        android:clipChildren="false"
+                        android:clipToPadding="false" >
+
+                        <LinearLayout
+                            android:id="@+id/col1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
+                            android:background="#ff330000"/>
+
+                        <LinearLayout
+                            android:id="@+id/col2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
+                            android:background="#ff000033"/>
+
+                        <LinearLayout
+                            android:id="@+id/col3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:clipChildren="false"
+                            android:clipToPadding="false"
+                            android:background="#ff003300"/>
+
+                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/glideimage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:contentDescription="@string/image"
+                        android:visibility="visible"
+                        android:clipChildren="false"
+                        android:clipToPadding="false" />
+
+                </RelativeLayout>
+
+            </ScrollView>
+        </HorizontalScrollView>
+
+    </RelativeLayout>

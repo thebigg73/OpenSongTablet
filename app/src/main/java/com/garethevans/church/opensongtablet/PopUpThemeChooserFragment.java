@@ -308,7 +308,7 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         resetcolours.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "resetcolours";
+                StaticVariables.whattodo = "resetcolours";
                 resetColours();
                 saveAllColors();
                 mListener.refreshAll();

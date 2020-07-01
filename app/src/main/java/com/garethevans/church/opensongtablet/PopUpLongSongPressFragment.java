@@ -164,7 +164,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         deleteSong_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "deletesong";
+                StaticVariables.whattodo = "deletesong";
                 if (mListener!=null) {
                     mListener.openFragment();
                 }
@@ -174,7 +174,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         shareSong_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "exportsong";
+                StaticVariables.whattodo = "exportsong";
                 if (mListener!=null) {
                     mListener.shareSong();
                 }
@@ -184,7 +184,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         renameSong_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "renamesong";
+                StaticVariables.whattodo = "renamesong";
                 if (mListener!=null) {
                     mListener.openFragment();
                 }
@@ -194,7 +194,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         duplicateSong_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "duplicate";
+                StaticVariables.whattodo = "duplicate";
                 if (mListener!=null) {
                     mListener.openFragment();
                 }
@@ -204,7 +204,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         editSong_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "editsong";
+                StaticVariables.whattodo = "editsong";
                 if (mListener!=null) {
                     mListener.openFragment();
                 }

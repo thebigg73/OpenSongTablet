@@ -135,7 +135,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         overWrite_CheckBox.setVisibility(View.VISIBLE);
         overWrite_CheckBox.setEnabled(true);
 
-        if (FullscreenActivity.whattodo.equals("doimportset")) {
+        if (StaticVariables.whattodo.equals("doimportset")) {
             s = getActivity().getString(R.string.importnewset);
             what = "set";
             filetype = getActivity().getString(R.string.set);
@@ -505,7 +505,7 @@ public class PopUpImportExternalFile extends DialogFragment {
                 mListener.showToastMessage(StaticVariables.myToastMessage);
                 if (!error) {
                     mListener.refreshAll();
-                    FullscreenActivity.whattodo = "editset";
+                    StaticVariables.whattodo = "editset";
                     mListener.openFragment();
                 }
                 dismiss();

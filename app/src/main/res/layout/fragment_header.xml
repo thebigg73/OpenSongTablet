@@ -6,16 +6,15 @@
     android:layout_margin="0dp"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:background="@color/altPrimary"
-    app:elevation="12dp"
+    android:background="@color/colorPrimary"
+    app:elevation="24dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fragBackButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_chevron_left_white_36dp"
-        app:backgroundTint="@color/mainSecondary"
+        android:src="@drawable/ic_close_white_36dp"
         android:layout_margin="@dimen/fab_margin"/>
 
     <TextView

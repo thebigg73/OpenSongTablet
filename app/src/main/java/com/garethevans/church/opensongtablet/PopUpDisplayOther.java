@@ -117,7 +117,7 @@ public class PopUpDisplayOther extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "extra";
+                    StaticVariables.whattodo = "extra";
                     mListener.openFragment();
                 }
                 try {
@@ -131,7 +131,7 @@ public class PopUpDisplayOther extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "popupsettings";
+                    StaticVariables.whattodo = "popupsettings";
                     mListener.openFragment();
                 }
                 try {
@@ -145,7 +145,7 @@ public class PopUpDisplayOther extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "actionbarinfo";
+                    StaticVariables.whattodo = "actionbarinfo";
                     mListener.openFragment();
                 }
                 try {

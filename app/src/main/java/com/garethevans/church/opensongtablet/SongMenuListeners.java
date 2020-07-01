@@ -34,7 +34,7 @@ public class SongMenuListeners extends Activity {
         return new TextView.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FullscreenActivity.pdfPageCurrent = 0;
+                StaticVariables.pdfPageCurrent = 0;
 
                 try {
                     if (clickedkey.equals(c.getString(R.string.songsinfolder))) {

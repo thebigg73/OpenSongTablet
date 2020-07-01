@@ -152,14 +152,14 @@ public class PopUpLinks extends DialogFragment {
         linkAudio_EditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FullscreenActivity.whattodo = "filechooser";
+                StaticVariables.whattodo = "filechooser";
                 openDocumentPicker("audio/*",StaticVariables.LINK_AUDIO);
             }
         });
         linkOther_EditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FullscreenActivity.whattodo = "filechooser";
+                StaticVariables.whattodo = "filechooser";
                 openDocumentPicker("*/*",StaticVariables.LINK_OTHER);
             }
         });

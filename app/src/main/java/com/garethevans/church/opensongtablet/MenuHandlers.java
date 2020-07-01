@@ -2,7 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
+
 import androidx.appcompat.app.ActionBar;
 import android.util.Log;
 import android.view.Menu;
@@ -41,7 +41,7 @@ class MenuHandlers {
 
             case R.id.action_fullsearch:
                 // Full search window
-                FullscreenActivity.whattodo = "fullsearch";
+                StaticVariables.whattodo = "fullsearch";
                 mListener.openFragment();
                 break;
 

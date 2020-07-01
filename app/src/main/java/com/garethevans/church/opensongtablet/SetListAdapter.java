@@ -121,7 +121,7 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
                     setActions.indexSongInSet();
                 }
 
-                if (FullscreenActivity.whattodo.equals("setitemvariation")) {
+                if (StaticVariables.whattodo.equals("setitemvariation")) {
                     PopUpSetViewNew.makeVariation(c, preferences);
 
                 } else {
@@ -130,7 +130,7 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
             }
         });
 
-        if (FullscreenActivity.whattodo.equals("setitemvariation") && !issong) {
+        if (StaticVariables.whattodo.equals("setitemvariation") && !issong) {
             // Only songs should be able to have variations
             setitemViewHolder.vCard.setOnClickListener(null);
         }

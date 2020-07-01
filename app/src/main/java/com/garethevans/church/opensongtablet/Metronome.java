@@ -242,7 +242,7 @@ class Metronome {
 
         } else {
             // Not valid, so open the popup
-            FullscreenActivity.whattodo = "page_metronome";
+            StaticVariables.whattodo = "page_metronome";
             if (PopUpMetronomeFragment.mListener!=null) {
                 PopUpMetronomeFragment.mListener.openFragment();
             } else {

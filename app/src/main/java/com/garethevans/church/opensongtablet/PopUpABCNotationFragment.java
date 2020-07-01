@@ -87,7 +87,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
             }
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        if (FullscreenActivity.whattodo.equals("abcnotation")) {
+        if (StaticVariables.whattodo.equals("abcnotation")) {
             saveMe.hide();
         }
         saveMe.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +133,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
                 } else {
                     updateContent(StaticVariables.mNotation);
                 }
-                if (!FullscreenActivity.whattodo.equals("abcnotation")) {
+                if (!StaticVariables.whattodo.equals("abcnotation")) {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                         abcWebView.evaluateJavascript("javascript:displayAndEdit();", null);
                     } else {
@@ -177,7 +177,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
             abcWebView.loadUrl("javascript:updateABC('"+s+"');");
         }
 
-        if (FullscreenActivity.whattodo.equals("abcnotation")) {
+        if (StaticVariables.whattodo.equals("abcnotation")) {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                 abcWebView.evaluateJavascript("javascript:displayOnly();", null);
             } else {

@@ -192,7 +192,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 FullscreenActivity.highlightOn = !FullscreenActivity.highlightOn;
-                FullscreenActivity.whattodo = "page_highlight";
+                StaticVariables.whattodo = "page_highlight";
                 if (mListener!=null) {
                     mListener.displayHighlight(false);
                 }
@@ -340,7 +340,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
     }
 
     private void openAction(String s) {
-        FullscreenActivity.whattodo = s;
+        StaticVariables.whattodo = s;
         if (mListener!=null) {
             mListener.openFragment();
         }

@@ -132,7 +132,7 @@ public class PopUpSetViewNew extends DialogFragment {
         StaticVariables.setView = true;
         if (StaticVariables.setchanged && mListener != null) {
             // We've edited the set and then clicked on a song, so save the set first
-            FullscreenActivity.whattodo = "saveset";
+            StaticVariables.whattodo = "saveset";
             StringBuilder tempmySet = new StringBuilder();
             String tempItem;
             if (StaticVariables.mTempSetList == null) {
@@ -254,7 +254,7 @@ public class PopUpSetViewNew extends DialogFragment {
                 close();
             }
         });
-        if (FullscreenActivity.whattodo.equals("setitemvariation")) {
+        if (StaticVariables.whattodo.equals("setitemvariation")) {
             CustomAnimations.animateFAB(saveMe, getActivity());
             saveMe.setEnabled(false);
             saveMe.hide();
@@ -362,13 +362,13 @@ public class PopUpSetViewNew extends DialogFragment {
                         lastSetName);
 
                 if (lastSetName==null || lastSetName.equals("")) {
-                    FullscreenActivity.whattodo = "saveset";
+                    StaticVariables.whattodo = "saveset";
                     if (mListener != null) {
                         mListener.openFragment();
                     }
                 } else if (storageAccess.uriExists(getActivity(),uri)) {
                     // Load the are you sure prompt
-                    FullscreenActivity.whattodo = "saveset";
+                    StaticVariables.whattodo = "saveset";
                     String setnamenice = lastSetName.replace("__"," / ");
                     String message = getResources().getString(R.string.save) + " \'" + setnamenice + "\"?";
                     StaticVariables.myToastMessage = message;
@@ -376,7 +376,7 @@ public class PopUpSetViewNew extends DialogFragment {
                     newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
                     dismiss();
                 } else {
-                    FullscreenActivity.whattodo = "saveset";
+                    StaticVariables.whattodo = "saveset";
                     if (mListener != null) {
                         mListener.openFragment();
                     }
@@ -384,7 +384,7 @@ public class PopUpSetViewNew extends DialogFragment {
             }
         });
 
-        if (FullscreenActivity.whattodo.equals("setitemvariation")) {
+        if (StaticVariables.whattodo.equals("setitemvariation")) {
             helpVariationItem_TextView.setVisibility(View.VISIBLE);
             info.hide();
             helpClickItem_TextView.setVisibility(View.GONE);

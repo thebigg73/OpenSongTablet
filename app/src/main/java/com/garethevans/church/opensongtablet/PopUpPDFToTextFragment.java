@@ -104,7 +104,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         justeditbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FullscreenActivity.whattodo = "editsongpdf";
+                StaticVariables.whattodo = "editsongpdf";
                 if (mListener!=null) {
                     try {
                         mListener.openFragment();

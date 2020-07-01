@@ -7,11 +7,11 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     card_view:contentPadding="2dp"
-    card_view:cardCornerRadius="8dp"
+    card_view:cardCornerRadius="4dp"
     android:layout_margin="4dp"
     android:padding="12dp"
-    card_view:cardBackgroundColor="@color/altPrimary"
-    app:elevation="8dp">
+    card_view:cardBackgroundColor="@color/colorPrimary"
+    app:elevation="4dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,42 +25,41 @@
             android:layout_alignParentTop="true"
             android:layout_toStartOf="@+id/cardview_setcheck"
             android:text="@string/title"
-            style="@style/songTitle"
+            android:textSize="18sp"
             android:layout_margin="4dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/cardview_title"
+            android:layout_toStartOf="@id/cardview_setcheck">
+        <TextView
+            android:id="@+id/cardview_author"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/edit_song_author"
+            android:layout_margin="4dp" />
 
         <TextView
             android:id="@+id/cardview_folder"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cardview_title"
-            android:layout_alignParentStart="true"
-            android:text="@string/mainfoldername"
-            style="@style/songInfo"
-            android:layout_margin="4dp"/>
-
-        <TextView
-            android:id="@+id/cardview_author"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/cardview_title"
-            android:layout_toStartOf="@+id/cardview_key"
-            android:layout_toEndOf="@+id/cardview_folder"
-            android:text="@string/edit_song_author"
-            style="@style/songInfo"
-            android:layout_margin="4dp"/>
-
+            android:layout_weight="0.3"
+            android:layout_margin="4dp"
+            android:text="@string/mainfoldername" />
         <TextView
             android:id="@+id/cardview_key"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cardview_title"
-            android:layout_toStartOf="@+id/cardview_setcheck"
+            android:layout_weight="0.2"
             android:gravity="center_vertical"
             android:text="@string/edit_song_key"
-            style="@style/songInfo"
             android:layout_margin="4dp"
             android:textStyle="italic" />
 
+        </LinearLayout>
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/cardview_setcheck"
             android:layout_width="wrap_content"
@@ -68,10 +67,10 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:checked="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:padding="8dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="24dp"
+            android:padding="4dp"
 />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -1,17 +1,18 @@
-package com.garethevans.church.opensongtablet.songlist;
+package com.garethevans.church.opensongtablet.songsandsets;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -28,37 +29,36 @@ import com.garethevans.church.opensongtablet.databinding.FragmentSonglistBinding
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 public class SongListFragment extends Fragment {
 
+    // The helper classes used
     private Preferences preferences;
     private SQLiteHelper sqLiteHelper;
     private SongListAdapter songListAdapter;
+
+    // The variable used in this fragment
     private static String whichMode;
     private NavController navController;
     private ArrayList<SQLite> songsFound;
-
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> foundFolders, foundArtists;
-    private String songListBy, songListSearchFolder, songListSearchArtist, songListSearchCustom;
-
+    private String songListBy, songListSearchFolder, songListSearchArtist, songListSearchCustom,
+            folderSearch, authorSearch, keySearch, themeSearch , otherSearch;
     private boolean searchFolder, searchAuthor, searchKey, searchTheme, searchOther;
-    private String folderSearch, authorSearch, keySearch, themeSearch , otherSearch;
-
     private FragmentSonglistBinding myView;
 
+
+    // The code to initialise this fragment
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-
-        StaticVariables.homeFragment = false;  // Set to true for Performance/Stage/Presentation only
 
         myView = FragmentSonglistBinding.inflate(inflater, container, false);
         View root = myView.getRoot();
 
-        navController = NavHostFragment.findNavController(this);
+
+        //navController = NavHostFragment.findNavController(this);
 
         // initialise helpers
         initialiseHelpers();
@@ -87,27 +87,45 @@ public class SongListFragment extends Fragment {
         return root;
     }
 
+
+    // Finished with this view
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         myView = null;
     }
 
+
+    // Getting the preferences and helpers ready
     private void initialiseHelpers() {
         preferences = new Preferences();
         sqLiteHelper = new SQLiteHelper(getActivity());
     }
+    private void setValues() {
+        myView.fragmentheader.pageHeading.setText(R.string.song_list);
+        searchFolder = preferences.getMyPreferenceBoolean(getActivity(),"songListSearchCustomFolder",false);
+        searchAuthor = preferences.getMyPreferenceBoolean(getActivity(),"songListSearchCustomAuthor",false);
+        searchKey = preferences.getMyPreferenceBoolean(getActivity(),"songListSearchCustomKey",false);
+        searchTheme = preferences.getMyPreferenceBoolean(getActivity(),"songListSearchCustomTheme",false);
+        searchOther = preferences.getMyPreferenceBoolean(getActivity(),"songListSearchCustomOther",false);
+        folderSearch = preferences.getMyPreferenceString(getActivity(),"songListCustomFolderVal","");
+        authorSearch = preferences.getMyPreferenceString(getActivity(),"songListCustomAuthorVal","");
+        keySearch = preferences.getMyPreferenceString(getActivity(),"songListCustomKeyVal","");
+        themeSearch = preferences.getMyPreferenceString(getActivity(),"songListCustomThemeVal","");
+        otherSearch = preferences.getMyPreferenceString(getActivity(),"songListCustomOtherVal","");
+        parseCustomSearch();
+    }
 
+
+    // Sor the view visibility, listeners, etc.
     private void hideViews() {
         myView.fragmentheader.previousHeading.setVisibility(View.GONE);
         myView.fragmentheader.separatorHeading.setVisibility(View.GONE);
     }
-
     private void searchVis(int spinnerVis, int textVis) {
         myView.songmenubuttons.spinnerRow.setVisibility(spinnerVis);
         myView.songmenubuttons.customRow.setVisibility(textVis);
     }
-
     private void fixButtons() {
         switch (songListBy) {
             case "folder":
@@ -130,7 +148,6 @@ public class SongListFragment extends Fragment {
                 break;
         }
     }
-
     private void searchButtons(boolean folderOn, boolean artistOn, boolean customOn) {
         setViewVisibility(myView.songmenubuttons.folderViewOn,folderOn);
         setViewVisibility(myView.songmenubuttons.folderViewOff,!folderOn);
@@ -139,7 +156,6 @@ public class SongListFragment extends Fragment {
         setViewVisibility(myView.songmenubuttons.customViewOn,customOn);
         setViewVisibility(myView.songmenubuttons.customViewOff,!customOn);
     }
-
     private void counterButtons(boolean visible, String text) {
         if (!visible) {
             // Hiding, so reset the text as well
@@ -177,24 +193,6 @@ public class SongListFragment extends Fragment {
             v.setVisibility(View.GONE);
         }
     }
-
-    private void setValues() {
-        myView.fragmentheader.pageHeading.setText(R.string.song_list);
-        searchFolder = preferences.getMyPreferenceBoolean(getActivity(),"songListSearchCustomFolder",false);
-        searchAuthor = preferences.getMyPreferenceBoolean(getActivity(),"songListSearchCustomAuthor",false);
-        searchKey = preferences.getMyPreferenceBoolean(getActivity(),"songListSearchCustomKey",false);
-        searchTheme = preferences.getMyPreferenceBoolean(getActivity(),"songListSearchCustomTheme",false);
-        searchOther = preferences.getMyPreferenceBoolean(getActivity(),"songListSearchCustomOther",false);
-
-        folderSearch = preferences.getMyPreferenceString(getActivity(),"songListCustomFolderVal","");
-        authorSearch = preferences.getMyPreferenceString(getActivity(),"songListCustomAuthorVal","");
-        keySearch = preferences.getMyPreferenceString(getActivity(),"songListCustomKeyVal","");
-        themeSearch = preferences.getMyPreferenceString(getActivity(),"songListCustomThemeVal","");
-        otherSearch = preferences.getMyPreferenceString(getActivity(),"songListCustomOtherVal","");
-
-        parseCustomSearch();
-    }
-
     private void initialiseRecyclerView() {
         myView.songListRecyclerView.removeAllViews();
         myView.songmenualpha.sideIndex.removeAllViews();
@@ -203,17 +201,17 @@ public class SongListFragment extends Fragment {
         myView.songListRecyclerView.setLayoutManager(llm);
         myView.songListRecyclerView.setHasFixedSize(true);
         List<SQLite> blank = new ArrayList<>();
-        songListAdapter = new SongListAdapter(blank,getActivity(),preferences,navController);
+        //songListAdapter = new SongListAdapter(requireActivity(), blank, preferences, mListener);
         myView.songListRecyclerView.setAdapter(songListAdapter);
     }
 
     private void setUpListeners() {
-        myView.fragmentheader.fragBackButton.setOnClickListener(v -> {
+        /*myView.fragmentheader.fragBackButton.setOnClickListener(v -> {
             preferences.setMyPreferenceString(getActivity(),"songListBy",songListBy);
             preferences.setMyPreferenceString(getActivity(),"songListSearchArtist",songListSearchArtist);
             preferences.setMyPreferenceString(getActivity(),"songListSearchCustom",songListSearchCustom);
 
-            if (StaticVariables.whichMode.equals("Presentation")) {
+            if (StaticVariables.whichMode.equals("Presentation") || StaticVariables.whichMode.equals("Stage")) {
                 NavHostFragment.findNavController(SongListFragment.this).navigate(R.id.nav_presentation);
             } else {
                 NavHostFragment.findNavController(SongListFragment.this).navigate(R.id.nav_performance);
@@ -276,13 +274,28 @@ public class SongListFragment extends Fragment {
             searchButtons(false,false,true);
             buildSongListThread();
         });
+        myView.addSongsButton.setOnClickListener(v -> showPopup(myView.addSongsButton));
+        myView.songListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    myView.addSongsButton.show();
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 ||dy<0 && myView.addSongsButton.isShown()) {
+                    myView.addSongsButton.hide();
+                }
+            }
+        });*/
     }
-
     private void setUpSearchFoldersThread() {
         new Thread(() -> {
             foundFolders = sqLiteHelper.getFolders(getActivity());
-            arrayAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),R.layout.spinnerlayout,foundFolders);
-            arrayAdapter.setDropDownViewResource(R.layout.spinnerlayout_dropdown);
+            arrayAdapter = new ArrayAdapter<>(requireActivity(),R.layout.spinnerlayout_dropdown,foundFolders);
+            //arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
 
             getActivity().runOnUiThread(() -> {
                 myView.songmenubuttons.searchSpinner.setAdapter(arrayAdapter);
@@ -302,11 +315,10 @@ public class SongListFragment extends Fragment {
             });
         }).start();
     }
-
     private void setUpSearchArtistsThread() {
         new Thread(() -> {
             foundArtists = sqLiteHelper.getAuthors(getActivity());
-            arrayAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),R.layout.spinnerlayout,foundArtists);
+            arrayAdapter = new ArrayAdapter<>(requireActivity(),R.layout.spinnerlayout,foundArtists);
             arrayAdapter.setDropDownViewResource(R.layout.spinnerlayout_dropdown);
             getActivity().runOnUiThread(() -> {
                 if (arrayAdapter!=null) {
@@ -328,7 +340,6 @@ public class SongListFragment extends Fragment {
             });
         }).start();
     }
-
     private void buildSongListThread() {
         // Show the user we're waiting on something happening
         myView.waitProgressBar.setVisibility(View.VISIBLE);
@@ -355,10 +366,10 @@ public class SongListFragment extends Fragment {
                             searchTheme, searchOther, folderSearch, authorSearch, keySearch, themeSearch, otherSearch,getFilterText());
                     break;
             }
-            Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+            requireActivity().runOnUiThread(() -> {
                 myView.songListRecyclerView.removeAllViews();
                 myView.songmenualpha.sideIndex.removeAllViews();
-                songListAdapter = new SongListAdapter(songsFound, getActivity(), preferences, navController);
+                //songListAdapter = new SongListAdapter(requireActivity(), songsFound, preferences,mListener);
                 myView.songListRecyclerView.setAdapter(songListAdapter);
                 songListAdapter.notifyDataSetChanged();
                 String t = "" + songsFound.size();
@@ -369,15 +380,6 @@ public class SongListFragment extends Fragment {
             });
         }).start();
     }
-
-    public static void loadSong(NavController navCont) {
-        if (whichMode.equals("Presentation")) {
-            navCont.navigate(R.id.nav_presentation);
-        } else {
-            navCont.navigate(R.id.nav_performance);
-        }
-    }
-
     private void displayIndex(ArrayList<SQLite> songMenuViewItems,
                               SongListAdapter songListAdapter) {
         if (preferences.getMyPreferenceBoolean(getActivity(),"songMenuAlphaIndexShow",true)) {
@@ -413,9 +415,7 @@ public class SongListFragment extends Fragment {
             myView.songmenualpha.sideIndex.addView(textView);
         }
     }
-
     private void parseCustomSearch() {
-        // TODO not sure if I need this search phrase?
         String searchValue = "";
 
         // This makes the search look nicer for the user
@@ -441,7 +441,6 @@ public class SongListFragment extends Fragment {
 
         myView.songmenubuttons.searchText.setText(searchValue.trim());
     }
-
     private String getFilterText() {
         if (myView.songmenubuttons.searchEditText.getText()!=null) {
             return myView.songmenubuttons.searchEditText.getText().toString();
@@ -449,4 +448,40 @@ public class SongListFragment extends Fragment {
             return "";
         }
     }
+
+    // Adding more songs button action
+    private void showPopup(View v) {
+        // Animate the FAB
+        PopupMenu popup = new PopupMenu(getActivity(), v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.addsongs, popup.getMenu());
+        popup.show();
+        popup.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.create:
+                default:
+                    Log.d("d","Create a new song");
+                    return true;
+                case R.id.web:
+                    Log.d("d","Import from the web");
+                    return true;
+                case R.id.file:
+                    Log.d("d","Import a file");
+                    return true;
+                case R.id.camera:
+                    Log.d("d","Use the camera");
+                    return false;
+            }
+        });
+    }
+
+    // When calling load song, go back to the correct start fragment
+    public static void loadSong(NavController navCont) {
+        if (whichMode.equals("Presentation")) {
+            navCont.navigate(R.id.nav_presentation);
+        } else {
+            navCont.navigate(R.id.nav_performance);
+        }
+    }
+
 }

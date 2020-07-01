@@ -157,7 +157,7 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
                 StaticVariables.whichOptionMenu = "MIDI";
                 mListener.prepareOptionMenu();
                 mListener.openMyDrawers("option");
-                FullscreenActivity.whattodo = "midicommands";
+                StaticVariables.whattodo = "midicommands";
                 mListener.openFragment();
             }
         } else {

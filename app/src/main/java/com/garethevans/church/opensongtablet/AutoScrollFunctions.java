@@ -110,9 +110,9 @@ class AutoScrollFunctions {
 
     static void getMultiPagePDFValues() {
         // If we have a multiple page pdf, then each page duration is a fraction of the total
-        if (FullscreenActivity.isPDF &&FullscreenActivity.pdfPageCount>0) {
+        if (FullscreenActivity.isPDF && StaticVariables.pdfPageCount>0) {
             try {
-                StaticVariables.autoScrollDuration = (int) ((float) Integer.parseInt(StaticVariables.mDuration.replaceAll("[\\D]", "")) / (float) FullscreenActivity.pdfPageCount);
+                StaticVariables.autoScrollDuration = (int) ((float) Integer.parseInt(StaticVariables.mDuration.replaceAll("[\\D]", "")) / (float) StaticVariables.pdfPageCount);
             } catch (Exception e) {
                 e.printStackTrace();
                 StaticVariables.autoScrollDuration = -1;

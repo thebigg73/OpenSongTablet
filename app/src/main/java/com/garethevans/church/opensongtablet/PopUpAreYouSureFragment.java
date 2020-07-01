@@ -56,15 +56,15 @@ public class PopUpAreYouSureFragment extends DialogFragment {
     private void noAction() {
         // Open back up the previous menu
         if (StaticVariables.whichMode.equals("Stage")) {
-            switch (FullscreenActivity.whattodo) {
+            switch (StaticVariables.whattodo) {
                 case "wipeallsongs":
-                    FullscreenActivity.whattodo = "managestorage";
+                    StaticVariables.whattodo = "managestorage";
                     if (mListener!=null) {
                         mListener.openFragment();
                     }
                     break;
                 case "resetcolours":
-                    FullscreenActivity.whattodo = "changetheme";
+                    StaticVariables.whattodo = "changetheme";
                     if (mListener!=null) {
                         mListener.openFragment();
                     }
@@ -72,7 +72,7 @@ public class PopUpAreYouSureFragment extends DialogFragment {
             }
 
         }
-        if (FullscreenActivity.whattodo.equals("saveset")) {
+        if (StaticVariables.whattodo.equals("saveset")) {
             if (mListener!=null) {
                 mListener.openFragment();
             }

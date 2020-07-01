@@ -761,10 +761,10 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 if (FullscreenActivity.isPDF) {
-                    FullscreenActivity.whattodo = "extractPDF";
+                    StaticVariables.whattodo = "extractPDF";
                     openFragment();
                 } else if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "songdetails";
+                    StaticVariables.whattodo = "songdetails";
                     openFragment();
                 }
             }
@@ -772,7 +772,7 @@ public class StageMode extends AppCompatActivity implements
         batteryholder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "actionbarinfo";
+                StaticVariables.whattodo = "actionbarinfo";
                 openFragment();
             }
         });
@@ -790,7 +790,7 @@ public class StageMode extends AppCompatActivity implements
         changefolder_LinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "choosefolder";
+                StaticVariables.whattodo = "choosefolder";
                 openFragment();
             }
         });
@@ -1123,27 +1123,27 @@ public class StageMode extends AppCompatActivity implements
         dealWithIntent();
     }
     private void dealWithIntent() {
-        if (FullscreenActivity.whattodo!=null) {
+        if (StaticVariables.whattodo!=null) {
             try {
-                switch (FullscreenActivity.whattodo) {
+                switch (StaticVariables.whattodo) {
                     case "importfile_customreusable_scripture":
                         // Receiving scripture text
-                        FullscreenActivity.whattodo = "customreusable_scripture";
+                        StaticVariables.whattodo = "customreusable_scripture";
                         openFragment();
                         break;
                     case "importfile_newsong_text":
                         // Receiving song (maybe) text
-                        FullscreenActivity.whattodo = "createsong";
+                        StaticVariables.whattodo = "createsong";
                         openFragment();
                         break;
                     case "importfile_processimportosb":
                         // Receiving an OpenSongApp backup file
-                        FullscreenActivity.whattodo = "processimportosb";
+                        StaticVariables.whattodo = "processimportosb";
                         openFragment();
                         break;
                     case "importfile_doimport":
                         // Receiving another file
-                        FullscreenActivity.whattodo = "doimport";
+                        StaticVariables.whattodo = "doimport";
                         openFragment();
                         break;
                 }
@@ -1264,7 +1264,7 @@ public class StageMode extends AppCompatActivity implements
             }
 
             String message = getResources().getString(R.string.exit);
-            FullscreenActivity.whattodo = "exit";
+            StaticVariables.whattodo = "exit";
 
             newFragment = PopUpAreYouSureFragment.newInstance(message);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -1460,7 +1460,7 @@ public class StageMode extends AppCompatActivity implements
     private void sendSongLocationToConnected() {
         String messageString = StaticVariables.whichSongFolder + "_____" +
                 StaticVariables.songfilename + "_____" +
-                FullscreenActivity.whichDirection;
+                StaticVariables.whichDirection;
 
         myMessage = new SalutMessage();
         myMessage.description = messageString;
@@ -1558,7 +1558,7 @@ public class StageMode extends AppCompatActivity implements
         // Save the new value
         preferences.setMyPreferenceInt(StageMode.this, "runssincebackup", runssincebackup);
         if (runssincebackup >= 10) {
-            FullscreenActivity.whattodo = "promptbackup";
+            StaticVariables.whattodo = "promptbackup";
             openFragment();
         }
     }
@@ -1635,7 +1635,7 @@ public class StageMode extends AppCompatActivity implements
                     }
 
                     // Animate out the current song
-                    if (FullscreenActivity.whichDirection.equals("L2R")) {
+                    if (StaticVariables.whichDirection.equals("L2R")) {
                         if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
                             glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
                         } else if (songscrollview != null) {
@@ -1650,7 +1650,7 @@ public class StageMode extends AppCompatActivity implements
                     }
                     // If there were highlight notes showing, move them away
                     if (StaticVariables.whichMode.equals("Performance") && highlightNotes != null && highlightNotes.getVisibility() == View.VISIBLE) {
-                        if (FullscreenActivity.whichDirection.equals("L2R")) {
+                        if (StaticVariables.whichDirection.equals("L2R")) {
                             highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
                         } else if (highlightNotes != null) {
                             highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
@@ -1665,7 +1665,7 @@ public class StageMode extends AppCompatActivity implements
 
                     if ((StaticVariables.pad1Playing || StaticVariables.pad2Playing)) {
                         if (!FullscreenActivity.isPDF && !FullscreenActivity.isImage ||
-                                (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent==0)) {
+                                (FullscreenActivity.isPDF && StaticVariables.pdfPageCurrent==0)) {
                             StaticVariables.fadeWhichPad = 0; // Fade both pads if required
                             fadeoutPad();
                         }
@@ -1725,7 +1725,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void doExport() {
         // This is called after the user has specified what should be exported.
-        switch (FullscreenActivity.whattodo) {
+        switch (StaticVariables.whattodo) {
             case "customise_exportsong":
                 shareSong();
                 break;
@@ -1957,7 +1957,7 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 CustomAnimations.animateFAB(setButton,StageMode.this);
-                FullscreenActivity.whattodo = "editset";
+                StaticVariables.whattodo = "editset";
                 openFragment();
             }
         });
@@ -1965,7 +1965,7 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 CustomAnimations.animateFAB(padButton,StageMode.this);
-                FullscreenActivity.whattodo = "page_pad";
+                StaticVariables.whattodo = "page_pad";
                 openFragment();
             }
         });
@@ -1981,7 +1981,7 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 CustomAnimations.animateFAB(autoscrollButton,StageMode.this);
-                FullscreenActivity.whattodo = "page_autoscroll";
+                StaticVariables.whattodo = "page_autoscroll";
                 openFragment();
             }
         });
@@ -1997,7 +1997,7 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 CustomAnimations.animateFAB(metronomeButton,StageMode.this);
-                FullscreenActivity.whattodo = "page_metronome";
+                StaticVariables.whattodo = "page_metronome";
                 openFragment();
             }
         });
@@ -2014,7 +2014,7 @@ public class StageMode extends AppCompatActivity implements
             public void onClick(View view) {
                 CustomAnimations.animateFAB(highlightButton,StageMode.this);
                 FullscreenActivity.highlightOn = !FullscreenActivity.highlightOn;
-                FullscreenActivity.whattodo = "page_highlight";
+                StaticVariables.whattodo = "page_highlight";
                 displayHighlight(false);
             }
         });
@@ -2026,7 +2026,7 @@ public class StageMode extends AppCompatActivity implements
                 DoVibrate.vibrate(StageMode.this, 50);
                 takeScreenShot();
                 if (FullscreenActivity.bmScreen!=null) {
-                    FullscreenActivity.whattodo = "drawnotes";
+                    StaticVariables.whattodo = "drawnotes";
                     openFragment();
                 } else {
                     Log.d("StageMode", "screenshot is null");
@@ -2038,7 +2038,7 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 CustomAnimations.animateFAB(highlightButton_ungrouped,StageMode.this);
-                FullscreenActivity.whattodo = "page_highlight";
+                StaticVariables.whattodo = "page_highlight";
                 FullscreenActivity.highlightOn = !FullscreenActivity.highlightOn;
                 displayHighlight(false);
             }
@@ -2051,7 +2051,7 @@ public class StageMode extends AppCompatActivity implements
                 DoVibrate.vibrate(StageMode.this, 50);
                 takeScreenShot();
                 if (FullscreenActivity.bmScreen!=null) {
-                    FullscreenActivity.whattodo = "drawnotes";
+                    StaticVariables.whattodo = "drawnotes";
                     openFragment();
                 } else {
                     Log.d("StageMode", "screenshot is null");
@@ -2074,7 +2074,7 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 CustomAnimations.animateFAB(chordButton,StageMode.this);
-                FullscreenActivity.whattodo = "page_chords";
+                StaticVariables.whattodo = "page_chords";
                 openFragment();
             }
         });
@@ -2082,7 +2082,7 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 CustomAnimations.animateFAB(chordButton_ungrouped,StageMode.this);
-                FullscreenActivity.whattodo = "page_chords";
+                StaticVariables.whattodo = "page_chords";
                 openFragment();
             }
         });
@@ -2090,7 +2090,7 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 CustomAnimations.animateFAB(linkButton,StageMode.this);
-                FullscreenActivity.whattodo = "page_links";
+                StaticVariables.whattodo = "page_links";
                 openFragment();
             }
         });
@@ -2098,7 +2098,7 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 CustomAnimations.animateFAB(linkButton_ungrouped,StageMode.this);
-                FullscreenActivity.whattodo = "page_links";
+                StaticVariables.whattodo = "page_links";
                 openFragment();
             }
         });
@@ -2106,7 +2106,7 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 CustomAnimations.animateFAB(stickyButton,StageMode.this);
-                FullscreenActivity.whattodo = "page_sticky";
+                StaticVariables.whattodo = "page_sticky";
                 displaySticky();
             }
         });
@@ -2114,7 +2114,7 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public boolean onLongClick(View view) {
                 CustomAnimations.animateFAB(stickyButton,StageMode.this);
-                FullscreenActivity.whattodo = "page_sticky";
+                StaticVariables.whattodo = "page_sticky";
                 openFragment();
                 return true;
             }
@@ -2123,7 +2123,7 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 CustomAnimations.animateFAB(stickyButton_ungrouped,StageMode.this);
-                FullscreenActivity.whattodo = "page_sticky";
+                StaticVariables.whattodo = "page_sticky";
                 displaySticky();
             }
         });
@@ -2131,7 +2131,7 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public boolean onLongClick(View view) {
                 CustomAnimations.animateFAB(stickyButton,StageMode.this);
-                FullscreenActivity.whattodo = "page_sticky";
+                StaticVariables.whattodo = "page_sticky";
                 openFragment();
                 return true;
             }
@@ -2141,9 +2141,9 @@ public class StageMode extends AppCompatActivity implements
             public void onClick(View view) {
                 CustomAnimations.animateFAB(notationButton,StageMode.this);
                 if (StaticVariables.mNotation.equals("")) {
-                    FullscreenActivity.whattodo = "abcnotation_edit";
+                    StaticVariables.whattodo = "abcnotation_edit";
                 } else {
-                    FullscreenActivity.whattodo = "abcnotation";
+                    StaticVariables.whattodo = "abcnotation";
                 }
                 openFragment();
             }
@@ -2152,7 +2152,7 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public boolean onLongClick(View view) {
                 CustomAnimations.animateFAB(notationButton,StageMode.this);
-                FullscreenActivity.whattodo = "abcnotation_edit";
+                StaticVariables.whattodo = "abcnotation_edit";
                 openFragment();
                 return true;
             }
@@ -2162,9 +2162,9 @@ public class StageMode extends AppCompatActivity implements
             public void onClick(View view) {
                 CustomAnimations.animateFAB(notationButton_ungrouped,StageMode.this);
                 if (StaticVariables.mNotation.equals("")) {
-                    FullscreenActivity.whattodo = "abcnotation_edit";
+                    StaticVariables.whattodo = "abcnotation_edit";
                 } else {
-                    FullscreenActivity.whattodo = "abcnotation";
+                    StaticVariables.whattodo = "abcnotation";
                 }
                 openFragment();
             }
@@ -2173,7 +2173,7 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public boolean onLongClick(View view) {
                 CustomAnimations.animateFAB(notationButton_ungrouped,StageMode.this);
-                FullscreenActivity.whattodo = "abcnotation_edit";
+                StaticVariables.whattodo = "abcnotation_edit";
                 openFragment();
                 return true;
             }
@@ -2183,7 +2183,7 @@ public class StageMode extends AppCompatActivity implements
             public void onClick(View view) {
                 CustomAnimations.animateFAB(pageselectButton,StageMode.this);
                 if (FullscreenActivity.isPDF) {
-                    FullscreenActivity.whattodo = "page_pageselect";
+                    StaticVariables.whattodo = "page_pageselect";
                     openFragment();
                 } else {
                     StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
@@ -2196,7 +2196,7 @@ public class StageMode extends AppCompatActivity implements
             public void onClick(View view) {
                 CustomAnimations.animateFAB(pageselectButton_ungrouped,StageMode.this);
                 if (FullscreenActivity.isPDF) {
-                    FullscreenActivity.whattodo = "page_pageselect";
+                    StaticVariables.whattodo = "page_pageselect";
                     openFragment();
                 } else {
                     StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
@@ -2209,7 +2209,7 @@ public class StageMode extends AppCompatActivity implements
                 @Override
                 public void onClick(View view) {
                     CustomAnimations.animateFAB(customButton,StageMode.this);
-                    FullscreenActivity.whattodo = "groupedpagebuttons";
+                    StaticVariables.whattodo = "groupedpagebuttons";
                     openFragment();
                 }
             });
@@ -2245,7 +2245,7 @@ public class StageMode extends AppCompatActivity implements
             public void onClick(View view) {
                 CustomAnimations.animateFAB(setForwardButton,StageMode.this);
                 StaticVariables.setMoveDirection = "forward";
-                FullscreenActivity.whichDirection = "R2L";
+                StaticVariables.whichDirection = "R2L";
                 goToNextItem();
             }
         });
@@ -2254,7 +2254,7 @@ public class StageMode extends AppCompatActivity implements
             public void onClick(View view) {
                 CustomAnimations.animateFAB(setBackButton,StageMode.this);
                 StaticVariables.setMoveDirection = "back";
-                FullscreenActivity.whichDirection = "L2R";
+                StaticVariables.whichDirection = "L2R";
                 goToPreviousItem();
             }
         });
@@ -2760,7 +2760,7 @@ public class StageMode extends AppCompatActivity implements
         switch (s) {
             case "":
             default:
-                FullscreenActivity.whattodo = "quicklaunch";
+                StaticVariables.whattodo = "quicklaunch";
                 openFragment();
                 break;
 
@@ -2785,7 +2785,7 @@ public class StageMode extends AppCompatActivity implements
                     if (FullscreenActivity.isPDF && s.equals("editsong")) {
                         s = "extractPDF";
                     }
-                    FullscreenActivity.whattodo = s;
+                    StaticVariables.whattodo = s;
                     openFragment();
                 }
                 break;
@@ -2866,10 +2866,10 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void doEdit() {
         if (FullscreenActivity.isPDF) {
-            FullscreenActivity.whattodo = "extractPDF";
+            StaticVariables.whattodo = "extractPDF";
             openFragment();
         } else if (FullscreenActivity.isSong){
-            FullscreenActivity.whattodo = "editsong";
+            StaticVariables.whattodo = "editsong";
             openFragment();
         }
     }
@@ -3143,7 +3143,7 @@ public class StageMode extends AppCompatActivity implements
                                 highlightNotes.setVisibility(View.VISIBLE);
                             } else {
                                 highlightNotes.setVisibility(View.VISIBLE);
-                                if (FullscreenActivity.whichDirection.equals("L2R")) {
+                                if (StaticVariables.whichDirection.equals("L2R")) {
                                     highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left));
                                 } else {
                                     highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right));
@@ -3161,7 +3161,7 @@ public class StageMode extends AppCompatActivity implements
                         // If the user has clicked the icon and no drawing exists, create one
                         takeScreenShot();
                         if (FullscreenActivity.bmScreen != null) {
-                            FullscreenActivity.whattodo = "drawnotes";
+                            StaticVariables.whattodo = "drawnotes";
                             openFragment();
                         } else {
                             Log.d("StageMode", "screenshot is null");
@@ -3463,7 +3463,7 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void confirmedAction() {
-        switch (FullscreenActivity.whattodo) {
+        switch (StaticVariables.whattodo) {
             case "exit":
                 try {
                     android.os.Process.killProcess(android.os.Process.myPid());
@@ -3628,7 +3628,7 @@ public class StageMode extends AppCompatActivity implements
             // Reset the imageview
             resetImageViewSizes();
 
-            String text = (FullscreenActivity.pdfPageCurrent + 1) + "/" + FullscreenActivity.pdfPageCount;
+            String text = (StaticVariables.pdfPageCurrent + 1) + "/" + StaticVariables.pdfPageCount;
 
             songauthor_ab.setText(text);
 
@@ -3697,7 +3697,7 @@ public class StageMode extends AppCompatActivity implements
             PopUpEditSongFragment.justSaveSongXML(StageMode.this, preferences);
         }
 
-        FullscreenActivity.whattodo = "page_autoscroll";
+        StaticVariables.whattodo = "page_autoscroll";
         openFragment();
     }
 
@@ -3711,7 +3711,7 @@ public class StageMode extends AppCompatActivity implements
             }
             // If we aren't at the beginning or have pdf pages before this, enable the setBackButton
             if ((StaticVariables.indexSongInSet > 0) ||
-                    (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent>0)) {
+                    (FullscreenActivity.isPDF && StaticVariables.pdfPageCurrent>0)) {
                 showFAB(setBackButton,preferences.getMyPreferenceBoolean(StageMode.this,"pageButtonShowSetMove",true));
             } else {
                 showFAB(setBackButton,false);
@@ -3719,7 +3719,7 @@ public class StageMode extends AppCompatActivity implements
 
             // If we aren't at the end of the set or inside a multipage pdf, enable the setForwardButton
             if ((StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) ||
-                    (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent<FullscreenActivity.pdfPageCount - 1)) {
+                    (FullscreenActivity.isPDF && StaticVariables.pdfPageCurrent< StaticVariables.pdfPageCount - 1)) {
                 showFAB(setForwardButton,preferences.getMyPreferenceBoolean(StageMode.this,"pageButtonShowSetMove",true));
             } else {
                 showFAB(setForwardButton,false);
@@ -3755,20 +3755,20 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void goToNextItem() {
-        FullscreenActivity.whichDirection = "R2L";
+        StaticVariables.whichDirection = "R2L";
         boolean dealtwithaspdf = false;
         StaticVariables.showstartofpdf = true;
 
         // If this is a PDF, check we can't move pages
-        if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1)) {
-            FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent + 1;
+        if (FullscreenActivity.isPDF && StaticVariables.pdfPageCurrent < (StaticVariables.pdfPageCount - 1)) {
+            StaticVariables.pdfPageCurrent = StaticVariables.pdfPageCurrent + 1;
 
             // Load the next pdf page
             dealtwithaspdf = true;
             loadSong();
 
         } else {
-            FullscreenActivity.pdfPageCurrent = 0;
+            StaticVariables.pdfPageCurrent = 0;
         }
 
         // If this hasn't been dealt with
@@ -4023,7 +4023,7 @@ public class StageMode extends AppCompatActivity implements
             }
 
         } else if (requestCode == StaticVariables.REQUEST_CAMERA_CODE && resultCode == Activity.RESULT_OK) {
-            FullscreenActivity.whattodo = "savecameraimage";
+            StaticVariables.whattodo = "savecameraimage";
             openFragment();
 
         } else if (requestCode == StaticVariables.REQUEST_PDF_CODE) {
@@ -4035,10 +4035,10 @@ public class StageMode extends AppCompatActivity implements
                 // This is for the File Chooser returning a file uri
                 String filelocation = data.getExtras().getString("data");
                 if (filelocation != null) {
-                    boolean validfiletype = (FullscreenActivity.whattodo.equals("processimportosb") && filelocation.endsWith(".osb")) ||
-                            (FullscreenActivity.whattodo.equals("importos") && filelocation.endsWith(".backup")) ||
-                            FullscreenActivity.whattodo.equals("doimport") ||
-                            FullscreenActivity.whattodo.equals("doimportset");
+                    boolean validfiletype = (StaticVariables.whattodo.equals("processimportosb") && filelocation.endsWith(".osb")) ||
+                            (StaticVariables.whattodo.equals("importos") && filelocation.endsWith(".backup")) ||
+                            StaticVariables.whattodo.equals("doimport") ||
+                            StaticVariables.whattodo.equals("doimportset");
 
                     if (validfiletype) {
                         File f = new File(filelocation);
@@ -4111,7 +4111,7 @@ public class StageMode extends AppCompatActivity implements
         if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
             songscrollview.setVisibility(View.GONE);
             glideimage_ScrollView.setVisibility(View.VISIBLE);
-            if (FullscreenActivity.whichDirection.equals("L2R")) {
+            if (StaticVariables.whichDirection.equals("L2R")) {
                 glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left));
             } else {
                 glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right));
@@ -4120,7 +4120,7 @@ public class StageMode extends AppCompatActivity implements
             glideimage_ScrollView.setVisibility(View.GONE);
             glideimage_HorizontalScrollView.setVisibility(View.GONE);
             songscrollview.setVisibility(View.VISIBLE);
-            if (FullscreenActivity.whichDirection.equals("L2R")) {
+            if (StaticVariables.whichDirection.equals("L2R")) {
                 songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left));
             } else {
                 songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right));
@@ -4253,17 +4253,17 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void goToPreviousItem() {
-        FullscreenActivity.whichDirection = "L2R";
+        StaticVariables.whichDirection = "L2R";
         boolean dealtwithaspdf = false;
         StaticVariables.showstartofpdf = true; // Default value - change later if need be
 
         // If this is a PDF, check we can't move pages
-        if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0) {
-            FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent - 1;
+        if (FullscreenActivity.isPDF && StaticVariables.pdfPageCurrent > 0) {
+            StaticVariables.pdfPageCurrent = StaticVariables.pdfPageCurrent - 1;
             dealtwithaspdf = true;
             loadSong();
         } else {
-            FullscreenActivity.pdfPageCurrent = 0;
+            StaticVariables.pdfPageCurrent = 0;
         }
 
         // If this hasn't been dealt with
@@ -4983,7 +4983,7 @@ public class StageMode extends AppCompatActivity implements
                 });
             } else {
                 // No sticky note, so show the edit window
-                FullscreenActivity.whattodo = "page_sticky";
+                StaticVariables.whattodo = "page_sticky";
                 openFragment();
             }
         }
@@ -5149,7 +5149,7 @@ public class StageMode extends AppCompatActivity implements
             case "randomsong":
             case "abcnotation":
             case "editset":
-                FullscreenActivity.whattodo = action;
+                StaticVariables.whattodo = action;
                 openFragment();
                 break;
 
@@ -5324,7 +5324,7 @@ public class StageMode extends AppCompatActivity implements
             StaticVariables.clickedOnPadStart = true;
             preparePad();
         } else {
-            FullscreenActivity.whattodo = "page_pad";
+            StaticVariables.whattodo = "page_pad";
             openFragment();
         }
     }
@@ -5483,7 +5483,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void openSongLongClickAction(String clickedfile, String clickedfolder,int i) {
         // Set the values
-        FullscreenActivity.whattodo = "songlongpress";
+        StaticVariables.whattodo = "songlongpress";
         StaticVariables.songfilename = clickedfile;
         StaticVariables.whichSongFolder = clickedfolder;
         // Short click the song as well!
@@ -6080,7 +6080,7 @@ public class StageMode extends AppCompatActivity implements
     public void splashScreen() {
         Intent intent = new Intent();
         intent.putExtra("showsplash",true);
-        intent.setClass(StageMode.this, BootUpCheck.class);
+        intent.setClass(StageMode.this, _BootUpCheck.class);
         startActivity(intent);
         finish();
     }
@@ -7095,7 +7095,7 @@ public class StageMode extends AppCompatActivity implements
                         StaticVariables.pauseautoscroll = true;
                     }
                     doCancelAsyncTask(mtask_autoscroll_music);
-                    if (FullscreenActivity.isPDF && (FullscreenActivity.pdfPageCurrent+1)<FullscreenActivity.pdfPageCount) {
+                    if (FullscreenActivity.isPDF && (StaticVariables.pdfPageCurrent+1)< StaticVariables.pdfPageCount) {
                         pdfCanContinueScrolling = true;
                         goToNextItem();
                     } else {
@@ -7224,10 +7224,10 @@ public class StageMode extends AppCompatActivity implements
             try {
                 if (StaticVariables.mSetList != null && StaticVariables.indexSongInSet > -1 &&
                         StaticVariables.mSetList.length > StaticVariables.indexSongInSet) {
-                    FullscreenActivity.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
-                    StaticVariables.whatsongforsetwork = FullscreenActivity.linkclicked;
+                    StaticVariables.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
+                    StaticVariables.whatsongforsetwork = StaticVariables.linkclicked;
                 } else {
-                    FullscreenActivity.linkclicked = "";
+                    StaticVariables.linkclicked = "";
                     StaticVariables.whatsongforsetwork = "";
                 }
             } catch (Exception e) {
@@ -7303,8 +7303,8 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void changePDFPage(int page, String direction) {
-        FullscreenActivity.whichDirection = direction;
-        FullscreenActivity.pdfPageCurrent = page;
+        StaticVariables.whichDirection = direction;
+        StaticVariables.pdfPageCurrent = page;
         loadSong();
     }
 
@@ -7606,7 +7606,7 @@ public class StageMode extends AppCompatActivity implements
                         // This line below is now reset in the edit song window
                         //FullscreenActivity.needtoeditsong = false;
 
-                        FullscreenActivity.whattodo = "editsong";
+                        StaticVariables.whattodo = "editsong";
                         FullscreenActivity.alreadyloading = false;
                         FullscreenActivity.needtorefreshsongmenu = true;
                         openFragment();
@@ -8225,14 +8225,14 @@ public class StageMode extends AppCompatActivity implements
 
     // Edit song
     private void gesture2() {
-        if (FullscreenActivity.whattodo!=null && FullscreenActivity.whattodo.equals("editsongpdf")) {
+        if (StaticVariables.whattodo!=null && StaticVariables.whattodo.equals("editsongpdf")) {
             openFragment();
         } else if (FullscreenActivity.isPDF) {
-            FullscreenActivity.whattodo = "extractPDF";
+            StaticVariables.whattodo = "extractPDF";
             openFragment();
         } else if (justSong(StageMode.this)) {
             // Edit the song
-            FullscreenActivity.whattodo = "editsong";
+            StaticVariables.whattodo = "editsong";
             openFragment();
         }
     }
@@ -8327,7 +8327,7 @@ public class StageMode extends AppCompatActivity implements
                         if (FullscreenActivity.isSong) {
                             gesture2();
                         } else {
-                            FullscreenActivity.whattodo = "extractPDF";
+                            StaticVariables.whattodo = "extractPDF";
                             openFragment();
                         }
                         break;

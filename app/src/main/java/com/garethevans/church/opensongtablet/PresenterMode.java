@@ -15,7 +15,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.display.DisplayManager;
@@ -609,20 +608,20 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     private void dealWithIntent() {
         try {
-            switch (FullscreenActivity.whattodo) {
+            switch (StaticVariables.whattodo) {
                 case "importfile_customreusable_scripture":
                     // Receiving scripture text
-                    FullscreenActivity.whattodo = "customreusable_scripture";
+                    StaticVariables.whattodo = "customreusable_scripture";
                     openFragment();
                     break;
                 case "importfile_processimportosb":
                     // Receiving an OpenSongApp backup file
-                    FullscreenActivity.whattodo = "processimportosb";
+                    StaticVariables.whattodo = "processimportosb";
                     openFragment();
                     break;
                 case "importfile_doimport":
                     // Receiving another file
-                    FullscreenActivity.whattodo = "doimport";
+                    StaticVariables.whattodo = "doimport";
                     openFragment();
                     break;
             }
@@ -744,7 +743,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         // Save the new value
         preferences.setMyPreferenceInt(PresenterMode.this, "runssincebackup", runssincebackup);
         if (runssincebackup >= 10) {
-            FullscreenActivity.whattodo = "promptbackup";
+            StaticVariables.whattodo = "promptbackup";
             openFragment();
         }
     }
@@ -815,7 +814,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     @Override
     public void openSongLongClickAction(String clickedfile, String clickedfolder,int i) {
         // Set the values
-        FullscreenActivity.whattodo = "songlongpress";
+        StaticVariables.whattodo = "songlongpress";
         StaticVariables.songfilename = clickedfile;
         StaticVariables.whichSongFolder = clickedfolder;
         // Short click the song as well!
@@ -1228,7 +1227,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         changefolder_LinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "choosefolder";
+                StaticVariables.whattodo = "choosefolder";
                 openFragment();
             }
         });
@@ -1245,7 +1244,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             public void onClick(View v) {
                 // Edit current set
                 //mDrawerLayout.closeDrawer(expListViewOption);
-                FullscreenActivity.whattodo = "editset";
+                StaticVariables.whattodo = "editset";
                 openFragment();
             }
         });
@@ -1255,7 +1254,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 // Edit current set
                 //mDrawerLayout.closeDrawer(expListViewOption);
                 CustomAnimations.animateFAB(set_view_fab,PresenterMode.this);
-                FullscreenActivity.whattodo = "editset";
+                StaticVariables.whattodo = "editset";
                 openFragment();
             }
         });
@@ -1293,21 +1292,21 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         songandauthor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "songdetails";
+                StaticVariables.whattodo = "songdetails";
                 openFragment();
             }
         });
         batteryholder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "actionbarinfo";
+                StaticVariables.whattodo = "actionbarinfo";
                 openFragment();
             }
         });
         pres_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "songdetails";
+                StaticVariables.whattodo = "songdetails";
                 openFragment();
             }
         });
@@ -1322,10 +1321,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             @Override
             public void onClick(View view) {
                 if (FullscreenActivity.isPDF) {
-                    FullscreenActivity.whattodo = "extractPDF";
+                    StaticVariables.whattodo = "extractPDF";
                     openFragment();
                 } else if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "editsong";
+                    StaticVariables.whattodo = "editsong";
                     openFragment();
                 }
             }
@@ -1397,21 +1396,21 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         presenter_slide_group.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "customreusable_slide";
+                StaticVariables.whattodo = "customreusable_slide";
                 openFragment();
             }
         });
         presenter_scripture_group.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "customreusable_scripture";
+                StaticVariables.whattodo = "customreusable_scripture";
                 openFragment();
             }
         });
         presenter_display_group.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "connecteddisplay";
+                StaticVariables.whattodo = "connecteddisplay";
                 openFragment();
             }
         });
@@ -1491,7 +1490,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             StaticVariables.indexSongInSet = which;
             if (StaticVariables.mSetList != null && StaticVariables.mSetList.length > which) {
                 StaticVariables.whatsongforsetwork = StaticVariables.mSetList[which];
-                FullscreenActivity.linkclicked = StaticVariables.mSetList[which];
+                StaticVariables.linkclicked = StaticVariables.mSetList[which];
                 if (which < 1) {
                     StaticVariables.previousSongInSet = "";
                 } else {
@@ -1540,7 +1539,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         Button newSongButton;
         TextView newSongSectionText;
         if (FullscreenActivity.isPDF) {
-            int pages = FullscreenActivity.pdfPageCount;
+            int pages = StaticVariables.pdfPageCount;
             if (pages > 0) {
                 for (int p = 0; p < pages; p++) {
                     String sectionText = (p + 1) + "";
@@ -1847,7 +1846,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     @Override
     public void confirmedAction() {
-        switch (FullscreenActivity.whattodo) {
+        switch (StaticVariables.whattodo) {
             case "exit":
                 this.finish();
                 break;
@@ -2143,7 +2142,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         Log.d("d","Sending song");
         String messageString = StaticVariables.whichSongFolder + "_____" +
                 StaticVariables.songfilename + "_____" +
-                FullscreenActivity.whichDirection;
+                StaticVariables.whichDirection;
 
         myMessage = new SalutMessage();
         myMessage.description = messageString;
@@ -2357,7 +2356,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
 
         } else if (requestCode == StaticVariables.REQUEST_CAMERA_CODE && resultCode == Activity.RESULT_OK) {
-            FullscreenActivity.whattodo = "savecameraimage";
+            StaticVariables.whattodo = "savecameraimage";
             openFragment();
 
         } else if (requestCode == StaticVariables.REQUEST_PDF_CODE) {
@@ -2369,10 +2368,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 // This is for the File Chooser returning a file uri
                 String filelocation = data.getExtras().getString("data");
                 if (filelocation != null) {
-                    boolean validfiletype = (FullscreenActivity.whattodo.equals("processimportosb") && filelocation.endsWith(".osb")) ||
-                            (FullscreenActivity.whattodo.equals("importos") && filelocation.endsWith(".backup")) ||
-                            FullscreenActivity.whattodo.equals("doimport") ||
-                            FullscreenActivity.whattodo.equals("doimportset");
+                    boolean validfiletype = (StaticVariables.whattodo.equals("processimportosb") && filelocation.endsWith(".osb")) ||
+                            (StaticVariables.whattodo.equals("importos") && filelocation.endsWith(".backup")) ||
+                            StaticVariables.whattodo.equals("doimport") ||
+                            StaticVariables.whattodo.equals("doimportset");
 
                     if (validfiletype) {
                         File f = new File(filelocation);
@@ -2487,7 +2486,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
             // If this is an image, hide the text, show the image, otherwise show the text in the slide window
             if (FullscreenActivity.isPDF) {
-                FullscreenActivity.pdfPageCurrent = which;
+                StaticVariables.pdfPageCurrent = which;
                 loadPDFPagePreview();
             } else if (FullscreenActivity.isImage) {
                 StaticVariables.uriToLoad = storageAccess.getUriForItem(PresenterMode.this, preferences, "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
@@ -2676,10 +2675,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     @Override
     public void doEdit() {
         if (FullscreenActivity.isPDF) {
-            FullscreenActivity.whattodo = "extractPDF";
+            StaticVariables.whattodo = "extractPDF";
             openFragment();
         } else if (FullscreenActivity.isSong) {
-            FullscreenActivity.whattodo = "editsong";
+            StaticVariables.whattodo = "editsong";
             openFragment();
         }
     }
@@ -2795,7 +2794,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     @Override
     public void doExport() {
         // This is called after the user has specified what should be exported.
-        switch (FullscreenActivity.whattodo) {
+        switch (StaticVariables.whattodo) {
             case "customise_exportsong":
                 shareSong();
                 break;
@@ -2837,7 +2836,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public void splashScreen() {
         Intent intent = new Intent();
         intent.putExtra("showsplash",true);
-        intent.setClass(PresenterMode.this, BootUpCheck.class);
+        intent.setClass(PresenterMode.this, _BootUpCheck.class);
         startActivity(intent);
         finish();
     }
@@ -2971,8 +2970,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     @Override
     public void changePDFPage(int page, String direction) {
-        FullscreenActivity.whichDirection = direction;
-        FullscreenActivity.pdfPageCurrent = page;
+        StaticVariables.whichDirection = direction;
+        StaticVariables.pdfPageCurrent = page;
         if (presenter_song_buttonsListView.getChildCount()>page) {
             LinearLayout row = (LinearLayout) presenter_song_buttonsListView.getChildAt(page);
             Button thisbutton = (Button) row.getChildAt(1);
@@ -3431,7 +3430,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     private void alertButtonClick() {
         highlightButtonClicked(presenter_alert_group);
-        FullscreenActivity.whattodo = "alert";
+        StaticVariables.whattodo = "alert";
         openFragment();
 
         // After a short time, turn off the button
@@ -3445,7 +3444,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     private void audioButtonClick() {
         highlightButtonClicked(presenter_audio_group);
-        FullscreenActivity.whattodo = "presenter_audio";
+        StaticVariables.whattodo = "presenter_audio";
         openFragment();
 
         // After a short time, turn off the button
@@ -3474,7 +3473,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         } else {
             highlightButtonClicked(presenter_dB_group);
-            FullscreenActivity.whattodo = "presenter_db";
+            StaticVariables.whattodo = "presenter_db";
             openFragment();
 
             // After a short time, turn off the button
@@ -3750,7 +3749,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     // If we have created, or converted a song format (e.g from OnSong or ChordPro), rebuild the database
                     // or pull up the edit screen
                     if (FullscreenActivity.needtoeditsong) {
-                        FullscreenActivity.whattodo = "editsong";
+                        StaticVariables.whattodo = "editsong";
                         FullscreenActivity.alreadyloading = false;
                         FullscreenActivity.needtorefreshsongmenu = true;
                     } else if (FullscreenActivity.needtorefreshsongmenu) {
@@ -3895,7 +3894,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         protected String doInBackground(Object... objects) {
             // Get the appropriate song
             try {
-                FullscreenActivity.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
+                StaticVariables.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -3914,8 +3913,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 if (!cancelled) {
                     // Get the next set positions and song
-                    FullscreenActivity.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
-                    StaticVariables.whatsongforsetwork = FullscreenActivity.linkclicked;
+                    StaticVariables.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
+                    StaticVariables.whatsongforsetwork = StaticVariables.linkclicked;
                     StaticVariables.setMoveDirection = ""; // Expects back or forward for Stage/Performance, but not here
                     setActions.doMoveInSet(PresenterMode.this, preferences);
 
@@ -4219,7 +4218,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
 
         String message = getResources().getString(R.string.exit);
-        FullscreenActivity.whattodo = "exit";
+        StaticVariables.whattodo = "exit";
 
         newFragment = PopUpAreYouSureFragment.newInstance(message);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

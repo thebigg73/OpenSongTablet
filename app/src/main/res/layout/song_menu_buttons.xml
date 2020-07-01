@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/white"
     xmlns:android="http://schemas.android.com/apk/res/android"
     tools:showIn="@layout/fragment_songlist">
 <LinearLayout
@@ -19,16 +18,16 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal|bottom">
         <Button
             android:id="@+id/folderViewOff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:drawableTop="@drawable/ic_folder_zip_white_36dp"
-            android:text="@string/folder"
             style="@style/songListButtonOff"
-            android:visibility="gone"/>
+            android:text="@string/folder"
+            android:visibility="visible"/>
         <Button
             android:id="@+id/folderViewOn"
             android:layout_width="match_parent"
@@ -36,7 +35,8 @@
             android:gravity="center_horizontal"
             android:drawableTop="@drawable/ic_folder_zip_white_36dp"
             android:text="@string/folder"
-            style="@style/songListButtonOn"/>
+            style="@style/songListButtonOn"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/folderCount"
@@ -44,6 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:layout_margin="8dp"
             style="@style/songCounter"/>
 
     </RelativeLayout>
@@ -53,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal|bottom">
         <Button
             android:id="@+id/artistViewOff"
             android:layout_width="match_parent"
@@ -78,6 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:layout_margin="8dp"
             style="@style/songCounter"/>
 
 
@@ -127,15 +129,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/normalText"
+                android:layout_margin="8dp"
                 android:text="@string/select"/>
 
             <Spinner
                 android:id="@+id/searchSpinner"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="match_parent"
-                style="@style/newSpinner"/>
+                android:layout_margin="8dp"
+                android:layout_height="match_parent" />
 
         </TableRow>
         <TableRow android:id="@+id/customRow"
@@ -143,7 +145,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/normalText"
+                android:layout_margin="8dp"
                 android:text="@string/custom"/>
 
             <LinearLayout
@@ -157,7 +159,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    style="@style/newEditText"/>
+                    android:textSize="14sp"/>
                 <Button
                     android:id="@+id/changeCustom"
                     android:layout_width="wrap_content"
@@ -167,27 +169,25 @@
 
 
         </TableRow>
-        <TableRow android:id="@+id/filterRow"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/normalText"
-                android:text="@string/filter_results"/>
-
-            <EditText
-                android:id="@+id/searchEditText"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                style="@style/newEditText"
-                android:hint="@string/filter_by_this_value"
-                android:textColorHint="@color/altSecondary"
-                android:inputType="textAutoCorrect"
-                android:imeOptions="actionSearch"
-                android:importantForAutofill="no" />
-        </TableRow>
     </TableLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/filter_by_this_value"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:hintTextAppearance="@style/TextAppearance.AppCompat"
+        android:textColorHint="@color/lightSecondary"
+        android:textColor="@color/white">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat"
+            android:textColorHint="@color/lightSecondary"
+            android:textColor="@color/white"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

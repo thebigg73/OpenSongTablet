@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.songlist;
+package com.garethevans.church.opensongtablet.songsandsets;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -40,8 +40,6 @@ public class CustomSearchFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-        StaticVariables.homeFragment = false;  // Set to true for Performance/Stage/Presentation only
 
         myView = FragmentSonglistCustomBinding.inflate(inflater, container, false);
         View root = myView.getRoot();
@@ -218,8 +216,12 @@ public class CustomSearchFragment extends Fragment {
 
     private void setUpListeners() {
         myView.fragmentheader.fragBackButton.setOnClickListener(v -> {
-            NavHostFragment.findNavController(CustomSearchFragment.this).navigate(R.id.nav_songlist);
             saveSpinnerAndTextValues();
+            if (StaticVariables.whichMode.equals("Presentation") || StaticVariables.whichMode.equals("Stage")) {
+                NavHostFragment.findNavController(CustomSearchFragment.this).navigate(R.id.nav_presentation);
+            } else {
+                NavHostFragment.findNavController(CustomSearchFragment.this).navigate(R.id.nav_performance);
+            }
         });
         myView.otherValue.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {

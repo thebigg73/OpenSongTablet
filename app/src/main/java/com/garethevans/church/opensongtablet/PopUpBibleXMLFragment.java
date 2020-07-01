@@ -626,7 +626,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
 
     private void doSave() {
         try {
-            FullscreenActivity.whattodo = "customreusable_scripture";
+            StaticVariables.whattodo = "customreusable_scripture";
             if (mListener != null) {
                 mListener.openFragment();
             }

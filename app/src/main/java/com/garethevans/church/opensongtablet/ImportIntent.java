@@ -28,7 +28,7 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_logosplash);
+        setContentView(R.layout._activity_logosplash);
 
         // Load the helper classes (preferences)
         // Declare helper classes:
@@ -128,11 +128,11 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
                     if (storageAccess.uriExists(ImportIntent.this, file_uri)) {
                         if (file_name.endsWith(".osb")) {
                             // This is an OpenSong backup file
-                            FullscreenActivity.whattodo = "processimportosb";
+                            StaticVariables.whattodo = "processimportosb";
                             showFragment();
                         } else {
                             // This is an file opensong can deal with (hopefully)
-                            FullscreenActivity.whattodo = "doimport";
+                            StaticVariables.whattodo = "doimport";
                             showFragment();
                         }
                     }
@@ -183,12 +183,12 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
             Bible bibleC = new Bible();
             sharedText = new StringBuilder(bibleC.shortenTheLines(sharedText.toString(), 40, 6));
 
-            FullscreenActivity.whattodo = "importfile_customreusable_scripture";
+            StaticVariables.whattodo = "importfile_customreusable_scripture";
             FullscreenActivity.scripture_title = title;
             FullscreenActivity.scripture_verse = sharedText.toString();
         } else {
             // Just standard text, so create a new song
-            FullscreenActivity.whattodo = "importfile_newsong_text";
+            StaticVariables.whattodo = "importfile_newsong_text";
             FullscreenActivity.scripture_title = "importedtext_in_scripture_verse";
             FullscreenActivity.scripture_verse = sharedText.toString();
         }
@@ -228,7 +228,7 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
 
     private void rebuildSearchIndex() {
         Log.d("d", "rebuildSearchIndex called");
-        FullscreenActivity.whattodo = "";
+        StaticVariables.whattodo = "";
         FullscreenActivity.needtorefreshsongmenu = false;
         // If the app is already running, send the call to run BootUpCheck
         if (FullscreenActivity.appRunning) {
@@ -242,7 +242,7 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
             }
         } else {
             Intent intent = new Intent();
-            intent.setClass(ImportIntent.this, BootUpCheck.class);
+            intent.setClass(ImportIntent.this, _BootUpCheck.class);
             startActivity(intent);
             finish();
         }

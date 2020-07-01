@@ -109,7 +109,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         String mTitle;
-        switch (FullscreenActivity.whattodo) {
+        switch (StaticVariables.whattodo) {
             case "chordie":
                 mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.chordiesearch);
                 break;
@@ -248,7 +248,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         searchresults_RelativeLayout.setVisibility(View.VISIBLE);
         searchtext_LinearLayout.setVisibility(View.GONE);
 
-        switch (FullscreenActivity.whattodo) {
+        switch (StaticVariables.whattodo) {
             case "chordie":
                 weblink = "https://www.chordie.com/results.php?q=" + searchtext + "&np=0&ps=10&wf=2221&s=RPD&wf=2221&wm=wrd&type=&sp=1&sy=1&cat=&ul=&np=0";
                 break;
@@ -313,7 +313,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                                         String contentDisposition, String mimetype,
                                         long contentLength) {
                 final String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
-                if (FullscreenActivity.whattodo.equals("songselect") && (filename.endsWith(".pdf")||filename.endsWith(".PDF"))) {
+                if (StaticVariables.whattodo.equals("songselect") && (filename.endsWith(".pdf")||filename.endsWith(".PDF"))) {
 
                     try {
                         // Hide the WebView
@@ -393,7 +393,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, weblink);
 
         // If we are in songselect, trigger the download to keep the stats live
-        if (FullscreenActivity.whattodo.equals("songselect")) {
+        if (StaticVariables.whattodo.equals("songselect")) {
             try {
                 // Trigger the download of the pdf
                 webresults_WebView.loadUrl("javascript:document.getElementById('chordSheetDownloadButton').click()");
@@ -1399,8 +1399,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         String nameofpdffile = nameoffile.replace(".pdf","")+".pdf";   // Gets rid of multilple .pdf extensions
 
         nameoffile = nameoffile.replace(".pdf","");
-        if ((FullscreenActivity.whattodo.equals("chordie") || FullscreenActivity.whattodo.equals("songselect") ||
-                FullscreenActivity.whattodo.equals("worshiptogether")) && !nameoffile.endsWith(".chopro")) {
+        if ((StaticVariables.whattodo.equals("chordie") || StaticVariables.whattodo.equals("songselect") ||
+                StaticVariables.whattodo.equals("worshiptogether")) && !nameoffile.endsWith(".chopro")) {
             // Fix the title line in the lyrics
 
             if (filecontents == null) {
@@ -1444,7 +1444,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         InputStream inputStream = null;
 
         // Get the song select pdf file stuff
-        if (FullscreenActivity.whattodo.equals("songselect") && downloadcomplete) {
+        if (StaticVariables.whattodo.equals("songselect") && downloadcomplete) {
             uri_newpdffile = storageAccess.getUriForItem(getActivity(), preferences, "Songs", whatfolderselected, nameofpdffile);
 
             // Check the uri exists for the outputstream to be valid
@@ -1465,7 +1465,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 sqLiteHelper.createSong(getActivity(),whatfolderselected,nameoffile);
             }
 
-            if (FullscreenActivity.whattodo.equals("songselect") && downloadcomplete && outputStreamPDF!=null && inputStream!=null) {
+            if (StaticVariables.whattodo.equals("songselect") && downloadcomplete && outputStreamPDF!=null && inputStream!=null) {
                 // Copy the orignal pdf file
                 storageAccess.copyFile(inputStream,outputStreamPDF);
                 // Add song to the database
@@ -1479,7 +1479,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         StaticVariables.whichSongFolder = whatfolderselected;
         if (filecontents!=null) {
             StaticVariables.songfilename = nameoffile;
-        } else if (FullscreenActivity.whattodo.equals("songselect") && downloadcomplete) {
+        } else if (StaticVariables.whattodo.equals("songselect") && downloadcomplete) {
             StaticVariables.songfilename = nameofpdffile;
         }
 

@@ -86,7 +86,7 @@ public class PopUpStickyFragment extends DialogFragment {
         editsticky.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "editnotes";
+                StaticVariables.whattodo = "editnotes";
                 mListener.openFragment();
                 dismiss();
             }

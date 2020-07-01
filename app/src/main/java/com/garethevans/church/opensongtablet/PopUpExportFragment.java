@@ -63,7 +63,7 @@ public class PopUpExportFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_exportselection, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        if (FullscreenActivity.whattodo.equals("customise_exportsong")) {
+        if (StaticVariables.whattodo.equals("customise_exportsong")) {
             title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.exportcurrentsong));
         } else {
             title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.exportsavedset));
@@ -100,7 +100,7 @@ public class PopUpExportFragment extends DialogFragment {
         exportPDFCheckBox = V.findViewById(R.id.exportPDFCheckBox);
 
         // Hide the ones we don't need
-        if (FullscreenActivity.whattodo.equals("customise_exportsong")) {
+        if (StaticVariables.whattodo.equals("customise_exportsong")) {
             exportOpenSongAppSetCheckBox.setVisibility(View.GONE);
         } else {
             exportChordProCheckBox.setVisibility(View.GONE);

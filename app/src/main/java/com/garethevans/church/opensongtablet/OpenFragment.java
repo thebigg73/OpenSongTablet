@@ -10,7 +10,7 @@ class OpenFragment {
         DialogFragment newFragment = null;
         String message;
 
-        switch (FullscreenActivity.whattodo) {
+        switch (StaticVariables.whattodo) {
             case "loadset":
             case "saveset":
             case "deleteset":
@@ -350,7 +350,7 @@ class OpenFragment {
     static String getMessage(Context c) {
         String message = "dialog";
 
-        switch (FullscreenActivity.whattodo) {
+        switch (StaticVariables.whattodo) {
             case "clearset":
                 message = c.getResources().getString(R.string.options_clearthisset);
                 break;

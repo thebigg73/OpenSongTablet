@@ -1,32 +1,46 @@
 package com.garethevans.church.opensongtablet.performance;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
+import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavHost;
-import androidx.navigation.NavHostController;
 
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.interfaces.LoadSongInterface;
 import com.garethevans.church.opensongtablet.Preferences;
+import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.SQLite;
 import com.garethevans.church.opensongtablet.SQLiteHelper;
 import com.garethevans.church.opensongtablet.StaticVariables;
 import com.garethevans.church.opensongtablet.StorageAccess;
 import com.garethevans.church.opensongtablet.databinding.FragmentPerformanceBinding;
-import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
+import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.LoadSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.SongXML;
 
-public class PerformanceFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.Map;
+
+public class PerformanceFragment extends Fragment implements LoadSongInterface {
 
     // Helper classes for the heavy lifting
     private StorageAccess storageAccess;
@@ -37,45 +51,36 @@ public class PerformanceFragment extends Fragment {
     private SQLiteHelper sqLiteHelper;
     private ConvertChoPro convertChoPro;
     private ConvertOnSong convertOnSong;
-    private AppActionBar appActionBar;
+    private ThemeColors themeColors;
+    //private ShowCase showCase;
 
-    public interface MyInterface {
-        void updateToolbar();
-    }
+    //private LoadSongInterface loadSongInterface;
+    private MainActivityInterface mainActivityInterface;
 
-    private MyInterface mListener;
-
-    WebView webView;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mListener = (MyInterface) getActivity();
-    }
-
+    // The variables used in the fragment
+    private float scaleHeadings, scaleComments, scaleChords, fontSize, fontSizeMin, fontSizeMax,
+            lineSpacing;
+    private int swipeMinimumDistance, swipeMaxDistanceYError, swipeMinimumVelocity;
+    private boolean trimLines, trimSections, addSectionSpace, songAutoScaleColumnMaximise,
+            songAutoScaleOverrideFull, songAutoScaleOverrideWidth;
+    static boolean wasScaling, R2L, loadNextSong, loadPrevSong;
+    private static int screenHeight;
+    public static int songViewWidth, songViewHeight, screenWidth;
+    private RelativeLayout testPane;
+    private ArrayList<View> sectionViews;
+    private ArrayList<Integer> sectionWidths, sectionHeights;
+    private ArrayList<String> songsInList;
+    private String autoScale;
+    private Map<String,Integer> colorMap;
     private FragmentPerformanceBinding myView;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
 
-        StaticVariables.homeFragment = true;  // Set to true for Performance/Stage/Presentation only
-        myView = FragmentPerformanceBinding.inflate(inflater, container, false);
-        View root = myView.getRoot();
-
-        webView = myView.webView;
-        webView.setInitialScale(100);
-        webView.getSettings().setBuiltInZoomControls(true);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-
-        String s = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
-        myView.textView.setText(s);
-
-        // Initialise the helper classes that do the heavy lifting
-        initialiseHelpers();
-
-        doSongLoad();
-        return root;
+    // Attaching and destroying
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mainActivityInterface = (MainActivityInterface) context;
+        //loadSongInterface = (LoadSongInterface) context;
     }
 
     @Override
@@ -84,6 +89,39 @@ public class PerformanceFragment extends Fragment {
         myView = null;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+    }
+
+    // The logic to start this fragment
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+
+        myView = FragmentPerformanceBinding.inflate(inflater, container, false);
+        View root = myView.getRoot();
+
+        // Initialise the helper classes that do the heavy lifting
+        initialiseHelpers();
+
+        // Load in preferences
+        loadPreferences();
+
+        doSongLoad();
+
+        // Set listeners for the scroll/scale/gestures
+        setGestureListeners();
+
+        // Set tutorials
+        Handler h = new Handler();
+        Runnable r = () -> mainActivityInterface.showTutorial("performanceView");
+        h.postDelayed(r,1000);
+
+        return root;
+    }
+
+    // Getting the preferences and helpers ready
     private void initialiseHelpers() {
         storageAccess = new StorageAccess();
         preferences = new Preferences();
@@ -93,29 +131,171 @@ public class PerformanceFragment extends Fragment {
         sqLiteHelper = new SQLiteHelper(getActivity());
         convertOnSong = new ConvertOnSong();
         convertChoPro = new ConvertChoPro();
-        appActionBar = new AppActionBar();
+        themeColors = new ThemeColors();
+        //showCase = new ShowCase();
+    }
+    private void loadPreferences() {
+        colorMap = themeColors.getDefaultColors(getActivity(),preferences);
+        scaleHeadings = preferences.getMyPreferenceFloat(getActivity(),"scaleHeadings",0.6f);
+        scaleChords = preferences.getMyPreferenceFloat(getActivity(),"scaleChords",0.8f);
+        scaleComments = preferences.getMyPreferenceFloat(getActivity(),"scaleComments",0.8f);
+        trimLines = preferences.getMyPreferenceBoolean(getActivity(),"trimLines",true);
+        lineSpacing = preferences.getMyPreferenceFloat(getActivity(),"lineSpacing",0.1f);
+        trimSections = preferences.getMyPreferenceBoolean(getActivity(),"trimSections",true);
+        addSectionSpace = preferences.getMyPreferenceBoolean(getActivity(), "addSectionSpace", true);
+        autoScale = preferences.getMyPreferenceString(getActivity(),"songAutoScale","W");
+        songAutoScaleColumnMaximise = preferences.getMyPreferenceBoolean(getActivity(),"songAutoScaleColumnMaximise",true);
+        fontSize = preferences.getMyPreferenceFloat(getActivity(),"fontSize",42.0f);
+        fontSizeMax = preferences.getMyPreferenceFloat(getActivity(),"fontSizeMax",50.0f);
+        fontSizeMin = preferences.getMyPreferenceFloat(getActivity(),"fontSizeMin",8.0f);
+        songAutoScaleOverrideFull = preferences.getMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideFull",true);
+        songAutoScaleOverrideWidth = preferences.getMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideWidth",false);
+        swipeMinimumDistance = preferences.getMyPreferenceInt(getActivity(),"swipeMinimumDistance",250);
+        swipeMaxDistanceYError = preferences.getMyPreferenceInt(getActivity(),"swipeMaxDistanceYError",200);
+        swipeMinimumVelocity = preferences.getMyPreferenceInt(getActivity(),"swipeMinimumVelocity",600);
+        fontSizeMax = 90.0f;
+        songAutoScaleOverrideWidth = false;
+        songAutoScaleOverrideFull = false;
     }
 
-    private void doSongLoad() {
-        // Load up the song
-        loadSong.doLoadSong(getActivity(),storageAccess,preferences,songXML,processSong,sqLiteHelper,
-                convertOnSong, convertChoPro);
+    // Displaying the song
+    public void doSongLoad() {
+        new Thread(() -> {
+            // Quick fade the current page
+            requireActivity().runOnUiThread(() -> {
+                Animation animSlide;
+                if (R2L) {
+                    animSlide = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_left);
+                } else {
+                    animSlide = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_right);
+                }
+                myView.songView.startAnimation(animSlide);
+            });
+            // Load up the song
+            if (sectionViews!=null) {
+                sectionViews.clear();
+            }
+            loadSong.doLoadSong(getActivity(),storageAccess,preferences,songXML,processSong,sqLiteHelper,
+                    convertOnSong, convertChoPro);
 
-        if (mListener!=null) {
-            mListener.updateToolbar();
+            requireActivity().runOnUiThread(this::prepareSongViews);
+        }).start();
+    }
+    private void prepareSongViews() {
+        // This is called on UI thread above;
+        myView.pageHolder.setBackgroundColor(colorMap.get("lyricsBackground"));
+        // Get the song in the layout
+        sectionViews = processSong.setSongInLayout(getActivity(),trimSections, addSectionSpace,
+                trimLines, lineSpacing, colorMap, scaleHeadings, scaleChords, scaleComments,
+                StaticVariables.mLyrics);
+
+        // We now have the 1 column layout ready, so we can set the view observer to measure once drawn
+        setUpVTO();
+
+        // Update the toolbar
+        mainActivityInterface.updateToolbar();
+    }
+    private void setUpVTO() {
+        testPane = myView.testPane;
+        ViewTreeObserver vto = testPane.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                testPane.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                // All views have now been drawn, so measure the arraylist views
+                sectionWidths = new ArrayList<>();
+                sectionHeights = new ArrayList<>();
+                for (View v:sectionViews)  {
+                    int width = v.getMeasuredWidth();
+                    int height = v.getMeasuredHeight();
+                    sectionWidths.add(width);
+                    sectionHeights.add(height);
+                }
+                screenWidth = myView.mypage.getMeasuredWidth();
+                screenHeight = myView.mypage.getMeasuredHeight();
+
+                scaleFactor = 1.0f;
+
+                processSong.addViewsToScreen(getActivity(), testPane, myView.pageHolder, myView.songView, screenWidth, screenHeight,
+                        myView.col1, myView.col2, myView.col3, autoScale, songAutoScaleOverrideFull,
+                        songAutoScaleOverrideWidth, songAutoScaleColumnMaximise, fontSize, fontSizeMin, fontSizeMax,
+                        sectionViews, sectionWidths, sectionHeights);
+
+                Animation animSlide;
+                if (R2L) {
+                    animSlide = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
+                } else {
+                    animSlide = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_left);
+                }
+                myView.songView.startAnimation(animSlide);
+                //myView.songscrollview.setLayoutParams(new HorizontalScrollView.LayoutParams(HorizontalScrollView.LayoutParams.WRAP_CONTENT, HorizontalScrollView.LayoutParams.WRAP_CONTENT));
+                //myView.horizontalscrollview.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                //scrollButtons.showScrollButtons(myView.songscrollview,myView.upArrow,myView.pageButtonsBottom.downArrow);
+            }
+        });
+        for (View view:sectionViews) {
+            testPane.addView(view);
         }
-
-        // Get the HTML text.
-        String encodedHtml = processSong.songHTML(getActivity(), storageAccess, preferences, 0xffffffff, 0xff000000, 0xff0000ff);
-        WebView webView = myView.webView;
-        webView.loadData(encodedHtml, "text/html", "base64");
-        webView.setBackgroundColor(0xffffff);
-
-
-        myView.textView.setText(StaticVariables.mLyrics);
     }
 
+
+    // The scale and gesture bits of the code
+    private ScaleGestureDetector scaleDetector;
+    static float scaleFactor = 1.0f;
+    private GestureDetector detector;
+    @SuppressLint("ClickableViewAccessibility")
+    private void setGestureListeners(){
+        detector = new GestureDetector(getActivity(), new GestureListener(myView.songscrollview,
+                myView.horizontalscrollview,swipeMinimumDistance,swipeMaxDistanceYError,swipeMinimumVelocity));
+        myView.mypage.setOnTouchListener(new MyTouchListener());
+        myView.songscrollview.setOnTouchListener(new MyTouchListener());
+        myView.horizontalscrollview.setOnTouchListener(new MyTouchListener());
+        scaleDetector = new ScaleGestureDetector(getActivity(), new PinchToZoomGestureListener(myView.pageHolder));
+    }
+    private class MyTouchListener implements View.OnTouchListener {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            v.performClick();
+            detector.onTouchEvent(event);
+            scaleDetector.onTouchEvent(event);
+            if (loadNextSong || loadPrevSong) {
+                prepareSongLoad();
+            }
+            return true;
+        }
+    }
+
+    private void prepareSongLoad() {
+        if (songsInList==null || songsInList.size()==0) {
+            // Initialise the songs in the list for swiping
+            songsInList = new ArrayList<>();
+            //TODO do logic to determine if this should be built from the set list or not
+
+            // If not in a set
+            ArrayList<SQLite> songsInFolder = sqLiteHelper.getSongsInFolder(getActivity(),StaticVariables.whichSongFolder,"");
+            for (SQLite song : songsInFolder) {
+                songsInList.add(song.getFilename());
+            }
+        }
+        // Get current index
+        int currentPosition = songsInList.indexOf(StaticVariables.songfilename);
+        if (loadNextSong) {
+            if (currentPosition<songsInList.size()-1) {
+                StaticVariables.songfilename = songsInList.get(currentPosition+1);
+                loadNextSong = false;
+                doSongLoad();
+            }
+        } else if (loadPrevSong) {
+            if (currentPosition>0) {
+                StaticVariables.songfilename = songsInList.get(currentPosition-1);
+                loadPrevSong = false;
+                doSongLoad();
+            }
+        }
+    }
     public void onBackPressed() {
         Log.d("PerformanceFragment","On back press!!!");
     }
+
+
 }

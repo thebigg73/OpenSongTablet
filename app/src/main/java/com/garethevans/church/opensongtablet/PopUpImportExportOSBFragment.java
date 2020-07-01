@@ -96,7 +96,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Decide if we are importing or exporting
         String mTitle;
-        if (FullscreenActivity.whattodo.equals("processimportosb")) {
+        if (StaticVariables.whattodo.equals("processimportosb")) {
             mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.backup_import);
         } else {
             mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.backup_export);
@@ -121,7 +121,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
             }
         });
         saveMe = V.findViewById(R.id.saveMe);
-        if (FullscreenActivity.whattodo.equals("processimportosb")) {
+        if (StaticVariables.whattodo.equals("processimportosb")) {
             saveMe.hide();
             saveMe.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -168,7 +168,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
 
 
         // Set up the folder list and hide the required layouts
-        if (FullscreenActivity.whattodo.equals("processimportosb")) {
+        if (StaticVariables.whattodo.equals("processimportosb")) {
             importfilechooser.setVisibility(View.VISIBLE);
             overwrite.setVisibility(View.GONE);
             zipcontents.setVisibility(View.GONE);
@@ -179,7 +179,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
             prepareFolderListExport();
         }
 
-        if (FullscreenActivity.file_uri!=null && FullscreenActivity.whattodo.equals("processimportosb")) {
+        if (FullscreenActivity.file_uri!=null && StaticVariables.whattodo.equals("processimportosb")) {
             // We must be importing and have selected an appropriate .osb file
             importfilechooser.setVisibility(View.VISIBLE);
             String nameoffile = FullscreenActivity.file_uri.getLastPathSegment();

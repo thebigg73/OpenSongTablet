@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/headerText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@mipmap/ic_round_launcher"
+        android:gravity="center"
+        android:text="@string/welcome"
+        android:textSize="22sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/firstrun"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/storage_help"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/MyHeadingText"
+                android:layout_marginEnd="8dp"
+                android:layout_gravity="center_vertical"
+                android:text="@string/currentstorage"/>
+
+            <TextView
+                android:id="@+id/progressText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                style="@style/MyHeadingText"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/warningText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/storage_warning"
+            style="@style/MyHeadingText"
+            android:textColor="@color/red"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/setStorage"
+            app:backgroundTint="@color/red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="16dp"
+            android:padding="12dp"
+            android:text="@string/changestorage"
+            android:textColor="#fff" />
+
+        <Button
+            android:id="@+id/findStorage"
+            app:backgroundTint="@color/darkyellow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="16dp"
+            android:padding="12dp"
+            android:text="@string/existing"
+            android:textColor="#fff" />
+
+
+        <TextView
+            android:id="@+id/previousStorageTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/previousStorageHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/found"
+            style="@style/MyWhiteHeadingText"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/previousStorageLocationsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/MyInfoText"/>
+
+        <Spinner
+            android:id="@+id/previousStorageSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            style="@style/MySpinner"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/startApp"
+            app:backgroundTint="@color/green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="32dp"
+            android:padding="12dp"
+            android:text="@string/start"
+            android:textSize="24sp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#fff" />
+
+        <Spinner
+            android:id="@+id/appMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            style="@style/MySpinner"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/currentAction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            style="@style/MyInfoText"
+            android:visibility="gone"/>
+
+</LinearLayout>

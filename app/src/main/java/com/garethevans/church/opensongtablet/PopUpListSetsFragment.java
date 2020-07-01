@@ -191,7 +191,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                         sort_FAB.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                FullscreenActivity.sortAlphabetically = !FullscreenActivity.sortAlphabetically;
+                                StaticVariables.sortAlphabetically = !StaticVariables.sortAlphabetically;
                                 filterByCategory(preferences.getMyPreferenceString(getActivity(), "whichSetCategory",
                                         getActivity().getString(R.string.mainfoldername)));
                             }
@@ -244,7 +244,7 @@ public class PopUpListSetsFragment extends DialogFragment {
     private String getTheTitle() {
         String myTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.set);
         String mTitle;
-        switch (FullscreenActivity.whattodo) {
+        switch (StaticVariables.whattodo) {
             default:
             case "loadset":
                 mTitle = myTitle + " - " + getActivity().getResources().getString(R.string.load);
@@ -341,7 +341,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         //saveMe.setFocusable(true);
         //saveMe.requestFocus();
 
-        switch (FullscreenActivity.whattodo) {
+        switch (StaticVariables.whattodo) {
             default:
             case "loadset":
                 currentCategory_LinearLayout.setVisibility(View.GONE);
@@ -427,7 +427,7 @@ public class PopUpListSetsFragment extends DialogFragment {
 
     private ArrayAdapter<String> setCorrectAdapter(ListView listView) {
         ArrayAdapter<String> arr;
-        switch (FullscreenActivity.whattodo) {
+        switch (StaticVariables.whattodo) {
             default:
             case "deleteset":
                 listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -487,7 +487,7 @@ public class PopUpListSetsFragment extends DialogFragment {
     }
 
     private void categorySpinnerListener() {
-        if (!FullscreenActivity.whattodo.equals("managesets")) {
+        if (!StaticVariables.whattodo.equals("managesets")) {
             setCategory_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -528,15 +528,15 @@ public class PopUpListSetsFragment extends DialogFragment {
                 String msetname = filteredsets.get(position);
 
                 // If we have a category selected, add this to the file name
-                if (!FullscreenActivity.whattodo.equals("managesets") && setCategory_Spinner.getSelectedItemPosition() > 0) {
+                if (!StaticVariables.whattodo.equals("managesets") && setCategory_Spinner.getSelectedItemPosition() > 0) {
                     msetname = cats.get(setCategory_Spinner.getSelectedItemPosition()) + "__" + msetname;
-                } else if (FullscreenActivity.whattodo.equals("managesets") && originalSetCategory_Spinner.getSelectedItemPosition() > 0) {
+                } else if (StaticVariables.whattodo.equals("managesets") && originalSetCategory_Spinner.getSelectedItemPosition() > 0) {
                     msetname = cats.get(originalSetCategory_Spinner.getSelectedItemPosition()) + "__" + msetname;
                 }
 
-                if (FullscreenActivity.whattodo.equals("exportset")) {
+                if (StaticVariables.whattodo.equals("exportset")) {
                     StaticVariables.setnamechosen = msetname + "%_%";
-                } else if (!FullscreenActivity.whattodo.equals("managesets")) {
+                } else if (!StaticVariables.whattodo.equals("managesets")) {
                     if (!StaticVariables.setnamechosen.contains(msetname)) {
                         // Add it to the setnamechosen
                         StaticVariables.setnamechosen = StaticVariables.setnamechosen + msetname + "%_%";
@@ -559,16 +559,16 @@ public class PopUpListSetsFragment extends DialogFragment {
             StaticVariables.setnamechosen = StaticVariables.setnamechosen.substring(0, StaticVariables.setnamechosen.length() - 3);
         }
 
-        if (FullscreenActivity.whattodo.equals("loadset") && !StaticVariables.setnamechosen.isEmpty()) {
+        if (StaticVariables.whattodo.equals("loadset") && !StaticVariables.setnamechosen.isEmpty()) {
             doLoadSet();
-        } else if (FullscreenActivity.whattodo.equals("saveset") && !setListName.getText().toString().trim().isEmpty() && !setListName.getText().toString().trim().equals("")) {
+        } else if (StaticVariables.whattodo.equals("saveset") && !setListName.getText().toString().trim().isEmpty() && !setListName.getText().toString().trim().equals("")) {
             doSaveSet();
-        } else if (FullscreenActivity.whattodo.equals("deleteset") && !StaticVariables.setnamechosen.isEmpty()) {
+        } else if (StaticVariables.whattodo.equals("deleteset") && !StaticVariables.setnamechosen.isEmpty()) {
             doDeleteSet();
-        } else if (FullscreenActivity.whattodo.equals("exportset") && !StaticVariables.setnamechosen.isEmpty()) {
+        } else if (StaticVariables.whattodo.equals("exportset") && !StaticVariables.setnamechosen.isEmpty()) {
             StaticVariables.settoload = StaticVariables.setnamechosen;
             doExportSet();
-        } else if (FullscreenActivity.whattodo.equals("managesets")) {
+        } else if (StaticVariables.whattodo.equals("managesets")) {
             if (!StaticVariables.setnamechosen.equals("") && !setListName.getText().toString().equals("")) {
                 doRenameSet();
             } else {
@@ -590,8 +590,8 @@ public class PopUpListSetsFragment extends DialogFragment {
         set_ListView.setAdapter(sets_adapter);
 
         // Go through new list and re tick any currently selected ones
-        if (FullscreenActivity.whattodo.equals("loadset") || FullscreenActivity.whattodo.equals("managesets") ||
-                FullscreenActivity.whattodo.equals("deleteset") || FullscreenActivity.whattodo.equals("exportset")) {
+        if (StaticVariables.whattodo.equals("loadset") || StaticVariables.whattodo.equals("managesets") ||
+                StaticVariables.whattodo.equals("deleteset") || StaticVariables.whattodo.equals("exportset")) {
             tickSelectedSetsInCategory(cat);
         }
     }
@@ -680,7 +680,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                             dismiss();
                         } else {
                             if (mListener != null) {
-                                FullscreenActivity.whattodo = "saveset";
+                                StaticVariables.whattodo = "saveset";
                                 mListener.confirmedAction();
                             }
                             try {
@@ -825,7 +825,7 @@ public class PopUpListSetsFragment extends DialogFragment {
 
                     // Tell the listener to do something
                     mListener.refreshAll();
-                    FullscreenActivity.whattodo = "editset";
+                    StaticVariables.whattodo = "editset";
                     mListener.openFragment();
                     //Close this dialog
                     hideKeyboard(newCategory_EditText);
@@ -849,7 +849,7 @@ public class PopUpListSetsFragment extends DialogFragment {
 
     private void doExportSet() {
         if (mListener != null) {
-            FullscreenActivity.whattodo = "customise_exportset";
+            StaticVariables.whattodo = "customise_exportset";
             mListener.openFragment();
             try {
                 hideKeyboard(newCategory_EditText);

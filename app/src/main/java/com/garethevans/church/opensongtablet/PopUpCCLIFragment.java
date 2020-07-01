@@ -212,7 +212,7 @@ public class PopUpCCLIFragment extends DialogFragment {
         logWebView.setInitialScale(100);
 
         // Set up the views required
-        switch (FullscreenActivity.whattodo) {
+        switch (StaticVariables.whattodo) {
             case "ccli_church":
                 setupChurchName();
                 break;

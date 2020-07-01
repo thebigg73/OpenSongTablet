@@ -1697,7 +1697,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
     public void onDismiss(final DialogInterface dialog) {
         if (mListener!=null) {
             mListener.pageButtonAlpha("chords");
-            FullscreenActivity.whattodo = "page_chords";
+            StaticVariables.whattodo = "page_chords";
             mListener.openFragment();
         }
     }

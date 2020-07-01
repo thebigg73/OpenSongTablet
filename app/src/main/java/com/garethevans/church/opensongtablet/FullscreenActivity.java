@@ -55,13 +55,10 @@ public class FullscreenActivity extends AppCompatActivity {
 
     public static String emailtext = "";
 
-    public static String whattodo;
-
     public static boolean pressing_button = false;
 
     public static String mCurrentPhotoPath;
 
-    public static int pdfPageCurrent = 0, pdfPageCount = 0;
     public static boolean isPDF = false;
     public static boolean isImage = false;
     public static boolean isSong = false;
@@ -77,7 +74,7 @@ public class FullscreenActivity extends AppCompatActivity {
     // Set variables
     public static boolean wasscrolling = false;
     public static boolean isManualDragging = false;
-    public static String tempswipeSet = "enable", whichDirection = "R2L";
+    public static String tempswipeSet = "enable";
 
     // Song xml data
     public static ArrayList<String> foundSongSections_heading = new ArrayList<>();
@@ -91,7 +88,6 @@ public class FullscreenActivity extends AppCompatActivity {
             thirdsplit_section, twothirdsplit_section;
     public static String myLyrics = "";
     public static String myXML = "", mynewXML = "";
-    public static String linkclicked = "";
     public static int numrowstowrite;
     public static String[] myParsedLyrics, myTransposedLyrics;
 
@@ -152,7 +148,6 @@ public class FullscreenActivity extends AppCompatActivity {
     public static String capokey = null;
 
     public static boolean orientationchanged = false;
-    public static boolean sortAlphabetically = true;
 
 
     // Updated scaled view stuff

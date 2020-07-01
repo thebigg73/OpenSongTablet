@@ -34,7 +34,7 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
             this.address = address;
             c = context;
             mListener = (MyInterface) context;
-            switch (FullscreenActivity.whattodo) {
+            switch (StaticVariables.whattodo) {
                 case "download_band":
                     filename = "Band.osb";
                     break;
@@ -138,7 +138,7 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
             if (StaticVariables.myToastMessage.equals(c.getResources().getString(R.string.network_error))) {
                 ShowToast.showToast(c);
             } else {
-                FullscreenActivity.whattodo = "processimportosb";
+                StaticVariables.whattodo = "processimportosb";
                 FullscreenActivity.file_uri = uri;
                 if (mListener != null) {
                     mListener.openFragment();

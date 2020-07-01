@@ -1,18 +1,33 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
-import android.util.Base64;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
-import com.garethevans.church.opensongtablet.Preferences;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.StaticVariables;
-import com.garethevans.church.opensongtablet.StorageAccess;
+import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 
 import java.util.ArrayList;
+import java.util.Map;
+
 
 public class ProcessSong {
-    
+
+    // These is used when loading and converting songs (ChordPro, badly formatted XML, etc).
     String parseHTML(String s) {
         if (s == null) {
             return "";
@@ -30,7 +45,7 @@ public class ProcessSong {
         s = s.replace("&quot;", "\"");
         return s;
     }
-    String parseToHTMLEntities(String s) {
+    public String parseToHTMLEntities(String s) {
         if (s == null) {
             s = "";
         }
@@ -65,7 +80,24 @@ public class ProcessSong {
 
         return s;
     }
-
+    public String parseFromHTMLEntities(String val) {
+        //Fix broken stuff
+        if (val==null) {
+            val = "";
+        }
+        val = val.replace("&amp;apos;","'");
+        val = val.replace("&amp;quote;","\"");
+        val = val.replace("&amp;quot;","\"");
+        val = val.replace("&amp;lt;","<");
+        val = val.replace("&amp;gt;",">");
+        val = val.replace("&amp;","&");
+        val = val.replace("&lt;","<");
+        val = val.replace("&gt;",">");
+        val = val.replace("&apos;","'");
+        val = val.replace("&quote;","\"");
+        val = val.replace("&quot;","\"");
+        return val;
+    }
     String fixStartOfLines(String lyrics) {
         StringBuilder fixedlyrics = new StringBuilder();
         String[] lines = lyrics.split("\n");
@@ -81,7 +113,6 @@ public class ProcessSong {
         }
         return fixedlyrics.toString();
     }
-
     String fixLineBreaksAndSlashes(String s) {
         s = s.replace("\r\n", "\n");
         s = s.replace("\r", "\n");
@@ -97,7 +128,6 @@ public class ProcessSong {
 
         return s;
     }
-
     String determineLineTypes(String string, Context c) {
         String type;
         if (string.indexOf(".")==0) {
@@ -307,7 +337,6 @@ public class ProcessSong {
 
         return sections;
     }
-
     String parseLyrics(String myLyrics, Context c) {
         myLyrics = myLyrics.replace("]\n\n","]\n");
         myLyrics = myLyrics.replaceAll("\r\n", "\n");
@@ -413,112 +442,40 @@ public class ProcessSong {
 
         return myLyrics;
     }
-
-
-
-
-
-    public String songHTML (Context c, StorageAccess storageAccess, Preferences preferences,
-                     int lyricsBackgroundColor, int lyricsTextColor, int lyricsChordColor) {
-        String unencodedHtml =  "" +
-                "<html>\n" +
-                "<head>\n" +
-                "<style>\n" +
-                getHTMLFontImports(c,preferences,lyricsTextColor,lyricsChordColor) +
-                ".page       {background-color:" + String.format("#%06X", (StaticVariables.white & lyricsBackgroundColor)) + ";}\n" +
-                ".lyrictable {border-spacing:0; border-collapse: collapse; border:0px;}\n" +
-                "</style>\n" +
-                "</head>\n" +
-                "<body class=\"page\"\">\n" +
-                "<table id=\"mysection\">\n" +
-                processHTMLLyrics(c,preferences,lyricsTextColor,lyricsChordColor) +
-                "</table>\n" +
-                "</body>\n" +
-                "</html>";
-
-        return Base64.encodeToString(unencodedHtml.getBytes(), Base64.NO_PADDING);
-    }
-
-    private String getHTMLFontImports(Context c, Preferences preferences,
-                              int lyricsTextColor, int lyricsChordColor) {
-        // This prepares the import code for the top of the html file that locates the fonts from Google
-        // If they've been downloaded already, they are cached on the device, so no need to redownload.
-        String base1 = "@import url('https://fonts.googleapis.com/css?family=";
-        String base2 = "&swap=true');\n";
-        String fontLyric = preferences.getMyPreferenceString(c,"fontLyric","Lato");
-        String fontChord = preferences.getMyPreferenceString(c,"fontChord","Lato");
-        String fontPreso = preferences.getMyPreferenceString(c,"fontPreso","Lato");
-        String fontPresoInfo = preferences.getMyPreferenceString(c,"fontPresoInfo","Lato");
-        float scaleChords = preferences.getMyPreferenceFloat(c,"scaleChords",1.0f);
-        float scaleHeadings = preferences.getMyPreferenceFloat(c,"scaleHeadings",0.6f);
-        String importString = base1+fontLyric+base2;
-        importString += base1+fontChord+base2;
-        importString += base1+fontPreso+base2;
-        importString += base1+fontPresoInfo+base2;
-        importString += ".lyric {font-family:"+fontLyric+"; color:" +
-                String.format("#%06X", (0xFFFFFF & lyricsTextColor)) + "; " +
-                "padding: 0px; text-size:12.0pt;}\n";
-        importString += ".chord {font-family:"+fontChord+"; color:" +
-                String.format("#%06X", (0xFFFFFF & lyricsChordColor)) + "; " +
-                "padding: 0px; text-size:"+(12.0f*scaleChords)+"pt;}\n";
-        importString += ".heading {font-family:"+fontLyric+"; color:" +
-                String.format("#%06X", (0xFFFFFF & lyricsTextColor)) + "; " +
-                "padding: 0px; text-size:"+(12.0f*scaleHeadings)+"pt; "+
-                "text-decoration:underline;}\n";
-        return importString;
-    }
-
-    private String processHTMLLyrics(Context c, Preferences preferences,
-                             int lyricsTextColor, int lyricsChordColor) {
-        // This goes through the song a section at a time and prepares the table contents
-        String[] lines = StaticVariables.mLyrics.split("\n");
-        String previousline, previouslineType;
-        String thisline, thislineType;
-        String nextline, nextlineType;
-
-        StringBuilder htmltext = new StringBuilder();
-        for (int i = 0; i < lines.length; i++) {
-            if (i > 0) {
-                previousline = lines[i - 1];
-            } else {
-                previousline = "";
-            }
-            previouslineType = getLineType(previousline);
-            thisline = lines[i];
-            thislineType = getLineType(thisline);
-            if (i < lines.length - 1) {
-                nextline = lines[i + 1];
-            } else {
-                nextline = "";
-            }
-            nextlineType = getLineType(nextline);
-
-            if (thislineType.equals("heading")) {
-                htmltext.append("<u>").append(fixHeading(c,thisline)).append("</u>").append("<br>");
-            } else {
-                // TODO
-                htmltext.append(thisline).append("<br>\n");
-            }
-        }
-        return htmltext.toString();
-    }
-
-    private String getLineType(String line) {
-        if (line==null) {
-            return "null";
-        } else if (line.startsWith("[")) {
-            return "heading";
-        } else if (line.startsWith(".")) {
+    private String getLineType(String string) {
+        if (string.startsWith(".")) {
             return "chord";
-        } else if (line.startsWith(";") && line.contains(":")) {
+        } else if (string.startsWith(";") && string.contains("|")) {
             return "tab";
-        } else if (line.startsWith(";")) {
+        } else if (string.startsWith(";")) {
             return "comment";
+        } else if (string.startsWith("[")) {
+            return "heading";
         } else {
-            return "lyric";
+            return "lyrics";
         }
     }
-
+    private String trimOutLineIdentifiers(Context c, String linetype, String string) {
+        switch (linetype) {
+            case "heading":
+                string = fixHeading(c, string);
+                break;
+            case "chord":
+            case "comment":
+            case "tab":
+                if (string.length() > 0) {
+                    string = string.substring(1);
+                }
+                break;
+            case "lyric":
+            default:
+                if (string.startsWith(" ")) {
+                    string = string.replaceFirst(" ", "");
+                }
+                break;
+        }
+        return string;
+    }
     private String fixHeading(Context c, String line) {
         line = line.replace("[","");
         line = line.replace("]","");
@@ -627,4 +584,858 @@ public class ProcessSong {
         }
         return line;
     }
+
+    // This is used for preparing the lyrics as views
+    // When processing the lyrics, chords+lyrics or chords+comments or multiple chords+chords are processed
+    // as groups of lines and returned as a TableLayout containing two or more rows to allow alignment
+    @SuppressWarnings("ConstantConditions")
+
+
+    // Splitting the song up in to manageable chunks
+    private String makeGroups(String string) {
+        String[] lines = string.split("\n");
+        StringBuilder sb = new StringBuilder();
+
+        // Go through each line and add bits together as groups ($_groupline$ between bits, \n for new group)
+        boolean stillworking = true;
+        int i = 0;
+        while (stillworking && i < lines.length) {
+            if (lines[i].startsWith(".")) {
+                // This is a chord line = this needs to be part of a group
+                sb.append("\n").append(lines[i]);
+                // If the next line is a lyric or comment add this to the group and stope there
+                int nl = i + 1;
+                if (nl < lines.length && (lines[nl].startsWith(" ") || lines[nl].startsWith(";"))) {
+                    sb.append("____groupline_____").append(lines[nl]);
+                    i = nl;
+                } else if (nl < lines.length && lines[nl].startsWith(".")) {
+                    // While the next line is still a chordline add this line
+                    while (nl < lines.length && lines[nl].startsWith(".")) {
+                        sb.append("____groupline_____").append(lines[nl]);
+                        i = nl;
+                        nl++;
+                    }
+                } else {
+                    sb.append("\n").append(lines[i]);
+                    i++;
+                    stillworking = false;
+                }
+            } else {
+                sb.append("\n").append(lines[i]);
+            }
+            i++;
+        }
+        return sb.toString();
+    }
+    private String makeSections(String string) {
+        string = string.replace("\n\n\n","\n \n____SPLIT____");
+        string = string.replace("\n \n \n","\n \n____SPLIT____");
+        string = string.replace("\n\n","\n \n____SPLIT____");
+        string = string.replace("\n \n","\n \n____SPLIT____");
+        string = string.replace("\n[","\n____SPLIT____[");
+        string = string.replace("\n [","\n____SPLIT____[");
+        string = string.replace("____SPLIT________SPLIT____","____SPLIT____");
+        if (string.trim().startsWith("____SPLIT____")) {
+            string = string.replaceFirst(" ____SPLIT____","");
+            while (string.startsWith("\n") || string.startsWith(" ")) {
+                if (string.startsWith(" ")) {
+                    string = string.replaceFirst(" ","");
+                } else {
+                    string = string.replaceFirst("\n","");
+                }
+            }
+        }
+        if (string.startsWith("____SPLIT____")) {
+            string = string.replaceFirst("____SPLIT____","");
+        }
+        return string;
+
+    }
+
+    private TableLayout groupTable(Context c, String string, float headingScale, float commentScale,
+                                   float chordScale, int lyricColor, int chordColor,
+                                   boolean trimLines, float lineSpacing) {
+        TableLayout tableLayout = newTableLayout(c);
+        // Split the group into lines
+        String[] lines = string.split("____groupline_____");
+
+        // Line 0 is the chord line.  All other lines need to be at least this size
+        // Make it 1 char bigger to identify the end of it
+        lines[0] += " ";
+        int minlength = lines[0].length();
+        for (int i=0; i<lines.length; i++) {
+            int length = lines[i].length();
+            if (length < minlength) {
+                for (int z = 0; z < (minlength - length); z++) {
+                    lines[i] += " ";
+                }
+            }
+        }
+
+        // Get the positions of the chords.  Each will be the start of a new section
+        // Start at the beginning
+        ArrayList<Integer> pos = new ArrayList<>();
+        pos.add(0);
+        boolean lookforstart = false;
+        for (int s=1;s<(lines[0].length()-1);s++) {
+            String mychar = lines[0].substring(s,s+1);
+            if (!mychar.equals(" ") && lookforstart) {
+                // This is the start of a new chord!
+                pos.add(s);
+                lookforstart = false;
+            } else if (mychar.equals(" ") && !lookforstart) {
+                // We've finished the chord.  Look for new one
+                lookforstart = true;
+            }
+        }
+
+        // Now we have the sizes, split into individual TextViews inside a TableRow for each line
+        for (int t=0; t<lines.length; t++) {
+            TableRow tableRow = newTableRow(c);
+            String linetype = getLineType(lines[t]);
+            Typeface typeface = getTypeface(linetype);
+            float size = getFontSize(linetype,headingScale,commentScale,chordScale);
+            int color = getFontColor(linetype,lyricColor,chordColor);
+            int startpos=0;
+            for (int endpos:pos) {
+                if (endpos != 0) {
+                    TextView textView = newTextView(c, linetype, typeface, size, color, trimLines, lineSpacing);
+                    String str = lines[t].substring(startpos, endpos);
+                    if (startpos == 0) {
+                        str = trimOutLineIdentifiers(c, linetype, str);
+                    }
+                    if (t == 0) {
+                        str = str.trim() + " "; // Chords lines are the splitters, only have one blank space after the chord
+                    }
+                    textView.setText(str);
+                    tableRow.addView(textView);
+                    startpos = endpos;
+                }
+            }
+            // Add the final position
+            TextView textView = newTextView(c,linetype,typeface,size,color,trimLines,lineSpacing);
+            String str = lines[t].substring(startpos);
+            if (str.startsWith(".")) {
+                str = str.replaceFirst(".","");
+            }
+            if (t==0) {
+                str = str.trim() + " ";
+            }
+            textView.setText(str);
+            tableRow.addView(textView);
+
+            tableLayout.addView(tableRow);
+        }
+        return tableLayout;
+    }
+    private TextView lineText(Context c, String linetype, String string, Typeface typeface, float size,
+                              int color, boolean trimLines, float lineSpacing) {
+        TextView textView = newTextView(c,linetype,typeface,size,color,trimLines,lineSpacing);
+        string = trimOutLineIdentifiers(c,linetype,string);
+        textView.setText(string);
+        return textView;
+    }
+
+
+    // Prepare the views
+    private void clearAndResetLinearLayout(LinearLayout linearLayout, boolean removeViews) {
+        if (linearLayout!=null) {
+            if (removeViews) {
+                linearLayout.removeAllViews();
+            }
+            linearLayout.setScaleX(1.0f);
+            linearLayout.setScaleY(1.0f);
+        }
+    }
+    private void clearAndResetRelativeLayout(RelativeLayout relativeLayout,boolean removeViews) {
+        if (relativeLayout!=null) {
+            if (removeViews) {
+                relativeLayout.removeAllViews();
+            }
+            relativeLayout.setScaleX(1.0f);
+            relativeLayout.setScaleY(1.0f);
+        }
+    }
+    private void columnVisibility(LinearLayout c1, LinearLayout c2, LinearLayout c3, boolean v1, boolean v2, boolean v3) {
+        if (v1) {
+            c1.setVisibility(View.VISIBLE);
+        } else {
+            c1.setVisibility(View.GONE);
+        }
+        if (v2) {
+            c2.setVisibility(View.VISIBLE);
+        } else {
+            c2.setVisibility(View.GONE);
+        }
+        if (v3) {
+            c3.setVisibility(View.VISIBLE);
+        } else {
+            c3.setVisibility(View.GONE);
+        }
+    }
+    public ArrayList<View> setSongInLayout(Context c, boolean trimSections, boolean addSectionSpace, boolean trimLines,
+                                           float lineSpacing, Map<String,Integer> colorMap, float headingScale,
+                                           float chordScale, float commentScale, String string) {
+        ArrayList<View> sectionViews = new ArrayList<>();
+
+        // This goes through processing the song
+        // First up we go through the lyrics and group lines that should be in a table for alignment purposes
+        string = makeGroups(string);
+
+        // Next we generate the split points for sections
+        string = makeSections(string);
+
+        // Split into sections an process each separately
+        String[] sections = string.split("____SPLIT____");
+
+        for (int sect = 0; sect<sections.length; sect++) {
+            String section = sections[sect];
+            if (trimSections) {
+                section = section.trim();
+            }
+            if (addSectionSpace && sect!=(sections.length-1)) { // Don't do for last section
+                section = section + "\n ";
+            }
+            LinearLayout linearLayout = newLinearLayout(c); // transparent color
+            int backgroundColor = colorMap.get("lyricsVerse");
+            // Now split by line
+            String[] lines = section.split("\n");
+            for (String line:lines) {
+                // Get the text stylings
+                String linetype = getLineType(line);
+                if (linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab")) {
+                    backgroundColor = getBGColor(c,colorMap,line);
+                }
+                Typeface typeface = getTypeface(linetype);
+                float size = getFontSize(linetype,headingScale,commentScale,chordScale);
+                int color = getFontColor(linetype,colorMap.get("lyricsText"),colorMap.get("lyricsChords"));
+                if (line.contains("____groupline_____")) {
+                    linearLayout.addView(groupTable(c,line,headingScale,commentScale,chordScale,
+                            colorMap.get("lyricsText"),colorMap.get("lyricsChords"),trimLines,lineSpacing));
+                } else {
+                    linearLayout.addView(lineText(c,linetype,line,typeface,size,color,
+                            trimLines,lineSpacing));
+                }
+            }
+            linearLayout.setBackgroundColor(backgroundColor);
+            sectionViews.add(linearLayout);
+        }
+        return sectionViews;
+    }
+
+
+    // Get properties for creating the views
+    private Typeface getTypeface(String string) {
+        if (string.equals("chord")) {
+            return StaticVariables.typefaceChords;
+        } else if (string.equals("tab")) {
+            return StaticVariables.typefaceMono;
+        } else {
+            return StaticVariables.typefaceLyrics;
+        }
+    }
+    private int getFontColor(String string, int lyricColor, int chordColor) {
+        if (string.equals("chord")) {
+            return chordColor;
+        } else {
+            return lyricColor;
+        }
+    }
+    private float getFontSize(String string, float headingScale, float commentScale, float chordScale) {
+        float f = defFontSize;
+        switch (string) {
+            case "chord":
+                f = defFontSize * chordScale;
+                break;
+            case "comment":
+                f = defFontSize * commentScale;
+                break;
+            case "heading":
+                f = defFontSize * headingScale;
+                break;
+        }
+        return f;
+    }
+    private int getBGColor(Context c, Map<String,Integer> colorMap,String line) {
+        if (line.startsWith(";")) {
+            return colorMap.get("lyricsComment");
+        } else if (fixHeading(c,line).contains(c.getString(R.string.tag_verse))) {
+            return colorMap.get("lyricsVerse");
+        } else if (fixHeading(c,line).contains(c.getString(R.string.tag_prechorus))) {
+            return colorMap.get("lyricsPreChorus");
+        } else if (fixHeading(c,line).contains(c.getString(R.string.tag_chorus))) {
+            return colorMap.get("lyricsChorus");
+        } else if (fixHeading(c,line).contains(c.getString(R.string.tag_bridge))) {
+            return colorMap.get("lyricsBridge");
+        } else if (fixHeading(c,line).contains(c.getString(R.string.tag_tag))) {
+            return colorMap.get("lyricsTag");
+        } else if (fixHeading(c,line).contains(c.getString(R.string.custom))) {
+            return colorMap.get("lyricsCustom");
+        } else {
+            return colorMap.get("lyricsVerse");
+        }
+    }
+
+
+
+    // Creating new blank views
+    private TableLayout newTableLayout(Context c) {
+        TableLayout tableLayout = new TableLayout(c);
+        tableLayout.setPadding(0,0,0,0);
+        tableLayout.setClipChildren(false);
+        tableLayout.setClipToPadding(false);
+        tableLayout.setDividerPadding(0);
+        return tableLayout;
+    }
+    private TableRow newTableRow(Context c) {
+        TableRow tableRow = new TableRow(c);
+        tableRow.setPadding(0,0,0,0);
+        tableRow.setDividerPadding(0);
+        return tableRow;
+    }
+    private LinearLayout newLinearLayout(Context c) {
+        LinearLayout linearLayout = new LinearLayout(c);
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        llp.setMargins(0,0,0,0);
+        linearLayout.setLayoutParams(llp);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setPadding(0,0,0,0);
+        linearLayout.setClipChildren(false);
+        linearLayout.setClipToPadding(false);
+        return linearLayout;
+    }
+    private TextView newTextView(Context c, String linetype, Typeface typeface, float size, int color,
+                                 boolean trimLines, float lineSpacing) {
+        TextView textView = new TextView(c);
+        if (trimLines && Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+            int trimval = (int) (size * lineSpacing);
+            textView.setPadding(0, -trimval, 0, -trimval);
+        } else {
+            textView.setPadding(0,0,0,0);
+        }
+        textView.setGravity(Gravity.CENTER_VERTICAL);
+        textView.setTextSize(size);
+        textView.setTypeface(typeface);
+        textView.setTextColor(color);
+        textView.setIncludeFontPadding(false);
+        if (linetype.equals("heading")) {
+            textView.setPaintFlags(textView.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
+        }
+        return textView;
+    }
+    private FrameLayout newFrameLayout(Context c, int color) {
+        FrameLayout frameLayout = new FrameLayout(c);
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        llp.setMargins(0,0,0,0);
+        frameLayout.setLayoutParams(llp);
+        frameLayout.setPadding(0,0,0,0);
+        frameLayout.setClipToPadding(false);
+        frameLayout.setClipChildren(false);
+        frameLayout.setBackgroundColor(color);
+        return frameLayout;
+    }
+
+
+    // Stuff for resizing/scaling
+    private int padding = 8;
+    private float defFontSize = 8.0f;
+    private String thisAutoScale;
+    private int getMaxValue(ArrayList<Integer> values, int start, int end) {
+        int maxValue = 0;
+        if (start>values.size()) {
+            start = values.size();
+        }
+        if (end>values.size()) {
+            end = values.size();
+        }
+        for (int i=start; i<end; i++) {
+            maxValue = Math.max(maxValue,values.get(i));
+        }
+        return maxValue;
+    }
+    private int getTotal(ArrayList<Integer> values, int start, int end) {
+        int total = 0;
+        if (start>values.size()) {
+            start = values.size();
+        }
+        if (end>values.size()) {
+            end = values.size();
+        }
+        for (int i=start; i<end; i++) {
+            total += values.get(i);
+        }
+        return total;
+    }
+    private void setMargins(LinearLayout linearLayout,int leftMargin, int rightMargin) {
+        LinearLayout.LayoutParams llp = (LinearLayout.LayoutParams)linearLayout.getLayoutParams();
+        llp.setMargins(leftMargin,0,rightMargin,0);
+        linearLayout.setClipToPadding(false);
+        linearLayout.setClipChildren(false);
+        linearLayout.setLayoutParams(llp);
+        linearLayout.setPadding(0,0,0,0);
+    }
+    private int dp2px(Context c) {
+        float scale = c.getResources().getDisplayMetrics().density;
+        return (int) (8 * scale);
+    }
+    private void setScaledView(LinearLayout innerColumn, float scaleSize, float maxFontSize) {
+        innerColumn.setPivotX(0);
+        innerColumn.setPivotY(0);
+        // Don't scale above the preferred maximum font size
+        float maxScaleSize = maxFontSize / defFontSize;
+        if (scaleSize>maxScaleSize) {
+            scaleSize = maxScaleSize;
+        }
+        innerColumn.setScaleX(scaleSize);
+        innerColumn.setScaleY(scaleSize);
+    }
+    private void resizeColumn(LinearLayout column, int startWidth, int startHeight, float scaleSize) {
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams((int) (startWidth * scaleSize),
+                (int) (startHeight * scaleSize));
+        column.setLayoutParams(lp);
+    }
+    private int howManyColumnsAreBest(float col1, float[] col2, float[] col3, String autoScale,
+                                      float fontSizeMin, boolean songAutoScaleOverrideFull) {
+        // There's a few things to consider here.  Firstly, if scaling is off, best is 1 column.
+        // If we are overriding full scale to width only, or 1 col to off, best is 1 column.
+
+        if (autoScale.equals("N")||autoScale.equals("W")) {
+            return 1;
+        }
+
+        float col2best = Math.min(col2[0],col2[1]);
+        float col3best = Math.min(col3[0],Math.min(col3[1],col3[2]));
+        int best;
+        if (col1>col2best) {
+            best = 1;
+            if (col3best>col1) {
+                best = 3;
+            }
+        } else {
+            best = 2;
+            if (col3best>col2best) {
+                best = 3;
+            }
+        }
+        // Default font size is 14sp when drawing. If scaling takes this below the min font Size, override back to 1 column
+        if (best==2) {
+            if (col2[2]==0) {
+                return 1;
+            }
+            float newFontSize2Col = defFontSize*col2best;
+            if (songAutoScaleOverrideFull && newFontSize2Col<fontSizeMin) {
+                thisAutoScale = "W";
+                return 1;
+            }
+        }
+        if (best==3) {
+            if (col3[3]==0) {
+                return 2;
+            }
+            float newFontSize3Col = defFontSize*col3best;
+            if (songAutoScaleOverrideFull && newFontSize3Col<fontSizeMin) {
+                thisAutoScale = "W";
+                return 1;
+            }
+        }
+        return best;
+    }
+
+
+    // These are called from the VTO listener - draw the stuff to the screen as 1,2 or 3 columns
+    public void addViewsToScreen(Context c, RelativeLayout testPane, RelativeLayout pageHolder, LinearLayout songView,
+                                 int screenWidth, int screenHeight, LinearLayout column1,
+                                 LinearLayout column2, LinearLayout column3, String autoScale,
+                                 boolean songAutoScaleOverrideFull, boolean songAutoScaleOverrideWidth,
+                                 boolean songAutoScaleColumnMaximise, float fontSize,
+                                 float fontSizeMin, float fontSizeMax, ArrayList<View> sectionViews,
+                                 ArrayList<Integer> sectionWidths, ArrayList<Integer> sectionHeights) {
+        // Now we have all the sizes in, determines the best was to show the song
+        // This will be single, two or three columns.  The best one will be the one
+        // which gives the best scale size
+
+        // Clear and reset the views
+        clearAndResetRelativeLayout(testPane,true);
+        clearAndResetRelativeLayout(pageHolder,false);
+        clearAndResetLinearLayout(songView,false);
+        pageHolder.setLayoutParams(new ScrollView.LayoutParams(ScrollView.LayoutParams.WRAP_CONTENT,ScrollView.LayoutParams.WRAP_CONTENT));
+        songView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT));
+        clearAndResetLinearLayout(column1,true);
+        clearAndResetLinearLayout(column2,true);
+        clearAndResetLinearLayout(column3,true);
+
+        // Set the padding and boxpadding from dp to px
+        padding = dp2px(c);
+
+        int currentWidth = getMaxValue(sectionWidths,0, sectionWidths.size());
+        int currentHeight = getTotal(sectionHeights,0, sectionHeights.size());
+
+        thisAutoScale = autoScale;
+
+        // All scaling types need to process the single column view, either to use it or compare to 2/3 columns
+        float[] scaleSize_2cols = new float[3];
+        float[] scaleSize_3cols = new float[4];
+        if (autoScale.equals("Y")) {
+            // Figure out two and three columns.  Only do this if we need to to save processing time.
+            scaleSize_2cols = col2Scale(screenWidth,screenHeight,currentHeight,songAutoScaleColumnMaximise,sectionWidths,sectionHeights);
+            scaleSize_3cols = col3Scale(screenWidth,screenHeight,currentHeight,songAutoScaleColumnMaximise,sectionWidths,sectionHeights);
+        }
+
+        float scaleSize_1col = col1Scale(screenWidth,screenHeight,currentWidth,currentHeight);
+
+        // Now we've used the views in measure, we need to remove them from the test pane, so we can reallocate them
+        testPane.removeAllViews();
+
+        // Now decide if 1,2 or 3 columns is best
+        int howmany = howManyColumnsAreBest(scaleSize_1col,scaleSize_2cols,scaleSize_3cols,autoScale,fontSizeMin,songAutoScaleOverrideFull);
+
+        switch (howmany) {
+            case 1:
+                // If we are using one column and resizing to width only, change the scale size
+                if (autoScale.equals("W") || thisAutoScale.equals("W")) {
+                    scaleSize_1col = (float)screenWidth /(float)currentWidth;
+                    if (defFontSize*scaleSize_1col<fontSizeMin && songAutoScaleOverrideWidth) {
+                        thisAutoScale = "N";
+                    }
+                }
+                // If autoscale is off, scale to the desired fontsize
+                if (autoScale.equals("N") || thisAutoScale.equals("N")) {
+                    scaleSize_1col = fontSize / defFontSize;
+                }
+                setOneColumn(c,sectionViews,column1,column2,column3,currentWidth,currentHeight,scaleSize_1col,fontSizeMax);
+                break;
+
+            case 2:
+                setTwoColumns(c,sectionViews,column1,column2,column3,sectionHeights,scaleSize_2cols,fontSizeMax,(int)((float)screenWidth/2.0f-padding));
+                break;
+
+            case 3:
+                setThreeColumns(c,sectionViews,column1,column2,column3,sectionWidths,sectionWidths,scaleSize_3cols,fontSizeMax);
+                break;
+        }
+    }
+
+
+    // 1 column stuff
+    private float col1Scale(int screenWidth, int screenHeight, int viewWidth, int viewHeight) {
+        float x_scale = screenWidth / (float) viewWidth;
+        float y_scale = screenHeight / (float) viewHeight;
+        return Math.min(x_scale, y_scale);
+    }
+    private void setOneColumn(Context c, ArrayList<View> sectionViews, LinearLayout column1, LinearLayout column2, LinearLayout column3,
+                              int currentWidth, int currentHeight, float scaleSize, float maxFontSize) {
+        columnVisibility(column1,column2,column3,false,false,false);
+        LinearLayout innerCol1 = newLinearLayout(c);
+
+        int color;
+        // For each section, add it to a relayivelayout to deal with the background colour.
+        for (View v:sectionViews) {
+            color = Color.TRANSPARENT;
+            Drawable background = v.getBackground();
+            if (background instanceof ColorDrawable) {
+                color = ((ColorDrawable) background).getColor();
+            }
+            FrameLayout frameLayout = newFrameLayout(c,color);
+            frameLayout.addView(v);
+            innerCol1.addView(frameLayout);
+        }
+        setScaledView(innerCol1, scaleSize, maxFontSize);
+        resizeColumn(innerCol1, currentWidth, currentHeight, scaleSize);
+        setMargins(column1,0,0);
+        column1.setPadding(0,0,0,0);
+        column1.setClipChildren(false);
+        column1.setClipToPadding(false);
+        column1.addView(innerCol1);
+        columnVisibility(column1,column2,column3,true,false,false);
+        PerformanceFragment.songViewWidth = (int) (currentWidth * scaleSize);
+        PerformanceFragment.songViewHeight = (int) (currentHeight * scaleSize);
+    }
+
+
+    // 2 column stuff
+    private float[] col2Scale(int screenWidth, int screenHeight, int totalViewHeight, boolean songAutoScaleColumnMaximise,
+                              ArrayList<Integer> viewWidth, ArrayList<Integer> viewHeight) {
+        float[] colscale = new float[3];
+
+        // Now go through the views and decide on the number for the first column (the rest is the second column)
+        int col1Height = 0;
+        int col2Height = totalViewHeight;
+        int preHalfWay = 0;
+        int postHalfWay = 0;
+        int i = 0;
+        while (i<viewHeight.size() && col1Height<col2Height) {
+            preHalfWay = i;
+            postHalfWay = preHalfWay+1;
+            col1Height += viewHeight.get(i);
+            col2Height -= viewHeight.get(i);
+            i++;
+        }
+
+        // Get the max width for pre halfway split column 1
+        int maxWidth_preHalfWay1 = getMaxValue(viewWidth,0,preHalfWay);
+        int maxWidth_preHalfWay2 = getMaxValue(viewWidth,preHalfWay,viewWidth.size());
+        int totaHeight_preHalfWay1 = getTotal(viewHeight,0,preHalfWay);
+        int totaHeight_preHalfWay2 = getTotal(viewHeight,preHalfWay,viewHeight.size());
+        int maxWidth_postHalfWay1 = getMaxValue(viewWidth,0,postHalfWay);
+        int maxWidth_postHalfWay2 = getMaxValue(viewWidth,postHalfWay,viewWidth.size());
+        int totaHeight_postHalfWay1 = getTotal(viewHeight,0,postHalfWay);
+        int totaHeight_postHalfWay2 = getTotal(viewHeight,postHalfWay,viewHeight.size());
+
+        // Get pre and post halfway scales
+        float halfWidth = ((float)screenWidth/2.0f)- padding - 0.5f;
+        float preCol1scaleX = halfWidth / (float) maxWidth_preHalfWay1;
+        float preCol1scaleY = (float) screenHeight / (float) totaHeight_preHalfWay1;
+        float preCol1Scale = Math.min(preCol1scaleX,preCol1scaleY);
+        float preCol2scaleX = halfWidth / (float) maxWidth_preHalfWay2;
+        float preCol2scaleY = (float) screenHeight / (float) totaHeight_preHalfWay2;
+        float preCol2Scale = Math.min(preCol2scaleX,preCol2scaleY);
+
+        float postCol1scaleX = halfWidth / (float) maxWidth_postHalfWay1;
+        float postCol1scaleY = (float) screenHeight/ (float) totaHeight_postHalfWay1;
+        float postCol1Scale = Math.min(postCol1scaleX,postCol1scaleY);
+        float postCol2scaleX = halfWidth / (float) maxWidth_postHalfWay2;
+        float postCol2scaleY = (float) screenHeight / (float) totaHeight_postHalfWay2;
+        float postCol2Scale = Math.min(postCol2scaleX,postCol2scaleY);
+
+        // Prefer the method that gives the largest scaling of col1 + col2
+        float preScaleTotal = preCol1Scale + preCol2Scale;
+        float postScaleTotal = postCol1Scale + postCol2Scale;
+
+        if (preScaleTotal>=postScaleTotal) {
+            colscale[0] = preCol1Scale;
+            colscale[1] = preCol2Scale;
+            colscale[2] = preHalfWay;
+        } else {
+            colscale[0] = postCol1Scale;
+            colscale[1] = postCol2Scale;
+            colscale[2] = postHalfWay;
+        }
+
+        if (!songAutoScaleColumnMaximise) {
+            // make 2 all the values of the smallest (but the same)
+            float min = Math.min(colscale[0],colscale[1]);
+            colscale[0] = min;
+            colscale[1] = min;
+        }
+
+        return colscale;
+    }
+    private void setTwoColumns(Context c, ArrayList<View> sectionViews, LinearLayout column1,
+                               LinearLayout column2, LinearLayout column3,
+                               ArrayList<Integer> sectionHeights, float[] scaleSize,
+                               float maxFontSize, int halfwidth) {
+        // Use 2 column
+        columnVisibility(column1,column2,column3,false,false,false);
+        LinearLayout innerCol1 = newLinearLayout(c);
+        LinearLayout innerCol2 = newLinearLayout(c);
+
+        int col1Height = getTotal(sectionHeights,0,(int)scaleSize[2]);
+        int col2Height = getTotal(sectionHeights,(int)scaleSize[2],sectionHeights.size());
+        setScaledView(innerCol1,scaleSize[0],maxFontSize);
+        setScaledView(innerCol2,scaleSize[1],maxFontSize);
+        resizeColumn(innerCol1, halfwidth, col1Height, 1);
+        resizeColumn(innerCol2, halfwidth, col2Height, 1);
+
+        int color;
+        for (int i=0; i<scaleSize[2]; i++) {
+            color = Color.TRANSPARENT;
+            Drawable background = sectionViews.get(i).getBackground();
+            if (background instanceof ColorDrawable) {
+                color = ((ColorDrawable) background).getColor();
+            }
+            FrameLayout frameLayout = newFrameLayout(c,color);
+            frameLayout.addView(sectionViews.get(i));
+            innerCol1.addView(frameLayout);
+        }
+        for (int i=(int)scaleSize[2]; i<sectionViews.size(); i++) {
+            color = Color.TRANSPARENT;
+            Drawable background = sectionViews.get(i).getBackground();
+            if (background instanceof ColorDrawable) {
+                color = ((ColorDrawable) background).getColor();
+            }
+            FrameLayout frameLayout = newFrameLayout(c,color);
+            frameLayout.addView(sectionViews.get(i));
+            innerCol2.addView(frameLayout);
+        }
+        columnVisibility(column1,column2,column3,true,true,false);
+        column1.addView(innerCol1);
+        column2.addView(innerCol2);
+        setMargins(column1,0,padding);
+        setMargins(column2,padding,0);
+        PerformanceFragment.songViewWidth = PerformanceFragment.screenWidth;
+        int col1h = (int) (col1Height*scaleSize[0]);
+        int col2h = (int) (col2Height*scaleSize[1]);
+        PerformanceFragment.songViewHeight = Math.max(col1h,col2h);
+    }
+
+    // 3 column stuff
+    private float[] col3Scale(int screenWidth, int screenHeight, int totalViewHeight,
+                              boolean songAutoScaleColumnMaximise, ArrayList<Integer> viewWidth,
+                              ArrayList<Integer> viewHeight) {
+        float[] colscale = new float[5];
+
+        // Find the third height of all of the views together
+        float thirdViewheight = (float)totalViewHeight / 3.0f;
+
+        // Go through the three sections and try to get them similar
+        int col1Height = 0;
+        int preThirdWay = 0;
+        int postThirdWay = 0;
+        int i=0;
+        while (i<viewHeight.size() && col1Height<thirdViewheight) {
+            preThirdWay = i;
+            postThirdWay = preThirdWay+1;
+            col1Height += viewHeight.get(i);
+            i++;
+        }
+        if (postThirdWay>viewHeight.size()) {
+            postThirdWay = preThirdWay;
+        }
+
+        // Decide if we're closer underheight or overheight
+        int col1Height_pre = getTotal(viewHeight,0,preThirdWay);
+        int col1Height_post = getTotal(viewHeight,0,postThirdWay);
+        int diff_pre = Math.abs((int)thirdViewheight - getTotal(viewHeight,0,preThirdWay));
+        int diff_post = Math.abs((int)thirdViewheight - getTotal(viewHeight, 0,postThirdWay));
+
+        int thirdWay;
+        if (diff_pre<=diff_post) {
+            thirdWay = preThirdWay;
+            col1Height = col1Height_pre;
+        } else {
+            thirdWay = postThirdWay;
+            col1Height = col1Height_post;
+        }
+
+        // Now we have the best first column, we compare column2 and column3 in ths same way as 2 columns
+        int col2Height = 0;
+        int col3Height = totalViewHeight-col1Height;
+        int preTwoThirdWay = 0;
+        int postTwoThirdWay = 0;
+        i=thirdWay;
+        while (i<viewHeight.size() && col2Height<col3Height) {
+            preTwoThirdWay = i;
+            postTwoThirdWay = preTwoThirdWay+1;
+            col2Height += viewHeight.get(i);
+            col3Height -= viewHeight.get(i);
+        }
+        if (postTwoThirdWay>viewHeight.size()) {
+            postTwoThirdWay = preTwoThirdWay;
+        }
+
+        // Decide if we're closer underheight or overheight
+        int col2Height_pre = getTotal(viewHeight,thirdWay,preTwoThirdWay);
+        int col2Height_post = getTotal(viewHeight,thirdWay,postTwoThirdWay);
+        int col3Height_pre = totalViewHeight-col2Height_pre;
+        int col3Height_post = totalViewHeight-col2Height_post;
+        diff_pre = Math.abs(col2Height_pre - col3Height_pre);
+        diff_post = Math.abs(col2Height_post - col3Height_post);
+
+        int twoThirdWay;
+        if (diff_pre<=diff_post) {
+            twoThirdWay = preTwoThirdWay;
+            col2Height = col2Height_pre;
+            col3Height = col3Height_pre;
+        } else {
+            twoThirdWay = postTwoThirdWay;
+            col2Height = col2Height_post;
+            col3Height = col3Height_post;
+        }
+
+        // Now decide on the x and y scaling available for each column
+        int maxWidthCol1 = getMaxValue(viewWidth,0,thirdWay);
+        int maxWidthCol2 = getMaxValue(viewWidth,thirdWay,twoThirdWay);
+        int maxWidthCol3 = getMaxValue(viewWidth,twoThirdWay,viewWidth.size());
+
+        float thirdWidth = ((float)screenWidth/3.0f)-padding;
+
+        float col1Xscale = thirdWidth / (float)maxWidthCol1;
+        float col1Yscale = (float)screenHeight / (float)col1Height;
+        float col1Scale = Math.min(col1Xscale,col1Yscale);
+        float col2Xscale = thirdWidth / (float)maxWidthCol2;
+        float col2Yscale = (float)screenHeight / (float)col2Height;
+        float col2Scale = Math.min(col2Xscale,col2Yscale);
+        float col3Xscale = thirdWidth / (float)maxWidthCol3;
+        float col3Yscale = (float)screenHeight / (float)col3Height;
+        float col3Scale = Math.min(col3Xscale,col3Yscale);
+
+        colscale[0] = col1Scale;
+        colscale[1] = col2Scale;
+        colscale[2] = col3Scale;
+        colscale[3] = thirdWay;
+        colscale[4] = twoThirdWay;
+
+        if (!songAutoScaleColumnMaximise) {
+            // make 2 all the values of the smallest (but the same)
+            float min = Math.min(colscale[0],Math.min(colscale[1],colscale[2]));
+            colscale[0] = min;
+            colscale[1] = min;
+            colscale[2] = min;
+        }
+
+        return colscale;
+    }
+    private void setThreeColumns(Context c, ArrayList<View> sectionViews, LinearLayout column1,
+                                 LinearLayout column2, LinearLayout column3, ArrayList<Integer> sectionWidths,
+                                 ArrayList<Integer> sectionHeights, float[] scaleSize,
+                                 float maxFontSize) {
+        // Use 2 column
+        columnVisibility(column1,column2,column3,false,false,false);
+        LinearLayout innerCol1 = newLinearLayout(c);
+        LinearLayout innerCol2 = newLinearLayout(c);
+        LinearLayout innerCol3 = newLinearLayout(c);
+        int color;
+        for (int i=0; i<scaleSize[3]; i++) {
+            color = Color.TRANSPARENT;
+            Drawable background = sectionViews.get(i).getBackground();
+            if (background instanceof ColorDrawable) {
+                color = ((ColorDrawable) background).getColor();
+            }
+            FrameLayout frameLayout = newFrameLayout(c,color);
+            frameLayout.addView(sectionViews.get(i));
+            innerCol1.addView(frameLayout);
+        }
+        for (int i=(int)scaleSize[3]; i<(int)scaleSize[4]; i++) {
+            color = Color.TRANSPARENT;
+            Drawable background = sectionViews.get(i).getBackground();
+            if (background instanceof ColorDrawable) {
+                color = ((ColorDrawable) background).getColor();
+            }
+            FrameLayout frameLayout = newFrameLayout(c,color);
+            frameLayout.addView(sectionViews.get(i));
+            innerCol2.addView(frameLayout);
+        }
+        for (int i=(int)scaleSize[4]; i<sectionViews.size(); i++) {
+            color = Color.TRANSPARENT;
+            Drawable background = sectionViews.get(i).getBackground();
+            if (background instanceof ColorDrawable) {
+                color = ((ColorDrawable) background).getColor();
+            }
+            FrameLayout frameLayout = newFrameLayout(c,color);
+            frameLayout.addView(sectionViews.get(i));
+            innerCol3.addView(frameLayout);
+        }
+        int col1Width = getMaxValue(sectionWidths,0,(int)scaleSize[3]);
+        int col1Height = getTotal(sectionHeights,0,(int)scaleSize[3]);
+        int col2Width = getMaxValue(sectionWidths,(int)scaleSize[3],(int)scaleSize[4]);
+        int col2Height = getTotal(sectionHeights,(int)scaleSize[3],(int)scaleSize[4]);
+        int col3Width = getMaxValue(sectionWidths,(int)scaleSize[4],sectionWidths.size());
+        int col3Height = getTotal(sectionHeights,(int)scaleSize[4],sectionHeights.size());
+        setScaledView(innerCol1,scaleSize[0],maxFontSize);
+        setScaledView(innerCol2,scaleSize[1],maxFontSize);
+        setScaledView(innerCol3,scaleSize[2],maxFontSize);
+        resizeColumn(innerCol1, col1Width, col1Height, scaleSize[0]);
+        resizeColumn(innerCol2, col2Width, col2Height, scaleSize[1]);
+        resizeColumn(innerCol3, col3Width, col3Height, scaleSize[2]);
+        columnVisibility(column1,column2,column3,true,true,true);
+        column1.addView(innerCol1);
+        column2.addView(innerCol2);
+        column3.addView(innerCol3);
+        PerformanceFragment.songViewWidth = PerformanceFragment.screenWidth;
+        int col1h = (int) (col1Height*scaleSize[0]);
+        int col2h = (int) (col2Height*scaleSize[1]);
+        int col3h = (int) (col3Height*scaleSize[2]);
+        PerformanceFragment.songViewHeight = Math.max(col1h,Math.max(col2h,col3h));
+    }
+
 }

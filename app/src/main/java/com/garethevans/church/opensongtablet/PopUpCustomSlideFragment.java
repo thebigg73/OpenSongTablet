@@ -149,7 +149,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                         localBibleFile.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                FullscreenActivity.whattodo = "localbible";
+                                StaticVariables.whattodo = "localbible";
                                 if (mListener != null) {
                                     try {
                                         mListener.openFragment();
@@ -177,12 +177,12 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                             }
                         });
 
-                        if (FullscreenActivity.whattodo.contains("customreusable_")) {
+                        if (StaticVariables.whattodo.contains("customreusable_")) {
                             updateFields();
                         } else {
                             // By default we want to make a brief note/placeholder
                             noteRadioButton.setChecked(true);
-                            FullscreenActivity.whattodo = "customnote";
+                            StaticVariables.whattodo = "customnote";
                             slideRadioButton.setChecked(false);
                             imageRadioButton.setChecked(false);
                             scriptureRadioButton.setChecked(false);
@@ -331,7 +331,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
 
     private void switchViewToNote() {
         whattype = "note";
-        FullscreenActivity.whattodo ="customnote";
+        StaticVariables.whattodo ="customnote";
         grabVerse_Button.setVisibility(View.GONE);
         reusable_LinearLayout.setVisibility(View.VISIBLE);
         searchBible_LinearLayout.setVisibility(View.GONE);
@@ -349,7 +349,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         whattype = "scripture";
         grabVerse_Button.setVisibility(View.GONE);
         searchBible_progressBar.setVisibility(View.GONE);
-        FullscreenActivity.whattodo ="customscripture";
+        StaticVariables.whattodo ="customscripture";
         reusable_LinearLayout.setVisibility(View.GONE);
         searchBible_LinearLayout.setVisibility(View.VISIBLE);
         slideDetails_RelativeLayout.setVisibility(View.GONE);
@@ -366,7 +366,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
 
     private void switchViewToSlide() {
         whattype = "slide";
-        FullscreenActivity.whattodo ="customslide";
+        StaticVariables.whattodo ="customslide";
         grabVerse_Button.setVisibility(View.GONE);
         reusable_LinearLayout.setVisibility(View.VISIBLE);
         searchBible_LinearLayout.setVisibility(View.GONE);
@@ -382,7 +382,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
 
     private void switchViewToImage() {
         whattype = "image";
-        FullscreenActivity.whattodo ="customimage";
+        StaticVariables.whattodo ="customimage";
         grabVerse_Button.setVisibility(View.GONE);
         reusable_LinearLayout.setVisibility(View.VISIBLE);
         searchBible_LinearLayout.setVisibility(View.GONE);
@@ -695,7 +695,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
 
         @Override
         protected void onPostExecute(String s) {
-            switch (FullscreenActivity.whattodo) {
+            switch (StaticVariables.whattodo) {
                 case "customreusable_note":
                     // Fill in the details
                     noteRadioButton.setChecked(true);

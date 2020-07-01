@@ -36,7 +36,7 @@ public class PopUpWebViewFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         String mTitle;
-        switch (FullscreenActivity.whattodo) {
+        switch (StaticVariables.whattodo) {
             case "errorlog":
                 mTitle = getResources().getString(R.string.search_log);
                 break;
@@ -87,7 +87,7 @@ public class PopUpWebViewFragment extends DialogFragment {
             }
         });
 
-        switch (FullscreenActivity.whattodo) {
+        switch (StaticVariables.whattodo) {
             case "errorlog":
                 webview.setVisibility(View.GONE);
                 textview.setVisibility(View.VISIBLE);
@@ -102,7 +102,7 @@ public class PopUpWebViewFragment extends DialogFragment {
                 closeMe.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        FullscreenActivity.whattodo = "changefonts";
+                        StaticVariables.whattodo = "changefonts";
                     }
                 });
                 break;

@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet.bootup;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,11 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavHost;
+import androidx.navigation.NavHostController;
 import androidx.navigation.NavOptions;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.garethevans.church.opensongtablet.NonOpenSongSQLiteHelper;
@@ -27,11 +30,9 @@ import com.garethevans.church.opensongtablet.SetTypeFace;
 import com.garethevans.church.opensongtablet.StaticVariables;
 import com.garethevans.church.opensongtablet.StorageAccess;
 import com.garethevans.church.opensongtablet.databinding.BootupLogoBinding;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 import java.util.ArrayList;
-
-import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
-import static com.google.android.material.snackbar.Snackbar.make;
 
 public class BootUpFragment extends Fragment {
 
@@ -39,11 +40,24 @@ public class BootUpFragment extends Fragment {
     private StorageAccess storageAccess;
     private SetTypeFace setTypeFace;
     private String initialising, message;
+    private String uT;
     private Uri uriTree;
 
     private BootupLogoBinding myView;
-
+    private MainActivityInterface mainActivityInterface;
     private Bundle bundle;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mainActivityInterface = (MainActivityInterface) context;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mainActivityInterface.hideActionBar(true);
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -61,7 +75,7 @@ public class BootUpFragment extends Fragment {
         initialising = "Initialising: ";
 
         // Check we have the required storage permission
-        checkStoragePermission();
+        startOrSetUp();
 
         return root;
     }
@@ -80,15 +94,6 @@ public class BootUpFragment extends Fragment {
         StaticVariables.activity = getActivity();
     }
 
-    private void checkPreferencesForStorage() {
-        String uT  = preferences.getMyPreferenceString(getActivity(),"uriTree","");
-        if (!uT.equals("")) {
-            uriTree = Uri.parse(uT);
-        } else {
-            uriTree = null;
-        }
-    }
-
     private void setFolderAndSong() {
         StaticVariables.whichSongFolder = preferences.getMyPreferenceString(getActivity(), "whichSongFolder",
                 getString(R.string.mainfoldername));
@@ -104,45 +109,39 @@ public class BootUpFragment extends Fragment {
         }
     }
 
-    private void checkStoragePermission() {
-        if (getActivity()!=null && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Storage permission has not been granted.
-            requestStoragePermission();
-        } else {
-            startBootProcess();
-        }
-    }
-    private void requestStoragePermission() {
-        if (getActivity()!=null && ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            try {
-                make(getActivity().findViewById(R.id.pagesplash), R.string.storage_rationale,
-                        LENGTH_INDEFINITE).setAction(R.string.ok, view -> {
-                            if (getActivity()!=null) {
-                                ActivityCompat.requestPermissions(getActivity(),
-                                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-                            }
-                        }).show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (getActivity()!=null) {
-            try {
-                // Storage permission has not been granted yet. Request it directly.
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 101) {
+    // Checks made before starting the app
+    private void startOrSetUp() {
+        if (storageIsCorrectlySet()) {
             startBootProcess();
         } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            requireStorageCheck();
         }
+    }
+    private boolean storagePermissionGranted() {
+        return (getActivity()!=null && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED);
+    }
+    private boolean storageLocationSet() {
+        uT = preferences.getMyPreferenceString(getActivity(),"uriTree","");
+        return !uT.isEmpty();
+    }
+    private boolean storageLocationValid() {
+        uriTree = Uri.parse(uT);
+        return storageAccess.uriTreeValid(requireActivity(),uriTree);
+    }
+    private boolean storageIsCorrectlySet() {
+        // Check that storage permission is granted and that it has been set and that it exists
+        return (storagePermissionGranted() && storageLocationSet() && storageLocationValid());
+    }
+
+    private void requireStorageCheck() {
+        // Either permission hasn't been granted, or it isn't set properly
+        // Switch to the set storage fragment
+        NavOptions navOptions = new NavOptions.Builder()
+                .setPopUpTo(R.id.nav_boot, true)
+                .build();
+        NavHostFragment.findNavController(BootUpFragment.this)
+                .navigate(R.id.action_nav_boot_to_nav_storage,bundle,navOptions);
     }
 
     private void startBootProcess() {
@@ -176,7 +175,6 @@ public class BootUpFragment extends Fragment {
 
                 // Check for saved storage locations
                 getActivity().runOnUiThread(() -> myView.currentAction.setText(message));
-                checkPreferencesForStorage();
                 setFolderAndSong();
 
                 final String progress = storageAccess.createOrCheckRootFolders(getActivity(), uriTree, preferences);

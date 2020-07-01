@@ -88,7 +88,7 @@ public class PopUpBackupPromptFragment extends DialogFragment {
         backupNow_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FullscreenActivity.whattodo = "exportosb";
+                StaticVariables.whattodo = "exportosb";
                 if (mListener != null) {
                     mListener.openFragment();
                 }

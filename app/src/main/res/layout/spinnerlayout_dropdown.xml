@@ -6,6 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/dropdownListPreferredItemHeight"
     android:ellipsize="marquee"
-    android:textColor="@color/white"
+    android:textColor="@color/black"
     android:textSize="16sp"
-    android:background="@color/mainSecondary"/>
+    android:background="@color/secPrimary"/>

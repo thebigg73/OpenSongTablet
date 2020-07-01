@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.songlist;
+package com.garethevans.church.opensongtablet.songsandsets;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.Preferences;
@@ -18,7 +17,6 @@ import com.garethevans.church.opensongtablet.SQLite;
 import com.garethevans.church.opensongtablet.StaticVariables;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,15 +26,21 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongIt
     private final List<SQLite> songList;
     private final Context c;
     private final Preferences preferences;
-    private final NavController navController;
 
-    SongListAdapter(List<SQLite> songList, Context context, Preferences preferences,
-                    NavController navController) {
+    AdapterCallback callback;
+
+    public interface AdapterCallback{
+        void onItemClicked(int position);
+        void onItemLongClicked(int position);
+    }
+
+    public SongListAdapter(Context context, List<SQLite> songList, Preferences preferences, AdapterCallback callback) {
         this.songList = songList;
         c = context;
         this.preferences = preferences;
-        this.navController = navController;
+        this.callback = callback;
     }
+
 
     @Override
     public int getItemCount() {
@@ -108,7 +112,19 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongIt
             StaticVariables.songfilename = mfilename;
             StaticVariables.whichSongFolder = songfolder;
             StaticVariables.whatsongforsetwork = songforset;
-            SongListFragment.loadSong(navController);
+            if (callback!=null) {
+                callback.onItemClicked(i);
+            }
+        });
+        songItemViewHolder.itemCard.setOnLongClickListener(v -> {
+            StaticVariables.songfilename = mfilename;
+            StaticVariables.whichSongFolder = songfolder;
+            StaticVariables.whatsongforsetwork = songforset;
+            if (callback!=null) {
+                callback.onItemClicked(i);
+                callback.onItemLongClicked(i);
+            }
+            return true;
         });
         songItemViewHolder.itemChecked.setOnCheckedChangeListener((buttonView, isChecked) -> {
             StaticVariables.whatsongforsetwork = songforset;
@@ -165,16 +181,18 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongIt
         }
     }
 
-    Map<String,Integer> getAlphaIndex(ArrayList<SQLite> songlist) {
+    Map<String,Integer> getAlphaIndex(List<SQLite> songlist) {
         Map<String,Integer> linkedHashMap = new LinkedHashMap<>();
-        for (int i=0; i<songlist.size(); i++) {
-            String index = "";
-            if (songlist.get(i)!=null && songlist.get(i).getFilename()!=null && !songlist.get(i).getFilename().equals("")) {
-                index = songlist.get(i).getFilename().substring(0, 1).toUpperCase(StaticVariables.locale);
-            }
+        if (songlist!=null) {
+            for (int i=0; i<songlist.size(); i++) {
+                String index = "";
+                if (songlist.get(i)!=null && songlist.get(i).getFilename()!=null && !songlist.get(i).getFilename().equals("")) {
+                    index = songlist.get(i).getFilename().substring(0, 1).toUpperCase(StaticVariables.locale);
+                }
 
-            if (linkedHashMap.get(index) == null) {
-                linkedHashMap.put(index, i);
+                if (linkedHashMap.get(index) == null) {
+                    linkedHashMap.put(index, i);
+                }
             }
         }
         return linkedHashMap;

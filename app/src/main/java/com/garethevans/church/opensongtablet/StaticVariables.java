@@ -16,6 +16,9 @@ import android.media.midi.MidiOutputPort;
 import android.media.midi.MidiReceiver;
 import android.net.Uri;
 
+import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
+import com.garethevans.church.opensongtablet.presentation.PresentationFragment;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -34,25 +37,34 @@ public class StaticVariables {
     // For moving through songs in list with swipe
     public static ArrayList<String> songsInList = new ArrayList<>();
 
+    public static PerformanceFragment performanceFragment;
+    public static PresentationFragment presentationFragment;
+
     // Set stuff
     public static String previousSongInSet = "";
     public static String nextSongInSet = "";
     public static String myNewXML;
     public static boolean homeFragment;
+    public static boolean sortAlphabetically = true;
+    public static String whichDirection = "R2L";
+    public static String whattodo = "";
+    public static int pdfPageCurrent = 0;
+    public static int pdfPageCount = 0;
+    public static String linkclicked = "";
     static String nextSongKeyInSet = "";
     public static String whatsongforsetwork = "";
-    static String newSetContents = "";
-    static String settoload = "";
-    static String setMoveDirection = "";
-    static String setnamechosen = "";
+    public static String newSetContents = "";
+    public static String settoload = "";
+    public static String setMoveDirection = "";
+    public static String setnamechosen = "";
     public static String[] mSet;
-    static String[] mSetList;
-    static boolean setView;
-    static boolean doneshuffle = false;
-    static boolean setchanged = false;
+    public static String[] mSetList;
+    public static boolean setView;
+    public static boolean doneshuffle = false;
+    public static boolean setchanged = false;
     public static int setSize;
     public static int indexSongInSet;
-    static ArrayList<String> mTempSetList;
+    public static ArrayList<String> mTempSetList;
     public static String currentSet;
     
     // Storage variables
@@ -73,14 +85,16 @@ public class StaticVariables {
     public static int ab_height;
 
     // The song secions.  Used when paring songs into bits
-    static String[] songSections, songSectionsLabels, songSectionsTypes;
+    public static String[] songSections;
+    static String[] songSectionsLabels;
+    static String[] songSectionsTypes;
     static String[][] sectionContents, sectionLineTypes, projectedContents, projectedLineTypes;
     static String songSection_holder; // This carries on section types after line breaks
     static float[] sectionScaleValue;
-    static int currentSection;
+    public static int currentSection;
 
     // The fonts used.  They are preloaded in SetTypeFace
-    static Typeface typefaceLyrics, typefaceChords, typefaceSticky, typefacePreso, typefacePresoInfo, typefaceCustom, typefaceMono;
+    public static Typeface typefaceLyrics, typefaceChords, typefaceSticky, typefacePreso, typefacePresoInfo, typefaceCustom, typefaceMono;
 
 
     // Song scaling used for scaling overrides if appropriate (matches to user preference)
@@ -93,37 +107,37 @@ public class StaticVariables {
     public static String whichMode = "";
 
     // Default colours
-    static final int darkblue = 0xff0000dd;
-    static final int vdarkblue = 0xff000022;
-    static final int purplyblue = 0xff452277;
-    static final int vlightcyan = 0xffeeffff;
-    static final int vlightblue = 0xffeeeeff;
-    static final int blue = 0xff0000ff;
-    static final int black = 0xff000000;
+    public static final int darkblue = 0xff0000dd;
+    public static final int vdarkblue = 0xff000022;
+    public static final int purplyblue = 0xff452277;
+    public static final int vlightcyan = 0xffeeffff;
+    public static final int vlightblue = 0xffeeeeff;
+    public static final int blue = 0xff0000ff;
+    public static final int black = 0xff000000;
     public static final int white = 0xffffffff;
-    static final int grey = 0xff666666;
-    static final int lightgrey = 0xff222222;
-    static final int lightyellow = 0xffddaa00;
-    static final int yellow = 0xffffff00;
-    static final int vdarkyellow = 0xff111100;
-    static final int red = 0xffff0000;
-    static final int vdarkred = 0xff220000;
-    static final int darkishred = 0xffaa1212;
-    static final int transparent = 0x00000000;
-    static final int vdarkgreen = 0xff002200;
-    static final int darkishgreen = 0xff112211;
-    static final int lightgreen = 0xffeeddee;
-    static final int vlightgreen = 0xffeeffee;
-    static final int green = 0xff00ff00;
-    static final int darkpurple = 0xff220022;
-    static final int vlightpurple = 0xffffeeff;
-    static final int lightishcyan = 0xffddeeff;
-    static final int highlighterblack = 0x66000000;
-    static final int highlighterwhite = 0x66ffffff;
-    static final int highlighterblue = 0x660000ff;
-    static final int highlighterred = 0x66ff0000;
-    static final int highlightergreen = 0x6600ff00;
-    static final int highighteryellow = 0x66ffff00;
+    public static final int grey = 0xff666666;
+    public static final int lightgrey = 0xff222222;
+    public static final int lightyellow = 0xffddaa00;
+    public static final int yellow = 0xffffff00;
+    public static final int vdarkyellow = 0xff111100;
+    public static final int red = 0xffff0000;
+    public static final int vdarkred = 0xff220000;
+    public static final int darkishred = 0xffaa1212;
+    public static final int transparent = 0x00000000;
+    public static final int vdarkgreen = 0xff002200;
+    public static final int darkishgreen = 0xff112211;
+    public static final int lightgreen = 0xffeeddee;
+    public static final int vlightgreen = 0xffeeffee;
+    public static final int green = 0xff00ff00;
+    public static final int darkpurple = 0xff220022;
+    public static final int vlightpurple = 0xffffeeff;
+    public static final int lightishcyan = 0xffddeeff;
+    public static final int highlighterblack = 0x66000000;
+    public static final int highlighterwhite = 0x66ffffff;
+    public static final int highlighterblue = 0x660000ff;
+    public static final int highlighterred = 0x66ff0000;
+    public static final int highlightergreen = 0x6600ff00;
+    public static final int highighteryellow = 0x66ffff00;
 
     // Option menu defines which menu we are in
     static String whichOptionMenu = "MAIN";

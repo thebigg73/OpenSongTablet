@@ -595,7 +595,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         setLoadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "loadset";
+                StaticVariables.whattodo = "loadset";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -609,14 +609,14 @@ public class OptionMenuListeners extends AppCompatActivity {
                 String lastSetName = preferences.getMyPreferenceString(c,"setCurrentLastName","");
                 Uri settosave = storageAccess.getUriForItem(c, preferences, "Sets", "", lastSetName);
                 if (lastSetName==null || lastSetName.equals("")) {
-                    FullscreenActivity.whattodo = "saveset";
+                    StaticVariables.whattodo = "saveset";
                     if (mListener != null) {
                         mListener.closeMyDrawers("option");
                         mListener.openFragment();
                     }
                 } else if (storageAccess.uriExists(c, settosave)) {
                     // Load the are you sure prompt
-                    FullscreenActivity.whattodo = "saveset";
+                    StaticVariables.whattodo = "saveset";
                     String setnamenice = lastSetName.replace("__"," / ");
                     String message = c.getResources().getString(R.string.save) + " \'" + setnamenice + "\"?";
                     StaticVariables.myToastMessage = message;
@@ -628,7 +628,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                     }
 
                 } else {
-                    FullscreenActivity.whattodo = "saveset";
+                    StaticVariables.whattodo = "saveset";
                     if (mListener != null) {
                         mListener.openFragment();
                     }
@@ -639,7 +639,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         setNewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "clearset";
+                StaticVariables.whattodo = "clearset";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -650,7 +650,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         setOrganiseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "managesets";
+                StaticVariables.whattodo = "managesets";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -661,7 +661,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         setDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "deleteset";
+                StaticVariables.whattodo = "deleteset";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -672,7 +672,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         setImportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FullscreenActivity.whattodo = "doimportset";
+                StaticVariables.whattodo = "doimportset";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.selectAFileUri(c.getString(R.string.importnewset));
@@ -683,7 +683,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         setExportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "exportset";
+                StaticVariables.whattodo = "exportset";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -694,7 +694,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         setCustomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "customcreate";
+                StaticVariables.whattodo = "customcreate";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -705,7 +705,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         setVariationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "setitemvariation";
+                StaticVariables.whattodo = "setitemvariation";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -716,7 +716,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         setEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "editset";
+                StaticVariables.whattodo = "editset";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -872,7 +872,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         songDuplicateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "duplicate";
+                StaticVariables.whattodo = "duplicate";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -884,7 +884,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "page_pad";
+                    StaticVariables.whattodo = "page_pad";
                     if (mListener != null) {
                         mListener.closeMyDrawers("option");
                         mListener.openFragment();
@@ -897,7 +897,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "page_autoscroll";
+                    StaticVariables.whattodo = "page_autoscroll";
                     if (mListener != null) {
                         mListener.closeMyDrawers("option");
                         mListener.openFragment();
@@ -910,7 +910,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "page_metronome";
+                    StaticVariables.whattodo = "page_metronome";
                     if (mListener != null) {
                         mListener.closeMyDrawers("option");
                         mListener.openFragment();
@@ -923,7 +923,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "page_chords";
+                    StaticVariables.whattodo = "page_chords";
                     if (mListener != null) {
                         mListener.closeMyDrawers("option");
                         mListener.openFragment();
@@ -936,7 +936,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "page_links";
+                    StaticVariables.whattodo = "page_links";
                     if (mListener != null) {
                         mListener.closeMyDrawers("option");
                         mListener.openFragment();
@@ -949,7 +949,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "editsong";
+                    StaticVariables.whattodo = "editsong";
                     if (mListener != null) {
                         mListener.closeMyDrawers("option");
                         mListener.openFragment();
@@ -965,7 +965,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "editnotes";
+                    StaticVariables.whattodo = "editnotes";
                     if (mListener != null) {
                         mListener.closeMyDrawers("option");
                         mListener.openFragment();
@@ -980,7 +980,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         songDrawingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "drawnotes";
+                StaticVariables.whattodo = "drawnotes";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     // Take a snapshot of the songwindow
@@ -997,7 +997,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         songScoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "abcnotation_edit";
+                StaticVariables.whattodo = "abcnotation_edit";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -1008,7 +1008,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         songOnYouTubeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "youtube";
+                StaticVariables.whattodo = "youtube";
                 if (mListener != null) {
                     Intent youtube = new Intent(Intent.ACTION_VIEW,
                             Uri.parse("https://www.youtube.com/results?search_query=" + StaticVariables.mTitle + "+" + StaticVariables.mAuthor));
@@ -1021,7 +1021,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         songOnWebButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "websearch";
+                StaticVariables.whattodo = "websearch";
                 if (mListener!=null) {
                     Intent web = new Intent(Intent.ACTION_VIEW,
                             Uri.parse("https://www.google.com/search?q=" + StaticVariables.mTitle + "+" + StaticVariables.mAuthor));
@@ -1034,7 +1034,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         songRenameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "renamesong";
+                StaticVariables.whattodo = "renamesong";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -1045,7 +1045,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         songNewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "createsong";
+                StaticVariables.whattodo = "createsong";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -1056,7 +1056,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         songDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "deletesong";
+                StaticVariables.whattodo = "deletesong";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -1067,7 +1067,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         songImportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FullscreenActivity.whattodo = "doimport";
+                StaticVariables.whattodo = "doimport";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.selectAFileUri(c.getString(R.string.importnewsong));
@@ -1079,7 +1079,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "customise_exportsong";
+                    StaticVariables.whattodo = "customise_exportsong";
                     if (mListener != null) {
                         mListener.closeMyDrawers("option");
                         mListener.openFragment();
@@ -1201,7 +1201,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "transpose";
+                    StaticVariables.whattodo = "transpose";
                     if (mListener != null) {
                         mListener.closeMyDrawers("option");
                         mListener.openFragment();
@@ -1311,7 +1311,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "page_chords";
+                    StaticVariables.whattodo = "page_chords";
                     if (mListener != null) {
                         mListener.closeMyDrawers("option");
                         mListener.openFragment();
@@ -1324,7 +1324,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "transpose";
+                    StaticVariables.whattodo = "transpose";
                     if (mListener != null) {
                         mListener.closeMyDrawers("option");
                         mListener.openFragment();
@@ -1340,7 +1340,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Transpose transpose = new Transpose();
-                FullscreenActivity.whattodo = "transpose";
+                StaticVariables.whattodo = "transpose";
                 if (FullscreenActivity.isPDF) {
                     // Can't do this action on a pdf!
                     StaticVariables.myToastMessage = c.getResources().getString(R.string.pdf_functionnotavailable);
@@ -1371,7 +1371,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Transpose transpose = new Transpose();
-                FullscreenActivity.whattodo = "transpose";
+                StaticVariables.whattodo = "transpose";
                 if (FullscreenActivity.isPDF) {
                     // Can't do this action on a pdf!
                     StaticVariables.myToastMessage = c.getResources().getString(R.string.pdf_functionnotavailable);
@@ -1472,7 +1472,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         chordsFormatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "choosechordformat";
+                StaticVariables.whattodo = "choosechordformat";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -1615,7 +1615,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "changetheme";
+                    StaticVariables.whattodo = "changetheme";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -1626,7 +1626,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "autoscale";
+                    StaticVariables.whattodo = "autoscale";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -1637,7 +1637,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "changefonts";
+                    StaticVariables.whattodo = "changefonts";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -1648,7 +1648,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "pagebuttons";
+                    StaticVariables.whattodo = "pagebuttons";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -1659,7 +1659,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "popupsettings";
+                    StaticVariables.whattodo = "popupsettings";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -1670,7 +1670,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "extra";
+                    StaticVariables.whattodo = "extra";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -1681,7 +1681,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "actionbarinfo";
+                    StaticVariables.whattodo = "actionbarinfo";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -1692,7 +1692,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null && (FullscreenActivity.isPresenting || FullscreenActivity.isHDMIConnected)) {
-                    FullscreenActivity.whattodo = "connecteddisplay";
+                    StaticVariables.whattodo = "connecteddisplay";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 } else {
@@ -1708,7 +1708,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                 if (mListener!=null) {
                     StaticVariables.myToastMessage = view.getContext().getString(R.string.connections_searching);
                     ShowToast.showToast(view.getContext());
-                    FullscreenActivity.whattodo = "hdmi";
+                    StaticVariables.whattodo = "hdmi";
                     mListener.connectHDMI();
                 }
             }
@@ -1773,7 +1773,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         ugSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "ultimate-guitar";
+                StaticVariables.whattodo = "ultimate-guitar";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -1783,7 +1783,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         chordieSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "chordie";
+                StaticVariables.whattodo = "chordie";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -1793,7 +1793,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         worshiptogetherSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "worshiptogether";
+                StaticVariables.whattodo = "worshiptogether";
                 if (mListener != null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -1803,7 +1803,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         worshipreadySearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "worshipready";
+                StaticVariables.whattodo = "worshipready";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -1813,7 +1813,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         songselectSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "songselect";
+                StaticVariables.whattodo = "songselect";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -1823,7 +1823,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         ukutabsSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "ukutabs";
+                StaticVariables.whattodo = "ukutabs";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -1833,7 +1833,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         holychordsSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FullscreenActivity.whattodo = "holychords";
+                StaticVariables.whattodo = "holychords";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -1843,7 +1843,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         bandDownloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "download_band";
+                StaticVariables.whattodo = "download_band";
                 StaticVariables.myToastMessage = c.getString(R.string.wait);
                 ShowToast.showToast(c);
                 if (mListener!=null) {
@@ -1855,7 +1855,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         churchDownloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "download_church";
+                StaticVariables.whattodo = "download_church";
                 StaticVariables.myToastMessage = c.getString(R.string.wait);
                 ShowToast.showToast(c);
                 if (mListener!=null) {
@@ -1867,7 +1867,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         songImportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FullscreenActivity.whattodo = "doimport";
+                StaticVariables.whattodo = "doimport";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.selectAFileUri(c.getString(R.string.importnewsong));
@@ -1940,7 +1940,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "newfolder";
+                    StaticVariables.whattodo = "newfolder";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -1951,7 +1951,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "editfoldername";
+                    StaticVariables.whattodo = "editfoldername";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -1973,7 +1973,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "exportsonglist";
+                    StaticVariables.whattodo = "exportsonglist";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -1984,7 +1984,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "processimportosb";
+                    StaticVariables.whattodo = "processimportosb";
                     mListener.selectAFileUri(c.getString(R.string.backup_import));
                     mListener.closeMyDrawers("option");
                 }
@@ -1995,7 +1995,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "exportosb";
+                    StaticVariables.whattodo = "exportosb";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -2006,7 +2006,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "importos";
+                    StaticVariables.whattodo = "importos";
                     mListener.closeMyDrawers("option");
                     mListener.selectAFileUri(c.getString(R.string.import_onsong_choose));
                 }
@@ -2039,7 +2039,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "errorlog";
+                    StaticVariables.whattodo = "errorlog";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -2391,7 +2391,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "footpedal";
+                    StaticVariables.whattodo = "footpedal";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -2402,7 +2402,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "quicklaunch";
+                    StaticVariables.whattodo = "quicklaunch";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -2413,7 +2413,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "gestures";
+                    StaticVariables.whattodo = "gestures";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -2424,7 +2424,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "menuoptions";
+                    StaticVariables.whattodo = "menuoptions";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -2435,7 +2435,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "scrollsettings";
+                    StaticVariables.whattodo = "scrollsettings";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -2446,7 +2446,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "swipesettings";
+                    StaticVariables.whattodo = "swipesettings";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -2521,7 +2521,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "page_autoscroll";
+                    StaticVariables.whattodo = "page_autoscroll";
                     if (mListener != null) {
                         mListener.closeMyDrawers("option");
                         mListener.openFragment();
@@ -2542,7 +2542,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "autoscrolldefaults";
+                    StaticVariables.whattodo = "autoscrolldefaults";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -2628,7 +2628,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "page_pad";
+                    StaticVariables.whattodo = "page_pad";
                     if (mListener != null) {
                         mListener.closeMyDrawers("option");
                         mListener.openFragment();
@@ -2648,7 +2648,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             public void onClick(View view) {
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
-                    FullscreenActivity.whattodo = "custompads";
+                    StaticVariables.whattodo = "custompads";
                     mListener.openFragment();
                 }
             }
@@ -2656,7 +2656,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         padCrossFadeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "crossfade";
+                StaticVariables.whattodo = "crossfade";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -2738,7 +2738,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "page_metronome";
+                    StaticVariables.whattodo = "page_metronome";
                     if (mListener != null) {
                         mListener.closeMyDrawers("option");
                         mListener.openFragment();
@@ -2749,7 +2749,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         metronomeLengthButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "page_metronome";
+                StaticVariables.whattodo = "page_metronome";
                 if (mListener!=null) {
                     try {
                         mListener.closeMyDrawers("option");
@@ -2835,7 +2835,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         ccliExportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "ccli_export";
+                StaticVariables.whattodo = "ccli_export";
                 if (mListener!=null) {
                     mListener.doExport();
                 }
@@ -2919,7 +2919,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "language";
+                    StaticVariables.whattodo = "language";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -3012,7 +3012,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (mListener!=null) {
-                FullscreenActivity.whattodo = whattodo;
+                StaticVariables.whattodo = whattodo;
                 if (closedrawer!=null && !closedrawer.isEmpty()) {
                     mListener.closeMyDrawers(closedrawer);
                 }

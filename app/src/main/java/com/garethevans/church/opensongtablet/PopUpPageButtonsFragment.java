@@ -299,7 +299,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         showPageButtons.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "groupedpagebuttons";
+                StaticVariables.whattodo = "groupedpagebuttons";
                 dismiss();
                 if (mListener!=null) {
                     mListener.openFragment();

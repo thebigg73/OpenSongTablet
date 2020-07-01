@@ -28,7 +28,7 @@ public class PopUpSizeAndAlpha {
                 String position = preferences.getMyPreferenceString(ac,"popupPosition","c");
 
                 // Override some of the defaults if required
-                switch (FullscreenActivity.whattodo) {
+                switch (StaticVariables.whattodo) {
                     case "chordie":
                     case "ultimate-guitar":
                     case "worshipready":

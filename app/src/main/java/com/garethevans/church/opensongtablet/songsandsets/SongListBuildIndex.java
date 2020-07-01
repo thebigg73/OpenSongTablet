@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.songlist;
+package com.garethevans.church.opensongtablet.songsandsets;
 
 import android.content.Context;
 import android.database.Cursor;

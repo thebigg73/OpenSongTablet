@@ -10,21 +10,21 @@ public class AppActionBar {
 
     public void setActionBar(TextView title, TextView author, TextView key) {
 
-        if (StaticVariables.mTitle != null) {
+        if (title!=null && StaticVariables.mTitle != null) {
             title.setText(StaticVariables.mTitle);
         }
-        if (StaticVariables.mAuthor != null && !StaticVariables.mAuthor.isEmpty()) {
+        if (author!=null && StaticVariables.mAuthor != null && !StaticVariables.mAuthor.isEmpty()) {
             author.setText(StaticVariables.mAuthor);
             author.setVisibility(View.VISIBLE);
-        } else {
+        } else if (author!=null){
             author.setVisibility(View.GONE);
         }
 
-        if (StaticVariables.mKey != null && !StaticVariables.mKey.isEmpty()) {
+        if (key!=null && StaticVariables.mKey != null && !StaticVariables.mKey.isEmpty()) {
             String k = " (" + StaticVariables.mKey + ")";
             key.setText(k);
             key.setVisibility(View.VISIBLE);
-        } else {
+        } else if (key!=null){
             key.setVisibility(View.GONE);
         }
     }

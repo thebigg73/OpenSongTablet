@@ -44,7 +44,7 @@
         android:label="@string/app_name"
         android:largeHeap="false"
         android:roundIcon="@mipmap/ic_round_launcher"
-        android:theme="@style/MyTheme"
+        android:theme="@style/Theme.MyDark"
         android:vmSafeMode="true"
         tools:ignore="UnusedAttribute"
         android:supportsRtl="true">
@@ -87,7 +87,7 @@
         </provider>
 
         <activity
-            android:name=".BootUpCheck"
+            android:name="._BootUpCheck"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
             android:label="@string/app_name">
             <!--<intent-filter
