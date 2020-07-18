@@ -48,7 +48,7 @@ public class PopUpSetViewNew extends DialogFragment {
         return frag;
     }
 
-    public static void makeVariation(Context c, Preferences preferences) {
+    static void makeVariation(Context c, Preferences preferences) {
         // Prepare the name of the new variation slide
         // If the file already exists, add _ to the filename
         StringBuilder newsongname = new StringBuilder(StaticVariables.songfilename);

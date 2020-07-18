@@ -1,6 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
-public class SongXML {
+class SongXML {
     // This class is used to build or initialise the song XML
 
     void initialiseSongTags() {

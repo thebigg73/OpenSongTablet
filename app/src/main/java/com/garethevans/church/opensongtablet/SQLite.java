@@ -1,29 +1,28 @@
 package com.garethevans.church.opensongtablet;
 
 // This class is used to build the song database and then query it for searches
-public class SQLite {
+class SQLite {
 
-    public static final String DATABASE_NAME = "Songs.db";
-    public static final String TABLE_NAME = "songs";
-    public static final String COLUMN_ID = "id";
-    public static final String COLUMN_SONGID = "songid";
-    public static final String COLUMN_FILENAME = "filename";
-    public static final String COLUMN_FOLDER = "folder";
-    public static final String COLUMN_TITLE = "title";
-    public static final String COLUMN_AUTHOR = "author";
-    public static final String COLUMN_COPYRIGHT = "copyright";
-    public static final String COLUMN_LYRICS = "lyrics";
-    public static final String COLUMN_HYMNNUM = "hymn_num";
-    public static final String COLUMN_CCLI = "ccli";
-    public static final String COLUMN_THEME = "theme";
-    public static final String COLUMN_ALTTHEME = "alttheme";
-    public static final String COLUMN_USER1 = "user1";
-    public static final String COLUMN_USER2 = "user2";
-    public static final String COLUMN_USER3 = "user3";
-    public static final String COLUMN_KEY = "key";
-    public static final String COLUMN_TIMESIG = "timesig";
-    public static final String COLUMN_AKA = "aka";
-    public static final String COLUMN_INSET = "inset";
+    static final String DATABASE_NAME = "Songs.db";
+    static final String TABLE_NAME = "songs";
+    static final String COLUMN_ID = "id";
+    static final String COLUMN_SONGID = "songid";
+    static final String COLUMN_FILENAME = "filename";
+    static final String COLUMN_FOLDER = "folder";
+    static final String COLUMN_TITLE = "title";
+    static final String COLUMN_AUTHOR = "author";
+    static final String COLUMN_COPYRIGHT = "copyright";
+    static final String COLUMN_LYRICS = "lyrics";
+    static final String COLUMN_HYMNNUM = "hymn_num";
+    static final String COLUMN_CCLI = "ccli";
+    static final String COLUMN_THEME = "theme";
+    static final String COLUMN_ALTTHEME = "alttheme";
+    static final String COLUMN_USER1 = "user1";
+    static final String COLUMN_USER2 = "user2";
+    static final String COLUMN_USER3 = "user3";
+    static final String COLUMN_KEY = "key";
+    static final String COLUMN_TIMESIG = "timesig";
+    static final String COLUMN_AKA = "aka";
 
     private int id;
     private String songid;
@@ -43,16 +42,14 @@ public class SQLite {
     private String key;
     private String timesig;
     private String aka;
-    private String inset;
 
-    public SQLite() {
+    SQLite() {
 
     }
 
     SQLite(int id, String songid, String filename, String folder, String title, String author,
            String copyright, String lyrics, String hymn_num, String ccli, String theme,
-           String alttheme, String user1, String user2, String user3, String key, String timesig,
-           String aka, String inset) {
+           String alttheme, String user1, String user2, String user3, String key, String timesig, String aka) {
         this.id = id;
         this.songid = songid;
         this.filename = filename;
@@ -71,7 +68,6 @@ public class SQLite {
         this.key = key;
         this.aka = aka;
         this.timesig = timesig;
-        this.inset = inset;
     }
 
     int getId() {
@@ -80,16 +76,16 @@ public class SQLite {
     String getSongid() {
         return songid;
     }
-    public String getFilename() {
+    String getFilename() {
         return filename;
     }
-    public String getFolder() {
+    String getFolder() {
         return folder;
     }
-    public String getTitle() {
+    String getTitle() {
         return title;
     }
-    public String getAuthor() {
+    String getAuthor() {
         return author;
     }
     String getCopyright() {
@@ -119,14 +115,13 @@ public class SQLite {
     String getUser3() {
         return user3;
     }
-    public String getKey() {
+    String getKey() {
         return key;
     }
     String getTimesig() {return timesig;}
     String getAka() {
         return aka;
     }
-    public String getInSet() {return inset;}
 
     void setId(int id) {
         this.id = id;
@@ -137,10 +132,10 @@ public class SQLite {
     void setFilename(String filename) {
         this.filename = filename;
     }
-    public void setFolder(String folder) {
+    void setFolder(String folder) {
         this.folder = folder;
     }
-    public void setTitle(String title) {
+    void setTitle(String title) {
         this.title = title;
     }
     void setAuthor(String author) {
@@ -149,7 +144,7 @@ public class SQLite {
     void setCopyright(String copyright) {
         this.copyright = copyright;
     }
-    public void setLyrics(String lyrics) {
+    void setLyrics(String lyrics) {
         this.lyrics = lyrics;
     }
     void setHymn_num(String hymn_num) {
@@ -180,9 +175,6 @@ public class SQLite {
     void setAka(String aka) {
         this.aka = aka;
     }
-    public void setInSet(String inset) {
-        this.inset = inset;
-    }
 
     // Create table SQL query - only including fields which are searchable or used in the song index
     static final String CREATE_TABLE =
@@ -204,8 +196,7 @@ public class SQLite {
                     + COLUMN_USER3 + " TEXT,"
                     + COLUMN_KEY + " TEXT,"
                     + COLUMN_TIMESIG + " TEXT,"
-                    + COLUMN_AKA + " TEXT,"
-                    + COLUMN_INSET + " TEXT"
+                    + COLUMN_AKA + " TEXT"
                     + ");";
 
 

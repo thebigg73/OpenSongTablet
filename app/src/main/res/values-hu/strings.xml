@@ -266,7 +266,7 @@
     <string name="media_selected">Media betöltött</string>
     <string name="menu_settings">"A menü beállításai"</string>
     <string name="menu_swipe_toggle">"Váltás dal lista és menük húzza be / ki"</string>
-    <string name="menu_width">Menü szélessége</string>
+    <string name="menu_width">"Menü szélessége (százalékos képernyő szélesség)"</string>
     <string name="metronome">"Metronóm"</string>
     <string name="metronomePedalText">"Kezdeni / megállni metronóm"</string>
     <string name="microphone_rationale">"Mikrofon / hangfelvétel eléréséhez szükséges a zajszintmérő."</string>

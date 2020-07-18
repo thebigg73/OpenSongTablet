@@ -6,7 +6,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-public class OnSongConvert {
+class OnSongConvert {
 
     // This is virtually the same as ChordProConvert, but with a few extra tags
     // To simplify this, we will extract the specific OnSongStuff first and then pass it to ChordProConvert
@@ -37,8 +37,8 @@ public class OnSongConvert {
     private String[] lines;
     private StringBuilder parsedLines;
 
-    public ArrayList<String> convertTextToTags(Context c, StorageAccess storageAccess, Preferences preferences,
-                                               SongXML songXML, ChordProConvert chordProConvert, Uri uri, String l) {
+    ArrayList<String> convertTextToTags(Context c, StorageAccess storageAccess, Preferences preferences,
+                                        SongXML songXML, ChordProConvert chordProConvert, Uri uri, String l) {
 
         initialiseTheVariables();
 

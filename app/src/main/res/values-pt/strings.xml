@@ -266,7 +266,7 @@
     <string name="media_selected">Mídia carregada</string>
     <string name="menu_settings">"Definições do menu"</string>
     <string name="menu_swipe_toggle">"Lista de músicas e menus de opções de alternância furto ligar / desligar"</string>
-    <string name="menu_width">Largura do menu</string>
+    <string name="menu_width">"Largura do menu (porcentagem da largura da tela)"</string>
     <string name="metronome">"Metrónomo"</string>
     <string name="metronomePedalText">"Começar / Parar metrónomo"</string>
     <string name="microphone_rationale">"Microfone / gravação de áudio é necessário para acessar o medidor de nível de som."</string>

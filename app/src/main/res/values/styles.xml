@@ -1,116 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
-    <!--STUFF FOR FRAGMENTS-->
-    <style name="backFragHeading">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/lightgrey</item>
-    </style>
-    <style name="currFragHeading">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/black</item>
-    </style>
-
-    <!--SONG LIST-->
-    <style name="songTitle">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="drawableTint">@color/black</item>
-    </style>
-    <style name="songListButtonOn">
-        <item name="backgroundTint">@color/mainSecondary</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="drawableTint">@color/white</item>
-        <item name="elevation">8dp</item>
-    </style>
-    <style name="songListButtonOff">
-        <item name="backgroundTint">@color/altSecondary</item>
-        <item name="android:textColor">@color/mainSecondary</item>
-        <item name="drawableTint">@color/mainSecondary</item>
-        <item name="elevation">8dp</item>
-    </style>
-    <style name="songInfo">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="drawableTint">@color/black</item>
-    </style>
-    <style name="songCounter">
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:elevation" tools:targetApi="lollipop">16dp</item>
-        <item name="android:layout_margin">6dp</item>
-        <item name="backgroundTint">@color/altSecondary</item>
-        <item name="android:background">@drawable/count_icon</item>
-
-    </style>
-
-    <!--DEFAULT VIEWS-->
-    <style name="pageButton">
-        <item name="backgroundTint">@color/mainSecondary</item>
-        <item name="drawableTint">@color/white</item>
-    </style>
-<style name="newSpinner">
-    <item name="android:background">@color/altPrimary</item>
-    <item name="android:layout_margin">8dp</item>
-    <item name="android:padding">8dp</item>
-</style>
-    <style name="normalText">
-        <item name="android:background">@color/white</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:padding">8dp</item>
-        <item name="android:layout_margin">8dp</item>
-    </style>
-
-    <style name="largeText">
-        <item name="android:background">@color/white</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:padding">8dp</item>
-        <item name="android:layout_margin">8dp</item>
-    </style>
-
-    <style name="checkBox">
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:padding">8dp</item>
-        <item name="android:layout_margin">8dp</item>
-    </style>
-
-    <style name="newEditText">
-        <item name="android:background">@color/altPrimary</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:layout_margin">8dp</item>
-        <item name="android:padding">8dp</item>
-    </style>
-
-    <style name="dividerLine">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
-        <item name="android:layout_margin">8dp</item>
-        <item name="android:background">@color/altPrimary</item>
-    </style>
-
-    <!--NEW DRAWER-->
-    <style name="DrawerLayout">
-        <item name="android:listDivider">@color/secondary</item>
-        <item name="itemBackground">@color/white</item>
-        <item name="itemTextColor">@color/black</item>
-        <item name="itemIconTint">@color/black</item>
-        <item name="backgroundColor">@color/white</item>
-        <item name="background">@color/white</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-    <style name="AppHeading">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-    <style name="AppSubHeading">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
     <style name="CustomDialog" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowNoTitle">false</item>
         <item name="android:colorBackground">@color/toolbar</item>
@@ -126,13 +16,13 @@
     </style>
 
     <style name="MyDialogHeadingText" parent="MyTheme.Base">
-        <item name="android:textColor">@color/yellow</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="MyHeadingText" parent="MyTheme.Base">
         <item name="android:textColor">#ff0</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="MyMenuHeadingText" parent="MyTheme.Base">
@@ -142,12 +32,12 @@
 
     <style name="MyWhiteHeadingText" parent="MyTheme.Base">
         <item name="android:textColor">#fff</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="MyInfoText" parent="MyTheme.Base">
-        <item name="android:textColor">#dd8</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="MyVersionText" parent="MyTheme.Base">
@@ -172,7 +62,7 @@
 
     <style name="MyEditText">
         <item name="android:textColor">#000</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:padding">8dp</item>
         <item name="android:background">#fff</item>
         <item name="android:textColorHint">#555</item>
@@ -184,17 +74,17 @@
     </style>
 
     <style name="MyTextSwitch">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:thumb">@drawable/switch_button</item>
     </style>
 
     <style name="MySwitch">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="MySpinner">
         <item name="android:textColor">#000</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:padding">8dp</item>
         <item name="android:background">#fff</item>
         <item name="android:spinnerMode">dialog</item>
@@ -206,7 +96,6 @@
         <item name="colorAccent">@color/accent</item>
         <item name="android:dialogTheme">@style/CustomDialog</item>
         <item name="colorControlActivated">@color/accent</item>
-        <item name="android:fontFamily">@font/ubuntu</item>
 
     </style>
 
@@ -216,23 +105,14 @@
         <item name="colorAccent">@color/accent</item>
         <item name="android:dialogTheme">@style/CustomDialog</item>
         <item name="colorControlActivated">@color/accent</item>
-        <item name="android:fontFamily">@font/ubuntu</item>
     </style>
 
     <style name="SwitchStyle">
         <item name="colorControlActivated">@color/accent</item>
-        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="ThemeOverlay.OpenSongApp" parent="ThemeOverlay.AppCompat.Dark">
         <item name="android:colorBackground">@color/toolbar</item>
         <item name="android:textColor">@color/text</item>
     </style>
-
-   <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:colorBackground">@color/primary</item>
-       <item name="android:fontFamily">@font/ubuntu</item>
-   </style>
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

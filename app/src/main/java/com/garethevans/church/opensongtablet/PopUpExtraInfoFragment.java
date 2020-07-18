@@ -45,8 +45,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
     }
 
     private SwitchCompat nextSongOnOff_Switch, nextSongTopBottom_Switch,stickyNotesOnOff_Switch,
-            stickyNotesFloat_Switch,stickyNotesTopBottom_Switch, highlightNotesOnOff_Switch,
-            capoNumeralOnOff_Switch, capoSize_Switch;
+            stickyNotesFloat_Switch,stickyNotesTopBottom_Switch, highlightNotesOnOff_Switch;
     private SeekBar stickyNotesTime_SeekBar, highlightTime_SeekBar;
     private TextView stickyNotesTime_TextView, stickNotesTimeInfo_TextView, highlightTime_TextView,
             highlightTimeInfo_TextView;
@@ -98,14 +97,11 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         highlightTime_TextView = V.findViewById(R.id.highlightTime_TextView);
         highlightTime_SeekBar = V.findViewById(R.id.highlightTime_SeekBar);
         highlightTimeInfo_TextView = V.findViewById(R.id.highlightTimeInfo_TextView);
-        capoNumeralOnOff_Switch = V.findViewById(R.id.capoNumeralOnOff_Switch);
-        capoSize_Switch = V.findViewById(R.id.capoSize_Switch);
 
         // Set the default values
         showNextButtons();
         showStickyButtons();
         showHighlightButtons();
-        showCapoButtons();
 
         // Set the listeners
         nextSongOnOff_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -227,28 +223,9 @@ public class PopUpExtraInfoFragment extends DialogFragment {
             }
         });
 
-        capoNumeralOnOff_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(),"capoInfoAsNumerals", isChecked);
-            }
-        });
-
-        capoSize_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(),"capoLargeFontInfoBar", isChecked);
-            }
-        });
-
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
-    }
-
-    private void showCapoButtons() {
-        capoNumeralOnOff_Switch.setChecked(preferences.getMyPreferenceBoolean(getActivity(), "capoInfoAsNumerals", false));
-        capoSize_Switch.setChecked(preferences.getMyPreferenceBoolean(getActivity(), "capoLargeFontInfoBar", true));
     }
 
     private void showNextButtons() {

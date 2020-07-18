@@ -266,7 +266,7 @@
     <string name="media_selected">Médias chargés</string>
     <string name="menu_settings">"Paramètres du menu"</string>
     <string name="menu_swipe_toggle">"Activer / desactiver l\'affichage de la Liste des chansons et du menu par balayage"</string>
-    <string name="menu_width">Largeur du menu</string>
+    <string name="menu_width">"Largeur du menu (pourcentage de largeur de l'écran)"</string>
     <string name="metronome">"Métronome"</string>
     <string name="metronomePedalText">"Commencer / arrêter métronome"</string>
     <string name="microphone_rationale">"Un microphone est nécessaire pour accéder à l\'indicateur de niveau sonore."</string>

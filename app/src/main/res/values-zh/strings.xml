@@ -266,7 +266,7 @@
     <string name="media_selected">媒体装</string>
     <string name="menu_settings">"菜单设置"</string>
     <string name="menu_swipe_toggle">"切换歌曲列表和选项菜单轻扫开/关"</string>
-    <string name="menu_width">菜单宽度</string>
+    <string name="menu_width">"菜单宽度（屏幕宽度的百分比）"</string>
     <string name="metronome">"节拍器"</string>
     <string name="metronomePedalText">"启动/停止节拍器"</string>
     <string name="microphone_rationale">"麦克风/音频记录才能访问声级计。"</string>

@@ -266,7 +266,7 @@
     <string name="media_selected">Cargados de medios</string>
     <string name="menu_settings">"Configuración del menú"</string>
     <string name="menu_swipe_toggle">"Lista de canciones y menús de opción Toggle deslizar encendido / apagado"</string>
-    <string name="menu_width">Ancho del menú</string>
+    <string name="menu_width">"Ancho del menú (porcentaje del ancho de la pantalla)"</string>
     <string name="metronome">"Metrónomo"</string>
     <string name="metronomePedalText">"Comencar / detener metrónomo"</string>
     <string name="microphone_rationale">"Se requiere micrófono / grabación de audio para acceder al medidor de nivel de sonido."</string>

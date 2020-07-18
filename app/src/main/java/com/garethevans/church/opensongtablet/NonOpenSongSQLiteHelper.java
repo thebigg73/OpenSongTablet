@@ -14,17 +14,17 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
+class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
 
     // Database Version
     private static final int DATABASE_VERSION = 1;
 
-    public NonOpenSongSQLiteHelper(Context context) {
+    NonOpenSongSQLiteHelper(Context context) {
         super(context, NonOpenSongSQLite.DATABASE_NAME, null, DATABASE_VERSION);
         // Don't create the database here as we don't want to recreate on each call.
     }
 
-    public void initialise(Context c, StorageAccess storageAccess, Preferences preferences) {
+    void initialise(Context c,StorageAccess storageAccess, Preferences preferences) {
          SQLiteDatabase db = getDB(c,storageAccess,preferences);
         if (db != null) {
             onCreate(db);

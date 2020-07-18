@@ -10,10 +10,10 @@ import android.util.Log;
 
 import java.util.Locale;
 
-public class TextSongConvert {
+class TextSongConvert {
 
     // This class is called when indexing text songs (ending in .txt or files that aren't xml, onsong or chordpro
-    public String convertText(Context c, String oldtext) {
+    String convertText(Context c, String oldtext) {
         StringBuilder newtext = new StringBuilder();
 
         try {

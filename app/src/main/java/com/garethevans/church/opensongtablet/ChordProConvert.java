@@ -8,7 +8,7 @@ import android.util.Log;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-public class ChordProConvert {
+class ChordProConvert {
 
     // Declare the variables;
     private String title;
@@ -25,8 +25,8 @@ public class ChordProConvert {
     private String[] lines;
     private StringBuilder parsedLines;
 
-    public ArrayList<String> convertTextToTags(Context c, StorageAccess storageAccess, Preferences preferences,
-                                               SongXML songXML, Uri uri, String l) {
+    ArrayList<String> convertTextToTags(Context c, StorageAccess storageAccess, Preferences preferences,
+                                        SongXML songXML, Uri uri, String l) {
 
         initialiseTheVariables();
 
@@ -98,7 +98,7 @@ public class ChordProConvert {
         parsedLines = new StringBuilder();
     }
 
-    public String fixLineBreaksAndSlashes(String s) {
+    String fixLineBreaksAndSlashes(String s) {
         s = s.replace("\r\n", "\n");
         s = s.replace("\r", "\n");
         s = s.replace("\n\n\n", "\n\n");
@@ -114,7 +114,7 @@ public class ChordProConvert {
         return s;
     }
 
-    public String makeTagsCommon(String s) {
+    String makeTagsCommon(String s) {
         s = s.replace("{ns", "{new_song");
         s = s.replace("{title :", "{title:");
         s = s.replace("{Title:", "{title:");
@@ -357,7 +357,7 @@ public class ChordProConvert {
         return s;
     }
 
-    public String removeOtherTags(String l) {
+    String removeOtherTags(String l) {
         // Break it apart again
         lines = l.split("\n");
         parsedLines = new StringBuilder();
@@ -385,7 +385,7 @@ public class ChordProConvert {
         return parsedLines.toString();
     }
 
-    public String getRidOfExtraLines(String s) {
+    String getRidOfExtraLines(String s) {
         // Get rid of double/triple line breaks
         // Fix spaces between line breaks
         s = s.replace("; ", ";");
@@ -419,7 +419,7 @@ public class ChordProConvert {
         return s;
     }
 
-    public String addSpacesToLines(String s) {
+    String addSpacesToLines(String s) {
         lines = s.split("\n");
 
         // Reset the parsed lines

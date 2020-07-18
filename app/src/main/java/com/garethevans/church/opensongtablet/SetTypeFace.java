@@ -6,13 +6,11 @@ import android.os.Handler;
 import androidx.core.provider.FontRequest;
 import androidx.core.provider.FontsContractCompat;
 import androidx.core.provider.FontsContractCompat.FontRequestCallback;
-
-import android.os.Looper;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class SetTypeFace {
+class SetTypeFace {
 
 
 /*
@@ -218,8 +216,8 @@ public class SetTypeFace {
 
 */
 
-    public void setUpAppFonts(Context c, Preferences preferences, Handler lyrichandler, Handler chordhandler, Handler stickyHandler,
-                              Handler presohandler, Handler presoinfohandler, Handler customhandler) {
+    void setUpAppFonts(Context c, Preferences preferences, Handler lyrichandler, Handler chordhandler, Handler stickyHandler,
+                       Handler presohandler, Handler presoinfohandler, Handler customhandler) {
         // Load up the user preferences
         String fontLyric = preferences.getMyPreferenceString(c, "fontLyric", "Lato");
         String fontChord = preferences.getMyPreferenceString(c, "fontChord", "Lato");

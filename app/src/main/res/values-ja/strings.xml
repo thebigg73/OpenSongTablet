@@ -266,7 +266,7 @@
     <string name="media_selected">メディアがロードされました</string>
     <string name="menu_settings">"メニュー設定"</string>
     <string name="menu_swipe_toggle">"トグル曲のリストとオプションメニューがオン/オフにスワイプ"</string>
-    <string name="menu_width">メニュー幅</string>
+    <string name="menu_width">"メニュー幅（画面幅の割合）"</string>
     <string name="metronome">"メトロノーム"</string>
     <string name="metronomePedalText">"/ストップメトロノームを開始"</string>
     <string name="microphone_rationale">"マイク/オーディオ録音はサウンドレベルメーターにアクセスする必要があります。"</string>

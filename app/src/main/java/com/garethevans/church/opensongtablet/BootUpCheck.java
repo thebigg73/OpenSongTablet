@@ -17,12 +17,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
-import androidx.documentfile.provider.DocumentFile;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,6 +25,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.documentfile.provider.DocumentFile;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -48,15 +49,31 @@ public class BootUpCheck extends AppCompatActivity {
     private StorageAccess storageAccess;
 
     // Declare views
-    private TextView progressText, version, previousStorageTextView, previousStorageLocationsTextView,
-            previousStorageHeading, currentAction, warningText;
-    private Button chooseStorageButton, goToSongsButton, userGuideButton, previousStorageButton,
-            resetCacheButton;
-    private LinearLayout storageLinearLayout, readUpdate, userGuideLinearLayout, goToSongsLinearLayout;
-    private Spinner appMode, previousStorageSpinner;
-    private String versionCode="", whichMode;
-    private Uri uriTree, uriTreeHome;
-    private boolean storageGranted, skiptoapp, changed;
+    private TextView progressText;
+    private TextView version;
+    private TextView previousStorageTextView;
+    private TextView previousStorageLocationsTextView;
+    private TextView previousStorageHeading;
+    private TextView currentAction;
+    private TextView warningText;
+    private Button chooseStorageButton;
+    private Button goToSongsButton;
+    private Button userGuideButton;
+    private Button previousStorageButton;
+    private Button resetCacheButton;
+    private LinearLayout storageLinearLayout;
+    private LinearLayout readUpdate;
+    private LinearLayout userGuideLinearLayout;
+    private LinearLayout goToSongsLinearLayout;
+    private Spinner appMode;
+    private Spinner previousStorageSpinner;
+    private String versionCode="";
+    private String whichMode;
+    private Uri uriTree;
+    private Uri uriTreeHome;
+    private boolean storageGranted;
+    private boolean skiptoapp;
+    private boolean changed;
     private int thisVersion;
     private ArrayList<String> locations;
     private File folder;
@@ -417,10 +434,9 @@ public class BootUpCheck extends AppCompatActivity {
         }
     }
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-        super.onActivityResult(requestCode, resultCode, resultData);
         if (resultCode == Activity.RESULT_OK) {
 
-            if (requestCode == 7789 && resultData != null && resultData.getExtras() != null) {
+            if (requestCode==7789 && resultData!=null && resultData.getExtras()!=null) {
                 kitKatDealWithUri(resultData);
             } else {
                 lollipopDealWithUri(resultData);
@@ -756,8 +772,6 @@ public class BootUpCheck extends AppCompatActivity {
                         intent.setClass(BootUpCheck.this, PresenterMode.class);
                         break;
                 }
-
-                intent.setClass(BootUpCheck.this, MainActivity.class);
 
             } else {
                 // There was a problem with the folders, so restart the app!

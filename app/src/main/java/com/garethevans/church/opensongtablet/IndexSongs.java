@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -107,6 +108,12 @@ class IndexSongs {
                                 // OK, so this wasn't an XML file.  Try to extract as something else
                                 ArrayList<String> bits = tryToFixSong(c, storageAccess, preferences, songXML, chordProConvert, onSongConvert,
                                         usrConvert, textSongConvert, uri);
+                                // Remove the original filename from the database
+                                if (bits!=null) {
+                                    String songIdtoRemove = folder + "/" + filename;
+                                    //Log.d("IndexSong", "songIdtoRemove=" + songIdtoRemove);
+                                    //sqLiteHelper.deleteSong(c, songIdtoRemove);
+                                }
 
                                 if (bits==null || bits.size()==0) {
                                     title = filename;
@@ -252,11 +259,11 @@ class IndexSongs {
                             break;
 
                         case "user2":
-                            user2 = xpp.nextText();
+                            user1 = xpp.nextText();
                             break;
 
                         case "user3":
-                            user3 = xpp.nextText();
+                            user1 = xpp.nextText();
                             break;
 
                         case "aka":

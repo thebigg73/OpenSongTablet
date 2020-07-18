@@ -35,13 +35,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
             custom2_comment, custom2_tag, custom2_chord, custom2_custom, custom2_capo, custom2_presofont,
             custom2_presoinfofont, custom2_presoshadow, custom2_presoalertfont, custom2_metronome,
             custom2_pagebuttons, custom2_stickytext, custom2_stickybg, custom2_extrainfobg, custom2_extrainfo;
-    private TextView dark_theme_heading, light_theme_heading, custom1_theme_heading, custom2_theme_heading, title,
-            pagebg_TextView, lyrics_TextView, chords_TextView, capo_TextView, verse_TextView, chorus_TextView,
-            prechorus_TextView, bridge_TextView, tag_TextView, custom_TextView, comment_TextView,
-            preso_TextView, presoinfo_TextView, presoalert_TextView, presoshadow_TextView, metronome_TextView,
-            pagebuttons_TextView, notes_TextView, notesbg_TextView, padbg_TextView, pad_TextView, item_TextView;
-    private Button resetcolours;
-
+    private TextView dark_theme_heading;
+    private TextView light_theme_heading;
+    private TextView custom1_theme_heading;
+    private TextView custom2_theme_heading;
     private int initialcolor = StaticVariables.black;
     private String buttonClicked = "";
     private MyInterface mListener;
@@ -69,40 +66,6 @@ public class PopUpThemeChooserFragment extends DialogFragment {
             custom2_presoShadowColor, custom2_presoInfoColor, custom2_presoAlertColor, custom2_metronomeColor,
             custom2_pageButtonsColor, custom2_stickyTextColor, custom2_stickyBackgroundColor,
             custom2_extraInfoTextColor, custom2_extraInfoBgColor;
-
-    private void updateFontSizes() {
-        float menuFontSize = preferences.getMyPreferenceFloat(getActivity(),"songMenuAlphaIndexSize",14.0f);
-        ResizeMenuItems resizeMenuItems = new ResizeMenuItems();
-        resizeMenuItems.updateTextViewSize(title,menuFontSize,"L",false);
-        resizeMenuItems.updateTextViewSize(item_TextView,menuFontSize,"",false);
-        resizeMenuItems.updateTextViewSize(dark_theme_heading,menuFontSize,"",false);
-        resizeMenuItems.updateTextViewSize(light_theme_heading,menuFontSize,"",false);
-        resizeMenuItems.updateTextViewSize(custom1_theme_heading,menuFontSize,"",false);
-        resizeMenuItems.updateTextViewSize(custom2_theme_heading,menuFontSize,"",false);
-        resizeMenuItems.updateTextViewSize(pagebg_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(lyrics_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(chords_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(capo_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(verse_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(chorus_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(prechorus_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(bridge_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(tag_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(custom_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(comment_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(preso_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(presoinfo_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(presoalert_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(presoshadow_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(metronome_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(pagebuttons_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(notes_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(notesbg_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(padbg_TextView,menuFontSize,"s",false);
-        resizeMenuItems.updateTextViewSize(pad_TextView,menuFontSize,"s",false);
-
-        resizeMenuItems.updateButtonTextSize(resetcolours,menuFontSize,"",true);
-    }
 
     static PopUpThemeChooserFragment newInstance() {
         PopUpThemeChooserFragment frag;
@@ -139,7 +102,7 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_themechooser, container, false);
 
-        title = V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getResources().getString(R.string.choose_theme));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
@@ -161,9 +124,6 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         // Identify the views
         identifyViews(V);
 
-        // Update the text size
-        updateFontSizes();
-
         // Run the script to set the button colours
         setButtonColors();
 
@@ -175,40 +135,21 @@ public class PopUpThemeChooserFragment extends DialogFragment {
     }
 
     private void identifyViews(View V) {
-        item_TextView = V.findViewById(R.id.item_TextView);
-        pagebg_TextView = V.findViewById(R.id.pagebg_TextView);
-        lyrics_TextView = V.findViewById(R.id.lyrics_TextView);
-        chords_TextView = V.findViewById(R.id.chords_TextView);
-        capo_TextView = V.findViewById(R.id.capo_TextView);
-        verse_TextView = V.findViewById(R.id.verse_TextView);
-        chorus_TextView = V.findViewById(R.id.chorus_TextView);
-        prechorus_TextView = V.findViewById(R.id.prechorus_TextView);
-        bridge_TextView = V.findViewById(R.id.bridge_TextView);
-        tag_TextView = V.findViewById(R.id.tag_TextView);
-        custom_TextView = V.findViewById(R.id.custom_TextView);
-        comment_TextView = V.findViewById(R.id.comment_TextView);
-        preso_TextView = V.findViewById(R.id.preso_TextView);
-        presoinfo_TextView = V.findViewById(R.id.presoinfo_TextView);
-        presoalert_TextView = V.findViewById(R.id.presoalert_TextView);
-        presoshadow_TextView = V.findViewById(R.id.presoshadow_TextView);
-        metronome_TextView = V.findViewById(R.id.metronome_TextView);
-        pagebuttons_TextView = V.findViewById(R.id.pagebuttons_TextView);
-        notes_TextView = V.findViewById(R.id.notes_TextView);
-        notesbg_TextView = V.findViewById(R.id.notesbg_TextView);
-        padbg_TextView = V.findViewById(R.id.padbg_TextView);
-        pad_TextView = V.findViewById(R.id.pad_TextView);
-
+        TextView stickynote_text = V.findViewById(R.id.stickynote_text);
+        TextView stickynote_bg = V.findViewById(R.id.stickynote_bg);
         String s = getResources().getString(R.string.stickynotes);
-        notes_TextView.setText(s);
+        stickynote_text.setText(s);
         s = s + "\n" + getResources().getString(R.string.presoBackground);
-        notesbg_TextView.setText(s);
+        stickynote_bg.setText(s);
 
         // Extra info text
         String eit = getString(R.string.pad) + " / " + getString(R.string.autoscroll) + " / " + getString(R.string.capo_color);
         String eit2 = getString(R.string.pad) + " / " + getString(R.string.autoscroll) + " / " + getString(R.string.capo_color) +
                 " (" + getString(R.string.presoBackground) + ")";
-        pad_TextView.setText(eit);
-        padbg_TextView.setText(eit2);
+        TextView extrafont = V.findViewById(R.id.timerandcapo);
+        TextView extrabg = V.findViewById(R.id.timerandcapobg);
+        extrafont.setText(eit);
+        extrabg.setText(eit2);
 
         // Define the buttons
         dark_background = V.findViewById(R.id.page_dark);
@@ -304,7 +245,7 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         custom1_theme_heading = V.findViewById(R.id.custom1_theme_heading);
         custom2_theme_heading = V.findViewById(R.id.custom2_theme_heading);
 
-        resetcolours = V.findViewById(R.id.resetcolours);
+        Button resetcolours = V.findViewById(R.id.resetcolours);
         resetcolours.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -9,7 +9,7 @@ public class Preferences extends Activity {
     private SharedPreferences sharedPref;
 
     // Get the saved preference values
-    public String getMyPreferenceString(Context c, String prefname, String fallback) {
+    String getMyPreferenceString (Context c, String prefname, String fallback) {
         // Return a string from saved preference
         if (c!=null && prefname!=null) {
             sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
@@ -18,7 +18,7 @@ public class Preferences extends Activity {
             return fallback;
         }
     }
-    public int getMyPreferenceInt(Context c, String prefname, int fallback) {
+    int getMyPreferenceInt (Context c, String prefname, int fallback) {
         // Return an int from saved preference
         if (c!=null && prefname!=null) {
             sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
@@ -27,7 +27,7 @@ public class Preferences extends Activity {
             return fallback;
         }
     }
-    public float getMyPreferenceFloat (Context c, String prefname, float fallback) {
+    float getMyPreferenceFloat (Context c, String prefname, float fallback) {
         // Return a float from saved preferences
         if (c!=null && prefname!=null) {
             sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
@@ -36,7 +36,7 @@ public class Preferences extends Activity {
             return fallback;
         }
     }
-    public boolean getMyPreferenceBoolean(Context c, String prefname, boolean fallback) {
+    boolean getMyPreferenceBoolean(Context c, String prefname, boolean fallback) {
         // Return a boolean from saved preference
         if (c!=null && prefname!=null) {
             sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
@@ -47,7 +47,7 @@ public class Preferences extends Activity {
     }
 
     // Set the preference values
-    public void setMyPreferenceString(Context c, String prefname, String value) {
+    void setMyPreferenceString (Context c, String prefname, String value) {
         // Identify the preferences
         if (c!=null && prefname!=null) {
             sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
@@ -68,7 +68,7 @@ public class Preferences extends Activity {
             sharedPref.edit().putFloat(prefname, value).apply();
         }
     }
-    public void setMyPreferenceBoolean(Context c, String prefname, boolean value) {
+    void setMyPreferenceBoolean (Context c, String prefname, boolean value) {
         // Identify the preferences
         if (c!=null && prefname!=null) {
             sharedPref = c.getSharedPreferences("CurrentPreferences", Context.MODE_PRIVATE);
@@ -385,18 +385,6 @@ public class Preferences extends Activity {
     songAutoScaleOverrideFull       boolean     If the app can override full autoscale if the font is too small
     songAutoScaleOverrideWidth      boolean     If the app can override width autoscale if the font is too small
     songfilename                    String      The name of the current song file (def:"")
-    songListBy                      String      When searching the song list, how should we show the values: folder, artist, custom (def:folder)
-    songListCustomAuthorVal         String      Text from last custom author search (def:"")
-    songListCustomFolderVal         String      Text from last custom author search (def:"")
-    songListCustomKeyVal            String      Text from last custom author search (def:"")
-    songListCustomThemeVal          String      Text from last custom author search (def:"")
-    songListCustomOtherVal          String      Text from last custom author search (def:"")
-    songListSearchCustomAuthor      boolean     Should we search in the song list using a custom author (def:false)
-    songListSearchCustomFolder      boolean     Should we search in the song list using a custom folder (def:false)
-    songListSearchCustomKey         boolean     Should we search in the song list using a custom folder (def:false)
-    songListSearchCustomOther       boolean     Should we search in the song list using a custom folder (def:false)
-    songListSearchCustomTheme       boolean     Should we search in the song list using a custom folder (def:true)
-    songListSearchArtist            String      When searching the song list by artist, what value should be used? (def:"")
     songLoadSuccess                 boolean     Indicates if the song loaded correctly (won't load a song next time if it crashed) (def:false)
     songMenuAlphaIndexShow          boolean     Should we show the alphabetical index in the song menu (def:true)
     songMenuAlphaIndexSize          float       The text size for the alphabetical index in the song menu (def:14.0f)

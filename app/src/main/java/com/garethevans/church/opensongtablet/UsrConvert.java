@@ -5,7 +5,7 @@ import android.net.Uri;
 
 import java.util.ArrayList;
 
-public class UsrConvert {
+class UsrConvert {
 
     // Declare the variables;
     private String title;
@@ -23,8 +23,8 @@ public class UsrConvert {
     private String[] lines;
     private StringBuilder parsedLines;
 
-    public ArrayList<String> convertTextToTags(Context c, StorageAccess storageAccess, Preferences preferences,
-                                               SongXML songXML, ChordProConvert chordProConvert, Uri uri, String l) {
+    ArrayList<String> convertTextToTags(Context c, StorageAccess storageAccess, Preferences preferences,
+                                        SongXML songXML, ChordProConvert chordProConvert, Uri uri, String l) {
 
         initialiseTheVariables();
 
