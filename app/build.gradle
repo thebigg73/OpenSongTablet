@@ -87,7 +87,6 @@ dependencies {
     annotationProcessor 'com.android.support:support-annotations:28.0.0'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.9.8'
     implementation group: 'javax.xml.crypto', name: 'jsr105-api', version: '1.0.1'
-    implementation 'com.itextpdf:itextg:5.5.10'
     implementation 'ru.egslava:MaskedEditText:1.0.5'
     implementation 'com.annimon:stream:1.1.9'
     implementation 'lib.kashif:folderpicker:2.4'
