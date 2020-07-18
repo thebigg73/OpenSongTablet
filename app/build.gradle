@@ -95,7 +95,6 @@ dependencies {
     annotationProcessor 'androidx.annotation:annotation:1.1.0'
     //implementation 'com.fasterxml.jackson.core:jackson-core:2.9.8'
     implementation group: 'javax.xml.crypto', name: 'jsr105-api', version: '1.0.1'
-    implementation 'com.itextpdf:itextg:5.5.10'                         // For creating pdf views
     //implementation 'ru.egslava:MaskedEditText:1.0.5'                    // Not sure if I need this anymore
     implementation 'com.annimon:stream:1.1.9'                           // Not sure if I need this anymore
     implementation 'lib.kashif:folderpicker:2.4'                        // Not sure if I need this anymore
