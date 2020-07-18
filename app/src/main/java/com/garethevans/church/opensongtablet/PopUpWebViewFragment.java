@@ -1,9 +1,14 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.KeyEvent;
@@ -52,7 +57,7 @@ public class PopUpWebViewFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_webview, container, false);
 
-        Preferences preferences = new Preferences();
+        _Preferences preferences = new _Preferences();
 
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(mTitle);
@@ -60,7 +65,7 @@ public class PopUpWebViewFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -113,7 +118,7 @@ public class PopUpWebViewFragment extends DialogFragment {
                 webview.loadUrl(FullscreenActivity.webpage);
                 break;
         }
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
         return V;
     }
 
@@ -123,3 +128,4 @@ public class PopUpWebViewFragment extends DialogFragment {
     }
 
 }
+*/

@@ -95,7 +95,7 @@
                 android:drawableStart="@drawable/ic_pulse_white_36dp"
                 android:text="@string/autostartmetronome"
                 android:textColor="#fff"
-                android:theme="@style/SwitchStyle"
+                android:theme="@style/MySwitch"
                 android:textSize="12sp"
                 app:showText="false"
                 tools:ignore="RtlHardcoded" />
@@ -112,7 +112,7 @@
                 android:text="@string/activated"
                 android:textColor="#fff"
                 android:textSize="12sp"
-                android:theme="@style/SwitchStyle"
+                android:theme="@style/MySwitch"
                 app:showText="false"
                 tools:ignore="RtlHardcoded" />
         </LinearLayout>

@@ -1,9 +1,13 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.SwitchCompat;
@@ -50,7 +54,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
     private SeekBar stickyNotesTime_SeekBar, highlightTime_SeekBar;
     private TextView stickyNotesTime_TextView, stickNotesTimeInfo_TextView, highlightTime_TextView,
             highlightTimeInfo_TextView;
-    private Preferences preferences;
+    private _Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,7 +78,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 mListener.refreshAll();
                 dismiss();
@@ -83,7 +87,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Initialise the views
         nextSongOnOff_Switch = V.findViewById(R.id.nextSongOnOff_Switch);
@@ -241,7 +245,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -357,4 +361,4 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         mListener.refreshAll();
     }
 
-}
+}*/

@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -5,6 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._LoadXML;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -45,7 +52,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         super.onDetach();
     }
 
-    private Preferences preferences;
+    private _Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,7 +64,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         }
     }
 
-    static void addtoSet(Context c, Preferences preferences) {
+    static void addtoSet(Context c, _Preferences preferences) {
 
         // If the song is in .pro, .onsong, .txt format, tell the user to convert it first
         // This is done by viewing it (avoids issues with file extension renames)
@@ -72,19 +79,19 @@ public class PopUpLongSongPressFragment extends DialogFragment {
 
             // Don't add song yet, but tell the user
             StaticVariables.myToastMessage = c.getResources().getString(R.string.convert_song);
-            ShowToast.showToast(c);
+            _ShowToast.showToast(c);
 
         } else if (StaticVariables.songfilename.toLowerCase(StaticVariables.locale).endsWith(".doc") ||
                 StaticVariables.songfilename.toLowerCase(StaticVariables.locale).endsWith(".docx")) {
             // Don't add song yet, but tell the user it is unsupported
             StaticVariables.myToastMessage = c.getResources().getString(R.string.file_type_unknown);
-            ShowToast.showToast(c);
+            _ShowToast.showToast(c);
 
         } else {
             if (preferences.getMyPreferenceBoolean(c,"ccliAutomaticLogging",false)) {
                 // Now we need to get the song info quickly to log it correctly
                 // as this might not be the song loaded
-                String[] vals = LoadXML.getCCLILogInfo(c, preferences, StaticVariables.whichSongFolder, StaticVariables.songfilename);
+                String[] vals = _LoadXML.getCCLILogInfo(c, preferences, StaticVariables.whichSongFolder, StaticVariables.songfilename);
                 if (vals.length == 4 && vals[0] != null && vals[1] != null && vals[2] != null && vals[3] != null) {
                     PopUpCCLIFragment.addUsageEntryToLog(c, preferences, StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename,
                             vals[0], vals[1], vals[2], vals[3], "6"); // Printed
@@ -107,7 +114,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
             // Tell the user that the song has been added.
             StaticVariables.myToastMessage = "\"" + StaticVariables.songfilename + "\" " +
                     c.getResources().getString(R.string.addedtoset);
-            ShowToast.showToast(c);
+            _ShowToast.showToast(c);
         }
     }
 
@@ -129,7 +136,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -137,7 +144,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Vibrate to let the user know something happened
         DoVibrate.vibrate(Objects.requireNonNull(getActivity()),50);
@@ -212,8 +219,8 @@ public class PopUpLongSongPressFragment extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
-}
+}*/

@@ -22,15 +22,53 @@
         android:id="@+id/nav_performance"
         android:name="com.garethevans.church.opensongtablet.performance.PerformanceFragment"
         android:label="@string/performancemode"
-        tools:layout="@layout/fragment_performance" />
+        tools:layout="@layout/fragment_performance" >
+
+        <action
+            android:id="@+id/action_nav_performance_to_nav_preference"
+            app:destination="@id/nav_preference" />
+        <action
+            android:id="@+id/action_nav_performance_to_editSong"
+            app:destination="@id/nav_editSong" />
+        <action
+            android:id="@+id/action_nav_performance_to_storageManagementFragment"
+            app:destination="@id/nav_storageManagement" />
+    </fragment>
     <fragment
         android:id="@+id/nav_storage"
         android:name="com.garethevans.church.opensongtablet.filemanagement.SetStorageLocationFragment"
         android:label="SetStorageLocationFragment"
-        tools:layout="@layout/fragment_setstoragelocation">
+        tools:layout="@layout/fragment_setstoragelocation"/>
+    <fragment
+        android:id="@+id/songMenuFragment"
+        android:name="com.garethevans.church.opensongtablet.songsandsets.SongMenuFragment"
+        tools:layout="@layout/menu_songs"
+        android:label="SongMenuFragment" />
+
+    <fragment
+        android:id="@+id/nav_editSong"
+        android:name="com.garethevans.church.opensongtablet.filemanagement.EditSongFragment"
+        android:label="EditSongFragment"
+        tools:layout="@layout/fragment_edit_song"/>
+
+    <fragment
+        android:id="@+id/nav_preference"
+        android:name="com.garethevans.church.opensongtablet.preferences.SettingsCategories"
+        android:label="@string/settings">
         <action
-            android:id="@+id/action_nav_storage_to_nav_boot"
-            app:destination="@id/nav_boot" />
+            android:id="@+id/action_nav_preference_to_nav_preference_ccli"
+            app:destination="@id/nav_preference_ccli" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_preference_ccli"
+        android:name="com.garethevans.church.opensongtablet.ccli.SettingsCCLI"
+        android:label="@string/edit_song_ccli"/>
+    <fragment
+        android:id="@+id/nav_storageManagement"
+        android:name="com.garethevans.church.opensongtablet.filemanagement.StorageManagementFragment"
+        android:label="StorageManagementFragment"
+        tools:layout="@layout/storage_folder_display"/>
+
 
 </navigation>

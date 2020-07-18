@@ -21,22 +21,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.garethevans.church.opensongtablet.Preferences;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.ShowToast;
-import com.garethevans.church.opensongtablet.StorageAccess;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.databinding.FragmentSetstoragelocationBinding;
-import com.garethevans.church.opensongtablet.interfaces.DrawerInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,10 +45,10 @@ import static com.google.android.material.snackbar.Snackbar.make;
 
 public class SetStorageLocationFragment extends Fragment {
 
-    private DrawerInterface drawerInterface;
     private MainActivityInterface mainActivityInterface;
     private Preferences preferences;
     private StorageAccess storageAccess;
+    private ShowToast showToast;
     private Uri uriTree, uriTreeHome;
     private Bundle bundle;
     private Button setStorage, findStorage, startApp;
@@ -68,7 +64,6 @@ public class SetStorageLocationFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
-            drawerInterface = (DrawerInterface) context;
             mainActivityInterface = (MainActivityInterface) context;
         } catch (ClassCastException e) {
             e.printStackTrace();
@@ -104,6 +99,7 @@ public class SetStorageLocationFragment extends Fragment {
     private void initialiseHelpers() {
         storageAccess = new StorageAccess();
         preferences = new Preferences();
+        showToast = new ShowToast();
     }
 
     private void initialiseViews() {
@@ -127,7 +123,7 @@ public class SetStorageLocationFragment extends Fragment {
         previousStorageTextView = myView.previousStorageTextView;
         previousStorageHeading = myView.previousStorageHeading;
         previousStorageLocationsTextView = myView.previousStorageLocationsTextView;
-        drawerInterface.lockDrawer();
+        mainActivityInterface.lockDrawer(true);
         mainActivityInterface.hideActionButton(true);
     }
 
@@ -267,8 +263,7 @@ public class SetStorageLocationFragment extends Fragment {
     private void notWriteable() {
         uriTree = null;
         uriTreeHome = null;
-        ShowToast showToast = new ShowToast();
-        showToast.showToastMessage(requireActivity(), getString(R.string.storage_notwritable));
+        showToast.doIt(requireActivity(), getString(R.string.storage_notwritable));
         if (locations != null && locations.size() > 0) {
             // Revert back to the blank selection as the one chosen can't be used
             previousStorageSpinner.setSelection(0);
@@ -410,7 +405,7 @@ public class SetStorageLocationFragment extends Fragment {
         NavOptions navOptions = new NavOptions.Builder()
                 .build();
         NavHostFragment.findNavController(SetStorageLocationFragment.this)
-                .navigate(R.id.action_nav_storage_to_nav_boot,bundle,navOptions);
+                .navigate(R.id.nav_boot,bundle,navOptions);
     }
 
     private void walkFiles(File root) {

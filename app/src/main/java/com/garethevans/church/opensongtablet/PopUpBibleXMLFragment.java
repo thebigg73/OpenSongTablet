@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -12,6 +13,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.SwitchCompat;
@@ -118,7 +124,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     private int selectedItem;
 
     private StorageAccess storageAccess;
-    private Preferences preferences;
+    private _Preferences preferences;
     private Bible bibleC;
     private boolean includeVersNums = false;
 
@@ -129,7 +135,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
 
         storageAccess = new StorageAccess();
-        preferences = new Preferences();
+        preferences = new _Preferences();
         bibleC = new Bible();
 
         V = inflater.inflate(R.layout.popup_biblexml, container, false);
@@ -186,7 +192,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
+                _CustomAnimations.animateFAB(closeMe, getActivity());
                 closeMe.setEnabled(false);
                 try {
                     dismiss();
@@ -198,7 +204,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe, getActivity());
+                _CustomAnimations.animateFAB(saveMe, getActivity());
                 saveMe.setEnabled(false);
                 doSave();
             }
@@ -768,10 +774,10 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         public void onReceive(Context ctxt, Intent intent) {
             hideViewsIfNeeded(false);
             StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.wait);
-            ShowToast.showToast(getActivity());
+            _ShowToast.showToast(getActivity());
 
             // Copy the zip file
             dealWithDownloadFile();
         }
     };
-}
+}*/

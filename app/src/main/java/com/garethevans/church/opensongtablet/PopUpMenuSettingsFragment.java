@@ -1,9 +1,13 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.SwitchCompat;
@@ -52,7 +56,7 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
     private TextView alphabeticalSize_TextView;
     private LinearLayout alphabeticalSizeGroup;
     private String scale;
-    private Preferences preferences;
+    private _Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,7 +78,7 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -82,7 +86,7 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Initialise the views
         scalemenu_SeekBar = V.findViewById(R.id.scalemenu_SeekBar);
@@ -180,7 +184,7 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -209,4 +213,4 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         this.dismiss();
     }
 
-}
+}*/

@@ -1,9 +1,17 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLite;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLiteHelper;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.SwitchCompat;
@@ -35,7 +43,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
 
     private TextView stickyNotesWidth_TextView, stickyNotesOpacity_TextView;
     private EditText editStickyText;
-    private Preferences preferences;
+    private _Preferences preferences;
     private StorageAccess storageAccess;
 
     @Override
@@ -73,7 +81,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -82,13 +90,13 @@ public class PopUpEditStickyFragment extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
+                _CustomAnimations.animateFAB(saveMe,getActivity());
                 saveMe.setEnabled(false);
                 doSave();
             }
         });
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
         storageAccess = new StorageAccess();
 
         // Initialise the views
@@ -156,7 +164,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
                 preferences.setMyPreferenceFloat(getActivity(),"stickyOpacity",i);
             }
         });
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -167,8 +175,8 @@ public class PopUpEditStickyFragment extends DialogFragment {
         PopUpEditSongFragment.prepareSongXML();
 
         if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-            NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
-            NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+            _NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new _NonOpenSongSQLiteHelper(getActivity());
+            _NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
             nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
         } else {
             PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
@@ -197,4 +205,4 @@ public class PopUpEditStickyFragment extends DialogFragment {
         this.dismiss();
     }
 
-}
+}*/

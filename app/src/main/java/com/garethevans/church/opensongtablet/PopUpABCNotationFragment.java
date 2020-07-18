@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -7,6 +8,13 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLite;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLiteHelper;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.util.Log;
@@ -62,7 +70,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
     }
 
     private WebView abcWebView;
-    private Preferences preferences;
+    private _Preferences preferences;
     private StorageAccess storageAccess;
 
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
@@ -81,7 +89,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
+                _CustomAnimations.animateFAB(closeMe, getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -93,12 +101,12 @@ public class PopUpABCNotationFragment extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe, getActivity());
+                _CustomAnimations.animateFAB(saveMe, getActivity());
                 doSave();
             }
         });
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
         storageAccess = new StorageAccess();
 
         // Initialise the views
@@ -151,7 +159,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
         abcWebView.loadUrl("file:///android_asset/ABC/abc.html");
         Dialog dialog = getDialog();
         if (dialog!=null && getActivity()!=null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog, preferences);
+            _PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog, preferences);
         }
         return V;
     }
@@ -222,13 +230,15 @@ public class PopUpABCNotationFragment extends DialogFragment {
                 StaticVariables.mNotation = value;
                 //String ABCPlaceHolder = ";"+getActivity().getString(R.string.music_score);
                 // I could add a line at the start to let the user know there is score, but decided not to
-                /*if (!FullscreenActivity.mLyrics.contains(ABCPlaceHolder)) {
+                */
+/*if (!FullscreenActivity.mLyrics.contains(ABCPlaceHolder)) {
                     FullscreenActivity.mLyrics = ABCPlaceHolder + "\n\n" + FullscreenActivity.mLyrics;
-                }*/
+                }*//*
+
                 PopUpEditSongFragment.prepareSongXML();
                 if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-                    NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
-                    NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+                    _NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new _NonOpenSongSQLiteHelper(getActivity());
+                    _NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
                     nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
                 } else {
                     PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
@@ -242,3 +252,4 @@ public class PopUpABCNotationFragment extends DialogFragment {
         }
     }
 }
+*/

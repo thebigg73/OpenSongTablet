@@ -1,7 +1,10 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import android.net.Uri;
+
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -260,12 +263,14 @@ class Bible {
         return al;
     }
     boolean isYouVersionScripture(String importtext) {
-        /* A simple way to check if this is a scripture file from Bible
+        */
+/* A simple way to check if this is a scripture file from Bible
          is to look for the last line starting with http://bible.com
 
          Split the string into separate lines
          If it is a scripture, the last line indicates so
-         The second last line is the Scripture reference */
+         The second last line is the Scripture reference *//*
+
         String[] importtextparts = importtext.split("\n");
         int lines = importtextparts.length;
         String identifying_line = "http://bible.com";
@@ -362,4 +367,4 @@ class Bible {
         }
         return "1";
     }
-}
+}*/

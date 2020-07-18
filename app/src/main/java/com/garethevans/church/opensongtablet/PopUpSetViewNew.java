@@ -1,39 +1,5 @@
-package com.garethevans.church.opensongtablet;
+/*
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
-import androidx.core.view.animation.PathInterpolatorCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.animation.Interpolator;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
 
 public class PopUpSetViewNew extends DialogFragment {
 
@@ -48,7 +14,7 @@ public class PopUpSetViewNew extends DialogFragment {
         return frag;
     }
 
-    public static void makeVariation(Context c, Preferences preferences) {
+    public static void makeVariation(Context c, _Preferences preferences) {
         // Prepare the name of the new variation slide
         // If the file already exists, add _ to the filename
         StringBuilder newsongname = new StringBuilder(StaticVariables.songfilename);
@@ -86,7 +52,7 @@ public class PopUpSetViewNew extends DialogFragment {
         preferences.setMyPreferenceString(c,"setCurrent",new_mySet.toString());
 
         StaticVariables.myToastMessage = c.getResources().getString(R.string.variation_edit);
-        ShowToast.showToast(c);
+        _ShowToast.showToast(c);
         // Now load the new variation item up
         loadSong(c,preferences);
         if (mListener != null) {
@@ -111,13 +77,13 @@ public class PopUpSetViewNew extends DialogFragment {
         super.onDetach();
     }
 
-    static ArrayList<String> mSongName = new ArrayList<>();
-    static ArrayList<String> mFolderName = new ArrayList<>();
+    public static ArrayList<String> mSongName = new ArrayList<>();
+    public static ArrayList<String> mFolderName = new ArrayList<>();
     private RecyclerView mRecyclerView;
 
     private StorageAccess storageAccess;
-    private Preferences preferences;
-    private SetActions setActions;
+    private _Preferences preferences;
+    private _SetActions setActions;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -128,7 +94,7 @@ public class PopUpSetViewNew extends DialogFragment {
         }
     }
 
-    public static void loadSong(Context c, Preferences preferences) {
+    public static void loadSong(Context c, _Preferences preferences) {
         StaticVariables.setView = true;
         if (StaticVariables.setchanged && mListener != null) {
             // We've edited the set and then clicked on a song, so save the set first
@@ -225,8 +191,8 @@ public class PopUpSetViewNew extends DialogFragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         storageAccess = new StorageAccess();
-        preferences = new Preferences();
-        setActions = new SetActions();
+        preferences = new _Preferences();
+        setActions = new _SetActions();
 
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
@@ -240,7 +206,7 @@ public class PopUpSetViewNew extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, PopUpSetViewNew.this.getActivity());
+                _CustomAnimations.animateFAB(closeMe, PopUpSetViewNew.this.getActivity());
                 closeMe.setEnabled(false);
                 PopUpSetViewNew.this.dismiss();
             }
@@ -255,7 +221,7 @@ public class PopUpSetViewNew extends DialogFragment {
             }
         });
         if (StaticVariables.whattodo.equals("setitemvariation")) {
-            CustomAnimations.animateFAB(saveMe, getActivity());
+            _CustomAnimations.animateFAB(saveMe, getActivity());
             saveMe.setEnabled(false);
             saveMe.hide();
         }
@@ -293,9 +259,9 @@ public class PopUpSetViewNew extends DialogFragment {
         extractSongsAndFolders();
         StaticVariables.doneshuffle = false;
 
-        SetListAdapter ma = new SetListAdapter(createList(StaticVariables.mTempSetList.size()), getActivity(), preferences);
+        _SetListAdapter ma = new _SetListAdapter(createList(StaticVariables.mTempSetList.size()), getActivity(), preferences);
         mRecyclerView.setAdapter(ma);
-        ItemTouchHelper.Callback callback = new SetListItemTouchHelper(ma);
+        ItemTouchHelper.Callback callback = new _SetListItemTouchHelper(ma);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(mRecyclerView);
 
@@ -372,7 +338,7 @@ public class PopUpSetViewNew extends DialogFragment {
                     String setnamenice = lastSetName.replace("__"," / ");
                     String message = getResources().getString(R.string.save) + " \'" + setnamenice + "\"?";
                     StaticVariables.myToastMessage = message;
-                    DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+                    DialogFragment newFragment = _PopUpAreYouSureFragment.newInstance(message);
                     newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
                     dismiss();
                 } else {
@@ -404,21 +370,21 @@ public class PopUpSetViewNew extends DialogFragment {
             llm.scrollToPositionWithOffset(StaticVariables.indexSongInSet , 0);
         }
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
 
-    private List<SetItemInfo> createList(int size) {
-        List<SetItemInfo> result = new ArrayList<>();
+    private List<_SetItemInfo> createList(int size) {
+        List<_SetItemInfo> result = new ArrayList<>();
         for (int i=1; i <= size; i++) {
             if (!mSongName.get(i - 1).equals("!ERROR!")) {
-                SetItemInfo si = new SetItemInfo();
+                _SetItemInfo si = new _SetItemInfo();
                 si.songitem = i+".";
                 si.songtitle = mSongName.get(i - 1);
                 si.songfolder = mFolderName.get(i - 1);
-                String songLocation = LoadXML.getTempFileLocation(Objects.requireNonNull(getActivity()),mFolderName.get(i-1),mSongName.get(i-1));
-                si.songkey = LoadXML.grabNextSongInSetKey(getActivity(), preferences, storageAccess, songLocation);
+                String songLocation = _LoadXML.getTempFileLocation(Objects.requireNonNull(getActivity()),mFolderName.get(i-1),mSongName.get(i-1));
+                si.songkey = _LoadXML.grabNextSongInSetKey(getActivity(), preferences, storageAccess, songLocation);
                 // Decide what image we'll need - song, image, note, slide, scripture, variation
                 if (mFolderName.get(i - 1).equals("**"+ Objects.requireNonNull(getActivity()).getResources().getString(R.string.slide))) {
                     si.songicon = getActivity().getResources().getString(R.string.slide);
@@ -671,4 +637,4 @@ public class PopUpSetViewNew extends DialogFragment {
         }
         return title;
     }
-}
+}*/

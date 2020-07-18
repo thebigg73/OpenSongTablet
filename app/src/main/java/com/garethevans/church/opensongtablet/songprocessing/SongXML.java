@@ -3,11 +3,11 @@ package com.garethevans.church.opensongtablet.songprocessing;
 import android.content.Context;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.StaticVariables;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 public class SongXML {
 
-    void initialiseSongTags() {
+    public void initialiseSongTags() {
         StaticVariables.mTitle = StaticVariables.songfilename;
         StaticVariables.mAuthor = "";
         StaticVariables.mCopyright = "";
@@ -50,7 +50,7 @@ public class SongXML {
         StaticVariables.mEncoding = "UTF-8";
     }
 
-    String getXML(ProcessSong processSong) {
+    public String getXML(ProcessSong processSong) {
         if (StaticVariables.mEncoding==null || StaticVariables.mEncoding.equals("")) {
             StaticVariables.mEncoding = "UTF-8";
         }
@@ -106,11 +106,27 @@ public class SongXML {
         return myNEWXML;
     }
 
-    void showWelcomeSong(Context c) {
+    public void showWelcomeSong(Context c) {
         StaticVariables.songfilename = "Welcome to OpenSongApp";
         StaticVariables.mTitle = "Welcome to OpenSongApp";
         StaticVariables.mLyrics = c.getString(R.string.user_guide_lyrics);
         StaticVariables.mAuthor = "Gareth Evans";
         StaticVariables.mLinkWeb = "https://www.opensongapp.com";
+    }
+
+    // These are to deal with custom files (scriptures, etc.)
+    public String getLocation (String string) {
+        if (string.startsWith("../")) {
+            return string.replace("../", "");
+        } else {
+            return "Songs";
+        }
+    }
+    private static String getFolder(String string) {
+        if (string.startsWith("../")) {
+            return "";
+        } else {
+            return string;
+        }
     }
 }

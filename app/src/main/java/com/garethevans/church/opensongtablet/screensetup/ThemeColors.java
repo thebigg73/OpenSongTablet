@@ -2,8 +2,8 @@ package com.garethevans.church.opensongtablet.screensetup;
 
 import android.content.Context;
 
-import com.garethevans.church.opensongtablet.Preferences;
-import com.garethevans.church.opensongtablet.StaticVariables;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 import java.util.HashMap;
 import java.util.Map;

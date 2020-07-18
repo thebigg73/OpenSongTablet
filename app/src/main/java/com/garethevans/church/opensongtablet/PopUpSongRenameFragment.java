@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -7,6 +8,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SQLite;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SQLiteHelper;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SongFolders;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.util.Log;
@@ -36,10 +46,10 @@ public class PopUpSongRenameFragment extends DialogFragment {
     private String oldsongname;
     private AsyncTask<Object, Void, String> getfolders;
     private StorageAccess storageAccess;
-    private Preferences preferences;
-    private SongFolders songFolders;
-    private SQLite sqLite;
-    private SQLiteHelper sqLiteHelper;
+    private _Preferences preferences;
+    private _SongFolders songFolders;
+    private _SQLite sqLite;
+    private _SQLiteHelper sqLiteHelper;
 
     private void doSave() {
         // Get the variables
@@ -57,7 +67,7 @@ public class PopUpSongRenameFragment extends DialogFragment {
         }
 
         storageAccess = new StorageAccess();
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         Uri from = storageAccess.getUriForItem(getActivity(), preferences, "Songs", tempOldFolder, oldsongname);
         Uri to = storageAccess.getUriForItem(getActivity(), preferences, "Songs", tempNewFolder, tempNewSong);
@@ -130,7 +140,7 @@ public class PopUpSongRenameFragment extends DialogFragment {
 
         } else {
             StaticVariables.myToastMessage = getResources().getString(R.string.file_exists);
-            ShowToast.showToast(getActivity());
+            _ShowToast.showToast(getActivity());
 
         }
     }
@@ -182,7 +192,7 @@ public class PopUpSongRenameFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -191,18 +201,18 @@ public class PopUpSongRenameFragment extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
+                _CustomAnimations.animateFAB(saveMe,getActivity());
                 //saveMe.setEnabled(false);
                 doSave();
             }
         });
 
         storageAccess = new StorageAccess();
-        songFolders = new SongFolders();
-        preferences = new Preferences();
+        songFolders = new _SongFolders();
+        preferences = new _Preferences();
 
         // Get the song details
-        sqLiteHelper = new SQLiteHelper(getActivity());
+        sqLiteHelper = new _SQLiteHelper(getActivity());
         String songId = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
         sqLite = sqLiteHelper.getSong(getActivity(),songId);
 
@@ -238,7 +248,7 @@ public class PopUpSongRenameFragment extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
         return V;
     }
 
@@ -284,3 +294,4 @@ public class PopUpSongRenameFragment extends DialogFragment {
     }
 
 }
+*/

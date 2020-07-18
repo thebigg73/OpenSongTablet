@@ -5,17 +5,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
-import com.garethevans.church.opensongtablet.ChordProConvert;
-import com.garethevans.church.opensongtablet.OnSongConvert;
-import com.garethevans.church.opensongtablet.Preferences;
-import com.garethevans.church.opensongtablet.SQLite;
-import com.garethevans.church.opensongtablet.SQLiteHelper;
-import com.garethevans.church.opensongtablet.ShowToast;
-import com.garethevans.church.opensongtablet.SongXML;
-import com.garethevans.church.opensongtablet.StaticVariables;
-import com.garethevans.church.opensongtablet.StorageAccess;
-import com.garethevans.church.opensongtablet.TextSongConvert;
-import com.garethevans.church.opensongtablet.UsrConvert;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.screensetup.ShowToast;
+import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
+import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
+import com.garethevans.church.opensongtablet.songprocessing.ConvertTextSong;
+import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.songprocessing.SongXML;
+import com.garethevans.church.opensongtablet.sqlite.SQLite;
+import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -73,9 +72,9 @@ public class SongListBuildIndex {
         }
 
         public void fullIndex(Context c, Preferences preferences, StorageAccess storageAccess,
-                       SQLiteHelper sqLiteHelper, SongXML songXML,
-                       ChordProConvert chordProConvert, OnSongConvert onSongConvert,
-                       TextSongConvert textSongConvert, UsrConvert usrConvert) {
+                              SQLiteHelper sqLiteHelper, SongXML songXML, ProcessSong processSong,
+                              ConvertChoPro convertChoPro, ConvertOnSong convertOnSong,
+                              ConvertTextSong textSongConvert, ShowToast showToast) {
 
             // The basic database was created on boot.
             // Now comes the time consuming bit that fully indexes the songs into the database
@@ -116,8 +115,9 @@ public class SongListBuildIndex {
 
                                 } catch (Exception e) {
                                     // OK, so this wasn't an XML file.  Try to extract as something else
-                                    ArrayList<String> bits = tryToFixSong(c, storageAccess, preferences, songXML, chordProConvert, onSongConvert,
-                                            usrConvert, textSongConvert, uri);
+                                    ArrayList<String> bits = tryToFixSong(c, storageAccess, 
+                                            preferences, processSong, sqLiteHelper, songXML, 
+                                            convertChoPro, convertOnSong, textSongConvert, uri);
 
                                     if (bits==null || bits.size()==0) {
                                         title = filename;
@@ -184,8 +184,7 @@ public class SongListBuildIndex {
             } catch (Exception e) {
                 e.printStackTrace();
             } catch (OutOfMemoryError oom) {
-                StaticVariables.myToastMessage = "Out of memory: "+folder+"/"+filename;
-                ShowToast.showToast(c);
+                showToast.doIt(c,"Out of memory: "+folder+"/"+filename);
             }
 
         }
@@ -289,9 +288,10 @@ public class SongListBuildIndex {
         }
 
         private ArrayList<String> tryToFixSong(Context c, StorageAccess storageAccess, Preferences preferences,
-                                               SongXML songXML, ChordProConvert chordProConvert,
-                                               OnSongConvert onSongConvert, UsrConvert usrConvert,
-                                               TextSongConvert textSongConvert, Uri uri) {
+                                               ProcessSong processSong, SQLiteHelper sqLiteHelper,
+                                               SongXML songXML, ConvertChoPro convertChoPro,
+                                               ConvertOnSong convertOnSong,
+                                               ConvertTextSong textSongConvert, Uri uri) {
 
             ArrayList<String> bits = new ArrayList<>();
 
@@ -301,7 +301,8 @@ public class SongListBuildIndex {
                     // Load the current text contents
                     try {
                         String filecontents = storageAccess.readTextFileToString(inputStream);
-                        bits = chordProConvert.convertTextToTags(c, storageAccess, preferences, songXML, uri, filecontents);
+                        bits = convertChoPro.convertTextToTags(c, storageAccess, preferences,
+                                processSong, sqLiteHelper, songXML, uri, filecontents);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -309,18 +310,9 @@ public class SongListBuildIndex {
                 } else if (filename.toLowerCase(Locale.ROOT).endsWith(".onsong")) {
                     try {
                         String filecontents = storageAccess.readTextFileToString(inputStream);
-                        bits = onSongConvert.convertTextToTags(c, storageAccess, preferences, songXML, chordProConvert,
+                        bits = convertOnSong.convertTextToTags(c, storageAccess, preferences, 
+                                processSong, songXML, convertChoPro, sqLiteHelper,
                                 uri, filecontents);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                } else if (filename.toLowerCase(Locale.ROOT).endsWith(".usr")) {
-                    try {
-                        String filecontents = storageAccess.readTextFileToString(inputStream);
-                        bits = usrConvert.convertTextToTags(c, storageAccess, preferences, songXML,
-                                chordProConvert, uri, filecontents);
 
                     } catch (Exception e) {
                         e.printStackTrace();

@@ -5,16 +5,17 @@ import android.net.Uri;
 import android.util.Base64;
 import android.util.Log;
 
-import com.garethevans.church.opensongtablet.Preferences;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.SQLiteHelper;
-import com.garethevans.church.opensongtablet.StaticVariables;
-import com.garethevans.church.opensongtablet.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
-import com.garethevans.church.opensongtablet.songprocessing.LoadSong;
+import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.SongXML;
+import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -25,7 +26,7 @@ class CreateNewSet {
     boolean doCreation(Context c, Preferences preferences,
                        StorageAccess storageAccess, ProcessSong processSong, LoadSong loadSong,
                        SongXML songXML, ConvertOnSong convertOnSong, ConvertChoPro convertChoPro,
-                       SQLiteHelper sqLiteHelper) {
+                       SQLiteHelper sqLiteHelper, ShowToast showToast) {
 
         // Keep the current song and directory aside for now
         String tempsongfilename = StaticVariables.songfilename;
@@ -95,8 +96,8 @@ class CreateNewSet {
                     StaticVariables.whichSongFolder = "../Scripture/_cache";
                     StaticVariables.songfilename = songparts[1];
                     try {
-                        loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong, sqLiteHelper,
-                                convertOnSong, convertChoPro);
+                        loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
+                                showToast, sqLiteHelper, convertOnSong, convertChoPro);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -146,8 +147,8 @@ class CreateNewSet {
                     StaticVariables.whichSongFolder = "../Slides/_cache";
                     StaticVariables.songfilename = songparts[1];
                     try {
-                        loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong, sqLiteHelper,
-                                convertOnSong, convertChoPro);
+                        loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
+                                showToast, sqLiteHelper, convertOnSong, convertChoPro);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -199,8 +200,8 @@ class CreateNewSet {
                     StaticVariables.whichSongFolder = "../Notes/_cache";
                     StaticVariables.songfilename = songparts[1];
                     try {
-                        loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong, sqLiteHelper,
-                                convertOnSong, convertChoPro);
+                        loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
+                                showToast, sqLiteHelper, convertOnSong, convertChoPro);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -234,8 +235,8 @@ class CreateNewSet {
                     StaticVariables.whichSongFolder = "../Variations";
                     StaticVariables.songfilename = songparts[1];
                     try {
-                        loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong, sqLiteHelper,
-                                convertOnSong, convertChoPro);
+                        loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
+                                showToast, sqLiteHelper, convertOnSong, convertChoPro);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -315,8 +316,8 @@ class CreateNewSet {
                     StaticVariables.whichSongFolder = "../Images/_cache";
                     StaticVariables.songfilename = songparts[1];
                     try {
-                        loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong, sqLiteHelper,
-                                convertOnSong, convertChoPro);
+                        loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
+                                showToast, sqLiteHelper, convertOnSong, convertChoPro);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -394,8 +395,8 @@ class CreateNewSet {
             StaticVariables.songfilename = tempsongfilename;
             StaticVariables.whichSongFolder = tempdir;
             try {
-                loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong, sqLiteHelper,
-                        convertOnSong, convertChoPro);
+                loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
+                        showToast, sqLiteHelper, convertOnSong, convertChoPro);
             } catch (Exception e) {
                 e.printStackTrace();
             }

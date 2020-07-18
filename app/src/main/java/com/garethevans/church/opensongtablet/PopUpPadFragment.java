@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -8,6 +9,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLite;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLiteHelper;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.SwitchCompat;
@@ -70,7 +79,7 @@ public class PopUpPadFragment extends DialogFragment {
     private Button start_stop_padplay;
     private String text;
     private boolean validpad;
-    private Preferences preferences;
+    private _Preferences preferences;
     private StorageAccess storageAccess;
 
     private AsyncTask<Object,Void,String> set_pad;
@@ -105,7 +114,7 @@ public class PopUpPadFragment extends DialogFragment {
             e.printStackTrace();
         }
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
         storageAccess = new StorageAccess();
         ProcessSong processSong = new ProcessSong();
 
@@ -117,7 +126,7 @@ public class PopUpPadFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 doSave();
             }
@@ -126,7 +135,7 @@ public class PopUpPadFragment extends DialogFragment {
         saveMe.hide();
 
         if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
+            _PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
         }
 
         // Initialise the views
@@ -177,7 +186,7 @@ public class PopUpPadFragment extends DialogFragment {
 
         mHandler.post(runnable);
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -186,8 +195,8 @@ public class PopUpPadFragment extends DialogFragment {
         PopUpEditSongFragment.prepareSongXML();
 
         if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-            NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
-            NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+            _NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new _NonOpenSongSQLiteHelper(getActivity());
+            _NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
             nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
         } else {
             PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
@@ -366,7 +375,7 @@ public class PopUpPadFragment extends DialogFragment {
                     StaticVariables.mPadFile = getResources().getString(R.string.link_audio);
                     //popupPad_file.setSelection(0);
                     StaticVariables.myToastMessage = getResources().getString(R.string.notset);
-                    ShowToast.showToast(getActivity());
+                    _ShowToast.showToast(getActivity());
                     // Try opening the link file popup to get the user to set one
                     if (mListener != null) {
                         StaticVariables.whattodo = "page_links";
@@ -381,8 +390,8 @@ public class PopUpPadFragment extends DialogFragment {
             }
             PopUpEditSongFragment.prepareSongXML();
             if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
-                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+                _NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new _NonOpenSongSQLiteHelper(getActivity());
+                _NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
                 nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
             } else {
                 PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
@@ -494,4 +503,4 @@ public class PopUpPadFragment extends DialogFragment {
         this.dismiss();
     }
 
-}
+}*/

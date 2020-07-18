@@ -14,21 +14,38 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 public class ShowCase {
 
-    public MaterialShowcaseView.Builder singleShowCase(Activity c, View target, String dismisstext_ornull, String information) {
+    public void singleShowCase(Activity c, View target, String dismiss, String info, boolean rect, String id) {
+        singleShowCaseBuilder(c,target,dismiss,info,rect,id).build().show(c);
+    }
+
+    public MaterialShowcaseView.Builder singleShowCaseBuilder(Activity c, View target,
+                                                              String dismisstext_ornull,
+                                                              String information,
+                                                              boolean rect, String id) {
         if (dismisstext_ornull==null) {
             dismisstext_ornull = c.getResources().getString(R.string.got_it);
         }
+
         Log.d("d","Trying to showcase");
-        return new MaterialShowcaseView.Builder(c)
+        MaterialShowcaseView.Builder mscb = new MaterialShowcaseView.Builder(c)
                 .setTarget(target)
                 .setDismissText(dismisstext_ornull)
                 .setContentText(information)
                 .setDelay(500) // optional but starting animations immediately in onCreate can make them choppy
+                .renderOverNavigationBar()
+                .setMaskColour(c.getResources().getColor(R.color.showcaseColor))
                 .setDismissOnTouch(true);
+        if (id!=null) {
+            mscb = mscb.singleUse(id);
+        }
+        if (rect) {
+            mscb = mscb.withRectangleShape();
+        }
+        return mscb;
     }
 
     public void sequenceShowCase (Activity c, ArrayList<View> targets, ArrayList<String> dismisstexts_ornulls,
-                           ArrayList<String> information, String showcaseid) {
+                           ArrayList<String> information, ArrayList<Boolean> rects, String showcaseid) {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         config.setRenderOverNavigationBar(true);
@@ -40,7 +57,8 @@ public class ShowCase {
                 dismisstexts_ornulls.set(i,c.getResources().getString(R.string.got_it));
             }
             if (targets.get(i)!=null) {
-                sequence.addSequenceItem(singleShowCase(c, targets.get(i), dismisstexts_ornulls.get(i), information.get(i)).build());
+                sequence.addSequenceItem(singleShowCaseBuilder(c, targets.get(i), dismisstexts_ornulls.get(i),
+                        information.get(i), rects.get(i),null).build());
             }
         }
         if (sequence!=null) {

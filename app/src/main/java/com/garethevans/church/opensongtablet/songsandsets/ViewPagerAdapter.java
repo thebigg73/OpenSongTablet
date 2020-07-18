@@ -8,21 +8,16 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 
-    public ViewPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
-        super(fragmentManager, lifecycle);
+    public final Fragment[] menuFragments = {new SongMenuFragment(), new SetMenuFragment()};
+
+    public ViewPagerAdapter(@NonNull FragmentManager fragmentManager,Lifecycle lifecycle) {
+        super(fragmentManager,lifecycle);
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        switch (position) {
-            case 0:
-                return new SongMenuFragment();
-            case 1:
-                return new SetMenuFragment();
-            default:
-                return null;
-        }
+        return menuFragments[position];
     }
 
     @Override
@@ -30,5 +25,3 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
         return 2;
     }
 }
-
-

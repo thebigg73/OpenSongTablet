@@ -1,13 +1,10 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +14,17 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import java.util.Objects;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLite;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLiteHelper;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class PopUpAutoscrollFragment extends DialogFragment {
 
@@ -54,7 +61,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
     private TextView popupautoscroll_delay_text;
     private EditText popupautoscroll_duration;
     private FloatingActionButton uselinkaudiolength_ImageButton;
-    private Preferences preferences;
+    private _Preferences preferences;
     private StorageAccess storageAccess;
     private ProcessSong processSong;
 
@@ -86,20 +93,17 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_page_autoscroll, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.autoscroll));
+        title.setText(requireActivity().getResources().getString(R.string.autoscroll));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, PopUpAutoscrollFragment.this.getActivity());
-                closeMe.setEnabled(false);
-                PopUpAutoscrollFragment.this.doSave();
-            }
+        closeMe.setOnClickListener(view -> {
+            _CustomAnimations.animateFAB(closeMe, PopUpAutoscrollFragment.this.getActivity());
+            closeMe.setEnabled(false);
+            PopUpAutoscrollFragment.this.doSave();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
         processSong = new ProcessSong();
         storageAccess = new StorageAccess();
 
@@ -135,26 +139,20 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         }
 
         // Set up the listeners
-        popupautoscroll_learnbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    try {
-                        mListener.prepareLearnAutoScroll();
-                        dismiss();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+        popupautoscroll_learnbutton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                try {
+                    mListener.prepareLearnAutoScroll();
+                    dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
-        popupautoscroll_duration.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                StaticVariables.mDuration = textView.getText().toString();
-                StaticVariables.autoscrollok = processSong.isAutoScrollValid(getActivity(),preferences);
-                return false;
-            }
+        popupautoscroll_duration.setOnEditorActionListener((textView, i, keyEvent) -> {
+            StaticVariables.mDuration = textView.getText().toString();
+            StaticVariables.autoscrollok = processSong.isAutoScrollValid(getActivity(),preferences);
+            return false;
         });
         popupautoscroll_delay.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -172,43 +170,34 @@ public class PopUpAutoscrollFragment extends DialogFragment {
                 StaticVariables.autoscrollok = processSong.isAutoScrollValid(getActivity(),preferences);
             }
         });
-        uselinkaudiolength_ImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(uselinkaudiolength_ImageButton, PopUpAutoscrollFragment.this.getActivity());
-                PopUpAutoscrollFragment.this.grabLinkAudioTime();
-                StaticVariables.autoscrollok = processSong.isAutoScrollValid(getActivity(),preferences);
-            }
+        uselinkaudiolength_ImageButton.setOnClickListener(view -> {
+            _CustomAnimations.animateFAB(uselinkaudiolength_ImageButton, PopUpAutoscrollFragment.this.getActivity());
+            PopUpAutoscrollFragment.this.grabLinkAudioTime();
+            StaticVariables.autoscrollok = processSong.isAutoScrollValid(getActivity(),preferences);
         });
         if (StaticVariables.isautoscrolling) {
-            popupautoscroll_startstopbutton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    StaticVariables.clickedOnAutoScrollStart = false;
-                    mListener.stopAutoScroll();
-                    PopUpAutoscrollFragment.this.dismiss();
-                }
+            popupautoscroll_startstopbutton.setOnClickListener(view -> {
+                StaticVariables.clickedOnAutoScrollStart = false;
+                mListener.stopAutoScroll();
+                PopUpAutoscrollFragment.this.dismiss();
             });
-            popupautoscroll_startstopbutton.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.stop));
+            popupautoscroll_startstopbutton.setText(requireActivity().getResources().getString(R.string.stop));
 
         } else {
-            popupautoscroll_startstopbutton.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.start));
-            popupautoscroll_startstopbutton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (StaticVariables.autoscrollok) {
-                        StaticVariables.clickedOnAutoScrollStart = true;
-                        PopUpAutoscrollFragment.this.doSave();
-                        mListener.startAutoScroll();
-                        PopUpAutoscrollFragment.this.dismiss();
-                    }
+            popupautoscroll_startstopbutton.setText(requireActivity().getResources().getString(R.string.start));
+            popupautoscroll_startstopbutton.setOnClickListener(view -> {
+                if (StaticVariables.autoscrollok) {
+                    StaticVariables.clickedOnAutoScrollStart = true;
+                    PopUpAutoscrollFragment.this.doSave();
+                    mListener.startAutoScroll();
+                    PopUpAutoscrollFragment.this.dismiss();
                 }
             });
         }
 
         mHandler.post(runnable);
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -238,20 +227,20 @@ public class PopUpAutoscrollFragment extends DialogFragment {
             }
             PopUpEditSongFragment.prepareSongXML();
             if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
-                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+                _NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new _NonOpenSongSQLiteHelper(getActivity());
+                _NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
                 nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
             } else {
                 PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
             }
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.save) + " - " +
+            StaticVariables.myToastMessage = requireActivity().getResources().getString(R.string.save) + " - " +
                     getActivity().getResources().getString(R.string.ok);
-            ShowToast.showToast(getActivity());
+            _ShowToast.showToast(getActivity());
         } catch (Exception e) {
             e.printStackTrace();
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.save) + " - " +
+            StaticVariables.myToastMessage = requireActivity().getResources().getString(R.string.save) + " - " +
                     getActivity().getResources().getString(R.string.error);
-            ShowToast.showToast(getActivity());
+            _ShowToast.showToast(getActivity());
         }
         dismiss();
     }
@@ -263,9 +252,9 @@ public class PopUpAutoscrollFragment extends DialogFragment {
             StaticVariables.mDuration = "" + StaticVariables.audiolength;
             popupautoscroll_duration.setText(StaticVariables.mDuration);
         } else {
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.link_audio) + " - " +
+            StaticVariables.myToastMessage = requireActivity().getResources().getString(R.string.link_audio) + " - " +
                     getActivity().getResources().getString(R.string.notset);
-            ShowToast.showToast(getActivity());
+            _ShowToast.showToast(getActivity());
         }
     }
 
@@ -278,23 +267,18 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         } else if (StaticVariables.isautoscrolling){
             popupautoscroll_startstopbutton.setText(getResources().getString(R.string.stop));
             popupautoscroll_startstopbutton.setEnabled(true);
-            popupautoscroll_startstopbutton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mListener.stopAutoScroll();
-                    PopUpAutoscrollFragment.this.dismiss();
-                }
+            popupautoscroll_startstopbutton.setOnClickListener(view -> {
+                mListener.stopAutoScroll();
+                PopUpAutoscrollFragment.this.dismiss();
             });
         } else {
             popupautoscroll_startstopbutton.setText(getResources().getString(R.string.start));
             popupautoscroll_startstopbutton.setEnabled(true);
-            popupautoscroll_startstopbutton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mListener.startAutoScroll();
-                    PopUpAutoscrollFragment.this.dismiss();
-                }
+            popupautoscroll_startstopbutton.setOnClickListener(view -> {
+                mListener.startAutoScroll();
+                PopUpAutoscrollFragment.this.dismiss();
             });
         }
     }
 }
+*/

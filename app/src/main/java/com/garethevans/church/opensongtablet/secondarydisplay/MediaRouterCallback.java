@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.secondarydisplay;
 
 import androidx.mediarouter.media.MediaRouter;
 
-import com.garethevans.church.opensongtablet.FullscreenActivity;
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
@@ -14,7 +13,7 @@ public class MediaRouterCallback extends MediaRouter.Callback {
 
     public MediaRouterCallback() {
         // Empty initialiser
-    };
+    }
 
     public MediaRouterCallback(CastDevice device, DisplayInterface displayInterface) {
         this.device = device;
@@ -34,8 +33,8 @@ public class MediaRouterCallback extends MediaRouter.Callback {
     public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
         teardown();
         device = null;
-        FullscreenActivity.isPresenting = false;
-        FullscreenActivity.isHDMIConnected = false;
+        //FullscreenActivity.isPresenting = false;
+        //FullscreenActivity.isHDMIConnected = false;
     }
 
     void teardown() {

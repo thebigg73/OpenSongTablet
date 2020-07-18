@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -5,6 +6,14 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._LoadXML;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLite;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLiteHelper;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -31,7 +40,7 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
 
     private MyInterface mListener;
     private StorageAccess storageAccess;
-    private Preferences preferences;
+    private _Preferences preferences;
     private ProcessSong processSong;
 
     @Override
@@ -73,7 +82,7 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -82,14 +91,14 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
+                _CustomAnimations.animateFAB(saveMe,getActivity());
                 saveMe.setEnabled(false);
                 doSave();
             }
         });
 
         storageAccess = new StorageAccess();
-        preferences = new Preferences();
+        preferences = new _Preferences();
         processSong = new ProcessSong();
 
         // Define the views
@@ -144,7 +153,7 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
                 m_mPresentation.setText("");
             }
         });
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -154,15 +163,15 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
         PopUpEditSongFragment.prepareSongXML();
 
         if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-            NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
-            NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+            _NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new _NonOpenSongSQLiteHelper(getActivity());
+            _NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
             nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
         } else {
             PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
         }
 
         try {
-            LoadXML.loadXML(getActivity(), preferences, storageAccess, processSong);
+            _LoadXML.loadXML(getActivity(), preferences, storageAccess, processSong);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -177,4 +186,4 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
         this.dismiss();
     }
 
-}
+}*/

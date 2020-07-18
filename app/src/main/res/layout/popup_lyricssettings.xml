@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:text="@string/showlyrics"
-                android:theme="@style/SwitchStyle"
+                android:theme="@style/MySwitch"
                 app:showText="false" />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:text="@string/hidelyricsbox"
-                android:theme="@style/SwitchStyle"
+                android:theme="@style/MySwitch"
                 app:showText="false" />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:text="@string/trim_sections"
-                android:theme="@style/SwitchStyle"
+                android:theme="@style/MySwitch"
                 app:showText="false" />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:text="@string/section_space"
-                android:theme="@style/SwitchStyle"
+                android:theme="@style/MySwitch"
                 app:showText="false" />
 
             <LinearLayout
@@ -161,7 +161,7 @@
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/trimlinespacing_SwitchCompat"
                 android:layout_width="match_parent"
-                style="@style/SwitchStyle"
+                style="@style/MySwitch"
                 android:layout_marginEnd="4dp"
                 android:layout_height="wrap_content"
                 android:text="@string/linespacing" />

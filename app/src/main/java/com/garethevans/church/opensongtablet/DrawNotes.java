@@ -3,21 +3,15 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.net.Uri;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.io.InputStream;
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 
 public class DrawNotes extends View {
@@ -41,19 +35,20 @@ public class DrawNotes extends View {
     private float mX;
     private float mY;
     //private boolean touchisup = false;
-    private final Preferences preferences;
+    //private final _Preferences preferences;
     public DrawNotes(Context c, @Nullable AttributeSet attrs) {
-        super(FullscreenActivity.mContext, attrs);
+        super(c,attrs);
+       /* super(FullscreenActivity.mContext, attrs);
         if (c==null) {
             c = FullscreenActivity.mContext;
         }
-        preferences = new Preferences();
-        setupDrawing(c);
+        preferences = new _Preferences();
+        setupDrawing(c);*/
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
+        /*super.onSizeChanged(w, h, oldw, oldh);
 
         if (w==0) {
             w = 1;
@@ -61,10 +56,11 @@ public class DrawNotes extends View {
         if (h==0) {
             h = 1;
         }
-        /*if (FullscreenActivity.bmScreen!=null) {
+if (FullscreenActivity.bmScreen!=null) {
             imagewidth = FullscreenActivity.bmScreen.getWidth();
             imageheight = FullscreenActivity.bmScreen.getHeight();
-        }*/
+        }
+
 
         if (!imageloaded) {
             try {
@@ -76,22 +72,22 @@ public class DrawNotes extends View {
                 e.printStackTrace();
             }
         }
-        invalidate();
+        invalidate();*/
     }
 
     public void setErase(boolean isErase){
-        if (isErase) {
+        /*if (isErase) {
             drawPaint.setColor(Color.WHITE);
             drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         } else {
             drawPaint.setXfermode(null);
-        }
+        }*/
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (c==null) {
+        /*if (c==null) {
             c = FullscreenActivity.mContext;
         }
         if (canvasBitmap!=null) {
@@ -124,10 +120,10 @@ public class DrawNotes extends View {
         } else {
             setErase(false);
         }
-        canvas.drawPath(drawPath, drawPaint);
+        canvas.drawPath(drawPath, drawPaint);*/
     }
 
-    public void undo() {
+   /* public void undo() {
         if (paths.size()>0) {
             undonePaths.add(paths.remove(paths.size()-1));
         }
@@ -142,7 +138,7 @@ public class DrawNotes extends View {
         }
         //touchisup = true;
         invalidate();
-    }
+    }*/
 
     public void redo() {
         if (undonePaths.size()>0) {
@@ -164,7 +160,7 @@ public class DrawNotes extends View {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (c==null) {
+        /*if (c==null) {
             c = FullscreenActivity.mContext;
         }
         float touchX = event.getX();
@@ -195,11 +191,11 @@ public class DrawNotes extends View {
                 break;
             default:
                 return false;
-        }
+        }*/
         return true;
     }
 
-    private void touchStart(Context c, float x, float y) {
+   /* private void touchStart(Context c, float x, float y) {
         if (c==null) {
             c = FullscreenActivity.mContext;
         }
@@ -215,8 +211,8 @@ public class DrawNotes extends View {
         drawPath.moveTo(x, y);
         mX = x;
         mY = y;
-    }
-
+    }*/
+/*
     private void touchMove(Context c, float x, float y) {
         if (c==null) {
             c = FullscreenActivity.mContext;
@@ -231,14 +227,14 @@ public class DrawNotes extends View {
             mX = x;
             mY = y;
         }
-    }
+    }*/
 
-    private void touchCancel() {
+ /*   private void touchCancel() {
         drawPath = new Path();
         //drawingapath = false;
-    }
+    }*/
 
-    private void touchUp(Context c) {
+ /*   private void touchUp(Context c) {
         if (c==null) {
             c = FullscreenActivity.mContext;
         }
@@ -281,7 +277,7 @@ public class DrawNotes extends View {
             c = FullscreenActivity.mContext;
         }
         if (preferences.getMyPreferenceString(c,"drawingTool","pen").equals("pen")) {
-            return preferences.getMyPreferenceInt(c,"drawingPenColor",StaticVariables.black);
+            return preferences.getMyPreferenceInt(c,"drawingPenColor", StaticVariables.black);
 
         } else {
             return preferences.getMyPreferenceInt(c, "drawingHighlighterColor", StaticVariables.highighteryellow);
@@ -383,5 +379,5 @@ public class DrawNotes extends View {
         }
 
 
-    }
+    }*/
 }

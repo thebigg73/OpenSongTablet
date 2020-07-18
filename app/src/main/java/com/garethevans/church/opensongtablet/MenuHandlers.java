@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -7,6 +8,9 @@ import androidx.appcompat.app.ActionBar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.ViewConfiguration;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -19,7 +23,7 @@ class MenuHandlers {
         void prepareOptionMenu();
     }
 
-    static void actOnClicks(Context c, Preferences preferences, int menuitem) {
+    static void actOnClicks(Context c, _Preferences preferences, int menuitem) {
         MyInterface mListener = (MyInterface) c;
         StaticVariables.setMoveDirection = "";
 
@@ -61,7 +65,7 @@ class MenuHandlers {
                     // Tell the user that the song has been added.
                     StaticVariables.myToastMessage = "\"" + StaticVariables.songfilename + "\" "
                             + c.getResources().getString(R.string.addedtoset);
-                    ShowToast.showToast(c);
+                    _ShowToast.showToast(c);
                     // Vibrate to indicate something has happened
                     DoVibrate.vibrate(c,50);
 
@@ -102,4 +106,4 @@ class MenuHandlers {
             }
         }
     }
-}
+}*/

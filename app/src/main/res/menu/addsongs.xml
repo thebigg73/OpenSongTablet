@@ -10,7 +10,7 @@
         app:iconTint="@color/black"
         android:title="Online service" />
     <item android:id="@+id/file"
-        android:icon="@drawable/fp_file"
+        android:icon="@drawable/ic_file_xml_white_36dp"
         app:iconTint="@color/black"
         android:title="Import file" />
     <item android:id="@+id/camera"

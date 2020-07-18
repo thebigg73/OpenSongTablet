@@ -1,9 +1,16 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SongFolders;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -29,7 +36,7 @@ public class PopUpExportSongListFragment extends DialogFragment {
 
     private ListView songDirectoy_ListView;
     private StorageAccess storageAccess;
-    private Preferences preferences;
+    private _Preferences preferences;
     private ArrayList<String> songfolders;
 
     @Override
@@ -53,7 +60,7 @@ public class PopUpExportSongListFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -62,15 +69,15 @@ public class PopUpExportSongListFragment extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
+                _CustomAnimations.animateFAB(saveMe,getActivity());
                 saveMe.setEnabled(false);
                 getFoldersSelected();
             }
         });
 
         storageAccess = new StorageAccess();
-        preferences = new Preferences();
-        SongFolders songFolders = new SongFolders();
+        preferences = new _Preferences();
+        _SongFolders songFolders = new _SongFolders();
 
 
         songDirectoy_ListView = V.findViewById(R.id.songDirectoy_ListView);
@@ -82,7 +89,7 @@ public class PopUpExportSongListFragment extends DialogFragment {
         songDirectoy_ListView.setAdapter(adapter);
         songDirectoy_ListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -152,4 +159,4 @@ public class PopUpExportSongListFragment extends DialogFragment {
             e.printStackTrace();
         }
     }
-}
+}*/

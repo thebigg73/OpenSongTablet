@@ -1,13 +1,18 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import android.net.Uri;
 
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SetActions;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+
 import java.io.OutputStream;
 
 class CustomSlide {
 
-    void addCustomSlide(Context c, Preferences preferences) {
+    void addCustomSlide(Context c, _Preferences preferences) {
         String templocator,folder;
 
         // Get rid of illegal characters
@@ -91,7 +96,7 @@ class CustomSlide {
         preferences.setMyPreferenceString(c,"setCurrent",val);
 
         // Show the current set
-        SetActions setActions = new SetActions();
+        _SetActions setActions = new _SetActions();
         setActions.prepareSetList(c,preferences);
     }
-}
+}*/

@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SearchViewAdapter;
 import com.peak.salut.Salut;
 import com.peak.salut.SalutDataReceiver;
 import com.peak.salut.SalutServiceData;
@@ -67,8 +69,6 @@ public class FullscreenActivity extends AppCompatActivity {
     public static boolean isImageSlide = false;
     public static final boolean isVideo = false;
 
-    // Views and bits on the pages
-    public static int mScreenOrientation;
     public static boolean scrollbutton = false;
 
     // Set variables
@@ -109,11 +109,8 @@ public class FullscreenActivity extends AppCompatActivity {
     public static String currentFolder = "";
     public static String newFolder = "";
     public static boolean appRunning = false;
-    public static int currentSongIndex;
-    public static int previousSongIndex;
-    public static int nextSongIndex;
     @SuppressLint("StaticFieldLeak")
-    public static SearchViewAdapter sva;
+    public static _SearchViewAdapter sva;
     public static int keyindex;
     public static float autoscroll_pixels = 0.0f, newPosFloat = 0.0f;
     public static long time_start, time_passed = 0;
@@ -156,4 +153,4 @@ public class FullscreenActivity extends AppCompatActivity {
     // Song sections
     public static LinearLayout[] sectionviews;
 
-}
+}*/

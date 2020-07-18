@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -14,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
 
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
@@ -31,7 +34,7 @@ public class PopUpLyricsSettings extends DialogFragment {
     }
 
     private MyInterface mListener;
-    private Preferences preferences;
+    private _Preferences preferences;
     private StorageAccess storageAccess;
 
     @Override
@@ -61,7 +64,7 @@ public class PopUpLyricsSettings extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_lyricssettings, container, false);
 
         // Initialise the helper classes
-        preferences = new Preferences();
+        preferences = new _Preferences();
         storageAccess = new StorageAccess();
 
         // Initialise the views
@@ -151,7 +154,7 @@ public class PopUpLyricsSettings extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 try {
                     if (mListener!=null) {
                         mListener.refreshAll();
@@ -255,3 +258,4 @@ public class PopUpLyricsSettings extends DialogFragment {
         }
     }
 }
+*/

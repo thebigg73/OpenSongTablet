@@ -233,13 +233,13 @@
 
             <include
                 android:id="@+id/mytoolbar"
-                layout="@layout/toolbar"
+                layout="@layout/_toolbar"
                 android:clipChildren="false"
                 android:clipToPadding="false" />
 
         </RelativeLayout>
 
-        <include layout="@layout/songmenu" />
+        <include layout="@layout/_songmenu" />
 
         <include layout="@layout/optionmenu" />
 

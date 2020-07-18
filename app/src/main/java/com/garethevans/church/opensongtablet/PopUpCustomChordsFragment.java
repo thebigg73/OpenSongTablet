@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -8,6 +9,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.util.Log;
@@ -94,7 +101,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
             string6_f5, string5_f5, string4_f5, string3_f5, string2_f5, string1_f5;
 
     private StorageAccess storageAccess;
-    private Preferences preferences;
+    private _Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -122,7 +129,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -131,7 +138,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         saveMe.hide();
 
         storageAccess = new StorageAccess();
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Initialise the views
         stringtop = getActivity().getResources().getDrawable(R.drawable.string_top);
@@ -502,7 +509,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         customchords_fret.setAdapter(adapter_fret);
         customchords_fret.setOnItemSelectedListener(new FretListener());
         prepareCustomChords();
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -1632,14 +1639,14 @@ public class PopUpCustomChordsFragment extends DialogFragment {
                 !customChordToSave.contains("_c")) {
             //No instrument set
             StaticVariables.myToastMessage = getResources().getString(R.string.customchords_noinstrument);
-            ShowToast.showToast(getActivity());
+            _ShowToast.showToast(getActivity());
         } else if (customNameToSave.equals("") || customNameToSave.isEmpty()) {
             //No chordname set
             StaticVariables.myToastMessage = getResources().getString(R.string.customchords_nochordname);
-            ShowToast.showToast(getActivity());
+            _ShowToast.showToast(getActivity());
         } else {
             StaticVariables.myToastMessage = getResources().getString(R.string.customchords_save);
-            ShowToast.showToast(getActivity());
+            _ShowToast.showToast(getActivity());
             StaticVariables.mCustomChords = StaticVariables.mCustomChords + " " + customChordToSave;
             StaticVariables.mCustomChords = StaticVariables.mCustomChords.trim();
 
@@ -1710,4 +1717,4 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         }
     }
 
-}
+}*/

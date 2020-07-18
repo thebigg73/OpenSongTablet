@@ -1,9 +1,14 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -51,7 +56,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
     private FloatingActionButton group_custom3;
     private FloatingActionButton group_custom4;
 
-    private Preferences preferences;
+    private _Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,7 +81,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -84,7 +89,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Initialise the views
         FloatingActionButton group_set = V.findViewById(R.id.group_set);
@@ -290,7 +295,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -354,3 +359,4 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         dismiss();
     }
 }
+*/

@@ -1,9 +1,13 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.SwitchCompat;
@@ -34,7 +38,7 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
     private ImageView swipesimulateion_ImageView;
     private LinearLayout swipesettings;
 
-    private Preferences preferences;
+    private _Preferences preferences;
 
     static PopUpSwipeSettingsFragment newInstance() {
         PopUpSwipeSettingsFragment frag;
@@ -65,7 +69,7 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -73,7 +77,7 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         if (getDialog().getWindow()!=null) {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -187,7 +191,7 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
                 hideorunhideSettings();
             }
         });
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
         return V;
     }
 
@@ -254,7 +258,7 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(preferences.getMyPreferenceInt(getActivity(), "swipeMinimumDistance", 250),
                 preferences.getMyPreferenceInt(getActivity(), "swipeMaxDistanceYError", 200));
         swipesimulateion_ImageView.setLayoutParams(llp);
-        CustomAnimations.animateSwipe(swipesimulateion_ImageView,
+        _CustomAnimations.animateSwipe(swipesimulateion_ImageView,
                 preferences.getMyPreferenceInt(getActivity(),"swipeMinimumDistance",250),
                 preferences.getMyPreferenceInt(getActivity(),"swipeMinimumVelocity",600));
     }
@@ -267,3 +271,4 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
         }
     }
 }
+*/

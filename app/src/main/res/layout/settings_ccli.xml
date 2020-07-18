@@ -1,0 +1,56 @@
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ccli.SettingsCCLI"
+    style="@style/PrefScrollView">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/ccliAutomatic"
+            style="@style/PrefSwitch"
+            android:text="@string/ccli_automatic"/>
+
+        <com.garethevans.church.opensongtablet.preferences.PrefEditTextView
+            android:id="@+id/ccliChurch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextVal="@string/ccli_church"
+            app:editTextVal="My Church"/>
+
+        <com.garethevans.church.opensongtablet.preferences.PrefEditTextView
+            android:id="@+id/ccliLicence"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextVal="@string/ccli_licence"
+            app:editTextVal="#Number"/>
+
+        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+            android:id="@+id/ccliView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:main="@string/ccli_view"
+            app:sub="Open your current CCLI log for viewing"/>
+
+        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+            android:id="@+id/ccliExport"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:main="@string/export"
+            app:sub="Export your CCLI log as a .csv file"/>
+
+        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+            android:id="@+id/ccliDelete"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:main="@string/delete"
+            app:sub="@string/ccli_reset"/>
+
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

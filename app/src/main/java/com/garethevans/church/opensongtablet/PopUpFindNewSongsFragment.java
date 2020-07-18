@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -14,6 +15,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SQLiteHelper;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SongFolders;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._TextSongConvert;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.text.Html;
@@ -71,10 +81,10 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     private ArrayList<String> newtempfolders;
     private MyInterface mListener;
     private boolean downloadcomplete = false;
-    private TextSongConvert textSongConvert;
+    private _TextSongConvert textSongConvert;
     private StorageAccess storageAccess;
-    private Preferences preferences;
-    private SongFolders songFolders;
+    private _Preferences preferences;
+    private _SongFolders songFolders;
     private Uri downloadedFile;
 
     static PopUpFindNewSongsFragment newInstance() {
@@ -143,7 +153,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 try {
-                    CustomAnimations.animateFAB(closeMe,getActivity());
+                    _CustomAnimations.animateFAB(closeMe,getActivity());
                     closeMe.setEnabled(false);
                     dismiss();
                 } catch (Exception e) {
@@ -154,10 +164,10 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        textSongConvert = new TextSongConvert();
+        textSongConvert = new _TextSongConvert();
         storageAccess = new StorageAccess();
-        preferences = new Preferences();
-        songFolders = new SongFolders();
+        preferences = new _Preferences();
+        songFolders = new _SongFolders();
 
         // Initialise the views
         searchtext_LinearLayout = V.findViewById(R.id.searchtext_LinearLayout);
@@ -237,7 +247,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -320,7 +330,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                         searchresults_RelativeLayout.setVisibility(View.GONE);
                         StaticVariables.myToastMessage = "Downloading...";
                         saveSong_Button.setEnabled(false);
-                        ShowToast.showToast(getActivity());
+                        _ShowToast.showToast(getActivity());
 
                         String cookie = CookieManager.getInstance().getCookie(url);
 
@@ -388,7 +398,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         grabSongData_ProgressBar.setVisibility(View.VISIBLE);
         weblink = webresults_WebView.getUrl();
         StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getText(R.string.chordproprogress).toString();
-        ShowToast.showToast(getActivity());
+        _ShowToast.showToast(getActivity());
         DownloadWebTextTask task = new DownloadWebTextTask();
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, weblink);
 
@@ -1456,7 +1466,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
 
         // Get the database ready
-        SQLiteHelper sqLiteHelper = new SQLiteHelper(getActivity());
+        _SQLiteHelper sqLiteHelper = new _SQLiteHelper(getActivity());
 
         try {
             if (filecontents!=null && !filecontents.equals("")) {
@@ -1552,7 +1562,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 String address = webresults_WebView.getUrl();
                 if (address != null && (address.contains("/tab-pro/") || address.contains("/chords-pro/"))) {
                     StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getText(R.string.not_allowed).toString();
-                    ShowToast.showToast(getActivity());
+                    _ShowToast.showToast(getActivity());
                     grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
                 } else if (result != null && (result.contains("<textarea id=\"chordproContent\"") ||
                 result.contains("<h1 class=\"titleLeft\""))) {
@@ -1590,14 +1600,14 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
                 } else {
                     StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getText(R.string.chordpro_false).toString();
-                    ShowToast.showToast(getActivity());
+                    _ShowToast.showToast(getActivity());
                     grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
                 }
             } catch (Exception | OutOfMemoryError e) {
                 e.printStackTrace();
                 if (getActivity()!=null) {
                     StaticVariables.myToastMessage = getActivity().getResources().getText(R.string.chordpro_false).toString();
-                    ShowToast.showToast(getActivity());
+                    _ShowToast.showToast(getActivity());
                     grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
                 }
             }
@@ -1679,10 +1689,10 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                         StaticVariables.myToastMessage = getActivity().getResources().getText(R.string.chordpro_false).toString();
                     }
 
-                    ShowToast.showToast(getActivity());
+                    _ShowToast.showToast(getActivity());
                     grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
                 }
             }
         }
     }
-}
+}*/

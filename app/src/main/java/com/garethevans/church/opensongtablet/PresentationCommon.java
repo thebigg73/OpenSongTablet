@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 // This contains all of the scripts for the PresentationService and PresentationServiceHDMI
@@ -27,6 +28,9 @@ import android.widget.TextView;
 import androidx.core.graphics.ColorUtils;
 
 import com.bumptech.glide.request.RequestOptions;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 import java.io.InputStream;
 
@@ -116,13 +120,13 @@ class PresentationCommon {
         StaticVariables.forcecastupdate = false;
         return runfixbackground;
     }
-    void changeMargins(Context c, Preferences preferences, TextView songinfo_TextView, RelativeLayout projectedPage_RelativeLayout, int presoInfoColor) {
+    void changeMargins(Context c, _Preferences preferences, TextView songinfo_TextView, RelativeLayout projectedPage_RelativeLayout, int presoInfoColor) {
         songinfo_TextView.setTextColor(presoInfoColor);
         projectedPage_RelativeLayout.setPadding(preferences.getMyPreferenceInt(c,"presoXMargin",20),
                 preferences.getMyPreferenceInt(c,"presoYMargin",10), preferences.getMyPreferenceInt(c,"presoXMargin",20),
                 preferences.getMyPreferenceInt(c,"presoYMargin",10));
     }
-    void fixBackground(Context c, Preferences preferences, StorageAccess storageAccess, ImageView projected_BackgroundImage,
+    void fixBackground(Context c, _Preferences preferences, StorageAccess storageAccess, ImageView projected_BackgroundImage,
                        SurfaceHolder projected_SurfaceHolder, SurfaceView projected_SurfaceView) {
         // Images and video backgrounds
         String img1 = preferences.getMyPreferenceString(c,"backgroundImage1","ost_bg.png");
@@ -192,7 +196,7 @@ class PresentationCommon {
                         GlideApp.with(c).load(imgUri).apply(myOptions).into(projected_BackgroundImage);
                     }
                     projected_BackgroundImage.setVisibility(View.VISIBLE);
-                    CustomAnimations.faderAnimationCustomAlpha(projected_BackgroundImage,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),
+                    _CustomAnimations.faderAnimationCustomAlpha(projected_BackgroundImage,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),
                             0.0f,preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
 
                 }
@@ -215,7 +219,7 @@ class PresentationCommon {
                 projected_BackgroundImage.setImageDrawable(null);
                 projected_BackgroundImage.setVisibility(View.GONE);
 
-                CustomAnimations.faderAnimationCustomAlpha(projected_SurfaceView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),
+                _CustomAnimations.faderAnimationCustomAlpha(projected_SurfaceView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),
                         0.0f,preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
 
                 break;
@@ -225,7 +229,7 @@ class PresentationCommon {
                 break;
         }
     }
-    void getDefaultColors(Context c, Preferences preferences) {
+    void getDefaultColors(Context c, _Preferences preferences) {
         switch (StaticVariables.mDisplayTheme) {
             case "dark":
             default:
@@ -299,15 +303,15 @@ class PresentationCommon {
                 break;
         }
     }
-    void updateAlpha(Context c, Preferences preferences, ImageView projected_BackgroundImage, SurfaceView projected_SurfaceView) {
+    void updateAlpha(Context c, _Preferences preferences, ImageView projected_BackgroundImage, SurfaceView projected_SurfaceView) {
         projected_BackgroundImage.setAlpha(preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
         projected_SurfaceView.setAlpha(preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
     }
-    void normalStartUp(Context c, Preferences preferences, ImageView projected_Logo) {
+    void normalStartUp(Context c, _Preferences preferences, ImageView projected_Logo) {
         // Animate out the default logo
-        CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+        _CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
     }
-    void presenterThemeSetUp(Context c, Preferences preferences, LinearLayout presentermode_bottombit, TextView presentermode_title,
+    void presenterThemeSetUp(Context c, _Preferences preferences, LinearLayout presentermode_bottombit, TextView presentermode_title,
                              TextView presentermode_author, TextView presentermode_copyright, TextView presentermode_alert) {
         // Set the text at the bottom of the page to match the presentation text colour
         presentermode_title.setTypeface(StaticVariables.typefacePresoInfo);
@@ -337,7 +341,7 @@ class PresentationCommon {
         }
         presentermode_bottombit.setBackgroundColor(ColorUtils.setAlphaComponent(StaticVariables.cast_presoShadowColor,100));
     }
-    void presenterStartUp(final Context c, final Preferences preferences, final StorageAccess storageAccess, final ImageView projected_BackgroundImage,
+    void presenterStartUp(final Context c, final _Preferences preferences, final StorageAccess storageAccess, final ImageView projected_BackgroundImage,
                           final SurfaceHolder projected_SurfaceHolder, final SurfaceView projected_SurfaceView) {
         // After the fadeout time, set the background and fade in
         Handler h = new Handler();
@@ -348,10 +352,10 @@ class PresentationCommon {
                 fixBackground(c, preferences, storageAccess, projected_BackgroundImage,projected_SurfaceHolder,projected_SurfaceView);
 
                 if (preferences.getMyPreferenceString(c,"backgroundTypeToUse","image").equals("image")) {
-                    CustomAnimations.faderAnimation(projected_BackgroundImage,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+                    _CustomAnimations.faderAnimation(projected_BackgroundImage,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
 
                 } else if (preferences.getMyPreferenceString(c,"backgroundTypeToUse","image").equals("video")) {
-                    CustomAnimations.faderAnimation(projected_SurfaceView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+                    _CustomAnimations.faderAnimation(projected_SurfaceView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
                 }
             }
         }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
@@ -360,7 +364,7 @@ class PresentationCommon {
 
 
     // The logo stuff, animations and blanking the screen
-    void setUpLogo(Context c, Preferences preferences, StorageAccess storageAccess, ImageView projected_Logo, int availableWidth_1col, int availableScreenHeight) {
+    void setUpLogo(Context c, _Preferences preferences, StorageAccess storageAccess, ImageView projected_Logo, int availableWidth_1col, int availableScreenHeight) {
         // If the customLogo doesn't exist, use the default one
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -410,68 +414,68 @@ class PresentationCommon {
             }
         }
         if (PresenterMode.logoButton_isSelected) {
-            CustomAnimations.faderAnimation(projected_Logo, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+            _CustomAnimations.faderAnimation(projected_Logo, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
         }
     }
-    void showLogo(Context c, Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout, RelativeLayout pageHolder,
+    void showLogo(Context c, _Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout, RelativeLayout pageHolder,
                   LinearLayout bottom_infobar, ImageView projected_Logo) {
         // Animate out the lyrics if they were visible and animate in the logo
         if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-            CustomAnimations.faderAnimation(projected_ImageView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+            _CustomAnimations.faderAnimation(projected_ImageView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
 
         } else {
-            CustomAnimations.faderAnimation(projected_LinearLayout,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+            _CustomAnimations.faderAnimation(projected_LinearLayout,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
         }
 
         // If we had a black screen, fade that in
         if (pageHolder.getVisibility() == View.INVISIBLE) {
-            CustomAnimations.faderAnimation(pageHolder,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+            _CustomAnimations.faderAnimation(pageHolder,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
 
         }
-        CustomAnimations.faderAnimation(bottom_infobar,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
-        CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+        _CustomAnimations.faderAnimation(bottom_infobar,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+        _CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
     }
-    void hideLogo(Context c, Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout, ImageView projected_Logo,
+    void hideLogo(Context c, _Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout, ImageView projected_Logo,
                   LinearLayout bottom_infobar) {
         // Animate out the logo and animate in the lyrics if they were visible
         // Animate out the lyrics if they were visible and animate in the logo
         if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-            CustomAnimations.faderAnimation(projected_ImageView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+            _CustomAnimations.faderAnimation(projected_ImageView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
         } else {
-            CustomAnimations.faderAnimation(projected_LinearLayout,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+            _CustomAnimations.faderAnimation(projected_LinearLayout,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
         }
-        CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
-        CustomAnimations.faderAnimation(bottom_infobar,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+        _CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+        _CustomAnimations.faderAnimation(bottom_infobar,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
     }
-    void blankUnblankDisplay(Context c, Preferences preferences, RelativeLayout pageHolder, boolean unblank) {
-        CustomAnimations.faderAnimation(pageHolder,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),unblank);
+    void blankUnblankDisplay(Context c, _Preferences preferences, RelativeLayout pageHolder, boolean unblank) {
+        _CustomAnimations.faderAnimation(pageHolder,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),unblank);
     }
-    private void animateIn(Context c, Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
+    private void animateIn(Context c, _Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
         // Fade in the main page
         if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
-            CustomAnimations.faderAnimation(projected_ImageView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+            _CustomAnimations.faderAnimation(projected_ImageView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
 
         } else {
-            CustomAnimations.faderAnimation(projected_LinearLayout,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+            _CustomAnimations.faderAnimation(projected_LinearLayout,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
         }
     }
-    private void animateOut(Context c, Preferences preferences, Display myscreen, ImageView projected_Logo, ImageView projected_ImageView,
+    private void animateOut(Context c, _Preferences preferences, Display myscreen, ImageView projected_Logo, ImageView projected_ImageView,
                             LinearLayout projected_LinearLayout, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout) {
         // If the logo is showing, fade it away
         if (projected_Logo.getAlpha() > 0.0f) {
-            CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+            _CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
         }
         // Fade in the main page
         if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
-            CustomAnimations.faderAnimation(projected_ImageView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+            _CustomAnimations.faderAnimation(projected_ImageView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
         } else {
-            CustomAnimations.faderAnimation(projected_LinearLayout,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+            _CustomAnimations.faderAnimation(projected_LinearLayout,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
         }
         getScreenSizes(myscreen,bottom_infobar, projectedPage_RelativeLayout, preferences.getMyPreferenceFloat(c,"castRotation",0.0f));  // Just in case something changed
     }
-    private void presenterFadeOutSongInfo(final Context c, final Preferences preferences, final TextView tv, final String s, final LinearLayout bottom_infobar) {
+    private void presenterFadeOutSongInfo(final Context c, final _Preferences preferences, final TextView tv, final String s, final LinearLayout bottom_infobar) {
         if (tv.getAlpha() > 0.0f) {
-            CustomAnimations.faderAnimation(tv,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+            _CustomAnimations.faderAnimation(tv,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
         }
         // After the transition time, change the text and fade it back in
         Handler h = new Handler();
@@ -484,7 +488,7 @@ class PresentationCommon {
                     bottom_infobar.setVisibility(View.GONE);
                 } else {
                     bottom_infobar.setVisibility(View.VISIBLE);
-                    CustomAnimations.faderAnimation(tv,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+                    _CustomAnimations.faderAnimation(tv,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
                 }
             }
         }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
@@ -492,7 +496,7 @@ class PresentationCommon {
 
 
     // Update the screen content
-    void doUpdate(final Context c, final Preferences preferences, final StorageAccess storageAccess, final ProcessSong processSong,
+    void doUpdate(final Context c, final _Preferences preferences, final StorageAccess storageAccess, final ProcessSong processSong,
                   final Display myscreen, final TextView songinfo_TextView, LinearLayout presentermode_bottombit, final SurfaceView projected_SurfaceView,
                   ImageView projected_BackgroundImage, RelativeLayout pageHolder, ImageView projected_Logo, final ImageView projected_ImageView,
                   final LinearLayout projected_LinearLayout, LinearLayout bottom_infobar, final RelativeLayout projectedPage_RelativeLayout,
@@ -509,7 +513,7 @@ class PresentationCommon {
 
         // If we had a black screen, fade that in
         if (pageHolder.getVisibility() == View.INVISIBLE) {
-            CustomAnimations.faderAnimation(pageHolder,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+            _CustomAnimations.faderAnimation(pageHolder,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
 
         }
 
@@ -588,8 +592,8 @@ class PresentationCommon {
             }
         }
     }
-    private void presenterWriteSongInfo(Context c, Preferences preferences, TextView presentermode_title, TextView presentermode_author,
-                                TextView presentermode_copyright, LinearLayout bottom_infobar) {
+    private void presenterWriteSongInfo(Context c, _Preferences preferences, TextView presentermode_title, TextView presentermode_author,
+                                        TextView presentermode_copyright, LinearLayout bottom_infobar) {
         String old_title = presentermode_title.getText().toString();
         String old_author = presentermode_author.getText().toString();
         String old_copyright = presentermode_copyright.getText().toString();
@@ -603,7 +607,7 @@ class PresentationCommon {
             presenterFadeOutSongInfo(c, preferences, presentermode_copyright, StaticVariables.mCopyright, bottom_infobar);
         }
     }
-    private void setSongTitle(Context c, Preferences preferences, TextView songinfo_TextView) {
+    private void setSongTitle(Context c, _Preferences preferences, TextView songinfo_TextView) {
         String old_title = songinfo_TextView.getText().toString();
         String new_title = StaticVariables.mTitle;
         if (!StaticVariables.mAuthor.equals("")) {
@@ -614,13 +618,13 @@ class PresentationCommon {
             normalChangeSongInfo(c,preferences,songinfo_TextView,new_title);
         }
     }
-    private void doPDFPage(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
+    private void doPDFPage(Context c, _Preferences preferences, StorageAccess storageAccess, ProcessSong processSong, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
         Bitmap bmp = processSong.createPDFPage(c, preferences, storageAccess, StaticVariables.cast_availableScreenWidth, StaticVariables.cast_availableScreenHeight, "Y");
         projected_ImageView.setBackgroundColor(StaticVariables.white);
         projected_ImageView.setImageBitmap(bmp);
         animateIn(c,preferences,projected_ImageView,projected_LinearLayout);
     }
-    private void doImagePage(Context c, Preferences preferences, StorageAccess storageAccess, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
+    private void doImagePage(Context c, _Preferences preferences, StorageAccess storageAccess, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
         projected_ImageView.setVisibility(View.GONE);
         projected_ImageView.setBackgroundColor(0x00000000);
         // Process the image location into an URI
@@ -639,8 +643,8 @@ class PresentationCommon {
         projected_LinearLayout.removeAllViews();
         projected_ImageView.setImageBitmap(null);
     }
-    private void normalChangeSongInfo(final Context c, final Preferences preferences, final TextView songinfo_TextView, final String s) {
-        CustomAnimations.faderAnimation(songinfo_TextView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+    private void normalChangeSongInfo(final Context c, final _Preferences preferences, final TextView songinfo_TextView, final String s) {
+        _CustomAnimations.faderAnimation(songinfo_TextView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
 
         // After the transition delay, write the new value and fade it back in
         Handler h = new Handler();
@@ -649,7 +653,7 @@ class PresentationCommon {
             public void run() {
                 songinfo_TextView.setTextColor(StaticVariables.cast_presoInfoColor);
                 songinfo_TextView.setText(s);
-                CustomAnimations.faderAnimation(songinfo_TextView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+                _CustomAnimations.faderAnimation(songinfo_TextView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
 
             }
         }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
@@ -658,7 +662,7 @@ class PresentationCommon {
 
 
     // Alert
-    void updateAlert(Context c, Preferences preferences, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout, boolean show, TextView presentermode_alert) {
+    void updateAlert(Context c, _Preferences preferences, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout, boolean show, TextView presentermode_alert) {
         if (show) {
             PresenterMode.alert_on = "Y";
             fadeinAlert(c, preferences, myscreen, bottom_infobar, projectedPage_RelativeLayout, presentermode_alert);
@@ -667,7 +671,7 @@ class PresentationCommon {
             fadeoutAlert(c, preferences, presentermode_alert);
         }
     }
-    private void fadeinAlert(Context c, Preferences preferences, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout, TextView presentermode_alert) {
+    private void fadeinAlert(Context c, _Preferences preferences, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout, TextView presentermode_alert) {
         presentermode_alert.setText(preferences.getMyPreferenceString(c,"presoAlertText",""));
         presentermode_alert.setTypeface(StaticVariables.typefacePresoInfo);
         presentermode_alert.setTextSize(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f));
@@ -676,17 +680,17 @@ class PresentationCommon {
 
         presentermode_alert.setVisibility(View.VISIBLE);
         getScreenSizes(myscreen,bottom_infobar,projectedPage_RelativeLayout,preferences.getMyPreferenceFloat(c,"castRotation",0.0f));
-        CustomAnimations.faderAnimation(presentermode_alert,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+        _CustomAnimations.faderAnimation(presentermode_alert,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
     }
-    private void fadeoutAlert(Context c, Preferences preferences, TextView presentermode_alert) {
-        CustomAnimations.faderAnimation(presentermode_alert,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+    private void fadeoutAlert(Context c, _Preferences preferences, TextView presentermode_alert) {
+        _CustomAnimations.faderAnimation(presentermode_alert,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
     }
 
 
 
 
     // MediaPlayer stuff
-    void prepareMediaPlayer(Context c, Preferences preferences, SurfaceHolder projected_SurfaceHolder, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout) {
+    void prepareMediaPlayer(Context c, _Preferences preferences, SurfaceHolder projected_SurfaceHolder, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout) {
         // Get the size of the SurfaceView
         getScreenSizes(myscreen,bottom_infobar,projectedPage_RelativeLayout,preferences.getMyPreferenceFloat(c,"castRotation",0.0f));
         StaticVariables.cast_mediaPlayer = new MediaPlayer();
@@ -724,7 +728,7 @@ class PresentationCommon {
             e.printStackTrace();
         }
     }
-    void reloadVideo(final Context c, final Preferences preferences, final SurfaceHolder projected_SurfaceHolder, final SurfaceView projected_SurfaceView) {
+    void reloadVideo(final Context c, final _Preferences preferences, final SurfaceHolder projected_SurfaceHolder, final SurfaceView projected_SurfaceView) {
         if (StaticVariables.cast_mediaPlayer == null) {
             StaticVariables.cast_mediaPlayer = new MediaPlayer();
             try {
@@ -800,9 +804,9 @@ class PresentationCommon {
 
 
     // Writing the views for PerformanceMode
-    private void prepareFullProjected (final Context c, final Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
-                 final LinearLayout col1_1, final LinearLayout col1_2, final LinearLayout col2_2, final LinearLayout col1_3,
-                 final LinearLayout col2_3, final LinearLayout col3_3, final LinearLayout projected_LinearLayout, final ImageView projected_ImageView) {
+    private void prepareFullProjected (final Context c, final _Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
+                                       final LinearLayout col1_1, final LinearLayout col1_2, final LinearLayout col2_2, final LinearLayout col1_3,
+                                       final LinearLayout col2_3, final LinearLayout col3_3, final LinearLayout projected_LinearLayout, final ImageView projected_ImageView) {
         if (StaticVariables.activity!=null) {
             new Thread(new Runnable() {
                 @Override
@@ -983,7 +987,7 @@ class PresentationCommon {
             }).start();
         }
     }
-    private void projectedPerformanceView1col(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
+    private void projectedPerformanceView1col(Context c, _Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
                                               float scale1_1, LinearLayout projected_LinearLayout, ImageView projected_ImageView) {
         // This is run inside the UI thread from the calling class (prepareFullProjected)
         try {
@@ -1024,7 +1028,7 @@ class PresentationCommon {
             e.printStackTrace();
         }
     }
-    private void projectedPerformanceView2col(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
+    private void projectedPerformanceView2col(Context c, _Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
                                               float scale1_2, float scale2_2, LinearLayout projected_LinearLayout, ImageView projected_ImageView) {
         // This is run inside the UI thread from the calling class (prepareFullProjected)
         try {
@@ -1089,8 +1093,8 @@ class PresentationCommon {
             e.printStackTrace();
         }
     }
-    private void projectedPerformanceView3col(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
-                                      float scale1_3, float scale2_3, float scale3_3, LinearLayout projected_LinearLayout, ImageView projected_ImageView) {
+    private void projectedPerformanceView3col(Context c, _Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
+                                              float scale1_3, float scale2_3, float scale3_3, LinearLayout projected_LinearLayout, ImageView projected_ImageView) {
         // This is run inside the UI thread from the calling class (prepareFullProjected)
         try {
             LinearLayout lyrics1_3 = processSong.createLinearLayout(c);
@@ -1177,7 +1181,7 @@ class PresentationCommon {
 
 
     // Writing the views for StageMode
-    private void prepareStageProjected(final Context c, final Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
+    private void prepareStageProjected(final Context c, final _Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
                                        final LinearLayout col1_1, final LinearLayout col1_2, final LinearLayout col2_2, final LinearLayout col1_3,
                                        final LinearLayout col2_3, final LinearLayout col3_3, final LinearLayout projected_LinearLayout, final ImageView projected_ImageView) {
 
@@ -1242,7 +1246,7 @@ class PresentationCommon {
             }).start();
         }
     }
-    private void projectedStageView1Col(Context c, Preferences preferences,StorageAccess storageAccess,ProcessSong processSong,
+    private void projectedStageView1Col(Context c, _Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
                                         float scale1_1, LinearLayout projected_LinearLayout, ImageView projected_ImageView) {
         // This is run inside the UI thread from the calling class (prepareFullProjected)
         try {
@@ -1284,7 +1288,7 @@ class PresentationCommon {
 
 
     // Writing the views for PresenterMode
-    private void preparePresenterProjected(final Context c, final Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
+    private void preparePresenterProjected(final Context c, final _Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
                                            final LinearLayout col1_1, final LinearLayout col1_2, final LinearLayout col2_2, final LinearLayout col1_3,
                                            final LinearLayout col2_3, final LinearLayout col3_3, final LinearLayout projected_LinearLayout, final ImageView projected_ImageView) {
         if (StaticVariables.activity != null) {
@@ -1346,7 +1350,7 @@ class PresentationCommon {
             }).start();
         }
     }
-    private void projectedPresenterView1Col(Context c, Preferences preferences,StorageAccess storageAccess,ProcessSong processSong,
+    private void projectedPresenterView1Col(Context c, _Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
                                             float scale1_1, LinearLayout projected_LinearLayout, ImageView projected_ImageView) {
         // This is run inside the UI thread from the calling class (prepareFullProjected)
         try {
@@ -1385,3 +1389,4 @@ class PresentationCommon {
 
 
 }
+*/

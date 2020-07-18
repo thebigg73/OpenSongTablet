@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -31,7 +32,7 @@ public class PopUpChordSettings extends DialogFragment {
     }
 
     private MyInterface mListener;
-    private Preferences preferences;
+    private _Preferences preferences;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -58,7 +59,7 @@ public class PopUpChordSettings extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_chordsettings, container, false);
 
         // Initialise the helper classes
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Initialise the views
         initialiseViews(V);
@@ -177,4 +178,4 @@ public class PopUpChordSettings extends DialogFragment {
             preferences.setMyPreferenceBoolean(getActivity(), value, isChecked);
         }
     }
-}
+}*/

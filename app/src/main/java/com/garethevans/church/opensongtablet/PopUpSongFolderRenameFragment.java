@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -7,6 +8,14 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SQLiteHelper;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SongFolders;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.util.Log;
@@ -39,9 +48,9 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
     private TextView title;
     private ProgressBar progressBar;
     private StorageAccess storageAccess;
-    private Preferences preferences;
-    private SongFolders songFolders;
-    private SQLiteHelper sqLiteHelper;
+    private _Preferences preferences;
+    private _SongFolders songFolders;
+    private _SQLiteHelper sqLiteHelper;
 
     static PopUpSongFolderRenameFragment newInstance(String message) {
         myTask = message;
@@ -68,7 +77,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -77,16 +86,16 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
+                _CustomAnimations.animateFAB(saveMe,getActivity());
                 //saveMe.setEnabled(false);
                 createOrRename();
             }
         });
 
         storageAccess = new StorageAccess();
-        preferences = new Preferences();
-        songFolders = new SongFolders();
-        sqLiteHelper = new SQLiteHelper(getActivity());
+        preferences = new _Preferences();
+        songFolders = new _SongFolders();
+        sqLiteHelper = new _SQLiteHelper(getActivity());
 
         // Initialise the views
         oldFolderNameSpinner = V.findViewById(R.id.oldFolderNameSpinner);
@@ -139,7 +148,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
         return V;
     }
 
@@ -209,7 +218,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
 
             @Override
             protected void onPostExecute(String s) {
-                ShowToast.showToast(getActivity());
+                _ShowToast.showToast(getActivity());
 
                 progressBar.setVisibility(View.GONE);
 
@@ -262,7 +271,9 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                /*//ShowToast.showToast(getActivity());
+                */
+/*//*
+/ShowToast.showToast(getActivity());
                 if (s.equals("success")) {
                     // Let the app know we need to rebuild the database
                     FullscreenActivity.needtorefreshsongmenu = true;
@@ -278,7 +289,8 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
                     }
                 } else {
                     progressBar.setVisibility(View.GONE);
-                }*/
+                }*//*
+
             }
         };
         renamefolders.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -343,3 +355,4 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         this.dismiss();
     }
 }
+*/

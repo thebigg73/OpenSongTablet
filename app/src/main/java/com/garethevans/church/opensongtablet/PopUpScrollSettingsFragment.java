@@ -1,9 +1,13 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -22,7 +26,7 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
     private TextView scrollspeed_TextView;
     private TextView scrolldistance_TextView;
 
-    private Preferences preferences;
+    private _Preferences preferences;
 
     static PopUpScrollSettingsFragment newInstance() {
         PopUpScrollSettingsFragment frag;
@@ -53,7 +57,7 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -61,7 +65,7 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         if (getDialog().getWindow()!=null) {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -108,7 +112,7 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -150,3 +154,4 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
     }
 
 }
+*/

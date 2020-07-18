@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -8,6 +9,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SongFolders;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.SwitchCompat;
@@ -77,9 +85,9 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
     private SwitchCompat overwrite;
     private StorageAccess storageAccess;
     private ExportPreparer exportPreparer;
-    private Preferences preferences;
+    private _Preferences preferences;
     private ProgressBar progressBar;
-    private SongFolders songFolders;
+    private _SongFolders songFolders;
     private String error;
 
     @Override
@@ -106,9 +114,9 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_importexportosb, container, false);
 
-        songFolders = new SongFolders();
+        songFolders = new _SongFolders();
         storageAccess = new StorageAccess();
-        preferences = new Preferences();
+        preferences = new _Preferences();
         error = getActivity().getResources().getString(R.string.backup_error);
 
         TextView title = V.findViewById(R.id.dialogtitle);
@@ -126,7 +134,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
             saveMe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CustomAnimations.animateFAB(saveMe, PopUpImportExportOSBFragment.this.getActivity());
+                    _CustomAnimations.animateFAB(saveMe, PopUpImportExportOSBFragment.this.getActivity());
                     saveMe.setEnabled(false);
                     PopUpImportExportOSBFragment.this.doTheImporting();
                 }
@@ -135,7 +143,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
             saveMe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CustomAnimations.animateFAB(saveMe, PopUpImportExportOSBFragment.this.getActivity());
+                    _CustomAnimations.animateFAB(saveMe, PopUpImportExportOSBFragment.this.getActivity());
                     saveMe.setEnabled(false);
                     PopUpImportExportOSBFragment.this.doTheExporting();
                 }
@@ -212,7 +220,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                 }
             }
         });
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -331,14 +339,14 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                 // There was an error, so show the message and hide the progressbar
                 waiting.setVisibility(View.GONE);
                 StaticVariables.myToastMessage = message;
-                ShowToast.showToast(getActivity());
+                _ShowToast.showToast(getActivity());
             }
         }
     }
     private void doTheImporting() {
         // Send an alert to the screen
         StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.wait);
-        ShowToast.showToast(getActivity());
+        _ShowToast.showToast(getActivity());
         // Check the selected folders
         selectednote = "";
         StringBuilder sb = new StringBuilder();
@@ -538,4 +546,4 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         }
     }
 
-}
+}*/

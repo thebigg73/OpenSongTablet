@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -5,6 +6,10 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -68,7 +73,7 @@ public class PopUpBackupPromptFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
+                _CustomAnimations.animateFAB(closeMe, getActivity());
                 closeMe.setEnabled(false);
                 doClose();
             }
@@ -77,7 +82,7 @@ public class PopUpBackupPromptFragment extends DialogFragment {
         saveMe.hide();
 
         // Reset the counter to 0 (value set when this popup loads) and save to preferences
-        Preferences preferences = new Preferences();
+        _Preferences preferences = new _Preferences();
         int runssincebackup = 0;
         preferences.setMyPreferenceInt(getActivity(), "runssincebackup", runssincebackup);
 
@@ -108,7 +113,7 @@ public class PopUpBackupPromptFragment extends DialogFragment {
 
         Dialog dialog = getDialog();
         if (dialog != null && getActivity() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), dialog, preferences);
+            _PopUpSizeAndAlpha.decoratePopUp(getActivity(), dialog, preferences);
         }
         return v;
     }
@@ -127,3 +132,4 @@ public class PopUpBackupPromptFragment extends DialogFragment {
     }
 
 }
+*/

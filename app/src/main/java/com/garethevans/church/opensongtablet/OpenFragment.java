@@ -1,7 +1,13 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import androidx.fragment.app.DialogFragment;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpAreYouSureFragment;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpFullSearchFragment;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpTransposeFragment;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 class OpenFragment {
 
@@ -42,18 +48,18 @@ class OpenFragment {
 
             case "resetcolours":
                 message = c.getResources().getString(R.string.reset_colours);
-                newFragment = PopUpAreYouSureFragment.newInstance(message);
+                newFragment = _PopUpAreYouSureFragment.newInstance(message);
                 break;
 
             case "clearset":
                 message = c.getResources().getString(R.string.options_clearthisset);
-                newFragment = PopUpAreYouSureFragment.newInstance(message);
+                newFragment = _PopUpAreYouSureFragment.newInstance(message);
                 break;
 
             case "deletesong":
                 message = c.getResources().getString(R.string.delete) +
                         " \"" + StaticVariables.songfilename + "\"?";
-                newFragment = PopUpAreYouSureFragment.newInstance(message);
+                newFragment = _PopUpAreYouSureFragment.newInstance(message);
                 break;
 
             case "randomsong":
@@ -145,7 +151,7 @@ class OpenFragment {
                 break;
 
             case "transpose":
-                newFragment = PopUpTransposeFragment.newInstance();
+                newFragment = _PopUpTransposeFragment.newInstance();
                 break;
 
             case "chordformat":
@@ -231,10 +237,12 @@ class OpenFragment {
                 break;
 
             case "filechooser":
-                /*newFragment = PopUpDirectoryChooserFragment.newInstance();
+                */
+/*newFragment = PopUpDirectoryChooserFragment.newInstance();
                 Bundle args2 = new Bundle();
                 args2.putString("type", "file");
-                newFragment.setArguments(args2);*/
+                newFragment.setArguments(args2);*//*
+
                 break;
 
             case "choosefile": //For connected display backgrounds
@@ -259,7 +267,7 @@ class OpenFragment {
                 break;
 
             case "fullsearch":
-                newFragment = PopUpFullSearchFragment.newInstance();
+                newFragment = _PopUpFullSearchFragment.newInstance();
                 break;
 
             case "choosefolder":
@@ -371,4 +379,4 @@ class OpenFragment {
         }
         return message;
     }
-}
+}*/

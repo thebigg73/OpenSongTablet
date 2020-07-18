@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet.animation;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.view.View;
 import android.view.animation.OvershootInterpolator;
 
 import androidx.core.view.ViewCompat;
@@ -25,40 +26,49 @@ public class PageButtonFAB {
         this.custom6 = custom6;
     }
 
+    private OvershootInterpolator interpolator = new OvershootInterpolator();
+
     public void animatePageButton(Context c, boolean open) {
-        OvershootInterpolator interpolator = new OvershootInterpolator();
         if (open) {
             ViewCompat.animate(actionButton).rotation(45f).withLayer().setDuration(500).
                     setInterpolator(interpolator).start();
             actionButton.setBackgroundTintList(ColorStateList.valueOf(c.getResources().getColor(R.color.red)));
-            ViewCompat.animate(custom1).alpha(1f).translationYBy(-500).setDuration(500).
-                    setInterpolator(interpolator).start();
-            ViewCompat.animate(custom2).alpha(1f).translationYBy(-500).setDuration(500).
-                    setInterpolator(interpolator).start();
-            ViewCompat.animate(custom3).alpha(1f).translationYBy(-500).setDuration(500).
-                    setInterpolator(interpolator).start();
-            ViewCompat.animate(custom4).alpha(1f).translationYBy(-500).setDuration(500).
-                    setInterpolator(interpolator).start();
-            ViewCompat.animate(custom5).alpha(1f).translationYBy(-500).setDuration(500).
-                    setInterpolator(interpolator).start();
-            ViewCompat.animate(custom6).alpha(1f).translationYBy(-500).setDuration(500).
-                    setInterpolator(interpolator).start();
         } else {
             ViewCompat.animate(actionButton).rotation(0f).withLayer().setDuration(500).
                     setInterpolator(interpolator).start();
             actionButton.setBackgroundTintList(ColorStateList.valueOf(c.getResources().getColor(R.color.secondary)));
-            ViewCompat.animate(custom1).alpha(0f).translationYBy(500).setDuration(500).
-                    setInterpolator(interpolator).start();
-            ViewCompat.animate(custom2).alpha(0f).translationYBy(500).setDuration(500).
-                    setInterpolator(interpolator).start();
-            ViewCompat.animate(custom3).alpha(0f).translationYBy(500).setDuration(500).
-                    setInterpolator(interpolator).start();
-            ViewCompat.animate(custom4).alpha(0f).translationYBy(500).setDuration(500).
-                    setInterpolator(interpolator).start();
-            ViewCompat.animate(custom5).alpha(0f).translationYBy(500).setDuration(500).
-                    setInterpolator(interpolator).start();
-            ViewCompat.animate(custom6).alpha(0f).translationYBy(500).setDuration(500).
-                    setInterpolator(interpolator).start();
         }
+        animateView(custom1,open);
+        animateView(custom2,open);
+        animateView(custom3,open);
+        animateView(custom4,open);
+        animateView(custom5,open);
+        animateView(custom6,open);
+    }
+
+    private void animateView(View view, boolean animateIn) {
+        float alpha = 0f;
+        int translationBy = 500;
+        Runnable endRunnable = hideView(view, animateIn);
+        Runnable startRunnable = hideView(view, animateIn);
+
+        if (animateIn) {
+            alpha = 1f;
+            translationBy = -500;
+            endRunnable = () -> {};
+        } else {
+            startRunnable = () -> {};
+        }
+        ViewCompat.animate(view).alpha(alpha).translationYBy(translationBy).setDuration(500).
+                setInterpolator(interpolator).withStartAction(startRunnable).withEndAction(endRunnable).start();
+    }
+    private Runnable hideView(View view,boolean show) {
+        return () -> {
+            if (show) {
+                view.setVisibility(View.VISIBLE);
+            } else {
+                view.setVisibility(View.GONE);
+            }
+        };
     }
 }

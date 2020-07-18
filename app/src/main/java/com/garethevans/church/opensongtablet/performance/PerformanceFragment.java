@@ -21,26 +21,25 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.interfaces.LoadSongInterface;
-import com.garethevans.church.opensongtablet.Preferences;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.SQLite;
-import com.garethevans.church.opensongtablet.SQLiteHelper;
-import com.garethevans.church.opensongtablet.StaticVariables;
-import com.garethevans.church.opensongtablet.StorageAccess;
 import com.garethevans.church.opensongtablet.databinding.FragmentPerformanceBinding;
+import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
-import com.garethevans.church.opensongtablet.songprocessing.LoadSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.SongXML;
+import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-public class PerformanceFragment extends Fragment implements LoadSongInterface {
+public class PerformanceFragment extends Fragment {
 
     // Helper classes for the heavy lifting
     private StorageAccess storageAccess;
@@ -52,6 +51,8 @@ public class PerformanceFragment extends Fragment implements LoadSongInterface {
     private ConvertChoPro convertChoPro;
     private ConvertOnSong convertOnSong;
     private ThemeColors themeColors;
+    private ShowToast showToast;
+
     //private ShowCase showCase;
 
     //private LoadSongInterface loadSongInterface;
@@ -69,7 +70,6 @@ public class PerformanceFragment extends Fragment implements LoadSongInterface {
     private RelativeLayout testPane;
     private ArrayList<View> sectionViews;
     private ArrayList<Integer> sectionWidths, sectionHeights;
-    private ArrayList<String> songsInList;
     private String autoScale;
     private Map<String,Integer> colorMap;
     private FragmentPerformanceBinding myView;
@@ -80,7 +80,13 @@ public class PerformanceFragment extends Fragment implements LoadSongInterface {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
-        //loadSongInterface = (LoadSongInterface) context;
+        mainActivityInterface.registerFragment(this,"Performance");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mainActivityInterface.registerFragment(null,"Performance");
     }
 
     @Override
@@ -104,9 +110,18 @@ public class PerformanceFragment extends Fragment implements LoadSongInterface {
 
         // Initialise the helper classes that do the heavy lifting
         initialiseHelpers();
+        mainActivityInterface.lockDrawer(false);
+        mainActivityInterface.hideActionButton(false);
 
         // Load in preferences
         loadPreferences();
+
+        // Prepare the song menu (will be called again after indexing from the main activity index songs)
+
+        // Build the song index if we are here for the first time
+        if (StaticVariables.indexRequired) {
+            mainActivityInterface.indexSongs();
+        }
 
         doSongLoad();
 
@@ -132,6 +147,7 @@ public class PerformanceFragment extends Fragment implements LoadSongInterface {
         convertOnSong = new ConvertOnSong();
         convertChoPro = new ConvertChoPro();
         themeColors = new ThemeColors();
+        showToast = new ShowToast();
         //showCase = new ShowCase();
     }
     private void loadPreferences() {
@@ -175,17 +191,20 @@ public class PerformanceFragment extends Fragment implements LoadSongInterface {
             if (sectionViews!=null) {
                 sectionViews.clear();
             }
-            loadSong.doLoadSong(getActivity(),storageAccess,preferences,songXML,processSong,sqLiteHelper,
-                    convertOnSong, convertChoPro);
+            loadSong.doLoadSong(getActivity(),storageAccess,preferences,songXML,processSong,
+                    showToast, sqLiteHelper, convertOnSong, convertChoPro);
 
             requireActivity().runOnUiThread(this::prepareSongViews);
+            mainActivityInterface.moveToSongInSongMenu();
         }).start();
     }
+
+
     private void prepareSongViews() {
         // This is called on UI thread above;
         myView.pageHolder.setBackgroundColor(colorMap.get("lyricsBackground"));
         // Get the song in the layout
-        sectionViews = processSong.setSongInLayout(getActivity(),trimSections, addSectionSpace,
+        sectionViews = processSong.setSongInLayout(getActivity(),preferences, trimSections, addSectionSpace,
                 trimLines, lineSpacing, colorMap, scaleHeadings, scaleChords, scaleComments,
                 StaticVariables.mLyrics);
 
@@ -193,7 +212,7 @@ public class PerformanceFragment extends Fragment implements LoadSongInterface {
         setUpVTO();
 
         // Update the toolbar
-        mainActivityInterface.updateToolbar();
+        mainActivityInterface.updateToolbar(null);
     }
     private void setUpVTO() {
         testPane = myView.testPane;
@@ -266,30 +285,33 @@ public class PerformanceFragment extends Fragment implements LoadSongInterface {
     }
 
     private void prepareSongLoad() {
-        if (songsInList==null || songsInList.size()==0) {
+        if (StaticVariables.songsInList==null || StaticVariables.songsInList.size()==0) {
             // Initialise the songs in the list for swiping
-            songsInList = new ArrayList<>();
+            StaticVariables.songsInList = new ArrayList<>();
+            StaticVariables.songsInList.clear();
             //TODO do logic to determine if this should be built from the set list or not
-
             // If not in a set
-            ArrayList<SQLite> songsInFolder = sqLiteHelper.getSongsInFolder(getActivity(),StaticVariables.whichSongFolder,"");
-            for (SQLite song : songsInFolder) {
-                songsInList.add(song.getFilename());
-            }
+            sqLiteHelper.getSongsByFilters(getActivity(),
+                    false,false,false,false,false,
+                    null,null,null,null,null);
         }
         // Get current index
-        int currentPosition = songsInList.indexOf(StaticVariables.songfilename);
+        int currentPosition = StaticVariables.songsInList.indexOf(StaticVariables.songfilename);
         if (loadNextSong) {
-            if (currentPosition<songsInList.size()-1) {
-                StaticVariables.songfilename = songsInList.get(currentPosition+1);
-                loadNextSong = false;
+            loadNextSong = false;
+            if (currentPosition<StaticVariables.songsInList.size()-1) {
+                StaticVariables.songfilename = StaticVariables.songsInList.get(currentPosition+1);
                 doSongLoad();
+            } else {
+                showToast.doIt(getActivity(), requireActivity().getString(R.string.lastsong));
             }
         } else if (loadPrevSong) {
+            loadPrevSong = false;
             if (currentPosition>0) {
-                StaticVariables.songfilename = songsInList.get(currentPosition-1);
-                loadPrevSong = false;
+                StaticVariables.songfilename = StaticVariables.songsInList.get(currentPosition-1);
                 doSongLoad();
+            } else {
+                showToast.doIt(getActivity(), requireActivity().getString(R.string.firstsong));
             }
         }
     }

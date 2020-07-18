@@ -19,16 +19,15 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 
-import com.garethevans.church.opensongtablet.BatteryMonitor;
-import com.garethevans.church.opensongtablet.Preferences;
-import com.garethevans.church.opensongtablet.StaticVariables;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class BatteryStatus extends BroadcastReceiver {
 
-    private static boolean isCharging;
+    private boolean isCharging;
 
     public interface MyInterface {
         void setUpBatteryMonitor();
@@ -72,7 +71,7 @@ public class BatteryStatus extends BroadcastReceiver {
                 batteryimage.setVisibility(View.INVISIBLE);
             }
             if (abh > 0) {
-                BitmapDrawable bmp = BatteryMonitor.batteryImage(c, preferences,i, abh);
+                BitmapDrawable bmp = batteryImage(c, preferences,i, abh);
                 batteryimage.setImageDrawable(bmp);
             }
 
@@ -102,7 +101,7 @@ public class BatteryStatus extends BroadcastReceiver {
     }
 
 
-    public static float getBatteryStatus (Context context) {
+    public float getBatteryStatus (Context context) {
 
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = context.registerReceiver(null, ifilter);
@@ -125,7 +124,7 @@ public class BatteryStatus extends BroadcastReceiver {
         }
     }
 
-    public static BitmapDrawable batteryImage(Context c, Preferences preferences, int charge, int abheight) {
+    public BitmapDrawable batteryImage(Context c, Preferences preferences, int charge, int abheight) {
 
         int size = (int)(abheight*0.75f);
         int thickness = preferences.getMyPreferenceInt(c,"batteryDialThickness",4);

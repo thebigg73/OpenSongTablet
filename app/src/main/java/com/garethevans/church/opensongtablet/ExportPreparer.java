@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -13,6 +14,11 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.core.content.FileProvider;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._LoadXML;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -39,7 +45,7 @@ class ExportPreparer {
     private Backup_Create_Selected backup_create_selected;
     private ZipOutputStream outSelected;
 
-    Intent exportSet(Context c, Preferences preferences, StorageAccess storageAccess) {
+    Intent exportSet(Context c, _Preferences preferences, StorageAccess storageAccess) {
         String nicename = StaticVariables.settoload;
 
         // This is the actual set file
@@ -173,7 +179,7 @@ class ExportPreparer {
         return emailIntent;
     }
 
-    Intent exportSong(Context c, Preferences preferences, Bitmap bmp, StorageAccess storageAccess, ProcessSong processSong) {
+    Intent exportSong(Context c, _Preferences preferences, Bitmap bmp, StorageAccess storageAccess, ProcessSong processSong) {
         // Prepare the appropriate attachments
         String emailcontent = "";
         Uri text = null;
@@ -302,7 +308,7 @@ class ExportPreparer {
         return emailIntent;
     }
 
-    Intent exportActivityLog(Context c, Preferences preferences, StorageAccess storageAccess) {
+    Intent exportActivityLog(Context c, _Preferences preferences, StorageAccess storageAccess) {
         String title = c.getString(R.string.app_name) + ": " + c.getString(R.string.edit_song_ccli);
         String subject = title + " - " + c.getString(R.string.ccli_view);
         String text = c.getString(R.string.ccli_church) + ": " +
@@ -359,7 +365,7 @@ class ExportPreparer {
         return uris;
     }
 
-    private void setParser(Context c, Preferences preferences, StorageAccess storageAccess) {
+    private void setParser(Context c, _Preferences preferences, StorageAccess storageAccess) {
         StringBuilder sb = new StringBuilder();
 
         FullscreenActivity.exportsetfilenames.clear();
@@ -384,21 +390,21 @@ class ExportPreparer {
                         switch (xpp.getAttributeValue(null, "type")) {
                             case "song":
                                 Uri songuri = storageAccess.getUriForItem(c, preferences, "Songs",
-                                        LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "path")),
-                                        LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name")));
+                                        _LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "path")),
+                                        _LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name")));
                                 String thisline;
 
                                 // Ensure there is a folder '/'
                                 if (xpp.getAttributeValue(null, "path").equals("")) {
-                                    thisline = "/" + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
+                                    thisline = "/" + _LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
                                 } else {
-                                    thisline = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "path")) + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
+                                    thisline = _LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "path")) + _LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
                                 }
                                 filesinset.add(thisline);
                                 filesinset_ost.add(thisline);
 
                                 // Set the default values exported with the text for the set
-                                song_title = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
+                                song_title = _LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
                                 song_author = "";
                                 song_hymnnumber = "";
                                 song_key = "";
@@ -420,16 +426,16 @@ class ExportPreparer {
                                 sb.append("\n");
                                 break;
                             case "scripture":
-                                sb.append(LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"))).append("\n");
+                                sb.append(_LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"))).append("\n");
                                 break;
                             case "custom":
                                 // Decide if this is a note or a slide
                                 if (xpp.getAttributeValue(null, "name").contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
-                                    String nametemp = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
+                                    String nametemp = _LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
                                     nametemp = nametemp.replace("# " + c.getResources().getString(R.string.note) + " # - ", "");
                                     sb.append(nametemp).append("\n");
                                 } else {
-                                    sb.append(LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"))).append("\n");
+                                    sb.append(_LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"))).append("\n");
                                 }
                                 break;
                             case "image":
@@ -437,14 +443,14 @@ class ExportPreparer {
                                 boolean allimagesdone = false;
                                 ArrayList<String> theseimages = new ArrayList<>();
                                 String imgname;
-                                imgname = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
+                                imgname = _LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
                                 while (!allimagesdone) { // Keep iterating unless the current eventType is the end of the document
                                     if (eventType == XmlPullParser.START_TAG) {
                                         if (xpp.getName().equals("description")) {
                                             xpp.next();
-                                            theseimages.add(LoadXML.parseFromHTMLEntities(xpp.getText()));
-                                            filesinset.add(LoadXML.parseFromHTMLEntities(xpp.getText()));
-                                            filesinset_ost.add(LoadXML.parseFromHTMLEntities(xpp.getText()));
+                                            theseimages.add(_LoadXML.parseFromHTMLEntities(xpp.getText()));
+                                            filesinset.add(_LoadXML.parseFromHTMLEntities(xpp.getText()));
+                                            filesinset_ost.add(_LoadXML.parseFromHTMLEntities(xpp.getText()));
                                         }
 
                                     } else if (eventType == XmlPullParser.END_TAG) {
@@ -503,25 +509,29 @@ class ExportPreparer {
                 if (eventType == XmlPullParser.START_TAG) {
                     switch (xppSong.getName()) {
                         case "author":
-                            song_author = LoadXML.parseFromHTMLEntities(xppSong.nextText());
+                            song_author = _LoadXML.parseFromHTMLEntities(xppSong.nextText());
                             break;
                         case "title":
-                            song_title = LoadXML.parseFromHTMLEntities(xppSong.nextText());
+                            song_title = _LoadXML.parseFromHTMLEntities(xppSong.nextText());
                             break;
-                        /*case "lyrics":
+                        */
+/*case "lyrics":
                             song_lyrics_chords = LoadXML.parseFromHTMLEntities(xppSong.nextText());
-                            break;*/
+                            break;*//*
+
                         case "hymn_number":
-                            song_hymnnumber = LoadXML.parseFromHTMLEntities(xppSong.nextText());
+                            song_hymnnumber = _LoadXML.parseFromHTMLEntities(xppSong.nextText());
                             break;
                         case "key":
-                            song_key = LoadXML.parseFromHTMLEntities(xppSong.nextText());
+                            song_key = _LoadXML.parseFromHTMLEntities(xppSong.nextText());
                             break;
                     }
                 }
                 eventType = xppSong.next();
             }
-            /*// Remove the chord lines from the song lyrics
+            */
+/*//*
+/ Remove the chord lines from the song lyrics
             String[] templyrics = song_lyrics_chords.split("\n");
 
             // Only add the lines that don't start with a .
@@ -534,7 +544,8 @@ class ExportPreparer {
                     }
                 }
                 song_lyrics = song_lyrics_withoutchords.toString();
-            }*/
+            }*//*
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -604,7 +615,8 @@ class ExportPreparer {
         } catch (Exception | OutOfMemoryError e) {
             e.printStackTrace();
         }
-        /*Document document = new Document();
+        */
+/*Document document = new Document();
         OutputStream outputStream = storageAccess.getOutputStream(c,uri);
         try {
             PdfWriter.getInstance(document, outputStream);
@@ -624,9 +636,11 @@ class ExportPreparer {
             document.add(new Paragraph(StaticVariables.mTitle,TitleFontName));
             document.add(new Paragraph(StaticVariables.mAuthor,AuthorFontName));
             addImage(document,bmp);
-            document.close();*/
+            document.close();*//*
+
     }
 
+*/
 /*    private void addImage(Document document, Bitmap bmp) {
         try {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -659,9 +673,10 @@ class ExportPreparer {
         } catch (Exception | OutOfMemoryError e) {
             e.printStackTrace();
         }
-    }*/
+    }*//*
 
-    void createSelectedOSB(Context c, Preferences preferences, String selected, StorageAccess storageAccess) {
+
+    void createSelectedOSB(Context c, _Preferences preferences, String selected, StorageAccess storageAccess) {
         folderstoexport = selected;
         if (backup_create_selected!=null) {
             backup_create_selected.cancel(true);
@@ -670,7 +685,7 @@ class ExportPreparer {
         backup_create_selected.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private String makeBackupZipSelected(Context c, Preferences preferences, StorageAccess storageAccess) {
+    private String makeBackupZipSelected(Context c, _Preferences preferences, StorageAccess storageAccess) {
         // Get the date for the file
         Calendar cal = Calendar.getInstance();
         System.out.println("Current time => " + cal.getTime());
@@ -682,7 +697,7 @@ class ExportPreparer {
         return backup;
     }
 
-    private void zipDirSelected(Context c, Preferences preferences, String zipFileName, StorageAccess storageAccess) {
+    private void zipDirSelected(Context c, _Preferences preferences, String zipFileName, StorageAccess storageAccess) {
         File tempbackup = new File(c.getExternalFilesDir("Backup"),zipFileName);
         //Uri uri = storageAccess.getUriForItem(c, preferences, "", "", zipFileName);
         //Uri uri = Uri.fromFile(tempbackup);
@@ -709,7 +724,7 @@ class ExportPreparer {
     }
 
     //TODO not sure if subfolders (e.g. Band/Temp/Inner are added to the zipfile
-    private void addDirSelected(Context c, Preferences preferences, String subfolder, StorageAccess storageAccess) {
+    private void addDirSelected(Context c, _Preferences preferences, String subfolder, StorageAccess storageAccess) {
         ArrayList<String> files = storageAccess.listFilesInFolder(c, preferences, "Songs", subfolder);
         byte[] tmpBuf = new byte[1024];
         for (String s:files) {
@@ -742,9 +757,9 @@ class ExportPreparer {
         final Context c;
         Intent emailIntent;
         final StorageAccess storageAccess;
-        final Preferences preferences;
+        final _Preferences preferences;
 
-        Backup_Create_Selected(Context context, Preferences p, StorageAccess sA) {
+        Backup_Create_Selected(Context context, _Preferences p, StorageAccess sA) {
             c = context;
             storageAccess = sA;
             preferences = p;
@@ -771,7 +786,7 @@ class ExportPreparer {
                     Uri uri = FileProvider.getUriForFile(c,"OpenSongAppFiles",tempbackup);
 
                     StaticVariables.myToastMessage = c.getString(R.string.backup_success);
-                    ShowToast.showToast(c);
+                    _ShowToast.showToast(c);
                     emailIntent = exportBackup(c, uri);
                     ((Activity) c).startActivityForResult(Intent.createChooser(emailIntent, c.getString(R.string.backup_info)), 12345);
                 } catch (Exception e) {
@@ -817,7 +832,7 @@ class ExportPreparer {
         string = string.replace("\n\n\n", "\n\n");
         return string;
     }
-    private String prepareTextFile(Context c, Preferences preferences, ProcessSong processSong) {
+    private String prepareTextFile(Context c, _Preferences preferences, ProcessSong processSong) {
         // This converts an OpenSong file into a text file
         StringBuilder s = new StringBuilder(StaticVariables.mTitle + "\n");
         if (!StaticVariables.mAuthor.equals("")) {
@@ -840,4 +855,4 @@ class ExportPreparer {
         return string;
     }
 
-}
+}*/

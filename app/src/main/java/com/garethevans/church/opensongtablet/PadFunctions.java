@@ -1,7 +1,11 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import android.net.Uri;
+
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 class PadFunctions {
 
@@ -55,7 +59,7 @@ class PadFunctions {
         return result;
     }
 
-    static boolean isPadValid(Context c, Preferences preferences) {
+    static boolean isPadValid(Context c, _Preferences preferences) {
         // If we are using auto, key needs to be set
         // If we are using audio file link, it needs to exist
         // If we are set to OFF then nope!
@@ -99,4 +103,4 @@ class PadFunctions {
             e.printStackTrace();
         }
     }
-}
+}*/

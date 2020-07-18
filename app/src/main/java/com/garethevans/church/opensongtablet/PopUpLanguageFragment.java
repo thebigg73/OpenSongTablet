@@ -1,9 +1,13 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -15,12 +19,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.Objects;
-
 public class PopUpLanguageFragment extends DialogFragment {
 
     private String tempLanguage;
-    private Preferences preferences;
+    private _Preferences preferences;
 
     static PopUpLanguageFragment newInstance() {
         PopUpLanguageFragment frag;
@@ -46,7 +48,7 @@ public class PopUpLanguageFragment extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(Objects.requireNonNull(getActivity()).getResources().getString(R.string.language));
+        getDialog().setTitle(requireActivity().getResources().getString(R.string.language));
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_language, container, false);
@@ -57,7 +59,7 @@ public class PopUpLanguageFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -66,13 +68,13 @@ public class PopUpLanguageFragment extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
+                _CustomAnimations.animateFAB(saveMe,getActivity());
                 saveMe.setEnabled(false);
                 doSave();
             }
         });
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Initialise the views
         ListView languagescroll = V.findViewById(R.id.languagescroll);
@@ -196,7 +198,7 @@ public class PopUpLanguageFragment extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -205,7 +207,7 @@ public class PopUpLanguageFragment extends DialogFragment {
         preferences.setMyPreferenceString(getActivity(),"language",tempLanguage);
         // Unfortunately this means the MAIN folder name isn't right!
         dismiss();
-        Objects.requireNonNull(getActivity()).recreate();
+        requireActivity().recreate();
     }
 
     @Override
@@ -213,4 +215,4 @@ public class PopUpLanguageFragment extends DialogFragment {
         this.dismiss();
     }
 
-}
+}*/

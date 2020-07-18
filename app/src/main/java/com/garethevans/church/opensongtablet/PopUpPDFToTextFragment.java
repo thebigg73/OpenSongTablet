@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -6,6 +7,12 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.util.Log;
@@ -40,7 +47,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
     private String foundTempo = "";
     private String foundTimeSig = "";
     private StorageAccess storageAccess;
-    private Preferences preferences;
+    private _Preferences preferences;
 
     public interface MyInterface {
         void refreshAll();
@@ -84,7 +91,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 cancelEdit();
             }
@@ -93,7 +100,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         saveMe.hide();
 
         storageAccess = new StorageAccess();
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Initialise the basic views
         TextView pdftotext_found = v.findViewById(R.id.pdftotext_found);
@@ -139,7 +146,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         getPDFExtractedText();
         pdftotext_found.setText(foundText);
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return v;
     }
@@ -215,14 +222,16 @@ public class PopUpPDFToTextFragment extends DialogFragment {
             if (mListener!=null) {
 
                 PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
-                /*if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                */
+/*if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
                     NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
                     nonOpenSongSQLiteHelper.createBasicSong(getActivity(),storageAccess,preferences,StaticVariables.whichSongFolder,StaticVariables.songfilename);
                     NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
                     nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
                 } else {
 
-                }*/
+                }*//*
+
                 StaticVariables.myToastMessage = "";
                 mListener.refreshAll();
                 dismiss();
@@ -231,7 +240,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
             Log.d("d","Error saving");
             StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.save) + " - " +
                     getActivity().getResources().getString(R.string.error);
-            ShowToast.showToast(getActivity());
+            _ShowToast.showToast(getActivity());
         }
     }
 
@@ -360,4 +369,4 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         return fixedtext.toString().trim();
     }
 
-}
+}*/

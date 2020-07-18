@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:text="@string/maximise_columns"
-                android:theme="@style/SwitchStyle" />
+                android:theme="@style/MySwitch" />
 
             <LinearLayout
                 android:id="@+id/maxAutoScale_Group"

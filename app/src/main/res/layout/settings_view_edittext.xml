@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/holderLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:hint="Hint"
+        android:labelFor="@+id/artistSearch"
+        android:layout_margin="2dp"
+        style="@style/editTextLayoutOutline"
+        app:backgroundTint="@color/transparent"
+        app:boxBackgroundColor="@color/transparent">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="The text"
+            android:lines="1"
+            android:maxLines="1"
+            style="@style/editTextFieldOutline"
+            app:backgroundTint="@color/transparent"/>
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>

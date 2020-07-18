@@ -1,0 +1,33 @@
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/infoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@string/info_storage_graph_overview"/>
+
+    <com.garethevans.church.opensongtablet.screensetup.MyZoomLayout
+        android:id="@+id/zoomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:maxZoom="5.5"
+        android:scrollbars="vertical|horizontal"
+        app:hasClickableChildren="true">
+
+        <de.blox.graphview.GraphView
+            android:id="@+id/graph"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:lineColor="@color/colorSecondary"
+            app:lineThickness="2dp"
+            app:useMaxSize="true" />
+
+    </com.garethevans.church.opensongtablet.screensetup.MyZoomLayout>
+
+</LinearLayout>

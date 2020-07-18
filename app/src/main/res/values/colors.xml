@@ -1,6 +1,7 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="transparent">#00000000</color>
     <color name="colorPrimary">#1F1B24</color>
+    <color name="showcaseColor">#ee1f1b24</color>
     <color name="primaryDark">#010D12</color>
     <color name="darkBackground">#121212</color>
     <color name="altPrimary">#0F1130</color>
@@ -22,12 +23,14 @@
     <color name="green">#00aa00</color>
     <color name="grey">#555555</color>
     <color name="dark">#222233</color>
+    <color name="darkgrey">#222222</color>
     <color name="lightgrey">#888888</color>
     <color name="vlightgrey">#BBBBBB</color>
     <color name="white">#FFFFFF</color>
     <color name="yellow">#FFFF00</color>
     <color name="darkyellow">#BBBB00</color>
     <color name="popupcolor">#232333</color>
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">@color/lightgrey</color>
 
 
 

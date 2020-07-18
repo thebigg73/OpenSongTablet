@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -15,6 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
 
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
@@ -53,7 +57,7 @@ public class PopUpDisplayOther extends DialogFragment {
     private Button extraInformation_Button, popupSettings_Button, actionBarSettings_Button;
     private SeekBar menuWidth_SeekBar, menuTextSize_SeekBar;
     private TextView menuWidth_TextView, menuTextSize_TextView;
-    private Preferences preferences;
+    private _Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,7 +81,7 @@ public class PopUpDisplayOther extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
+                _CustomAnimations.animateFAB(closeMe, getActivity());
                 closeMe.setEnabled(false);
                 mListener.refreshAll();
                 dismiss();
@@ -86,7 +90,7 @@ public class PopUpDisplayOther extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Initialise the views
         initialiseViews(V);
@@ -94,7 +98,7 @@ public class PopUpDisplayOther extends DialogFragment {
         // Set the buttons and seek bars
         setListeners();
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
 
         return V;
     }
@@ -217,3 +221,4 @@ public class PopUpDisplayOther extends DialogFragment {
     }
 }
 
+*/

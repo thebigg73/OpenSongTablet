@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/menu_songs"
+    android:orientation="vertical">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/folderRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:hint="@string/folder"
+        style="@style/exposedDropDown"
+        android:labelFor="@+id/folderSearch">
+
+        <AutoCompleteTextView
+            android:id="@+id/folderSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/exposedDropDownItem"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/artistRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/artist"
+        android:labelFor="@+id/artistSearch"
+        android:layout_margin="2dp"
+        style="@style/editTextLayoutOutline">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/artistSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/editTextFieldOutline"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/keyRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:hint="@string/edit_song_key"
+        style="@style/exposedDropDown"
+        android:labelFor="@+id/keySearch">
+
+        <AutoCompleteTextView
+            android:id="@+id/keySearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/exposedDropDownItem"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tagRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/edit_song_theme"
+        android:labelFor="@+id/tagSearch"
+        android:layout_margin="2dp"
+        style="@style/editTextLayoutOutline">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tagSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/editTextFieldOutline" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/filterRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/filter_results"
+        android:labelFor="@+id/filterSearch"
+        android:layout_margin="2dp"
+        style="@style/editTextLayoutOutline">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/filterSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/editTextFieldOutline"/>
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>

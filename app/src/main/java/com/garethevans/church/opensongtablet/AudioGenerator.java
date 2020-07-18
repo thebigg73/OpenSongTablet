@@ -1,9 +1,12 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.util.Log;
+
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 class AudioGenerator {
 
@@ -112,4 +115,4 @@ class AudioGenerator {
         }
 	}
 
-}
+}*/

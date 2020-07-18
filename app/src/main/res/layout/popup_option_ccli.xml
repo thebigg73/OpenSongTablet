@@ -87,7 +87,7 @@
                 android:drawableStart="@drawable/ic_format_list_numbers_white_36dp"
                 android:text="@string/ccli_automatic"
                 android:textColor="#fff"
-                android:theme="@style/SwitchStyle"
+                android:theme="@style/MySwitch"
                 android:textSize="12sp"
                 app:showText="false" />
 

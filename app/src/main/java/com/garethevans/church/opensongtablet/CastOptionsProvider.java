@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
@@ -21,4 +22,4 @@ class CastOptionsProvider implements OptionsProvider {
         return null;
     }
 
-}
+}*/

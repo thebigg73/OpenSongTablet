@@ -14,23 +14,20 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavHostController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.garethevans.church.opensongtablet.NonOpenSongSQLiteHelper;
-import com.garethevans.church.opensongtablet.Preferences;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.SQLiteHelper;
-import com.garethevans.church.opensongtablet.SetTypeFace;
-import com.garethevans.church.opensongtablet.StaticVariables;
-import com.garethevans.church.opensongtablet.StorageAccess;
+import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.databinding.BootupLogoBinding;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
+import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import java.util.ArrayList;
 
@@ -61,6 +58,10 @@ public class BootUpFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        // TODO
+        // REMOVE BEFORE RELEASE!!!!!
+        //MaterialShowcaseView.resetAll(requireActivity());
 
         StaticVariables.homeFragment = false;  // Set to true for Performance/Stage/Presentation only
 
@@ -156,7 +157,6 @@ public class BootUpFragment extends Fragment {
 
         if (getActivity() != null) {
             new Thread(() -> {
-                Log.d("BootUpFragment", "run()");
                 // Set up the Typefaces
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
@@ -173,15 +173,23 @@ public class BootUpFragment extends Fragment {
 
                 Log.d("BootUpFragment", message);
 
-                // Check for saved storage locations
-                getActivity().runOnUiThread(() -> myView.currentAction.setText(message));
+
+                getActivity().runOnUiThread(() -> {
+
+
+                    // Tell the user we're initialising the storage
+                    myView.currentAction.setText(message);
+                });
                 setFolderAndSong();
 
+                // Check for saved storage locations
                 final String progress = storageAccess.createOrCheckRootFolders(getActivity(), uriTree, preferences);
                 boolean foldersok = !progress.contains("Error");
 
                 if (foldersok) {
 
+                    // Get the songIds  these are basically folder/file pairs for proper indexing later
+                    // These are stored to a temporary file in the app storage folder
                     ArrayList<String> songIds = new ArrayList<>();
                     try {
                         songIds = storageAccess.listSongs(getActivity(), preferences);
@@ -211,32 +219,11 @@ public class BootUpFragment extends Fragment {
 
                     // Finished indexing
                     message = getString(R.string.success);
-                    Log.d("BootUpFragment", message);
-
-                    // Check for saved storage locations
                     getActivity().runOnUiThread(() -> myView.currentAction.setText(message));
 
                     StaticVariables.whichMode = preferences.getMyPreferenceString(getActivity(), "whichMode", "Performance");
 
-                    NavOptions navOptions = new NavOptions.Builder()
-                            .setPopUpTo(R.id.nav_boot, true)
-                            .build();
-
-                    getActivity().runOnUiThread(() -> {
-                        switch (StaticVariables.whichMode) {
-                            case "Performance":
-                            case "Stage":
-                            default:
-                                NavHostFragment.findNavController(BootUpFragment.this)
-                                        .navigate(R.id.nav_performance,bundle,navOptions);
-                                break;
-
-                            case "Presentation":
-                                NavHostFragment.findNavController(BootUpFragment.this)
-                                        .navigate(R.id.nav_presentation,bundle,navOptions);
-                                break;
-                        }
-                    });
+                    getActivity().runOnUiThread(() -> mainActivityInterface.initialiseActivity());
                 } else {
                     // There was a problem with the folders, so restart the app!
                     Log.d("BootUpFragment", "problem with folders");

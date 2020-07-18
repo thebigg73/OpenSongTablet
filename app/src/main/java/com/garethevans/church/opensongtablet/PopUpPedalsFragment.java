@@ -1,11 +1,8 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.widget.SwitchCompat;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +15,16 @@ import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.DialogFragment;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -39,7 +46,7 @@ public class PopUpPedalsFragment extends DialogFragment {
     private int keyRepeatCount = 20;
     private String keyRepeatCountText = "20";
     private ArrayList<String> availableactions;
-    private Preferences preferences;
+    private _Preferences preferences;
 
     private int assignWhich = -1;
 
@@ -63,7 +70,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -71,7 +78,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Initialise the views
         initialiseViews(V);
@@ -85,7 +92,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         // Set AirTurnMode actions
         airTurnModeActions();
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -789,7 +796,7 @@ public class PopUpPedalsFragment extends DialogFragment {
                     if (keyCode == KeyEvent.KEYCODE_BACK && assignWhich>-1) {
                         //User has pressed the back key - not allowed!!!!
                         StaticVariables.myToastMessage = getResources().getString(R.string.no);
-                        ShowToast.showToast(getActivity());
+                        _ShowToast.showToast(getActivity());
                     } else if (keyCode == KeyEvent.KEYCODE_BACK && assignWhich==-1) {
                         dismiss();
                         return false;
@@ -820,4 +827,4 @@ public class PopUpPedalsFragment extends DialogFragment {
         this.dismiss();
     }
 
-}
+}*/

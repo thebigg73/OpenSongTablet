@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.Manifest;
@@ -21,6 +22,11 @@ import android.os.Handler;
 import android.os.ParcelUuid;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.util.Log;
@@ -87,7 +93,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
+                _CustomAnimations.animateFAB(closeMe, getActivity());
                 closeMe.setEnabled(false);
                 try {
                     dismiss();
@@ -99,7 +105,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        Preferences preferences = new Preferences();
+        _Preferences preferences = new _Preferences();
 
         // Initialise the basic views
         progressBar = V.findViewById(R.id.progressBar);
@@ -171,7 +177,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
             mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
         }
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -288,7 +294,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
             mBluetoothLeScanner.startScan(scanFilters, scanSettings, scanCallback);
         } else {
             StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.nothighenoughapi);
-            ShowToast.showToast(getActivity());
+            _ShowToast.showToast(getActivity());
         }
     }
 
@@ -360,11 +366,11 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
                 }
             },1000);
             StaticVariables.myToastMessage = getString(R.string.ok);
-            ShowToast.showToast(getContext());
+            _ShowToast.showToast(getContext());
         } catch (Exception e) {
             e.printStackTrace();
             StaticVariables.myToastMessage = getString(R.string.error);
-            ShowToast.showToast(getContext());
+            _ShowToast.showToast(getContext());
         }
     }
 
@@ -376,3 +382,4 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         }
     }
 }
+*/

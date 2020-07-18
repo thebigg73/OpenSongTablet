@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -5,6 +6,13 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SQLite;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SQLiteHelper;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SongFolders;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -62,7 +70,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
     private TextView foundSongFolder_TextView;
     private ListView chooseFolders_ListView;
     private boolean songisvalid = false;
-    private Preferences preferences;
+    private _Preferences preferences;
     private ArrayList<String> foldernames;
 
     @Override
@@ -77,7 +85,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
+                _CustomAnimations.animateFAB(closeMe, getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -85,8 +93,8 @@ public class PopUpRandomSongFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
-        SongFolders songFolders = new SongFolders();
+        preferences = new _Preferences();
+        _SongFolders songFolders = new _SongFolders();
 
         // Initialise the views
         foundSong_Button = V.findViewById(R.id.foundSong_Button);
@@ -131,7 +139,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -220,10 +228,10 @@ public class PopUpRandomSongFragment extends DialogFragment {
         try {
             // This feature randomly picks a song from the user's database
             ArrayList<String> songstochoosefrom = new ArrayList<>();
-            SQLiteHelper sqLiteHelper = new SQLiteHelper(getActivity());
-            ArrayList<SQLite> allsongs = sqLiteHelper.getAllSongs(getActivity());
+            _SQLiteHelper sqLiteHelper = new _SQLiteHelper(getActivity());
+            ArrayList<_SQLite> allsongs = sqLiteHelper.getAllSongs(getActivity());
 
-            for (SQLite check : allsongs) {
+            for (_SQLite check : allsongs) {
                 if (preferences.getMyPreferenceString(getActivity(), "randomSongFolderChoice", "").
                         contains(check.getFolder())) {
                     songstochoosefrom.add(check.getFolder() + "__" + check.getFilename());
@@ -248,3 +256,4 @@ public class PopUpRandomSongFragment extends DialogFragment {
 
 }
 
+*/

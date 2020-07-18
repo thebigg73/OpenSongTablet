@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -6,6 +7,14 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLite;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLiteHelper;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.SwitchCompat;
@@ -64,7 +73,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
     private int total_counts = 0;
     private int metronomecolor;
 
-    private Preferences preferences;
+    private _Preferences preferences;
     private StorageAccess storageAccess;
 
     @Override
@@ -76,7 +85,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
             dismiss();
         }
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
         storageAccess = new StorageAccess();
 
         switch (StaticVariables.mDisplayTheme) {
@@ -85,7 +94,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
                 metronomecolor = preferences.getMyPreferenceInt(getActivity(),"dark_metronomeColor",StaticVariables.darkishred);
                 break;
             case "light":
-                metronomecolor = preferences.getMyPreferenceInt(getActivity(),"light_metronomeColor",StaticVariables.darkishred);
+                metronomecolor = preferences.getMyPreferenceInt(getActivity(),"light_metronomeColor", StaticVariables.darkishred);
                 break;
             case "custom1":
                 metronomecolor = preferences.getMyPreferenceInt(getActivity(),"custom1_metronomeColor",StaticVariables.darkishred);
@@ -109,7 +118,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 doSave();
             }
@@ -240,12 +249,12 @@ public class PopUpMetronomeFragment extends DialogFragment {
                     }
                 } else {
                     StaticVariables.myToastMessage = getString(R.string.notset);
-                    ShowToast.showToast(getActivity());
+                    _ShowToast.showToast(getActivity());
                 }
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -254,8 +263,8 @@ public class PopUpMetronomeFragment extends DialogFragment {
         PopUpEditSongFragment.prepareSongXML();
         try {
             if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
-                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+                _NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new _NonOpenSongSQLiteHelper(getActivity());
+                _NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
                 nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
             } else {
                 PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
@@ -268,7 +277,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
             StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.save) + " - " +
                     getActivity().getResources().getString(R.string.error);
         }
-        ShowToast.showToast(getActivity());
+        _ShowToast.showToast(getActivity());
         dismiss();
     }
 
@@ -538,3 +547,4 @@ public class PopUpMetronomeFragment extends DialogFragment {
     }
 
 }
+*/

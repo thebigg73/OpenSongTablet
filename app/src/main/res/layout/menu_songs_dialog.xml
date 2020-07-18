@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/myActionsScrollView"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:layout_margin="16dp"
+    android:background="@drawable/rounded_dialog">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/createButton"
+            style="@style/BottomSheetButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/create"
+            app:icon="@drawable/ic_plus_white_36dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/manageStorage"
+            style="@style/BottomSheetButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/storage_choose"
+            app:icon="@drawable/ic_database_white_36dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/importButton"
+            style="@style/BottomSheetButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/import_file"
+            app:icon="@drawable/ic_download_white_36dp" />
+
+    </LinearLayout>
+</ScrollView>

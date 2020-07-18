@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -21,6 +22,11 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpAreYouSureFragment;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._Transpose;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.peak.salut.Callbacks.SalutCallback;
 import com.peak.salut.Callbacks.SalutDeviceCallback;
@@ -360,7 +366,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         }
     }
 
-    static void optionListeners(View v, Context c, Preferences preferences, StorageAccess storageAccess) {
+    static void optionListeners(View v, Context c, _Preferences preferences, StorageAccess storageAccess) {
 
         textSize = preferences.getMyPreferenceFloat(c,"songMenuAlphaIndexSize",14.0f);
 
@@ -532,7 +538,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     StaticVariables.myToastMessage = "MIDI - " + c.getString(R.string.nothighenoughapi);
-                    ShowToast.showToast(c);
+                    _ShowToast.showToast(c);
                 }
             });
         }
@@ -546,7 +552,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         closeOptionsFAB.setOnClickListener(new FABCloseListener());
     }
 
-    private static void setOptionListener(View v, final Context c, final Preferences preferences, final StorageAccess storageAccess) {
+    private static void setOptionListener(View v, final Context c, final _Preferences preferences, final StorageAccess storageAccess) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -621,7 +627,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                     String message = c.getResources().getString(R.string.save) + " \'" + setnamenice + "\"?";
                     StaticVariables.myToastMessage = message;
                     try {
-                        DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+                        DialogFragment newFragment = _PopUpAreYouSureFragment.newInstance(message);
                         newFragment.show(fm,message);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -744,7 +750,8 @@ public class OptionMenuListeners extends AppCompatActivity {
         });
 
         // Add the set list to the menu
-        /*if (StaticVariables.mSetList!=null) {
+
+        if (StaticVariables.mSetList!=null) {
             for (int x = 0; x< StaticVariables.mSetList.length; x++) {
                 TextView tv = new TextView(c);
                 tv.setText(StaticVariables.mSetList[x]);
@@ -795,11 +802,12 @@ public class OptionMenuListeners extends AppCompatActivity {
                 });
                 setLinearLayout.addView(tv);
             }
-        }*/
+        }
+
 
     }
 
-    private static void songOptionListener(View v, final Context c, final Preferences preferences) {
+    private static void songOptionListener(View v, final Context c, final _Preferences preferences) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -956,7 +964,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                     }
                 } else {
                     StaticVariables.myToastMessage = c.getString(R.string.not_allowed);
-                    ShowToast.showToast(c);
+                    _ShowToast.showToast(c);
                 }
             }
         });
@@ -972,7 +980,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                     }
                 } else {
                     StaticVariables.myToastMessage = c.getString(R.string.not_allowed);
-                    ShowToast.showToast(c);
+                    _ShowToast.showToast(c);
                 }
             }
         });
@@ -1086,7 +1094,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                     }
                 } else {
                     StaticVariables.myToastMessage = c.getString(R.string.not_allowed);
-                    ShowToast.showToast(c);
+                    _ShowToast.showToast(c);
                 }
             }
         });
@@ -1208,7 +1216,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                     }
                 } else {
                     StaticVariables.myToastMessage = c.getString(R.string.not_allowed);
-                    ShowToast.showToast(c);
+                    _ShowToast.showToast(c);
                 }
             }
         });
@@ -1228,7 +1236,7 @@ public class OptionMenuListeners extends AppCompatActivity {
 
     }
 
-    private static void chordOptionListener(View v, final Context c, final StorageAccess storageAccess, final Preferences preferences) {
+    private static void chordOptionListener(View v, final Context c, final StorageAccess storageAccess, final _Preferences preferences) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -1331,7 +1339,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                     }
                 } else {
                     StaticVariables.myToastMessage = c.getString(R.string.not_allowed);
-                    ShowToast.showToast(c);
+                    _ShowToast.showToast(c);
                 }
             }
         });
@@ -1339,16 +1347,16 @@ public class OptionMenuListeners extends AppCompatActivity {
         chordsSharpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Transpose transpose = new Transpose();
+                _Transpose transpose = new _Transpose();
                 StaticVariables.whattodo = "transpose";
                 if (FullscreenActivity.isPDF) {
                     // Can't do this action on a pdf!
                     StaticVariables.myToastMessage = c.getResources().getString(R.string.pdf_functionnotavailable);
-                    ShowToast.showToast(c);
+                    _ShowToast.showToast(c);
                 } else if (!FullscreenActivity.isSong) {
                     // Editing a slide / note / scripture / image
                     StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
-                    ShowToast.showToast(c);
+                    _ShowToast.showToast(c);
                 } else {
                     StaticVariables.transposeDirection = "0";
                     transpose.checkChordFormat(c,preferences);
@@ -1370,16 +1378,16 @@ public class OptionMenuListeners extends AppCompatActivity {
         chordsFlatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Transpose transpose = new Transpose();
+                _Transpose transpose = new _Transpose();
                 StaticVariables.whattodo = "transpose";
                 if (FullscreenActivity.isPDF) {
                     // Can't do this action on a pdf!
                     StaticVariables.myToastMessage = c.getResources().getString(R.string.pdf_functionnotavailable);
-                    ShowToast.showToast(c);
+                    _ShowToast.showToast(c);
                 } else if (!FullscreenActivity.isSong) {
                     // Editing a slide / note / scripture / image
                     StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
-                    ShowToast.showToast(c);
+                    _ShowToast.showToast(c);
                 } else {
                     StaticVariables.transposeDirection = "0";
                     transpose.checkChordFormat(c,preferences);
@@ -1491,15 +1499,15 @@ public class OptionMenuListeners extends AppCompatActivity {
         chordsConvertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Transpose transpose = new Transpose();
+                _Transpose transpose = new _Transpose();
                 if (FullscreenActivity.isPDF) {
                     // Can't do this action on a pdf!
                     StaticVariables.myToastMessage = c.getResources().getString(R.string.pdf_functionnotavailable);
-                    ShowToast.showToast(c);
+                    _ShowToast.showToast(c);
                 } else if (!FullscreenActivity.isSong) {
                     // Editing a slide / note / scripture / image
                     StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
-                    ShowToast.showToast(c);
+                    _ShowToast.showToast(c);
                 } else {
                     transpose.convertChords(c,storageAccess,preferences);
                 }
@@ -1697,7 +1705,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                     mListener.openFragment();
                 } else {
                     StaticVariables.myToastMessage = view.getContext().getString(R.string.nodisplays);
-                    ShowToast.showToast(view.getContext());
+                    _ShowToast.showToast(view.getContext());
                 }
             }
         });
@@ -1707,7 +1715,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             public void onClick(View view) {
                 if (mListener!=null) {
                     StaticVariables.myToastMessage = view.getContext().getString(R.string.connections_searching);
-                    ShowToast.showToast(view.getContext());
+                    _ShowToast.showToast(view.getContext());
                     StaticVariables.whattodo = "hdmi";
                     mListener.connectHDMI();
                 }
@@ -1845,7 +1853,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             public void onClick(View view) {
                 StaticVariables.whattodo = "download_band";
                 StaticVariables.myToastMessage = c.getString(R.string.wait);
-                ShowToast.showToast(c);
+                _ShowToast.showToast(c);
                 if (mListener!=null) {
                     mListener.doDownload("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_leDR5bFFjRVVxVjA");
                     mListener.closeMyDrawers("option");
@@ -1857,7 +1865,7 @@ public class OptionMenuListeners extends AppCompatActivity {
             public void onClick(View view) {
                 StaticVariables.whattodo = "download_church";
                 StaticVariables.myToastMessage = c.getString(R.string.wait);
-                ShowToast.showToast(c);
+                _ShowToast.showToast(c);
                 if (mListener!=null) {
                     mListener.doDownload("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_lbVY3VVVOMkc5OGM");
                     mListener.closeMyDrawers("option");
@@ -1895,7 +1903,7 @@ public class OptionMenuListeners extends AppCompatActivity {
 
     }
 
-    private static void storageOptionListener(View v, final Context c, final Preferences preferences) {
+    private static void storageOptionListener(View v, final Context c, final _Preferences preferences) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -2136,7 +2144,7 @@ public class OptionMenuListeners extends AppCompatActivity {
 
     }
 
-    private static void midiOptionListener(View v, final Context c, final Preferences preferences) {
+    private static void midiOptionListener(View v, final Context c, final _Preferences preferences) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -2185,7 +2193,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                                 c.getResources().getString(R.string.connections_success);
                         FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
                         setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-                        ShowToast.showToast(c);
+                        _ShowToast.showToast(c);
                     }
                 });
             } catch (Exception e) {
@@ -2200,7 +2208,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                     " " + FullscreenActivity.mBluetoothName;
             FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
             setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-            ShowToast.showToast(c);
+            _ShowToast.showToast(c);
         } else {
             try {
                 if (FullscreenActivity.network!=null) {
@@ -2229,7 +2237,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                                 " " + hostname.readableName;
                         FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
                         setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-                        ShowToast.showToast(c);
+                        _ShowToast.showToast(c);
                         registerWithHost(c,hostname);
                     }
                 }, true);
@@ -2268,7 +2276,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                             " " + possibleHost.readableName;
                     FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
                     setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-                    ShowToast.showToast(c);
+                    _ShowToast.showToast(c);
                     FullscreenActivity.clientButtonText = (c.getResources().getString(R.string.connections_disconnect) +
                             " " + possibleHost.readableName).toUpperCase(StaticVariables.locale);
                     setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
@@ -2281,7 +2289,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                             c.getResources().getString(R.string.connections_failure);
                     FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
                     setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-                    ShowToast.showToast(c);
+                    _ShowToast.showToast(c);
                     try {
                         FullscreenActivity.network.stopServiceDiscovery(true);
                     } catch (Exception e) {
@@ -2298,7 +2306,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         }
     }
 
-    private static void modeOptionListener(View v, final Context c, final Preferences preferences) {
+    private static void modeOptionListener(View v, final Context c, final _Preferences preferences) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -2349,7 +2357,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         checkVisible.setVisibility(View.VISIBLE);
     }
 
-    private static void gestureOptionListener(View v, final Context c, final Preferences preferences) {
+    private static void gestureOptionListener(View v, final Context c, final _Preferences preferences) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -2478,7 +2486,7 @@ public class OptionMenuListeners extends AppCompatActivity {
 
     }
 
-    private static void autoscrollOptionListener(View v, final Context c, final Preferences preferences) {
+    private static void autoscrollOptionListener(View v, final Context c, final _Preferences preferences) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -2585,7 +2593,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         });
     }
 
-    private static void padOptionListener(View v, final Context c, final Preferences preferences) {
+    private static void padOptionListener(View v, final Context c, final _Preferences preferences) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -2693,7 +2701,7 @@ public class OptionMenuListeners extends AppCompatActivity {
 
     }
 
-    private static void metronomeOptionListener(View v, final Context c, final Preferences preferences) {
+    private static void metronomeOptionListener(View v, final Context c, final _Preferences preferences) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -2790,7 +2798,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         });
     }
 
-    private static void ccliOptionListener(View v, final Context c, final Preferences preferences) {
+    private static void ccliOptionListener(View v, final Context c, final _Preferences preferences) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -2845,7 +2853,7 @@ public class OptionMenuListeners extends AppCompatActivity {
         closeOptionsFAB.setOnClickListener(new FABCloseListener());
     }
 
-    private static void otherOptionListener(View v, final Context c, final Preferences preferences) {
+    private static void otherOptionListener(View v, final Context c, final _Preferences preferences) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -3048,11 +3056,11 @@ public class OptionMenuListeners extends AppCompatActivity {
     }
 
     private static class ModeChangeListener implements View.OnClickListener {
-        Preferences preferences;
+        _Preferences preferences;
         String mode;
         Context c;
 
-        ModeChangeListener(Context c, Preferences prefs, String mode) {
+        ModeChangeListener(Context c, _Preferences prefs, String mode) {
             this.c = c;
             this.preferences = prefs;
             this.mode = mode;
@@ -3087,10 +3095,10 @@ public class OptionMenuListeners extends AppCompatActivity {
     private static class SwitchBooleanSaveListener implements CompoundButton.OnCheckedChangeListener {
 
         Context c;
-        Preferences preferences;
+        _Preferences preferences;
         String prefName;
 
-        SwitchBooleanSaveListener(Context ctx, Preferences prefs, String pName) {
+        SwitchBooleanSaveListener(Context ctx, _Preferences prefs, String pName) {
             this.c = ctx;
             this.preferences = prefs;
             this.prefName = pName;
@@ -3102,4 +3110,4 @@ public class OptionMenuListeners extends AppCompatActivity {
         }
     }
 
-}
+}*/

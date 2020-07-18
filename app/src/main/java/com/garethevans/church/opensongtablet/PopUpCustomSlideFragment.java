@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -15,6 +16,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 
@@ -122,7 +129,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         // Initialise the helper classes
         storageAccess = new StorageAccess();
         bibleC = new Bible();
-        Preferences preferences = new Preferences();
+        _Preferences preferences = new _Preferences();
 
         V = inflater.inflate(R.layout.popup_customslidecreator, container, false);
 
@@ -240,7 +247,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             }
         }).start();
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
 
         return V;
     }
@@ -253,7 +260,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
+                _CustomAnimations.animateFAB(closeMe, getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -262,7 +269,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe, getActivity());
+                _CustomAnimations.animateFAB(saveMe, getActivity());
                 saveMe.setEnabled(false);
                 doSave();
             }
@@ -671,7 +678,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         @Override
         protected void onPostExecute(String s) {
             if (!StaticVariables.myToastMessage.equals("")) {
-                ShowToast.showToast(getActivity());
+                _ShowToast.showToast(getActivity());
             }
 
             // Try to update the views sent
@@ -772,4 +779,4 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         this.dismiss();
     }
 
-}
+}*/

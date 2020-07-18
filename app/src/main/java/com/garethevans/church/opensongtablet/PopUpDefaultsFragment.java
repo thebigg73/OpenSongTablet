@@ -1,8 +1,12 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -27,7 +31,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
     private Button bc_button;
     private Button br_button;
 
-    private Preferences preferences;
+    private _Preferences preferences;
 
     static PopUpDefaultsFragment newInstance() {
         PopUpDefaultsFragment frag;
@@ -57,7 +61,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -65,7 +69,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Initialise the views
         SeekBar popupAlpha_seekBar = V.findViewById(R.id.popupAlpha_seekBar);
@@ -93,7 +97,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 preferences.setMyPreferenceFloat(getActivity(),"popupAlpha",((i+6.0f) / 10.0f));
-                PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(),preferences);
+                _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(),preferences);
             }
 
             @Override
@@ -106,7 +110,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 preferences.setMyPreferenceFloat(getActivity(),"popupDim", (float) i / 10.0f);
-                PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(),preferences);
+                _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(),preferences);
             }
 
             @Override
@@ -126,7 +130,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(),preferences);
+                _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(),preferences);
             }
         });
 
@@ -240,7 +244,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
                     br_button.setBackgroundResource(R.drawable.blue_button);
                     break;
             }
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(),preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(),preferences);
     }
 
     @Override
@@ -249,3 +253,4 @@ public class PopUpDefaultsFragment extends DialogFragment {
     }
 
 }
+*/

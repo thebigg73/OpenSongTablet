@@ -214,7 +214,7 @@
                 android:drawableStart="@drawable/ic_check_white_36dp"
                 android:gravity="center_vertical"
                 android:layout_margin="4dp"
-                android:theme="@style/SwitchStyle"
+                android:theme="@style/MySwitch"
                 android:text="@string/setquickcheck"
                 android:textColor="#fff"
                 android:textSize="12sp"

@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -7,6 +8,11 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SQLiteHelper;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -34,7 +40,7 @@ public class PopUpChooseFolderFragment extends DialogFragment {
     }
 
     private MyInterface mListener;
-    private SQLiteHelper sqLiteHelper;
+    private _SQLiteHelper sqLiteHelper;
     private ArrayList<String> songfolders;
 
     @Override
@@ -75,7 +81,7 @@ public class PopUpChooseFolderFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, PopUpChooseFolderFragment.this.getActivity());
+                _CustomAnimations.animateFAB(closeMe, PopUpChooseFolderFragment.this.getActivity());
                 closeMe.setEnabled(false);
                 PopUpChooseFolderFragment.this.dismiss();
             }
@@ -85,8 +91,8 @@ public class PopUpChooseFolderFragment extends DialogFragment {
 
         lv = V.findViewById(R.id.songfolders_ListView);
 
-        Preferences preferences = new Preferences();
-        sqLiteHelper = new SQLiteHelper(getActivity());
+        _Preferences preferences = new _Preferences();
+        sqLiteHelper = new _SQLiteHelper(getActivity());
 
         // Update the song folders
 
@@ -107,7 +113,7 @@ public class PopUpChooseFolderFragment extends DialogFragment {
             }
         }).start();
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -134,7 +140,7 @@ public class PopUpChooseFolderFragment extends DialogFragment {
         @Override
         protected void onPostExecute(String s) {
             try {
-                ArrayAdapter<String> lva = new ArrayAdapter<>(c, R.layout.songlistitem, songfolders);
+                ArrayAdapter<String> lva = new ArrayAdapter<>(c, R.layout._songlistitem, songfolders);
                 lv.setAdapter(lva);
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -161,4 +167,4 @@ public class PopUpChooseFolderFragment extends DialogFragment {
         this.dismiss();
     }
 
-}
+}*/

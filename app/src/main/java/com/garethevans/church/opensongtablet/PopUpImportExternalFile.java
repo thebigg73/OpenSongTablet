@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -9,6 +10,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ChordProConvert;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._OnSongConvert;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SQLiteHelper;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SetActions;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SongFolders;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SongXML;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.text.TextUtils;
@@ -43,7 +56,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         return frag;
     }
 
-    private SetActions setActions;
+    private _SetActions setActions;
 
     private MyInterface mListener;
 
@@ -72,12 +85,12 @@ public class PopUpImportExternalFile extends DialogFragment {
     // Helper classes
     private Bible bibleC;
     private StorageAccess storageAccess;
-    private Preferences preferences;
-    private SongFolders songFolders;
-    private OnSongConvert onSongConvert;
-    private ChordProConvert chordProConvert;
-    private SongXML songXML;
-    private SQLiteHelper sqLiteHelper;
+    private _Preferences preferences;
+    private _SongFolders songFolders;
+    private _OnSongConvert onSongConvert;
+    private _ChordProConvert chordProConvert;
+    private _SongXML songXML;
+    private _SQLiteHelper sqLiteHelper;
 
     private String what, errormessage = "", filetype, chosenfolder;
 
@@ -91,13 +104,13 @@ public class PopUpImportExternalFile extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         bibleC = new Bible();
         storageAccess = new StorageAccess();
-        preferences = new Preferences();
-        songFolders = new SongFolders();
-        setActions = new SetActions();
-        onSongConvert = new OnSongConvert();
-        chordProConvert = new ChordProConvert();
-        songXML = new SongXML();
-        sqLiteHelper = new SQLiteHelper(getActivity());
+        preferences = new _Preferences();
+        songFolders = new _SongFolders();
+        setActions = new _SetActions();
+        onSongConvert = new _OnSongConvert();
+        chordProConvert = new _ChordProConvert();
+        songXML = new _SongXML();
+        sqLiteHelper = new _SQLiteHelper(getActivity());
 
         View v = inflater.inflate(R.layout.popup_importexternalfile, container, false);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -111,7 +124,7 @@ public class PopUpImportExternalFile extends DialogFragment {
 
         initialiseLocationsToSave();
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
 
         return v;
     }
@@ -224,7 +237,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
+                _CustomAnimations.animateFAB(closeMe, getActivity());
                 closeMe.setEnabled(false);
                 try {
                     dismiss();
@@ -236,7 +249,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe, getActivity());
+                _CustomAnimations.animateFAB(saveMe, getActivity());
                 saveMe.setEnabled(false);
                 overwrite = overWrite_CheckBox.isChecked();
                 getChosenFolder();
@@ -421,7 +434,7 @@ public class PopUpImportExternalFile extends DialogFragment {
 
         // Add the songs to the SQLite database if it isn't a custom slide/scripture
         if (!subfolder.startsWith("../")) {
-            SQLiteHelper sqLiteHelper = new SQLiteHelper(getActivity());
+            _SQLiteHelper sqLiteHelper = new _SQLiteHelper(getActivity());
             sqLiteHelper.createSong(getActivity(), subfolder, song);
         }
 
@@ -708,7 +721,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         protected void onPostExecute(String s) {
             // This bit will take a while, so will be called in an async task
             try {
-                ShowToast.showToast(getActivity());
+                _ShowToast.showToast(getActivity());
                 if (mListener != null) {
                     mListener.onSongImportDone();
                 }
@@ -720,4 +733,4 @@ public class PopUpImportExternalFile extends DialogFragment {
         }
     }
 
-}
+}*/

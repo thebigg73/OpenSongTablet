@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -13,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 // All of the classes after initialisation are the same for the PresentationService and PresentationServiceHDMI files
 // The both call functions in the PresentationCommon file
@@ -47,7 +51,7 @@ class PresentationServiceHDMI extends Presentation
     private static SurfaceView projected_SurfaceView;
     private static SurfaceHolder projected_SurfaceHolder;
     private static StorageAccess storageAccess;
-    private static Preferences preferences;
+    private static _Preferences preferences;
     private static ProcessSong processSong;
     private static PresentationCommon presentationCommon;
     @SuppressLint("StaticFieldLeak")
@@ -61,7 +65,7 @@ class PresentationServiceHDMI extends Presentation
             setContentView(R.layout.cast_screen);
 
             storageAccess = new StorageAccess();
-            preferences = new Preferences();
+            preferences = new _Preferences();
             presentationCommon = new PresentationCommon();
 
             getDefaultColors();
@@ -142,7 +146,7 @@ class PresentationServiceHDMI extends Presentation
         }
     }
     static void changeMargins() {
-        presentationCommon.changeMargins(c,preferences,songinfo_TextView,projectedPage_RelativeLayout,StaticVariables.cast_presoInfoColor);
+        presentationCommon.changeMargins(c,preferences,songinfo_TextView,projectedPage_RelativeLayout, StaticVariables.cast_presoInfoColor);
     }
     static void fixBackground() {
         presentationCommon.fixBackground(c,preferences,storageAccess,projected_BackgroundImage,projected_SurfaceHolder,projected_SurfaceView);
@@ -243,3 +247,4 @@ class PresentationServiceHDMI extends Presentation
     }
 
 }
+*/

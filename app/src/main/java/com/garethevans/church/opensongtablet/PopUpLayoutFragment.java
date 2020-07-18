@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -9,6 +10,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SetTypeFace;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.SwitchCompat;
@@ -80,7 +87,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             chooseVideo2Button;
     private CheckBox image1CheckBox, image2CheckBox, video1CheckBox, video2CheckBox;
     private StorageAccess storageAccess;
-    private Preferences preferences;
+    private _Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,7 +112,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -114,8 +121,8 @@ public class PopUpLayoutFragment extends DialogFragment {
         saveMe.hide();
 
         storageAccess = new StorageAccess();
-        preferences = new Preferences();
-        SetTypeFace setTypeFace = new SetTypeFace();
+        preferences = new _Preferences();
+        _SetTypeFace setTypeFace = new _SetTypeFace();
 
         identifyViews(V);
 
@@ -138,7 +145,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         // Make sure the logo we have is what is displayed (if we have set a new one)
         sendUpdateToScreen("logo");
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -338,7 +345,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         lyrics_left_align.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(lyrics_left_align, getActivity());
+                _CustomAnimations.animateFAB(lyrics_left_align, getActivity());
                 preferences.setMyPreferenceInt(getActivity(),"presoLyricsAlign",Gravity.START);
                 setUpAlignmentButtons();
                 sendUpdateToScreen("all");
@@ -347,7 +354,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         lyrics_center_align.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(lyrics_center_align, getActivity());
+                _CustomAnimations.animateFAB(lyrics_center_align, getActivity());
                 preferences.setMyPreferenceInt(getActivity(),"presoLyricsAlign",Gravity.CENTER);
                 setUpAlignmentButtons();
                 sendUpdateToScreen("all");
@@ -356,7 +363,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         lyrics_right_align.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(lyrics_right_align, getActivity());
+                _CustomAnimations.animateFAB(lyrics_right_align, getActivity());
                 preferences.setMyPreferenceInt(getActivity(),"presoLyricsAlign",Gravity.END);
                 setUpAlignmentButtons();
                 sendUpdateToScreen("all");
@@ -365,7 +372,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         lyrics_top_valign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(lyrics_top_valign, getActivity());
+                _CustomAnimations.animateFAB(lyrics_top_valign, getActivity());
                 preferences.setMyPreferenceInt(getActivity(),"presoLyricsVAlign",Gravity.TOP);
                 setUpAlignmentButtons();
                 sendUpdateToScreen("all");
@@ -374,7 +381,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         lyrics_center_valign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(lyrics_center_valign, getActivity());
+                _CustomAnimations.animateFAB(lyrics_center_valign, getActivity());
                 preferences.setMyPreferenceInt(getActivity(),"presoLyricsVAlign",Gravity.CENTER_VERTICAL);
                 setUpAlignmentButtons();
                 sendUpdateToScreen("all");
@@ -383,7 +390,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         lyrics_bottom_valign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(lyrics_bottom_valign, getActivity());
+                _CustomAnimations.animateFAB(lyrics_bottom_valign, getActivity());
                 preferences.setMyPreferenceInt(getActivity(),"presoLyricsVAlign",Gravity.BOTTOM);
                 setUpAlignmentButtons();
                 sendUpdateToScreen("all");
@@ -392,7 +399,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         info_left_align.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(info_left_align, getActivity());
+                _CustomAnimations.animateFAB(info_left_align, getActivity());
                 preferences.setMyPreferenceInt(getActivity(),"presoInfoAlign",Gravity.START);
                 setUpAlignmentButtons();
                 sendUpdateToScreen("info");
@@ -401,7 +408,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         info_center_align.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(info_center_align, getActivity());
+                _CustomAnimations.animateFAB(info_center_align, getActivity());
                 preferences.setMyPreferenceInt(getActivity(),"presoInfoAlign",Gravity.CENTER);
                 setUpAlignmentButtons();
                 sendUpdateToScreen("info");
@@ -410,7 +417,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         info_right_align.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(info_right_align, getActivity());
+                _CustomAnimations.animateFAB(info_right_align, getActivity());
                 preferences.setMyPreferenceInt(getActivity(),"presoInfoAlign",Gravity.END);
                 setUpAlignmentButtons();
                 sendUpdateToScreen("info");
@@ -468,7 +475,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onClick(View v) {
                 // Open another popup listing the files to choose from
                 PresenterMode.whatBackgroundLoaded = "video1";
-                chooseFile("video/*",StaticVariables.REQUEST_BACKGROUND_VIDEO1);
+                chooseFile("video/*", StaticVariables.REQUEST_BACKGROUND_VIDEO1);
             }
         });
         chooseVideo2Button.setOnClickListener(new View.OnClickListener() {
@@ -854,4 +861,4 @@ public class PopUpLayoutFragment extends DialogFragment {
         }
     }
 
-}
+}*/

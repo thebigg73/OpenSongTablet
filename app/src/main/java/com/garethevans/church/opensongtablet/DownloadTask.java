@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 // This class is used to download my versions of the Church and Band songs as .osb files
@@ -7,6 +8,10 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -25,7 +30,7 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
     private final StorageAccess storageAccess;
     @SuppressLint("StaticFieldLeak")
     private final
-    Preferences preferences;
+    _Preferences preferences;
     @SuppressLint("StaticFieldLeak")
     private final Context c;
     private Uri uri;
@@ -46,7 +51,7 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
                     break;
             }
             storageAccess = new StorageAccess();
-            preferences = new Preferences();
+            preferences = new _Preferences();
         }
 
         @Override
@@ -136,7 +141,7 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
         @Override
         protected void onPostExecute(String s) {
             if (StaticVariables.myToastMessage.equals(c.getResources().getString(R.string.network_error))) {
-                ShowToast.showToast(c);
+                _ShowToast.showToast(c);
             } else {
                 StaticVariables.whattodo = "processimportosb";
                 FullscreenActivity.file_uri = uri;
@@ -146,3 +151,4 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
             }
         }
 }
+*/

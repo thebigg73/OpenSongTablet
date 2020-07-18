@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -26,6 +27,14 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpAreYouSureFragment;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SetActions;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -59,8 +68,8 @@ public class PopUpListSetsFragment extends DialogFragment {
     private ProgressBar progressBar;
 
     private StorageAccess storageAccess;
-    private SetActions setActions;
-    private Preferences preferences;
+    private _SetActions setActions;
+    private _Preferences preferences;
 
     public interface MyInterface {
         void refreshAll();
@@ -120,8 +129,8 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         // Initialise the helper classes
         storageAccess = new StorageAccess();
-        setActions = new SetActions();
-        preferences = new Preferences();
+        setActions = new _SetActions();
+        preferences = new _Preferences();
 
         new Thread(new Runnable() {
             @Override
@@ -214,7 +223,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         }).start();
 
         // Set the popup defaults
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
 
         return V;
     }
@@ -311,7 +320,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
+                _CustomAnimations.animateFAB(closeMe, getActivity());
                 closeMe.setEnabled(false);
                 StaticVariables.myToastMessage = "";
                 hideKeyboard(newCategory_EditText);
@@ -325,7 +334,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe, getActivity());
+                _CustomAnimations.animateFAB(saveMe, getActivity());
                 doAction();
             }
         });
@@ -671,7 +680,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                         if (storageAccess.uriExists(getActivity(), newsetname)) {
                             String message = getResources().getString(R.string.save) + " \'" + setListName.getText().toString().trim() + "\"?";
                             StaticVariables.myToastMessage = message;
-                            DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+                            DialogFragment newFragment = _PopUpAreYouSureFragment.newInstance(message);
                             newFragment.show(getActivity().getSupportFragmentManager(), "dialog");
                             hideKeyboard(newCategory_EditText);
                             hideKeyboard(setListName);
@@ -744,7 +753,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                     getActivity().getResources().getString(R.string.file_exists);
         }
 
-        ShowToast.showToast(getActivity());
+        _ShowToast.showToast(getActivity());
         preferences.setMyPreferenceString(getActivity(), "setCurrentLastName", StaticVariables.setnamechosen);
         StaticVariables.setnamechosen = "";
 
@@ -876,7 +885,7 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         String message = getResources().getString(R.string.delete) + " \"" + setstodelete + "\"?";
         StaticVariables.myToastMessage = message;
-        DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+        DialogFragment newFragment = _PopUpAreYouSureFragment.newInstance(message);
         newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), message);
         hideKeyboard(newCategory_EditText);
         hideKeyboard(setListName);
@@ -900,4 +909,4 @@ public class PopUpListSetsFragment extends DialogFragment {
     }
 
 
-}
+}*/

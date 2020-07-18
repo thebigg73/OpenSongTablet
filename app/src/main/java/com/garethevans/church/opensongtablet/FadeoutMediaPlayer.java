@@ -1,6 +1,9 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.os.AsyncTask;
+
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 class FadeoutMediaPlayer extends AsyncTask<Object,Void,String> {
 
@@ -94,4 +97,4 @@ class FadeoutMediaPlayer extends AsyncTask<Object,Void,String> {
         }
     }
 
-}
+}*/

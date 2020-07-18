@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -8,6 +9,9 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -48,7 +52,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
     private int counts = 0;
     private float avvol = 0.0f;
 
-    private Preferences preferences;
+    private _Preferences preferences;
 
     private final Runnable r = new Runnable() {
         @Override
@@ -79,7 +83,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -87,7 +91,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         dBTextView = V.findViewById(R.id.dBTextView);
 
@@ -245,7 +249,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
             e.printStackTrace();
         }
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
         return V;
     }
 
@@ -428,3 +432,4 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
     }
 
 }
+*/

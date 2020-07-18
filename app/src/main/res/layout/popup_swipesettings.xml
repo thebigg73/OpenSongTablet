@@ -32,7 +32,7 @@
                 android:id="@+id/gesturesSongSwipeButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/SwitchStyle"
+                android:theme="@style/MySwitch"
                 android:text="@string/song_swipe_toggle"
                 style="@style/MyHeadingText"
                 app:showText="false" />

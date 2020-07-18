@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet.screensetup;
 
 import android.view.View;
 import android.view.Window;
-import android.view.WindowId;
 import android.view.WindowManager;
 
 public class WindowFlags {

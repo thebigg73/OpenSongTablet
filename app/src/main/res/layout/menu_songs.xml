@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-<LinearLayout android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/searchButtonGroup"
@@ -53,93 +57,11 @@
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
-    <TableLayout
+    <include
+        android:id="@+id/filters"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <TableRow android:id="@+id/folderRow">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:text="@string/folder"/>
-        <Spinner
-            android:id="@+id/folderSearch"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
-    </TableRow>
-        <TableRow android:id="@+id/artistRow">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:labelFor="@+id/artistSearch"
-                android:text="@string/edit_song_author"/>
-            <EditText
-                android:id="@+id/artistSearch"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:autofillHints="@string/edit_song_author"
-                android:inputType="text" />
-        </TableRow>
-        <TableRow android:id="@+id/keyRow">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="@string/edit_song_key"/>
-            <Spinner
-                android:id="@+id/keySearch"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-        </TableRow>
-        <TableRow android:id="@+id/tagRow">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:labelFor="@+id/tagSearch"
-                android:text="@string/tag_tag"/>
-            <EditText
-                android:id="@+id/tagSearch"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:autofillHints="@string/tag_tag"
-                android:inputType="text" />
-        </TableRow>
-        <TableRow android:id="@+id/filterRow">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:labelFor="@+id/filterSearch"
-                android:text="@string/action_search"/>
-            <EditText
-                android:id="@+id/filterSearch"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:autofillHints="@string/search"
-                android:inputType="text" />
-        </TableRow>
-
-    </TableLayout>
-
-
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/refreshSearch"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_rotate_right_white_36dp"
-        android:text="Run filter" />
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/seachView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        layout="@layout/menu_songs_filters"/>
 
 <LinearLayout android:id="@+id/menu_songs"
     android:layout_width="match_parent"
@@ -148,36 +70,59 @@
     android:layout_margin="8dp">
 
         <include android:id="@+id/songmenualpha"
-            layout="@layout/song_menu_alphaindex" />
+            layout="@layout/_song_menu_alphaindex" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <include layout="@layout/song_menu_listtitles" />
+
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/menu_songs_listtitles" />
 
             <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
                 android:id="@+id/songListRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:fastScrollPopupBgColor="@color/mainSecondary"
+                app:fastScrollPopupBgColor="@color/colorSecondary"
                 app:fastScrollPopupTextColor="@color/white"
-                app:fastScrollThumbColor="@color/colorPrimary"
-                android:padding="4dp" />
+                app:fastScrollThumbColor="@color/colorSecondary"
+                app:fastScrollEnableThumbInactiveColor="false"
+                app:fastScrollAutoHide="false"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                android:scrollbarSize="8dp"
+                app:fastScrollTrackColor="@color/darkgrey"
+                android:scrollbarThumbVertical="@color/grey"
+                android:paddingTop="8dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="100dp"
+                android:clipToPadding="false"/>
 
         </LinearLayout>
     </LinearLayout>
+
 </LinearLayout>
-    <include android:id="@+id/songMenuButtons"
-        android:clipToPadding="true"
-        android:clipChildren="true"
-        layout="@layout/fabs_menusongs" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:indeterminate="true"
+        android:layout_gravity="center"
         android:scaleX="0.4"
         android:scaleY="0.4" />
-</FrameLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/actionFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_plus_white_36dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        app:useCompatPadding="true" />
+
+</RelativeLayout>

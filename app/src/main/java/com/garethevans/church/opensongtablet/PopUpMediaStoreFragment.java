@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -9,6 +10,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.loader.content.CursorLoader;
@@ -76,7 +80,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -84,7 +88,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        Preferences preferences = new Preferences();
+        _Preferences preferences = new _Preferences();
 
         from = new String[] {MediaStore.MediaColumns.TITLE};
         to = new int[] {android.R.id.text1};
@@ -95,21 +99,25 @@ public class PopUpMediaStoreFragment extends DialogFragment {
         mediaSelected = V.findViewById(R.id.mediaSelected);
         mediaSelected.setText(PresenterMode.mpTitle);
         SwitchCompat externalSwitch = V.findViewById(R.id.externalSwitch);
-        /*if (FullscreenActivity.mediaStore.equals("ext")) {
+        */
+/*if (FullscreenActivity.mediaStore.equals("ext")) {
             externalSwitch.setChecked(true);
         } else {
             externalSwitch.setChecked(false);
         }
-        */
+        *//*
+
         externalSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                /*if (isChecked) {
+                */
+/*if (isChecked) {
                     FullscreenActivity.mediaStore = "ext";
                 } else {
                     FullscreenActivity.mediaStore = "int";
                 }
-                Preferences.savePreferences();*/
+                Preferences.savePreferences();*//*
+
                 updateMedia();
             }
         });
@@ -159,7 +167,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
                 // Ooops
             }
         }
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -184,11 +192,13 @@ public class PopUpMediaStoreFragment extends DialogFragment {
 
     private void updateMedia() {
 
-        /*if (FullscreenActivity.mediaStore.equals("ext")) {
+        */
+/*if (FullscreenActivity.mediaStore.equals("ext")) {
             sourceUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         } else {
             sourceUri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
-        }*/
+        }*//*
+
 
         CursorLoader cursorLoader = new CursorLoader(
                 Objects.requireNonNull(getActivity()),
@@ -277,3 +287,4 @@ public class PopUpMediaStoreFragment extends DialogFragment {
     }
 
 }
+*/

@@ -5,13 +5,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
-import com.garethevans.church.opensongtablet.FullscreenActivity;
-import com.garethevans.church.opensongtablet.Preferences;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.SQLite;
-import com.garethevans.church.opensongtablet.SQLiteHelper;
-import com.garethevans.church.opensongtablet.StaticVariables;
-import com.garethevans.church.opensongtablet.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.sqlite.SQLite;
+import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -74,17 +73,17 @@ public class ConvertChoPro {
         setCorrectXMLValues();
 
         // Now prepare the new songXML file
-        StaticVariables.myNewXML = songXML.getXML(processSong);
+        String newXML = songXML.getXML(processSong);
 
         // Get a unique uri for the new song
         Uri newUri = getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);
 
         // Now write the modified song
         writeTheImprovedSong(c, storageAccess, preferences, sqLiteHelper, oldSongFileName, newSongFileName,
-                songSubFolder, newUri, uri);
+                songSubFolder, newUri, uri, newXML);
 
         // Indicate after loading song (which renames it), we need to build the database and song index
-        FullscreenActivity.needtorefreshsongmenu = true;
+        StaticVariables.needtorefreshsongmenu = true;
 
         return bitsForIndexing(newSongFileName, title, author, copyright, key, time_sig, ccli, lyrics);
     }
@@ -525,7 +524,7 @@ public class ConvertChoPro {
 
     void writeTheImprovedSong(Context c, StorageAccess storageAccess, Preferences preferences,
                               SQLiteHelper sqLiteHelper, String oldSongFileName, String nsf,
-                              String songSubFolder, Uri newUri, Uri oldUri) {
+                              String songSubFolder, Uri newUri, Uri oldUri, String newXML) {
 
         newSongFileName = nsf;
         // Only do this for songs that exist!
@@ -545,7 +544,7 @@ public class ConvertChoPro {
             if (outputStream != null) {
                 // Change the songId (references to the uri)
                 // Now remove the old chordpro file
-                storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream);
+                storageAccess.writeFileFromString(newXML, outputStream);
                 Log.d("ChordProConvert","attempt to deletefile="+storageAccess.deleteFile(c, oldUri));
 
                 // Remove old song from database
@@ -874,7 +873,7 @@ public class ConvertChoPro {
         return line;
     }
 
-    String fromChordProToOpenSong(String lyrics) {
+    public String fromChordProToOpenSong(String lyrics) {
         // This receives the text from the edit song lyrics editor and changes the format
         // This changes ChordPro formatted songs back to OpenSong format
         // The app will convert it into OpenSong before saving.
@@ -892,7 +891,6 @@ public class ConvertChoPro {
             line[x] = fixHeadings(line[x]);
             line[x] = guessTags(line[x]);
             line[x] = extractCommentLines(line[x]);
-
 
             // Join the individual lines back up (unless they are start/end of chorus)
             if (!line[x].contains("{start_of_chorus}") && !line[x].contains("{soc}") &&

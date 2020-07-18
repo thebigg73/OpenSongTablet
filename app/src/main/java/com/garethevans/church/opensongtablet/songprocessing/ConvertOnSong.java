@@ -3,10 +3,10 @@ package com.garethevans.church.opensongtablet.songprocessing;
 import android.content.Context;
 import android.net.Uri;
 
-import com.garethevans.church.opensongtablet.Preferences;
-import com.garethevans.church.opensongtablet.SQLiteHelper;
-import com.garethevans.church.opensongtablet.StaticVariables;
-import com.garethevans.church.opensongtablet.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import java.util.ArrayList;
 
@@ -89,7 +89,7 @@ public class ConvertOnSong {
         setCorrectXMLValues();
 
         // Now prepare the new songXML file
-        StaticVariables.myNewXML = songXML.getXML(processSong);
+        //StaticVariables.myNewXML = songXML.getXML(processSong);
 
         // Get a unique uri for the new song
         Uri newUri = convertChoPro.getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);
@@ -103,7 +103,7 @@ public class ConvertOnSong {
 
         // Now write the modified song
         convertChoPro.writeTheImprovedSong(c, storageAccess, preferences, sqLiteHelper, oldSongFileName, newSongFileName,
-                songSubFolder, newUri, uri);
+                songSubFolder, newUri, uri, songXML.getXML(processSong));
 
         // Add it to the database
         return convertChoPro.bitsForIndexing(newSongFileName, title, author, copyright, key, time_sig, ccli, lyrics);

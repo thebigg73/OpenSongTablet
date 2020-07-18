@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.animation.ObjectAnimator;
@@ -11,9 +12,12 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+
 class AutoScrollFunctions {
 
-    static void getAutoScrollTimes(Context c, Preferences preferences) {
+    static void getAutoScrollTimes(Context c, _Preferences preferences) {
         // Set the autoscroll values
         try {
             StaticVariables.autoScrollDuration = Integer.parseInt(StaticVariables.mDuration.replaceAll("[\\D]", ""));
@@ -40,7 +44,7 @@ class AutoScrollFunctions {
         }
     }
 
-    static void getAutoScrollValues(Context c, Preferences preferences, ScrollView scrollpage, View main_page, View toolbar) {
+    static void getAutoScrollValues(Context c, _Preferences preferences, ScrollView scrollpage, View main_page, View toolbar) {
         // Get the autoScrollDuration;
         if (StaticVariables.mDuration.isEmpty() &&
                 preferences.getMyPreferenceBoolean(c,"autoscrollUseDefaultTime",false)) {
@@ -119,7 +123,7 @@ class AutoScrollFunctions {
             }
         }
     }
-    static void getAudioLength(Context c, Preferences preferences) {
+    static void getAudioLength(Context c, _Preferences preferences) {
         MediaPlayer mediafile = new MediaPlayer();
 
         // Ultimately these should be stored as strings that get parsed as Uris
@@ -177,8 +181,8 @@ class AutoScrollFunctions {
         final TextView tvt;
         final TextView tvs;
         final Context c;
-        final Preferences preferences;
-        ProgressTimeRunnable(Context ctx, Preferences pref, TextView t, TextView tt, TextView ts) {
+        final _Preferences preferences;
+        ProgressTimeRunnable(Context ctx, _Preferences pref, TextView t, TextView tt, TextView ts) {
             tv = t;
             tvt = tt;
             tvs = ts;
@@ -236,3 +240,4 @@ class AutoScrollFunctions {
         }
     }
 }
+*/

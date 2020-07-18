@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -10,6 +11,8 @@ import android.view.Gravity;
 
 import androidx.documentfile.provider.DocumentFile;
 
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -23,7 +26,7 @@ import static android.provider.DocumentsContract.EXTRA_INITIAL_URI;
 
 class ProfileActions {
 
-    boolean doSaveProfile(Context c, Preferences preferences, StorageAccess storageAccess, Uri to) {
+    boolean doSaveProfile(Context c, _Preferences preferences, StorageAccess storageAccess, Uri to) {
         boolean result = true;  // Returns true on success.  Catches throw to false
         try {
             // This is used to copy the current preferences xml file to the chosen name / location
@@ -66,7 +69,7 @@ class ProfileActions {
         return uri;
     }
 
-    boolean doLoadProfile(Context c, Preferences preferences, StorageAccess storageAccess, Uri uri) {
+    boolean doLoadProfile(Context c, _Preferences preferences, StorageAccess storageAccess, Uri uri) {
         // This class will import saved profiles/settings.
         // Old settings will work up to a point
 
@@ -372,7 +375,7 @@ class ProfileActions {
                             break;
                         case "custom1_lyricsTagColor":        // New preference only
                             //custom1_lyricsTagColor          int         The color for the background for the tag in the custom1 theme
-                            preferences.setMyPreferenceInt(c,"custom1_lyricsTagColor",getIntegerValue(xppValue,StaticVariables.black));
+                            preferences.setMyPreferenceInt(c,"custom1_lyricsTagColor",getIntegerValue(xppValue, StaticVariables.black));
                             break;
                         case "custom1_lyricsTextColor":        // New preference only
                             //custom1_lyricsTextColor         int         The color for the lyrics text in the custom1 theme
@@ -1878,10 +1881,12 @@ class ProfileActions {
                             break;
 
                             // Don't include the songfilename
-                       /* case "songfilename":        // New preference
+                       */
+/* case "songfilename":        // New preference
                             //songfilename                    String      The name of the current song file
                             preferences.setMyPreferenceString(c,"songfilename",getTextValue(xppValue,""));
-                            break;*/
+                            break;*//*
+
 
                         case "songLoadSuccess":        // New preference
                             //songLoadSuccess                 boolean     Indicates if the song loaded correctly (won't load a song next time if it crashed)
@@ -2018,7 +2023,8 @@ class ProfileActions {
                             break;
 
                             // Don't include the old storage!!!!!
-                        /*case "uriTree":        // New preference
+                        */
+/*case "uriTree":        // New preference
                             //uriTree                         String      A string representation of the user root location (may be the OpenSong folder or its parent)
                             preferences.setMyPreferenceString(c,"uriTree",getTextValue(xppValue,""));
                             break;
@@ -2026,7 +2032,8 @@ class ProfileActions {
                         case "uriTreeHome":        // New preference
                             //uriTreeHome                     String      A string representation of the user home location (The OpenSong folder)
                             preferences.setMyPreferenceString(c,"uriTreeHome",getTextValue(xppValue,""));
-                            break;*/
+                            break;*//*
+
 
                         case "usePresentationOrder":        // New preference
                             //usePresentationOrder            boolean     Should the song be parsed into the specified presentation order
@@ -2044,10 +2051,12 @@ class ProfileActions {
                             break;
 
                             // Don't include the song folder
-                        /*case "whichSongFolder":        // New preference
+                        */
+/*case "whichSongFolder":        // New preference
                             //whichSongFolder                 String      The song folder we are currently in
                             preferences.setMyPreferenceString(c,"whichSongFolder",getTextValue(xppValue,c.getString(R.string.mainfoldername)));
-                            break;*/
+                            break;*//*
+
 
                     }
                 }
@@ -2067,7 +2076,7 @@ class ProfileActions {
         return result;
     }
 
-    Intent openProfile(Context c, Preferences preferences, StorageAccess storageAccess) {
+    Intent openProfile(Context c, _Preferences preferences, StorageAccess storageAccess) {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("application/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -2087,7 +2096,7 @@ class ProfileActions {
         return intent;
     }
 
-    Intent saveProfile(Context c, Preferences preferences, StorageAccess storageAccess) {
+    Intent saveProfile(Context c, _Preferences preferences, StorageAccess storageAccess) {
         Intent intent = new Intent();
         intent.setType("application/*");
         String [] mimeTypes = {"application/*", "application/xml", "text/xml"};
@@ -2177,4 +2186,4 @@ class ProfileActions {
         return text;
     }
 
-}
+}*/

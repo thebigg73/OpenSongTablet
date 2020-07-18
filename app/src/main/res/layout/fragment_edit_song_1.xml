@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/transpose"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="500dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/exposedDropDown"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="0.8"
+                    android:hint="@string/folder"
+                    android:labelFor="@+id/folderName">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/folderName"
+                        style="@style/exposedDropDownItem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/editTextLayoutOutline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1.2"
+                    android:hint="@string/title"
+                    android:labelFor="@+id/songTitle">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/title"
+                        style="@style/editTextFieldOutline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/exposedDropDown"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="0.8"
+                    android:hint="@string/edit_song_key"
+                    android:labelFor="@+id/key">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/key"
+                        style="@style/exposedDropDownItem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/editTextLayoutOutline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1.2"
+                    android:hint="@string/artist"
+                    android:labelFor="@+id/artist">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/artist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/editTextLayoutOutline"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/formatButton"
+                style="@style/menuToggle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="0dp"
+                android:weightSum="2"
+                android:paddingBottom="0dp"
+                app:checkedButton="@+id/openSongFormat"
+                app:singleSelection="true">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/openSongFormat"
+                    style="@style/TextOnlyButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="OpenSong"
+                    tools:ignore="HardcodedText"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/chordProFormat"
+                    style="@style/TextOnlyButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ChordPro"
+                    tools:ignore="HardcodedText" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/editTextLayoutOutline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="top"
+                android:hint="@string/edit_song_lyrics"
+                android:labelFor="@+id/lyrics"
+                app:hintEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/lyrics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:minHeight="200dp"
+                    android:singleLine="false"
+                    style="@style/editTextLayoutOutline"
+                    android:typeface="monospace" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/transpose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/transpose"
+        android:layout_margin="16dp"
+        android:padding="16dp"
+        android:layout_above="@+id/autoFix"
+        app:backgroundTint="@color/colorSecondary"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/autoFix"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fix"
+            android:layout_margin="16dp"
+            android:padding="16dp"
+            android:layout_alignParentBottom="true"
+            app:backgroundTint="@color/colorSecondary"/>
+
+</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

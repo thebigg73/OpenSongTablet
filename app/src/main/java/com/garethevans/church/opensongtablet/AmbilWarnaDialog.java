@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -345,9 +346,11 @@ class AmbilWarnaDialog {
 		dialog.show();
 		}
 
-	/*public AlertDialog getDialog() {
+	*/
+/*public AlertDialog getDialog() {
 		return dialog;
-		}*/
+		}*//*
+
 
 	//@SuppressWarnings("deprecation")
 	private void updateAlphaView() {
@@ -357,4 +360,4 @@ class AmbilWarnaDialog {
 		//viewAlphaOverlay.setBackgroundDrawable(gd);
 		viewAlphaOverlay.setBackground(gd);
 		}
-}
+}*/

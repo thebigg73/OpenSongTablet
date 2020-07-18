@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -25,6 +26,12 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._LoadXML;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._Transpose;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -161,7 +168,7 @@ public class ProcessSong extends Activity {
         string = string.replace("<p>","\n\n");
         return string;
     }
-    String removeUnderScores(Context c, Preferences preferences, String myLyrics) {
+    String removeUnderScores(Context c, _Preferences preferences, String myLyrics) {
         // Go through the lines and remove underscores if the line isn't an image location
         // Split the lyrics into a line by line array so we can fix individual lines
         String[] lineLyrics = myLyrics.split("\n");
@@ -196,7 +203,7 @@ public class ProcessSong extends Activity {
         myLyrics = myLyricsBuilder.toString();
         return myLyrics;
     }
-    String removeUnwantedSymbolsAndSpaces(Context c, Preferences preferences, String string) {
+    String removeUnwantedSymbolsAndSpaces(Context c, _Preferences preferences, String string) {
         // Replace unwanted symbols
         // Split into lines
         //string = string.replace("|", "\n");
@@ -621,7 +628,7 @@ public class ProcessSong extends Activity {
         return string;
     }
 
-    private String validCustomPadString(Context c, Preferences preferences, StorageAccess storageAccess, String s, String custom) {
+    private String validCustomPadString(Context c, _Preferences preferences, StorageAccess storageAccess, String s, String custom) {
         if (custom!=null && !custom.isEmpty()) {
             // Null is the built in auto pad.  So, not using that.  Test it exists.
             Uri uri = storageAccess.getUriForItem(c, preferences, "Pads", "", custom);
@@ -631,7 +638,7 @@ public class ProcessSong extends Activity {
         }
         return s;
     }
-    void processKey(Context c, Preferences preferences, StorageAccess storageAccess) {
+    void processKey(Context c, _Preferences preferences, StorageAccess storageAccess) {
         switch (StaticVariables.mKey) {
             case "A":
                 StaticVariables.pad_filename = validCustomPadString(c, preferences, storageAccess, "a",
@@ -897,7 +904,7 @@ public class ProcessSong extends Activity {
         }
         return i;
     }
-    String getSalutReceivedLocation(String string, Context c, Preferences preferences, StorageAccess storageAccess) {
+    String getSalutReceivedLocation(String string, Context c, _Preferences preferences, StorageAccess storageAccess) {
         String[] s;
         string = string.replace("{\"description\":\"","");
         string = string.replace("\"}","");
@@ -942,7 +949,7 @@ public class ProcessSong extends Activity {
         }
     }
 
-    boolean isAutoScrollValid(Context c, Preferences preferences) {
+    boolean isAutoScrollValid(Context c, _Preferences preferences) {
         // Get the autoScrollDuration;
         if (StaticVariables.mDuration.isEmpty() &&
                 preferences.getMyPreferenceBoolean(c,"autoscrollUseDefaultTime",false)) {
@@ -1163,9 +1170,9 @@ public class ProcessSong extends Activity {
         }
     }
 
-    private TableRow capolinetoTableRow(Context c, Preferences preferences, int lyricsCapoColor,
+    private TableRow capolinetoTableRow(Context c, _Preferences preferences, int lyricsCapoColor,
                                         String[] chords, float fontsize) {
-        Transpose transpose = new Transpose();
+        _Transpose transpose = new _Transpose();
         TableRow caporow  = new TableRow(c);
         caporow.setClipChildren(false);
         caporow.setClipToPadding(false);
@@ -1206,7 +1213,7 @@ public class ProcessSong extends Activity {
         return caporow;
     }
 
-    private TableRow chordlinetoTableRow(Context c, Preferences preferences, int lyricsChordsColor,
+    private TableRow chordlinetoTableRow(Context c, _Preferences preferences, int lyricsChordsColor,
                                          String[] chords, float fontsize) {
         TableRow chordrow = new TableRow(c);
         chordrow.setLayoutParams(tablelayout_params());
@@ -1246,7 +1253,7 @@ public class ProcessSong extends Activity {
 
     private TableRow lyriclinetoTableRow(Context c, int lyricsTextColor, int presoFontColor,
                                          String[] lyrics, float fontsize,
-                                         StorageAccess storageAccess, Preferences preferences) {
+                                         StorageAccess storageAccess, _Preferences preferences) {
         TableRow lyricrow = new TableRow(c);
         if (StaticVariables.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout &&
                 !preferences.getMyPreferenceBoolean(c,"presoShowChords",false)) {
@@ -1395,7 +1402,7 @@ public class ProcessSong extends Activity {
         return lyricrow;
     }
 
-    private TableRow commentlinetoTableRow(Context c, Preferences preferences,
+    private TableRow commentlinetoTableRow(Context c, _Preferences preferences,
                                            int presoFontColor, int lyricsTextColor,
                                            String[] comment, float fontsize, boolean tab) {
         TableRow commentrow = new TableRow(c);
@@ -1413,9 +1420,11 @@ public class ProcessSong extends Activity {
         commentrow.setClipToPadding(false);
 
         for (String bit:comment) {
-            /*if (bit.startsWith(" ") && bit.length() > 1) {
+            */
+/*if (bit.startsWith(" ") && bit.length() > 1) {
                 bit = bit.substring(1);
-            }*/
+            }*//*
+
             if (bit.startsWith("__")) {
                 bit = bit.replace("__", "");
             }
@@ -1459,7 +1468,7 @@ public class ProcessSong extends Activity {
         return commentrow;
     }
 
-    private TextView titletoTextView(Context c, Preferences preferences, int lyricsTextColor, String title, float fontsize) {
+    private TextView titletoTextView(Context c, _Preferences preferences, int lyricsTextColor, String title, float fontsize) {
         TextView titleview = new TextView(c);
         titleview.setLayoutParams(linearlayout_params());
         titleview.setText(title);
@@ -1500,7 +1509,7 @@ public class ProcessSong extends Activity {
         return colortouse;
     }
 
-    String fixMultiLineFormat(Context c, Preferences preferences, String string) {
+    String fixMultiLineFormat(Context c, _Preferences preferences, String string) {
         if (!preferences.getMyPreferenceBoolean(c,"multiLineVerseKeepCompact",false)) {
             // Best way to determine if the song is in multiline format is
             // Look for [v] or [c] case insensitive
@@ -1715,7 +1724,7 @@ public class ProcessSong extends Activity {
 
     }
 
-    String[] splitSongIntoSections(Context c, Preferences preferences, String song) {
+    String[] splitSongIntoSections(Context c, _Preferences preferences, String song) {
 
         song = song.replace("-!!", "");
 
@@ -1800,7 +1809,7 @@ public class ProcessSong extends Activity {
 
         return newsong.toString().split("%%__SPLITHERE__%%");
     }
-    String[] splitLaterSplits(Context c, Preferences preferences, String[] currsections) {
+    String[] splitLaterSplits(Context c, _Preferences preferences, String[] currsections) {
         ArrayList<String> newbits = new ArrayList<>();
         for (int z=0; z<currsections.length; z++) {
             // If currsection doesn't have extra split points, add this section to the array
@@ -1879,7 +1888,7 @@ public class ProcessSong extends Activity {
         }
         return label;
     }
-    String[] matchPresentationOrder(Context c, Preferences preferences, String[] currentSections) {
+    String[] matchPresentationOrder(Context c, _Preferences preferences, String[] currentSections) {
 
         // Get the currentSectionLabels - these will change after we reorder the song
         String[] currentSectionLabels = new String[currentSections.length];
@@ -1965,7 +1974,7 @@ public class ProcessSong extends Activity {
         }
         return keytext;
     }
-    String getCapoInfo(Context c, Preferences preferences) {
+    String getCapoInfo(Context c, _Preferences preferences) {
         String s = "";
         // If we are using a capo, add the capo display
         if (!StaticVariables.mCapo.equals("")) {
@@ -2123,7 +2132,7 @@ public class ProcessSong extends Activity {
         chopro.append("\n");
         return chopro.toString();
     }
-    String songSectionText(Context c, Preferences preferences, int x) {
+    String songSectionText(Context c, _Preferences preferences, int x) {
         StringBuilder text = new StringBuilder();
         String[] heading = beautifyHeadings(StaticVariables.songSectionsLabels[x],c);
         text.append(heading[0].trim()).append(":");
@@ -2155,7 +2164,7 @@ public class ProcessSong extends Activity {
     }
 
     LinearLayout songSectionView(Context c, int x, float fontsize, boolean projected,
-                                 StorageAccess storageAccess, Preferences preferences,
+                                 StorageAccess storageAccess, _Preferences preferences,
                                  int lyricsTextColor, int lyricsBackgroundColor, int lyricsChordsColor,
                                  int lyricsCommentColor, int lyricsCustomColor,
                                  int lyricsCapoColor, int presoFontColor) {
@@ -2298,12 +2307,14 @@ public class ProcessSong extends Activity {
                     tl.setBackgroundColor(lyricsCommentColor);
                     break;
 
-                /*case "abc_notation":
+                */
+/*case "abc_notation":
                     WebView wv = ProcessSong.abcnotationtoWebView(c, FullscreenActivity.mNotation);
                     if (wv!=null) {
                         tl.addView(wv);
                     }
-                    break;*/
+                    break;*//*
+
             }
             try {
                 ll.addView(tl);
@@ -2322,7 +2333,7 @@ public class ProcessSong extends Activity {
     }
 
     LinearLayout projectedSectionView(Context c, int x, float fontsize, StorageAccess storageAccess,
-                                      Preferences preferences,
+                                      _Preferences preferences,
                                       int lyricsTextColor, int lyricsChordsColor,
                                       int lyricsCapoColor, int presoFontColor, int presoShadowColor) {
 
@@ -2509,7 +2520,7 @@ public class ProcessSong extends Activity {
         return tl;
     }
 
-    Bitmap createPDFPage(Context c, Preferences preferences, StorageAccess storageAccess, int pagewidth, int pageheight, String scale) {
+    Bitmap createPDFPage(Context c, _Preferences preferences, StorageAccess storageAccess, int pagewidth, int pageheight, String scale) {
         String tempsongtitle = StaticVariables.songfilename.replace(".pdf", "");
         tempsongtitle = tempsongtitle.replace(".PDF", "");
         StaticVariables.mTitle = tempsongtitle;
@@ -2628,13 +2639,13 @@ public class ProcessSong extends Activity {
         } else {
             // Make the image to be displayed on the screen a pdf icon
             StaticVariables.myToastMessage = c.getResources().getString(R.string.nothighenoughapi);
-            ShowToast.showToast(c);
+            _ShowToast.showToast(c);
 
             return null;
         }
     }
 
-    float getScaleValue(Context c, Preferences preferences, float x, float y, float fontsize) {
+    float getScaleValue(Context c, _Preferences preferences, float x, float y, float fontsize) {
         float scale;
         if (StaticVariables.thisSongScale==null) {
             StaticVariables.thisSongScale = preferences.getMyPreferenceString(c,"songAutoScale","W");
@@ -2662,14 +2673,16 @@ public class ProcessSong extends Activity {
     float getStageScaleValue(float x, float y) {
         float scale = Math.min(x, y);
         return scale;
-        /*if (x>y) {
+        */
+/*if (x>y) {
             scale = y;
         } else {
             scale = x;
-        }*/
+        }*//*
+
     }
 
-    RelativeLayout preparePerformanceBoxView(Context c, Preferences preferences, int lyricsTextColor, int lyricsBackgroundColor, int padding) {
+    RelativeLayout preparePerformanceBoxView(Context c, _Preferences preferences, int lyricsTextColor, int lyricsBackgroundColor, int padding) {
         RelativeLayout boxbit  = new RelativeLayout(c);
         LinearLayout.LayoutParams llp = linearlayout_params();
         llp.setMargins(0,0, 0,0);
@@ -2687,7 +2700,7 @@ public class ProcessSong extends Activity {
         boxbit.setPadding(padding-linewidth,padding-linewidth,padding-linewidth,padding-linewidth);
         return boxbit;
     }
-    LinearLayout prepareProjectedBoxView(Context c, Preferences preferences, int lyricsTextColor, int lyricsBackgroundColor, int padding) {
+    LinearLayout prepareProjectedBoxView(Context c, _Preferences preferences, int lyricsTextColor, int lyricsBackgroundColor, int padding) {
         LinearLayout boxbit  = createLinearLayout(c);
         LinearLayout.LayoutParams llp = linearlayout_params();
         llp.setMargins(0,0, 0,0);
@@ -2713,7 +2726,7 @@ public class ProcessSong extends Activity {
         }
         return boxbit;
     }
-    LinearLayout prepareStageBoxView(Context c, Preferences preferences, int lyricsTextColor, int lyricsBackgroundColor, int m, int padding) {
+    LinearLayout prepareStageBoxView(Context c, _Preferences preferences, int lyricsTextColor, int lyricsBackgroundColor, int m, int padding) {
         LinearLayout boxbit  = new LinearLayout(c);
         LinearLayout.LayoutParams llp = linearlayout_params();
         llp.setMargins(m,m,m,padding);
@@ -2785,14 +2798,14 @@ public class ProcessSong extends Activity {
         }
     }
 
-    void addExtraInfo(Context c, StorageAccess storageAccess, Preferences preferences) {
+    void addExtraInfo(Context c, StorageAccess storageAccess, _Preferences preferences) {
         String nextinset = "";
 
         if (StaticVariables.setView) {
             // Get the index in the set
             try {
                 if (!StaticVariables.nextSongInSet.equals("")) {
-                    StaticVariables.nextSongKeyInSet = LoadXML.grabNextSongInSetKey(c, preferences, storageAccess, StaticVariables.nextSongInSet);
+                    StaticVariables.nextSongKeyInSet = _LoadXML.grabNextSongInSetKey(c, preferences, storageAccess, StaticVariables.nextSongInSet);
                     nextinset = ";__" + c.getString(R.string.next) + ": " + StaticVariables.nextSongInSet;
                     if (!StaticVariables.nextSongKeyInSet.equals("")) {
                         nextinset = nextinset + " (" + StaticVariables.nextSongKeyInSet + ")";
@@ -2968,10 +2981,13 @@ public class ProcessSong extends Activity {
 
 
     // Stuff I might eventually use...
-    /*
+    */
+/*
     @SuppressWarnings("unused")
     public static WebView abcnotationtoWebView(Context c, final String s) {
         *//*
+*/
+/*
         boolean oktouse = false;
         if (!s.equals("")) {
             TableLayout.LayoutParams lp = new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -3005,6 +3021,8 @@ public class ProcessSong extends Activity {
             return null;
         }
         *//*
+*/
+/*
         return new WebView(c);
     }
     @SuppressWarnings("unused")
@@ -3109,5 +3127,6 @@ public class ProcessSong extends Activity {
         } else {
             return "lyric";
         }
-    }*/
-}
+    }*//*
+
+}*/

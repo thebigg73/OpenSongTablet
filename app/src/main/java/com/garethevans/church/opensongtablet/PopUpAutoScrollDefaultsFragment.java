@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
@@ -32,7 +35,7 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
     private EditText default_delaymax_EditText;
     private EditText default_duration_EditText;
     private RadioButton autoscroll_default_RadioButton;
-    private Preferences preferences;
+    private _Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, PopUpAutoScrollDefaultsFragment.this.getActivity());
+                _CustomAnimations.animateFAB(closeMe, PopUpAutoScrollDefaultsFragment.this.getActivity());
                 closeMe.setEnabled(false);
                 PopUpAutoScrollDefaultsFragment.this.dismiss();
             }
@@ -66,13 +69,13 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, PopUpAutoScrollDefaultsFragment.this.getActivity());
+                _CustomAnimations.animateFAB(closeMe, PopUpAutoScrollDefaultsFragment.this.getActivity());
                 saveMe.setEnabled(false);
                 PopUpAutoScrollDefaultsFragment.this.doSave();
             }
         });
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Initialise the views
         default_delaytime_TextView = V.findViewById(R.id.default_delaytime_TextView);
@@ -121,7 +124,7 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -159,3 +162,4 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
     }
 
 }
+*/

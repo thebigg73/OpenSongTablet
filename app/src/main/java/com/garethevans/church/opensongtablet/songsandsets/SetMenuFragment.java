@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.songsandsets;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,13 +14,14 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.garethevans.church.opensongtablet.Preferences;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.ShowToast;
-import com.garethevans.church.opensongtablet.StaticVariables;
-import com.garethevans.church.opensongtablet.StorageAccess;
 import com.garethevans.church.opensongtablet.databinding.MenuSetsBinding;
-import com.garethevans.church.opensongtablet.songprocessing.LoadSong;
+import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 
 import java.io.InputStream;
@@ -37,18 +37,18 @@ public class SetMenuFragment extends Fragment {
     Preferences preferences;
     SetActions setActions;
     LoadSong loadSong;
+    ShowToast showToast;
     ProcessSong processSong;
 
     static ArrayList<String> mSongName, mFolderName;
     LinearLayoutManager llm;
 
-    private static MyInterface mListener;
+    private static MainActivityInterface mainActivityInterface;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(@NonNull Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        mainActivityInterface = (MainActivityInterface) context;
+        super.onAttach(context);
     }
     public interface MyInterface {
         void loadSongFromSet();
@@ -109,7 +109,6 @@ public class SetMenuFragment extends Fragment {
         llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(RecyclerView.VERTICAL);
         menuSetsBinding.myRecyclerView.setLayoutManager(llm);
-
     }
 
     String getSetName() {
@@ -134,7 +133,7 @@ public class SetMenuFragment extends Fragment {
         return title;
     }
 
-    void prepareCurrentSet() {
+    public void prepareCurrentSet() {
         // Grab the saved set list array and put it into a list
         // This way we work with a temporary version
         if (StaticVariables.mSetList==null) {
@@ -154,7 +153,8 @@ public class SetMenuFragment extends Fragment {
     }
 
     private void prepareSetListViews() {
-        SetListAdapter ma = new SetListAdapter(createList(StaticVariables.mTempSetList.size()), getActivity(), preferences);
+        SetListAdapter ma = new SetListAdapter(createList(StaticVariables.mTempSetList.size()),
+                getActivity(), preferences, showToast);
         menuSetsBinding.myRecyclerView.setAdapter(ma);
         ItemTouchHelper.Callback callback = new SetListItemTouchHelper(ma);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
@@ -241,7 +241,7 @@ public class SetMenuFragment extends Fragment {
         return result;
     }
 
-    public static void makeVariation(Context c, Preferences preferences) {
+    public static void makeVariation(Context c, Preferences preferences, ShowToast showToast) {
         // Prepare the name of the new variation slide
         // If the file already exists, add _ to the filename
         StringBuilder newsongname = new StringBuilder(StaticVariables.songfilename);
@@ -278,8 +278,7 @@ public class SetMenuFragment extends Fragment {
         }
         preferences.setMyPreferenceString(c,"setCurrent",new_mySet.toString());
 
-        StaticVariables.myToastMessage = c.getResources().getString(R.string.variation_edit);
-        ShowToast.showToast(c);
+        showToast.doIt(c, c.getResources().getString(R.string.variation_edit));
         // Now load the new variation item up
         loadSong(c,preferences);
 
@@ -287,7 +286,7 @@ public class SetMenuFragment extends Fragment {
 
     public static void loadSong(Context c, Preferences preferences) {
         StaticVariables.setView = true;
-        if (StaticVariables.setchanged && mListener != null) {
+        if (StaticVariables.setchanged && mainActivityInterface != null) {
             // We've edited the set and then clicked on a song, so save the set first
             StaticVariables.whattodo = "saveset";
             StringBuilder tempmySet = new StringBuilder();
@@ -300,10 +299,9 @@ public class SetMenuFragment extends Fragment {
                 tempmySet.append("$**_").append(tempItem).append("_**$");
             }
             preferences.setMyPreferenceString(c,"setCurrent",tempmySet.toString());
-            mListener.confirmedAction();
         }
-        if (mListener != null) {
-            mListener.loadSongFromSet();
+        if (mainActivityInterface != null) {
+            mainActivityInterface.loadSongFromSet();
         }
     }
 
@@ -320,13 +318,12 @@ public class SetMenuFragment extends Fragment {
         preferences.setMyPreferenceString(getActivity(),"setCurrent",tempmySet.toString());
         StaticVariables.mTempSetList = null;
         setActions.prepareSetList(getActivity(),preferences);
-        StaticVariables.myToastMessage = requireActivity().getString(R.string.currentset) +
-                " - " + getActivity().getString(R.string.ok);
+        showToast.doIt(getActivity(),requireActivity().getString(R.string.currentset) + " - " + getActivity().getString(R.string.ok));
     }
 
     private void refresh() {
-        if (mListener != null) {
-            mListener.refreshAll();
+        if (mainActivityInterface != null) {
+            mainActivityInterface.refreshAll();
         }
     }
 

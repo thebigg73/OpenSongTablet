@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -7,6 +8,10 @@ import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -34,7 +39,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
 
     private MyInterface mListener;
 
-    private Preferences preferences;
+    private _Preferences preferences;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -64,7 +69,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
 
         V = inflater.inflate(R.layout.popup_quicklaunch, container, false);
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Do this in a new thread
         new Thread(new Runnable() {
@@ -82,7 +87,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
             }
         }).start();
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
 
         return V;
     }
@@ -102,7 +107,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -111,7 +116,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
+                _CustomAnimations.animateFAB(saveMe,getActivity());
                 saveMe.setEnabled(false);
                 doSave();
             }
@@ -132,7 +137,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
     private void setFABS() {
         // Set the colors
         int color;
-        Preferences preferences = new Preferences();
+        _Preferences preferences = new _Preferences();
         switch (StaticVariables.mDisplayTheme) {
             case "dark":
             default:
@@ -569,3 +574,4 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
     }
 
 }
+*/

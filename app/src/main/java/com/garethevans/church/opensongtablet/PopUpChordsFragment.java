@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -7,6 +8,11 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ChordDirectory;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.util.Log;
@@ -63,7 +69,7 @@ public class PopUpChordsFragment extends DialogFragment {
             mx, m0, m1, m2, m3, m4, m5, rx, r0, r1, r2, r3, r4, r5;
 
     private ProcessSong processSong;
-    private Preferences preferences;
+    private _Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,12 +90,12 @@ public class PopUpChordsFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_page_chords, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.chords));
+        title.setText(requireActivity().getResources().getString(R.string.chords));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -98,7 +104,7 @@ public class PopUpChordsFragment extends DialogFragment {
         saveMe.hide();
 
         processSong = new ProcessSong();
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Initialise the views
         Spinner popupchord_instrument = V.findViewById(R.id.popupchord_instrument);
@@ -211,7 +217,7 @@ public class PopUpChordsFragment extends DialogFragment {
         });
         prepareChords();
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -980,3 +986,4 @@ public class PopUpChordsFragment extends DialogFragment {
     }
 
 }
+*/

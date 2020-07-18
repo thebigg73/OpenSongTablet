@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -5,6 +6,8 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 class Metronome {
 	
@@ -478,4 +481,4 @@ class Metronome {
         return t >= 40 && t < 299 && StaticVariables.mTimeSigValid;
 
     }
-}
+}*/

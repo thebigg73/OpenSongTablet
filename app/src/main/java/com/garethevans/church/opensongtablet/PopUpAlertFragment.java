@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -5,6 +6,9 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.SwitchCompat;
@@ -16,13 +20,11 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.Objects;
-
 public class PopUpAlertFragment extends DialogFragment {
 
     private EditText alertMessage;
     private MyInterface mListener;
-    private Preferences preferences;
+    private _Preferences preferences;
 
     static PopUpAlertFragment newInstance() {
         PopUpAlertFragment frag;
@@ -70,12 +72,12 @@ public class PopUpAlertFragment extends DialogFragment {
         final View V = inflater.inflate(R.layout.popup_alert, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.alert));
+        title.setText(requireActivity().getResources().getString(R.string.alert));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
+                _CustomAnimations.animateFAB(closeMe, getActivity());
                 closeMe.setEnabled(false);
                 doClose();
             }
@@ -83,7 +85,7 @@ public class PopUpAlertFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
         alertMessage = V.findViewById(R.id.alertMessage);
         alertMessage.setText(preferences.getMyPreferenceString(getActivity(),"presoAlertText",""));
         SwitchCompat alertToggle = V.findViewById(R.id.alertToggleButton);
@@ -107,7 +109,7 @@ public class PopUpAlertFragment extends DialogFragment {
         });
         Dialog dialog = getDialog();
         if (dialog != null && getActivity() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(), dialog, preferences);
+            _PopUpSizeAndAlpha.decoratePopUp(getActivity(), dialog, preferences);
         }
         return V;
     }
@@ -122,3 +124,4 @@ public class PopUpAlertFragment extends DialogFragment {
     }
 
 }
+*/

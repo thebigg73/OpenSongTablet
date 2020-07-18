@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import com.bluelinelabs.logansquare.annotation.JsonField;
@@ -9,3 +10,4 @@ class SalutMessage {
     String description;
     //public int nonJsonField;
 }
+*/

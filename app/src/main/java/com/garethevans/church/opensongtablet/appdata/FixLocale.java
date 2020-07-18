@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.util.Log;
 
-import com.garethevans.church.opensongtablet.Preferences;
-import com.garethevans.church.opensongtablet.StaticVariables;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 import java.util.Locale;
 

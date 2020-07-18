@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/toggleScrollBeforeSwipe"
-                android:theme="@style/SwitchStyle"
+                android:theme="@style/MySwitch"
                 android:background="@drawable/section_box"
                 android:layout_margin="4dp"
                 app:showText="false" />
@@ -383,7 +383,7 @@
                 android:drawableStart="@drawable/ic_pedal_white_36dp"
                 android:text="@string/airTurnLongPress"
                 style="@style/MyWhiteHeadingText"
-                android:theme="@style/SwitchStyle"
+                android:theme="@style/MySwitch"
                 app:showText="false"
                 tools:ignore="RtlHardcoded" />
 

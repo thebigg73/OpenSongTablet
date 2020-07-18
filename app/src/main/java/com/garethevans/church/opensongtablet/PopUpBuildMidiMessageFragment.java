@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -5,6 +6,14 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLite;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLiteHelper;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.util.Log;
@@ -39,7 +48,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
     private int byte2 = 0;
     private int byte3 = 0;
 
-    private Preferences preferences;
+    private _Preferences preferences;
     private StorageAccess storageAccess;
 
     static PopUpBuildMidiMessageFragment newInstance() {
@@ -67,7 +76,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
         storageAccess = new StorageAccess();
 
         View V = inflater.inflate(R.layout.popup_buildmidicommand, container, false);
@@ -78,7 +87,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
+                _CustomAnimations.animateFAB(closeMe, getActivity());
                 closeMe.setEnabled(false);
                 try {
                     dismiss();
@@ -91,7 +100,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe, getActivity());
+                _CustomAnimations.animateFAB(saveMe, getActivity());
                 saveMe.setEnabled(false);
                 doSave();
             }
@@ -202,7 +211,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -223,8 +232,8 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
             PopUpEditSongFragment.prepareSongXML();
 
             if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
-                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+                _NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new _NonOpenSongSQLiteHelper(getActivity());
+                _NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
                 nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
             } else {
                 PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
@@ -431,7 +440,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
         }
         if (!success) {
             StaticVariables.myToastMessage = getString(R.string.midi_error);
-            ShowToast.showToast(getActivity());
+            _ShowToast.showToast(getActivity());
         }
     }
-}
+}*/

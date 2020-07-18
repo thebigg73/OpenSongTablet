@@ -1,9 +1,14 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.SwitchCompat;
@@ -26,7 +31,7 @@ public class PopUpScalingFragment extends DialogFragment {
     private SwitchCompat switchAutoScaleOnOff_SwitchCompat, switchAutoScaleWidthFull_SwitchCompat,
             overrideFull_Switch, overrideWidth_Switch, switchAutoScaleMaxColumns_SwitchCompat;
     private SeekBar stagemode_scale_SeekBar;
-    private Preferences preferences;
+    private _Preferences preferences;
 
     static PopUpScalingFragment newInstance() {
         PopUpScalingFragment frag;
@@ -67,7 +72,7 @@ public class PopUpScalingFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 mListener.refreshAll();
                 dismiss();
@@ -76,7 +81,7 @@ public class PopUpScalingFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Initialise the views
         initialiseViews(V);
@@ -93,7 +98,7 @@ public class PopUpScalingFragment extends DialogFragment {
         // Resize the menu text
         updateFontSizes();
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -300,10 +305,12 @@ public class PopUpScalingFragment extends DialogFragment {
         resizeMenuItems.updateSwitchTextSize(overrideWidth_Switch,menuFontSize,"",false);
         resizeMenuItems.updateSwitchTextSize(overrideFull_Switch,menuFontSize,"",false);
 
-        /*
+        */
+/*
         resizeMenuItems.updateButtonTextSize(VIEWID,menuFontSize,"S",false);
         resizeMenuItems.updateEditTextSize(VIEWID,menuFontSize,"",false);
-        */
+        *//*
+
     }
 
     private void maxColsSwitchVisibilty() {
@@ -430,4 +437,4 @@ public class PopUpScalingFragment extends DialogFragment {
         void refreshAll();
     }
 
-}
+}*/

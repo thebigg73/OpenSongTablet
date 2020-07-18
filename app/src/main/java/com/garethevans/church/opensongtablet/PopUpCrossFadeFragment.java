@@ -1,8 +1,12 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -32,7 +36,7 @@ public class PopUpCrossFadeFragment extends DialogFragment {
         }
     }
 
-    private Preferences preferences;
+    private _Preferences preferences;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,7 +50,7 @@ public class PopUpCrossFadeFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -54,7 +58,7 @@ public class PopUpCrossFadeFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Initialise the views
         final SeekBar crossFadeSeekBar = V.findViewById(R.id.crossFadeSeekBar);
@@ -83,7 +87,7 @@ public class PopUpCrossFadeFragment extends DialogFragment {
                 preferences.setMyPreferenceInt(getActivity(),"padCrossFadeTime",(seekBar.getProgress() +2)*1000);
             }
         });
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -94,3 +98,4 @@ public class PopUpCrossFadeFragment extends DialogFragment {
     }
 
 }
+*/

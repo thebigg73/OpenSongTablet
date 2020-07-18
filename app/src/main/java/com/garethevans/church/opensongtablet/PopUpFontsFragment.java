@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -21,6 +22,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SetTypeFace;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.BufferedReader;
@@ -58,8 +62,8 @@ public class PopUpFontsFragment extends DialogFragment {
     private TextView lyricPreviewTextView, chordPreviewTextView, stickyPreviewTextView,
             presoPreviewTextView, presoinfoPreviewTextView;
     private ArrayAdapter<String> choose_fonts;
-    private SetTypeFace setTypeFace;
-    private Preferences preferences;
+    private _SetTypeFace setTypeFace;
+    private _Preferences preferences;
     // Handlers for fonts
     private Handler lyrichandler, chordhandler, stickyhandler, presohandler, presoinfohandler;
 
@@ -77,7 +81,7 @@ public class PopUpFontsFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 try {
                     mListener.refreshAll();
                     dismiss();
@@ -88,8 +92,8 @@ public class PopUpFontsFragment extends DialogFragment {
         });
 
         // Initialise the helper classes
-        preferences = new Preferences();
-        setTypeFace = new SetTypeFace();
+        preferences = new _Preferences();
+        setTypeFace = new _SetTypeFace();
 
         // Initialise the font handlers
         lyrichandler = new Handler();
@@ -124,7 +128,7 @@ public class PopUpFontsFragment extends DialogFragment {
         setTypeFace.setUpAppFonts(getActivity(), preferences, lyrichandler, chordhandler, stickyhandler,
                 presohandler, presoinfohandler, customhandler);
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         // Try to get a list of fonts from Google
         GetFontList getFontList = new GetFontList();
@@ -333,4 +337,4 @@ public class PopUpFontsFragment extends DialogFragment {
             setSpinners();
         }
     }
-}
+}*/

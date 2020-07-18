@@ -1,7 +1,12 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -20,7 +25,7 @@ public class PopUpCustomPadsFragment extends DialogFragment {
     private ArrayList<String> padfiles;
     private Spinner padAb, padA, padBb, padB, padC, padDb, padD, padEb, padE, padF, padGb, padG,
             padAbm, padAm, padBbm, padBm, padCm, padDbm, padDm, padEbm, padEm, padFm, padGbm, padGm;
-    private Preferences preferences;
+    private _Preferences preferences;
 
     static PopUpCustomPadsFragment newInstance() {
         PopUpCustomPadsFragment frag;
@@ -48,7 +53,7 @@ public class PopUpCustomPadsFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
+                _CustomAnimations.animateFAB(closeMe, getActivity());
                 closeMe.setEnabled(false);
                 doSave();
             }
@@ -84,7 +89,7 @@ public class PopUpCustomPadsFragment extends DialogFragment {
 
         // Set up the spinners
         StorageAccess storageAccess = new StorageAccess();
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         padfiles = storageAccess.listFilesInFolder(getActivity(), preferences, "Pads", "");
         padfiles.add(0,getActivity().getString(R.string.pad_auto));
@@ -143,7 +148,7 @@ public class PopUpCustomPadsFragment extends DialogFragment {
         setSpinnerVal(padGbm,preferences.getMyPreferenceString(getActivity(),"customPadGbm",""));
         setSpinnerVal(padGm,preferences.getMyPreferenceString(getActivity(),"customPadGm",""));
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -213,3 +218,4 @@ public class PopUpCustomPadsFragment extends DialogFragment {
         }
     }
 }
+*/

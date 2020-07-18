@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.widget.Button;
@@ -9,7 +10,8 @@ import androidx.appcompat.widget.SwitchCompat;
 class ResizeMenuItems {
 
 
-    /*
+    */
+/*
     In the menu java files, add this function:
     "" = normal text size, L=larger text (for popup titles), S=smaller text (for info text)
     the boolean is if the view is to be capitalised
@@ -28,7 +30,8 @@ class ResizeMenuItems {
      // Update the text size to user preference
      updateFontSizes();
 
-    */
+    *//*
+
 
     void updateTextViewSize(TextView tv, float defaultsize, String type, boolean allCaps) {
         try {
@@ -131,3 +134,4 @@ class ResizeMenuItems {
     }
 
 }
+*/

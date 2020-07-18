@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -5,6 +6,11 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -25,7 +31,7 @@ public class PopUpFileChooseFragment extends DialogFragment {
 
     private static String[] foundFiles;
     private StorageAccess storageAccess;
-    private Preferences preferences;
+    private _Preferences preferences;
 
     static PopUpFileChooseFragment newInstance() {
         PopUpFileChooseFragment frag;
@@ -82,7 +88,7 @@ public class PopUpFileChooseFragment extends DialogFragment {
         TextView location = V.findViewById(R.id.location);
 
         storageAccess = new StorageAccess();
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Decide on the title of the file chooser
         if (PresenterMode.whatBackgroundLoaded!=null) {
@@ -161,7 +167,7 @@ public class PopUpFileChooseFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 if (StaticVariables.whattodo.equals("customnote") ||
                         StaticVariables.whattodo.equals("customslide") ||
@@ -232,7 +238,7 @@ public class PopUpFileChooseFragment extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -303,4 +309,4 @@ public class PopUpFileChooseFragment extends DialogFragment {
         this.dismiss();
     }
 
-}
+}*/

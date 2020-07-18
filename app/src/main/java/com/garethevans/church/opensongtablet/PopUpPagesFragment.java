@@ -1,9 +1,14 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -71,7 +76,7 @@ public class PopUpPagesFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -79,7 +84,7 @@ public class PopUpPagesFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        Preferences preferences = new Preferences();
+        _Preferences preferences = new _Preferences();
 
         // Initialise the views
         TextView pages_notavailable = V.findViewById(R.id.pages_notavailable);
@@ -143,7 +148,7 @@ public class PopUpPagesFragment extends DialogFragment {
             pages_notavailable.setVisibility(View.VISIBLE);
             pages_available.setVisibility(View.GONE);
         }
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -176,3 +181,4 @@ public class PopUpPagesFragment extends DialogFragment {
     }
 
 }
+*/

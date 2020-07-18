@@ -18,8 +18,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.StaticVariables;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -28,7 +29,7 @@ import java.util.Map;
 public class ProcessSong {
 
     // These is used when loading and converting songs (ChordPro, badly formatted XML, etc).
-    String parseHTML(String s) {
+    public String parseHTML(String s) {
         if (s == null) {
             return "";
         }
@@ -45,6 +46,7 @@ public class ProcessSong {
         s = s.replace("&quot;", "\"");
         return s;
     }
+
     public String parseToHTMLEntities(String s) {
         if (s == null) {
             s = "";
@@ -80,39 +82,45 @@ public class ProcessSong {
 
         return s;
     }
+
     public String parseFromHTMLEntities(String val) {
         //Fix broken stuff
-        if (val==null) {
+        if (val == null) {
             val = "";
         }
-        val = val.replace("&amp;apos;","'");
-        val = val.replace("&amp;quote;","\"");
-        val = val.replace("&amp;quot;","\"");
-        val = val.replace("&amp;lt;","<");
-        val = val.replace("&amp;gt;",">");
-        val = val.replace("&amp;","&");
-        val = val.replace("&lt;","<");
-        val = val.replace("&gt;",">");
-        val = val.replace("&apos;","'");
-        val = val.replace("&quote;","\"");
-        val = val.replace("&quot;","\"");
+        val = val.replace("&amp;apos;", "'");
+        val = val.replace("&amp;quote;", "\"");
+        val = val.replace("&amp;quot;", "\"");
+        val = val.replace("&amp;lt;", "<");
+        val = val.replace("&amp;gt;", ">");
+        val = val.replace("&amp;", "&");
+        val = val.replace("&lt;", "<");
+        val = val.replace("&gt;", ">");
+        val = val.replace("&apos;", "'");
+        val = val.replace("&quote;", "\"");
+        val = val.replace("&quot;", "\"");
         return val;
     }
-    String fixStartOfLines(String lyrics) {
+
+    public String fixStartOfLines(String lyrics) {
         StringBuilder fixedlyrics = new StringBuilder();
         String[] lines = lyrics.split("\n");
 
-        for (String line:lines) {
+        for (String line : lines) {
             if (!line.startsWith("[") && !line.startsWith(";") && !line.startsWith(".") && !line.startsWith(" ") &&
                     !line.startsWith("1") && !line.startsWith("2") && !line.startsWith("3") && !line.startsWith("4") &&
                     !line.startsWith("5") && !line.startsWith("6") && !line.startsWith("7") && !line.startsWith("8") &&
                     !line.startsWith("9") && !line.startsWith("-")) {
                 line = " " + line;
+            } else if (line.matches("^[0-9].*$") && line.length() > 1 && !line.substring(1, 2).equals(".")) {
+                // Multiline verse
+                line = line.substring(0, 1) + ". " + line.substring(1);
             }
             fixedlyrics.append(line).append("\n");
         }
         return fixedlyrics.toString();
     }
+
     String fixLineBreaksAndSlashes(String s) {
         s = s.replace("\r\n", "\n");
         s = s.replace("\r", "\n");
@@ -128,17 +136,18 @@ public class ProcessSong {
 
         return s;
     }
+
     String determineLineTypes(String string, Context c) {
         String type;
-        if (string.indexOf(".")==0) {
+        if (string.indexOf(".") == 0) {
             type = "chord";
-        } else if (string.indexOf(";__" + c.getResources().getString(R.string.edit_song_capo))==0) {
+        } else if (string.indexOf(";__" + c.getResources().getString(R.string.edit_song_capo)) == 0) {
             type = "capoinfo";
-        } else if (string.indexOf(";__")==0) {
+        } else if (string.indexOf(";__") == 0) {
             type = "extra";
             //} else if (string.startsWith(";"+c.getString(R.string.music_score))) {
             //    type = "abcnotation";
-        } else if (string.startsWith(";") && string.length()>4 && (string.indexOf("|")==2 || string.indexOf("|")==3)) {
+        } else if (string.startsWith(";") && string.length() > 4 && (string.indexOf("|") == 2 || string.indexOf("|") == 3)) {
             // Used to do this by identifying type of string start or drum start
             // Now just look for ;*| or ;**| where * is anything such as ;e | or ;BD|
             type = "tab";
@@ -154,6 +163,7 @@ public class ProcessSong {
         }
         return type;
     }
+
     String howToProcessLines(int linenum, int totallines, String thislinetype, String nextlinetype, String previouslinetype) {
         String what;
         // If this is a chord line followed by a lyric line.
@@ -181,15 +191,17 @@ public class ProcessSong {
         }
         return what;
     }
+
     String fixLineLength(String string, int newlength) {
         int extraspacesrequired = newlength - string.length();
         StringBuilder stringBuilder = new StringBuilder(string);
-        for (int x = 0; x<extraspacesrequired; x++) {
+        for (int x = 0; x < extraspacesrequired; x++) {
             stringBuilder.append(" ");
         }
         string = stringBuilder.toString();
         return string;
     }
+
     String[] getChordPositions(String string) {
         // Given a chord line, get the character positions that each chord starts at
         // Go through the line character by character
@@ -209,8 +221,8 @@ public class ProcessSong {
 
             String thischar = "";
             boolean thischarempty = false;
-            if (x<string.length()-1) {
-                thischar = string.substring(x,x+1);
+            if (x < string.length() - 1) {
+                thischar = string.substring(x, x + 1);
             }
             if (thischar.equals(" ") || thischar.equals("|")) {
                 thischarempty = true;
@@ -218,7 +230,7 @@ public class ProcessSong {
 
             String prevchar;
             boolean prevcharempty = false;
-            prevchar = string.substring(x-1,x);
+            prevchar = string.substring(x - 1, x);
             if (prevchar.equals(" ") || prevchar.equals("|")) {
                 prevcharempty = true;
             }
@@ -233,20 +245,21 @@ public class ProcessSong {
         chordpos = chordpositions.toArray(chordpos);
         return chordpos;
     }
+
     String[] getChordSections(String string, String[] pos_string) {
         // Go through the chord positions and extract the substrings
         ArrayList<String> chordsections = new ArrayList<>();
         int startpos = 0;
         int endpos = -1;
 
-        if (string==null) {
-            string="";
+        if (string == null) {
+            string = "";
         }
-        if (pos_string==null) {
+        if (pos_string == null) {
             pos_string = new String[0];
         }
 
-        for (int x=0;x<pos_string.length;x++) {
+        for (int x = 0; x < pos_string.length; x++) {
             if (pos_string[x].equals("0")) {
                 // First chord is at the start of the line
                 startpos = 0;
@@ -275,7 +288,7 @@ public class ProcessSong {
                 startpos = endpos;
             }
         }
-        if (startpos==0 && endpos==-1) {
+        if (startpos == 0 && endpos == -1) {
             // This is just a chord line, so add the whole line
             chordsections.add(string);
         }
@@ -284,20 +297,21 @@ public class ProcessSong {
 
         return sections;
     }
+
     String[] getLyricSections(String string, String[] pos_string) {
         // Go through the chord positions and extract the substrings
         ArrayList<String> lyricsections = new ArrayList<>();
         int startpos = 0;
         int endpos = -1;
 
-        if (string==null) {
+        if (string == null) {
             string = "";
         }
-        if (pos_string==null) {
+        if (pos_string == null) {
             pos_string = new String[0];
         }
 
-        for (int x=0;x<pos_string.length;x++) {
+        for (int x = 0; x < pos_string.length; x++) {
             if (pos_string[x].equals("0")) {
                 // First chord is at the start of the line
                 startpos = 0;
@@ -327,7 +341,7 @@ public class ProcessSong {
             }
         }
 
-        if (startpos==0 && endpos<0) {
+        if (startpos == 0 && endpos < 0) {
             // Just add the line
             lyricsections.add(string);
         }
@@ -337,8 +351,9 @@ public class ProcessSong {
 
         return sections;
     }
-    String parseLyrics(String myLyrics, Context c) {
-        myLyrics = myLyrics.replace("]\n\n","]\n");
+
+    public String parseLyrics(String myLyrics, Context c) {
+        myLyrics = myLyrics.replace("]\n\n", "]\n");
         myLyrics = myLyrics.replaceAll("\r\n", "\n");
         myLyrics = myLyrics.replaceAll("\r", "\n");
         myLyrics = myLyrics.replaceAll("\\t", "    ");
@@ -349,26 +364,26 @@ public class ProcessSong {
         myLyrics = myLyrics.replace("\f", "    ");
         myLyrics = myLyrics.replace("&#27;", "'");
         myLyrics = myLyrics.replace("&#027;", "'");
-        myLyrics = myLyrics.replace("&#39;","'");
-        myLyrics = myLyrics.replace("&#34;","'");
-        myLyrics = myLyrics.replace("&#039;","'");
-        myLyrics = myLyrics.replace("&ndash;","-");
-        myLyrics = myLyrics.replace("&mdash;","-");
-        myLyrics = myLyrics.replace("&apos;","'");
+        myLyrics = myLyrics.replace("&#39;", "'");
+        myLyrics = myLyrics.replace("&#34;", "'");
+        myLyrics = myLyrics.replace("&#039;", "'");
+        myLyrics = myLyrics.replace("&ndash;", "-");
+        myLyrics = myLyrics.replace("&mdash;", "-");
+        myLyrics = myLyrics.replace("&apos;", "'");
         myLyrics = myLyrics.replace("&lt;", "<");
         myLyrics = myLyrics.replace("&gt;", ">");
         myLyrics = myLyrics.replace("&quot;", "\"");
-        myLyrics = myLyrics.replace("&rdquo;","'");
-        myLyrics = myLyrics.replace("&rdquor;","'");
-        myLyrics = myLyrics.replace("&rsquo;","'");
-        myLyrics = myLyrics.replace("&rdquor;","'");
+        myLyrics = myLyrics.replace("&rdquo;", "'");
+        myLyrics = myLyrics.replace("&rdquor;", "'");
+        myLyrics = myLyrics.replace("&rsquo;", "'");
+        myLyrics = myLyrics.replace("&rdquor;", "'");
         myLyrics = myLyrics.replaceAll("\u0092", "'");
         myLyrics = myLyrics.replaceAll("\u0093", "'");
         myLyrics = myLyrics.replaceAll("\u2018", "'");
         myLyrics = myLyrics.replaceAll("\u2019", "'");
 
         // If UG has been bad, replace these bits:
-        myLyrics = myLyrics.replace("pre class=\"\"","");
+        myLyrics = myLyrics.replace("pre class=\"\"", "");
 
         if (!StaticVariables.whichSongFolder.contains(c.getResources().getString(R.string.slide)) &&
                 !StaticVariables.whichSongFolder.contains(c.getResources().getString(R.string.image)) &&
@@ -396,52 +411,53 @@ public class ProcessSong {
         String languageverse = c.getResources().getString(R.string.tag_verse);
         String languageverse_lowercase = languageverse.toLowerCase(StaticVariables.locale);
         String languageverse_uppercase = languageverse.toUpperCase(StaticVariables.locale);
-        myLyrics = myLyrics.replace("["+languageverse_lowercase,"["+languageverse);
-        myLyrics = myLyrics.replace("["+languageverse_uppercase,"["+languageverse);
-        myLyrics = myLyrics.replace("["+languageverse+"]","[V]");
-        myLyrics = myLyrics.replace("["+languageverse+" 1]","[V1]");
-        myLyrics = myLyrics.replace("["+languageverse+" 2]","[V2]");
-        myLyrics = myLyrics.replace("["+languageverse+" 3]","[V3]");
-        myLyrics = myLyrics.replace("["+languageverse+" 4]","[V4]");
-        myLyrics = myLyrics.replace("["+languageverse+" 5]","[V5]");
-        myLyrics = myLyrics.replace("["+languageverse+" 6]","[V6]");
-        myLyrics = myLyrics.replace("["+languageverse+" 7]","[V7]");
-        myLyrics = myLyrics.replace("["+languageverse+" 8]","[V8]");
-        myLyrics = myLyrics.replace("["+languageverse+" 9]","[V9]");
+        myLyrics = myLyrics.replace("[" + languageverse_lowercase, "[" + languageverse);
+        myLyrics = myLyrics.replace("[" + languageverse_uppercase, "[" + languageverse);
+        myLyrics = myLyrics.replace("[" + languageverse + "]", "[V]");
+        myLyrics = myLyrics.replace("[" + languageverse + " 1]", "[V1]");
+        myLyrics = myLyrics.replace("[" + languageverse + " 2]", "[V2]");
+        myLyrics = myLyrics.replace("[" + languageverse + " 3]", "[V3]");
+        myLyrics = myLyrics.replace("[" + languageverse + " 4]", "[V4]");
+        myLyrics = myLyrics.replace("[" + languageverse + " 5]", "[V5]");
+        myLyrics = myLyrics.replace("[" + languageverse + " 6]", "[V6]");
+        myLyrics = myLyrics.replace("[" + languageverse + " 7]", "[V7]");
+        myLyrics = myLyrics.replace("[" + languageverse + " 8]", "[V8]");
+        myLyrics = myLyrics.replace("[" + languageverse + " 9]", "[V9]");
 
         // Replace [Chorus] with [C] and [Chorus 1] with [C1]
         String languagechorus = c.getResources().getString(R.string.tag_chorus);
         String languagechorus_lowercase = languagechorus.toLowerCase(StaticVariables.locale);
         String languagechorus_uppercase = languagechorus.toUpperCase(StaticVariables.locale);
-        myLyrics = myLyrics.replace("["+languagechorus_lowercase,"["+languagechorus);
-        myLyrics = myLyrics.replace("["+languagechorus_uppercase,"["+languagechorus);
-        myLyrics = myLyrics.replace("["+languagechorus+"]","[C]");
-        myLyrics = myLyrics.replace("["+languagechorus+" 1]","[C1]");
-        myLyrics = myLyrics.replace("["+languagechorus+" 2]","[C2]");
-        myLyrics = myLyrics.replace("["+languagechorus+" 3]","[C3]");
-        myLyrics = myLyrics.replace("["+languagechorus+" 4]","[C4]");
-        myLyrics = myLyrics.replace("["+languagechorus+" 5]","[C5]");
-        myLyrics = myLyrics.replace("["+languagechorus+" 6]","[C6]");
-        myLyrics = myLyrics.replace("["+languagechorus+" 7]","[C7]");
-        myLyrics = myLyrics.replace("["+languagechorus+" 8]","[C8]");
-        myLyrics = myLyrics.replace("["+languagechorus+" 9]","[C9]");
+        myLyrics = myLyrics.replace("[" + languagechorus_lowercase, "[" + languagechorus);
+        myLyrics = myLyrics.replace("[" + languagechorus_uppercase, "[" + languagechorus);
+        myLyrics = myLyrics.replace("[" + languagechorus + "]", "[C]");
+        myLyrics = myLyrics.replace("[" + languagechorus + " 1]", "[C1]");
+        myLyrics = myLyrics.replace("[" + languagechorus + " 2]", "[C2]");
+        myLyrics = myLyrics.replace("[" + languagechorus + " 3]", "[C3]");
+        myLyrics = myLyrics.replace("[" + languagechorus + " 4]", "[C4]");
+        myLyrics = myLyrics.replace("[" + languagechorus + " 5]", "[C5]");
+        myLyrics = myLyrics.replace("[" + languagechorus + " 6]", "[C6]");
+        myLyrics = myLyrics.replace("[" + languagechorus + " 7]", "[C7]");
+        myLyrics = myLyrics.replace("[" + languagechorus + " 8]", "[C8]");
+        myLyrics = myLyrics.replace("[" + languagechorus + " 9]", "[C9]");
 
         // Try to convert ISO / Windows
         myLyrics = myLyrics.replace("\0x91", "'");
 
         // Get rid of BOMs and stuff
-        myLyrics = myLyrics.replace("\uFEFF","");
-        myLyrics = myLyrics.replace("\uFEFF","");
-        myLyrics = myLyrics.replace("[&#x27;]","");
-        myLyrics = myLyrics.replace("[\\xEF]","");
-        myLyrics = myLyrics.replace("[\\xBB]","");
-        myLyrics = myLyrics.replace("[\\xFF]","");
-        myLyrics = myLyrics.replace("\\xEF","");
-        myLyrics = myLyrics.replace("\\xBB","");
-        myLyrics = myLyrics.replace("\\xFF","");
+        myLyrics = myLyrics.replace("\uFEFF", "");
+        myLyrics = myLyrics.replace("\uFEFF", "");
+        myLyrics = myLyrics.replace("[&#x27;]", "");
+        myLyrics = myLyrics.replace("[\\xEF]", "");
+        myLyrics = myLyrics.replace("[\\xBB]", "");
+        myLyrics = myLyrics.replace("[\\xFF]", "");
+        myLyrics = myLyrics.replace("\\xEF", "");
+        myLyrics = myLyrics.replace("\\xBB", "");
+        myLyrics = myLyrics.replace("\\xFF", "");
 
         return myLyrics;
     }
+
     private String getLineType(String string) {
         if (string.startsWith(".")) {
             return "chord";
@@ -455,6 +471,7 @@ public class ProcessSong {
             return "lyrics";
         }
     }
+
     private String trimOutLineIdentifiers(Context c, String linetype, String string) {
         switch (linetype) {
             case "heading":
@@ -476,9 +493,10 @@ public class ProcessSong {
         }
         return string;
     }
+
     private String fixHeading(Context c, String line) {
-        line = line.replace("[","");
-        line = line.replace("]","");
+        line = line.replace("[", "");
+        line = line.replace("]", "");
 
         switch (line) {
             case "V-":
@@ -596,18 +614,28 @@ public class ProcessSong {
         String[] lines = string.split("\n");
         StringBuilder sb = new StringBuilder();
 
-        // Go through each line and add bits together as groups ($_groupline$ between bits, \n for new group)
-        boolean stillworking = true;
+        // Go through each line and add bits together as groups ($_groupline_$ between bits, \n for new group)
         int i = 0;
-        while (stillworking && i < lines.length) {
+        while (i < lines.length) {
             if (lines[i].startsWith(".")) {
                 // This is a chord line = this needs to be part of a group
                 sb.append("\n").append(lines[i]);
-                // If the next line is a lyric or comment add this to the group and stope there
+                // If the next line is a lyric or comment add this to the group and stop there
                 int nl = i + 1;
-                if (nl < lines.length && (lines[nl].startsWith(" ") || lines[nl].startsWith(";"))) {
+                boolean stillworking = true;
+                if (shouldNextLineBeAdded(nl, lines, true)) {
                     sb.append("____groupline_____").append(lines[nl]);
-                    i = nl;
+                    while (stillworking) {
+                        // Keep going for multiple lines to be added
+                        if (shouldNextLineBeAdded(nl + 1, lines, false)) {
+                            i = nl;
+                            nl++;
+                            sb.append("____groupline_____").append(lines[nl]);
+                        } else {
+                            i++;
+                            stillworking = false;
+                        }
+                    }
                 } else if (nl < lines.length && lines[nl].startsWith(".")) {
                     // While the next line is still a chordline add this line
                     while (nl < lines.length && lines[nl].startsWith(".")) {
@@ -615,10 +643,6 @@ public class ProcessSong {
                         i = nl;
                         nl++;
                     }
-                } else {
-                    sb.append("\n").append(lines[i]);
-                    i++;
-                    stillworking = false;
                 }
             } else {
                 sb.append("\n").append(lines[i]);
@@ -627,26 +651,37 @@ public class ProcessSong {
         }
         return sb.toString();
     }
+
+    private boolean shouldNextLineBeAdded(int nl, String[] lines, boolean incnormallyricline) {
+        if (incnormallyricline) {
+            return (nl < lines.length && (lines[nl].startsWith(" ") || lines[nl].startsWith(";") ||
+                    lines[nl].matches("^[0-9].*$")));
+        } else {
+            return (nl < lines.length && (lines[nl].matches("^[0-9].*$")));
+        }
+    }
+
     private String makeSections(String string) {
-        string = string.replace("\n\n\n","\n \n____SPLIT____");
-        string = string.replace("\n \n \n","\n \n____SPLIT____");
-        string = string.replace("\n\n","\n \n____SPLIT____");
-        string = string.replace("\n \n","\n \n____SPLIT____");
-        string = string.replace("\n[","\n____SPLIT____[");
-        string = string.replace("\n [","\n____SPLIT____[");
-        string = string.replace("____SPLIT________SPLIT____","____SPLIT____");
+        string = string.replace("\n\n\n", "\n \n____SPLIT____");
+        string = string.replace("\n \n \n", "\n \n____SPLIT____");
+        string = string.replace("\n\n", "\n \n____SPLIT____");
+        string = string.replace("\n \n", "\n \n____SPLIT____");
+        string = string.replace("\n[", "\n____SPLIT____[");
+        string = string.replace("\n [", "\n____SPLIT____[");
+        string = string.replace("\n[", "\n____SPLIT____[");
+        string = string.replace("____SPLIT________SPLIT____", "____SPLIT____");
         if (string.trim().startsWith("____SPLIT____")) {
-            string = string.replaceFirst(" ____SPLIT____","");
+            string = string.replaceFirst(" ____SPLIT____", "");
             while (string.startsWith("\n") || string.startsWith(" ")) {
                 if (string.startsWith(" ")) {
-                    string = string.replaceFirst(" ","");
+                    string = string.replaceFirst(" ", "");
                 } else {
-                    string = string.replaceFirst("\n","");
+                    string = string.replaceFirst("\n", "");
                 }
             }
         }
         if (string.startsWith("____SPLIT____")) {
-            string = string.replaceFirst("____SPLIT____","");
+            string = string.replaceFirst("____SPLIT____", "");
         }
         return string;
 
@@ -662,8 +697,12 @@ public class ProcessSong {
         // Line 0 is the chord line.  All other lines need to be at least this size
         // Make it 1 char bigger to identify the end of it
         lines[0] += " ";
+        if (lineIsChordForMultiline(lines)) {
+            lines[0] = ". " + lines[0].substring(1);
+        }
+
         int minlength = lines[0].length();
-        for (int i=0; i<lines.length; i++) {
+        for (int i = 0; i < lines.length; i++) {
             int length = lines[i].length();
             if (length < minlength) {
                 for (int z = 0; z < (minlength - length); z++) {
@@ -677,8 +716,9 @@ public class ProcessSong {
         ArrayList<Integer> pos = new ArrayList<>();
         pos.add(0);
         boolean lookforstart = false;
-        for (int s=1;s<(lines[0].length()-1);s++) {
-            String mychar = lines[0].substring(s,s+1);
+
+        for (int s = 1; s < (lines[0].length() - 1); s++) {
+            String mychar = lines[0].substring(s, s + 1);
             if (!mychar.equals(" ") && lookforstart) {
                 // This is the start of a new chord!
                 pos.add(s);
@@ -690,16 +730,17 @@ public class ProcessSong {
         }
 
         // Now we have the sizes, split into individual TextViews inside a TableRow for each line
-        for (int t=0; t<lines.length; t++) {
+        for (int t = 0; t < lines.length; t++) {
             TableRow tableRow = newTableRow(c);
             String linetype = getLineType(lines[t]);
             Typeface typeface = getTypeface(linetype);
-            float size = getFontSize(linetype,headingScale,commentScale,chordScale);
-            int color = getFontColor(linetype,lyricColor,chordColor);
-            int startpos=0;
-            for (int endpos:pos) {
+            float size = getFontSize(linetype, headingScale, commentScale, chordScale);
+            int color = getFontColor(linetype, lyricColor, chordColor);
+            int startpos = 0;
+            for (int endpos : pos) {
                 if (endpos != 0) {
                     TextView textView = newTextView(c, linetype, typeface, size, color, trimLines, lineSpacing);
+
                     String str = lines[t].substring(startpos, endpos);
                     if (startpos == 0) {
                         str = trimOutLineIdentifiers(c, linetype, str);
@@ -713,12 +754,12 @@ public class ProcessSong {
                 }
             }
             // Add the final position
-            TextView textView = newTextView(c,linetype,typeface,size,color,trimLines,lineSpacing);
+            TextView textView = newTextView(c, linetype, typeface, size, color, trimLines, lineSpacing);
             String str = lines[t].substring(startpos);
             if (str.startsWith(".")) {
-                str = str.replaceFirst(".","");
+                str = str.replaceFirst(".", "");
             }
-            if (t==0) {
+            if (t == 0) {
                 str = str.trim() + " ";
             }
             textView.setText(str);
@@ -728,6 +769,176 @@ public class ProcessSong {
         }
         return tableLayout;
     }
+
+    private boolean isMultiLineFormatSong(String string) {
+        // Best way to determine if the song is in multiline format is
+        // Look for [v] or [c] case insensitive
+        // And it needs to be followed by a line starting with 1 and 2
+        try {
+            String[] sl = string.split("\n");
+            boolean has_multiline_vtag = false;
+            boolean has_multiline_ctag = false;
+            boolean has_multiline_1tag = false;
+            boolean has_multiline_2tag = false;
+
+            for (String l : sl) {
+                if (l.toLowerCase(StaticVariables.locale).startsWith("[v]")) {
+                    has_multiline_vtag = true;
+                } else if (l.toLowerCase(StaticVariables.locale).startsWith("[c]")) {
+                    has_multiline_ctag = true;
+                } else if (l.toLowerCase(StaticVariables.locale).startsWith("1") ||
+                        l.toLowerCase(StaticVariables.locale).startsWith(" 1")) {
+                    has_multiline_1tag = true;
+                } else if (l.toLowerCase(StaticVariables.locale).startsWith("2") ||
+                        l.toLowerCase(StaticVariables.locale).startsWith(" 2")) {
+                    has_multiline_2tag = true;
+                }
+            }
+
+            return (has_multiline_vtag || has_multiline_ctag) && has_multiline_1tag && has_multiline_2tag;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private boolean lineIsChordForMultiline(String[] lines) {
+        return (lines[0].length()>1 && lines.length>1 && lines[1].matches("^[0-9].*$"));
+    }
+    String fixMultiLineFormat(Context c, Preferences preferences, String string) {
+
+        if (!preferences.getMyPreferenceBoolean(c,"multiLineVerseKeepCompact",false) && isMultiLineFormatSong(string)) {
+            // Reset the available song sections
+            // Ok the song is in the multiline format
+            // [V]
+            // .G     C
+            // 1Verse 1
+            // 2Verse 2
+
+            // Create empty verse and chorus strings up to 9 verses/choruses
+            String[] verse = {"", "", "", "", "", "", "", "", ""};
+            String[] chorus = {"", "", "", "", "", "", "", "", ""};
+
+            StringBuilder versechords = new StringBuilder();
+            StringBuilder choruschords = new StringBuilder();
+
+            // Split the string into separate lines
+            String[] lines = string.split("\n");
+
+            // Go through the lines and look for tags and line numbers
+            boolean gettingverse = false;
+            boolean gettingchorus = false;
+            for (int z = 0; z < lines.length; z++) {
+                String l = lines[z];
+                String l_1 = "";
+                String l_2 = "";
+
+                if (lines.length > z + 1) {
+                    l_1 = lines[z + 1];
+                }
+                if (lines.length > z + 2) {
+                    l_2 = lines[z + 2];
+                }
+
+                boolean mlv = isMultiLine(l, l_1, l_2, "v");
+                boolean mlc = isMultiLine(l, l_1, l_2, "c");
+
+                if (mlv) {
+                    lines[z] = "__VERSEMULTILINE__";
+                    gettingverse = true;
+                    gettingchorus = false;
+                } else if (mlc) {
+                    lines[z] = "__CHORUSMULTILINE__";
+                    gettingverse = false;
+                    gettingchorus = true;
+                } else if (l.startsWith("[")) {
+                    gettingverse = false;
+                    gettingchorus = false;
+                }
+
+                if (gettingverse) {
+                    if (lines[z].startsWith(".")) {
+                        versechords.append(lines[z]).append("\n");
+                        lines[z] = "__REMOVED__";
+                    } else if (Character.isDigit((lines[z] + " ").charAt(0))) {
+                        int vnum = Integer.parseInt((lines[z] + " ").substring(0, 1));
+                        if (verse[vnum].equals("")) {
+                            verse[vnum] = "[V" + vnum + "]\n";
+                        }
+                        verse[vnum] += lines[z].substring(2) + "\n";
+                        lines[z] = "__REMOVED__";
+                    }
+                } else if (gettingchorus) {
+                    if (lines[z].startsWith(".")) {
+                        choruschords.append(lines[z]).append("\n");
+                        lines[z] = "__REMOVED__";
+                    } else if (Character.isDigit((lines[z] + " ").charAt(0))) {
+                        int cnum = Integer.parseInt((lines[z] + " ").substring(0, 1));
+                        if (chorus[cnum].equals("")) {
+                            chorus[cnum] = "[C" + cnum + "]\n";
+                        }
+                        chorus[cnum] += lines[z].substring(2) + "\n";
+                        lines[z] = "__REMOVED__";
+                    }
+                }
+            }
+
+            // Get the replacement text
+            String versereplacement = addchordstomultiline(verse, versechords.toString());
+            String chorusreplacement = addchordstomultiline(chorus, choruschords.toString());
+
+            // Now go back through the lines and extract the new improved version
+            StringBuilder improvedlyrics = new StringBuilder();
+            for (String thisline : lines) {
+                if (thisline.equals("__VERSEMULTILINE__")) {
+                    thisline = versereplacement;
+                } else if (thisline.equals("__CHORUSMULTILINE__")) {
+                    thisline = chorusreplacement;
+                }
+                if (!thisline.equals("__REMOVED__")) {
+                    improvedlyrics.append(thisline).append("\n");
+                }
+            }
+
+            return improvedlyrics.toString();
+        } else {
+            // Not multiline format, or not wanting to expand it
+            return string;
+        }
+    }
+    private boolean isMultiLine(String l, String l_1, String l_2, String type) {
+        boolean isit = false;
+        l = l.toLowerCase(StaticVariables.locale);
+
+        if (l.startsWith("["+type+"]") &&
+                (l_1.startsWith("1") || l_1.startsWith(" 1") || l_2.startsWith("1") || l_2.startsWith(" 1"))) {
+            isit = true;
+        }
+        return isit;
+    }
+    private String addchordstomultiline(String[] multiline, String chords) {
+        String[] chordlines = chords.split("\n");
+        StringBuilder replacementtext = new StringBuilder();
+
+        // Go through each verse/chorus in turn
+        for (String sections:multiline) {
+            String[] section = sections.split("\n");
+
+            if (section.length == chordlines.length+1) {
+                replacementtext.append(section[0]).append("\n");
+                // Only works if there are the same number of lyric lines as chords!
+                for (int x=0; x<chordlines.length; x++) {
+                    replacementtext.append(chordlines[x]).append("\n").append(section[x + 1]).append("\n");
+                }
+                replacementtext.append("\n");
+            } else {
+                replacementtext.append(sections).append("\n");
+            }
+        }
+        return replacementtext.toString();
+    }
+
+
     private TextView lineText(Context c, String linetype, String string, Typeface typeface, float size,
                               int color, boolean trimLines, float lineSpacing) {
         TextView textView = newTextView(c,linetype,typeface,size,color,trimLines,lineSpacing);
@@ -773,15 +984,19 @@ public class ProcessSong {
             c3.setVisibility(View.GONE);
         }
     }
-    public ArrayList<View> setSongInLayout(Context c, boolean trimSections, boolean addSectionSpace, boolean trimLines,
-                                           float lineSpacing, Map<String,Integer> colorMap, float headingScale,
+    public ArrayList<View> setSongInLayout(Context c, Preferences preferences, boolean trimSections,
+                                           boolean addSectionSpace, boolean trimLines, float lineSpacing,
+                                           Map<String,Integer> colorMap, float headingScale,
                                            float chordScale, float commentScale, String string) {
         ArrayList<View> sectionViews = new ArrayList<>();
 
         // This goes through processing the song
+
+        // First check for multiverse/multiline formatting
+        string = fixMultiLineFormat(c,preferences,string);
+
         // First up we go through the lyrics and group lines that should be in a table for alignment purposes
         string = makeGroups(string);
-
         // Next we generate the split points for sections
         string = makeSections(string);
 

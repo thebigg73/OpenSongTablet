@@ -10,10 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.garethevans.church.opensongtablet.Preferences;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.SetActions;
-import com.garethevans.church.opensongtablet.StaticVariables;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Collections;
@@ -24,11 +24,13 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
     private final List<SetItemInfo> setList;
     private final Context c;
     private final Preferences preferences;
+    private final ShowToast showToast;
 
-    SetListAdapter(List<SetItemInfo> setList, Context context, Preferences p) {
+    SetListAdapter(List<SetItemInfo> setList, Context context, Preferences p, ShowToast t) {
         this.setList = setList;
         c = context;
         preferences = p;
+        showToast = t;
     }
 
     @Override
@@ -125,7 +127,7 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
             }
 
             if (StaticVariables.whattodo.equals("setitemvariation")) {
-                SetMenuFragment.makeVariation(c, preferences);
+                SetMenuFragment.makeVariation(c, preferences, showToast);
 
             } else {
                 SetMenuFragment.loadSong(c,preferences);

@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -14,11 +15,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class PopUpThemeChooserFragment extends DialogFragment {
 
-    private Preferences preferences;
+    private _Preferences preferences;
     private View dark_font, dark_background, dark_verse, dark_chorus, dark_prechorus, dark_bridge,
             dark_comment, dark_tag, dark_chord, dark_custom, dark_capo, dark_presofont,
             dark_presoinfofont, dark_presoshadow, dark_presoalertfont, dark_metronome,
@@ -145,7 +149,7 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
+                _CustomAnimations.animateFAB(closeMe, getActivity());
                 closeMe.setEnabled(false);
                 doClose();
             }
@@ -153,7 +157,7 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Load up the preferences
         loadUpPreferences();
@@ -170,7 +174,7 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         // Set the appropriate theme button based on what is already set
         setUpButtons();
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
         return V;
     }
 
@@ -888,7 +892,7 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         this.dismiss();
     }
 
-    private void saveTheColor(Preferences preferences, String whichColor, int value) {
+    private void saveTheColor(_Preferences preferences, String whichColor, int value) {
         preferences.setMyPreferenceInt(getActivity(), whichColor, value);
     }
 
@@ -1259,3 +1263,4 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         }
     }
 }
+*/

@@ -8,20 +8,18 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.garethevans.church.opensongtablet.Preferences;
-import com.garethevans.church.opensongtablet.SQLiteHelper;
-import com.garethevans.church.opensongtablet.StaticVariables;
-import com.garethevans.church.opensongtablet.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.databinding.FragmentPresentationBinding;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
-import com.garethevans.church.opensongtablet.songprocessing.LoadSong;
+import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.SongXML;
-
-import java.util.Objects;
+import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 
 public class PresentationFragment extends Fragment {

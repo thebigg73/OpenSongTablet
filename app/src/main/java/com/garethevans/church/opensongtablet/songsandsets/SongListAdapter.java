@@ -1,31 +1,33 @@
 package com.garethevans.church.opensongtablet.songsandsets;
 
 import android.content.Context;
+import android.os.Build;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.garethevans.church.opensongtablet.Preferences;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.SQLite;
-import com.garethevans.church.opensongtablet.StaticVariables;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.sqlite.SQLite;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongItemViewHolder> implements FastScrollRecyclerView.SectionedAdapter  {
+public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> implements FastScrollRecyclerView.SectionedAdapter  {
 
     private final List<SQLite> songList;
     private final Context c;
     private final Preferences preferences;
+    private final SongForSet songForSet;
+    private SparseBooleanArray checkedArray = new SparseBooleanArray();
 
     AdapterCallback callback;
 
@@ -34,13 +36,25 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongIt
         void onItemLongClicked(int position);
     }
 
-    public SongListAdapter(Context context, List<SQLite> songList, Preferences preferences, AdapterCallback callback) {
+    public SongListAdapter(Context context, List<SQLite> songList, Preferences preferences,
+                           SongForSet songForSet, AdapterCallback callback) {
         this.songList = songList;
         c = context;
         this.preferences = preferences;
         this.callback = callback;
+        this.songForSet = songForSet;
+        if (songList!=null) {
+            initialiseCheckedArray();
+        }
     }
 
+    private void initialiseCheckedArray() {
+        for (int i = 0; i < songList.size(); i++) {
+            if (StaticVariables.currentSet.contains(songForSet.getSongForSet(c, songList.get(i).getFolder(), songList.get(i).getFilename()))) {
+                checkedArray.put(i, true);
+            }
+        }
+    }
 
     @Override
     public int getItemCount() {
@@ -55,15 +69,9 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongIt
     public void onBindViewHolder(@NonNull SongItemViewHolder songItemViewHolder, int i) {
         SQLite song = songList.get(i);
         String filename = song.getFilename();
-        //String title = song.getTitle();
         String folder = song.getFolder();
         String author = song.getAuthor();
         String key = song.getKey();
-        String isinset = song.getInSet();
-        boolean inset = true;
-        if (isinset==null || isinset.equals("false")) {
-            inset = false;
-        }
 
         if (folder==null) {folder="";}
         if (author==null) {author="";}
@@ -71,7 +79,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongIt
         if (key==null) {key="";}
 
         final String songfolder = folder;
-        //songItemViewHolder.itemTitle.setText(filename);
         if (folder.startsWith("**")) {
             folder = folder.replace("**","");
         }
@@ -85,7 +92,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongIt
             songItemViewHolder.itemKey.setText(key);
             songItemViewHolder.itemKey.setVisibility(View.VISIBLE);
         } else {
-            songItemViewHolder.itemKey.setVisibility(View.GONE);
+            songItemViewHolder.itemKey.setVisibility(View.INVISIBLE);
         }
 
         // Set the author if it exists
@@ -97,14 +104,8 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongIt
         }
 
         // Set the checkbox if the song is in the set
-        songItemViewHolder.itemChecked.setChecked(inset);
-
-        String songforset;
-        if (songfolder.equals(c.getString(R.string.mainfoldername)) || songfolder.equals("MAIN") || songfolder.equals("")) {
-            songforset = "$**_" + filename + "_**$";
-        } else {
-            songforset = "$**_" + songfolder + "/" + filename + "_**$";
-        }
+        String songforset = songForSet.getSongForSet(c,songfolder,filename);
+        bindCheckBox(songItemViewHolder.itemChecked,i);
 
         // Set the listener
         final String mfilename = filename;
@@ -116,34 +117,60 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongIt
                 callback.onItemClicked(i);
             }
         });
+
+        // For Chromebooks (need to be running Marshmallow or higher
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            songItemViewHolder.itemCard.setOnContextClickListener(v -> {
+                StaticVariables.songfilename = mfilename;
+                StaticVariables.whichSongFolder = songfolder;
+                StaticVariables.whatsongforsetwork = songforset;
+                if (callback!=null) {
+                    callback.onItemLongClicked(i);
+                }
+                return true;
+            });
+        }
+
         songItemViewHolder.itemCard.setOnLongClickListener(v -> {
             StaticVariables.songfilename = mfilename;
             StaticVariables.whichSongFolder = songfolder;
             StaticVariables.whatsongforsetwork = songforset;
             if (callback!=null) {
-                callback.onItemClicked(i);
                 callback.onItemLongClicked(i);
             }
             return true;
         });
-        songItemViewHolder.itemChecked.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            StaticVariables.whatsongforsetwork = songforset;
-            if (isChecked) {
+
+        songItemViewHolder.itemChecked.setOnClickListener(v -> {
+            int adapterPosition = songItemViewHolder.getAdapterPosition();
+            if (!checkedArray.get(adapterPosition, false)) {
+                songItemViewHolder.itemChecked.setChecked(true);
+                checkedArray.put(adapterPosition, true);
                 StaticVariables.currentSet = StaticVariables.currentSet + songforset;
-                song.setInSet("true");
-            } else {
+            }
+            else  {
+                songItemViewHolder.itemChecked.setChecked(false);
+                checkedArray.put(adapterPosition, false);
                 StaticVariables.currentSet = StaticVariables.currentSet.replace(songforset,"");
-                song.setInSet("false");
             }
             preferences.setMyPreferenceString(c,"setCurrent",StaticVariables.currentSet);
         });
     }
 
+    void bindCheckBox(CheckBox checkBox, int position) {
+        // use the sparse boolean array to check
+        if (!checkedArray.get(position, false)) {
+            checkBox.setChecked(false);
+        } else {
+            checkBox.setChecked(true);
+        }
+    }
+
     @NonNull
     @Override
-    public SongItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public SongItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).
-                inflate(R.layout.song_menu_itemrow, viewGroup, false);
+                inflate(R.layout.menu_songs_itemrow, viewGroup, false);
 
         return new SongItemViewHolder(itemView);
     }
@@ -158,27 +185,6 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongIt
             return ""+position;
         }
 
-    }
-
-
-    static class SongItemViewHolder extends RecyclerView.ViewHolder {
-
-        final TextView itemTitle;
-        final TextView itemFolder;
-        final TextView itemAuthor;
-        final TextView itemKey;
-        final CheckBox itemChecked;
-        final CardView itemCard;
-
-        SongItemViewHolder(View v) {
-            super(v);
-            itemCard = v.findViewById(R.id.card_view);
-            itemTitle = v.findViewById(R.id.cardview_title);
-            itemFolder = v.findViewById(R.id.cardview_folder);
-            itemAuthor = v.findViewById(R.id.cardview_author);
-            itemKey = v.findViewById(R.id.cardview_key);
-            itemChecked = v.findViewById(R.id.cardview_setcheck);
-        }
     }
 
     Map<String,Integer> getAlphaIndex(List<SQLite> songlist) {
@@ -198,4 +204,3 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongIt
         return linkedHashMap;
     }
 }
-

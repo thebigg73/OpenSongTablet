@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:text="@string/showchords"
-                android:theme="@style/SwitchStyle"
+                android:theme="@style/MySwitch"
                 app:showText="false" />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:text="@string/showcapo"
-                android:theme="@style/SwitchStyle"
+                android:theme="@style/MySwitch"
                 app:showText="false" />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:text="@string/capo_toggle_bothcapo"
-                android:theme="@style/SwitchStyle"
+                android:theme="@style/MySwitch"
                 app:showText="false" />
 
             <TextView

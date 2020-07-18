@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -5,6 +6,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
+
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -186,11 +189,13 @@ class Midi extends Activity {
     }
 
     byte[] returnBytesFromHexText(String lineofhextext) {
-        /*
+        */
+/*
         This function can be called for each line of hex text stored with the song (each line is a command)
         Split the line into an array split by spaces
         Convert each section into an integer which is added to the bytes array
-        */
+        *//*
+
         String[] hexbits = lineofhextext.split(" ");
         byte[] bytes = new byte[hexbits.length];
         int i = 0;
@@ -237,3 +242,4 @@ class Midi extends Activity {
     }
 
 }
+*/

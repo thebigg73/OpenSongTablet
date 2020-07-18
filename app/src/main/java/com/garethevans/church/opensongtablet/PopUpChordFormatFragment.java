@@ -1,8 +1,12 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.SwitchCompat;
@@ -30,7 +34,7 @@ public class PopUpChordFormatFragment extends DialogFragment {
     private SwitchCompat switchAb, switchBb, switchDb, switchEb, switchGb, switchAbm, switchBbm,
             switchDbm, switchEbm, switchGbm, assumePreferred_SwitchCompat;
 
-    private Preferences preferences;
+    private _Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +59,7 @@ public class PopUpChordFormatFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 exitChordFormat();
             }
@@ -63,7 +67,7 @@ public class PopUpChordFormatFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Identify the views
         identifyViews(V);
@@ -74,7 +78,7 @@ public class PopUpChordFormatFragment extends DialogFragment {
         // Set the listeners
         setListeners();
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -247,3 +251,4 @@ public class PopUpChordFormatFragment extends DialogFragment {
     }
 
 }
+*/

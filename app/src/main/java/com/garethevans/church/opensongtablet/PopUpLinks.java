@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -8,6 +9,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLite;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLiteHelper;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.util.Log;
@@ -31,7 +39,7 @@ public class PopUpLinks extends DialogFragment {
     private EditText linkOther_EditText;
 
     private StorageAccess storageAccess;
-    private Preferences preferences;
+    private _Preferences preferences;
 
     private Uri uri;
 
@@ -65,7 +73,7 @@ public class PopUpLinks extends DialogFragment {
         }
 
         storageAccess = new StorageAccess();
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         getDialog().setCanceledOnTouchOutside(true);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -81,7 +89,7 @@ public class PopUpLinks extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -90,7 +98,7 @@ public class PopUpLinks extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
+                _CustomAnimations.animateFAB(saveMe,getActivity());
                 saveMe.setEnabled(false);
                 doSave();
             }
@@ -153,14 +161,14 @@ public class PopUpLinks extends DialogFragment {
             @Override
             public void onClick(View v) {
                 StaticVariables.whattodo = "filechooser";
-                openDocumentPicker("audio/*",StaticVariables.LINK_AUDIO);
+                openDocumentPicker("audio/(TODOREPLACEWITH _/_* without underscores)",StaticVariables.LINK_AUDIO);
             }
         });
         linkOther_EditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 StaticVariables.whattodo = "filechooser";
-                openDocumentPicker("*/*",StaticVariables.LINK_OTHER);
+                openDocumentPicker("*(TODOREPLACEWITH _/_* without underscores)",StaticVariables.LINK_OTHER);
             }
         });
 
@@ -174,7 +182,7 @@ public class PopUpLinks extends DialogFragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                     StaticVariables.myToastMessage = getResources().getString(R.string.notset);
-                    ShowToast.showToast(getActivity());
+                    _ShowToast.showToast(getActivity());
                 }
             }
         });
@@ -192,7 +200,7 @@ public class PopUpLinks extends DialogFragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                     StaticVariables.myToastMessage = getResources().getString(R.string.notset);
-                    ShowToast.showToast(getActivity());
+                    _ShowToast.showToast(getActivity());
                 }
             }
         });
@@ -209,7 +217,7 @@ public class PopUpLinks extends DialogFragment {
 
                     if (mimeType == null) {
                         // If using a proper content uri, it will be null!
-                        mimeType = "audio/*";
+                        mimeType = "audio(TODOREPLACEWITH _/_* without underscores)";
                     }
 
                     newIntent.setDataAndType(uri, mimeType);
@@ -225,7 +233,7 @@ public class PopUpLinks extends DialogFragment {
                     }
                 } else {
                     StaticVariables.myToastMessage = getResources().getString(R.string.notset);
-                    ShowToast.showToast(getActivity());
+                    _ShowToast.showToast(getActivity());
                 }
             }
         });
@@ -241,7 +249,7 @@ public class PopUpLinks extends DialogFragment {
                     String mimeType = myMime.getMimeTypeFromExtension(mytext);
 
                     if (mimeType == null) {
-                        mimeType = "*/*";
+                        mimeType = "*(TODOREPLACEWITH _/_* without underscores)";
                     }
 
                     newIntent.setDataAndType(uri, mimeType);
@@ -255,12 +263,12 @@ public class PopUpLinks extends DialogFragment {
                     }
                 } else {
                     StaticVariables.myToastMessage = getResources().getString(R.string.notset);
-                    ShowToast.showToast(getActivity());
+                    _ShowToast.showToast(getActivity());
                 }
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -276,8 +284,8 @@ public class PopUpLinks extends DialogFragment {
         PopUpEditSongFragment.prepareSongXML();
         try {
             if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
-                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+                _NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new _NonOpenSongSQLiteHelper(getActivity());
+                _NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
                 nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
             } else {
                 PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
@@ -287,7 +295,7 @@ public class PopUpLinks extends DialogFragment {
         } catch (Exception e) {
             StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.save) + " - " +
                     getActivity().getResources().getString(R.string.error);
-            ShowToast.showToast(getActivity());
+            _ShowToast.showToast(getActivity());
             e.printStackTrace();
         }
     }
@@ -368,8 +376,9 @@ public class PopUpLinks extends DialogFragment {
             e.printStackTrace();
             linkAudio_EditText.setText("");
             StaticVariables.myToastMessage = getString(R.string.not_allowed);
-            ShowToast.showToast(getActivity());
+            _ShowToast.showToast(getActivity());
             mediafile.release();
         }
     }
 }
+(TODOREPLACEWITH _*_/ without underscores)*/

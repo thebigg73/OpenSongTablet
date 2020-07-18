@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -5,6 +6,11 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -79,7 +85,7 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
+                _CustomAnimations.animateFAB(closeMe, getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -90,7 +96,7 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
         // Initialise the Midi - this is only available for Marshmallow+
         m = new Midi();
 
-        Preferences preferences = new Preferences();
+        _Preferences preferences = new _Preferences();
 
         // Initialise the views
         ListView songMessages = V.findViewById(R.id.songMessages);
@@ -122,7 +128,7 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
                 openMidiEdit();
             }
         });
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
 
         return V;
     }
@@ -147,7 +153,7 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
         }
         if (!success) {
             StaticVariables.myToastMessage = getString(R.string.midi_error);
-            ShowToast.showToast(getActivity());
+            _ShowToast.showToast(getActivity());
         }
     }
 
@@ -162,7 +168,7 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
             }
         } else {
             StaticVariables.myToastMessage = getString(R.string.nothighenoughapi);
-            ShowToast.showToast(getActivity());
+            _ShowToast.showToast(getActivity());
         }
         try {
             dismiss();
@@ -196,3 +202,4 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
         midiMessagesAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),R.layout.my_spinner, songMidiMessagesNice);
     }
 }
+*/

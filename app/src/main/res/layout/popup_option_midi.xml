@@ -115,7 +115,7 @@
                 android:drawableStart="@drawable/ic_midi_white_36dp"
                 android:text="@string/midi_auto"
                 android:textColor="#fff"
-                android:theme="@style/SwitchStyle"
+                android:theme="@style/MySwitch"
                 android:textSize="12sp"
                 app:showText="false" />
 

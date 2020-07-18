@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/rounded_dialog">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/changeLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/BottomSheetButton"
+                android:text="@string/changestorage"
+                app:icon="@drawable/ic_database_white_36dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/backupFolder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/BottomSheetButton"
+                android:text="@string/osb_backup"
+                app:icon="@drawable/ic_backup_restore_white_36dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/createSubdirectory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/BottomSheetButton"
+                android:text="@string/folder_new"
+                app:icon="@drawable/ic_plus_white_36dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/renameFolder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/BottomSheetButton"
+                android:text="@string/folder_rename"
+                app:icon="@drawable/ic_rename_box_white_36dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/moveContents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/BottomSheetButton"
+                android:text="Move folder contents"
+                app:icon="@drawable/ic_content_copy_white_36dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/deleteSubdirectory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/BottomSheetButton"
+                android:text="@string/delete"
+                app:icon="@drawable/ic_delete_white_36dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -250,7 +250,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="8dp"
                 android:text="@string/chordformat_default"
-                android:theme="@style/SwitchStyle" />
+                android:theme="@style/MySwitch" />
 
 
         </LinearLayout>

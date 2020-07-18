@@ -1,9 +1,14 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -62,7 +67,7 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -71,7 +76,7 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         saveMe.hide();
 
         ProcessSong processSong = new ProcessSong();
-        Preferences preferences = new Preferences();
+        _Preferences preferences = new _Preferences();
 
         Button editSongDetails = V.findViewById(R.id.editSongDetails);
         editSongDetails.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +129,7 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         v_mLyrics.setTextSize(8.0f);
         v_mLyrics.setText(StaticVariables.mLyrics);
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
         return V;
     }
 
@@ -143,4 +148,4 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         this.dismiss();
     }
 
-}
+}*/

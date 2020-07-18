@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -8,6 +9,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.util.Log;
@@ -87,7 +93,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
     private final int isgone = View.GONE;
 
     private StorageAccess storageAccess;
-    private Preferences preferences;
+    private _Preferences preferences;
     private ProcessSong processSong;
     private Uri uri;
 
@@ -103,7 +109,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
+                _CustomAnimations.animateFAB(closeMe, getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -118,7 +124,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         });
 
         storageAccess = new StorageAccess();
-        preferences = new Preferences();
+        preferences = new _Preferences();
         processSong = new ProcessSong();
 
         // Initialise the views
@@ -266,7 +272,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
         drawView.setDrawingSize(screenshot_width,screenshot_height);
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -370,7 +376,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
                 val = preferences.getMyPreferenceInt(getActivity(),"drawingHighlighterColor",StaticVariables.yellow);
                 if (val==StaticVariables.highlighterblack) {
                     color = "black";
-                } else if (val==StaticVariables.highlighterwhite) {
+                } else if (val== StaticVariables.highlighterwhite) {
                     color = "white";
                 } else if (val==StaticVariables.highlighterred) {
                     color = "red";
@@ -575,3 +581,4 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         }
     }
 }
+*/

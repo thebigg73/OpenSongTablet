@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.Manifest;
@@ -6,6 +7,11 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._BootUpCheck;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
@@ -262,7 +268,7 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
     @Override
     public void showToastMessage(String message) {
         Log.d("d", "showToastMessage called");
-        ShowToast.showToast(ImportIntent.this);
+        _ShowToast.showToast(ImportIntent.this);
     }
 
     @Override
@@ -276,3 +282,4 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
         Log.d("d", "selectAFileUri called");
     }
 }
+*/

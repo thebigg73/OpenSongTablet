@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
@@ -7,6 +8,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SQLiteHelper;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SongFolders;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SongXML;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.util.Log;
@@ -37,9 +47,9 @@ public class PopUpSongCreateFragment extends DialogFragment {
     private MyInterface mListener;
     private AsyncTask<Object, Void, String> getfolders;
     private StorageAccess storageAccess;
-    private Preferences preferences;
-    private SongFolders songFolders;
-    private SongXML songXML;
+    private _Preferences preferences;
+    private _SongFolders songFolders;
+    private _SongXML songXML;
 
     static PopUpSongCreateFragment newInstance() {
         PopUpSongCreateFragment frag;
@@ -88,7 +98,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -97,16 +107,16 @@ public class PopUpSongCreateFragment extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
+                _CustomAnimations.animateFAB(saveMe,getActivity());
                 //saveMe.setEnabled(false);
                 doSave();
             }
         });
 
         storageAccess = new StorageAccess();
-        preferences = new Preferences();
-        songFolders = new SongFolders();
-        songXML = new SongXML();
+        preferences = new _Preferences();
+        songFolders = new _SongFolders();
+        songXML = new _SongXML();
 
         // Initialise the views
         newFolderSpinner = V.findViewById(R.id.newFolderSpinner);
@@ -154,7 +164,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
             }
         });
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
         return V;
 
     }
@@ -230,7 +240,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
                     storageAccess.deleteFile(getActivity(), from);
 
                     // Add the new song to the SQLite database
-                    SQLiteHelper sqLiteHelper = new SQLiteHelper(getActivity());
+                    _SQLiteHelper sqLiteHelper = new _SQLiteHelper(getActivity());
                     sqLiteHelper.createSong(getActivity(),FullscreenActivity.newFolder,tempNewSong);
 
                     try {
@@ -299,7 +309,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
                         }
 
                         // Add the new song to the SQLite database
-                        SQLiteHelper sqLiteHelper = new SQLiteHelper(getActivity());
+                        _SQLiteHelper sqLiteHelper = new _SQLiteHelper(getActivity());
                         sqLiteHelper.createSong(getActivity(),StaticVariables.whichSongFolder,StaticVariables.songfilename);
                     } else {
                         StaticVariables.myToastMessage = getResources().getString(R.string.notset);
@@ -330,7 +340,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
                 }
 
                 if (!StaticVariables.myToastMessage.equals("")) {
-                    ShowToast.showToast(getActivity());
+                    _ShowToast.showToast(getActivity());
                 }
                 try {
                     dismiss();
@@ -377,3 +387,4 @@ public class PopUpSongCreateFragment extends DialogFragment {
     }
 
 }
+*/

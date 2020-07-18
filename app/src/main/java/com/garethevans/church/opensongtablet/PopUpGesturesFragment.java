@@ -1,9 +1,13 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
+import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -23,7 +27,7 @@ public class PopUpGesturesFragment extends DialogFragment {
     private Spinner screenDoubleTap;
     private Spinner screenLongPress;
 
-    private Preferences preferences;
+    private _Preferences preferences;
 
     static PopUpGesturesFragment newInstance() {
         PopUpGesturesFragment frag;
@@ -59,7 +63,7 @@ public class PopUpGesturesFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                _CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -68,13 +72,13 @@ public class PopUpGesturesFragment extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
+                _CustomAnimations.animateFAB(saveMe,getActivity());
                 saveMe.setEnabled(false);
                 doSave();
             }
         });
 
-        preferences = new Preferences();
+        preferences = new _Preferences();
 
         // Initialise the views
         screenDoubleTap = V.findViewById(R.id.screenDoubleTap);
@@ -106,7 +110,7 @@ public class PopUpGesturesFragment extends DialogFragment {
         setSpinnerVal(screenDoubleTap, preferences.getMyPreferenceInt(getActivity(),"gestureScreenDoubleTap",2));
         setSpinnerVal(screenLongPress, preferences.getMyPreferenceInt(getActivity(),"gestureScreenLongPress",3));
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -138,4 +142,4 @@ public class PopUpGesturesFragment extends DialogFragment {
         this.dismiss();
     }
 
-}
+}*/

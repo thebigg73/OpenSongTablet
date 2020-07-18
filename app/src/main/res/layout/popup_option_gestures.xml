@@ -138,7 +138,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_menu_white_36dp"
                 android:text="@string/hide_actionbar"
-                android:theme="@style/SwitchStyle"
+                android:theme="@style/MySwitch"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 app:showText="false" />
