@@ -86,6 +86,7 @@ public class FolderManagementDialog extends DialogFragment {
         String action;
         ArrayList<String> arguments;
 
+
         ActionClickListener(String what, int id) {
 
             this.what = what;
