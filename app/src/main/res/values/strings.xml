@@ -34,7 +34,6 @@
     <string name="average">Average</string>
     <string name="back">Back</string>
     <string name="backing_track">Choose backing track</string>
-    <string name="backup_and_restore">Backup and Restore</string>
     <string name="backup_error">"No OpenSongApp backup file found in OpenSong folder"</string>
     <string name="backup_export">Export OpenSongApp backup</string>
     <string name="backup_import">Import OpenSongApp backup</string>
@@ -73,8 +72,6 @@
     </string-array>
     <string name="capo_color">Capo font</string>
     <string name="capo_style">Capo fret as numeral</string>
-    <string name="capo_style_number">1,2,3...</string>
-    <string name="capo_style_numeral">I,II,III...</string>
     <string name="capo_toggle_bothcapo">Show both capo and native chords if available</string>
     <string-array name="capoprint" translatable="false">
         <item/>
@@ -115,7 +112,6 @@
     <string name="chordFormat6" translatable="false">I  II  III  IV  V  VI  VII  VIII  IX  X  XI  XII</string>
     <string name="chord_color">Chords font</string>
     <string name="chord_convert">Convert song to my preferred chord format</string>
-    <string name="chord_settings">Chord settings</string>
     <string name="chordformat_default">Always assume songs are in my preferred chord format</string>
     <string name="chordiesearch">Online search at Chordie.com</string>
     <string name="chordline_scale">Scale chords</string>
@@ -125,7 +121,6 @@
     <string name="chords_flat">Use b chords</string>
     <string name="chords_sharp">Use # chords</string>
     <string name="chorus_background">Chorus background</string>
-    <string name="click_to_change">Click to change</string>
     <string name="colorchooser">Colour Chooser</string>
     <string name="comment_background">Comment background</string>
     <string name="commentline_scale">Scale comment text</string>
@@ -245,7 +240,6 @@
     <string name="firstsong">Displaying first item</string>
     <string name="fix">Autofix</string>
     <string name="floating_window">Floating window</string>
-    <string name="folder">Folder</string>
     <string name="folder_new">Create new song folder</string>
     <string name="folder_rename">Edit song folder name</string>
     <string name="folderexists">This folder already exists!</string>
@@ -265,7 +259,6 @@
     <string name="hdmi" translatable="false">HDMI</string>
     <string name="headingline_scale">Scale heading text</string>
     <string name="help">Help (Online)</string>
-    <string name="hide">Hide</string>
     <string name="hide_actionbar">Hide top menu bar on/off</string>
     <string name="hidelyricsbox">Hide lyrics box</string>
     <string name="highlight">Highlighter</string>
@@ -359,7 +352,6 @@
     <string name="loop_slide_pages">Loop pages in custom slide</string>
     <string name="lorem" translatable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
     <string name="lyrics_color">Lyrics font</string>
-    <string name="lyrics_settings">Lyrics settings</string>
     <string name="mainfoldername">MAIN</string>
     <string name="managesets">Rename sets</string>
     <string name="mandolin">Mandolin</string>
@@ -372,8 +364,7 @@
     <string name="media_selected">Media loaded</string>
     <string name="menu_settings">Menu settings</string>
     <string name="menu_swipe_toggle">Toggle song list and option menus swipe on/off</string>
-    <string name="menu_text_size">Menu text size</string>
-    <string name="menu_width">Menu width</string>
+    <string name="menu_width">Menu width (percentage of screen width)</string>
     <string name="metronome">Metronome</string>
     <string name="metronome_duration">Metronome duration (bars)</string>
     <string name="metronomePedalText">Start/stop metronome</string>
@@ -420,8 +411,6 @@
     <string name="on">ON</string>
     <string name="options">OPTIONS</string>
     <string name="options_clearthisset">CLEAR THE CURRENT SET AND CREATE A NEW ONE</string>
-    <string name="osb_backup">Create a backup of OpenSongApp songs (*.osb)</string>
-    <string name="osb_restore">Restore songs from OpenSongApp backup file (*.osb)</string>
     <string name="other">Other</string>
     <string name="override_fullautoscale">Override full autoscale to width only</string>
     <string name="override_scale_explanation">If the autoscale font size is less than the desired minimum font size, do you want the app to override to a different scaling method?  Using these options may force you to scroll horizontally and vertically in a song</string>
@@ -469,9 +458,7 @@
     <string name="preso_alpha">Background opacity</string>
     <string name="processing">Files are being processed</string>
     <string name="profile">Profile</string>
-    <string name="profile_backup">Backup current profile</string>
     <string name="profile_description">Profiles are used to store your display preferences.</string>
-    <string name="profile_restore">Restore a saved profile</string>
     <string name="promptbackup">You haven\'t backed up your song library in the last 10 times you have used this app.
         This is highly recommended as you can recover your songs if anything goes wrong.
         Ideally you should keep a copy of your backup file on the cloud (e.g. Google Drive) or email it to yourself.</string>
@@ -499,7 +486,6 @@
     <string name="scrollbuttons_toggle">Toggle scroll buttons</string>
     <string name="search">Search</string>
     <string name="search_biblegateway">Search BibleGateway.com</string>
-    <string name="search_fields">Search fields</string>
     <string name="search_index_end">All songs have been fully indexed</string>
     <string name="search_index_error">There was an error building your search database</string>
     <string name="search_index_start">Building your song database</string>
@@ -520,10 +506,9 @@
     <string name="setquickcheck">Show set checkboxes in song menu</string>
     <string name="setxmargins">Horizontal margin size</string>
     <string name="setymargins">Vertical margin size</string>
-    <string name="show">Show</string>
+    <string name="show_general_advanced">Toggle general/advanced fields</string>
     <string name="showcapo">Show capo chords</string>
     <string name="showchords">Show chords</string>
-    <string name="show_general_advanced">Toggle general/advanced fields</string>
     <string name="showlyrics">Show lyrics</string>
     <string name="shownextinset">Show next song in set</string>
     <string name="simple_note">Simple note / placeholder</string>
@@ -533,10 +518,7 @@
     <string name="slide">Slide</string>
     <string name="slide_add_page">Insert new page to custom slide</string>
     <string name="song">SONG</string>
-    <string name="song_display">Song display</string>
-    <string name="song_features">Song features</string>
     <string name="song_functionnotavailable">This function is not available for songs</string>
-    <string name="song_list">Songs</string>
     <string name="song_new_name">Enter a new file name for this song (this is how it will appear in your song menu)</string>
     <string name="song_sections">Song sections</string>
     <string name="song_swipe_toggle">Toggle swipe to move between songs on/off</string>
@@ -725,10 +707,4 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="duplicate">Duplicate</string>
     <string name="storage_warning">Please do not select the \'Songs\' folder as your storage location.  You should select the parent \'OpenSong\' folder location instead.</string>
     <string name="rotate_display">Rotate display</string>
-    <string name="filter_results">Filter results</string>
-    <string name="custom_search">Custom search</string>
-    <string name="available">Available</string>
-    <string name="look_for">Look for</string>
-    <string name="filter_by_this_value">Filter by this value</string>
-
 </resources>
