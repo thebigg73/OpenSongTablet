@@ -5,4 +5,7 @@ Use your mobile device as a portable song book.  Please feel free to help out by
 
 The app online manual can be found at http://www.opensongapp.com
 
+To use (and install) this code, copy the git address (the https:// bit).  Open Android Studio and select File > New > Project from Version Control.
+You can then run on an emulator or plugged in Android device as appropriate.
+
 Gareth Evans
