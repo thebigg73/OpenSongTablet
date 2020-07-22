@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:drawableTop="@drawable/ic_folder_zip_white_36dp"
+            android:drawableTop="@drawable/ic_folder_open_white_36dp"
             style="@style/songListButtonOff"
             android:text="@string/folder"
             android:visibility="visible"/>
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:drawableTop="@drawable/ic_folder_zip_white_36dp"
+            android:drawableTop="@drawable/ic_folder_open_white_36dp"
             android:text="@string/folder"
             style="@style/songListButtonOn"
             android:visibility="gone"/>

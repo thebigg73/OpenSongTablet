@@ -590,11 +590,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
-                if (position == 0) {
-                    showSetMenu = false;
-                } else {
-                    showSetMenu = true;
-                }
+                showSetMenu = position != 0;
                 super.onPageSelected(position);
             }
         });
@@ -771,12 +767,12 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     }
     @Override
-    public void displayAreYouSure(String what, String action, ArrayList<String> arguments) {
-        AreYouSureDialogFragment dialogFragment = new AreYouSureDialogFragment(what,action,arguments);
+    public void displayAreYouSure(String what, String action, ArrayList<String> arguments, String fragName, Fragment callingFragment) {
+        AreYouSureDialogFragment dialogFragment = new AreYouSureDialogFragment(what,action,arguments,fragName,callingFragment);
         dialogFragment.show(this.getSupportFragmentManager(), "areYouSure");
     }
     @Override
-    public void confirmedAction(boolean agree, String what, ArrayList<String> arguments) {
+    public void confirmedAction(boolean agree, String what, ArrayList<String> arguments, String fragName, Fragment callingFragment) {
         Log.d("d","agree="+agree+"  what="+what);
         if (agree) {
             boolean result = false;
@@ -802,9 +798,11 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
                 case "deleteItem":
                     // Folder and subfolder are passed in the arguments.  Blank arguments.get(2) /filenames mean folders
-                    storageAccess.doDeleteFile(this,preferences,arguments.get(0),arguments.get(1),arguments.get(2));
+                    result = storageAccess.doDeleteFile(this,preferences,arguments.get(0),arguments.get(1),arguments.get(2));
                     //Rebuild the song index
                     rebuildTheSongIndex();
+                    //Update the fragment
+                    updateFragment(fragName,callingFragment);
                     break;
 
             }

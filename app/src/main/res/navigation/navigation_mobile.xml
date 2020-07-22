@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_nav_boot_to_nav_storage"
             app:destination="@id/nav_storage" />
+        <action
+            android:id="@+id/action_nav_boot_to_nav_presentation"
+            app:destination="@id/nav_presentation" />
     </fragment>
 
     <fragment
@@ -69,6 +72,11 @@
         android:name="com.garethevans.church.opensongtablet.filemanagement.StorageManagementFragment"
         android:label="StorageManagementFragment"
         tools:layout="@layout/storage_folder_display"/>
+    <fragment
+        android:id="@+id/nav_presentation"
+        android:name="com.garethevans.church.opensongtablet.presentation.PresentationFragment"
+        android:label="PresentationFragment"
+        tools:layout="@layout/fragment_presentation"/>
 
 
 </navigation>

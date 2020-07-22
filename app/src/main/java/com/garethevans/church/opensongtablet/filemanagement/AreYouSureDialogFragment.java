@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.databinding.AreyousureDialogBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -43,11 +44,15 @@ public class AreYouSureDialogFragment extends DialogFragment {
     String action;
     String what;
     ArrayList<String> arguments;
+    String fragName;
+    Fragment callingFragment;  // can be null if not needed for MainActivity to refresh the fragment
 
-    public AreYouSureDialogFragment(String what, String action, ArrayList<String> arguments){
+    public AreYouSureDialogFragment(String what, String action, ArrayList<String> arguments, String fragName, Fragment callingFragment){
         this.what = what;
         this.action = action;
         this.arguments = arguments;
+        this.fragName = fragName;
+        this.callingFragment = callingFragment;
     }
 
     @Override
@@ -57,11 +62,11 @@ public class AreYouSureDialogFragment extends DialogFragment {
 
         areYouSureBinding.action.setText(action);
         areYouSureBinding.cancelButton.setOnClickListener(v -> {
-            mainActivityInterface.confirmedAction(false,what,arguments);
+            mainActivityInterface.confirmedAction(false,what,arguments,fragName,callingFragment);
             dismiss();
         });
         areYouSureBinding.okButton.setOnClickListener(v -> {
-            mainActivityInterface.confirmedAction(true,what,arguments);
+            mainActivityInterface.confirmedAction(true,what,arguments,fragName,callingFragment);
             dismiss();
         });
         return areYouSureBinding.getRoot();

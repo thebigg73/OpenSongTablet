@@ -4,7 +4,7 @@ apply plugin: "androidx.navigation.safeargs"
 android {
 
     compileSdkVersion 29
-    buildToolsVersion '29.0.2'
+    buildToolsVersion '29.0.3'
     buildTypes {
         release {
             minifyEnabled false
@@ -46,7 +46,7 @@ android {
             jcenter()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:4.0.0'
+            classpath 'com.android.tools.build:gradle:4.0.1'
             //classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
             classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.0"
             classpath 'me.tatarka:gradle-retrolambda:3.7.0'
@@ -96,7 +96,7 @@ dependencies {
     //implementation 'com.fasterxml.jackson.core:jackson-core:2.9.8'
     implementation group: 'javax.xml.crypto', name: 'jsr105-api', version: '1.0.1'
     //implementation 'ru.egslava:MaskedEditText:1.0.5'                    // Not sure if I need this anymore
-    implementation 'com.annimon:stream:1.1.9'                           // Not sure if I need this anymore
+    implementation 'com.annimon:stream:1.2.1'                           // Not sure if I need this anymore
     implementation 'lib.kashif:folderpicker:2.4'                        // Not sure if I need this anymore
     //implementation 'com.github.mmin18:realtimeblurview:1.2.1'           // Not sure if I need this anymore
     implementation 'androidx.appcompat:appcompat:1.1.0'

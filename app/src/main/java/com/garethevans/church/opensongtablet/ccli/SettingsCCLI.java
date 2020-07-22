@@ -108,7 +108,7 @@ public class SettingsCCLI extends Fragment {
         });
         ccliView.setOnClickListener(v -> showDialog());
         ccliExport.setOnClickListener(view -> mainActivityInterface.doExport("ccliLog"));
-        ccliDelete.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("ccliDelete", getString(R.string.ccli_reset),null));
+        ccliDelete.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("ccliDelete", getString(R.string.ccli_reset),null,"SettingsCCLI", this));
     }
 
     private void showDialog() {

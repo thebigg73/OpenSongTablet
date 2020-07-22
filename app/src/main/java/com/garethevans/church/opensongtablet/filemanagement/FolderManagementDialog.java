@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class FolderManagementDialog extends DialogFragment {
         this.root = root;
         this.songs = songs;
         this.subdir = subdir;
+        Log.d("d","root="+root+"   songs="+songs+"   subdir="+subdir);
     }
 
 
@@ -106,8 +108,8 @@ public class FolderManagementDialog extends DialogFragment {
                     arguments.add("Songs");
                     arguments.add(subdir);
                     arguments.add("");
-                    mainActivityInterface.displayAreYouSure(what, action, arguments);
-                    mainActivityInterface.updateFragment("StorageManagementFragment",callingFragment);
+                    mainActivityInterface.displayAreYouSure(what, action, arguments, "StorageManagementFragment", callingFragment);
+                    //mainActivityInterface.updateFragment("StorageManagementFragment",callingFragment);
                     break;
             }
 

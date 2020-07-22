@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.MenuSetsDialogBinding;
@@ -22,6 +23,14 @@ public class SetMenuDialog extends DialogFragment {
 
     MenuSetsDialogBinding menuSetsDialogBinding;
     MainActivityInterface mainActivityInterface;
+
+    String fragName;
+    Fragment callingFragment;
+
+    SetMenuDialog (String fragName, Fragment callingFragment) {
+        this.fragName = fragName;
+        this.callingFragment = callingFragment;
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -46,7 +55,7 @@ public class SetMenuDialog extends DialogFragment {
         Preferences preferences = new Preferences();
         SetActions setActions = new SetActions();
 
-        menuSetsDialogBinding.createSet.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("newSet",getActivity().getResources().getString(R.string.options_clearthisset),null));
+        menuSetsDialogBinding.createSet.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("newSet",getActivity().getResources().getString(R.string.options_clearthisset),null,fragName,callingFragment));
         //menuSetsDialogBinding.saveSet.setOnClickListener(v -> setActions.saveTheSet());
         //menuSetsDialogBinding.manageSets.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.nav_manageSets));
         //menuSetsDialogBinding.addCustomSlide.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.customSlide));

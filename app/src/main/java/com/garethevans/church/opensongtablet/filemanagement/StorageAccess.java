@@ -1243,12 +1243,13 @@ public class StorageAccess {
     }
     private boolean deleteFile_SAF(Context c, Uri uri) {
         try {
-            DocumentFile df = DocumentFile.fromSingleUri(c, uri);
+            DocumentFile df = DocumentFile.fromSingleUri(c,uri);
+
             if (df!=null) {
-                // If this is a directory, recursively delete its contents
+                /*// If this is a directory, recursively delete its contents first
                 if (df.isDirectory()) {
                     wipeFolder_SAF(c,df);
-                }
+                }*/
                 return df.delete();
 
             } else {
@@ -1257,6 +1258,7 @@ public class StorageAccess {
             }
         } catch (Exception e) {
             Log.d("StorageAccess","Unable to delete "+uri);
+            e.printStackTrace();
             return false;
         }
     }
@@ -1414,6 +1416,7 @@ public class StorageAccess {
         // Already established that this is a directory
         DocumentFile[] dfs = df.listFiles();
         for (DocumentFile idf: dfs) {
+            Log.d("d","idf="+idf.getName());
             if (idf.isDirectory()) {
                 wipeFolder_SAF(c,idf);
             }

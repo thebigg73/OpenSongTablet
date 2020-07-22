@@ -25,8 +25,8 @@ public interface MainActivityInterface {
     void updateKeyAndLyrics(String key, String lyrics);
     void editSongSaveButtonAnimation(boolean pulse);
     void registerFragment(Fragment frag, String what);
-    void displayAreYouSure(String what, String action, ArrayList<String> arguments);
-    void confirmedAction(boolean agree, String what, ArrayList<String> arguments);
+    void displayAreYouSure(String what, String action, ArrayList<String> arguments, String fragName, Fragment callingFragment);
+    void confirmedAction(boolean agree, String what, ArrayList<String> arguments, String fragName, Fragment callingFragment);
     void refreshAll();
     void doExport(String what);
     void refreshSetList();

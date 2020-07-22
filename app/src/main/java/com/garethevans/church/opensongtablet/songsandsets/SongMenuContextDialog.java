@@ -87,7 +87,7 @@ class SongMenuContextDialog extends DialogFragment {
                 case "deleteSong":
                     String str = getString(R.string.delete) + ": " +
                             StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
-                    mainActivityInterface.displayAreYouSure("deleteSong", str,null);
+                    mainActivityInterface.displayAreYouSure("deleteSong", str,null, "SongMenuFragment",null);
                     break;
 
                 case "editSong":

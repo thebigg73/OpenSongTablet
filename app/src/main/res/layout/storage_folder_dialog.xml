@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 style="@style/BottomSheetButton"
                 android:text="@string/osb_backup"
-                app:icon="@drawable/ic_backup_restore_white_36dp" />
+                app:icon="@drawable/ic_database_export_white_36dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/createSubdirectory"

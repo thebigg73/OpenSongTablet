@@ -85,12 +85,16 @@ public class StorageManagementFragment extends DialogFragment {
         graphView.setOnItemClickListener((parent, view, position, id) -> {
             boolean root = position==0;
             boolean songs = position==1;
-            String location = "";
-            if (actualLocation.size()>position && (position)>1) {
-                Log.d("d", "actualLocation=" + actualLocation.get(position-2));  // Take away 2 as not OpenSong/ or Songs/
-                location = actualLocation.get(position-2);
+            try {
+                if (actualLocation.size()>position) {
+                    Log.d("d", "actualLocation=" + actualLocation.get(position));
+                    showActionDialog(root,songs,actualLocation.get(position));
+                } else {
+                    Log.d("d","actualLocation isn't big enough to hold this position");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            showActionDialog(root,songs,location);
         });
     }
 
@@ -101,7 +105,9 @@ public class StorageManagementFragment extends DialogFragment {
         // Set up top level folders
         //  This will return a list like MAIN, Band, Musicals, Musicals/HSM, Alex, etc.
         Node root = new Node("OpenSongApp");
+        actualLocation.add("root");
         Node songs = new Node("Songs\n(" + getActivity().getResources().getString(R.string.mainfoldername) + ")");
+        actualLocation.add("Songs");
         graph.addEdge(root, songs);
         Node currparent = songs;
         StringBuilder currParentString;
@@ -188,7 +194,7 @@ public class StorageManagementFragment extends DialogFragment {
                 .build();
     }
 
-    private void initialiseShowcaseArrays () {
+    private void initialiseShowcaseArrays() {
         views = new ArrayList<>();
         infos = new ArrayList<>();
         dismisses = new ArrayList<>();
@@ -213,6 +219,7 @@ public class StorageManagementFragment extends DialogFragment {
 
     public void updateFragment() {
         // Called from MainActivity when change has been made from Dialog
+        Log.d("d","Update fragment called");
         createNodes();
         adapter.notifyDataSetChanged();
     }
