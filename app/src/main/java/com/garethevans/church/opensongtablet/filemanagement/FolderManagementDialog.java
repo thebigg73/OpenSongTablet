@@ -90,7 +90,6 @@ public class FolderManagementDialog extends DialogFragment {
 
 
         ActionClickListener(String what, int id) {
-
             this.what = what;
             this.id = id;
         }
@@ -109,11 +108,16 @@ public class FolderManagementDialog extends DialogFragment {
                     arguments.add(subdir);
                     arguments.add("");
                     mainActivityInterface.displayAreYouSure(what, action, arguments, "StorageManagementFragment", callingFragment);
-                    //mainActivityInterface.updateFragment("StorageManagementFragment",callingFragment);
                     break;
+
+                case "createItem":
+                    DialogFragment dialogFragment = new NewNameDialog(false,"Songs",subdir);
+                    dialogFragment.show(getActivity().getSupportFragmentManager(),"createItem");
             }
 
             dismiss();
         }
     }
+
+
 }

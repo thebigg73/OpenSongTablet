@@ -37,6 +37,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.Collator;
@@ -1321,7 +1322,6 @@ public class StorageAccess {
             return false;
         }
     }
-
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private boolean renameFolder_SAF(Context c, Preferences preferences, String oldsubfolder, String newsubfolder) {
         // SAF can only rename final name (can't move within directory structure) - No / allowed!
@@ -1622,4 +1622,40 @@ public class StorageAccess {
         nonOpenSongSQLiteHelper.updateSong(c,storageAccess,preferences,nonOpenSongSQLite);
     }
 
+    public String makeFilenameSafe(String string) {
+        string = string.replace("/", "");
+        string = string.replace("\\", "");
+        string = string.replace("|", "");
+        string = string.replace(">", "");
+        string = string.replace("<", "");
+        string = string.replace("?", "");
+        string = string.replace("*", "");
+        string = string.replace("\"", "");
+        return string;
+    }
+
+
+    public boolean createFolder(Context c, Preferences preferences, String currentDir, String currentSubDir, String newFolder) {
+        // Get the uri for the parent
+        Uri dirUri = getUriForItem(c,preferences,currentDir,currentSubDir,"");
+        if (lollipopOrLater()){
+            return createFolder_SAF(c, dirUri,newFolder);
+        } else {
+            return createFolder_File(dirUri,newFolder);
+        }
+    }
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private boolean createFolder_SAF(Context c, Uri dirUri, String newFolder) {
+        try {
+            DocumentsContract.createDocument(c.getContentResolver(), dirUri, DocumentsContract.Document.MIME_TYPE_DIR, newFolder);
+            return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    private boolean createFolder_File(Uri root, String newName) {
+        File f = new File(root.getPath(),newName);
+        return f.mkdirs();
+    }
 }

@@ -34,6 +34,7 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
 
     // The helper classes used
     private Preferences preferences;
+    private StorageAccess storageAccess;
     private SQLiteHelper sqLiteHelper;
     private EditContent editContent;
 
@@ -165,6 +166,7 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
     // Getting the preferences and helpers ready
     private void initialiseHelpers() {
         preferences = new Preferences();
+        storageAccess = new StorageAccess();
         sqLiteHelper = new SQLiteHelper(getActivity());
         editContent = new EditContent();
     }
@@ -235,7 +237,7 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
             if (s != null) {
                 value = s.toString();
                 if (what.equals("title")) {
-                    value = makeFilenameSafe(value);
+                    value = storageAccess.makeFilenameSafe(value);
                 }
                 saveVal();
             }
@@ -265,18 +267,6 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
                     break;
             }
         }
-    }
-
-    private String makeFilenameSafe(String string) {
-        string = string.replace("/","");
-        string = string.replace("\\","");
-        string = string.replace("|","");
-        string = string.replace(">","");
-        string = string.replace("<","");
-        string = string.replace("?","");
-        string = string.replace("*","");
-        string = string.replace("\"","");
-        return string;
     }
 
     private void saveButtonAccent(boolean newchanges) {
