@@ -78,6 +78,8 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 
+//TODO Fix unused and local
+
 public class MainActivity extends AppCompatActivity implements LoadSongInterface,
         ShowCaseInterface, MainActivityInterface,
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
