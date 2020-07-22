@@ -21,7 +21,6 @@ import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.mediarouter.app.MediaRouteActionProvider;
 import androidx.mediarouter.media.MediaRouteSelector;
 import androidx.mediarouter.media.MediaRouter;
@@ -124,9 +123,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     EditSongFragmentMain editSongFragmentMain;
     Fragment registeredFragment;
 
-    FragmentManager fragmentManager;
     NavController navController;
-    NavHostFragment navHostFragment;
 
     ActionBar ab;
     DrawerLayout drawerLayout;
@@ -136,7 +133,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     ViewPagerAdapter adapter;
     ViewPager2 viewPager;
     boolean showSetMenu;
-
 
     ActivityMainBinding activityMainBinding;
     AppBarMainBinding appBarMainBinding;
@@ -348,13 +344,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         });
         return songMenuFragment != null;
     }
-    private Fragment getFragmentFrom() {
-        if (preferences.getMyPreferenceString(this,"whichMode","Performance").equals("Presentation")) {
-            return presentationFragment;
-        } else {
-            return performanceFragment;
-        }
-    }
 
     @Override
     public void hideKeyboard() {
@@ -414,7 +403,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            showDrawer(false);
+            hideDrawer();
         } else if (StaticVariables.homeFragment) {
             Log.d("d","In the home fragment, so deal with back pressed");
         } else {
@@ -437,7 +426,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         if (StaticVariables.orientationChanged) {
             // Set the current orientation
             StaticVariables.currentScreenOrientation = newConfig.orientation; // Set the current orientation
-            showDrawer(false);
+            hideDrawer();
             doSongLoad();
         }
     }
@@ -594,14 +583,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 super.onPageSelected(position);
             }
         });
-        activityMainBinding.menuTop.versionCode.setOnClickListener(v -> showDrawer(false));
+        activityMainBinding.menuTop.versionCode.setOnClickListener(v -> hideDrawer());
     }
-    private void showDrawer(boolean open) {
-        if (open) {
-            activityMainBinding.drawerLayout.openDrawer(GravityCompat.START);
-        } else {
-            activityMainBinding.drawerLayout.closeDrawer(GravityCompat.START);
-        }
+    private void hideDrawer() {
+        activityMainBinding.drawerLayout.closeDrawer(GravityCompat.START);
     }
 
 
@@ -631,7 +616,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 Log.d("MainActivity", "performanceFragment not available");
             }
         }
-        showDrawer(false);
+        hideDrawer();
     }
 
 
@@ -731,7 +716,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     @Override
     public void navigateToFragment(int id) {
-        showDrawer(false);  // Only the Performance and Presentation fragments allow this.  Switched on in these fragments
+        hideDrawer();  // Only the Performance and Presentation fragments allow this.  Switched on in these fragments
         hideActionButton(true);
         try {
             navController.navigate(id);
