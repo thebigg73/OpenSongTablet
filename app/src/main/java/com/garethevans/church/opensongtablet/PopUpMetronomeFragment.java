@@ -213,7 +213,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         popupmetronome_startstopbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                doSave();
+                // IV - doSave moved to dismiss
                 if (StaticVariables.metronomeonoff.equals("off") && StaticVariables.metronomeok) {
                     popupmetronome_startstopbutton.setText(getResources().getString(R.string.stop));
                     StaticVariables.metronomeonoff = "on";
@@ -239,9 +239,10 @@ public class PopUpMetronomeFragment extends DialogFragment {
                         Metronome.metroTask.stop();
                     }
                 } else {
-                    StaticVariables.myToastMessage = getString(R.string.notset);
+                    StaticVariables.myToastMessage = getString(R.string.metronome) + " - " + getString(R.string.notset);
                     ShowToast.showToast(getActivity());
                 }
+                PopUpMetronomeFragment.this.dismiss();
             }
         });
 
@@ -260,15 +261,13 @@ public class PopUpMetronomeFragment extends DialogFragment {
             } else {
                 PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
             }
-
-            StaticVariables.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
-                    getResources().getString(R.string.ok);
+            // IV - removed as we (perhaps) do not need to announce expected behaviour
         } catch (Exception e) {
             e.printStackTrace();
             StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.save) + " - " +
                     getActivity().getResources().getString(R.string.error);
+            ShowToast.showToast(getActivity());
         }
-        ShowToast.showToast(getActivity());
         dismiss();
     }
 
@@ -334,6 +333,8 @@ public class PopUpMetronomeFragment extends DialogFragment {
 
     @Override
     public void onDismiss(final DialogInterface dialog) {
+        // IV - doSave in dismiss to ensure save
+        doSave();
         if (mListener!=null) {
             mListener.pageButtonAlpha("");
         }
