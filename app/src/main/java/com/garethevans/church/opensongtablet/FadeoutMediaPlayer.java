@@ -20,78 +20,84 @@ class FadeoutMediaPlayer extends AsyncTask<Object,Void,String> {
     protected String doInBackground(Object... objects) {
         float level1 = vol;
         int i = 1;
-        while (i < 50) {
-            i++;
-            level1 = level1 * 0.9f;
-            float leftVol1 = level1;
-            float rightVol1 = level1;
-            if (pan.equals("L")) {
-                rightVol1 = 0.0f;
-            } else if (pan.equals("R")) {
-                leftVol1 = 0.0f;
-            }
-            try {
-                if (which==1 && FullscreenActivity.mPlayer1!=null) {
-                    FullscreenActivity.mPlayer1.setVolume(leftVol1, rightVol1);
-                } else if (which==2 && FullscreenActivity.mPlayer2!=null) {
-                    FullscreenActivity.mPlayer2.setVolume(leftVol1, rightVol1);
+
+        // Prevent double running of fades
+        if ((which == 1 && !StaticVariables.pad1Fading) || (which == 2 && !StaticVariables.pad2Fading)) {
+            int fadetime = time;
+            while (i < 50) {
+                i = i + 1;
+                if (i == 50) {
+                    level1 = 0.0f;
+                } else {
+                    level1 *= 0.90f;
                 }
-            } catch (Exception e) {
-                // Problem!
-                e.printStackTrace();
+
+                // If both pads are fading decide on the quietest and quick fade it
+                if (StaticVariables.pad1Fading && StaticVariables.pad2Fading) {
+                    // padInQuickFade flags the pad being quick faded and ensures only it is quick faded
+                    if (StaticVariables.padInQuickFade == 0) {
+                        if (StaticVariables.pad1FadeVolume < StaticVariables.pad2FadeVolume) {
+                            StaticVariables.padInQuickFade = 1;
+                        } else {
+                            StaticVariables.padInQuickFade = 2;
+                        }
+                    }
+                }
+                // If quickfade is running it can be stopped by external set of padInQuickFade to 0
+                if (StaticVariables.padInQuickFade == which) {
+                    fadetime = 2000;
+                } else {
+                    fadetime = time;
+                }
+
+                float leftVol1 = level1;
+                float rightVol1 = level1;
+                if (pan.equals("L")) {
+                    rightVol1 = 0.0f;
+                } else if (pan.equals("R")) {
+                    leftVol1 = 0.0f;
+                }
+
+                try {
+                    if (which == 1) {
+                        StaticVariables.pad1Fading = true;
+                        StaticVariables.pad1FadeVolume = level1;
+                        FullscreenActivity.mPlayer1.setVolume(leftVol1, rightVol1);
+                    } else {
+                        StaticVariables.pad2Fading = true;
+                        StaticVariables.pad2FadeVolume = level1;
+                        FullscreenActivity.mPlayer2.setVolume(leftVol1, rightVol1);
+                    }
+                } catch (Exception e) {
+                        // Problem!
+                        e.printStackTrace();
+                }
+
+                // Pause before next fade increment
+                long nowtime = System.currentTimeMillis();
+                long thentime = nowtime + (fadetime / 50);
+                while (nowtime < thentime) {
+                      nowtime = System.currentTimeMillis();
+                }
             }
 
-            // Pause before next fade increment
-            long nowtime = System.currentTimeMillis();
-            long thentime = nowtime + time / 50;
-            while (System.currentTimeMillis() < thentime) {
-                // Do nothing......
-                System.currentTimeMillis();
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    protected void onPostExecute(String s) {
-        try {
-            if (which==1 && FullscreenActivity.mPlayer1!=null) {
-                PadFunctions.getPad1Status();
-                if (StaticVariables.pad1Playing) {
+            // At the end of a fade stop and reset the player and cancel fading flags
+            try {
+                if (which == 1) {
                     FullscreenActivity.mPlayer1.stop();
                     FullscreenActivity.mPlayer1.reset();
-                }
-                StaticVariables.pad1Playing = false;
-                StaticVariables.pad1Fading = false;
-
-            } else if (which==2 && FullscreenActivity.mPlayer2!=null) {
-                PadFunctions.getPad2Status();
-                if (StaticVariables.pad2Playing) {
+                    StaticVariables.pad1Fading = false;
+                    StaticVariables.pad1Playing = false;
+                } else {
                     FullscreenActivity.mPlayer2.stop();
                     FullscreenActivity.mPlayer2.reset();
+                    StaticVariables.pad2Fading = false;
+                    StaticVariables.pad2Playing = false;
                 }
-                StaticVariables.pad2Playing = false;
-                StaticVariables.pad2Fading = false;
-
-            } else if (which==1) {
-                StaticVariables.pad1Playing = false;
-                StaticVariables.pad1Fading = false;
-            } else if (which==2) {
-                StaticVariables.pad2Playing = false;
-                StaticVariables.pad2Fading = false;
+             } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            if (which==0) {
-                StaticVariables.pad1Playing = false;
-                StaticVariables.pad1Fading = false;
-                StaticVariables.pad2Playing = false;
-                StaticVariables.pad2Fading = false;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+        return null;
     }
-
 }

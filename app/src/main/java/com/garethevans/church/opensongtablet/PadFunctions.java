@@ -82,7 +82,8 @@ class PadFunctions {
                 // Restart pad 1
                 FullscreenActivity.mPlayer1.start();
                 FullscreenActivity.mPlayer1Paused = false;
-            } else if (getPad1Status() && !FullscreenActivity.mPlayer1Paused) {
+            // IV - Addition to tests to prevent volume slider affecting a fading pad
+            } else if (getPad1Status() && !FullscreenActivity.mPlayer1Paused && !StaticVariables.pad1Fading) {
                 // Pause pad 1
                 FullscreenActivity.mPlayer1.pause();
                 FullscreenActivity.mPlayer1Paused = true;
@@ -90,7 +91,7 @@ class PadFunctions {
                 // Restart pad 1
                 FullscreenActivity.mPlayer2.start();
                 FullscreenActivity.mPlayer2Paused = false;
-            } else if (getPad2Status() && !FullscreenActivity.mPlayer2Paused) {
+            } else if (getPad2Status() && !FullscreenActivity.mPlayer2Paused && !StaticVariables.pad2Fading) {
                 // Pause pad 2
                 FullscreenActivity.mPlayer2.pause();
                 FullscreenActivity.mPlayer2Paused = true;

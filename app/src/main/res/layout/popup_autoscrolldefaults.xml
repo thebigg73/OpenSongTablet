@@ -6,6 +6,13 @@
     android:background="@drawable/popup_bg"
     android:padding="8dp">
 
+    <!-- Dummy item to prevent Number Picker from receiving focus -->
+    <LinearLayout
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
     <FrameLayout
         android:id="@+id/myTitle"
         android:layout_width="match_parent"
