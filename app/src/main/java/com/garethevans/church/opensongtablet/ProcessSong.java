@@ -1466,13 +1466,11 @@ public class ProcessSong extends Activity {
     private TextView titletoTextView(Context c, Preferences preferences, int lyricsTextColor, String title, float fontsize) {
         TextView titleview = new TextView(c);
         titleview.setLayoutParams(linearlayout_params());
-        // IV - Trim
-        titleview.setText(title.trim());
+        titleview.setText(title);
         titleview.setTextColor(lyricsTextColor);
         titleview.setTypeface(StaticVariables.typefaceLyrics);
         titleview.setTextSize(fontsize * preferences.getMyPreferenceFloat(c,"scaleHeadings", 0.6f));
-        // IV - Choice to make underline and bold
-        titleview.setPaintFlags(titleview.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG|Paint.FAKE_BOLD_TEXT_FLAG);
+        titleview.setPaintFlags(titleview.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
         return titleview;
     }
 
@@ -1908,9 +1906,7 @@ public class ProcessSong extends Activity {
             } else if (tempPresentationOrder.contains(tag)) {
                 tempPresentationOrder = tempPresentationOrder.replace(tag + " ", "<__" + tag + "__>");
             } else {
-                // IV - this logic avoids a trailing new line
-                if (errors.length() > 0) {errors.append(("\n"));}
-                errors.append(tag).append(" - not found in presentation order");
+                errors.append(tag).append(" - not found in presentation order\n");
             }
         }
 
@@ -1924,8 +1920,7 @@ public class ProcessSong extends Activity {
         for (int d=0; d<tempPresOrderArray.length; d++) {
             if (!tempPresOrderArray[d].contains("__>")) {
                 if (!tempPresOrderArray[d].equals("") && !tempPresOrderArray[d].equals(" ")) {
-                    if (errors.length() > 0) {errors.append(("\n"));}
-                    errors.append(tempPresOrderArray[d]).append(" - not found in song");
+                    errors.append(tempPresOrderArray[d]).append(" - not found in song\n");
                 }
                 tempPresOrderArray[d] = "";
                 // tempPresOrderArray now looks like "", "V1__>V2 ", "C__>", "V3__>", "C__>", "C__>", "Guitar Solo__>", "C__>Outro "
@@ -1934,8 +1929,7 @@ public class ProcessSong extends Activity {
                 String badbit = tempPresOrderArray[d].replace(goodbit+"__>","");
                 tempPresOrderArray[d] = goodbit;
                 if (!badbit.equals("") && !badbit.equals(" ")) {
-                    if (errors.length() > 0) {errors.append(("\n"));}
-                    errors.append(badbit).append(" - not found in song");
+                    errors.append(badbit).append(" - not found in song\n");
                 }
                 // tempPresOrderArray now looks like "", "V1", "C", "V3", "C", "C", "Guitar Solo", "C"
             }
