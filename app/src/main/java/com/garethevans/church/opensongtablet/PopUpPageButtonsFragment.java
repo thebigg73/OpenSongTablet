@@ -27,9 +27,10 @@ public class PopUpPageButtonsFragment extends DialogFragment {
     }
 
     public interface MyInterface {
-        void pageButtonAlpha(String s);
-        void groupPageButtons();
         void openFragment();
+        // Used for setup and display of all buttons
+        void setupPageButtons();
+        void onScrollAction();
     }
 
     private MyInterface mListener;
@@ -150,7 +151,8 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         custom3Visible_Switch.setText(c3);
         custom4Visible_Switch.setText(c4);
 
-        enableordisablegrouping();
+        // IV - collapsing and expanding groups means a block is no longer needed
+        //enableordisablegrouping();
 
         // Set the listeners
         pageButtonSize_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -168,7 +170,6 @@ public class PopUpPageButtonsFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 preferences.setMyPreferenceBoolean(getActivity(),"pageButtonGroupMain", b);
-                enableordisablegrouping();
                 updateDisplay();
             }
         });
@@ -192,12 +193,14 @@ public class PopUpPageButtonsFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 saveValue("pageButtonGroupExtra",b);
+                updateDisplay();
             }
         });
         customButtonGroup_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 saveValue("pageButtonGroupCustom",b);
+                updateDisplay();
             }
         });
         setVisible_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -319,15 +322,12 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         return preferences.getMyPreferenceBoolean(getActivity(),value,fallback);
     }
 
-    private void enableordisablegrouping() {
-        extraButtonGroup_Switch.setEnabled(!getValue("pageButtonGroupMain",false));
-        customButtonGroup_Switch.setEnabled(!getValue("pageButtonGroupMain",false));
-    }
-
+    // IV - enableordisablegrouping() no longer needed with expanding and contracting button groups
     private void updateDisplay() {
         if (mListener!=null) {
-            mListener.groupPageButtons();
-            mListener.pageButtonAlpha("");
+            // IV - setup is needed as the all group button needs to change function
+            mListener.setupPageButtons();
+            mListener.onScrollAction();
         }
     }
 

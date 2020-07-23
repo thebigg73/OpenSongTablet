@@ -46,9 +46,10 @@ public class OptionMenuListeners extends AppCompatActivity {
         void connectHDMI();
         void takeScreenShot();
         void prepareLearnAutoScroll();
-        void stopAutoScroll();
-        void killPad();
-        void stopMetronome();
+        // IV - Activities use the gestures - these have the stop and start logic
+        void gesture5();
+        void gesture6();
+        void gesture7();
         void doExport();
         void updateExtraInfoColorsAndSizes(String s);
         void selectAFileUri(String s);
@@ -2629,9 +2630,13 @@ public class OptionMenuListeners extends AppCompatActivity {
         autoscrollActivatedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                StaticVariables.clickedOnAutoScrollStart = b;
-                if (!b && mListener!=null) {
-                    mListener.stopAutoScroll();
+                // gesture contains the start/stop logic.
+                if (mListener != null) {
+                    // Request a start/stop to get to the desired state
+                    if ((!StaticVariables.isautoscrolling && b) || (StaticVariables.isautoscrolling && !b)) {
+                        StaticVariables.doVibrateActive = false;
+                        mListener.gesture5();
+                    }
                 }
             }
         });
@@ -2772,7 +2777,8 @@ public class OptionMenuListeners extends AppCompatActivity {
         switchTimerSize.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(c,"autoscrollLargeFontInfoBar",b);
+                // IV - Correction to preference name
+                preferences.setMyPreferenceBoolean(c,"padLargeFontInfoBar",b);
                 if (mListener!=null) {
                     mListener.updateExtraInfoColorsAndSizes("pad");
                 }
@@ -2781,9 +2787,9 @@ public class OptionMenuListeners extends AppCompatActivity {
         padActivatedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                StaticVariables.clickedOnPadStart = b;
-                if (!b && mListener!=null) {
-                    mListener.killPad();
+                // gesture contains the start/stop logic
+                if (mListener != null) {
+                        mListener.gesture6();
                 }
             }
         });
@@ -2868,11 +2874,9 @@ public class OptionMenuListeners extends AppCompatActivity {
         metronomeActivatedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                StaticVariables.clickedOnMetronomeStart = b;
-                if (!b && mListener!=null) {
-                    if (StaticVariables.metronomeonoff.equals("on")) {
-                        mListener.stopMetronome();
-                    }
+                // gesture contains the start/stop logic
+                if (mListener != null) {
+                    mListener.gesture7();
                 }
             }
         });
