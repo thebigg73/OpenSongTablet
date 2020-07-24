@@ -4051,7 +4051,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     // Page buttons not officially used in PresenterMode, although some features are
     @Override
-    public void setUpPageButtonsColors() {
+    public void setupPageButtons() {
+        // Not using page buttons as FABs on the screen, so do nothing
+    }@Override
+    public void setupPageButtonsColors() {
         // Not using page buttons as FABs on the screen, so do nothing
     }
     @Override
@@ -4062,28 +4065,15 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public void setupQuickLaunchButtons() {
         // Do nothing as this override is for StageMode
     }
+    // IV - Various void removed / added to match with changes
     @Override
-    public void groupPageButtons() {}
+    public void onScrollAction() {}
 
-    // The pad - Not used in PresenterMode
-    @Override
-    public void preparePad() {}
-    @Override
-    public void killPad() {}
-    @Override
-    public void fadeoutPad() {}
-
-    // Autoscroll - Not used in PresenterMode
-    @Override
-    public void stopAutoScroll() {}
-    @Override
-    public void startAutoScroll() {}
     @Override
     public void prepareLearnAutoScroll() {}
 
-    // Metronome - Not used in PresenterMode
     @Override
-    public void stopMetronome() {}
+    public void stopLearnAutoScroll() {}
 
     @Override
     public void updateExtraInfoColorsAndSizes(String what) {}

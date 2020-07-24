@@ -112,6 +112,8 @@ class Metronome {
 			if (maxBeatCount>0 && runningBeatCount>=maxBeatCount) { // This is if the user has specified max metronome time
 			    play=false;
                 StaticVariables.metronomeonoff = "off";
+                // IV - This variable is a state indicator set in this function only
+                StaticVariables.clickedOnMetronomeStart = false;
             }
 			if(currentBeat > beat)
 				currentBeat = 1;
@@ -185,7 +187,7 @@ class Metronome {
             PopUpMetronomeFragment.tempo = PopUpMetronomeFragment.bpm;
         }
 
-        return (int) PopUpMetronomeFragment.bpm;
+        return PopUpMetronomeFragment.bpm;
     }
 
     static void setBeatValues() {
@@ -225,6 +227,8 @@ class Metronome {
             // Start the metronome
             StaticVariables.metronomeonoff = "on";
             StaticVariables.whichbeat = "b";
+            // This is a state indicator set in this function only
+            StaticVariables.clickedOnMetronomeStart = true;
             metroTask = new MetronomeAsyncTask(pan,vol,barlength);
             try {
                 metroTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -232,27 +236,16 @@ class Metronome {
                 Log.d("d","Error starting the metronome");
             }
             startstopVisualMetronome(showvisual,metronomeColor);
-
-        } else if (checkMetronomeValid(c) && StaticVariables.metronomeonoff.equals("on")) {
+        // IV - A stop perhaps does not need to consider if it is valid
+        } else if (StaticVariables.metronomeonoff.equals("on")) {
             // Stop the metronome
             StaticVariables.metronomeonoff = "off";
+            // This a state indicator set in this function only
+            StaticVariables.clickedOnMetronomeStart = false;
             if (metroTask!=null) {
                 metroTask.stop();
             }
-
-        } else {
-            // Not valid, so open the popup
-            FullscreenActivity.whattodo = "page_metronome";
-            if (PopUpMetronomeFragment.mListener!=null) {
-                PopUpMetronomeFragment.mListener.openFragment();
-            } else {
-
-
-                
-                PopUpMetronomeFragment.MyInterface mListener;
-                mListener = (PopUpMetronomeFragment.MyInterface) activity;
-                mListener.openFragment();
-            }
+            // IV - Do not go to setting page as metronome 'not set' may be valid
         }
     }
 
