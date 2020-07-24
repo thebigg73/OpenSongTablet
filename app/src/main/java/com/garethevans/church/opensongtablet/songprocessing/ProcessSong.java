@@ -1,12 +1,18 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.pdf.PdfRenderer;
+import android.net.Uri;
 import android.os.Build;
+import android.os.ParcelFileDescriptor;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -18,6 +24,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
@@ -494,7 +501,7 @@ public class ProcessSong {
         return string;
     }
 
-    private String fixHeading(Context c, String line) {
+    public String fixHeading(Context c, String line) {
         line = line.replace("[", "");
         line = line.replace("]", "");
 
@@ -1653,4 +1660,178 @@ public class ProcessSong {
         PerformanceFragment.songViewHeight = Math.max(col1h,Math.max(col2h,col3h));
     }
 
+
+
+    // Now the stuff to read in pdf files (converts the pages to an image for displaying)
+    // This uses Android built in PdfRenderer, so will only work on Lollipop+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public Bitmap getBitmapFromPDF(Context c, Preferences preferences, StorageAccess storageAccess,
+                                   String folder, String filename, int page, int allowedWidth,
+                                   int allowedHeight, String scale) {
+        Bitmap bmp = null;
+
+        Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", folder, filename);
+
+        // FileDescriptor for file, it allows you to close file when you are done with it
+        ParcelFileDescriptor parcelFileDescriptor = getPDFParcelFileDescriptor(c,uri);
+
+        // Get PDF renderer
+        PdfRenderer pdfRenderer = getPDFRenderer(parcelFileDescriptor);
+
+        // Get the page count
+        StaticVariables.pdfPageCount = getPDFPageCount(pdfRenderer);
+
+        // Set the current page number
+        page = getCurrentPage(page);
+
+        if (parcelFileDescriptor!=null && pdfRenderer!=null && StaticVariables.pdfPageCount>0) {
+            // Good to continue!
+
+            // Get the currentPDF page
+            PdfRenderer.Page currentPage = getPDFPage(pdfRenderer,page);
+
+            // Get the currentPDF size
+            ArrayList<Integer> pdfSize = getPDFPageSize(currentPage);
+
+            // Get the scaled sizes for the bitmap
+            ArrayList<Integer> bmpSize = getBitmapScaledSize(pdfSize,allowedWidth,allowedHeight,scale);
+
+            // Get a scaled bitmap for these sizes
+            bmp = createBitmapFromPage(bmpSize,currentPage,true);
+
+            // Try to close the pdf stuff down to recover memory
+            try {
+                currentPage.close();
+                pdfRenderer.close();
+                parcelFileDescriptor.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return bmp;
+    }
+    public ParcelFileDescriptor getPDFParcelFileDescriptor(Context c, Uri uri) {
+        try {
+            return c.getContentResolver().openFileDescriptor(uri, "r");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public PdfRenderer getPDFRenderer(ParcelFileDescriptor parcelFileDescriptor) {
+        try {
+            return new PdfRenderer(parcelFileDescriptor);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public int getPDFPageCount(PdfRenderer pdfRenderer) {
+        if (pdfRenderer!=null) {
+            return pdfRenderer.getPageCount();
+        } else {
+            return 0;
+        }
+    }
+    public int getCurrentPage(int page) {
+        if (!StaticVariables.showstartofpdf) {
+            // This is to deal with swiping backwards through songs, show the last page first!
+            page = StaticVariables.pdfPageCount - 1;
+            StaticVariables.showstartofpdf = true;
+        }
+        if (page >= StaticVariables.pdfPageCount) {
+            StaticVariables.pdfPageCurrent = 0;
+            page = 0;
+        } else {
+            StaticVariables.pdfPageCurrent = page;
+        }
+        return page;
+    }
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public PdfRenderer.Page getPDFPage(PdfRenderer pdfRenderer, int page) {
+        return pdfRenderer.openPage(page);
+    }
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public ArrayList<Integer> getPDFPageSize(PdfRenderer.Page currentPage) {
+        ArrayList<Integer> sizes = new ArrayList<>();
+        // Get pdf size from page
+        int pdfwidth;
+        int pdfheight;
+        if (currentPage != null) {
+            pdfwidth = currentPage.getWidth();
+            pdfheight = currentPage.getHeight();
+        } else {
+            pdfwidth = 1;
+            pdfheight = 1;
+        }
+        sizes.add(pdfwidth);
+        sizes.add(pdfheight);
+        return sizes;
+    }
+    public ArrayList<Integer> getBitmapScaledSize(ArrayList<Integer> pdfSize, int allowedWidth, int allowedHeight, String scale) {
+        ArrayList<Integer> sizes = new ArrayList<>();
+
+        int bmpwidth = 0;
+        int bmpheight = 0;
+
+        float xscale = (float) allowedWidth / (float) pdfSize.get(0);
+        float yscale = (float) allowedHeight / (float) pdfSize.get(1);
+        float maxscale = Math.min(xscale,yscale);
+
+        switch (scale) {
+            case "Y":
+                bmpheight = (int) ((float) pdfSize.get(1) * maxscale);
+                bmpwidth = (int) ((float) pdfSize.get(0) * maxscale);
+                break;
+
+            case "W":
+                bmpheight = (int) (xscale * (float) pdfSize.get(1));
+                bmpwidth = allowedWidth;
+                break;
+
+            default:
+                // This means pdf will never be bigger than needed (even if scale is off)
+                // This avoids massive files calling out of memory error
+                if (pdfSize.get(0)> allowedWidth) {
+                    bmpheight = (int) (xscale * (float) pdfSize.get(1));
+                    bmpwidth = allowedWidth;
+                }
+                break;
+        }
+        if (bmpwidth == 0) {
+            bmpwidth = 1;
+        }
+        if (bmpheight == 0) {
+            bmpheight = 1;
+        }
+
+        sizes.add(bmpwidth);
+        sizes.add(bmpheight);
+        return sizes;
+    }
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public Bitmap createBitmapFromPage(ArrayList<Integer> bmpSize, PdfRenderer.Page currentPage, boolean forDisplayOnly) {
+        Bitmap bitmap = Bitmap.createBitmap(bmpSize.get(0), bmpSize.get(1), Bitmap.Config.ARGB_8888);
+        // Make a canvas with which we can draw to the bitmap to make it white
+        Canvas canvas = new Canvas(bitmap);
+        // Fill with white
+        canvas.drawColor(0xffffffff);
+
+        // Be aware this pdf might have transparency.  For now, I've just set the background
+        // of the image view to white.  This is fine for most PDF files.
+        int resolution;
+        if (forDisplayOnly) {
+            resolution = PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY;
+        } else {
+            resolution = PdfRenderer.Page.RENDER_MODE_FOR_PRINT;
+        }
+        try {
+            currentPage.render(bitmap, null, null, resolution);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
 }

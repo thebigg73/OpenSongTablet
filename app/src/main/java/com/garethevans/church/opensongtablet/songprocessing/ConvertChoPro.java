@@ -740,7 +740,7 @@ public class ConvertChoPro {
         return l;
     }
 
-    String fromOpenSongToChordPro(String lyrics, Context c, ProcessSong processSong) {
+    public String fromOpenSongToChordPro(Context c, ProcessSong processSong, String lyrics) {
         // This receives the text from the edit song lyrics editor and changes the format
         // Allows users to enter their song as chordpro/onsong format
         // The app will convert it into OpenSong before saving.

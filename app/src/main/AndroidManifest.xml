@@ -50,6 +50,10 @@
         android:vmSafeMode="true"
         tools:ignore="UnusedAttribute" >
 
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="ocr" />
+
  <!--       <receiver android:name=".OLD_TO_DELETE._BatteryMonitor" >
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />

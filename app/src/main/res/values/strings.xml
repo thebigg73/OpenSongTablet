@@ -757,4 +757,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="remove_item_from_set">Remove item from set</string>
     <string name="info_storage_graph_overview">Your current OpenSong/Songs folder directory structure is shown below (you can zoom and pan). \nClick on the root (OpenSong) folder to change your storage location.\nClick on the \'Songs\' folder to create a backup or a sub directory. If you already have sub directories, clicking on them will give further options.</string>
     <string name="delete_folder_warning">If you delete this subdirectory, this will also delete any songs or folders that it contains.  You cannot undo this change!</string>
+    <string name="root">ROOT</string>
+    <string name="get_songs">Get songs</string>
 </resources>

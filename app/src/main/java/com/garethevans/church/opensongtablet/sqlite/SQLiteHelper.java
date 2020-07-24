@@ -325,6 +325,10 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
     }
 
+    public String getAnySongId(String folder, String filename) {
+        return folder + "/" + filename;
+    }
+
     private String getSetString(Context c, String folder, String filename) {
         if (folder == null || folder.equals(c.getString(R.string.mainfoldername)) || folder.isEmpty()) {
             return "$**_" + filename + "_**$";
@@ -417,6 +421,42 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         //Return the songs
         Log.d("SQLiteHelper","QUERY:  "+selectQuery);
         return songs;
+    }
+
+    public SQLite getSpecificSong(Context c, String folder, String filename) {
+        String id = getAnySongId(folder,filename);
+        String sql = "SELECT * FROM " + SQLite.TABLE_NAME + " WHERE " + SQLite.COLUMN_SONGID + "=\"" + id + "\"";
+        SQLite thisSong = new SQLite();
+
+        try (SQLiteDatabase db = getDB(c)) {
+            Cursor cursor = db.rawQuery(sql, null);
+
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                String ti = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_TITLE)));
+                String au = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AUTHOR)));
+                String co = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_COPYRIGHT)));
+                String ke = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_KEY)));
+                String ly = unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_LYRICS)));
+
+                thisSong.setFilename(filename);
+                thisSong.setTitle(ti);
+                thisSong.setFolder(folder);
+                thisSong.setSongid(id);
+                thisSong.setAuthor(au);
+                thisSong.setKey(ke);
+                thisSong.setCopyright(co);
+                thisSong.setLyrics(ly);
+            }
+
+            // close db connection
+            try {
+                cursor.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return thisSong;
     }
 
     public ArrayList<String> getFolders(Context c) {

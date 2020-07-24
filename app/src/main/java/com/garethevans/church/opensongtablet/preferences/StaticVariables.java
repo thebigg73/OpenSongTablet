@@ -203,7 +203,7 @@ public class StaticVariables {
     public static String pad_filename = "null";
 
     // PDF stuff
-    static boolean showstartofpdf = true;
+    public static boolean showstartofpdf = true;
 
     // Used for the chord image display
     static String allchords = "";

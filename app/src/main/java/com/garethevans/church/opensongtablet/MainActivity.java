@@ -719,6 +719,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void navigateToFragment(int id) {
         hideDrawer();  // Only the Performance and Presentation fragments allow this.  Switched on in these fragments
+        lockDrawer(true);
         hideActionButton(true);
         try {
             navController.navigate(id);
@@ -731,11 +732,40 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         frag.show(getSupportFragmentManager(), tag);
     }
     @Override
-    public void updateFragment(String what, Fragment callingFragment) {
-        switch (what) {
-            case "StorageManagementFragment":
-                ((StorageManagementFragment)callingFragment).updateFragment();
-                break;
+    public void updateFragment(String fragName, Fragment callingFragment, ArrayList<String> arguments) {
+        if (fragName!=null) {
+            switch (fragName) {
+                case "StorageManagementFragment":
+                    ((StorageManagementFragment)callingFragment).updateFragment();
+                    break;
+
+                case "createNewSong":
+                    // User was in song menu dialog, clicked on create, then entered a new file name
+                    // Check this was successful (saved as arguments)
+                    if (arguments!=null && arguments.size()>0 && arguments.get(0).equals("success")) {
+                        // Write a blank xml file with the song name in it
+                        songXML.initialiseSongTags();
+                        String newSongText = songXML.getXML(processSong);
+                        if (storageAccess.doStringWriteToFile(this,preferences,"Songs",StaticVariables.whichSongFolder, StaticVariables.songfilename,newSongText)) {
+                            navigateToFragment(R.id.nav_editSong);
+                        } else {
+                            ShowToast.showToast(this,getString(R.string.error));
+                        }
+                    }
+                    break;
+
+                case "duplicateSong":
+                    // User was in song menu dialog, clicked on create, then entered a new file name
+                    // Check this was successful (saved as arguments)
+                    if (arguments!=null && arguments.size()>1 && arguments.get(0).equals("success")) {
+                        // We now need to copy the original file.  It's contents are saved in arguments.get(1)
+                        if (storageAccess.doStringWriteToFile(this,preferences,"Songs",StaticVariables.whichSongFolder,StaticVariables.songfilename,arguments.get(1))) {
+                            doSongLoad();
+                        } else {
+                            ShowToast.showToast(this,getString(R.string.error));
+                        }
+                    }
+            }
         }
     }
 
@@ -787,9 +817,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     // Folder and subfolder are passed in the arguments.  Blank arguments.get(2) /filenames mean folders
                     result = storageAccess.doDeleteFile(this,preferences,arguments.get(0),arguments.get(1),arguments.get(2));
                     //Rebuild the song index
-                    rebuildTheSongIndex();
-                    //Update the fragment
-                    updateFragment(fragName,callingFragment);
+                    updateSongMenu(fragName, callingFragment, arguments); // Passing the fragment allows an update to be sent to the calling fragment
                     break;
 
             }
@@ -801,7 +829,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         }
     }
 
-    private void rebuildTheSongIndex() {
+    @Override
+    public void updateSongMenu(String fragName, Fragment callingFragment, ArrayList<String> arguments) {
+        // If sent called from another fragment the fragName and callingFragment are used to run an update listener
         // Get all of the files as an array list
         ArrayList<String> songIds = storageAccess.listSongs(this, preferences);
         // Write this to text file
@@ -816,6 +846,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // It can be upgraded asynchronously in StageMode/PresenterMode to include author/key
         // Also will later include all the stuff for the search index as well
         sqLiteHelper.insertFast(this, storageAccess);
+        if (fragName!=null) {
+            //Update the fragment
+            updateFragment(fragName,callingFragment,arguments);
+        }
         // Now build it properly
         indexSongs();
     }

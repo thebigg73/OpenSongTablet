@@ -140,7 +140,7 @@ public class SongListBuildIndex {
                                 }
                             }
 
-                            // Make the lyrics nicer for the database (remove chord lines and headings)
+                            /*// Make the lyrics nicer for the database (remove chord lines and headings)
                             String[] lines = lyrics.split("\n");
                             StringBuilder sb = new StringBuilder();
                             for (String l : lines) {
@@ -148,7 +148,7 @@ public class SongListBuildIndex {
                                     sb.append(l).append("\n");
                                 }
                             }
-                            lyrics = sb.toString();
+                            lyrics = sb.toString();*/
 
                             String songid = folder.replaceAll("'", "''") + "/" + filename.replaceAll("'", "''");
                             // Now we have the song info, update the table row

@@ -14,13 +14,13 @@
         android:text="@string/newfoldername" />
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/editTextLayoutOutline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:padding="16dp"
         android:hint="@string/title"
-        android:labelFor="@+id/songTitle">
+        style="@style/editTextLayoutOutline"
+        android:background="@color/colorSecondary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/title"

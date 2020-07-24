@@ -50,5 +50,6 @@ public class SettingsCategories extends Fragment {
 
     private void setListeners() {
         myView.ccliButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.nav_preference_ccli));
+        myView.storageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.nav_storageManagement));
     }
 }

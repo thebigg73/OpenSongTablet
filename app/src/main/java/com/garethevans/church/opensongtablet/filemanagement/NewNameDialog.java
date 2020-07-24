@@ -1,6 +1,8 @@
 package com.garethevans.church.opensongtablet.filemanagement;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,30 +14,41 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.NewNameDialogBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
+import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.songprocessing.SongXML;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.ArrayList;
 
 public class NewNameDialog extends DialogFragment {
 
     MainActivityInterface mainActivityInterface;
     Preferences preferences;
     StorageAccess storageAccess;
+    SongXML songXML;
+    ProcessSong processSong;
     NewNameDialogBinding myView;
     TextInputEditText title;
     MaterialButton okButton, cancelButton;
     boolean isfile;
-    String currentDir, currentSubDir;
+    String currentDir, currentSubDir, fragName;
+    Fragment callingFragment;
+    String songContent;
 
-    NewNameDialog (boolean isfile, String currentDir, String currentSubDir) {
+    public NewNameDialog(Fragment callingFragment, String fragName, boolean isfile, String currentDir, String currentSubDir) {
         this.isfile = isfile;  // True to create a file, false to create a folder
         this.currentDir = currentDir;
         this.currentSubDir = currentSubDir;
+        this.fragName = fragName;
+        this.callingFragment = callingFragment;
     }
 
     @Override
@@ -48,13 +61,15 @@ public class NewNameDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        myView = NewNameDialogBinding.inflate(inflater,container,false);
-        okButton = myView.okButton;
-        cancelButton = myView.cancelButton;
-        title = myView.title;
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        storageAccess = new StorageAccess();
-        preferences = new Preferences();
+        myView = NewNameDialogBinding.inflate(inflater,container,false);
+
+        setHelpers();
+        setViews();
+
+        // Get the current songXML to pass back as an argument if we need it (good for duplicating!)
+        songContent = songXML.getXML(processSong);
 
         // Set listeners
         okButton.setOnClickListener(v -> doSave());
@@ -67,7 +82,9 @@ public class NewNameDialog extends DialogFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s != null) {
                     String string = storageAccess.makeFilenameSafe(s.toString());
-                    title.setText(string);
+                    if (!s.toString().equals(string)) {
+                        title.setText(string);
+                    }
                 }
             }
 
@@ -75,6 +92,19 @@ public class NewNameDialog extends DialogFragment {
             public void afterTextChanged(Editable s) {}
         });
         return myView.getRoot();
+    }
+
+    private void setViews() {
+        okButton = myView.okButton;
+        cancelButton = myView.cancelButton;
+        title = myView.title;
+    }
+
+    private void setHelpers() {
+        storageAccess = new StorageAccess();
+        preferences = new Preferences();
+        songXML = new SongXML();
+        processSong = new ProcessSong();
     }
 
     private void doSave() {
@@ -96,11 +126,16 @@ public class NewNameDialog extends DialogFragment {
                 if (storageAccess.createFolder(getActivity(),preferences,currentDir,currentSubDir,newName)) {
                     message = success;
                 }
+            } else if (exists) {
+                message = getActivity().getResources().getString(R.string.file_exists);
             }
         }
         ShowToast.showToast(getActivity(),message);
         if (message.equals(success)) {
-            mainActivityInterface.navigateToFragment(R.id.nav_storageManagement);
+            ArrayList<String> result = new ArrayList<>();
+            result.add("success");
+            result.add(songContent);
+            mainActivityInterface.updateSongMenu(fragName,callingFragment,result);
             dismiss();
         }
     }

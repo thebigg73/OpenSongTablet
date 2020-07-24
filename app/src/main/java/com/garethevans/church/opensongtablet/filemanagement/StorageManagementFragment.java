@@ -1,6 +1,8 @@
 package com.garethevans.church.opensongtablet.filemanagement;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,20 +28,26 @@ import de.blox.graphview.GraphView;
 import de.blox.graphview.Node;
 import de.blox.graphview.tree.BuchheimWalkerAlgorithm;
 import de.blox.graphview.tree.BuchheimWalkerConfiguration;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 public class StorageManagementFragment extends DialogFragment {
 
     StorageFolderDisplayBinding myView;
     SQLiteHelper sqLiteHelper;
+    StorageAccess storageAccess;
+    ShowCase showCase;
 
     protected GraphView graphView;
     Graph graph;
+    Node songs, parentNode;
+    String fulladdress, folder, parent;
 
     GraphAdapter<GraphView.ViewHolder> adapter;
     MainActivityInterface mainActivityInterface;
-    ArrayList<String> actualLocation, infos, dismisses;
+    ArrayList<String> actualLocation, infos, dismisses, songIDs, availableFolders;
     ArrayList<View> views = new ArrayList<>();
     ArrayList<Boolean> rects = new ArrayList<>();
+    int redColor, greenColor;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -53,15 +61,29 @@ public class StorageManagementFragment extends DialogFragment {
         graphView = myView.graph;
 
         sqLiteHelper = new SQLiteHelper(requireContext());
-        ShowCase showCase = new ShowCase();
+        storageAccess = new StorageAccess();
+        showCase = new ShowCase();
+
+        redColor = getActivity().getResources().getColor(R.color.lightred);
+        greenColor = getActivity().getResources().getColor(R.color.lightgreen);
+
+        // TODO remove this once this fragment is finished development
+        MaterialShowcaseView.resetSingleUse(requireContext(),"storageManagement");
 
         mainActivityInterface.updateToolbar(getActivity().getResources().getString(R.string.storage_choose));
         graph = new Graph();
 
         // Do this as separate tasks in a new thread
+        setUpThread();
+
+        return myView.getRoot();
+    }
+
+    private void setUpThread() {
         new Thread(() -> {
             createNodes();
             adapter = getGraphAdapter();
+            adapter.notifyDataSetChanged();
 
             requireActivity().runOnUiThread(() -> {
                 graphView.setAdapter(adapter);
@@ -70,28 +92,24 @@ public class StorageManagementFragment extends DialogFragment {
 
             setListeners();
 
+            showLocations();
             // Prepare the showcase
             initialiseShowcaseArrays();
             requireActivity().runOnUiThread(() -> {
                 prepareShowcaseViews();
-                showCase.sequenceShowCase(requireActivity(),views,dismisses,infos,rects,"storageManagements");
+                showCase.sequenceShowCase(requireActivity(),views,dismisses,infos,rects,"storageManagement");
             });
         }).start();
-
-        return myView.getRoot();
     }
-
     private void setListeners() {
         graphView.setOnItemClickListener((parent, view, position, id) -> {
             boolean root = position==0;
             boolean songs = position==1;
             try {
-                if (actualLocation.size()>position) {
-                    Log.d("d", "actualLocation=" + actualLocation.get(position));
-                    showActionDialog(root,songs,actualLocation.get(position));
-                } else {
-                    Log.d("d","actualLocation isn't big enough to hold this position");
-                }
+                TextView tv = view.findViewById(R.id.actualButton);
+                String actLoc = tv.getText().toString();
+                Log.d("d","actLoc="+actLoc);
+                showActionDialog(root,songs,actLoc);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -99,47 +117,27 @@ public class StorageManagementFragment extends DialogFragment {
     }
 
     private void createNodes() {
-        ArrayList<String> folders = sqLiteHelper.getFolders(requireContext());
+        ArrayList<String> folders = getFoldersFromFile();
         actualLocation = new ArrayList<>();
 
         // Set up top level folders
         //  This will return a list like MAIN, Band, Musicals, Musicals/HSM, Alex, etc.
-        Node root = new Node("OpenSongApp");
+        Node root = new Node("OpenSongApp\n("+getActivity().getResources().getString(R.string.root)+")");
         actualLocation.add("root");
-        Node songs = new Node("Songs\n(" + getActivity().getResources().getString(R.string.mainfoldername) + ")");
+        songs = new Node("Songs\n(" + getActivity().getResources().getString(R.string.mainfoldername) + ")");
         actualLocation.add("Songs");
         graph.addEdge(root, songs);
-        Node currparent = songs;
-        StringBuilder currParentString;
-        for (String folder : folders) {
-            Log.d("d","folder:" + folder);
-            if (!folder.contains("/") && !folder.equals(getActivity().getResources().getString(R.string.mainfoldername))) {
-                // Top level subfolders
-                Node node = new Node(folder);
-                graph.addEdge(songs,node);
-                actualLocation.add(folder);
-            } else if (!folder.equals(getActivity().getResources().getString(R.string.mainfoldername))) {
-                // Sub folder.  Check the top part exists, if not, create it
-                String[] nodebits = folder.split("/");
-                currParentString = new StringBuilder();
-                for (int i=0; i<nodebits.length; i++) {
-                    String nodebit = nodebits[i];
-                    Node node = new Node(nodebit);
-                    if (!graph.contains(node)) {
-                        // Create the node link
-                        graph.addEdge(currparent,node);
-                        String actLoc = currParentString + "/" + folder;
-                        if (i!=0) {
-                            currParentString.append("/").append(nodebit);
-                            if (currParentString.toString().startsWith("/")) {
-                                currParentString = new StringBuilder(currParentString.toString().replaceFirst("/", ""));
-                            }
-                        }
-                        actualLocation.add(actLoc);
-                    }
-                    currparent = node;
-                }
+
+        for (String thisfolder:folders) {
+            if (!thisfolder.contains("/")) {
+                parent = "";
+            } else {
+                parent = thisfolder.substring(0,thisfolder.indexOf("/"));
             }
+            folder = thisfolder;
+            fulladdress = thisfolder;
+            parentNode = songs;
+            makeNodes();
         }
     }
 
@@ -148,7 +146,6 @@ public class StorageManagementFragment extends DialogFragment {
 
             @Override
             public int getCount() {
-                Log.d("d","getCount="+graph.getNodeCount());
                 return graph.getNodeCount();
             }
 
@@ -171,15 +168,36 @@ public class StorageManagementFragment extends DialogFragment {
 
             @Override
             public void onBindViewHolder(@NonNull GraphView.ViewHolder viewHolder, @NonNull Object data, int position) {
-                ((SimpleViewHolder) viewHolder).nodeButton.setText(((Node)data).getData().toString());
+                int color = 66;
+                if (position==0) {
+                    // Color this red
+                    color = redColor;
+                } else if (position==1) {
+                   color = greenColor;
+                }
+                String simpleText = ((Node)data).getData().toString();
+                String actualText = simpleText;
+                if (simpleText.contains("/")) {
+                    simpleText = simpleText.substring(simpleText.lastIndexOf("/"));
+                    simpleText = simpleText.replace("/","");
+                }
+                ((SimpleViewHolder) viewHolder).nodeButton.setText(simpleText);
+                ((SimpleViewHolder) viewHolder).nodeActual.setText(actualText);
+
+                if (color!=66 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    ((SimpleViewHolder) viewHolder).nodeButton.setBackgroundTintList(ColorStateList.valueOf(color));
+                }
             }
 
             class SimpleViewHolder extends GraphView.ViewHolder {
                 TextView nodeButton;
+                TextView nodeActual;
 
                 SimpleViewHolder(View itemView) {
                     super(itemView);
                     nodeButton = itemView.findViewById(R.id.nodeButton);
+                    nodeActual = itemView.findViewById(R.id.actualButton);
+
                 }
             }
         };
@@ -220,7 +238,73 @@ public class StorageManagementFragment extends DialogFragment {
     public void updateFragment() {
         // Called from MainActivity when change has been made from Dialog
         Log.d("d","Update fragment called");
-        createNodes();
-        adapter.notifyDataSetChanged();
+        graph = new Graph();
+        setUpThread();
+    }
+
+    private ArrayList<String> getFoldersFromFile() {
+        songIDs = storageAccess.getSongIDsFromFile(getActivity());
+        // Each subdir ends with /
+        availableFolders = new ArrayList<>();
+        for (String entry:songIDs) {
+            if (entry.endsWith("/")) {
+                String newtext = entry.substring(0,entry.lastIndexOf("/"));
+                availableFolders.add(newtext);
+                Log.d("d",newtext);
+            }
+        }
+        return availableFolders;
+    }
+
+    private void showLocations() {
+        for (String entry:actualLocation) {
+            Log.d("d","actualLocation="+entry);
+        }
+    }
+
+    private void makeNodes() {
+        // We are sent each folder in turn.  Sometimes they are root folders, other times subfolders
+        // We need to figure this out, create them and add them as appropriate
+        if (folder.contains("/")) {
+            // Deal with the subfolders one at a time by resending here
+            // Split it up
+            String[] subs = folder.split("/");
+            for (String sub : subs) {
+                folder = sub;
+                makeNodes();
+            }
+        } else {
+            String nodeName;
+            if (folder.equals(parent) || parent.isEmpty()) {
+                // Top level folder, so attach to songs
+                nodeName = folder;
+
+
+            } else {
+                // Otherwise, find the parent, because it must have already been created!
+                int position = -1;
+                if (graph.contains(parentNode)) {
+                    position = actualLocation.indexOf(parentNode.getData().toString());
+                }
+                if (position>-1) {
+                    parentNode = graph.getNodeAtPosition(position);
+                }
+
+                if (parent.isEmpty()) {
+                    nodeName = folder;
+                } else {
+                    nodeName = parent + "/" + folder;
+                }
+            }
+            Node node = new Node(nodeName);
+            if (!graph.contains(node)) {
+               // Make the graph add edge to the parentNode
+               graph.addEdge(parentNode, node);
+               actualLocation.add(nodeName);
+            }
+            // This now becomes the new parent
+            parent = nodeName;
+            parentNode = new Node(parent);
+        }
     }
 }

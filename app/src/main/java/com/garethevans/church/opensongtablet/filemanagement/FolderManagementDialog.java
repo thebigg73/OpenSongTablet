@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.StorageFolderDialogBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 import java.util.ArrayList;
 
@@ -28,11 +29,16 @@ public class FolderManagementDialog extends DialogFragment {
     boolean root, songs;
     String subdir;
     Fragment callingFragment;
+    StorageAccess storageAccess;
+    Preferences preferences;
 
     FolderManagementDialog(Fragment callingFragment, boolean root, boolean songs, String subdir) {
         this.callingFragment = callingFragment;
         this.root = root;
         this.songs = songs;
+        if (songs || root) {
+            subdir = "";  // Songs is passed as the main folder location, so don't need this as well
+        }
         this.subdir = subdir;
         Log.d("d","root="+root+"   songs="+songs+"   subdir="+subdir);
     }
@@ -57,7 +63,11 @@ public class FolderManagementDialog extends DialogFragment {
         myView = StorageFolderDialogBinding.inflate(inflater,container,false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+        storageAccess = new StorageAccess();
+        preferences = new Preferences();
+
         if (root) {
+            myView.currentLocation.setText(storageAccess.niceUriTree(getActivity(),preferences));
             myView.backupFolder.setVisibility(View.GONE);
             myView.createSubdirectory.setVisibility(View.GONE);
             myView.moveContents.setVisibility(View.GONE);
@@ -65,15 +75,20 @@ public class FolderManagementDialog extends DialogFragment {
             myView.deleteSubdirectory.setVisibility(View.GONE);
             myView.changeLocation.setOnClickListener(new ActionClickListener("resetStorage", R.id.nav_storage));
         } else if (songs) {
+            String s = "OpenSong/Songs";
+            myView.currentLocation.setText(s);
             myView.changeLocation.setVisibility(View.GONE);
             myView.renameFolder.setVisibility(View.GONE);
             myView.moveContents.setVisibility(View.GONE);
             myView.deleteSubdirectory.setVisibility(View.GONE);
+            myView.createSubdirectory.setOnClickListener(new ActionClickListener("createItem", 0));
+            //myView.backupFolder.setOnClickListener(new ActionClickListener(R.id.nav_storage));
         } else {
+            String s = "OpenSong/Songs/" + subdir;
+            myView.currentLocation.setText(s);
             myView.changeLocation.setVisibility(View.GONE);
             myView.backupFolder.setVisibility(View.GONE);
-            //myView.backupFolder.setOnClickListener(new ActionClickListener(R.id.nav_storage));
-            //myView.createSubdirectory.setOnClickListener(new ActionClickListener(R.id.nav_storage));
+            myView.createSubdirectory.setOnClickListener(new ActionClickListener("createItem", 0));
             //myView.moveContents.setOnClickListener(new ActionClickListener(R.id.nav_storage));
             //myView.renameFolder.setOnClickListener(new ActionClickListener(R.id.nav_storage));
             myView.deleteSubdirectory.setOnClickListener(new ActionClickListener("deleteItem", 0));
@@ -111,7 +126,7 @@ public class FolderManagementDialog extends DialogFragment {
                     break;
 
                 case "createItem":
-                    DialogFragment dialogFragment = new NewNameDialog(false,"Songs",subdir);
+                    DialogFragment dialogFragment = new NewNameDialog(callingFragment,"StorageManagementFragment",false,"Songs",subdir);
                     dialogFragment.show(getActivity().getSupportFragmentManager(),"createItem");
             }
 

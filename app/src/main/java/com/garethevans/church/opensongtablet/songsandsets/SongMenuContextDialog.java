@@ -13,11 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.MenuSongsContextDialogBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 class SongMenuContextDialog extends DialogFragment {
 
@@ -54,22 +51,14 @@ class SongMenuContextDialog extends DialogFragment {
         myView = MenuSongsContextDialogBinding.inflate(inflater, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        SongForSet songForSet = new SongForSet();
-        Preferences preferences = new Preferences();
-        SetActions setActions = new SetActions();
 
-        String songchosen = requireContext().getResources().getString(R.string.song) + ": " +
-                song;
-        myView.songSelected.setText(songchosen);
-        myView.editButton.setOnClickListener(new ActionClickListener(R.id.nav_editSong,"editSong"));
-        myView.duplicateButton.setOnClickListener(new ActionClickListener(0, "duplicateSong"));
-        myView.deleteButton.setOnClickListener(new ActionClickListener(0, "deleteSong"));
-        myView.setButton.setOnClickListener(v -> {
-            songForSet.addToSet(requireContext(),preferences,setActions,StaticVariables.whichSongFolder,StaticVariables.songfilename);
-            mainActivityInterface.refreshSetList();
-            dismiss();
-        });
-        myView.exportButton.setOnClickListener(new ActionClickListener(0,"exportSong"));
+
+
+
+
+
+
+
         return myView.getRoot();
     }
 
@@ -84,17 +73,9 @@ class SongMenuContextDialog extends DialogFragment {
         @Override
         public void onClick(View v) {
             switch (str) {
-                case "deleteSong":
-                    String str = getString(R.string.delete) + ": " +
-                            StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
-                    mainActivityInterface.displayAreYouSure("deleteSong", str,null, "SongMenuFragment",null);
-                    break;
 
-                case "editSong":
-                    StaticVariables.whichSongFolder = folder;
-                    StaticVariables.songfilename = song;
-                    mainActivityInterface.navigateToFragment(id);
-                    break;
+
+
 
                 default:
                     mainActivityInterface.navigateToFragment(id);

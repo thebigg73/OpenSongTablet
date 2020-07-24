@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center">
 
@@ -13,7 +14,17 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:padding="12dp"
+        android:background="@drawable/rounded_dialog"/>
+
+    <TextView
+        android:id="@+id/actualButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="12dp"
+        android:textSize="12sp"
         android:background="@color/colorSecondary"
-        android:text="Node text" />
+        android:visibility="gone"/>
 
 </LinearLayout>

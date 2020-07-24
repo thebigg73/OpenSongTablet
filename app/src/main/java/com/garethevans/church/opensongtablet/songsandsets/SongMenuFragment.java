@@ -219,7 +219,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
                 Handler h = new Handler();
                 h.postDelayed(() -> songButtonActive = true,600);
                 showActionButton(false);
-                showActionDialog();
+                showActionDialog(StaticVariables.whichSongFolder,StaticVariables.songfilename);
             }
         });
         songListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -285,8 +285,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         });
     }
 
-    private void showActionDialog() {
-        SongMenuDialog dialogFragment = new SongMenuDialog();
+    private void showActionDialog(String folder, String song) {
+        SongMenuDialog dialogFragment = new SongMenuDialog(folder, song);
         dialogFragment.show(requireActivity().getSupportFragmentManager(), "songMenuActions");
     }
 

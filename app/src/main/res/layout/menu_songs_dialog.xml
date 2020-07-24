@@ -13,6 +13,73 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/section_box"
+            android:layout_marginBottom="16dp">
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songSelected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/song" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/editButton"
+            style="@style/BottomSheetButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/edit"
+            app:icon="@drawable/ic_pencil_white_36dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/duplicateButton"
+            style="@style/BottomSheetButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/duplicate"
+            app:icon="@drawable/ic_content_copy_white_36dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/deleteButton"
+            style="@style/BottomSheetButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/delete"
+            app:icon="@drawable/ic_delete_white_36dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/setButton"
+            style="@style/BottomSheetButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_song_to_set"
+            app:icon="@drawable/ic_format_list_numbers_white_36dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/exportButton"
+            style="@style/BottomSheetButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/export"
+            app:icon="@drawable/ic_upload_white_36dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/section_box">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/getSongs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/get_songs" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/createButton"
             style="@style/BottomSheetButton"
@@ -22,20 +89,14 @@
             app:icon="@drawable/ic_plus_white_36dp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/manageStorage"
-            style="@style/BottomSheetButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/storage_choose"
-            app:icon="@drawable/ic_database_white_36dp" />
-
-        <com.google.android.material.button.MaterialButton
             android:id="@+id/importButton"
             style="@style/BottomSheetButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/import_file"
             app:icon="@drawable/ic_download_white_36dp" />
+
+    </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

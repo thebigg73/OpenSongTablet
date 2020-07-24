@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--//TODO Extract the text strings -->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,6 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+            android:id="@+id/storageButton"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            app:main="@string/storage"
+            app:sub="Manage your app and song folders" />
 
         <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
             android:id="@+id/ccliButton"

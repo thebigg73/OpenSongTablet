@@ -31,5 +31,6 @@ public interface MainActivityInterface {
     void doExport(String what);
     void refreshSetList();
     void openDialog(DialogFragment frag, String tag);
-    void updateFragment(String what, Fragment callingFragment);
+    void updateFragment(String fragName, Fragment callingFragment, ArrayList<String> arguments);
+    void updateSongMenu(String fragName, Fragment callingFragment, ArrayList<String> arguments);
 }

@@ -1616,6 +1616,20 @@ public class StorageAccess {
         }
     }
 
+    public ArrayList<String> getSongIDsFromFile(Context c) {
+        File songIDFile = new File(c.getExternalFilesDir("Database"),"SongIds.txt");
+        Uri uri = Uri.fromFile(songIDFile);
+        InputStream is = getInputStream(c,uri);
+        String text = readTextFileToString(is);
+        // Split the text into line and add to the new array
+        ArrayList<String> songIDs = new ArrayList<>();
+        String[] lines = text.split("\n");
+        for (String line:lines) {
+            songIDs.add(line);
+        }
+        return songIDs;
+    }
+
     void updateNonOpenSongDB(Context c, StorageAccess storageAccess, Preferences preferences, String what, String with) {
         NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(c);
         NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(c,storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
@@ -1657,5 +1671,67 @@ public class StorageAccess {
     private boolean createFolder_File(Uri root, String newName) {
         File f = new File(root.getPath(),newName);
         return f.mkdirs();
+    }
+
+    public String niceUriTree(Context c, Preferences preferences) {
+        String uriTree = getStoragePreference(c,preferences);
+        Uri uri = Uri.parse(uriTree);
+        Uri uriTreeHome = homeFolder(c,uri,preferences);  // In case we specified the folder containing /OpenSong as the root
+        if (lollipopOrLater()) {
+            return niceUriTree_SAF(uriTreeHome);
+        } else {
+            return niceUriTree_File(uriTreeHome);
+        }
+    }
+    private String niceUriTree_SAF(Uri uriTree) {
+        String text = "";
+        try {
+            List<String> bits = uriTree.getPathSegments();
+            StringBuilder sb = new StringBuilder();
+            for (String b : bits) {
+                sb.append("/");
+                sb.append(b);
+            }
+            text = sb.toString();
+            Log.d("SetStorageLocation", "text=" + text);
+            if (!text.endsWith(appFolder)) {
+                    text += "/" + appFolder;
+            }
+            text = text.replace("tree", "/");
+            text = text.replace(":", "/");
+            while (text.contains("//")) {
+                text = text.replace("//", "/");
+            }
+
+            // Finally, the storage location is likely something like /9016-4EF8/OpenSong/document/9016-4EF8/OpenSong
+            // This is due to the content using a document contract
+            // Strip this back to the bit after document
+            if (text.contains("OpenSong/document/")) {
+                text = text.substring(text.lastIndexOf("OpenSong/document/") + 18);
+            }
+            if (text.startsWith("primary/")) {
+                text = text.replace("primary/","");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            text = "" + uriTreeHome;
+        }
+        return text;
+    }
+    private String niceUriTree_File(Uri uriTree) {
+        return uriTree.getPath();
+    }
+
+    public boolean doStringWriteToFile(Context c, Preferences preferences, String folder, String subfolder, String filename, String string) {
+        try {
+            Uri uri = getUriForItem(c, preferences, folder, subfolder, filename);
+            lollipopCreateFileForOutputStream(c,preferences,uri,null,folder,subfolder,filename);
+            OutputStream outputStream = getOutputStream(c, uri);
+            writeFileFromString(string, outputStream);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

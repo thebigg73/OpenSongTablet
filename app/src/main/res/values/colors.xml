@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <color name="transparent">#00000000</color>
     <color name="colorPrimary">#1F1B24</color>
-    <color name="showcaseColor">#ee1f1b24</color>
+    <color name="showcaseColor">#ee0e0a13</color>
     <color name="primaryDark">#010D12</color>
     <color name="darkBackground">#121212</color>
     <color name="altPrimary">#0F1130</color>
@@ -20,7 +20,11 @@
     <color name="purple">#452277</color>
     <color name="blue">#0000aa</color>
     <color name="red">#aa0000</color>
+    <color name="darkred">#770000</color>
+    <color name="lightred">#884646</color>
     <color name="green">#00aa00</color>
+    <color name="darkgreen">#005500</color>
+    <color name="lightgreen">#378857</color>
     <color name="grey">#555555</color>
     <color name="dark">#222233</color>
     <color name="darkgrey">#222222</color>

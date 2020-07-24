@@ -89,10 +89,10 @@ public class SQLite {
     public String getAuthor() {
         return author;
     }
-    String getCopyright() {
+    public String getCopyright() {
         return copyright;
     }
-    String getLyrics() {
+    public String getLyrics() {
         return lyrics;
     }
     String getHymn_num() {

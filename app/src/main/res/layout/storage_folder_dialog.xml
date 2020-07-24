@@ -12,7 +12,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/currentLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/changestorage"
+                android:layout_marginBottom="16dp"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/changeLocation"
