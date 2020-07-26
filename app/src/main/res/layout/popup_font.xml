@@ -282,10 +282,10 @@
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/boldChordsHeadings"
-                android:layout_width="match_parent"
                 style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_margin="8dp"
-                android:layout_height="wrap_content"
                 android:text="@string/bold_chords_headings" />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -295,6 +295,7 @@
                 android:layout_margin="8dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/hideBox_SwitchCompat"/>
+
 
             <androidx.appcompat.widget.SwitchCompat
                 android:text="@string/trim_sections"
