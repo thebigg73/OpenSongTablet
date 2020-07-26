@@ -31,6 +31,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -103,6 +104,8 @@ import java.util.Map;
 import java.util.Set;
 
 import lib.folderpicker.FolderPicker;
+
+// This includes all recent version pulls from IV and GE
 
 public class StageMode extends AppCompatActivity implements
         PopUpAreYouSureFragment.MyInterface, PopUpPagesFragment.MyInterface,
@@ -1569,7 +1572,6 @@ public class StageMode extends AppCompatActivity implements
                             e.printStackTrace();
                         }
                     }
-
                     // Animate out the current song
                     if (FullscreenActivity.whichDirection.equals("L2R")) {
                         if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
@@ -1605,11 +1607,11 @@ public class StageMode extends AppCompatActivity implements
                         stopAutoScroll();
                     }
 
-
                     // IV - Pad time display handled elsewhere
                     // After animate out, load the song
                     Handler h = new Handler();
                     h.postDelayed(() -> {
+                        Log.d("d","loadSong() called - Runnable going");
                         try {
                             glideimage_HorizontalScrollView.setVisibility(View.GONE);
                             glideimage_ScrollView.setVisibility(View.GONE);
@@ -1628,11 +1630,26 @@ public class StageMode extends AppCompatActivity implements
                         }
                         // Load the song
                         doCancelAsyncTask(loadsong_async);
+
+                        // Stop the metronome if loading a new song.  Trying afterwards stops the async starting!
+                        // TODO
+                        Log.d("d","loadSong()  StaticVariables.reloadOfSong="+StaticVariables.reloadOfSong + "  StaticVariables.clickedOnMetronomeStart="+StaticVariables.clickedOnMetronomeStart);
+                        // Do not touch on a reload
+                        if (!StaticVariables.reloadOfSong) {
+                            // Stop it - clickedOnMetronomeStart is the indicator that it was playing
+                            if (StaticVariables.clickedOnMetronomeStart) {
+                                gesture7();  // This also sets StaticVariables.clickedOnMetronomeStart to false;
+                                // Set this variable back as we want the metronome to restart after song load.
+                                StaticVariables.clickedOnMetronomeStart = true;
+                            }
+                        }
+
                         // IV - added a few more tasks to cancel
                         doCancelAsyncTask(resizestage_async);
                         doCancelAsyncTask(resizeperformance_async);
                         loadsong_async = new LoadSongAsync();
                         try {
+                            Log.d("d","loadSong() called - about to start async load");
                             loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -3641,23 +3658,30 @@ public class StageMode extends AppCompatActivity implements
 
     // IV - fixSetActionButtons() renamed as is now a check. Used by ScrollButtons and pedal code.
     private void checkCanGoTo() {
-        // IV - Change to use of variables for results
-        StaticVariables.setView = setActions.isSongInSet(StageMode.this, preferences);
-        if (StaticVariables.setView) {
-            // Now get the position in the set and decide on the set move buttons
-            if (StaticVariables.indexSongInSet < 0) {
-                // We weren't in set mode, so find the first instance of this song.
-                setActions.indexSongInSet();
-            }
-            // If we aren't at the beginning or have pdf pages before this, indicate a setBackButton
-            StaticVariables.canGoToPrevious = (StaticVariables.indexSongInSet > 0) ||
-                    (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0);
+        if (preferences.getMyPreferenceBoolean(StageMode.this,"pedalShowWarningBeforeMove",false)) {
+            // IV - Change to use of variables for results
+            StaticVariables.setView = setActions.isSongInSet(StageMode.this, preferences);
+            if (StaticVariables.setView) {
+                // Now get the position in the set and decide on the set move buttons
+                if (StaticVariables.indexSongInSet < 0) {
+                    // We weren't in set mode, so find the first instance of this song.
+                    setActions.indexSongInSet();
+                }
+                // If we aren't at the beginning or have pdf pages before this, indicate a setBackButton
+                StaticVariables.canGoToPrevious = (StaticVariables.indexSongInSet > 0) ||
+                        (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0);
 
-            // If we aren't at the end of the set or inside a multipage pdf, indicate a setForwardButton
-            StaticVariables.canGoToNext = (StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) ||
-                    (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < FullscreenActivity.pdfPageCount - 1);
+                // If we aren't at the end of the set or inside a multipage pdf, indicate a setForwardButton
+                StaticVariables.canGoToNext = (StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) ||
+                        (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < FullscreenActivity.pdfPageCount - 1);
+            } else {
+                StaticVariables.canGoToPrevious = (FullscreenActivity.currentSongIndex > FullscreenActivity.previousSongIndex); // i.e there is a song before in the list/menu
+                StaticVariables.canGoToNext = (FullscreenActivity.currentSongIndex < FullscreenActivity.nextSongIndex); // i.e there is a song after in the list/menu
+                StaticVariables.indexSongInSet = -1;
+
+            }
         } else {
-            StaticVariables.indexSongInSet = -1;
+            // Set these as false.  Doesn't mean we can't go, just we won't be warned.
             StaticVariables.canGoToPrevious = false;
             StaticVariables.canGoToNext = false;
         }
@@ -3960,10 +3984,18 @@ public class StageMode extends AppCompatActivity implements
             // PDF sent back, so reload it
             loadSong();
 
-        } else if (requestCode == StaticVariables.REQUEST_FILE_CHOOSER && data != null && data.getExtras() != null) {
+        } else if (requestCode == StaticVariables.REQUEST_FILE_CHOOSER && data != null) {
+            String filelocation;
             try {
                 // This is for the File Chooser returning a file uri
-                String filelocation = data.getExtras().getString("data");
+                if (data.getExtras() != null) {
+                    // This is from the FolderPicker.class
+                    filelocation = data.getExtras().getString("data");
+                } else {
+                    // This is the built in file picker
+                    filelocation = data.getDataString();
+                }
+                Log.d("d","filelocation="+filelocation);
                 if (filelocation != null) {
                     boolean validfiletype = (FullscreenActivity.whattodo.equals("processimportosb") && filelocation.endsWith(".osb")) ||
                             (FullscreenActivity.whattodo.equals("importos") && filelocation.endsWith(".backup")) ||
@@ -3971,9 +4003,15 @@ public class StageMode extends AppCompatActivity implements
                             FullscreenActivity.whattodo.equals("doimportset");
 
                     if (validfiletype) {
-                        File f = new File(filelocation);
-                        FullscreenActivity.file_uri = FileProvider.getUriForFile(StageMode.this,
-                                "OpenSongAppFiles", f);
+                        if (filelocation.startsWith("content")) {
+                            // Already safe to continue
+                            FullscreenActivity.file_uri = Uri.parse(filelocation);
+                        } else {
+                            // Non secure (from Folder Picker class, need to convert to FileProvider content
+                            File f = new File(filelocation);
+                            FullscreenActivity.file_uri = FileProvider.getUriForFile(StageMode.this,
+                                    "OpenSongAppFiles", f);
+                        }
                         openFragment();
                     } else {
                         StaticVariables.myToastMessage = getString(R.string.file_type_unknown);
@@ -4051,6 +4089,20 @@ public class StageMode extends AppCompatActivity implements
         }
 
         // Set the overrides back
+
+        // Do not touch on a reload
+        if (!StaticVariables.reloadOfSong && StaticVariables.clickedOnMetronomeStart) {
+            // GE - metronome was stopped before loading the song and StaticVariables.clickedOnMetronomeStart was reset manually to true afterwards
+            // IV - gesture used for stop and start
+            // GE - I moved this to later in the process
+
+            // Metronome was playing before loading the song - if requested autostart start the metronome for the new song
+            if (preferences.getMyPreferenceBoolean(StageMode.this, "metronomeAutoStart", false) &&
+                    FullscreenActivity.isSong) {
+                // Start it
+                gesture7();
+            }
+        }
 
         // Check for dual screen presentation
         if (StaticVariables.whichMode.equals("Performance")) {
@@ -4948,7 +5000,6 @@ public class StageMode extends AppCompatActivity implements
             try {
                 DisplayManager dm = (DisplayManager) getSystemService(DISPLAY_SERVICE);
                 if (dm!=null) {
-                    Log.d("StageMode","dm="+dm);
 
                     // If a Chromebook HDMI, need to do this
                     Display[] displays = dm.getDisplays();
@@ -4958,9 +5009,6 @@ public class StageMode extends AppCompatActivity implements
                             mDisplay. getRealSize(size);
                             int width = size. x;
                             int height = size. y;
-                            Log. e("Width", "" + width);
-                            Log. e("height", "" + height);
-                            Log.d("StageMode","mDisplay="+mDisplay);
                             hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong);
                             hdmi.show();
                             FullscreenActivity.isHDMIConnected = true;
@@ -4971,7 +5019,6 @@ public class StageMode extends AppCompatActivity implements
                         // For non-Chromebooks
                         displays = dm.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
                         for (Display mDisplay : displays) {
-                            Log.d("StageMode", "mDisplay=" + mDisplay);
                             hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong);
                             hdmi.show();
                             FullscreenActivity.isHDMIConnected = true;
@@ -4980,7 +5027,6 @@ public class StageMode extends AppCompatActivity implements
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d("d","Error"+e);
             }
         }
     }
@@ -6039,19 +6085,13 @@ public class StageMode extends AppCompatActivity implements
     @SuppressLint("StaticFieldLeak")
     private class PrepareSongView extends AsyncTask<Object, Void, String> {
 
-        long start;
         @Override
         protected void onPreExecute() {
-            //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-            start = System.currentTimeMillis();
             try {
                 mypage.setBackgroundColor(lyricsBackgroundColor);
                 songscrollview.setBackgroundColor(lyricsBackgroundColor);
-
                 width_scale = 0f;
-
                 StaticVariables.currentSection = 0;
-
                 testpane.removeAllViews();
                 testpane1_2.removeAllViews();
                 testpane2_2.removeAllViews();
@@ -6065,8 +6105,6 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         protected String doInBackground(Object... params) {
-            //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-
             // Set up the songviews
             try {
                 StaticVariables.songSectionsTypes = new String[StaticVariables.songSections.length];
@@ -6417,7 +6455,9 @@ public class StageMode extends AppCompatActivity implements
         // IV - Pad time display logic is elsewhere
 
         // Wait until a pad is free for use
-        while (StaticVariables.pad1Playing && StaticVariables.pad2Playing) {}
+        while (StaticVariables.pad1Playing && StaticVariables.pad2Playing) {
+            //Waiting for pad to become available
+        }
         StaticVariables.padInQuickFade = 0;
     }
 
@@ -7252,20 +7292,6 @@ public class StageMode extends AppCompatActivity implements
                         }
                     }
 
-                    // Do not touch on a reload
-                    if (!StaticVariables.reloadOfSong) {
-                        // Stop it
-                        // IV - gesture used for stop and start
-                        if (StaticVariables.clickedOnMetronomeStart) {
-                            gesture7();
-                            // Metronome Was playing - if requested autostart start the metronome for a new song
-                            if (preferences.getMyPreferenceBoolean(StageMode.this, "metronomeAutoStart", false) &&
-                                    FullscreenActivity.isSong) {
-                                // Start it
-                                gesture7();
-                            }
-                        }
-                    }
 
                     // Make sure all dynamic (scroll and set) buttons display
                     onScrollAction();
@@ -7279,12 +7305,10 @@ public class StageMode extends AppCompatActivity implements
                         Handler find = new Handler();
                         find.postDelayed(() -> openMyDrawers("option"), 2000);
                     }
-
                     // Send the midi data if we can
                     if (preferences.getMyPreferenceBoolean(StageMode.this,"midiSendAuto",false)) {
                         sendMidi();
                     }
-
                     // Send WiFiP2P intent
                     if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
                         try {
@@ -7330,13 +7354,13 @@ public class StageMode extends AppCompatActivity implements
                         }
                     }
                 }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
             // IV - True if a reload, this sets loadsong back to standard mode
             StaticVariables.reloadOfSong = false;
             FullscreenActivity.alreadyloading = false;
-
         }
     }
 
@@ -7587,7 +7611,8 @@ public class StageMode extends AppCompatActivity implements
                     pedalPreviousAndNextIgnoreHandler.removeCallbacks(pedalPreviousAndNextIgnoreRunnable);
                     pedalPreviousAndNextIgnoreHandler.postDelayed(pedalPreviousAndNextIgnoreRunnable, 2000);
                 } catch (Exception e) {
-                    // OK
+                    e.printStackTrace();
+
                 }
             }
         }
@@ -8148,7 +8173,7 @@ public class StageMode extends AppCompatActivity implements
             if (oktoregistergesture()) {
 
                 // Now find out which gesture we've gone for
-                switch (preferences.getMyPreferenceInt(StageMode.this,"gestureScreenLongPress",3)) {
+                switch (preferences.getMyPreferenceInt(StageMode.this,"gestureScreenLongPress",0)) {
                     case 1:
                         gesture1();  // Open/close the drawers
                         break;
@@ -8274,8 +8299,8 @@ public class StageMode extends AppCompatActivity implements
         DoVibrate.vibrate(StageMode.this, 50);
         StaticVariables.metronomeok = Metronome.isMetronomeValid();
         if (StaticVariables.metronomeok || StaticVariables.clickedOnMetronomeStart) {
-            // IV - clickedOnMetronomeStart is set elsewhere
-            Metronome.startstopMetronome(StageMode.this, StageMode.this,
+            // IV - clickedOnMetronomeStart is set elsewhere (Metronome class)
+            Metronome.startstopMetronome(StageMode.this,
                     preferences.getMyPreferenceBoolean(StageMode.this, "metronomeShowVisual", false),
                     defmetronomecolor, preferences.getMyPreferenceString(StageMode.this, "metronomePan", "C"),
                     preferences.getMyPreferenceFloat(StageMode.this, "metronomeVol", 0.5f),
@@ -8590,11 +8615,26 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void selectAFileUri(String s) {
-        Intent intent = new Intent(this, FolderPicker.class);
-        intent.putExtra("title", s);
-        intent.putExtra("pickFiles", true);
-        if (StaticVariables.uriTree!=null) {
-            intent.putExtra("location", StaticVariables.uriTree.getPath());
+        // Replace the FolderPicker class for Lollopop+
+        Intent intent;
+        // Start location
+        Uri uri = storageAccess.getUriForItem(StageMode.this,preferences,"","","");
+        Log.d("d","Start uri="+uri);
+        if (storageAccess.lollipopOrLater()) {
+            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("*/*");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri);
+            }
+
+        } else {
+            intent = new Intent(this, FolderPicker.class);
+            intent.putExtra("title", s);
+            intent.putExtra("pickFiles", true);
+            if (StaticVariables.uriTree!=null) {
+                intent.putExtra("location", StaticVariables.uriTree.getPath());
+            }
         }
         startActivityForResult(intent, StaticVariables.REQUEST_FILE_CHOOSER);
     }

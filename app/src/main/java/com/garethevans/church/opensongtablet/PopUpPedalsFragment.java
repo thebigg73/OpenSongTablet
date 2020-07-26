@@ -2,10 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.widget.SwitchCompat;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +15,12 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -30,7 +32,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         return frag;
     }
 
-    private SwitchCompat pedalToggleScrollBeforeSwipeButton, autoRepeatLongPress_Switch;
+    private SwitchCompat pedalToggleScrollBeforeSwipeButton, autoRepeatLongPress_Switch, pedalToggleWarnBeforeSwipeButton;
     private SeekBar autoRepeatCount_SeekBar;
     private Button pedal1button, pedal2button, pedal3button, pedal4button, pedal5button, pedal6button;
     private TextView pedal1text, pedal2text, pedal3text, pedal4text, pedal5text, pedal6text, autoRepeatCount_TextView;
@@ -117,6 +119,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         pedallong5choice = V.findViewById(R.id.pedallong5choice);
         pedallong6choice = V.findViewById(R.id.pedallong6choice);
         pedalToggleScrollBeforeSwipeButton = V.findViewById(R.id.pedalToggleScrollBeforeSwipeButton);
+        pedalToggleWarnBeforeSwipeButton = V.findViewById(R.id.pedalToggleWarnBeforeSwipeButton);
         autoRepeatLongPress_Switch = V.findViewById(R.id.autoRepeatLongPress_Switch);
         autoRepeatCount_SeekBar = V.findViewById(R.id.autoRepeatCount_SeekBar);
         autoRepeatCount_TextView = V.findViewById(R.id.autoRepeatCount_TextView);
@@ -725,12 +728,9 @@ public class PopUpPedalsFragment extends DialogFragment {
 
     private void resetButtons() {
         pedalToggleScrollBeforeSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"pedalScrollBeforeMove",true));
-        pedalToggleScrollBeforeSwipeButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(),"pedalScrollBeforeMove",isChecked);
-            }
-        });
+        pedalToggleScrollBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"pedalScrollBeforeMove",isChecked));
+        pedalToggleWarnBeforeSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"pedalShowWarningBeforeMove",false));
+        pedalToggleWarnBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"pedalShowWarningBeforeMove",isChecked));
         autoRepeatLongPress_Switch.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"airTurnMode",false));
         keyRepeatCount = preferences.getMyPreferenceInt(getActivity(),"keyRepeatCount",20);
         keyRepeatCountText = "" + keyRepeatCount;

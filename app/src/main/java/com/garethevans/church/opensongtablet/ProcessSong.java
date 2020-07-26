@@ -1193,8 +1193,9 @@ public class ProcessSong extends Activity {
             capobit.setTextSize(fontsize * preferences.getMyPreferenceFloat(c,"scaleChords",1.0f));
             capobit.setTextColor(lyricsCapoColor);
             capobit.setTypeface(StaticVariables.typefaceChords);
-            // IV - Choice to make bold
-            capobit.setPaintFlags(capobit.getPaintFlags()| Paint.FAKE_BOLD_TEXT_FLAG);
+            if (preferences.getMyPreferenceBoolean(c,"displayBoldChordsHeadings",false)) {
+                capobit.setPaintFlags(capobit.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+            }
 
             if (preferences.getMyPreferenceBoolean(c,"trimLines",false)) {
                 capobit.setSingleLine();
@@ -1233,8 +1234,9 @@ public class ProcessSong extends Activity {
             chordbit.setTextSize(fontsize * preferences.getMyPreferenceFloat(c,"scaleChords",1.0f));
             chordbit.setTextColor(lyricsChordsColor);
             chordbit.setTypeface(StaticVariables.typefaceChords);
-            // IV - Choice to make bold
-            chordbit.setPaintFlags(chordbit.getPaintFlags()| Paint.FAKE_BOLD_TEXT_FLAG);
+            if (preferences.getMyPreferenceBoolean(c,"displayBoldChordsHeadings",false)) {
+                chordbit.setPaintFlags(chordbit.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+            }
 
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT && preferences.getMyPreferenceBoolean(c,"trimLines",false)) {
                 chordbit.setSingleLine();
@@ -1301,10 +1303,8 @@ public class ProcessSong extends Activity {
                 lyricbit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT));
                 lyricbit.setGravity(preferences.getMyPreferenceInt(c,"presoLyricsAlign",Gravity.CENTER));
-                lyricbit.setLayoutParams(tablerow_params());
-            } else {
-                lyricbit.setLayoutParams(tablerow_params());
             }
+            lyricbit.setLayoutParams(tablerow_params());
             lyricbit.setText(bit);
             lyricbit.setTextSize(fontsize);
             if (StaticVariables.whichMode.equals("Presentation")) {
@@ -1471,8 +1471,11 @@ public class ProcessSong extends Activity {
         titleview.setTextColor(lyricsTextColor);
         titleview.setTypeface(StaticVariables.typefaceLyrics);
         titleview.setTextSize(fontsize * preferences.getMyPreferenceFloat(c,"scaleHeadings", 0.6f));
-        // IV - Choice to make underline and bold
-        titleview.setPaintFlags(titleview.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG|Paint.FAKE_BOLD_TEXT_FLAG);
+        if (preferences.getMyPreferenceBoolean(c,"displayBoldChordsHeadings",false)) {
+            titleview.setPaintFlags(titleview.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG | Paint.FAKE_BOLD_TEXT_FLAG);
+        } else {
+            titleview.setPaintFlags(titleview.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        }
         return titleview;
     }
 
@@ -2670,13 +2673,7 @@ public class ProcessSong extends Activity {
         return scale;
     }
     float getStageScaleValue(float x, float y) {
-        float scale = Math.min(x, y);
-        return scale;
-        /*if (x>y) {
-            scale = y;
-        } else {
-            scale = x;
-        }*/
+        return Math.min(x, y);
     }
 
     RelativeLayout preparePerformanceBoxView(Context c, Preferences preferences, int lyricsTextColor, int lyricsBackgroundColor, int padding) {

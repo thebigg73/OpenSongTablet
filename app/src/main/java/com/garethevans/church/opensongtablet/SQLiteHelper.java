@@ -102,9 +102,19 @@ class SQLiteHelper extends SQLiteOpenHelper {
             values.put(SQLite.COLUMN_CCLI, escapedSQL(ccli));
             values.put(SQLite.COLUMN_LYRICS, escapedSQL(lyrics));
 
-            // Insert the new row, returning the primary key value of the new row
-            db.insert(SQLite.TABLE_NAME, null, values);
+            // Insert the new row, returning the primary key value of the new row as long as it doesn't already exist
+            String Query = "SELECT "+SQLite.COLUMN_SONGID+" FROM " + SQLite.TABLE_NAME+ " where " + SQLite.COLUMN_SONGID + " = '" + escapedSQL(songid) + "'";
+            Cursor cursor = db.rawQuery(Query, null);
+            if (cursor.getCount() <= 0) {
+                // Doesn't exist, so add it
+                cursor.close();
+                db.insert(SQLite.TABLE_NAME, null, values);
 
+            } else {
+                // Exists, so update it
+                db.update(SQLite.TABLE_NAME, values,SQLite.COLUMN_SONGID + "=?",new String[]{escapedSQL(songid)});
+                cursor.close();
+            }
         }
     }
 

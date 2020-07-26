@@ -25,6 +25,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Display;
@@ -2195,10 +2196,18 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // PDF sent back, so reload it
             loadSong();
 
-        } else if (requestCode == StaticVariables.REQUEST_FILE_CHOOSER && data != null && data.getExtras() != null) {
+        } else if (requestCode == StaticVariables.REQUEST_FILE_CHOOSER && data != null) {
             try {
                 // This is for the File Chooser returning a file uri
-                String filelocation = data.getExtras().getString("data");
+                String filelocation;
+                if (data.getExtras() != null) {
+                    // This is from the FolderPicker.class
+                    filelocation = data.getExtras().getString("data");
+                } else {
+                    // This is the built in file picker
+                    filelocation = data.getDataString();
+                }
+                Log.d("d","filelocation="+filelocation);
                 if (filelocation != null) {
                     boolean validfiletype = (FullscreenActivity.whattodo.equals("processimportosb") && filelocation.endsWith(".osb")) ||
                             (FullscreenActivity.whattodo.equals("importos") && filelocation.endsWith(".backup")) ||
@@ -2206,9 +2215,15 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                             FullscreenActivity.whattodo.equals("doimportset");
 
                     if (validfiletype) {
-                        File f = new File(filelocation);
-                        FullscreenActivity.file_uri = FileProvider.getUriForFile(PresenterMode.this,
-                                "OpenSongAppFiles", f);
+                        if (filelocation.startsWith("content")) {
+                            // Already safe to continue
+                            FullscreenActivity.file_uri = Uri.parse(filelocation);
+                        } else {
+                            // Non secure (from Folder Picker class, need to convert to FileProvider content
+                            File f = new File(filelocation);
+                            FullscreenActivity.file_uri = FileProvider.getUriForFile(PresenterMode.this,
+                                    "OpenSongAppFiles", f);
+                        }
                         openFragment();
                     } else {
                         StaticVariables.myToastMessage = getString(R.string.file_type_unknown);
@@ -4089,11 +4104,26 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     @Override
     public void selectAFileUri(String s) {
-        Intent intent = new Intent(this, FolderPicker.class);
-        intent.putExtra("title", s);
-        intent.putExtra("pickFiles", true);
-        if (StaticVariables.uriTree!=null) {
-            intent.putExtra("location", StaticVariables.uriTree.getPath());
+        // Replace the FolderPicker class for Lollopop+
+        Intent intent;
+        // Start location
+        Uri uri = storageAccess.getUriForItem(PresenterMode.this,preferences,"","","");
+        Log.d("d","Start uri="+uri);
+        if (storageAccess.lollipopOrLater()) {
+            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("*/*");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri);
+            }
+
+        } else {
+            intent = new Intent(this, FolderPicker.class);
+            intent.putExtra("title", s);
+            intent.putExtra("pickFiles", true);
+            if (StaticVariables.uriTree!=null) {
+                intent.putExtra("location", StaticVariables.uriTree.getPath());
+            }
         }
         startActivityForResult(intent, StaticVariables.REQUEST_FILE_CHOOSER);
     }
