@@ -51,97 +51,45 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/menu_button"
-            android:layout_margin="4dp">
-
             <Button
                 android:id="@+id/modePerformanceButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#0000"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_microphone_variant_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/performancemode"
                 android:textColor="#fff"
-                android:layout_toStartOf="@+id/performanceCheck"
                 android:textSize="12sp" />
-
-            <CheckBox
-                android:id="@+id/performanceCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:checked="true"
-                android:enabled="false"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/menu_button"
-            android:layout_margin="4dp">
 
             <Button
                 android:id="@+id/modeStageButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#0000"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_lan_connect_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/stagemode"
                 android:textColor="#fff"
-                android:layout_toStartOf="@+id/stageCheck"
                 android:textSize="12sp" />
-
-            <CheckBox
-                android:id="@+id/stageCheck"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:checked="false"
-                android:visibility="gone"
-                android:enabled="false"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/menu_button"
-            android:layout_margin="4dp">
 
             <Button
                 android:id="@+id/modePresentationButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#0000"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_projector_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/presentermode"
                 android:textColor="#fff"
-                android:layout_toStartOf="@+id/presentationCheck"
                 android:textSize="12sp"/>
 
-        <CheckBox
-            android:id="@+id/presentationCheck"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:checked="false"
-            android:visibility="gone"
-            android:enabled="false"/>
-
-    </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 

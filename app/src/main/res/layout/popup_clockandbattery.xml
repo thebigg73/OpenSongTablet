@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/popup_bg"
     android:padding="8dp">
 
@@ -23,25 +22,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/hideActionBar_Switch"
-                style="@style/MyTextSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="16dp"
-                android:checked="false"
-                android:text="@string/hide_actionbar"
-                android:textOff="@string/hide"
-                android:textOn="@string/show"
-                app:showText="true"
-                app:switchTextAppearance="@style/MyInfoText"
-                app:thumbTextPadding="4dp"
-                app:thumbTint="#444488"  />
 
             <LinearLayout
                 android:orientation="vertical"

@@ -31,10 +31,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:background="@drawable/section_box"
                 android:color="@android:color/transparent"
                 android:orientation="vertical"
-                android:layout_margin="4dp">
+                android:padding="8dp">
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/nextSongOnOff_Switch"
@@ -42,8 +43,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="4dp"
+                    android:layout_margin="8dp"
+                    android:checked="false"
                     android:text="@string/shownextinset"
+                    android:textColor="#ff0"
                     android:textOff="@string/off"
                     android:textOn="@string/on"
                     app:showText="true"
@@ -56,8 +59,11 @@
                     style="@style/MyTextSwitch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:checked="false"
                     android:text="@string/position"
+                    android:textColor="#ff0"
                     android:textOff="@string/top"
                     android:textOn="@string/bottom"
                     app:showText="true"
@@ -69,18 +75,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="8dp"
                 android:background="@drawable/section_box"
                 android:color="@android:color/transparent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="8dp">
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/stickyNotesOnOff_Switch"
                     style="@style/MyTextSwitch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:checked="false"
                     android:text="@string/toggle_autoshow_stickynotes"
+                    android:textColor="#ff0"
                     android:textOff="@string/off"
                     android:textOn="@string/on"
                     app:showText="true"
@@ -93,8 +103,11 @@
                     style="@style/MyTextSwitch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:checked="false"
                     android:text="@string/floating_window"
+                    android:textColor="#ff0"
                     android:textOff="@string/off"
                     android:textOn="@string/on"
                     app:showText="true"
@@ -104,13 +117,10 @@
 
                 <TextView
                     android:id="@+id/stickNotesTimeInfo_TextView"
-                    style="@style/MyWhiteHeadingText"
+                    style="@style/MyHeadingText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="0dp"
+                    android:layout_margin="8dp"
                     android:text="@string/time" />
 
                 <SeekBar
@@ -120,17 +130,17 @@
                     android:background="@drawable/apptheme_scrubber_primary_holo"
                     android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                     android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="16dp"
                     android:max="20"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/stickyNotesTime_TextView"
-                    android:layout_margin="4dp"
+                    android:layout_margin="8dp"
                     android:gravity="center_horizontal"
                     style="@style/MyInfoText" />
 
@@ -139,8 +149,11 @@
                     style="@style/MyTextSwitch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:checked="false"
                     android:text="@string/position"
+                    android:textColor="#ff0"
                     android:textOff="@string/top"
                     android:textOn="@string/bottom"
                     app:showText="true"
@@ -153,18 +166,22 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="8dp"
                 android:background="@drawable/section_box"
                 android:color="@android:color/transparent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="8dp">
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/highlightNotesOnOff_Switch"
                     style="@style/MyTextSwitch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:checked="false"
                     android:text="@string/autoshow_highlight"
+                    android:textColor="#ff0"
                     android:textOff="@string/off"
                     android:textOn="@string/on"
                     app:showText="true"
@@ -174,13 +191,10 @@
 
                 <TextView
                     android:id="@+id/highlightTimeInfo_TextView"
-                    style="@style/MyWhiteHeadingText"
+                    style="@style/MyHeadingText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginBottom="0dp"
+                    android:layout_margin="8dp"
                     android:text="@string/time" />
 
                 <SeekBar
@@ -190,58 +204,22 @@
                     android:background="@drawable/apptheme_scrubber_primary_holo"
                     android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                     android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginBottom="0dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="16dp"
                     android:max="20"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/highlightTime_TextView"
-                    android:layout_margin="4dp"
+                    android:layout_margin="8dp"
                     android:gravity="center_horizontal"
                     style="@style/MyInfoText" />
 
             </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:background="@drawable/section_box"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/capoNumeralOnOff_Switch"
-                style="@style/MyTextSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:text="@string/capo_style"
-                android:textOff="@string/capo_style_number"
-                android:textOn="@string/capo_style_numeral"
-                app:showText="true"
-                app:switchTextAppearance="@style/MyInfoText"
-                app:thumbTextPadding="4dp"
-                app:thumbTint="#444488" />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/capoSize_Switch"
-                style="@style/MyTextSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:text="@string/size"
-                android:textOff="@string/size_mini"
-                android:textOn="@string/size_normal"
-                app:showText="true"
-                app:switchTextAppearance="@style/MyInfoText"
-                app:thumbTextPadding="4dp"
-                app:thumbTint="#444488" />
-
-        </LinearLayout>
 
         </LinearLayout>
 

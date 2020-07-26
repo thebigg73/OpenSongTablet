@@ -266,7 +266,7 @@
     <string name="media_selected">media gelaai</string>
     <string name="menu_settings">"Kieslys instellings"</string>
     <string name="menu_swipe_toggle">"Toggle lietjie en opsies menu deur swipe ap / af"</string>
-    <string name="menu_width">Spyskaart breedte</string>
+    <string name="menu_width">"Spyskaart breedte (persentasie skerm breedte)"</string>
     <string name="metronome">"Metronoom"</string>
     <string name="metronomePedalText">"Begin / stop metronoom"</string>
     <string name="microphone_rationale">"Mikrofoon / audio opname is nodig om toegang tot die klank vlak meter."</string>

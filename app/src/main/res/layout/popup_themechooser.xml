@@ -39,7 +39,7 @@
                 tools:ignore="UselessParent">
 
                 <TextView
-                    android:id="@+id/item_TextView"
+                    android:id="@+id/textView41"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_column="0"
@@ -123,13 +123,13 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/pagebg_TextView"
+                        android:id="@+id/textView53"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/page_background"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/page_dark"
@@ -177,13 +177,13 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/lyrics_TextView"
+                        android:id="@+id/textView54"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/lyrics_color"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/lyrics_dark"
@@ -235,13 +235,13 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/chords_TextView"
+                        android:id="@+id/textView55"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/chord_color"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/chords_dark"
@@ -292,13 +292,13 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/capo_TextView"
+                        android:id="@+id/textView56"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/capo_color"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/capo_dark"
@@ -346,13 +346,13 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/verse_TextView"
+                        android:id="@+id/textView57"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/verse_background"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/verse_dark"
@@ -400,13 +400,13 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/chorus_TextView"
+                        android:id="@+id/textView58"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/chorus_background"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/chorus_dark"
@@ -454,13 +454,13 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/prechorus_TextView"
+                        android:id="@+id/textView59"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/prechorus_background"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/prechorus_dark"
@@ -508,13 +508,13 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/bridge_TextView"
+                        android:id="@+id/textView60"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/bridge_background"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/bridge_dark"
@@ -562,13 +562,13 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/tag_TextView"
+                        android:id="@+id/textView61"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/tag_background"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/tag_dark"
@@ -616,13 +616,13 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/custom_TextView"
+                        android:id="@+id/textView62"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/custom_background"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/custom_dark"
@@ -670,13 +670,13 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/comment_TextView"
+                        android:id="@+id/textView63"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/comment_background"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/comment_dark"
@@ -725,13 +725,12 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/preso_TextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/presoFont"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/presofont_dark"
@@ -780,13 +779,12 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/presoinfo_TextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/presoInfoFont"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/presoinfofont_dark"
@@ -834,13 +832,12 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/presoalert_TextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/alert"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/presoalertfont_dark"
@@ -888,13 +885,12 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/presoshadow_TextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/presoFontShadow"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/presofontshadow_dark"
@@ -942,13 +938,13 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/metronome_TextView"
+                        android:id="@+id/textView64"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/metronome"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/metronome_dark"
@@ -997,13 +993,13 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/pagebuttons_TextView"
+                        android:id="@+id/textView669"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/pagebuttons"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/pagebuttons_dark"
@@ -1052,13 +1048,13 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/notes_TextView"
+                        android:id="@+id/stickynote_text"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/stickynotes"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/stickytext_dark"
@@ -1107,13 +1103,13 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/notesbg_TextView"
+                        android:id="@+id/stickynote_bg"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/stickynotes"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/stickybg_dark"
@@ -1162,13 +1158,13 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/padbg_TextView"
+                        android:id="@+id/timerandcapobg"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/extradisplay"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/dark_extrainfobg"
@@ -1217,13 +1213,13 @@
                     android:minHeight="48dp">
 
                     <TextView
-                        android:id="@+id/pad_TextView"
+                        android:id="@+id/timerandcapo"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/extradisplay"
-                        style="@style/MyWhiteHeadingText" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/dark_extrainfo"
@@ -1272,7 +1268,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_margin="32dp"
-                android:layout_gravity="center_horizontal"
                 android:background="@drawable/red_button"
                 android:text="@string/reset_colours"
                 android:textColor="#fff" />
