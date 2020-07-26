@@ -5,10 +5,6 @@ import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -56,7 +52,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
     private FloatingActionButton group_custom3;
     private FloatingActionButton group_custom4;
 
-    private _Preferences preferences;
+    private Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,7 +77,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                _CustomAnimations.animateFAB(closeMe,getActivity());
+                CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -89,7 +85,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new _Preferences();
+        preferences = new Preferences();
 
         // Initialise the views
         FloatingActionButton group_set = V.findViewById(R.id.group_set);
@@ -115,16 +111,16 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         switch (StaticVariables.mDisplayTheme) {
             case "dark":
             default:
-                color = preferences.getMyPreferenceInt(getActivity(),"dark_pageButtonsColor",0xff452277);
+                color = preferences.getMyPreferenceInt(getActivity(),"dark_pageButtonsColor",StaticVariables.purplyblue);
                 break;
             case "light":
-                color = preferences.getMyPreferenceInt(getActivity(),"light_pageButtonsColor",0xff452277);
+                color = preferences.getMyPreferenceInt(getActivity(),"light_pageButtonsColor",StaticVariables.purplyblue);
                 break;
             case "custom1":
-                color = preferences.getMyPreferenceInt(getActivity(),"custom1_pageButtonsColor",0xff452277);
+                color = preferences.getMyPreferenceInt(getActivity(),"custom1_pageButtonsColor",StaticVariables.purplyblue);
                 break;
             case "custom2":
-                color = preferences.getMyPreferenceInt(getActivity(),"custom2_pageButtonsColor",0xff452277);
+                color = preferences.getMyPreferenceInt(getActivity(),"custom2_pageButtonsColor",StaticVariables.purplyblue);
                 break;
         }
 
@@ -197,7 +193,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 FullscreenActivity.highlightOn = !FullscreenActivity.highlightOn;
-                StaticVariables.whattodo = "page_highlight";
+                FullscreenActivity.whattodo = "page_highlight";
                 if (mListener!=null) {
                     mListener.displayHighlight(false);
                 }
@@ -295,7 +291,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
             }
         });
 
-        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -345,7 +341,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
     }
 
     private void openAction(String s) {
-        StaticVariables.whattodo = s;
+        FullscreenActivity.whattodo = s;
         if (mListener!=null) {
             mListener.openFragment();
         }
@@ -358,5 +354,4 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         }
         dismiss();
     }
-}
-*/
+}*/

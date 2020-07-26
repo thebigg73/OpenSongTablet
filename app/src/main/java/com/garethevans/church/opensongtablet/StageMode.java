@@ -32,55 +32,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
-
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._FixLocale;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._BatteryMonitor;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._BootUpCheck;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ChordProConvert;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._IndexSongs;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._LoadXML;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLite;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLiteHelper;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._OnSongConvert;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpAreYouSureFragment;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpFullSearchFragment;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpTransposeFragment;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SQLite;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SQLiteHelper;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SearchViewItems;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SetActions;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SetTypeFace;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SongMenuAdapter;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SongMenuListeners;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SongMenuViewItems;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SongXML;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._TextSongConvert;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._Transpose;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._UsrConvert;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-import androidx.core.view.MenuItemCompat;
-import androidx.core.view.animation.PathInterpolatorCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.mediarouter.app.MediaRouteActionProvider;
-import androidx.mediarouter.media.MediaControlIntent;
-import androidx.mediarouter.media.MediaRouteSelector;
-import androidx.mediarouter.media.MediaRouter;
-import androidx.appcompat.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -110,13 +63,31 @@ import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.core.view.MenuItemCompat;
+import androidx.core.view.animation.PathInterpolatorCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.mediarouter.app.MediaRouteActionProvider;
+import androidx.mediarouter.media.MediaControlIntent;
+import androidx.mediarouter.media.MediaRouteSelector;
+import androidx.mediarouter.media.MediaRouter;
+
 import com.bluelinelabs.logansquare.LoganSquare;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 import com.google.android.gms.common.api.Status;
-import com.peak.salut.Callbacks.SalutCallback;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.peak.salut.Callbacks.SalutDataCallback;
 import com.peak.salut.Salut;
 import com.peak.salut.SalutDataReceiver;
@@ -135,20 +106,22 @@ import java.util.Set;
 
 import lib.folderpicker.FolderPicker;
 
+// This includes all recent version pulls from IV and GE
+
 public class StageMode extends AppCompatActivity implements
-        _PopUpAreYouSureFragment.MyInterface, PopUpPagesFragment.MyInterface,
+        PopUpAreYouSureFragment.MyInterface, PopUpPagesFragment.MyInterface,
         PopUpEditSongFragment.MyInterface, PopUpSongDetailsFragment.MyInterface,
         PopUpPresentationOrderFragment.MyInterface, PopUpListSetsFragment.MyInterface,
-        _SongMenuListeners.MyInterface, OptionMenuListeners.MyInterface, MenuHandlers.MyInterface,
-        _SetActions.MyInterface, _PopUpFullSearchFragment.MyInterface, _IndexSongs.MyInterface,
+        SongMenuListeners.MyInterface, OptionMenuListeners.MyInterface, MenuHandlers.MyInterface,
+        SetActions.MyInterface, PopUpFullSearchFragment.MyInterface, IndexSongs.MyInterface,
         SearchView.OnQueryTextListener, PopUpSetViewNew.MyInterface,
         PopUpChooseFolderFragment.MyInterface, PopUpCustomSlideFragment.MyInterface,
-        PopUpImportExternalFile.MyInterface, PopUpDisplayOther.MyInterface,
-        PopUpBackupPromptFragment.MyInterface, PopUpLyricsSettings.MyInterface,
+        PopUpImportExternalFile.MyInterface,
+        PopUpBackupPromptFragment.MyInterface,
         PopUpSongFolderRenameFragment.MyInterface, PopUpThemeChooserFragment.MyInterface,
-        PopUpExtraInfoFragment.MyInterface, PopUpChordSettings.MyInterface,
+        PopUpExtraInfoFragment.MyInterface,
         PopUpPageButtonsFragment.MyInterface, PopUpScalingFragment.MyInterface,
-        PopUpFontsFragment.MyInterface, _PopUpTransposeFragment.MyInterface,
+        PopUpFontsFragment.MyInterface, PopUpTransposeFragment.MyInterface,
         PopUpEditStickyFragment.MyInterface, PopUpSongRenameFragment.MyInterface,
         PopUpSongCreateFragment.MyInterface, PopUpFileChooseFragment.MyInterface,
         PopUpPadFragment.MyInterface, PopUpAutoscrollFragment.MyInterface,
@@ -156,12 +129,11 @@ public class StageMode extends AppCompatActivity implements
         PopUpStickyFragment.MyInterface, PopUpLinks.MyInterface, PopUpCustomChordsFragment.MyInterface,
         PopUpQuickLaunchSetup.MyInterface, PopUpLongSongPressFragment.MyInterface,
         PopUpFindNewSongsFragment.MyInterface, PopUpGroupedPageButtonsFragment.MyInterface,
-        PopUpImportExportOSBFragment.MyInterface, SalutDataCallback, _SongMenuAdapter.MyInterface,
-        _BatteryMonitor.MyInterface, PopUpMenuSettingsFragment.MyInterface,
+        PopUpImportExportOSBFragment.MyInterface, SalutDataCallback, SongMenuAdapter.MyInterface,
+        BatteryMonitor.MyInterface, PopUpMenuSettingsFragment.MyInterface,
         PopUpLayoutFragment.MyInterface, DownloadTask.MyInterface,
         PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
         PopUpCreateDrawingFragment.MyInterface,
-        PopUpPDFToTextFragment.MyInterface, PopUpRandomSongFragment.MyInterface,
         PopUpCCLIFragment.MyInterface,
         PopUpBibleXMLFragment.MyInterface, PopUpShowMidiMessageFragment.MyInterface {
 
@@ -315,7 +287,7 @@ public class StageMode extends AppCompatActivity implements
     private AsyncTask<Void, Void, String> resizeperformance_async;
     private AsyncTask<Void, Void, String> resizestage_async;
     private AsyncTask<String, Integer, String> mtask_autoscroll_music;
-    private AsyncTask<Void, Void, Integer> prepare_pad;
+    // IV - prepare_pad not in use - using play_pads
     private AsyncTask<Void, Void, Integer> play_pads;
     private AsyncTask<String, Integer, String> do_download;
     private AsyncTask<Object, Integer, String> get_scrollheight;
@@ -325,34 +297,14 @@ public class StageMode extends AppCompatActivity implements
     private boolean firstrun_song = true;
 
     // Handlers and Runnables
-    private final Runnable padoncheck = new Runnable() {
-        @Override
-        public void run() {
-            getPadsOnStatus();
-        }
-    };
-    private final Handler handle = new Handler();
+    // IV - padoncheck no in use. handle not used
     private final Handler dopadProgressTime = new Handler();
-    private final Runnable padprogressTimeRunnable = new Runnable() {
-        @Override
-        public void run() {
-            getPadProgress();
-        }
-    };
-    private final Runnable onEverySecond = new Runnable() {
-        @Override
-        public void run() {
-            preparePadProgress();
-        }
-    };
+    private final Runnable padprogressTimeRunnable = this::getPadProgress;
+    private final Runnable onEverySecond = this::preparePadProgress;
     private Handler delaycheckscroll;
     private Runnable checkScrollPosition;
     private final Handler mRestoreImmersiveModeHandler = new Handler();
-    private final Runnable restoreImmersiveModeRunnable = new Runnable() {
-        public void run() {
-            restoreTransparentBars();
-        }
-    };
+    private final Runnable restoreImmersiveModeRunnable = this::restoreTransparentBars;
     private final Handler delayactionBarHide = new Handler();
     private final Runnable hideActionBarRunnable = new Runnable() {
         @Override
@@ -362,6 +314,31 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     };
+    // IV - Handlers for confirmation of page change when using pedal
+    private final Handler pedalPreviousAndNextNeedsConfirmHandler = new Handler();
+    private final Runnable pedalPreviousAndNextNeedsConfirmRunnable = () -> StaticVariables.pedalPreviousAndNextNeedsConfirm = true;
+    private final Handler pedalPreviousAndNextIgnoreHandler = new Handler();
+    private final Runnable pedalPreviousAndNextIgnoreRunnable = () -> StaticVariables.pedalPreviousAndNextIgnore = false;
+    // Handlers for activity after settled on a song
+    private final Handler startAutoscrollHandler = new Handler();
+    private final Runnable startAutoscrollRunnable = this::gesture5;
+    private final Handler showStickyHandler = new Handler();
+    private final Runnable showStickyRunnable  = this::showSticky;
+    private final Handler startCapoAnimationHandler = new Handler();
+    private final Runnable startCapoAnimationRunnable = () -> CustomAnimations.highlightAction(capoInfo,StageMode.this);
+    // Handler for temporary pause of autoscroll
+    private final Handler endManualDraggingHandler = new Handler();
+    private final Runnable endManualDraggingRunnable = () -> FullscreenActivity.isManualDragging = false;
+    // Handler for stop of autoscroll
+    private final Handler endAutoScrollHandler = new Handler();
+    private final Runnable endAutoScrollRunnable = () -> {
+        // If we are still at the end of the page stop
+        if (StaticVariables.isautoscrolling && FullscreenActivity.newPosFloat >= StaticVariables.scrollpageHeight) {
+            StaticVariables.autoscrollispaused = false;
+            StaticVariables.isautoscrolling = false;
+        }
+    };
+
     // Handlers for fonts
     private Handler lyrichandler;
     private Handler chordhandler;
@@ -387,22 +364,22 @@ public class StageMode extends AppCompatActivity implements
 
     // Helper classes
     private ExportPreparer exportPreparer;
-    private _SetActions setActions;
+    private SetActions setActions;
     private StorageAccess storageAccess;
-    private _IndexSongs indexSongs;
-    private _Preferences preferences;
-    private _SongXML songXML;
-    private _ChordProConvert chordProConvert;
-    private _OnSongConvert onSongConvert;
-    private _UsrConvert usrConvert;
-    private _TextSongConvert textSongConvert;
-    private _SetTypeFace setTypeFace;
-    private _SQLiteHelper sqLiteHelper;
+    private IndexSongs indexSongs;
+    private Preferences preferences;
+    private SongXML songXML;
+    private ChordProConvert chordProConvert;
+    private OnSongConvert onSongConvert;
+    private UsrConvert usrConvert;
+    private TextSongConvert textSongConvert;
+    private SetTypeFace setTypeFace;
+    private SQLiteHelper sqLiteHelper;
     private ProcessSong processSong;
-    private _SQLite sqLite;  // This is the song values for the sqlite database, search and menus
-    private _NonOpenSongSQLite nonOpenSongSQLite; // For the pdf and image songs
-    private _NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
-    private _Transpose transpose;
+    private SQLite sqLite;  // This is the song values for the sqlite database, search and menus
+    private NonOpenSongSQLite nonOpenSongSQLite; // For the pdf and image songs
+    private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
+    private Transpose transpose;
     private ProfileActions profileActions;
 
     private boolean pdfCanContinueScrolling;
@@ -418,46 +395,37 @@ public class StageMode extends AppCompatActivity implements
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 
-        setActions = new _SetActions();
+        setActions = new SetActions();
         exportPreparer = new ExportPreparer();
         storageAccess = new StorageAccess();
-        indexSongs = new _IndexSongs();
-        preferences = new _Preferences();
-        songXML = new _SongXML();
-        chordProConvert = new _ChordProConvert();
-        onSongConvert = new _OnSongConvert();
-        usrConvert = new _UsrConvert();
-        textSongConvert = new _TextSongConvert();
-        setTypeFace = new _SetTypeFace();
-        sqLiteHelper = new _SQLiteHelper(StageMode.this);
-        nonOpenSongSQLiteHelper = new _NonOpenSongSQLiteHelper(StageMode.this);
+        indexSongs = new IndexSongs();
+        preferences = new Preferences();
+        songXML = new SongXML();
+        chordProConvert = new ChordProConvert();
+        onSongConvert = new OnSongConvert();
+        usrConvert = new UsrConvert();
+        textSongConvert = new TextSongConvert();
+        setTypeFace = new SetTypeFace();
+        sqLiteHelper = new SQLiteHelper(StageMode.this);
+        nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(StageMode.this);
         processSong = new ProcessSong();
-        transpose = new _Transpose();
+        transpose = new Transpose();
         profileActions = new ProfileActions();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        StaticVariables.myToastMessage = getString(R.string.search_index_start);
-                        _ShowToast.showToast(StageMode.this);
-                    }
-                });
-                indexSongs.fullIndex(StageMode.this,preferences,storageAccess,sqLiteHelper,songXML,
-                        chordProConvert,onSongConvert,textSongConvert,usrConvert);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        StaticVariables.myToastMessage = getString(R.string.search_index_end);
-                        _ShowToast.showToast(StageMode.this);
-                        // Now instruct the song menu to be built again.
-                        prepareSongMenu();
-                    }
-                });
+        new Thread(() -> {
+            runOnUiThread(() -> {
+                StaticVariables.myToastMessage = getString(R.string.search_index_start);
+                ShowToast.showToast(StageMode.this);
+            });
+            indexSongs.fullIndex(StageMode.this,preferences,storageAccess,sqLiteHelper,songXML,
+                    chordProConvert,onSongConvert,textSongConvert,usrConvert);
+            runOnUiThread(() -> {
+                StaticVariables.myToastMessage = getString(R.string.search_index_end);
+                ShowToast.showToast(StageMode.this);
+                // Now instruct the song menu to be built again.
+                prepareSongMenu();
+            });
 
-            }
         }).start();
 
         // Get the language
@@ -491,90 +459,73 @@ public class StageMode extends AppCompatActivity implements
                 .addControlCategory(MediaControlIntent.CATEGORY_LIVE_VIDEO)
                 .build();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // Set the fullscreen window flags
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setWindowFlags();
-                        setWindowFlagsAdvanced();
-                    }
-                });
+        new Thread(() -> {
+            // Set the fullscreen window flags
+            runOnUiThread(() -> {
+                setWindowFlags();
+                setWindowFlagsAdvanced();
+            });
 
-                // Since this mode has just been opened, force an update to the cast screen
-                StaticVariables.forcecastupdate = true;
+            // Since this mode has just been opened, force an update to the cast screen
+            StaticVariables.forcecastupdate = true;
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+            runOnUiThread(() -> {
+                // Set up the gesture detector
+                scaleGestureDetector = new ScaleGestureDetector(StageMode.this, new simpleOnScaleGestureListener());
+                gestureDetector = new GestureDetector(StageMode.this,new SwipeDetector());
 
-                        // Set up the gesture detector
-                        scaleGestureDetector = new ScaleGestureDetector(StageMode.this, new simpleOnScaleGestureListener());
-                        gestureDetector = new GestureDetector(StageMode.this,new SwipeDetector());
+                // Set up the toolbar and views
+                setUpToolbar();
+                setUpViews();
+            });
 
-                        // Set up the toolbar and views
-                        setUpToolbar();
-                        setUpViews();
-                    }
-                });
+            // Battery monitor
+            IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+            br = new BatteryMonitor();
+            StageMode.this.registerReceiver(br, filter);
 
-                // Battery monitor
-                IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-                br = new _BatteryMonitor();
-                StageMode.this.registerReceiver(br, filter);
+            runOnUiThread(() -> {
+                // Make the drawers match half the width of the screen
+                resizeDrawers();
 
+                // Restore Drawer Swipe preference
+                toggleDrawerSwipe();
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Make the drawers match half the width of the screen
-                        resizeDrawers();
+                // Prepare the song menu
+                prepareSongMenu();
 
-                        // Prepare the song menu
-                        prepareSongMenu();
+                // Prepare the option menu
+                prepareOptionMenu();
 
-                        // Prepare the option menu
-                        prepareOptionMenu();
+                // Set up the page buttons
+                setupPageButtons();
 
-                        // Set up the page buttons
-                        setupPageButtons();
+                // Load the song and get started
+                loadSong();
 
-                        // Load the song and get started
-                        loadSong();
+                // IV - Dynamic buttons (scroll and set) are done later
 
-                        // Prepare the scrollbuttons
-                        scrollButtons();
+                // Prepare abhide listener
+                setupAbHide();
+            });
 
-                        // Prepare abhide listener
-                        setupAbHide();
-                    }
-                });
+            // Set up the Salut service
+            getBluetoothName();
+            startRegistration();
 
-                // Set up the Salut service
-                getBluetoothName();
-                startRegistration();
+            dealWithIntent();
 
-                dealWithIntent();
-
-                // Set up stuff for NFC transfer (if allowed)
-                if (FullscreenActivity.mAndroidBeamAvailable) {
-                    FullscreenActivity.mNfcAdapter = NfcAdapter.getDefaultAdapter(StageMode.this);
-                    mFileUriCallback = new FileUriCallback();
-                    // Set the dynamic callback for URI requests.
-                    FullscreenActivity.mNfcAdapter.setBeamPushUrisCallback(mFileUriCallback, StageMode.this);
-                }
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Initialise the ab info
-                        adjustABInfo();
-                    }
-                });
-
+            // Set up stuff for NFC transfer (if allowed)
+            if (FullscreenActivity.mAndroidBeamAvailable) {
+                FullscreenActivity.mNfcAdapter = NfcAdapter.getDefaultAdapter(StageMode.this);
+                mFileUriCallback = new FileUriCallback();
+                // Set the dynamic callback for URI requests.
+                FullscreenActivity.mNfcAdapter.setBeamPushUrisCallback(mFileUriCallback, StageMode.this);
             }
+
+            // Initialise the ab info
+            runOnUiThread(this::adjustABInfo);
+
         }).start();
 
         // Check if we need to remind the user to backup their songs
@@ -752,12 +703,7 @@ public class StageMode extends AppCompatActivity implements
         backingtrackProgress.setVisibility(View.GONE);
         padcurrentTime_TextView = findViewById(R.id.padcurrentTime_TextView);
         // Allow the user to pause/resume playback
-        backingtrackProgress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PadFunctions.pauseOrResumePad();
-            }
-        });
+        backingtrackProgress.setOnClickListener(v -> PadFunctions.pauseOrResumePad());
         padTimeSeparator_TextView = findViewById(R.id.padTimeSeparator_TextView);
         padtotalTime_TextView = findViewById(R.id.padtotalTime_TextView);
         playbackProgress = findViewById(R.id.playbackProgress);
@@ -788,24 +734,18 @@ public class StageMode extends AppCompatActivity implements
         //songscrollview.setBackgroundColor(0xff0000ff);
 
         // Enable the song and author section to link to edit song
-        songandauthor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (FullscreenActivity.isPDF) {
-                    StaticVariables.whattodo = "extractPDF";
-                    openFragment();
-                } else if (FullscreenActivity.isSong) {
-                    StaticVariables.whattodo = "songdetails";
-                    openFragment();
-                }
-            }
-        });
-        batteryholder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whattodo = "actionbarinfo";
+        songandauthor.setOnClickListener(v -> {
+            if (FullscreenActivity.isPDF) {
+                StaticVariables.myToastMessage = getString(R.string.pdf_functionnotavailable);
+                ShowToast.showToast(StageMode.this);
+            } else if (FullscreenActivity.isSong) {
+                FullscreenActivity.whattodo = "songdetails";
                 openFragment();
             }
+        });
+        batteryholder.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "actionbarinfo";
+            openFragment();
         });
 
         // Set up the navigation drawer
@@ -818,19 +758,11 @@ public class StageMode extends AppCompatActivity implements
         menuFolder_TextView.setText(getString(R.string.wait));
         menuCount_TextView = findViewById(R.id.menuCount_TextView);
         LinearLayout changefolder_LinearLayout = findViewById(R.id.changefolder_LinearLayout);
-        changefolder_LinearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whattodo = "choosefolder";
-                openFragment();
-            }
+        changefolder_LinearLayout.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "choosefolder";
+            openFragment();
         });
-        closeSongFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                closeMyDrawers("song");
-            }
-        });
+        closeSongFAB.setOnClickListener(view -> closeMyDrawers("song"));
     }
 
     private void getBluetoothName() {
@@ -853,12 +785,7 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.serviceData = new SalutServiceData("OpenSongApp", 60606,
                     FullscreenActivity.mBluetoothName);
 
-            FullscreenActivity.network = new Salut(FullscreenActivity.dataReceiver, FullscreenActivity.serviceData, new SalutCallback() {
-                @Override
-                public void call() {
-                    FullscreenActivity.salutLog += "\n" + getResources().getString(R.string.nowifidirect);
-                }
-            });
+            FullscreenActivity.network = new Salut(FullscreenActivity.dataReceiver, FullscreenActivity.serviceData, () -> FullscreenActivity.salutLog += "\n" + getResources().getString(R.string.nowifidirect));
 
         } catch (Exception e) {
             FullscreenActivity.salutLog += "\n" + getResources().getString(R.string.nowifidirect);
@@ -896,23 +823,10 @@ public class StageMode extends AppCompatActivity implements
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
-        Runnable testnavbar = new Runnable() {
-            @Override
-            public void run() {
-                getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-                    @Override
-                    public void onSystemUiVisibilityChange(int visibility) {
-                        restoreTransparentBars();
-                    }
-                });
+        Runnable testnavbar = () -> {
+            getWindow().getDecorView().setOnSystemUiVisibilityChangeListener(visibility -> restoreTransparentBars());
 
-                getWindow().getDecorView().setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        restoreTransparentBars();
-                    }
-                });
-            }
+            getWindow().getDecorView().setOnFocusChangeListener((v1, hasFocus) -> restoreTransparentBars());
         };
 
         Handler waitandtest = new Handler();
@@ -935,16 +849,13 @@ public class StageMode extends AppCompatActivity implements
     }
     private void restoreTransparentBars() {
         // Set runnable
-        Runnable delhide = new Runnable() {
-            @Override
-            public void run() {
-                // Hide them
-                setWindowFlags();
-                setWindowFlagsAdvanced();
-                View rf = getCurrentFocus();
-                if (rf!=null) {
-                    rf.clearFocus();
-                }
+        Runnable delhide = () -> {
+            // Hide them
+            setWindowFlags();
+            setWindowFlagsAdvanced();
+            View rf = getCurrentFocus();
+            if (rf!=null) {
+                rf.clearFocus();
             }
         };
 
@@ -992,16 +903,20 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
+                // Set a runnable to return option menu to MAIN, This ensures 'Activated/Running' in sub menus work properly
+                Handler resetoptionmenu = new Handler();
+                resetoptionmenu.postDelayed(() -> {
+                    StaticVariables.whichOptionMenu = "MAIN";
+                    prepareOptionMenu();
+                }, 300);
                 // Set a runnable to re-enable swipe
                 Handler allowswipe = new Handler();
-                allowswipe.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        FullscreenActivity.tempswipeSet = "enable"; // enable swipe after short delay
-                    }
+                allowswipe.postDelayed(() -> {
+                    FullscreenActivity.tempswipeSet = "enable"; // enable swipe after short delay
                 }, FullscreenActivity.delayswipe_time); // 1800ms delay
                 hideActionBar();
-                setupPageButtons();
+                // Make sure all dynamic (scroll and set) buttons display
+                onScrollAction();
             }
 
             // Called when a drawer has settled in a completely open state.
@@ -1022,19 +937,9 @@ public class StageMode extends AppCompatActivity implements
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
 
         final View decorView = getWindow().getDecorView();
-        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-            @Override
-            public void onSystemUiVisibilityChange(int visibility) {
-                restoreTransparentBars();
-            }
-        });
+        decorView.setOnSystemUiVisibilityChangeListener(visibility -> restoreTransparentBars());
 
-        decorView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                restoreTransparentBars();
-            }
-        });
+        decorView.setOnFocusChangeListener((v, hasFocus) -> restoreTransparentBars());
 
     }
     @Override
@@ -1102,7 +1007,7 @@ public class StageMode extends AppCompatActivity implements
             digitalclock.setText(formattedTime);
 
             // Get battery
-            int i = (int) (_BatteryMonitor.getBatteryStatus(StageMode.this) * 100.0f);
+            int i = (int) (BatteryMonitor.getBatteryStatus(StageMode.this) * 100.0f);
             String charge = i + "%";
             if (preferences.getMyPreferenceBoolean(StageMode.this,"batteryTextOn",true)) {
                 batterycharge.setVisibility(View.VISIBLE);
@@ -1119,18 +1024,13 @@ public class StageMode extends AppCompatActivity implements
                 batteryimage.setVisibility(View.INVISIBLE);
             }
             if (ab != null && abh > 0) {
-                BitmapDrawable bmp = _BatteryMonitor.batteryImage(StageMode.this, preferences,i, abh);
+                BitmapDrawable bmp = BatteryMonitor.batteryImage(StageMode.this, preferences,i, abh);
                 batteryimage.setImageDrawable(bmp);
             }
 
             // Ask the app to check again in 60s
             Handler batterycheck = new Handler();
-            batterycheck.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setUpBatteryMonitor();
-                }
-            }, 60000);
+            batterycheck.postDelayed(this::setUpBatteryMonitor, 60000);
         } catch (Exception e) {
             // Ooops
         }
@@ -1150,31 +1050,31 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     protected void onNewIntent (Intent intent) {
-        //super.onNewIntent(intent);
+        super.onNewIntent(intent);
         dealWithIntent();
     }
     private void dealWithIntent() {
-        if (StaticVariables.whattodo!=null) {
+        if (FullscreenActivity.whattodo!=null) {
             try {
-                switch (StaticVariables.whattodo) {
+                switch (FullscreenActivity.whattodo) {
                     case "importfile_customreusable_scripture":
                         // Receiving scripture text
-                        StaticVariables.whattodo = "customreusable_scripture";
+                        FullscreenActivity.whattodo = "customreusable_scripture";
                         openFragment();
                         break;
                     case "importfile_newsong_text":
                         // Receiving song (maybe) text
-                        StaticVariables.whattodo = "createsong";
+                        FullscreenActivity.whattodo = "createsong";
                         openFragment();
                         break;
                     case "importfile_processimportosb":
                         // Receiving an OpenSongApp backup file
-                        StaticVariables.whattodo = "processimportosb";
+                        FullscreenActivity.whattodo = "processimportosb";
                         openFragment();
                         break;
                     case "importfile_doimport":
                         // Receiving another file
-                        StaticVariables.whattodo = "doimport";
+                        FullscreenActivity.whattodo = "doimport";
                         openFragment();
                         break;
                 }
@@ -1295,9 +1195,9 @@ public class StageMode extends AppCompatActivity implements
             }
 
             String message = getResources().getString(R.string.exit);
-            StaticVariables.whattodo = "exit";
+            FullscreenActivity.whattodo = "exit";
 
-            newFragment = _PopUpAreYouSureFragment.newInstance(message);
+            newFragment = PopUpAreYouSureFragment.newInstance(message);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.add(newFragment, message);
 
@@ -1370,6 +1270,10 @@ public class StageMode extends AppCompatActivity implements
         super.onPause();
         try {
             FullscreenActivity.whichPad = 0;
+            // IV - Stop autoscroll as it breaks on pause
+            if (StaticVariables.isautoscrolling) {
+                stopAutoScroll();
+            }
             killPad();
         } catch (Exception e) {
             e.printStackTrace();
@@ -1400,7 +1304,7 @@ public class StageMode extends AppCompatActivity implements
             }
         } else if (FullscreenActivity.network!=null) {
             try {
-            FullscreenActivity.network.unregisterClient(false);
+                FullscreenActivity.network.unregisterClient(false);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1448,7 +1352,7 @@ public class StageMode extends AppCompatActivity implements
         doCancelAsyncTask(do_moveinset);
         doCancelAsyncTask(add_slidetoset);
         doCancelAsyncTask(dualscreenwork_async);
-        doCancelAsyncTask(prepare_pad);
+        // IV - prepare_pad not in use
         doCancelAsyncTask(play_pads);
         doCancelAsyncTask(do_download);
         doCancelAsyncTask(show_sticky);
@@ -1466,21 +1370,21 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
         // Get the language
         FixLocale.fixLocale(StageMode.this,preferences);
 
-        FullscreenActivity.orientationchanged = StaticVariables.currentScreenOrientation != newConfig.orientation;
+        FullscreenActivity.orientationchanged = FullscreenActivity.mScreenOrientation != newConfig.orientation;
 
         if (FullscreenActivity.orientationchanged) {
             if (newFragment!=null && newFragment.getDialog()!=null) {
-                _PopUpSizeAndAlpha.decoratePopUp(StageMode.this,newFragment.getDialog(), preferences);
+                PopUpSizeAndAlpha.decoratePopUp(StageMode.this,newFragment.getDialog(), preferences);
             }
 
             // Get the current orientation
-            StaticVariables.currentScreenOrientation = getResources().getConfiguration().orientation;
+            FullscreenActivity.mScreenOrientation = getResources().getConfiguration().orientation;
 
             closeMyDrawers("both");
             resizeDrawers();
@@ -1491,7 +1395,7 @@ public class StageMode extends AppCompatActivity implements
     private void sendSongLocationToConnected() {
         String messageString = StaticVariables.whichSongFolder + "_____" +
                 StaticVariables.songfilename + "_____" +
-                StaticVariables.whichDirection;
+                FullscreenActivity.whichDirection;
 
         myMessage = new SalutMessage();
         myMessage.description = messageString;
@@ -1536,7 +1440,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void shareSong() {
         if (justSong(StageMode.this)) {
-        // Export - Take a screenshot as a bitmap
+            // Export - Take a screenshot as a bitmap
             doCancelAsyncTask(sharesong_async);
             sharesong_async = new ShareSong();
             try {
@@ -1551,7 +1455,7 @@ public class StageMode extends AppCompatActivity implements
     public void refreshAll() {
         // Show the toast if the message isn't blank
         if (!StaticVariables.myToastMessage.equals("")) {
-            _ShowToast.showToast(StageMode.this);
+            ShowToast.showToast(StageMode.this);
         }
         lyrichandler = new Handler();
         chordhandler = new Handler();
@@ -1589,7 +1493,7 @@ public class StageMode extends AppCompatActivity implements
         // Save the new value
         preferences.setMyPreferenceInt(StageMode.this, "runssincebackup", runssincebackup);
         if (runssincebackup >= 10) {
-            StaticVariables.whattodo = "promptbackup";
+            FullscreenActivity.whattodo = "promptbackup";
             openFragment();
         }
     }
@@ -1597,16 +1501,16 @@ public class StageMode extends AppCompatActivity implements
     private void indexOfSongInMenu() {
         int position = filenamesSongsInFolder.indexOf(StaticVariables.songfilename);
         if (position<=0) {
-            StaticVariables.currentSongIndex = 0;
-            StaticVariables.previousSongIndex = 0;
+            FullscreenActivity.currentSongIndex = 0;
+            FullscreenActivity.previousSongIndex = 0;
         } else {
-            StaticVariables.currentSongIndex = position;
-            StaticVariables.previousSongIndex = position-1;
+            FullscreenActivity.currentSongIndex = position;
+            FullscreenActivity.previousSongIndex = position-1;
         }
         if (position<filenamesSongsInFolder.size()-1) {
-            StaticVariables.nextSongIndex = position+1;
+            FullscreenActivity.nextSongIndex = position+1;
         } else {
-            StaticVariables.nextSongIndex = position;
+            FullscreenActivity.nextSongIndex = position;
         }
     }
 
@@ -1615,8 +1519,22 @@ public class StageMode extends AppCompatActivity implements
         try {
             // Only do this once - if we are the process of loading a song already, don't try to do it again!
             if (!FullscreenActivity.alreadyloading) {
-                FullscreenActivity.alreadyloading = true;
                 // It will get set back to false in the post execute of the async task
+                FullscreenActivity.alreadyloading = true;
+
+                // Clear any queued 'after song display' activity - we are moving to a new song
+                startCapoAnimationHandler.removeCallbacks(startCapoAnimationRunnable);
+                startAutoscrollHandler.removeCallbacks(startAutoscrollRunnable);
+                showStickyHandler.removeCallbacks(showStickyRunnable);
+
+                // If there is a sticky note showing, remove it early
+                if (stickyPopUpWindow != null && stickyPopUpWindow.isShowing()) {
+                    try {
+                        stickyPopUpWindow.dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
                 // Check for set song
                 StaticVariables.setView = setActions.isSongInSet(StageMode.this, preferences);
@@ -1642,7 +1560,7 @@ public class StageMode extends AppCompatActivity implements
 
                 if (!storageAccess.checkFileExtensionValid(uri) && !storageAccess.determineFileTypeByExtension()) {
                     StaticVariables.myToastMessage = getResources().getString(R.string.file_type_unknown);
-                    _ShowToast.showToast(StageMode.this);
+                    ShowToast.showToast(StageMode.this);
                 } else {
                     // Declare this as a new song for CCLI autologging
                     newsongloaded = true;
@@ -1655,18 +1573,8 @@ public class StageMode extends AppCompatActivity implements
                             e.printStackTrace();
                         }
                     }
-
-                    // If there is a sticky note showing, remove it
-                    if (stickyPopUpWindow != null && stickyPopUpWindow.isShowing()) {
-                        try {
-                            stickyPopUpWindow.dismiss();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
                     // Animate out the current song
-                    if (StaticVariables.whichDirection.equals("L2R")) {
+                    if (FullscreenActivity.whichDirection.equals("L2R")) {
                         if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
                             glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
                         } else if (songscrollview != null) {
@@ -1681,7 +1589,7 @@ public class StageMode extends AppCompatActivity implements
                     }
                     // If there were highlight notes showing, move them away
                     if (StaticVariables.whichMode.equals("Performance") && highlightNotes != null && highlightNotes.getVisibility() == View.VISIBLE) {
-                        if (StaticVariables.whichDirection.equals("L2R")) {
+                        if (FullscreenActivity.whichDirection.equals("L2R")) {
                             highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
                         } else if (highlightNotes != null) {
                             highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
@@ -1690,52 +1598,66 @@ public class StageMode extends AppCompatActivity implements
 
                     // Remove any capokey
                     FullscreenActivity.capokey = "";
+                    // IV - Clear capo info and animation - prevents disturbance with display of new song
+                    capoInfo.setVisibility(View.GONE);
+                    capoinfonewkey.setVisibility(View.GONE);
+                    capoInfo.clearAnimation();
 
-                    // End any current autscrolling
-                    stopAutoScroll();
-
-                    if ((StaticVariables.pad1Playing || StaticVariables.pad2Playing)) {
-                        if (!FullscreenActivity.isPDF && !FullscreenActivity.isImage ||
-                                (FullscreenActivity.isPDF && StaticVariables.pdfPageCurrent==0)) {
-                            StaticVariables.fadeWhichPad = 0; // Fade both pads if required
-                            fadeoutPad();
-                        }
+                    // End any current autoscroll
+                    if (StaticVariables.isautoscrolling) {
+                        stopAutoScroll();
                     }
-                    updateExtraInfoColorsAndSizes("pad");
-                    padcurrentTime_TextView.setText(getString(R.string.zerotime));
-                    backingtrackProgress.setVisibility(View.GONE);
 
+                    // IV - Pad time display handled elsewhere
                     // After animate out, load the song
                     Handler h = new Handler();
-                    h.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                glideimage_HorizontalScrollView.setVisibility(View.GONE);
-                                glideimage_ScrollView.setVisibility(View.GONE);
-                                songscrollview.setVisibility(View.GONE);
-                                highlightNotes.setVisibility(View.GONE);
-                                FullscreenActivity.highlightOn = false;
-                                glideimage_ScrollView.scrollTo(0, 0);
-                                songscrollview.scrollTo(0, 0);
+                    h.postDelayed(() -> {
+                        Log.d("d","loadSong() called - Runnable going");
+                        try {
+                            glideimage_HorizontalScrollView.setVisibility(View.GONE);
+                            glideimage_ScrollView.setVisibility(View.GONE);
+                            songscrollview.setVisibility(View.GONE);
+                            highlightNotes.setVisibility(View.GONE);
+                            FullscreenActivity.highlightOn = false;
+                            glideimage_ScrollView.scrollTo(0, 0);
+                            songscrollview.scrollTo(0, 0);
 
-                                // Hide the image, cause we might be loading a proper song!
-                                glideimage.setBackgroundColor(StaticVariables.transparent);
-                                glideimage.setImageDrawable(null);
+                            // Hide the image, cause we might be loading a proper song!
+                            glideimage.setBackgroundColor(StaticVariables.transparent);
+                            glideimage.setImageDrawable(null);
 
-                            } catch (Exception e) {
-                                Log.d("StageMode", "error updating the views");
-                            }
-                            // Load the song
-                            doCancelAsyncTask(loadsong_async);
-                            loadsong_async = new LoadSongAsync();
-                            try {
-                                loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                        } catch (Exception e) {
+                            Log.d("StageMode", "error updating the views");
+                        }
+                        // Load the song
+                        doCancelAsyncTask(loadsong_async);
+
+                        // Stop the metronome if loading a new song.  Trying afterwards stops the async starting!
+                        // TODO
+                        Log.d("d","loadSong()  StaticVariables.reloadOfSong="+StaticVariables.reloadOfSong + "  StaticVariables.clickedOnMetronomeStart="+StaticVariables.clickedOnMetronomeStart);
+                        // Do not touch on a reload
+                        if (!StaticVariables.reloadOfSong) {
+                            // Stop it - clickedOnMetronomeStart is the indicator that it was playing
+                            if (StaticVariables.clickedOnMetronomeStart) {
+                                gesture7();  // This also sets StaticVariables.clickedOnMetronomeStart to false;
+                                // Set this variable back as we want the metronome to restart after song load.
+                                StaticVariables.clickedOnMetronomeStart = true;
                             }
                         }
+
+                        // IV - added a few more tasks to cancel
+                        doCancelAsyncTask(resizestage_async);
+                        doCancelAsyncTask(resizeperformance_async);
+                        loadsong_async = new LoadSongAsync();
+                        try {
+                            Log.d("d","loadSong() called - about to start async load");
+                            loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }, 300);
+                    // Make sure all dynamic (scroll and set) buttons display
+                    onScrollAction();
                 }
             }
         } catch (Exception e) {
@@ -1756,7 +1678,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void doExport() {
         // This is called after the user has specified what should be exported.
-        switch (StaticVariables.whattodo) {
+        switch (FullscreenActivity.whattodo) {
             case "customise_exportsong":
                 shareSong();
                 break;
@@ -1905,77 +1827,91 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    //IV - Expanded to do display of scroll and set dynamic buttons
     private void scrollButtons() {
         delaycheckscroll = new Handler();
-        checkScrollPosition = new Runnable() {
-            @Override
-            public void run() {
-                FullscreenActivity.newPosFloat = songscrollview.getScrollY();
+        checkScrollPosition = () -> {
+            FullscreenActivity.newPosFloat = songscrollview.getScrollY();
+            if (!(preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowScroll", true))) {
+                showFAB(scrollDownButton, false);
+                showFAB(scrollUpButton, false);
+            } else {
+                // Use checkCanScroll results
+                showFAB(scrollDownButton, checkCanScrollDown());
+                showFAB(scrollUpButton, checkCanScrollUp());
+            }
 
-                if (checkCanScrollDown()) {
-                    showFAB(scrollDownButton,true);
+            // Use chackCanGoTo results
+            if (!(preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowSetMove", true))) {
+                showFAB(setBackButton, false);
+                showFAB(setForwardButton, false);
+            } else {
+                // If we are in Stage mode and mid song add Set Move buttons for section moves
+                if ((StaticVariables.whichMode != null) && StaticVariables.whichMode.equals("Stage") && (StaticVariables.songSections != null)) {
+                    if (StaticVariables.currentSection == 0) {
+                        showFAB(setBackButton, StaticVariables.canGoToPrevious);
+                        showFAB(setForwardButton, true);
+                    } else {
+                        if (StaticVariables.currentSection == StaticVariables.songSections.length - 1) {
+                            showFAB(setBackButton, true);
+                            showFAB(setForwardButton, StaticVariables.canGoToNext);
+                        } else {
+                            showFAB(setBackButton, true);
+                            showFAB(setForwardButton, true);
+                        }
+                    }
+                    // Otherwise use checkCanGoTo results as-is
                 } else {
-                    showFAB(scrollDownButton,false);
-                }
-
-                if (checkCanScrollUp()) {
-                    showFAB(scrollUpButton,true);
-                } else {
-                    showFAB(scrollUpButton,false);
+                    showFAB(setBackButton, StaticVariables.canGoToPrevious);
+                    showFAB(setForwardButton, StaticVariables.canGoToNext);
                 }
             }
         };
     }
 
     //@Override
-    private void setupPageButtons() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                //coordinator_layout = findViewById(R.id.coordinator_layout);
+    public void setupPageButtons() {
+        runOnUiThread(() -> {
+            //coordinator_layout = findViewById(R.id.coordinator_layout);
 
-                setButton = findViewById(R.id.setButton);
-                padButton = findViewById(R.id.padButton);
-                autoscrollButton = findViewById(R.id.autoscrollButton);
-                metronomeButton = findViewById(R.id.metronomeButton);
-                extraButton = findViewById(R.id.extraButton);
-                chordButton = findViewById(R.id.chordButton);
-                stickyButton = findViewById(R.id.stickyButton);
-                notationButton = findViewById(R.id.notationButton);
-                highlightButton = findViewById(R.id.highlightButton);
-                pageselectButton = findViewById(R.id.pageselectButton);
-                linkButton = findViewById(R.id.linkButton);
-                chordButton_ungrouped = findViewById(R.id.chordButton_ungrouped);
-                stickyButton_ungrouped = findViewById(R.id.stickyButton_ungrouped);
-                notationButton_ungrouped = findViewById(R.id.notationButton_ungrouped);
-                highlightButton_ungrouped = findViewById(R.id.highlightButton_ungrouped);
-                pageselectButton_ungrouped = findViewById(R.id.pageselectButton_ungrouped);
-                linkButton_ungrouped = findViewById(R.id.linkButton_ungrouped);
-                customButton = findViewById(R.id.customButton);
-                custom1Button = findViewById(R.id.custom1Button);
-                custom2Button = findViewById(R.id.custom2Button);
-                custom3Button = findViewById(R.id.custom3Button);
-                custom4Button = findViewById(R.id.custom4Button);
-                custom1Button_ungrouped = findViewById(R.id.custom1Button_ungrouped);
-                custom2Button_ungrouped = findViewById(R.id.custom2Button_ungrouped);
-                custom3Button_ungrouped = findViewById(R.id.custom3Button_ungrouped);
-                custom4Button_ungrouped = findViewById(R.id.custom4Button_ungrouped);
-                extrabuttons = findViewById(R.id.extrabuttons);
-                extrabuttons.setVisibility(View.GONE);
-                extrabuttons2 = findViewById(R.id.extrabuttons2);
-                extrabuttons2.setVisibility(View.GONE);
-                scrollDownButton = findViewById(R.id.scrollDownButton);
-                scrollUpButton = findViewById(R.id.scrollUpButton);
-                setBackButton = findViewById(R.id.setBackButton);
-                setForwardButton = findViewById(R.id.setForwardButton);
-                setUpPageButtonsColors();
-                setupQuickLaunchButtons();
-            }
+            setButton = findViewById(R.id.setButton);
+            padButton = findViewById(R.id.padButton);
+            autoscrollButton = findViewById(R.id.autoscrollButton);
+            metronomeButton = findViewById(R.id.metronomeButton);
+            extraButton = findViewById(R.id.extraButton);
+            chordButton = findViewById(R.id.chordButton);
+            stickyButton = findViewById(R.id.stickyButton);
+            notationButton = findViewById(R.id.notationButton);
+            highlightButton = findViewById(R.id.highlightButton);
+            pageselectButton = findViewById(R.id.pageselectButton);
+            linkButton = findViewById(R.id.linkButton);
+            chordButton_ungrouped = findViewById(R.id.chordButton_ungrouped);
+            stickyButton_ungrouped = findViewById(R.id.stickyButton_ungrouped);
+            notationButton_ungrouped = findViewById(R.id.notationButton_ungrouped);
+            highlightButton_ungrouped = findViewById(R.id.highlightButton_ungrouped);
+            pageselectButton_ungrouped = findViewById(R.id.pageselectButton_ungrouped);
+            linkButton_ungrouped = findViewById(R.id.linkButton_ungrouped);
+            customButton = findViewById(R.id.customButton);
+            custom1Button = findViewById(R.id.custom1Button);
+            custom2Button = findViewById(R.id.custom2Button);
+            custom3Button = findViewById(R.id.custom3Button);
+            custom4Button = findViewById(R.id.custom4Button);
+            custom1Button_ungrouped = findViewById(R.id.custom1Button_ungrouped);
+            custom2Button_ungrouped = findViewById(R.id.custom2Button_ungrouped);
+            custom3Button_ungrouped = findViewById(R.id.custom3Button_ungrouped);
+            custom4Button_ungrouped = findViewById(R.id.custom4Button_ungrouped);
+            extrabuttons = findViewById(R.id.extrabuttons);
+            extrabuttons.setVisibility(View.GONE);
+            extrabuttons2 = findViewById(R.id.extrabuttons2);
+            extrabuttons2.setVisibility(View.GONE);
+            scrollDownButton = findViewById(R.id.scrollDownButton);
+            scrollUpButton = findViewById(R.id.scrollUpButton);
+            setBackButton = findViewById(R.id.setBackButton);
+            setForwardButton = findViewById(R.id.setForwardButton);
+            // IV - minor name change setUp -> setup
+            setupPageButtonsColors();
+            setupQuickLaunchButtons();
         });
-
-
-
-
 
         // Decide if we are grouping / tidying page buttons
         groupPageButtons();
@@ -1983,345 +1919,301 @@ public class StageMode extends AppCompatActivity implements
         // Set the sizes and the alphas
         pageButtonAlpha("");
 
+        // IV - Animations for grouped buttons below removed as they fire in the wrong place
+        // IV - that is on next return to group, perhaps a long time after use
+        // IV - the collapse of the group will 'animate' the click
         // Set the listeners
-        setButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(setButton,StageMode.this);
-                StaticVariables.whattodo = "editset";
+        setButton.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(setButton,StageMode.this);
+            FullscreenActivity.whattodo = "editset";
+            openFragment();
+        });
+        // IV - New Long click to set item variation
+        setButton.setOnLongClickListener(view -> {
+            FullscreenActivity.whattodo = "setitemvariation";
+            openFragment();
+            return true;
+        });
+        padButton.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(padButton,StageMode.this);
+            FullscreenActivity.whattodo = "page_pad";
+            openFragment();
+        });
+        padButton.setOnLongClickListener(view -> {
+            CustomAnimations.animateFABLong(padButton,StageMode.this);
+            gesture6();
+            return true;
+        });
+        autoscrollButton.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(autoscrollButton,StageMode.this);
+            FullscreenActivity.whattodo = "page_autoscroll";
+            openFragment();
+        });
+        autoscrollButton.setOnLongClickListener(view -> {
+            CustomAnimations.animateFABLong(autoscrollButton,StageMode.this);
+            gesture5();
+            return true;
+        });
+        metronomeButton.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(metronomeButton,StageMode.this);
+            FullscreenActivity.whattodo = "page_metronome";
+            openFragment();
+        });
+        metronomeButton.setOnLongClickListener(view -> {
+            CustomAnimations.animateFABLong(metronomeButton,StageMode.this);
+            gesture7();
+            return true;
+        });
+        highlightButton.setOnClickListener(view -> {
+            FullscreenActivity.highlightOn = !FullscreenActivity.highlightOn;
+            FullscreenActivity.whattodo = "page_highlight";
+            displayHighlight(false);
+        });
+        highlightButton.setOnLongClickListener(view -> {
+            // Vibrate to let the user know something happened
+            DoVibrate.vibrate(StageMode.this, 50);
+            takeScreenShot();
+            if (FullscreenActivity.bmScreen!=null) {
+                FullscreenActivity.whattodo = "drawnotes";
                 openFragment();
+            } else {
+                Log.d("StageMode", "screenshot is null");
             }
+            return true;
         });
-        padButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(padButton,StageMode.this);
-                StaticVariables.whattodo = "page_pad";
+        highlightButton_ungrouped.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(highlightButton_ungrouped,StageMode.this);
+            FullscreenActivity.whattodo = "page_highlight";
+            FullscreenActivity.highlightOn = !FullscreenActivity.highlightOn;
+            displayHighlight(false);
+        });
+        highlightButton_ungrouped.setOnLongClickListener(view -> {
+            CustomAnimations.animateFABLong(highlightButton_ungrouped,StageMode.this);
+            // Vibrate to let the user know something happened
+            DoVibrate.vibrate(StageMode.this, 50);
+            takeScreenShot();
+            if (FullscreenActivity.bmScreen!=null) {
+                FullscreenActivity.whattodo = "drawnotes";
                 openFragment();
+            } else {
+                Log.d("StageMode", "screenshot is null");
+            }
+            return true;
+        });
+        extraButton.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(extraButton,StageMode.this);
+            if (extrabuttons!=null && extrabuttons.getVisibility() == View.GONE) {
+                pageButtonAlpha("extra");
+            } else {
+                pageButtonAlpha("");
             }
         });
-        padButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                _CustomAnimations.animateFABLong(padButton,StageMode.this);
-                gesture6();
-                return true;
-            }
+        // Button groups - extra group long click action to switch to all group mode (collapse of the buttons displayed)
+        extraButton.setOnLongClickListener(view -> {
+            CustomAnimations.animateFAB(extraButton,StageMode.this);
+            preferences.setMyPreferenceBoolean(StageMode.this, "pageButtonGroupMain", !(preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonGroupMain", false)));
+            // Need to redo OnClick button action
+            setupPageButtons();
+            groupPageButtons();
+            // Make sure all dynamic (scroll and set) buttons display
+            onScrollAction();
+            return true;
         });
-        autoscrollButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(autoscrollButton,StageMode.this);
-                StaticVariables.whattodo = "page_autoscroll";
+        chordButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "page_chords";
+            openFragment();
+        });
+        chordButton_ungrouped.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(chordButton_ungrouped,StageMode.this);
+            FullscreenActivity.whattodo = "page_chords";
+            openFragment();
+        });
+        linkButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "page_links";
+            openFragment();
+        });
+        linkButton_ungrouped.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(linkButton_ungrouped,StageMode.this);
+            FullscreenActivity.whattodo = "page_links";
+            openFragment();
+        });
+        stickyButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "page_sticky";
+            displaySticky();
+        });
+        stickyButton.setOnLongClickListener(view -> {
+            FullscreenActivity.whattodo = "page_sticky";
+            openFragment();
+            return true;
+        });
+        stickyButton_ungrouped.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(stickyButton_ungrouped,StageMode.this);
+            FullscreenActivity.whattodo = "page_sticky";
+            displaySticky();
+        });
+        stickyButton_ungrouped.setOnLongClickListener(view -> {
+            CustomAnimations.animateFAB(stickyButton,StageMode.this);
+            FullscreenActivity.whattodo = "page_sticky";
+            openFragment();
+            return true;
+        });
+        notationButton.setOnClickListener(view -> {
+            if (StaticVariables.mNotation.equals("")) {
+                FullscreenActivity.whattodo = "abcnotation_edit";
+            } else {
+                FullscreenActivity.whattodo = "abcnotation";
+            }
+            openFragment();
+        });
+        notationButton.setOnLongClickListener(view -> {
+            FullscreenActivity.whattodo = "abcnotation_edit";
+            openFragment();
+            return true;
+        });
+        notationButton_ungrouped.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(notationButton_ungrouped,StageMode.this);
+            if (StaticVariables.mNotation.equals("")) {
+                FullscreenActivity.whattodo = "abcnotation_edit";
+            } else {
+                FullscreenActivity.whattodo = "abcnotation";
+            }
+            openFragment();
+        });
+        notationButton_ungrouped.setOnLongClickListener(view -> {
+            CustomAnimations.animateFAB(notationButton_ungrouped,StageMode.this);
+            FullscreenActivity.whattodo = "abcnotation_edit";
+            openFragment();
+            return true;
+        });
+        pageselectButton.setOnClickListener(view -> {
+            if (FullscreenActivity.isPDF) {
+                FullscreenActivity.whattodo = "page_pageselect";
                 openFragment();
+            } else {
+                StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
+                ShowToast.showToast(StageMode.this);
             }
         });
-        autoscrollButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                _CustomAnimations.animateFABLong(autoscrollButton,StageMode.this);
-                gesture5();
-                return true;
-            }
-        });
-        metronomeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(metronomeButton,StageMode.this);
-                StaticVariables.whattodo = "page_metronome";
+        pageselectButton_ungrouped.setOnClickListener(view -> {
+            if (FullscreenActivity.isPDF) {
+                FullscreenActivity.whattodo = "page_pageselect";
                 openFragment();
-            }
-        });
-        metronomeButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                _CustomAnimations.animateFABLong(metronomeButton,StageMode.this);
-                gesture7();
-                return true;
-            }
-        });
-        highlightButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(highlightButton,StageMode.this);
-                FullscreenActivity.highlightOn = !FullscreenActivity.highlightOn;
-                StaticVariables.whattodo = "page_highlight";
-                displayHighlight(false);
-            }
-        });
-        highlightButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                _CustomAnimations.animateFABLong(highlightButton,StageMode.this);
-                // Vibrate to let the user know something happened
-                DoVibrate.vibrate(StageMode.this, 50);
-                takeScreenShot();
-                if (FullscreenActivity.bmScreen!=null) {
-                    StaticVariables.whattodo = "drawnotes";
-                    openFragment();
-                } else {
-                    Log.d("StageMode", "screenshot is null");
-                }
-                return true;
-            }
-        });
-        highlightButton_ungrouped.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(highlightButton_ungrouped,StageMode.this);
-                StaticVariables.whattodo = "page_highlight";
-                FullscreenActivity.highlightOn = !FullscreenActivity.highlightOn;
-                displayHighlight(false);
-            }
-        });
-        highlightButton_ungrouped.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                _CustomAnimations.animateFABLong(highlightButton_ungrouped,StageMode.this);
-                // Vibrate to let the user know something happened
-                DoVibrate.vibrate(StageMode.this, 50);
-                takeScreenShot();
-                if (FullscreenActivity.bmScreen!=null) {
-                    StaticVariables.whattodo = "drawnotes";
-                    openFragment();
-                } else {
-                    Log.d("StageMode", "screenshot is null");
-                }
-                return true;
-            }
-        });
-        extraButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(extraButton,StageMode.this);
-                if (extrabuttons!=null && extrabuttons.getVisibility() == View.GONE) {
-                    pageButtonAlpha("extra");
-                } else {
-                    pageButtonAlpha("");
-                }
-            }
-        });
-        chordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(chordButton,StageMode.this);
-                StaticVariables.whattodo = "page_chords";
-                openFragment();
-            }
-        });
-        chordButton_ungrouped.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(chordButton_ungrouped,StageMode.this);
-                StaticVariables.whattodo = "page_chords";
-                openFragment();
-            }
-        });
-        linkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(linkButton,StageMode.this);
-                StaticVariables.whattodo = "page_links";
-                openFragment();
-            }
-        });
-        linkButton_ungrouped.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(linkButton_ungrouped,StageMode.this);
-                StaticVariables.whattodo = "page_links";
-                openFragment();
-            }
-        });
-        stickyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(stickyButton,StageMode.this);
-                StaticVariables.whattodo = "page_sticky";
-                displaySticky();
-            }
-        });
-        stickyButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                _CustomAnimations.animateFAB(stickyButton,StageMode.this);
-                StaticVariables.whattodo = "page_sticky";
-                openFragment();
-                return true;
-            }
-        });
-        stickyButton_ungrouped.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(stickyButton_ungrouped,StageMode.this);
-                StaticVariables.whattodo = "page_sticky";
-                displaySticky();
-            }
-        });
-        stickyButton_ungrouped.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                _CustomAnimations.animateFAB(stickyButton,StageMode.this);
-                StaticVariables.whattodo = "page_sticky";
-                openFragment();
-                return true;
-            }
-        });
-        notationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(notationButton,StageMode.this);
-                if (StaticVariables.mNotation.equals("")) {
-                    StaticVariables.whattodo = "abcnotation_edit";
-                } else {
-                    StaticVariables.whattodo = "abcnotation";
-                }
-                openFragment();
-            }
-        });
-        notationButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                _CustomAnimations.animateFAB(notationButton,StageMode.this);
-                StaticVariables.whattodo = "abcnotation_edit";
-                openFragment();
-                return true;
-            }
-        });
-        notationButton_ungrouped.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(notationButton_ungrouped,StageMode.this);
-                if (StaticVariables.mNotation.equals("")) {
-                    StaticVariables.whattodo = "abcnotation_edit";
-                } else {
-                    StaticVariables.whattodo = "abcnotation";
-                }
-                openFragment();
-            }
-        });
-        notationButton_ungrouped.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                _CustomAnimations.animateFAB(notationButton_ungrouped,StageMode.this);
-                StaticVariables.whattodo = "abcnotation_edit";
-                openFragment();
-                return true;
-            }
-        });
-        pageselectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(pageselectButton,StageMode.this);
-                if (FullscreenActivity.isPDF) {
-                    StaticVariables.whattodo = "page_pageselect";
-                    openFragment();
-                } else {
-                    StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
-                    _ShowToast.showToast(StageMode.this);
-                }
-            }
-        });
-        pageselectButton_ungrouped.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(pageselectButton_ungrouped,StageMode.this);
-                if (FullscreenActivity.isPDF) {
-                    StaticVariables.whattodo = "page_pageselect";
-                    openFragment();
-                } else {
-                    StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
-                    _ShowToast.showToast(StageMode.this);
-                }
+            } else {
+                StaticVariables.myToastMessage = getResources().getString(R.string.not_allowed);
+                ShowToast.showToast(StageMode.this);
             }
         });
         if (preferences.getMyPreferenceBoolean(StageMode.this,"pageButtonGroupMain",false)) {
-            customButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    _CustomAnimations.animateFAB(customButton,StageMode.this);
-                    StaticVariables.whattodo = "groupedpagebuttons";
-                    openFragment();
-                }
+            customButton.setOnClickListener(view -> {
+                CustomAnimations.animateFAB(customButton,StageMode.this);
+                FullscreenActivity.whattodo = "groupedpagebuttons";
+                openFragment();
             });
         } else {
-            customButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    _CustomAnimations.animateFAB(customButton,StageMode.this);
-                    if (extrabuttons2!=null && extrabuttons2.getVisibility() == View.GONE) {
-                        pageButtonAlpha("custom");
-                    } else {
-                        pageButtonAlpha("");
-                    }
-                    }
+            customButton.setOnClickListener(view -> {
+                CustomAnimations.animateFAB(customButton,StageMode.this);
+                if (extrabuttons2!=null && extrabuttons2.getVisibility() == View.GONE) {
+                    pageButtonAlpha("custom");
+                } else {
+                    pageButtonAlpha("");
+                }
             });
         }
-        scrollUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(scrollUpButton,StageMode.this);
-                doScrollUp();
+        // Button groups - custom Long press toggles all group mode - allows expansion and collapse of buttons display
+        customButton.setOnLongClickListener(view -> {
+            // This provides the ability to expand and collapse the number of buttons displayed.
+            // If extra or custom groupings are 'hidden' by an all grouping support long press to switch into and out of all grouping
+            if ((preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonGroupExtra", false) || preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonGroupCustom", false))) {
+                preferences.setMyPreferenceBoolean(StageMode.this, "pageButtonGroupMain", !(preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonGroupMain", false)));
+                // Need to redo OnClick button action
+                setupPageButtons();
+                groupPageButtons();
+                // Make sure all dynamic (scroll and set) buttons display
+                onScrollAction();
+            } else {
+                CustomAnimations.animateFAB(customButton, StageMode.this);
+                FullscreenActivity.whattodo = "groupedpagebuttons";
+                openFragment();
             }
+            return true;
         });
-        scrollDownButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(scrollDownButton,StageMode.this);
-                doScrollDown();
-            }
+        scrollUpButton.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(scrollUpButton,StageMode.this);
+            doScrollUp();
         });
-        setForwardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(setForwardButton,StageMode.this);
-                StaticVariables.setMoveDirection = "forward";
-                StaticVariables.whichDirection = "R2L";
-                goToNextItem();
-            }
+        scrollDownButton.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(scrollDownButton,StageMode.this);
+            doScrollDown();
         });
-        setBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(setBackButton,StageMode.this);
-                StaticVariables.setMoveDirection = "back";
-                StaticVariables.whichDirection = "L2R";
-                goToPreviousItem();
+        setForwardButton.setOnClickListener(view -> {
+            // Animate but not if called by R2L swipe (so set like scroll buttons do not animate on swipe)
+            if (!(StaticVariables.setMoveDirection.equals("swipe"))) {
+                CustomAnimations.animateFAB(setForwardButton, StageMode.this);
             }
+            StaticVariables.setMoveDirection = "forward";
+            FullscreenActivity.whichDirection = "R2L";
+            goToNextItem();
+        });
+        setBackButton.setOnClickListener(view -> {
+            // Animate but not if called by  a L2R swipe (so set like scroll buttons do not animate on swipe)
+            if (!(StaticVariables.setMoveDirection.equals("swipe"))) {
+                CustomAnimations.animateFAB(setBackButton, StageMode.this);
+            }
+            StaticVariables.setMoveDirection = "back";
+            FullscreenActivity.whichDirection = "L2R";
+            goToPreviousItem();
         });
     }
 
     @Override
-    public void setUpPageButtonsColors() {
+    public void setupPageButtonsColors() {
+        // IV - Added the complete range of buttons get the color on all
         // Set the colors
-        setButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
-        padButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
         autoscrollButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
-        metronomeButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
-        extraButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
         chordButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
-        linkButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
-        pageselectButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
-        customButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        chordButton_ungrouped.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
         custom1Button.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        custom1Button_ungrouped.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
         custom2Button.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        custom2Button_ungrouped.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
         custom3Button.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        custom3Button_ungrouped.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
         custom4Button.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        custom4Button_ungrouped.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        customButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        extraButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        highlightButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        highlightButton_ungrouped.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        linkButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        linkButton_ungrouped.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        metronomeButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        notationButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        notationButton_ungrouped.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        padButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        pageselectButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        pageselectButton_ungrouped.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
         scrollDownButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
         scrollUpButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
         setBackButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        setButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
         setForwardButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        stickyButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
+        stickyButton_ungrouped.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
     }
 
-    private void onScrollAction() {
-        // Reshow the scroll arrows if needed
+    // IV - This is called wherever we need to make sure scroll and set dynamic buttons are displayed
+    public void onScrollAction() {
+        // Display the scroll and set dynamic buttons as needed
+        checkCanGoTo();
         scrollButtons();
         delaycheckscroll.post(checkScrollPosition);
     }
 
     private void doScrollUp() {
-        // Scroll the screen up
+        // Temporarily pause any running autoscroll
+        pauseAutoscroll();
 
+        // Scroll the screen up
         if (StaticVariables.whichMode.equals("Stage")) {
             try {
                 StaticVariables.currentSection -= 1;
@@ -2330,11 +2222,10 @@ public class StageMode extends AppCompatActivity implements
                 StaticVariables.currentSection += 1;
                 e.printStackTrace();
             }
-            scrollButtons();
+            // Make sure all dynamic (scroll and set) buttons display
+            onScrollAction();
         } else {
-            FullscreenActivity.wasscrolling = true;
-            FullscreenActivity.scrollbutton = true;
-
+            // IV - Do not stop autoscroll.  User may reposition and continue autoscroll
             DisplayMetrics metrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
@@ -2371,21 +2262,20 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void doScrollDown() {
+        // Temporarily pause any running autoscroll
+        pauseAutoscroll();
 
         if (StaticVariables.whichMode.equals("Stage")) {
             try {
                 StaticVariables.currentSection += 1;
                 selectSection(StaticVariables.currentSection);
-
             } catch (Exception e) {
                 StaticVariables.currentSection -= 1;
             }
-            scrollButtons();
+            // Make sure all dynamic (scroll and set) buttons display
+            onScrollAction();
         } else {
-            // Scroll the screen down
-            FullscreenActivity.wasscrolling = true;
-            FullscreenActivity.scrollbutton = true;
-
+            // IV - Do not stop autoscroll.  User may reposition and continue autoscroll
             DisplayMetrics metrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
@@ -2453,14 +2343,20 @@ public class StageMode extends AppCompatActivity implements
         showFAB(custom2Button_ungrouped, false);
         showFAB(custom3Button_ungrouped, false);
         showFAB(custom4Button_ungrouped, false);
-        showFAB(setBackButton, false);
-        showFAB(setForwardButton, false);
-        showFAB(scrollDownButton, false);
-        showFAB(scrollUpButton, false);
+        // We can be doing a button reorg where we want to keep seeing these buttons
+        if (!StaticVariables.ignoreGesture) {
+            showFAB(setBackButton, false);
+            showFAB(setForwardButton, false);
+            showFAB(scrollDownButton, false);
+            showFAB(scrollUpButton, false);
+        }
     }
 
-    @Override
     public void groupPageButtons() {
+
+        // Flag to ignore full screen long press activity for a short while
+        StaticVariables.ignoreGesture = true;
+
         // Hide everything to begin with
         hideAllFABs();
 
@@ -2498,7 +2394,7 @@ public class StageMode extends AppCompatActivity implements
             if (groupextra) {
                 // Only show the extrabutton if some of the contents are visible
                 if (showchordsbutton || showlinkbutton || showstickybutton || shownotationbutton ||
-                    showhighlighterbutton || showpageselectbutton) {
+                        showhighlighterbutton || showpageselectbutton) {
                     showFAB(extraButton, true);
                     showFAB(chordButton, showchordsbutton);
                     showFAB(linkButton, showlinkbutton);
@@ -2535,6 +2431,10 @@ public class StageMode extends AppCompatActivity implements
                 showFAB(custom4Button_ungrouped,showcustom4button);
             }
         }
+
+        // Restore full screen gesture activity after a delay
+        Handler h = new Handler();
+        h.postDelayed(() -> StaticVariables.ignoreGesture = false, 300);
     }
 
     @Override
@@ -2728,70 +2628,76 @@ public class StageMode extends AppCompatActivity implements
         custom2Button_ungrouped.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(StageMode.this, b2ac));
         custom3Button_ungrouped.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(StageMode.this, b3ac));
         custom4Button_ungrouped.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(StageMode.this, b4ac));
-        custom1Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(custom1Button,StageMode.this);
-                customButtonAction(b1ac);
-            }
+        custom1Button.setOnClickListener(view -> customButtonAction(b1ac));
+        custom2Button.setOnClickListener(view -> customButtonAction(b2ac));
+        custom3Button.setOnClickListener(view -> customButtonAction(b3ac));
+        custom4Button.setOnClickListener(view -> customButtonAction(b4ac));
+        custom1Button_ungrouped.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(custom1Button_ungrouped,StageMode.this);
+            customButtonAction(b1ac);
         });
-        custom2Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(custom2Button,StageMode.this);
-                customButtonAction(b2ac);
-            }
+        custom2Button_ungrouped.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(custom2Button_ungrouped,StageMode.this);
+            customButtonAction(b2ac);
         });
-        custom3Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(custom3Button,StageMode.this);
-                customButtonAction(b3ac);
-            }
+        custom3Button_ungrouped.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(custom3Button_ungrouped,StageMode.this);
+            customButtonAction(b3ac);
         });
-        custom4Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(custom4Button,StageMode.this);
-                customButtonAction(b4ac);
-            }
+        custom4Button_ungrouped.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(custom4Button_ungrouped,StageMode.this);
+            customButtonAction(b4ac);
         });
-        custom1Button_ungrouped.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(custom1Button_ungrouped,StageMode.this);
-                customButtonAction(b1ac);
-            }
+
+        // Support for custom button LongClick actions
+        custom1Button.setOnLongClickListener(view -> {
+            customButtonLongPressAction(b1ac);
+            return true;
         });
-        custom2Button_ungrouped.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(custom2Button_ungrouped,StageMode.this);
-                customButtonAction(b2ac);
-            }
+        custom2Button.setOnLongClickListener(view -> {
+            customButtonLongPressAction(b2ac);
+            return true;
         });
-        custom3Button_ungrouped.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(custom3Button_ungrouped,StageMode.this);
-                customButtonAction(b3ac);
-            }
+        custom3Button.setOnLongClickListener(view -> {
+            customButtonLongPressAction(b3ac);
+            return true;
         });
-        custom4Button_ungrouped.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _CustomAnimations.animateFAB(custom4Button_ungrouped,StageMode.this);
-                customButtonAction(b4ac);
-            }
+        custom4Button.setOnLongClickListener(view -> {
+            customButtonLongPressAction(b4ac);
+            return true;
         });
+        custom1Button_ungrouped.setOnLongClickListener(view -> {
+            CustomAnimations.animateFAB(custom1Button_ungrouped, StageMode.this);
+            customButtonLongPressAction(b1ac);
+            return true;
+        });
+        custom2Button_ungrouped.setOnLongClickListener(view -> {
+            CustomAnimations.animateFAB(custom2Button_ungrouped, StageMode.this);
+            customButtonLongPressAction(b2ac);
+            return true;
+        });
+        custom3Button_ungrouped.setOnLongClickListener(view -> {
+            CustomAnimations.animateFAB(custom3Button_ungrouped, StageMode.this);
+            customButtonLongPressAction(b3ac);
+            return true;
+        });
+        custom4Button_ungrouped.setOnLongClickListener(view -> {
+            CustomAnimations.animateFAB(custom4Button_ungrouped, StageMode.this);
+            customButtonLongPressAction(b4ac);
+            return true;
+        });
+
     }
 
     private void customButtonAction(String s) {
+        // Flag to ignore full screen long press activity for a short while
+        StaticVariables.ignoreGesture = true;
+
         boolean val;
         switch (s) {
             case "":
             default:
-                StaticVariables.whattodo = "quicklaunch";
+                FullscreenActivity.whattodo = "quicklaunch";
                 openFragment();
                 break;
 
@@ -2811,31 +2717,52 @@ public class StageMode extends AppCompatActivity implements
             case "abcnotation_editsong":
             case "showmidicommands":
                 if (s.equals("editsong") && !justSong(StageMode.this) && !FullscreenActivity.isPDF) {
-                    _ShowToast.showToast(StageMode.this);
+                    ShowToast.showToast(StageMode.this);
                 } else {
                     if (FullscreenActivity.isPDF && s.equals("editsong")) {
                         s = "extractPDF";
                     }
-                    StaticVariables.whattodo = s;
+                    FullscreenActivity.whattodo = s;
                     openFragment();
                 }
                 break;
 
             case "showchords":
+                // Button cycle is: on -> off -> on
                 val = preferences.getMyPreferenceBoolean(StageMode.this,"displayChords",true);
                 preferences.setMyPreferenceBoolean(StageMode.this,"displayChords",!val);
+                // Flag for a reload
+                StaticVariables.reloadOfSong = true;
                 loadSong();
                 break;
 
             case "showcapo":
-                val = preferences.getMyPreferenceBoolean(StageMode.this,"displayCapoChords",true);
-                preferences.setMyPreferenceBoolean(StageMode.this,"displayCapoChords",!val);
-                loadSong();
+                // Button cycle is: Native on and Capo off -> Capo else Native on -> both Native and Capo on  -> Native on and Capo off
+                if (preferences.getMyPreferenceBoolean(StageMode.this, "displayChords", true)) {
+                    if (preferences.getMyPreferenceBoolean(StageMode.this, "displayCapoChords", true)) {
+                        if (preferences.getMyPreferenceBoolean(StageMode.this, "displayCapoAndNativeChords", true)) {
+                            preferences.setMyPreferenceBoolean(StageMode.this, "displayCapoAndNativeChords", false);
+                            preferences.setMyPreferenceBoolean(StageMode.this, "displayCapoChords", false);
+                        } else {
+                            preferences.setMyPreferenceBoolean(StageMode.this, "displayCapoAndNativeChords", true);
+                        }
+                    } else {
+                        preferences.setMyPreferenceBoolean(StageMode.this, "displayCapoChords", true);
+                    }
+                    // Flag for a reload
+                    StaticVariables.reloadOfSong = true;
+                    loadSong();
+                } else {
+                    StaticVariables.myToastMessage = getResources().getString(R.string.showchords) + " - " + getResources().getString(R.string.notset) + "!";
+                    ShowToast.showToast(StageMode.this);
+                }
                 break;
 
             case "showlyrics":
                 val = preferences.getMyPreferenceBoolean(StageMode.this,"displayLyrics",true);
                 preferences.setMyPreferenceBoolean(StageMode.this,"displayLyrics",!val);
+                // Flag for a reload
+                StaticVariables.reloadOfSong = true;
                 loadSong();
                 break;
 
@@ -2863,6 +2790,91 @@ public class StageMode extends AppCompatActivity implements
                 }
                 break;
         }
+
+        pageButtonAlpha("");
+
+        // Restore full screen gesture activity after a delay
+        Handler h = new Handler();
+        h.postDelayed(() -> StaticVariables.ignoreGesture = false, 300);
+    }
+
+    // IV - Long click activites added
+    private void customButtonLongPressAction(String s) {
+        // Flag to ignore full screen long press activity for a short while
+        StaticVariables.ignoreGesture = true;
+
+        switch (s) {
+            case "":
+            default:
+                FullscreenActivity.whattodo = "quicklaunch";
+                openFragment();
+                break;
+
+            case "editsong":
+            case "editsongpdf":
+            case "changetheme":
+            case "autoscale":
+            case "changefonts":
+            case "profiles":
+            case "gestures":
+            case "footpedal":
+            case "transpose":
+            case "fullsearch":
+            case "randomsong":
+            case "abcnotation_edit":
+            case "abcnotation":
+            case "abcnotation_editsong":
+            case "showmidicommands":
+            case "showlyrics":
+            case "inc_autoscroll_speed":
+            case "dec_autoscroll_speed":
+            case "toggle_autoscroll_pause":
+                if (s.equals("editsong") && !justSong(StageMode.this) && !FullscreenActivity.isPDF) {
+                    ShowToast.showToast(StageMode.this);
+                } else {
+                    if (FullscreenActivity.isPDF && s.equals("editsong")) {
+                        s = "extractPDF";
+                    }
+                    FullscreenActivity.whattodo = s;
+                    openFragment();
+                }
+                break;
+
+            case "showchords":
+                // Display the native chords
+                StaticVariables.showCapoInChordsFragment = false;
+                FullscreenActivity.whattodo = "page_chords";
+                openFragment();
+                break;
+
+            case "showcapo":
+                // Display the Capo chords
+                if (StaticVariables.mCapo.equals("")) {
+                    StaticVariables.myToastMessage = getString(R.string.edit_song_capo) + " - " + getString(R.string.notset);
+                    ShowToast.showToast(StageMode.this);
+                } else {
+                    StaticVariables.showCapoInChordsFragment = true;
+                    FullscreenActivity.whattodo = "page_chords";
+                    openFragment();
+                }
+                break;
+
+            case "exit":
+                try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        finishAndRemoveTask();
+                    } else {
+                        this.finishAffinity();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+        pageButtonAlpha("");
+        // Restore full screen gesture activity after a delay
+        Handler h = new Handler();
+        h.postDelayed(() -> StaticVariables.ignoreGesture = false, 300);
     }
 
     private void increaseAutoScrollSpeed() {
@@ -2897,10 +2909,10 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void doEdit() {
         if (FullscreenActivity.isPDF) {
-            StaticVariables.whattodo = "extractPDF";
+            FullscreenActivity.whattodo = "extractPDF";
             openFragment();
         } else if (FullscreenActivity.isSong){
-            StaticVariables.whattodo = "editsong";
+            FullscreenActivity.whattodo = "editsong";
             openFragment();
         }
     }
@@ -2989,6 +3001,8 @@ public class StageMode extends AppCompatActivity implements
                 if (!cancelled) {
                     DrawerTweaks.closeMyDrawers(mDrawerLayout, songmenu, optionmenu, which);
                 }
+                // Make sure all dynamic (scroll and set) buttons display
+                onScrollAction();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -2999,7 +3013,7 @@ public class StageMode extends AppCompatActivity implements
         //scroll to the song in the song menu
         try {
             indexOfSongInMenu();
-            song_list_view.setSelection(StaticVariables.currentSongIndex);
+            song_list_view.setSelection(FullscreenActivity.currentSongIndex);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -3062,6 +3076,8 @@ public class StageMode extends AppCompatActivity implements
                 selectSection(StaticVariables.currentSection);
                 break;
         }
+        // Make sure all dynamic (scroll and set) buttons display
+        onScrollAction();
     }
 
     public void doMoveInSet() {
@@ -3083,7 +3099,7 @@ public class StageMode extends AppCompatActivity implements
             if (!fromautoshow) {
                 // Don't show the warning just because the app tries to autoshow it
                 StaticVariables.myToastMessage = getString(R.string.switchtoperformmode);
-                _ShowToast.showToast(StageMode.this);
+                ShowToast.showToast(StageMode.this);
             }
         } else {
             // If we are trying to show notes, but they are already open, close them
@@ -3129,42 +3145,36 @@ public class StageMode extends AppCompatActivity implements
 
                             // Set a runnable to check the height/width after a couple of seconds to redraw the image position
                             // Only if it has changed though
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        Thread.sleep(1000);
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                int secondguessheight;
-                                                int secondguesswidth;
-                                                if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
-                                                    secondguesswidth = glideimage_ScrollView.getMeasuredWidth();
-                                                    secondguessheight = glideimage_ScrollView.getMeasuredHeight();
-                                                } else {
-                                                    secondguesswidth = songscrollview.getMeasuredWidth();
-                                                    secondguessheight = songscrollview.getMeasuredHeight();
-                                                }
-                                                if (secondguessheight != firstguessheight || secondguesswidth != firstguesswidth) {
-                                                    // Set the parameters again
-                                                    RelativeLayout.LayoutParams rlp2 =
-                                                            new RelativeLayout.LayoutParams(secondguesswidth, secondguessheight);
-                                                    if (preferences.getMyPreferenceBoolean(StageMode.this,"hideActionBar",false)) {
-                                                        rlp2.addRule(RelativeLayout.BELOW, 0);
-                                                    } else {
-                                                        rlp2.addRule(RelativeLayout.BELOW, ab_toolbar.getId());
-                                                    }
-                                                    highlightNotes.setLayoutParams(rlp2);
-                                                    highlightNotes.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                                }
+                            new Thread(() -> {
+                                try {
+                                    Thread.sleep(1000);
+                                    runOnUiThread(() -> {
+                                        int secondguessheight;
+                                        int secondguesswidth;
+                                        if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
+                                            secondguesswidth = glideimage_ScrollView.getMeasuredWidth();
+                                            secondguessheight = glideimage_ScrollView.getMeasuredHeight();
+                                        } else {
+                                            secondguesswidth = songscrollview.getMeasuredWidth();
+                                            secondguessheight = songscrollview.getMeasuredHeight();
+                                        }
+                                        if (secondguessheight != firstguessheight || secondguesswidth != firstguesswidth) {
+                                            // Set the parameters again
+                                            RelativeLayout.LayoutParams rlp2 =
+                                                    new RelativeLayout.LayoutParams(secondguesswidth, secondguessheight);
+                                            if (preferences.getMyPreferenceBoolean(StageMode.this,"hideActionBar",false)) {
+                                                rlp2.addRule(RelativeLayout.BELOW, 0);
+                                            } else {
+                                                rlp2.addRule(RelativeLayout.BELOW, ab_toolbar.getId());
                                             }
-                                        });
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-
+                                            highlightNotes.setLayoutParams(rlp2);
+                                            highlightNotes.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                                        }
+                                    });
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
                                 }
+
                             }).start();
                             highlightNotes.setImageBitmap(canvasBitmap);
                             highlightNotes.setLayoutParams(rlp);
@@ -3174,7 +3184,7 @@ public class StageMode extends AppCompatActivity implements
                                 highlightNotes.setVisibility(View.VISIBLE);
                             } else {
                                 highlightNotes.setVisibility(View.VISIBLE);
-                                if (StaticVariables.whichDirection.equals("L2R")) {
+                                if (FullscreenActivity.whichDirection.equals("L2R")) {
                                     highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left));
                                 } else {
                                     highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right));
@@ -3192,7 +3202,7 @@ public class StageMode extends AppCompatActivity implements
                         // If the user has clicked the icon and no drawing exists, create one
                         takeScreenShot();
                         if (FullscreenActivity.bmScreen != null) {
-                            StaticVariables.whattodo = "drawnotes";
+                            FullscreenActivity.whattodo = "drawnotes";
                             openFragment();
                         } else {
                             Log.d("StageMode", "screenshot is null");
@@ -3204,7 +3214,7 @@ public class StageMode extends AppCompatActivity implements
                 if (!fromautoshow) {
                     // Don't show the warning just because the app tries to autoshow it
                     StaticVariables.myToastMessage = getString(R.string.highlight_notallowed);
-                    _ShowToast.showToast(StageMode.this);
+                    ShowToast.showToast(StageMode.this);
                 }
                 FullscreenActivity.highlightOn = false;
             }
@@ -3219,7 +3229,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public boolean onQueryTextSubmit(String newText) {
         // TODO Not sure if this does anything as FullscreenActivity.sva is never assigned anything!
-        _SearchViewItems item = (_SearchViewItems) FullscreenActivity.sva.getItem(0);
+        SearchViewItems item = (SearchViewItems) FullscreenActivity.sva.getItem(0);
         StaticVariables.songfilename = item.getFilename();
         StaticVariables.whichSongFolder = item.getFolder();
         StaticVariables.setView = false;
@@ -3251,30 +3261,6 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void allowPDFEditViaExternal() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", StaticVariables.whichSongFolder,
-                StaticVariables.songfilename);
-        intent.setDataAndType(uri, "application/pdf");
-        // Always use string resources for UI text.
-        String title = getResources().getString(R.string.editpdf);
-        // Create intent to show chooser
-        Intent chooser = Intent.createChooser(intent, title);
-
-        // Verify the intent will resolve to at least one activity
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(chooser, StaticVariables.REQUEST_PDF_CODE);
-        } else {
-            try {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.adobe.reader")));
-            } catch (Exception e) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.adobe.reader")));
-            }
-        }
-    }
-
-
     // Salut (Connected devices logic)
     private void holdBeforeLoading() {
         // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
@@ -3291,12 +3277,7 @@ public class StageMode extends AppCompatActivity implements
 
             // After a delay of 800 milliseconds, reset the firstReceivingOfSalut;
             Handler h = new Handler();
-            h.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    FullscreenActivity.firstReceivingOfSalut = true;
-                }
-            }, 800);
+            h.postDelayed(() -> FullscreenActivity.firstReceivingOfSalut = true, 800);
         }
     }
     private void holdBeforeSending() {
@@ -3308,24 +3289,14 @@ public class StageMode extends AppCompatActivity implements
             if (FullscreenActivity.network != null) {
                 if (FullscreenActivity.network.isRunningAsHost) {
                     try {
-                        FullscreenActivity.network.sendToAllDevices(myMessage, new SalutCallback() {
-                            @Override
-                            public void call() {
-                                Log.e(TAG, "Oh no! The data failed to send.");
-                            }
-                        });
+                        FullscreenActivity.network.sendToAllDevices(myMessage, () -> Log.e(TAG, "Oh no! The data failed to send."));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
                 // After a delay of 800 milliseconds, reset the firstSendingOfSalut;
                 Handler h = new Handler();
-                h.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        FullscreenActivity.firstSendingOfSalut = true;
-                    }
-                }, 800);
+                h.postDelayed(() -> FullscreenActivity.firstSendingOfSalut = true, 800);
             }
         }
     }
@@ -3338,24 +3309,14 @@ public class StageMode extends AppCompatActivity implements
             if (FullscreenActivity.network != null) {
                 if (FullscreenActivity.network.isRunningAsHost) {
                     try {
-                        FullscreenActivity.network.sendToAllDevices(sm, new SalutCallback() {
-                            @Override
-                            public void call() {
-                                Log.e(TAG, "Oh no! The data failed to send.");
-                            }
-                        });
+                        FullscreenActivity.network.sendToAllDevices(sm, () -> Log.e(TAG, "Oh no! The data failed to send."));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
                 // After a delay of 800 milliseconds, reset the firstSendingOfSalut;
                 Handler h = new Handler();
-                h.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        FullscreenActivity.firstSendingOfSalutAutoscroll = true;
-                    }
-                }, 800);
+                h.postDelayed(() -> FullscreenActivity.firstSendingOfSalutAutoscroll = true, 800);
             }
         }
     }
@@ -3368,12 +3329,7 @@ public class StageMode extends AppCompatActivity implements
             if (FullscreenActivity.network != null) {
                 if (FullscreenActivity.network.isRunningAsHost) {
                     try {
-                        FullscreenActivity.network.sendToAllDevices(mySongMessage, new SalutCallback() {
-                            @Override
-                            public void call() {
-                                Log.e(TAG, "Oh no! The data failed to send.");
-                            }
-                        });
+                        FullscreenActivity.network.sendToAllDevices(mySongMessage, () -> Log.e(TAG, "Oh no! The data failed to send."));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -3381,12 +3337,7 @@ public class StageMode extends AppCompatActivity implements
 
                 // After a delay of 800 milliseconds, reset the firstSendingOfSalut;
                 Handler h = new Handler();
-                h.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        FullscreenActivity.firstSendingOfSalutXML = true;
-                    }
-                }, 800);
+                h.postDelayed(() -> FullscreenActivity.firstSendingOfSalutXML = true, 800);
             }
         }
     }
@@ -3399,12 +3350,7 @@ public class StageMode extends AppCompatActivity implements
             if (FullscreenActivity.network != null) {
                 if (FullscreenActivity.network.isRunningAsHost) {
                     try {
-                        FullscreenActivity.network.sendToAllDevices(mySectionMessage, new SalutCallback() {
-                            @Override
-                            public void call() {
-                                Log.e(TAG, "Oh no! The data failed to send.");
-                            }
-                        });
+                        FullscreenActivity.network.sendToAllDevices(mySectionMessage, () -> Log.e(TAG, "Oh no! The data failed to send."));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -3412,12 +3358,7 @@ public class StageMode extends AppCompatActivity implements
 
                 // After a delay of 800 milliseconds, reset the firstSendingOfSalutSection;
                 Handler h = new Handler();
-                h.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        FullscreenActivity.firstSendingOfSalutSection = true;
-                    }
-                }, 800);
+                h.postDelayed(() -> FullscreenActivity.firstSendingOfSalutSection = true, 800);
             }
         }
     }
@@ -3429,32 +3370,27 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.firstReceivingOfSalutXML = false;
 
 
-                FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\n", "$$__$$");
-                FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\", "");
-                FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("$$__$$", "\n");
+            FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\n", "$$__$$");
+            FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\", "");
+            FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("$$__$$", "\n");
 
-                // Create the temp song file
-                Uri receivedUri = storageAccess.getUriForItem(StageMode.this, preferences,
-                        "Received", "", "ReceivedSong");
-                storageAccess.lollipopCreateFileForOutputStream(StageMode.this, preferences, receivedUri,
-                        null, "Received", "", "ReceivedSong");
-                OutputStream outputStream = storageAccess.getOutputStream(StageMode.this, receivedUri);
-                storageAccess.writeFileFromString(FullscreenActivity.mySalutXML, outputStream);
+            // Create the temp song file
+            Uri receivedUri = storageAccess.getUriForItem(StageMode.this, preferences,
+                    "Received", "", "ReceivedSong");
+            storageAccess.lollipopCreateFileForOutputStream(StageMode.this, preferences, receivedUri,
+                    null, "Received", "", "ReceivedSong");
+            OutputStream outputStream = storageAccess.getOutputStream(StageMode.this, receivedUri);
+            storageAccess.writeFileFromString(FullscreenActivity.mySalutXML, outputStream);
 
-                StaticVariables.songfilename = "ReceivedSong";
-                StaticVariables.whichSongFolder = "../Received";
+            StaticVariables.songfilename = "ReceivedSong";
+            StaticVariables.whichSongFolder = "../Received";
 
-                loadSong();
+            loadSong();
 
 
             // After a delay of 800 milliseconds, reset the firstReceivingOfSalut;
             Handler h = new Handler();
-            h.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    FullscreenActivity.firstReceivingOfSalutXML = true;
-                }
-            },800);
+            h.postDelayed(() -> FullscreenActivity.firstReceivingOfSalutXML = true,800);
         }
     }
     private void holdBeforeLoadingSection(int s) {
@@ -3465,12 +3401,7 @@ public class StageMode extends AppCompatActivity implements
 
             // After a delay of 800 milliseconds, reset the firstReceivingOfSalutSection;
             Handler h = new Handler();
-            h.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    FullscreenActivity.firstReceivingOfSalutSection = true;
-                }
-            }, 800);
+            h.postDelayed(() -> FullscreenActivity.firstReceivingOfSalutSection = true, 800);
         }
     }
     private void holdBeforeAutoscrolling() {
@@ -3483,18 +3414,13 @@ public class StageMode extends AppCompatActivity implements
 
             // After a delay of 800 milliseconds, reset the firstReceivingOfSalut;
             Handler h = new Handler();
-            h.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    FullscreenActivity.firstReceivingOfSalutAutoscroll = true;
-                }
-            }, 800);
+            h.postDelayed(() -> FullscreenActivity.firstReceivingOfSalutAutoscroll = true, 800);
         }
     }
 
     @Override
     public void confirmedAction() {
-        switch (StaticVariables.whattodo) {
+        switch (FullscreenActivity.whattodo) {
             case "exit":
                 try {
                     android.os.Process.killProcess(android.os.Process.myPid());
@@ -3628,7 +3554,6 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void loadPDF() {
-
         Bitmap bmp = processSong.createPDFPage(StageMode.this, preferences, storageAccess,
                 getAvailableWidth(), getAvailableHeight(),
                 preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W"));
@@ -3659,7 +3584,7 @@ public class StageMode extends AppCompatActivity implements
             // Reset the imageview
             resetImageViewSizes();
 
-            String text = (StaticVariables.pdfPageCurrent + 1) + "/" + StaticVariables.pdfPageCount;
+            String text = (FullscreenActivity.pdfPageCurrent + 1) + "/" + FullscreenActivity.pdfPageCount;
 
             songauthor_ab.setText(text);
 
@@ -3728,84 +3653,88 @@ public class StageMode extends AppCompatActivity implements
             PopUpEditSongFragment.justSaveSongXML(StageMode.this, preferences);
         }
 
-        StaticVariables.whattodo = "page_autoscroll";
+        FullscreenActivity.whattodo = "page_autoscroll";
         openFragment();
     }
 
-    private void fixSetActionButtons() {
-        StaticVariables.setView = setActions.isSongInSet(StageMode.this,preferences);
-        if (StaticVariables.setView) {
-            // Now get the position in the set and decide on the set move buttons
-            if (StaticVariables.indexSongInSet < 0) {
-                // We weren't in set mode, so find the first instance of this song.
-                setActions.indexSongInSet();
-            }
-            // If we aren't at the beginning or have pdf pages before this, enable the setBackButton
-            if ((StaticVariables.indexSongInSet > 0) ||
-                    (FullscreenActivity.isPDF && StaticVariables.pdfPageCurrent>0)) {
-                showFAB(setBackButton,preferences.getMyPreferenceBoolean(StageMode.this,"pageButtonShowSetMove",true));
-            } else {
-                showFAB(setBackButton,false);
-            }
+    // IV - fixSetActionButtons() renamed as is now a check. Used by ScrollButtons and pedal code.
+    private void checkCanGoTo() {
+        if (preferences.getMyPreferenceBoolean(StageMode.this,"pedalShowWarningBeforeMove",false)) {
+            // IV - Change to use of variables for results
+            StaticVariables.setView = setActions.isSongInSet(StageMode.this, preferences);
+            if (StaticVariables.setView) {
+                // Now get the position in the set and decide on the set move buttons
+                if (StaticVariables.indexSongInSet < 0) {
+                    // We weren't in set mode, so find the first instance of this song.
+                    setActions.indexSongInSet();
+                }
+                // If we aren't at the beginning or have pdf pages before this, indicate a setBackButton
+                StaticVariables.canGoToPrevious = (StaticVariables.indexSongInSet > 0) ||
+                        (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0);
 
-            // If we aren't at the end of the set or inside a multipage pdf, enable the setForwardButton
-            if ((StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) ||
-                    (FullscreenActivity.isPDF && StaticVariables.pdfPageCurrent< StaticVariables.pdfPageCount - 1)) {
-                showFAB(setForwardButton,preferences.getMyPreferenceBoolean(StageMode.this,"pageButtonShowSetMove",true));
+                // If we aren't at the end of the set or inside a multipage pdf, indicate a setForwardButton
+                StaticVariables.canGoToNext = (StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) ||
+                        (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < FullscreenActivity.pdfPageCount - 1);
             } else {
-                showFAB(setForwardButton,false);
-            }
+                StaticVariables.canGoToPrevious = (FullscreenActivity.currentSongIndex > FullscreenActivity.previousSongIndex); // i.e there is a song before in the list/menu
+                StaticVariables.canGoToNext = (FullscreenActivity.currentSongIndex < FullscreenActivity.nextSongIndex); // i.e there is a song after in the list/menu
+                StaticVariables.indexSongInSet = -1;
 
+            }
         } else {
-            StaticVariables.indexSongInSet = -1;
-            showFAB(setBackButton,false);
-            showFAB(setForwardButton,false);
+            // Set these as false.  Doesn't mean we can't go, just we won't be warned.
+            StaticVariables.canGoToPrevious = false;
+            StaticVariables.canGoToNext = false;
         }
     }
 
     private void getPadProgress() {
-        int pos;
-        boolean pad1status = PadFunctions.getPad1Status();
-        boolean pad2status = PadFunctions.getPad2Status();
+        // IV - Pad time display logic is concentrated here
+        String text = "0:00";
 
-        boolean display1 = (pad1status && !StaticVariables.pad1Fading);
-        boolean display2 = (pad2status && !StaticVariables.pad2Fading);
-        // Decide which player we should be getting the status of
-        if (display1 || FullscreenActivity.mPlayer1Paused) {
-            pos = (int) (FullscreenActivity.mPlayer1.getCurrentPosition() / 1000.0f);
-        } else if (display2 || FullscreenActivity.mPlayer2Paused) {
-            pos = (int) (FullscreenActivity.mPlayer2.getCurrentPosition() / 1000.0f);
-        } else {
-            pos = 0;
+        if (StaticVariables.clickedOnPadStart) {
+            // Decide which player and get time
+            if ((PadFunctions.getPad1Status() && !StaticVariables.pad1Fading) || FullscreenActivity.mPlayer1Paused) {
+                text = TimeTools.timeFormatFixer((int) (FullscreenActivity.mPlayer1.getCurrentPosition() / 1000.0f));
+            } else if ((PadFunctions.getPad2Status() && !StaticVariables.pad2Fading) || FullscreenActivity.mPlayer2Paused) {
+                text = TimeTools.timeFormatFixer((int) (FullscreenActivity.mPlayer2.getCurrentPosition() / 1000.0f));
+            }
         }
 
-        String text = TimeTools.timeFormatFixer(pos);
-        updateExtraInfoColorsAndSizes("pad");
-        padcurrentTime_TextView.setText(text);
-
+        if (!text.equals(padcurrentTime_TextView.toString())) {
+            updateExtraInfoColorsAndSizes("pad");
+            padcurrentTime_TextView.setText(text);
+            // When 0:00 we get the pad total time and make Pad progress visible
+            if (text.equals("0:00")) {
+                padtotalTime_TextView.setText(TimeTools.timeFormatFixer(StaticVariables.padtime_length));
+                backingtrackProgress.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     private void goToNextItem() {
-        StaticVariables.whichDirection = "R2L";
+        FullscreenActivity.whichDirection = "R2L";
         boolean dealtwithaspdf = false;
         StaticVariables.showstartofpdf = true;
 
         // If this is a PDF, check we can't move pages
-        if (FullscreenActivity.isPDF && StaticVariables.pdfPageCurrent < (StaticVariables.pdfPageCount - 1)) {
-            StaticVariables.pdfPageCurrent = StaticVariables.pdfPageCurrent + 1;
+        if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1)) {
+            FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent + 1;
 
             // Load the next pdf page
             dealtwithaspdf = true;
             loadSong();
 
         } else {
-            StaticVariables.pdfPageCurrent = 0;
+            FullscreenActivity.pdfPageCurrent = 0;
         }
 
         // If this hasn't been dealt with
         if (!dealtwithaspdf && StaticVariables.setView) {
             // Is there another song in the set?  If so move, if not, do nothing
-            if (StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) {
+            // IV - Now made song section aware for Stage mode
+            if ((StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) ||
+                    (StaticVariables.whichMode.equals("Stage") && StaticVariables.songSections != null && StaticVariables.currentSection < StaticVariables.songSections.length - 1)) {
                 //FullscreenActivity.indexSongInSet += 1;
                 StaticVariables.setMoveDirection = "forward";
                 doMoveInSet();
@@ -3815,10 +3744,10 @@ public class StageMode extends AppCompatActivity implements
             // However, only do this if the previous item isn't a subfolder!
             boolean isfolder = false;
             try {
-                if (StaticVariables.nextSongIndex < filenamesSongsInFolder.size() && StaticVariables.nextSongIndex>-1) {
+                if (FullscreenActivity.nextSongIndex < filenamesSongsInFolder.size() && FullscreenActivity.nextSongIndex>-1) {
 
                     Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", "",
-                            filenamesSongsInFolder.get(StaticVariables.nextSongIndex));
+                            filenamesSongsInFolder.get(FullscreenActivity.nextSongIndex));
                     if (storageAccess.uriExists(StageMode.this, uri) && !storageAccess.uriIsFile(StageMode.this, uri)) {
                         isfolder = true;
                     }
@@ -3828,22 +3757,17 @@ public class StageMode extends AppCompatActivity implements
             }
 
             try {
-                if (StaticVariables.nextSongIndex < filenamesSongsInFolder.size()
-                        && StaticVariables.nextSongIndex != -1
-                        && !StaticVariables.songfilename.equals(filenamesSongsInFolder.get(StaticVariables.nextSongIndex)) &&
+                if (FullscreenActivity.nextSongIndex < filenamesSongsInFolder.size()
+                        && FullscreenActivity.nextSongIndex != -1
+                        && !StaticVariables.songfilename.equals(filenamesSongsInFolder.get(FullscreenActivity.nextSongIndex)) &&
                         !isfolder) {
                     FullscreenActivity.tempswipeSet = "disable";
-                    StaticVariables.songfilename = filenamesSongsInFolder.get(StaticVariables.nextSongIndex);
+                    StaticVariables.songfilename = filenamesSongsInFolder.get(FullscreenActivity.nextSongIndex);
                     loadSong();
 
                     // Set a runnable to reset swipe back to original value after 1 second
                     Handler delayfadeinredraw = new Handler();
-                    delayfadeinredraw.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            FullscreenActivity.tempswipeSet = "enable";
-                        }
-                    }, FullscreenActivity.delayswipe_time);
+                    delayfadeinredraw.postDelayed(() -> FullscreenActivity.tempswipeSet = "enable", FullscreenActivity.delayswipe_time);
                 } else {
                     showToastMessage(getResources().getString(R.string.lastsong));
                 }
@@ -3862,26 +3786,26 @@ public class StageMode extends AppCompatActivity implements
                 !StaticVariables.mMidi.isEmpty()) && !StaticVariables.mMidi.trim().equals("")) {
             // Declare the midi code
             Handler mh = new Handler();
-            mh.post(new Runnable() {
-                @androidx.annotation.RequiresApi(api = Build.VERSION_CODES.M)
-                @Override
-                public void run() {
-                    try {
-                        if (midi==null) {
+            mh.post(() -> {
+                try {
+                    if (midi==null) {
+                        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M ) {
                             midi = new Midi();
                         }
-                        // Split the midi messages by line, after changing , into new line
-                        StaticVariables.mMidi = StaticVariables.mMidi.replace(",", "\n");
-                        StaticVariables.mMidi = StaticVariables.mMidi.replace("\n\n", "\n");
-                        String[] midilines = StaticVariables.mMidi.trim().split("\n");
-                        for (String ml : midilines) {
-                            if (midi!=null) {
+                    }
+                    // Split the midi messages by line, after changing , into new line
+                    StaticVariables.mMidi = StaticVariables.mMidi.replace(",", "\n");
+                    StaticVariables.mMidi = StaticVariables.mMidi.replace("\n\n", "\n");
+                    String[] midilines = StaticVariables.mMidi.trim().split("\n");
+                    for (String ml : midilines) {
+                        if (midi!=null) {
+                            if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M ) {
                                 midi.sendMidi(midi.returnBytesFromHexText(ml));
                             }
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
         }
@@ -3920,11 +3844,11 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.highlightOn = false;
             highlightNotes.setVisibility(View.GONE);
             StaticVariables.myToastMessage = getString(R.string.switchtoperformmode);
-            _ShowToast.showToast(StageMode.this);
+            ShowToast.showToast(StageMode.this);
         } else {
             if (StaticVariables.thisSongScale == null || !StaticVariables.thisSongScale.equals("Y")) {
                 StaticVariables.myToastMessage = getString(R.string.highlight_notallowed);
-                _ShowToast.showToast(StageMode.this);
+                ShowToast.showToast(StageMode.this);
                 FullscreenActivity.bmScreen = null;
             } else {
                 boolean vis = false;
@@ -4054,31 +3978,45 @@ public class StageMode extends AppCompatActivity implements
             }
 
         } else if (requestCode == StaticVariables.REQUEST_CAMERA_CODE && resultCode == Activity.RESULT_OK) {
-            StaticVariables.whattodo = "savecameraimage";
+            FullscreenActivity.whattodo = "savecameraimage";
             openFragment();
 
         } else if (requestCode == StaticVariables.REQUEST_PDF_CODE) {
             // PDF sent back, so reload it
             loadSong();
 
-        } else if (requestCode == StaticVariables.REQUEST_FILE_CHOOSER && data != null && data.getExtras() != null) {
+        } else if (requestCode == StaticVariables.REQUEST_FILE_CHOOSER && data != null) {
+            String filelocation;
             try {
                 // This is for the File Chooser returning a file uri
-                String filelocation = data.getExtras().getString("data");
+                if (data.getExtras() != null) {
+                    // This is from the FolderPicker.class
+                    filelocation = data.getExtras().getString("data");
+                } else {
+                    // This is the built in file picker
+                    filelocation = data.getDataString();
+                }
+                Log.d("d","filelocation="+filelocation);
                 if (filelocation != null) {
-                    boolean validfiletype = (StaticVariables.whattodo.equals("processimportosb") && filelocation.endsWith(".osb")) ||
-                            (StaticVariables.whattodo.equals("importos") && filelocation.endsWith(".backup")) ||
-                            StaticVariables.whattodo.equals("doimport") ||
-                            StaticVariables.whattodo.equals("doimportset");
+                    boolean validfiletype = (FullscreenActivity.whattodo.equals("processimportosb") && filelocation.endsWith(".osb")) ||
+                            (FullscreenActivity.whattodo.equals("importos") && filelocation.endsWith(".backup")) ||
+                            FullscreenActivity.whattodo.equals("doimport") ||
+                            FullscreenActivity.whattodo.equals("doimportset");
 
                     if (validfiletype) {
-                        File f = new File(filelocation);
-                        FullscreenActivity.file_uri = FileProvider.getUriForFile(StageMode.this,
-                                "OpenSongAppFiles", f);
+                        if (filelocation.startsWith("content")) {
+                            // Already safe to continue
+                            FullscreenActivity.file_uri = Uri.parse(filelocation);
+                        } else {
+                            // Non secure (from Folder Picker class, need to convert to FileProvider content
+                            File f = new File(filelocation);
+                            FullscreenActivity.file_uri = FileProvider.getUriForFile(StageMode.this,
+                                    "OpenSongAppFiles", f);
+                        }
                         openFragment();
                     } else {
                         StaticVariables.myToastMessage = getString(R.string.file_type_unknown);
-                        _ShowToast.showToast(StageMode.this);
+                        ShowToast.showToast(StageMode.this);
                     }
                 }
             } catch (Exception e) {
@@ -4087,53 +4025,46 @@ public class StageMode extends AppCompatActivity implements
 
         } else if (requestCode == StaticVariables.REQUEST_PROFILE_LOAD && data!=null && data.getData()!=null) {
             // Loading in a profile
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    boolean success = profileActions.doLoadProfile(StageMode.this,preferences,storageAccess,data.getData());
-                    if (success) {
-                        StaticVariables.myToastMessage = getString(R.string.success);
-                    } else {
-                        StaticVariables.myToastMessage = getString(R.string.error);
-                    }
-                    // Once done, reload everything
-                    runOnUiThread(new Runnable() {
-                                      @Override
-                                      public void run() {
-                                          _ShowToast.showToast(StageMode.this);
-                                          loadStartUpVariables();
-                                          refreshAll();
-                                      }
-                                  }
-                            );
+            new Thread(() -> {
+                boolean success = profileActions.doLoadProfile(StageMode.this,preferences,storageAccess,data.getData());
+                if (success) {
+                    StaticVariables.myToastMessage = getString(R.string.success);
+                } else {
+                    StaticVariables.myToastMessage = getString(R.string.error);
                 }
+                // Once done, reload everything
+                runOnUiThread(() -> {
+                            ShowToast.showToast(StageMode.this);
+                            loadStartUpVariables();
+                            refreshAll();
+                        }
+                );
             }).start();
 
         } else if (requestCode == StaticVariables.REQUEST_PROFILE_SAVE && data!=null && data.getData()!=null) {
             // Saving a profile
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    boolean success = profileActions.doSaveProfile(StageMode.this,preferences,storageAccess,data.getData());
-                    if (success) {
-                        StaticVariables.myToastMessage = getString(R.string.success);
-                    } else {
-                        StaticVariables.myToastMessage = getString(R.string.error);
-                    }
-                    // Once done, say so
-                    runOnUiThread(new Runnable() {
-                                      @Override
-                                      public void run() {
-                                          _ShowToast.showToast(StageMode.this);
-                                      }
-                                  }
-                    );
+            new Thread(() -> {
+                boolean success = profileActions.doSaveProfile(StageMode.this,preferences,storageAccess,data.getData());
+                if (success) {
+                    StaticVariables.myToastMessage = getString(R.string.success);
+                } else {
+                    StaticVariables.myToastMessage = getString(R.string.error);
                 }
+                // Once done, say so
+                runOnUiThread(() -> ShowToast.showToast(StageMode.this)
+                );
             }).start();
         }
     }
 
     private void animateInSong() {
+        // End any current autoscroll
+        if (StaticVariables.isautoscrolling) {
+            stopAutoScroll();
+        }
+        // Indicate manual drag to cause any still active scrolling tasks to stop.
+        FullscreenActivity.isManualDragging = true;
+
         // If autoshowing highlighter notes
         if (preferences.getMyPreferenceBoolean(StageMode.this,"drawingAutoDisplay",true)) {
             showHighlight();
@@ -4142,7 +4073,7 @@ public class StageMode extends AppCompatActivity implements
         if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
             songscrollview.setVisibility(View.GONE);
             glideimage_ScrollView.setVisibility(View.VISIBLE);
-            if (StaticVariables.whichDirection.equals("L2R")) {
+            if (FullscreenActivity.whichDirection.equals("L2R")) {
                 glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left));
             } else {
                 glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right));
@@ -4151,7 +4082,7 @@ public class StageMode extends AppCompatActivity implements
             glideimage_ScrollView.setVisibility(View.GONE);
             glideimage_HorizontalScrollView.setVisibility(View.GONE);
             songscrollview.setVisibility(View.VISIBLE);
-            if (StaticVariables.whichDirection.equals("L2R")) {
+            if (FullscreenActivity.whichDirection.equals("L2R")) {
                 songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left));
             } else {
                 songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right));
@@ -4159,6 +4090,20 @@ public class StageMode extends AppCompatActivity implements
         }
 
         // Set the overrides back
+
+        // Do not touch on a reload
+        if (!StaticVariables.reloadOfSong && StaticVariables.clickedOnMetronomeStart) {
+            // GE - metronome was stopped before loading the song and StaticVariables.clickedOnMetronomeStart was reset manually to true afterwards
+            // IV - gesture used for stop and start
+            // GE - I moved this to later in the process
+
+            // Metronome was playing before loading the song - if requested autostart start the metronome for the new song
+            if (preferences.getMyPreferenceBoolean(StageMode.this, "metronomeAutoStart", false) &&
+                    FullscreenActivity.isSong) {
+                // Start it
+                gesture7();
+            }
+        }
 
         // Check for dual screen presentation
         if (StaticVariables.whichMode.equals("Performance")) {
@@ -4170,7 +4115,7 @@ public class StageMode extends AppCompatActivity implements
             }
         }
 
-        // Check the scroll buttons
+        // Make sure all dynamic (scroll and set) buttons display
         onScrollAction();
 
         // Keep a note of the content size in case we pinch zoom
@@ -4193,16 +4138,13 @@ public class StageMode extends AppCompatActivity implements
 
         } else {
             final LinearLayout songbit = (LinearLayout) songscrollview.getChildAt(0);
-            songbit.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    songwidth = songbit.getMeasuredWidth();
-                    songheight = songbit.getMeasuredHeight();
-                    songbit.setScaleX(1.0f);
-                    songbit.setScaleY(1.0f);
-                    highlightNotes.setScaleX(1.0f);
-                    highlightNotes.setScaleY(1.0f);
-                }
+            songbit.postDelayed(() -> {
+                songwidth = songbit.getMeasuredWidth();
+                songheight = songbit.getMeasuredHeight();
+                songbit.setScaleX(1.0f);
+                songbit.setScaleY(1.0f);
+                highlightNotes.setScaleX(1.0f);
+                highlightNotes.setScaleY(1.0f);
             }, 1000);
         }
 
@@ -4210,32 +4152,28 @@ public class StageMode extends AppCompatActivity implements
         glideimage_ScrollView.scrollTo(0,0);
         FullscreenActivity.newPosFloat = 0.0f;
         // Automatically start the autoscroll
-        if ((preferences.getMyPreferenceBoolean(StageMode.this,"autoscrollAutoStart",false) &&
-                StaticVariables.clickedOnAutoScrollStart) || pdfCanContinueScrolling) {
-            StaticVariables.autoscrollok = processSong.isAutoScrollValid(StageMode.this,preferences);
-            if ((FullscreenActivity.isPDF || FullscreenActivity.isImage) && StaticVariables.autoscrollok) {
-                glideimage_ScrollView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        startAutoScroll();
-                    }
-                });
-            } else if (!FullscreenActivity.isPDF && !FullscreenActivity.isImage && StaticVariables.autoscrollok) {
-                songscrollview.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        startAutoScroll();
-                    }
-                });
+        if (StaticVariables.clickedOnAutoScrollStart && (preferences.getMyPreferenceBoolean(StageMode.this, "autoscrollAutoStart", false) || pdfCanContinueScrolling)) {
+            // IV - Using a runnable to autostart if needed - proceeds only after settled on an item
+            // IV - Avoids unneeded work during quick song changes
+            startAutoscrollHandler.postDelayed(startAutoscrollRunnable, 2000);
+        }
+
+        // Do not touch on a reload
+        if (!StaticVariables.reloadOfSong) {
+            // If autoshowing sticky notes as a popup
+            if (preferences.getMyPreferenceString(StageMode.this, "stickyAutoDisplay", "F").equals("F") && !StaticVariables.mNotes.equals("")) {
+                showStickyHandler.postDelayed(showStickyRunnable, 2000);
             }
         }
 
         setUpCapoInfo();
 
+        // Make sure all dynamic (scroll and set) buttons display
+        onScrollAction();
+
         // Could add CCLI autologging here, but excessive as may just be browsing.  So only log when
         // a song is added to a set.
     }
-
 
     private void setUpCapoInfo() {
         updateExtraInfoColorsAndSizes("capo");
@@ -4269,7 +4207,9 @@ public class StageMode extends AppCompatActivity implements
         } else {
             capoInfo.setVisibility(View.VISIBLE);
             // Highlight the capoInfo to draw attention to it
-            _CustomAnimations.highlightAction(capoInfo,StageMode.this);
+            // IV - Using a runnable to start capo animation - proceeds only after settled on an item
+            // IV - This avoids mis-display during rapid song changes
+            startCapoAnimationHandler.postDelayed(startCapoAnimationRunnable, 2000);
         }
 
         // Add the capo information for theactionbar
@@ -4284,24 +4224,26 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void goToPreviousItem() {
-        StaticVariables.whichDirection = "L2R";
+        FullscreenActivity.whichDirection = "L2R";
         boolean dealtwithaspdf = false;
         StaticVariables.showstartofpdf = true; // Default value - change later if need be
 
         // If this is a PDF, check we can't move pages
-        if (FullscreenActivity.isPDF && StaticVariables.pdfPageCurrent > 0) {
-            StaticVariables.pdfPageCurrent = StaticVariables.pdfPageCurrent - 1;
+        if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0) {
+            FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent - 1;
             dealtwithaspdf = true;
             loadSong();
         } else {
-            StaticVariables.pdfPageCurrent = 0;
+            FullscreenActivity.pdfPageCurrent = 0;
         }
 
         // If this hasn't been dealt with
         if (!dealtwithaspdf && StaticVariables.setView) {
             StaticVariables.showstartofpdf = false; // Moving backwards, so start at end of pdf
+            // IV - Now made song section aware for Stage mode
             // Is there another song in the set?  If so move, if not, do nothing
-            if (StaticVariables.indexSongInSet > 0 && StaticVariables.mSetList.length > 0) {
+            if ((StaticVariables.indexSongInSet > 0 && StaticVariables.mSetList.length > 0) ||
+                    (StaticVariables.whichMode.equals("Stage") && StaticVariables.songSections != null && StaticVariables.currentSection > 0)) {
                 //FullscreenActivity.indexSongInSet -= 1;
                 StaticVariables.setMoveDirection = "back";
                 doMoveInSet();
@@ -4310,10 +4252,10 @@ public class StageMode extends AppCompatActivity implements
             // Try to move to the previous song alphabetically
             // However, only do this if the previous item isn't a subfolder!
             boolean isfolder = false;
-            if (StaticVariables.previousSongIndex >= 0) {
+            if (FullscreenActivity.previousSongIndex >= 0) {
                 try {
                     Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", "",
-                            filenamesSongsInFolder.get(StaticVariables.previousSongIndex));
+                            filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex));
                     if (storageAccess.uriExists(StageMode.this, uri) && !storageAccess.uriIsFile(StageMode.this, uri)) {
                         isfolder = true;
                     }
@@ -4323,22 +4265,17 @@ public class StageMode extends AppCompatActivity implements
             }
 
             try {
-                if (StaticVariables.previousSongIndex >= 0
-                        && !StaticVariables.songfilename.equals(filenamesSongsInFolder.get(StaticVariables.previousSongIndex))
+                if (FullscreenActivity.previousSongIndex >= 0
+                        && !StaticVariables.songfilename.equals(filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex))
                         && !isfolder) {
                     FullscreenActivity.tempswipeSet = "disable";
 
-                    StaticVariables.songfilename = filenamesSongsInFolder.get(StaticVariables.previousSongIndex);
+                    StaticVariables.songfilename = filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex);
                     loadSong();
 
                     // Set a runnable to reset swipe back to original value after 1 second
                     Handler delayfadeinredraw = new Handler();
-                    delayfadeinredraw.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            FullscreenActivity.tempswipeSet = "enable";
-                        }
-                    }, FullscreenActivity.delayswipe_time);
+                    delayfadeinredraw.postDelayed(() -> FullscreenActivity.tempswipeSet = "enable", FullscreenActivity.delayswipe_time);
                 } else {
                     showToastMessage(getResources().getString(R.string.firstsong));
                 }
@@ -4442,6 +4379,8 @@ public class StageMode extends AppCompatActivity implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // Make sure all dynamic (scroll and set) buttons display
+        onScrollAction();
     }
 
     private void resizeStageView() {
@@ -4527,19 +4466,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    private void getPadsOnStatus() {
-        StaticVariables.padson = StaticVariables.pad1Playing || StaticVariables.pad2Playing;
-        if (!StaticVariables.padson) {
-            try {
-                backingtrackProgress.setVisibility(View.GONE);
-                updateExtraInfoColorsAndSizes("pad");
-            } catch (Exception e) {
-                Log.d("StageMode", "Can't touch the view - " + e);
-                // This will happen if killPads was called from an async task
-            }
-        }
-    }
-
+    // IV - getPadOnStatus is not used
     private void resizePerformanceView() {
         doCancelAsyncTask(resizeperformance_async);
         resizeperformance_async = new ResizePerformanceView();
@@ -4761,7 +4688,7 @@ public class StageMode extends AppCompatActivity implements
                     }
 
                     FullscreenActivity.scalingfiguredout = true;
-                    _ShowToast.showToast(StageMode.this);
+                    ShowToast.showToast(StageMode.this);
 
                     // Now render the scaled song!
                     if (coltouse == 1) {
@@ -4828,7 +4755,7 @@ public class StageMode extends AppCompatActivity implements
     public void showToastMessage(String message) {
         if (message != null && !message.isEmpty()) {
             StaticVariables.myToastMessage = message;
-            _ShowToast.showToast(StageMode.this);
+            ShowToast.showToast(StageMode.this);
         }
     }
 
@@ -4976,16 +4903,13 @@ public class StageMode extends AppCompatActivity implements
                 stickyPopUpWindow.showAtLocation(mypage, Gravity.TOP | Gravity.START, hp, vp);
                 RelativeLayout stickyfloat = popupView.findViewById(R.id.stickyfloat);
                 stickyfloat.setAlpha(preferences.getMyPreferenceFloat(StageMode.this,"stickyOpacity",0.8f));
-                closeStickyFloat.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        // If there is a sticky note showing, remove it
-                        if (stickyPopUpWindow != null && stickyPopUpWindow.isShowing()) {
-                            try {
-                                stickyPopUpWindow.dismiss();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                closeStickyFloat.setOnClickListener(view -> {
+                    // If there is a sticky note showing, remove it
+                    if (stickyPopUpWindow != null && stickyPopUpWindow.isShowing()) {
+                        try {
+                            stickyPopUpWindow.dismiss();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 });
@@ -5014,7 +4938,7 @@ public class StageMode extends AppCompatActivity implements
                 });
             } else {
                 // No sticky note, so show the edit window
-                StaticVariables.whattodo = "page_sticky";
+                FullscreenActivity.whattodo = "page_sticky";
                 openFragment();
             }
         }
@@ -5062,24 +4986,10 @@ public class StageMode extends AppCompatActivity implements
                     });
         } else {
             // Might be a hdmi connection
-            */
-/*try {
-                Display mDisplay = mMediaRouter.getSelectedRoute().getPresentationDisplay();
-                if (mDisplay != null) {
-                    hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong);
-                    hdmi.show();
-                    FullscreenActivity.isHDMIConnected = true;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*//*
-
-
             // Try this code (Alternative to use HDMI as Chromebooks not coping with above
             try {
                 DisplayManager dm = (DisplayManager) getSystemService(DISPLAY_SERVICE);
                 if (dm!=null) {
-                    Log.d("StageMode","dm="+dm);
 
                     // If a Chromebook HDMI, need to do this
                     Display[] displays = dm.getDisplays();
@@ -5089,9 +4999,6 @@ public class StageMode extends AppCompatActivity implements
                             mDisplay. getRealSize(size);
                             int width = size. x;
                             int height = size. y;
-                            Log. e("Width", "" + width);
-                            Log. e("height", "" + height);
-                            Log.d("StageMode","mDisplay="+mDisplay);
                             hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong);
                             hdmi.show();
                             FullscreenActivity.isHDMIConnected = true;
@@ -5102,7 +5009,6 @@ public class StageMode extends AppCompatActivity implements
                         // For non-Chromebooks
                         displays = dm.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
                         for (Display mDisplay : displays) {
-                            Log.d("StageMode", "mDisplay=" + mDisplay);
                             hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong);
                             hdmi.show();
                             FullscreenActivity.isHDMIConnected = true;
@@ -5111,7 +5017,6 @@ public class StageMode extends AppCompatActivity implements
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d("d","Error"+e);
             }
         }
     }
@@ -5121,7 +5026,7 @@ public class StageMode extends AppCompatActivity implements
         switch (action) {
             default:
                 StaticVariables.myToastMessage = getString(R.string.pedal) + " - " + getString(R.string.notset);
-                _ShowToast.showToast(StageMode.this);
+                ShowToast.showToast(StageMode.this);
                 break;
 
             case "prev":
@@ -5182,7 +5087,7 @@ public class StageMode extends AppCompatActivity implements
             case "randomsong":
             case "abcnotation":
             case "editset":
-                StaticVariables.whattodo = action;
+                FullscreenActivity.whattodo = action;
                 openFragment();
                 break;
 
@@ -5218,7 +5123,7 @@ public class StageMode extends AppCompatActivity implements
                 } else {
                     if (StaticVariables.mNotes == null || StaticVariables.mNotes.equals("")) {
                         StaticVariables.myToastMessage = getString(R.string.stickynotes) + " - " + getString(R.string.notset);
-                        _ShowToast.showToast(StageMode.this);
+                        ShowToast.showToast(StageMode.this);
                     } else {
                         displaySticky();
                     }
@@ -5347,18 +5252,21 @@ public class StageMode extends AppCompatActivity implements
     public void gesture6() {
         StaticVariables.pad1Playing = PadFunctions.getPad1Status();
         StaticVariables.pad2Playing = PadFunctions.getPad2Status();
-
-        DoVibrate.vibrate(StageMode.this, 50);
-        if (StaticVariables.pad1Playing || StaticVariables.pad2Playing) {
-            StaticVariables.clickedOnPadStart = false;
+        // IV - If playing pads then fade to stop
+        // IV - StaticVariables.clickedOnPadStart handled elsewhere
+        if ((StaticVariables.pad1Playing && !StaticVariables.pad1Fading)  || (StaticVariables.pad2Playing && !StaticVariables.pad2Fading)) {
+            DoVibrate.vibrate(StageMode.this, 50);
             fadeoutPad();
-            StaticVariables.padson = false;
-        } else if (PadFunctions.isPadValid(StageMode.this, preferences)) {
-            StaticVariables.clickedOnPadStart = true;
-            preparePad();
         } else {
-            StaticVariables.whattodo = "page_pad";
-            openFragment();
+            if (PadFunctions.isPadValid(StageMode.this, preferences)) {
+                DoVibrate.vibrate(StageMode.this, 50);
+                playPad();
+            } else {
+                // We inform the user - 'Not set' which can be valid
+                // IV - gesture6 is now used in page_pad - a page_pad call may result in a loop!
+                showToastMessage(getResources().getString(R.string.pad) + " - " +
+                        getResources().getString(R.string.notset));
+            }
         }
     }
 
@@ -5408,8 +5316,8 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    private void displayIndex(ArrayList<_SongMenuViewItems> songMenuViewItems,
-                              _SongMenuAdapter songMenuAdapter) {
+    private void displayIndex(ArrayList<SongMenuViewItems> songMenuViewItems,
+                              SongMenuAdapter songMenuAdapter) {
         LinearLayout indexLayout = findViewById(R.id.side_index);
         if (preferences.getMyPreferenceBoolean(StageMode.this,"songMenuAlphaIndexShow",true)) {
             indexLayout.setVisibility(View.VISIBLE);
@@ -5429,26 +5337,18 @@ public class StageMode extends AppCompatActivity implements
             int i = (int) preferences.getMyPreferenceFloat(StageMode.this,"songMenuAlphaIndexSize",14.0f) *2;
             textView.setPadding(i,i,i,i);
             textView.setText(index);
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    TextView selectedIndex = (TextView) view;
-                    try {
-                        if (selectedIndex.getText() != null) {
-                            String myval = selectedIndex.getText().toString();
-                            Object obj = map.get(myval);
-                            if (obj!=null) {
-                                song_list_view.setSelection((int)obj);
-                            }
-                            */
-/*
-                            int i = map.get(myval);
-                            song_list_view.setSelection(i);*//*
-
+            textView.setOnClickListener(view -> {
+                TextView selectedIndex = (TextView) view;
+                try {
+                    if (selectedIndex.getText() != null) {
+                        String myval = selectedIndex.getText().toString();
+                        Object obj = map.get(myval);
+                        if (obj!=null) {
+                            song_list_view.setSelection((int)obj);
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
             indexLayout.addView(textView);
@@ -5506,7 +5406,7 @@ public class StageMode extends AppCompatActivity implements
         // Load the song
         loadSong();
 
-        StaticVariables.currentSongIndex = i;
+        FullscreenActivity.currentSongIndex = i;
 
         // Scroll to this song in the song menu
         song_list_view.smoothScrollToPosition(i);
@@ -5518,7 +5418,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void openSongLongClickAction(String clickedfile, String clickedfolder,int i) {
         // Set the values
-        StaticVariables.whattodo = "songlongpress";
+        FullscreenActivity.whattodo = "songlongpress";
         StaticVariables.songfilename = clickedfile;
         StaticVariables.whichSongFolder = clickedfolder;
         // Short click the song as well!
@@ -5749,7 +5649,7 @@ public class StageMode extends AppCompatActivity implements
                     startActivity(emailIntent);
                 } catch (ActivityNotFoundException e) {
                     StaticVariables.myToastMessage = getString(R.string.error);
-                    _ShowToast.showToast(StageMode.this);
+                    ShowToast.showToast(StageMode.this);
                 }
                 break;
 
@@ -5888,15 +5788,9 @@ public class StageMode extends AppCompatActivity implements
             String imageFileName = "JPEG_" + timeStamp + "_";
             File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             File image = File.createTempFile(
-                    imageFileName,  */
-/* prefix *//*
-
-                    ".jpg",         */
-/* suffix *//*
-
-                    storageDir      */
-/* directory *//*
-
+                    imageFileName,  // prefix
+                    ".jpg",         // suffix
+                    storageDir      // directory
             );
 
             Uri imageUri = FileProvider.getUriForFile(StageMode.this, "OpenSongAppFiles", image);
@@ -6121,7 +6015,7 @@ public class StageMode extends AppCompatActivity implements
     public void splashScreen() {
         Intent intent = new Intent();
         intent.putExtra("showsplash",true);
-        intent.setClass(StageMode.this, _BootUpCheck.class);
+        intent.setClass(StageMode.this, BootUpCheck.class);
         startActivity(intent);
         finish();
     }
@@ -6132,7 +6026,7 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected String doInBackground(Object... obj) {
             try {
-                _LoadXML.prepareLoadCustomReusable(StageMode.this, preferences, storageAccess,
+                LoadXML.prepareLoadCustomReusable(StageMode.this, preferences, storageAccess,
                         processSong, FullscreenActivity.customreusabletoload);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -6174,107 +6068,17 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
-
-    @Override
-    public void preparePad() {
-        backingtrackProgress.setVisibility(View.VISIBLE);
-        updateExtraInfoColorsAndSizes("pad");
-        doCancelAsyncTask(prepare_pad);
-        prepare_pad = new PreparePad();
-        try {
-            prepare_pad.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private class PreparePad extends AsyncTask<Void, Void, Integer> {
-
-        @Override
-        protected Integer doInBackground(Void... voids) {
-            //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-            try {
-                StaticVariables.padson = true;
-                PadFunctions.getPad1Status();
-                PadFunctions.getPad2Status();
-
-                FullscreenActivity.mPlayer1Paused = false;
-                FullscreenActivity.mPlayer2Paused = false;
-
-                if (StaticVariables.pad1Playing && !StaticVariables.pad1Fading) {
-                    // If mPlayer1 is already playing, set this to fade out and start mPlayer2
-                    StaticVariables.pad1Fading = true;
-                    StaticVariables.pad2Fading = false;
-                    FullscreenActivity.whichPad = 2;
-                    StaticVariables.padson = true;
-
-                } else if (StaticVariables.pad2Playing && !StaticVariables.pad2Fading) {
-                    // If mPlayer2 is already playing, set this to fade out and start mPlayer1
-                    StaticVariables.pad1Fading = false;
-                    StaticVariables.pad2Fading = true;
-                    StaticVariables.padson = true;
-                    FullscreenActivity.whichPad = 1;
-
-                } else {
-                    // Else nothing, was playing, so start mPlayer1
-                    StaticVariables.pad1Fading = false;
-                    StaticVariables.pad2Fading = false;
-                    FullscreenActivity.whichPad = 1;
-                    StaticVariables.padson = true;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return FullscreenActivity.whichPad;
-        }
-
-        boolean cancelled = false;
-        @Override
-        protected void onCancelled() {
-            cancelled = true;
-        }
-
-        @Override
-        protected void onPostExecute(Integer i) {
-            try {
-                if (!cancelled) {
-                    if (StaticVariables.pad1Fading) {
-                        StaticVariables.fadeWhichPad = 1;
-                        fadeoutPad();
-                    }
-                    if (StaticVariables.pad2Fading) {
-                        StaticVariables.fadeWhichPad = 2;
-                        fadeoutPad();
-                    }
-                    try {
-                        playPads(i);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
+    // IV - preparePad() lost all function on rework except for a call of playpad so has been removed.
     @SuppressLint("StaticFieldLeak")
     private class PrepareSongView extends AsyncTask<Object, Void, String> {
 
-        long start;
         @Override
         protected void onPreExecute() {
-            //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-            start = System.currentTimeMillis();
             try {
                 mypage.setBackgroundColor(lyricsBackgroundColor);
                 songscrollview.setBackgroundColor(lyricsBackgroundColor);
-
                 width_scale = 0f;
-
                 StaticVariables.currentSection = 0;
-
                 testpane.removeAllViews();
                 testpane1_2.removeAllViews();
                 testpane2_2.removeAllViews();
@@ -6288,8 +6092,6 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         protected String doInBackground(Object... params) {
-            //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-
             // Set up the songviews
             try {
                 StaticVariables.songSectionsTypes = new String[StaticVariables.songSections.length];
@@ -6361,15 +6163,10 @@ public class StageMode extends AppCompatActivity implements
                                 lyricsCapoColor, presoFontColor);
                         section.setClipChildren(false);
                         section.setClipToPadding(false);
-                        try {
-                            section.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                            FullscreenActivity.viewwidth[x] = section.getMeasuredWidth();
-                            FullscreenActivity.viewheight[x] = section.getMeasuredHeight();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            FullscreenActivity.viewwidth[x] = 0;
-                            FullscreenActivity.viewheight[x] = 0;
-                        }
+                        section.measure(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        FullscreenActivity.viewwidth[x] = section.getMeasuredWidth();
+                        FullscreenActivity.viewheight[x] = section.getMeasuredHeight();
+
                         // The other views for 2 or 3 column mode
                         section1_1 = processSong.songSectionView(StageMode.this, x, 12.0f, false,
                                 storageAccess, preferences,
@@ -6496,12 +6293,7 @@ public class StageMode extends AppCompatActivity implements
                     boxbit.setAlpha(0.5f);
                     FullscreenActivity.sectionviews[x] = boxbit;
                     final int finalX = x;
-                    FullscreenActivity.sectionviews[x].setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            selectSection(finalX);
-                        }
-                    });
+                    FullscreenActivity.sectionviews[x].setOnClickListener(v -> selectSection(finalX));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -6542,17 +6334,7 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
-
-    private void playPads(int which) {
-        doCancelAsyncTask(play_pads);
-        play_pads = new PlayPads(which);
-        try {
-            play_pads.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+    // playPad  moved to be with other related voids
     private class Player1Prepared implements MediaPlayer.OnPreparedListener {
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
@@ -6561,28 +6343,18 @@ public class StageMode extends AppCompatActivity implements
             StaticVariables.padtime_length = (int) (FullscreenActivity.mPlayer1.getDuration() / 1000.0f);
             FullscreenActivity.mPlayer1.setLooping(PadFunctions.getLoop());
             FullscreenActivity.mPlayer1.setVolume(PadFunctions.getVol(padpan,padvol,0), PadFunctions.getVol(padpan,padvol,1));
-            FullscreenActivity.mPlayer1.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    if (!PadFunctions.getLoop()) {
-                        Log.d("StageMode", "Reached end and not looping");
+            FullscreenActivity.mPlayer1.setOnCompletionListener(mp -> {
+                if (!PadFunctions.getLoop()) {
+                    Log.d("StageMode", "Reached end and not looping");
 
-                    } else {
-                        Log.d("StageMode", "Reached end but looping");
-                    }
+                } else {
+                    Log.d("StageMode", "Reached end but looping");
                 }
             });
-            String text = TimeTools.timeFormatFixer(StaticVariables.padtime_length);
-            try {
-                updateExtraInfoColorsAndSizes("pad");
-                padcurrentTime_TextView.setText(getString(R.string.zerotime));
-                padtotalTime_TextView.setText(text);
-
-            } catch (Exception e) {
-                e.printStackTrace(); // If called from doInBackground()
-            }
+            // IV - Logic of time display content is elsewhere
             FullscreenActivity.mPlayer1.start();
-            StaticVariables.padson = true;
+            // IV - padson is not in use
+            dopadProgressTime.removeCallbacks((onEverySecond));
             dopadProgressTime.post(onEverySecond);
         }
     }
@@ -6604,9 +6376,14 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void preparePadProgress() {
-        if (StaticVariables.padson) {
+        // If we need to display pad time do runnables otherwise stop display
+        PadFunctions.getPad1Status();
+        PadFunctions.getPad2Status();
+        if (StaticVariables.pad1Playing || StaticVariables.pad2Playing || FullscreenActivity.mPlayer1Paused || FullscreenActivity.mPlayer2Paused) {
             dopadProgressTime.post(padprogressTimeRunnable);
             dopadProgressTime.postDelayed(onEverySecond, 1000);
+        } else {
+            backingtrackProgress.setVisibility(View.GONE);
         }
     }
 
@@ -6619,149 +6396,62 @@ public class StageMode extends AppCompatActivity implements
             float padvol = preferences.getMyPreferenceFloat(StageMode.this,"padVol",1.0f);
             FullscreenActivity.mPlayer2.setLooping(PadFunctions.getLoop());
             FullscreenActivity.mPlayer2.setVolume(PadFunctions.getVol(padpan,padvol,0), PadFunctions.getVol(padpan,padvol,1));
-            FullscreenActivity.mPlayer2.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    if (!PadFunctions.getLoop()) {
-                        Log.d("StageMode", "Reached end and not looping");
+            FullscreenActivity.mPlayer2.setOnCompletionListener(mp -> {
+                if (!PadFunctions.getLoop()) {
+                    Log.d("StageMode", "Reached end and not looping");
 
-                    } else {
-                        Log.d("StageMode", "Reached end but looping");
-                    }
+                } else {
+                    Log.d("StageMode", "Reached end but looping");
                 }
             });
-            String text = TimeTools.timeFormatFixer(StaticVariables.padtime_length);
-            try {
-                updateExtraInfoColorsAndSizes("pad");
-                padcurrentTime_TextView.setText(getString(R.string.zerotime));
-                padtotalTime_TextView.setText(text);
-            } catch (Exception e) {
-                e.printStackTrace(); // If called from doInBackground()
-            }
+            // IV - Logic of time display content is elsewhere
             FullscreenActivity.mPlayer2.start();
-            StaticVariables.padson = true;
+            // IV - padson is not in use
+            dopadProgressTime.removeCallbacks((onEverySecond));
             dopadProgressTime.post(onEverySecond);
         }
     }
 
-    @Override
-    public void fadeoutPad() {
-        if ((StaticVariables.pad1Playing && !StaticVariables.pad1Fading) && !StaticVariables.pad2Playing) {
-            // Pad 1 is the one that will be faded
-            StaticVariables.fadeWhichPad = 1;
-        } else if ((StaticVariables.pad2Playing && !StaticVariables.pad2Fading) && !StaticVariables.pad1Playing) {
-            // Pad 2 is the one that will be faded
-            StaticVariables.fadeWhichPad = 2;
-        } else if (StaticVariables.pad1Playing && StaticVariables.pad1Fading &&
-                StaticVariables.pad2Playing && StaticVariables.pad2Fading) {
-            // Both pads are being faded, so do nothing
-            StaticVariables.fadeWhichPad = -1;
-        } else {
-            // Both pads need faded, or it doesn't matter either way
-            StaticVariables.fadeWhichPad = 0;
-        }
-        String padpan = preferences.getMyPreferenceString(StageMode.this,"padPan","C");
-        float padvol = preferences.getMyPreferenceFloat(StageMode.this,"padVol",1.0f);
+    // IV - Logic to fade playing pad(s)
+    private void fadeoutPad() {
 
-        switch (StaticVariables.fadeWhichPad) {
+        // Put the display time into a known state
+        padcurrentTime_TextView.setText("0:00");
 
-            case 1:
-                // mPlayer1 is playing, so fade it out.
-                doCancelAsyncTask(fadeout_media1);
-                updateExtraInfoColorsAndSizes("pad");
-                padcurrentTime_TextView.setText(getString(R.string.zerotime));
-                fadeout_media1 = new FadeoutMediaPlayer(padpan, padvol,1,preferences.getMyPreferenceInt(StageMode.this,"padCrossFadeTime",8000));
-                fadeout_media1.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                break;
+        // Put the quick fade mechainism into a known state
+        StaticVariables.padInQuickFade = 0;
 
-            case 2:
-                // mPlayer2 is playing, so fade it out.
-                doCancelAsyncTask(fadeout_media2);
-                updateExtraInfoColorsAndSizes("pad");
-                padcurrentTime_TextView.setText(getString(R.string.zerotime));
-                fadeout_media2 = new FadeoutMediaPlayer(padpan, padvol, 2,preferences.getMyPreferenceInt(StageMode.this,"padCrossFadeTime",8000));
-                fadeout_media2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                break;
+        // Set false as all pads will fade. preparePad sets this true if a pad is played
+        StaticVariables.clickedOnPadStart = false;
 
-            case 0:
-                // Fade both pads
-                if (StaticVariables.pad1Playing) {
-                    // mPlayer1 is playing, so fade it out.
-                    doCancelAsyncTask(fadeout_media1);
-                    updateExtraInfoColorsAndSizes("pad");
-                    padcurrentTime_TextView.setText(getString(R.string.zerotime));
-                    fadeout_media1 = new FadeoutMediaPlayer(padpan,padvol, 1,preferences.getMyPreferenceInt(StageMode.this,"padCrossFadeTime",8000));
-                    fadeout_media1.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                }
-                if (StaticVariables.pad2Playing) {
-                    // mPlayer2 is playing, so fade it out.
-                    doCancelAsyncTask(fadeout_media2);
-                    updateExtraInfoColorsAndSizes("pad");
-                    padcurrentTime_TextView.setText(getString(R.string.zerotime));
-                    fadeout_media2 = new FadeoutMediaPlayer(padpan,padvol, 2, preferences.getMyPreferenceInt(StageMode.this,"padCrossFadeTime",8000));
-                    fadeout_media2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                }
-                break;
+        String padpan = preferences.getMyPreferenceString(StageMode.this, "padPan", "C");
+        float padvol = preferences.getMyPreferenceFloat(StageMode.this, "padVol", 1.0f);
+
+        PadFunctions.getPad1Status();
+        PadFunctions.getPad2Status();
+
+        if (StaticVariables.pad1Playing && !StaticVariables.pad1Fading) {
+            fadeout_media1 = new FadeoutMediaPlayer(padpan, padvol, 1, preferences.getMyPreferenceInt(StageMode.this, "padCrossFadeTime", 8000));
+            fadeout_media1.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
 
-        // Set a runnable to check for the pads on or off to hide the player progress
-        handle.postDelayed(padoncheck, 13000); // Cross fade has finished
+        if (StaticVariables.pad2Playing && !StaticVariables.pad2Fading) {
+            fadeout_media2 = new FadeoutMediaPlayer(padpan, padvol, 2, preferences.getMyPreferenceInt(StageMode.this, "padCrossFadeTime", 8000));
+            fadeout_media2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+        // IV - Pad time display logic is elsewhere
+
+        // Wait until a pad is free for use
+        while (StaticVariables.pad1Playing && StaticVariables.pad2Playing) {
+            //Waiting for pad to become available
+        }
+        StaticVariables.padInQuickFade = 0;
     }
 
-    @Override
-    public void killPad() {
-
-        PadFunctions.getPad1Status();
-        PadFunctions.getPad2Status();
-
-        switch (FullscreenActivity.whichPad) {
-            case 1:
-                if (StaticVariables.pad1Playing) {
-                    try {
-                        FullscreenActivity.mPlayer1.stop();
-                        FullscreenActivity.mPlayer1.reset();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-
-            case 2:
-                if (StaticVariables.pad2Playing) {
-                    try {
-                        FullscreenActivity.mPlayer2.stop();
-                        FullscreenActivity.mPlayer2.reset();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-
-            case 0:
-            default:
-                if (StaticVariables.pad1Playing) {
-                    try {
-                        FullscreenActivity.mPlayer1.stop();
-                        FullscreenActivity.mPlayer1.reset();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (StaticVariables.pad2Playing) {
-                    try {
-                        FullscreenActivity.mPlayer2.stop();
-                        FullscreenActivity.mPlayer2.reset();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-        }
-        PadFunctions.getPad1Status();
-        PadFunctions.getPad2Status();
-        getPadsOnStatus();
-        updateExtraInfoColorsAndSizes("pad");
-        padcurrentTime_TextView.setText(getString(R.string.zerotime));
+    private void killPad() {
+        // Fade rather than kill - avoids an abrupt stop if the app is accidentally switched away from
+        fadeoutPad();
+        // IV - Pad time display is handled elsewhere
     }
 
     @Override
@@ -6770,12 +6460,7 @@ public class StageMode extends AppCompatActivity implements
         StaticVariables.learnSongLength = false;
         updateExtraInfoColorsAndSizes("autoscroll");
         learnAutoScroll.setVisibility(View.VISIBLE);
-        learnAutoScroll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startLearnAutoScroll();
-            }
-        });
+        learnAutoScroll.setOnClickListener(view -> startLearnAutoScroll());
         String s = getString(R.string.autoscroll_time) + "\n" + getString(R.string.start);
         //learnAutoScroll_TextView.setTextSize(10.0f);
         learnAutoScroll_TextView.setText(s);
@@ -6785,12 +6470,7 @@ public class StageMode extends AppCompatActivity implements
     private void startLearnAutoScroll() {
         StaticVariables.learnPreDelay = true;
         StaticVariables.learnSongLength = false;
-        learnAutoScroll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getLearnedPreDelayValue();
-            }
-        });
+        learnAutoScroll.setOnClickListener(view -> getLearnedPreDelayValue());
         String s = getString(R.string.autoscroll_time) + "\n" + getString(R.string.save);
         learnAutoScroll_TextView.setText(s);
         LearnAutoScroll mtask_learnautoscroll = new LearnAutoScroll();
@@ -6806,12 +6486,14 @@ public class StageMode extends AppCompatActivity implements
         StaticVariables.mPreDelay = time+"";
         String s = getString(R.string.edit_song_duration) + "\n" + getString(R.string.save);
         learnAutoScroll_TextView.setText(s);
-        learnAutoScroll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getLearnedSongLengthValue();
-            }
-        });
+        learnAutoScroll.setOnClickListener(view -> getLearnedSongLengthValue());
+    }
+    // IV - Used by autoscroll setting page - if learn is running it can be abandoned by reopen of autoscroll settings page
+    @Override
+    public void stopLearnAutoScroll() {
+        learnAutoScroll.setVisibility(View.GONE);
+        StaticVariables.learnPreDelay = false;
+        StaticVariables.learnSongLength = false;
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -6931,16 +6613,17 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void startAutoScroll() {
-        StaticVariables.clickedOnAutoScrollStart = true;
+    private void startAutoScroll() {
+        // IV - clickedOnAutoScrollStart is being used to indicate being active (autoscroll may be active but not running)
+        // IV - it is set elsewhere
         updateExtraInfoColorsAndSizes("autoscroll");
-        currentTime_TextView.setText(getString(R.string.zerotime));
+        currentTime_TextView.setText("0:00");
         AutoScrollFunctions.getMultiPagePDFValues();  // This splits the time for multiple pages
         totalTime_TextView.setText(TimeTools.timeFormatFixer(StaticVariables.autoScrollDuration));
         playbackProgress.setVisibility(View.VISIBLE);
         doCancelAsyncTask(mtask_autoscroll_music);
         doCancelAsyncTask(get_scrollheight);
+        endAutoScrollHandler.removeCallbacks(endAutoScrollRunnable);
         StaticVariables.isautoscrolling = true;
         StaticVariables.pauseautoscroll = true;
         FullscreenActivity.isManualDragging = false;
@@ -7064,10 +6747,18 @@ public class StageMode extends AppCompatActivity implements
         protected String doInBackground(String... args) {
             try {
                 while (StaticVariables.isautoscrolling) {
+                    // IV - update the scroll buttons as we go
+                    delaycheckscroll.post(checkScrollPosition);
                     FullscreenActivity.time_passed = System.currentTimeMillis();
                     boolean doscroll = ((FullscreenActivity.time_passed - FullscreenActivity.time_start) / 1000) >= StaticVariables.autoScrollDelay;
                     if (doscroll) {
                         publishProgress(1);
+                        // We set a runnable to end scroll after 4s - renewed if we are not at the end of the page.
+                        // IV - Helps manual drag during autoscroll - a user can drag temporarily to the end and back up without an immediate autoscroll stop
+                        if (FullscreenActivity.newPosFloat < StaticVariables.scrollpageHeight) {
+                            endAutoScrollHandler.removeCallbacks(endAutoScrollRunnable);
+                        }
+                        endAutoScrollHandler.postDelayed(endAutoScrollRunnable, 4000);
                     }
                     // don't scroll first time
                     if (!StaticVariables.pauseautoscroll) {
@@ -7085,12 +6776,7 @@ public class StageMode extends AppCompatActivity implements
                     } else {
                         StaticVariables.pauseautoscroll = false;
                     }
-                    if (doscroll) {
-                        if (FullscreenActivity.newPosFloat >= StaticVariables.scrollpageHeight) {
-                            StaticVariables.autoscrollispaused = false;
-                            StaticVariables.isautoscrolling = false;
-                        }
-                    }
+
                     long starttime = System.currentTimeMillis();
                     long currtime = System.currentTimeMillis();
                     while ((currtime - starttime) < StaticVariables.autoscroll_pause_time) {
@@ -7136,12 +6822,12 @@ public class StageMode extends AppCompatActivity implements
                         StaticVariables.pauseautoscroll = true;
                     }
                     doCancelAsyncTask(mtask_autoscroll_music);
-                    if (FullscreenActivity.isPDF && (StaticVariables.pdfPageCurrent+1)< StaticVariables.pdfPageCount) {
+                    if (FullscreenActivity.isPDF && (FullscreenActivity.pdfPageCurrent+1)<FullscreenActivity.pdfPageCount) {
                         pdfCanContinueScrolling = true;
                         goToNextItem();
                     } else {
                         pdfCanContinueScrolling = false;
-                        updateExtraInfoColorsAndSizes("autoscroll");
+                        // IV - updateExtra... not needed as done elsewhere
                         playbackProgress.setVisibility(View.GONE);
                     }
                 }
@@ -7159,15 +6845,15 @@ public class StageMode extends AppCompatActivity implements
             doCancelAsyncTask(mtask_autoscroll_music);
         }
     }
-
-    @Override
-    public void stopAutoScroll() {
+    // IV - No longer needs to be public
+    private void stopAutoScroll() {
         try {
             updateExtraInfoColorsAndSizes("autoscroll");
             playbackProgress.setVisibility(View.GONE);
             doCancelAsyncTask(mtask_autoscroll_music);
+            doCancelAsyncTask(get_scrollheight);
             StaticVariables.isautoscrolling = false;
-            currentTime_TextView.setText(getString(R.string.zerotime));
+            currentTime_TextView.setText("0:00");
             // Send WiFiP2P intent
             if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
                 try {
@@ -7180,18 +6866,16 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
-
-    @Override
-    public void stopMetronome() {
-        if (StaticVariables.metronomeonoff.equals("on")) {
-            // Stop it
-            Metronome.startstopMetronome(StageMode.this, StageMode.this,
-                    preferences.getMyPreferenceBoolean(StageMode.this,"metronomeShowVisual",false),
-                    defmetronomecolor, preferences.getMyPreferenceString(StageMode.this,"metronomePan","C"),
-                    preferences.getMyPreferenceFloat(StageMode.this,"metronomeVol",0.5f),
-                    preferences.getMyPreferenceInt(StageMode.this,"metronomeLength",0));
+    // IV - New function to restart autoscroll after a manual drag or scroll
+    private void pauseAutoscroll () {
+        if (StaticVariables.isautoscrolling) {
+            FullscreenActivity.isManualDragging = true;
+            endManualDraggingHandler.removeCallbacks(endManualDraggingRunnable);
+            endManualDraggingHandler.postDelayed(endManualDraggingRunnable, 2000);
         }
     }
+
+    // IV - stopMetronome not needed as logic is concentrated in the gesture
 
     private boolean checkCanScrollDown() {
         boolean showscrolldown = false;
@@ -7223,8 +6907,8 @@ public class StageMode extends AppCompatActivity implements
                 }
             }
         }
-        // Decide if the down arrow should be displayed.
-        return showscrolldown && preferences.getMyPreferenceBoolean(StageMode.this,"PageButtonShowScroll",true);
+        // IV - Scrollbuttons considers the preference when displaying
+        return showscrolldown;
     }
 
     private boolean checkCanScrollUp() {
@@ -7244,8 +6928,8 @@ public class StageMode extends AppCompatActivity implements
                 }
             }
         }
-        // Decide if the up arrow should be displayed.
-        return showscrollup && preferences.getMyPreferenceBoolean(StageMode.this,"PageButtonShowScroll",true);
+        // IV - Scrollbuttons considers the preference when displaying
+        return showscrollup;
     }
 
     private void scrollMenu(String direction) {
@@ -7265,10 +6949,10 @@ public class StageMode extends AppCompatActivity implements
             try {
                 if (StaticVariables.mSetList != null && StaticVariables.indexSongInSet > -1 &&
                         StaticVariables.mSetList.length > StaticVariables.indexSongInSet) {
-                    StaticVariables.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
-                    StaticVariables.whatsongforsetwork = StaticVariables.linkclicked;
+                    FullscreenActivity.linkclicked = StaticVariables.mSetList[StaticVariables.indexSongInSet];
+                    StaticVariables.whatsongforsetwork = FullscreenActivity.linkclicked;
                 } else {
-                    StaticVariables.linkclicked = "";
+                    FullscreenActivity.linkclicked = "";
                     StaticVariables.whatsongforsetwork = "";
                 }
             } catch (Exception e) {
@@ -7344,8 +7028,8 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void changePDFPage(int page, String direction) {
-        StaticVariables.whichDirection = direction;
-        StaticVariables.pdfPageCurrent = page;
+        FullscreenActivity.whichDirection = direction;
+        FullscreenActivity.pdfPageCurrent = page;
         loadSong();
     }
 
@@ -7353,8 +7037,8 @@ public class StageMode extends AppCompatActivity implements
     private boolean oktoregistergesture() {
 
         boolean oktogo = false;
-
-        if (!FullscreenActivity.pressing_button  // Button pressing
+        // IV - gestures can be ignored at times
+        if (!StaticVariables.ignoreGesture & !FullscreenActivity.pressing_button  // Button pressing
                 && !setButton.isPressed() && !padButton.isPressed() && !autoscrollButton.isPressed()
                 && !metronomeButton.isPressed() && !extraButton.isPressed() && !chordButton.isPressed()
                 && !linkButton.isPressed() && !stickyButton.isPressed() && !notationButton.isPressed()
@@ -7367,6 +7051,7 @@ public class StageMode extends AppCompatActivity implements
                 && !custom1Button_ungrouped.isPressed() && !custom2Button_ungrouped.isPressed()
                 && !custom3Button_ungrouped.isPressed() && !custom4Button_ungrouped.isPressed()
                 && !scrollDownButton.isPressed() && !scrollUpButton.isPressed()
+                && !setBackButton.isPressed() && !setForwardButton.isPressed()
                 && !mDrawerLayout.isDrawerOpen(songmenu) && !mDrawerLayout.isDrawerVisible(songmenu)
                 && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerVisible(optionmenu)) {
             oktogo = true;
@@ -7385,7 +7070,7 @@ public class StageMode extends AppCompatActivity implements
                 sectionpresented = false;
 
                 try {
-                    _LoadXML.loadXML(StageMode.this, preferences, storageAccess, processSong);
+                    LoadXML.loadXML(StageMode.this, preferences, storageAccess, processSong);
                 } catch (Exception e) {
                     Log.d("StageMode", "Error loading song:" + StaticVariables.songfilename);
                 }
@@ -7505,6 +7190,9 @@ public class StageMode extends AppCompatActivity implements
         }
 
         protected void onPostExecute(String s) {
+            // IV - Store value for use later
+            boolean orientationChanged = FullscreenActivity.orientationchanged;
+
             try {
                 if (!cancelled) {
                     // If we have changed folders, redraw the song menu
@@ -7543,25 +7231,14 @@ public class StageMode extends AppCompatActivity implements
 
                     // Any errors to show?
                     if (!StaticVariables.myToastMessage.equals("")) {
-                        _ShowToast.showToast(StageMode.this);
+                        ShowToast.showToast(StageMode.this);
                     }
-
-                    // If pads were already playing (previous song), start them up again if wanted
-                    // Don't redo this if the orientation has changed (causing a reload)
-                    // Stop restarting the pads if changing portrait/landscape
-                    // Only play if this isn't called by an orientation change
-                    if (!FullscreenActivity.orientationchanged && FullscreenActivity.isSong &&
-                            (StaticVariables.padson ||
-                                    (preferences.getMyPreferenceBoolean(StageMode.this,"padAutoStart",false) &&
-                                            StaticVariables.clickedOnPadStart))) {
-                        preparePad();
-                    }
-
+                    // IV - Handling pads moved to later
                     // Now, reset the orientation.
                     FullscreenActivity.orientationchanged = false;
 
                     // Get the current orientation
-                    StaticVariables.currentScreenOrientation = getResources().getConfiguration().orientation;
+                    FullscreenActivity.mScreenOrientation = getResources().getConfiguration().orientation;
 
                     // Put the title of the song in the taskbar
                     songtitle_ab.setText(processSong.getSongTitle());
@@ -7583,24 +7260,28 @@ public class StageMode extends AppCompatActivity implements
                         prepareView();
                     }
 
-                    // Automatically stop the metronome if it is still on
-                    if (StaticVariables.metronomeonoff.equals("on")) {
-                        // Stop it
-                        Metronome.startstopMetronome(StageMode.this, StageMode.this,
-                                preferences.getMyPreferenceBoolean(StageMode.this,"metronomeShowVisual",false),
-                                defmetronomecolor, preferences.getMyPreferenceString(StageMode.this,"metronomePan","C"),
-                                preferences.getMyPreferenceFloat(StageMode.this,"metronomeVol",0.5f),
-                                preferences.getMyPreferenceInt(StageMode.this,"metronomeLength",0));
-                    }
-                    // Start it again with the new values if we chose to
-                    if (preferences.getMyPreferenceBoolean(StageMode.this,"metronomeAutoStart",false) &&
-                            StaticVariables.clickedOnMetronomeStart &&
-                            !FullscreenActivity.isPDF) {
-                        gesture7();
+                    // Do the pad fade and play here after display. This ensures a good cross-fade once the song is displayed
+                    if (StaticVariables.clickedOnPadStart) {
+                        // Do not touch on a reload
+                        if (!StaticVariables.reloadOfSong) {
+                            // If pads were already playing (previous song), start them up again if wanted
+                            // Don't redo this if the orientation has changed (causing a reload)
+                            // Stop restarting the pads if changing portrait/landscape
+                            // Only play if this isn't called by an orientation change
+
+                            if (preferences.getMyPreferenceBoolean(StageMode.this, "padAutoStart", false) &&
+                                    FullscreenActivity.isSong &&
+                                    !orientationChanged) {
+                                playPad();
+                            } else {
+                                fadeoutPad();
+                            }
+                        }
                     }
 
-                    // Decide if we have loaded a song in the current set
-                    fixSetActionButtons();
+
+                    // Make sure all dynamic (scroll and set) buttons display
+                    onScrollAction();
 
                     // If the user has shown the 'Welcome to OpenSongApp' file, and their song lists are empty,
                     // open the find new songs menu
@@ -7609,19 +7290,12 @@ public class StageMode extends AppCompatActivity implements
                         StaticVariables.whichOptionMenu = "FIND";
                         prepareOptionMenu();
                         Handler find = new Handler();
-                        find.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                openMyDrawers("option");
-                            }
-                        }, 2000);
+                        find.postDelayed(() -> openMyDrawers("option"), 2000);
                     }
-
                     // Send the midi data if we can
                     if (preferences.getMyPreferenceBoolean(StageMode.this,"midiSendAuto",false)) {
                         sendMidi();
                     }
-
                     // Send WiFiP2P intent
                     if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
                         try {
@@ -7630,15 +7304,7 @@ public class StageMode extends AppCompatActivity implements
                             e.printStackTrace();
                         }
                     }
-
-                    // If autoshowing sticky notes as a popup
-                    if (preferences.getMyPreferenceString(StageMode.this,"stickyAutoDisplay","F").equals("F") && !StaticVariables.mNotes.equals("")) {
-                        try {
-                            showSticky();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    // IV - Sticky display moved until after song display so that timings are correct
 
                     // If we have created, or converted a song format (e.g from OnSong or ChordPro), rebuild the database
                     // or pull up the edit screen
@@ -7647,7 +7313,7 @@ public class StageMode extends AppCompatActivity implements
                         // This line below is now reset in the edit song window
                         //FullscreenActivity.needtoeditsong = false;
 
-                        StaticVariables.whattodo = "editsong";
+                        FullscreenActivity.whattodo = "editsong";
                         FullscreenActivity.alreadyloading = false;
                         FullscreenActivity.needtorefreshsongmenu = true;
                         openFragment();
@@ -7675,11 +7341,13 @@ public class StageMode extends AppCompatActivity implements
                         }
                     }
                 }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            // IV - True if a reload, this sets loadsong back to standard mode
+            StaticVariables.reloadOfSong = false;
             FullscreenActivity.alreadyloading = false;
-
         }
     }
 
@@ -7706,38 +7374,29 @@ public class StageMode extends AppCompatActivity implements
         if (!airTurnCheckRunning) {
             final int initialAirTurnCount = keyRepeatCount;
             airTurnCheckRunning = true;
-            airTurn.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (keyRepeatCount>=initialAirTurnCount+preferences.getMyPreferenceInt(StageMode.this, "keyRepeatCount",4)) {
-                        // Must be repeat press on AirTurn pedal
-                        keyRepeatCount = 0;
-                        // In the long press action, set the airTurnCheckRunning boolean to false
-                        stopAirTurnCheckRunning();
-                        doLongKeyPressAction(keyCode);
-                    } else {
-                        // Check in another 200ms to see if the count has increased.  If it hasn't, short press action should be called.
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (initialAirTurnCount==keyRepeatCount) {
-                                    doShortPressAction(keyCode, event);
-                                }
-                            }
-                        },200);
-                    }
+            airTurn.postDelayed(() -> {
+                if (keyRepeatCount>=initialAirTurnCount+preferences.getMyPreferenceInt(StageMode.this, "keyRepeatCount",4)) {
+                    // Must be repeat press on AirTurn pedal
+                    keyRepeatCount = 0;
+                    // In the long press action, set the airTurnCheckRunning boolean to false
+                    stopAirTurnCheckRunning();
+                    doLongKeyPressAction(keyCode);
+                } else {
+                    // Check in another 200ms to see if the count has increased.  If it hasn't, short press action should be called.
+                    new Handler().postDelayed(() -> {
+                        if (initialAirTurnCount==keyRepeatCount) {
+                            doShortPressAction(keyCode, event);
+                        }
+                    },200);
                 }
             }, 200);
         }
     }
 
     private void stopAirTurnCheckRunning() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                keyRepeatCount = 0;
-                airTurnCheckRunning = false;
-            }
+        new Handler().postDelayed(() -> {
+            keyRepeatCount = 0;
+            airTurnCheckRunning = false;
         },500);
     }
     private void doShortPressAction(int keyCode, KeyEvent event) {
@@ -7803,8 +7462,8 @@ public class StageMode extends AppCompatActivity implements
     @SuppressLint("StaticFieldLeak")
     private class PrepareSongMenu extends AsyncTask<Object, Void, String> {
 
-        ArrayList<_SQLite> songsInFolder;
-        ArrayList<_SQLite> childFolders;
+        ArrayList<SQLite> songsInFolder;
+        ArrayList<SQLite> childFolders;
 
         @Override
         protected void onPreExecute() {
@@ -7819,9 +7478,9 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected String doInBackground(Object... params) {
             try {
-                songsInFolder = sqLiteHelper.getSongsInFolder(StageMode.this, StaticVariables.whichSongFolder, "");
+                songsInFolder = sqLiteHelper.getSongsInFolder(StageMode.this, StaticVariables.whichSongFolder);
                 // Remove any that aren't there (due to updating something) - permanently fixed on reboot
-                for (_SQLite s:songsInFolder) {
+                for (SQLite s:songsInFolder) {
                     if (s!=null && s.getFolder()!=null && s.getFilename()!=null) {
                         Uri u = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", s.getFolder(), s.getFilename());
                         if (!storageAccess.uriExists(StageMode.this, u)) {
@@ -7857,7 +7516,7 @@ public class StageMode extends AppCompatActivity implements
                     filenamesSongsInFolder = new ArrayList<>();
 
                     // Go through the found songs in folder and prepare the menu
-                    ArrayList<_SongMenuViewItems> songmenulist = new ArrayList<>();
+                    ArrayList<SongMenuViewItems> songmenulist = new ArrayList<>();
 
                     String setcurrent = preferences.getMyPreferenceString(StageMode.this,"setCurrent","");
 
@@ -7884,13 +7543,13 @@ public class StageMode extends AppCompatActivity implements
 
                         boolean isinset = setcurrent.contains(whattolookfor);
 
-                        _SongMenuViewItems song = new _SongMenuViewItems(foundsongfilename,
+                        SongMenuViewItems song = new SongMenuViewItems(foundsongfilename,
                                 foundsongfilename, foundsongauthor, foundsongkey, isinset);
                         songmenulist.add(song);
                         filenamesSongsInFolder.add(foundsongfilename);
                     }
 
-                    _SongMenuAdapter lva = new _SongMenuAdapter(StageMode.this, preferences, songmenulist);
+                    SongMenuAdapter lva = new SongMenuAdapter(StageMode.this, preferences, songmenulist);
                     song_list_view.setAdapter(lva);
                     song_list_view.setFastScrollEnabled(true);
                     song_list_view.setScrollingCacheEnabled(true);
@@ -7918,44 +7577,139 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
+
+    // IV - code supporting intentional page turns when using pedal for next/previous.
+    // IV - 'Are you sure?' is displayed and the user can repeat the action to continue after 2 seconds
+    // IV - After continue there is a 10s grace period where further pedal use is not tested.  Any pedal 'page' or 'scroll' use extends a further 10s grace period.
+    private void pedalPreviousAndNextConfirm() {
+        if (FullscreenActivity.isSong && (!(StaticVariables.whichMode != null && StaticVariables.whichMode.equals("Stage") &&
+                StaticVariables.songSections != null && StaticVariables.currentSection > 0 && StaticVariables.currentSection < StaticVariables.songSections.length - 2))) {
+            if (StaticVariables.pedalPreviousAndNextNeedsConfirm) {
+                StaticVariables.myToastMessage = getString(R.string.pedal) + " - " + getString(R.string.areyousure);
+                ShowToast.showToast(StageMode.this);
+                StaticVariables.pedalPreviousAndNextNeedsConfirm = false;
+                pedalPreviousAndNextNeedsConfirmHandler.postDelayed(pedalPreviousAndNextNeedsConfirmRunnable, 10000);
+                StaticVariables.pedalPreviousAndNextIgnore = true;
+                // Use a runnable to end the ignore period.
+                pedalPreviousAndNextIgnoreHandler.postDelayed(pedalPreviousAndNextIgnoreRunnable, 2000);
+            } else {
+                try {
+                    // If pedal used again in the ignore period - extend the ignore period.
+                    pedalPreviousAndNextIgnoreHandler.removeCallbacks(pedalPreviousAndNextIgnoreRunnable);
+                    pedalPreviousAndNextIgnoreHandler.postDelayed(pedalPreviousAndNextIgnoreRunnable, 2000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                }
+            }
+        }
+    }
+
+    private void PedalNeedsConfirmTrueAfterDelay() {
+        // After a NeedsConfirm prompt the user can use prev/next without prompt during a grace period.
+        // This is extended on any use of a pedal prev/next/up/down.
+        if (!StaticVariables.pedalPreviousAndNextNeedsConfirm) {
+            try {
+                pedalPreviousAndNextNeedsConfirmHandler.removeCallbacks(pedalPreviousAndNextNeedsConfirmRunnable);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            pedalPreviousAndNextNeedsConfirmHandler.postDelayed(pedalPreviousAndNextNeedsConfirmRunnable, 10000);
+        }
+    }
+
     private void pedalPrevious() {
+        boolean goToItemRequired = false;
+
         if (preferences.getMyPreferenceBoolean(StageMode.this,"pedalScrollBeforeMove",true)) {
             if (mDrawerLayout.isDrawerOpen(songmenu)) {
                 // Scroll the song menu up
                 scrollMenu("up");
             } else {
                 if (checkCanScrollUp()) {
-                    _CustomAnimations.animateFAB(scrollUpButton,StageMode.this);
-                    doScrollUp();
-                } else {
-                    if (setBackButton!=null && setBackButton.getVisibility() == View.VISIBLE) {
-                        _CustomAnimations.animateFAB(setBackButton,StageMode.this);
+                    if (scrollUpButton!=null && scrollUpButton.getVisibility() == View.VISIBLE) {
+                        CustomAnimations.animateFAB(scrollUpButton, StageMode.this);
                     }
-                    goToPreviousItem();
+                    doScrollUp();
+                    PedalNeedsConfirmTrueAfterDelay();
+                } else {
+                    goToItemRequired = true;
                 }
             }
-        } else {
-            goToPreviousItem();
+        } else{
+            goToItemRequired = true;
+        }
+
+        if (goToItemRequired) {
+            if (FullscreenActivity.isSong) {
+                checkCanGoTo();
+                // When in a set we canGoToPrevious. Confirm to make leaving the song an intentional action.
+                if (StaticVariables.canGoToPrevious) {
+                    if ((StaticVariables.whichMode != null) && (StaticVariables.whichMode.equals("Stage"))) {
+                        // For Stage mode only do for the top section
+                        if ((StaticVariables.songSections != null) && (StaticVariables.currentSection == 0)) {
+                            pedalPreviousAndNextConfirm();
+                        }
+                    } else {
+                        // For Performance mode
+                        pedalPreviousAndNextConfirm();
+                    }
+                }
+            }
+            if (!StaticVariables.pedalPreviousAndNextIgnore) {
+                if (setBackButton!=null && setBackButton.getVisibility() == View.VISIBLE) {
+                    CustomAnimations.animateFAB(setBackButton, StageMode.this);
+                }
+                goToPreviousItem();
+                PedalNeedsConfirmTrueAfterDelay();
+            }
         }
     }
     private void pedalNext() {
+        boolean goToItemRequired = false;
+
         if (preferences.getMyPreferenceBoolean(StageMode.this,"pedalScrollBeforeMove",true)) {
             if (mDrawerLayout.isDrawerOpen(songmenu)) {
                 // Scroll the song menu down
                 scrollMenu("down");
             } else {
                 if (checkCanScrollDown()) {
-                    _CustomAnimations.animateFAB(scrollDownButton,StageMode.this);
-                    doScrollDown();
-                } else {
-                    if (setForwardButton!=null && setForwardButton.getVisibility() == View.VISIBLE) {
-                        _CustomAnimations.animateFAB(setForwardButton,StageMode.this);
+                    if (scrollDownButton!=null && scrollDownButton.getVisibility() == View.VISIBLE) {
+                        CustomAnimations.animateFAB(scrollDownButton, StageMode.this);
                     }
-                    goToNextItem();
+                    doScrollDown();
+                    PedalNeedsConfirmTrueAfterDelay();
+                } else {
+                    goToItemRequired = true;
                 }
             }
-        } else {
-            goToNextItem();
+        } else{
+            goToItemRequired = true;
+        }
+
+        if (goToItemRequired) {
+            if (FullscreenActivity.isSong) {
+                checkCanGoTo();
+                // When in a set we canGoToNext. Confirm if this would leave the song.
+                if (StaticVariables.canGoToNext) {
+                    if ((StaticVariables.whichMode != null) && (StaticVariables.whichMode.equals("Stage"))) {
+                        // For Stage mode only do for the bottom section
+                        if ((StaticVariables.songSections != null) && (StaticVariables.currentSection == StaticVariables.songSections.length - 1)) {
+                            pedalPreviousAndNextConfirm();
+                        }
+                    } else {
+                        // For Performance mode
+                        pedalPreviousAndNextConfirm();
+                    }
+                }
+            }
+            if (!StaticVariables.pedalPreviousAndNextIgnore) {
+                if (setForwardButton!=null && setForwardButton.getVisibility() == View.VISIBLE) {
+                    CustomAnimations.animateFAB(setForwardButton, StageMode.this);
+                }
+                goToNextItem();
+                PedalNeedsConfirmTrueAfterDelay();
+            }
         }
     }
     private void pedalUp() {
@@ -7964,8 +7718,9 @@ public class StageMode extends AppCompatActivity implements
             scrollMenu("up");
         } else {
             if (checkCanScrollUp()) {
-                _CustomAnimations.animateFAB(scrollUpButton,StageMode.this);
+                CustomAnimations.animateFAB(scrollUpButton,StageMode.this);
                 doScrollUp();
+                PedalNeedsConfirmTrueAfterDelay();
             }
         }
     }
@@ -7975,8 +7730,9 @@ public class StageMode extends AppCompatActivity implements
             scrollMenu("down");
         } else {
             if (checkCanScrollDown()) {
-                _CustomAnimations.animateFAB(scrollDownButton,StageMode.this);
+                CustomAnimations.animateFAB(scrollDownButton,StageMode.this);
                 doScrollDown();
+                PedalNeedsConfirmTrueAfterDelay();
             }
         }
     }
@@ -8085,29 +7841,20 @@ public class StageMode extends AppCompatActivity implements
                 glideimage.getLayoutParams().width = newwidth;
                 glideimage.getLayoutParams().height = newheight;
                 glideimage_FrameLayout.requestLayout();
-                glideimage_FrameLayout.post(new Runnable() {
+                glideimage_FrameLayout.post(() -> {
+                    glideimage_ScrollView.scrollTo(0, 0);
+                    glideimage_HorizontalScrollView.scrollTo(0, 0);
+                    glideimage.setScaleX(1.0f);
+                    glideimage.setScaleY(1.0f);
 
-                    @Override
-                    public void run() {
-                        glideimage_ScrollView.scrollTo(0, 0);
-                        glideimage_HorizontalScrollView.scrollTo(0, 0);
-                        glideimage.setScaleX(1.0f);
-                        glideimage.setScaleY(1.0f);
+                    // If the width of the song is smaller than the screen width, make the scrollview the screen width
+                    // Otherwise make it expand to fit the song
+                    hsvlp.width = Math.max(newwidth, screenwidth);
 
-                        // If the width of the song is smaller than the screen width, make the scrollview the screen width
-                        // Otherwise make it expand to fit the song
-                        if (newwidth <= screenwidth) {
-                            hsvlp.width = screenwidth;
+                    //Keep the scrollview the height of the page
+                    hsvlp.height = screenheight;
 
-                        } else {
-                            hsvlp.width = newwidth;
-                        }
-
-                        //Keep the scrollview the height of the page
-                        hsvlp.height = screenheight;
-
-                        glideimage_ScrollView.setLayoutParams(hsvlp);
-                    }
+                    glideimage_ScrollView.setLayoutParams(hsvlp);
                 });
 
             } else {
@@ -8127,28 +7874,20 @@ public class StageMode extends AppCompatActivity implements
                 // The minimum height is for adding height to the bottom if it gets bigger
                 songbit.setMinimumHeight(newheight);
                 songscrollview.requestLayout();
-                songscrollview.post(new Runnable() {
+                songscrollview.post(() -> {
+                    songscrollview.scrollTo(0, 0);
+                    horizontalscrollview.scrollTo(0, 0);
 
-                    @Override
-                    public void run() {
-                        songscrollview.scrollTo(0, 0);
-                        horizontalscrollview.scrollTo(0, 0);
+                    // If the width of the song is smaller than the screen width, make the scrollview the screen width
+                    // Otherwise make it expand to fit the song
+                    hsvlp.width = Math.max(newwidth, screenwidth);
 
-                        // If the width of the song is smaller than the screen width, make the scrollview the screen width
-                        // Otherwise make it expand to fit the song
-                        if (newwidth <= screenwidth) {
-                            hsvlp.width = screenwidth;
-                        } else {
-                            hsvlp.width = newwidth;
-                        }
+                    //Keep the scrollview the height of the page
+                    hsvlp.height = screenheight;
 
-                        //Keep the scrollview the height of the page
-                        hsvlp.height = screenheight;
+                    songscrollview.setLayoutParams(hsvlp);
+                    songscrollview.requestLayout();
 
-                        songscrollview.setLayoutParams(hsvlp);
-                        songscrollview.requestLayout();
-
-                    }
                 });
             }
         }
@@ -8159,7 +7898,10 @@ public class StageMode extends AppCompatActivity implements
         try {
             int action = ev.getAction();
             // WOULD BE BETTER IF THIS WAS CALLED ON SOME KIND OF ONSCROLL LISTENER
-            scaleGestureDetector.onTouchEvent(ev);
+            // IV - Do not do pinch and zoom when autoscrolling - autoscroll code is not compatible with it
+            if (!StaticVariables.isautoscrolling) {
+                scaleGestureDetector.onTouchEvent(ev);
+            }
             if (action == MotionEvent.ACTION_MOVE) {// Set a runnable to check the scroll position
                 FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY();
                 delaycheckscroll.post(checkScrollPosition);
@@ -8174,7 +7916,6 @@ public class StageMode extends AppCompatActivity implements
                     if (action == MotionEvent.ACTION_UP && !FullscreenActivity.scrollbutton) {
                         toggleActionBar();
                         FullscreenActivity.wasscrolling = false;
-
                     } else {
                         try {
                             delayactionBarHide.removeCallbacks(hideActionBarRunnable);
@@ -8184,12 +7925,14 @@ public class StageMode extends AppCompatActivity implements
                     }
                     FullscreenActivity.wasscrolling = false;
                     FullscreenActivity.scrollbutton = false;
-                    FullscreenActivity.isManualDragging = false;
+                    // IV - Manual drag handled elsewhere
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // Temporarily pause any running autoscroll
+        pauseAutoscroll();
         return super.dispatchTouchEvent(ev);
     }
 
@@ -8244,9 +7987,8 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            OptionMenuListeners.updateMenuVersionNumber(StageMode.this, (TextView) findViewById(R.id.menu_version_bottom));
+            OptionMenuListeners.updateMenuVersionNumber(StageMode.this, findViewById(R.id.menu_version_bottom));
         }
-
     }
 
     // Open/close the drawers
@@ -8266,14 +8008,14 @@ public class StageMode extends AppCompatActivity implements
 
     // Edit song
     private void gesture2() {
-        if (StaticVariables.whattodo!=null && StaticVariables.whattodo.equals("editsongpdf")) {
+        if (FullscreenActivity.whattodo!=null && FullscreenActivity.whattodo.equals("editsongpdf")) {
             openFragment();
         } else if (FullscreenActivity.isPDF) {
-            StaticVariables.whattodo = "extractPDF";
+            FullscreenActivity.whattodo = "extractPDF";
             openFragment();
         } else if (justSong(StageMode.this)) {
             // Edit the song
-            StaticVariables.whattodo = "editsong";
+            FullscreenActivity.whattodo = "editsong";
             openFragment();
         }
     }
@@ -8300,18 +8042,8 @@ public class StageMode extends AppCompatActivity implements
         setActions.prepareSetList(StageMode.this,preferences);
         prepareOptionMenu();
 
-        // Show the current set
-        openMyDrawers("option");
-
-        // Hide the menus - 1 second after opening the Option menu,
-        // close it (1000ms total)
-        Handler optionMenuFlickClosed = new Handler();
-        optionMenuFlickClosed.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mDrawerLayout.closeDrawer(optionmenu);
-            }
-        }, 1000);
+        // IV - Option menu is not shown (original code was not showing set)
+        // IV - The function now behaves like other 'add to set' methods - no display of set
     }
 
     // Redraw the lyrics page
@@ -8326,7 +8058,6 @@ public class StageMode extends AppCompatActivity implements
         if (StaticVariables.isautoscrolling) {
             stopAutoScroll();
             StaticVariables.clickedOnAutoScrollStart = false;
-
         } else {
             if (StaticVariables.autoscrollok || preferences.getMyPreferenceBoolean(StageMode.this, "autoscrollUseDefaultTime", true)) {
                 StaticVariables.clickedOnAutoScrollStart = true;
@@ -8368,7 +8099,7 @@ public class StageMode extends AppCompatActivity implements
                         if (FullscreenActivity.isSong) {
                             gesture2();
                         } else {
-                            StaticVariables.whattodo = "extractPDF";
+                            FullscreenActivity.whattodo = "extractPDF";
                             openFragment();
                         }
                         break;
@@ -8429,7 +8160,7 @@ public class StageMode extends AppCompatActivity implements
             if (oktoregistergesture()) {
 
                 // Now find out which gesture we've gone for
-                switch (preferences.getMyPreferenceInt(StageMode.this,"gestureScreenLongPress",3)) {
+                switch (preferences.getMyPreferenceInt(StageMode.this,"gestureScreenLongPress",0)) {
                     case 1:
                         gesture1();  // Open/close the drawers
                         break;
@@ -8479,8 +8210,9 @@ public class StageMode extends AppCompatActivity implements
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
                                 float distanceY) {
-            FullscreenActivity.wasscrolling = true;
-            FullscreenActivity.isManualDragging = true;
+            // IV wasscrolling and isManualDragging are dealt with elsewhere
+            // Temporarily pause any running autoscroll
+            pauseAutoscroll();
             return true;
         }
 
@@ -8511,6 +8243,8 @@ public class StageMode extends AppCompatActivity implements
 
                     // Trying to move to the next item
                     try {
+                        // IV - Flag this as a swipe
+                        StaticVariables.setMoveDirection = "swipe";
                         setForwardButton.performClick();
                         //goToNextItem();
                     } catch (Exception e) {
@@ -8529,6 +8263,8 @@ public class StageMode extends AppCompatActivity implements
 
                     // Go to previous item
                     try {
+                        // IV - Flag this as a swipe
+                        StaticVariables.setMoveDirection = "swipe";
                         setBackButton.performClick();
                         //goToPreviousItem();
                     } catch (Exception e) {
@@ -8549,9 +8285,9 @@ public class StageMode extends AppCompatActivity implements
     public void gesture7() {
         DoVibrate.vibrate(StageMode.this, 50);
         StaticVariables.metronomeok = Metronome.isMetronomeValid();
-        if (StaticVariables.metronomeok) {
-            StaticVariables.clickedOnMetronomeStart = !StaticVariables.metronomeonoff.equals("on");
-            Metronome.startstopMetronome(StageMode.this, StageMode.this,
+        if (StaticVariables.metronomeok || StaticVariables.clickedOnMetronomeStart) {
+            // IV - clickedOnMetronomeStart is set elsewhere (Metronome class)
+            Metronome.startstopMetronome(StageMode.this,
                     preferences.getMyPreferenceBoolean(StageMode.this, "metronomeShowVisual", false),
                     defmetronomecolor, preferences.getMyPreferenceString(StageMode.this, "metronomePan", "C"),
                     preferences.getMyPreferenceFloat(StageMode.this, "metronomeVol", 0.5f),
@@ -8624,6 +8360,18 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    // IV - playPad no longer uses a pad number parameter as it works out which player to use
+    private void playPad() {
+        doCancelAsyncTask(play_pads);
+        play_pads = new PlayPads();
+        try {
+            padcurrentTime_TextView.setText("0:00");
+            play_pads.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @SuppressLint("StaticFieldLeak")
     private class PlayPads extends AsyncTask<Void, Void, Integer> {
         int which;
@@ -8631,9 +8379,8 @@ public class StageMode extends AppCompatActivity implements
         boolean validlinkaudio;
         boolean error;
 
-        PlayPads(Integer w) {
-            which = w;
-        }
+        // IV - No pad parameter as the logic of which pad to start is now internal to the function
+        PlayPads() {}
 
         @Override
         protected Integer doInBackground(Void... voids) {
@@ -8654,13 +8401,16 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         protected void onPostExecute(Integer i) {
+            // Makes sure pads are in a known state
+            fadeoutPad();
+
+            // Default to 0, overridden if a pad is prepareAsync'd
+            FullscreenActivity.whichPad = 0;
             try {
                 if (!cancelled) {
                     if (StaticVariables.mPadFile.equals(getResources().getString(R.string.pad_auto)) ||
                             StaticVariables.mPadFile.equals("")) {
-
                         boolean custompad;
-                        StaticVariables.padson = true;
                         if (StaticVariables.pad_filename != null && StaticVariables.mKey != null) {
                             custompad = !StaticVariables.pad_filename.endsWith("null") && StaticVariables.pad_filename.startsWith("custom_");
                             AssetFileDescriptor afd = null;
@@ -8678,63 +8428,45 @@ public class StageMode extends AppCompatActivity implements
                                     afd = getResources().openRawResourceFd(path);
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                    which = 0;
                                 }
                             }
 
-                            if (which == 1) {
+                            // IV - Do work IF we have a pad to start
+                            if (padpath != null || afd != null) {
                                 try {
                                     PadFunctions.getPad1Status();
-                                    if (StaticVariables.pad1Playing) {
-                                        FullscreenActivity.mPlayer1.stop();
-                                    }
-                                    FullscreenActivity.mPlayer1.reset();
-                                    FullscreenActivity.mPlayer1.setOnPreparedListener(new Player1Prepared());
-                                    if (custompad) {
-                                        FullscreenActivity.mPlayer1.setDataSource(StageMode.this,Uri.parse(padpath));
-                                    } else {
-                                        FullscreenActivity.mPlayer1.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                                        afd.close();
-                                    }
-
-                                    FullscreenActivity.mPlayer1.prepareAsync();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    StaticVariables.fadeWhichPad = 0;
-                                    FullscreenActivity.whichPad = 0;
-                                    killPad();
-                                }
-                            } else if (which == 2) {
-                                try {
                                     PadFunctions.getPad2Status();
-                                    if (StaticVariables.pad2Playing) {
-                                        FullscreenActivity.mPlayer2.stop();
-                                    }
-                                    FullscreenActivity.mPlayer2.reset();
-                                    FullscreenActivity.mPlayer2.setOnPreparedListener(new Player2Prepared());
-                                    if (custompad) {
-                                        FullscreenActivity.mPlayer2.setDataSource(StageMode.this,Uri.parse(padpath));
+                                    if (!StaticVariables.pad1Playing || StaticVariables.pad2Playing) {
+                                        FullscreenActivity.whichPad = 1;
+                                        FullscreenActivity.mPlayer1.stop();
+                                        FullscreenActivity.mPlayer1.reset();
+                                        StaticVariables.pad1Fading = false;
+                                        FullscreenActivity.mPlayer1.setOnPreparedListener(new Player1Prepared());
+                                        if (custompad) {
+                                            FullscreenActivity.mPlayer1.setDataSource(StageMode.this, Uri.parse(padpath));
+                                        } else {
+                                            FullscreenActivity.mPlayer1.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                                            afd.close();
+                                        }
+                                        FullscreenActivity.mPlayer1.prepareAsync();
                                     } else {
-                                        FullscreenActivity.mPlayer2.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                                        afd.close();
+                                        FullscreenActivity.whichPad = 2;
+                                        FullscreenActivity.mPlayer2.stop();
+                                        FullscreenActivity.mPlayer2.reset();
+                                        StaticVariables.pad2Fading = false;
+                                        FullscreenActivity.mPlayer2.setOnPreparedListener(new Player2Prepared());
+                                        if (custompad) {
+                                            FullscreenActivity.mPlayer2.setDataSource(StageMode.this, Uri.parse(padpath));
+                                        } else {
+                                            FullscreenActivity.mPlayer2.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                                            afd.close();
+                                        }
+                                        FullscreenActivity.mPlayer2.prepareAsync();
                                     }
-                                    FullscreenActivity.mPlayer2.prepareAsync();
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                    StaticVariables.fadeWhichPad = 0;
-                                    FullscreenActivity.whichPad = 0;
-                                    killPad();
                                 }
                             }
-
-                        } else {
-                            // No key specified in the song - play nothing
-                            StaticVariables.myToastMessage = getResources().getString(R.string.pad_error);
-                            StaticVariables.padson = false;
-                            error = true;
-                            StaticVariables.fadeWhichPad = 0;
-                            FullscreenActivity.whichPad = 0;
-                            killPad();
                         }
                     }
 
@@ -8743,21 +8475,19 @@ public class StageMode extends AppCompatActivity implements
                         try {
                             StorageAccess storageAccess = new StorageAccess();
                             Uri uri = storageAccess.fixLocalisedUri(StageMode.this, preferences, StaticVariables.mLinkAudio);
-                            if (which == 1) {
-                                PadFunctions.getPad1Status();
-                                if (StaticVariables.pad1Playing) {
-                                    FullscreenActivity.mPlayer1.stop();
-                                }
+                            if (!StaticVariables.pad1Playing || StaticVariables.pad2Playing) {
+                                FullscreenActivity.whichPad = 1;
+                                FullscreenActivity.mPlayer1.stop();
                                 FullscreenActivity.mPlayer1.reset();
+                                StaticVariables.pad1Fading = false;
                                 FullscreenActivity.mPlayer1.setOnPreparedListener(new Player1Prepared());
                                 FullscreenActivity.mPlayer1.setDataSource(StageMode.this, uri);
                                 FullscreenActivity.mPlayer1.prepareAsync();
-                            } else if (which == 2) {
-                                PadFunctions.getPad2Status();
-                                if (StaticVariables.pad2Playing) {
-                                    FullscreenActivity.mPlayer2.stop();
-                                }
+                            } else {
+                                FullscreenActivity.whichPad = 2;
+                                FullscreenActivity.mPlayer2.stop();
                                 FullscreenActivity.mPlayer2.reset();
+                                StaticVariables.pad2Fading = false;
                                 FullscreenActivity.mPlayer2.setOnPreparedListener(new Player2Prepared());
                                 FullscreenActivity.mPlayer2.setDataSource(StageMode.this, uri);
                                 FullscreenActivity.mPlayer2.prepareAsync();
@@ -8772,27 +8502,19 @@ public class StageMode extends AppCompatActivity implements
                             // Problem with link audio so don't use it
                             StaticVariables.myToastMessage = getResources().getString(R.string.link_audio) + " - " +
                                     getResources().getString(R.string.file_type_unknown);
-                            StaticVariables.padson = false;
                             error = true;
                         }
                     }
-
-                    // No pads wanted
-                    if (StaticVariables.mPadFile.equals(getResources().getString(R.string.off)) && StaticVariables.padson) {
-                        // Pad shouldn't play
-                        StaticVariables.padson = false;
-                        StaticVariables.fadeWhichPad = 0;
-                        FullscreenActivity.whichPad = 0;
-                        killPad();
-                    }
-
+                    // IV - As we start from fading all pads we do not need fade code here
                     if (error) {
-                        _ShowToast.showToast(StageMode.this);
+                        ShowToast.showToast(StageMode.this);
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            StaticVariables.clickedOnPadStart = !(FullscreenActivity.whichPad == 0);
+            which = FullscreenActivity.whichPad;
         }
     }
     @Override
@@ -8880,12 +8602,28 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void selectAFileUri(String s) {
-        Intent intent = new Intent(this, FolderPicker.class);
-        intent.putExtra("title", s);
-        intent.putExtra("pickFiles", true);
-        if (StaticVariables.uriTree!=null) {
-            intent.putExtra("location", StaticVariables.uriTree.getPath());
+        // Replace the FolderPicker class for Lollopop+
+        Intent intent;
+        // Start location
+        Uri uri = storageAccess.getUriForItem(StageMode.this,preferences,"","","");
+        Log.d("d","Start uri="+uri);
+        if (storageAccess.lollipopOrLater()) {
+            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("* / *"); // TODO remove the space before and after / - current;y can't due to commenting of entire file
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri);
+            }
+
+        } else {
+            intent = new Intent(this, FolderPicker.class);
+            intent.putExtra("title", s);
+            intent.putExtra("pickFiles", true);
+            if (StaticVariables.uriTree!=null) {
+                intent.putExtra("location", StaticVariables.uriTree.getPath());
+            }
         }
         startActivityForResult(intent, StaticVariables.REQUEST_FILE_CHOOSER);
     }
-}*/
+}
+*/

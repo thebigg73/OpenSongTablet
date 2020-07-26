@@ -22,7 +22,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.databinding.FragmentPerformanceBinding;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -35,6 +34,7 @@ import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.SongXML;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
+import com.garethevans.church.opensongtablet.databinding.FragmentPerformanceBinding;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -63,7 +63,7 @@ public class PerformanceFragment extends Fragment {
             lineSpacing;
     private int swipeMinimumDistance, swipeMaxDistanceYError, swipeMinimumVelocity;
     private boolean trimLines, trimSections, addSectionSpace, songAutoScaleColumnMaximise,
-            songAutoScaleOverrideFull, songAutoScaleOverrideWidth;
+            songAutoScaleOverrideFull, songAutoScaleOverrideWidth, boldChordHeading;
     static boolean wasScaling, R2L, loadNextSong, loadPrevSong;
     private static int screenHeight;
     public static int songViewWidth, songViewHeight, screenWidth;
@@ -158,6 +158,7 @@ public class PerformanceFragment extends Fragment {
         trimLines = preferences.getMyPreferenceBoolean(getActivity(),"trimLines",true);
         lineSpacing = preferences.getMyPreferenceFloat(getActivity(),"lineSpacing",0.1f);
         trimSections = preferences.getMyPreferenceBoolean(getActivity(),"trimSections",true);
+        boldChordHeading = preferences.getMyPreferenceBoolean(getActivity(), "displayBoldChordsHeadings", false);
         addSectionSpace = preferences.getMyPreferenceBoolean(getActivity(), "addSectionSpace", true);
         autoScale = preferences.getMyPreferenceString(getActivity(),"songAutoScale","W");
         songAutoScaleColumnMaximise = preferences.getMyPreferenceBoolean(getActivity(),"songAutoScaleColumnMaximise",true);
@@ -206,7 +207,7 @@ public class PerformanceFragment extends Fragment {
         // Get the song in the layout
         sectionViews = processSong.setSongInLayout(getActivity(),preferences, trimSections, addSectionSpace,
                 trimLines, lineSpacing, colorMap, scaleHeadings, scaleChords, scaleComments,
-                StaticVariables.mLyrics);
+                StaticVariables.mLyrics, boldChordHeading);
 
         // We now have the 1 column layout ready, so we can set the view observer to measure once drawn
         setUpVTO();

@@ -20,10 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
 
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -37,7 +33,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         return frag;
     }
 
-    private SwitchCompat pedalToggleScrollBeforeSwipeButton, autoRepeatLongPress_Switch;
+    private SwitchCompat pedalToggleScrollBeforeSwipeButton, autoRepeatLongPress_Switch, pedalToggleWarnBeforeSwipeButton;
     private SeekBar autoRepeatCount_SeekBar;
     private Button pedal1button, pedal2button, pedal3button, pedal4button, pedal5button, pedal6button;
     private TextView pedal1text, pedal2text, pedal3text, pedal4text, pedal5text, pedal6text, autoRepeatCount_TextView;
@@ -46,7 +42,7 @@ public class PopUpPedalsFragment extends DialogFragment {
     private int keyRepeatCount = 20;
     private String keyRepeatCountText = "20";
     private ArrayList<String> availableactions;
-    private _Preferences preferences;
+    private Preferences preferences;
 
     private int assignWhich = -1;
 
@@ -70,7 +66,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                _CustomAnimations.animateFAB(closeMe,getActivity());
+                CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -78,7 +74,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new _Preferences();
+        preferences = new Preferences();
 
         // Initialise the views
         initialiseViews(V);
@@ -92,7 +88,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         // Set AirTurnMode actions
         airTurnModeActions();
 
-        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -124,6 +120,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         pedallong5choice = V.findViewById(R.id.pedallong5choice);
         pedallong6choice = V.findViewById(R.id.pedallong6choice);
         pedalToggleScrollBeforeSwipeButton = V.findViewById(R.id.pedalToggleScrollBeforeSwipeButton);
+        pedalToggleWarnBeforeSwipeButton = V.findViewById(R.id.pedalToggleWarnBeforeSwipeButton);
         autoRepeatLongPress_Switch = V.findViewById(R.id.autoRepeatLongPress_Switch);
         autoRepeatCount_SeekBar = V.findViewById(R.id.autoRepeatCount_SeekBar);
         autoRepeatCount_TextView = V.findViewById(R.id.autoRepeatCount_TextView);
@@ -651,7 +648,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-               saveAction(which, i);
+                saveAction(which, i);
             }
 
             @Override
@@ -732,12 +729,9 @@ public class PopUpPedalsFragment extends DialogFragment {
 
     private void resetButtons() {
         pedalToggleScrollBeforeSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"pedalScrollBeforeMove",true));
-        pedalToggleScrollBeforeSwipeButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(),"pedalScrollBeforeMove",isChecked);
-            }
-        });
+        pedalToggleScrollBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"pedalScrollBeforeMove",isChecked));
+        pedalToggleWarnBeforeSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"pedalShowWarningBeforeMove",false));
+        pedalToggleWarnBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"pedalShowWarningBeforeMove",isChecked));
         autoRepeatLongPress_Switch.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"airTurnMode",false));
         keyRepeatCount = preferences.getMyPreferenceInt(getActivity(),"keyRepeatCount",20);
         keyRepeatCountText = "" + keyRepeatCount;
@@ -796,7 +790,7 @@ public class PopUpPedalsFragment extends DialogFragment {
                     if (keyCode == KeyEvent.KEYCODE_BACK && assignWhich>-1) {
                         //User has pressed the back key - not allowed!!!!
                         StaticVariables.myToastMessage = getResources().getString(R.string.no);
-                        _ShowToast.showToast(getActivity());
+                        ShowToast.showToast(getActivity());
                     } else if (keyCode == KeyEvent.KEYCODE_BACK && assignWhich==-1) {
                         dismiss();
                         return false;

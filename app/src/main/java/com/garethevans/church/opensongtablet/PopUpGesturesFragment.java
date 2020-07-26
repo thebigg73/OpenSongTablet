@@ -4,12 +4,6 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +11,11 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -27,7 +26,7 @@ public class PopUpGesturesFragment extends DialogFragment {
     private Spinner screenDoubleTap;
     private Spinner screenLongPress;
 
-    private _Preferences preferences;
+    private Preferences preferences;
 
     static PopUpGesturesFragment newInstance() {
         PopUpGesturesFragment frag;
@@ -63,7 +62,7 @@ public class PopUpGesturesFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                _CustomAnimations.animateFAB(closeMe,getActivity());
+                CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -72,13 +71,13 @@ public class PopUpGesturesFragment extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                _CustomAnimations.animateFAB(saveMe,getActivity());
+                CustomAnimations.animateFAB(saveMe,getActivity());
                 saveMe.setEnabled(false);
                 doSave();
             }
         });
 
-        preferences = new _Preferences();
+        preferences = new Preferences();
 
         // Initialise the views
         screenDoubleTap = V.findViewById(R.id.screenDoubleTap);
@@ -108,9 +107,9 @@ public class PopUpGesturesFragment extends DialogFragment {
 
         // Set the current choices
         setSpinnerVal(screenDoubleTap, preferences.getMyPreferenceInt(getActivity(),"gestureScreenDoubleTap",2));
-        setSpinnerVal(screenLongPress, preferences.getMyPreferenceInt(getActivity(),"gestureScreenLongPress",3));
+        setSpinnerVal(screenLongPress, preferences.getMyPreferenceInt(getActivity(),"gestureScreenLongPress",0));
 
-        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.drawerlayout.widget.DrawerLayout xmlns:tools="http://schemas.android.com/tools"
+    <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -56,28 +57,28 @@
                 android:clipToPadding="false"
                 android:visibility="gone">
 
-            <ScrollView
-                android:id="@+id/glideimage_ScrollView"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:clipChildren="false"
-                android:clipToPadding="false">
-
-                <FrameLayout
-                    android:id="@+id/glideimage_FrameLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                <ScrollView
+                    android:id="@+id/glideimage_ScrollView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:clipChildren="false"
                     android:clipToPadding="false">
-                <ImageView
-                    android:id="@+id/glideimage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/image"
-                    android:visibility="visible" />
-                </FrameLayout>
 
-            </ScrollView>
+                    <FrameLayout
+                        android:id="@+id/glideimage_FrameLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipChildren="false"
+                        android:clipToPadding="false">
+                        <ImageView
+                            android:id="@+id/glideimage"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/image"
+                            android:visibility="visible" />
+                    </FrameLayout>
+
+                </ScrollView>
             </HorizontalScrollView>
 
             <RelativeLayout
@@ -167,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/mytoolbar"
                 android:layout_centerHorizontal="true"
-                android:layout_margin="16dp"
+                android:layout_margin="30dp"
                 android:alpha="0.4"
                 android:src="@drawable/ic_arrow_up_white_36dp"
                 android:visibility="gone"
@@ -180,7 +181,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_margin="16dp"
+                android:layout_margin="30dp"
                 android:alpha="0.4"
                 android:src="@drawable/ic_arrow_down_white_36dp"
                 android:visibility="gone"
@@ -193,7 +194,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:layout_margin="16dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginBottom="30dp"
                 android:alpha="0.4"
                 android:src="@drawable/ic_arrow_left_white_36dp"
                 android:visibility="invisible"
@@ -206,7 +208,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
-                android:layout_margin="16dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="30dp"
                 android:alpha="0.4"
                 android:src="@drawable/ic_arrow_right_white_36dp"
                 android:visibility="invisible"
@@ -220,8 +223,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@+id/padProgress"
-                android:layout_above="@+id/setForwardButton"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="166dp"
+                android:layout_marginEnd="17dp"
+                android:layout_marginBottom="100dp"
                 android:visibility="visible" />
 
             <TextView
@@ -231,15 +236,15 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true" />
 
-            <include
+            <!--<include
                 android:id="@+id/mytoolbar"
-                layout="@layout/_toolbar"
+                layout="@layout/toolbar"
                 android:clipChildren="false"
-                android:clipToPadding="false" />
+                android:clipToPadding="false" />-->
 
         </RelativeLayout>
 
-        <include layout="@layout/_songmenu" />
+        <!--<include layout="@layout/songmenu" />-->
 
         <include layout="@layout/optionmenu" />
 

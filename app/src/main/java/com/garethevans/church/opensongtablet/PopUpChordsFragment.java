@@ -8,11 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ChordDirectory;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import android.util.Log;
@@ -61,6 +56,7 @@ public class PopUpChordsFragment extends DialogFragment {
     }
 
     private TableLayout chordimageshere;
+    private Button customchordedit;
     private ArrayList<String> unique_chords;
     private AsyncTask<Object,Void,String> prepare_chords;
 
@@ -69,7 +65,7 @@ public class PopUpChordsFragment extends DialogFragment {
             mx, m0, m1, m2, m3, m4, m5, rx, r0, r1, r2, r3, r4, r5;
 
     private ProcessSong processSong;
-    private _Preferences preferences;
+    private Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,12 +86,19 @@ public class PopUpChordsFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_page_chords, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(requireActivity().getResources().getString(R.string.chords));
+
+        // Title changed to reflect Native or Capo chord display
+        if (StaticVariables.showCapoInChordsFragment) {
+            title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.showcapo));
+        } else {
+            title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.showchords));
+        }
+
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                _CustomAnimations.animateFAB(closeMe,getActivity());
+                CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -104,7 +107,7 @@ public class PopUpChordsFragment extends DialogFragment {
         saveMe.hide();
 
         processSong = new ProcessSong();
-        preferences = new _Preferences();
+        preferences = new Preferences();
 
         // Initialise the views
         Spinner popupchord_instrument = V.findViewById(R.id.popupchord_instrument);
@@ -140,11 +143,11 @@ public class PopUpChordsFragment extends DialogFragment {
         r3 = getActivity().getResources().getDrawable(R.drawable.chord_r_3);
         r4 = getActivity().getResources().getDrawable(R.drawable.chord_r_4);
         r5 = getActivity().getResources().getDrawable(R.drawable.chord_r_5);
-        Button customchordedit = V.findViewById(R.id.customchordedit);
+        customchordedit = V.findViewById(R.id.customchordedit);
         customchordedit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StaticVariables.whattodo = "customchords";
+                FullscreenActivity.whattodo = "customchords";
                 mListener.openFragment();
                 dismiss();
             }
@@ -215,9 +218,8 @@ public class PopUpChordsFragment extends DialogFragment {
 
             }
         });
-        prepareChords();
 
-        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -254,6 +256,20 @@ public class PopUpChordsFragment extends DialogFragment {
 
             // Initialise the chords in the song
             StaticVariables.allchords = processSong.getAllChords(StaticVariables.mLyrics);
+
+            // If we are showing Capo chords - transpose
+            if (StaticVariables.showCapoInChordsFragment) {
+                try {
+                    Transpose transpose;
+                    transpose = new Transpose();
+                    StaticVariables.temptranspChords = StaticVariables.allchords;
+                    transpose.capoTranspose(getActivity(), preferences);
+                    StaticVariables.allchords = StaticVariables.temptranspChords;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
             while (StaticVariables.allchords.contains("  ")) {
                 StaticVariables.allchords = StaticVariables.allchords.replace("  "," ");
             }
@@ -967,6 +983,7 @@ public class PopUpChordsFragment extends DialogFragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            StaticVariables.showCapoInChordsFragment = false;
         }
     }
 
@@ -985,5 +1002,4 @@ public class PopUpChordsFragment extends DialogFragment {
         this.dismiss();
     }
 
-}
-*/
+}*/

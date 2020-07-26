@@ -5,10 +5,6 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.SwitchCompat;
@@ -32,9 +28,10 @@ public class PopUpPageButtonsFragment extends DialogFragment {
     }
 
     public interface MyInterface {
-        void pageButtonAlpha(String s);
-        void groupPageButtons();
         void openFragment();
+        // Used for setup and display of all buttons
+        void setupPageButtons();
+        void onScrollAction();
     }
 
     private MyInterface mListener;
@@ -56,7 +53,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
     private SwitchCompat extraButtonGroup_Switch;
     private SwitchCompat customButtonGroup_Switch;
 
-    private _Preferences preferences;
+    private Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,7 +78,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                _CustomAnimations.animateFAB(closeMe,getActivity());
+                CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -89,7 +86,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new _Preferences();
+        preferences = new Preferences();
 
         // Initialise the views
         SwitchCompat pageButtonSize_Switch = V.findViewById(R.id.pageButtonSize_Switch);
@@ -155,7 +152,8 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         custom3Visible_Switch.setText(c3);
         custom4Visible_Switch.setText(c4);
 
-        enableordisablegrouping();
+        // IV - collapsing and expanding groups means a block is no longer needed
+        //enableordisablegrouping();
 
         // Set the listeners
         pageButtonSize_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -173,7 +171,6 @@ public class PopUpPageButtonsFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 preferences.setMyPreferenceBoolean(getActivity(),"pageButtonGroupMain", b);
-                enableordisablegrouping();
                 updateDisplay();
             }
         });
@@ -197,12 +194,14 @@ public class PopUpPageButtonsFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 saveValue("pageButtonGroupExtra",b);
+                updateDisplay();
             }
         });
         customButtonGroup_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 saveValue("pageButtonGroupCustom",b);
+                updateDisplay();
             }
         });
         setVisible_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -304,14 +303,14 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         showPageButtons.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StaticVariables.whattodo = "groupedpagebuttons";
+                FullscreenActivity.whattodo = "groupedpagebuttons";
                 dismiss();
                 if (mListener!=null) {
                     mListener.openFragment();
                 }
             }
         });
-        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -324,21 +323,18 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         return preferences.getMyPreferenceBoolean(getActivity(),value,fallback);
     }
 
-    private void enableordisablegrouping() {
-        extraButtonGroup_Switch.setEnabled(!getValue("pageButtonGroupMain",false));
-        customButtonGroup_Switch.setEnabled(!getValue("pageButtonGroupMain",false));
-    }
-
+    // IV - enableordisablegrouping() no longer needed with expanding and contracting button groups
     private void updateDisplay() {
         if (mListener!=null) {
-            mListener.groupPageButtons();
-            mListener.pageButtonAlpha("");
+            // IV - setup is needed as the all group button needs to change function
+            mListener.setupPageButtons();
+            mListener.onScrollAction();
         }
     }
 
     @Override
     public void onDismiss(final DialogInterface dialog) {
-       updateDisplay();
+        updateDisplay();
     }
 
     @Override
@@ -346,5 +342,4 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         this.dismiss();
     }
 
-}
-*/
+}*/

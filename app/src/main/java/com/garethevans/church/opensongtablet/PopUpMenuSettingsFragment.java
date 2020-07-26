@@ -5,9 +5,6 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.SwitchCompat;
@@ -56,7 +53,7 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
     private TextView alphabeticalSize_TextView;
     private LinearLayout alphabeticalSizeGroup;
     private String scale;
-    private _Preferences preferences;
+    private Preferences preferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,7 +75,7 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                _CustomAnimations.animateFAB(closeMe,getActivity());
+                CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
                 dismiss();
             }
@@ -86,7 +83,7 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        preferences = new _Preferences();
+        preferences = new Preferences();
 
         // Initialise the views
         scalemenu_SeekBar = V.findViewById(R.id.scalemenu_SeekBar);
@@ -136,7 +133,8 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         gesturesMenuSwipeButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(getActivity(),"swipeForMenus",true);
+                // IV - Was previous set to true - changed to set from the button
+                preferences.setMyPreferenceBoolean(getActivity(),"swipeForMenus",b);
                 if (mListener!=null) {
                     mListener.toggleDrawerSwipe();
                 }
@@ -184,7 +182,7 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
             }
         });
 
-        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }

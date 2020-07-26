@@ -1,31 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="end|center_vertical"
-    android:layout_alignParentEnd="true"
-    android:background="#888888"
+    android:layout_centerHorizontal="false"
     android:alpha="0.5"
-    android:paddingLeft="4dp"
-    android:paddingRight="4dp"
-    android:paddingBottom="0dp"
-    android:paddingTop="0dp">
+    android:background="#888888"
+    android:orientation="horizontal"
+    android:padding="2dp">
+
+    <ImageView
+        android:id="@+id/pad"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_capo_white_36dp"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/capoinfo"
         style="@style/MyInfoText"
-        android:drawableStart="@drawable/ic_capo_white_36dp"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical|center_horizontal"/>
+        android:layout_gravity="center_vertical"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/capoinfonewkey"
         style="@style/MyInfoText"
-        android:gravity="center_vertical|center_horizontal"/>
-
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="2dp"
+        android:textStyle="bold" />
 </LinearLayout>

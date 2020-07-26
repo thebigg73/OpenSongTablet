@@ -45,6 +45,17 @@
                 android:layout_margin="4dp"
                 app:showText="false" />
 
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/pedalToggleWarnBeforeSwipeButton"
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/warn_before_changing_song"
+                android:theme="@style/MySwitch"
+                android:background="@drawable/section_box"
+                android:layout_margin="4dp"
+                app:showText="false" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -177,11 +188,11 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     style="@style/MySpinner"/><TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    style="@style/MyInfoText"
-                    android:text="@string/longpress"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                style="@style/MyInfoText"
+                android:text="@string/longpress"/>
                 <Spinner
                     android:id="@+id/pedallong3choice"
                     android:layout_width="match_parent"
@@ -350,75 +361,75 @@
                     android:text="@string/footpedal"/>
             </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/section_box"
-            android:layout_margin="4dp"
-            android:orientation="vertical">
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/MyHeadingText"
-                android:text="@string/airTurn"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                style="@style/MyInfoText"
-                android:text="@string/autoRepeatRationale" />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/autoRepeatLongPress_Switch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:background="@drawable/section_box"
                 android:layout_margin="4dp"
-                android:drawableLeft="@drawable/ic_pedal_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_pedal_white_36dp"
-                android:text="@string/airTurnLongPress"
-                style="@style/MyWhiteHeadingText"
-                android:theme="@style/MySwitch"
-                app:showText="false"
-                tools:ignore="RtlHardcoded" />
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginBottom="4dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="4dp"
-                style="@style/MyWhiteHeadingText"
-                android:text="@string/autoRepeatCount"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MyHeadingText"
+                    android:text="@string/airTurn"/>
 
-            <SeekBar
-                android:id="@+id/autoRepeatCount_SeekBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/apptheme_scrubber_primary_holo"
-                android:max="300"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    style="@style/MyInfoText"
+                    android:text="@string/autoRepeatRationale" />
 
-            <TextView
-                android:id="@+id/autoRepeatCount_TextView"
-                style="@style/MyInfoText"
-                android:layout_gravity="end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal" />
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/autoRepeatLongPress_Switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:drawableLeft="@drawable/ic_pedal_white_36dp"
+                    android:drawablePadding="4dp"
+                    android:drawableStart="@drawable/ic_pedal_white_36dp"
+                    android:text="@string/airTurnLongPress"
+                    style="@style/MyWhiteHeadingText"
+                    android:theme="@style/MySwitch"
+                    app:showText="false"
+                    tools:ignore="RtlHardcoded" />
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="4dp"
+                    style="@style/MyWhiteHeadingText"
+                    android:text="@string/autoRepeatCount"/>
+
+                <SeekBar
+                    android:id="@+id/autoRepeatCount_SeekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:max="300"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+                <TextView
+                    android:id="@+id/autoRepeatCount_TextView"
+                    style="@style/MyInfoText"
+                    android:layout_gravity="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

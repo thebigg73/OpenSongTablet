@@ -1,40 +1,37 @@
 /*
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
-
 class Metronome {
-	
-	private double bpm;
-	private short beat, noteValue;
-	private int silence;
-	private float metrovol;
 
-	private double beatSound, sound;
+    private double bpm;
+    private short beat, noteValue;
+    private int silence;
+    private float metrovol;
+
+    private double beatSound, sound;
     private boolean play = true;
-	
-	private final AudioGenerator audioGenerator = new AudioGenerator(8000);
+
+    private final AudioGenerator audioGenerator = new AudioGenerator(8000);
     private double[] soundTickArray, soundTockArray, silenceSoundArray;
-	private int currentBeat = 1;
-	private int runningBeatCount;
-	static private int maxBeatCount;
+    private int currentBeat = 1;
+    private int runningBeatCount;
+    static private int maxBeatCount;
 
     // Variables for metronome to work
     // Keeping them as public/static to allow them to be accessed without the dialogfragment
     static MetronomeAsyncTask metroTask;
     static VisualMetronomeAsyncTask visualMetronome;
 
-	private Metronome(String pan, float vol) {
-		audioGenerator.createPlayer(pan,vol);
-	}
-	
-	private void calcSilence() {
+    private Metronome(String pan, float vol) {
+        audioGenerator.createPlayer(pan,vol);
+    }
+
+    private void calcSilence() {
 
         //TEST
         beat = getBeat();
@@ -77,14 +74,14 @@ class Metronome {
         }
 
         soundTickArray = new double[tick1];
-		soundTockArray = new double[tick1];
-		if (silence>10000) {
+        soundTockArray = new double[tick1];
+        if (silence>10000) {
             silence = 10000;
         }
-		silenceSoundArray = new double[this.silence];
+        silenceSoundArray = new double[this.silence];
         double[] tick;
         double[] tock;
-		if (StaticVariables.mTimeSig.equals("1/4")) {
+        if (StaticVariables.mTimeSig.equals("1/4")) {
             tick = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, beatSound/ resolutionmeter);
             tock = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, beatSound/ resolutionmeter);
 
@@ -92,81 +89,83 @@ class Metronome {
             tick = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, beatSound/ resolutionmeter);
             tock = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, sound/ resolutionmeter);
         }
-		for(int i = 0; i< tick1; i++) {
-			soundTickArray[i] = tick[i];
-			soundTockArray[i] = tock[i];
-		}
-		for(int i=0;i<silence;i++)
-			silenceSoundArray[i] = 0;
-	}
-	
-	private void play(String pan, float vol) {
-		calcSilence();
-		do {
-			if(currentBeat == 1) {
-				audioGenerator.writeSound(pan,vol,soundTockArray);
-			} else {
-				audioGenerator.writeSound(pan,vol,soundTickArray);
-			}
-			audioGenerator.writeSound(pan,vol,silenceSoundArray);
+        for(int i = 0; i< tick1; i++) {
+            soundTickArray[i] = tick[i];
+            soundTockArray[i] = tock[i];
+        }
+        for(int i=0;i<silence;i++)
+            silenceSoundArray[i] = 0;
+    }
 
-			currentBeat++;
-			runningBeatCount++;
-			if (maxBeatCount>0 && runningBeatCount>=maxBeatCount) { // This is if the user has specified max metronome time
-			    play=false;
-                StaticVariables.metronomeonoff = "off";
+    private void play(String pan, float vol) {
+        calcSilence();
+        do {
+            if(currentBeat == 1) {
+                audioGenerator.writeSound(pan,vol,soundTockArray);
+            } else {
+                audioGenerator.writeSound(pan,vol,soundTickArray);
             }
-			if(currentBeat > beat)
-				currentBeat = 1;
-		} while(play);
-	}
-	
-	private void stop() {
-		play = false;
-		audioGenerator.destroyAudioTrack();
-	}
+            audioGenerator.writeSound(pan,vol,silenceSoundArray);
 
-	private double getBpm() {
-		return PopUpMetronomeFragment.bpm;
-	}
+            currentBeat++;
+            runningBeatCount++;
+            if (maxBeatCount>0 && runningBeatCount>=maxBeatCount) { // This is if the user has specified max metronome time
+                play=false;
+                StaticVariables.metronomeonoff = "off";
+                // IV - This variable is a state indicator set in this function only
+                StaticVariables.clickedOnMetronomeStart = false;
+            }
+            if(currentBeat > beat)
+                currentBeat = 1;
+        } while(play);
+    }
 
-	private void setBpm(int bpm) {
-		this.bpm = bpm;
-	}
+    private void stop() {
+        play = false;
+        audioGenerator.destroyAudioTrack();
+    }
 
-	private short getNoteValue() {
-		return FullscreenActivity.noteValue;
-	}
+    private double getBpm() {
+        return PopUpMetronomeFragment.bpm;
+    }
 
-	private void setNoteValue(short noteValue) {
-		this.noteValue = noteValue;
-	}
+    private void setBpm(int bpm) {
+        this.bpm = bpm;
+    }
 
-	private short getBeat() {
-		return FullscreenActivity.beats;
-	}
-	private void setBeat(short beat_set) {
-		this.beat = beat_set;
-	}
+    private short getNoteValue() {
+        return FullscreenActivity.noteValue;
+    }
 
-	private void setBeatSound(double sound1) {
-		this.beatSound = sound1;
-	}
+    private void setNoteValue(short noteValue) {
+        this.noteValue = noteValue;
+    }
 
-	private void setSound(double sound2) {
-		this.sound = sound2;
-	}
+    private short getBeat() {
+        return FullscreenActivity.beats;
+    }
+    private void setBeat(short beat_set) {
+        this.beat = beat_set;
+    }
 
-	private void setVolume(float metrovol_set) {
-		this.metrovol = metrovol_set;
-	}
-	public float getVolume () {
-		return metrovol;
-	}
+    private void setBeatSound(double sound1) {
+        this.beatSound = sound1;
+    }
 
-	private void setCurrentBeat(int currentBeat_set) {
-		this.currentBeat = currentBeat_set;
-	}
+    private void setSound(double sound2) {
+        this.sound = sound2;
+    }
+
+    private void setVolume(float metrovol_set) {
+        this.metrovol = metrovol_set;
+    }
+    public float getVolume () {
+        return metrovol;
+    }
+
+    private void setCurrentBeat(int currentBeat_set) {
+        this.currentBeat = currentBeat_set;
+    }
 
     static int getTempo(String t) {
         t = t.replace("Very Fast", "140");
@@ -188,7 +187,7 @@ class Metronome {
             PopUpMetronomeFragment.tempo = PopUpMetronomeFragment.bpm;
         }
 
-        return (int) PopUpMetronomeFragment.bpm;
+        return PopUpMetronomeFragment.bpm;
     }
 
     static void setBeatValues() {
@@ -223,11 +222,13 @@ class Metronome {
         FullscreenActivity.noteValue = r;
     }
 
-    static void startstopMetronome(Activity activity, Context c, boolean showvisual, int metronomeColor, String pan, float vol, int barlength) {
+    static void startstopMetronome(Context c, boolean showvisual, int metronomeColor, String pan, float vol, int barlength) {
         if (checkMetronomeValid(c) && StaticVariables.metronomeonoff.equals("off")) {
             // Start the metronome
             StaticVariables.metronomeonoff = "on";
             StaticVariables.whichbeat = "b";
+            // This is a state indicator set in this function only
+            StaticVariables.clickedOnMetronomeStart = true;
             metroTask = new MetronomeAsyncTask(pan,vol,barlength);
             try {
                 metroTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -235,27 +236,16 @@ class Metronome {
                 Log.d("d","Error starting the metronome");
             }
             startstopVisualMetronome(showvisual,metronomeColor);
-
-        } else if (checkMetronomeValid(c) && StaticVariables.metronomeonoff.equals("on")) {
+            // IV - A stop perhaps does not need to consider if it is valid
+        } else if (StaticVariables.metronomeonoff.equals("on")) {
             // Stop the metronome
             StaticVariables.metronomeonoff = "off";
+            // This a state indicator set in this function only
+            StaticVariables.clickedOnMetronomeStart = false;
             if (metroTask!=null) {
                 metroTask.stop();
             }
-
-        } else {
-            // Not valid, so open the popup
-            StaticVariables.whattodo = "page_metronome";
-            if (PopUpMetronomeFragment.mListener!=null) {
-                PopUpMetronomeFragment.mListener.openFragment();
-            } else {
-
-
-                
-                PopUpMetronomeFragment.MyInterface mListener;
-                mListener = (PopUpMetronomeFragment.MyInterface) activity;
-                mListener.openFragment();
-            }
+            // IV - Do not go to setting page as metronome 'not set' may be valid
         }
     }
 
@@ -273,6 +263,7 @@ class Metronome {
         for (String arrayval : arrayvals) {
             if (StaticVariables.mTimeSig.equals(arrayval)) {
                 validTimeSig = true;
+                break;
             }
         }
 
@@ -293,9 +284,9 @@ class Metronome {
     }
     private static class VisualMetronomeAsyncTask extends AsyncTask<Void, Integer, String> {
 
-	    VisualMetronomeAsyncTask(boolean showvis, int metronomeColor) {
-	        this.metronomeColor = metronomeColor;
-	        this.showvisual = showvis;
+        VisualMetronomeAsyncTask(boolean showvis, int metronomeColor) {
+            this.metronomeColor = metronomeColor;
+            this.showvisual = showvis;
         }
 
         final int beatmultiplier = FullscreenActivity.noteValue;

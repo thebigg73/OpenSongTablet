@@ -9,14 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.NonNull;
-
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLite;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._NonOpenSongSQLiteHelper;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.SwitchCompat;
@@ -45,10 +37,8 @@ public class PopUpPadFragment extends DialogFragment {
     }
 
     public interface MyInterface {
-        void loadSong();
-        void fadeoutPad();
-        void preparePad();
-        void killPad();
+        // IV - gesture used to control activity
+        void gesture6();
         void pageButtonAlpha(String s);
         void openFragment();
     }
@@ -79,7 +69,7 @@ public class PopUpPadFragment extends DialogFragment {
     private Button start_stop_padplay;
     private String text;
     private boolean validpad;
-    private _Preferences preferences;
+    private Preferences preferences;
     private StorageAccess storageAccess;
 
     private AsyncTask<Object,Void,String> set_pad;
@@ -114,7 +104,7 @@ public class PopUpPadFragment extends DialogFragment {
             e.printStackTrace();
         }
 
-        preferences = new _Preferences();
+        preferences = new Preferences();
         storageAccess = new StorageAccess();
         ProcessSong processSong = new ProcessSong();
 
@@ -126,16 +116,17 @@ public class PopUpPadFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                _CustomAnimations.animateFAB(closeMe,getActivity());
+                CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
-                doSave();
+                // IV - doSave now in dismiss
+                PopUpPadFragment.this.dismiss();
             }
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
         if (getActivity() != null && getDialog() != null) {
-            _PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
         }
 
         // Initialise the views
@@ -186,26 +177,25 @@ public class PopUpPadFragment extends DialogFragment {
 
         mHandler.post(runnable);
 
-        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
 
+    // IV - now called from dismiss
     private void doSave() {
-        PopUpEditSongFragment.prepareSongXML();
+        // We update only if we successfully initialised with pad details
+        if (!(popupPad_volume_text.getText() == "")) {
+            PopUpEditSongFragment.prepareSongXML();
 
-        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-            _NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new _NonOpenSongSQLiteHelper(getActivity());
-            _NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
-            nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
-        } else {
-            PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
-        }
-        try {
-            mListener.loadSong();
-            dismiss();
-        } catch (Exception e) {
-            e.printStackTrace();
+            if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
+                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(), storageAccess, preferences, nonOpenSongSQLiteHelper.getSongId());
+                nonOpenSongSQLiteHelper.updateSong(getActivity(), storageAccess, preferences, nonOpenSongSQLite);
+            } else {
+                PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+            }
+            // IV - Start/Stop of pad does not need a song load
         }
     }
 
@@ -260,7 +250,8 @@ public class PopUpPadFragment extends DialogFragment {
             } else {
                 popupPad_pan_text.setText("C");
             }
-            if (FullscreenActivity.mPlayer1 != null) {
+            // IV - Additional test to prevent volume change affecting a fading pad
+            if (FullscreenActivity.mPlayer1 != null && !StaticVariables.pad1Fading) {
                 float leftVolume = temp_padvol;
                 float rightVolume = temp_padvol;
                 if (temp_padpan.equals("left")) {
@@ -277,7 +268,7 @@ public class PopUpPadFragment extends DialogFragment {
                 }
             }
 
-            if (FullscreenActivity.mPlayer2 != null) {
+            if (FullscreenActivity.mPlayer2 != null && !StaticVariables.pad2Fading) {
 
                 float leftVolume = temp_padvol;
                 float rightVolume = temp_padvol;
@@ -375,10 +366,10 @@ public class PopUpPadFragment extends DialogFragment {
                     StaticVariables.mPadFile = getResources().getString(R.string.link_audio);
                     //popupPad_file.setSelection(0);
                     StaticVariables.myToastMessage = getResources().getString(R.string.notset);
-                    _ShowToast.showToast(getActivity());
+                    ShowToast.showToast(getActivity());
                     // Try opening the link file popup to get the user to set one
                     if (mListener != null) {
-                        StaticVariables.whattodo = "page_links";
+                        FullscreenActivity.whattodo = "page_links";
                         mListener.openFragment();
                         //dismiss();
                     }
@@ -390,8 +381,8 @@ public class PopUpPadFragment extends DialogFragment {
             }
             PopUpEditSongFragment.prepareSongXML();
             if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-                _NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new _NonOpenSongSQLiteHelper(getActivity());
-                _NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
+                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
                 nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
             } else {
                 PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
@@ -404,85 +395,39 @@ public class PopUpPadFragment extends DialogFragment {
     }
 
     private void checkPadStatus() {
-        boolean pad1playing = false;
-        boolean pad2playing = false;
-        try {
-            pad1playing = FullscreenActivity.mPlayer1 != null && FullscreenActivity.mPlayer1.isPlaying();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        try {
-            pad2playing = FullscreenActivity.mPlayer2 != null && FullscreenActivity.mPlayer2.isPlaying();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // Proceed if we are not in the middle of an Async song load!
+        if (!FullscreenActivity.alreadyloading) {
+            boolean pad1playing = false;
+            boolean pad2playing = false;
+            try {
+                pad1playing = FullscreenActivity.mPlayer1 != null && FullscreenActivity.mPlayer1.isPlaying();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-        if (pad1playing && !pad2playing) {
-            text = getResources().getString(R.string.stop);
-            StaticVariables.clickedOnPadStart = true;
-            validpad = true;
+            try {
+                pad2playing = FullscreenActivity.mPlayer2 != null && FullscreenActivity.mPlayer2.isPlaying();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (((StaticVariables.pad1Playing && !StaticVariables.pad1Fading) || (StaticVariables.pad2Playing & !StaticVariables.pad2Fading))) {
+                text = getResources().getString(R.string.stop);
+            } else {
+                text = "Start";
+            }
+            start_stop_padplay.setText(text);
+
             start_stop_padplay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    FullscreenActivity.whichPad = 1;
-                    StaticVariables.pad1Fading = true;
-                    mListener.fadeoutPad();
-                    StaticVariables.clickedOnPadStart = false;
-                    dismiss();
-                }
-            });
-        } else if (pad2playing && !pad1playing) {
-            text = getResources().getString(R.string.stop);
-            StaticVariables.clickedOnPadStart = true;
-            validpad = true;
-            //start_stop_padplay.setText(getResources().getString(R.string.stop));
-            start_stop_padplay.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    FullscreenActivity.whichPad = 2;
-                    StaticVariables.pad2Fading = true;
-                    StaticVariables.clickedOnPadStart = false;
-                    mListener.fadeoutPad();
-                    dismiss();
-                }
-            });
-
-        } else if (!pad1playing) {
-            text = getResources().getString(R.string.start);
-            StaticVariables.clickedOnPadStart = false;
-            // start_stop_padplay.setText(getResources().getString(R.string.start));
-            // Decide if pad is valid
-            startenabled();
-            start_stop_padplay.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    FullscreenActivity.whichPad = 0;
-                    mListener.killPad();
-                    FullscreenActivity.whichPad = 1;
-                    mListener.preparePad();
-                    dismiss();
-                }
-            });
-
-        } else {
-            text = getResources().getString(R.string.stop);
-            StaticVariables.clickedOnPadStart = true;
-            validpad = true;
-            //start_stop_padplay.setText(getResources().getString(R.string.stop));
-            start_stop_padplay.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    FullscreenActivity.whichPad = 0;  // both
-                    StaticVariables.clickedOnPadStart = false;
-                    mListener.killPad();
-                    dismiss();
+                    // IV - gesture6 has the start and stop logic
+                    mListener.gesture6();
+                    PopUpPadFragment.this.dismiss();
                 }
             });
         }
-
-        start_stop_padplay.setText(text);
-        start_stop_padplay.setEnabled(validpad);
     }
 
     @Override
@@ -491,15 +436,17 @@ public class PopUpPadFragment extends DialogFragment {
             mListener.pageButtonAlpha("");
         }
         mStopHandler = true;
+        // IV - Always save
+        doSave();
+        // IV - Moved to dismiss
+        if (set_pad!=null) {
+            set_pad.cancel(true);
+        }
         super.onDismiss(dialog);
     }
 
     @Override
     public void onCancel(DialogInterface dialog) {
-        mStopHandler = true;
-        if (set_pad!=null) {
-            set_pad.cancel(true);
-        }
         this.dismiss();
     }
 
