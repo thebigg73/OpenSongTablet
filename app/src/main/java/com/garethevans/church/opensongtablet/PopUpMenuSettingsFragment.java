@@ -132,7 +132,8 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         gesturesMenuSwipeButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(getActivity(),"swipeForMenus",true);
+                // IV - Was previous set to true - changed to set from the button
+                preferences.setMyPreferenceBoolean(getActivity(),"swipeForMenus",b);
                 if (mListener!=null) {
                     mListener.toggleDrawerSwipe();
                 }

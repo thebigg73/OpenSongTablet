@@ -688,14 +688,15 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         loadUpPreferences();
         if (mListener != null) {
             mListener.refreshAll();
-            mListener.setUpPageButtonsColors();
+            // IV - minor name change
+            mListener.setupPageButtonsColors();
         }
     }
 
     private void doClose() {
         if (mListener != null) {
             mListener.refreshAll();
-            mListener.setUpPageButtonsColors();
+            mListener.setupPageButtonsColors();
         }
         dismiss();
     }
@@ -926,8 +927,7 @@ public class PopUpThemeChooserFragment extends DialogFragment {
     public interface MyInterface {
         //void prepareView();
         void refreshAll();
-
-        void setUpPageButtonsColors();
+        void setupPageButtonsColors();
     }
 
     private class ChangeColorListener implements View.OnClickListener {

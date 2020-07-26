@@ -110,16 +110,16 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         switch (StaticVariables.mDisplayTheme) {
             case "dark":
             default:
-                color = preferences.getMyPreferenceInt(getActivity(),"dark_pageButtonsColor",0xff452277);
+                 color = preferences.getMyPreferenceInt(getActivity(),"dark_pageButtonsColor",StaticVariables.purplyblue);
                 break;
             case "light":
-                color = preferences.getMyPreferenceInt(getActivity(),"light_pageButtonsColor",0xff452277);
+                color = preferences.getMyPreferenceInt(getActivity(),"light_pageButtonsColor",StaticVariables.purplyblue);
                 break;
             case "custom1":
-                color = preferences.getMyPreferenceInt(getActivity(),"custom1_pageButtonsColor",0xff452277);
+                color = preferences.getMyPreferenceInt(getActivity(),"custom1_pageButtonsColor",StaticVariables.purplyblue);
                 break;
             case "custom2":
-                color = preferences.getMyPreferenceInt(getActivity(),"custom2_pageButtonsColor",0xff452277);
+                color = preferences.getMyPreferenceInt(getActivity(),"custom2_pageButtonsColor",StaticVariables.purplyblue);
                 break;
         }
 
