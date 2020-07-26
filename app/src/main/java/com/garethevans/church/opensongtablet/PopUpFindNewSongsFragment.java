@@ -2,7 +2,6 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,18 +13,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import androidx.annotation.NonNull;
-
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._PopUpSizeAndAlpha;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SQLiteHelper;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._ShowToast;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._SongFolders;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._TextSongConvert;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -34,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.CookieManager;
-import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.URLUtil;
 import android.webkit.WebChromeClient;
@@ -51,6 +37,11 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
@@ -59,7 +50,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
 
@@ -81,10 +71,10 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     private ArrayList<String> newtempfolders;
     private MyInterface mListener;
     private boolean downloadcomplete = false;
-    private _TextSongConvert textSongConvert;
+    private TextSongConvert textSongConvert;
     private StorageAccess storageAccess;
-    private _Preferences preferences;
-    private _SongFolders songFolders;
+    private Preferences preferences;
+    private SongFolders songFolders;
     private Uri downloadedFile;
 
     static PopUpFindNewSongsFragment newInstance() {
@@ -94,10 +84,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (MyInterface) context;
     }
 
     @Override
@@ -121,25 +110,25 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         String mTitle;
         switch (StaticVariables.whattodo) {
             case "chordie":
-                mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.chordiesearch);
+                mTitle = requireActivity().getResources().getString(R.string.chordiesearch);
                 break;
             case "songselect":
-                mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.songselect);
+                mTitle = requireActivity().getResources().getString(R.string.songselect);
                 break;
             case "worshiptogether":
-                mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.worshiptogether);
+                mTitle = requireActivity().getResources().getString(R.string.worshiptogether);
                 break;
             case "ukutabs":
-                mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.ukutabs);
+                mTitle = requireActivity().getResources().getString(R.string.ukutabs);
                 break;
             case "worshipready":
-                mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.worshipready);
+                mTitle = requireActivity().getResources().getString(R.string.worshipready);
                 break;
             case "holychords":
-                mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.holychords);
+                mTitle = requireActivity().getResources().getString(R.string.holychords);
                 break;
             default:
-                mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.ultimateguitarsearch);
+                mTitle = requireActivity().getResources().getString(R.string.ultimateguitarsearch);
                 break;
         }
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -149,25 +138,22 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(mTitle);
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    _CustomAnimations.animateFAB(closeMe,getActivity());
-                    closeMe.setEnabled(false);
-                    dismiss();
-                } catch (Exception e) {
-                    // Error cancelling
-                }
+        closeMe.setOnClickListener(view -> {
+            try {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                dismiss();
+            } catch (Exception e) {
+                // Error cancelling
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        textSongConvert = new _TextSongConvert();
+        textSongConvert = new TextSongConvert();
         storageAccess = new StorageAccess();
-        preferences = new _Preferences();
-        songFolders = new _SongFolders();
+        preferences = new Preferences();
+        songFolders = new SongFolders();
 
         // Initialise the views
         searchtext_LinearLayout = V.findViewById(R.id.searchtext_LinearLayout);
@@ -212,42 +198,26 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         // Listen for the buttons
 
-        doSearch_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String searchtext = searchphrase_EditText.getText().toString();
-                if (!searchtext.equals("")) {
-                    FullscreenActivity.phrasetosearchfor = searchtext;
-                    doSearch(searchtext);
-                }
+        doSearch_Button.setOnClickListener(view -> {
+            String searchtext = searchphrase_EditText.getText().toString();
+            if (!searchtext.equals("")) {
+                FullscreenActivity.phrasetosearchfor = searchtext;
+                doSearch(searchtext);
             }
         });
 
-        webBack_ImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    webresults_WebView.goBack();
-                } catch (Exception e) {
-                    // Error going back in the web view
-                }
+        webBack_ImageButton.setOnClickListener(view -> {
+            try {
+                webresults_WebView.goBack();
+            } catch (Exception e) {
+                // Error going back in the web view
             }
         });
-        grabSongData_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                grabchordpro();
-            }
-        });
+        grabSongData_Button.setOnClickListener(view -> grabchordpro());
 
-        saveSong_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doSaveSong();
-            }
-        });
+        saveSong_Button.setOnClickListener(view -> doSaveSong());
 
-        _PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -295,11 +265,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         //String newUA = "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0";
         String newUA = "Mozilla/5.0 (X11; Linux i686; rv:64.0) Gecko/20100101 Firefox/64.0";
         //String oldUA = "Mozilla/5.0 (Linux; U; Android 4.0.4; en-gb; GT-I9300 Build/IMM76D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30";
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            webresults_WebView.getSettings().setUserAgentString(newUA);
-        } else {
-            webresults_WebView.getSettings().setUserAgentString(newUA);
-        }
+        webresults_WebView.getSettings().setUserAgentString(newUA);
         webresults_WebView.getSettings().getJavaScriptEnabled();
         webresults_WebView.getSettings().setJavaScriptEnabled(true);
         webresults_WebView.getSettings().setDomStorageEnabled(true);
@@ -312,44 +278,38 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         webresults_WebView.setScrollbarFadingEnabled(false);
         webresults_WebView.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
         try {
-            Objects.requireNonNull(getActivity()).registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+            requireActivity().registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         } catch (Exception e) {
             Log.d("d","Error registering download complete listener");
         }
-        webresults_WebView.setDownloadListener(new DownloadListener() {
+        webresults_WebView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
+            final String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
+            if (FullscreenActivity.whattodo.equals("songselect") && (filename.endsWith(".pdf")||filename.endsWith(".PDF"))) {
 
-            @Override
-            public void onDownloadStart(String url, String userAgent,
-                                        String contentDisposition, String mimetype,
-                                        long contentLength) {
-                final String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
-                if (StaticVariables.whattodo.equals("songselect") && (filename.endsWith(".pdf")||filename.endsWith(".PDF"))) {
+                try {
+                    // Hide the WebView
+                    searchresults_RelativeLayout.setVisibility(View.GONE);
+                    StaticVariables.myToastMessage = "Downloading...";
+                    saveSong_Button.setEnabled(false);
+                    ShowToast.showToast(getActivity());
 
-                    try {
-                        // Hide the WebView
-                        searchresults_RelativeLayout.setVisibility(View.GONE);
-                        StaticVariables.myToastMessage = "Downloading...";
-                        saveSong_Button.setEnabled(false);
-                        _ShowToast.showToast(getActivity());
+                    String cookie = CookieManager.getInstance().getCookie(url);
 
-                        String cookie = CookieManager.getInstance().getCookie(url);
+                    DownloadManager.Request request = new DownloadManager.Request(
+                            Uri.parse(url));
 
-                        DownloadManager.Request request = new DownloadManager.Request(
-                                Uri.parse(url));
-
-                        request.allowScanningByMediaScanner();
-                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-                        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename);
-                        downloadedFile = Uri.fromFile(file);
-                        DownloadManager dm = (DownloadManager) Objects.requireNonNull(getActivity()).getSystemService(DOWNLOAD_SERVICE);
-                        request.addRequestHeader("Cookie", cookie);
-                        if (dm != null) {
-                            dm.enqueue(request);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    request.allowScanningByMediaScanner();
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
+                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+                    File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename);
+                    downloadedFile = Uri.fromFile(file);
+                    DownloadManager dm = (DownloadManager) requireActivity().getSystemService(DOWNLOAD_SERVICE);
+                    request.addRequestHeader("Cookie", cookie);
+                    if (dm != null) {
+                        dm.enqueue(request);
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -366,7 +326,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 setFileNameAndFolder();
             }
             try {
-                Objects.requireNonNull(getActivity()).unregisterReceiver(onComplete);
+                requireActivity().unregisterReceiver(onComplete);
             } catch (Exception e) {
                 Log.d("d","Error unregistering receiver");
             }
@@ -378,14 +338,14 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     }
 
     @Override
-    public void onDismiss(final DialogInterface dialog) {
+    public void onDismiss(@NonNull final DialogInterface dialog) {
         if (mListener != null) {
             mListener.pageButtonAlpha("");
         }
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         try {
             this.dismiss();
         } catch (Exception e) {
@@ -397,8 +357,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         // Need to run a async task to grab html text
         grabSongData_ProgressBar.setVisibility(View.VISIBLE);
         weblink = webresults_WebView.getUrl();
-        StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getText(R.string.chordproprogress).toString();
-        _ShowToast.showToast(getActivity());
+        StaticVariables.myToastMessage = requireActivity().getResources().getText(R.string.chordproprogress).toString();
+        ShowToast.showToast(getActivity());
         DownloadWebTextTask task = new DownloadWebTextTask();
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, weblink);
 
@@ -1365,6 +1325,61 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         return lyrics.trim();
     }
 
+    private String fixForeignLanguageHTML(String s) {
+        s = s.replace("&iquest;","¿");
+        s = s.replace("&Agrave;","À");
+        s = s.replace("&agrave;","à");
+        s = s.replace("&Aacute;","Á");
+        s = s.replace("&aacute;","á");
+        s = s.replace("&Acirc;;","Â");
+        s = s.replace("&acirc;;","â");
+        s = s.replace("&Atilde;","Ã");
+        s = s.replace("&atilde;","ã");
+        s = s.replace("&Aring;","Å");
+        s = s.replace("&aring;", "å");
+        s = s.replace("&Auml;","Ä");
+        s = s.replace("&auml;","ä");
+        s = s.replace("&AElig;","Æ");
+        s = s.replace("&aelig;","æ");
+        s = s.replace("&Cacute;","Ć");
+        s = s.replace("&cacute;","ć");
+        s = s.replace("&Ccedil;","Ç");
+        s = s.replace("&ccedil;","ç");
+        s = s.replace("&Eacute;","É");
+        s = s.replace("&eacute;","é");
+        s = s.replace("&Ecirc;;","Ê");
+        s = s.replace("&ecirc;;","ê");
+        s = s.replace("&Egrave;","È");
+        s = s.replace("&egrave;","è");
+        s = s.replace("&Euml;","Ë");
+        s = s.replace("&euml;","ë");
+        s = s.replace("&Iacute;","Í");
+        s = s.replace("&iacute;","í");
+        s = s.replace("&Icirc;;","Î");
+        s = s.replace("&icirc;;","î");
+        s = s.replace("&Igrave;","Ì");
+        s = s.replace("&igrave;","ì");
+        s = s.replace("&Iuml;","Ï");
+        s = s.replace("&iuml;","ï");
+        s = s.replace("&Oacute;","Ó");
+        s = s.replace("&oacute;","ó");
+        s = s.replace("&Ocirc;;","Ô");
+        s = s.replace("&ocirc;;","ô");
+        s = s.replace("&Ograve;","Ò");
+        s = s.replace("&ograve;","ò");
+        s = s.replace("&Ouml;","Ö");
+        s = s.replace("&ouml;","ö");
+        s = s.replace("&szlig;", "ß");
+        s = s.replace("&Uacute;","Ú");
+        s = s.replace("&uacute;","ú");
+        s = s.replace("&Ucirc;;","Û");
+        s = s.replace("&ucirc;;","û");
+        s = s.replace("&Ugrave;","Ù");
+        s = s.replace("&ugrave;","ù");
+        s = s.replace("&Uuml;","Ü");
+        s = s.replace("&uuml;","ü");
+        return s;
+    }
     private void setFileNameAndFolder() {
 
         // Hide the searchresults_RelativeLayout
@@ -1466,7 +1481,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
 
         // Get the database ready
-        _SQLiteHelper sqLiteHelper = new _SQLiteHelper(getActivity());
+        SQLiteHelper sqLiteHelper = new SQLiteHelper(getActivity());
 
         try {
             if (filecontents!=null && !filecontents.equals("")) {
@@ -1560,9 +1575,14 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             // Check we aren't trying to use the tab-pro page!
             try {
                 String address = webresults_WebView.getUrl();
+                // Fix the foreign characters
+                if (result!=null) {
+                    result = fixForeignLanguageHTML(result);
+                }
+
                 if (address != null && (address.contains("/tab-pro/") || address.contains("/chords-pro/"))) {
-                    StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getText(R.string.not_allowed).toString();
-                    _ShowToast.showToast(getActivity());
+                    StaticVariables.myToastMessage = requireActivity().getResources().getText(R.string.not_allowed).toString();
+                    ShowToast.showToast(getActivity());
                     grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
                 } else if (result != null && (result.contains("<textarea id=\"chordproContent\"") ||
                 result.contains("<h1 class=\"titleLeft\""))) {
@@ -1599,15 +1619,15 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     setFileNameAndFolder();
 
                 } else {
-                    StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getText(R.string.chordpro_false).toString();
-                    _ShowToast.showToast(getActivity());
+                    StaticVariables.myToastMessage = requireActivity().getResources().getText(R.string.chordpro_false).toString();
+                    ShowToast.showToast(getActivity());
                     grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
                 }
             } catch (Exception | OutOfMemoryError e) {
                 e.printStackTrace();
                 if (getActivity()!=null) {
                     StaticVariables.myToastMessage = getActivity().getResources().getText(R.string.chordpro_false).toString();
-                    _ShowToast.showToast(getActivity());
+                    ShowToast.showToast(getActivity());
                     grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
                 }
             }
@@ -1630,7 +1650,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         protected void onPostExecute(String s) {
             try {
                 // The song folder
-                ArrayAdapter<String> folders = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, newtempfolders);
+                ArrayAdapter<String> folders = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, newtempfolders);
                 folders.setDropDownViewResource(R.layout.my_spinner);
                 choosefolder_Spinner.setAdapter(folders);
 
@@ -1689,10 +1709,11 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                         StaticVariables.myToastMessage = getActivity().getResources().getText(R.string.chordpro_false).toString();
                     }
 
-                    _ShowToast.showToast(getActivity());
+                    ShowToast.showToast(getActivity());
                     grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
                 }
             }
         }
     }
+
 }*/

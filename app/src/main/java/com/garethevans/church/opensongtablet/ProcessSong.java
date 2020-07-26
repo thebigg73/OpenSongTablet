@@ -64,6 +64,8 @@ public class ProcessSong extends Activity {
         myLyrics = myLyrics.replaceAll("\u2018", "'");
         myLyrics = myLyrics.replaceAll("\u2019", "'");
 
+        myLyrics = fixForeignEntities(myLyrics);
+
         // If UG has been bad, replace these bits:
         myLyrics = myLyrics.replace("pre class=\"\"","");
 
@@ -139,6 +141,62 @@ public class ProcessSong extends Activity {
 
         return myLyrics;
     }
+    String fixForeignEntities (String s) {
+        s = s.replace("&iquest;","¿");
+        s = s.replace("&Agrave;","À");
+        s = s.replace("&agrave;","à");
+        s = s.replace("&Aacute;","Á");
+        s = s.replace("&aacute;","á");
+        s = s.replace("&Acirc;;","Â");
+        s = s.replace("&acirc;;","â");
+        s = s.replace("&Atilde;","Ã");
+        s = s.replace("&atilde;","ã");
+        s = s.replace("&Aring;","Å");
+        s = s.replace("&aring;", "å");
+        s = s.replace("&Auml;","Ä");
+        s = s.replace("&auml;","ä");
+        s = s.replace("&AElig;","Æ");
+        s = s.replace("&aelig;","æ");
+        s = s.replace("&Cacute;","Ć");
+        s = s.replace("&cacute;","ć");
+        s = s.replace("&Ccedil;","Ç");
+        s = s.replace("&ccedil;","ç");
+        s = s.replace("&Eacute;","É");
+        s = s.replace("&eacute;","é");
+        s = s.replace("&Ecirc;;","Ê");
+        s = s.replace("&ecirc;;","ê");
+        s = s.replace("&Egrave;","È");
+        s = s.replace("&egrave;","è");
+        s = s.replace("&Euml;","Ë");
+        s = s.replace("&euml;","ë");
+        s = s.replace("&Iacute;","Í");
+        s = s.replace("&iacute;","í");
+        s = s.replace("&Icirc;;","Î");
+        s = s.replace("&icirc;;","î");
+        s = s.replace("&Igrave;","Ì");
+        s = s.replace("&igrave;","ì");
+        s = s.replace("&Iuml;","Ï");
+        s = s.replace("&iuml;","ï");
+        s = s.replace("&Oacute;","Ó");
+        s = s.replace("&oacute;","ó");
+        s = s.replace("&Ocirc;;","Ô");
+        s = s.replace("&ocirc;;","ô");
+        s = s.replace("&Ograve;","Ò");
+        s = s.replace("&ograve;","ò");
+        s = s.replace("&Ouml;","Ö");
+        s = s.replace("&ouml;","ö");
+        s = s.replace("&szlig;", "ß");
+        s = s.replace("&Uacute;","Ú");
+        s = s.replace("&uacute;","ú");
+        s = s.replace("&Ucirc;;","Û");
+        s = s.replace("&ucirc;;","û");
+        s = s.replace("&Ugrave;","Ù");
+        s = s.replace("&ugrave;","ù");
+        s = s.replace("&Uuml;","Ü");
+        s = s.replace("&uuml;","ü");
+        return s;
+    }
+
     String fixStartOfLines(String lyrics) {
         StringBuilder fixedlyrics = new StringBuilder();
         String[] lines = lyrics.split("\n");
