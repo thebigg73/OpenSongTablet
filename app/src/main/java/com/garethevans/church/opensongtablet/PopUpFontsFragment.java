@@ -8,10 +8,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +15,15 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -87,13 +88,10 @@ public class PopUpFontsFragment extends DialogFragment {
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.hide();
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
-                saveMe.setEnabled(false);
-                doSave();
-            }
+        saveMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(saveMe,getActivity());
+            saveMe.setEnabled(false);
+            doSave();
         });
 
         // Initialise the helper classes
@@ -121,13 +119,10 @@ public class PopUpFontsFragment extends DialogFragment {
         presoPreviewTextView = V.findViewById(R.id.presoPreviewTextView);
         presoinfoPreviewTextView = V.findViewById(R.id.presoinfoPreviewTextView);
         TextView fontBrowse = V.findViewById(R.id.fontBrowse);
-        fontBrowse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://fonts.google.com"));
-                startActivity(intent);
-            }
+        fontBrowse.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://fonts.google.com"));
+            startActivity(intent);
         });
         scaleChords_TextView = V.findViewById(R.id.scaleChords_TextView);
         scaleChords_SeekBar = V.findViewById(R.id.scaleChords_SeekBar);
@@ -135,6 +130,7 @@ public class PopUpFontsFragment extends DialogFragment {
         scaleComment_SeekBar = V.findViewById(R.id.scaleComment_SeekBar);
         scaleHeading_TextView = V.findViewById(R.id.scaleHeading_TextView);
         scaleHeading_SeekBar = V.findViewById(R.id.scaleHeading_SeekBar);
+        SwitchCompat boldChordsHeadings = V.findViewById(R.id.boldChordsHeadings);
         lineSpacing_TextView = V.findViewById(R.id.lineSpacing_TextView);
         lineSpacing_SeekBar = V.findViewById(R.id.lineSpacing_SeekBar);
         SwitchCompat trimlinespacing_SwitchCompat = V.findViewById(R.id.trimlinespacing_SwitchCompat);
@@ -146,6 +142,7 @@ public class PopUpFontsFragment extends DialogFragment {
         setTypeFace.setUpAppFonts(getActivity(), preferences, lyrichandler, chordhandler, stickyhandler,
                 presohandler, presoinfohandler, customhandler);
 
+        boldChordsHeadings.setChecked(preferences.getMyPreferenceBoolean(getActivity(), "displayBoldChordsHeadings", false));
         trimSections_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"trimSections",true));
         hideBox_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"hideLyricsBox",false));
         addSectionSpace_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"addSectionSpace",true));
@@ -232,33 +229,18 @@ public class PopUpFontsFragment extends DialogFragment {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
-        trimlinespacing_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean b) {
-                // Disable the linespacing seekbar if required
-                lineSpacing_SeekBar.setEnabled(b);
-                preferences.setMyPreferenceBoolean(getActivity(),"trimLines",b);
-            }
+        trimlinespacing_SwitchCompat.setOnCheckedChangeListener((buttonView, b) -> {
+            // Disable the linespacing seekbar if required
+            lineSpacing_SeekBar.setEnabled(b);
+            preferences.setMyPreferenceBoolean(getActivity(),"trimLines",b);
         });
 
-        hideBox_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(getActivity(),"hideLyricsBox",b);
-            }
-        });
-        trimSections_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(getActivity(),"trimSections",b);
-            }
-        });
-        addSectionSpace_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                // Historic button name - actually asks if space should be added
-                preferences.setMyPreferenceBoolean(getActivity(),"addSectionSpace",b);
-            }
+        boldChordsHeadings.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(), "displayBoldChordsHeadings", b));
+        hideBox_SwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(),"hideLyricsBox",b));
+        trimSections_SwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(),"trimSections",b));
+        addSectionSpace_SwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> {
+            // Historic button name - actually asks if space should be added
+            preferences.setMyPreferenceBoolean(getActivity(),"addSectionSpace",b);
         });
 
         // If we are running kitkat, hide the trim options

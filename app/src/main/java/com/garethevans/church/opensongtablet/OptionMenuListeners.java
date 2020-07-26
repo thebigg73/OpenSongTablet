@@ -7,22 +7,19 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.peak.salut.Callbacks.SalutCallback;
-import com.peak.salut.Callbacks.SalutDeviceCallback;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.peak.salut.SalutDevice;
 
 public class OptionMenuListeners extends AppCompatActivity {
@@ -466,168 +463,114 @@ public class OptionMenuListeners extends AppCompatActivity {
         }
 
         // Set the listeners
-        menuSetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "SET";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuSetButton.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "SET";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-        menuSongButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "SONG";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuSongButton.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "SONG";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-        menuProfileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "PROFILE";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuProfileButton.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "PROFILE";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-        menuChordsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "CHORDS";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuChordsButton.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "CHORDS";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-        menuDisplayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "DISPLAY";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuDisplayButton.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "DISPLAY";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-        menuGesturesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "GESTURES";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuGesturesButton.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "GESTURES";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-        menuFindSongsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "FIND";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuFindSongsButton.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "FIND";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-        menuStorageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "STORAGE";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuStorageButton.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "STORAGE";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
 
         if (c.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI)) {
-            menuMidiButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    StaticVariables.whichOptionMenu = "MIDI";
-                    if (mListener != null) {
-                        mListener.prepareOptionMenu();
-                    }
+            menuMidiButton.setOnClickListener(view -> {
+                StaticVariables.whichOptionMenu = "MIDI";
+                if (mListener != null) {
+                    mListener.prepareOptionMenu();
                 }
             });
         } else {
-            menuMidiButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    StaticVariables.myToastMessage = "MIDI - " + c.getString(R.string.nothighenoughapi);
-                    ShowToast.showToast(c);
-                }
+            menuMidiButton.setOnClickListener(view -> {
+                StaticVariables.myToastMessage = "MIDI - " + c.getString(R.string.nothighenoughapi);
+                ShowToast.showToast(c);
             });
         }
-        menuConnectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "CONNECT";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuConnectButton.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "CONNECT";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-        menuModeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "MODE";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuModeButton.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "MODE";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-        menuAutoScrollButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "AUTOSCROLL";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuAutoScrollButton.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "AUTOSCROLL";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-        menuPadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "PAD";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuPadButton.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "PAD";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-        menuMetronomeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "METRONOME";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuMetronomeButton.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "METRONOME";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-        menuCCLIButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "CCLI";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuCCLIButton.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "CCLI";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-        menuOtherButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "OTHER";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuOtherButton.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "OTHER";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
 
-        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                }
+        closeOptionsFAB.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
             }
         });
 
@@ -669,221 +612,127 @@ public class OptionMenuListeners extends AppCompatActivity {
         showSetTickBoxInSongMenu.setChecked(preferences.getMyPreferenceBoolean(c,"songMenuSetTicksShow",true));
 
         // Set the button listeners
-        menuup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "MAIN";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuup.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "MAIN";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
 
-        setLoadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "loadset";
-                if (mListener!=null) {
+        setLoadButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "loadset";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
+
+        setSaveButton.setOnClickListener(view -> {
+            String lastSetName = preferences.getMyPreferenceString(c,"setCurrentLastName","");
+            Uri settosave = storageAccess.getUriForItem(c, preferences, "Sets", "", lastSetName);
+            if (lastSetName==null || lastSetName.equals("")) {
+                FullscreenActivity.whattodo = "saveset";
+                if (mListener != null) {
                     mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            } else if (storageAccess.uriExists(c, settosave)) {
+                // Load the are you sure prompt
+                FullscreenActivity.whattodo = "saveset";
+                String setnamenice = lastSetName.replace("__"," / ");
+                String message = c.getResources().getString(R.string.save) + " \"" + setnamenice + "\"?";
+                StaticVariables.myToastMessage = message;
+                try {
+                    DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+                    newFragment.show(fm,message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                FullscreenActivity.whattodo = "saveset";
+                if (mListener != null) {
                     mListener.openFragment();
                 }
             }
         });
 
-        setSaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String lastSetName = preferences.getMyPreferenceString(c,"setCurrentLastName","");
-                Uri settosave = storageAccess.getUriForItem(c, preferences, "Sets", "", lastSetName);
-                if (lastSetName==null || lastSetName.equals("")) {
-                    FullscreenActivity.whattodo = "saveset";
-                    if (mListener != null) {
-                        mListener.closeMyDrawers("option");
-                        mListener.openFragment();
-                    }
-                } else if (storageAccess.uriExists(c, settosave)) {
-                    // Load the are you sure prompt
-                    FullscreenActivity.whattodo = "saveset";
-                    String setnamenice = lastSetName.replace("__"," / ");
-                    String message = c.getResources().getString(R.string.save) + " \'" + setnamenice + "\"?";
-                    StaticVariables.myToastMessage = message;
-                    try {
-                        DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
-                        newFragment.show(fm,message);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                } else {
-                    FullscreenActivity.whattodo = "saveset";
-                    if (mListener != null) {
-                        mListener.openFragment();
-                    }
-                }
+        setNewButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "clearset";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        setNewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "clearset";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        setOrganiseButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "managesets";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        setOrganiseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "managesets";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        setDeleteButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "deleteset";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        setDeleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "deleteset";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        setImportButton.setOnClickListener(v1 -> {
+            FullscreenActivity.whattodo = "doimportset";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.selectAFileUri(c.getString(R.string.importnewset));
             }
         });
 
-        setImportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FullscreenActivity.whattodo = "doimportset";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.selectAFileUri(c.getString(R.string.importnewset));
-                }
+        setExportButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "exportset";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        setExportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "exportset";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        setCustomButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "customcreate";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        setCustomButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "customcreate";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        setVariationButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "setitemvariation";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        setVariationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "setitemvariation";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        setEditButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "editset";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        setEditButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "editset";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        showSetTickBoxInSongMenu.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(c,"songMenuSetTicksShow",b);
+            if (mListener!=null) {
+                mListener.prepareSongMenu();
             }
         });
 
-        showSetTickBoxInSongMenu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(c,"songMenuSetTicksShow",b);
-                if (mListener!=null) {
-                    mListener.prepareSongMenu();
-                }
+        closeOptionsFAB.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
             }
         });
-
-        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                }
-            }
-        });
-
-        // Add the set list to the menu
-        /*if (StaticVariables.mSetList!=null) {
-            for (int x = 0; x< StaticVariables.mSetList.length; x++) {
-                TextView tv = new TextView(c);
-                tv.setText(StaticVariables.mSetList[x]);
-                tv.setTextColor(0xffffffff);
-                tv.setTextSize(16.0f);
-                tv.setPadding(16,16,16,16);
-                LinearLayout.LayoutParams tvp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
-                tvp.setMargins(40,40,40,40);
-                tv.setLayoutParams(tvp);
-                final int val = x;
-                tv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        try {
-                            StaticVariables.setView = true;
-                            FullscreenActivity.pdfPageCurrent = 0;
-                            FullscreenActivity.linkclicked = StaticVariables.mSetList[val];
-                            StaticVariables.indexSongInSet = val;
-                            SetActions setActions = new SetActions();
-                            setActions.songIndexClickInSet();
-                            setActions.getSongFileAndFolder(c);
-                            preferences.setMyPreferenceString(c,"whichSongFolder",StaticVariables.whichSongFolder);
-                            preferences.setMyPreferenceString(c, "songfilename",StaticVariables.songfilename);
-                            if (mListener != null) {
-                                mListener.closeMyDrawers("option");
-                                mListener.loadSong();
-                            }
-                        } catch (Exception e) {
-                            Log.d("OptionMenuListeners", "Something went wrong with the set item");
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                tv.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        try {
-                            FullscreenActivity.linkclicked = StaticVariables.mSetList[val];
-                            if (mListener != null) {
-                                mListener.removeSongFromSet(val);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        return false;
-                    }
-                });
-                setLinearLayout.addView(tv);
-            }
-        }*/
-
     }
 
     private static void songOptionListener(View v, final Context c, final Preferences preferences) {
@@ -946,268 +795,205 @@ public class OptionMenuListeners extends AppCompatActivity {
         songKeepMultiLineCompactButton.setChecked(preferences.getMyPreferenceBoolean(c,"multiLineVerseKeepCompact",false));
 
         // Set the button listeners
-        menuup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "MAIN";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuup.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "MAIN";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
 
-        songDuplicateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "duplicate";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        songDuplicateButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "duplicate";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        songPadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "page_pad";
-                    if (mListener != null) {
-                        mListener.closeMyDrawers("option");
-                        mListener.openFragment();
-                    }
-                }
-            }
-        });
-
-        songAutoScrollButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "page_autoscroll";
-                    if (mListener != null) {
-                        mListener.closeMyDrawers("option");
-                        mListener.openFragment();
-                    }
-                }
-            }
-        });
-
-        songMetronomeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "page_metronome";
-                    if (mListener != null) {
-                        mListener.closeMyDrawers("option");
-                        mListener.openFragment();
-                    }
-                }
-            }
-        });
-
-        songChordsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "page_chords";
-                    if (mListener != null) {
-                        mListener.closeMyDrawers("option");
-                        mListener.openFragment();
-                    }
-                }
-            }
-        });
-
-        songLinksButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "page_links";
-                    if (mListener != null) {
-                        mListener.closeMyDrawers("option");
-                        mListener.openFragment();
-                    }
-                }
-            }
-        });
-
-        songEditButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "editsong";
-                    if (mListener != null) {
-                        mListener.closeMyDrawers("option");
-                        mListener.openFragment();
-                    }
-                } else {
-                    StaticVariables.myToastMessage = c.getString(R.string.not_allowed);
-                    ShowToast.showToast(c);
-                }
-            }
-        });
-
-        songStickyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "editnotes";
-                    if (mListener != null) {
-                        mListener.closeMyDrawers("option");
-                        mListener.openFragment();
-                    }
-                } else {
-                    StaticVariables.myToastMessage = c.getString(R.string.not_allowed);
-                    ShowToast.showToast(c);
-                }
-            }
-        });
-
-        songDrawingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "drawnotes";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    // Take a snapshot of the songwindow
-                    mListener.takeScreenShot();
-                    if (FullscreenActivity.bmScreen!=null) {
-                        mListener.openFragment();
-                    } else {
-                        Log.d("OptionMenuListeners", "screenshot is null");
-                    }
-                }
-            }
-        });
-
-        songScoreButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "abcnotation_edit";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
-            }
-        });
-
-        songOnYouTubeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "youtube";
+        songPadButton.setOnClickListener(v1 -> {
+            if (FullscreenActivity.isSong) {
+                FullscreenActivity.whattodo = "page_pad";
                 if (mListener != null) {
-                    Intent youtube = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("https://www.youtube.com/results?search_query=" + StaticVariables.mTitle + "+" + StaticVariables.mAuthor));
-                    mListener.callIntent("web", youtube);
-                    mListener.closeMyDrawers("option");
-                }
-            }
-        });
-
-        songOnWebButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "websearch";
-                if (mListener!=null) {
-                    Intent web = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("https://www.google.com/search?q=" + StaticVariables.mTitle + "+" + StaticVariables.mAuthor));
-                    mListener.callIntent("web", web);
-                    mListener.closeMyDrawers("option");
-                }
-            }
-        });
-
-        songRenameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "renamesong";
-                if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
             }
         });
 
-        songNewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "createsong";
-                if (mListener!=null) {
+        songAutoScrollButton.setOnClickListener(v12 -> {
+            if (FullscreenActivity.isSong) {
+                FullscreenActivity.whattodo = "page_autoscroll";
+                if (mListener != null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
             }
         });
 
-        songDeleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "deletesong";
-                if (mListener!=null) {
+        songMetronomeButton.setOnClickListener(v13 -> {
+            if (FullscreenActivity.isSong) {
+                FullscreenActivity.whattodo = "page_metronome";
+                if (mListener != null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
             }
         });
 
-        songImportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FullscreenActivity.whattodo = "doimport";
-                if (mListener!=null) {
+        songChordsButton.setOnClickListener(v14 -> {
+            if (FullscreenActivity.isSong) {
+                FullscreenActivity.whattodo = "page_chords";
+                if (mListener != null) {
                     mListener.closeMyDrawers("option");
-                    mListener.selectAFileUri(c.getString(R.string.importnewsong));
+                    mListener.openFragment();
                 }
             }
         });
 
-        songExportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "customise_exportsong";
-                    if (mListener != null) {
-                        mListener.closeMyDrawers("option");
-                        mListener.openFragment();
-                    }
+        songLinksButton.setOnClickListener(v15 -> {
+            if (FullscreenActivity.isSong) {
+                FullscreenActivity.whattodo = "page_links";
+                if (mListener != null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
+        songEditButton.setOnClickListener(view -> {
+            if (FullscreenActivity.isSong) {
+                FullscreenActivity.whattodo = "editsong";
+                if (mListener != null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            } else {
+                StaticVariables.myToastMessage = c.getString(R.string.not_allowed);
+                ShowToast.showToast(c);
+            }
+        });
+
+        songStickyButton.setOnClickListener(view -> {
+            if (FullscreenActivity.isSong) {
+                FullscreenActivity.whattodo = "editnotes";
+                if (mListener != null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            } else {
+                StaticVariables.myToastMessage = c.getString(R.string.not_allowed);
+                ShowToast.showToast(c);
+            }
+        });
+
+        songDrawingButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "drawnotes";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                // Take a snapshot of the songwindow
+                mListener.takeScreenShot();
+                if (FullscreenActivity.bmScreen!=null) {
+                    mListener.openFragment();
                 } else {
-                    StaticVariables.myToastMessage = c.getString(R.string.not_allowed);
-                    ShowToast.showToast(c);
+                    Log.d("OptionMenuListeners", "screenshot is null");
                 }
             }
         });
 
-        songPresentationOrderButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(c,"usePresentationOrder",b);
-                if (FullscreenActivity.isSong) {
-                    if (mListener != null) {
-                        mListener.loadSong();
-                    }
-                }
+        songScoreButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "abcnotation_edit";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        songKeepMultiLineCompactButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(c,"multiLineVerseKeepCompact",b);
-                if (FullscreenActivity.isSong) {
-                    if (mListener != null) {
-                        mListener.loadSong();
-                    }
-                }
+        songOnYouTubeButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "youtube";
+            if (mListener != null) {
+                Intent youtube = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://www.youtube.com/results?search_query=" + StaticVariables.mTitle + "+" + StaticVariables.mAuthor));
+                mListener.callIntent("web", youtube);
+                mListener.closeMyDrawers("option");
             }
         });
 
-        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
+        songOnWebButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "websearch";
+            if (mListener!=null) {
+                Intent web = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://www.google.com/search?q=" + StaticVariables.mTitle + "+" + StaticVariables.mAuthor));
+                mListener.callIntent("web", web);
+                mListener.closeMyDrawers("option");
+            }
+        });
+
+        songRenameButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "renamesong";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
+
+        songNewButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "createsong";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
+
+        songDeleteButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "deletesong";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
+
+        songImportButton.setOnClickListener(v16 -> {
+            FullscreenActivity.whattodo = "doimport";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.selectAFileUri(c.getString(R.string.importnewsong));
+            }
+        });
+
+        songExportButton.setOnClickListener(view -> {
+            if (FullscreenActivity.isSong) {
+                FullscreenActivity.whattodo = "customise_exportsong";
+                if (mListener != null) {
                     mListener.closeMyDrawers("option");
+                    mListener.openFragment();
                 }
+            } else {
+                StaticVariables.myToastMessage = c.getString(R.string.not_allowed);
+                ShowToast.showToast(c);
+            }
+        });
+
+        songPresentationOrderButton.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(c,"usePresentationOrder",b);
+            if (FullscreenActivity.isSong) {
+                if (mListener != null) {
+                    mListener.loadSong();
+                }
+            }
+        });
+
+        songKeepMultiLineCompactButton.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(c,"multiLineVerseKeepCompact",b);
+            if (FullscreenActivity.isSong) {
+                if (mListener != null) {
+                    mListener.loadSong();
+                }
+            }
+        });
+
+        closeOptionsFAB.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
             }
         });
 
@@ -1282,225 +1068,183 @@ public class OptionMenuListeners extends AppCompatActivity {
         capoAsNumeralsToggleSwitch.setChecked(preferences.getMyPreferenceBoolean(c,"capoInfoAsNumerals",false));
 
         // Set the button listeners
-        menuup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "MAIN";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuup.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "MAIN";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
 
-        chordsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "page_chords";
-                    if (mListener != null) {
-                        mListener.closeMyDrawers("option");
-                        mListener.openFragment();
-                    }
-                }
-            }
-        });
-
-        chordsTransposeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "transpose";
-                    if (mListener != null) {
-                        mListener.closeMyDrawers("option");
-                        mListener.openFragment();
-                    }
-                } else {
-                    StaticVariables.myToastMessage = c.getString(R.string.not_allowed);
-                    ShowToast.showToast(c);
-                }
-            }
-        });
-
-        chordsSharpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Transpose transpose = new Transpose();
-                FullscreenActivity.whattodo = "transpose";
-                if (FullscreenActivity.isPDF) {
-                    // Can't do this action on a pdf!
-                    StaticVariables.myToastMessage = c.getResources().getString(R.string.pdf_functionnotavailable);
-                    ShowToast.showToast(c);
-                } else if (!FullscreenActivity.isSong) {
-                    // Editing a slide / note / scripture / image
-                    StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
-                    ShowToast.showToast(c);
-                } else {
-                    StaticVariables.transposeDirection = "0";
-                    transpose.checkChordFormat(c,preferences);
-                    if (preferences.getMyPreferenceBoolean(c,"chordFormatUsePreferred",true)) {
-                        StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(c,"chordFormat",1);
-                    }
-                    try {
-                        transpose.doTranspose(c,storageAccess, preferences, true, false, false);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    if (mListener!=null) {
-                        mListener.loadSong();
-                    }
-                }
-            }
-        });
-
-        chordsFlatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Transpose transpose = new Transpose();
-                FullscreenActivity.whattodo = "transpose";
-                if (FullscreenActivity.isPDF) {
-                    // Can't do this action on a pdf!
-                    StaticVariables.myToastMessage = c.getResources().getString(R.string.pdf_functionnotavailable);
-                    ShowToast.showToast(c);
-                } else if (!FullscreenActivity.isSong) {
-                    // Editing a slide / note / scripture / image
-                    StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
-                    ShowToast.showToast(c);
-                } else {
-                    StaticVariables.transposeDirection = "0";
-                    transpose.checkChordFormat(c,preferences);
-                    if (preferences.getMyPreferenceBoolean(c,"chordFormatUsePreferred",true)) {
-                        StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(c,"chordFormat",1);
-                    }
-                    try {
-                        transpose.doTranspose(c, storageAccess, preferences, false, true, false);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    if (mListener!=null) {
-                        mListener.loadSong();
-                    }
-                }
-            }
-        });
-
-        chordsToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(c,"displayChords",b);
-                chordsCapoToggleSwitch.setEnabled(b);
-                if (!b) {
-                    chordsCapoToggleSwitch.setAlpha(0.4f);
-                } else {
-                    chordsCapoToggleSwitch.setAlpha(1.0f);
-                }
-
-                boolean nativeandcapobuttonenabled = preferences.getMyPreferenceBoolean(c,"displayCapoChords",true) && b;
-                chordsNativeAndCapoToggleSwitch.setEnabled(nativeandcapobuttonenabled);
-                if (!nativeandcapobuttonenabled) {
-                    chordsNativeAndCapoToggleSwitch.setAlpha(0.4f);
-                } else {
-                    chordsNativeAndCapoToggleSwitch.setAlpha(1.0f);
-                }
-
-                if (mListener!=null) {
-                    mListener.loadSong();
-                }
-            }
-        });
-
-        chordsLyricsToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(c,"displayLyrics",b);
-                if (mListener!=null) {
-                    mListener.loadSong();
-                }
-            }
-        });
-
-        chordsCapoToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(c,"displayCapoChords",b);
-                boolean nativeandcapobuttonenabled = preferences.getMyPreferenceBoolean(c,"displayChords",true) && b;
-                chordsNativeAndCapoToggleSwitch.setEnabled(nativeandcapobuttonenabled);
-                if (!nativeandcapobuttonenabled) {
-                    chordsNativeAndCapoToggleSwitch.setAlpha(0.4f);
-                } else {
-                    chordsNativeAndCapoToggleSwitch.setAlpha(1.0f);
-                }
-                if (mListener!=null) {
-                    mListener.loadSong();
-                }
-            }
-        });
-
-        chordsNativeAndCapoToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(c,"displayCapoAndNativeChords",b);
-                if (mListener!=null) {
-                    mListener.loadSong();
-                }
-            }
-        });
-
-        capoAsNumeralsToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(c,"capoInfoAsNumerals",b);
-                if (mListener!=null) {
-                    mListener.loadSong();
-                }
-            }
-        });
-        chordsFormatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "choosechordformat";
-                if (mListener!=null) {
+        chordsButton.setOnClickListener(v1 -> {
+            if (FullscreenActivity.isSong) {
+                FullscreenActivity.whattodo = "page_chords";
+                if (mListener != null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
             }
         });
-        switchCapoTextSize.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(c,"capoLargeFontInfoBar",b);
-                if (mListener!=null) {
-                    mListener.updateExtraInfoColorsAndSizes("capo");
+
+        chordsTransposeButton.setOnClickListener(view -> {
+            if (FullscreenActivity.isSong) {
+                FullscreenActivity.whattodo = "transpose";
+                if (mListener != null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
                 }
+            } else {
+                StaticVariables.myToastMessage = c.getString(R.string.not_allowed);
+                ShowToast.showToast(c);
             }
         });
-        chordsConvertButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Transpose transpose = new Transpose();
-                if (FullscreenActivity.isPDF) {
-                    // Can't do this action on a pdf!
-                    StaticVariables.myToastMessage = c.getResources().getString(R.string.pdf_functionnotavailable);
-                    ShowToast.showToast(c);
-                } else if (!FullscreenActivity.isSong) {
-                    // Editing a slide / note / scripture / image
-                    StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
-                    ShowToast.showToast(c);
-                } else {
-                    transpose.convertChords(c,storageAccess,preferences);
+
+        chordsSharpButton.setOnClickListener(view -> {
+            Transpose transpose = new Transpose();
+            FullscreenActivity.whattodo = "transpose";
+            if (FullscreenActivity.isPDF) {
+                // Can't do this action on a pdf!
+                StaticVariables.myToastMessage = c.getResources().getString(R.string.pdf_functionnotavailable);
+                ShowToast.showToast(c);
+            } else if (!FullscreenActivity.isSong) {
+                // Editing a slide / note / scripture / image
+                StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
+                ShowToast.showToast(c);
+            } else {
+                StaticVariables.transposeDirection = "0";
+                transpose.checkChordFormat(c,preferences);
+                if (preferences.getMyPreferenceBoolean(c,"chordFormatUsePreferred",true)) {
+                    StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(c,"chordFormat",1);
+                }
+                try {
+                    transpose.doTranspose(c,storageAccess, preferences, true, false, false);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
                     mListener.loadSong();
                 }
             }
         });
 
-        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
+        chordsFlatButton.setOnClickListener(view -> {
+            Transpose transpose = new Transpose();
+            FullscreenActivity.whattodo = "transpose";
+            if (FullscreenActivity.isPDF) {
+                // Can't do this action on a pdf!
+                StaticVariables.myToastMessage = c.getResources().getString(R.string.pdf_functionnotavailable);
+                ShowToast.showToast(c);
+            } else if (!FullscreenActivity.isSong) {
+                // Editing a slide / note / scripture / image
+                StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
+                ShowToast.showToast(c);
+            } else {
+                StaticVariables.transposeDirection = "0";
+                transpose.checkChordFormat(c,preferences);
+                if (preferences.getMyPreferenceBoolean(c,"chordFormatUsePreferred",true)) {
+                    StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(c,"chordFormat",1);
                 }
+                try {
+                    transpose.doTranspose(c, storageAccess, preferences, false, true, false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (mListener!=null) {
+                    mListener.loadSong();
+                }
+            }
+        });
+
+        chordsToggleSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(c,"displayChords",b);
+            chordsCapoToggleSwitch.setEnabled(b);
+            if (!b) {
+                chordsCapoToggleSwitch.setAlpha(0.4f);
+            } else {
+                chordsCapoToggleSwitch.setAlpha(1.0f);
+            }
+
+            boolean nativeandcapobuttonenabled1 = preferences.getMyPreferenceBoolean(c,"displayCapoChords",true) && b;
+            chordsNativeAndCapoToggleSwitch.setEnabled(nativeandcapobuttonenabled1);
+            if (!nativeandcapobuttonenabled1) {
+                chordsNativeAndCapoToggleSwitch.setAlpha(0.4f);
+            } else {
+                chordsNativeAndCapoToggleSwitch.setAlpha(1.0f);
+            }
+
+            if (mListener!=null) {
+                mListener.loadSong();
+            }
+        });
+
+        chordsLyricsToggleSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(c,"displayLyrics",b);
+            if (mListener!=null) {
+                mListener.loadSong();
+            }
+        });
+
+        chordsCapoToggleSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(c,"displayCapoChords",b);
+            boolean nativeandcapobuttonenabled12 = preferences.getMyPreferenceBoolean(c,"displayChords",true) && b;
+            chordsNativeAndCapoToggleSwitch.setEnabled(nativeandcapobuttonenabled12);
+            if (!nativeandcapobuttonenabled12) {
+                chordsNativeAndCapoToggleSwitch.setAlpha(0.4f);
+            } else {
+                chordsNativeAndCapoToggleSwitch.setAlpha(1.0f);
+            }
+            if (mListener!=null) {
+                mListener.loadSong();
+            }
+        });
+
+        chordsNativeAndCapoToggleSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(c,"displayCapoAndNativeChords",b);
+            if (mListener!=null) {
+                mListener.loadSong();
+            }
+        });
+
+        capoAsNumeralsToggleSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(c,"capoInfoAsNumerals",b);
+            if (mListener!=null) {
+                mListener.loadSong();
+            }
+        });
+        chordsFormatButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "choosechordformat";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
+        switchCapoTextSize.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(c,"capoLargeFontInfoBar",b);
+            if (mListener!=null) {
+                mListener.updateExtraInfoColorsAndSizes("capo");
+            }
+        });
+        chordsConvertButton.setOnClickListener(view -> {
+            Transpose transpose = new Transpose();
+            if (FullscreenActivity.isPDF) {
+                // Can't do this action on a pdf!
+                StaticVariables.myToastMessage = c.getResources().getString(R.string.pdf_functionnotavailable);
+                ShowToast.showToast(c);
+            } else if (!FullscreenActivity.isSong) {
+                // Editing a slide / note / scripture / image
+                StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
+                ShowToast.showToast(c);
+            } else {
+                transpose.convertChords(c,storageAccess,preferences);
+            }
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.loadSong();
+            }
+        });
+
+        closeOptionsFAB.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
             }
         });
     }
@@ -1520,39 +1264,27 @@ public class OptionMenuListeners extends AppCompatActivity {
         setTextButtons(profileSaveButton,c.getString(R.string.save));
 
         // Set the button listeners
-        menuup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "MAIN";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuup.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "MAIN";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-        profileLoadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.profileWork("load");
-                }
+        profileLoadButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.profileWork("load");
             }
         });
-        profileSaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        profileSaveButton.setOnClickListener(view -> {
 
-                if (mListener!=null) {
-                    mListener.profileWork("save");
-                }
+            if (mListener!=null) {
+                mListener.profileWork("save");
             }
         });
 
-        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                }
+        closeOptionsFAB.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
             }
         });
     }
@@ -1586,125 +1318,92 @@ public class OptionMenuListeners extends AppCompatActivity {
         setTextButtons(displayHDMIButton,c.getString(R.string.hdmi));
 
         // Set the button listeners
-        menuup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "MAIN";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuup.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "MAIN";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
 
-        displayThemeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "changetheme";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        displayThemeButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "changetheme";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        displayAutoScaleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "autoscale";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        displayAutoScaleButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "autoscale";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        displayFontButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "changefonts";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        displayFontButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "changefonts";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        displayButtonsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "pagebuttons";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        displayButtonsButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "pagebuttons";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        displayPopUpsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "popupsettings";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        displayPopUpsButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "popupsettings";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        displayInfoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "extra";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        displayInfoButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "extra";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        displayActionBarButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "actionbarinfo";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        displayActionBarButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "actionbarinfo";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        displayConnectedDisplayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null && (FullscreenActivity.isPresenting || FullscreenActivity.isHDMIConnected)) {
-                    FullscreenActivity.whattodo = "connecteddisplay";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                } else {
-                    StaticVariables.myToastMessage = view.getContext().getString(R.string.nodisplays);
-                    ShowToast.showToast(view.getContext());
-                }
+        displayConnectedDisplayButton.setOnClickListener(view -> {
+            if (mListener!=null && (FullscreenActivity.isPresenting || FullscreenActivity.isHDMIConnected)) {
+                FullscreenActivity.whattodo = "connecteddisplay";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            } else {
+                StaticVariables.myToastMessage = view.getContext().getString(R.string.nodisplays);
+                ShowToast.showToast(view.getContext());
             }
         });
 
-        displayHDMIButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    StaticVariables.myToastMessage = view.getContext().getString(R.string.connections_searching);
-                    ShowToast.showToast(view.getContext());
-                    FullscreenActivity.whattodo = "hdmi";
-                    mListener.connectHDMI();
-                }
+        displayHDMIButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                StaticVariables.myToastMessage = view.getContext().getString(R.string.connections_searching);
+                ShowToast.showToast(view.getContext());
+                FullscreenActivity.whattodo = "hdmi";
+                mListener.connectHDMI();
             }
         });
 
-        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                }
+        closeOptionsFAB.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
             }
         });
 
@@ -1745,136 +1444,97 @@ public class OptionMenuListeners extends AppCompatActivity {
         setTextButtons(cameraButton,c.getString(R.string.camera));
 
         // Set the button listeners
-        menuup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "MAIN";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuup.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "MAIN";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
 
-        ugSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "ultimate-guitar";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        ugSearchButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "ultimate-guitar";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
-        chordieSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "chordie";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        chordieSearchButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "chordie";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
-        worshiptogetherSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "worshiptogether";
-                if (mListener != null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        worshiptogetherSearchButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "worshiptogether";
+            if (mListener != null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
-        worshipreadySearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "worshipready";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        worshipreadySearchButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "worshipready";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
-        songselectSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "songselect";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        songselectSearchButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "songselect";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
-        ukutabsSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "ukutabs";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        ukutabsSearchButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "ukutabs";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
-        holychordsSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FullscreenActivity.whattodo = "holychords";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        holychordsSearchButton.setOnClickListener(v1 -> {
+            FullscreenActivity.whattodo = "holychords";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
-        bandDownloadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "download_band";
-                StaticVariables.myToastMessage = c.getString(R.string.wait);
-                ShowToast.showToast(c);
-                if (mListener!=null) {
-                    mListener.doDownload("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_leDR5bFFjRVVxVjA");
-                    mListener.closeMyDrawers("option");
-                }
+        bandDownloadButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "download_band";
+            StaticVariables.myToastMessage = c.getString(R.string.wait);
+            ShowToast.showToast(c);
+            if (mListener!=null) {
+                mListener.doDownload("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_leDR5bFFjRVVxVjA");
+                mListener.closeMyDrawers("option");
             }
         });
-        churchDownloadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "download_church";
-                StaticVariables.myToastMessage = c.getString(R.string.wait);
-                ShowToast.showToast(c);
-                if (mListener!=null) {
-                    mListener.doDownload("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_lbVY3VVVOMkc5OGM");
-                    mListener.closeMyDrawers("option");
-                }
+        churchDownloadButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "download_church";
+            StaticVariables.myToastMessage = c.getString(R.string.wait);
+            ShowToast.showToast(c);
+            if (mListener!=null) {
+                mListener.doDownload("https://drive.google.com/uc?export=download&id=0B-GbNhnY_O_lbVY3VVVOMkc5OGM");
+                mListener.closeMyDrawers("option");
             }
         });
-        songImportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FullscreenActivity.whattodo = "doimport";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.selectAFileUri(c.getString(R.string.importnewsong));
-                }
+        songImportButton.setOnClickListener(v12 -> {
+            FullscreenActivity.whattodo = "doimport";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.selectAFileUri(c.getString(R.string.importnewsong));
             }
         });
-        cameraButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        cameraButton.setOnClickListener(view -> {
 
-                if (mListener!=null) {
-                    mListener.useCamera();
-                }
-           }
-        });
+            if (mListener!=null) {
+                mListener.useCamera();
+            }
+       });
 
-        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                }
+        closeOptionsFAB.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
             }
         });
 
@@ -1911,132 +1571,93 @@ public class OptionMenuListeners extends AppCompatActivity {
         setTextButtons(storageLogButton,c.getString(R.string.search_log));
 
         // Set the button listeners
-        menuup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "MAIN";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuup.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "MAIN";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
+            }
+        });
+        storageNewFolderButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "newfolder";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
+        storageEditButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "editfoldername";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
+        storageManageButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                preferences.setMyPreferenceInt(c, "lastUsedVersion", 0);
+                mListener.closeMyDrawers("option");
+                mListener.splashScreen();
             }
         });
 
-        storageNewFolderButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "newfolder";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        exportSongListButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "exportsonglist";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        storageEditButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "editfoldername";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        storageImportOSBButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "processimportosb";
+                mListener.selectAFileUri(c.getString(R.string.backup_import));
+                mListener.closeMyDrawers("option");
             }
         });
 
-        storageManageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    preferences.setMyPreferenceInt(c, "lastUsedVersion", 0);
-                    mListener.closeMyDrawers("option");
-                    mListener.splashScreen();
-                }
+        storageExportOSBButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "exportosb";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        exportSongListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "exportsonglist";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        storageImportOnSongButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "importos";
+                mListener.closeMyDrawers("option");
+                mListener.selectAFileUri(c.getString(R.string.import_onsong_choose));
             }
         });
 
-        storageImportOSBButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "processimportosb";
-                    mListener.selectAFileUri(c.getString(R.string.backup_import));
-                    mListener.closeMyDrawers("option");
-                }
+        storageSongMenuButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.prepareSongMenu();
+                mListener.closeMyDrawers("option");
+                mListener.openMyDrawers("song");
+                mListener.closeMyDrawers("song_delayed");
             }
         });
 
-        storageExportOSBButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "exportosb";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        storageDatabaseButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.rebuildSearchIndex();
             }
         });
 
-        storageImportOnSongButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "importos";
-                    mListener.closeMyDrawers("option");
-                    mListener.selectAFileUri(c.getString(R.string.import_onsong_choose));
-                }
+        storageLogButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "errorlog";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        storageSongMenuButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.prepareSongMenu();
-                    mListener.closeMyDrawers("option");
-                    mListener.openMyDrawers("song");
-                    mListener.closeMyDrawers("song_delayed");
-                }
-            }
-        });
-
-        storageDatabaseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.rebuildSearchIndex();
-                }
-            }
-        });
-
-        storageLogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "errorlog";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
-            }
-        });
-
-        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                }
+        closeOptionsFAB.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
             }
         });
     }
@@ -2076,46 +1697,22 @@ public class OptionMenuListeners extends AppCompatActivity {
         connectionsReceiveHostFile.setChecked(FullscreenActivity.receiveHostFiles);
 
         // Set the button listeners
-        menuUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "MAIN";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuUp.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "MAIN";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-        connectionsReceiveHostFile.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                FullscreenActivity.receiveHostFiles = b;
-            }
+        connectionsReceiveHostFile.setOnCheckedChangeListener((compoundButton, b) -> FullscreenActivity.receiveHostFiles = b);
+        FullscreenActivity.connectionsLog.setOnClickListener(view -> {
+            FullscreenActivity.salutLog = c.getResources().getString(R.string.connections_log) + "\n\n";
+            setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
         });
-        FullscreenActivity.connectionsLog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.salutLog = c.getResources().getString(R.string.connections_log) + "\n\n";
-                setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-            }
-        });
-        FullscreenActivity.hostButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setupNetwork(c);
-            }
-        });
-        FullscreenActivity.clientButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                discoverServices(c);
-            }
-        });
-        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                }
+        FullscreenActivity.hostButton.setOnClickListener(view -> setupNetwork(c));
+        FullscreenActivity.clientButton.setOnClickListener(view -> discoverServices(c));
+        closeOptionsFAB.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
             }
         });
 
@@ -2146,67 +1743,44 @@ public class OptionMenuListeners extends AppCompatActivity {
         midiAuto.setChecked(preferences.getMyPreferenceBoolean(c,"midiSendAuto",false));
 
         // Set the button listeners
-        menuUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "MAIN";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuUp.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "MAIN";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-        midiBluetooth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "bluetoothmidi";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        midiBluetooth.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "bluetoothmidi";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
-        midiUSB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "usbmidi";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        midiUSB.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "usbmidi";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
-        midiCommands.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "midicommands";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        midiCommands.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "midicommands";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
-        midiSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "showmidicommands";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        midiSend.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "showmidicommands";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
-        midiAuto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(c,"midiSendAuto",b);
-            }
-        });
-        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                }
+        midiAuto.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(c,"midiSendAuto",b));
+        closeOptionsFAB.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
             }
         });
     }
@@ -2219,15 +1793,12 @@ public class OptionMenuListeners extends AppCompatActivity {
 
         if (FullscreenActivity.network!=null && !FullscreenActivity.network.isRunningAsHost) {
             try {
-                FullscreenActivity.network.startNetworkService(new SalutDeviceCallback() {
-                    @Override
-                    public void call(SalutDevice salutDevice) {
-                        StaticVariables.myToastMessage = salutDevice.readableName + " - " +
-                                c.getResources().getString(R.string.connections_success);
-                        FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-                        setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-                        ShowToast.showToast(c);
-                    }
+                FullscreenActivity.network.startNetworkService(salutDevice -> {
+                    StaticVariables.myToastMessage = salutDevice.readableName + " - " +
+                            c.getResources().getString(R.string.connections_success);
+                    FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
+                    setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
+                    ShowToast.showToast(c);
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2262,17 +1833,14 @@ public class OptionMenuListeners extends AppCompatActivity {
     private static void discoverServices(final Context c) {
         if(FullscreenActivity.network!=null && !FullscreenActivity.network.isRunningAsHost && !FullscreenActivity.network.isDiscovering) {
             try {
-                FullscreenActivity.network.discoverNetworkServices(new SalutCallback() {
-                    @Override
-                    public void call() {
-                        SalutDevice hostname = FullscreenActivity.network.foundDevices.get(0);
-                        StaticVariables.myToastMessage = c.getResources().getString(R.string.connections_host) +
-                                " " + hostname.readableName;
-                        FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-                        setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-                        ShowToast.showToast(c);
-                        registerWithHost(c,hostname);
-                    }
+                FullscreenActivity.network.discoverNetworkServices(() -> {
+                    SalutDevice hostname = FullscreenActivity.network.foundDevices.get(0);
+                    StaticVariables.myToastMessage = c.getResources().getString(R.string.connections_host) +
+                            " " + hostname.readableName;
+                    FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
+                    setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
+                    ShowToast.showToast(c);
+                    registerWithHost(c,hostname);
                 }, true);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2302,37 +1870,31 @@ public class OptionMenuListeners extends AppCompatActivity {
     private static void registerWithHost(final Context c, final SalutDevice possibleHost) {
         try {
             Log.d("OptionMenu","possibleHost="+possibleHost);
-            FullscreenActivity.network.registerWithHost(possibleHost, new SalutCallback() {
-                @Override
-                public void call() {
-                    StaticVariables.myToastMessage = c.getResources().getString(R.string.connections_connected) +
-                            " " + possibleHost.readableName;
-                    FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-                    setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-                    ShowToast.showToast(c);
-                    FullscreenActivity.clientButtonText = (c.getResources().getString(R.string.connections_disconnect) +
-                            " " + possibleHost.readableName).toUpperCase(StaticVariables.locale);
-                    setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
+            FullscreenActivity.network.registerWithHost(possibleHost, () -> {
+                StaticVariables.myToastMessage = c.getResources().getString(R.string.connections_connected) +
+                        " " + possibleHost.readableName;
+                FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
+                setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
+                ShowToast.showToast(c);
+                FullscreenActivity.clientButtonText = (c.getResources().getString(R.string.connections_disconnect) +
+                        " " + possibleHost.readableName).toUpperCase(StaticVariables.locale);
+                setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
 
+            }, () -> {
+                StaticVariables.myToastMessage = possibleHost.readableName + ": " +
+                        c.getResources().getString(R.string.connections_failure);
+                FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
+                setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
+                ShowToast.showToast(c);
+                try {
+                    FullscreenActivity.network.stopServiceDiscovery(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }, new SalutCallback() {
-                @Override
-                public void call() {
-                    StaticVariables.myToastMessage = possibleHost.readableName + ": " +
-                            c.getResources().getString(R.string.connections_failure);
-                    FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-                    setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-                    ShowToast.showToast(c);
-                    try {
-                        FullscreenActivity.network.stopServiceDiscovery(true);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    FullscreenActivity.clientButtonText = c.getResources().getString(R.string.connections_discover).toUpperCase(StaticVariables.locale);
-                    setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
-                    FullscreenActivity.hostButton.setAlpha(1f);
-                    FullscreenActivity.hostButton.setClickable(true);
-                }
+                FullscreenActivity.clientButtonText = c.getResources().getString(R.string.connections_discover).toUpperCase(StaticVariables.locale);
+                setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
+                FullscreenActivity.hostButton.setAlpha(1f);
+                FullscreenActivity.hostButton.setClickable(true);
             });
         } catch (Exception e) {
             e.printStackTrace();
@@ -2378,70 +1940,55 @@ public class OptionMenuListeners extends AppCompatActivity {
 
         }
         // Set the button listeners
-        menuUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "MAIN";
+        menuUp.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "MAIN";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
+            }
+        });
+        modePerformanceButton.setOnClickListener(view -> {
+            if (!StaticVariables.whichMode.equals("Performance")) {
+                // Switch to performance mode
+                StaticVariables.whichMode = "Performance";
+                preferences.setMyPreferenceString(c,"whichMode","Performance");
+                Intent performmode = new Intent();
+                performmode.setClass(c, StageMode.class);
                 if (mListener!=null) {
-                    mListener.prepareOptionMenu();
+                    mListener.closeMyDrawers("option");
+                    mListener.callIntent("activity", performmode);
                 }
             }
         });
-        modePerformanceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!StaticVariables.whichMode.equals("Performance")) {
-                    // Switch to performance mode
-                    StaticVariables.whichMode = "Performance";
-                    preferences.setMyPreferenceString(c,"whichMode","Performance");
-                    Intent performmode = new Intent();
-                    performmode.setClass(c, StageMode.class);
-                    if (mListener!=null) {
-                        mListener.closeMyDrawers("option");
-                        mListener.callIntent("activity", performmode);
-                    }
+        modeStageButton.setOnClickListener(view -> {
+            if (!StaticVariables.whichMode.equals("Stage")) {
+                // Switch to stage mode
+                StaticVariables.whichMode = "Stage";
+                preferences.setMyPreferenceString(c,"whichMode","Stage");
+                Intent stagemode = new Intent();
+                stagemode.setClass(c, StageMode.class);
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.callIntent("activity", stagemode);
                 }
             }
         });
-        modeStageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!StaticVariables.whichMode.equals("Stage")) {
-                    // Switch to stage mode
-                    StaticVariables.whichMode = "Stage";
-                    preferences.setMyPreferenceString(c,"whichMode","Stage");
-                    Intent stagemode = new Intent();
-                    stagemode.setClass(c, StageMode.class);
-                    if (mListener!=null) {
-                        mListener.closeMyDrawers("option");
-                        mListener.callIntent("activity", stagemode);
-                    }
-                }
-            }
-        });
-        modePresentationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!StaticVariables.whichMode.equals("Presentation")) {
-                    // Switch to presentation mode
-                    StaticVariables.whichMode = "Presentation";
-                    preferences.setMyPreferenceString(c,"whichMode","Presentation");
-                    Intent presentmode = new Intent();
-                    presentmode.setClass(c, PresenterMode.class);
-                    if (mListener!=null) {
-                        mListener.closeMyDrawers("option");
-                        mListener.callIntent("activity", presentmode);
-                    }
+        modePresentationButton.setOnClickListener(view -> {
+            if (!StaticVariables.whichMode.equals("Presentation")) {
+                // Switch to presentation mode
+                StaticVariables.whichMode = "Presentation";
+                preferences.setMyPreferenceString(c,"whichMode","Presentation");
+                Intent presentmode = new Intent();
+                presentmode.setClass(c, PresenterMode.class);
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.callIntent("activity", presentmode);
                 }
             }
         });
 
-        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                }
+        closeOptionsFAB.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
             }
         });
 
@@ -2475,105 +2022,70 @@ public class OptionMenuListeners extends AppCompatActivity {
         displayMenuToggleSwitch.setChecked(preferences.getMyPreferenceBoolean(c,"hideActionBar",false));
 
         // Set the button listeners
-        menuup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "MAIN";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuup.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "MAIN";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-
-        gesturesPedalButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "footpedal";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        gesturesPedalButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "footpedal";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
-
-        gesturesPageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "quicklaunch";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        gesturesPageButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "quicklaunch";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
-
-        gesturesCustomButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "gestures";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        gesturesCustomButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "gestures";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
-
-        gesturesMenuOptions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "menuoptions";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        gesturesMenuOptions.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "menuoptions";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
-
-        gesturesScrollButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "scrollsettings";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        gesturesScrollButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "scrollsettings";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
-
-        gesturesSongSwipeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "swipesettings";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
+        gesturesSongSwipeButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "swipesettings";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
-        displayMenuToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(c,"hideActionBar",b);
-                if (mListener!=null) {
-                    if (b) {
-                        mListener.hideActionBar();
-                    } else {
-                        mListener.showActionBar();
-                    }
-                    mListener.loadSong();
+        displayMenuToggleSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(c,"hideActionBar",b);
+            if (mListener!=null) {
+                if (b) {
+                    mListener.hideActionBar();
+                } else {
+                    mListener.showActionBar();
                 }
+                mListener.loadSong();
             }
         });
-
-        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                }
+        closeOptionsFAB.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
             }
         });
-
     }
 
     private static void autoscrollOptionListener(View v, final Context c, final Preferences preferences) {
@@ -2605,84 +2117,56 @@ public class OptionMenuListeners extends AppCompatActivity {
         switchTimerSize.setChecked(preferences.getMyPreferenceBoolean(c,"autoscrollLargeFontInfoBar",true));
 
         // Set the button listeners
-        menuup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "MAIN";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuup.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "MAIN";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-
-        autoScrollButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "page_autoscroll";
-                    if (mListener != null) {
-                        mListener.closeMyDrawers("option");
-                        mListener.openFragment();
-                    }
-                }
-            }
-        });
-        autoscrollActivatedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                // gesture contains the start/stop logic.
+        autoScrollButton.setOnClickListener(v1 -> {
+            if (FullscreenActivity.isSong) {
+                FullscreenActivity.whattodo = "page_autoscroll";
                 if (mListener != null) {
-                    // Request a start/stop to get to the desired state
-                    if ((!StaticVariables.isautoscrolling && b) || (StaticVariables.isautoscrolling && !b)) {
-                        StaticVariables.doVibrateActive = false;
-                        mListener.gesture5();
-                    }
-                }
-            }
-        });
-        autoScrollTimeDefaultsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "autoscrolldefaults";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
             }
         });
-
-        autoScrollStartButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(c,"autoscrollAutoStart",b);
-            }
-        });
-
-        autoScrollLearnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.prepareLearnAutoScroll();
+        autoscrollActivatedSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            // gesture contains the start/stop logic.
+            if (mListener != null) {
+                // Request a start/stop to get to the desired state
+                if ((!StaticVariables.isautoscrolling && b) || (StaticVariables.isautoscrolling && !b)) {
+                    StaticVariables.doVibrateActive = false;
+                    mListener.gesture5();
                 }
             }
         });
-        switchTimerSize.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(c,"autoscrollLargeFontInfoBar",b);
-                if (mListener!=null) {
-                    mListener.updateExtraInfoColorsAndSizes("autoscroll");
-                }
+        autoScrollTimeDefaultsButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "autoscrolldefaults";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                }
+        autoScrollStartButton.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(c,"autoscrollAutoStart",b));
+
+        autoScrollLearnButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.prepareLearnAutoScroll();
+            }
+        });
+        switchTimerSize.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(c,"autoscrollLargeFontInfoBar",b);
+            if (mListener!=null) {
+                mListener.updateExtraInfoColorsAndSizes("autoscroll");
+            }
+        });
+        closeOptionsFAB.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
             }
         });
     }
@@ -2716,81 +2200,52 @@ public class OptionMenuListeners extends AppCompatActivity {
         padStartButton.setChecked(preferences.getMyPreferenceBoolean(c,"padAutoStart",false));
         padActivatedSwitch.setChecked(StaticVariables.clickedOnPadStart);
         // Set the button listeners
-        menuup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "MAIN";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuup.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "MAIN";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
-
-        padButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "page_pad";
-                    if (mListener != null) {
-                        mListener.closeMyDrawers("option");
-                        mListener.openFragment();
-                    }
-                }
-            }
-        });
-
-        padStartButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(c,"padAutoStart",b);
-            }
-        });
-        padCustomButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    FullscreenActivity.whattodo = "custompads";
-                    mListener.openFragment();
-                }
-            }
-        });
-        padCrossFadeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "crossfade";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
-            }
-        });
-
-        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                }
-            }
-        });
-        switchTimerSize.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                // IV - Correction to preference name
-                preferences.setMyPreferenceBoolean(c,"padLargeFontInfoBar",b);
-                if (mListener!=null) {
-                    mListener.updateExtraInfoColorsAndSizes("pad");
-                }
-            }
-        });
-        padActivatedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                // gesture contains the start/stop logic
+        padButton.setOnClickListener(v1 -> {
+            if (FullscreenActivity.isSong) {
+                FullscreenActivity.whattodo = "page_pad";
                 if (mListener != null) {
-                        mListener.gesture6();
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
                 }
+            }
+        });
+        padStartButton.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(c,"padAutoStart",b));
+        padCustomButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                FullscreenActivity.whattodo = "custompads";
+                mListener.openFragment();
+            }
+        });
+        padCrossFadeButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "crossfade";
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
+        closeOptionsFAB.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+            }
+        });
+        switchTimerSize.setOnCheckedChangeListener((compoundButton, b) -> {
+            // IV - Correction to preference name
+            preferences.setMyPreferenceBoolean(c,"padLargeFontInfoBar",b);
+            if (mListener!=null) {
+                mListener.updateExtraInfoColorsAndSizes("pad");
+            }
+        });
+        padActivatedSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            // gesture contains the start/stop logic
+            if (mListener != null) {
+                    mListener.gesture6();
             }
         });
 
@@ -2827,66 +2282,44 @@ public class OptionMenuListeners extends AppCompatActivity {
         metronomeActivatedSwitch.setChecked(StaticVariables.clickedOnMetronomeStart);
 
         // Set the button listeners
-        menuup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "MAIN";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuup.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "MAIN";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
 
-        metronomeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (FullscreenActivity.isSong) {
-                    FullscreenActivity.whattodo = "page_metronome";
-                    if (mListener != null) {
-                        mListener.closeMyDrawers("option");
-                        mListener.openFragment();
-                    }
-                }
-            }
-        });
-        metronomeLengthButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        metronomeButton.setOnClickListener(v1 -> {
+            if (FullscreenActivity.isSong) {
                 FullscreenActivity.whattodo = "page_metronome";
-                if (mListener!=null) {
-                    try {
-                        mListener.closeMyDrawers("option");
-                        mListener.openFragment();
-                        mListener.prepareOptionMenu();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        metronomeStartButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(c,"metronomeAutoStart",b);
-            }
-        });
-
-        metronomeActivatedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                // gesture contains the start/stop logic
                 if (mListener != null) {
-                    mListener.gesture7();
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
                 }
             }
         });
-
-        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
+        metronomeLengthButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "page_metronome";
+            if (mListener!=null) {
+                try {
                     mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                    mListener.prepareOptionMenu();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+            }
+        });
+        metronomeStartButton.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(c,"metronomeAutoStart",b));
+        metronomeActivatedSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            // gesture contains the start/stop logic
+            if (mListener != null) {
+                mListener.gesture7();
+            }
+        });
+        closeOptionsFAB.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
             }
         });
     }
@@ -2929,73 +2362,47 @@ public class OptionMenuListeners extends AppCompatActivity {
         ccliAutoButton.setChecked(preferences.getMyPreferenceBoolean(c,"ccliAutomaticLogging",false));
 
         // Set the button listeners
-        menuup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "MAIN";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuup.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "MAIN";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
             }
         });
 
-        ccliAutoButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(c,"ccliAutomaticLogging",b);
+        ccliAutoButton.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(c,"ccliAutomaticLogging",b));
+        ccliChurchButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "ccli_church";
+            if (mListener!=null) {
+                mListener.openFragment();
             }
         });
-        ccliChurchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "ccli_church";
-                if (mListener!=null) {
-                    mListener.openFragment();
-                }
+        ccliLicenceButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "ccli_licence";
+            if (mListener!=null) {
+                mListener.openFragment();
             }
         });
-        ccliLicenceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "ccli_licence";
-                if (mListener!=null) {
-                    mListener.openFragment();
-                }
+        ccliViewButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "ccli_view";
+            if (mListener!=null) {
+                mListener.openFragment();
             }
         });
-        ccliViewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "ccli_view";
-                if (mListener!=null) {
-                    mListener.openFragment();
-                }
+        ccliExportButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "ccli_export";
+            if (mListener!=null) {
+                mListener.doExport();
             }
         });
-        ccliExportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "ccli_export";
-                if (mListener!=null) {
-                    mListener.doExport();
-                }
+        ccliResetButton.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "ccli_reset";
+            if (mListener!=null) {
+                mListener.openFragment();
             }
         });
-        ccliResetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "ccli_reset";
-                if (mListener!=null) {
-                    mListener.openFragment();
-                }
-            }
-        });
-        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                }
+        closeOptionsFAB.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
             }
         });
     }
@@ -3025,106 +2432,73 @@ public class OptionMenuListeners extends AppCompatActivity {
         setTextButtons(otherPayPalButton,c.getString(R.string.paypal));
 
         // Set the button listeners
-        menuup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StaticVariables.whichOptionMenu = "MAIN";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
-                }
+        menuup.setOnClickListener(view -> {
+            StaticVariables.whichOptionMenu = "MAIN";
+            if (mListener!=null) {
+                mListener.prepareOptionMenu();
+            }
+        });
+        otherHelpButton.setOnClickListener(view -> {
+            String url = "https://www.opensongapp.com/user-guide";
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.callIntent("web",i);
+            }
+        });
+        otherTweetButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.callIntent("twitter",null);
+            }
+        });
+        otherEmailButton.setOnClickListener(view -> {
+            String url = "https://www.opensongapp.com/forum";
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
+                mListener.callIntent("web",i);
+            }
+        });
+        otherLanguageButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "language";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
             }
         });
 
-        otherHelpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String url = "https://www.opensongapp.com/user-guide";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.callIntent("web",i);
-                }
+        otherStartButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                // Set the last used version to 1
+                // Setting to 0 is now only for fresh installs
+                preferences.setMyPreferenceInt(c, "lastUsedVersion", 1);
+                mListener.closeMyDrawers("option");
+                mListener.splashScreen();
             }
         });
-
-        otherTweetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.callIntent("twitter",null);
-                }
+        otherRateButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                // Rate this app
+                String appPackage = c.getPackageName();
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackage));
+                mListener.closeMyDrawers("option");
+                mListener.callIntent("web", i);
             }
         });
-
-        otherEmailButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String url = "https://www.opensongapp.com/forum";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.callIntent("web",i);
-                }
+        otherPayPalButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                // PayPal.Me
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.paypal.me/opensongapp"));
+                mListener.closeMyDrawers("option");
+                mListener.callIntent("web", i);
             }
         });
-        otherLanguageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    FullscreenActivity.whattodo = "language";
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                }
-            }
-        });
-
-        otherStartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    // Set the last used version to 1
-                    // Setting to 0 is now only for fresh installs
-                    preferences.setMyPreferenceInt(c, "lastUsedVersion", 1);
-                    mListener.closeMyDrawers("option");
-                    mListener.splashScreen();
-                }
-            }
-        });
-
-        otherRateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    // Rate this app
-                    String appPackage = c.getPackageName();
-                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackage));
-                    mListener.closeMyDrawers("option");
-                    mListener.callIntent("web", i);
-                }
-            }
-        });
-
-        otherPayPalButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    // PayPal.Me
-                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.paypal.me/opensongapp"));
-                    mListener.closeMyDrawers("option");
-                    mListener.callIntent("web", i);
-                }
-            }
-        });
-
-        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                }
+        closeOptionsFAB.setOnClickListener(view -> {
+            if (mListener!=null) {
+                mListener.closeMyDrawers("option");
             }
         });
     }

@@ -47,6 +47,7 @@
         android:theme="@style/MyTheme"
         android:vmSafeMode="true"
         tools:ignore="UnusedAttribute"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true">
 
         <receiver android:name=".BatteryMonitor">

@@ -8,9 +8,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +20,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -79,7 +81,10 @@ public class PopUpImportExternalFile extends DialogFragment {
     private SongXML songXML;
     private SQLiteHelper sqLiteHelper;
 
-    private String what, errormessage = "", filetype, chosenfolder;
+    private String what;
+    private String errormessage = "";
+    private String filetype;
+    private String chosenfolder;
 
     // Folder variables
     private ArrayList<String> folderlist;
@@ -221,27 +226,21 @@ public class PopUpImportExternalFile extends DialogFragment {
         progressLinearLayout = v.findViewById(R.id.progressLinearLayout);
         saveMe = v.findViewById(R.id.saveMe);
         closeMe = v.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
-                closeMe.setEnabled(false);
-                try {
-                    dismiss();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe, getActivity());
+            closeMe.setEnabled(false);
+            try {
+                dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe, getActivity());
-                saveMe.setEnabled(false);
-                overwrite = overWrite_CheckBox.isChecked();
-                getChosenFolder();
-                setUpSaveAction();
-            }
+        saveMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(saveMe, getActivity());
+            saveMe.setEnabled(false);
+            overwrite = overWrite_CheckBox.isChecked();
+            getChosenFolder();
+            setUpSaveAction();
         });
     }
 
@@ -260,7 +259,7 @@ public class PopUpImportExternalFile extends DialogFragment {
 
     private void updateTextViews() {
         if ((FullscreenActivity.file_uri != null) && (FullscreenActivity.file_uri.getLastPathSegment() != null)) {
-            fileTitle_TextView.setText(FullscreenActivity.file_uri.getLastPathSegment());
+            fileTitle_TextView.setText(improveFileName(FullscreenActivity.file_uri));
         }
         fileType_TextView.setText(filetype);
     }
@@ -326,7 +325,7 @@ public class PopUpImportExternalFile extends DialogFragment {
 
     private void importOpenSongSet() {
         // Get the new file name
-        String filename = FullscreenActivity.file_uri.getLastPathSegment();
+        String filename = improveFileName(FullscreenActivity.file_uri);
         if (filename!=null && filename.endsWith(".osts")) {
             filename = filename.replace(".osts","");
         }
@@ -395,10 +394,11 @@ public class PopUpImportExternalFile extends DialogFragment {
 
     private void importFile() {
         // Get the new file name
-        String filename = FullscreenActivity.file_uri.getLastPathSegment();
+        String filename = improveFileName(FullscreenActivity.file_uri);
         if (filename!=null && filename.endsWith(".ost")) {
             filename = filename.replace(".ost","");
         }
+
 
         // Set the variable to initialise the search index
         FullscreenActivity.needtorefreshsongmenu = true;
@@ -720,4 +720,15 @@ public class PopUpImportExternalFile extends DialogFragment {
         }
     }
 
+    private String improveFileName(Uri fileUri) {
+        String betterFilename = "";
+        if (fileUri!=null) {
+            betterFilename = fileUri.getLastPathSegment();
+        }
+        if (betterFilename.contains("/")) {
+            betterFilename = betterFilename.substring(betterFilename.lastIndexOf("/"));
+            betterFilename = betterFilename.replace("/","");
+        }
+        return betterFilename;
+    }
 }

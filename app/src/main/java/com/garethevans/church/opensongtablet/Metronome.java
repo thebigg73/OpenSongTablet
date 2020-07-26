@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -222,7 +221,7 @@ class Metronome {
         FullscreenActivity.noteValue = r;
     }
 
-    static void startstopMetronome(Activity activity, Context c, boolean showvisual, int metronomeColor, String pan, float vol, int barlength) {
+    static void startstopMetronome(Context c, boolean showvisual, int metronomeColor, String pan, float vol, int barlength) {
         if (checkMetronomeValid(c) && StaticVariables.metronomeonoff.equals("off")) {
             // Start the metronome
             StaticVariables.metronomeonoff = "on";
@@ -263,6 +262,7 @@ class Metronome {
         for (String arrayval : arrayvals) {
             if (StaticVariables.mTimeSig.equals(arrayval)) {
                 validTimeSig = true;
+                break;
             }
         }
 

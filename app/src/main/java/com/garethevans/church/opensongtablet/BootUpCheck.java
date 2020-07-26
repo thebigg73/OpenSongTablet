@@ -12,7 +12,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -27,7 +26,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -195,87 +193,59 @@ public class BootUpCheck extends AppCompatActivity {
     }
     private void setButtonActions() {
         showLoadingBar();
-        goToSongsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (appMode.getSelectedItemPosition()) {
-                    case 0:
-                    default:
-                        whichMode = "Performance";
-                        preferences.setMyPreferenceString(BootUpCheck.this,"whichMode",whichMode);
-                        break;
+        goToSongsButton.setOnClickListener(v -> {
+            switch (appMode.getSelectedItemPosition()) {
+                case 0:
+                default:
+                    whichMode = "Performance";
+                    preferences.setMyPreferenceString(BootUpCheck.this,"whichMode",whichMode);
+                    break;
 
-                    case 1:
-                        whichMode = "Stage";
-                        preferences.setMyPreferenceString(BootUpCheck.this,"whichMode",whichMode);
-                        break;
+                case 1:
+                    whichMode = "Stage";
+                    preferences.setMyPreferenceString(BootUpCheck.this,"whichMode",whichMode);
+                    break;
 
-                    case 2:
-                        whichMode = "Presentation";
-                        preferences.setMyPreferenceString(BootUpCheck.this,"whichMode",whichMode);
-                        break;
-                }
-                goToSongs();
+                case 2:
+                    whichMode = "Presentation";
+                    preferences.setMyPreferenceString(BootUpCheck.this,"whichMode",whichMode);
+                    break;
+            }
+            goToSongs();
+        });
+        chooseStorageButton.setOnClickListener(v -> chooseStorageLocation());
+        readUpdate.setOnClickListener(v -> {
+            String url = "http://www.opensongapp.com/latest-updates";
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            try {
+                startActivity(i);
+            } catch (Exception e) {
+                Log.d("BootUpCheck", "Error showing activity");
             }
         });
-        chooseStorageButton.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void onClick(View v) {
-                chooseStorageLocation();
+        userGuideLinearLayout.setOnClickListener(v -> {
+            String url = "http://www.opensongapp.com";
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            try {
+                startActivity(i);
+            } catch (Exception e) {
+                Log.d("BootUpCheck", "Error showing activity");
             }
         });
-        readUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = "http://www.opensongapp.com/latest-updates";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                try {
-                    startActivity(i);
-                } catch (Exception e) {
-                    Log.d("BootUpCheck", "Error showing activity");
-                }
+        userGuideButton.setOnClickListener(v -> {
+            String url = "http://www.opensongapp.com";
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            try {
+                startActivity(i);
+            } catch (Exception e) {
+                Log.d("BootUpCheck", "Error showing activity");
             }
         });
-        userGuideLinearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = "http://www.opensongapp.com";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                try {
-                    startActivity(i);
-                } catch (Exception e) {
-                    Log.d("BootUpCheck", "Error showing activity");
-                }
-            }
-        });
-        userGuideButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = "http://www.opensongapp.com";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                try {
-                    startActivity(i);
-                } catch (Exception e) {
-                    Log.d("BootUpCheck", "Error showing activity");
-                }
-            }
-        });
-        previousStorageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSearch();
-            }
-        });
-        resetCacheButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearTheCaches();
-            }
-        });
+        previousStorageButton.setOnClickListener(v -> startSearch());
+        resetCacheButton.setOnClickListener(v -> clearTheCaches());
     }
     private void pulseStartButton() {
         CustomAnimations ca = new CustomAnimations();
@@ -327,13 +297,8 @@ public class BootUpCheck extends AppCompatActivity {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             try {
                 make(findViewById(R.id.page), R.string.storage_rationale,
-                        LENGTH_INDEFINITE).setAction(R.string.ok, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ActivityCompat.requestPermissions(BootUpCheck.this,
-                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-                    }
-                }).show();
+                        LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(BootUpCheck.this,
+                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101)).show();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -541,12 +506,11 @@ public class BootUpCheck extends AppCompatActivity {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             if (android.os.Build.VERSION.SDK_INT >= 28) {
                 thisVersion = (int) pInfo.getLongVersionCode();
-                versionCode = "V."+pInfo.versionName;
             } else {
                 //noinspection
                 thisVersion = pInfo.versionCode;
-                versionCode = "V."+pInfo.versionName;
             }
+            versionCode = "V."+pInfo.versionName;
         } catch (Exception e) {
             thisVersion = 0;
             versionCode = "";
@@ -879,12 +843,7 @@ public class BootUpCheck extends AppCompatActivity {
 
     private void displayWhere(String msg) {
         final String str = msg;
-        runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    previousStorageTextView.setText(str);
-                }
-            });
+        runOnUiThread(() -> previousStorageTextView.setText(str));
     }
 
     @SuppressLint("StaticFieldLeak")
