@@ -1840,12 +1840,10 @@ public class StageMode extends AppCompatActivity implements
                 showFAB(scrollUpButton, checkCanScrollUp());
             }
 
-            // Use chackCanGoTo results
-            if (!(preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowSetMove", true))) {
-                showFAB(setBackButton, false);
-                showFAB(setForwardButton, false);
-            } else {
-                // If we are in Stage mode and mid song add Set Move buttons for section moves
+            // Use checkCanGoTo results
+            // IV Added to the condition - do if setView
+            if (preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowSetMove", true) && StaticVariables.setView ) {
+                // If we are in Stage mode and mid song add Set Move buttons to support section moves
                 if ((StaticVariables.whichMode != null) && StaticVariables.whichMode.equals("Stage") && (StaticVariables.songSections != null)) {
                     if (StaticVariables.currentSection == 0) {
                         showFAB(setBackButton, StaticVariables.canGoToPrevious);
@@ -1864,6 +1862,9 @@ public class StageMode extends AppCompatActivity implements
                     showFAB(setBackButton, StaticVariables.canGoToPrevious);
                     showFAB(setForwardButton, StaticVariables.canGoToNext);
                 }
+            } else {
+                showFAB(setBackButton, false);
+                showFAB(setForwardButton, false);
             }
         };
     }
@@ -3656,34 +3657,31 @@ public class StageMode extends AppCompatActivity implements
         openFragment();
     }
 
-    // IV - fixSetActionButtons() renamed as is now a check. Used by ScrollButtons and pedal code.
+    // IV - Set buttons not displaying correctly when pedalShowWarningBeforeMove block - so moved block to pedalNeeds code
     private void checkCanGoTo() {
-        if (preferences.getMyPreferenceBoolean(StageMode.this,"pedalShowWarningBeforeMove",false)) {
-            // IV - Change to use of variables for results
-            StaticVariables.setView = setActions.isSongInSet(StageMode.this, preferences);
-            if (StaticVariables.setView) {
-                // Now get the position in the set and decide on the set move buttons
-                if (StaticVariables.indexSongInSet < 0) {
-                    // We weren't in set mode, so find the first instance of this song.
-                    setActions.indexSongInSet();
-                }
-                // If we aren't at the beginning or have pdf pages before this, indicate a setBackButton
-                StaticVariables.canGoToPrevious = (StaticVariables.indexSongInSet > 0) ||
-                        (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0);
+        // IV - Change to use of variables for results
+        // Set default state
+        StaticVariables.canGoToPrevious = false;
+        StaticVariables.canGoToNext = false;
 
-                // If we aren't at the end of the set or inside a multipage pdf, indicate a setForwardButton
-                StaticVariables.canGoToNext = (StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) ||
-                        (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < FullscreenActivity.pdfPageCount - 1);
-            } else {
-                StaticVariables.canGoToPrevious = (FullscreenActivity.currentSongIndex > FullscreenActivity.previousSongIndex); // i.e there is a song before in the list/menu
-                StaticVariables.canGoToNext = (FullscreenActivity.currentSongIndex < FullscreenActivity.nextSongIndex); // i.e there is a song after in the list/menu
-                StaticVariables.indexSongInSet = -1;
-
+        StaticVariables.setView = setActions.isSongInSet(StageMode.this, preferences);
+        if (StaticVariables.setView) {
+            // Now get the position in the set and decide on the set move buttons
+            if (StaticVariables.indexSongInSet < 0) {
+                // We weren't in set mode, so find the first instance of this song.
+                setActions.indexSongInSet();
             }
+            // If we aren't at the beginning or have pdf pages before this, indicate a setBackButton
+            StaticVariables.canGoToPrevious = (StaticVariables.indexSongInSet > 0) ||
+                    (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0);
+
+            // If we aren't at the end of the set or inside a multipage pdf, indicate a setForwardButton
+            StaticVariables.canGoToNext = (StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) ||
+                    (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < FullscreenActivity.pdfPageCount - 1);
         } else {
-            // Set these as false.  Doesn't mean we can't go, just we won't be warned.
-            StaticVariables.canGoToPrevious = false;
-            StaticVariables.canGoToNext = false;
+            StaticVariables.canGoToPrevious = (FullscreenActivity.currentSongIndex > FullscreenActivity.previousSongIndex); // i.e there is a song before in the list/menu
+            StaticVariables.canGoToNext = (FullscreenActivity.currentSongIndex < FullscreenActivity.nextSongIndex); // i.e there is a song after in the list/menu
+            StaticVariables.indexSongInSet = -1;
         }
     }
 
@@ -3737,6 +3735,8 @@ public class StageMode extends AppCompatActivity implements
                 //FullscreenActivity.indexSongInSet += 1;
                 StaticVariables.setMoveDirection = "forward";
                 doMoveInSet();
+            } else {
+                showToastMessage(getResources().getString(R.string.lastsong));
             }
         } else if (!dealtwithaspdf) {
             // Try to move to the next song alphabetically
@@ -4246,6 +4246,8 @@ public class StageMode extends AppCompatActivity implements
                 //FullscreenActivity.indexSongInSet -= 1;
                 StaticVariables.setMoveDirection = "back";
                 doMoveInSet();
+            } else {
+                showToastMessage(getResources().getString(R.string.firstsong));
             }
         } else if (!dealtwithaspdf) {
             // Try to move to the previous song alphabetically
@@ -6997,6 +6999,10 @@ public class StageMode extends AppCompatActivity implements
     // This bit listens for long key presses (disables the menu long press action)
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // IV - With this call, pause(if running) autoscroll so a user using pedal long press for scroll can hold autoscroll at the top of a song with it starting with pedal release
+        // Temporarily pause any running autoscroll
+        pauseAutoscroll();
+
         // AirTurn pedals don't do long press, but instead autorepeat.  To deal with, count onKeyDown
         // If the app detects more than a set number (reset when onKeyUp/onLongPress) it triggers onLongPress
 
@@ -7595,25 +7601,26 @@ public class StageMode extends AppCompatActivity implements
     // IV - 'Are you sure?' is displayed and the user can repeat the action to continue after 2 seconds
     // IV - After continue there is a 10s grace period where further pedal use is not tested.  Any pedal 'page' or 'scroll' use extends a further 10s grace period.
     private void pedalPreviousAndNextConfirm() {
-        if (FullscreenActivity.isSong && (!(StaticVariables.whichMode != null && StaticVariables.whichMode.equals("Stage") &&
-                StaticVariables.songSections != null && StaticVariables.currentSection > 0 && StaticVariables.currentSection < StaticVariables.songSections.length - 2))) {
-            if (StaticVariables.pedalPreviousAndNextNeedsConfirm) {
-                StaticVariables.myToastMessage = getString(R.string.pedal) + " - " + getString(R.string.areyousure);
-                ShowToast.showToast(StageMode.this);
-                StaticVariables.pedalPreviousAndNextNeedsConfirm = false;
-                pedalPreviousAndNextNeedsConfirmHandler.postDelayed(pedalPreviousAndNextNeedsConfirmRunnable, 10000);
-                StaticVariables.pedalPreviousAndNextIgnore = true;
-                // Use a runnable to end the ignore period.
+        // IV - isSong and Stage mode limitations moved elsewhere
+         // If we confirm a move then we will ignore the move
+        StaticVariables.pedalPreviousAndNextIgnore = StaticVariables.pedalPreviousAndNextNeedsConfirm;
+        if (StaticVariables.pedalPreviousAndNextNeedsConfirm) {
+            StaticVariables.myToastMessage = getString(R.string.pedal) + " - " + getString(R.string.areyousure);
+            ShowToast.showToast(StageMode.this);
+            StaticVariables.pedalPreviousAndNextNeedsConfirm = false;
+            pedalPreviousAndNextNeedsConfirmHandler.postDelayed(pedalPreviousAndNextNeedsConfirmRunnable, 10000);
+            StaticVariables.pedalPreviousAndNextIgnore = true;
+            // Use a runnable to end the ignore period.
+            pedalPreviousAndNextIgnoreHandler.postDelayed(pedalPreviousAndNextIgnoreRunnable, 2000);
+        } else {
+            // At this point StaticVariables.pedalPreviousAndNextNeedsConfirm = false
+            // and StaticVariables.pedalPreviousAndNextIgnore = false;
+            try {
+                // If pedal used again in the ignore period - extend the ignore period.
+                pedalPreviousAndNextIgnoreHandler.removeCallbacks(pedalPreviousAndNextIgnoreRunnable);
                 pedalPreviousAndNextIgnoreHandler.postDelayed(pedalPreviousAndNextIgnoreRunnable, 2000);
-            } else {
-                try {
-                    // If pedal used again in the ignore period - extend the ignore period.
-                    pedalPreviousAndNextIgnoreHandler.removeCallbacks(pedalPreviousAndNextIgnoreRunnable);
-                    pedalPreviousAndNextIgnoreHandler.postDelayed(pedalPreviousAndNextIgnoreRunnable, 2000);
-                } catch (Exception e) {
-                    e.printStackTrace();
-
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -7622,17 +7629,15 @@ public class StageMode extends AppCompatActivity implements
         // After a NeedsConfirm prompt the user can use prev/next without prompt during a grace period.
         // This is extended on any use of a pedal prev/next/up/down.
         if (!StaticVariables.pedalPreviousAndNextNeedsConfirm) {
-            try {
-                pedalPreviousAndNextNeedsConfirmHandler.removeCallbacks(pedalPreviousAndNextNeedsConfirmRunnable);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            pedalPreviousAndNextNeedsConfirmHandler.removeCallbacks(pedalPreviousAndNextNeedsConfirmRunnable);
             pedalPreviousAndNextNeedsConfirmHandler.postDelayed(pedalPreviousAndNextNeedsConfirmRunnable, 10000);
         }
     }
 
     private void pedalPrevious() {
-        boolean goToItemRequired = false;
+        // IV - Logic changed to - assume will do move unless cancelled
+        // This can be cancelled
+        boolean goToItemRequired = true;
 
         if (preferences.getMyPreferenceBoolean(StageMode.this,"pedalScrollBeforeMove",true)) {
             if (mDrawerLayout.isDrawerOpen(songmenu)) {
@@ -7645,41 +7650,71 @@ public class StageMode extends AppCompatActivity implements
                     }
                     doScrollUp();
                     PedalNeedsConfirmTrueAfterDelay();
-                } else {
-                    goToItemRequired = true;
+                    goToItemRequired = false;
                 }
             }
-        } else{
-            goToItemRequired = true;
         }
 
         if (goToItemRequired) {
-            if (FullscreenActivity.isSong) {
-                checkCanGoTo();
-                // When in a set we canGoToPrevious. Confirm to make leaving the song an intentional action.
-                if (StaticVariables.canGoToPrevious) {
-                    if ((StaticVariables.whichMode != null) && (StaticVariables.whichMode.equals("Stage"))) {
-                        // For Stage mode only do for the top section
-                        if ((StaticVariables.songSections != null) && (StaticVariables.currentSection == 0)) {
+            // IV - isSong limitation removed.  Preference acts to block feature here
+            // Consider a song change warning
+            if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
+                // IV - We warn only if we can sucessfully move
+                // Set to a known state
+                StaticVariables.pedalPreviousAndNextIgnore = false;
+                if (StaticVariables.setView) {
+                    checkCanGoTo();
+                    // If in a set and able to move
+                    if (StaticVariables.canGoToPrevious) {
+                        if ((StaticVariables.whichMode != null) && (StaticVariables.whichMode.equals("Stage"))) {
+                            // For Stage mode only do for the top section
+                            if ((StaticVariables.songSections != null) && (StaticVariables.currentSection == 0)) {
+                                pedalPreviousAndNextConfirm();
+                            }
+                        } else {
+                            // For Performance mode
                             pedalPreviousAndNextConfirm();
                         }
-                    } else {
-                        // For Performance mode
-                        pedalPreviousAndNextConfirm();
+                    }
+                } else {
+                    // IV - Now in use for non set songs
+                    // If in a folder and able to move
+                    boolean isfolder = false;
+                    if (FullscreenActivity.previousSongIndex >= 0) {
+                        try {
+                            Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", "",
+                                    filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex));
+                            if (storageAccess.uriExists(StageMode.this, uri) && !storageAccess.uriIsFile(StageMode.this, uri)) {
+                                isfolder = true;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        if (!StaticVariables.songfilename.equals(filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex)) && !isfolder) {
+                            pedalPreviousAndNextConfirm();
+                        }
                     }
                 }
+                // Ignore the move if a warning was given
+                goToItemRequired = !StaticVariables.pedalPreviousAndNextIgnore;
             }
-            if (!StaticVariables.pedalPreviousAndNextIgnore) {
+
+            if (goToItemRequired) {
                 if (setBackButton!=null && setBackButton.getVisibility() == View.VISIBLE) {
                     CustomAnimations.animateFAB(setBackButton, StageMode.this);
                 }
                 goToPreviousItem();
-                PedalNeedsConfirmTrueAfterDelay();
+                if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
+                    PedalNeedsConfirmTrueAfterDelay();
+                }
             }
         }
     }
+
     private void pedalNext() {
-        boolean goToItemRequired = false;
+        // This can be cancelled
+        boolean goToItemRequired = true;
 
         if (preferences.getMyPreferenceBoolean(StageMode.this,"pedalScrollBeforeMove",true)) {
             if (mDrawerLayout.isDrawerOpen(songmenu)) {
@@ -7692,36 +7727,68 @@ public class StageMode extends AppCompatActivity implements
                     }
                     doScrollDown();
                     PedalNeedsConfirmTrueAfterDelay();
-                } else {
-                    goToItemRequired = true;
+                    // we have done a scroll so cancel the item move
+                    goToItemRequired = false;
                 }
             }
-        } else{
-            goToItemRequired = true;
         }
 
         if (goToItemRequired) {
-            if (FullscreenActivity.isSong) {
-                checkCanGoTo();
-                // When in a set we canGoToNext. Confirm if this would leave the song.
-                if (StaticVariables.canGoToNext) {
-                    if ((StaticVariables.whichMode != null) && (StaticVariables.whichMode.equals("Stage"))) {
-                        // For Stage mode only do for the bottom section
-                        if ((StaticVariables.songSections != null) && (StaticVariables.currentSection == StaticVariables.songSections.length - 1)) {
+            // IV - isSong limitation removed.  Preference acts to block feature here
+            // Consider a song change warning
+            if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
+                // IV - We warn only if we can sucessfully move
+                // Set to a known state
+                StaticVariables.pedalPreviousAndNextIgnore = false;
+                if (StaticVariables.setView) {
+                    checkCanGoTo();
+                    // If in a set and able to move
+                    if (StaticVariables.canGoToNext) {
+                        if ((StaticVariables.whichMode != null) && (StaticVariables.whichMode.equals("Stage"))) {
+                            // For Stage mode only do for the bottom section
+                            if ((StaticVariables.songSections != null) && (StaticVariables.currentSection == StaticVariables.songSections.length - 1)) {
+                                pedalPreviousAndNextConfirm();
+                            }
+                        } else {
+                            // For Performance mode
                             pedalPreviousAndNextConfirm();
                         }
-                    } else {
-                        // For Performance mode
-                        pedalPreviousAndNextConfirm();
+                    }
+                } else {
+                    // IV - Now in use for non set songs
+                    // If in a folder and able to move
+                    boolean isfolder = false;
+                    try {
+                        if (FullscreenActivity.nextSongIndex < filenamesSongsInFolder.size()) {
+                            if (FullscreenActivity.nextSongIndex > -1) {
+                                Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", "",
+                                        filenamesSongsInFolder.get(FullscreenActivity.nextSongIndex));
+                                if (storageAccess.uriExists(StageMode.this, uri) && !storageAccess.uriIsFile(StageMode.this, uri)) {
+                                    isfolder = true;
+                                }
+                            }
+                            if (FullscreenActivity.nextSongIndex != -1 &&
+                                    !StaticVariables.songfilename.equals(filenamesSongsInFolder.get(FullscreenActivity.nextSongIndex)) &&
+                                    !isfolder) {
+                                pedalPreviousAndNextConfirm();
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
+                // Ignore the move if a warning was given
+                goToItemRequired = !StaticVariables.pedalPreviousAndNextIgnore;
             }
-            if (!StaticVariables.pedalPreviousAndNextIgnore) {
+
+            if (goToItemRequired) {
                 if (setForwardButton!=null && setForwardButton.getVisibility() == View.VISIBLE) {
                     CustomAnimations.animateFAB(setForwardButton, StageMode.this);
                 }
                 goToNextItem();
-                PedalNeedsConfirmTrueAfterDelay();
+                if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
+                    PedalNeedsConfirmTrueAfterDelay();
+                }
             }
         }
     }
@@ -7733,7 +7800,9 @@ public class StageMode extends AppCompatActivity implements
             if (checkCanScrollUp()) {
                 CustomAnimations.animateFAB(scrollUpButton,StageMode.this);
                 doScrollUp();
-                PedalNeedsConfirmTrueAfterDelay();
+                if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
+                    PedalNeedsConfirmTrueAfterDelay();
+                }
             }
         }
     }
@@ -7745,7 +7814,9 @@ public class StageMode extends AppCompatActivity implements
             if (checkCanScrollDown()) {
                 CustomAnimations.animateFAB(scrollDownButton,StageMode.this);
                 doScrollDown();
-                PedalNeedsConfirmTrueAfterDelay();
+                if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
+                    PedalNeedsConfirmTrueAfterDelay();
+                }
             }
         }
     }
@@ -8171,7 +8242,6 @@ public class StageMode extends AppCompatActivity implements
 
             // First test conditions
             if (oktoregistergesture()) {
-
                 // Now find out which gesture we've gone for
                 switch (preferences.getMyPreferenceInt(StageMode.this,"gestureScreenLongPress",0)) {
                     case 1:

@@ -117,8 +117,9 @@ public class PopUpExportFragment extends DialogFragment {
         // Set the checkboxes to their last set value
         exportOpenSongAppSetCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportOpenSongAppSet",true));
         exportOpenSongAppCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportOpenSongApp",true));
-        exportDesktopCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportOpenSongAppSet",false));
-        exportTextCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportOpenSongText",true));
+        // IV - preference name corrections
+        exportDesktopCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportDesktop",false));
+        exportTextCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportText",true));
         exportChordProCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportChordPro",false));
         exportOnSongCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportOnSong",false));
         exportImageCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportImage",false));

@@ -183,7 +183,7 @@ class ExportPreparer {
         Uri onsong = null;
         Uri image = null;
         Uri pdf = null;
-        Bitmap pdfbmp = bmp.copy(bmp.getConfig(),true);
+        // IV - Moved pdfbmp into relevant PDF section
 
         // Prepare the song uri and input stream
         Uri uriinput = storageAccess.getUriForItem(c, preferences, "Songs", StaticVariables.whichSongFolder,
@@ -258,6 +258,20 @@ class ExportPreparer {
             storageAccess.writeFileFromString(exportOnSong_String,outputStream);
         }
 
+        // IV - Image based exports  - did not investigate why but swapped position of PDF with PNG to get them working when both selected
+        if (StaticVariables.whichMode.equals("Performance") && preferences.getMyPreferenceBoolean(c,"exportPDF",false)) {
+            // Prepare a pdf version of the song.
+            pdf = storageAccess.getUriForItem(c, preferences, "Export", "",
+                    StaticVariables.songfilename+".pdf");
+
+            // Check the uri exists for the outputstream to be valid
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, pdf, null, "Export", "", StaticVariables.songfilename + ".pdf");
+
+            Bitmap pdfbmp = bmp.copy(bmp.getConfig(),true);
+
+            makePDF(c,pdfbmp,pdf,storageAccess);
+        }
+
         if (StaticVariables.whichMode.equals("Performance") &&
                 preferences.getMyPreferenceBoolean(c,"exportImage",false)) {
             // Prepare an image/png version of the song.
@@ -269,14 +283,6 @@ class ExportPreparer {
 
             OutputStream outputStream = storageAccess.getOutputStream(c,image);
             storageAccess.writeImage(outputStream, bmp);
-        }
-
-        if (StaticVariables.whichMode.equals("Performance") && preferences.getMyPreferenceBoolean(c,"exportPDF",false)) {
-            // Prepare a pdf version of the song.
-            pdf = storageAccess.getUriForItem(c, preferences, "Export", "",
-                    StaticVariables.songfilename+".pdf");
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, pdf, null, "Export", "", StaticVariables.songfilename + ".pdf");
-            makePDF(c,pdfbmp,pdf,storageAccess);
         }
 
         Intent emailIntent = setEmailIntent(StaticVariables.songfilename, StaticVariables.songfilename,
@@ -832,11 +838,12 @@ class ExportPreparer {
 
         // Go through each song section and add the text trimmed lines
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
-            s.append(processSong.songSectionText(c, preferences, f));
+            // IV - Separate sections by a line breaks - to correctly layout txt output
+            s.append(processSong.songSectionText(c, preferences, f)).append("\n\n");
         }
 
         String string = s.toString();
-        string = string.replace("\n\n\n", "\n\n");
+        string = string.replaceAll("\n\n\n", "\n\n");
         return string;
     }
 
