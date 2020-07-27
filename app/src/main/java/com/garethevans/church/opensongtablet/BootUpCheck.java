@@ -399,6 +399,7 @@ public class BootUpCheck extends AppCompatActivity {
         }
     }
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        super.onActivityResult(requestCode,resultCode,resultData);
         if (resultCode == Activity.RESULT_OK) {
 
             if (requestCode==7789 && resultData!=null && resultData.getExtras()!=null) {

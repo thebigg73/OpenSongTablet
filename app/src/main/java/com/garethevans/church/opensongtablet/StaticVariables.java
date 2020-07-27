@@ -18,8 +18,13 @@ import android.net.Uri;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.UUID;
 
 class StaticVariables {
+
+    public static boolean isHost = false, isConnected = false, usingNearby = false,
+            receiveHostFiles = false, keepHostFiles=false;
+    public static String connectionLog, deviceName, randomId = UUID.randomUUID().toString();
 
     // The song fields
     static String mTitle = "Welcome to OpenSongApp", mAuthor = "Gareth Evans", mCopyright = "",

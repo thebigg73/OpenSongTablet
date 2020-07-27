@@ -883,65 +883,6 @@ public class ProcessSong extends Activity {
         }
     }
 
-    int getSalutReceivedSection(String s) {
-        int i=-1;
-        if (s!=null && s.length()>0 && s.contains("___section___")) {
-            s = s.replace("{\"description\":\"","");
-            s = s.replace("\"}","");
-            s = s.replace("___section___","");
-            try {
-                i = Integer.parseInt(s);
-            } catch (Exception e) {
-                i = -1;
-            }
-        }
-        return i;
-    }
-    String getSalutReceivedLocation(String string, Context c, Preferences preferences, StorageAccess storageAccess) {
-        String[] s;
-        string = string.replace("{\"description\":\"","");
-        string = string.replace("\"}","");
-        boolean exists = false;
-        boolean haslyrics = string.contains("<lyrics>");
-
-        // The host sends the location first.  It then sends the content of the OpenSongApp file once it has loaded it
-        // Try to get the location
-        String sent_folder = "";
-        String sent_file = "";
-        String sent_direction = "L2R";
-
-        if (string.length()>0 && string.contains("_____")) {
-            // We have a song location!
-            s = string.split("_____");
-            if (s.length == 3 && s[0] != null && s[1] != null && s[2] != null) {
-                sent_folder = s[0];
-                sent_file = s[1];
-                sent_direction = s[2];
-                // Check the song exists
-                Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", s[0], s[1]);
-                StaticVariables.uriToLoad = uri;
-                exists = storageAccess.uriExists(c, uri) && !s[1].equals("");
-            }
-        }
-
-        if (exists && !FullscreenActivity.receiveHostFiles) {
-            // It exists and we don't want host files
-            StaticVariables.whichSongFolder = sent_folder;
-            StaticVariables.songfilename = sent_file;
-            FullscreenActivity.whichDirection = sent_direction;
-            return "Location";
-
-        } else if (haslyrics) {
-            // Receive the lyrics sent since we need or want them
-            FullscreenActivity.mySalutXML = string;
-            return "HostFile";
-
-        } else {
-            // Nothing sent
-            return "";
-        }
-    }
-
     boolean isAutoScrollValid(Context c, Preferences preferences) {
         // Get the autoScrollDuration;
         if (StaticVariables.mDuration.isEmpty() &&
@@ -2963,6 +2904,36 @@ public class ProcessSong extends Activity {
     }
 
 
+    // The stuff for the Nearby API connections (replaced Salut)
+    public ArrayList<String> getNearbyIncoming(String incoming) {
+        String[] bits = incoming.split("_xx____xx_");
+        ArrayList<String> received = new ArrayList<>();
+        Collections.addAll(received, bits);
+        // Fix bits in the song xml
+        if (received.size()>=4) {
+            // 4th bit (index of 3 though!) is the xml
+            String fixed = received.get(3);
+            fixed = fixed.replace("\\n", "$$__$$");
+            fixed = fixed.replace("\\", "");
+            fixed = fixed.replace("$$__$$", "\n");
+            received.add(3,fixed);
+        }
+        return received;
+    }
+    public int getNearbySection(String incoming) {
+        int i=-1;
+        if (incoming!=null && incoming.length()>0 && incoming.contains("___section___")) {
+            incoming = incoming.replace("{\"description\":\"","");
+            incoming = incoming.replace("\"}","");
+            incoming = incoming.replace("___section___","");
+            try {
+                i = Integer.parseInt(incoming);
+            } catch (Exception e) {
+                i = -1;
+            }
+        }
+        return i;
+    }
 
 
 

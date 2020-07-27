@@ -7,15 +7,9 @@ import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.peak.salut.Salut;
-import com.peak.salut.SalutDataReceiver;
-import com.peak.salut.SalutServiceData;
 
 import java.util.ArrayList;
 
@@ -128,22 +122,8 @@ public class FullscreenActivity extends AppCompatActivity {
     public static final MediaPlayer mPlayer1 = new MediaPlayer();
     public static final MediaPlayer mPlayer2 = new MediaPlayer();
     public static boolean mPlayer1Paused = false, mPlayer2Paused = false;
-    // Salut / connect devices
-    @SuppressLint("StaticFieldLeak")
-    public static Button hostButton, clientButton;
-    @SuppressLint("StaticFieldLeak")
-    public static TextView connectionsLog;
-    @SuppressLint("StaticFieldLeak")
-    public static SalutDataReceiver dataReceiver;
-    public static SalutServiceData serviceData;
-    public static Salut network;
     public static BluetoothAdapter mBluetoothAdapter;
-    public static String hostButtonText="", clientButtonText="", salutLog="",
-            mBluetoothName, mySalutXML = "", presenterSendSong="";
-    public static boolean firstSendingOfSalut = true, firstSendingOfSalutXML = true,
-            firstSendingOfSalutSection = true, firstReceivingOfSalut = true,
-            firstReceivingOfSalutXML = true, firstReceivingOfSalutSection = true,
-            firstSendingOfSalutAutoscroll = true, firstReceivingOfSalutAutoscroll = true;
+    public static String mBluetoothName, presenterSendSong="";
     static NfcAdapter mNfcAdapter;
     // Drawing stuff
     public static boolean highlightOn, saveHighlight = false;

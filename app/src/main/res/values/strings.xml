@@ -144,6 +144,9 @@
     <string name="connections_service_start">Start service</string>
     <string name="connections_service_stop">Stop service</string>
     <string name="connections_success">Connection success</string>
+    <string name="connections_enable">Enable nearby connections</string>
+    <string name="connections_actashost">Act as host</string>
+    <string name="connections_keephostsongs">Keep host songs</string>
     <string name="content">Content</string>
     <string name="continuous">Continuous</string>
     <string name="convert_song">Please convert this song into OpenSong format (by viewing it) before adding it to a set</string>
@@ -759,4 +762,8 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="delete_folder_warning">If you delete this subdirectory, this will also delete any songs or folders that it contains.  You cannot undo this change!</string>
     <string name="warn_before_changing_song">Show a warning before moving to the next song (useful to avoid accidental presses)</string>
     <string name="bold_chords_headings">Display chords and headings in bold</string>
+    <string name="location_rationale">This feature is required to locate other network devices</string>
+    <string name="accept_connection">Connect with</string>
+    <string name="accept_code">Confirm the code matches on both devices:</string>
+    <string name="time_zero" translatable="false">0:00</string>
 </resources>

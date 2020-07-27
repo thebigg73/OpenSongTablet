@@ -4,11 +4,13 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -80,17 +82,25 @@ import androidx.mediarouter.media.MediaControlIntent;
 import androidx.mediarouter.media.MediaRouteSelector;
 import androidx.mediarouter.media.MediaRouter;
 
-import com.bluelinelabs.logansquare.LoganSquare;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.nearby.Nearby;
+import com.google.android.gms.nearby.connection.AdvertisingOptions;
+import com.google.android.gms.nearby.connection.ConnectionInfo;
+import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;
+import com.google.android.gms.nearby.connection.ConnectionResolution;
+import com.google.android.gms.nearby.connection.ConnectionsStatusCodes;
+import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo;
+import com.google.android.gms.nearby.connection.DiscoveryOptions;
+import com.google.android.gms.nearby.connection.EndpointDiscoveryCallback;
+import com.google.android.gms.nearby.connection.Payload;
+import com.google.android.gms.nearby.connection.PayloadCallback;
+import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
+import com.google.android.gms.nearby.connection.Strategy;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.peak.salut.Callbacks.SalutDataCallback;
-import com.peak.salut.Salut;
-import com.peak.salut.SalutDataReceiver;
-import com.peak.salut.SalutServiceData;
 
 import java.io.File;
 import java.io.InputStream;
@@ -102,11 +112,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import lib.folderpicker.FolderPicker;
 
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
+import static com.google.android.material.snackbar.Snackbar.make;
+
 // This includes all recent version pulls from IV and GE
 
+@SuppressWarnings("StatementWithEmptyBody")
 public class StageMode extends AppCompatActivity implements
         PopUpAreYouSureFragment.MyInterface, PopUpPagesFragment.MyInterface,
         PopUpEditSongFragment.MyInterface, PopUpSongDetailsFragment.MyInterface,
@@ -128,7 +143,7 @@ public class StageMode extends AppCompatActivity implements
         PopUpStickyFragment.MyInterface, PopUpLinks.MyInterface, PopUpCustomChordsFragment.MyInterface,
         PopUpQuickLaunchSetup.MyInterface, PopUpLongSongPressFragment.MyInterface,
         PopUpFindNewSongsFragment.MyInterface, PopUpGroupedPageButtonsFragment.MyInterface,
-        PopUpImportExportOSBFragment.MyInterface, SalutDataCallback, SongMenuAdapter.MyInterface,
+        PopUpImportExportOSBFragment.MyInterface, SongMenuAdapter.MyInterface,
         BatteryMonitor.MyInterface, PopUpMenuSettingsFragment.MyInterface,
         PopUpLayoutFragment.MyInterface, DownloadTask.MyInterface,
         PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
@@ -347,10 +362,8 @@ public class StageMode extends AppCompatActivity implements
     private Handler customhandler;
 
     // Network discovery / connections
-    private static final String TAG = "StageMode";
-    private SalutMessage myMessage;
-    private SalutMessage mySongMessage;
-    private SalutMessage mySectionMessage;
+    private ArrayList<String> connectedEndPoints;
+    private ArrayList<String> connectedEndPointsNames;
 
     // NFC
     private FileUriCallback mFileUriCallback;
@@ -380,8 +393,10 @@ public class StageMode extends AppCompatActivity implements
     private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
     private Transpose transpose;
     private ProfileActions profileActions;
+    private OptionMenuListeners optionMenuListeners;
 
     private boolean pdfCanContinueScrolling;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -447,9 +462,13 @@ public class StageMode extends AppCompatActivity implements
         // In order to quickly start, load the minimum variables we need
         loadStartUpVariables();
 
+        optionMenuListeners = new OptionMenuListeners(this);
+
         // Set up the fonts
         setTypeFace.setUpAppFonts(StageMode.this, preferences, lyrichandler, chordhandler, stickyhandler,
                 presohandler, presoinfohandler, customhandler);
+
+
 
         // Setup the CastContext
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
@@ -508,9 +527,11 @@ public class StageMode extends AppCompatActivity implements
                 setupAbHide();
             });
 
-            // Set up the Salut service
+            // Set up the Nearby connection service
             getBluetoothName();
-            startRegistration();
+            getUserNickname();
+            connectedEndPoints = new ArrayList<>();
+            connectedEndPointsNames = new ArrayList<>();
 
             dealWithIntent();
 
@@ -530,6 +551,7 @@ public class StageMode extends AppCompatActivity implements
         // Check if we need to remind the user to backup their songs
         checkBackupState();
     }
+
 
     // Load the variables we need
     private void loadStartUpVariables() {
@@ -778,19 +800,297 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    private void startRegistration() {
-        try {
-            FullscreenActivity.dataReceiver = new SalutDataReceiver(StageMode.this, StageMode.this);
-            FullscreenActivity.serviceData = new SalutServiceData("OpenSongApp", 60606,
-                    FullscreenActivity.mBluetoothName);
-
-            FullscreenActivity.network = new Salut(FullscreenActivity.dataReceiver, FullscreenActivity.serviceData, () -> FullscreenActivity.salutLog += "\n" + getResources().getString(R.string.nowifidirect));
-
-        } catch (Exception e) {
-            FullscreenActivity.salutLog += "\n" + getResources().getString(R.string.nowifidirect);
-            e.printStackTrace();
+    String serviceId = "com.garethevans.church.opensongtablet";
+    private void updateConnectionLog(String newMessage) {
+        if (newMessage!=null) {
+            StaticVariables.connectionLog += newMessage + "\n";
+            try {
+                optionMenuListeners.updateConnectionsLog();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
+
+    @Override
+    public void startAdvertising() {
+        AdvertisingOptions advertisingOptions =
+                new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
+        Nearby.getConnectionsClient(this)
+                .startAdvertising(
+                        getUserNickname(), serviceId, connectionLifecycleCallback(), advertisingOptions)
+                .addOnSuccessListener(
+                        (Void unused) -> {
+                            // We're advertising!
+                            updateConnectionLog(getString(R.string.connections_broadcast) + " " + getUserNickname());
+
+                        })
+                .addOnFailureListener(
+                        (Exception e) -> {
+                            // We were unable to start advertising.
+                            updateConnectionLog(getString(R.string.connections_failure) + " " + getUserNickname());
+                            e.printStackTrace();
+                        });
+    }
+    @Override
+    public void startDiscovery() {
+        DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
+        Nearby.getConnectionsClient(this)
+                .startDiscovery(serviceId, endpointDiscoveryCallback(), discoveryOptions)
+                .addOnSuccessListener(
+                        (Void unused) -> {
+                            // We're discovering!
+                            updateConnectionLog(getString(R.string.connections_discover));
+                        })
+                .addOnFailureListener(
+                        (Exception e) -> {
+                            // We're unable to start discovering.
+                            updateConnectionLog(getString(R.string.connections_discover_stop));
+                            stopDiscovery();
+                        });
+    }
+    @Override
+    public void stopAdvertising() {
+        Nearby.getConnectionsClient(this).stopAdvertising();
+    }
+    @Override
+    public void stopDiscovery() {
+        Nearby.getConnectionsClient(this).stopDiscovery();
+    }
+
+    private String getDeviceNameFromId(String endpointId) {
+        // When requesting connections, the proper device name is stored in an arraylist like endpointId__deviceName
+        for (String s:connectedEndPointsNames) {
+            if (s.startsWith(endpointId+"__")) {
+                return s.replace(endpointId+"__","");
+            }
+        }
+        return endpointId;
+    }
+    private String getUserNickname() {
+        if (StaticVariables.deviceName==null || StaticVariables.deviceName.isEmpty()) {
+            if (FullscreenActivity.mBluetoothName.equals("Unknown")) {
+                FullscreenActivity.mBluetoothName = UUID.randomUUID().toString().substring(0,8);
+                FullscreenActivity.mBluetoothName.toUpperCase(StaticVariables.locale);
+            }
+            StaticVariables.deviceName = preferences.getMyPreferenceString(this,"deviceId", FullscreenActivity.mBluetoothName);
+            if (StaticVariables.deviceName.equals(StaticVariables.randomId)) {
+                // Set this value - user can change at any time
+                preferences.setMyPreferenceString(this,"deviceId",StaticVariables.randomId);
+            }
+        }
+        return StaticVariables.deviceName;
+    }
+
+    private ConnectionLifecycleCallback connectionLifecycleCallback() {
+        return new ConnectionLifecycleCallback() {
+            @Override
+            public void onConnectionInitiated(@NonNull String endpointId, @NonNull ConnectionInfo connectionInfo) {
+                new AlertDialog.Builder(StageMode.this)
+                        .setTitle(getString(R.string.accept_connection) + " " + connectionInfo.getEndpointName())
+                        .setMessage(getString(R.string.accept_code) + " " + connectionInfo.getAuthenticationToken())
+                        .setPositiveButton(
+                                getString(R.string.ok),
+                                (DialogInterface dialog, int which) -> {
+                                    // Add a note of the nice name matching the endpointId
+                                    connectedEndPointsNames.add(endpointId + "__" + connectionInfo.getEndpointName());
+                                    // The user confirmed, so we can accept the connection.
+                                    Nearby.getConnectionsClient(StageMode.this)
+                                            .acceptConnection(endpointId, payloadCallback());
+                                })
+                        .setNegativeButton(
+                                getString(R.string.cancel),
+                                (DialogInterface dialog, int which) ->
+                                        // The user canceled, so we should reject the connection.
+                                        Nearby.getConnectionsClient(StageMode.this).rejectConnection(endpointId))
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+
+            @Override
+            public void onConnectionResult(@NonNull String endpointId, @NonNull ConnectionResolution connectionResolution) {
+                switch (connectionResolution.getStatus().getStatusCode()) {
+                    case ConnectionsStatusCodes.STATUS_OK:
+                        // We're connected! Can now start sending and receiving data.
+                        connectedEndPoints.add(endpointId);
+                        StaticVariables.isConnected = true;
+                        updateConnectionLog(getString(R.string.connections_connected) + " " + getDeviceNameFromId(endpointId));
+                        // try to send the current song payload
+                        sendSongPayload();
+                        break;
+                    case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
+                    case ConnectionsStatusCodes.STATUS_ERROR:
+                        // The connection broke before it was able to be accepted.
+                        // The connection was rejected by one or both sides.
+                        updateConnectionLog(getString(R.string.connections_failure) + " " + getUserNickname()+" <-> "+getDeviceNameFromId(endpointId));
+                        break;
+                    default:
+                        // Unknown status code
+                        break;
+                }
+            }
+
+            @Override
+            public void onDisconnected(@NonNull String endpointId) {
+                connectedEndPoints.remove(endpointId);
+                updateConnectionLog(getString(R.string.connections_disconnect) + " " + getDeviceNameFromId(endpointId));
+                // Check if we have valid connections
+                StaticVariables.isConnected = stillValidConnections();
+            }
+        };
+    }
+    private boolean stillValidConnections() {
+        if (connectedEndPoints != null && connectedEndPoints.size() >= 1) {
+            for (String s : connectedEndPoints) {
+                if (s != null && !s.isEmpty()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private EndpointDiscoveryCallback endpointDiscoveryCallback() {
+        return new EndpointDiscoveryCallback() {
+            @Override
+            public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo discoveredEndpointInfo) {
+                Nearby.getConnectionsClient(StageMode.this)
+                        .requestConnection(getUserNickname(), endpointId, connectionLifecycleCallback())
+                        .addOnSuccessListener(
+                                (Void unused) -> {
+                                    // We successfully requested a connection. Now both sides
+                                    // must accept before the connection is established.
+                                    updateConnectionLog(getString(R.string.connections_searching));
+                                })
+                        .addOnFailureListener(
+                                (Exception e) -> {
+                                    // Nearby Connections failed to request the connection.
+                                    updateConnectionLog(getString(R.string.connections_failure) + " " + getDeviceNameFromId(endpointId));
+                                });
+            }
+
+            @Override
+            public void onEndpointLost(@NonNull String endpointId) {
+                updateConnectionLog(getString(R.string.connections_disconnect) + " " + getDeviceNameFromId(endpointId));
+            }
+        };
+    }
+    private void sendSongPayload() {
+        String infoPayload = StaticVariables.whichSongFolder + "_xx____xx_" +
+                StaticVariables.songfilename + "_xx____xx_" +
+                FullscreenActivity.whichDirection + "_xx____xx_" +
+                FullscreenActivity.myXML;
+        Log.d("d","sending: "+StaticVariables.whichSongFolder+"/"+StaticVariables.songfilename);
+        doSendBytesPayload(infoPayload);
+    }
+
+    private void doSendBytesPayload(String infoPayload) {
+        byte[] mybytes = infoPayload.getBytes();
+        Payload payload = Payload.fromBytes(mybytes);
+        for (String endpointId:connectedEndPoints) {
+            Nearby.getConnectionsClient(this).sendPayload(endpointId,payload);
+        }
+    }
+    private void payloadAutoscroll(String incoming) {
+        // It sends autoscroll startstops as autoscroll_start or autoscroll_stop
+        // Start or stop by stating we were already doing the other!
+        StaticVariables.isautoscrolling = !incoming.equals("autoscroll_start");
+        gesture5();
+    }
+    private void payloadSection(String incoming) {
+        int mysection = processSong.getNearbySection(incoming);
+        if (mysection >= 0) {
+            // Look for a section being sent
+            StaticVariables.currentSection = mysection;
+            selectSection(mysection);
+        }
+    }
+    private void payloadOpenSong(String incoming) {
+        // New method sends OpenSong songs in the format of
+        //  FOLDER_xx____xx_FILENAME_xx____xx_R2L/L2R_xx____xx_<?xml>
+
+        ArrayList<String> receivedBits = processSong.getNearbyIncoming(incoming);
+
+        Uri properUri = storageAccess.getUriForItem(this, preferences, "Songs", receivedBits.get(0), receivedBits.get(1));
+        Uri tempUri = storageAccess.getUriForItem(this, preferences, "Received", "", "ReceivedSong");
+
+        // Only songs sent via bytes payload trigger this.
+        boolean songReceived = (receivedBits.size()>=4);
+
+        if (StaticVariables.receiveHostFiles) {
+            boolean writeTemp = true;
+            OutputStream outputStream = null;
+            if (songReceived && StaticVariables.keepHostFiles) {
+                // Check if we have the song already.  If we do, grab the song into the Received folder,
+                // Otherwise, we'll write into the user's storage
+                writeTemp = storageAccess.uriExists(this, properUri);
+            }
+            if (songReceived && writeTemp) {
+                storageAccess.lollipopCreateFileForOutputStream(this, preferences, tempUri, null, "Received", "", "ReceivedSong");
+                outputStream = storageAccess.getOutputStream(this, tempUri);
+                StaticVariables.songfilename = "ReceivedSong";
+                StaticVariables.whichSongFolder = "../Received";
+            } else if (songReceived){
+                storageAccess.lollipopCreateFileForOutputStream(this, preferences, properUri, null, "Songs", receivedBits.get(0), receivedBits.get(1));
+                outputStream = storageAccess.getOutputStream(this, properUri);
+                StaticVariables.songfilename = receivedBits.get(1);
+                StaticVariables.whichSongFolder = receivedBits.get(0);
+                // Add to the sqldatabase
+                sqLiteHelper.createSong(this,StaticVariables.whichSongFolder,StaticVariables.songfilename);
+                prepareSongMenu();
+            }
+            if (songReceived) {
+                // Receiving an OpenSong file via bytes.  PDFs etc are sent separately
+                storageAccess.writeFileFromString(receivedBits.get(3), outputStream);
+            }
+
+        }
+        if (songReceived) {
+            StaticVariables.whichSongFolder = receivedBits.get(0);
+            StaticVariables.songfilename = receivedBits.get(1);
+            Log.d("d","received: "+StaticVariables.whichSongFolder+"/"+StaticVariables.songfilename);
+            FullscreenActivity.whichDirection = receivedBits.get(2);
+            loadSong();
+        }
+    }
+
+    private PayloadCallback payloadCallback() {
+        return new PayloadCallback() {
+            @Override
+            public void onPayloadReceived(@NonNull String s, @NonNull Payload payload) {
+
+                if (!StaticVariables.isHost) {
+                    // We can deal with the incoming payload!
+                    if (payload.getType() == Payload.Type.FILE) {
+                        // TODO receive file
+                    } else {
+                        // We're dealing with bytes
+                        String incoming = new String(payload.asBytes());
+                        if (incoming!=null && incoming.contains("autoscroll_")) {
+                            payloadAutoscroll(incoming);
+                        } else if (incoming!=null && incoming.contains("___section___")) {
+                            payloadSection(incoming);
+                        } else if (incoming!=null) {
+                            payloadOpenSong(incoming);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onPayloadTransferUpdate(@NonNull String s, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
+                // TODO deal with file transfer (non OpenSong only)
+            }
+        };
+    }
+    @Override
+    public void turnOffNearby() {
+        Nearby.getConnectionsClient(this).stopAllEndpoints();
+        StaticVariables.isHost = false;
+        StaticVariables.isConnected = false;
+        StaticVariables.usingNearby = false;
+    }
+
 
     // Window decoration
     @Override
@@ -1083,53 +1383,6 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void onDataReceived(Object data) {
-        // Attempt to extract the song details
-        if (data!=null) {
-            try {
-                SalutMessage newMessage = LoganSquare.parse((String)data,SalutMessage.class);
-                Log.d("StageMode","Salut Message = "+newMessage);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (data.toString().contains("_____") || data.toString().contains("<lyrics>") || data.toString().contains("___section___") || data.toString().contains("autoscroll_")) {
-
-                // Look for a section being sent
-                int mysection = processSong.getSalutReceivedSection(data.toString());
-                if (mysection >= 0) {
-                    // Choose a section
-                    holdBeforeLoadingSection(mysection);
-
-                    // Listen for autoscroll start being sent
-                } else if (data.toString().contains("autoscroll_start")) {
-                    // Trigger the autoscroll
-                    StaticVariables.isautoscrolling = false;
-                    holdBeforeAutoscrolling();
-
-                    // Listen for autoscroll stop being sent
-                } else if (data.toString().contains("autoscroll_stop")) {
-                    // Trigger the autoscroll stop
-                    StaticVariables.isautoscrolling = true;
-                    holdBeforeAutoscrolling();
-
-                    // Must be receiving a song or a song location
-                } else {
-                    // Load the song
-                    String action = processSong.getSalutReceivedLocation(data.toString(), StageMode.this, preferences, storageAccess);
-                    switch (action) {
-                        case "Location":
-                            holdBeforeLoading();
-                            break;
-                        case "HostFile":
-                            holdBeforeLoadingXML();
-                            break;
-                    }
-                }
-            }
-        }
-    }
-
     @SuppressLint("StaticFieldLeak")
     private class CheckStorage extends AsyncTask<Object, Void, String> {
 
@@ -1248,7 +1501,6 @@ public class StageMode extends AppCompatActivity implements
                 Log.d("StageMode", "No need to close battery monitor");
             }
         }
-
         tryCancelAsyncTasks();
     }
 
@@ -1295,20 +1547,6 @@ public class StageMode extends AppCompatActivity implements
             songscrollview.removeAllViews();
         }
 
-        if (FullscreenActivity.network!=null && FullscreenActivity.network.isRunningAsHost) {
-            try {
-                FullscreenActivity.network.stopNetworkService(false);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (FullscreenActivity.network!=null) {
-            try {
-            FullscreenActivity.network.unregisterClient(false);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
         // Second screen
         try {
             CastRemoteDisplayLocalService.stopService();
@@ -1324,6 +1562,7 @@ public class StageMode extends AppCompatActivity implements
             // Ooops
             e.printStackTrace();
         }
+        turnOffNearby();
     }
 
     private void tryCancelAsyncTasks() {
@@ -1358,7 +1597,7 @@ public class StageMode extends AppCompatActivity implements
         doCancelAsyncTask(show_highlight);
         doCancelAsyncTask(get_scrollheight);
     }
-    private void doCancelAsyncTask(AsyncTask ast) {
+    private void doCancelAsyncTask(AsyncTask<?,?,?> ast) {
         try {
             if (ast!=null) {
                 ast.cancel(true);
@@ -1391,49 +1630,20 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    private void sendSongLocationToConnected() {
-        String messageString = StaticVariables.whichSongFolder + "_____" +
-                StaticVariables.songfilename + "_____" +
-                FullscreenActivity.whichDirection;
-
-        myMessage = new SalutMessage();
-        myMessage.description = messageString;
-        holdBeforeSending();
-    }
-
     private void sendAutoscrollTriggerToConnected() {
-        String messageString = "autoscroll_";
+        String infoPayload = "autoscroll_";
 
         if (StaticVariables.isautoscrolling) {
-            messageString += "start";
+            infoPayload += "start";
         } else {
-            messageString += "stop";
+            infoPayload += "stop";
         }
-        SalutMessage sm = new SalutMessage();
-        sm.description = messageString;
-        holdBeforeSendingAutoscroll(sm);
-    }
-
-    private void sendSongXMLToConnected() {
-        String myXML;
-        if (FullscreenActivity.isSong && FullscreenActivity.myXML!=null) {
-            myXML = FullscreenActivity.myXML;
-        } else {
-            myXML = "";
-        }
-        mySongMessage = new SalutMessage();
-        mySongMessage.description = myXML;
-        holdBeforeSendingXML();
+        doSendBytesPayload(infoPayload);
     }
 
     private void sendSongSectionToConnected() {
-        int sectionval;
-        if (StaticVariables.whichMode.equals("Stage") || StaticVariables.whichMode.equals("Presentation")) {
-            sectionval = StaticVariables.currentSection;
-            mySectionMessage = new SalutMessage();
-            mySectionMessage.description = "___section___" + sectionval;
-            holdBeforeSendingSection();
-        }
+        String infoPayload = "___section___"+StaticVariables.currentSection;
+        doSendBytesPayload(infoPayload);
     }
 
     @Override
@@ -1561,17 +1771,8 @@ public class StageMode extends AppCompatActivity implements
                     StaticVariables.myToastMessage = getResources().getString(R.string.file_type_unknown);
                     ShowToast.showToast(StageMode.this);
                 } else {
-                    // Declare this as a new song for CCLI autologging
                     newsongloaded = true;
 
-                    // Send WiFiP2P intent
-                    if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
-                        try {
-                            sendSongLocationToConnected();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
                     // Animate out the current song
                     if (FullscreenActivity.whichDirection.equals("L2R")) {
                         if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
@@ -3260,162 +3461,6 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    // Salut (Connected devices logic)
-    private void holdBeforeLoading() {
-        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
-        // As soon as we receive if, check this is the first time
-        if (FullscreenActivity.firstReceivingOfSalut) {
-            // Now turn it off
-            FullscreenActivity.firstReceivingOfSalut = false;
-            // Decide if the file exists on this device first
-            Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs",
-                    StaticVariables.whichSongFolder, StaticVariables.songfilename);
-            if (storageAccess.uriExists(StageMode.this, uri)) {
-                loadSong();
-            }
-
-            // After a delay of 800 milliseconds, reset the firstReceivingOfSalut;
-            Handler h = new Handler();
-            h.postDelayed(() -> FullscreenActivity.firstReceivingOfSalut = true, 800);
-        }
-    }
-    private void holdBeforeSending() {
-        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
-        // As soon as we send it, check this is the first time
-        if (FullscreenActivity.firstSendingOfSalut) {
-            // Now turn it off
-            FullscreenActivity.firstSendingOfSalut = false;
-            if (FullscreenActivity.network != null) {
-                if (FullscreenActivity.network.isRunningAsHost) {
-                    try {
-                        FullscreenActivity.network.sendToAllDevices(myMessage, () -> Log.e(TAG, "Oh no! The data failed to send."));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                // After a delay of 800 milliseconds, reset the firstSendingOfSalut;
-                Handler h = new Handler();
-                h.postDelayed(() -> FullscreenActivity.firstSendingOfSalut = true, 800);
-            }
-        }
-    }
-    private void holdBeforeSendingAutoscroll(SalutMessage sm) {
-        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
-        // As soon as we send it, check this is the first time
-        if (FullscreenActivity.firstSendingOfSalutAutoscroll) {
-            // Now turn it off
-            FullscreenActivity.firstSendingOfSalutAutoscroll = false;
-            if (FullscreenActivity.network != null) {
-                if (FullscreenActivity.network.isRunningAsHost) {
-                    try {
-                        FullscreenActivity.network.sendToAllDevices(sm, () -> Log.e(TAG, "Oh no! The data failed to send."));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                // After a delay of 800 milliseconds, reset the firstSendingOfSalut;
-                Handler h = new Handler();
-                h.postDelayed(() -> FullscreenActivity.firstSendingOfSalutAutoscroll = true, 800);
-            }
-        }
-    }
-    private void holdBeforeSendingXML() {
-        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
-        // As soon as we send it, check this is the first time
-        if (FullscreenActivity.firstSendingOfSalutXML) {
-            // Now turn it off
-            FullscreenActivity.firstSendingOfSalutXML = false;
-            if (FullscreenActivity.network != null) {
-                if (FullscreenActivity.network.isRunningAsHost) {
-                    try {
-                        FullscreenActivity.network.sendToAllDevices(mySongMessage, () -> Log.e(TAG, "Oh no! The data failed to send."));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                // After a delay of 800 milliseconds, reset the firstSendingOfSalut;
-                Handler h = new Handler();
-                h.postDelayed(() -> FullscreenActivity.firstSendingOfSalutXML = true, 800);
-            }
-        }
-    }
-    private void holdBeforeSendingSection() {
-        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
-        // As soon as we send it, check this is the first time
-        if (FullscreenActivity.firstSendingOfSalutSection) {
-            // Now turn it off
-            FullscreenActivity.firstSendingOfSalutSection = false;
-            if (FullscreenActivity.network != null) {
-                if (FullscreenActivity.network.isRunningAsHost) {
-                    try {
-                        FullscreenActivity.network.sendToAllDevices(mySectionMessage, () -> Log.e(TAG, "Oh no! The data failed to send."));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                // After a delay of 800 milliseconds, reset the firstSendingOfSalutSection;
-                Handler h = new Handler();
-                h.postDelayed(() -> FullscreenActivity.firstSendingOfSalutSection = true, 800);
-            }
-        }
-    }
-    private void holdBeforeLoadingXML() {
-        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
-        // As soon as we receive if, check this is the first time
-        if (FullscreenActivity.firstReceivingOfSalutXML) {
-            // Now turn it off
-            FullscreenActivity.firstReceivingOfSalutXML = false;
-
-
-                FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\n", "$$__$$");
-                FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\", "");
-                FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("$$__$$", "\n");
-
-                // Create the temp song file
-                Uri receivedUri = storageAccess.getUriForItem(StageMode.this, preferences,
-                        "Received", "", "ReceivedSong");
-                storageAccess.lollipopCreateFileForOutputStream(StageMode.this, preferences, receivedUri,
-                        null, "Received", "", "ReceivedSong");
-                OutputStream outputStream = storageAccess.getOutputStream(StageMode.this, receivedUri);
-                storageAccess.writeFileFromString(FullscreenActivity.mySalutXML, outputStream);
-
-                StaticVariables.songfilename = "ReceivedSong";
-                StaticVariables.whichSongFolder = "../Received";
-
-                loadSong();
-
-
-            // After a delay of 800 milliseconds, reset the firstReceivingOfSalut;
-            Handler h = new Handler();
-            h.postDelayed(() -> FullscreenActivity.firstReceivingOfSalutXML = true,800);
-        }
-    }
-    private void holdBeforeLoadingSection(int s) {
-        if (FullscreenActivity.firstReceivingOfSalutSection) {
-            // Now turn it off
-            FullscreenActivity.firstReceivingOfSalutSection = false;
-            selectSection(s);
-
-            // After a delay of 800 milliseconds, reset the firstReceivingOfSalutSection;
-            Handler h = new Handler();
-            h.postDelayed(() -> FullscreenActivity.firstReceivingOfSalutSection = true, 800);
-        }
-    }
-    private void holdBeforeAutoscrolling() {
-        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
-        // As soon as we receive if, check this is the first time
-        if (FullscreenActivity.firstReceivingOfSalutAutoscroll) {
-            // Now turn it off
-            FullscreenActivity.firstReceivingOfSalutAutoscroll = false;
-            gesture5();
-
-            // After a delay of 800 milliseconds, reset the firstReceivingOfSalut;
-            Handler h = new Handler();
-            h.postDelayed(() -> FullscreenActivity.firstReceivingOfSalutAutoscroll = true, 800);
-        }
-    }
 
     @Override
     public void confirmedAction() {
@@ -4340,12 +4385,8 @@ public class StageMode extends AppCompatActivity implements
         StaticVariables.currentSection = whichone;
 
         // Send section to other devices (checks we are in stage or presentation mode in called method
-        if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
-            try {
-                sendSongSectionToConnected();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (StaticVariables.isHost && StaticVariables.isConnected && FullscreenActivity.isSong) {
+            sendSongSectionToConnected();
         }
 
         // Set this sections alpha to 1.0f;
@@ -5007,8 +5048,8 @@ public class StageMode extends AppCompatActivity implements
                         if (mDisplay.getDisplayId()==1) {
                             Point size = new Point();
                             mDisplay. getRealSize(size);
-                            int width = size. x;
-                            int height = size. y;
+                            //int width = size. x;
+                            //int height = size. y;
                             hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong);
                             hdmi.show();
                             FullscreenActivity.isHDMIConnected = true;
@@ -5710,6 +5751,27 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    @Override
+    public boolean requestNearbyPermissions() {
+        Log.d("d","Requesting nearby permissions");
+            if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
+                try {
+                    make(findViewById(R.id.mypage), R.string.location_rationale,
+                        LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 404)).show();
+                return false;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            } else {
+                ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},404);
+                return false;
+            }
+    }
+
     @SuppressLint("StaticFieldLeak")
     private class ShareSet extends AsyncTask<Object, Void, String> {
         @Override
@@ -5764,12 +5826,18 @@ public class StageMode extends AppCompatActivity implements
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
         // If request is cancelled, the result arrays are empty.
-        if (requestCode == StaticVariables.REQUEST_CAMERA_CODE) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                // Success, go for it
-                startCamera();
+            switch (requestCode) {
+                case StaticVariables.REQUEST_CAMERA_CODE:
+                    startCamera();
+                    break;
+
+                case 404:
+                    // Access fine location, so can open the menu at 'Connect devices'
+                    Log.d("d", "FINE LOCATION granted!");
+                    break;
             }
         }
     }
@@ -6429,7 +6497,7 @@ public class StageMode extends AppCompatActivity implements
     private void fadeoutPad() {
 
         // Put the display time into a known state
-        padcurrentTime_TextView.setText("0:00");
+        padcurrentTime_TextView.setText(R.string.time_zero);
 
         // Put the quick fade mechainism into a known state
         StaticVariables.padInQuickFade = 0;
@@ -6630,7 +6698,7 @@ public class StageMode extends AppCompatActivity implements
         // IV - clickedOnAutoScrollStart is being used to indicate being active (autoscroll may be active but not running)
         // IV - it is set elsewhere
         updateExtraInfoColorsAndSizes("autoscroll");
-        currentTime_TextView.setText("0:00");
+        currentTime_TextView.setText(R.string.time_zero);
         AutoScrollFunctions.getMultiPagePDFValues();  // This splits the time for multiple pages
         totalTime_TextView.setText(TimeTools.timeFormatFixer(StaticVariables.autoScrollDuration));
         playbackProgress.setVisibility(View.VISIBLE);
@@ -6746,13 +6814,9 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            // Send WiFiP2P intent
-            if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
-                try {
-                    sendAutoscrollTriggerToConnected();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            // Send Nearby autoscroll payload
+            if (StaticVariables.isHost && StaticVariables.isConnected) {
+                sendAutoscrollTriggerToConnected();
             }
         }
 
@@ -6866,14 +6930,10 @@ public class StageMode extends AppCompatActivity implements
             doCancelAsyncTask(mtask_autoscroll_music);
             doCancelAsyncTask(get_scrollheight);
             StaticVariables.isautoscrolling = false;
-            currentTime_TextView.setText("0:00");
-            // Send WiFiP2P intent
-            if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
-                try {
-                    sendAutoscrollTriggerToConnected();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            currentTime_TextView.setText(R.string.time_zero);
+            // Send Nearby autoscroll payload
+            if (StaticVariables.isHost && StaticVariables.isConnected) {
+                sendAutoscrollTriggerToConnected();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -7309,14 +7369,11 @@ public class StageMode extends AppCompatActivity implements
                     if (preferences.getMyPreferenceBoolean(StageMode.this,"midiSendAuto",false)) {
                         sendMidi();
                     }
-                    // Send WiFiP2P intent
-                    if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
-                        try {
-                            sendSongXMLToConnected();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    // Send Nearby song intent
+                    if (StaticVariables.isConnected && StaticVariables.isHost) {
+                        sendSongPayload();
                     }
+
                     // IV - Sticky display moved until after song display so that timings are correct
 
                     // If we have created, or converted a song format (e.g from OnSong or ChordPro), rebuild the database
@@ -8378,7 +8435,7 @@ public class StageMode extends AppCompatActivity implements
         doCancelAsyncTask(play_pads);
         play_pads = new PlayPads();
         try {
-            padcurrentTime_TextView.setText("0:00");
+            padcurrentTime_TextView.setText(R.string.time_zero);
             play_pads.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
             e.printStackTrace();

@@ -7,10 +7,13 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,9 +23,27 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.peak.salut.SalutDevice;
 
-public class OptionMenuListeners extends AppCompatActivity {
+public class OptionMenuListeners extends AppCompatActivity implements MenuInterface{
+
+    @SuppressLint("StaticFieldLeak")
+    static TextView connectionLog;
+    Context context;
+
+    public OptionMenuListeners(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public void updateConnectionsLog() {
+        if (StaticVariables.whichOptionMenu.equals("CONNECT") && connectionLog != null) {
+            try {
+                setTextTextView(connectionLog,StaticVariables.connectionLog);
+            } catch (Exception e) {
+                Log.d("d", "Connections menu closed");
+            }
+        }
+    }
 
     public interface MyInterface {
         void openFragment();
@@ -51,6 +72,12 @@ public class OptionMenuListeners extends AppCompatActivity {
         void updateExtraInfoColorsAndSizes(String s);
         void selectAFileUri(String s);
         void profileWork(String s);
+        boolean requestNearbyPermissions();
+        void startDiscovery();
+        void startAdvertising();
+        void stopDiscovery();
+        void stopAdvertising();
+        void turnOffNearby();
     }
 
     private static MyInterface mListener;
@@ -367,7 +394,7 @@ public class OptionMenuListeners extends AppCompatActivity {
                 break;
 
             case "CONNECT":
-                connectOptionListener(v,c);
+                connectOptionListener(v,c,preferences);
                 break;
 
             case "MIDI":
@@ -412,6 +439,14 @@ public class OptionMenuListeners extends AppCompatActivity {
         t.setTextSize(textSize);
         t.setText(text.toUpperCase(StaticVariables.locale));
     }
+    private static void setEditText(EditText t, String text) {
+        t.setTextSize(textSize);
+        t.setText(text.toUpperCase(StaticVariables.locale));
+    }
+    private static void setTextSwitch(SwitchCompat t, String text) {
+        t.setTextSize(textSize);
+        t.setText(text.toUpperCase(StaticVariables.locale));
+    }
 
     private static void mainOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
@@ -452,7 +487,6 @@ public class OptionMenuListeners extends AppCompatActivity {
         setTextButtons(menuCCLIButton,c.getString(R.string.edit_song_ccli));
         setTextButtons(menuOtherButton,c.getString(R.string.other));
 
-        // Only allow connection menu for JellyBean+
         menuConnectButton.setVisibility(View.VISIBLE);
 
         // Only allow MIDI menu for Marshmallow+ and if it is available
@@ -528,7 +562,9 @@ public class OptionMenuListeners extends AppCompatActivity {
         menuConnectButton.setOnClickListener(view -> {
             StaticVariables.whichOptionMenu = "CONNECT";
             if (mListener!=null) {
-                mListener.prepareOptionMenu();
+                if (mListener.requestNearbyPermissions()) {
+                    mListener.prepareOptionMenu();
+                }
             }
         });
         menuModeButton.setOnClickListener(view -> {
@@ -1662,59 +1698,99 @@ public class OptionMenuListeners extends AppCompatActivity {
         });
     }
 
-    private static void connectOptionListener(View v, final Context c) {
+    private static void connectOptionListener(View v, final Context c, final Preferences preferences) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
         TextView menuUp = v.findViewById(R.id.connectionsMenuTitle);
 
         // We keep a static reference to these in the FullscreenActivity
-        FullscreenActivity.hostButton = v.findViewById(R.id.connectionsHostButton);
-        FullscreenActivity.clientButton = v.findViewById(R.id.connectionsGuestButton);
-        SwitchCompat connectionsReceiveHostFile = v.findViewById(R.id.connectionsReceiveHostFile);
-        FullscreenActivity.connectionsLog = v.findViewById(R.id.options_connections_log);
+        EditText deviceName = v.findViewById(R.id.deviceName);
+        SwitchCompat actAsHost = v.findViewById(R.id.actAsHost);
+        actAsHost.requestFocus();
+        SwitchCompat enableNearby = v.findViewById(R.id.enableNearby);
+        SwitchCompat receiveHostFiles = v.findViewById(R.id.receiveHostFiles);
+        SwitchCompat keepHostFiles = v.findViewById(R.id.keepHostFiles);
+        connectionLog = v.findViewById(R.id.options_connections_log);
 
-        if (FullscreenActivity.salutLog==null || FullscreenActivity.salutLog.equals("")) {
-            FullscreenActivity.salutLog = c.getResources().getString(R.string.connections_log) + "\n\n";
+        deviceName.setText(StaticVariables.deviceName);
+        if (StaticVariables.connectionLog==null || StaticVariables.connectionLog.isEmpty()) {
+            StaticVariables.connectionLog = c.getResources().getString(R.string.connections_log) + "\n\n";
         }
-        setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
 
+        setTextTextView(connectionLog,StaticVariables.connectionLog);
+        setEditText(deviceName,StaticVariables.deviceName);
+        setTextSwitch(actAsHost,c.getResources().getString(R.string.connections_actashost));
+        setTextSwitch(enableNearby,c.getResources().getString(R.string.connections_enable));
+        setTextSwitch(receiveHostFiles,c.getResources().getString(R.string.connections_receive_host));
+        setTextSwitch(keepHostFiles,c.getResources().getString(R.string.connections_keephostsongs));
+        setTextTextView(menuUp,c.getResources().getString(R.string.connections_connect));
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
-        // Get host/slave text
-        if (FullscreenActivity.hostButtonText==null || FullscreenActivity.hostButtonText.equals("")) {
-            FullscreenActivity.hostButtonText = c.getResources().getString(R.string.connections_service_start).toUpperCase(StaticVariables.locale);
-        }
-        if (FullscreenActivity.clientButtonText==null || FullscreenActivity.clientButtonText.equals("")) {
-            FullscreenActivity.clientButtonText = c.getResources().getString(R.string.connections_discover).toUpperCase(StaticVariables.locale);
-        }
-
-        // Capitalise all the text by locale
-        menuUp.setText(c.getString(R.string.connections_connect).toUpperCase(StaticVariables.locale));
-        setTextButtons(connectionsReceiveHostFile,c.getString(R.string.connections_receive_host));
-        setTextButtons(FullscreenActivity.hostButton,FullscreenActivity.hostButtonText);
-        setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
-        connectionsReceiveHostFile.setChecked(FullscreenActivity.receiveHostFiles);
-
-        // Set the button listeners
+        // Set the listeners
         menuUp.setOnClickListener(view -> {
             StaticVariables.whichOptionMenu = "MAIN";
             if (mListener!=null) {
                 mListener.prepareOptionMenu();
             }
         });
-        connectionsReceiveHostFile.setOnCheckedChangeListener((compoundButton, b) -> FullscreenActivity.receiveHostFiles = b);
-        FullscreenActivity.connectionsLog.setOnClickListener(view -> {
-            FullscreenActivity.salutLog = c.getResources().getString(R.string.connections_log) + "\n\n";
-            setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-        });
-        FullscreenActivity.hostButton.setOnClickListener(view -> setupNetwork(c));
-        FullscreenActivity.clientButton.setOnClickListener(view -> discoverServices(c));
         closeOptionsFAB.setOnClickListener(view -> {
             if (mListener!=null) {
                 mListener.closeMyDrawers("option");
             }
         });
+
+        enableNearby.setOnCheckedChangeListener((view,isChecked) -> {
+            StaticVariables.usingNearby = isChecked;
+            if (isChecked) {
+                if (StaticVariables.isHost) {
+                    mListener.startAdvertising();
+                } else {
+                    mListener.startDiscovery();
+                }
+            } else {
+                if (StaticVariables.isHost) {
+                    mListener.stopAdvertising();
+                } else {
+                    mListener.startDiscovery();
+                }
+                mListener.turnOffNearby();
+            }
+        });
+        actAsHost.setOnCheckedChangeListener((view,isChecked) -> {
+            StaticVariables.isHost = isChecked;
+            receiveHostFiles.setEnabled(!isChecked);
+            keepHostFiles.setEnabled(!isChecked);
+        });
+        receiveHostFiles.setOnCheckedChangeListener((view,isChecked) -> {
+            StaticVariables.receiveHostFiles = isChecked;
+            keepHostFiles.setEnabled(isChecked);
+        });
+        keepHostFiles.setOnCheckedChangeListener((view,isChecked) -> StaticVariables.keepHostFiles = isChecked);
+        deviceName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s!=null && s.length()>0) {
+                    StaticVariables.deviceName = s.toString();
+                    setTextTextView(deviceName,StaticVariables.deviceName);
+                    preferences.setMyPreferenceString(c, "deviceName", StaticVariables.deviceName);
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+        connectionLog.setOnClickListener(view -> {
+            StaticVariables.connectionLog = c.getResources().getString(R.string.connections_log) + "\n\n";
+            setTextTextView(connectionLog,StaticVariables.connectionLog);
+        });
+
+        // Set the default values
+        enableNearby.setChecked(StaticVariables.usingNearby);
+        actAsHost.setChecked(StaticVariables.isHost);
+        receiveHostFiles.setChecked(StaticVariables.receiveHostFiles);
+        keepHostFiles.setChecked(StaticVariables.keepHostFiles);
 
     }
 
@@ -1783,122 +1859,6 @@ public class OptionMenuListeners extends AppCompatActivity {
                 mListener.closeMyDrawers("option");
             }
         });
-    }
-
-    private static void setupNetwork(final Context c) {
-        Log.d("OptionMenuListener","FullscreenActivity.network="+FullscreenActivity.network);
-        if (FullscreenActivity.network!=null) {
-            Log.d("OptionMenuListener", "FullscreenActivity.network.isRunningAsHost=" + FullscreenActivity.network.isRunningAsHost);
-        }
-
-        if (FullscreenActivity.network!=null && !FullscreenActivity.network.isRunningAsHost) {
-            try {
-                FullscreenActivity.network.startNetworkService(salutDevice -> {
-                    StaticVariables.myToastMessage = salutDevice.readableName + " - " +
-                            c.getResources().getString(R.string.connections_success);
-                    FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-                    setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-                    ShowToast.showToast(c);
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            FullscreenActivity.hostButtonText = c.getResources().getString(R.string.connections_service_stop).toUpperCase(StaticVariables.locale);
-            setTextButtons(FullscreenActivity.hostButton,FullscreenActivity.hostButtonText);
-            FullscreenActivity.clientButton.setAlpha(0.5f);
-            FullscreenActivity.clientButton.setClickable(false);
-            StaticVariables.myToastMessage = c.getResources().getString(R.string.connections_broadcast) +
-                    " " + FullscreenActivity.mBluetoothName;
-            FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-            setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-            ShowToast.showToast(c);
-        } else {
-            try {
-                if (FullscreenActivity.network!=null) {
-                    FullscreenActivity.network.stopNetworkService(false);
-                }
-                FullscreenActivity.hostButtonText = c.getResources().getString(R.string.connections_service_start).toUpperCase(StaticVariables.locale);
-                setTextButtons(FullscreenActivity.hostButton,FullscreenActivity.hostButtonText);
-                FullscreenActivity.salutLog += "\n" + c.getResources().getString(R.string.connections_service_stop);
-                setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-                FullscreenActivity.clientButton.setAlpha(1f);
-                FullscreenActivity.clientButton.setClickable(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private static void discoverServices(final Context c) {
-        if(FullscreenActivity.network!=null && !FullscreenActivity.network.isRunningAsHost && !FullscreenActivity.network.isDiscovering) {
-            try {
-                FullscreenActivity.network.discoverNetworkServices(() -> {
-                    SalutDevice hostname = FullscreenActivity.network.foundDevices.get(0);
-                    StaticVariables.myToastMessage = c.getResources().getString(R.string.connections_host) +
-                            " " + hostname.readableName;
-                    FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-                    setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-                    ShowToast.showToast(c);
-                    registerWithHost(c,hostname);
-                }, true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            FullscreenActivity.salutLog += "\n" + c.getResources().getString(R.string.connections_searching);
-            setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-            FullscreenActivity.clientButtonText = c.getResources().getString(R.string.connections_discover_stop).toUpperCase(StaticVariables.locale);
-            setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
-            FullscreenActivity.hostButton.setAlpha(0.5f);
-            FullscreenActivity.hostButton.setClickable(false);
-        } else {
-            FullscreenActivity.salutLog += "\n" +c.getResources().getString(R.string.connections_discover_stop);
-            setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-            try {
-                FullscreenActivity.network.stopServiceDiscovery(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            FullscreenActivity.clientButtonText = c.getResources().getString(R.string.connections_discover).toUpperCase(StaticVariables.locale);
-            setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
-            FullscreenActivity.hostButton.setAlpha(1f);
-            FullscreenActivity.hostButton.setClickable(true);
-        }
-
-    }
-
-    private static void registerWithHost(final Context c, final SalutDevice possibleHost) {
-        try {
-            Log.d("OptionMenu","possibleHost="+possibleHost);
-            FullscreenActivity.network.registerWithHost(possibleHost, () -> {
-                StaticVariables.myToastMessage = c.getResources().getString(R.string.connections_connected) +
-                        " " + possibleHost.readableName;
-                FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-                setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-                ShowToast.showToast(c);
-                FullscreenActivity.clientButtonText = (c.getResources().getString(R.string.connections_disconnect) +
-                        " " + possibleHost.readableName).toUpperCase(StaticVariables.locale);
-                setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
-
-            }, () -> {
-                StaticVariables.myToastMessage = possibleHost.readableName + ": " +
-                        c.getResources().getString(R.string.connections_failure);
-                FullscreenActivity.salutLog += "\n" + StaticVariables.myToastMessage;
-                setTextTextView(FullscreenActivity.connectionsLog,FullscreenActivity.salutLog);
-                ShowToast.showToast(c);
-                try {
-                    FullscreenActivity.network.stopServiceDiscovery(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                FullscreenActivity.clientButtonText = c.getResources().getString(R.string.connections_discover).toUpperCase(StaticVariables.locale);
-                setTextButtons(FullscreenActivity.clientButton,FullscreenActivity.clientButtonText);
-                FullscreenActivity.hostButton.setAlpha(1f);
-                FullscreenActivity.hostButton.setClickable(true);
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private static void modeOptionListener(View v, final Context c, final Preferences preferences) {

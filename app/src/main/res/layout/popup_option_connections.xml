@@ -52,21 +52,35 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/connectionsHostButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_access_point_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/connections_service_start"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <EditText
+            android:id="@+id/deviceName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawablePadding="4dp"
+            android:drawableStart="@drawable/ic_account_white_36dp"
+            android:gravity="center_vertical"
+            android:text="@string/app_name"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/connectionsGuestButton"
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/actAsHost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawablePadding="4dp"
+            android:drawableStart="@drawable/ic_access_point_white_36dp"
+            android:gravity="center_vertical"
+            android:text="@string/connections_actashost"
+            android:textColor="#fff"
+            android:textSize="12sp" />
+
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/enableNearby"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -74,23 +88,35 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_access_point_network_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/connections_discover"
+                android:text="@string/connections_enable"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/connectionsReceiveHostFile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_download_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/connections_receive_host"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/receiveHostFiles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawablePadding="4dp"
+            android:drawableStart="@drawable/ic_download_white_36dp"
+            android:gravity="center_vertical"
+            android:text="@string/connections_receive_host"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/keepHostFiles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawablePadding="4dp"
+            android:drawableStart="@drawable/ic_content_save_white_36dp"
+            android:gravity="center_vertical"
+            android:text="@string/connections_keephostsongs"
+            android:textColor="#fff"
+            android:textSize="12sp" />
             <TextView
                 android:id="@+id/options_connections_log"
                 android:layout_width="match_parent"

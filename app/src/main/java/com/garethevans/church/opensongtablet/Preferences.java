@@ -207,6 +207,7 @@ public class Preferences extends Activity {
     dark_stickyBackgroundColor      int         The color for the sticky note background info text in the dark theme
     dark_extraInfoTextColor         int         The color for the extra info text in the dark theme
     dark_extraInfoBgColor           int         The color for the extra info background in the dark theme
+    deviceName                      String      The name used for nearby connections.
     displayCapoChords               boolean     Should capo chords be shown (def:true)
     displayCapoAndNativeChords      boolean     Should both chords be shown at once (def:false)
     displayChords                   boolean     Decides if chords should be shown (def:true)
