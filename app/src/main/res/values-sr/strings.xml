@@ -502,4 +502,12 @@
     <string name="autoRepeatCount">Број понављања типки потребних за опонашање дугог притиска</string>
     <string name="autoRepeatRationale">Neke papučice (poput AirTurna) šalju automatsko ponavljanje signala tastera što zaustavlja rad duge pritiske. Ako koristite neku od ovih papučica, uključite AirTurn režim dugog pritiska i prilagodite klizač broju ponovljenih signala potrebnih za simuliranu dugu radnju pritiska. Većina klavijatura ima kašnjenje od 500 ms i ponavljanje od oko 25 ms. To znači da će držanje tipke u trajanju od 1 sekunde snimiti 20 pritiska tipki. AirTurn papučice omogućavaju podešavanje brzine ponavljanja i odlaganja pomoću njihove aplikacije za prateću upotrebu. Veći brojevi brojača ponavljanja ključa znače duže držanje papučice da biste se registrovali kao dugo pritiskanje.</string>
     <string name="rotate_display">Rotirajte displej</string>
+    <string name="accept_connection">Povezivanje sa</string>
+    <string name="accept_code">Potvrdite podudaranje koda na oba uređaja:</string>
+    <string name="location_rationale">Ova funkcija je potrebna za pronalaženje drugih mrežnih uređaja</string>
+    <string name="connections_keephostsongs">Zadržite domaćinske pesme</string>
+    <string name="connections_actashost">Ponašajte se kao domaćin</string>
+    <string name="connections_enable">Omogućite veze u blizini</string>
+    <string name="bold_chords_headings">Prikažite akorde i naslove podebljano</string>
+    <string name="warn_before_changing_song">Pokažite upozorenje pre prelaska na sledeću pesmu (korisno da izbegnete slučajne pritiske)</string>
 </resources>

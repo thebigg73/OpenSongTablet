@@ -502,4 +502,12 @@
     <string name="autoRepeatCount">Anzahl der Tastenwiederholungen, die zum Emulieren eines langen Drucks erforderlich sind</string>
     <string name="autoRepeatRationale">Einige Pedale (z. B. AirTurn) senden automatische Wiederholungssignale, wodurch die langen Druckaktionen gestoppt werden. Wenn Sie eines dieser Pedale verwenden, schalten Sie den AirTurn-Langdruckmodus ein und stellen Sie den Schieberegler auf die Anzahl der wiederholten Signale ein, die für eine simulierte Langdruckaktion erforderlich sind. Die meisten Tastaturen haben eine Verzögerung von 500 ms und eine Wiederholrate von etwa 25 ms. Dies bedeutet, dass durch Halten einer Taste für 1 Sekunde 20 Tastendrücke aufgezeichnet werden. Mit AirTurn-Pedalen können Sie die Wiederholungsrate und die Verzögerungszeit mithilfe der Begleit-App anpassen. Höhere Zahlen für die Anzahl der Tastenwiederholungen bedeuten, dass Sie das Pedal länger gedrückt halten, um sich als langes Drücken zu registrieren.</string>
     <string name="rotate_display">Anzeige drehen</string>
+    <string name="accept_connection">Verbinden mit</string>
+    <string name="accept_code">Bestätigen Sie, dass der Code auf beiden Geräten übereinstimmt:</string>
+    <string name="warn_before_changing_song">Zeigen Sie eine Warnung an, bevor Sie zum nächsten Titel wechseln (nützlich, um versehentliches Drücken zu vermeiden).</string>
+    <string name="bold_chords_headings">Zeigen Sie Akkorde und Überschriften fett an</string>
+    <string name="connections_enable">Aktivieren Sie Verbindungen in der Nähe</string>
+    <string name="connections_actashost">Als Gastgeber fungieren</string>
+    <string name="connections_keephostsongs">Behalten Sie Host-Songs</string>
+    <string name="location_rationale">Diese Funktion ist erforderlich, um andere Netzwerkgeräte zu finden</string>
 </resources>

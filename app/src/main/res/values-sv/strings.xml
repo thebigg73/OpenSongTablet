@@ -502,4 +502,12 @@
     <string name="autoRepeatCount">Antal knappupprepningar som krävs för att emulera lång tryckning</string>
     <string name="autoRepeatRationale">Vissa pedaler (som AirTurn) skickar auto repetitionssignaler som stoppar de långa pressåtgärderna. Om du använder en av dessa pedaler, slå på AirTurns långa tryckläge och justera skjutreglaget till antalet upprepade signaler som behövs för en simulerad lång pressåtgärd. De flesta tangentbord har en fördröjning på 500 ms och en repetitionsfrekvens på cirka 25 ms. Detta innebär att om du håller ner en knapp under en sekund registrerar du 20 knapptryckningar. Med AirTurn-pedaler kan du justera repetitionsfrekvensen och fördröjningstiden med hjälp av deras följeslagarapp. Högre siffror för upprepningen av tangenterna betyder att du håller pedalen längre för att registrera dig som en lång tryckning.</string>
     <string name="rotate_display">Rotera displayen</string>
+    <string name="accept_connection">Ansluta till</string>
+    <string name="accept_code">Bekräfta kodmatchningarna på båda enheterna:</string>
+    <string name="location_rationale">Den här funktionen krävs för att hitta andra nätverksenheter</string>
+    <string name="connections_keephostsongs">Håll värdlåtar</string>
+    <string name="connections_actashost">Agera som värd</string>
+    <string name="connections_enable">Aktivera anslutningar i närheten</string>
+    <string name="bold_chords_headings">Visa ackord och rubriker med fet stil</string>
+    <string name="warn_before_changing_song">Visa en varning innan du går till nästa låt (användbart för att undvika oavsiktliga tryck)</string>
 </resources>

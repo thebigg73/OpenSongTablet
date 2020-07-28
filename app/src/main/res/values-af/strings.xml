@@ -502,4 +502,12 @@
     <string name="autoRepeatCount">Aantal toonsherhalings wat benodig word om die lang druk na te boots</string>
     <string name="autoRepeatRationale">Sommige pedale (soos AirTurn) stuur outomatiese herhalingstoetsseine wat keer dat die lang persaksies werk. As u een van hierdie pedale gebruik, skakel dan die AirTurn-langpersmodus aan en pas die skuifknop aan by die aantal herhaalde seine wat nodig is vir \'n gesimuleerde langpersaksie. Die meeste sleutelborde het \'n vertraging van 500 m en \'n herhalingstempo van ongeveer 25 m. Dit beteken dat die hou van \'n sleutel vir 1 sekonde 20 sleuteldrukke opneem. Met AirTurn-pedale kan u die herhalingskoers en die vertragingstyd aanpas met behulp van hul metgesel-app. Hoër getalle vir die toetsherhalingstelling beteken dat u die pedaal langer moet hou om as \'n lang pers te registreer.</string>
     <string name="rotate_display">Draai skerm</string>
+    <string name="accept_connection">Konnekteer met</string>
+    <string name="accept_code">Bevestig die kodewys op albei toestelle:</string>
+    <string name="connections_enable">Aktiveer nabygeleë verbindings</string>
+    <string name="bold_chords_headings">Vertoon akkoorde en opskrifte in vetdruk</string>
+    <string name="warn_before_changing_song">Wys \'n waarskuwing voordat u na die volgende liedjie gaan (nuttig om toevallige perse te vermy)</string>
+    <string name="connections_actashost">Tree op as gasheer</string>
+    <string name="connections_keephostsongs">Hou gasheerliedjies</string>
+    <string name="location_rationale">Hierdie funksie is nodig om ander netwerktoestelle op te spoor</string>
 </resources>

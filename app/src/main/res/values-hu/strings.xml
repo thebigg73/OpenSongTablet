@@ -502,4 +502,12 @@
     <string name="autoRepeatCount">A hosszú megnyomás emulálásához szükséges gombismétlések száma</string>
     <string name="autoRepeatRationale">Néhány pedál (például az AirTurn) automatikus ismételt gombjeleket küld, amely megállítja a hosszú nyomás mûködését. Ha ezen pedálok egyikét használja, kapcsolja be az AirTurn hosszú sajtó üzemmódot, és állítsa be a csúszkát a szimulált hosszú sajtoláshoz szükséges ismétlődő jelek számához. A legtöbb billentyűzet 500 ms késleltetéssel és kb. 25 ms ismétlési sebességgel rendelkezik. Ez azt jelenti, hogy egy gomb egy másodpercig tartsa lenyomva a 20 gombnyomást. Az AirTurn pedálok lehetővé teszik az ismétlési sebesség és a késleltetési idő beállítását társaik alkalmazásával. A gombok ismétlési számának magasabb száma azt jelenti, hogy hosszabb ideig tartja a pedált, hogy hosszú nyomásig regisztráljon.</string>
     <string name="rotate_display">A kijelző forgatása</string>
+    <string name="accept_connection">Csatlakoztasd</string>
+    <string name="accept_code">Erősítse meg a kód egyezését mindkét eszközön:</string>
+    <string name="location_rationale">Ez a szolgáltatás szükséges más hálózati eszközök megkereséséhez</string>
+    <string name="connections_keephostsongs">Tartsa be a fogadó dalokat</string>
+    <string name="connections_actashost">Viselkedj házigazdaként</string>
+    <string name="connections_enable">A közeli kapcsolatok engedélyezése</string>
+    <string name="bold_chords_headings">Az akkordok és a fejlécek vastag betűvel jelennek meg</string>
+    <string name="warn_before_changing_song">Mutasson figyelmeztetést, mielőtt a következő dalra lépne (hasznos a véletlen megnyomás elkerülése érdekében)</string>
 </resources>

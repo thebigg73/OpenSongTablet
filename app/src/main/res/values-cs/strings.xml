@@ -502,4 +502,12 @@
     <string name="autoRepeatCount">Počet opakování kláves potřebných k emulaci dlouhého stisknutí</string>
     <string name="autoRepeatRationale">Některé pedály (například AirTurn) vysílají klíčové signály automatického opakování, které zastaví činnost dlouhého stisknutí. Pokud používáte jeden z těchto pedálů, zapněte režim dlouhého stisknutí AirTurn a nastavte posuvník na počet opakovaných signálů potřebných pro simulovanou akci dlouhého stisknutí. Většina klávesnic má zpoždění 500ms a opakovací rychlost asi 25ms. To znamená, že podržením tlačítka po dobu 1 sekundy se zaznamená 20 stisknutí tlačítka. Pedály AirTurn vám umožňují upravit rychlost opakování a dobu zpoždění pomocí jejich doprovodné aplikace. Vyšší čísla pro počet opakování tlačítek znamenají, že se pedál drží déle, aby se zaregistroval jako dlouhý stisk.</string>
     <string name="rotate_display">Otočení displeje</string>
+    <string name="accept_connection">Spojit s</string>
+    <string name="accept_code">Potvrďte shodu kódu na obou zařízeních:</string>
+    <string name="connections_enable">Povolit blízká připojení</string>
+    <string name="bold_chords_headings">Zobrazit akordy a nadpisy tučně</string>
+    <string name="warn_before_changing_song">Před přechodem na další skladbu zobrazit varování (užitečné, aby se zabránilo náhodnému stisknutí)</string>
+    <string name="connections_actashost">Působit jako hostitel</string>
+    <string name="connections_keephostsongs">Udržujte hostitelské písně</string>
+    <string name="location_rationale">Tato funkce je vyžadována k nalezení dalších síťových zařízení</string>
 </resources>
