@@ -1333,6 +1333,9 @@ public class ProcessSong extends Activity {
         lyricrow.setClipChildren(false);
         lyricrow.setClipToPadding(false);
 
+        // IV - Used when a lyricsOnly song is processed
+        boolean lyricsOnly = false;
+
         for (String bit:lyrics) {
             String imagetext;
             if ((bit.toLowerCase(Locale.ROOT).endsWith(".png") || bit.toLowerCase(Locale.ROOT).endsWith(".jpg") ||
@@ -1349,7 +1352,15 @@ public class ProcessSong extends Activity {
                     bit = bit.replace("_", "");
                 } else if ((StaticVariables.whichMode.equals("Stage") || StaticVariables.whichMode.equals("Performance")) &&
                         !preferences.getMyPreferenceBoolean(c,"displayChords",true)) {
-                    bit = bit.replace("_", "");
+                    // IV - Lyric line only so assemble and do the line in one go.  Remove typical word splits and white space - beautify!
+                    final StringBuilder sb = new StringBuilder();
+                    sb.append(lyrics[0]);
+                    for (int i = 1; i < lyrics.length; i++) {
+                        sb.append(lyrics[i]);
+                    }
+                    bit = sb.toString().replaceAll("_", "").replaceAll("\\s+-\\s+", "").replaceAll("\\s{2,}", " ").trim();
+                    // IV - flag used to break loop
+                    lyricsOnly = true;
                 } else {
                     bit = bit.replace("_", " ");
                 }
@@ -1453,7 +1464,10 @@ public class ProcessSong extends Activity {
                     lyricbit.setLineSpacing(0f, 0f);
                 }
                 lyricrow.addView(lyricbit);
-            }
+            // IV quick exit after doing a lyrics only line in one go above
+            if (lyricsOnly) {
+                break;
+            }}
         }
         return lyricrow;
     }
@@ -2213,7 +2227,8 @@ public class ProcessSong extends Activity {
                     StaticVariables.sectionContents[x][y].startsWith(" ") ||
                     StaticVariables.sectionContents[x][y].startsWith(".") ||
                     StaticVariables.sectionContents[x][y].startsWith(";")) {
-                text.append(StaticVariables.sectionContents[x][y].substring(1));
+               // IV - Replace leading character with space to keep correct txt alignment
+                text.append(" ").append(StaticVariables.sectionContents[x][y].substring(1));
             } else {
                 text.append(StaticVariables.sectionContents[x][y]);
             }
