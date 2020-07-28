@@ -288,18 +288,22 @@ public class NearbyConnections implements NearbyInterface {
     private void payloadAutoscroll(String incoming) {
         // It sends autoscroll startstops as autoscroll_start or autoscroll_stop
         // Start or stop by stating we were already doing the other!
-        if (nearbyReturnActionsInterface!=null) {
-            StaticVariables.isautoscrolling = !incoming.equals("autoscroll_start");
-            nearbyReturnActionsInterface.gesture5();
+        if (!StaticVariables.whichMode.equals("Presentation")) {
+            if (nearbyReturnActionsInterface != null) {
+                StaticVariables.isautoscrolling = !incoming.equals("autoscroll_start");
+                nearbyReturnActionsInterface.gesture5();
+            }
         }
     }
     private void payloadSection(String incoming) {
-        int mysection = processSong.getNearbySection(incoming);
-        if (mysection >= 0) {
-            if (nearbyReturnActionsInterface!=null) {
-                // Look for a section being sent
-                StaticVariables.currentSection = mysection;
-                nearbyReturnActionsInterface.selectSection(mysection);
+        if (!StaticVariables.whichMode.equals("Performance")) {
+            int mysection = processSong.getNearbySection(incoming);
+            if (mysection >= 0) {
+                if (nearbyReturnActionsInterface != null) {
+                    // Look for a section being sent
+                    StaticVariables.currentSection = mysection;
+                    nearbyReturnActionsInterface.selectSection(mysection);
+                }
             }
         }
     }
