@@ -391,6 +391,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // Initialise the ab info
             adjustABInfo();
 
+            // Setup the options drawer reset on close
+            setupOptionDrawerReset();
+
             // Click on the first item in the set
             if (presenter_set_buttonsListView.getChildCount() > 0) {
                 presenter_set_buttonsListView.getChildAt(0).performClick();
@@ -4442,5 +4445,24 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
         }
         startActivityForResult(intent, StaticVariables.REQUEST_FILE_CHOOSER);
+    }
+
+    // IV - Make option menu return to MAIN after use - same as for other modes
+    private void setupOptionDrawerReset() {
+        // Called when a drawer has settled in a completely open state.
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(PresenterMode.this, mDrawerLayout, ab_toolbar, R.string.drawer_open, R.string.drawer_close) {
+            // Called when a drawer has settled in a completely closed state.
+            @Override
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                // Set a runnable to return option menu to MAIN, This ensures 'Activated/Running' in sub menus work properly
+                Handler resetoptionmenu = new Handler();
+                resetoptionmenu.postDelayed(() -> {
+                    StaticVariables.whichOptionMenu = "MAIN";
+                    prepareOptionMenu();
+                }, 300);
+            }
+        };
+        mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
     }
 }
