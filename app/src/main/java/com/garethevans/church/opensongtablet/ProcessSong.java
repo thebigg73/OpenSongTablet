@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
@@ -2550,6 +2551,11 @@ public class ProcessSong extends Activity {
                 pdfheight = 1;
             }
             Bitmap bitmap = Bitmap.createBitmap(pdfwidth, pdfheight, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            canvas.drawColor(0xffffffff);
+            Paint paint = new Paint();
+            paint.setColor(0xffffffff);
+            canvas.drawRect(0F, 0F, (float) pdfwidth, (float) pdfheight, paint);
             // Be aware this pdf might have transparency.  For now, I've just set the background
             // of the image view to white.  This is fine for most PDF files.
 

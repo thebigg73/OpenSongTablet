@@ -4,13 +4,11 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -50,6 +48,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
@@ -71,25 +70,11 @@ import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.nearby.Nearby;
-import com.google.android.gms.nearby.connection.AdvertisingOptions;
-import com.google.android.gms.nearby.connection.ConnectionInfo;
-import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;
-import com.google.android.gms.nearby.connection.ConnectionResolution;
-import com.google.android.gms.nearby.connection.ConnectionsStatusCodes;
-import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo;
-import com.google.android.gms.nearby.connection.DiscoveryOptions;
-import com.google.android.gms.nearby.connection.EndpointDiscoveryCallback;
-import com.google.android.gms.nearby.connection.Payload;
-import com.google.android.gms.nearby.connection.PayloadCallback;
-import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
-import com.google.android.gms.nearby.connection.Strategy;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -98,7 +83,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import lib.folderpicker.FolderPicker;
 
@@ -136,7 +120,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
         PopUpCreateDrawingFragment.MyInterface,
         PopUpRandomSongFragment.MyInterface,
-        PopUpCCLIFragment.MyInterface,
+        PopUpCCLIFragment.MyInterface, NearbyReturnActionsInterface, NearbyInterface,
         PopUpBibleXMLFragment.MyInterface, PopUpShowMidiMessageFragment.MyInterface {
 
     private DialogFragment newFragment;
@@ -158,6 +142,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
     private ProcessSong processSong;
     private ProfileActions profileActions;
+    private NearbyConnections nearbyConnections;
 
     // MIDI
     private Midi midi;
@@ -305,6 +290,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         processSong = new ProcessSong();
         profileActions = new ProfileActions();
         optionMenuListeners = new OptionMenuListeners(this);
+        nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong,optionMenuListeners,sqLiteHelper);
 
         new Thread(() -> {
             runOnUiThread(() -> {
@@ -382,6 +368,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             initialiseTheViews();
             screenClickListeners();
 
+            // Prepare the drawer closed/open listener
+            setupDrawerClose();
+
             // Make the drawers match half the width of the screen
             resizeDrawers();
 
@@ -397,7 +386,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
             // Set up the Wifi service
             getBluetoothName();
-            getUserNickname();
+            nearbyConnections.getUserNickname();
 
             // Initialise the ab info
             adjustABInfo();
@@ -494,7 +483,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // Ooops
             e.printStackTrace();
         }
-        turnOffNearby();
+        nearbyConnections.turnOffNearby();
     }
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
@@ -761,7 +750,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                 // Send Nearby payload
                 if (StaticVariables.isHost && StaticVariables.isConnected) {
-                    sendSongPayload();
+                    nearbyConnections.sendSongPayload();
                 }
 
                 doCancelAsyncTask(loadsong_async);
@@ -1100,6 +1089,43 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         // Do nothing as we don't allow this in Presentation Mode
     }
 
+    private void setupDrawerClose() {
+        // What happens when the navigation drawers are opened
+        // Called when a drawer has settled in a completely closed state.
+        // Set a runnable to re-enable swipe
+        // enable swipe after short delay
+        // 1800ms delay
+        // Called when a drawer has settled in a completely open state.
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(PresenterMode.this, mDrawerLayout, ab_toolbar, R.string.drawer_open, R.string.drawer_close) {
+            // Called when a drawer has settled in a completely closed state.
+            @Override
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                // Set a runnable to return option menu to MAIN, This ensures 'Activated/Running' in sub menus work properly
+                Handler resetoptionmenu = new Handler();
+                resetoptionmenu.postDelayed(() -> {
+                    StaticVariables.whichOptionMenu = "MAIN";
+                    prepareOptionMenu();
+                }, 300);
+                // Set a runnable to re-enable swipe
+                Handler allowswipe = new Handler();
+                allowswipe.postDelayed(() -> {
+                    FullscreenActivity.tempswipeSet = "enable"; // enable swipe after short delay
+                }, FullscreenActivity.delayswipe_time); // 1800ms delay
+            }
+
+            // Called when a drawer has settled in a completely open state.
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                FullscreenActivity.tempswipeSet = "disable";
+                FullscreenActivity.wasscrolling = false;
+                FullscreenActivity.scrollbutton = false;
+            }
+        };
+        mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
+    }
+
     private void checkStorage() {
         if (check_storage!=null) {
             check_storage.cancel(true);
@@ -1190,6 +1216,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         batterycharge = findViewById(R.id.batterycharge);
         batteryimage = findViewById(R.id.batteryimage);
         batteryholder = findViewById(R.id.batteryholder);
+        ab_toolbar = findViewById(R.id.mytoolbar);
 
         // The song menu
         songmenu = findViewById(R.id.songmenu);
@@ -1557,6 +1584,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         selectSectionButtonInSong(StaticVariables.currentSection);
     }
 
+    @Override
+    public void selectSection(int which) {
+        selectSectionButtonInSong(which);
+    }
     private void selectSectionButtonInSong(int which) {
 
         try {
@@ -1652,6 +1683,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 FullscreenActivity.indexSongInSet<FullscreenActivity.mSetList.length-1) {
             enabledisableButton(nav_nextsong, true);
         }*/
+    }
+    @Override
+    public void goToPreviousItem() {
+        // Called from nearby connection
+        tryClickPreviousSection();
+    }
+    @Override
+    public void goToNextItem() {
+        // Called from nearby connection
+        tryClickPreviousSection();
     }
     private void tryClickNextSection() {
         if (StaticVariables.currentSection < StaticVariables.songSections.length - 1) {
@@ -1835,7 +1876,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     private void sendSongSectionToConnected() {
         String infoPayload = "___section___" + StaticVariables.currentSection;
-        doSendBytesPayload(infoPayload);
+        nearbyConnections.doSendPayloadBytes(infoPayload);
     }
 
     private void getBluetoothName() {
@@ -2268,48 +2309,48 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
-    String serviceId = "com.garethevans.church.opensongtablet";
+
+    // Nearby
+    // These are dealt with in NearbyConnections.  Pulled in from interface to listen from optionmenulistener
+    @Override
+    public void startDiscovery() {
+        nearbyConnections.startDiscovery();
+    }
+    @Override
+    public void startAdvertising() {
+        nearbyConnections.startAdvertising();
+    }
+    @Override
+    public void stopDiscovery() {
+        nearbyConnections.stopDiscovery();
+    }
+    @Override
+    public void stopAdvertising() {
+        nearbyConnections.stopAdvertising();
+    }
+    @Override
+    public void turnOffNearby() {
+        nearbyConnections.turnOffNearby();
+    }
+    @Override
+    public void doSendPayloadBytes(String infoPayload) {
+        nearbyConnections.doSendPayloadBytes(infoPayload);
+    }
+
+
+    // The stuff used for Google Nearby for connecting devices
+    // TODO REMOVE
+    /*String serviceId = "com.garethevans.church.opensongtablet";
     private void updateConnectionLog(String newMessage) {
         if (newMessage!=null) {
             StaticVariables.connectionLog += newMessage + "\n";
-            optionMenuListeners.updateConnectionsLog();
-        }
-    }
-    @Override
-    public boolean requestNearbyPermissions() {
-        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
             try {
-                make(findViewById(R.id.mypage), R.string.location_rationale,
-                        LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 404)).show();
-                return false;
+                optionMenuListeners.updateConnectionsLog();
             } catch (Exception e) {
                 e.printStackTrace();
-                return false;
             }
-        } else {
-            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},404);
-            return false;
         }
     }
-
-    @Override
-    public void startDiscovery() {
-        DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
-        Nearby.getConnectionsClient(this)
-                .startDiscovery(serviceId, endpointDiscoveryCallback(), discoveryOptions)
-                .addOnSuccessListener(
-                        (Void unused) -> {
-                            // We're discovering!
-                        })
-                .addOnFailureListener(
-                        (Exception e) -> {
-                            // We're unable to start discovering.
-                        });
-    }
-
     @Override
     public void startAdvertising() {
         AdvertisingOptions advertisingOptions =
@@ -2320,46 +2361,55 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 .addOnSuccessListener(
                         (Void unused) -> {
                             // We're advertising!
-                            Log.d("d","We're advertising!!");
+                            updateConnectionLog(getString(R.string.connections_broadcast) + " " + getUserNickname());
+
                         })
                 .addOnFailureListener(
                         (Exception e) -> {
                             // We were unable to start advertising.
-                            Log.d("d","Failed to advertise");
+                            updateConnectionLog(getString(R.string.connections_failure) + " " + getUserNickname());
                             e.printStackTrace();
                         });
     }
-
     @Override
-    public void stopDiscovery() {
-        Nearby.getConnectionsClient(this).stopDiscovery();
+    public void startDiscovery() {
+        DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
+        Nearby.getConnectionsClient(this)
+                .startDiscovery(serviceId, endpointDiscoveryCallback(), discoveryOptions)
+                .addOnSuccessListener(
+                        (Void unused) -> {
+                            // We're discovering!
+                            updateConnectionLog(getString(R.string.connections_discover));
+                        })
+                .addOnFailureListener(
+                        (Exception e) -> {
+                            // We're unable to start discovering.
+                            updateConnectionLog(getString(R.string.connections_discover_stop));
+                            stopDiscovery();
+                        });
     }
-
     @Override
     public void stopAdvertising() {
         Nearby.getConnectionsClient(this).stopAdvertising();
     }
-
+    @Override
+    public void stopDiscovery() {
+        Nearby.getConnectionsClient(this).stopDiscovery();
+    }
     private String getDeviceNameFromId(String endpointId) {
         // When requesting connections, the proper device name is stored in an arraylist like endpointId__deviceName
-        for (String s: connectedEndPointsNames) {
+        for (String s:connectedEndPointsNames) {
             if (s.startsWith(endpointId+"__")) {
                 return s.replace(endpointId+"__","");
             }
         }
         return endpointId;
     }
-
-    @Override
-    public void turnOffNearby() {
-        Nearby.getConnectionsClient(this).stopAllEndpoints();
-    }
-
     private String getUserNickname() {
         if (StaticVariables.deviceName==null || StaticVariables.deviceName.isEmpty()) {
             if (FullscreenActivity.mBluetoothName.equals("Unknown")) {
                 FullscreenActivity.mBluetoothName = UUID.randomUUID().toString().substring(0,8);
-                FullscreenActivity.mBluetoothName.toUpperCase(StaticVariables.locale);
+                FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothName.toUpperCase(StaticVariables.locale);
             }
             StaticVariables.deviceName = preferences.getMyPreferenceString(this,"deviceId", FullscreenActivity.mBluetoothName);
             if (StaticVariables.deviceName.equals(StaticVariables.randomId)) {
@@ -2373,31 +2423,29 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         return new ConnectionLifecycleCallback() {
             @Override
             public void onConnectionInitiated(@NonNull String endpointId, @NonNull ConnectionInfo connectionInfo) {
-                Log.d("d","onConnectionInitiated.  endpointId="+endpointId+"  connectionInfo.getEndpointName()="+connectionInfo.getEndpointName());
-                new AlertDialog.Builder(PresenterMode.this)
-                        .setTitle("Accept connection to " + connectionInfo.getEndpointName())
-                        .setMessage("Confirm the code matches on both devices: " + connectionInfo.getAuthenticationToken())
+                new AlertDialog.Builder(StageMode.this)
+                        .setTitle(getString(R.string.accept_connection) + " " + connectionInfo.getEndpointName())
+                        .setMessage(getString(R.string.accept_code) + " " + connectionInfo.getAuthenticationToken())
                         .setPositiveButton(
-                                android.R.string.ok,
+                                getString(R.string.ok),
                                 (DialogInterface dialog, int which) -> {
-                                        // Add a note of the nice name matching the endpointId
-                                        connectedEndPointsNames.add(endpointId + "__" + connectionInfo.getEndpointName());
-                                        // The user confirmed, so we can accept the connection.
-                                        Nearby.getConnectionsClient(PresenterMode.this)
-                                                .acceptConnection(endpointId, payloadCallback());
+                                    // Add a note of the nice name matching the endpointId
+                                    connectedEndPointsNames.add(endpointId + "__" + connectionInfo.getEndpointName());
+                                    // The user confirmed, so we can accept the connection.
+                                    Nearby.getConnectionsClient(StageMode.this)
+                                            .acceptConnection(endpointId, payloadCallback());
                                 })
                         .setNegativeButton(
-                                android.R.string.cancel,
+                                getString(R.string.cancel),
                                 (DialogInterface dialog, int which) ->
                                         // The user canceled, so we should reject the connection.
-                                        Nearby.getConnectionsClient(PresenterMode.this).rejectConnection(endpointId))
+                                        Nearby.getConnectionsClient(StageMode.this).rejectConnection(endpointId))
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
             }
 
             @Override
             public void onConnectionResult(@NonNull String endpointId, @NonNull ConnectionResolution connectionResolution) {
-                Log.d("d","onConnectionResult.  endpointId="+endpointId+"  connectionResolution="+connectionResolution);
                 switch (connectionResolution.getStatus().getStatusCode()) {
                     case ConnectionsStatusCodes.STATUS_OK:
                         // We're connected! Can now start sending and receiving data.
@@ -2428,7 +2476,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
         };
     }
-
     private boolean stillValidConnections() {
         if (connectedEndPoints != null && connectedEndPoints.size() >= 1) {
             for (String s : connectedEndPoints) {
@@ -2439,13 +2486,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
         return false;
     }
-
     private EndpointDiscoveryCallback endpointDiscoveryCallback() {
         return new EndpointDiscoveryCallback() {
             @Override
             public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo discoveredEndpointInfo) {
-                Log.d("d","onEndpointFound. endpointId="+endpointId+"discoveredEndpointInfo.getEndpointName()="+discoveredEndpointInfo.getEndpointName());
-                Nearby.getConnectionsClient(PresenterMode.this)
+                Nearby.getConnectionsClient(StageMode.this)
                         .requestConnection(getUserNickname(), endpointId, connectionLifecycleCallback())
                         .addOnSuccessListener(
                                 (Void unused) -> {
@@ -2467,54 +2512,71 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         };
     }
     private void sendSongPayload() {
-        String infoPayload = StaticVariables.whichSongFolder + "_xx____xx_" +
-                StaticVariables.songfilename + "_xx____xx_" +
-                FullscreenActivity.whichDirection + "_xx____xx_" +
-                FullscreenActivity.presenterSendSong;
-        doSendBytesPayload(infoPayload);
-    }
+        String infoPayload;
+        Payload payloadFile = null;
+        String infoFilePayload = StaticVariables.whichSongFolder + "_xx____xx_" + StaticVariables.songfilename +
+                "_xx____xx_" + FullscreenActivity.whichDirection;
+        if (FullscreenActivity.isSong) {
+            // By default, this should be smaller than 32kb, so probably going to send as bytes
+            // We'll measure the actual size later to check though
+            infoPayload = StaticVariables.whichSongFolder + "_xx____xx_" +
+                    StaticVariables.songfilename + "_xx____xx_" +
+                    FullscreenActivity.whichDirection + "_xx____xx_" +
+                    FullscreenActivity.myXML;
+        } else {
+            // We will send as a file instead
+            infoPayload=null;
+        }
 
-    private void doSendBytesPayload(String infoPayload) {
-        byte[] mybytes = infoPayload.getBytes();
-        Payload payload = Payload.fromBytes(mybytes);
+        if (infoPayload!=null) {
+            // Check the size.  If it is bigger than the 32kb (go 30kb to play safe!) allowed for bytes, switch to file
+            byte[] mybytes = infoPayload.getBytes();
+            if (mybytes.length>30000) {
+                infoPayload = null;
+            }
+        }
+
+        if (infoPayload==null) {
+            // We will send as a file
+            try {
+                Uri uri = storageAccess.getUriForItem(this, preferences, "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
+                ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(uri, "r");
+                payloadFile = Payload.fromFile(parcelFileDescriptor);
+                infoFilePayload = "FILE:"+payloadFile.getId()+":"+infoFilePayload;
+            } catch (Exception e) {
+                e.printStackTrace();
+                payloadFile = null;
+            }
+        }
+
         for (String endpointId:connectedEndPoints) {
-            Nearby.getConnectionsClient(this).sendPayload(endpointId,payload);
+            if (payloadFile!=null) {
+                // Send the file descriptor as bytes, then the file
+                Nearby.getConnectionsClient(this).sendPayload(endpointId,Payload.fromBytes(infoFilePayload.getBytes()));
+                Nearby.getConnectionsClient(this).sendPayload(endpointId,payloadFile);
+            } else if (infoPayload!=null){
+                // Just send the bytes
+                Nearby.getConnectionsClient(this).sendPayload(endpointId,Payload.fromBytes(infoPayload.getBytes()));
+            }
         }
     }
-
-    private PayloadCallback payloadCallback() {
-        return new PayloadCallback() {
-            @Override
-            public void onPayloadReceived(@NonNull String s, @NonNull Payload payload) {
-
-                if (!StaticVariables.isHost) {
-                    // We can deal with the incoming payload!
-                    if (payload.getType() == Payload.Type.FILE) {
-                        // TODO receive file
-                    } else {
-                        // We're dealing with bytes
-                        String incoming = new String(payload.asBytes());
-                        if (incoming!=null && incoming.contains("___section___")) {
-                            payloadSection(incoming);
-                        } else if (incoming!=null) {
-                            payloadOpenSong(incoming);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onPayloadTransferUpdate(@NonNull String s, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
-                // TODO deal with file transfer (non OpenSong only)
-            }
-        };
+    private void doSendPayloadBytes(String infoPayload) {
+        for (String endpointId:connectedEndPoints) {
+            Nearby.getConnectionsClient(this).sendPayload(endpointId,Payload.fromBytes(infoPayload.getBytes()));
+        }
+    }
+    private void payloadAutoscroll(String incoming) {
+        // It sends autoscroll startstops as autoscroll_start or autoscroll_stop
+        // Start or stop by stating we were already doing the other!
+        StaticVariables.isautoscrolling = !incoming.equals("autoscroll_start");
+        gesture5();
     }
     private void payloadSection(String incoming) {
         int mysection = processSong.getNearbySection(incoming);
         if (mysection >= 0) {
             // Look for a section being sent
             StaticVariables.currentSection = mysection;
-            selectSectionButtonInSong(StaticVariables.currentSection);
+            selectSection(mysection);
         }
     }
     private void payloadOpenSong(String incoming) {
@@ -2565,6 +2627,119 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             loadSong();
         }
     }
+    private void payloadFile(Payload payload, String foldernamepair) {
+        // If songs are too big, then we receive them as a file rather than bytes
+        Log.d("d","foldernamepair="+foldernamepair);
+        String[] bits = foldernamepair.split("_xx____xx_");
+        String folder = bits[0];
+        String filename = bits[1];
+        FullscreenActivity.whichDirection = bits[2];
+        boolean movepage = false;
+        if ((folder.equals(StaticVariables.whichSongFolder)||StaticVariables.whichSongFolder.equals("../Received"))
+                && filename.equals(StaticVariables.songfilename) && filename.toLowerCase(StaticVariables.locale).endsWith(".pdf")) {
+            // We are likely trying to move page to an already received file
+            movepage = true;
+        } else {
+            FullscreenActivity.pdfPageCurrent = 0;
+        }
+        Uri newLocation = null;
+        if (StaticVariables.receiveHostFiles && StaticVariables.keepHostFiles) {
+            newLocation = storageAccess.getUriForItem(this,preferences,"Songs",folder,filename);
+            storageAccess.lollipopCreateFileForOutputStream(this,preferences,newLocation,null,"Songs",folder,filename);
+        } else if (StaticVariables.receiveHostFiles) {
+            folder = "../Received";
+            newLocation = storageAccess.getUriForItem(this, preferences, "Received", "", filename);
+            storageAccess.lollipopCreateFileForOutputStream(this, preferences, newLocation, null, "Received", "", filename);
+        }
+        StaticVariables.whichSongFolder = folder;
+        StaticVariables.songfilename = filename;
+        Log.d("d","newLocation="+newLocation);
+        if (movepage) {
+            if (FullscreenActivity.whichDirection.equals("L2R")) {
+                // Go back
+                goToPreviousItem();
+            } else {
+                // Go forward
+                goToNextItem();
+            }
+        } else if (newLocation!=null) { // i.e. we have received the file by choice
+            InputStream inputStream = new FileInputStream(payload.asFile().asParcelFileDescriptor().getFileDescriptor());
+            Uri originalUri = Uri.parse(payload.asFile().asParcelFileDescriptor().getFileDescriptor().toString());
+            OutputStream outputStream = storageAccess.getOutputStream(this, newLocation);
+            if (storageAccess.copyFile(inputStream, outputStream)) {
+                loadSong();
+            }
+            Log.d("d","originalUri="+originalUri);
+            storageAccess.deleteFile(this, originalUri);
+        } else {
+            loadSong();
+        }
+    }
+    private final SimpleArrayMap<Long, Payload> incomingFilePayloads = new SimpleArrayMap<>();
+    private final SimpleArrayMap<Long, String> fileNewLocation = new SimpleArrayMap<>();
+    private PayloadCallback payloadCallback() {
+        return new PayloadCallback() {
+            @Override
+            public void onPayloadReceived(@NonNull String s, @NonNull Payload payload) {
+                if (!StaticVariables.isHost) {
+                    // We can deal with the incoming payload!
+                    if (payload.getType() == Payload.Type.FILE) {
+                        // Make a note of it.  Nothing happens until complete
+                        incomingFilePayloads.put(payload.getId(), payload);
+
+                    } else if (payload.getType() == Payload.Type.BYTES) {
+                        // We're dealing with bytes
+                        String incoming = new String(payload.asBytes());
+                        if (incoming!=null && incoming.startsWith("FILE:")) {
+                            // Add the file location to the arraymap
+                            incoming = incoming.replaceFirst("FILE:","");
+                            String id = incoming.substring(0,incoming.indexOf(":"));
+                            id = id.replace(":","");
+                            String foldernamepair = incoming.substring(incoming.indexOf(":"));
+                            foldernamepair = foldernamepair.replace(":","");
+                            fileNewLocation.put(Long.parseLong(id),foldernamepair);
+
+                        } else if (incoming!=null && incoming.contains("autoscroll_")) {
+                            payloadAutoscroll(incoming);
+                        } else if (incoming!=null && incoming.contains("___section___")) {
+                            payloadSection(incoming);
+                        } else if (incoming!=null) {
+                            payloadOpenSong(incoming);
+                        }
+                    }
+                    // not dealing with files as it is complex with scoped storage access
+                    // also don't want user's download folder getting clogged!
+                }
+            }
+
+
+            @Override
+            public void onPayloadTransferUpdate(@NonNull String s, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
+                if (payloadTransferUpdate.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
+                    // For bytes this is sent automatically, but it's the file we are interested in here
+                    Payload payload = null;
+                    if (incomingFilePayloads.containsKey(payloadTransferUpdate.getPayloadId())) {
+                        payload = incomingFilePayloads.get(payloadTransferUpdate.getPayloadId());
+                        String foldernamepair = fileNewLocation.get(payloadTransferUpdate.getPayloadId());
+                        if (foldernamepair==null) {
+                            foldernamepair = "../Received_xx____xx_ReceivedSong";
+                        }
+                        incomingFilePayloads.remove(payloadTransferUpdate.getPayloadId());
+                        fileNewLocation.remove(payloadTransferUpdate.getPayloadId());
+
+                        payloadFile(payload,foldernamepair);
+                    }
+                }
+            }
+        };
+    }
+    @Override
+    public void turnOffNearby() {
+        Nearby.getConnectionsClient(this).stopAllEndpoints();
+        StaticVariables.isHost = false;
+        StaticVariables.isConnected = false;
+        StaticVariables.usingNearby = false;
+    }*/
 
     @SuppressLint("StaticFieldLeak")
     private class PrepareOptionMenu extends AsyncTask<Object, Void, String> {
@@ -3436,6 +3611,28 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         blankButton_isSelected = false;
     }
 
+    // Google Nearby
+    @Override
+    public boolean requestNearbyPermissions() {
+        Log.d("d","Requesting nearby permissions");
+        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
+            try {
+                make(findViewById(R.id.mypage), R.string.location_rationale,
+                        LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 404)).show();
+                return false;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},404);
+            return false;
+        }
+    }
+
     // The camera permissions and stuff
     @Override
     public void useCamera() {
@@ -3452,6 +3649,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
+
         // If request is cancelled, the result arrays are empty.
         if (grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -3598,6 +3796,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 if (!cancelled) {
                     // Now, reset the orientation.
+                    // Keep for check
+                    boolean orientationChanged = FullscreenActivity.orientationchanged;
                     FullscreenActivity.orientationchanged = false;
 
                     // Get the current orientation
@@ -3614,12 +3814,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
 
                     // Send WiFiP2P intent
-                    if (StaticVariables.isHost && StaticVariables.isConnected) {
-                        sendSongPayload();
+                    if (StaticVariables.isHost && StaticVariables.isConnected && !orientationChanged) {
+                        nearbyConnections.sendSongPayload();
                     }
 
                     // Send the midi data if we can
-                    sendMidi();
+                    if (!orientationChanged) {
+                        sendMidi();
+                    }
 
                     // If the user has shown the 'Welcome to OpenSongApp' file, and their song lists are empty,
                     // open the find new songs menu

@@ -73,22 +73,22 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         void selectAFileUri(String s);
         void profileWork(String s);
         boolean requestNearbyPermissions();
-        void startDiscovery();
-        void startAdvertising();
-        void stopDiscovery();
-        void stopAdvertising();
-        void turnOffNearby();
     }
 
     private static MyInterface mListener;
+
+    private static NearbyInterface nearbyInterface;
 
     private static FragmentManager fm;
     private static float textSize = 14.0f;
 
     static LinearLayout prepareOptionMenu(Context c, FragmentManager fragman) {
         mListener = (MyInterface) c;
+        nearbyInterface = (NearbyInterface) c;
+
         fm = fragman;
         LinearLayout menu;
+        Log.d("d","whichOptionMenu="+StaticVariables.whichOptionMenu);
         switch (StaticVariables.whichOptionMenu) {
             case "MAIN":
             default:
@@ -562,9 +562,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         menuConnectButton.setOnClickListener(view -> {
             StaticVariables.whichOptionMenu = "CONNECT";
             if (mListener!=null) {
-                if (mListener.requestNearbyPermissions()) {
-                    mListener.prepareOptionMenu();
-                }
+                mListener.prepareOptionMenu();
             }
         });
         menuModeButton.setOnClickListener(view -> {
@@ -1700,6 +1698,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
 
     private static void connectOptionListener(View v, final Context c, final Preferences preferences) {
         mListener = (MyInterface) c;
+        nearbyInterface = (NearbyInterface) c;
 
         // Identify the buttons
         TextView menuUp = v.findViewById(R.id.connectionsMenuTitle);
@@ -1744,17 +1743,17 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             StaticVariables.usingNearby = isChecked;
             if (isChecked) {
                 if (StaticVariables.isHost) {
-                    mListener.startAdvertising();
+                    nearbyInterface.startAdvertising();
                 } else {
-                    mListener.startDiscovery();
+                    nearbyInterface.startDiscovery();
                 }
             } else {
                 if (StaticVariables.isHost) {
-                    mListener.stopAdvertising();
+                    nearbyInterface.stopAdvertising();
                 } else {
-                    mListener.startDiscovery();
+                    nearbyInterface.startDiscovery();
                 }
-                mListener.turnOffNearby();
+                nearbyInterface.turnOffNearby();
             }
         });
         actAsHost.setOnCheckedChangeListener((view,isChecked) -> {
@@ -1792,6 +1791,10 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         receiveHostFiles.setChecked(StaticVariables.receiveHostFiles);
         keepHostFiles.setChecked(StaticVariables.keepHostFiles);
 
+        if (!mListener.requestNearbyPermissions()) {
+            StaticVariables.whichOptionMenu = "MAIN";
+            mListener.closeMyDrawers("option");
+        }
     }
 
     private static void midiOptionListener(View v, final Context c, final Preferences preferences) {

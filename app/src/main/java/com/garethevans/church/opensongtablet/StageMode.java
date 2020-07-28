@@ -4,13 +4,11 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -87,24 +85,10 @@ import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.nearby.Nearby;
-import com.google.android.gms.nearby.connection.AdvertisingOptions;
-import com.google.android.gms.nearby.connection.ConnectionInfo;
-import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;
-import com.google.android.gms.nearby.connection.ConnectionResolution;
-import com.google.android.gms.nearby.connection.ConnectionsStatusCodes;
-import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo;
-import com.google.android.gms.nearby.connection.DiscoveryOptions;
-import com.google.android.gms.nearby.connection.EndpointDiscoveryCallback;
-import com.google.android.gms.nearby.connection.Payload;
-import com.google.android.gms.nearby.connection.PayloadCallback;
-import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
-import com.google.android.gms.nearby.connection.Strategy;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -112,7 +96,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import lib.folderpicker.FolderPicker;
 
@@ -148,7 +131,7 @@ public class StageMode extends AppCompatActivity implements
         PopUpLayoutFragment.MyInterface, DownloadTask.MyInterface,
         PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
         PopUpCreateDrawingFragment.MyInterface,
-        PopUpCCLIFragment.MyInterface,
+        PopUpCCLIFragment.MyInterface, NearbyReturnActionsInterface, NearbyInterface,
         PopUpBibleXMLFragment.MyInterface, PopUpShowMidiMessageFragment.MyInterface {
 
     // The toolbar and menu
@@ -361,9 +344,13 @@ public class StageMode extends AppCompatActivity implements
     private Handler presoinfohandler;
     private Handler customhandler;
 
-    // Network discovery / connections
+    //TODO REMOVE
+    /*/
     private ArrayList<String> connectedEndPoints;
-    private ArrayList<String> connectedEndPointsNames;
+    private ArrayList<String> connectedEndPointsNames;*/
+
+    // Network discovery / connections
+    NearbyConnections nearbyConnections;
 
     // NFC
     private FileUriCallback mFileUriCallback;
@@ -393,7 +380,6 @@ public class StageMode extends AppCompatActivity implements
     private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
     private Transpose transpose;
     private ProfileActions profileActions;
-    private OptionMenuListeners optionMenuListeners;
 
     private boolean pdfCanContinueScrolling;
 
@@ -425,6 +411,8 @@ public class StageMode extends AppCompatActivity implements
         processSong = new ProcessSong();
         transpose = new Transpose();
         profileActions = new ProfileActions();
+        OptionMenuListeners optionMenuListeners = new OptionMenuListeners(this);
+        nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong, optionMenuListeners, sqLiteHelper);
 
         new Thread(() -> {
             runOnUiThread(() -> {
@@ -462,7 +450,7 @@ public class StageMode extends AppCompatActivity implements
         // In order to quickly start, load the minimum variables we need
         loadStartUpVariables();
 
-        optionMenuListeners = new OptionMenuListeners(this);
+
 
         // Set up the fonts
         setTypeFace.setUpAppFonts(StageMode.this, preferences, lyrichandler, chordhandler, stickyhandler,
@@ -529,9 +517,11 @@ public class StageMode extends AppCompatActivity implements
 
             // Set up the Nearby connection service
             getBluetoothName();
-            getUserNickname();
-            connectedEndPoints = new ArrayList<>();
-            connectedEndPointsNames = new ArrayList<>();
+            nearbyConnections.getUserNickname();
+
+            //TODO REMOVE
+            /*connectedEndPoints = new ArrayList<>();
+            connectedEndPointsNames = new ArrayList<>();*/
 
             dealWithIntent();
 
@@ -800,7 +790,9 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    String serviceId = "com.garethevans.church.opensongtablet";
+    // The stuff used for Google Nearby for connecting devices
+    // TODO REMOVE
+    /*String serviceId = "com.garethevans.church.opensongtablet";
     private void updateConnectionLog(String newMessage) {
         if (newMessage!=null) {
             StaticVariables.connectionLog += newMessage + "\n";
@@ -811,7 +803,6 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
-
     @Override
     public void startAdvertising() {
         AdvertisingOptions advertisingOptions =
@@ -857,7 +848,6 @@ public class StageMode extends AppCompatActivity implements
     public void stopDiscovery() {
         Nearby.getConnectionsClient(this).stopDiscovery();
     }
-
     private String getDeviceNameFromId(String endpointId) {
         // When requesting connections, the proper device name is stored in an arraylist like endpointId__deviceName
         for (String s:connectedEndPointsNames) {
@@ -871,7 +861,7 @@ public class StageMode extends AppCompatActivity implements
         if (StaticVariables.deviceName==null || StaticVariables.deviceName.isEmpty()) {
             if (FullscreenActivity.mBluetoothName.equals("Unknown")) {
                 FullscreenActivity.mBluetoothName = UUID.randomUUID().toString().substring(0,8);
-                FullscreenActivity.mBluetoothName.toUpperCase(StaticVariables.locale);
+                FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothName.toUpperCase(StaticVariables.locale);
             }
             StaticVariables.deviceName = preferences.getMyPreferenceString(this,"deviceId", FullscreenActivity.mBluetoothName);
             if (StaticVariables.deviceName.equals(StaticVariables.randomId)) {
@@ -881,7 +871,6 @@ public class StageMode extends AppCompatActivity implements
         }
         return StaticVariables.deviceName;
     }
-
     private ConnectionLifecycleCallback connectionLifecycleCallback() {
         return new ConnectionLifecycleCallback() {
             @Override
@@ -949,7 +938,6 @@ public class StageMode extends AppCompatActivity implements
         }
         return false;
     }
-
     private EndpointDiscoveryCallback endpointDiscoveryCallback() {
         return new EndpointDiscoveryCallback() {
             @Override
@@ -976,19 +964,57 @@ public class StageMode extends AppCompatActivity implements
         };
     }
     private void sendSongPayload() {
-        String infoPayload = StaticVariables.whichSongFolder + "_xx____xx_" +
-                StaticVariables.songfilename + "_xx____xx_" +
-                FullscreenActivity.whichDirection + "_xx____xx_" +
-                FullscreenActivity.myXML;
-        Log.d("d","sending: "+StaticVariables.whichSongFolder+"/"+StaticVariables.songfilename);
-        doSendBytesPayload(infoPayload);
-    }
+        String infoPayload;
+        Payload payloadFile = null;
+        String infoFilePayload = StaticVariables.whichSongFolder + "_xx____xx_" + StaticVariables.songfilename +
+                "_xx____xx_" + FullscreenActivity.whichDirection;
+        if (FullscreenActivity.isSong) {
+            // By default, this should be smaller than 32kb, so probably going to send as bytes
+            // We'll measure the actual size later to check though
+            infoPayload = StaticVariables.whichSongFolder + "_xx____xx_" +
+                    StaticVariables.songfilename + "_xx____xx_" +
+                    FullscreenActivity.whichDirection + "_xx____xx_" +
+                    FullscreenActivity.myXML;
+        } else {
+            // We will send as a file instead
+            infoPayload=null;
+        }
 
-    private void doSendBytesPayload(String infoPayload) {
-        byte[] mybytes = infoPayload.getBytes();
-        Payload payload = Payload.fromBytes(mybytes);
+        if (infoPayload!=null) {
+            // Check the size.  If it is bigger than the 32kb (go 30kb to play safe!) allowed for bytes, switch to file
+            byte[] mybytes = infoPayload.getBytes();
+            if (mybytes.length>30000) {
+                infoPayload = null;
+            }
+        }
+
+        if (infoPayload==null) {
+            // We will send as a file
+            try {
+                Uri uri = storageAccess.getUriForItem(this, preferences, "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
+                ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(uri, "r");
+                payloadFile = Payload.fromFile(parcelFileDescriptor);
+                infoFilePayload = "FILE:"+payloadFile.getId()+":"+infoFilePayload;
+            } catch (Exception e) {
+                e.printStackTrace();
+                payloadFile = null;
+            }
+        }
+
         for (String endpointId:connectedEndPoints) {
-            Nearby.getConnectionsClient(this).sendPayload(endpointId,payload);
+            if (payloadFile!=null) {
+                // Send the file descriptor as bytes, then the file
+                Nearby.getConnectionsClient(this).sendPayload(endpointId,Payload.fromBytes(infoFilePayload.getBytes()));
+                Nearby.getConnectionsClient(this).sendPayload(endpointId,payloadFile);
+            } else if (infoPayload!=null){
+                // Just send the bytes
+                Nearby.getConnectionsClient(this).sendPayload(endpointId,Payload.fromBytes(infoPayload.getBytes()));
+            }
+        }
+    }
+    private void doSendPayloadBytes(String infoPayload) {
+        for (String endpointId:connectedEndPoints) {
+            Nearby.getConnectionsClient(this).sendPayload(endpointId,Payload.fromBytes(infoPayload.getBytes()));
         }
     }
     private void payloadAutoscroll(String incoming) {
@@ -1053,20 +1079,79 @@ public class StageMode extends AppCompatActivity implements
             loadSong();
         }
     }
-
+    private void payloadFile(Payload payload, String foldernamepair) {
+        // If songs are too big, then we receive them as a file rather than bytes
+        Log.d("d","foldernamepair="+foldernamepair);
+        String[] bits = foldernamepair.split("_xx____xx_");
+        String folder = bits[0];
+        String filename = bits[1];
+        FullscreenActivity.whichDirection = bits[2];
+        boolean movepage = false;
+        if ((folder.equals(StaticVariables.whichSongFolder)||StaticVariables.whichSongFolder.equals("../Received"))
+                && filename.equals(StaticVariables.songfilename) && filename.toLowerCase(StaticVariables.locale).endsWith(".pdf")) {
+            // We are likely trying to move page to an already received file
+            movepage = true;
+        } else {
+            FullscreenActivity.pdfPageCurrent = 0;
+        }
+        Uri newLocation = null;
+        if (StaticVariables.receiveHostFiles && StaticVariables.keepHostFiles) {
+            newLocation = storageAccess.getUriForItem(this,preferences,"Songs",folder,filename);
+            storageAccess.lollipopCreateFileForOutputStream(this,preferences,newLocation,null,"Songs",folder,filename);
+        } else if (StaticVariables.receiveHostFiles) {
+            folder = "../Received";
+            newLocation = storageAccess.getUriForItem(this, preferences, "Received", "", filename);
+            storageAccess.lollipopCreateFileForOutputStream(this, preferences, newLocation, null, "Received", "", filename);
+        }
+        StaticVariables.whichSongFolder = folder;
+        StaticVariables.songfilename = filename;
+        Log.d("d","newLocation="+newLocation);
+        if (movepage) {
+            if (FullscreenActivity.whichDirection.equals("L2R")) {
+                // Go back
+                goToPreviousItem();
+            } else {
+                // Go forward
+                goToNextItem();
+            }
+        } else if (newLocation!=null) { // i.e. we have received the file by choice
+            InputStream inputStream = new FileInputStream(payload.asFile().asParcelFileDescriptor().getFileDescriptor());
+            Uri originalUri = Uri.parse(payload.asFile().asParcelFileDescriptor().getFileDescriptor().toString());
+            OutputStream outputStream = storageAccess.getOutputStream(this, newLocation);
+            if (storageAccess.copyFile(inputStream, outputStream)) {
+                loadSong();
+            }
+            Log.d("d","originalUri="+originalUri);
+            storageAccess.deleteFile(this, originalUri);
+        } else {
+            loadSong();
+        }
+    }
+    private final SimpleArrayMap<Long, Payload> incomingFilePayloads = new SimpleArrayMap<>();
+    private final SimpleArrayMap<Long, String> fileNewLocation = new SimpleArrayMap<>();
     private PayloadCallback payloadCallback() {
         return new PayloadCallback() {
             @Override
             public void onPayloadReceived(@NonNull String s, @NonNull Payload payload) {
-
                 if (!StaticVariables.isHost) {
                     // We can deal with the incoming payload!
                     if (payload.getType() == Payload.Type.FILE) {
-                        // TODO receive file
-                    } else {
+                        // Make a note of it.  Nothing happens until complete
+                        incomingFilePayloads.put(payload.getId(), payload);
+
+                    } else if (payload.getType() == Payload.Type.BYTES) {
                         // We're dealing with bytes
                         String incoming = new String(payload.asBytes());
-                        if (incoming!=null && incoming.contains("autoscroll_")) {
+                        if (incoming!=null && incoming.startsWith("FILE:")) {
+                            // Add the file location to the arraymap
+                            incoming = incoming.replaceFirst("FILE:","");
+                            String id = incoming.substring(0,incoming.indexOf(":"));
+                            id = id.replace(":","");
+                            String foldernamepair = incoming.substring(incoming.indexOf(":"));
+                            foldernamepair = foldernamepair.replace(":","");
+                            fileNewLocation.put(Long.parseLong(id),foldernamepair);
+
+                        } else if (incoming!=null && incoming.contains("autoscroll_")) {
                             payloadAutoscroll(incoming);
                         } else if (incoming!=null && incoming.contains("___section___")) {
                             payloadSection(incoming);
@@ -1074,12 +1159,29 @@ public class StageMode extends AppCompatActivity implements
                             payloadOpenSong(incoming);
                         }
                     }
+                    // not dealing with files as it is complex with scoped storage access
+                    // also don't want user's download folder getting clogged!
                 }
             }
 
+
             @Override
             public void onPayloadTransferUpdate(@NonNull String s, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
-                // TODO deal with file transfer (non OpenSong only)
+                if (payloadTransferUpdate.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
+                    // For bytes this is sent automatically, but it's the file we are interested in here
+                    Payload payload;
+                    if (incomingFilePayloads.containsKey(payloadTransferUpdate.getPayloadId())) {
+                        payload = incomingFilePayloads.get(payloadTransferUpdate.getPayloadId());
+                        String foldernamepair = fileNewLocation.get(payloadTransferUpdate.getPayloadId());
+                        if (foldernamepair==null) {
+                            foldernamepair = "../Received_xx____xx_ReceivedSong";
+                        }
+                        incomingFilePayloads.remove(payloadTransferUpdate.getPayloadId());
+                        fileNewLocation.remove(payloadTransferUpdate.getPayloadId());
+
+                        payloadFile(payload,foldernamepair);
+                    }
+                }
             }
         };
     }
@@ -1090,7 +1192,7 @@ public class StageMode extends AppCompatActivity implements
         StaticVariables.isConnected = false;
         StaticVariables.usingNearby = false;
     }
-
+*/
 
     // Window decoration
     @Override
@@ -1383,6 +1485,36 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+
+    // Nearby
+    // These are dealt with in NearbyConnections.  Pulled in from interface to listen from optionmenulistener
+    @Override
+    public void startDiscovery() {
+        nearbyConnections.startDiscovery();
+    }
+    @Override
+    public void startAdvertising() {
+        nearbyConnections.startAdvertising();
+    }
+    @Override
+    public void stopDiscovery() {
+        nearbyConnections.stopDiscovery();
+    }
+    @Override
+    public void stopAdvertising() {
+        nearbyConnections.stopAdvertising();
+    }
+    @Override
+    public void turnOffNearby() {
+        nearbyConnections.turnOffNearby();
+    }
+    @Override
+    public void doSendPayloadBytes(String infoPayload) {
+        nearbyConnections.doSendPayloadBytes(infoPayload);
+    }
+
+
+
     @SuppressLint("StaticFieldLeak")
     private class CheckStorage extends AsyncTask<Object, Void, String> {
 
@@ -1562,7 +1694,7 @@ public class StageMode extends AppCompatActivity implements
             // Ooops
             e.printStackTrace();
         }
-        turnOffNearby();
+        nearbyConnections.turnOffNearby();
     }
 
     private void tryCancelAsyncTasks() {
@@ -1638,12 +1770,12 @@ public class StageMode extends AppCompatActivity implements
         } else {
             infoPayload += "stop";
         }
-        doSendBytesPayload(infoPayload);
+        nearbyConnections.doSendPayloadBytes(infoPayload);
     }
 
     private void sendSongSectionToConnected() {
         String infoPayload = "___section___"+StaticVariables.currentSection;
-        doSendBytesPayload(infoPayload);
+        nearbyConnections.doSendPayloadBytes(infoPayload);
     }
 
     @Override
@@ -3756,7 +3888,8 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    private void goToNextItem() {
+    @Override
+    public void goToNextItem() {
         FullscreenActivity.whichDirection = "R2L";
         boolean dealtwithaspdf = false;
         StaticVariables.showstartofpdf = true;
@@ -4267,7 +4400,8 @@ public class StageMode extends AppCompatActivity implements
         songcapo_ab.setText(capotext);
     }
 
-    private void goToPreviousItem() {
+    @Override
+    public void goToPreviousItem() {
         FullscreenActivity.whichDirection = "L2R";
         boolean dealtwithaspdf = false;
         StaticVariables.showstartofpdf = true; // Default value - change later if need be
@@ -4309,7 +4443,7 @@ public class StageMode extends AppCompatActivity implements
             }
 
             try {
-                if (FullscreenActivity.previousSongIndex >= 0
+                if (FullscreenActivity.previousSongIndex >= 0 && filenamesSongsInFolder.size()>FullscreenActivity.previousSongIndex
                         && !StaticVariables.songfilename.equals(filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex))
                         && !isfolder) {
                     FullscreenActivity.tempswipeSet = "disable";
@@ -4377,7 +4511,8 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    private void selectSection(int whichone) {
+    @Override
+    public void selectSection(int whichone) {
         if (whichone < 0) {
             whichone = 0;
         }
@@ -7370,8 +7505,8 @@ public class StageMode extends AppCompatActivity implements
                         sendMidi();
                     }
                     // Send Nearby song intent
-                    if (StaticVariables.isConnected && StaticVariables.isHost) {
-                        sendSongPayload();
+                    if (StaticVariables.isConnected && StaticVariables.isHost && !orientationChanged) {
+                        nearbyConnections.sendSongPayload();
                     }
 
                     // IV - Sticky display moved until after song display so that timings are correct

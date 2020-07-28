@@ -323,48 +323,50 @@ public class LoadXML extends Activity {
     }
 
     private static void updateNonOpenSongDetails(NonOpenSongSQLite nonOpenSongSQLite) {
-        StaticVariables.mAka = nonOpenSongSQLite.getAka();
-        StaticVariables.mAltTheme = nonOpenSongSQLite.getAlttheme();
-        StaticVariables.mAuthor = nonOpenSongSQLite.getAuthor();
-        StaticVariables.mPreDelay = nonOpenSongSQLite.getAutoscrolldelay();
-        StaticVariables.mDuration = nonOpenSongSQLite.getAutoscrollLength();
-        StaticVariables.mCCLI = nonOpenSongSQLite.getCcli();
-        StaticVariables.mCopyright = nonOpenSongSQLite.getCopyright();
-        StaticVariables.mHymnNumber = nonOpenSongSQLite.getHymn_num();
-        StaticVariables.mKey = nonOpenSongSQLite.getKey();
-        StaticVariables.mLyrics = nonOpenSongSQLite.getLyrics();
-        StaticVariables.mTempo = nonOpenSongSQLite.getMetronomebpm();
-        StaticVariables.mTimeSig = nonOpenSongSQLite.getMetronomeSig();
-        StaticVariables.mTheme = nonOpenSongSQLite.getTheme();
-        StaticVariables.mTitle = nonOpenSongSQLite.getTitle();
-        StaticVariables.mUser1 = nonOpenSongSQLite.getUser1();
-        StaticVariables.mUser2 = nonOpenSongSQLite.getUser2();
-        StaticVariables.mUser3 = nonOpenSongSQLite.getUser3();
-        StaticVariables.mPadFile = nonOpenSongSQLite.getPadfile();
-        StaticVariables.mMidi = nonOpenSongSQLite.getMidi();
-        StaticVariables.mMidiIndex = nonOpenSongSQLite.getMidiindex();
-        StaticVariables.mCapo = nonOpenSongSQLite.getCapo();
-        StaticVariables.mNotes = nonOpenSongSQLite.getNotes();
-        StaticVariables.mNotation = nonOpenSongSQLite.getAbc();
-        StaticVariables.mLinkYouTube = nonOpenSongSQLite.getLinkyoutube();
-        StaticVariables.mLinkWeb = nonOpenSongSQLite.getLinkweb();
-        StaticVariables.mLinkAudio = nonOpenSongSQLite.getLinkaudio();
-        StaticVariables.mLinkOther = nonOpenSongSQLite.getLinkother();
-        StaticVariables.mPresentation = nonOpenSongSQLite.getPresentationorder();
+        if (nonOpenSongSQLite!=null) {
+            StaticVariables.mAka = nonOpenSongSQLite.getAka();
+            StaticVariables.mAltTheme = nonOpenSongSQLite.getAlttheme();
+            StaticVariables.mAuthor = nonOpenSongSQLite.getAuthor();
+            StaticVariables.mPreDelay = nonOpenSongSQLite.getAutoscrolldelay();
+            StaticVariables.mDuration = nonOpenSongSQLite.getAutoscrollLength();
+            StaticVariables.mCCLI = nonOpenSongSQLite.getCcli();
+            StaticVariables.mCopyright = nonOpenSongSQLite.getCopyright();
+            StaticVariables.mHymnNumber = nonOpenSongSQLite.getHymn_num();
+            StaticVariables.mKey = nonOpenSongSQLite.getKey();
+            StaticVariables.mLyrics = nonOpenSongSQLite.getLyrics();
+            StaticVariables.mTempo = nonOpenSongSQLite.getMetronomebpm();
+            StaticVariables.mTimeSig = nonOpenSongSQLite.getMetronomeSig();
+            StaticVariables.mTheme = nonOpenSongSQLite.getTheme();
+            StaticVariables.mTitle = nonOpenSongSQLite.getTitle();
+            StaticVariables.mUser1 = nonOpenSongSQLite.getUser1();
+            StaticVariables.mUser2 = nonOpenSongSQLite.getUser2();
+            StaticVariables.mUser3 = nonOpenSongSQLite.getUser3();
+            StaticVariables.mPadFile = nonOpenSongSQLite.getPadfile();
+            StaticVariables.mMidi = nonOpenSongSQLite.getMidi();
+            StaticVariables.mMidiIndex = nonOpenSongSQLite.getMidiindex();
+            StaticVariables.mCapo = nonOpenSongSQLite.getCapo();
+            StaticVariables.mNotes = nonOpenSongSQLite.getNotes();
+            StaticVariables.mNotation = nonOpenSongSQLite.getAbc();
+            StaticVariables.mLinkYouTube = nonOpenSongSQLite.getLinkyoutube();
+            StaticVariables.mLinkWeb = nonOpenSongSQLite.getLinkweb();
+            StaticVariables.mLinkAudio = nonOpenSongSQLite.getLinkaudio();
+            StaticVariables.mLinkOther = nonOpenSongSQLite.getLinkother();
+            StaticVariables.mPresentation = nonOpenSongSQLite.getPresentationorder();
 
-        if (!StaticVariables.mDuration.isEmpty()) {
-            try {
-                StaticVariables.autoScrollDuration = Integer.parseInt(StaticVariables.mDuration.replaceAll("[\\D]",""));
-            } catch (Exception e) {
-                StaticVariables.autoScrollDuration = -1;
+            if (!StaticVariables.mDuration.isEmpty()) {
+                try {
+                    StaticVariables.autoScrollDuration = Integer.parseInt(StaticVariables.mDuration.replaceAll("[\\D]", ""));
+                } catch (Exception e) {
+                    StaticVariables.autoScrollDuration = -1;
+                }
             }
-        }
 
-        if (!StaticVariables.mPreDelay.isEmpty()) {
-            try {
-                StaticVariables.autoScrollDelay = Integer.parseInt(StaticVariables.mPreDelay.replaceAll("[\\D]",""));
-            } catch (Exception e) {
-                StaticVariables.autoScrollDelay = -1;
+            if (!StaticVariables.mPreDelay.isEmpty()) {
+                try {
+                    StaticVariables.autoScrollDelay = Integer.parseInt(StaticVariables.mPreDelay.replaceAll("[\\D]", ""));
+                } catch (Exception e) {
+                    StaticVariables.autoScrollDelay = -1;
+                }
             }
         }
     }
