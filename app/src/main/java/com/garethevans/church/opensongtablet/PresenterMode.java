@@ -368,9 +368,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             initialiseTheViews();
             screenClickListeners();
 
-            // Prepare the drawer closed/open listener
-            setupDrawerClose();
-
             // Make the drawers match half the width of the screen
             resizeDrawers();
 
@@ -1090,43 +1087,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     @Override
     public void hideActionBar() {
         // Do nothing as we don't allow this in Presentation Mode
-    }
-
-    private void setupDrawerClose() {
-        // What happens when the navigation drawers are opened
-        // Called when a drawer has settled in a completely closed state.
-        // Set a runnable to re-enable swipe
-        // enable swipe after short delay
-        // 1800ms delay
-        // Called when a drawer has settled in a completely open state.
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(PresenterMode.this, mDrawerLayout, ab_toolbar, R.string.drawer_open, R.string.drawer_close) {
-            // Called when a drawer has settled in a completely closed state.
-            @Override
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                // Set a runnable to return option menu to MAIN, This ensures 'Activated/Running' in sub menus work properly
-                Handler resetoptionmenu = new Handler();
-                resetoptionmenu.postDelayed(() -> {
-                    StaticVariables.whichOptionMenu = "MAIN";
-                    prepareOptionMenu();
-                }, 300);
-                // Set a runnable to re-enable swipe
-                Handler allowswipe = new Handler();
-                allowswipe.postDelayed(() -> {
-                    FullscreenActivity.tempswipeSet = "enable"; // enable swipe after short delay
-                }, FullscreenActivity.delayswipe_time); // 1800ms delay
-            }
-
-            // Called when a drawer has settled in a completely open state.
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                FullscreenActivity.tempswipeSet = "disable";
-                FullscreenActivity.wasscrolling = false;
-                FullscreenActivity.scrollbutton = false;
-            }
-        };
-        mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
     }
 
     private void checkStorage() {
