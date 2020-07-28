@@ -209,7 +209,6 @@ public class PopUpAutoscrollFragment extends DialogFragment {
                 boolean b = popupautoscroll_startstopbutton.getText() == Objects.requireNonNull(getActivity()).getResources().getString(R.string.start);
                 // Request a start/stop if needed to get to the chosen state
                 if ((!StaticVariables.isautoscrolling && b) || (StaticVariables.isautoscrolling && !b)) {
-                    StaticVariables.doVibrateActive = false;
                     mListener.gesture5();
                 }
                         PopUpAutoscrollFragment.this.dismiss();
