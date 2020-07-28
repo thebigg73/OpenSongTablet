@@ -30,6 +30,8 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
     static TextView connectionLog;
     Context context;
 
+    public OptionMenuListeners() {}
+
     public OptionMenuListeners(Context context) {
         this.context = context;
     }
