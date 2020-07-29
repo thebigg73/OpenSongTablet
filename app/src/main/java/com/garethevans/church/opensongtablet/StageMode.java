@@ -5939,7 +5939,6 @@ public class StageMode extends AppCompatActivity implements
         Handler resetBlockActionOnKeyUp = new Handler();
         resetBlockActionOnKeyUp.postDelayed(() -> {
             StaticVariables.blockActionOnKeyUp = false;
-            prepareOptionMenu();
         }, 300);
 
         // Load the whichSongFolder in case we were browsing elsewhere
