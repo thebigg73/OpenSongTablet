@@ -8,11 +8,11 @@ import java.io.OutputStream;
 class CustomSlide {
 
     void addCustomSlide(Context c, Preferences preferences) {
+        StorageAccess storageAccess = new StorageAccess();
         String templocator,folder;
 
         // Get rid of illegal characters
-        String filetitle = FullscreenActivity.customslide_title.replaceAll("[|?*<\":>+\\[\\]']", " ");
-
+        String filetitle = storageAccess.safeFilename(FullscreenActivity.customslide_title);
         switch (FullscreenActivity.noteorslide) {
             case "note":
                 folder = "Notes";
@@ -60,7 +60,7 @@ class CustomSlide {
         FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&amp;", "&");
         FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&", "&amp;");
 
-        StorageAccess storageAccess = new StorageAccess();
+
         Uri uri = storageAccess.getUriForItem(c, preferences, folder, "_cache", filetitle);
 
         // Check the uri exists for the outputstream to be valid

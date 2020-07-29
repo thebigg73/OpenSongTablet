@@ -1,7 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -50,10 +50,9 @@ public class PopUpImportExternalFile extends DialogFragment {
     private MyInterface mListener;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        mListener = (MyInterface) context;
+        super.onAttach(context);
     }
 
     @Override
@@ -369,6 +368,7 @@ public class PopUpImportExternalFile extends DialogFragment {
     }
 
     private void copyFile(String folder, String subfolder, String filename) {
+        filename = storageAccess.safeFilename(filename);
         Uri newfile = storageAccess.getUriForItem(getActivity(), preferences, folder, subfolder, filename);
         if (!storageAccess.uriExists(getActivity(), newfile) || overwrite) {
 
@@ -574,6 +574,7 @@ public class PopUpImportExternalFile extends DialogFragment {
                     final byte[] buffer = new byte[2048];
                     int count;
                     filename = ze.getName();
+                    filename = storageAccess.safeFilename(filename);
                     if (!filename.startsWith("Media")) {
                         // The Media folder throws errors (it has zero length files sometimes
                         // It also contains stuff that is irrelevant for OpenSongApp importing

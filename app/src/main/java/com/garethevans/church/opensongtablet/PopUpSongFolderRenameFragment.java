@@ -1,14 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +17,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -65,22 +67,15 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         title = V.findViewById(R.id.dialogtitle);
         doSetTitle();
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
-                //saveMe.setEnabled(false);
-                createOrRename();
-            }
+        saveMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(saveMe,getActivity());
+            createOrRename();
         });
 
         storageAccess = new StorageAccess();
@@ -146,10 +141,9 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
     private MyInterface mListener;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        mListener = (MyInterface) context;
+        super.onAttach(context);
     }
 
     @Override
@@ -262,23 +256,6 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                /*//ShowToast.showToast(getActivity());
-                if (s.equals("success")) {
-                    // Let the app know we need to rebuild the database
-                    FullscreenActivity.needtorefreshsongmenu = true;
-
-                    if (mListener != null) {
-                        mListener.loadSong();
-                        mListener.rebuildSearchIndex();
-                    }
-                    try {
-                        dismiss();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    progressBar.setVisibility(View.GONE);
-                }*/
             }
         };
         renamefolders.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -287,6 +264,8 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
     private void getVariables() {
         // Get the variables
         tempNewFolder = newFolderNameEditText.getText().toString().trim();
+        tempNewFolder = storageAccess.safeFilename(tempNewFolder);
+        newFolderNameEditText.setText(tempNewFolder);
         Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", tempNewFolder, "");
 
         if (!tempNewFolder.equals("") && !tempNewFolder.isEmpty() && !tempNewFolder.contains("/") &&
@@ -336,7 +315,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         if (getFolders_async!=null) {
             getFolders_async.cancel(true);
         }

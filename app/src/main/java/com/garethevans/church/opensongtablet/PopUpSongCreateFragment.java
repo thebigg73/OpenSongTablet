@@ -1,14 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +17,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -53,10 +55,9 @@ public class PopUpSongCreateFragment extends DialogFragment {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        mListener = (MyInterface) context;
+        super.onAttach(context);
     }
 
     @Override
@@ -85,22 +86,16 @@ public class PopUpSongCreateFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getResources().getString(R.string.createanewsong));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
-                //saveMe.setEnabled(false);
-                doSave();
-            }
+        saveMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(saveMe,getActivity());
+            //saveMe.setEnabled(false);
+            doSave();
         });
 
         storageAccess = new StorageAccess();
@@ -178,6 +173,8 @@ public class PopUpSongCreateFragment extends DialogFragment {
             // Prepare the app to rebuild the search index after loading the song
             FullscreenActivity.needtorefreshsongmenu = true;
             tempNewSong = newSongNameEditText.getText().toString().trim();
+            tempNewSong = storageAccess.safeFilename(tempNewSong);
+            newSongNameEditText.setText(tempNewSong);
             StaticVariables.myToastMessage = "";
         }
 
@@ -201,7 +198,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
                     // If no name is specified, use the original ugly one
                     if (tempNewSong == null || tempNewSong.isEmpty()) {
-                        tempNewSong = currimagename;
+                        tempNewSong = storageAccess.safeFilename(currimagename);
                     }
 
                     // Check the camera image ends with .jpg.  If not, add it!
@@ -216,6 +213,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
                     Log.d("PopUpCreate", "inputStream=" + inputStream);
 
                     // Check the uri exists for the outputstream to be valid
+                    to = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.newFolder, tempNewSong);
                     storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, to, null,
                             "Songs", FullscreenActivity.newFolder, tempNewSong);
 
@@ -261,6 +259,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
                             tempNewSong = tempNewSong.replace(".pdf", "");
                             tempNewSong = tempNewSong.replace(".PDF", "");
                         }
+                        tempNewSong = storageAccess.safeFilename(tempNewSong);
 
                         songXML.initialiseSongTags();
 
@@ -318,14 +317,12 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
                     if (mListener != null) {
                         mListener.prepareSongMenu();
-                        if (FullscreenActivity.whattodo.equals("savecameraimage")) {
-                            mListener.loadSong();
-                        } else {
+                        if (!FullscreenActivity.whattodo.equals("savecameraimage")) {
                             // Prepare the app to open the edit page after loading
                             FullscreenActivity.needtorefreshsongmenu = false;  // This will happen after editing
                             FullscreenActivity.needtoeditsong = true;
-                            mListener.loadSong();
                         }
+                        mListener.loadSong();
                     }
                 }
 
@@ -369,7 +366,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         if (getfolders!=null) {
             getfolders.cancel(true);
         }

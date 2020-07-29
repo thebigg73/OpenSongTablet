@@ -462,7 +462,7 @@ class SetActions {
 
     private void writeTempSlide(String where, String what, Context c, Preferences preferences, StorageAccess storageAccess) {
         // Fix the custom name so there are no illegal characters
-        what = what.replaceAll("[|?*<\":>+\\[\\]']", " ");
+        what = storageAccess.safeFilename(what);
         String set_item;
         String foldername;
         String subfoldername;
@@ -851,11 +851,11 @@ class SetActions {
                                 }
 
                                 Uri uri = storageAccess.getUriForItem(c, preferences, "Images", "_cache",
-                                        image_title.toString() + imagenums + image_type);
+                                        storageAccess.safeFilename(image_title.toString()) + imagenums + image_type);
 
                                 // Check the uri exists for the outputstream to be valid
                                 storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null,
-                                        "Images", "_cache", image_title.toString() + imagenums + image_type);
+                                        "Images", "_cache", storageAccess.safeFilename(image_title.toString()) + imagenums + image_type);
 
                                 OutputStream outputStream = storageAccess.getOutputStream(c, uri);
                                 byte[] decodedString = Base64.decode(image_content, Base64.DEFAULT);
