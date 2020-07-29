@@ -308,9 +308,10 @@ class ChordProConvert {
     String extractChordLines(String s) {
         StringBuilder tempchordline = new StringBuilder();
         if (!s.startsWith("#") && !s.startsWith(";")) {
+            // IV - Add a leading space - the effect is to fix a chord mis-alignment
+            s = " " + s;
             // Look for [ and ] signifying a chord
             while (s.contains("[") && s.contains("]")) {
-
                 // Find chord start and end pos
                 int chordstart = s.indexOf("[");
                 int chordend = s.indexOf("]");
@@ -344,12 +345,7 @@ class ChordProConvert {
             // All chords should be gone now, so remove any remaining [ and ]
             s = s.replace("[", "");
             s = s.replace("]", "");
-            if (!s.startsWith(" ")) {
-                s = " " + s;
-                if (tempchordline.length() > 0) {
-                    tempchordline.insert(0, " ");
-                }
-            }
+            // IV - fix for missing space removed as now handled before loop
             if (tempchordline.length() > 0) {
                 s = "." + tempchordline + "\n" + s;
             }
@@ -906,10 +902,19 @@ class ChordProConvert {
             line[x] = guessTags(line[x]);
             line[x] = extractCommentLines(line[x]);
 
+            // IV - Treat start of chorus as a comment - allows song autofix to fix when it fixes comments
+            line[x] = line[x].replace("{start_of_chorus}",";Chorus");
 
-            // Join the individual lines back up (unless they are start/end of chorus)
-            if (!line[x].contains("{start_of_chorus}") && !line[x].contains("{soc}") &&
-                    !line[x].contains("{end_of_chorus}") && !line[x].contains("{eoc}")) {
+            // IV - For unprocessed lines add a leading space - a fix for mis-aligned lyric only lines
+            if (line[x].length() > 0) {
+                String test = ";. {";
+                if (!test.contains(line[x].substring(0,1))) {
+                    line[x] = " " + line[x];
+                }
+            }
+
+            // Join the individual lines back up (unless they are end of chorus)
+            if (!line[x].contains("{end_of_chorus}") && !line[x].contains("{eoc}")) {
                 newlyrics.append(line[x]).append("\n");
             }
         }
