@@ -8211,7 +8211,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    // Start or stop the metronoma
+    // Start or stop the metronome
     @Override
     public void gesture7() {
         DoVibrate.vibrate(StageMode.this, 50);
