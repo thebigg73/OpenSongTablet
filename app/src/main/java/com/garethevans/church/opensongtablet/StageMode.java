@@ -4714,6 +4714,33 @@ public class StageMode extends AppCompatActivity implements
                     StaticVariables.myToastMessage = getString(R.string.pedal) + " - " + getString(R.string.notset);
                     ShowToast.showToast(StageMode.this);
                     break;
+        drawerOrFragmentActive = mDrawerLayout.isDrawerOpen(songmenu) || mDrawerLayout.isDrawerOpen(optionmenu) || getSupportFragmentManager().getFragments().size() != 0;
+        // IV - If in a drawer or fragment restrict to move actions only
+        if (drawerOrFragmentActive) {
+            switch (action) {
+                case "prev":
+                    pedalPrevious();
+                    break;
+
+                case "next":
+                    pedalNext();
+                    break;
+
+                case "up":
+                    pedalUp();
+                    break;
+
+                case "down":
+                    pedalDown();
+                    break;
+            }
+        } else {
+            boolean val;
+            switch (action) {
+                default:
+                    StaticVariables.myToastMessage = getString(R.string.pedal) + " - " + getString(R.string.notset);
+                    ShowToast.showToast(StageMode.this);
+                    break;
 
                 case "prev":
                     pedalPrevious();
