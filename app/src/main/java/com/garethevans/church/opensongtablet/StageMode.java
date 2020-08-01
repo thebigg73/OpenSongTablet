@@ -3344,13 +3344,16 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void goToNextItem() {
-        FullscreenActivity.whichDirection = "R2L";
         dealtwithaspdf = false;
-        StaticVariables.showstartofpdf = true;
 
-        // If this is a PDF, check we can't move pages
-        if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1)) {
-            FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent + 1;
+        // IV - Stops errors on rapid song changes
+        if (!FullscreenActivity.alreadyloading) {
+            FullscreenActivity.whichDirection = "R2L";
+            StaticVariables.showstartofpdf = true;
+
+            // If this is a PDF, check we can't move pages
+            if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1)) {
+                FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent + 1;
 
             // GE Added this to stop the pad reloading between PDF pages
             StaticVariables.reloadOfSong = false;
@@ -3359,56 +3362,57 @@ public class StageMode extends AppCompatActivity implements
             dealtwithaspdf = true;
             loadSong();
 
-        } else {
-            FullscreenActivity.pdfPageCurrent = 0;
-        }
-
-        // If this hasn't been dealt with
-        if (!dealtwithaspdf && StaticVariables.setView) {
-            // Is there another song in the set?  If so move, if not, do nothing
-            // IV - Now made song section aware for Stage mode
-            if ((StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) ||
-                    (StaticVariables.whichMode.equals("Stage") && StaticVariables.songSections != null && StaticVariables.currentSection < StaticVariables.songSections.length - 1)) {
-                //FullscreenActivity.indexSongInSet += 1;
-                StaticVariables.setMoveDirection = "forward";
-                doMoveInSet();
             } else {
-                showToastMessage(getResources().getString(R.string.lastsong));
-            }
-        } else if (!dealtwithaspdf) {
-            // Try to move to the next song alphabetically
-            // However, only do this if the previous item isn't a subfolder!
-            boolean isfolder = false;
-            try {
-                if (FullscreenActivity.nextSongIndex < filenamesSongsInFolder.size() && FullscreenActivity.nextSongIndex>-1) {
-
-                    Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", "",
-                            filenamesSongsInFolder.get(FullscreenActivity.nextSongIndex));
-                    if (storageAccess.uriExists(StageMode.this, uri) && !storageAccess.uriIsFile(StageMode.this, uri)) {
-                        isfolder = true;
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                FullscreenActivity.pdfPageCurrent = 0;
             }
 
-            try {
-                if (FullscreenActivity.nextSongIndex < filenamesSongsInFolder.size()
-                        && FullscreenActivity.nextSongIndex != -1
-                        && !StaticVariables.songfilename.equals(filenamesSongsInFolder.get(FullscreenActivity.nextSongIndex)) &&
-                        !isfolder) {
-                    FullscreenActivity.tempswipeSet = "disable";
-                    StaticVariables.songfilename = filenamesSongsInFolder.get(FullscreenActivity.nextSongIndex);
-                    loadSong();
-
-                    // Set a runnable to reset swipe back to original value after 1 second
-                    Handler delayfadeinredraw = new Handler();
-                    delayfadeinredraw.postDelayed(() -> FullscreenActivity.tempswipeSet = "enable", FullscreenActivity.delayswipe_time);
+            // If this hasn't been dealt with
+            if (!dealtwithaspdf && StaticVariables.setView) {
+                // Is there another song in the set?  If so move, if not, do nothing
+                // IV - Now made song section aware for Stage mode
+                if ((StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) ||
+                        (StaticVariables.whichMode.equals("Stage") && StaticVariables.songSections != null && StaticVariables.currentSection < StaticVariables.songSections.length - 1)) {
+                    //FullscreenActivity.indexSongInSet += 1;
+                    StaticVariables.setMoveDirection = "forward";
+                    doMoveInSet();
                 } else {
                     showToastMessage(getResources().getString(R.string.lastsong));
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } else if (!dealtwithaspdf) {
+                // Try to move to the next song alphabetically
+                // However, only do this if the previous item isn't a subfolder!
+                boolean isfolder = false;
+                try {
+                    if (FullscreenActivity.nextSongIndex < filenamesSongsInFolder.size() && FullscreenActivity.nextSongIndex > -1) {
+
+                        Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", "",
+                                filenamesSongsInFolder.get(FullscreenActivity.nextSongIndex));
+                        if (storageAccess.uriExists(StageMode.this, uri) && !storageAccess.uriIsFile(StageMode.this, uri)) {
+                            isfolder = true;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    if (FullscreenActivity.nextSongIndex < filenamesSongsInFolder.size()
+                            && FullscreenActivity.nextSongIndex != -1
+                            && !StaticVariables.songfilename.equals(filenamesSongsInFolder.get(FullscreenActivity.nextSongIndex)) &&
+                            !isfolder) {
+                        FullscreenActivity.tempswipeSet = "disable";
+                        StaticVariables.songfilename = filenamesSongsInFolder.get(FullscreenActivity.nextSongIndex);
+                        loadSong();
+
+                        // Set a runnable to reset swipe back to original value after 1 second
+                        Handler delayfadeinredraw = new Handler();
+                        delayfadeinredraw.postDelayed(() -> FullscreenActivity.tempswipeSet = "enable", FullscreenActivity.delayswipe_time);
+                    } else {
+                        showToastMessage(getResources().getString(R.string.lastsong));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -3861,9 +3865,12 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void goToPreviousItem() {
-        FullscreenActivity.whichDirection = "L2R";
-        dealtwithaspdf = false;
         StaticVariables.showstartofpdf = true; // Default value - change later if need be
+        // IV - Stops errors on rapid song changes
+        if (!FullscreenActivity.alreadyloading) {
+            FullscreenActivity.whichDirection = "L2R";
+            dealtwithaspdf = false;
+            StaticVariables.showstartofpdf = true; // Default value - change later if need be
 
         // If this is a PDF, check we can't move pages
         if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0) {
@@ -3879,52 +3886,53 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.pdfPageCurrent = 0;
         }
 
-        // If this hasn't been dealt with
-        if (!dealtwithaspdf && StaticVariables.setView) {
-            StaticVariables.showstartofpdf = false; // Moving backwards, so start at end of pdf
-            // IV - Now made song section aware for Stage mode
-            // Is there another song in the set?  If so move, if not, do nothing
-            if ((StaticVariables.indexSongInSet > 0 && StaticVariables.mSetList.length > 0) ||
-                    (StaticVariables.whichMode.equals("Stage") && StaticVariables.songSections != null && StaticVariables.currentSection > 0)) {
-                //FullscreenActivity.indexSongInSet -= 1;
-                StaticVariables.setMoveDirection = "back";
-                doMoveInSet();
-            } else {
-                showToastMessage(getResources().getString(R.string.firstsong));
-            }
-        } else if (!dealtwithaspdf) {
-            // Try to move to the previous song alphabetically
-            // However, only do this if the previous item isn't a subfolder!
-            boolean isfolder = false;
-            if (FullscreenActivity.previousSongIndex >= 0) {
+            // If this hasn't been dealt with
+            if (!dealtwithaspdf && StaticVariables.setView) {
+                StaticVariables.showstartofpdf = false; // Moving backwards, so start at end of pdf
+                // IV - Now made song section aware for Stage mode
+                // Is there another song in the set?  If so move, if not, do nothing
+                if ((StaticVariables.indexSongInSet > 0 && StaticVariables.mSetList.length > 0) ||
+                        (StaticVariables.whichMode.equals("Stage") && StaticVariables.songSections != null && StaticVariables.currentSection > 0)) {
+                    //FullscreenActivity.indexSongInSet -= 1;
+                    StaticVariables.setMoveDirection = "back";
+                    doMoveInSet();
+                } else {
+                    showToastMessage(getResources().getString(R.string.firstsong));
+                }
+            } else if (!dealtwithaspdf) {
+                // Try to move to the previous song alphabetically
+                // However, only do this if the previous item isn't a subfolder!
+                boolean isfolder = false;
+                if (FullscreenActivity.previousSongIndex >= 0) {
+                    try {
+                        Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", "",
+                                filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex));
+                        if (storageAccess.uriExists(StageMode.this, uri) && !storageAccess.uriIsFile(StageMode.this, uri)) {
+                            isfolder = true;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 try {
-                    Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", "",
-                            filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex));
-                    if (storageAccess.uriExists(StageMode.this, uri) && !storageAccess.uriIsFile(StageMode.this, uri)) {
-                        isfolder = true;
+                    if (FullscreenActivity.previousSongIndex >= 0 && filenamesSongsInFolder.size()>FullscreenActivity.previousSongIndex
+                            && !StaticVariables.songfilename.equals(filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex))
+                            && !isfolder) {
+                        FullscreenActivity.tempswipeSet = "disable";
+
+                        StaticVariables.songfilename = filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex);
+                        loadSong();
+
+                        // Set a runnable to reset swipe back to original value after 1 second
+                        Handler delayfadeinredraw = new Handler();
+                        delayfadeinredraw.postDelayed(() -> FullscreenActivity.tempswipeSet = "enable", FullscreenActivity.delayswipe_time);
+                    } else {
+                        showToastMessage(getResources().getString(R.string.firstsong));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-
-            try {
-                if (FullscreenActivity.previousSongIndex >= 0 && filenamesSongsInFolder.size()>FullscreenActivity.previousSongIndex
-                        && !StaticVariables.songfilename.equals(filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex))
-                        && !isfolder) {
-                    FullscreenActivity.tempswipeSet = "disable";
-
-                    StaticVariables.songfilename = filenamesSongsInFolder.get(FullscreenActivity.previousSongIndex);
-                    loadSong();
-
-                    // Set a runnable to reset swipe back to original value after 1 second
-                    Handler delayfadeinredraw = new Handler();
-                    delayfadeinredraw.postDelayed(() -> FullscreenActivity.tempswipeSet = "enable", FullscreenActivity.delayswipe_time);
-                } else {
-                    showToastMessage(getResources().getString(R.string.firstsong));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
     }
@@ -5392,6 +5400,13 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void openFragment() {
+        // IV - Block false short key press if fragment used during long press
+        StaticVariables.blockActionOnKeyUp = true;
+        Handler resetBlockActionOnKeyUp = new Handler();
+        resetBlockActionOnKeyUp.postDelayed(() -> {
+            StaticVariables.blockActionOnKeyUp = false;
+        }, 300);
+
         // Load the whichSongFolder in case we were browsing elsewhere
         StaticVariables.whichSongFolder = preferences.getMyPreferenceString(StageMode.this,"whichSongFolder",getString(R.string.mainfoldername));
 
@@ -7183,8 +7198,14 @@ public class StageMode extends AppCompatActivity implements
             doAirTurnShortOrLongPressListen(keyCode, event);
             return false;
         } else {
-            doShortPressAction(keyCode, event);
-            return true;
+            // IV - Block false short key press if fragment used during long press
+            if (StaticVariables.blockActionOnKeyUp) {
+                StaticVariables.blockActionOnKeyUp = false;
+                return false;
+            } else {
+                doShortPressAction(keyCode, event);
+                return true;
+            }
         }
     }
 
