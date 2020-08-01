@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -74,10 +73,9 @@ public class PopUpThemeChooserFragment extends DialogFragment {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        mListener = (MyInterface) context;
+        super.onAttach(context);
     }
 
     @Override
@@ -105,13 +103,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getResources().getString(R.string.choose_theme));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
-                closeMe.setEnabled(false);
-                doClose();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe, getActivity());
+            closeMe.setEnabled(false);
+            doClose();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
@@ -246,45 +241,30 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         custom2_theme_heading = V.findViewById(R.id.custom2_theme_heading);
 
         Button resetcolours = V.findViewById(R.id.resetcolours);
-        resetcolours.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "resetcolours";
-                resetColours();
-                saveAllColors();
-                mListener.refreshAll();
-                setButtonColors();
-            }
+        resetcolours.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "resetcolours";
+            resetColours();
+            saveAllColors();
+            mListener.refreshAll();
+            setButtonColors();
         });
 
         // Listen for the theme changing
-        dark_theme_heading.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StaticVariables.mDisplayTheme = "dark";
-                doThemeSwitch("dark");
-            }
+        dark_theme_heading.setOnClickListener(v -> {
+            StaticVariables.mDisplayTheme = "dark";
+            doThemeSwitch("dark");
         });
-        light_theme_heading.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StaticVariables.mDisplayTheme = "light";
-                doThemeSwitch("light");
-            }
+        light_theme_heading.setOnClickListener(v -> {
+            StaticVariables.mDisplayTheme = "light";
+            doThemeSwitch("light");
         });
-        custom1_theme_heading.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StaticVariables.mDisplayTheme = "custom1";
-                doThemeSwitch("custom1");
-            }
+        custom1_theme_heading.setOnClickListener(v -> {
+            StaticVariables.mDisplayTheme = "custom1";
+            doThemeSwitch("custom1");
         });
-        custom2_theme_heading.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StaticVariables.mDisplayTheme = "custom2";
-                doThemeSwitch("custom2");
-            }
+        custom2_theme_heading.setOnClickListener(v -> {
+            StaticVariables.mDisplayTheme = "custom2";
+            doThemeSwitch("custom2");
         });
     }
 
@@ -322,9 +302,9 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         light_lyricsChordsColor = preferences.getMyPreferenceInt(getActivity(), "light_lyricsChordsColor", StaticVariables.darkblue);
         light_lyricsCustomColor = preferences.getMyPreferenceInt(getActivity(), "light_lyricsCustomColor", StaticVariables.lightishcyan);
         light_lyricsCapoColor = preferences.getMyPreferenceInt(getActivity(), "light_lyricsCapoColor", StaticVariables.red);
-        light_presoFontColor = preferences.getMyPreferenceInt(getActivity(), "light_presoFontColor", StaticVariables.black);
+        light_presoFontColor = preferences.getMyPreferenceInt(getActivity(), "light_presoFontColor", StaticVariables.white);
         light_presoShadowColor = preferences.getMyPreferenceInt(getActivity(), "light_presoShadowColor", StaticVariables.white);
-        light_presoInfoColor = preferences.getMyPreferenceInt(getActivity(), "light_presoInfoColor", StaticVariables.black);
+        light_presoInfoColor = preferences.getMyPreferenceInt(getActivity(), "light_presoInfoColor", StaticVariables.white);
         light_presoAlertColor = preferences.getMyPreferenceInt(getActivity(), "light_presoAlertColor", StaticVariables.red);
         light_metronomeColor = preferences.getMyPreferenceInt(getActivity(), "light_metronomeColor", StaticVariables.darkishred);
         light_pageButtonsColor = preferences.getMyPreferenceInt(getActivity(), "light_pageButtonsColor", StaticVariables.purplyblue);
@@ -826,7 +806,7 @@ public class PopUpThemeChooserFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 

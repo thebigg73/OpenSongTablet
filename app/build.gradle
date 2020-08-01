@@ -60,8 +60,8 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-cast:18.1.0'
-    implementation 'com.google.android.gms:play-services-cast-framework:18.1.0'
+    implementation 'com.google.android.gms:play-services-cast:19.0.0'
+    implementation 'com.google.android.gms:play-services-cast-framework:19.0.0'
     implementation 'com.google.android.gms:play-services-nearby:17.0.0'
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -74,7 +74,6 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'org.apache.commons:commons-compress:1.12'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
-    testImplementation 'junit:junit:4.13'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     implementation 'androidx.annotation:annotation:1.1.0'
     annotationProcessor 'androidx.annotation:annotation:1.1.0'
@@ -84,5 +83,7 @@ dependencies {
     implementation 'com.annimon:stream:1.2.1'
     implementation 'lib.kashif:folderpicker:2.4'
     implementation 'com.github.mmin18:realtimeblurview:1.2.1'
+
+    testImplementation 'junit:junit:4.13'
 
 }

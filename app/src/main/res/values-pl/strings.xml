@@ -510,4 +510,5 @@
     <string name="connections_actashost">Działaj jako gospodarz</string>
     <string name="connections_keephostsongs">Zachowaj piosenki gospodarza</string>
     <string name="location_rationale">Ta funkcja jest wymagana do lokalizowania innych urządzeń sieciowych</string>
+    <string name="bold_text">Wyświetlaj teksty pogrubioną czcionką</string>
 </resources>

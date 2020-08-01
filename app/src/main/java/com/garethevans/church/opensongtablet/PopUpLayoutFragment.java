@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,11 +7,6 @@ import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.widget.SwitchCompat;
-
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,13 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.DialogFragment;
+
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
@@ -46,10 +44,9 @@ public class PopUpLayoutFragment extends DialogFragment {
     private static MyInterface mListener;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        mListener = (MyInterface) context;
+        super.onAttach(context);
     }
 
     @Override
@@ -60,7 +57,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     private boolean firsttime = true;
 
-    private SwitchCompat toggleChordsButton, toggleAutoScaleButton, blockShadow;
+    private SwitchCompat toggleChordsButton, toggleAutoScaleButton, blockShadow, boldTextButton;
     private LinearLayout group_maxfontsize;
     private LinearLayout group_manualfontsize;
     private LinearLayout blockShadowAlphaLayout;
@@ -102,13 +99,10 @@ public class PopUpLayoutFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.connected_display));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
@@ -148,6 +142,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         blockShadowAlphaLayout = V.findViewById(R.id.blockShadowAlphaLayout);
         blockShadowAlpha = V.findViewById(R.id.blockShadowAlpha);
         toggleChordsButton = V.findViewById(R.id.toggleChordsButton);
+        boldTextButton = V.findViewById(R.id.boldTextButton);
         toggleAutoScaleButton = V.findViewById(R.id.toggleAutoScaleButton);
         group_maxfontsize = V.findViewById(R.id.group_maxfontsize);
         setMaxFontSizeProgressBar = V.findViewById(R.id.setMaxFontSizeProgressBar);
@@ -201,6 +196,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         blockShadowAlpha.setProgress((int)(preferences.getMyPreferenceFloat(getActivity(),"blockShadowAlpha",0.7f)*100));
         toggleChordsButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"presoShowChords",false));
         toggleAutoScaleButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"presoAutoscale",true));
+        boldTextButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"presoLyricsBold",false));
         setMaxFontSizeProgressBar.setMax(70);
         setMaxFontSizeProgressBar.setProgress((int)preferences.getMyPreferenceFloat(getActivity(),"fontSizePresoMax",40.0f) - 4);
         maxfontSizePreview.setTypeface(StaticVariables.typefacePreso);
@@ -225,8 +221,8 @@ public class PopUpLayoutFragment extends DialogFragment {
         presoTransitionTimeTextView.setText(SeekBarProgressToText());
         setupPreviews();
         setCheckBoxes();
-        setXMarginProgressBar.setMax(50);
-        setYMarginProgressBar.setMax(50);
+        setXMarginProgressBar.setMax(150);
+        setYMarginProgressBar.setMax(150);
         setXMarginProgressBar.setProgress(preferences.getMyPreferenceInt(getActivity(),"presoXMargin",20));
         setYMarginProgressBar.setProgress(preferences.getMyPreferenceInt(getActivity(),"presoYMargin",10));
         setRotationProgressBar.setMax(3);
@@ -287,13 +283,10 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     private void setupListeners() {
         // Set listeners
-        blockShadow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(getActivity(),"blockShadow",b);
-                setBlockAlphaVisibility();
-                sendUpdateToScreen("all");
-            }
+        blockShadow.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(getActivity(),"blockShadow",b);
+            setBlockAlphaVisibility();
+            sendUpdateToScreen("all");
         });
         blockShadowAlpha.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -308,113 +301,83 @@ public class PopUpLayoutFragment extends DialogFragment {
                 sendUpdateToScreen("all");
             }
         });
-
-        toggleChordsButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(getActivity(),"presoShowChords",b);
-                if (mListener!=null) {
-                    try {
-                        mListener.loadSong();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+        toggleChordsButton.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(getActivity(),"presoShowChords",b);
+            if (mListener!=null) {
+                try {
+                    mListener.loadSong();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                sendUpdateToScreen("chords");
-                setUpAlignmentButtons();
             }
+            sendUpdateToScreen("chords");
+            setUpAlignmentButtons();
         });
-        toggleAutoScaleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(getActivity(),"presoAutoScale",b);
-                showorhideView(group_maxfontsize,b);
-                showorhideView(group_manualfontsize,!b);
-                sendUpdateToScreen("autoscale");
-            }
+        boldTextButton.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(getActivity(),"presoLyricsBold",b);
+            sendUpdateToScreen("all");
+        });
+        toggleAutoScaleButton.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(getActivity(),"presoAutoScale",b);
+            showorhideView(group_maxfontsize,b);
+            showorhideView(group_manualfontsize,!b);
+            sendUpdateToScreen("autoscale");
         });
         setMaxFontSizeProgressBar.setOnSeekBarChangeListener(new setMaxFontSizeListener());
         setFontSizeProgressBar.setOnSeekBarChangeListener(new setFontSizeListener());
-        lyrics_left_align.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(lyrics_left_align, getActivity());
-                preferences.setMyPreferenceInt(getActivity(),"presoLyricsAlign",Gravity.START);
-                setUpAlignmentButtons();
-                sendUpdateToScreen("all");
-            }
+        lyrics_left_align.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(lyrics_left_align, getActivity());
+            preferences.setMyPreferenceInt(getActivity(),"presoLyricsAlign",Gravity.START);
+            setUpAlignmentButtons();
+            sendUpdateToScreen("all");
         });
-        lyrics_center_align.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(lyrics_center_align, getActivity());
-                preferences.setMyPreferenceInt(getActivity(),"presoLyricsAlign",Gravity.CENTER);
-                setUpAlignmentButtons();
-                sendUpdateToScreen("all");
-            }
+        lyrics_center_align.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(lyrics_center_align, getActivity());
+            preferences.setMyPreferenceInt(getActivity(),"presoLyricsAlign",Gravity.CENTER);
+            setUpAlignmentButtons();
+            sendUpdateToScreen("all");
         });
-        lyrics_right_align.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(lyrics_right_align, getActivity());
-                preferences.setMyPreferenceInt(getActivity(),"presoLyricsAlign",Gravity.END);
-                setUpAlignmentButtons();
-                sendUpdateToScreen("all");
-            }
+        lyrics_right_align.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(lyrics_right_align, getActivity());
+            preferences.setMyPreferenceInt(getActivity(),"presoLyricsAlign",Gravity.END);
+            setUpAlignmentButtons();
+            sendUpdateToScreen("all");
         });
-        lyrics_top_valign.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(lyrics_top_valign, getActivity());
-                preferences.setMyPreferenceInt(getActivity(),"presoLyricsVAlign",Gravity.TOP);
-                setUpAlignmentButtons();
-                sendUpdateToScreen("all");
-            }
+        lyrics_top_valign.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(lyrics_top_valign, getActivity());
+            preferences.setMyPreferenceInt(getActivity(),"presoLyricsVAlign",Gravity.TOP);
+            setUpAlignmentButtons();
+            sendUpdateToScreen("all");
         });
-        lyrics_center_valign.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(lyrics_center_valign, getActivity());
-                preferences.setMyPreferenceInt(getActivity(),"presoLyricsVAlign",Gravity.CENTER_VERTICAL);
-                setUpAlignmentButtons();
-                sendUpdateToScreen("all");
-            }
+        lyrics_center_valign.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(lyrics_center_valign, getActivity());
+            preferences.setMyPreferenceInt(getActivity(),"presoLyricsVAlign",Gravity.CENTER_VERTICAL);
+            setUpAlignmentButtons();
+            sendUpdateToScreen("all");
         });
-        lyrics_bottom_valign.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(lyrics_bottom_valign, getActivity());
-                preferences.setMyPreferenceInt(getActivity(),"presoLyricsVAlign",Gravity.BOTTOM);
-                setUpAlignmentButtons();
-                sendUpdateToScreen("all");
-            }
+        lyrics_bottom_valign.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(lyrics_bottom_valign, getActivity());
+            preferences.setMyPreferenceInt(getActivity(),"presoLyricsVAlign",Gravity.BOTTOM);
+            setUpAlignmentButtons();
+            sendUpdateToScreen("all");
         });
-        info_left_align.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(info_left_align, getActivity());
-                preferences.setMyPreferenceInt(getActivity(),"presoInfoAlign",Gravity.START);
-                setUpAlignmentButtons();
-                sendUpdateToScreen("info");
-            }
+        info_left_align.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(info_left_align, getActivity());
+            preferences.setMyPreferenceInt(getActivity(),"presoInfoAlign",Gravity.START);
+            setUpAlignmentButtons();
+            sendUpdateToScreen("info");
         });
-        info_center_align.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(info_center_align, getActivity());
-                preferences.setMyPreferenceInt(getActivity(),"presoInfoAlign",Gravity.CENTER);
-                setUpAlignmentButtons();
-                sendUpdateToScreen("info");
-            }
+        info_center_align.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(info_center_align, getActivity());
+            preferences.setMyPreferenceInt(getActivity(),"presoInfoAlign",Gravity.CENTER);
+            setUpAlignmentButtons();
+            sendUpdateToScreen("info");
         });
-        info_right_align.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(info_right_align, getActivity());
-                preferences.setMyPreferenceInt(getActivity(),"presoInfoAlign",Gravity.END);
-                setUpAlignmentButtons();
-                sendUpdateToScreen("info");
-            }
+        info_right_align.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(info_right_align, getActivity());
+            preferences.setMyPreferenceInt(getActivity(),"presoInfoAlign",Gravity.END);
+            setUpAlignmentButtons();
+            sendUpdateToScreen("info");
         });
         presoTransitionTimeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -439,100 +402,73 @@ public class PopUpLayoutFragment extends DialogFragment {
         presoAlphaProgressBar.setOnSeekBarChangeListener(new presoAlphaListener());
         setXMarginProgressBar.setOnSeekBarChangeListener(new setMargin_Listener());
         setYMarginProgressBar.setOnSeekBarChangeListener(new setMargin_Listener());
-        chooseLogoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Open another popup listing the files to choose from
-                PresenterMode.whatBackgroundLoaded = "logo";
-                chooseFile("image/*",StaticVariables.REQUEST_CUSTOM_LOGO);
-            }
+        chooseLogoButton.setOnClickListener(v -> {
+            // Open another popup listing the files to choose from
+            PresenterMode.whatBackgroundLoaded = "logo";
+            chooseFile("image/*",StaticVariables.REQUEST_CUSTOM_LOGO);
         });
-        chooseImage1Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Open another popup listing the files to choose from
+        chooseImage1Button.setOnClickListener(v -> {
+            // Open another popup listing the files to choose from
+            PresenterMode.whatBackgroundLoaded = "image1";
+            chooseFile("image/*",StaticVariables.REQUEST_BACKGROUND_IMAGE1);
+        });
+        chooseImage2Button.setOnClickListener(v -> {
+            // Open another popup listing the files to choose from
+            PresenterMode.whatBackgroundLoaded = "image2";
+            chooseFile("image/*",StaticVariables.REQUEST_BACKGROUND_IMAGE2);
+        });
+        chooseVideo1Button.setOnClickListener(v -> {
+            // Open another popup listing the files to choose from
+            PresenterMode.whatBackgroundLoaded = "video1";
+            chooseFile("video/*",StaticVariables.REQUEST_BACKGROUND_VIDEO1);
+        });
+        chooseVideo2Button.setOnClickListener(v -> {
+            // Open another popup listing the files to choose from
+            PresenterMode.whatBackgroundLoaded = "video2";
+            chooseFile("video/*",StaticVariables.REQUEST_BACKGROUND_VIDEO2);
+        });
+        image1CheckBox.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                image2CheckBox.setChecked(false);
+                video1CheckBox.setChecked(false);
+                video2CheckBox.setChecked(false);
                 PresenterMode.whatBackgroundLoaded = "image1";
-                chooseFile("image/*",StaticVariables.REQUEST_BACKGROUND_IMAGE1);
+                preferences.setMyPreferenceString(getActivity(),"backgroundTypeToUse","image");
+                preferences.setMyPreferenceString(getActivity(),"backgroundToUse","img1");
+                sendUpdateToScreen("backgrounds");
             }
         });
-        chooseImage2Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Open another popup listing the files to choose from
+        image2CheckBox.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                image1CheckBox.setChecked(false);
+                video1CheckBox.setChecked(false);
+                video2CheckBox.setChecked(false);
                 PresenterMode.whatBackgroundLoaded = "image2";
-                chooseFile("image/*",StaticVariables.REQUEST_BACKGROUND_IMAGE2);
+                preferences.setMyPreferenceString(getActivity(),"backgroundTypeToUse","image");
+                preferences.setMyPreferenceString(getActivity(),"backgroundToUse","img2");
+                sendUpdateToScreen("backgrounds");
             }
         });
-        chooseVideo1Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Open another popup listing the files to choose from
+        video1CheckBox.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                image1CheckBox.setChecked(false);
+                image2CheckBox.setChecked(false);
+                video2CheckBox.setChecked(false);
                 PresenterMode.whatBackgroundLoaded = "video1";
-                chooseFile("video/*",StaticVariables.REQUEST_BACKGROUND_VIDEO1);
+                preferences.setMyPreferenceString(getActivity(),"backgroundTypeToUse","video");
+                preferences.setMyPreferenceString(getActivity(),"backgroundToUse","vid1");
+                sendUpdateToScreen("backgrounds");
             }
         });
-        chooseVideo2Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Open another popup listing the files to choose from
+        video2CheckBox.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                image1CheckBox.setChecked(false);
+                image2CheckBox.setChecked(false);
+                video1CheckBox.setChecked(false);
                 PresenterMode.whatBackgroundLoaded = "video2";
-                chooseFile("video/*",StaticVariables.REQUEST_BACKGROUND_VIDEO2);
-            }
-        });
-        image1CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    image2CheckBox.setChecked(false);
-                    video1CheckBox.setChecked(false);
-                    video2CheckBox.setChecked(false);
-                    PresenterMode.whatBackgroundLoaded = "image1";
-                    preferences.setMyPreferenceString(getActivity(),"backgroundTypeToUse","image");
-                    preferences.setMyPreferenceString(getActivity(),"backgroundToUse","img1");
-                    sendUpdateToScreen("backgrounds");
-                }
-            }
-        });
-        image2CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    image1CheckBox.setChecked(false);
-                    video1CheckBox.setChecked(false);
-                    video2CheckBox.setChecked(false);
-                    PresenterMode.whatBackgroundLoaded = "image2";
-                    preferences.setMyPreferenceString(getActivity(),"backgroundTypeToUse","image");
-                    preferences.setMyPreferenceString(getActivity(),"backgroundToUse","img2");
-                    sendUpdateToScreen("backgrounds");
-                }
-            }
-        });
-        video1CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    image1CheckBox.setChecked(false);
-                    image2CheckBox.setChecked(false);
-                    video2CheckBox.setChecked(false);
-                    PresenterMode.whatBackgroundLoaded = "video1";
-                    preferences.setMyPreferenceString(getActivity(),"backgroundTypeToUse","video");
-                    preferences.setMyPreferenceString(getActivity(),"backgroundToUse","vid1");
-                    sendUpdateToScreen("backgrounds");
-                }
-            }
-        });
-        video2CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    image1CheckBox.setChecked(false);
-                    image2CheckBox.setChecked(false);
-                    video1CheckBox.setChecked(false);
-                    PresenterMode.whatBackgroundLoaded = "video2";
-                    preferences.setMyPreferenceString(getActivity(),"backgroundTypeToUse","video");
-                    preferences.setMyPreferenceString(getActivity(),"backgroundToUse","vid2");
-                    sendUpdateToScreen("backgrounds");
-                }
+                preferences.setMyPreferenceString(getActivity(),"backgroundTypeToUse","video");
+                preferences.setMyPreferenceString(getActivity(),"backgroundToUse","vid2");
+                sendUpdateToScreen("backgrounds");
             }
         });
         setRotationProgressBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -622,19 +558,14 @@ public class PopUpLayoutFragment extends DialogFragment {
         if (preferences.getMyPreferenceBoolean(getActivity(),"presoShowChords",false)) {
             vis = false;
         }
-        setFABVis(lyrics_left_align,vis);
-        setFABVis(lyrics_center_align,vis);
-        setFABVis(lyrics_right_align,vis);
+        lyrics_left_align.setEnabled(vis);
+        lyrics_right_align.setEnabled(vis);
+        lyrics_center_align.setEnabled(vis);
+
         setViewVis(lyrics_title_align,vis);
     }
 
-    private void setFABVis(FloatingActionButton fav, boolean vis) {
-        if (vis) {
-            fav.show();
-        } else {
-            fav.hide();
-        }
-    }
+
     private void setViewVis(View v, boolean vis) {
         if (vis) {
             v.setVisibility(View.VISIBLE);
@@ -785,7 +716,7 @@ public class PopUpLayoutFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 
