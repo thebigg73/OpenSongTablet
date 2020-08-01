@@ -21,6 +21,21 @@
             android:paddingBottom="500dp"
             android:orientation="vertical">
 
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/editTextLayoutOutline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:hint="@string/title"
+                android:labelFor="@+id/songTitle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/title"
+                    style="@style/editTextFieldOutline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,11 +65,11 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="1.2"
-                    android:hint="@string/title"
-                    android:labelFor="@+id/songTitle">
+                    android:hint="@string/filename"
+                    android:labelFor="@+id/fileName">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/title"
+                        android:id="@+id/fileName"
                         style="@style/editTextFieldOutline"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />

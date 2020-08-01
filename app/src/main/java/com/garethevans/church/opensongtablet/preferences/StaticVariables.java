@@ -27,13 +27,11 @@ public class StaticVariables {
     // The song fields
     public static String mTitle = "Welcome to OpenSongApp", mAuthor = "Gareth Evans", mCopyright = "",
             mLyrics = "", mCCLI = "", mAltTheme = "", mPresentation = "", mHymnNumber = "",
-            mUser1 = "", mUser2 = "", mUser3 = "", mKey = "", mAka = "", mKeyLine = "",
-            mStyle = "", mCapo = "", mCapoPrint = "", mTempo = "", mTimeSig = "", mTheme = "",
-            mDuration = "", mPreDelay = "", mBooks = "", mMidi = "", mMidiIndex = "",
-            mPitch = "", mRestrictions = "", mNotes = "", mLinkedSongs = "", mExtraStuff1 = "",
-            mExtraStuff2 = "", mPadFile = "", mCustomChords = "", mLinkYouTube = "", mLinkWeb = "",
-            mLinkAudio = "", mLoopAudio = "false", mLinkOther = "", mNotation = "", mEncoding = "UTF-8",
-            fileType = "";
+            mUser1 = "", mUser2 = "", mUser3 = "", mKey = "", mAka = "", mCapo = "", mCapoPrint = "",
+            mTempo = "", mTimeSig = "", mTheme = "", mDuration = "", mPreDelay = "", mMidi = "",
+            mMidiIndex = "", mNotes = "", mExtraStuff1 = "", mExtraStuff2 = "", mPadFile = "",
+            mCustomChords = "", mLinkYouTube = "", mLinkWeb = "", mLinkAudio = "", mLoopAudio = "false",
+            mLinkOther = "", mNotation = "", mEncoding = "UTF-8", mFileType = "XML";
 
     // For moving through songs in list with swipe
     public static ArrayList<String> songsInList = new ArrayList<>();

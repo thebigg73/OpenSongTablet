@@ -81,7 +81,7 @@ public class NewNameDialog extends DialogFragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s != null) {
-                    String string = storageAccess.makeFilenameSafe(s.toString());
+                    String string = storageAccess.safeFilename(s.toString());
                     if (!s.toString().equals(string)) {
                         title.setText(string);
                     }
@@ -116,6 +116,8 @@ public class NewNameDialog extends DialogFragment {
 
         if (title!=null && title.getText()!=null && title.getText()!=null && title.getText().toString()!=null && !title.getText().toString().isEmpty()) {
             newName = title.getText().toString();
+            newName = storageAccess.safeFilename(newName);
+            title.setText(newName);
             Uri uri = storageAccess.getUriForItem(getActivity(), preferences, currentDir, currentSubDir, newName);
             exists = storageAccess.uriExists(getActivity(),uri);
             if (isfile && !exists) {

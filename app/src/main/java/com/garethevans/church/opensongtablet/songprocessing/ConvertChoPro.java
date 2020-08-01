@@ -1,14 +1,14 @@
 package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
@@ -32,8 +32,8 @@ public class ConvertChoPro {
     private StringBuilder parsedLines;
 
     public ArrayList<String> convertTextToTags(Context c, StorageAccess storageAccess, Preferences preferences,
-                                               ProcessSong processSong, SQLiteHelper sqLiteHelper, SongXML songXML,
-                                               Uri uri, String l) {
+                                               ProcessSong processSong, SQLiteHelper sqLiteHelper,
+                                               CommonSQL commonSQL, SongXML songXML, Uri uri, String l) {
 
         initialiseTheVariables();
 
@@ -64,7 +64,7 @@ public class ConvertChoPro {
         songSubFolder = getSongFolderLocation(storageAccess, uri, oldSongFileName);
 
         // Prepare the new song filename
-        newSongFileName = getNewSongFileName(uri, title, processSong);
+        newSongFileName = getNewSongFileName(storageAccess, uri, title, processSong);
 
         // Initialise the variables
         songXML.initialiseSongTags();
@@ -79,7 +79,7 @@ public class ConvertChoPro {
         Uri newUri = getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);
 
         // Now write the modified song
-        writeTheImprovedSong(c, storageAccess, preferences, sqLiteHelper, oldSongFileName, newSongFileName,
+        writeTheImprovedSong(c, storageAccess, preferences, sqLiteHelper, commonSQL, oldSongFileName, newSongFileName,
                 songSubFolder, newUri, uri, newXML);
 
         // Indicate after loading song (which renames it), we need to build the database and song index
@@ -297,9 +297,10 @@ public class ConvertChoPro {
     String extractChordLines(String s) {
         StringBuilder tempchordline = new StringBuilder();
         if (!s.startsWith("#") && !s.startsWith(";")) {
+            // IV - Add a leading space - the effect is to fix a chord mis-alignment
+            s = " " + s;
             // Look for [ and ] signifying a chord
             while (s.contains("[") && s.contains("]")) {
-
                 // Find chord start and end pos
                 int chordstart = s.indexOf("[");
                 int chordend = s.indexOf("]");
@@ -333,12 +334,6 @@ public class ConvertChoPro {
             // All chords should be gone now, so remove any remaining [ and ]
             s = s.replace("[", "");
             s = s.replace("]", "");
-            if (!s.startsWith(" ")) {
-                s = " " + s;
-                if (tempchordline.length() > 0) {
-                    tempchordline.insert(0, " ");
-                }
-            }
             if (tempchordline.length() > 0) {
                 s = "." + tempchordline + "\n" + s;
             }
@@ -458,7 +453,7 @@ public class ConvertChoPro {
         return fn;
     }
 
-    String getNewSongFileName(Uri uri, String title, ProcessSong processSong) {
+    String getNewSongFileName(StorageAccess storageAccess, Uri uri, String title, ProcessSong processSong) {
         String fn = uri.getLastPathSegment();
         if (fn == null) {
             fn = "";
@@ -489,6 +484,7 @@ public class ConvertChoPro {
             fn = fn.replace(".US", "");
         }
         fn = processSong.fixLineBreaksAndSlashes(fn);
+        fn = storageAccess.safeFilename(fn);
         return fn;
     }
 
@@ -523,7 +519,7 @@ public class ConvertChoPro {
     }
 
     void writeTheImprovedSong(Context c, StorageAccess storageAccess, Preferences preferences,
-                              SQLiteHelper sqLiteHelper, String oldSongFileName, String nsf,
+                              SQLiteHelper sqLiteHelper, CommonSQL commonSQL, String oldSongFileName, String nsf,
                               String songSubFolder, Uri newUri, Uri oldUri, String newXML) {
 
         newSongFileName = nsf;
@@ -548,8 +544,7 @@ public class ConvertChoPro {
                 Log.d("ChordProConvert","attempt to deletefile="+storageAccess.deleteFile(c, oldUri));
 
                 // Remove old song from database
-                String songid = songSubFolder+"/"+oldSongFileName;
-                sqLiteHelper.deleteSong(c,songid);
+                sqLiteHelper.deleteSong(c,commonSQL,songSubFolder,oldSongFileName);
             }
 
             // Update the song filename
@@ -561,23 +556,15 @@ public class ConvertChoPro {
                 songSubFolder = c.getString(R.string.mainfoldername);
             }
 
-            SQLiteDatabase tdb = sqLiteHelper.getDB(c);
-            if (!sqLiteHelper.songIdExists(tdb,songSubFolder+"/"+newSongFileName)) {
-                try {
-                    sqLiteHelper.createSong(c, songSubFolder, newSongFileName);
-                } catch (Exception e) {
-                    Log.d("ChordProConvert", "Unable to create song in database - likely already exists!");
-                }
+            if (!sqLiteHelper.songExists(c,commonSQL,songSubFolder,newSongFileName)) {
+                sqLiteHelper.createSong(c,storageAccess,commonSQL,songSubFolder,newSongFileName);
             }
-            tdb.close();
 
-            SQLite sqLite = sqLiteHelper.getSong(c,songSubFolder+"/"+newSongFileName);
-            if (sqLite!=null) {
-                sqLite.setTitle(StaticVariables.mTitle);
-                sqLite.setLyrics(StaticVariables.mLyrics);
-                sqLite.setFolder(songSubFolder);
-                sqLiteHelper.updateSong(c,sqLite);
-            }
+            // Update the song object with the static variables in the database and then add in the statics
+            SQLite sqLite = sqLiteHelper.getSpecificSong(c, commonSQL,songSubFolder,newSongFileName);
+            sqLite = commonSQL.updateSQLiteFromStatics(storageAccess,sqLite,songSubFolder,newSongFileName);
+            // Write the song object (full details) back to the database;
+            sqLiteHelper.updateSong(c,commonSQL,sqLite);
         }
     }
 
@@ -892,9 +879,19 @@ public class ConvertChoPro {
             line[x] = guessTags(line[x]);
             line[x] = extractCommentLines(line[x]);
 
-            // Join the individual lines back up (unless they are start/end of chorus)
-            if (!line[x].contains("{start_of_chorus}") && !line[x].contains("{soc}") &&
-                    !line[x].contains("{end_of_chorus}") && !line[x].contains("{eoc}")) {
+            // IV - Treat start of chorus as a comment - allows song autofix to fix when it fixes comments
+            line[x] = line[x].replace("{start_of_chorus}",";Chorus");
+
+            // IV - For unprocessed lines add a leading space - a fix for mis-aligned lyric only lines
+            if (line[x].length() > 0) {
+                String test = ";. {";
+                if (!test.contains(line[x].substring(0,1))) {
+                    line[x] = " " + line[x];
+                }
+            }
+
+            // Join the individual lines back up (unless they are end of chorus)
+            if (!line[x].contains("{end_of_chorus}") && !line[x].contains("{eoc}")) {
                 newlyrics.append(line[x]).append("\n");
             }
         }

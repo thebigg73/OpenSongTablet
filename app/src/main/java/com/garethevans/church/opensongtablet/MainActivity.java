@@ -69,7 +69,7 @@ import com.garethevans.church.opensongtablet.songsandsets.SetMenuFragment;
 import com.garethevans.church.opensongtablet.songsandsets.SongListBuildIndex;
 import com.garethevans.church.opensongtablet.songsandsets.SongMenuFragment;
 import com.garethevans.church.opensongtablet.songsandsets.ViewPagerAdapter;
-import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLite;
+import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private Preferences preferences;
     private SQLite sqLite;
     private SQLiteHelper sqLiteHelper;
-    private NonOpenSongSQLite nonOpenSongSQLite;
+    private CommonSQL commonSQL;
     private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
     private ConvertChoPro convertChoPro;
     private ConvertOnSong convertOnSong;
@@ -238,8 +238,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         preferences = new Preferences();
         sqLite = new SQLite();
         sqLiteHelper = new SQLiteHelper(this);
-        nonOpenSongSQLite = new NonOpenSongSQLite();
         nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(this);
+        commonSQL = new CommonSQL();
         convertChoPro = new ConvertChoPro();
         convertOnSong = new ConvertOnSong();
         convertTextSong = new ConvertTextSong();
@@ -799,10 +799,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                             StaticVariables.whichSongFolder, StaticVariables.songfilename);
                     // Now remove from the SQL database
                     if (StaticVariables.fileType.equals("PDF") || StaticVariables.fileType.equals("IMG")) {
-                        nonOpenSongSQLiteHelper.deleteSong(this,storageAccess,preferences,
-                                nonOpenSongSQLiteHelper.getSongId());
+                        nonOpenSongSQLiteHelper.deleteSong(this,commonSQL,storageAccess,preferences,sqLite.getFolder(),sqLite.getFilename());
                     } else {
-                        sqLiteHelper.deleteSong(this, sqLiteHelper.getSongId());
+                        sqLiteHelper.deleteSong(this, commonSQL, sqLite.getFolder(),sqLite.getFilename());
                     }
                     // TODO
                     // Send a call to reindex?
@@ -837,15 +836,13 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Write this to text file
         storageAccess.writeSongIDFile(this, preferences, songIds);
         // Try to create the basic databases
-        SQLiteHelper sqLiteHelper = new SQLiteHelper(this);
         sqLiteHelper.resetDatabase(this);
-        NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(this);
-        nonOpenSongSQLiteHelper.initialise(this, storageAccess, preferences);
+        nonOpenSongSQLiteHelper.initialise(this, commonSQL, storageAccess, preferences);
         // Add entries to the database that have songid, folder and filename fields
         // This is the minimum that we need for the song menu.
         // It can be upgraded asynchronously in StageMode/PresenterMode to include author/key
         // Also will later include all the stuff for the search index as well
-        sqLiteHelper.insertFast(this, storageAccess);
+        sqLiteHelper.insertFast(this, commonSQL, storageAccess);
         if (fragName!=null) {
             //Update the fragment
             updateFragment(fragName,callingFragment,arguments);

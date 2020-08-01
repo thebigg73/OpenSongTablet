@@ -14,6 +14,8 @@ import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.SongXML;
+import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
+import com.garethevans.church.opensongtablet.sqlite.SQLite;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -29,177 +31,184 @@ import java.util.Locale;
 
 public class LoadSong {
 
-    private boolean isXML, isPDF, isIMG, isCustom, needtoloadextra = false;
-    private String filetype, utf, where = "Songs", folder, origfolder;
+    //private boolean isXML, isPDF, isIMG, isCustom,
+    private boolean needtoloadextra = false;
+    //private String filetype, utf, where = "Songs", folder, origfolder;
+    private String utf;
     private Uri uri;
 
-    public void doLoadSong(Context c, StorageAccess storageAccess, Preferences preferences,
-                           SongXML songXML, ProcessSong processSong, ShowToast showToast,
-                           SQLiteHelper sqLiteHelper, ConvertOnSong convertOnSong,
-                           ConvertChoPro convertChoPro) {
+    public SQLite doLoadSong(Context c, StorageAccess storageAccess, Preferences preferences,
+                             SongXML songXML, ProcessSong processSong, ShowToast showToast,
+                             SQLiteHelper sqLiteHelper, CommonSQL commonSQL, SQLite sqLite,
+                             ConvertOnSong convertOnSong, ConvertChoPro convertChoPro,
+                             String where, String folder, String filename, boolean indexing) {
+
+        // This extracts what it can from the song, and returning an updated SQLite song object.
+        // If we are indexing, that's it.  If not, we update the statics with the SQL values
         // Set the song load status to false (helps check if it didn't load).  This is set to true after success
-        preferences.setMyPreferenceBoolean(c,"songLoadSuccess",false);
 
-        // Empty the XML
-        StaticVariables.myNewXML = "";
+        // Once indexing has finished, we load from the database instead, so this is only for indexing and impatient users!
 
-        // First up, determine the type of song we have.
-        // The best songs are xml (OpenSong formatted).
-        filetype = getFileTypeByExtension();
+        if (!indexing) {
+            preferences.setMyPreferenceBoolean(c,"songLoadSuccess",false);
+        }
+
+        boolean isCustom = folder.startsWith("../");
+
+        // Determine the filetype by extension - the best songs are xml (OpenSong formatted).
+        sqLite.setFiletype(getFileTypeByExtension(filename));
 
         // Get the file encoding (this also tests that the file exists)
-        utf = getUTF(c,storageAccess,preferences);
-
-        // Initialise the Song tags
-        songXML.initialiseSongTags();
+        utf = getUTF(c,storageAccess,preferences,folder,filename,sqLite.getFiletype());
 
         // Try to load the song as an xml
-        boolean readAsXML = false;
-        if (filetype.equals("SONG") && !StaticVariables.songfilename.equals("Welcome to OpenSongApp")) {
-            // This returns true if successful, false if not.
+        if (sqLite.getFiletype().equals("XML") && !filename.equals("Welcome to OpenSongApp")) {
+            // Here we go loading the song
+            // This returns an update sqLite song object if it works
             try {
-                readAsXML = readFileAsXML(c, storageAccess, preferences, processSong, showToast);
+                sqLite = readFileAsXML(c, storageAccess, preferences, processSong, showToast, sqLite, where, folder, filename, indexing);
             } catch (XmlPullParserException | IOException e) {
                 e.printStackTrace();
             }
-        } else if (StaticVariables.songfilename.equals("Welcome to OpenSongApp")) {
-            songXML.showWelcomeSong(c);
-            isXML = true;
-            readAsXML = true;
         }
 
-        if (isXML && readAsXML) {
-            // Song was loaded correctly and was xml format
-            preferences.setMyPreferenceBoolean(c, "songLoadSuccess", true);
-            preferences.setMyPreferenceString(c, "songfilename", StaticVariables.songfilename);
-            if (isCustom) {
-                StaticVariables.whichSongFolder = origfolder;
-            } else {
-                StaticVariables.whichSongFolder = folder;
-            }
-            preferences.setMyPreferenceString(c,"whichSongFolder",StaticVariables.whichSongFolder);
-        } else {
-            Log.d("LoadSong", "Song wasn't loaded");
-        }
-
-        if (StaticVariables.mLyrics == null || StaticVariables.mLyrics.isEmpty()) {
-            isXML = false;
-        }
-
-        // If the file wasn't read as an xml file, we need to deal with it in another way
-        if ((!readAsXML || !isXML) && !isIMG && !isPDF) {
-            StaticVariables.myNewXML = getSongAsText(c,storageAccess,preferences);
-            StaticVariables.mLyrics = StaticVariables.myNewXML;
-            StaticVariables.mTitle = StaticVariables.songfilename;
-            if (StaticVariables.mLyrics!=null && !StaticVariables.mLyrics.isEmpty()) {
+        // If the file wasn't read as an xml file and might be text based, we need to deal with it in another way
+        if (!sqLite.getFiletype().equals("XML") && !sqLite.getFiletype().equals("PDF") &&
+                !sqLite.getFiletype().equals("IMG") && !sqLite.getFiletype().equals("DOC")) {
+            // This will try to import text, chordpro or onsong and update the lyrics field
+            sqLite.setLyrics(getSongAsText(c,storageAccess,preferences, where, folder, filename));
+            sqLite.setTitle(sqLite.getFilename());
+            if (sqLite.getLyrics()!=null && !sqLite.getLyrics().isEmpty()) {
                 preferences.setMyPreferenceBoolean(c,"songLoadSuccess",true);
-                preferences.setMyPreferenceString(c,"songfilename",StaticVariables.songfilename);
-                preferences.setMyPreferenceString(c,"whichSongFolder",StaticVariables.whichSongFolder);
             }
         }
 
-        // If the song is OnSong or ChordPro format - try to import it
-        if (!readAsXML && StaticVariables.songfilename.toLowerCase(Locale.ROOT).contains(".onsong")) {
+        if (sqLite.getFiletype().equals("iOS")) {
             // Run the OnSongConvert script
             convertOnSong.convertTextToTags(c,storageAccess,preferences,processSong, songXML,
-                    convertChoPro,sqLiteHelper,uri,StaticVariables.myNewXML);
+                    convertChoPro,sqLiteHelper,uri,sqLite.getLyrics());
 
             // Now read in the proper OpenSong xml file
             try {
-                readFileAsXML(c,storageAccess,preferences,processSong,showToast);
+                readFileAsXML(c,storageAccess,preferences,processSong,showToast,sqLite,where, folder, filename, indexing);
             } catch (Exception e) {
                 Log.d("LoadXML", "Error performing grabOpenSongXML()");
             }
-
-        } else if (!readAsXML && isChoPro()) {
+        } else if (sqLite.getFiletype().equals("CHO") || lyricsHaveChoProTags(sqLite.getLyrics())) {
             // Run the ChordProConvert script
             convertChoPro.convertTextToTags(c,storageAccess,preferences,processSong,sqLiteHelper,
-                    songXML,uri,StaticVariables.myNewXML);
+                    commonSQL, songXML, uri, sqLite.getLyrics());
 
             // Now read in the proper OpenSong xml file
             try {
-                readFileAsXML(c, storageAccess,preferences,processSong,showToast);
+                readFileAsXML(c,storageAccess,preferences,processSong,showToast,sqLite,where,folder,filename,indexing);
             } catch (Exception e) {
                 Log.d("LoadXML", "Error performing grabOpenSongXML()");
             }
         }
 
         // Fix all the rogue code
-        StaticVariables.mLyrics = processSong.parseLyrics(StaticVariables.mLyrics, c);
+        sqLite.setLyrics(processSong.parseLyrics(sqLite.getLyrics(), c));
 
-        // Just in case we have improved the song, prepare the improved xml
-        songXML.getXML(processSong);
-    }
 
-    private boolean isChoPro() {
-        return StaticVariables.myNewXML.contains("{title") ||
-                StaticVariables.myNewXML.contains("{t:") ||
-                StaticVariables.myNewXML.contains("{t :") ||
-                StaticVariables.myNewXML.contains("{subtitle") ||
-                StaticVariables.myNewXML.contains("{st:") ||
-                StaticVariables.myNewXML.contains("{st :") ||
-                StaticVariables.myNewXML.contains("{comment") ||
-                StaticVariables.myNewXML.contains("{c:") ||
-                StaticVariables.myNewXML.contains("{new_song") ||
-                StaticVariables.myNewXML.contains("{ns") ||
-                StaticVariables.songfilename.toLowerCase(Locale.ROOT).contains(".pro") ||
-                StaticVariables.songfilename.toLowerCase(Locale.ROOT).contains(".chopro") ||
-                StaticVariables.songfilename.toLowerCase(Locale.ROOT).contains(".chordpro");
-    }
+        // Finally if we aren't indexing, set the static variables to match the SQLite object
+        // Also build the XML file back incase we've updated content
+        if (!indexing) {
+            // Empty the XML
+            StaticVariables.myNewXML = "";
 
-    private String getFileTypeByExtension() {
-        String filetype = "SONG";
-        isXML = true;
-        if (StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".pdf")) {
-            isPDF = true;
-            filetype = "PDF";
-            StaticVariables.fileType="PDF";
-            isXML = false;
-        } else if (StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".doc") ||
-                StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".docx")) {
-            filetype = "DOC";
-            StaticVariables.fileType="DOC";
-            isXML = false;
-        } else if (StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".jpg") ||
-                StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".jpeg") ||
-                StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".png") ||
-                StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".gif") ||
-                StaticVariables.songfilename.toLowerCase(Locale.ROOT).endsWith(".bmp")) {
-            filetype = "IMG";
-            StaticVariables.fileType="IMG";
-            isIMG = true;
-            isXML = false;
+            // Initialise the Song tags
+            songXML.initialiseSongTags();
+
+            // Check if the song has been loaded (will now have a lyrics value)
+            if (!sqLite.getFilename().equals("Welcome to OpenSongApp") && sqLite.getLyrics()!=null && !sqLite.getLyrics().isEmpty()) {
+                // Song was loaded correctly and was xml format
+                preferences.setMyPreferenceBoolean(c, "songLoadSuccess", true);
+                StaticVariables.songfilename = sqLite.getFilename();
+                if (isCustom) {
+                    StaticVariables.whichSongFolder = folder;
+                } else {
+                    StaticVariables.whichSongFolder = sqLite.getFolder();
+                }
+            } else {
+                StaticVariables.whichSongFolder = c.getResources().getString(R.string.mainfoldername);
+                StaticVariables.songfilename = "Welcome to OpenSongApp";
+            }
+
+            // Just in case we have improved the song, prepare the improved xml
+            songXML.getXML(processSong);
+
+            preferences.setMyPreferenceString(c,"songfilename",StaticVariables.songfilename);
+            preferences.setMyPreferenceString(c,"whichSongFolder",StaticVariables.whichSongFolder);
         }
-        return filetype;
+    return sqLite;
     }
 
-    private String getUTF(Context c, StorageAccess storageAccess, Preferences preferences) {
+    private boolean lyricsHaveChoProTags(String lyrics) {
+        return lyrics.contains("{title") ||
+                lyrics.contains("{t:") ||
+                lyrics.contains("{t :") ||
+                lyrics.contains("{subtitle") ||
+                lyrics.contains("{st:") ||
+                lyrics.contains("{st :") ||
+                lyrics.contains("{comment") ||
+                lyrics.contains("{c:") ||
+                lyrics.contains("{new_song") ||
+                lyrics.contains("{ns");
+    }
+
+    private String getFileTypeByExtension(String filename) {
+        filename = filename.toLowerCase(Locale.ROOT);
+        if (!filename.contains(".")) {
+            // No extension, so hopefully ok
+            return "XML";
+        } else if (filename.endsWith(".pdf")) {
+            return "PDF";
+        } else if (filename.endsWith(".doc") ||
+                filename.endsWith(".docx")) {
+            return "DOC";
+        } else if (filename.endsWith(".jpg") ||
+                filename.endsWith(".jpeg") ||
+                filename.endsWith(".png") ||
+                filename.endsWith(".gif") ||
+                filename.endsWith(".bmp")) {
+            return "IMG";
+        } else if (filename.endsWith(".cho") ||
+                filename.endsWith(".crd") ||
+                filename.endsWith(".chopro") ||
+                filename.contains(".pro")) {
+            return "CHO";
+        } else if (filename.endsWith(".onsong")) {
+            return "iOS";
+        } else if (filename.endsWith(".txt")) {
+            return "TXT";
+        } else {
+            // Assume we are good to go!
+            return "XML";
+        }
+    }
+
+    private String getUTF(Context c, StorageAccess storageAccess, Preferences preferences, String folder, String filename, String filetype) {
         // Determine the file encoding
-        where = "Songs";
-        folder = StaticVariables.whichSongFolder;
-        origfolder = StaticVariables.whichSongFolder;
-        isCustom = false;
+        String where = "Songs";
         if (StaticVariables.whichSongFolder.startsWith("../")) {
             folder = folder.replace("../", "");
-            isCustom = true;
-            where = "";
         }
-        uri = storageAccess.getUriForItem(c, preferences, where, folder, StaticVariables.songfilename);
+        uri = storageAccess.getUriForItem(c, preferences, where, folder, filename);
         if (storageAccess.uriExists(c,uri)) {
-            if (filetype.equals("SONG") && !StaticVariables.songfilename.equals("Welcome to OpenSongApp")) {
-                utf = storageAccess.getUTFEncoding(c, uri);
+            if (filetype.equals("XML") && !StaticVariables.songfilename.equals("Welcome to OpenSongApp")) {
+                return storageAccess.getUTFEncoding(c, uri);
             } else {
-                utf = null;
+                return null;
             }
         } else {
-            utf = null;
+            return null;
         }
-        return utf;
     }
 
-    private boolean readFileAsXML(Context c, StorageAccess storageAccess, Preferences preferences,
-                                  ProcessSong processSong, ShowToast showToast) throws XmlPullParserException, IOException {
-        boolean success = false;
+    private SQLite readFileAsXML(Context c, StorageAccess storageAccess, Preferences preferences,
+                                  ProcessSong processSong, ShowToast showToast, SQLite sqLite, String where, String folder, String filename, boolean indexing)
+            throws XmlPullParserException, IOException {
         // Extract all of the key bits of the song
         XmlPullParserFactory factory;
         factory = XmlPullParserFactory.newInstance();
@@ -213,13 +222,11 @@ public class LoadSong {
             InputStreamReader lineReader = new InputStreamReader(inputStream);
             BufferedReader buffreader = new BufferedReader(lineReader);
 
-            isXML = false;
-
             String line;
             try {
                 line = buffreader.readLine();
                 if (line.contains("<?xml")) {
-                    isXML = true;
+                    sqLite.setFiletype("XML");
                 }
                 if (line.contains("encoding=\"")) {
                     int startpos = line.indexOf("encoding=\"") + 10;
@@ -249,136 +256,117 @@ public class LoadSong {
                     switch (xpp.getName()) {
                         case "author":
                             try {
-                                StaticVariables.mAuthor = processSong.parseHTML(xpp.nextText());
-                                isXML = true;
+                                sqLite.setAuthor(processSong.parseHTML(xpp.nextText()));
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 // Try to read in the xml
-                                StaticVariables.mAuthor = fixXML(c, preferences, storageAccess, showToast, "author");
+                                sqLite.setAuthor(fixXML(c, preferences, storageAccess, showToast, sqLite,"author",where,folder,filename));
                             }
                             break;
                         case "copyright":
-                            StaticVariables.mCopyright = processSong.parseHTML(xpp.nextText());
-                            isXML = true;
+                            sqLite.setCopyright(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "title":
                             String testthetitle = processSong.parseHTML(xpp.nextText());
                             if (testthetitle != null && !testthetitle.equals("") && !testthetitle.isEmpty()) {
-                                StaticVariables.mTitle = processSong.parseHTML(testthetitle);
+                                sqLite.setTitle(processSong.parseHTML(testthetitle));
                             } else if (testthetitle != null && testthetitle.equals("")) {
-                                StaticVariables.mTitle = StaticVariables.songfilename;
+                                sqLite.setTitle(sqLite.getFilename());
                             }
-                            isXML = true;
                             break;
                         case "lyrics":
                             try {
-                                StaticVariables.mLyrics = processSong.fixStartOfLines(processSong.parseHTML(xpp.nextText()));
+                                sqLite.setLyrics(processSong.fixStartOfLines(processSong.parseHTML(xpp.nextText())));
                             } catch (Exception e) {
                                 // Try to read in the xml
                                 e.printStackTrace();
-                                StaticVariables.mLyrics = fixXML(c, preferences, storageAccess,showToast,"lyrics");
+                                sqLite.setLyrics(fixXML(c, preferences, storageAccess,showToast, sqLite,"lyrics",where,folder,filename));
                             }
                             break;
                         case "ccli":
-                            StaticVariables.mCCLI = processSong.parseHTML(xpp.nextText());
+                            sqLite.setCcli(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "theme":
-                            StaticVariables.mTheme = processSong.parseHTML(xpp.nextText());
+                            sqLite.setTheme(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "alttheme":
-                            StaticVariables.mAltTheme = processSong.parseHTML(xpp.nextText());
+                            sqLite.setAlttheme(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "presentation":
-                            StaticVariables.mPresentation = processSong.parseHTML(xpp.nextText());
+                            sqLite.setPresentationorder(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "hymn_number":
-                            StaticVariables.mHymnNumber = processSong.parseHTML(xpp.nextText());
+                            sqLite.setHymn_num(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "user1":
-                            StaticVariables.mUser1 = processSong.parseHTML(xpp.nextText());
+                            sqLite.setUser1(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "user2":
-                            StaticVariables.mUser2 = processSong.parseHTML(xpp.nextText());
+                            sqLite.setUser2(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "user3":
-                            StaticVariables.mUser3 = processSong.parseHTML(xpp.nextText());
+                            sqLite.setUser3(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "key":
-                            StaticVariables.mKey = processSong.parseHTML(xpp.nextText());
+                            sqLite.setKey(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "aka":
-                            StaticVariables.mAka = processSong.parseHTML(xpp.nextText());
-                            break;
-                        case "key_line":
-                            StaticVariables.mKeyLine = processSong.parseHTML(xpp.nextText());
+                            sqLite.setAka(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "capo":
                             if (xpp.getAttributeCount() > 0) {
                                 StaticVariables.mCapoPrint = xpp.getAttributeValue(0);
                             }
-                            StaticVariables.mCapo = processSong.parseHTML(xpp.nextText());
+                            sqLite.setCapo(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "tempo":
-                            StaticVariables.mTempo = processSong.parseHTML(xpp.nextText());
+                            sqLite.setMetronomebpm(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "time_sig":
-                            StaticVariables.mTimeSig = processSong.parseHTML(xpp.nextText());
+                            sqLite.setTimesig(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "duration":
-                            StaticVariables.mDuration = processSong.parseHTML(xpp.nextText());
+                            sqLite.setAutoscrolllength(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "predelay":
-                            StaticVariables.mPreDelay = processSong.parseHTML(xpp.nextText());
-                            break;
-                        case "books":
-                            StaticVariables.mBooks = processSong.parseHTML(xpp.nextText());
+                            sqLite.setAutoscrolldelay(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "midi":
-                            StaticVariables.mMidi = processSong.parseHTML(xpp.nextText());
+                            sqLite.setMidi(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "midi_index":
-                            StaticVariables.mMidiIndex = processSong.parseHTML(xpp.nextText());
-                            break;
-                        case "pitch":
-                            StaticVariables.mPitch = processSong.parseHTML(xpp.nextText());
-                            break;
-                        case "restrictions":
-                            StaticVariables.mRestrictions = processSong.parseHTML(xpp.nextText());
+                            sqLite.setMidiindex(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "notes":
-                            StaticVariables.mNotes = processSong.parseHTML(xpp.nextText());
-                            break;
-                        case "linked_songs":
-                            StaticVariables.mLinkedSongs = processSong.parseHTML(xpp.nextText());
+                            sqLite.setNotes(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "pad_file":
-                            StaticVariables.mPadFile = processSong.parseHTML(xpp.nextText());
+                            sqLite.setPadfile(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "custom_chords":
-                            StaticVariables.mCustomChords = processSong.parseHTML(xpp.nextText());
+                            sqLite.setCustomChords(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "link_youtube":
-                            StaticVariables.mLinkYouTube = processSong.parseHTML(xpp.nextText());
+                            sqLite.setLinkyoutube(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "link_web":
-                            StaticVariables.mLinkWeb = processSong.parseHTML(xpp.nextText());
+                            sqLite.setLinkWeb(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "link_audio":
-                            StaticVariables.mLinkAudio = processSong.parseHTML(xpp.nextText());
+                            sqLite.setLinkaudio(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "loop_audio":
-                            StaticVariables.mLoopAudio = processSong.parseHTML(xpp.nextText());
+                            sqLite.setPadloop(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "link_other":
-                            StaticVariables.mLinkOther = processSong.parseHTML(xpp.nextText());
+                            sqLite.setLinkother(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "abcnotation":
-                            StaticVariables.mNotation = processSong.parseHTML(xpp.nextText());
+                            sqLite.setAbc(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "style":
                         case "backgrounds":
-                            //FullscreenActivity.mExtraStuff2 = xpp.nextText();
-                            // Simplest way to get this is to load the file in line by line as asynctask
+                            // Simplest way to get this is to load the file in line by line as asynctask after this
                             needtoloadextra = true;
                             break;
                     }
@@ -386,60 +374,45 @@ public class LoadSong {
                 // If it isn't an xml file, an error is about to be thrown
                 try {
                     eventType = xpp.next();
-                    success = true;
-                    StaticVariables.fileType="XML";
+                    sqLite.setFiletype("XML");
                 } catch (Exception e) {
                     Log.d("LoadSong", "Not xml so exiting");
                     eventType = XmlPullParser.END_DOCUMENT;
+                    sqLite.setFiletype("?");
                 }
             }
 
-            if (StaticVariables.songfilename.equals("Welcome to OpenSongApp")) {
-                setNotFound(c);
+            if (sqLite.getFilename().equals("Welcome to OpenSongApp")) {
+                sqLite = setNotFound(c,sqLite);
             }
 
             // If we really have to load extra stuff, lets do it as an asynctask
-            if (needtoloadextra) {
+            if (needtoloadextra && !indexing) {
                 inputStream = storageAccess.getInputStream(c, uri);
-                SideTask loadextra = new SideTask(c, inputStream, uri);
+                SideTask loadextra = new SideTask(c, inputStream, uri, sqLite.getFilename());
                 loadextra.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         }
-        return success;
+        return sqLite;
     }
 
-    private static boolean validReadableFile(Context c, StorageAccess storageAccess, Uri uri) {
-        boolean isvalid = false;
-        // Get length of file in Kb
-        float filesize = storageAccess.getFileSizeFromUri(c, uri);
-        String filename = StaticVariables.songfilename;
-        if (filename.endsWith(".txt") || filename.endsWith(".TXT") ||
-                filename.endsWith(".onsong") || filename.endsWith(".ONSONG") ||
-                filename.endsWith(".crd") || filename.endsWith(".CRD") ||
-                filename.endsWith(".chopro") || filename.endsWith(".CHOPRO") ||
-                filename.endsWith(".chordpro") || filename.endsWith(".CHORDPRO") ||
-                filename.endsWith(".usr") || filename.endsWith(".USR") ||
-                filename.endsWith(".pro") || filename.endsWith(".PRO")) {
-            isvalid = true;
-        } else if (filesize < 2000) {
-            // Less than 2Mb
-            isvalid = true;
-        }
-        return isvalid;
-    }
 
+
+    // Deal with the additional mExtraStuff1&2 - only needed if we are editing/saving the song
     @SuppressLint("StaticFieldLeak")
     private static class SideTask extends AsyncTask<String, Void, String> {
 
         final InputStream inputStream;
         StorageAccess storageAccess;
+        String filename;
         final Uri uri;
         final Context c;
 
-        SideTask(Context ctx, InputStream is, Uri u) {
+        SideTask(Context ctx, InputStream is, Uri u, String filename) {
             inputStream = is;
             c = ctx;
             uri = u;
+            this.filename = filename;
         }
 
         @Override
@@ -447,7 +420,7 @@ public class LoadSong {
             String full_text;
             storageAccess = new StorageAccess();
             try {
-                if (validReadableFile(c, storageAccess, uri)) {
+                if (validReadableFile(c, storageAccess, uri, filename)) {
                     full_text = storageAccess.readTextFileToString(inputStream);
                 } else {
                     full_text = "";
@@ -483,7 +456,27 @@ public class LoadSong {
             }
         }
     }
-    private String fixXML(Context c, Preferences preferences, StorageAccess storageAccess, ShowToast showToast, String section) {
+    private static boolean validReadableFile(Context c, StorageAccess storageAccess, Uri uri, String filename) {
+        boolean isvalid = false;
+        // Get length of file in Kb
+        float filesize = storageAccess.getFileSizeFromUri(c, uri);
+        if (filename.endsWith(".txt") || filename.endsWith(".TXT") ||
+                filename.endsWith(".onsong") || filename.endsWith(".ONSONG") ||
+                filename.endsWith(".crd") || filename.endsWith(".CRD") ||
+                filename.endsWith(".chopro") || filename.endsWith(".CHOPRO") ||
+                filename.endsWith(".chordpro") || filename.endsWith(".CHORDPRO") ||
+                filename.endsWith(".usr") || filename.endsWith(".USR") ||
+                filename.endsWith(".pro") || filename.endsWith(".PRO")) {
+            isvalid = true;
+        } else if (filesize < 2000) {
+            // Less than 2Mb
+            isvalid = true;
+        }
+        return isvalid;
+    }
+
+
+    private String fixXML(Context c, Preferences preferences, StorageAccess storageAccess, ShowToast showToast, SQLite sqLite, String section, String where, String folder, String filename) {
 
         // Error in the xml - tell the user we're trying to fix it!
         showToast.doIt(c,c.getString(R.string.fix));
@@ -491,7 +484,7 @@ public class LoadSong {
         String tofix;
         // If an XML file has unencoded ampersands or quotes, fix them
         try {
-            tofix = getSongAsText(c,storageAccess,preferences);
+            tofix = getSongAsText(c,storageAccess,preferences,where,folder,filename);
 
             if (tofix.contains("<")) {
                 String[] sections = tofix.split("<");
@@ -516,10 +509,10 @@ public class LoadSong {
             if (newXML.toString().contains("<"+section+">") && newXML.toString().contains("</"+section+">")) {
                 int start = newXML.indexOf("<"+section+">") + 2 + section.length();
                 int end = newXML.indexOf("</"+section+">");
-                isXML = true;
+                sqLite.setFiletype("XML");
                 return newXML.substring(start,end);
             } else {
-                isXML = false;
+                sqLite.setFiletype("?");
                 return newXML.toString();
             }
 
@@ -547,21 +540,16 @@ public class LoadSong {
         return tofix;
     }
 
-    private void setNotFound(Context c) {
-        StaticVariables.mAuthor = "Gareth Evans";
-        StaticVariables.mLinkWeb = "https://www.opensongapp,com";
-        StaticVariables.mTitle = "Welcome to OpenSongApp";
-        if (StaticVariables.songfilename.equals("Welcome to OpenSongApp")) {
-            StaticVariables.mLyrics = c.getString(R.string.user_guide_lyrics);
-        } else {
-            StaticVariables.mLyrics = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename +
-                    c.getString(R.string.nofound);
-        }
-
+    private SQLite setNotFound(Context c, SQLite sqLite) {
+        sqLite.setAuthor("Gareth Evans");
+        sqLite.setLinkWeb("https://www.opensongapp,com");
+        sqLite.setTitle("Welcome to OpenSongApp");
+        sqLite.setLyrics(c.getString(R.string.user_guide_lyrics));
+        return sqLite;
     }
 
-    private String getSongAsText(Context c, StorageAccess storageAccess, Preferences preferences) {
-        Uri uri = storageAccess.getUriForItem(c,preferences,where, folder,StaticVariables.songfilename);
+    private String getSongAsText(Context c, StorageAccess storageAccess, Preferences preferences, String where, String folder, String filename) {
+        Uri uri = storageAccess.getUriForItem(c,preferences,where, folder,filename);
         InputStream inputStream = storageAccess.getInputStream(c,uri);
         String s = storageAccess.readTextFileToString(inputStream);
         try {

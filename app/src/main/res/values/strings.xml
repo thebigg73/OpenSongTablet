@@ -761,4 +761,5 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="get_songs">Get songs</string>
     <string name="warn_before_changing_song">Show a warning before moving to the next song (useful to avoid accidental presses)</string>
     <string name="bold_chords_headings">Display chords and headings in bold</string>
+    <string name="filename">Filename</string>
 </resources>

@@ -77,7 +77,7 @@ public class ConvertOnSong {
         songSubFolder = convertChoPro.getSongFolderLocation(storageAccess, uri, oldSongFileName);
 
         // Prepare the new song filename
-        newSongFileName = convertChoPro.getNewSongFileName(uri, title, processSong);
+        newSongFileName = convertChoPro.getNewSongFileName(storageAccess, uri, title, processSong);
 
         // By default, set the title to the new filename
         StaticVariables.songfilename = newSongFileName;

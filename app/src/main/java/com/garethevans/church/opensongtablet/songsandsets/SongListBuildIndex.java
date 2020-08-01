@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.songsandsets;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,6 +14,8 @@ import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertTextSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.SongXML;
+import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
+import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
@@ -29,6 +32,12 @@ public class SongListBuildIndex {
     // It builds the search index and prepares the required stuff for the song menus (name, author, key)
     // It updates the entries in the user sqlite database
 
+
+    private SQLite sqLite;
+    private CommonSQL commonSQL;
+
+
+    private String songid;
         private String filename;
         private String folder;
         private String title;
@@ -45,17 +54,31 @@ public class SongListBuildIndex {
         private String key;
         private String aka;
         private String timesig;
+        private String presentationorder;
         private InputStream inputStream;
         private Uri uri;
         private String utf;
 
-        private void initialiseValues() {
 
+
+        private SQLite updateSQLite(SQLite sqLite) {
+            sqLite.setSongid(escaped(songid));
+        }
+
+        private String escaped(String string) {
+            return commonSQL.escapedSQL(string);
+        }
+        private void initialiseValues(SQLite sqLite) {
+            //id;
+            songid = "";
             title = "";
             folder = "";
+            filename = "";
             author = "";
             copyright = "";
             lyrics = "";
+            capo = "";
+            customchords = "";
             hymnnum = "";
             ccli = "";
             theme = "";
@@ -65,14 +88,33 @@ public class SongListBuildIndex {
             user3 = "";
             key = "";
             aka = "";
+            tempo = "";
             timesig = "";
+            duration = "";
+            delay = "";
+            presentationorder = "";
+            midi = "";
+            midiindex = "";
+            notes = "";
+            notation = "";
+            padfile = "";
+            padloop = "";
+            linkaudio = "";
+            linkweb = "";
+            linkyoutube = "";
+            linkother = "";
+            filetype = "";
+
+
             inputStream = null;
             uri = null;
             utf = "UTF-8";
+
         }
 
         public void fullIndex(Context c, Preferences preferences, StorageAccess storageAccess,
-                              SQLiteHelper sqLiteHelper, SongXML songXML, ProcessSong processSong,
+                              SQLiteHelper sqLiteHelper, NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper,
+                              CommonSQL commonSQL, SongXML songXML, ProcessSong processSong,
                               ConvertChoPro convertChoPro, ConvertOnSong convertOnSong,
                               ConvertTextSong textSongConvert, ShowToast showToast) {
 
@@ -80,38 +122,37 @@ public class SongListBuildIndex {
             // Now comes the time consuming bit that fully indexes the songs into the database
 
             try (SQLiteDatabase db = sqLiteHelper.getDB(c)) {
-                StringBuilder log = new StringBuilder();
-                log.append("Search index progress.\n\n" +
-                        "If the last song shown in this list is not the last song in your directory, there was an error indexing it.\n" +
-                        "Please manually check that the file is a correctly formatted OpenSong file.\n\n\n");
-
                 // Go through each entry in the database and get the folder and filename.
                 // Then load the file and write the values into the sql table
-                String altquery = "SELECT " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_FILENAME +
+                String altquery = "SELECT " + SQLite.COLUMN_ID + ", " + SQLite.COLUMN_FOLDER + ", " + SQLite.COLUMN_FILENAME +
                         " FROM " + SQLite.TABLE_NAME;
 
                 Cursor cursor = db.rawQuery(altquery, null);
                 cursor.moveToFirst();
+
+                // We now iterate through each song in turn!
                 do {
-                    initialiseValues();
+                    SQLite sqLite = new SQLite();
 
                     // Get the folder and filename
-                    if (cursor.getColumnIndex(SQLite.COLUMN_FOLDER) > -1) {
-                        folder = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER));
-                        filename = cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME));
+                    if (cursor.getColumnIndex(SQLite.COLUMN_ID) > -1) {
+                        sqLite.setId(cursor.getInt(cursor.getColumnIndex(SQLite.COLUMN_ID)));
+                        sqLite.setFolder(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER)));
+                        sqLite.setFilename(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME)));
 
-                        if (!filename.equals("")) {
+                        // Now we have the info to open the file and extract what we need
+                        if (!sqLite.getFilename().isEmpty()) {
                             // Get the uri, utf and inputStream for the file
                             uri = storageAccess.getUriForItem(c, preferences, "Songs",
-                                    folder.replaceAll("''", "'"), filename.replaceAll("''", "'"));
+                                    commonSQL.unescapedSQL(sqLite.getFolder()), commonSQL.unescapedSQL(sqLite.getFilename()));
                             utf = storageAccess.getUTFEncoding(c, uri);
                             inputStream = storageAccess.getInputStream(c, uri);
 
                             // Now try to get the file as an xml.  If it encounters an error, it is treated in the catch statements
                             if (filenameIsOk(filename)) {
                                 try {
+                                    // All going well all the other details for sqLite are now set!
                                     getXMLStuff();
-                                    log.append(folder).append("/").append(filename).append("\n");
 
                                 } catch (Exception e) {
                                     // OK, so this wasn't an XML file.  Try to extract as something else
@@ -120,62 +161,29 @@ public class SongListBuildIndex {
                                             convertChoPro, convertOnSong, textSongConvert, uri);
 
                                     if (bits==null || bits.size()==0) {
-                                        title = filename;
-                                        author = "";
-                                        copyright = "";
-                                        key = "";
-                                        timesig = "";
-                                        ccli = "";
-                                        lyrics = "";
+                                        sqLite.setTitle(sqLite.getFilename());
+
                                     } else {
-                                        filename = bits.get(0);
-                                        title = bits.get(1);
-                                        author = bits.get(2);
-                                        copyright = bits.get(3);
-                                        key = bits.get(4);
-                                        timesig = bits.get(5);
-                                        ccli = bits.get(6);
-                                        lyrics = bits.get(7);
+                                        sqLite.setFilename(escaped(bits.get(0));
+                                        sqLite.setTitle(bits.get(1));
+                                        sqLite.setAuthor(bits.get(2));
+                                        sqLite.setCopyright(bits.get(3));
+                                        sqLite.setKey(bits.get(4));
+                                        sqLite.setTimesig(bits.get(5));
+                                        sqLite.setCcli(bits.get(6));
+                                        sqLite.setLyrics(bits.get(7));
                                     }
                                 }
                             }
 
-                            /*// Make the lyrics nicer for the database (remove chord lines and headings)
-                            String[] lines = lyrics.split("\n");
-                            StringBuilder sb = new StringBuilder();
-                            for (String l : lines) {
-                                if (!l.startsWith("[") && !l.startsWith(".")) {
-                                    sb.append(l).append("\n");
-                                }
-                            }
-                            lyrics = sb.toString();*/
+                            // Update the database entry
+                            commonSQL.updateSong(db,sqLite);
 
-                            String songid = folder.replaceAll("'", "''") + "/" + filename.replaceAll("'", "''");
-                            // Now we have the song info, update the table row
-                            String updateQuery = "UPDATE " + SQLite.TABLE_NAME + " " + "SET " +
-                                    SQLite.COLUMN_FOLDER + "='" + folder.replaceAll("'", "''") + "', " +
-                                    SQLite.COLUMN_FILENAME + "='" + filename.replaceAll("'", "''") + "', " +
-                                    SQLite.COLUMN_TITLE + "='" + title.replaceAll("'", "''") + "', " +
-                                    SQLite.COLUMN_AUTHOR + "='" + author.replaceAll("'", "''") + "', " +
-                                    SQLite.COLUMN_COPYRIGHT + "='" + copyright.replaceAll("'", "''") + "', " +
-                                    SQLite.COLUMN_LYRICS + "='" + lyrics.replaceAll("'", "''") + "', " +
-                                    SQLite.COLUMN_KEY + "='" + key.replaceAll("'", "''") + "', " +
-                                    SQLite.COLUMN_THEME + "='" + theme.replaceAll("'", "''") + "', " +
-                                    SQLite.COLUMN_ALTTHEME + "='" + alttheme.replaceAll("'", "''") + "', " +
-                                    SQLite.COLUMN_AKA + "='" + aka.replaceAll("'", "''") + "', " +
-                                    SQLite.COLUMN_USER1 + "='" + user1.replaceAll("'", "''") + "', " +
-                                    SQLite.COLUMN_USER2 + "='" + user2.replaceAll("'", "''") + "', " +
-                                    SQLite.COLUMN_USER3 + "='" + user3.replaceAll("'", "''") + "', " +
-                                    SQLite.COLUMN_HYMNNUM + "='" + hymnnum.replaceAll("'", "''") + "', " +
-                                    SQLite.COLUMN_CCLI + "='" + ccli.replaceAll("'", "''") + "', " +
-                                    SQLite.COLUMN_TIMESIG + "='" + timesig.replaceAll("'", "''") + "' " +
-                                    "WHERE " + SQLite.COLUMN_SONGID + "='" + songid + "';";
-                            try {
-                                db.execSQL(updateQuery);
-                            } catch (OutOfMemoryError | Exception e) {
-                                e.printStackTrace();
+                            // If the file is a PDF or IMG file, then we need to check it is in the persistent DB
+                            // If not, add it.  Call update, if it fails (no match), the method catches it and creates the entry
+                            if (sqLite.getFiletype().equals("PDF") || sqLite.getFiletype().equals("IMG")) {
+                                nonOpenSongSQLiteHelper.updateSong(c, commonSQL, storageAccess, preferences, sqLite);
                             }
-                            // close the db connection
                         }
                     }
                 } while (cursor.moveToNext());
@@ -209,7 +217,7 @@ public class SongListBuildIndex {
             return false;
         }
 
-        private void getXMLStuff() throws Exception{
+        private void getXMLStuff() throws Exception {
             try {
                 XmlPullParserFactory factory;
                 factory = XmlPullParserFactory.newInstance();
@@ -219,7 +227,7 @@ public class SongListBuildIndex {
                 xpp.setInput(inputStream, utf);
                 int eventType;
 
-                // Extract the title, author, key, lyrics, theme
+                // Extract all of the stuff we need
                 eventType = xpp.getEventType();
                 while (eventType != XmlPullParser.END_DOCUMENT) {
                     if (eventType == XmlPullParser.START_TAG) {
@@ -302,7 +310,7 @@ public class SongListBuildIndex {
                     try {
                         String filecontents = storageAccess.readTextFileToString(inputStream);
                         bits = convertChoPro.convertTextToTags(c, storageAccess, preferences,
-                                processSong, sqLiteHelper, songXML, uri, filecontents);
+                                processSong, sqLiteHelper, commonSQL, songXML, uri, filecontents);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

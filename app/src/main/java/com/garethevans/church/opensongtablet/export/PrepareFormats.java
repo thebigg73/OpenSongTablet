@@ -3,13 +3,7 @@ package com.garethevans.church.opensongtablet.export;
 // This class prepares all of the different export formats for the app and returns them
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
-import android.view.View;
-import android.widget.LinearLayout;
 
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
@@ -31,7 +25,7 @@ public class PrepareFormats {
                                              SQLiteHelper sqLiteHelper, ConvertChoPro convertChoPro, String folder, String filename,
                                              boolean desktop, boolean ost, boolean txt, boolean chopro, boolean onsong) {
         ArrayList<Uri> uris = new ArrayList<>();
-        thisSongSQL = sqLiteHelper.getSpecificSong(c,folder,filename);
+        thisSongSQL = sqLiteHelper.getSpecificSong(c);
 
         String newFilename = folder.replace("/","_");
         if (!newFilename.endsWith("_")) {

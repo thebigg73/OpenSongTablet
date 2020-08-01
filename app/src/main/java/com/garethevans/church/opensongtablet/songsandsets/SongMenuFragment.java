@@ -29,6 +29,7 @@ import com.garethevans.church.opensongtablet.databinding.MenuSongsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -45,6 +46,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     // The helper classes used
     private Preferences preferences;
     private SQLiteHelper sqLiteHelper;
+    private CommonSQL commonSQL;
     private MenuSongsBinding menuSongsBinding;
     private ShowCase showCase;
     private SongForSet songForSet;
@@ -138,6 +140,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private void initialiseHelpers() {
         preferences = new Preferences();
         sqLiteHelper = new SQLiteHelper(getActivity());
+        commonSQL = new CommonSQL();
         showCase = new ShowCase();
         songForSet = new SongForSet();
     }
@@ -162,7 +165,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     private void setUpExposedDropDowns() {
         new Thread(() -> {
-            foundFolders = sqLiteHelper.getFolders(getActivity());
+            foundFolders = sqLiteHelper.getFolders(getActivity(), commonSQL);
             folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, foundFolders);
             keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, getResources().getStringArray(R.array.key_choice));
             getActivity().runOnUiThread(() -> {
@@ -325,10 +328,10 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         new Thread(() -> {
             requireActivity().runOnUiThread(() -> buttonsEnabled(false));
             try {
-                songsFound = sqLiteHelper.getSongsByFilters(getActivity(), songListSearchByFolder,
-                        songListSearchByArtist, songListSearchByKey, songListSearchByTag,
-                        songListSearchByFilter, folderSearchVal, artistSearchVal, keySearchVal,
-                        tagSearchVal, filterSearchVal);
+                songsFound = sqLiteHelper.getSongsByFilters(getActivity(), commonSQL,
+                        songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
+                        songListSearchByTag, songListSearchByFilter, folderSearchVal,
+                        artistSearchVal, keySearchVal, tagSearchVal, filterSearchVal);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.d("SongMenu","No songs found.  Could just be that storage isn't set properly yet");
@@ -426,11 +429,8 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         // Set up page buttons
         setListeners();
 
-        // Prepare the song menu
+        // Prepare the song menu (includes a call to update the prepareSearch
         fixButtons();
-
-        // Prepare the menu
-        prepareSearch();
     }
 
     public void moveToSongInMenu() {

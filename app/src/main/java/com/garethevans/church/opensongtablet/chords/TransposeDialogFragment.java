@@ -26,7 +26,6 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.SongXML;
-import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLite;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
@@ -313,7 +312,7 @@ public class TransposeDialogFragment extends DialogFragment {
                     nonOpenSongSQLiteHelper.updateSong(requireContext(),storageAccess,preferences,nonOpenSongSQLite);
                 } else {
                     SQLiteHelper sqLiteHelper = new SQLiteHelper(requireContext());
-                    SQLite sqLite = sqLiteHelper.getSong(requireContext(),sqLiteHelper.getSongId());
+                    SQLite sqLite = sqLiteHelper.getSong(requireContext(),sqLiteHelper.getCurrentSongId());
                     sqLiteHelper.updateSong(requireContext(),sqLite);
                     // Now write the file
                     Uri uri = storageAccess.getUriForItem(requireContext(),preferences,"Songs",

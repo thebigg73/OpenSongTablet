@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.databinding.FragmentPerformanceBinding;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -33,8 +34,9 @@ import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.SongXML;
+import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
+import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
-import com.garethevans.church.opensongtablet.databinding.FragmentPerformanceBinding;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -48,6 +50,8 @@ public class PerformanceFragment extends Fragment {
     private LoadSong loadSong;
     private SongXML songXML;
     private SQLiteHelper sqLiteHelper;
+    private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
+    private CommonSQL commonSQL;
     private ConvertChoPro convertChoPro;
     private ConvertOnSong convertOnSong;
     private ThemeColors themeColors;
@@ -148,6 +152,8 @@ public class PerformanceFragment extends Fragment {
         convertChoPro = new ConvertChoPro();
         themeColors = new ThemeColors();
         showToast = new ShowToast();
+        nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
+        commonSQL = new CommonSQL();
         //showCase = new ShowCase();
     }
     private void loadPreferences() {
@@ -292,7 +298,7 @@ public class PerformanceFragment extends Fragment {
             StaticVariables.songsInList.clear();
             //TODO do logic to determine if this should be built from the set list or not
             // If not in a set
-            sqLiteHelper.getSongsByFilters(getActivity(),
+            sqLiteHelper.getSongsByFilters(getActivity(), commonSQL,
                     false,false,false,false,false,
                     null,null,null,null,null);
         }

@@ -26,6 +26,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
@@ -39,6 +40,7 @@ public class SongMenuDialog extends DialogFragment {
     StorageAccess storageAccess;
     ProcessSong processSong;
     SQLiteHelper sqLiteHelper;
+    CommonSQL commonSQL;
     MakePDF makePDF;
     OCR ocr;
     NewNameDialog dialog;
@@ -71,19 +73,13 @@ public class SongMenuDialog extends DialogFragment {
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getDialog().getWindow().setGravity(Gravity.BOTTOM|Gravity.END);
 
-        // Display current songs at the top
+        // Display current song at the top
         myView.songSelected.setText(song);
 
         setHelpers();
         setListeners();
 
-        thisSongSQL = sqLiteHelper.getSpecificSong(getActivity(),folder,song);
-        if (thisSongSQL==null) {
-            Log.d("d","thisSongSQL=null");
-        } else {
-            Log.d("d","thisSongSQL is valid");
-            Log.d("d","thisSongSQL.getTitle()="+thisSongSQL.getTitle());
-        }
+        thisSongSQL = sqLiteHelper.getSpecificSong(getActivity(),commonSQL,folder,song);
 
         return myView.getRoot();
     }
@@ -97,6 +93,7 @@ public class SongMenuDialog extends DialogFragment {
         storageAccess = new StorageAccess();
         processSong = new ProcessSong();
         sqLiteHelper = new SQLiteHelper(getActivity());
+        commonSQL = new CommonSQL();
     }
 
     private void setListeners() {

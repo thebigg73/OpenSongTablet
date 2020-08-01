@@ -15,6 +15,7 @@ public class SongXML {
         StaticVariables.mHymnNumber = "";
         StaticVariables.mCapo = "";
         StaticVariables.mCapoPrint = "false";
+        StaticVariables.mCustomChords = "";
         StaticVariables.mTempo = "";
         StaticVariables.mTimeSig = "";
         StaticVariables.mDuration = "";
@@ -27,16 +28,10 @@ public class SongXML {
         StaticVariables.mUser3 = "";
         StaticVariables.mKey = "";
         StaticVariables.mAka = "";
-        StaticVariables.mKeyLine = "";
-        StaticVariables.mBooks = "";
         StaticVariables.mMidi = "";
         StaticVariables.mMidiIndex = "";
-        StaticVariables.mPitch = "";
-        StaticVariables.mRestrictions = "";
         StaticVariables.mNotes = "";
         StaticVariables.mLyrics = "";
-        StaticVariables.mStyle = "";
-        StaticVariables.mLinkedSongs = "";
         StaticVariables.mNotation = "";
         StaticVariables.mPadFile = "";
         StaticVariables.mCustomChords = "";
@@ -48,6 +43,7 @@ public class SongXML {
         StaticVariables.mExtraStuff1 = "";
         StaticVariables.mExtraStuff2 = "";
         StaticVariables.mEncoding = "UTF-8";
+        StaticVariables.mFileType = "XML";
     }
 
     public String getXML(ProcessSong processSong) {
@@ -75,15 +71,10 @@ public class SongXML {
         myNEWXML += "  <user3>" + processSong.parseToHTMLEntities(StaticVariables.mUser3) + "</user3>\n";
         myNEWXML += "  <key>" + processSong.parseToHTMLEntities(StaticVariables.mKey) + "</key>\n";
         myNEWXML += "  <aka>" + processSong.parseToHTMLEntities(StaticVariables.mAka) + "</aka>\n";
-        myNEWXML += "  <key_line>" + processSong.parseToHTMLEntities(StaticVariables.mKeyLine) + "</key_line>\n";
-        myNEWXML += "  <books>" + processSong.parseToHTMLEntities(StaticVariables.mBooks) + "</books>\n";
         myNEWXML += "  <midi>" + processSong.parseToHTMLEntities(StaticVariables.mMidi) + "</midi>\n";
         myNEWXML += "  <midi_index>" + processSong.parseToHTMLEntities(StaticVariables.mMidiIndex) + "</midi_index>\n";
-        myNEWXML += "  <pitch>" + processSong.parseToHTMLEntities(StaticVariables.mPitch) + "</pitch>\n";
-        myNEWXML += "  <restrictions>" + processSong.parseToHTMLEntities(StaticVariables.mRestrictions) + "</restrictions>\n";
         myNEWXML += "  <notes>" + processSong.parseToHTMLEntities(StaticVariables.mNotes) + "</notes>\n";
         myNEWXML += "  <lyrics>" + processSong.parseToHTMLEntities(StaticVariables.mLyrics) + "</lyrics>\n";
-        myNEWXML += "  <linked_songs>" + processSong.parseToHTMLEntities(StaticVariables.mLinkedSongs) + "</linked_songs>\n";
         myNEWXML += "  <pad_file>" + processSong.parseToHTMLEntities(StaticVariables.mPadFile) + "</pad_file>\n";
         myNEWXML += "  <custom_chords>" + processSong.parseToHTMLEntities(StaticVariables.mCustomChords) + "</custom_chords>\n";
         myNEWXML += "  <link_youtube>" + processSong.parseToHTMLEntities(StaticVariables.mLinkYouTube) + "</link_youtube>\n";

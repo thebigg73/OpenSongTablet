@@ -19,15 +19,21 @@ import com.garethevans.church.opensongtablet.databinding.FragmentEditSongBinding
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
+import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.SongXML;
-import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLite;
+import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+
+// When editing a song, we don't rely on the database values
+// The song gets loaded from storage, parsed into the statics
+// Then the sqLite song object is created from the statics
 
 public class EditSongFragment extends Fragment {
 
@@ -43,11 +49,14 @@ public class EditSongFragment extends Fragment {
     StorageAccess storageAccess;
     Preferences preferences;
     ConvertChoPro convertChoPro;
+    ConvertOnSong convertOnSong;
     ProcessSong processSong;
     SongXML songXML;
+    LoadSong loadSong;
     SaveSong saveSong;
+    ShowToast showToast;
     NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
-    NonOpenSongSQLite nonOpenSongSQLite;
+    CommonSQL commonSQL;
     SQLiteHelper sqLiteHelper;
     SQLite sqLite;
     CCLILog ccliLog;
@@ -56,17 +65,13 @@ public class EditSongFragment extends Fragment {
     Fragment fragment;
 
     boolean createNewSong;
+    boolean saveOK = false;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mainActivityInterface = (MainActivityInterface) context;
         mainActivityInterface.registerFragment(this,"EditSongFragment");
-        if (StaticVariables.songfilename.contains("*NEWSONG*")) {
-            createNewSong = true;
-            // If we cancel, we'll be back to the original song in the view.
-            StaticVariables.songfilename = StaticVariables.songfilename.replace("*NEWSONG*","");
-        }
     }
 
     @Override
@@ -88,36 +93,32 @@ public class EditSongFragment extends Fragment {
         this.savedInstanceState = savedInstanceState;
         fragment = this;
 
+        if (StaticVariables.songfilename.contains("*NEWSONG*")) {
+            createNewSong = true;
+            // If we cancel, we'll be back to the original song in the view.
+            StaticVariables.songfilename = StaticVariables.songfilename.replace("*NEWSONG*","");
+        }
+
         // Initialise helpers
         initialiseHelpers();
 
-        // Initialise Views
-        initialiseViews();
-
         // Set up toolbar
-        setupToolbar();
+        mainActivityInterface.updateToolbar(getResources().getString(R.string.edit));
 
         // Stop the song menu from opening and hide the page button
         mainActivityInterface.hideActionButton(true);
         mainActivityInterface.lockDrawer(true);
 
         if (createNewSong) {
-            StaticVariables.fileType = "XML";
             songXML.initialiseSongTags();
             StaticVariables.mTitle = getActivity().getResources().getString(R.string.song_new_name);
+        } else {
+            // Get the XML values into the statics
+            loadSong.doLoadSong(getActivity(),storageAccess,preferences,songXML,processSong,showToast,sqLiteHelper,convertOnSong,convertChoPro);
         }
 
         // A quick test of images or PDF files (sent when saving)
-        imgOrPDF = (StaticVariables.fileType.equals("PDF") || StaticVariables.fileType.equals("IMG"));
-
-        // Initialise the correct SQL helper (used when saving).  Null mean they aren't needed.
-        if (imgOrPDF) {
-            nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(requireContext());
-            nonOpenSongSQLite = new NonOpenSongSQLite();
-        } else {
-            sqLiteHelper = new SQLiteHelper(requireContext());
-            sqLite = new SQLite();
-        }
+        imgOrPDF = (StaticVariables.mFileType.equals("PDF") || StaticVariables.mFileType.equals("IMG"));
 
         // Initialise views
         setUpTabs();
@@ -135,16 +136,15 @@ public class EditSongFragment extends Fragment {
         processSong = new ProcessSong();
         songXML = new SongXML();
         saveSong = new SaveSong();
+        loadSong = new LoadSong();
+        showToast = new ShowToast();
         ccliLog = new CCLILog();
+        sqLite = new SQLite();
+        sqLiteHelper = new SQLiteHelper(requireContext());
+        nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(requireContext());
     }
 
-    private void initialiseViews() {
-    }
 
-
-    private void setupToolbar() {
-        mainActivityInterface.updateToolbar(getResources().getString(R.string.edit));
-    }
 
     private void setUpTabs() {
         adapter = new EditSongViewPagerAdapter(getActivity().getSupportFragmentManager(), requireActivity().getLifecycle());
@@ -185,10 +185,15 @@ public class EditSongFragment extends Fragment {
     private void doSaveChanges() {
         // Send this off for processing in a new Thread
         new Thread(() -> {
-            saveSong.doSave(requireContext(),preferences,storageAccess,editContent,songXML,convertChoPro,
-                    processSong,sqLite,sqLiteHelper,nonOpenSongSQLite,nonOpenSongSQLiteHelper,ccliLog,imgOrPDF);
+            saveOK = saveSong.doSave(requireContext(),preferences,storageAccess,editContent,songXML,convertChoPro,
+                    processSong,sqLite,sqLiteHelper,nonOpenSongSQLiteHelper,commonSQL,ccliLog,imgOrPDF);
 
-        requireActivity().runOnUiThread(() -> mainActivityInterface.returnToHome(fragment,savedInstanceState));
+            if (saveOK) {
+                // If successful, go back to the home page.  Otherwise stay here and await user decision from toast
+                requireActivity().runOnUiThread(() -> mainActivityInterface.returnToHome(fragment, savedInstanceState));
+            } else {
+                showToast.doIt(getActivity(),requireContext().getResources().getString(R.string.notsaved));
+            }
         }).start();
     }
 }

@@ -176,7 +176,7 @@ class CreateNewSet {
                             .append("</title>\n    <subtitle>")
                             .append(processSong.parseToHTMLEntities(StaticVariables.mCopyright))
                             .append("</subtitle>\n    <notes>")
-                            .append(processSong.parseToHTMLEntities(StaticVariables.mKeyLine))
+                            .append("")
                             .append("</notes>\n    <slides>\n");
 
                     for (String mySlide : mySlides) {
@@ -359,7 +359,7 @@ class CreateNewSet {
                             .append(processSong.parseToHTMLEntities(StaticVariables.mAuthor))
                             .append("</subtitle>\n")
                             .append("    <notes>")
-                            .append(processSong.parseToHTMLEntities(StaticVariables.mKeyLine))
+                            .append("")
                             .append("</notes>\n")
                             .append("    <slides>\n")
                             .append(slide_code)

@@ -21,6 +21,9 @@ import com.garethevans.church.opensongtablet.databinding.FragmentEditSong1Bindin
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentMainInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
+import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
@@ -36,13 +39,16 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
     private Preferences preferences;
     private StorageAccess storageAccess;
     private SQLiteHelper sqLiteHelper;
+    private CommonSQL commonSQL;
     private EditContent editContent;
+    private ConvertChoPro convertChoPro;
+    private ProcessSong processSong;
 
     // The variable used in this fragment
     private FragmentEditSong1Binding myView;
     MaterialButton openSongFormat, chordProFormat, transpose, autoFix;
     MaterialButtonToggleGroup formatButton;
-    TextInputEditText title, artist, lyrics;
+    TextInputEditText title, filename, artist, lyrics;
     AutoCompleteTextView folder, key;
     int activeColor, inactiveColor;
     private MainActivityInterface mainActivityInterface;
@@ -97,8 +103,21 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
         return myView.getRoot();
     }
 
+    // Getting the preferences and helpers ready
+    private void initialiseHelpers() {
+        preferences = new Preferences();
+        storageAccess = new StorageAccess();
+        sqLiteHelper = new SQLiteHelper(getActivity());
+        commonSQL = new CommonSQL();
+        editContent = new EditContent();
+        convertChoPro = new ConvertChoPro();
+        processSong = new ProcessSong();
+    }
+
     // Initialise the views
     private void initialiseViews() {
+        // TODO add filename box
+        filename = myView.fileName;
         folder = myView.folderName;
         title = myView.title;
         key = myView.key;
@@ -119,7 +138,7 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
     // Set up the drop down lists
     private void setUpDropDowns() {
         new Thread(() -> {
-            foundFolders = sqLiteHelper.getFolders(getActivity());
+            foundFolders = sqLiteHelper.getFolders(getActivity(),commonSQL);
             folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, foundFolders);
             keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, getResources().getStringArray(R.array.key_choice));
             getActivity().runOnUiThread(() -> {
@@ -144,17 +163,46 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
 
     // Set the current loaded values
     private void setCurrentValues() {
+        // Exposed drop downs are set separately (once values are loaded up)
+        filename.setText(editContent.getFilename());
         title.setText(editContent.getTitle());
         artist.setText(editContent.getArtist());
         lyrics.setText(editContent.getLyrics());
+        if (preferences.getMyPreferenceBoolean(requireContext(),"editAsChordPro",false)) {
+            // Do the conversion
+            dealWithEditMode(true);
+        }
     }
 
     // Deal with the edit mode
-    private void dealWithEditMode(boolean openSongFormatting) {
-        preferences.setMyPreferenceBoolean(requireContext(), "editAsChordPro", !openSongFormatting);
-        Log.d("d", "Display as OpenSongFormat" + openSongFormatting);
+    private void dealWithEditMode(boolean choProFormatting) {
+        preferences.setMyPreferenceBoolean(requireContext(), "editAsChordPro", choProFormatting);
+        String text = null;
+        if (lyrics.getText()!=null && lyrics.getText().toString()!=null) {
+            text = lyrics.getText().toString();
+        }
+        setButtonOn(chordProFormat,choProFormatting);
+        setButtonOn(openSongFormat,!choProFormatting);
+
+        if (choProFormatting && text!=null) {
+            // If switching from OpenSong to ChoPro
+            editContent.setLyrics(convertChoPro.fromOpenSongToChordPro(requireContext(),processSong,text));
+            lyrics.setText(editContent.getLyrics());
+        } else if (text!=null){
+
+            // If switching from ChoPro to OpenSong
+            editContent.setLyrics(convertChoPro.fromChordProToOpenSong(text));
+            lyrics.setText(editContent.getLyrics());
+        }
     }
 
+    private void setButtonOn(MaterialButton button, boolean on) {
+        if (on) {
+            button.setBackgroundTintList(ColorStateList.valueOf(getContext().getResources().getColor(R.color.colorSecondary)));
+        } else {
+            button.setBackgroundTintList(ColorStateList.valueOf(getContext().getResources().getColor(R.color.colorPrimary)));
+        }
+    }
     // Finished with this view
     @Override
     public void onDestroyView() {
@@ -163,13 +211,7 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
     }
 
 
-    // Getting the preferences and helpers ready
-    private void initialiseHelpers() {
-        preferences = new Preferences();
-        storageAccess = new StorageAccess();
-        sqLiteHelper = new SQLiteHelper(getActivity());
-        editContent = new EditContent();
-    }
+
 
 
     // Sor the view visibility, listeners, etc.
@@ -190,6 +232,8 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
             openSongFormat.performClick();
         }
 
+        //TODO add filename
+        //filename.addTextChangedListener(new MyTextWatcher("filename"));
         title.addTextChangedListener(new MyTextWatcher("title"));
         artist.addTextChangedListener(new MyTextWatcher("artist"));
         lyrics.addTextChangedListener(new MyTextWatcher("lyrics"));
@@ -236,8 +280,8 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             if (s != null) {
                 value = s.toString();
-                if (what.equals("title")) {
-                    value = storageAccess.makeFilenameSafe(value);
+                if (what.equals("filename")) {
+                    value = storageAccess.safeFilename(value);
                 }
                 saveVal();
             }
@@ -252,6 +296,9 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
             switch (what) {
                 case "folder":
                     editContent.setFolder(value);
+                    break;
+                case "filename":
+                    editContent.setFilename(value);
                     break;
                 case "title":
                     editContent.setTitle(value);

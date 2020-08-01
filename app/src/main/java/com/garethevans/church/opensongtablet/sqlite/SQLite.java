@@ -1,9 +1,24 @@
 package com.garethevans.church.opensongtablet.sqlite;
 
 // This class is used to build the song database and then query it for searches
+// If the database is good to go (after full index) we get songs from here = quicker
+// If the database isn't fully indexed, we load the song from the file
+// If we create, update, delete songs we do that to both the SQL database and the file
+// Non OpenSong songs (PDF, Images) have their details stored in a persistent database
+// This is stored in the Settings folder to allow syncing between devices
+// After indexing songs, PDFs and images will just have the songid, folder and filename to begin with
+// We then update their records in the SQL database using the persistent NonSQLDatabase entries
+// Updates to PDFs and images therefore require edits in the SQL database and the NonSQLDatabase
+// We only need to touch the PDF/image if we delete it
+
 public class SQLite {
 
+    // The initialisers
+    public SQLite() {}
+
+    // The table columns
     public static final String DATABASE_NAME = "Songs.db";
+    public static final String NON_OS_DATABASE_NAME = "NonOpenSongSongs.db";
     public static final String TABLE_NAME = "songs";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_SONGID = "songid";
@@ -23,7 +38,28 @@ public class SQLite {
     public static final String COLUMN_KEY = "key";
     public static final String COLUMN_TIMESIG = "timesig";
     public static final String COLUMN_AKA = "aka";
+    public static final String COLUMN_AUTOSCROLL_DELAY = "autoscrolldelay";
+    public static final String COLUMN_AUTOSCROLL_LENGTH = "autoscrolllength";
+    public static final String COLUMN_METRONOME_BPM = "metronomebpm";
+    public static final String COLUMN_PAD_FILE = "padfile";
+    public static final String COLUMN_PAD_LOOP = "padloop";
+    public static final String COLUMN_MIDI = "midi";
+    public static final String COLUMN_MIDI_INDEX = "midiindex";
+    public static final String COLUMN_CAPO = "capo";
+    public static final String COLUMN_CUSTOM_CHORDS = "customchords";
+    public static final String COLUMN_NOTES = "notes";
+    public static final String COLUMN_ABC = "abc";
+    public static final String COLUMN_LINK_YOUTUBE = "linkyoutube";
+    public static final String COLUMN_LINK_WEB = "linkweb";
+    public static final String COLUMN_LINK_AUDIO = "linkaudio";
+    public static final String COLUMN_LINK_OTHER = "linkother";
+    public static final String COLUMN_PRESENTATIONORDER = "presentationorder";
+    public static final String COLUMN_FILETYPE = "filetype";
 
+
+
+
+    // The holders
     private int id;
     private String songid;
     private String filename;
@@ -42,39 +78,30 @@ public class SQLite {
     private String key;
     private String timesig;
     private String aka;
+    private String autoscrolldelay;
+    private String autoscrolllength;
+    private String metronomebpm;
+    private String padfile;
+    private String padloop;
+    private String midi;
+    private String midiindex;
+    private String capo;
+    private String customchords;
+    private String notes;
+    private String abc;
+    private String linkyoutube;
+    private String linkweb;
+    private String linkaudio;
+    private String linkother;
+    private String presentationorder;
+    private String filetype;
 
-    public SQLite() {
 
-    }
-
-    SQLite(int id, String songid, String filename, String folder, String title, String author,
-           String copyright, String lyrics, String hymn_num, String ccli, String theme,
-           String alttheme, String user1, String user2, String user3, String key, String timesig,
-           String aka) {
-        this.id = id;
-        this.songid = songid;
-        this.filename = filename;
-        this.folder = folder;
-        this.title = title;
-        this.author = author;
-        this.copyright = copyright;
-        this.lyrics = lyrics;
-        this.hymn_num = hymn_num;
-        this.ccli = ccli;
-        this.theme = theme;
-        this.alttheme = alttheme;
-        this.user1 = user1;
-        this.user2 = user2;
-        this.user3 = user3;
-        this.key = key;
-        this.aka = aka;
-        this.timesig = timesig;
-    }
-
+    // The getters
     public int getId() {
         return id;
     }
-    String getSongid() {
+    public String getSongid() {
         return songid;
     }
     public String getFilename() {
@@ -95,35 +122,55 @@ public class SQLite {
     public String getLyrics() {
         return lyrics;
     }
-    String getHymn_num() {
+    public String getHymn_num() {
         return hymn_num;
     }
-    String getCcli() {
+    public String getCcli() {
         return ccli;
     }
-    String getTheme() {
+    public String getTheme() {
         return theme;
     }
-    String getAlttheme() {
+    public String getAlttheme() {
         return alttheme;
     }
-    String getUser1() {
+    public String getUser1() {
         return user1;
     }
-    String getUser2() {
+    public String getUser2() {
         return user2;
     }
-    String getUser3() {
+    public String getUser3() {
         return user3;
     }
     public String getKey() {
         return key;
     }
-    String getTimesig() {return timesig;}
-    String getAka() {
+    public String getTimesig() {return timesig;}
+    public String getAka() {
         return aka;
     }
+    public String getAutoscrolldelay() {return autoscrolldelay;}
+    public String getAutoscrolllength() {return autoscrolllength;}
+    public String getMetronomebpm() {return metronomebpm;}
+    public String getPadfile() {return padfile;}
+    public String getPadloop() {return padloop;}
+    public String getMidi() {return midi;}
+    public String getMidiindex() {return midiindex;}
+    public String getCapo() {return capo;}
+    public String getCustomchords() {return customchords;}
+    public String getNotes() {return notes;}
+    public String getAbc() {return abc;}
+    public String getLinkyoutube() {return linkyoutube;}
+    public String getLinkWeb() {return linkweb;}
+    public String getLinkaudio() {return linkaudio;}
+    public String getLinkother() {return linkother;}
+    public String getPresentationorder() {return presentationorder;}
+    public String getFiletype() {return filetype;}
 
+
+
+    // The setters
     public void setId(int id) {
         this.id = id;
     }
@@ -176,8 +223,26 @@ public class SQLite {
     public void setAka(String aka) {
         this.aka = aka;
     }
+    public void setAutoscrolldelay(String autoscrolldelay) {this.autoscrolldelay = autoscrolldelay;}
+    public void setAutoscrolllength(String autoscrolllength) {this.autoscrolllength = autoscrolllength;}
+    public void setMetronomebpm(String metronomebpm) {this.metronomebpm  = metronomebpm;}
+    public void setPadfile(String padfile) {this.padfile = padfile;}
+    public void setPadloop(String padloop) {this.padloop = padloop;}
+    public void setMidi(String midi) {this.midi = midi;}
+    public void setMidiindex(String midiindex) {this.midiindex = midiindex;}
+    public void setCapo(String capo) {this.capo = capo;}
+    public void setCustomChords(String customchords) {this.customchords = customchords;}
+    public void setNotes(String notes) {this.notes = notes;}
+    public void setAbc(String abc) {this.abc = abc;}
+    public void setLinkyoutube(String linkyoutube) {this.linkyoutube = linkyoutube;}
+    public void setLinkWeb(String linkweb) {this.linkweb = linkweb;}
+    public void setLinkaudio(String linkaudio) {this.linkaudio = linkaudio;}
+    public void setLinkother(String linkother) {this.linkother = linkother;}
+    public void setPresentationorder(String presentationorder) {this.presentationorder = presentationorder;}
+    public void setFiletype(String filetype) {this.filetype = filetype;}
 
-    // Create table SQL query - only including fields which are searchable or used in the song index
+
+    // Create table SQL query.  Because this will have non OpenSong stuff too, include all useable fields
     static final String CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -197,6 +262,24 @@ public class SQLite {
                     + COLUMN_USER3 + " TEXT,"
                     + COLUMN_KEY + " TEXT,"
                     + COLUMN_TIMESIG + " TEXT,"
-                    + COLUMN_AKA + " TEXT"
+                    + COLUMN_AKA + " TEXT,"
+                    + COLUMN_AUTOSCROLL_DELAY + " TEXT,"
+                    + COLUMN_AUTOSCROLL_LENGTH + " TEXT,"
+                    + COLUMN_METRONOME_BPM + " TEXT,"
+                    + COLUMN_METRONOME_BPM + " TEXT,"
+                    + COLUMN_PAD_FILE + " TEXT,"
+                    + COLUMN_PAD_LOOP + " TEXT,"
+                    + COLUMN_MIDI + " TEXT,"
+                    + COLUMN_MIDI_INDEX + " TEXT,"
+                    + COLUMN_CAPO + " TEXT,"
+                    + COLUMN_CUSTOM_CHORDS + " TEXT,"
+                    + COLUMN_NOTES + " TEXT,"
+                    + COLUMN_ABC + " TEXT,"
+                    + COLUMN_LINK_YOUTUBE + " TEXT,"
+                    + COLUMN_LINK_WEB + " TEXT,"
+                    + COLUMN_LINK_AUDIO + " TEXT,"
+                    + COLUMN_LINK_OTHER + " TEXT,"
+                    + COLUMN_PRESENTATIONORDER + " TEXT,"
+                    + COLUMN_FILETYPE + " TEXT"
                     + ");";
 }

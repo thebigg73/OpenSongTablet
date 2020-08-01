@@ -26,6 +26,7 @@ import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
@@ -35,6 +36,9 @@ public class BootUpFragment extends Fragment {
 
     private Preferences preferences;
     private StorageAccess storageAccess;
+    private SQLiteHelper sqLiteHelper;
+    private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
+    private CommonSQL commonSQL;
     private SetTypeFace setTypeFace;
     private String initialising, message;
     private String uT;
@@ -91,6 +95,9 @@ public class BootUpFragment extends Fragment {
         // Load the helper classes (preferences)
         preferences = new Preferences();
         storageAccess = new StorageAccess();
+        sqLiteHelper = new SQLiteHelper(requireContext());
+        nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(requireContext());
+        commonSQL = new CommonSQL();
         setTypeFace = new SetTypeFace();
         StaticVariables.activity = getActivity();
     }
@@ -206,16 +213,18 @@ public class BootUpFragment extends Fragment {
                     storageAccess.writeSongIDFile(getActivity(), preferences, songIds);
 
                     // Try to create the basic databases
-                    SQLiteHelper sqLiteHelper = new SQLiteHelper(getActivity());
+                    // Non persistent, created from storage at boot (to keep updated) used to references ALL files
                     sqLiteHelper.resetDatabase(getActivity());
-                    NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
-                    nonOpenSongSQLiteHelper.initialise(getActivity(), storageAccess, preferences);
+                    // Persistent containing details of PDF/Image files only.  Pull in to main database at boot
+                    // Updated each time a file is created, deleted, moved.
+                    // Also updated when feature data (pad, autoscroll, metronome, etc.) is updated for these files
+                    nonOpenSongSQLiteHelper.initialise(getActivity(), commonSQL, storageAccess, preferences);
 
                     // Add entries to the database that have songid, folder and filename fields
                     // This is the minimum that we need for the song menu.
                     // It can be upgraded asynchronously in StageMode/PresenterMode to include author/key
                     // Also will later include all the stuff for the search index as well
-                    sqLiteHelper.insertFast(getActivity(), storageAccess);
+                    sqLiteHelper.insertFast(getActivity(), commonSQL, storageAccess);
 
                     // Finished indexing
                     message = getString(R.string.success);
