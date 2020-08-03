@@ -168,7 +168,6 @@ class StaticVariables {
     static boolean canGoToNext = false;
     static boolean canGoToPrevious = false;
     static boolean doVibrateActive = true;
-    static boolean blockActionOnKeyUp = false;
     static int scrollpageHeight;
     static int total_pixels_to_scroll = 0;
     static final int autoscroll_pause_time = 500;

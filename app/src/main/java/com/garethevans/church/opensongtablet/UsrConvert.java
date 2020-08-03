@@ -163,21 +163,22 @@ class UsrConvert {
                     int tagstart = sections[w].indexOf("[");
                     int tagend = sections[w].indexOf("]");
                     String customtag = "";
+                    // IV - Include leading [ in replaces to avoid any possiblity of replaces elsewhere
                     if (tagstart > -1 && tagend > 1) {
-                        customtag = sections[w].substring(tagstart + 1, tagend - 1);
+                        customtag = sections[w].substring(tagstart, tagend - 1);
                     }
                     String newtag = customtag;
                     // Replace any know custom tags
-                    newtag = newtag.replace(c.getResources().getString(R.string.tag_bridge) + " ", "B");
-                    newtag = newtag.replace(c.getResources().getString(R.string.tag_bridge), "B");
-                    newtag = newtag.replace(c.getResources().getString(R.string.tag_prechorus) + " ", "P");
-                    newtag = newtag.replace(c.getResources().getString(R.string.tag_prechorus), "B");
-                    newtag = newtag.replace(c.getResources().getString(R.string.tag_chorus) + " ", "C");
-                    newtag = newtag.replace(c.getResources().getString(R.string.tag_chorus), "C");
-                    newtag = newtag.replace(c.getResources().getString(R.string.tag_verse) + " ", "V");
-                    newtag = newtag.replace(c.getResources().getString(R.string.tag_verse), "V");
-                    newtag = newtag.replace(c.getResources().getString(R.string.tag_tag) + " ", "T");
-                    newtag = newtag.replace(c.getResources().getString(R.string.tag_tag), "T");
+                    newtag = newtag.replace("[" + c.getResources().getString(R.string.tag_bridge) + " ", "B");
+                    newtag = newtag.replace("[" + c.getResources().getString(R.string.tag_bridge), "[B");
+                    newtag = newtag.replace("[" + c.getResources().getString(R.string.tag_prechorus) + " ", "[P");
+                    newtag = newtag.replace("[" + c.getResources().getString(R.string.tag_prechorus), "[P");
+                    newtag = newtag.replace("[" + c.getResources().getString(R.string.tag_chorus) + " ", "[C");
+                    newtag = newtag.replace("[" + c.getResources().getString(R.string.tag_chorus), "[C");
+                    newtag = newtag.replace("[" + c.getResources().getString(R.string.tag_verse) + " ", "[V");
+                    newtag = newtag.replace("[" + c.getResources().getString(R.string.tag_verse), "[V");
+                    newtag = newtag.replace("[" + c.getResources().getString(R.string.tag_tag) + " ", "[T");
+                    newtag = newtag.replace("[" + c.getResources().getString(R.string.tag_tag), "[T");
                     sections[w] = sections[w].replace(customtag, newtag);
 
                 } else {
