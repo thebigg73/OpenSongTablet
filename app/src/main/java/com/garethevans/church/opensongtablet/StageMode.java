@@ -5221,7 +5221,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void doPedalAction(String action) {
-        drawerOrFragmentActive = mDrawerLayout.isDrawerOpen(songmenu) || mDrawerLayout.isDrawerOpen(optionmenu);
+        drawerOrFragmentActive = mDrawerLayout.isDrawerOpen(songmenu) || mDrawerLayout.isDrawerOpen(optionmenu) || getSupportFragmentManager().getFragments().size() != 0;
         // IV - If in a drawer or fragment restrict to move actions only
         if (drawerOrFragmentActive) {
             switch (action) {
