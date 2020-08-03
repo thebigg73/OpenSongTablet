@@ -510,4 +510,5 @@
     <string name="connections_actashost">Atuar como anfitrião</string>
     <string name="connections_keephostsongs">Mantenha as músicas do host</string>
     <string name="location_rationale">Esse recurso é necessário para localizar outros dispositivos de rede</string>
+    <string name="bold_text">Exibir letras em negrito</string>
 </resources>

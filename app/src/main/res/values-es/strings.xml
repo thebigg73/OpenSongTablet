@@ -510,4 +510,5 @@
     <string name="connections_enable">Habilitar conexiones cercanas</string>
     <string name="bold_chords_headings">Mostrar acordes y encabezados en negrita</string>
     <string name="warn_before_changing_song">Mostrar una advertencia antes de pasar a la siguiente canción (útil para evitar prensas accidentales)</string>
+    <string name="bold_text">Mostrar letras en negrita</string>
 </resources>

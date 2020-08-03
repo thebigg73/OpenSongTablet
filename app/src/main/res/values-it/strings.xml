@@ -510,4 +510,5 @@
     <string name="connections_enable">Abilita connessioni vicine</string>
     <string name="bold_chords_headings">Mostra accordi e intestazioni in grassetto</string>
     <string name="warn_before_changing_song">Mostra un avviso prima di passare al brano successivo (utile per evitare pressioni accidentali)</string>
+    <string name="bold_text">Mostra i testi in grassetto</string>
 </resources>

@@ -510,4 +510,5 @@
     <string name="connections_enable">Omogućite veze u blizini</string>
     <string name="bold_chords_headings">Prikažite akorde i naslove podebljano</string>
     <string name="warn_before_changing_song">Pokažite upozorenje pre prelaska na sledeću pesmu (korisno da izbegnete slučajne pritiske)</string>
+    <string name="bold_text">Prikažite tekst podebljano</string>
 </resources>

@@ -510,4 +510,5 @@
     <string name="connections_actashost">Als Gastgeber fungieren</string>
     <string name="connections_keephostsongs">Behalten Sie Host-Songs</string>
     <string name="location_rationale">Diese Funktion ist erforderlich, um andere Netzwerkgeräte zu finden</string>
+    <string name="bold_text">Zeigen Sie die Texte in Fettdruck an</string>
 </resources>
