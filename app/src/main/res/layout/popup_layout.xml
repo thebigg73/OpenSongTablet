@@ -145,6 +145,18 @@
                     android:text="@string/showchords"
                     android:theme="@style/SwitchStyle" />
 
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/boldTextButton"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="@string/bold_text"
+                    android:theme="@style/SwitchStyle" />
+
                 <TextView
                     style="@style/MyWhiteHeadingText"
                     android:layout_width="match_parent"

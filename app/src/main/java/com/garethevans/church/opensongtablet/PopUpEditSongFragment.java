@@ -261,10 +261,9 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     private MyInterface mListener;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mListener = (MyInterface) activity;
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (MyInterface) context;
     }
 
     @Override
@@ -509,7 +508,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         try {
             forceHideKeyboard(edit_song_lyrics);
             this.dismiss();
@@ -576,26 +575,20 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getResources().getString(R.string.edit));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                if (FullscreenActivity.needtoeditsong) {
-                    saveEdit(true);
-                } else {
-                    cancelEdit();
-                }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            if (FullscreenActivity.needtoeditsong) {
+                saveEdit(true);
+            } else {
+                cancelEdit();
             }
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
-                saveMe.setEnabled(false);
-                saveEdit(true);
-            }
+        saveMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(saveMe,getActivity());
+            saveMe.setEnabled(false);
+            saveEdit(true);
         });
 
         // Initialise the basic views
@@ -616,165 +609,135 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         hideIfPDF(edit_song_capo_print);
         edit_song_presentation = V.findViewById(R.id.edit_song_presentation);
         edit_song_presentation.setFocusable(false);
-        edit_song_presentation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Save the song first - false to stop everything reloading
-                saveEdit(false);
+        edit_song_presentation.setOnClickListener(v -> {
+            // Save the song first - false to stop everything reloading
+            saveEdit(false);
 
-                DialogFragment newFragment = PopUpPresentationOrderFragment.newInstance();
-                newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
-                forceHideKeyboard(edit_song_lyrics);
-                dismiss();
-            }
+            DialogFragment newFragment = PopUpPresentationOrderFragment.newInstance();
+            newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
+            forceHideKeyboard(edit_song_lyrics);
+            dismiss();
         });
         hideIfPDF(V.findViewById(R.id.myPresentation));
         hideIfPDF(edit_song_presentation);
         edit_song_notes = V.findViewById(R.id.edit_song_notes);
         addBrackets = V.findViewById(R.id.addBrackets);
         addBrackets.hide();
-        addBrackets.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int start = Math.max(edit_song_lyrics.getSelectionStart(), 0);
-                int end = Math.max(edit_song_lyrics.getSelectionEnd(), 0);
-                edit_song_lyrics.getText().replace(Math.min(start, end), Math.max(start, end),
-                        "[]", 0, 2);
-                edit_song_lyrics.setSelection(start+1);
-            }
+        addBrackets.setOnClickListener(v -> {
+            int start = Math.max(edit_song_lyrics.getSelectionStart(), 0);
+            int end = Math.max(edit_song_lyrics.getSelectionEnd(), 0);
+            edit_song_lyrics.getText().replace(Math.min(start, end), Math.max(start, end),
+                    "[]", 0, 2);
+            edit_song_lyrics.setSelection(start+1);
         });
         transposeDown_RelativeLayout = V.findViewById(R.id.transposeDown_RelativeLayout);
         transposeUp_RelativeLayout = V.findViewById(R.id.transposeUp_RelativeLayout);
         transposeDown_RelativeLayout.setVisibility(View.GONE);
         transposeUp_RelativeLayout.setVisibility(View.GONE);
         FloatingActionButton transposeUpFAB = V.findViewById(R.id.transposeUpFAB);
-        transposeUpFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int startSelection = edit_song_lyrics.getSelectionStart();
-                int endSelection = edit_song_lyrics.getSelectionEnd();
+        transposeUpFAB.setOnClickListener(v -> {
+            int startSelection = edit_song_lyrics.getSelectionStart();
+            int endSelection = edit_song_lyrics.getSelectionEnd();
 
-                if (startSelection > 0 && endSelection > startSelection) {
-                    String selectedText = edit_song_lyrics.getText().toString().substring(startSelection, endSelection);
-                    // Transpose it
-                    selectedText = transpose.transposeThisString(getActivity(),preferences,"+1",  selectedText);
+            if (startSelection > 0 && endSelection > startSelection) {
+                String selectedText = edit_song_lyrics.getText().toString().substring(startSelection, endSelection);
+                // Transpose it
+                selectedText = transpose.transposeThisString(getActivity(),preferences,"+1",  selectedText);
 
-                    // Replace the old text
-                    String lyricsinfront = edit_song_lyrics.getText().toString().substring(0, startSelection);
-                    String lyricsafter = edit_song_lyrics.getText().toString().substring(endSelection);
-                    String newtext = lyricsinfront + selectedText + lyricsafter;
-                    edit_song_lyrics.setText(newtext);
-                    edit_song_lyrics.setSelection(startSelection);
+                // Replace the old text
+                String lyricsinfront = edit_song_lyrics.getText().toString().substring(0, startSelection);
+                String lyricsafter = edit_song_lyrics.getText().toString().substring(endSelection);
+                String newtext = lyricsinfront + selectedText + lyricsafter;
+                edit_song_lyrics.setText(newtext);
+                edit_song_lyrics.setSelection(startSelection);
 
-                }
             }
         });
         FloatingActionButton transposeDownFAB = V.findViewById(R.id.transposeDownFAB);
-        transposeDownFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int startSelection = edit_song_lyrics.getSelectionStart();
-                int endSelection = edit_song_lyrics.getSelectionEnd();
+        transposeDownFAB.setOnClickListener(v -> {
+            int startSelection = edit_song_lyrics.getSelectionStart();
+            int endSelection = edit_song_lyrics.getSelectionEnd();
 
-                if (startSelection > 0 && endSelection > startSelection) {
-                    String selectedText = edit_song_lyrics.getText().toString().substring(startSelection, endSelection);
-                    // Transpose it
-                    selectedText = transpose.transposeThisString(getActivity(),preferences,"-1",  selectedText);
+            if (startSelection > 0 && endSelection > startSelection) {
+                String selectedText = edit_song_lyrics.getText().toString().substring(startSelection, endSelection);
+                // Transpose it
+                selectedText = transpose.transposeThisString(getActivity(),preferences,"-1",  selectedText);
 
-                    // Replace the old text
-                    String lyricsinfront = edit_song_lyrics.getText().toString().substring(0, startSelection);
-                    String lyricsafter = edit_song_lyrics.getText().toString().substring(endSelection);
-                    String newtext = lyricsinfront + selectedText + lyricsafter;
-                    edit_song_lyrics.setText(newtext);
-                    edit_song_lyrics.setSelection(startSelection);
+                // Replace the old text
+                String lyricsinfront = edit_song_lyrics.getText().toString().substring(0, startSelection);
+                String lyricsafter = edit_song_lyrics.getText().toString().substring(endSelection);
+                String newtext = lyricsinfront + selectedText + lyricsafter;
+                edit_song_lyrics.setText(newtext);
+                edit_song_lyrics.setSelection(startSelection);
 
-                }
             }
         });
         SwitchCompat editAsChordPro = V.findViewById(R.id.editAsChordPro);
         editAsChordPro.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"editAsChordPro",false));
-        editAsChordPro.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(),"editAsChordPro",isChecked);
-                changeFormat(isChecked);
-            }
+        editAsChordPro.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            preferences.setMyPreferenceBoolean(getActivity(),"editAsChordPro",isChecked);
+            changeFormat(isChecked);
         });
         edit_song_lyrics = V.findViewById(R.id.edit_song_lyrics);
         edit_song_lyrics.setHorizontallyScrolling(true);
-        edit_song_lyrics.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    addBrackets.show();
-                    //keyboardopen = false;
-                    forceShowKeyboard();
-                } else {
-                    addBrackets.hide();
-                    transposeDown_RelativeLayout.setVisibility(View.GONE);
-                    transposeUp_RelativeLayout.setVisibility(View.GONE);
-                    forceHideKeyboard(edit_song_lyrics);
-                }
-            }
-        });
-        edit_song_lyrics.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Show the keyboard
+        edit_song_lyrics.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                addBrackets.show();
                 //keyboardopen = false;
                 forceShowKeyboard();
+            } else {
+                addBrackets.hide();
                 transposeDown_RelativeLayout.setVisibility(View.GONE);
                 transposeUp_RelativeLayout.setVisibility(View.GONE);
+                forceHideKeyboard(edit_song_lyrics);
             }
         });
-        edit_song_lyrics.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (mActionMode != null) {
-                    return false;
-                }
-                Log.d("d", "onlongclick");
-                // Start the CAB using the ActionMode.Callback defined above
-                mActionMode = Objects.requireNonNull(getActivity()).startActionMode(mActionModeCallback);
-                edit_song_lyrics.setSelected(true);
+        edit_song_lyrics.setOnClickListener(v -> {
+            // Show the keyboard
+            //keyboardopen = false;
+            forceShowKeyboard();
+            transposeDown_RelativeLayout.setVisibility(View.GONE);
+            transposeUp_RelativeLayout.setVisibility(View.GONE);
+        });
+        edit_song_lyrics.setOnLongClickListener(v -> {
+            if (mActionMode != null) {
                 return false;
             }
+            Log.d("d", "onlongclick");
+            // Start the CAB using the ActionMode.Callback defined above
+            mActionMode = Objects.requireNonNull(getActivity()).startActionMode(mActionModeCallback);
+            edit_song_lyrics.setSelected(true);
+            return false;
         });
         // Buttons
         Button toggleGeneralAdvanced = V.findViewById(R.id.show_general_advanced);
         generalSettings = V.findViewById(R.id.general_settings);
         TextView abcnotation = V.findViewById(R.id.abcnotation);
-        abcnotation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Save the song first - false to stop everything reloading
-                saveEdit(false);
+        abcnotation.setOnClickListener(view -> {
+            // Save the song first - false to stop everything reloading
+            saveEdit(false);
 
-                FullscreenActivity.whattodo = "abcnotation_edit";
-                DialogFragment newFragment = PopUpABCNotationFragment.newInstance();
-                newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
-                forceHideKeyboard(edit_song_lyrics);
-                dismiss();
-            }
+            FullscreenActivity.whattodo = "abcnotation_edit";
+            DialogFragment newFragment = PopUpABCNotationFragment.newInstance();
+            newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
+            forceHideKeyboard(edit_song_lyrics);
+            dismiss();
         });
         fix_lyrics = V.findViewById(R.id.fix_lyrics);
-        fix_lyrics.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String text = edit_song_lyrics.getText().toString();
-                if (preferences.getMyPreferenceBoolean(getActivity(),"editAsChordPro",false)) {
-                    // If we are editing as ChordPro, convert it back to OpenSong first
-                    text = chordProConvert.fromChordProToOpenSong(text);
-                    // Now fix it
-                    text = textSongConvert.convertText(getActivity(),text);
-                    // Now set it back to the ChordPro format
-                    text = chordProConvert.fromOpenSongToChordPro(text,getActivity(),processSong);
-                } else {
-                    // Using OpenSong format, so simply fix it
-                    text = textSongConvert.convertText(getActivity(),text);
-                }
-                edit_song_lyrics.setText(text);
+        fix_lyrics.setOnClickListener(view -> {
+            String text = edit_song_lyrics.getText().toString();
+            if (preferences.getMyPreferenceBoolean(getActivity(),"editAsChordPro",false)) {
+                // If we are editing as ChordPro, convert it back to OpenSong first
+                text = chordProConvert.fromChordProToOpenSong(text);
+                // Now fix it
+                text = textSongConvert.convertText(getActivity(),text);
+                // Now set it back to the ChordPro format
+                text = chordProConvert.fromOpenSongToChordPro(text,getActivity(),processSong);
+            } else {
+                // Using OpenSong format, so simply fix it
+                text = textSongConvert.convertText(getActivity(),text);
             }
+            edit_song_lyrics.setText(text);
         });
 
         // Initialise the advanced views
@@ -805,60 +768,57 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         advancedSettings = V.findViewById(R.id.advanced_settings);
 
         // Listeners for the buttons
-        toggleGeneralAdvanced.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        toggleGeneralAdvanced.setOnClickListener(v -> {
 
-                 if (generalSettings.getVisibility() == View.VISIBLE) {
-                    // Slide the general settings left
-                    generalSettings.startAnimation(AnimationUtils.loadAnimation(
-                            V.getContext(), R.anim.slide_out_left));
-                    // Wait 300ms before hiding the general settings and unhiding the advanced settings
-                    Handler delayfadeinredraw = new Handler();
-                    delayfadeinredraw.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            generalSettings.setVisibility(View.GONE);
-                        }
-                    }, 300); // 300ms
+             if (generalSettings.getVisibility() == View.VISIBLE) {
+                // Slide the general settings left
+                generalSettings.startAnimation(AnimationUtils.loadAnimation(
+                        V.getContext(), R.anim.slide_out_left));
+                // Wait 300ms before hiding the general settings and unhiding the advanced settings
+                Handler delayfadeinredraw = new Handler();
+                delayfadeinredraw.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        generalSettings.setVisibility(View.GONE);
+                    }
+                }, 300); // 300ms
 
-                    // Wait 300ms before sliding in the advanced settings
-                    Handler delayfadeinredraw2 = new Handler();
-                    delayfadeinredraw2.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            advancedSettings.startAnimation(AnimationUtils
-                                    .loadAnimation(V.getContext(),
-                                            R.anim.slide_in_right));
-                            advancedSettings.setVisibility(View.VISIBLE);
-                        }
-                    }, 600); // 300ms
+                // Wait 300ms before sliding in the advanced settings
+                Handler delayfadeinredraw2 = new Handler();
+                delayfadeinredraw2.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        advancedSettings.startAnimation(AnimationUtils
+                                .loadAnimation(V.getContext(),
+                                        R.anim.slide_in_right));
+                        advancedSettings.setVisibility(View.VISIBLE);
+                    }
+                }, 600); // 300ms
 
-                } else {
-                    // Slide the advanced settings right
-                    advancedSettings.startAnimation(AnimationUtils.loadAnimation(
-                            V.getContext(), R.anim.slide_out_right));
-                    // Wait 300ms before hiding the advanced settings and unhiding the general settings
-                    Handler delayfadeinredraw = new Handler();
-                    delayfadeinredraw.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            advancedSettings.setVisibility(View.GONE);
-                        }
-                    }, 300); // 300ms
+            } else {
+                // Slide the advanced settings right
+                advancedSettings.startAnimation(AnimationUtils.loadAnimation(
+                        V.getContext(), R.anim.slide_out_right));
+                // Wait 300ms before hiding the advanced settings and unhiding the general settings
+                Handler delayfadeinredraw = new Handler();
+                delayfadeinredraw.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        advancedSettings.setVisibility(View.GONE);
+                    }
+                }, 300); // 300ms
 
-                    // Wait 300ms before sliding in the general settings
-                    Handler delayfadeinredraw2 = new Handler();
-                    delayfadeinredraw2.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            generalSettings.startAnimation(AnimationUtils
-                                    .loadAnimation(V.getContext(),
-                                            R.anim.slide_in_left));
-                            generalSettings.setVisibility(View.VISIBLE);
-                        }
-                    }, 600); // 300ms
-                }
+                // Wait 300ms before sliding in the general settings
+                Handler delayfadeinredraw2 = new Handler();
+                delayfadeinredraw2.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        generalSettings.startAnimation(AnimationUtils
+                                .loadAnimation(V.getContext(),
+                                        R.anim.slide_in_left));
+                        generalSettings.setVisibility(View.VISIBLE);
+                    }
+                }, 600); // 300ms
             }
         });
 
@@ -1123,7 +1083,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     }
 
     @Override
-    public void onDismiss(final DialogInterface dialog) {
+    public void onDismiss(@NonNull final DialogInterface dialog) {
         forceHideKeyboard(null);
     }
 }

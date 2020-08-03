@@ -57,7 +57,7 @@ class ChordProConvert {
         songSubFolder = getSongFolderLocation(storageAccess, uri, oldSongFileName);
 
         // Prepare the new song filename
-        newSongFileName = getNewSongFileName(uri, title);
+        newSongFileName = getNewSongFileName(storageAccess, uri, title);
 
         // Initialise the variables
         songXML.initialiseSongTags();
@@ -465,7 +465,7 @@ class ChordProConvert {
         return fn;
     }
 
-    String getNewSongFileName(Uri uri, String title) {
+    String getNewSongFileName(StorageAccess storageAccess, Uri uri, String title) {
         String fn = uri.getLastPathSegment();
         if (fn == null) {
             fn = "";
@@ -496,6 +496,8 @@ class ChordProConvert {
             fn = fn.replace(".US", "");
         }
         fn = fixLineBreaksAndSlashes(fn);
+        // Remove bad characters
+        fn = storageAccess.safeFilename(fn);
         return fn;
     }
 

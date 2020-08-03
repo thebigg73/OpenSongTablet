@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,9 +12,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -40,6 +36,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -84,10 +85,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        mListener = (MyInterface) context;
+        super.onAttach(context);
     }
 
     @Override
@@ -1429,6 +1429,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
 
         // Get the uri for the new file
+        nameoffile = storageAccess.safeFilename(nameoffile);
         Uri uri_newfile = storageAccess.getUriForItem(getActivity(), preferences, "Songs", whatfolderselected, nameoffile);
         Uri uri_newpdffile;
 
@@ -1445,6 +1446,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         // Get the song select pdf file stuff
         if (FullscreenActivity.whattodo.equals("songselect") && downloadcomplete) {
+            nameofpdffile = storageAccess.safeFilename(nameofpdffile);
             uri_newpdffile = storageAccess.getUriForItem(getActivity(), preferences, "Songs", whatfolderselected, nameofpdffile);
 
             // Check the uri exists for the outputstream to be valid

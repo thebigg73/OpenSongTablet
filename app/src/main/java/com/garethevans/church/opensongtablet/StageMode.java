@@ -201,7 +201,6 @@ public class StageMode extends AppCompatActivity implements
     private boolean shortKeyPress = false;
     private boolean blockActionOnKeyUp;
     private boolean drawerOrFragmentActive = false;
-    boolean dealtwithaspdf;
 
     // Page buttons
     private FloatingActionButton setButton;
@@ -385,6 +384,7 @@ public class StageMode extends AppCompatActivity implements
     private ProfileActions profileActions;
 
     private boolean pdfCanContinueScrolling;
+    private boolean dealtwithaspdf;
 
 
     @Override
@@ -793,409 +793,6 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    // The stuff used for Google Nearby for connecting devices
-    // TODO REMOVE
-    /*String serviceId = "com.garethevans.church.opensongtablet";
-    private void updateConnectionLog(String newMessage) {
-        if (newMessage!=null) {
-            StaticVariables.connectionLog += newMessage + "\n";
-            try {
-                optionMenuListeners.updateConnectionsLog();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    @Override
-    public void startAdvertising() {
-        AdvertisingOptions advertisingOptions =
-                new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
-        Nearby.getConnectionsClient(this)
-                .startAdvertising(
-                        getUserNickname(), serviceId, connectionLifecycleCallback(), advertisingOptions)
-                .addOnSuccessListener(
-                        (Void unused) -> {
-                            // We're advertising!
-                            updateConnectionLog(getString(R.string.connections_broadcast) + " " + getUserNickname());
-
-                        })
-                .addOnFailureListener(
-                        (Exception e) -> {
-                            // We were unable to start advertising.
-                            updateConnectionLog(getString(R.string.connections_failure) + " " + getUserNickname());
-                            e.printStackTrace();
-                        });
-    }
-    @Override
-    public void startDiscovery() {
-        DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
-        Nearby.getConnectionsClient(this)
-                .startDiscovery(serviceId, endpointDiscoveryCallback(), discoveryOptions)
-                .addOnSuccessListener(
-                        (Void unused) -> {
-                            // We're discovering!
-                            updateConnectionLog(getString(R.string.connections_discover));
-                        })
-                .addOnFailureListener(
-                        (Exception e) -> {
-                            // We're unable to start discovering.
-                            updateConnectionLog(getString(R.string.connections_discover_stop));
-                            stopDiscovery();
-                        });
-    }
-    @Override
-    public void stopAdvertising() {
-        Nearby.getConnectionsClient(this).stopAdvertising();
-    }
-    @Override
-    public void stopDiscovery() {
-        Nearby.getConnectionsClient(this).stopDiscovery();
-    }
-    private String getDeviceNameFromId(String endpointId) {
-        // When requesting connections, the proper device name is stored in an arraylist like endpointId__deviceName
-        for (String s:connectedEndPointsNames) {
-            if (s.startsWith(endpointId+"__")) {
-                return s.replace(endpointId+"__","");
-            }
-        }
-        return endpointId;
-    }
-    private String getUserNickname() {
-        if (StaticVariables.deviceName==null || StaticVariables.deviceName.isEmpty()) {
-            if (FullscreenActivity.mBluetoothName.equals("Unknown")) {
-                FullscreenActivity.mBluetoothName = UUID.randomUUID().toString().substring(0,8);
-                FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothName.toUpperCase(StaticVariables.locale);
-            }
-            StaticVariables.deviceName = preferences.getMyPreferenceString(this,"deviceId", FullscreenActivity.mBluetoothName);
-            if (StaticVariables.deviceName.equals(StaticVariables.randomId)) {
-                // Set this value - user can change at any time
-                preferences.setMyPreferenceString(this,"deviceId",StaticVariables.randomId);
-            }
-        }
-        return StaticVariables.deviceName;
-    }
-    private ConnectionLifecycleCallback connectionLifecycleCallback() {
-        return new ConnectionLifecycleCallback() {
-            @Override
-            public void onConnectionInitiated(@NonNull String endpointId, @NonNull ConnectionInfo connectionInfo) {
-                new AlertDialog.Builder(StageMode.this)
-                        .setTitle(getString(R.string.accept_connection) + " " + connectionInfo.getEndpointName())
-                        .setMessage(getString(R.string.accept_code) + " " + connectionInfo.getAuthenticationToken())
-                        .setPositiveButton(
-                                getString(R.string.ok),
-                                (DialogInterface dialog, int which) -> {
-                                    // Add a note of the nice name matching the endpointId
-                                    connectedEndPointsNames.add(endpointId + "__" + connectionInfo.getEndpointName());
-                                    // The user confirmed, so we can accept the connection.
-                                    Nearby.getConnectionsClient(StageMode.this)
-                                            .acceptConnection(endpointId, payloadCallback());
-                                })
-                        .setNegativeButton(
-                                getString(R.string.cancel),
-                                (DialogInterface dialog, int which) ->
-                                        // The user canceled, so we should reject the connection.
-                                        Nearby.getConnectionsClient(StageMode.this).rejectConnection(endpointId))
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-            }
-
-            @Override
-            public void onConnectionResult(@NonNull String endpointId, @NonNull ConnectionResolution connectionResolution) {
-                switch (connectionResolution.getStatus().getStatusCode()) {
-                    case ConnectionsStatusCodes.STATUS_OK:
-                        // We're connected! Can now start sending and receiving data.
-                        connectedEndPoints.add(endpointId);
-                        StaticVariables.isConnected = true;
-                        updateConnectionLog(getString(R.string.connections_connected) + " " + getDeviceNameFromId(endpointId));
-                        // try to send the current song payload
-                        sendSongPayload();
-                        break;
-                    case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
-                    case ConnectionsStatusCodes.STATUS_ERROR:
-                        // The connection broke before it was able to be accepted.
-                        // The connection was rejected by one or both sides.
-                        updateConnectionLog(getString(R.string.connections_failure) + " " + getUserNickname()+" <-> "+getDeviceNameFromId(endpointId));
-                        break;
-                    default:
-                        // Unknown status code
-                        break;
-                }
-            }
-
-            @Override
-            public void onDisconnected(@NonNull String endpointId) {
-                connectedEndPoints.remove(endpointId);
-                updateConnectionLog(getString(R.string.connections_disconnect) + " " + getDeviceNameFromId(endpointId));
-                // Check if we have valid connections
-                StaticVariables.isConnected = stillValidConnections();
-            }
-        };
-    }
-    private boolean stillValidConnections() {
-        if (connectedEndPoints != null && connectedEndPoints.size() >= 1) {
-            for (String s : connectedEndPoints) {
-                if (s != null && !s.isEmpty()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    private EndpointDiscoveryCallback endpointDiscoveryCallback() {
-        return new EndpointDiscoveryCallback() {
-            @Override
-            public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo discoveredEndpointInfo) {
-                Nearby.getConnectionsClient(StageMode.this)
-                        .requestConnection(getUserNickname(), endpointId, connectionLifecycleCallback())
-                        .addOnSuccessListener(
-                                (Void unused) -> {
-                                    // We successfully requested a connection. Now both sides
-                                    // must accept before the connection is established.
-                                    updateConnectionLog(getString(R.string.connections_searching));
-                                })
-                        .addOnFailureListener(
-                                (Exception e) -> {
-                                    // Nearby Connections failed to request the connection.
-                                    updateConnectionLog(getString(R.string.connections_failure) + " " + getDeviceNameFromId(endpointId));
-                                });
-            }
-
-            @Override
-            public void onEndpointLost(@NonNull String endpointId) {
-                updateConnectionLog(getString(R.string.connections_disconnect) + " " + getDeviceNameFromId(endpointId));
-            }
-        };
-    }
-    private void sendSongPayload() {
-        String infoPayload;
-        Payload payloadFile = null;
-        String infoFilePayload = StaticVariables.whichSongFolder + "_xx____xx_" + StaticVariables.songfilename +
-                "_xx____xx_" + FullscreenActivity.whichDirection;
-        if (FullscreenActivity.isSong) {
-            // By default, this should be smaller than 32kb, so probably going to send as bytes
-            // We'll measure the actual size later to check though
-            infoPayload = StaticVariables.whichSongFolder + "_xx____xx_" +
-                    StaticVariables.songfilename + "_xx____xx_" +
-                    FullscreenActivity.whichDirection + "_xx____xx_" +
-                    FullscreenActivity.myXML;
-        } else {
-            // We will send as a file instead
-            infoPayload=null;
-        }
-
-        if (infoPayload!=null) {
-            // Check the size.  If it is bigger than the 32kb (go 30kb to play safe!) allowed for bytes, switch to file
-            byte[] mybytes = infoPayload.getBytes();
-            if (mybytes.length>30000) {
-                infoPayload = null;
-            }
-        }
-
-        if (infoPayload==null) {
-            // We will send as a file
-            try {
-                Uri uri = storageAccess.getUriForItem(this, preferences, "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
-                ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(uri, "r");
-                payloadFile = Payload.fromFile(parcelFileDescriptor);
-                infoFilePayload = "FILE:"+payloadFile.getId()+":"+infoFilePayload;
-            } catch (Exception e) {
-                e.printStackTrace();
-                payloadFile = null;
-            }
-        }
-
-        for (String endpointId:connectedEndPoints) {
-            if (payloadFile!=null) {
-                // Send the file descriptor as bytes, then the file
-                Nearby.getConnectionsClient(this).sendPayload(endpointId,Payload.fromBytes(infoFilePayload.getBytes()));
-                Nearby.getConnectionsClient(this).sendPayload(endpointId,payloadFile);
-            } else if (infoPayload!=null){
-                // Just send the bytes
-                Nearby.getConnectionsClient(this).sendPayload(endpointId,Payload.fromBytes(infoPayload.getBytes()));
-            }
-        }
-    }
-    private void doSendPayloadBytes(String infoPayload) {
-        for (String endpointId:connectedEndPoints) {
-            Nearby.getConnectionsClient(this).sendPayload(endpointId,Payload.fromBytes(infoPayload.getBytes()));
-        }
-    }
-    private void payloadAutoscroll(String incoming) {
-        // It sends autoscroll startstops as autoscroll_start or autoscroll_stop
-        // Start or stop by stating we were already doing the other!
-        StaticVariables.isautoscrolling = !incoming.equals("autoscroll_start");
-        gesture5();
-    }
-    private void payloadSection(String incoming) {
-        int mysection = processSong.getNearbySection(incoming);
-        if (mysection >= 0) {
-            // Look for a section being sent
-            StaticVariables.currentSection = mysection;
-            selectSection(mysection);
-        }
-    }
-    private void payloadOpenSong(String incoming) {
-        // New method sends OpenSong songs in the format of
-        //  FOLDER_xx____xx_FILENAME_xx____xx_R2L/L2R_xx____xx_<?xml>
-
-        ArrayList<String> receivedBits = processSong.getNearbyIncoming(incoming);
-
-        Uri properUri = storageAccess.getUriForItem(this, preferences, "Songs", receivedBits.get(0), receivedBits.get(1));
-        Uri tempUri = storageAccess.getUriForItem(this, preferences, "Received", "", "ReceivedSong");
-
-        // Only songs sent via bytes payload trigger this.
-        boolean songReceived = (receivedBits.size()>=4);
-
-        if (StaticVariables.receiveHostFiles) {
-            boolean writeTemp = true;
-            OutputStream outputStream = null;
-            if (songReceived && StaticVariables.keepHostFiles) {
-                // Check if we have the song already.  If we do, grab the song into the Received folder,
-                // Otherwise, we'll write into the user's storage
-                writeTemp = storageAccess.uriExists(this, properUri);
-            }
-            if (songReceived && writeTemp) {
-                storageAccess.lollipopCreateFileForOutputStream(this, preferences, tempUri, null, "Received", "", "ReceivedSong");
-                outputStream = storageAccess.getOutputStream(this, tempUri);
-                StaticVariables.songfilename = "ReceivedSong";
-                StaticVariables.whichSongFolder = "../Received";
-            } else if (songReceived){
-                storageAccess.lollipopCreateFileForOutputStream(this, preferences, properUri, null, "Songs", receivedBits.get(0), receivedBits.get(1));
-                outputStream = storageAccess.getOutputStream(this, properUri);
-                StaticVariables.songfilename = receivedBits.get(1);
-                StaticVariables.whichSongFolder = receivedBits.get(0);
-                // Add to the sqldatabase
-                sqLiteHelper.createSong(this,StaticVariables.whichSongFolder,StaticVariables.songfilename);
-                prepareSongMenu();
-            }
-            if (songReceived) {
-                // Receiving an OpenSong file via bytes.  PDFs etc are sent separately
-                storageAccess.writeFileFromString(receivedBits.get(3), outputStream);
-            }
-
-        }
-        if (songReceived) {
-            StaticVariables.whichSongFolder = receivedBits.get(0);
-            StaticVariables.songfilename = receivedBits.get(1);
-            Log.d("d","received: "+StaticVariables.whichSongFolder+"/"+StaticVariables.songfilename);
-            FullscreenActivity.whichDirection = receivedBits.get(2);
-            loadSong();
-        }
-    }
-    private void payloadFile(Payload payload, String foldernamepair) {
-        // If songs are too big, then we receive them as a file rather than bytes
-        Log.d("d","foldernamepair="+foldernamepair);
-        String[] bits = foldernamepair.split("_xx____xx_");
-        String folder = bits[0];
-        String filename = bits[1];
-        FullscreenActivity.whichDirection = bits[2];
-        boolean movepage = false;
-        if ((folder.equals(StaticVariables.whichSongFolder)||StaticVariables.whichSongFolder.equals("../Received"))
-                && filename.equals(StaticVariables.songfilename) && filename.toLowerCase(StaticVariables.locale).endsWith(".pdf")) {
-            // We are likely trying to move page to an already received file
-            movepage = true;
-        } else {
-            FullscreenActivity.pdfPageCurrent = 0;
-        }
-        Uri newLocation = null;
-        if (StaticVariables.receiveHostFiles && StaticVariables.keepHostFiles) {
-            newLocation = storageAccess.getUriForItem(this,preferences,"Songs",folder,filename);
-            storageAccess.lollipopCreateFileForOutputStream(this,preferences,newLocation,null,"Songs",folder,filename);
-        } else if (StaticVariables.receiveHostFiles) {
-            folder = "../Received";
-            newLocation = storageAccess.getUriForItem(this, preferences, "Received", "", filename);
-            storageAccess.lollipopCreateFileForOutputStream(this, preferences, newLocation, null, "Received", "", filename);
-        }
-        StaticVariables.whichSongFolder = folder;
-        StaticVariables.songfilename = filename;
-        Log.d("d","newLocation="+newLocation);
-        if (movepage) {
-            if (FullscreenActivity.whichDirection.equals("L2R")) {
-                // Go back
-                goToPreviousItem();
-            } else {
-                // Go forward
-                goToNextItem();
-            }
-        } else if (newLocation!=null) { // i.e. we have received the file by choice
-            InputStream inputStream = new FileInputStream(payload.asFile().asParcelFileDescriptor().getFileDescriptor());
-            Uri originalUri = Uri.parse(payload.asFile().asParcelFileDescriptor().getFileDescriptor().toString());
-            OutputStream outputStream = storageAccess.getOutputStream(this, newLocation);
-            if (storageAccess.copyFile(inputStream, outputStream)) {
-                loadSong();
-            }
-            Log.d("d","originalUri="+originalUri);
-            storageAccess.deleteFile(this, originalUri);
-        } else {
-            loadSong();
-        }
-    }
-    private final SimpleArrayMap<Long, Payload> incomingFilePayloads = new SimpleArrayMap<>();
-    private final SimpleArrayMap<Long, String> fileNewLocation = new SimpleArrayMap<>();
-    private PayloadCallback payloadCallback() {
-        return new PayloadCallback() {
-            @Override
-            public void onPayloadReceived(@NonNull String s, @NonNull Payload payload) {
-                if (!StaticVariables.isHost) {
-                    // We can deal with the incoming payload!
-                    if (payload.getType() == Payload.Type.FILE) {
-                        // Make a note of it.  Nothing happens until complete
-                        incomingFilePayloads.put(payload.getId(), payload);
-
-                    } else if (payload.getType() == Payload.Type.BYTES) {
-                        // We're dealing with bytes
-                        String incoming = new String(payload.asBytes());
-                        if (incoming!=null && incoming.startsWith("FILE:")) {
-                            // Add the file location to the arraymap
-                            incoming = incoming.replaceFirst("FILE:","");
-                            String id = incoming.substring(0,incoming.indexOf(":"));
-                            id = id.replace(":","");
-                            String foldernamepair = incoming.substring(incoming.indexOf(":"));
-                            foldernamepair = foldernamepair.replace(":","");
-                            fileNewLocation.put(Long.parseLong(id),foldernamepair);
-
-                        } else if (incoming!=null && incoming.contains("autoscroll_")) {
-                            payloadAutoscroll(incoming);
-                        } else if (incoming!=null && incoming.contains("___section___")) {
-                            payloadSection(incoming);
-                        } else if (incoming!=null) {
-                            payloadOpenSong(incoming);
-                        }
-                    }
-                    // not dealing with files as it is complex with scoped storage access
-                    // also don't want user's download folder getting clogged!
-                }
-            }
-
-
-            @Override
-            public void onPayloadTransferUpdate(@NonNull String s, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
-                if (payloadTransferUpdate.getStatus() == PayloadTransferUpdate.Status.SUCCESS) {
-                    // For bytes this is sent automatically, but it's the file we are interested in here
-                    Payload payload;
-                    if (incomingFilePayloads.containsKey(payloadTransferUpdate.getPayloadId())) {
-                        payload = incomingFilePayloads.get(payloadTransferUpdate.getPayloadId());
-                        String foldernamepair = fileNewLocation.get(payloadTransferUpdate.getPayloadId());
-                        if (foldernamepair==null) {
-                            foldernamepair = "../Received_xx____xx_ReceivedSong";
-                        }
-                        incomingFilePayloads.remove(payloadTransferUpdate.getPayloadId());
-                        fileNewLocation.remove(payloadTransferUpdate.getPayloadId());
-
-                        payloadFile(payload,foldernamepair);
-                    }
-                }
-            }
-        };
-    }
-    @Override
-    public void turnOffNearby() {
-        Nearby.getConnectionsClient(this).stopAllEndpoints();
-        StaticVariables.isHost = false;
-        StaticVariables.isConnected = false;
-        StaticVariables.usingNearby = false;
-    }
-*/
 
     // Window decoration
     @Override
@@ -1302,7 +899,6 @@ public class StageMode extends AppCompatActivity implements
         // enable swipe after short delay
         // 1800ms delay
         // Called when a drawer has settled in a completely open state.
-
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(StageMode.this, mDrawerLayout, ab_toolbar, R.string.drawer_open, R.string.drawer_close) {
             // Called when a drawer has settled in a completely closed state.
             @Override
@@ -1314,14 +910,12 @@ public class StageMode extends AppCompatActivity implements
                     StaticVariables.whichOptionMenu = "MAIN";
                     prepareOptionMenu();
                 }, 300);
-
                 // Set a runnable to re-enable swipe
                 Handler allowswipe = new Handler();
                 allowswipe.postDelayed(() -> {
                     FullscreenActivity.tempswipeSet = "enable"; // enable swipe after short delay
                 }, FullscreenActivity.delayswipe_time); // 1800ms delay
                 hideActionBar();
-
                 // Make sure all dynamic (scroll and set) buttons display
                 onScrollAction();
             }
@@ -1858,148 +1452,6 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.nextSongIndex = position+1;
         } else {
             FullscreenActivity.nextSongIndex = position;
-        }
-    }
-
-    @Override
-    public void loadSong() {
-        try {
-            // Only do this once - if we are the process of loading a song already, don't try to do it again!
-            if (!FullscreenActivity.alreadyloading) {
-                // It will get set back to false in the post execute of the async task
-                FullscreenActivity.alreadyloading = true;
-
-                // Clear any queued 'after song display' activity - we are moving to a new song
-                startCapoAnimationHandler.removeCallbacks(startCapoAnimationRunnable);
-                startAutoscrollHandler.removeCallbacks(startAutoscrollRunnable);
-                showStickyHandler.removeCallbacks(showStickyRunnable);
-
-                // If there is a sticky note showing, remove it early
-                if (stickyPopUpWindow != null && stickyPopUpWindow.isShowing()) {
-                    try {
-                        stickyPopUpWindow.dismiss();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                // Check for set song
-                StaticVariables.setView = setActions.isSongInSet(StageMode.this, preferences);
-
-                // Sort the text size and colour of the info stuff
-                updateExtraInfoColorsAndSizes("capo");
-                updateExtraInfoColorsAndSizes("pad");
-                updateExtraInfoColorsAndSizes("metronome");
-
-                // Set the focus
-                // Don't do this for a blacklisted filetype (application, video, audio)
-                String where = "Songs";
-                String folder = StaticVariables.whichSongFolder;
-
-                // Watch out for custom items
-                if (folder.startsWith("../")) {
-                    where = "";
-                    folder = folder.replace("../", "");
-                }
-
-                Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, where, folder,
-                        StaticVariables.songfilename);
-
-                if (!storageAccess.checkFileExtensionValid(uri) && !storageAccess.determineFileTypeByExtension()) {
-                    StaticVariables.myToastMessage = getResources().getString(R.string.file_type_unknown);
-                    ShowToast.showToast(StageMode.this);
-                } else {
-                    newsongloaded = true;
-
-                    // Animate out the current song
-                    if (FullscreenActivity.whichDirection.equals("L2R")) {
-                        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-                            glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
-                        } else if (songscrollview != null) {
-                            songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
-                        }
-                    } else {
-                        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-                            glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
-                        } else if (songscrollview != null) {
-                            songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
-                        }
-                    }
-                    // If there were highlight notes showing, move them away
-                    if (StaticVariables.whichMode.equals("Performance") && highlightNotes != null && highlightNotes.getVisibility() == View.VISIBLE) {
-                        if (FullscreenActivity.whichDirection.equals("L2R")) {
-                            highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
-                        } else if (highlightNotes != null) {
-                            highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
-                        }
-                    }
-
-                    // Remove any capokey
-                    FullscreenActivity.capokey = "";
-                    // IV - Clear capo info and animation - prevents disturbance with display of new song
-                    capoInfo.setVisibility(View.GONE);
-                    capoinfonewkey.setVisibility(View.GONE);
-                    capoInfo.clearAnimation();
-
-                    // End any current autoscroll
-                    if (StaticVariables.isautoscrolling) {
-                        stopAutoScroll();
-                    }
-
-                    // IV - Pad time display handled elsewhere
-                    // After animate out, load the song
-                    Handler h = new Handler();
-                    h.postDelayed(() -> {
-                        Log.d("d","loadSong() called - Runnable going");
-                        try {
-                            glideimage_HorizontalScrollView.setVisibility(View.GONE);
-                            glideimage_ScrollView.setVisibility(View.GONE);
-                            songscrollview.setVisibility(View.GONE);
-                            highlightNotes.setVisibility(View.GONE);
-                            FullscreenActivity.highlightOn = false;
-                            glideimage_ScrollView.scrollTo(0, 0);
-                            songscrollview.scrollTo(0, 0);
-
-                            // Hide the image, cause we might be loading a proper song!
-                            glideimage.setBackgroundColor(StaticVariables.transparent);
-                            glideimage.setImageDrawable(null);
-
-                        } catch (Exception e) {
-                            Log.d("StageMode", "error updating the views");
-                        }
-                        // Load the song
-                        doCancelAsyncTask(loadsong_async);
-
-                        // Stop the metronome if loading a new song.  Trying afterwards stops the async starting!
-                        // TODO
-                        Log.d("d","loadSong()  StaticVariables.reloadOfSong="+StaticVariables.reloadOfSong + "  StaticVariables.clickedOnMetronomeStart="+StaticVariables.clickedOnMetronomeStart);
-                        // Do not touch on a reload
-                        if (!StaticVariables.reloadOfSong) {
-                            // Stop it - clickedOnMetronomeStart is the indicator that it was playing
-                            if (StaticVariables.clickedOnMetronomeStart) {
-                                gesture7();  // This also sets StaticVariables.clickedOnMetronomeStart to false;
-                                // Set this variable back as we want the metronome to restart after song load.
-                                StaticVariables.clickedOnMetronomeStart = true;
-                            }
-                        }
-
-                        // IV - added a few more tasks to cancel
-                        doCancelAsyncTask(resizestage_async);
-                        doCancelAsyncTask(resizeperformance_async);
-                        loadsong_async = new LoadSongAsync();
-                        try {
-                            Log.d("d","loadSong() called - about to start async load");
-                            loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }, 300);
-                    // Make sure all dynamic (scroll and set) buttons display
-                    onScrollAction();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -3894,6 +3346,8 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void goToNextItem() {
+        dealtwithaspdf = false;
+
         // IV - Stops errors on rapid song changes
         if (!FullscreenActivity.alreadyloading) {
             FullscreenActivity.whichDirection = "R2L";
@@ -3903,9 +3357,12 @@ public class StageMode extends AppCompatActivity implements
             if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1)) {
                 FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent + 1;
 
-                // Load the next pdf page
-                dealtwithaspdf = true;
-                loadSong();
+            // GE Added this to stop the pad reloading between PDF pages
+            StaticVariables.reloadOfSong = false;
+
+            // Load the next pdf page
+            dealtwithaspdf = true;
+            loadSong();
 
             } else {
                 FullscreenActivity.pdfPageCurrent = 0;
@@ -4414,13 +3871,18 @@ public class StageMode extends AppCompatActivity implements
         // IV - Stops errors on rapid song changes
         if (!FullscreenActivity.alreadyloading) {
             FullscreenActivity.whichDirection = "L2R";
-            boolean dealtwithaspdf = false;
+            dealtwithaspdf = false;
             StaticVariables.showstartofpdf = true; // Default value - change later if need be
 
             // If this is a PDF, check we can't move pages
             if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0) {
                 FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent - 1;
                 dealtwithaspdf = true;
+
+            // GE Added this to stop the pad reloading between PDF pages
+            StaticVariables.reloadOfSong = false;
+
+
                 loadSong();
             } else {
                 FullscreenActivity.pdfPageCurrent = 0;
@@ -7314,6 +6776,147 @@ public class StageMode extends AppCompatActivity implements
         return oktogo;
     }
 
+    @Override
+    public void loadSong() {
+        try {
+            // Only do this once - if we are the process of loading a song already, don't try to do it again!
+            if (!FullscreenActivity.alreadyloading) {
+                // It will get set back to false in the post execute of the async task
+                FullscreenActivity.alreadyloading = true;
+
+                // Clear any queued 'after song display' activity - we are moving to a new song
+                startCapoAnimationHandler.removeCallbacks(startCapoAnimationRunnable);
+                startAutoscrollHandler.removeCallbacks(startAutoscrollRunnable);
+                showStickyHandler.removeCallbacks(showStickyRunnable);
+
+                // If there is a sticky note showing, remove it early
+                if (stickyPopUpWindow != null && stickyPopUpWindow.isShowing()) {
+                    try {
+                        stickyPopUpWindow.dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                // Check for set song
+                StaticVariables.setView = setActions.isSongInSet(StageMode.this, preferences);
+
+                // Sort the text size and colour of the info stuff
+                updateExtraInfoColorsAndSizes("capo");
+                updateExtraInfoColorsAndSizes("pad");
+                updateExtraInfoColorsAndSizes("metronome");
+
+                // Set the focus
+                // Don't do this for a blacklisted filetype (application, video, audio)
+                String where = "Songs";
+                String folder = StaticVariables.whichSongFolder;
+
+                // Watch out for custom items
+                if (folder.startsWith("../")) {
+                    where = "";
+                    folder = folder.replace("../", "");
+                }
+
+                Uri uri = storageAccess.getUriForItem(StageMode.this, preferences, where, folder,
+                        StaticVariables.songfilename);
+
+                if (!storageAccess.checkFileExtensionValid(uri) && !storageAccess.determineFileTypeByExtension()) {
+                    StaticVariables.myToastMessage = getResources().getString(R.string.file_type_unknown);
+                    ShowToast.showToast(StageMode.this);
+                } else {
+                    newsongloaded = true;
+
+                    // Animate out the current song
+                    if (FullscreenActivity.whichDirection.equals("L2R")) {
+                        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                            glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
+                        } else if (songscrollview != null) {
+                            songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
+                        }
+                    } else {
+                        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                            glideimage_ScrollView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
+                        } else if (songscrollview != null) {
+                            songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
+                        }
+                    }
+                    // If there were highlight notes showing, move them away
+                    if (StaticVariables.whichMode.equals("Performance") && highlightNotes != null && highlightNotes.getVisibility() == View.VISIBLE) {
+                        if (FullscreenActivity.whichDirection.equals("L2R")) {
+                            highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
+                        } else if (highlightNotes != null) {
+                            highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
+                        }
+                    }
+
+                    // Remove any capokey
+                    FullscreenActivity.capokey = "";
+                    // IV - Clear capo info and animation - prevents disturbance with display of new song
+                    capoInfo.setVisibility(View.GONE);
+                    capoinfonewkey.setVisibility(View.GONE);
+                    capoInfo.clearAnimation();
+
+                    // End any current autoscroll
+                    if (StaticVariables.isautoscrolling) {
+                        stopAutoScroll();
+                    }
+
+                    // IV - Pad time display handled elsewhere
+                    // After animate out, load the song
+                    Handler h = new Handler();
+                    h.postDelayed(() -> {
+                        Log.d("d","loadSong() called - Runnable going");
+                        try {
+                            glideimage_HorizontalScrollView.setVisibility(View.GONE);
+                            glideimage_ScrollView.setVisibility(View.GONE);
+                            songscrollview.setVisibility(View.GONE);
+                            highlightNotes.setVisibility(View.GONE);
+                            FullscreenActivity.highlightOn = false;
+                            glideimage_ScrollView.scrollTo(0, 0);
+                            songscrollview.scrollTo(0, 0);
+
+                            // Hide the image, cause we might be loading a proper song!
+                            glideimage.setBackgroundColor(StaticVariables.transparent);
+                            glideimage.setImageDrawable(null);
+
+                        } catch (Exception e) {
+                            Log.d("StageMode", "error updating the views");
+                        }
+                        // Load the song
+                        doCancelAsyncTask(loadsong_async);
+
+                        // Stop the metronome if loading a new song.  Trying afterwards stops the async starting!
+                        // TODO
+                        Log.d("d","loadSong()  StaticVariables.reloadOfSong="+StaticVariables.reloadOfSong + "  StaticVariables.clickedOnMetronomeStart="+StaticVariables.clickedOnMetronomeStart);
+                        // Do not touch on a reload
+                        if (!StaticVariables.reloadOfSong) {
+                            // Stop it - clickedOnMetronomeStart is the indicator that it was playing
+                            if (StaticVariables.clickedOnMetronomeStart) {
+                                gesture7();  // This also sets StaticVariables.clickedOnMetronomeStart to false;
+                                // Set this variable back as we want the metronome to restart after song load.
+                                StaticVariables.clickedOnMetronomeStart = true;
+                            }
+                        }
+
+                        // IV - added a few more tasks to cancel
+                        doCancelAsyncTask(resizestage_async);
+                        doCancelAsyncTask(resizeperformance_async);
+                        loadsong_async = new LoadSongAsync();
+                        try {
+                            Log.d("d","loadSong() called - about to start async load");
+                            loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }, 300);
+                    // Make sure all dynamic (scroll and set) buttons display
+                    onScrollAction();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @SuppressLint("StaticFieldLeak")
     private class LoadSongAsync extends AsyncTask<Object, Void, String> {
         @Override
@@ -7514,14 +7117,17 @@ public class StageMode extends AppCompatActivity implements
                         prepareView();
                     }
 
+                    Log.d("StageMode","clickedOnPadStart="+StaticVariables.clickedOnPadStart+"   reloadOfSong="+StaticVariables.reloadOfSong+"    dealtwithaspdf="+dealtwithaspdf);
                     // Do the pad fade and play here after display. This ensures a good cross-fade once the song is displayed
                     if (StaticVariables.clickedOnPadStart) {
                         // Do not touch on a reload
-                        if (!StaticVariables.reloadOfSong) {
+                        // GE Added in extra check to stop pads crossfading between pdf page changes
+                        if (!StaticVariables.reloadOfSong && !(FullscreenActivity.isPDF && dealtwithaspdf)) {
                             // If pads were already playing (previous song), start them up again if wanted
                             // Don't redo this if the orientation has changed (causing a reload)
                             // Stop restarting the pads if changing portrait/landscape
                             // Only play if this isn't called by an orientation change
+                            // Or moving between the pages of a PDF
 
                             if (preferences.getMyPreferenceBoolean(StageMode.this, "padAutoStart", false) &&
                                     FullscreenActivity.isSong &&
@@ -8602,6 +8208,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    // Start or stop the metronome
     @Override
     public void gesture7() {
         DoVibrate.vibrate(StageMode.this, 50);

@@ -131,7 +131,7 @@ class TextSongConvert {
             // Get the average length of the bits
             if (numnonempties > 0 && totalsize > 0) {
                 float avlength = (float) totalsize / (float) numnonempties;
-                float percentageused = ((float)totalsize/(float)l.length())*100;
+                float percentageused = ((float) totalsize / (float) l.length()) * 100;
 
                 // To try and identify chords, experience shows that the average length is
                 // less than 2.4 or that the percentage used is less than 25%
@@ -139,10 +139,12 @@ class TextSongConvert {
 
                 if (avlength < 2.4 || percentageused < 25) {
                     // Likely a chord line, so add a "."
-                    l = "." + l.substring(1);
+                    l = "." + l;
                 } else {
                     // Likely a lyric line, so add a " "
-                    l = " " + l.substring(1);
+                    if (!l.startsWith(" ")) {
+                        l = " " + l;
+                    }
                 }
             }
         }

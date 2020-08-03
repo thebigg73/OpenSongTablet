@@ -56,7 +56,7 @@ class UsrConvert {
         songSubFolder = chordProConvert.getSongFolderLocation(storageAccess, uri, oldSongFileName);
 
         // Prepare the new song filename
-        newSongFileName = chordProConvert.getNewSongFileName(uri, title);
+        newSongFileName = chordProConvert.getNewSongFileName(storageAccess,uri,title);
 
         // Get a unique uri for the new song
         Uri newUri = chordProConvert.getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);
@@ -130,7 +130,7 @@ class UsrConvert {
                 tags = tags.replace(c.getResources().getString(R.string.tag_bridge) + " ", "B");
                 tags = tags.replace(c.getResources().getString(R.string.tag_bridge), "B");
                 tags = tags.replace(c.getResources().getString(R.string.tag_prechorus) + " ", "P");
-                tags = tags.replace(c.getResources().getString(R.string.tag_prechorus), "P");
+                tags = tags.replace(c.getResources().getString(R.string.tag_prechorus), "B");
                 tags = tags.replace(c.getResources().getString(R.string.tag_chorus) + " ", "C");
                 tags = tags.replace(c.getResources().getString(R.string.tag_chorus), "C");
                 tags = tags.replace(c.getResources().getString(R.string.tag_verse) + " ", "V");

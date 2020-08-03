@@ -1,14 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +16,11 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -44,7 +46,8 @@ public class PopUpSongRenameFragment extends DialogFragment {
     private void doSave() {
         // Get the variables
         String tempNewSong = newSongNameEditText.getText().toString().trim();
-
+        tempNewSong = storageAccess.safeFilename(tempNewSong);
+        newSongNameEditText.setText(tempNewSong);
         String tempOldFolder = FullscreenActivity.currentFolder;
         String tempNewFolder = FullscreenActivity.newFolder;
 
@@ -55,9 +58,6 @@ public class PopUpSongRenameFragment extends DialogFragment {
                 tempNewSong = tempNewSong + ".pdf";
             }
         }
-
-        storageAccess = new StorageAccess();
-        preferences = new Preferences();
 
         Uri from = storageAccess.getUriForItem(getActivity(), preferences, "Songs", tempOldFolder, oldsongname);
         Uri to = storageAccess.getUriForItem(getActivity(), preferences, "Songs", tempNewFolder, tempNewSong);
@@ -144,10 +144,9 @@ public class PopUpSongRenameFragment extends DialogFragment {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        mListener = (MyInterface) context;
+        super.onAttach(context);
     }
 
     @Override
@@ -179,22 +178,15 @@ public class PopUpSongRenameFragment extends DialogFragment {
             title.setText(getResources().getString(R.string.rename));
         }
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
-                //saveMe.setEnabled(false);
-                doSave();
-            }
+        saveMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(saveMe,getActivity());
+            doSave();
         });
 
         storageAccess = new StorageAccess();
@@ -211,7 +203,7 @@ public class PopUpSongRenameFragment extends DialogFragment {
         newSongNameEditText = V.findViewById(R.id.newSongNameEditText);
 
         oldsongname = StaticVariables.songfilename;
-        newSongNameEditText.setText(oldsongname);
+        newSongNameEditText.setText(storageAccess.safeFilename(oldsongname));
         isPDF = oldsongname.endsWith(".pdf") || oldsongname.endsWith(".PDF");
 
         // Set up the folderspinner
@@ -276,7 +268,7 @@ public class PopUpSongRenameFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         if (getfolders!=null) {
             getfolders.cancel(true);
         }
