@@ -510,5 +510,4 @@
     <string name="connections_enable">Aktivera anslutningar i närheten</string>
     <string name="bold_chords_headings">Visa ackord och rubriker med fet stil</string>
     <string name="warn_before_changing_song">Visa en varning innan du går till nästa låt (användbart för att undvika oavsiktliga tryck)</string>
-    <string name="bold_text">Visa texter med fet stil</string>
 </resources>

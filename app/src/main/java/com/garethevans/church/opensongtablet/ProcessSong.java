@@ -1257,11 +1257,6 @@ public class ProcessSong extends Activity {
 
             TextView lyricbit = new TextView(c);
 
-            if (StaticVariables.whichMode.equals("Presentation") && !preferences.getMyPreferenceBoolean(c,"presoShowChords",false)) {
-                // Temp fix to ensure space either side.  Not an issue in proposed MaterialApp where view is zoomed instead of scaling fontsize
-                bit = bit + "  ";
-            }
-
             if (StaticVariables.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout &&
                     !preferences.getMyPreferenceBoolean(c,"presoShowChords",false)) {
                 lyricbit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -1275,10 +1270,8 @@ public class ProcessSong extends Activity {
             }
             lyricbit.setTextSize(fontsize);
             if (StaticVariables.whichMode.equals("Presentation")) {
+
                 lyricbit.setTextColor(presoFontColor);
-                if (preferences.getMyPreferenceBoolean(c, "presoLyricsBold", false)) {
-                    lyricbit.setPaintFlags(lyricbit.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
-                }
                 lyricbit.setTypeface(StaticVariables.typefacePreso);
 
                 int w = StaticVariables.cast_availableWidth_1col;
@@ -1294,7 +1287,6 @@ public class ProcessSong extends Activity {
                 }
 
             } else {
-                Log.d("ProcessSong","Performance: bit="+bit+"    Color="+lyricsTextColor);
                 lyricbit.setTextColor(lyricsTextColor);
                 lyricbit.setTypeface(StaticVariables.typefaceLyrics);
             }
@@ -1416,9 +1408,6 @@ public class ProcessSong extends Activity {
             if (StaticVariables.whichMode.equals("Presentation")) {
                 lyricbit.setTextColor(presoFontColor);
                 lyricbit.setTypeface(StaticVariables.typefacePreso);
-                if (preferences.getMyPreferenceBoolean(c, "presoLyricsBold", false)) {
-                    lyricbit.setPaintFlags(lyricbit.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
-                }
 
             } else {
                 lyricbit.setTextColor(lyricsTextColor);
@@ -2766,13 +2755,12 @@ public class ProcessSong extends Activity {
 
     float getProjectedFontSize(float scale) {
         float tempfontsize = 12.0f * scale;
-        Log.d("ProcessSong","tempfontsize="+tempfontsize);
         int start = (int) tempfontsize;
         float end = tempfontsize - start;
         if (end<0.5) {
-            return (float) start - 0.4f;
+            return (float) start - 0.1f;
         } else {
-            return (float) start;
+            return (float) start + 0.4f;
         }
     }
 

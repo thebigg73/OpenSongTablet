@@ -510,5 +510,4 @@
     <string name="connections_actashost">Выступать в качестве хозяина</string>
     <string name="connections_keephostsongs">Хранить песни хозяина</string>
     <string name="location_rationale">Эта функция требуется для поиска других сетевых устройств</string>
-    <string name="bold_text">Показать текст жирным шрифтом</string>
 </resources>

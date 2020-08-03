@@ -56,7 +56,7 @@ class UsrConvert {
         songSubFolder = chordProConvert.getSongFolderLocation(storageAccess, uri, oldSongFileName);
 
         // Prepare the new song filename
-        newSongFileName = chordProConvert.getNewSongFileName(storageAccess,uri,title);
+        newSongFileName = chordProConvert.getNewSongFileName(uri, title);
 
         // Get a unique uri for the new song
         Uri newUri = chordProConvert.getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);

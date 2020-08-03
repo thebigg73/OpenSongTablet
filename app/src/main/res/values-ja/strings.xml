@@ -510,5 +510,4 @@
     <string name="connections_enable">近くの接続を有効にする</string>
     <string name="bold_chords_headings">コードと見出しを太字で表示する</string>
     <string name="warn_before_changing_song">次の曲に移動する前に警告を表示します（誤って押すのを防ぐのに役立ちます）</string>
-    <string name="bold_text">歌詞を太字で表示する</string>
 </resources>

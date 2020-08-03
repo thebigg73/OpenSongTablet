@@ -510,5 +510,4 @@
     <string name="connections_enable">A közeli kapcsolatok engedélyezése</string>
     <string name="bold_chords_headings">Az akkordok és a fejlécek vastag betűvel jelennek meg</string>
     <string name="warn_before_changing_song">Mutasson figyelmeztetést, mielőtt a következő dalra lépne (hasznos a véletlen megnyomás elkerülése érdekében)</string>
-    <string name="bold_text">A dalszövegeket vastag betűvel jelenítheti meg</string>
 </resources>
