@@ -1269,7 +1269,7 @@ public class ProcessSong extends Activity {
             }
             lyricbit.setLayoutParams(tablerow_params());
             // IV - Only use if the bit is not 'empty'.  This means the chord line spacing is used
-            if (bit.replace(" ","") != "") {
+            if (!bit.replace(" ","").isEmpty()) {
                 lyricbit.setText(bit);
             }
             lyricbit.setTextSize(fontsize);
