@@ -346,11 +346,6 @@ public class StageMode extends AppCompatActivity implements
     private Handler presoinfohandler;
     private Handler customhandler;
 
-    //TODO REMOVE
-    /*/
-    private ArrayList<String> connectedEndPoints;
-    private ArrayList<String> connectedEndPointsNames;*/
-
     // Network discovery / connections
     NearbyConnections nearbyConnections;
 
@@ -521,10 +516,6 @@ public class StageMode extends AppCompatActivity implements
             // Set up the Nearby connection service
             getBluetoothName();
             nearbyConnections.getUserNickname();
-
-            //TODO REMOVE
-            /*connectedEndPoints = new ArrayList<>();
-            connectedEndPointsNames = new ArrayList<>();*/
 
             dealWithIntent();
 
@@ -5431,6 +5422,7 @@ public class StageMode extends AppCompatActivity implements
             blockActionOnKeyUp = false;
         }, 300);
 
+
         // Load the whichSongFolder in case we were browsing elsewhere
         StaticVariables.whichSongFolder = preferences.getMyPreferenceString(StageMode.this,"whichSongFolder",getString(R.string.mainfoldername));
 
@@ -6886,8 +6878,6 @@ public class StageMode extends AppCompatActivity implements
                         doCancelAsyncTask(loadsong_async);
 
                         // Stop the metronome if loading a new song.  Trying afterwards stops the async starting!
-                        // TODO
-                        Log.d("d","loadSong()  StaticVariables.reloadOfSong="+StaticVariables.reloadOfSong + "  StaticVariables.clickedOnMetronomeStart="+StaticVariables.clickedOnMetronomeStart);
                         // Do not touch on a reload
                         if (!StaticVariables.reloadOfSong) {
                             // Stop it - clickedOnMetronomeStart is the indicator that it was playing
