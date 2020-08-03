@@ -73,10 +73,10 @@ class ExportPreparer {
         // If the user has requested to attach a .txt version of the set
         if (preferences.getMyPreferenceBoolean(c,"exportText",true)) {
             texturi = storageAccess.getFileProviderUri(c, preferences, "Export", "",
-                    storageAccess.safeFilename(StaticVariables.settoload)+".txt");
+                    StaticVariables.settoload+".txt");
 
             // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, texturi, null, "Export", "", storageAccess.safeFilename(StaticVariables.settoload) + ".txt");
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, texturi, null, "Export", "", StaticVariables.settoload + ".txt");
 
             // Write the set text file
             OutputStream outputStream = storageAccess.getOutputStream(c,texturi);
@@ -96,10 +96,10 @@ class ExportPreparer {
             // Copy the set file to an .osts file
             InputStream inputStream = storageAccess.getInputStream(c,seturi);
 
-            ostsuri = storageAccess.getFileProviderUri(c, preferences, "Export", "", storageAccess.safeFilename(StaticVariables.settoload) + ".osts");
+            ostsuri = storageAccess.getFileProviderUri(c, preferences, "Export", "", StaticVariables.settoload + ".osts");
 
             // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, ostsuri, null, "Export", "", storageAccess.safeFilename(StaticVariables.settoload) + ".osts");
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, ostsuri, null, "Export", "", StaticVariables.settoload + ".osts");
 
             OutputStream outputStream = storageAccess.getOutputStream(c,ostsuri);
             storageAccess.copyFile(inputStream,outputStream);
@@ -147,9 +147,9 @@ class ExportPreparer {
                     InputStream inputStream = storageAccess.getInputStream(c,songtoload);
                     if (inputStream != null) {
                         Uri ostsongcopy = storageAccess.getFileProviderUri(c, preferences, "Notes", "_cache",
-                                storageAccess.safeFilename(tempsong_ost) + ".ost");
+                                tempsong_ost + ".ost");
                         // Check the uri exists for the outputstream to be valid
-                        storageAccess.lollipopCreateFileForOutputStream(c, preferences, ostsongcopy, null, "Notes", "_cache", storageAccess.safeFilename(tempsong_ost) + ".ost");
+                        storageAccess.lollipopCreateFileForOutputStream(c, preferences, ostsongcopy, null, "Notes", "_cache", tempsong_ost + ".ost");
                         OutputStream outputStream = storageAccess.getOutputStream(c, ostsongcopy);
                         storageAccess.copyFile(inputStream, outputStream);
                         uris.add(ostsongcopy);
@@ -196,10 +196,10 @@ class ExportPreparer {
         emailcontent += exportText_String;
         if (preferences.getMyPreferenceBoolean(c,"exportText",true)) {
             text = storageAccess.getUriForItem(c, preferences, "Export", "",
-                    storageAccess.safeFilename(StaticVariables.songfilename)+".txt");
+                    StaticVariables.songfilename+".txt");
 
             // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, text, null, "Export", "", storageAccess.safeFilename(StaticVariables.songfilename) + ".txt");
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, text, null, "Export", "", StaticVariables.songfilename + ".txt");
 
             OutputStream outputStream = storageAccess.getOutputStream(c,text);
             storageAccess.writeFileFromString(exportText_String,outputStream);
@@ -208,10 +208,10 @@ class ExportPreparer {
         if (preferences.getMyPreferenceBoolean(c,"exportOpenSongApp",true)) {
             // Prepare an ost version of the song.
             ost = storageAccess.getUriForItem(c, preferences, "Export", "",
-                    storageAccess.safeFilename(StaticVariables.songfilename)+".ost");
+                    StaticVariables.songfilename+".ost");
 
             // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, ost, null, "Export", "", storageAccess.safeFilename(StaticVariables.songfilename) + ".ost");
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, ost, null, "Export", "", StaticVariables.songfilename + ".ost");
 
             inputStream = storageAccess.getInputStream(c, uriinput);
             OutputStream outputStream = storageAccess.getOutputStream(c,ost);
@@ -222,10 +222,10 @@ class ExportPreparer {
         if (preferences.getMyPreferenceBoolean(c,"exportDesktop",false)) {
             // Prepare a desktop version of the song.
             desktop = storageAccess.getUriForItem(c, preferences, "Export", "",
-                    storageAccess.safeFilename(StaticVariables.songfilename));
+                    StaticVariables.songfilename);
 
             // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, desktop, null, "Export", "", storageAccess.safeFilename(StaticVariables.songfilename));
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, desktop, null, "Export", "", StaticVariables.songfilename);
 
             inputStream = storageAccess.getInputStream(c, uriinput);
             OutputStream outputStream = storageAccess.getOutputStream(c,desktop);
@@ -236,10 +236,10 @@ class ExportPreparer {
             // Prepare a chordpro version of the song.
             String exportChordPro_String = prepareChordProFile(c,processSong);
             chopro = storageAccess.getUriForItem(c, preferences, "Export", "",
-                    storageAccess.safeFilename(StaticVariables.songfilename)+".chopro");
+                    StaticVariables.songfilename+".chopro");
 
             // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, chopro, null, "Export", "", storageAccess.safeFilename(StaticVariables.songfilename) + ".chopro");
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, chopro, null, "Export", "", StaticVariables.songfilename + ".chopro");
 
             OutputStream outputStream = storageAccess.getOutputStream(c,chopro);
             storageAccess.writeFileFromString(exportChordPro_String,outputStream);
@@ -249,10 +249,10 @@ class ExportPreparer {
             // Prepare an onsong version of the song.
             String exportOnSong_String = prepareOnSongFile(c, processSong);
             onsong = storageAccess.getUriForItem(c, preferences, "Export", "",
-                    storageAccess.safeFilename(StaticVariables.songfilename)+".onsong");
+                    StaticVariables.songfilename+".onsong");
 
             // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, onsong, null, "Export", "", storageAccess.safeFilename(StaticVariables.songfilename) + ".onsong");
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, onsong, null, "Export", "", StaticVariables.songfilename + ".onsong");
 
             OutputStream outputStream = storageAccess.getOutputStream(c,onsong);
             storageAccess.writeFileFromString(exportOnSong_String,outputStream);
@@ -262,10 +262,10 @@ class ExportPreparer {
         if (StaticVariables.whichMode.equals("Performance") && preferences.getMyPreferenceBoolean(c,"exportPDF",false)) {
             // Prepare a pdf version of the song.
             pdf = storageAccess.getUriForItem(c, preferences, "Export", "",
-                    storageAccess.safeFilename(StaticVariables.songfilename)+".pdf");
+                    StaticVariables.songfilename+".pdf");
 
             // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, pdf, null, "Export", "", storageAccess.safeFilename(StaticVariables.songfilename) + ".pdf");
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, pdf, null, "Export", "", StaticVariables.songfilename + ".pdf");
 
             Bitmap pdfbmp = bmp.copy(bmp.getConfig(),true);
 
@@ -276,10 +276,10 @@ class ExportPreparer {
                 preferences.getMyPreferenceBoolean(c,"exportImage",false)) {
             // Prepare an image/png version of the song.
             image = storageAccess.getUriForItem(c, preferences, "Export", "",
-                    storageAccess.safeFilename(StaticVariables.songfilename)+".png");
+                    StaticVariables.songfilename+".png");
 
             // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, image, null, "Export", "", storageAccess.safeFilename(StaticVariables.songfilename) + ".png");
+            storageAccess.lollipopCreateFileForOutputStream(c, preferences, image, null, "Export", "", StaticVariables.songfilename + ".png");
 
             OutputStream outputStream = storageAccess.getOutputStream(c,image);
             storageAccess.writeImage(outputStream, bmp);
@@ -821,6 +821,9 @@ class ExportPreparer {
 
         String string = s.toString();
         string = string.replace("\n\n\n", "\n\n");
+        // IV - remove empty comments
+        string = string.replace("{c:}\n", "");
+
         return string;
     }
     private String prepareTextFile(Context c, Preferences preferences, ProcessSong processSong) {

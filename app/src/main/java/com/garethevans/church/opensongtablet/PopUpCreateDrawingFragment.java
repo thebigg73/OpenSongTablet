@@ -1,12 +1,15 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +20,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.OutputStream;
 import java.util.Objects;
@@ -41,9 +39,10 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
     private MyInterface mListener;
 
     @Override
-    public void onAttach(@NonNull Context context) {
-        mListener = (MyInterface) context;
-        super.onAttach(context);
+    @SuppressWarnings("deprecation")
+    public void onAttach(Activity activity) {
+        mListener = (MyInterface) activity;
+        super.onAttach(activity);
     }
 
     @Override
@@ -61,7 +60,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(@NonNull DialogInterface dialog) {
+    public void onCancel(DialogInterface dialog) {
         this.dismiss();
     }
 
@@ -101,14 +100,22 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText("");
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe, getActivity());
-            closeMe.setEnabled(false);
-            dismiss();
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe, getActivity());
+                closeMe.setEnabled(false);
+                dismiss();
+            }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setEnabled(true);
-        saveMe.setOnClickListener(view -> doSave());
+        saveMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                doSave();
+            }
+        });
 
         storageAccess = new StorageAccess();
         preferences = new Preferences();
@@ -154,23 +161,71 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         setCurrentSize();
 
         // Listen for clicks
-        currentTool.setOnClickListener(view -> {
-            if (myTools.getVisibility() == View.GONE) {
-                showorhideToolOptions(isvis);
-            } else {
-                showorhideToolOptions(isgone);
+        currentTool.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (myTools.getVisibility() == View.GONE) {
+                    showorhideToolOptions(isvis);
+                } else {
+                    showorhideToolOptions(isgone);
+                }
             }
         });
 
-        pencil_FAB.setOnClickListener(view -> updateTool("pen"));
-        highlighter_FAB.setOnClickListener(view -> updateTool("highlighter"));
-        eraser_FAB.setOnClickListener(view -> updateTool("eraser"));
-        color_black.setOnClickListener(view -> updateColor(StaticVariables.black));
-        color_white.setOnClickListener(view -> updateColor(StaticVariables.white));
-        color_yellow.setOnClickListener(view -> updateColor(StaticVariables.yellow));
-        color_red.setOnClickListener(view -> updateColor(StaticVariables.red));
-        color_green.setOnClickListener(view -> updateColor(StaticVariables.green));
-        color_blue.setOnClickListener(view -> updateColor(StaticVariables.blue));
+        pencil_FAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateTool("pen");
+            }
+        });
+        highlighter_FAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateTool("highlighter");
+            }
+        });
+        eraser_FAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateTool("eraser");
+            }
+        });
+        color_black.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateColor(StaticVariables.black);
+            }
+        });
+        color_white.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateColor(StaticVariables.white);
+            }
+        });
+        color_yellow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateColor(StaticVariables.yellow);
+            }
+        });
+        color_red.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateColor(StaticVariables.red);
+            }
+        });
+        color_green.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateColor(StaticVariables.green);
+            }
+        });
+        color_blue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateColor(StaticVariables.blue);
+            }
+        });
         size_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -183,12 +238,27 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-        delete_FAB.setOnClickListener(view -> drawView.startNew(getActivity(),uri));
+        delete_FAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawView.startNew(getActivity(),uri);
+            }
+        });
         // Hide the undo/redo buttons for now
         //undo_FAB.setVisibility(View.GONE);
-        undo_FAB.setOnClickListener(view -> drawView.undo());
+        undo_FAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawView.undo();
+            }
+        });
         //redo_FAB.setVisibility(View.GONE);
-        redo_FAB.setOnClickListener(view -> drawView.redo());
+        redo_FAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawView.redo();
+            }
+        });
         showorhideToolOptions(isgone);
 
         // Set the appropriate highlighter file
@@ -426,7 +496,12 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         float max_w_scale = (float)wa/(float)w;
         float max_h_scale = (float)ha/(float)h;
 
-        float scale = Math.min(max_h_scale, max_w_scale);
+        float scale;
+        if (max_h_scale>max_w_scale) {
+            scale = max_w_scale;
+        } else {
+            scale = max_h_scale;
+        }
 
         screenshot_width = (int) (w* scale);
         screenshot_height = (int) (h* scale);

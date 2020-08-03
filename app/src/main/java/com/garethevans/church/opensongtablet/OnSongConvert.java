@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -71,7 +72,7 @@ class OnSongConvert {
         songSubFolder = chordProConvert.getSongFolderLocation(storageAccess, uri, oldSongFileName);
 
         // Prepare the new song filename
-        newSongFileName = chordProConvert.getNewSongFileName(storageAccess, uri, title);
+        newSongFileName = chordProConvert.getNewSongFileName(uri, title);
 
         // By default, set the title to the new filename
         StaticVariables.songfilename = newSongFileName;

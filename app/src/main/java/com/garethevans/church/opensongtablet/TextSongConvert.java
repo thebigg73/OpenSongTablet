@@ -115,7 +115,8 @@ class TextSongConvert {
 
     private String fixChordLines(String l) {
         // Look for chord lines
-        if (!l.startsWith(".") && !l.startsWith("[") && !l.startsWith(";") && !l.startsWith("-")) {
+        // IV - Do not fix lines with with '_' - this can be added to force a lyric line
+        if (!l.startsWith(".") && !l.startsWith("[") && !l.startsWith(";") && !l.startsWith("-") && (!l.contains("_"))) {
             // Do this by splitting the line into sections split by space
             String[] possiblechordline = l.split(" ");
             // Go through each split bit and get the length of the non empty ones.  We'll then average the lengths
@@ -138,13 +139,19 @@ class TextSongConvert {
 
                 if (avlength < 2.4 || percentageused < 25) {
                     // Likely a chord line, so add a "."
-                    l = "." + l;
+                    l = "." + l.substring(1);
                 } else {
                     // Likely a lyric line, so add a " "
-                    if (!l.startsWith(" ")) {
-                        l = " " + l;
-                    }
+                    l = " " + l.substring(1);
                 }
+            }
+        }
+        // IV - An extension to the fix mechanism - put [] at end of any line to have fix convert to a heading
+        if (l.endsWith("[]")) {
+            if (l.startsWith(";")) {
+                l = "[" + l.substring(1).replace("[", "");
+            } else {
+                l = "[" + l.replace("[", "");
             }
         }
         return l;

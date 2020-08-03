@@ -17,13 +17,12 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.DocumentsContract;
-import android.util.Base64;
-import android.util.Log;
-import android.webkit.MimeTypeMap;
-
 import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 import androidx.documentfile.provider.DocumentFile;
+import android.util.Base64;
+import android.util.Log;
+import android.webkit.MimeTypeMap;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -1385,6 +1384,23 @@ class StorageAccess {
         deleteFile(c,uri);
     }
 
+    /*boolean isXML(Uri uri) {
+        boolean isxml = true;
+        if (uri != null && uri.getLastPathSegment()!=null) {
+            String name = uri.getLastPathSegment().toLowerCase(StaticVariables.locale);
+            if (name.endsWith(".pdf") || name.endsWith(".doc") ||
+                    name.endsWith(".jpg") || name.endsWith(".png") ||
+                    name.endsWith(".bmp") || name.endsWith(".gif") ||
+                    name.endsWith(".jpeg") || name.endsWith(".apk") ||
+                    name.endsWith(".txt") || name.endsWith(".zip")) {
+                isxml = false;
+            }
+        } else {
+            isxml = false;
+        }
+        return isxml;
+    }*/
+
     boolean containsXMLTags(Context c, Uri uri) {
         try {
             boolean found = false;
@@ -1567,13 +1583,6 @@ class StorageAccess {
         NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(c);
         NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(c,storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
         nonOpenSongSQLiteHelper.updateSong(c,storageAccess,preferences,nonOpenSongSQLite);
-    }
-
-    public String safeFilename(String filename) {
-        // Remove bad characters from filenames
-        filename = filename.replaceAll("[*?/<>&!#$+\"'{}:@\\\\]",""); // Removes bad characters
-        filename = filename.replaceAll("\\s{2,}", " ");  // Removes double spaces
-        return filename.trim();  // Returns the trimmed value
     }
 
 }
