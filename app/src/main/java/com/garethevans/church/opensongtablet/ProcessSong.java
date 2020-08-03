@@ -961,7 +961,12 @@ public class ProcessSong extends Activity {
         // In order to identify chords at the end of the line
         // (My method looks for a following space)
         // Add a space to the search string.
-        string = " " + string.substring(1) + " ";
+        if (string.length()<1) {
+            // GE Fix for empty line as substring(1) failed for empty lines.
+            string = " ";
+        } else {
+            string = " " + string.substring(1) + " ";
+        }
 
         for (int x = 2; x < string.length(); x++) {
 
@@ -1269,7 +1274,7 @@ public class ProcessSong extends Activity {
             }
             lyricbit.setLayoutParams(tablerow_params());
             // IV - Only use if the bit is not 'empty'.  This means the chord line spacing is used
-            if (bit.replace(" ","") != "") {
+            if (!bit.replace(" ","").isEmpty()) {
                 lyricbit.setText(bit);
             }
             lyricbit.setTextSize(fontsize);
