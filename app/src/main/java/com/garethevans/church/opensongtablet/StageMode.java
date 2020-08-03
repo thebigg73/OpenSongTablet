@@ -899,6 +899,7 @@ public class StageMode extends AppCompatActivity implements
         // enable swipe after short delay
         // 1800ms delay
         // Called when a drawer has settled in a completely open state.
+
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(StageMode.this, mDrawerLayout, ab_toolbar, R.string.drawer_open, R.string.drawer_close) {
             // Called when a drawer has settled in a completely closed state.
             @Override
@@ -910,12 +911,14 @@ public class StageMode extends AppCompatActivity implements
                     StaticVariables.whichOptionMenu = "MAIN";
                     prepareOptionMenu();
                 }, 300);
+
                 // Set a runnable to re-enable swipe
                 Handler allowswipe = new Handler();
                 allowswipe.postDelayed(() -> {
                     FullscreenActivity.tempswipeSet = "enable"; // enable swipe after short delay
                 }, FullscreenActivity.delayswipe_time); // 1800ms delay
                 hideActionBar();
+
                 // Make sure all dynamic (scroll and set) buttons display
                 onScrollAction();
             }
@@ -4684,7 +4687,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void doPedalAction(String action) {
-        drawerOrFragmentActive = mDrawerLayout.isDrawerOpen(songmenu) || mDrawerLayout.isDrawerOpen(optionmenu) || getSupportFragmentManager().getFragments().size() != 0;
+        drawerOrFragmentActive = mDrawerLayout.isDrawerOpen(songmenu) || mDrawerLayout.isDrawerOpen(optionmenu);
         // IV - If in a drawer or fragment restrict to move actions only
         if (drawerOrFragmentActive) {
             switch (action) {
@@ -6705,7 +6708,7 @@ public class StageMode extends AppCompatActivity implements
         // If the app detects more than a set number (reset when onKeyUp/onLongPress) it triggers onLongPress
 
         keyRepeatCount++;
-        if (preferences.getMyPreferenceBoolean(StageMode.this,"airTurnMode",false) && keyRepeatCount>preferences.getMyPreferenceInt(StageMode.this,"keyRepeatCount",20)) {
+        if (preferences.getMyPreferenceBoolean(StageMode.this, "airTurnMode", false) && keyRepeatCount > preferences.getMyPreferenceInt(StageMode.this, "keyRepeatCount", 20)) {
             keyRepeatCount = 0;
             shortKeyPress = false;
             longKeyPress = true;
@@ -6719,15 +6722,14 @@ public class StageMode extends AppCompatActivity implements
             return true;
         }
 
-        if (keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal1Code",21) ||
-                keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal2Code",22) ||
-                keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal3Code",19) ||
-                keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal4Code",20) ||
-                keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal5Code",92) ||
-                keyCode == preferences.getMyPreferenceInt(StageMode.this,"pedal6Code",93)) {
+        if (keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal1Code", 21) ||
+                keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal2Code", 22) ||
+                keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal3Code", 19) ||
+                keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal4Code", 20) ||
+                keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal5Code", 92) ||
+                keyCode == preferences.getMyPreferenceInt(StageMode.this, "pedal6Code", 93)) {
             event.startTracking();
             shortKeyPress = !longKeyPress;
-
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -7212,7 +7214,7 @@ public class StageMode extends AppCompatActivity implements
     // This bit listens for key presses (for page turn and scroll)
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        keyRepeatCount ++;
+        keyRepeatCount++;
         // If we are using an AirTurn pedal it will send repeated signals (onKeyDown then onKeyUp)
         // I'd like to listen for multiple signals and treat them as a longpress instead.
         // Each time on keyUp is detected, we add one to the counter.
@@ -7490,7 +7492,7 @@ public class StageMode extends AppCompatActivity implements
                 scrollMenu("up");
             } else {
                 if (!drawerOrFragmentActive && checkCanScrollUp()) {
-                    if (scrollUpButton!=null && scrollUpButton.getVisibility() == View.VISIBLE) {
+                    if (scrollUpButton != null && scrollUpButton.getVisibility() == View.VISIBLE) {
                         CustomAnimations.animateFAB(scrollUpButton, StageMode.this);
                     }
                     doScrollUp();
@@ -7567,7 +7569,7 @@ public class StageMode extends AppCompatActivity implements
                 scrollMenu("down");
             } else {
                 if (!drawerOrFragmentActive && checkCanScrollDown()) {
-                    if (scrollDownButton!=null && scrollDownButton.getVisibility() == View.VISIBLE) {
+                    if (scrollDownButton != null && scrollDownButton.getVisibility() == View.VISIBLE) {
                         CustomAnimations.animateFAB(scrollDownButton, StageMode.this);
                     }
                     doScrollDown();
@@ -7643,7 +7645,7 @@ public class StageMode extends AppCompatActivity implements
             scrollMenu("up");
         } else {
             if (!drawerOrFragmentActive && checkCanScrollUp()) {
-                CustomAnimations.animateFAB(scrollUpButton,StageMode.this);
+                CustomAnimations.animateFAB(scrollUpButton, StageMode.this);
                 doScrollUp();
                 if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
                     PedalNeedsConfirmTrueAfterDelay();
@@ -7657,7 +7659,7 @@ public class StageMode extends AppCompatActivity implements
             scrollMenu("down");
         } else {
             if (!drawerOrFragmentActive && checkCanScrollDown()) {
-                CustomAnimations.animateFAB(scrollDownButton,StageMode.this);
+                CustomAnimations.animateFAB(scrollDownButton, StageMode.this);
                 doScrollDown();
                 if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
                     PedalNeedsConfirmTrueAfterDelay();

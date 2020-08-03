@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,6 +9,13 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.DialogFragment;
+import androidx.core.view.animation.PathInterpolatorCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,15 +25,6 @@ import android.view.Window;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.core.view.animation.PathInterpolatorCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -55,7 +54,7 @@ public class PopUpSetViewNew extends DialogFragment {
         StringBuilder newsongname = new StringBuilder(StaticVariables.songfilename);
         StorageAccess storageAccess = new StorageAccess();
         Uri uriVariation = storageAccess.getUriForItem(c, preferences, "Variations", "",
-                storageAccess.safeFilename(StaticVariables.songfilename));
+                StaticVariables.songfilename);
 
         // Original file
         Uri uriOriginal = storageAccess.getUriForItem(c, preferences, "Songs", StaticVariables.whichSongFolder,
@@ -66,19 +65,19 @@ public class PopUpSetViewNew extends DialogFragment {
 
         // Check the uri exists for the outputstream to be valid
         storageAccess.lollipopCreateFileForOutputStream(c, preferences, uriVariation, null,
-                "Variations", "", storageAccess.safeFilename(StaticVariables.songfilename));
+                "Variations", "", StaticVariables.songfilename);
 
         OutputStream outputStream = storageAccess.getOutputStream(c, uriVariation);
         storageAccess.copyFile(inputStream, outputStream);
 
         // Fix the song name and folder for loading
-        StaticVariables.songfilename = storageAccess.safeFilename(newsongname.toString());
+        StaticVariables.songfilename = newsongname.toString();
         StaticVariables.whichSongFolder = "../Variations";
-        StaticVariables.whatsongforsetwork = "\"$**_**" + c.getResources().getString(R.string.variation) + "/" + storageAccess.safeFilename(newsongname.toString()) + "_**$";
+        StaticVariables.whatsongforsetwork = "\"$**_**" + c.getResources().getString(R.string.variation) + "/" + newsongname + "_**$";
 
         // Replace the set item with the variation
-        StaticVariables.mSetList[StaticVariables.indexSongInSet] = "**" + c.getResources().getString(R.string.variation) + "/" + storageAccess.safeFilename(newsongname.toString());
-        StaticVariables.mTempSetList.set(StaticVariables.indexSongInSet,"**" + c.getResources().getString(R.string.variation) + "/" + storageAccess.safeFilename(newsongname.toString()));
+        StaticVariables.mSetList[StaticVariables.indexSongInSet] = "**" + c.getResources().getString(R.string.variation) + "/" + newsongname;
+        StaticVariables.mTempSetList.set(StaticVariables.indexSongInSet,"**" + c.getResources().getString(R.string.variation) + "/" + newsongname);
         // Rebuild the mySet variable
         StringBuilder new_mySet = new StringBuilder();
         for (String thisitem : StaticVariables.mSetList) {
@@ -100,9 +99,10 @@ public class PopUpSetViewNew extends DialogFragment {
     private static MyInterface mListener;
 
     @Override
-    public void onAttach(@NonNull Context context) {
-        mListener = (MyInterface) context;
-        super.onAttach(context);
+    @SuppressWarnings("deprecation")
+    public void onAttach(Activity activity) {
+        mListener = (MyInterface) activity;
+        super.onAttach(activity);
     }
 
     @Override
@@ -237,16 +237,22 @@ public class PopUpSetViewNew extends DialogFragment {
         String titletext = Objects.requireNonNull(getActivity()).getResources().getString(R.string.set) + displaySetName();
         title.setText(titletext);
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe, PopUpSetViewNew.this.getActivity());
-            closeMe.setEnabled(false);
-            PopUpSetViewNew.this.dismiss();
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe, PopUpSetViewNew.this.getActivity());
+                closeMe.setEnabled(false);
+                PopUpSetViewNew.this.dismiss();
+            }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setOnClickListener(view -> {
-            PopUpSetViewNew.this.doSave();
-            refresh();
-            close();
+        saveMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopUpSetViewNew.this.doSave();
+                refresh();
+                close();
+            }
         });
         if (FullscreenActivity.whattodo.equals("setitemvariation")) {
             CustomAnimations.animateFAB(saveMe, getActivity());
@@ -295,71 +301,85 @@ public class PopUpSetViewNew extends DialogFragment {
 
         FloatingActionButton listSetTweetButton = V.findViewById(R.id.listSetTweetButton);
         // Set up the Tweet button
-        listSetTweetButton.setOnClickListener(v -> PopUpSetViewNew.this.doExportSetTweet());
+        listSetTweetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopUpSetViewNew.this.doExportSetTweet();
+            }
+        });
         FloatingActionButton info = V.findViewById(R.id.info);
         final LinearLayout helptext = V.findViewById(R.id.helptext);
-        info.setOnClickListener(view -> {
-            if (helptext.getVisibility() == View.VISIBLE) {
-                helptext.setVisibility(View.GONE);
-            } else {
-                helptext.setVisibility(View.VISIBLE);
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (helptext.getVisibility() == View.VISIBLE) {
+                    helptext.setVisibility(View.GONE);
+                } else {
+                    helptext.setVisibility(View.VISIBLE);
+                }
             }
         });
 
         FloatingActionButton set_shuffle = V.findViewById(R.id.shuffle);
-        set_shuffle.setOnClickListener(v -> {
-            // Save any changes to current set first
-            doSave();
+        set_shuffle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Save any changes to current set first
+                doSave();
 
-            if (StaticVariables.mTempSetList == null && StaticVariables.mSetList != null) {
-                // Somehow the temp set list is null, so build it again
-                StaticVariables.mTempSetList = new ArrayList<>();
-                Collections.addAll(StaticVariables.mTempSetList, StaticVariables.mSetList);
-            }
+                if (StaticVariables.mTempSetList == null && StaticVariables.mSetList != null) {
+                    // Somehow the temp set list is null, so build it again
+                    StaticVariables.mTempSetList = new ArrayList<>();
+                    Collections.addAll(StaticVariables.mTempSetList, StaticVariables.mSetList);
+                }
 
-            if (StaticVariables.mTempSetList!=null && StaticVariables.mTempSetList.size()>0) {
-                // Redraw the lists
-                Collections.shuffle(StaticVariables.mTempSetList);
+                if (StaticVariables.mTempSetList!=null && StaticVariables.mTempSetList.size()>0) {
+                    // Redraw the lists
+                    Collections.shuffle(StaticVariables.mTempSetList);
 
-                // Prepare the page for redrawing....
-                StaticVariables.doneshuffle = true;
+                    // Prepare the page for redrawing....
+                    StaticVariables.doneshuffle = true;
 
-                // Run the listener
-                PopUpSetViewNew.this.dismiss();
+                    // Run the listener
+                    PopUpSetViewNew.this.dismiss();
 
-                if (mListener != null) {
-                    mListener.shuffleSongsInSet();
+                    if (mListener != null) {
+                        mListener.shuffleSongsInSet();
+                    }
                 }
             }
         });
 
         FloatingActionButton saveAsProperSet = V.findViewById(R.id.saveAsProperSet);
-        saveAsProperSet.setOnClickListener(view -> {
-            // Save any changes to current set first
-            doSave();
+        saveAsProperSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Save any changes to current set first
+                doSave();
 
-            String lastSetName = preferences.getMyPreferenceString(getActivity(),"setCurrentLastName","");
-            Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Sets", "",
-                    lastSetName);
+                String lastSetName = preferences.getMyPreferenceString(getActivity(),"setCurrentLastName","");
+                Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Sets", "",
+                        lastSetName);
 
-            if (lastSetName==null || lastSetName.equals("")) {
-                FullscreenActivity.whattodo = "saveset";
-                if (mListener != null) {
-                    mListener.openFragment();
-                }
-            } else if (storageAccess.uriExists(getActivity(),uri)) {
-                // Load the are you sure prompt
-                FullscreenActivity.whattodo = "saveset";
-                String setnamenice = lastSetName.replace("__"," / ");
-                String message = getResources().getString(R.string.save) + " \"" + setnamenice + "\"?";
-                StaticVariables.myToastMessage = message;
-                DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
-                newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
-                dismiss();
-            } else {
-                FullscreenActivity.whattodo = "saveset";
-                if (mListener != null) {
-                    mListener.openFragment();
+                if (lastSetName==null || lastSetName.equals("")) {
+                    FullscreenActivity.whattodo = "saveset";
+                    if (mListener != null) {
+                        mListener.openFragment();
+                    }
+                } else if (storageAccess.uriExists(getActivity(),uri)) {
+                    // Load the are you sure prompt
+                    FullscreenActivity.whattodo = "saveset";
+                    String setnamenice = lastSetName.replace("__"," / ");
+                    String message = getResources().getString(R.string.save) + " \'" + setnamenice + "\"?";
+                    StaticVariables.myToastMessage = message;
+                    DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+                    newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
+                    dismiss();
+                } else {
+                    FullscreenActivity.whattodo = "saveset";
+                    if (mListener != null) {
+                        mListener.openFragment();
+                    }
                 }
             }
         });
@@ -466,7 +486,7 @@ public class PopUpSetViewNew extends DialogFragment {
     }
 
     @Override
-    public void onDismiss(@NonNull final DialogInterface dialog) {
+    public void onDismiss(final DialogInterface dialog) {
         if (mListener!=null) {
             mListener.pageButtonAlpha("");
             mListener.windowFlags();
@@ -482,64 +502,67 @@ public class PopUpSetViewNew extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getDialog().setOnKeyListener((dialog, keyCode, event) -> {
-            event.startTracking();
-            longKeyPress = event.isLongPress();
-            boolean actionrecognised;
-            if (event.getAction() == KeyEvent.ACTION_DOWN && !longKeyPress) {
-                Log.d("PopUpSetViewNew", "Pedal listener onKeyDown:" + keyCode);
+        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
                 event.startTracking();
-                // AirTurn pedals don't do long press, but instead autorepeat.  To deal with, count onKeyDown
-                // If the app detects more than a set number (reset when onKeyUp/onLongPress) it triggers onLongPress
-                keyRepeatCount++;
-                if (preferences.getMyPreferenceBoolean(getActivity(), "airTurnMode", false) && keyRepeatCount > preferences.getMyPreferenceInt(getActivity(), "keyRepeatCount", 20)) {
-                    keyRepeatCount = 0;
-                    longKeyPress = true;
-                    doLongKeyPressAction(keyCode);
-                    return true;
-                }
-                return true;
-            } else if (event.getAction() == KeyEvent.ACTION_UP || longKeyPress) {
-                if (longKeyPress) {
+                longKeyPress = event.isLongPress();
+                boolean actionrecognised;
+                if (event.getAction() == KeyEvent.ACTION_DOWN && !longKeyPress) {
+                    Log.d("PopUpSetViewNew", "Pedal listener onKeyDown:" + keyCode);
                     event.startTracking();
-                    actionrecognised = doLongKeyPressAction(keyCode);
-                    Log.d("PopUpSetViewNew", "Is long press!!!");
-                    longKeyPress = false;
-                    keyRepeatCount = 0;
-                    if (actionrecognised) {
+                    // AirTurn pedals don't do long press, but instead autorepeat.  To deal with, count onKeyDown
+                    // If the app detects more than a set number (reset when onKeyUp/onLongPress) it triggers onLongPress
+                    keyRepeatCount++;
+                    if (preferences.getMyPreferenceBoolean(getActivity(), "airTurnMode", false) && keyRepeatCount > preferences.getMyPreferenceInt(getActivity(), "keyRepeatCount", 20)) {
+                        keyRepeatCount = 0;
                         longKeyPress = true;
+                        doLongKeyPressAction(keyCode);
                         return true;
+                    }
+                    return true;
+                } else if (event.getAction() == KeyEvent.ACTION_UP || longKeyPress) {
+                    if (longKeyPress) {
+                        event.startTracking();
+                        actionrecognised = doLongKeyPressAction(keyCode);
+                        Log.d("PopUpSetViewNew", "Is long press!!!");
+                        longKeyPress = false;
+                        keyRepeatCount = 0;
+                        if (actionrecognised) {
+                            longKeyPress = true;
+                            return true;
+                        } else {
+                            return false;
+                        }
                     } else {
+                        // onKeyUp
+                        keyRepeatCount = 0;
+
+                        Log.d("PopUpSetViewNew", "Pedal listener onKeyUp:" + keyCode);
+                        if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal1Code", 21)) {
+                            doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal1ShortPressAction", "prev"));
+                            return true;
+                        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal2Code", 22)) {
+                            doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal2ShortPressAction", "next"));
+                            return true;
+                        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal3Code", 19)) {
+                            doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal3ShortPressAction", "prev"));
+                            return true;
+                        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal4Code", 20)) {
+                            doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal4ShortPressAction", "next"));
+                            return true;
+                        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal5Code", 92)) {
+                            doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal5LongPressAction", "songmenu"));
+                            return true;
+                        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal6Code", 93)) {
+                            doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal6ShortPressAction", "next"));
+                            return true;
+                        }
                         return false;
                     }
-                } else {
-                    // onKeyUp
-                    keyRepeatCount = 0;
-
-                    Log.d("PopUpSetViewNew", "Pedal listener onKeyUp:" + keyCode);
-                    if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal1Code", 21)) {
-                        doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal1ShortPressAction", "prev"));
-                        return true;
-                    } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal2Code", 22)) {
-                        doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal2ShortPressAction", "next"));
-                        return true;
-                    } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal3Code", 19)) {
-                        doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal3ShortPressAction", "prev"));
-                        return true;
-                    } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal4Code", 20)) {
-                        doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal4ShortPressAction", "next"));
-                        return true;
-                    } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal5Code", 92)) {
-                        doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal5LongPressAction", "songmenu"));
-                        return true;
-                    } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal6Code", 93)) {
-                        doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal6ShortPressAction", "next"));
-                        return true;
-                    }
-                    return false;
                 }
+                return true;
             }
-            return true;
         });
     }
 
@@ -623,7 +646,7 @@ public class PopUpSetViewNew extends DialogFragment {
     }
 
     @Override
-    public void onCancel(@NonNull DialogInterface dialog) {
+    public void onCancel(DialogInterface dialog) {
         this.dismiss();
     }
 

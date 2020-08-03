@@ -951,14 +951,19 @@ public class ProcessSong extends Activity {
         ArrayList<String> chordpositions = new ArrayList<>();
 
         // Set the start of the line as the first bit
-        chordpositions.add("0");
+        if (string.startsWith(".")) {
+            chordpositions.add("1");
+        } else {
+            chordpositions.add("0");
+        }
 
+        // IV - Comments do not seem to reflect the code logic?
         // In order to identify chords at the end of the line
         // (My method looks for a following space)
         // Add a space to the search string.
-        string += " ";
+        string = " " + string.substring(1) + " ";
 
-        for (int x = 1; x < string.length(); x++) {
+        for (int x = 2; x < string.length(); x++) {
 
             String thischar = "";
             boolean thischarempty = false;
@@ -995,6 +1000,7 @@ public class ProcessSong extends Activity {
         if (string==null) {
             string="";
         }
+
         if (pos_string==null) {
             pos_string = new String[0];
         }
@@ -1008,7 +1014,7 @@ public class ProcessSong extends Activity {
                 // First get the second last section
                 endpos = Integer.parseInt(pos_string[x]);
                 if (startpos < endpos) {
-                    chordsections.add(string.substring(startpos, endpos));
+                chordsections.add(string.substring(startpos, endpos));
                 }
 
                 // Now get the last one
@@ -1263,7 +1269,10 @@ public class ProcessSong extends Activity {
                 lyricbit.setGravity(preferences.getMyPreferenceInt(c,"presoLyricsAlign",Gravity.CENTER));
             }
             lyricbit.setLayoutParams(tablerow_params());
-            lyricbit.setText(bit);
+            // IV - Only use if the bit is not 'empty'.  This means the chord line spacing is used
+            if (bit.replace(" ","") != "") {
+                lyricbit.setText(bit);
+            }
             lyricbit.setTextSize(fontsize);
             if (StaticVariables.whichMode.equals("Presentation")) {
                 lyricbit.setTextColor(presoFontColor);
