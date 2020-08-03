@@ -951,14 +951,24 @@ public class ProcessSong extends Activity {
         ArrayList<String> chordpositions = new ArrayList<>();
 
         // Set the start of the line as the first bit
-        chordpositions.add("0");
+        if (string.startsWith(".")) {
+            chordpositions.add("1");
+        } else {
+            chordpositions.add("0");
+        }
 
+        // IV - Comments do not seem to reflect the code logic?
         // In order to identify chords at the end of the line
         // (My method looks for a following space)
         // Add a space to the search string.
-        string += " ";
+        if (string.length()<1) {
+            // GE Fix for empty line as substring(1) failed for empty lines.
+            string = " ";
+        } else {
+            string = " " + string.substring(1) + " ";
+        }
 
-        for (int x = 1; x < string.length(); x++) {
+        for (int x = 2; x < string.length(); x++) {
 
             String thischar = "";
             boolean thischarempty = false;
@@ -1263,7 +1273,10 @@ public class ProcessSong extends Activity {
                 lyricbit.setGravity(preferences.getMyPreferenceInt(c,"presoLyricsAlign",Gravity.CENTER));
             }
             lyricbit.setLayoutParams(tablerow_params());
-            lyricbit.setText(bit);
+            // IV - Only use if the bit is not 'empty'.  This means the chord line spacing is used
+            if (!bit.replace(" ","").isEmpty()) {
+                lyricbit.setText(bit);
+            }
             lyricbit.setTextSize(fontsize);
             if (StaticVariables.whichMode.equals("Presentation")) {
                 lyricbit.setTextColor(presoFontColor);

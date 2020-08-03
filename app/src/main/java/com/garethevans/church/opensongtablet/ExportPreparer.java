@@ -821,6 +821,9 @@ class ExportPreparer {
 
         String string = s.toString();
         string = string.replace("\n\n\n", "\n\n");
+        // IV - remove empty comments
+        string = string.replace("{c:}\n", "");
+
         return string;
     }
     private String prepareTextFile(Context c, Preferences preferences, ProcessSong processSong) {
