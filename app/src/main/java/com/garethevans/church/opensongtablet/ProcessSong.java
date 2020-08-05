@@ -2039,7 +2039,7 @@ public class ProcessSong extends Activity {
         StringBuilder chopro = new StringBuilder();
         String[] heading = beautifyHeadings(StaticVariables.songSectionsLabels[x],c);
         if (onsong) {
-            // IV DOne in three places to handle sections without heading
+            // IV Done in three places to handle sections without heading
             if (heading[0].trim().equals("")) {
                 chopro.append("Custom:\n");
             } else {
@@ -2914,7 +2914,7 @@ public class ProcessSong extends Activity {
         if (sad.equals("T") && !StaticVariables.mNotes.equals("")) {
             // If we have song details to display put them before a left aligned note otherwise just right align the note.
             if (s.length() > 0) {
-                s.append(stickyNotes.toString().replace(";__" + c.getString(R.string.note) + ": " + ";__", ";" + c.getString(R.string.note) + ": ")).append("\n");
+                s.append(stickyNotes.toString().replace(";__" + c.getString(R.string.note) + ": " + ";__", ";" + c.getString(R.string.note) + ": "));
             } else {
                 s.append(stickyNotes.toString().replace(";__" + c.getString(R.string.note) + ": " + ";__", ";__" + c.getString(R.string.note) + ": ")).append("\n");
             }
@@ -2930,7 +2930,7 @@ public class ProcessSong extends Activity {
 
         if (sad.equals("B")) {
             if (!StaticVariables.mNotes.equals("")) {
-                FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "\n\n" + stickyNotes;
+                FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "\n\n" + stickyNotes.toString().replace(";__" + c.getString(R.string.note) + ": " + ";__", ";__" + c.getString(R.string.note) + ": ") + "\n";
             }
         }
 
