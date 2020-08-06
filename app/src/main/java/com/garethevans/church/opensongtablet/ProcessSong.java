@@ -2988,7 +2988,7 @@ public class ProcessSong extends Activity {
 
         if (sad.equals("B")) {
             if (!StaticVariables.mNotes.equals("")) {
-                FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "\n\n" + stickyNotes;
+                FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "\n\n" + stickyNotes.toString().replace(";__" + c.getString(R.string.note) + ": " + ";__", ";__" + c.getString(R.string.note) + ": ") + "\n";
             }
         }
 
