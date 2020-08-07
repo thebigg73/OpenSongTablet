@@ -409,6 +409,7 @@ public class ProcessSong extends Activity {
             //} else if (thislinetype.equals("abcnotation")) {
             //    what = "abc_notation";
         } else {
+
             what = "null"; // Probably a lyric line with a chord above it - already dealt with
         }
         return what;
@@ -1245,6 +1246,8 @@ public class ProcessSong extends Activity {
 
         // IV - Used when a lyricsOnly song is processed
         boolean lyricsOnly = false;
+        // IV - Used to process a request to bold a line
+        boolean fakeBold = false;
 
         for (String bit : lyrics) {
             String imagetext;
@@ -1255,6 +1258,12 @@ public class ProcessSong extends Activity {
                 imagetext = bit.trim();
             } else {
                 imagetext = "";
+            }
+
+            // IV - '_B_' at a line start is the marker for Bold of line
+            if (bit.startsWith("_B_")) {
+                fakeBold = true;
+                bit = bit.replace("_B_", "");
             }
 
             if (!StaticVariables.whichSongFolder.contains(c.getResources().getString(R.string.image))) {
@@ -1268,8 +1277,8 @@ public class ProcessSong extends Activity {
                     for (int i = 1; i < lyrics.length; i++) {
                         sb.append(lyrics[i]);
                     }
-                    // IV - 2 spaces added to try to stop right overrun.  Needs proper solution
-                    bit = sb.toString().replaceAll("_", "").replaceAll("\\s+-\\s+", "").replaceAll("\\s{2,}", " ").trim() + "  ";
+                    // IV - 2 spaces added to try to stop right overrun.  Needs proper solution.  Bold marker removed as line has been reconstructed.
+                    bit = sb.toString().replace("_B_","").replaceAll("_", "").replaceAll("\\s+-\\s+", "").replaceAll("\\s{2,}", " ").trim() + "  ";
                     // IV - flag used to break loop
                     lyricsOnly = true;
                 } else {
@@ -1295,10 +1304,11 @@ public class ProcessSong extends Activity {
             if (!bit.replace(" ", "").isEmpty()) {
                 lyricbit.setText(bit);
             }
+
             lyricbit.setTextSize(fontsize);
             if (StaticVariables.whichMode.equals("Presentation")) {
                 lyricbit.setTextColor(presoFontColor);
-                if (preferences.getMyPreferenceBoolean(c, "presoLyricsBold", false)) {
+                if (preferences.getMyPreferenceBoolean(c, "presoLyricsBold", false) || fakeBold) {
                     lyricbit.setPaintFlags(lyricbit.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
                 }
                 lyricbit.setTypeface(StaticVariables.typefacePreso);
@@ -1318,6 +1328,9 @@ public class ProcessSong extends Activity {
             } else {
                 Log.d("ProcessSong", "Performance: bit=" + bit + "    Color=" + lyricsTextColor);
                 lyricbit.setTextColor(lyricsTextColor);
+                if (fakeBold) {
+                    lyricbit.setPaintFlags(lyricbit.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+                }
                 lyricbit.setTypeface(StaticVariables.typefaceLyrics);
             }
 
@@ -2903,9 +2916,8 @@ public class ProcessSong extends Activity {
             }
             // IV - Go multiline if a line is longer than the longest line
             // IV - This avoids causing small text for multi-column songs
-            String tempString = multiLine(StaticVariables.mTitle.toUpperCase(), longestLine);
-
-            s.append(" " + tempString + "  \n");
+            String tempString = multiLine(StaticVariables.mTitle, longestLine);
+            s.append("_B_" + tempString.replaceAll("\n","\n_B_") + "  \n");
 
             if (!StaticVariables.mAuthor.equals("")) {
                 tempString = multiLine(StaticVariables.mAuthor, longestLine);
