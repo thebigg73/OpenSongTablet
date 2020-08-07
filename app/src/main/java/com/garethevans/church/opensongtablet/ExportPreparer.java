@@ -795,8 +795,12 @@ class ExportPreparer {
 
         // Go through each song section and add the ChordPro formatted chords
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
-            s.append(processSong.songSectionChordPro(c, f, false));
+            // IV - Quick exit if Heading or Note
+            if (!StaticVariables.songSections[f].startsWith("B_") && !StaticVariables.songSections[f].startsWith(";__")) {
+                s.append(processSong.songSectionChordPro(c, f, false));
+            }
         }
+
         String string = s.toString();
         string = string.replace("\n\n\n", "\n\n");
         return string;
@@ -816,14 +820,16 @@ class ExportPreparer {
 
         // Go through each song section and add the ChordPro formatted chords
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
-            s.append(processSong.songSectionChordPro(c, f, true));
+            // IV - Quick exit if Heading or Note
+            if (!StaticVariables.songSections[f].startsWith("B_") && !StaticVariables.songSections[f].startsWith(";__")) {
+                s.append(processSong.songSectionChordPro(c, f, true));
+            }
         }
 
         String string = s.toString();
-        string = string.replace("\n\n\n", "\n\n");
+        string = string.replaceAll("\n\n\n", "\n\n");
         // IV - remove empty comments
         string = string.replace("{c:}\n", "");
-
         return string;
     }
     private String prepareTextFile(Context c, Preferences preferences, ProcessSong processSong) {
@@ -841,13 +847,15 @@ class ExportPreparer {
 
         // Go through each song section and add the text trimmed lines
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
-            // IV - Separate sections by a line breaks - to correctly layout txt output
-            s.append(processSong.songSectionText(c, preferences, f)).append("\n\n");
+            // IV - Quick exit if Heading or Note
+            if (!StaticVariables.songSections[f].startsWith("B_") && !StaticVariables.songSections[f].startsWith(";__")) {
+                // IV - Separate sections by a line breaks - to correctly layout txt output
+                s.append(processSong.songSectionText(c, preferences, f)).append("\n\n");
+            }
         }
 
         String string = s.toString();
         string = string.replaceAll("\n\n\n", "\n\n");
         return string;
     }
-
 }

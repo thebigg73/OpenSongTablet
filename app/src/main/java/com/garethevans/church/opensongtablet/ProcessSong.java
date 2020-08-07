@@ -1260,10 +1260,10 @@ public class ProcessSong extends Activity {
                 imagetext = "";
             }
 
-            // IV - '_B_' at a line start is the marker for Bold of line
-            if (bit.startsWith("_B_")) {
+            // IV - ' B_' at a line start is the marker for Bold of line
+            if (bit.startsWith("B_")) {
                 fakeBold = true;
-                bit = bit.replace("_B_", "");
+                bit = bit.replace("B_", "");
             }
 
             if (!StaticVariables.whichSongFolder.contains(c.getResources().getString(R.string.image))) {
@@ -1278,7 +1278,7 @@ public class ProcessSong extends Activity {
                         sb.append(lyrics[i]);
                     }
                     // IV - 2 spaces added to try to stop right overrun.  Needs proper solution.  Bold marker removed as line has been reconstructed.
-                    bit = sb.toString().replace("_B_","").replaceAll("_", "").replaceAll("\\s+-\\s+", "").replaceAll("\\s{2,}", " ").trim() + "  ";
+                    bit = sb.toString().replace("B_","").replaceAll("_", "").replaceAll("\\s+-\\s+", "").replaceAll("\\s{2,}", " ").trim() + "  ";
                     // IV - flag used to break loop
                     lyricsOnly = true;
                 } else {
@@ -2917,7 +2917,7 @@ public class ProcessSong extends Activity {
             // IV - Go multiline if a line is longer than the longest line
             // IV - This avoids causing small text for multi-column songs
             String tempString = multiLine(StaticVariables.mTitle, longestLine);
-            s.append("_B_" + tempString.replaceAll("\n","\n_B_") + "  \n");
+            s.append(" B_" + tempString.replaceAll("\n","\n B_") + "  \n");
 
             if (!StaticVariables.mAuthor.equals("")) {
                 tempString = multiLine(StaticVariables.mAuthor, longestLine);
