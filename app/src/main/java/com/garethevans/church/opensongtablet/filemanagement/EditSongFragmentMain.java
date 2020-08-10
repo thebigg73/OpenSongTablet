@@ -18,11 +18,12 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.chords.TransposeDialogFragment;
 import com.garethevans.church.opensongtablet.databinding.FragmentEditSong1Binding;
-import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentMainInterface;
+import com.garethevans.church.opensongtablet.interfaces.EditSongMainFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.google.android.material.button.MaterialButton;
@@ -33,14 +34,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class EditSongFragmentMain extends Fragment implements EditSongFragmentMainInterface {
+public class EditSongFragmentMain extends Fragment implements EditSongMainFragmentInterface  {
 
     // The helper classes used
     private Preferences preferences;
     private StorageAccess storageAccess;
     private SQLiteHelper sqLiteHelper;
     private CommonSQL commonSQL;
-    private EditContent editContent;
     private ConvertChoPro convertChoPro;
     private ProcessSong processSong;
 
@@ -55,7 +55,8 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
     private ArrayList<String> foundFolders;
     private ExposedDropDownArrayAdapter folderArrayAdapter, keyArrayAdapter;
     private List<String> keys;
-    boolean changes;
+    boolean changes, editAsChoPro;
+    Song song, originalSong;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -88,6 +89,12 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
         // Hide the main action button and send the fragment reference if it was showing
         mainActivityInterface.hideActionButton(true);
 
+        // Get the song
+        song = mainActivityInterface.getSong();
+        originalSong = mainActivityInterface.getOriginalSong();
+
+        editAsChoPro = preferences.getMyPreferenceBoolean(requireContext(),"editAsChordPro",false);
+
         // Initialise the views
         initialiseViews();
 
@@ -109,14 +116,12 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
         storageAccess = new StorageAccess();
         sqLiteHelper = new SQLiteHelper(getActivity());
         commonSQL = new CommonSQL();
-        editContent = new EditContent();
         convertChoPro = new ConvertChoPro();
         processSong = new ProcessSong();
     }
 
     // Initialise the views
     private void initialiseViews() {
-        // TODO add filename box
         filename = myView.fileName;
         folder = myView.folderName;
         title = myView.title;
@@ -143,16 +148,16 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
             keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, getResources().getStringArray(R.array.key_choice));
             getActivity().runOnUiThread(() -> {
                 folder.setAdapter(folderArrayAdapter);
-                if (editContent.getFolder() != null) {
-                    int pos = foundFolders.indexOf(editContent.getFolder());
+                if (song.getFolder() != null) {
+                    int pos = foundFolders.indexOf(song.getFolder());
                     if (pos >= 0) {
                         folder.setText(foundFolders.get(pos));
                     }
                 }
                 key.setAdapter(keyArrayAdapter);
                 keys = Arrays.asList(getResources().getStringArray(R.array.key_choice));
-                if (editContent.getKey() != null) {
-                    int pos = keys.indexOf(editContent.getKey());
+                if (song.getKey() != null) {
+                    int pos = keys.indexOf(song.getKey());
                     if (pos >= 0) {
                         key.setText(keys.get(pos));
                     }
@@ -164,43 +169,62 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
     // Set the current loaded values
     private void setCurrentValues() {
         // Exposed drop downs are set separately (once values are loaded up)
-        filename.setText(editContent.getFilename());
-        title.setText(editContent.getTitle());
-        artist.setText(editContent.getArtist());
-        lyrics.setText(editContent.getLyrics());
-        if (preferences.getMyPreferenceBoolean(requireContext(),"editAsChordPro",false)) {
+        filename.setText(song.getFilename());
+        title.setText(song.getTitle());
+        artist.setText(song.getAuthor());
+        lyrics.setText(song.getLyrics());
+        if (editAsChoPro) {
             // Do the conversion
+            // Initially set this to false so it triggers
+            editAsChoPro = false;
             dealWithEditMode(true);
+            setButtonOn(chordProFormat,true);
+            setButtonOn(openSongFormat,false);
+        } else {
+            setButtonOn(chordProFormat,false);
+            setButtonOn(openSongFormat,true);
         }
     }
 
     // Deal with the edit mode
     private void dealWithEditMode(boolean choProFormatting) {
-        preferences.setMyPreferenceBoolean(requireContext(), "editAsChordPro", choProFormatting);
         String text = null;
         if (lyrics.getText()!=null && lyrics.getText().toString()!=null) {
             text = lyrics.getText().toString();
         }
-        setButtonOn(chordProFormat,choProFormatting);
-        setButtonOn(openSongFormat,!choProFormatting);
+        if (choProFormatting) {
+            // We can switch to ChoPro format
+            setButtonOn(chordProFormat,true);
+            setButtonOn(openSongFormat,false);
+            // Only process if we are actually changing
+            if (!editAsChoPro && text!=null && !text.isEmpty()) {
+                song.setLyrics(convertChoPro.fromOpenSongToChordPro(requireContext(), processSong, text));
+                lyrics.setText(song.getLyrics());
+            }
+            preferences.setMyPreferenceBoolean(requireContext(), "editAsChordPro", true);
+            editAsChoPro = true;
 
-        if (choProFormatting && text!=null) {
-            // If switching from OpenSong to ChoPro
-            editContent.setLyrics(convertChoPro.fromOpenSongToChordPro(requireContext(),processSong,text));
-            lyrics.setText(editContent.getLyrics());
-        } else if (text!=null){
+        } else if (!choProFormatting && editAsChoPro && text!=null && !text.isEmpty()) {
+            // We can switch to OpenSong format
+            setButtonOn(chordProFormat,false);
+            setButtonOn(openSongFormat,true);
 
-            // If switching from ChoPro to OpenSong
-            editContent.setLyrics(convertChoPro.fromChordProToOpenSong(text));
-            lyrics.setText(editContent.getLyrics());
+            // Only process if we are actually changing
+            if (editAsChoPro && text!=null && !text.isEmpty()) {
+                song.setLyrics(convertChoPro.fromChordProToOpenSong(text));
+                lyrics.setText(song.getLyrics());
+            }
+            preferences.setMyPreferenceBoolean(requireContext(), "editAsChordPro", false);
+            editAsChoPro = false;
         }
+        mainActivityInterface.updateSong(song);
     }
 
     private void setButtonOn(MaterialButton button, boolean on) {
         if (on) {
-            button.setBackgroundTintList(ColorStateList.valueOf(getContext().getResources().getColor(R.color.colorSecondary)));
+            button.setBackgroundTintList(ColorStateList.valueOf(activeColor));
         } else {
-            button.setBackgroundTintList(ColorStateList.valueOf(getContext().getResources().getColor(R.color.colorPrimary)));
+            button.setBackgroundTintList(ColorStateList.valueOf(inactiveColor));
         }
     }
     // Finished with this view
@@ -212,28 +236,11 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
 
 
 
-
-
     // Sor the view visibility, listeners, etc.
     private void setUpListeners() {
-        openSongFormat.addOnCheckedChangeListener((button, isChecked) -> {
-            openSongFormat.setBackgroundTintList(ColorStateList.valueOf(activeColor));
-            chordProFormat.setBackgroundTintList(ColorStateList.valueOf(inactiveColor));
-            dealWithEditMode(true);
-        });
-        chordProFormat.addOnCheckedChangeListener((button, isChecked) -> {
-            chordProFormat.setBackgroundTintList(ColorStateList.valueOf(activeColor));
-            openSongFormat.setBackgroundTintList(ColorStateList.valueOf(inactiveColor));
-            dealWithEditMode(false);
-        });
-        if (preferences.getMyPreferenceBoolean(requireContext(), "editAsChordPro", false)) {
-            chordProFormat.performClick();
-        } else {
-            openSongFormat.performClick();
-        }
-
-        //TODO add filename
-        //filename.addTextChangedListener(new MyTextWatcher("filename"));
+        openSongFormat.setOnClickListener(v -> dealWithEditMode(false));
+        chordProFormat.setOnClickListener(v -> dealWithEditMode(true));
+        filename.addTextChangedListener(new MyTextWatcher("filename"));
         title.addTextChangedListener(new MyTextWatcher("title"));
         artist.addTextChangedListener(new MyTextWatcher("artist"));
         lyrics.addTextChangedListener(new MyTextWatcher("lyrics"));
@@ -242,8 +249,7 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
 
         transpose.setOnClickListener(v -> {
             Log.d("Editsong", "key="+key);
-            TransposeDialogFragment dialogFragment = new TransposeDialogFragment(true,
-                    editContent.getKey(),editContent.getLyrics());
+            TransposeDialogFragment dialogFragment = new TransposeDialogFragment(true,song);
             dialogFragment.show(requireActivity().getSupportFragmentManager(), "transposeAction");
         });
         autoFix.setOnClickListener(v -> doAutoFix());
@@ -254,14 +260,13 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
         Log.d("d","doAutoFix() called");
     }
 
-    public void updateKeyAndLyrics(String newkey, String newlyrics) {
+    public void updateKeyAndLyrics(Song song) {
         // This is called if we ran a transpose while editing
-        editContent.setKey(newkey);
-        editContent.setLyrics(newlyrics);
-        key.setText(keys.get(keys.indexOf(newkey)));
-        lyrics.setText(newlyrics);
+        this.song = song;
+        mainActivityInterface.updateSong(song);
+        key.setText(keys.get(keys.indexOf(song.getKey())));
+        lyrics.setText(song.getLyrics());
     }
-
 
     private class MyTextWatcher implements TextWatcher {
 
@@ -289,41 +294,43 @@ public class EditSongFragmentMain extends Fragment implements EditSongFragmentMa
 
         @Override
         public void afterTextChanged(Editable s) {
-            saveButtonAccent(editContent.areThereChanges());
+            saveButtonAccent(mainActivityInterface.songChanged());
         }
 
         public void saveVal() {
             switch (what) {
                 case "folder":
-                    editContent.setFolder(value);
+                    song.setFolder(value);
                     break;
                 case "filename":
-                    editContent.setFilename(value);
+                    song.setFilename(value);
                     break;
                 case "title":
-                    editContent.setTitle(value);
+                    song.setTitle(value);
                     break;
                 case "key":
-                    editContent.setKey(value);
+                    song.setKey(value);
                     break;
                 case "artist":
-                    editContent.setLyrics(value);
+                    song.setLyrics(value);
                     break;
                 case "lyrics":
-                    editContent.setArtist(value);
+                    song.setAuthor(value);
                     break;
             }
+            mainActivityInterface.updateSong(song);
         }
     }
 
     private void saveButtonAccent(boolean newchanges) {
-        Log.d("d","aretherechanges()="+newchanges+"  changes="+changes);
-        // If changes are made, tint the button green and pulse gently
-        if (newchanges && newchanges!=changes) {
-            // Only do this for new changes - save sending a callback repeatedly
+        // Only do this for new changes - save sending a callback repeatedly
+        if (!changes && newchanges) {
+            // If changes are made, tint the button green and pulse gently
+            Log.d("EditSongFragmentMain","Changes made");
             mainActivityInterface.editSongSaveButtonAnimation(true);
             changes = true;
-        } else if (!newchanges && newchanges!=changes){
+        } else if (!newchanges) {
+            Log.d("EditSongFragmentMain","No changes made");
             mainActivityInterface.editSongSaveButtonAnimation(false);
             changes = false;
         }

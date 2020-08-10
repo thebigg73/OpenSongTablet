@@ -9,7 +9,8 @@ import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
-import com.garethevans.church.opensongtablet.sqlite.SQLite;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import java.io.InputStream;
@@ -18,14 +19,14 @@ import java.util.ArrayList;
 
 public class PrepareFormats {
 
-    SQLite thisSongSQL;
+    Song thisSongSQL;
 
     // When a user asks for a song to be exported, it is first copied to the Exports folder in the folder_filename format
     public ArrayList<Uri> makeSongExportCopies(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
-                                             SQLiteHelper sqLiteHelper, ConvertChoPro convertChoPro, String folder, String filename,
-                                             boolean desktop, boolean ost, boolean txt, boolean chopro, boolean onsong) {
+                                               SQLiteHelper sqLiteHelper, CommonSQL commonSQL, ConvertChoPro convertChoPro, String folder, String filename,
+                                               boolean desktop, boolean ost, boolean txt, boolean chopro, boolean onsong) {
         ArrayList<Uri> uris = new ArrayList<>();
-        thisSongSQL = sqLiteHelper.getSpecificSong(c);
+        thisSongSQL = sqLiteHelper.getSpecificSong(c,commonSQL,folder,filename);
 
         String newFilename = folder.replace("/","_");
         if (!newFilename.endsWith("_")) {
@@ -73,10 +74,10 @@ public class PrepareFormats {
         }
     }
 
-    private String getSongAsText(SQLite thisSongSQL) {
-        String title = replaceNulls(thisSongSQL.getTitle());
-        String key = replaceNulls(thisSongSQL.getKey());
-        String author = replaceNulls(thisSongSQL.getAuthor());
+    private String getSongAsText(Song thisSong) {
+        String title = replaceNulls(thisSong.getTitle());
+        String key = replaceNulls(thisSong.getKey());
+        String author = replaceNulls(thisSong.getAuthor());
 
         if (!key.isEmpty()) {
             key = " (" + key + ")";
@@ -86,38 +87,38 @@ public class PrepareFormats {
         } else {
             author = "\n\n";
         }
-        return title + key + author + replaceNulls(thisSongSQL.getLyrics());
+        return title + key + author + replaceNulls(thisSong.getLyrics());
     }
-    private String getSongAsChoPro(Context c, ProcessSong processSong, SQLite thisSongSQL, ConvertChoPro convertChoPro) {
+    private String getSongAsChoPro(Context c, ProcessSong processSong, Song thisSong, ConvertChoPro convertChoPro) {
         // This converts an OpenSong file into a ChordPro file
-        String string = "{ns}\n" + "{t:" + replaceNulls(thisSongSQL.getTitle()) + "}\n";
+        String string = "{ns}\n" + "{t:" + replaceNulls(thisSong.getTitle()) + "}\n";
 
-        if (thisSongSQL.getAuthor()!=null && !thisSongSQL.getAuthor().isEmpty()) {
-            string = string + "{st:" + replaceNulls(thisSongSQL.getAuthor()) + "}\n";
+        if (thisSong.getAuthor()!=null && !thisSong.getAuthor().isEmpty()) {
+            string = string + "{st:" + replaceNulls(thisSong.getAuthor()) + "}\n";
         }
-        string = string + "\n" + convertChoPro.fromOpenSongToChordPro(c, processSong, replaceNulls(thisSongSQL.getLyrics()));
+        string = string + "\n" + convertChoPro.fromOpenSongToChordPro(c, processSong, replaceNulls(thisSong.getLyrics()));
         string = string.replace("\n\n\n", "\n\n");
         return string;
     }
-    private String getSongAsOnSong(Context c, ProcessSong processSong, SQLite thisSongSQL, ConvertChoPro convertChoPro) {
+    private String getSongAsOnSong(Context c, ProcessSong processSong, Song thisSong, ConvertChoPro convertChoPro) {
         // This converts an OpenSong file into a OnSong file
         String string = replaceNulls(thisSongSQL.getTitle()) + "\n";
 
-        if (thisSongSQL.getAuthor()!=null && !thisSongSQL.getAuthor().isEmpty()) {
-            string = string + thisSongSQL.getAuthor() + "\n";
+        if (thisSong.getAuthor()!=null && !thisSong.getAuthor().isEmpty()) {
+            string = string + thisSong.getAuthor() + "\n";
         }
 
-        if (thisSongSQL.getCopyright()!=null && !thisSongSQL.getCopyright().isEmpty()) {
-            string = string + "Copyright: " + thisSongSQL.getCopyright() + "\n";
+        if (thisSong.getCopyright()!=null && !thisSong.getCopyright().isEmpty()) {
+            string = string + "Copyright: " + thisSong.getCopyright() + "\n";
         }
 
-        if (thisSongSQL.getKey()!=null && !thisSongSQL.getKey().isEmpty()) {
-            string = string + "Key: " + thisSongSQL.getKey() + "\n\n";
+        if (thisSong.getKey()!=null && !thisSong.getKey().isEmpty()) {
+            string = string + "Key: " + thisSong.getKey() + "\n\n";
         } else {
             string = string + "\n";
         }
 
-        string = string + convertChoPro.fromOpenSongToChordPro(c,processSong,replaceNulls(thisSongSQL.getLyrics()));
+        string = string + convertChoPro.fromOpenSongToChordPro(c,processSong,replaceNulls(thisSong.getLyrics()));
 
         string = string.replace("\n\n\n", "\n\n");
         return string;

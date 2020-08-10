@@ -26,8 +26,8 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
-import com.garethevans.church.opensongtablet.sqlite.SQLite;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 public class SongMenuDialog extends DialogFragment {
@@ -44,7 +44,7 @@ public class SongMenuDialog extends DialogFragment {
     MakePDF makePDF;
     OCR ocr;
     NewNameDialog dialog;
-    SQLite thisSongSQL;
+    Song thisSong;
 
     private String folder, song;
 
@@ -79,7 +79,7 @@ public class SongMenuDialog extends DialogFragment {
         setHelpers();
         setListeners();
 
-        thisSongSQL = sqLiteHelper.getSpecificSong(getActivity(),commonSQL,folder,song);
+        thisSong = sqLiteHelper.getSpecificSong(getActivity(),commonSQL,folder,song);
 
         return myView.getRoot();
     }
@@ -127,14 +127,14 @@ public class SongMenuDialog extends DialogFragment {
                     break;
 
                 case "duplicateSong":
-                    dialog = new NewNameDialog(null,"duplicateSong",true,"Songs",StaticVariables.whichSongFolder);
+                    dialog = new NewNameDialog(null,"duplicateSong",true,"Songs",StaticVariables.whichSongFolder,thisSong);
                     dialog.show(getActivity().getSupportFragmentManager(),"NewNameDialog");
                     break;
 
                 case "deleteSong":
                     String str = getString(R.string.delete) + ": " +
                             StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
-                    mainActivityInterface.displayAreYouSure("deleteSong", str,null, "SongMenuFragment",null);
+                    mainActivityInterface.displayAreYouSure("deleteSong", str,null, "SongMenuFragment",null,thisSong);
                     break;
 
                 case "addToSet":
@@ -144,13 +144,13 @@ public class SongMenuDialog extends DialogFragment {
 
                 case "exportSong":
                     // TODO For now, test the pdf creation
-                    Uri uri = makePDF.createPDF(getActivity(),preferences,storageAccess,processSong,thisSongSQL);
+                    Uri uri = makePDF.createPDF(getActivity(),preferences,storageAccess,processSong,thisSong);
                     Log.d("d","created uri:"+uri);
                     break;
 
                 case "createSong":
                     // The user is first asked for a new song name.  It is then created and then the user is sent to the edit page.
-                    dialog = new NewNameDialog(null,"createNewSong",true,"Songs",StaticVariables.whichSongFolder);
+                    dialog = new NewNameDialog(null,"createNewSong",true,"Songs",StaticVariables.whichSongFolder,thisSong);
                     dialog.show(getActivity().getSupportFragmentManager(),"NewNameDialog");
                     break;
 

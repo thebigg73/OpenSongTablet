@@ -45,7 +45,7 @@ public class SettingsCCLI extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         myView = SettingsCcliBinding.inflate(inflater, container, false);
-        mainActivityInterface.updateToolbar(requireContext().getResources().getString(R.string.edit_song_ccli));
+        mainActivityInterface.updateToolbar(null,requireContext().getResources().getString(R.string.edit_song_ccli));
 
         // Prepare helpers
         prepareHelpers();
@@ -108,7 +108,7 @@ public class SettingsCCLI extends Fragment {
         });
         ccliView.setOnClickListener(v -> showDialog());
         ccliExport.setOnClickListener(view -> mainActivityInterface.doExport("ccliLog"));
-        ccliDelete.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("ccliDelete", getString(R.string.ccli_reset),null,"SettingsCCLI", this));
+        ccliDelete.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("ccliDelete", getString(R.string.ccli_reset),null,"SettingsCCLI", this, null));
     }
 
     private void showDialog() {

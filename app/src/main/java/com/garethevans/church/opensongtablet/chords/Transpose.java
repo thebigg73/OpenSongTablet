@@ -7,12 +7,12 @@ import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.ArrayList;
 
 public class Transpose {
 
-    private int oldchordformat;
     //  A  A#/Bb  B/Cb  C/B#  C#/Db    D    D#/Eb   E/Fb   E#/F   F#/Gb   G     G#/Ab
     //  A    B     H     C
     //  1    2     3     4      5      6      7      8      9      10     11     12
@@ -74,21 +74,22 @@ public class Transpose {
     private final String[] naturalchords3c    = {".a",      ".h",      ".c",      ".d",      ".e",      ".f",      ".g"};
     private final String[] naturalchords4     = {"La",      "Si",      "Do",      "Ré",      "Mi",      "Fa",      "Sol"};
 
-    private final String originalkey = StaticVariables.mKey;
+    private String originalkey;
     private String transposedLyrics, transposedChords;
+    private int oldchordformat;
 
     private boolean usesflats;
     private boolean capousesflats;
 
-    ArrayList<String> doTranspose(Context c, String key, String lyrics, Preferences preferences, boolean forcesharps, boolean forceflats) {
 
-        ArrayList<String> returned = new ArrayList<>();   // Value 0 is the new key, value 1 is the new lyrics
-        
+    // The song is sent in and the song is sent back after processing (key and lyrics get changed)
+    Song doTranspose(Context c, Song song, Preferences preferences, String transposeDirection,
+                     int transposeTimes, boolean forcesharps, boolean forceflats) {
+
         try {
             // Go through each line and change each chord to $..$
             // This marks the bit to be changed
-
-            String[] splitLyrics = lyrics.split("\n");
+            String[] splitLyrics = song.getLyrics().split("\n");
             
             if (preferences.getMyPreferenceBoolean(c,"chordFormatUsePreferred",true)) {
                 oldchordformat = preferences.getMyPreferenceInt(c,"chordFormat",1);
@@ -96,8 +97,8 @@ public class Transpose {
                 oldchordformat = StaticVariables.detectedChordFormat;
             }
             
-            // Change the saved key to a number
-            returned.add(sortTheTransposedKey(c,key,preferences));
+            // Transpose the key
+            song.setKey(sortTheTransposedKey(c,song.getKey(),preferences,transposeDirection,transposeTimes));
 
             // Now we change the chords into numbers
             for (int x = 0; x < splitLyrics.length; x++) {
@@ -126,7 +127,7 @@ public class Transpose {
 
             // Next up we do the transposing
 
-            transposeChords(splitLyrics);
+            splitLyrics = transposeChords(splitLyrics);
 
             StringBuilder sb = new StringBuilder();
             // Now we put the numbers back into chords in the correct format and using either the key preference or the forced sharps or flats
@@ -157,19 +158,20 @@ public class Transpose {
                 sb.append(splitLyrics[x]).append("\n");
             }
 
-            returned.add(sb.toString());
+            song.setLyrics(sb.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return returned;
+        return song;
     }
 
-    private String sortTheTransposedKey(Context c, String key, Preferences preferences) {
+    private String sortTheTransposedKey(Context c, String key, Preferences preferences,
+                                        String transposeDirection, int transposeTimes) {
         if (key != null && !key.isEmpty()) {
             String newkey = keyToNumber(key);
 
             // Transpose the key
-            newkey = transposeKey(newkey, StaticVariables.transposeDirection, StaticVariables.transposeTimes);
+            newkey = transposeKey(newkey, transposeDirection, transposeTimes);
 
             // Convert the keynumber to a key
             newkey = numberToKey(c, preferences, newkey);
@@ -182,15 +184,14 @@ public class Transpose {
         return key;
     }
     
-    String transposeThisString(Context c, Preferences preferences, String direction, String texttotranspose) {
+    String transposeThisString(Context c, Preferences preferences, String transposeDirection, String texttotranspose) {
         try {
             // Go through each line and change each chord to $..$
             // This marks the bit to be changed
 
             String[] splitLyrics = texttotranspose.split("\n");
 
-            StaticVariables.transposeDirection = direction;
-            StaticVariables.transposeTimes = 1;
+            int transposeTimes = 1;
 
             oldchordformat = StaticVariables.detectedChordFormat;
 
@@ -410,32 +411,28 @@ public class Transpose {
         return line;
     }
 
-    ArrayList<String> convertChords(Context c, String key, String lyrics, StorageAccess storageAccess, Preferences preferences) {
+    Song convertChords(Context c, Song song, StorageAccess storageAccess, Preferences preferences, String transposeDirection, int transposeTimes) {
         int convertTo = preferences.getMyPreferenceInt(c,"chordFormat",1);
-        checkChordFormat(c,lyrics,preferences);
-
-        ArrayList<String> returned = new ArrayList<>();  // 0 is the key, 1 is the lyrics
+        checkChordFormat(c,song.getLyrics(),preferences);
 
         Log.d("Transpose","convertTo="+convertTo+"\ndetetctedChordFormat="+StaticVariables.detectedChordFormat);
         if (StaticVariables.detectedChordFormat >= 5) {
-            convertFromNumerals(c, lyrics, storageAccess, preferences);
+            song.setLyrics(convertFromNumerals(c, song, storageAccess, preferences));
         }// Convert to a normal format to start with
         if (convertTo>=5) {
             // We want to convert to a numeral.  If it is normal format, just do it, otherwise, convert to a normal format
             // Now convert to the correct value
-            returned.add(convertToNumerals(c, lyrics, preferences));
-            returned.add(key);
+            song.setLyrics(convertToNumerals(c, song.getLyrics(), preferences));
         } else {
-            StaticVariables.transposeDirection = "0";
-            checkChordFormat(c, lyrics, preferences);
+            transposeDirection = "0";
+            checkChordFormat(c, song.getLyrics(), preferences);
             try {
-                returned = doTranspose(c, key, lyrics, preferences, false, false);
+                song = doTranspose(c, song, preferences, transposeDirection, transposeTimes,false, false);
             } catch (Exception e) {
-                returned.add(lyrics);
                 e.printStackTrace();
             }
         }
-        return returned;
+        return song;
     }
 
     private String convertToNumerals(Context c, String lyrics, Preferences preferences) {
@@ -462,11 +459,12 @@ public class Transpose {
 
     }
 
-    private void convertFromNumerals(Context c, String lyrics, StorageAccess storageAccess, Preferences preferences) {
+    private String convertFromNumerals(Context c, Song song, StorageAccess storageAccess, Preferences preferences) {
         // This goes through the song and converts from Nashville numbering or numerals to standard chord format first
+        String lyrics = song.getLyrics();
         if (StaticVariables.detectedChordFormat==5 || StaticVariables.detectedChordFormat==6) {
             // We currently have either a nashville system (numbers or numerals)
-            String[] splitLyrics = lyrics.split("\n");
+            String[] splitLyrics = song.getLyrics().split("\n");
 
             boolean numeral = StaticVariables.detectedChordFormat==6;
             StringBuilder sb = new StringBuilder();
@@ -484,16 +482,16 @@ public class Transpose {
                 sb.append(line).append("\n");
             }
 
-            StaticVariables.mLyrics = sb.toString();
-
+            lyrics = sb.toString();
             // If the new chordformat desired is also a numeral or number system, convert it to that
             if (preferences.getMyPreferenceInt(c,"chordFormat",1)==5 ||
                     preferences.getMyPreferenceInt(c, "chordFormat",1)==6) {
-                convertToNumerals(c, lyrics, preferences);
+                song.setLyrics(convertToNumerals(c, song.getLyrics(), preferences));
             }
         } else {
             ShowToast.showToast(c,"No Nashville/Numeral chord format detected.");
         }
+        return lyrics;
     }
 
     private String toNashville(String line, boolean numeral) {
@@ -960,7 +958,7 @@ public class Transpose {
         return getkeynum;
     }
 
-    private void transposeChords(String[] splitLyrics) {
+    private String[] transposeChords(String[] splitLyrics) {
         // Go through each line in turn
         for (int x = 0; x < splitLyrics.length; x++) {
 
@@ -1069,6 +1067,7 @@ public class Transpose {
                 }
             }
         }
+        return splitLyrics;
     }
 
     String numberToKey(Context c, Preferences preferences, String key) {
@@ -1352,14 +1351,14 @@ public class Transpose {
         return string;
     }
 
-    String capoTranspose(Context c, Preferences preferences) {
+    Song capoTranspose(Context c, Preferences preferences, Song song) {
 
-        int numtimes = Integer.parseInt(StaticVariables.mCapo);
-        String capokey = null;
+        int numtimes = Integer.parseInt(song.getCapo());
+        String capokey;
 
         // Get the capokey if it hasn't been set
-        if (StaticVariables.mKey!=null) {
-            capokey = keyToNumber(StaticVariables.mKey);
+        if (song.getKey()!=null) {
+            capokey = keyToNumber(song.getKey());
             capokey = transposeKey(capokey,"-1",numtimes);
             capokey = numberToKey(c, preferences, capokey);
             // Decide if flats should be used
@@ -1410,7 +1409,7 @@ public class Transpose {
                 break;
         }
 
-        return capokey;
+        return song;
     }
 
     ArrayList<String> quickCapoKey(Context c, Preferences preferences, String key) {

@@ -20,13 +20,14 @@
             app:main="@string/storage"
             app:sub="Manage your app and song folders" />
 
+        <TableRow style="@style/DividerLine" />
+
         <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
             android:id="@+id/ccliButton"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             app:main="CCLI"
             app:sub="Change CCLI log" />
-
 
     <TableRow style="@style/DividerLine" />
 

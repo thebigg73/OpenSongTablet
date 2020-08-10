@@ -70,7 +70,7 @@ public class StorageManagementFragment extends DialogFragment {
         // TODO remove this once this fragment is finished development
         MaterialShowcaseView.resetSingleUse(requireContext(),"storageManagement");
 
-        mainActivityInterface.updateToolbar(getActivity().getResources().getString(R.string.storage_choose));
+        mainActivityInterface.updateToolbar(null,getActivity().getResources().getString(R.string.storage_choose));
         graph = new Graph();
 
         // Do this as separate tasks in a new thread

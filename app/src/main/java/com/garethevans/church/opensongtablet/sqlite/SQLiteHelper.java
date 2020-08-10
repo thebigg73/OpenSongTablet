@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -86,9 +87,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             // Likely the song exists and we didn't check!
         }
     }
-    public void updateSong(Context c, CommonSQL commonSQL, SQLite sqLite) {
+    public void updateSong(Context c, CommonSQL commonSQL, Song song) {
         try (SQLiteDatabase db = getDB(c)) {
-            commonSQL.updateSong(db,sqLite);
+            commonSQL.updateSong(db,song);
         } catch (OutOfMemoryError | Exception e) {
             e.printStackTrace();
         }
@@ -122,19 +123,19 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             return false;
         }
     }
-    public SQLite getSpecificSong(Context c, CommonSQL commonSQL, String folder, String filename) {
+    public Song getSpecificSong(Context c, CommonSQL commonSQL, String folder, String filename) {
         try (SQLiteDatabase db = getDB(c)) {
             return commonSQL.getSpecificSong(db,folder,filename);
         } catch (OutOfMemoryError | Exception e) {
-            SQLite thisSong = new SQLite();
+            Song thisSong = new Song();
             thisSong.setFolder(folder);
             thisSong.setFilename(filename);
             String songId = commonSQL.getAnySongId(folder,filename);
             thisSong.setSongid(songId);
-            return new SQLite();
+            return thisSong;
         }
     }
-    public ArrayList<SQLite> getSongsByFilters(Context c, CommonSQL commonSQL, boolean searchByFolder, boolean searchByArtist,
+    public ArrayList<Song> getSongsByFilters(Context c, CommonSQL commonSQL, boolean searchByFolder, boolean searchByArtist,
                                                boolean searchByKey, boolean searchByTag,
                                                boolean searchByFilter, String folderVal, String artistVal,
                                                String keyVal, String tagVal, String filterVal) {

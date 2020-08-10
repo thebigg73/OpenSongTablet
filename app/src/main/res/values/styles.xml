@@ -202,16 +202,20 @@
         <item name="hintTextColor">@color/lightgrey</item>
         <item name="helperTextTextColor">@color/lightgrey</item>
         <item name="android:focusable">false</item>
+        <item name="boxStrokeColor">@color/lightgrey</item>
+        <item name="colorAccent">@color/lightgrey</item>
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxStrokeWidth">1dp</item>
 
     </style>
 
     <style name="exposedDropDownItem">
-        <item name="backgroundTint">@color/colorPrimary</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:inputType">none</item>
         <item name="hintTextColor">@color/lightgrey</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:dropDownHeight">400dp</item>
+        <item name="android:background">@null</item>
     </style>
 
     <style name="spinner" parent="Widget.AppCompat.Spinner">

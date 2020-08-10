@@ -5,16 +5,18 @@ import android.net.Uri;
 import android.util.Base64;
 import android.util.Log;
 
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
-import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songprocessing.SongXML;
+import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import java.io.OutputStream;
@@ -26,12 +28,13 @@ class CreateNewSet {
     boolean doCreation(Context c, Preferences preferences,
                        StorageAccess storageAccess, ProcessSong processSong, LoadSong loadSong,
                        SongXML songXML, ConvertOnSong convertOnSong, ConvertChoPro convertChoPro,
-                       SQLiteHelper sqLiteHelper, ShowToast showToast) {
+                       SQLiteHelper sqLiteHelper, CommonSQL commonSQL, ShowToast showToast) {
 
         // Keep the current song and directory aside for now
         String tempsongfilename = StaticVariables.songfilename;
         String tempdir = StaticVariables.whichSongFolder;
-
+        Song song = new Song();
+        
         StringBuilder sb = new StringBuilder();
 
         // Only do this is the mSetList isn't empty
@@ -95,14 +98,15 @@ class CreateNewSet {
                     // Load the scripture file up
                     StaticVariables.whichSongFolder = "../Scripture/_cache";
                     StaticVariables.songfilename = songparts[1];
+                    song = song.initialiseSong(commonSQL);
                     try {
-                        loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
-                                showToast, sqLiteHelper, convertOnSong, convertChoPro);
+                        song = loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
+                                showToast, sqLiteHelper, commonSQL, song,convertOnSong, convertChoPro,false);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     
-                    String scripture_lyrics = StaticVariables.mLyrics;
+                    String scripture_lyrics = song.getLyrics();
 
                     // Parse the lyrics into individual slides;
                     scripture_lyrics = scripture_lyrics.replace("[]", "_SPLITHERE_");
@@ -110,8 +114,8 @@ class CreateNewSet {
                     String[] mySlides = scripture_lyrics.split("_SPLITHERE_");
 
                     String newname = songparts[1];
-                    if (!StaticVariables.mAuthor.equals("")) {
-                        newname = newname+"|"+ StaticVariables.mAuthor;
+                    if (!song.getAuthor().equals("")) {
+                        newname = newname+"|"+ song.getAuthor();
                     }
                     sb.append("  <slide_group type=\"scripture\" name=\"")
                             .append(processSong.parseToHTMLEntities(newname))
@@ -146,14 +150,15 @@ class CreateNewSet {
                     // Keep the songfile as a temp
                     StaticVariables.whichSongFolder = "../Slides/_cache";
                     StaticVariables.songfilename = songparts[1];
+                    song = song.initialiseSong(commonSQL);
                     try {
-                        loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
-                                showToast, sqLiteHelper, convertOnSong, convertChoPro);
+                        song = loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
+                                showToast, sqLiteHelper, commonSQL, song,convertOnSong, convertChoPro,false);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     
-                    String slide_lyrics = StaticVariables.mLyrics;
+                    String slide_lyrics = song.getLyrics();
 
                     if (slide_lyrics.indexOf("---\n") == 0) {
                         slide_lyrics = slide_lyrics.replaceFirst("---\n", "");
@@ -166,15 +171,15 @@ class CreateNewSet {
                     sb.append("  <slide_group name=\"")
                             .append(processSong.parseToHTMLEntities(songparts[1]))
                             .append("\" type=\"custom\" print=\"true\" seconds=\"")
-                            .append(processSong.parseToHTMLEntities(StaticVariables.mUser1))
+                            .append(processSong.parseToHTMLEntities(song.getUser1()))
                             .append("\" loop=\"")
-                            .append(processSong.parseToHTMLEntities(StaticVariables.mUser2))
+                            .append(processSong.parseToHTMLEntities(song.getUser2()))
                             .append("\" transition=\"")
-                            .append(processSong.parseToHTMLEntities(StaticVariables.mUser3))
+                            .append(processSong.parseToHTMLEntities(song.getUser3()))
                             .append("\">\n    <title>")
-                            .append(processSong.parseToHTMLEntities(StaticVariables.mTitle))
+                            .append(processSong.parseToHTMLEntities(song.getTitle()))
                             .append("</title>\n    <subtitle>")
-                            .append(processSong.parseToHTMLEntities(StaticVariables.mCopyright))
+                            .append(processSong.parseToHTMLEntities(song.getCopyright()))
                             .append("</subtitle>\n    <notes>")
                             .append("")
                             .append("</notes>\n    <slides>\n");
@@ -199,14 +204,15 @@ class CreateNewSet {
                     // Load the note up to grab the contents
                     StaticVariables.whichSongFolder = "../Notes/_cache";
                     StaticVariables.songfilename = songparts[1];
+                    song = song.initialiseSong(commonSQL);
                     try {
-                        loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
-                                showToast, sqLiteHelper, convertOnSong, convertChoPro);
+                        song = loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
+                                showToast, sqLiteHelper, commonSQL, song,convertOnSong, convertChoPro,false);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    String slide_lyrics = StaticVariables.mLyrics;
+                    String slide_lyrics = song.getLyrics();
 
                     sb.append("  <slide_group name=\"# ")
                             .append(processSong.parseToHTMLEntities(c.getResources().getString(R.string.note)))
@@ -234,14 +240,15 @@ class CreateNewSet {
                     // Load the variation song up to grab the contents
                     StaticVariables.whichSongFolder = "../Variations";
                     StaticVariables.songfilename = songparts[1];
+                    song = song.initialiseSong(commonSQL);
                     try {
-                        loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
-                                showToast, sqLiteHelper, convertOnSong, convertChoPro);
+                        song = loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
+                                showToast, sqLiteHelper, commonSQL, song,convertOnSong, convertChoPro,false);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    String slide_lyrics = StaticVariables.mLyrics;
+                    String slide_lyrics = song.getLyrics();
                     try {
                         byte[] data = StaticVariables.myNewXML.getBytes(StandardCharsets.UTF_8);
                         slide_lyrics = Base64.encodeToString(data, Base64.DEFAULT);
@@ -251,7 +258,7 @@ class CreateNewSet {
 
                     // Prepare the slide contents so it remains compatible with the desktop app
                     // Split the lyrics into individual lines
-                    String[] lyrics_lines = StaticVariables.mLyrics.split("\n");
+                    String[] lyrics_lines = song.getLyrics().split("\n");
                     StringBuilder currentslide = new StringBuilder();
                     ArrayList<String> newslides = new ArrayList<>();
 
@@ -294,7 +301,7 @@ class CreateNewSet {
                             .append(processSong.parseToHTMLEntities(songparts[1]))
                             .append("</title>\n")
                             .append("    <subtitle>")
-                            .append(processSong.parseToHTMLEntities(StaticVariables.mAuthor))
+                            .append(processSong.parseToHTMLEntities(song.getAuthor()))
                             .append("</subtitle>\n")
                             .append("    <notes>")
                             .append(processSong.parseToHTMLEntities(slide_lyrics))
@@ -315,16 +322,17 @@ class CreateNewSet {
                     // Load the image slide up to grab the contents
                     StaticVariables.whichSongFolder = "../Images/_cache";
                     StaticVariables.songfilename = songparts[1];
+                    song = song.initialiseSong(commonSQL);
                     try {
-                        loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
-                                showToast, sqLiteHelper, convertOnSong, convertChoPro);
+                        song = loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
+                                showToast, sqLiteHelper, commonSQL, song,convertOnSong, convertChoPro,false);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
                     // The mUser3 field should contain all the images
                     // Break all the images into the relevant slides
-                    String[] separate_slide = StaticVariables.mUser3.split("\n");
+                    String[] separate_slide = song.getUser3().split("\n");
 
                     StringBuilder slide_code = new StringBuilder();
 
@@ -346,17 +354,17 @@ class CreateNewSet {
                     }
 
                     sb.append("  <slide_group name=\"")
-                            .append(processSong.parseToHTMLEntities(StaticVariables.mAka))
+                            .append(processSong.parseToHTMLEntities(song.getAka()))
                             .append("\" type=\"image\" print=\"true\" seconds=\"")
-                            .append(processSong.parseToHTMLEntities(StaticVariables.mUser1))
+                            .append(processSong.parseToHTMLEntities(song.getUser1()))
                             .append("\" loop=\"")
-                            .append(processSong.parseToHTMLEntities(StaticVariables.mUser2))
+                            .append(processSong.parseToHTMLEntities(song.getUser2()))
                             .append("\" transition=\"0\" resize=\"screen\" keep_aspect=\"false\" link=\"false\">\n")
                             .append("    <title>")
-                            .append(processSong.parseToHTMLEntities(StaticVariables.mTitle))
+                            .append(processSong.parseToHTMLEntities(song.getTitle()))
                             .append("</title>\n")
                             .append("    <subtitle>")
-                            .append(processSong.parseToHTMLEntities(StaticVariables.mAuthor))
+                            .append(processSong.parseToHTMLEntities(song.getAuthor()))
                             .append("</subtitle>\n")
                             .append("    <notes>")
                             .append("")
@@ -394,9 +402,10 @@ class CreateNewSet {
             // Now we are finished, put the original songfilename back
             StaticVariables.songfilename = tempsongfilename;
             StaticVariables.whichSongFolder = tempdir;
+            song = song.initialiseSong(commonSQL);
             try {
-                loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
-                        showToast, sqLiteHelper, convertOnSong, convertChoPro);
+                song = loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
+                        showToast, sqLiteHelper, commonSQL, song,convertOnSong, convertChoPro,false);
             } catch (Exception e) {
                 e.printStackTrace();
             }

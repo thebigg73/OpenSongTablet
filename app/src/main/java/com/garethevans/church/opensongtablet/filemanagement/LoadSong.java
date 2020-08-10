@@ -13,19 +13,17 @@ import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songprocessing.SongXML;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
-import com.garethevans.church.opensongtablet.sqlite.SQLite;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Locale;
 
@@ -33,15 +31,33 @@ public class LoadSong {
 
     //private boolean isXML, isPDF, isIMG, isCustom,
     private boolean needtoloadextra = false;
-    //private String filetype, utf, where = "Songs", folder, origfolder;
-    private String utf;
     private Uri uri;
 
-    public SQLite doLoadSong(Context c, StorageAccess storageAccess, Preferences preferences,
+    public Song doLoadSong(Context c, StorageAccess storageAccess, Preferences preferences,
+                           SongXML songXML, ProcessSong processSong, ShowToast showToast,
+                           SQLiteHelper sqLiteHelper, CommonSQL commonSQL, Song song,
+                           ConvertOnSong convertOnSong, ConvertChoPro convertChoPro, boolean indexing) {
+
+        // If we have finished song indexing, we get the song from the SQL database.
+        // If not, we load up from the xml file
+        // We also load from the file if it is a custom file (pdf and images are dealt with separately)
+
+        if (!StaticVariables.indexComplete || song.getFolder().contains("../")) {
+            // This is set to true once the index is completed
+            Log.d("LoadSong","Loading from the xml file");
+            return doLoadSongFile(c,storageAccess,preferences,songXML,processSong,showToast,
+                    sqLiteHelper,commonSQL,song,convertOnSong,convertChoPro,indexing);
+        } else {
+            Log.d("LoadSong","Loading from the database");
+            return sqLiteHelper.getSpecificSong(c,commonSQL,song.getFolder(),song.getFilename());
+        }
+
+
+    }
+    public Song doLoadSongFile(Context c, StorageAccess storageAccess, Preferences preferences,
                              SongXML songXML, ProcessSong processSong, ShowToast showToast,
-                             SQLiteHelper sqLiteHelper, CommonSQL commonSQL, SQLite sqLite,
-                             ConvertOnSong convertOnSong, ConvertChoPro convertChoPro,
-                             String where, String folder, String filename, boolean indexing) {
+                             SQLiteHelper sqLiteHelper, CommonSQL commonSQL, Song song,
+                             ConvertOnSong convertOnSong, ConvertChoPro convertChoPro, boolean indexing) {
 
         // This extracts what it can from the song, and returning an updated SQLite song object.
         // If we are indexing, that's it.  If not, we update the statics with the SQL values
@@ -53,62 +69,79 @@ public class LoadSong {
             preferences.setMyPreferenceBoolean(c,"songLoadSuccess",false);
         }
 
-        boolean isCustom = folder.startsWith("../");
+        String where = "Songs";
+        if (song.getFolder().startsWith("../")) {
+            where = song.getFolder();
+            where = where.replace("../","");
+            String folder = "";
+            if (where.contains("/")) {
+                folder = where.substring(where.indexOf("/"));
+                where = where.substring(0,where.indexOf("/"));
+                folder = folder.replace("/","");
+                where = where.replace("/","");
+
+            }
+            song.setFolder(folder);
+        }
 
         // Determine the filetype by extension - the best songs are xml (OpenSong formatted).
-        sqLite.setFiletype(getFileTypeByExtension(filename));
+        song.setFiletype(getFileTypeByExtension(song.getFilename()));
+
+        // Get the uri for the song - we know it exists as we found it!
+        uri = storageAccess.getUriForItem(c,preferences,where,song.getFolder(),song.getFilename());
 
         // Get the file encoding (this also tests that the file exists)
-        utf = getUTF(c,storageAccess,preferences,folder,filename,sqLite.getFiletype());
+        //private String filetype, utf, where = "Songs", folder, origfolder;
+        String utf = getUTF(c, storageAccess, preferences, song.getFolder(), song.getFilename(), song.getFiletype());
 
         // Try to load the song as an xml
-        if (sqLite.getFiletype().equals("XML") && !filename.equals("Welcome to OpenSongApp")) {
+        if (song.getFiletype().equals("XML") && !song.getFilename().equals("Welcome to OpenSongApp")) {
             // Here we go loading the song
             // This returns an update sqLite song object if it works
             try {
-                sqLite = readFileAsXML(c, storageAccess, preferences, processSong, showToast, sqLite, where, folder, filename, indexing);
+                song = readFileAsXML(c, storageAccess, preferences, processSong, showToast, where, song, uri, utf, indexing);
             } catch (XmlPullParserException | IOException e) {
                 e.printStackTrace();
             }
         }
 
         // If the file wasn't read as an xml file and might be text based, we need to deal with it in another way
-        if (!sqLite.getFiletype().equals("XML") && !sqLite.getFiletype().equals("PDF") &&
-                !sqLite.getFiletype().equals("IMG") && !sqLite.getFiletype().equals("DOC")) {
+        if (!song.getFiletype().equals("XML") && !song.getFiletype().equals("PDF") &&
+                !song.getFiletype().equals("IMG") && !song.getFiletype().equals("DOC")) {
             // This will try to import text, chordpro or onsong and update the lyrics field
-            sqLite.setLyrics(getSongAsText(c,storageAccess,preferences, where, folder, filename));
-            sqLite.setTitle(sqLite.getFilename());
-            if (sqLite.getLyrics()!=null && !sqLite.getLyrics().isEmpty()) {
+            song.setLyrics(getSongAsText(c,storageAccess,preferences, where, song.getFolder(), song.getFilename()));
+            song.setTitle(song.getFilename());
+            if (song.getLyrics()!=null && !song.getLyrics().isEmpty()) {
                 preferences.setMyPreferenceBoolean(c,"songLoadSuccess",true);
             }
         }
 
-        if (sqLite.getFiletype().equals("iOS")) {
+        if (song.getFiletype().equals("iOS")) {
             // Run the OnSongConvert script
             convertOnSong.convertTextToTags(c,storageAccess,preferences,processSong, songXML,
-                    convertChoPro,sqLiteHelper,uri,sqLite.getLyrics());
+                    convertChoPro,sqLiteHelper,commonSQL,uri,song);
 
             // Now read in the proper OpenSong xml file
             try {
-                readFileAsXML(c,storageAccess,preferences,processSong,showToast,sqLite,where, folder, filename, indexing);
+                readFileAsXML(c,storageAccess,preferences,processSong,showToast, where, song, uri, utf, indexing);
             } catch (Exception e) {
                 Log.d("LoadXML", "Error performing grabOpenSongXML()");
             }
-        } else if (sqLite.getFiletype().equals("CHO") || lyricsHaveChoProTags(sqLite.getLyrics())) {
+        } else if (song.getFiletype().equals("CHO") || lyricsHaveChoProTags(song.getLyrics())) {
             // Run the ChordProConvert script
-            convertChoPro.convertTextToTags(c,storageAccess,preferences,processSong,sqLiteHelper,
-                    commonSQL, songXML, uri, sqLite.getLyrics());
+            song = convertChoPro.convertTextToTags(c,storageAccess,preferences,processSong,sqLiteHelper,
+                    commonSQL, songXML, uri, song);
 
             // Now read in the proper OpenSong xml file
             try {
-                readFileAsXML(c,storageAccess,preferences,processSong,showToast,sqLite,where,folder,filename,indexing);
+                readFileAsXML(c,storageAccess,preferences,processSong,showToast,where,song,uri, utf,indexing);
             } catch (Exception e) {
                 Log.d("LoadXML", "Error performing grabOpenSongXML()");
             }
         }
 
         // Fix all the rogue code
-        sqLite.setLyrics(processSong.parseLyrics(sqLite.getLyrics(), c));
+        song.setLyrics(processSong.parseLyrics(song.getLyrics(), c));
 
 
         // Finally if we aren't indexing, set the static variables to match the SQLite object
@@ -117,31 +150,22 @@ public class LoadSong {
             // Empty the XML
             StaticVariables.myNewXML = "";
 
-            // Initialise the Song tags
-            songXML.initialiseSongTags();
-
             // Check if the song has been loaded (will now have a lyrics value)
-            if (!sqLite.getFilename().equals("Welcome to OpenSongApp") && sqLite.getLyrics()!=null && !sqLite.getLyrics().isEmpty()) {
+            if (!song.getFilename().equals("Welcome to OpenSongApp") && song.getLyrics()!=null && !song.getLyrics().isEmpty()) {
                 // Song was loaded correctly and was xml format
                 preferences.setMyPreferenceBoolean(c, "songLoadSuccess", true);
-                StaticVariables.songfilename = sqLite.getFilename();
-                if (isCustom) {
-                    StaticVariables.whichSongFolder = folder;
-                } else {
-                    StaticVariables.whichSongFolder = sqLite.getFolder();
-                }
+                StaticVariables.songfilename = song.getFilename();
+                StaticVariables.whichSongFolder = song.getFolder();
+
             } else {
                 StaticVariables.whichSongFolder = c.getResources().getString(R.string.mainfoldername);
                 StaticVariables.songfilename = "Welcome to OpenSongApp";
             }
 
-            // Just in case we have improved the song, prepare the improved xml
-            songXML.getXML(processSong);
-
             preferences.setMyPreferenceString(c,"songfilename",StaticVariables.songfilename);
             preferences.setMyPreferenceString(c,"whichSongFolder",StaticVariables.whichSongFolder);
         }
-    return sqLite;
+    return song;
     }
 
     private boolean lyricsHaveChoProTags(String lyrics) {
@@ -206,163 +230,135 @@ public class LoadSong {
         }
     }
 
-    private SQLite readFileAsXML(Context c, StorageAccess storageAccess, Preferences preferences,
-                                  ProcessSong processSong, ShowToast showToast, SQLite sqLite, String where, String folder, String filename, boolean indexing)
+    public Song readFileAsXML(Context c, StorageAccess storageAccess, Preferences preferences,
+                              ProcessSong processSong, ShowToast showToast, String where, Song song, Uri uri, String utf, boolean indexing)
             throws XmlPullParserException, IOException {
+
         // Extract all of the key bits of the song
-        XmlPullParserFactory factory;
-        factory = XmlPullParserFactory.newInstance();
-
-        factory.setNamespaceAware(true);
-        XmlPullParser xpp;
-        xpp = factory.newPullParser();
-
         if (storageAccess.uriIsFile(c,uri)) {
             InputStream inputStream = storageAccess.getInputStream(c, uri);
-            InputStreamReader lineReader = new InputStreamReader(inputStream);
-            BufferedReader buffreader = new BufferedReader(lineReader);
-
-            String line;
-            try {
-                line = buffreader.readLine();
-                if (line.contains("<?xml")) {
-                    sqLite.setFiletype("XML");
-                }
-                if (line.contains("encoding=\"")) {
-                    int startpos = line.indexOf("encoding=\"") + 10;
-                    int endpos = line.indexOf("\"", startpos);
-                    String enc = line.substring(startpos, endpos);
-                    if (enc.length() > 0) {
-                        utf = enc.toUpperCase();
-                    }
-                }
-            } catch (Exception e) {
-                utf = "UTF-8";
-            }
-
-            // Keep a note of this encoding incase we resave the song!
-            StaticVariables.mEncoding = utf;
-
-            // read every line of the file into the line-variable, on line at the time
-            inputStream.close();
-            inputStream = storageAccess.getInputStream(c, uri);
-
+            XmlPullParserFactory factory;
+            factory = XmlPullParserFactory.newInstance();
+            factory.setNamespaceAware(true);
+            XmlPullParser xpp;
+            xpp = factory.newPullParser();
             xpp.setInput(inputStream, utf);
-
             int eventType;
+
+            // Extract all of the stuff we need
             eventType = xpp.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 if (eventType == XmlPullParser.START_TAG) {
                     switch (xpp.getName()) {
                         case "author":
                             try {
-                                sqLite.setAuthor(processSong.parseHTML(xpp.nextText()));
+                                song.setAuthor(processSong.parseHTML(xpp.nextText()));
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 // Try to read in the xml
-                                sqLite.setAuthor(fixXML(c, preferences, storageAccess, showToast, sqLite,"author",where,folder,filename));
+                                song.setAuthor(fixXML(c, preferences, storageAccess, showToast, song,"author",where));
                             }
                             break;
                         case "copyright":
-                            sqLite.setCopyright(processSong.parseHTML(xpp.nextText()));
+                            song.setCopyright(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "title":
                             String testthetitle = processSong.parseHTML(xpp.nextText());
                             if (testthetitle != null && !testthetitle.equals("") && !testthetitle.isEmpty()) {
-                                sqLite.setTitle(processSong.parseHTML(testthetitle));
+                                song.setTitle(processSong.parseHTML(testthetitle));
                             } else if (testthetitle != null && testthetitle.equals("")) {
-                                sqLite.setTitle(sqLite.getFilename());
+                                song.setTitle(song.getFilename());
                             }
                             break;
                         case "lyrics":
                             try {
-                                sqLite.setLyrics(processSong.fixStartOfLines(processSong.parseHTML(xpp.nextText())));
+                                song.setLyrics(processSong.fixStartOfLines(processSong.parseHTML(xpp.nextText())));
                             } catch (Exception e) {
                                 // Try to read in the xml
                                 e.printStackTrace();
-                                sqLite.setLyrics(fixXML(c, preferences, storageAccess,showToast, sqLite,"lyrics",where,folder,filename));
+                                song.setLyrics(fixXML(c, preferences, storageAccess,showToast, song,"lyrics",where));
                             }
                             break;
                         case "ccli":
-                            sqLite.setCcli(processSong.parseHTML(xpp.nextText()));
+                            song.setCcli(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "theme":
-                            sqLite.setTheme(processSong.parseHTML(xpp.nextText()));
+                            song.setTheme(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "alttheme":
-                            sqLite.setAlttheme(processSong.parseHTML(xpp.nextText()));
+                            song.setAlttheme(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "presentation":
-                            sqLite.setPresentationorder(processSong.parseHTML(xpp.nextText()));
+                            song.setPresentationorder(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "hymn_number":
-                            sqLite.setHymn_num(processSong.parseHTML(xpp.nextText()));
+                            song.setHymnnum(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "user1":
-                            sqLite.setUser1(processSong.parseHTML(xpp.nextText()));
+                            song.setUser1(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "user2":
-                            sqLite.setUser2(processSong.parseHTML(xpp.nextText()));
+                            song.setUser2(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "user3":
-                            sqLite.setUser3(processSong.parseHTML(xpp.nextText()));
+                            song.setUser3(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "key":
-                            sqLite.setKey(processSong.parseHTML(xpp.nextText()));
+                            song.setKey(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "aka":
-                            sqLite.setAka(processSong.parseHTML(xpp.nextText()));
+                            song.setAka(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "capo":
                             if (xpp.getAttributeCount() > 0) {
-                                StaticVariables.mCapoPrint = xpp.getAttributeValue(0);
+                                song.setCapoprint(xpp.getAttributeValue(0));
                             }
-                            sqLite.setCapo(processSong.parseHTML(xpp.nextText()));
+                            song.setCapo(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "tempo":
-                            sqLite.setMetronomebpm(processSong.parseHTML(xpp.nextText()));
+                            song.setMetronomebpm(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "time_sig":
-                            sqLite.setTimesig(processSong.parseHTML(xpp.nextText()));
+                            song.setTimesig(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "duration":
-                            sqLite.setAutoscrolllength(processSong.parseHTML(xpp.nextText()));
+                            song.setAutoscrolllength(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "predelay":
-                            sqLite.setAutoscrolldelay(processSong.parseHTML(xpp.nextText()));
+                            song.setAutoscrolldelay(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "midi":
-                            sqLite.setMidi(processSong.parseHTML(xpp.nextText()));
+                            song.setMidi(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "midi_index":
-                            sqLite.setMidiindex(processSong.parseHTML(xpp.nextText()));
+                            song.setMidiindex(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "notes":
-                            sqLite.setNotes(processSong.parseHTML(xpp.nextText()));
+                            song.setNotes(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "pad_file":
-                            sqLite.setPadfile(processSong.parseHTML(xpp.nextText()));
+                            song.setPadfile(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "custom_chords":
-                            sqLite.setCustomChords(processSong.parseHTML(xpp.nextText()));
+                            song.setCustomChords(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "link_youtube":
-                            sqLite.setLinkyoutube(processSong.parseHTML(xpp.nextText()));
+                            song.setLinkyoutube(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "link_web":
-                            sqLite.setLinkWeb(processSong.parseHTML(xpp.nextText()));
+                            song.setLinkweb(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "link_audio":
-                            sqLite.setLinkaudio(processSong.parseHTML(xpp.nextText()));
+                            song.setLinkaudio(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "loop_audio":
-                            sqLite.setPadloop(processSong.parseHTML(xpp.nextText()));
+                            song.setPadloop(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "link_other":
-                            sqLite.setLinkother(processSong.parseHTML(xpp.nextText()));
+                            song.setLinkother(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "abcnotation":
-                            sqLite.setAbc(processSong.parseHTML(xpp.nextText()));
+                            song.setAbc(processSong.parseHTML(xpp.nextText()));
                             break;
                         case "style":
                         case "backgrounds":
@@ -374,26 +370,26 @@ public class LoadSong {
                 // If it isn't an xml file, an error is about to be thrown
                 try {
                     eventType = xpp.next();
-                    sqLite.setFiletype("XML");
+                    song.setFiletype("XML");
                 } catch (Exception e) {
                     Log.d("LoadSong", "Not xml so exiting");
                     eventType = XmlPullParser.END_DOCUMENT;
-                    sqLite.setFiletype("?");
+                    song.setFiletype("?");
                 }
             }
 
-            if (sqLite.getFilename().equals("Welcome to OpenSongApp")) {
-                sqLite = setNotFound(c,sqLite);
+            if (song.getFilename().equals("Welcome to OpenSongApp")) {
+                song = setNotFound(c);
             }
 
             // If we really have to load extra stuff, lets do it as an asynctask
             if (needtoloadextra && !indexing) {
                 inputStream = storageAccess.getInputStream(c, uri);
-                SideTask loadextra = new SideTask(c, inputStream, uri, sqLite.getFilename());
+                SideTask loadextra = new SideTask(c, inputStream, uri, song.getFilename());
                 loadextra.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         }
-        return sqLite;
+        return song;
     }
 
 
@@ -476,7 +472,7 @@ public class LoadSong {
     }
 
 
-    private String fixXML(Context c, Preferences preferences, StorageAccess storageAccess, ShowToast showToast, SQLite sqLite, String section, String where, String folder, String filename) {
+    private String fixXML(Context c, Preferences preferences, StorageAccess storageAccess, ShowToast showToast, Song song, String section, String where) {
 
         // Error in the xml - tell the user we're trying to fix it!
         showToast.doIt(c,c.getString(R.string.fix));
@@ -484,7 +480,7 @@ public class LoadSong {
         String tofix;
         // If an XML file has unencoded ampersands or quotes, fix them
         try {
-            tofix = getSongAsText(c,storageAccess,preferences,where,folder,filename);
+            tofix = getSongAsText(c,storageAccess,preferences,where,song.getFolder(),song.getFilename());
 
             if (tofix.contains("<")) {
                 String[] sections = tofix.split("<");
@@ -509,10 +505,10 @@ public class LoadSong {
             if (newXML.toString().contains("<"+section+">") && newXML.toString().contains("</"+section+">")) {
                 int start = newXML.indexOf("<"+section+">") + 2 + section.length();
                 int end = newXML.indexOf("</"+section+">");
-                sqLite.setFiletype("XML");
+                song.setFiletype("XML");
                 return newXML.substring(start,end);
             } else {
-                sqLite.setFiletype("?");
+                song.setFiletype("?");
                 return newXML.toString();
             }
 
@@ -540,12 +536,16 @@ public class LoadSong {
         return tofix;
     }
 
-    private SQLite setNotFound(Context c, SQLite sqLite) {
-        sqLite.setAuthor("Gareth Evans");
-        sqLite.setLinkWeb("https://www.opensongapp,com");
-        sqLite.setTitle("Welcome to OpenSongApp");
-        sqLite.setLyrics(c.getString(R.string.user_guide_lyrics));
-        return sqLite;
+    private Song setNotFound(Context c) {
+        Song song = new Song();
+        StaticVariables.songfilename = "Welcome to OpenSongApp";
+        song.setFilename("Welcome to OpenSongApp");
+        song.setTitle("Welcome to OpenSongApp");
+        song.setLyrics(c.getString(R.string.user_guide_lyrics));
+        song.setAuthor("Gareth Evans");
+        song.setKey("G");
+        song.setLinkweb("https://www.opensongapp.com");
+        return song;
     }
 
     private String getSongAsText(Context c, StorageAccess storageAccess, Preferences preferences, String where, String folder, String filename) {

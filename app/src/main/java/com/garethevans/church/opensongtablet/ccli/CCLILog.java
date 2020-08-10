@@ -8,7 +8,7 @@ import android.util.Log;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -36,6 +36,14 @@ import javax.xml.transform.stream.StreamResult;
 
 public class CCLILog {
 
+    Song song;
+
+    CCLILog(Song song) {
+        this.song = song;
+    }
+
+    public CCLILog() {}
+
     /*
     1 Created - when importing or clicking on the new
     2 Deleted - when clicking on the delete options
@@ -61,7 +69,7 @@ public class CCLILog {
     String thisdate;
     String thistime;
 
-    private ArrayList<String> songfile, song, author, copyright, ccli, date, time, action;
+    private ArrayList<String> songfile, title, author, copyright, ccli, date, time, action;
 
     public void addEntry(Context c, Preferences preferences, StorageAccess storageAccess, String usageType) {
 
@@ -167,23 +175,23 @@ public class CCLILog {
                 newItem.appendChild(a_usage);
 
                 Element a_fname = document.createElement("FileName");
-                a_fname.appendChild(document.createTextNode(StaticVariables.songfilename));
+                a_fname.appendChild(document.createTextNode(song.getFilename()));
                 newItem.appendChild(a_fname);
 
-                Element a_song = document.createElement("title");
-                a_song.appendChild(document.createTextNode(StaticVariables.mTitle));
-                newItem.appendChild(a_song);
+                Element a_title = document.createElement("title");
+                a_title.appendChild(document.createTextNode(song.getTitle()));
+                newItem.appendChild(a_title);
 
                 Element a_author = document.createElement("author");
-                a_author.appendChild(document.createTextNode(StaticVariables.mAuthor));
+                a_author.appendChild(document.createTextNode(song.getAuthor()));
                 newItem.appendChild(a_author);
 
                 Element a_copyright = document.createElement("copyright");
-                a_copyright.appendChild(document.createTextNode(StaticVariables.mCopyright));
+                a_copyright.appendChild(document.createTextNode(song.getCopyright()));
                 newItem.appendChild(a_copyright);
 
                 Element a_ccli = document.createElement("ccli");
-                a_ccli.appendChild(document.createTextNode(StaticVariables.mCCLI));
+                a_ccli.appendChild(document.createTextNode(song.getCcli()));
                 newItem.appendChild(a_ccli);
 
                 if (root != null) {
@@ -222,7 +230,7 @@ public class CCLILog {
 
     private void initialiseTables() {
         songfile = new ArrayList<>();
-        song = new ArrayList<>();
+        title = new ArrayList<>();
         author = new ArrayList<>();
         copyright = new ArrayList<>();
         ccli = new ArrayList<>();
@@ -248,7 +256,7 @@ public class CCLILog {
 
             int eventType;
             String curr_file = "";
-            String curr_song = "";
+            String curr_title = "";
             String curr_author = "";
             String curr_copy = "";
             String curr_ccli = "";
@@ -261,9 +269,9 @@ public class CCLILog {
                 if (eventType == XmlPullParser.START_TAG) {
                     if (xpp.getName().startsWith("Entry")) {
                         // If the song isn't blank (first time), extract them
-                        if (!curr_song.equals("")) {
+                        if (!curr_title.equals("")) {
                             songfile.add(curr_file);
-                            song.add(curr_song);
+                            title.add(curr_title);
                             author.add(curr_author);
                             copyright.add(curr_copy);
                             ccli.add(curr_ccli);
@@ -273,7 +281,7 @@ public class CCLILog {
 
                             // Reset the tags
                             curr_file = "";
-                            curr_song = "";
+                            curr_title = "";
                             curr_author = "";
                             curr_copy = "";
                             curr_ccli = "";
@@ -284,7 +292,7 @@ public class CCLILog {
                     } else if (xpp.getName().equals("FileName")) {
                         curr_file = xpp.nextText();
                     } else if (xpp.getName().equals("title")) {
-                        curr_song = xpp.nextText();
+                        curr_title = xpp.nextText();
                     } else if (xpp.getName().equals("author")) {
                         curr_author = xpp.nextText();
                     } else if (xpp.getName().equals("copyright")) {
@@ -308,9 +316,9 @@ public class CCLILog {
             }
 
             // Add the last item
-            if (!curr_song.equals("")) {
+            if (!curr_title.equals("")) {
                 songfile.add(curr_file);
-                song.add(curr_song);
+                title.add(curr_title);
                 author.add(curr_author);
                 copyright.add(curr_copy);
                 ccli.add(curr_ccli);
@@ -324,7 +332,7 @@ public class CCLILog {
     }
 
     String buildMyTable(Context c, Preferences preferences, String sizeoffile) {
-        if (song == null || song.size() == 0) {
+        if (title == null || title.size() == 0) {
             return "<html><body><h2>" + c.getResources().getString(R.string.edit_song_ccli) + "</h2>\n" +
                     "<h3>" + c.getResources().getString(R.string.ccli_church) + ": " +
                     preferences.getMyPreferenceString(c,"ccliChurchName","") + "</h3>\n" +
@@ -358,10 +366,10 @@ public class CCLILog {
             table.append("<th>").append(c.getResources().getString(R.string.action)).append("</th>");
             table.append("</tr>\n");
             // Build the table view
-            for (int x = 0; x < song.size(); x++) {
+            for (int x = 0; x < title.size(); x++) {
                 table.append("<tr>");
                 table.append("<td>").append(songfile.get(x)).append("</td>");
-                table.append("<td>").append(song.get(x)).append("</td>");
+                table.append("<td>").append(title.get(x)).append("</td>");
                 table.append("<td>").append(author.get(x)).append("</td>");
                 table.append("<td>").append(copyright.get(x)).append("</td>");
                 table.append("<td>").append(ccli.get(x)).append("</td>");

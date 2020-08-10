@@ -22,6 +22,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songprocessing.SongXML;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -42,13 +43,15 @@ public class NewNameDialog extends DialogFragment {
     String currentDir, currentSubDir, fragName;
     Fragment callingFragment;
     String songContent;
+    Song song;
 
-    public NewNameDialog(Fragment callingFragment, String fragName, boolean isfile, String currentDir, String currentSubDir) {
+    public NewNameDialog(Fragment callingFragment, String fragName, boolean isfile, String currentDir, String currentSubDir, Song song) {
         this.isfile = isfile;  // True to create a file, false to create a folder
         this.currentDir = currentDir;
         this.currentSubDir = currentSubDir;
         this.fragName = fragName;
         this.callingFragment = callingFragment;
+        this.song = song;
     }
 
     @Override
@@ -69,7 +72,7 @@ public class NewNameDialog extends DialogFragment {
         setViews();
 
         // Get the current songXML to pass back as an argument if we need it (good for duplicating!)
-        songContent = songXML.getXML(processSong);
+        songContent = songXML.getXML(song,processSong);
 
         // Set listeners
         okButton.setOnClickListener(v -> doSave());

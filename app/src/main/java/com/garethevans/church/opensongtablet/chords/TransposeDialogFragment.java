@@ -25,20 +25,21 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songprocessing.SongXML;
+import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
-import com.garethevans.church.opensongtablet.sqlite.SQLite;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.google.android.material.button.MaterialButton;
 
 import java.io.OutputStream;
-import java.util.ArrayList;
 
 public class TransposeDialogFragment extends DialogFragment {
 
     boolean editSong = false;  // This is set to true when coming here from EditSongFragment
-    String lyrics = StaticVariables.mLyrics;  //  These get updated from the caller
-    String key = StaticVariables.mKey;
+    String lyrics;  //  These get updated from the caller
+    String key;
+    Song song;
 
     private TransposeDialogBinding myView;
     private SeekBar transposeSeekBar;
@@ -53,16 +54,21 @@ public class TransposeDialogFragment extends DialogFragment {
     private Transpose transpose;
     private SongXML songXML;
     private ProcessSong processSong;
+    private SQLiteHelper sqLiteHelper;
+    private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
+    private CommonSQL commonSQL;
 
     private MainActivityInterface mainActivityInterface;
 
-    public TransposeDialogFragment(boolean editSong, String key, String lyrics) {
+    private String transposeDirection;
+    private int transposeTimes;
+
+    public TransposeDialogFragment(boolean editSong, Song song) {
         // This is called from the EditSongFragment.  Receive temp lyrics and key
         Log.d("TransposeFrag","Caller: key="+key);
 
         this.editSong = editSong;
-        this.lyrics = lyrics;
-        this.key = key;
+        this.song = song;
     }
 
     public TransposeDialogFragment() {
@@ -93,8 +99,8 @@ public class TransposeDialogFragment extends DialogFragment {
         setListeners();
 
         // Initialise the transpose values
-        StaticVariables.transposeDirection = "";
-        StaticVariables.transposeTimes = Math.abs(0);
+        transposeDirection = "";
+        transposeTimes = Math.abs(0);
 
         // Decide if we are using preferred chord format
         usePreferredChordFormat(preferences.getMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",false));
@@ -111,6 +117,9 @@ public class TransposeDialogFragment extends DialogFragment {
         transpose = new Transpose();
         songXML = new SongXML();
         processSong = new ProcessSong();
+        sqLiteHelper = new SQLiteHelper(requireContext());
+        nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(requireContext());
+        commonSQL = new CommonSQL();
     }
 
     // Initialise the views
@@ -174,19 +183,19 @@ public class TransposeDialogFragment extends DialogFragment {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int val = progress-6;
                 if (val<0) {
-                    StaticVariables.transposeDirection = "-1";
-                    StaticVariables.transposeTimes = Math.abs(val);
+                    transposeDirection = "-1";
+                    transposeTimes = Math.abs(val);
                     String text = "-"+Math.abs(val);
                     transposeValTextView.setText(text);
 
                 } else if (val>0) {
-                    StaticVariables.transposeDirection = "+1";
-                    StaticVariables.transposeTimes = Math.abs(val);
+                    transposeDirection = "+1";
+                    transposeTimes = Math.abs(val);
                     String text = "+"+Math.abs(val);
                     transposeValTextView.setText(text);
                 } else {
-                    StaticVariables.transposeDirection = "";
-                    StaticVariables.transposeTimes = Math.abs(0);
+                    transposeDirection = "";
+                    transposeTimes = Math.abs(0);
                     transposeValTextView.setText("0");
                 }
 
@@ -194,7 +203,7 @@ public class TransposeDialogFragment extends DialogFragment {
                 if (key!=null && !key.equals("")) {
                     // Get the new key value
                     String keynum = transpose.keyToNumber(key);
-                    String transpkeynum = transpose.transposeKey(keynum, StaticVariables.transposeDirection, StaticVariables.transposeTimes);
+                    String transpkeynum = transpose.transposeKey(keynum, transposeDirection, transposeTimes);
                     String newkey = transpose.numberToKey(getActivity(), preferences, transpkeynum);
 
                     String keychange = getString(R.string.edit_song_key) + ": " + key + "\n" +
@@ -286,34 +295,27 @@ public class TransposeDialogFragment extends DialogFragment {
             // Do the transpose
             // If we are editing the song, don't write this, just get the returned values as an array
             try {
-                ArrayList<String> newValues = transpose.doTranspose(getActivity(), key, lyrics, preferences,
-                        false, false);
-                key = newValues.get(0);
-                lyrics = newValues.get(1);
+                song = transpose.doTranspose(getActivity(), song, preferences,transposeDirection,
+                        transposeTimes,false, false);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             // If we are just editing, update the edit fragment and dismiss, otherwise save the new values
             if (editSong) {
-                requireActivity().runOnUiThread(() -> mainActivityInterface.updateKeyAndLyrics(key, lyrics));
+                requireActivity().runOnUiThread(() -> mainActivityInterface.updateKeyAndLyrics(song));
 
             } else {
                 // Write the new improved XML file
-                StaticVariables.mLyrics = lyrics;
-                StaticVariables.mKey = key;
+                String newXML = songXML.getXML(song,processSong);
 
-                String newXML = songXML.getXML(processSong);
+                if (song.getFiletype().equals("PDF")||song.getFiletype().equals("XML")) {
+                    nonOpenSongSQLiteHelper.updateSong(requireContext(),commonSQL,storageAccess,preferences,song);
+                    sqLiteHelper.updateSong(requireContext(),commonSQL,song);
 
-                if (StaticVariables.fileType.equals("PDF")||StaticVariables.fileType.equals("XML")) {
-                    NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(requireContext());
-                    NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(requireContext(),
-                            storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
-                    nonOpenSongSQLiteHelper.updateSong(requireContext(),storageAccess,preferences,nonOpenSongSQLite);
                 } else {
-                    SQLiteHelper sqLiteHelper = new SQLiteHelper(requireContext());
-                    SQLite sqLite = sqLiteHelper.getSong(requireContext(),sqLiteHelper.getCurrentSongId());
-                    sqLiteHelper.updateSong(requireContext(),sqLite);
+                    sqLiteHelper.updateSong(requireContext(),commonSQL,song);
                     // Now write the file
                     Uri uri = storageAccess.getUriForItem(requireContext(),preferences,"Songs",
                             StaticVariables.whichSongFolder, StaticVariables.songfilename);

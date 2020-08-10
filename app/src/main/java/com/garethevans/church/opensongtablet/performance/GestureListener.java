@@ -11,14 +11,22 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
     private ScrollView songScrollView;
     private HorizontalScrollView horizontalScrollView;
     private int swipeMinimumDistance, swipeMaxDistanceYError, swipeMinimumVelocity;
+    private boolean oktoregistergesture;
+    private PerformanceGestures performanceGestures;
+    private int doubleTapAction;
+
 
     GestureListener(ScrollView songScrollView, HorizontalScrollView horizontalScrollView,
-                    int swipeMinimumDistance, int swipeMaxDistanceYError, int swipeMinimumVelocity) {
+                    int swipeMinimumDistance, int swipeMaxDistanceYError, int swipeMinimumVelocity,
+                    boolean oktoregistergesture, int doubleTapAction, PerformanceGestures performanceGestures) {
         this.songScrollView = songScrollView;
         this.horizontalScrollView = horizontalScrollView;
         this.swipeMinimumDistance = swipeMinimumDistance;
         this.swipeMaxDistanceYError = swipeMaxDistanceYError;
         this.swipeMinimumVelocity = swipeMinimumVelocity;
+        this.oktoregistergesture = oktoregistergesture;
+        this.doubleTapAction = doubleTapAction;
+        this.performanceGestures = performanceGestures;
     }
     
     @Override
@@ -62,6 +70,30 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
     @Override
     public boolean onDoubleTapEvent(MotionEvent e) {
+        // Decide what the double tap action is
+        // 1 = both menus
+        // 2 = edit song
+        // 3 = add to set
+        // 4 = redraw
+        // 5 = start/stop autoscroll
+        // 6 = start/stop pad
+        // 7 = start/stop metronome
+        // 8 = start/stop autoscroll + pad
+        // 9 = start/stop autoscroll + metronome
+        //10 = start/stop autoscroll + pad + metronome
+        //11 = start/stop autoscroll + pad + metronome
+        // 0/else = off (highest menu item)
+
+        // First test conditions
+        if (oktoregistergesture) {
+
+            // Now find out which gesture we've gone for
+            switch (doubleTapAction) {
+                case 1:
+                    performanceGestures.gesture1();
+            }
+        }
+
         if (!PerformanceFragment.wasScaling) {
             if (e.getAction() == 1) {
                 //Do your action on double tap

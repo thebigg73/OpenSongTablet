@@ -7,7 +7,7 @@ import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 public class SongXML {
 
-    public void initialiseSongTags() {
+    /*public void initialiseSongTags() {
         StaticVariables.mTitle = StaticVariables.songfilename;
         StaticVariables.mAuthor = "";
         StaticVariables.mCopyright = "";
@@ -44,45 +44,45 @@ public class SongXML {
         StaticVariables.mExtraStuff2 = "";
         StaticVariables.mEncoding = "UTF-8";
         StaticVariables.mFileType = "XML";
-    }
+    }*/
 
-    public String getXML(ProcessSong processSong) {
+    public String getXML(Song song, ProcessSong processSong) {
         if (StaticVariables.mEncoding==null || StaticVariables.mEncoding.equals("")) {
             StaticVariables.mEncoding = "UTF-8";
         }
         String myNEWXML = "<?xml version=\"1.0\" encoding=\""+ StaticVariables.mEncoding+"\"?>\n";
         myNEWXML += "<song>\n";
-        myNEWXML += "  <title>" + processSong.parseToHTMLEntities(StaticVariables.mTitle) + "</title>\n";
-        myNEWXML += "  <author>" + processSong.parseToHTMLEntities(StaticVariables.mAuthor) + "</author>\n";
-        myNEWXML += "  <copyright>" + processSong.parseToHTMLEntities(StaticVariables.mCopyright) + "</copyright>\n";
-        myNEWXML += "  <presentation>" + processSong.parseToHTMLEntities(StaticVariables.mPresentation) + "</presentation>\n";
-        myNEWXML += "  <hymn_number>" + processSong.parseToHTMLEntities(StaticVariables.mHymnNumber) + "</hymn_number>\n";
-        myNEWXML += "  <capo print=\"" + processSong.parseToHTMLEntities(StaticVariables.mCapoPrint) + "\">" +
-                processSong.parseToHTMLEntities(StaticVariables.mCapo) + "</capo>\n";
-        myNEWXML += "  <tempo>" + processSong.parseToHTMLEntities(StaticVariables.mTempo) + "</tempo>\n";
-        myNEWXML += "  <time_sig>" + processSong.parseToHTMLEntities(StaticVariables.mTimeSig) + "</time_sig>\n";
-        myNEWXML += "  <duration>" + processSong.parseToHTMLEntities(StaticVariables.mDuration) + "</duration>\n";
-        myNEWXML += "  <predelay>" + processSong.parseToHTMLEntities(StaticVariables.mPreDelay) + "</predelay>\n";
-        myNEWXML += "  <ccli>" + processSong.parseToHTMLEntities(StaticVariables.mCCLI) + "</ccli>\n";
-        myNEWXML += "  <theme>" + processSong.parseToHTMLEntities(StaticVariables.mTheme) + "</theme>\n";
-        myNEWXML += "  <alttheme>" + processSong.parseToHTMLEntities(StaticVariables.mAltTheme) + "</alttheme>\n";
-        myNEWXML += "  <user1>" + processSong.parseToHTMLEntities(StaticVariables.mUser1) + "</user1>\n";
-        myNEWXML += "  <user2>" + processSong.parseToHTMLEntities(StaticVariables.mUser2) + "</user2>\n";
-        myNEWXML += "  <user3>" + processSong.parseToHTMLEntities(StaticVariables.mUser3) + "</user3>\n";
-        myNEWXML += "  <key>" + processSong.parseToHTMLEntities(StaticVariables.mKey) + "</key>\n";
-        myNEWXML += "  <aka>" + processSong.parseToHTMLEntities(StaticVariables.mAka) + "</aka>\n";
-        myNEWXML += "  <midi>" + processSong.parseToHTMLEntities(StaticVariables.mMidi) + "</midi>\n";
-        myNEWXML += "  <midi_index>" + processSong.parseToHTMLEntities(StaticVariables.mMidiIndex) + "</midi_index>\n";
-        myNEWXML += "  <notes>" + processSong.parseToHTMLEntities(StaticVariables.mNotes) + "</notes>\n";
-        myNEWXML += "  <lyrics>" + processSong.parseToHTMLEntities(StaticVariables.mLyrics) + "</lyrics>\n";
-        myNEWXML += "  <pad_file>" + processSong.parseToHTMLEntities(StaticVariables.mPadFile) + "</pad_file>\n";
-        myNEWXML += "  <custom_chords>" + processSong.parseToHTMLEntities(StaticVariables.mCustomChords) + "</custom_chords>\n";
-        myNEWXML += "  <link_youtube>" + processSong.parseToHTMLEntities(StaticVariables.mLinkYouTube) + "</link_youtube>\n";
-        myNEWXML += "  <link_web>" + processSong.parseToHTMLEntities(StaticVariables.mLinkWeb) + "</link_web>\n";
-        myNEWXML += "  <link_audio>" + processSong.parseToHTMLEntities(StaticVariables.mLinkAudio) + "</link_audio>\n";
-        myNEWXML += "  <loop_audio>" + processSong.parseToHTMLEntities(StaticVariables.mLoopAudio) + "</loop_audio>\n";
-        myNEWXML += "  <link_other>" + processSong.parseToHTMLEntities(StaticVariables.mLinkOther) + "</link_other>\n";
-        myNEWXML += "  <abcnotation>" + processSong.parseToHTMLEntities(StaticVariables.mNotation) + "</abcnotation>\n";
+        myNEWXML += "  <title>" + processSong.parseToHTMLEntities(song.getTitle()) + "</title>\n";
+        myNEWXML += "  <author>" + processSong.parseToHTMLEntities(song.getAuthor()) + "</author>\n";
+        myNEWXML += "  <copyright>" + processSong.parseToHTMLEntities(song.getCopyright()) + "</copyright>\n";
+        myNEWXML += "  <presentation>" + processSong.parseToHTMLEntities(song.getPresentationorder()) + "</presentation>\n";
+        myNEWXML += "  <hymn_number>" + processSong.parseToHTMLEntities(song.getHymnnum()) + "</hymn_number>\n";
+        myNEWXML += "  <capo print=\"" + processSong.parseToHTMLEntities(song.getCapoprint()) + "\">" +
+                processSong.parseToHTMLEntities(song.getCapo()) + "</capo>\n";
+        myNEWXML += "  <tempo>" + processSong.parseToHTMLEntities(song.getMetronomebpm()) + "</tempo>\n";
+        myNEWXML += "  <time_sig>" + processSong.parseToHTMLEntities(song.getTimesig()) + "</time_sig>\n";
+        myNEWXML += "  <duration>" + processSong.parseToHTMLEntities(song.getAutoscrolllength()) + "</duration>\n";
+        myNEWXML += "  <predelay>" + processSong.parseToHTMLEntities(song.getAutoscrolldelay()) + "</predelay>\n";
+        myNEWXML += "  <ccli>" + processSong.parseToHTMLEntities(song.getCcli()) + "</ccli>\n";
+        myNEWXML += "  <theme>" + processSong.parseToHTMLEntities(song.getTheme()) + "</theme>\n";
+        myNEWXML += "  <alttheme>" + processSong.parseToHTMLEntities(song.getAlttheme()) + "</alttheme>\n";
+        myNEWXML += "  <user1>" + processSong.parseToHTMLEntities(song.getUser1()) + "</user1>\n";
+        myNEWXML += "  <user2>" + processSong.parseToHTMLEntities(song.getUser2()) + "</user2>\n";
+        myNEWXML += "  <user3>" + processSong.parseToHTMLEntities(song.getUser3()) + "</user3>\n";
+        myNEWXML += "  <key>" + processSong.parseToHTMLEntities(song.getKey()) + "</key>\n";
+        myNEWXML += "  <aka>" + processSong.parseToHTMLEntities(song.getAka()) + "</aka>\n";
+        myNEWXML += "  <midi>" + processSong.parseToHTMLEntities(song.getMidi()) + "</midi>\n";
+        myNEWXML += "  <midi_index>" + processSong.parseToHTMLEntities(song.getMidiindex()) + "</midi_index>\n";
+        myNEWXML += "  <notes>" + processSong.parseToHTMLEntities(song.getNotes()) + "</notes>\n";
+        myNEWXML += "  <lyrics>" + processSong.parseToHTMLEntities(song.getLyrics()) + "</lyrics>\n";
+        myNEWXML += "  <pad_file>" + processSong.parseToHTMLEntities(song.getPadfile()) + "</pad_file>\n";
+        myNEWXML += "  <custom_chords>" + processSong.parseToHTMLEntities(song.getCustomchords()) + "</custom_chords>\n";
+        myNEWXML += "  <link_youtube>" + processSong.parseToHTMLEntities(song.getLinkyoutube()) + "</link_youtube>\n";
+        myNEWXML += "  <link_web>" + processSong.parseToHTMLEntities(song.getLinkweb()) + "</link_web>\n";
+        myNEWXML += "  <link_audio>" + processSong.parseToHTMLEntities(song.getLinkaudio()) + "</link_audio>\n";
+        myNEWXML += "  <loop_audio>" + processSong.parseToHTMLEntities(song.getPadloop()) + "</loop_audio>\n";
+        myNEWXML += "  <link_other>" + processSong.parseToHTMLEntities(song.getLinkother()) + "</link_other>\n";
+        myNEWXML += "  <abcnotation>" + processSong.parseToHTMLEntities(song.getAbc()) + "</abcnotation>\n";
 
         if (!StaticVariables.mExtraStuff1.isEmpty()) {
             myNEWXML += "  " + StaticVariables.mExtraStuff1 + "\n";
@@ -92,17 +92,19 @@ public class SongXML {
         }
         myNEWXML += "</song>";
 
-        StaticVariables.myNewXML = myNEWXML;
-
         return myNEWXML;
     }
 
-    public void showWelcomeSong(Context c) {
+    public Song showWelcomeSong(Context c) {
+        Song song = new Song();
         StaticVariables.songfilename = "Welcome to OpenSongApp";
-        StaticVariables.mTitle = "Welcome to OpenSongApp";
-        StaticVariables.mLyrics = c.getString(R.string.user_guide_lyrics);
-        StaticVariables.mAuthor = "Gareth Evans";
-        StaticVariables.mLinkWeb = "https://www.opensongapp.com";
+        song.setFilename("Welcome to OpenSongApp");
+        song.setTitle("Welcome to OpenSongApp");
+        song.setLyrics(c.getString(R.string.user_guide_lyrics));
+        song.setAuthor("Gareth Evans");
+        song.setKey("G");
+        song.setLinkweb("https://www.opensongapp.com");
+        return song;
     }
 
     // These are to deal with custom files (scriptures, etc.)

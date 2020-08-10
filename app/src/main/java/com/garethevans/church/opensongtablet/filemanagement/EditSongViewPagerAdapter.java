@@ -12,6 +12,8 @@ import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView.M
 
 public class EditSongViewPagerAdapter extends FragmentStateAdapter implements MeasurableAdapter {
 
+    EditContent editContent;
+
     public final Fragment[] menuFragments = {new EditSongFragmentMain(), new EditSongFragmentFeatures(), new EditSongFragmentTags()};
 
     public EditSongViewPagerAdapter(@NonNull FragmentManager fragmentManager,Lifecycle lifecycle) {

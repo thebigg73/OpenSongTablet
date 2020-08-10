@@ -25,13 +25,7 @@ import java.util.Locale;
 public class StaticVariables {
 
     // The song fields
-    public static String mTitle = "Welcome to OpenSongApp", mAuthor = "Gareth Evans", mCopyright = "",
-            mLyrics = "", mCCLI = "", mAltTheme = "", mPresentation = "", mHymnNumber = "",
-            mUser1 = "", mUser2 = "", mUser3 = "", mKey = "", mAka = "", mCapo = "", mCapoPrint = "",
-            mTempo = "", mTimeSig = "", mTheme = "", mDuration = "", mPreDelay = "", mMidi = "",
-            mMidiIndex = "", mNotes = "", mExtraStuff1 = "", mExtraStuff2 = "", mPadFile = "",
-            mCustomChords = "", mLinkYouTube = "", mLinkWeb = "", mLinkAudio = "", mLoopAudio = "false",
-            mLinkOther = "", mNotation = "", mEncoding = "UTF-8", mFileType = "XML";
+    public static String mEncoding = "UTF-8", mExtraStuff1 = "", mExtraStuff2 = "";
 
     // For moving through songs in list with swipe
     public static ArrayList<String> songsInList = new ArrayList<>();
@@ -57,6 +51,7 @@ public class StaticVariables {
     public static int currentScreenOrientation;
     public static boolean orientationChanged;
     public static boolean indexRequired = true;
+    public static boolean indexComplete = false;
     public static boolean needtorefreshsongmenu;
     static String nextSongKeyInSet = "";
     public static String whatsongforsetwork = "";
@@ -73,6 +68,7 @@ public class StaticVariables {
     public static int indexSongInSet;
     public static ArrayList<String> mTempSetList;
     public static String currentSet;
+
     
     // Storage variables
     static Uri uriTree;
@@ -169,23 +165,54 @@ public class StaticVariables {
     // Uri of external files (image from image file) clicked to present
     static Uri uriToLoad;
 
-    // Metronome, pad and autoscroll stuff
+    // Metronome stuff
     static boolean metronomeok;
-    static boolean autoscrollok;
-    static boolean pad1Playing;
-    static boolean pad2Playing;
-    static boolean pad1Fading = false;
-    static boolean pad2Fading = false;
-    static boolean clickedOnAutoScrollStart = false;
-    static boolean pauseautoscroll = true;
-    static boolean autoscrollispaused = false;
-    static boolean isautoscrolling = false;
     static boolean mTimeSigValid = false;
     static boolean usingdefaults = false;
+    public static boolean clickedOnMetronomeStart = false;
+    public static String whichbeat = "a";
+    public static String metronomeonoff = "off";
+    public static short noteValue = 4, beats = 4;;
+
+
+
+
+    //Pad stuff
+    public static MediaPlayer mPlayer1 = new MediaPlayer();
+    public static MediaPlayer mPlayer2 = new MediaPlayer();
+
+    public static boolean pad1Playing;
+    public static boolean pad2Playing;
+    static boolean pad1Fading = false;
+    static boolean pad2Fading = false;
+    static boolean clickedOnPadStart = false;
+    static int audiolength = -1;
+    static int padtime_length = 0;
+    static int autoscroll_modifier = 0;
+    static int padInQuickFade = 0;
+    static float pad1FadeVolume;
+    static float pad2FadeVolume;
+    public static String pad_filename = "null";
+
+
+
+    //Autoscroll stuff
+    public static boolean autoscrollok;
+    public static boolean clickedOnAutoScrollStart = false;
+    static boolean pauseautoscroll = true;
+    static boolean autoscrollispaused = false;
+    public static boolean isautoscrolling = false;
+    public static boolean wasscrolling;
     static boolean learnPreDelay = false;
     static boolean learnSongLength = false;
-    static boolean clickedOnMetronomeStart = false;
-    static boolean clickedOnPadStart = false;
+    static final int autoscroll_pause_time = 500;
+    static int autoScrollDelay;
+    static int autoScrollDuration;
+    static int scrollpageHeight;
+    static int total_pixels_to_scroll = 0;
+
+
+    // Pedal movement
     static boolean pedalPreviousAndNextNeedsConfirm = true;
     static boolean pedalPreviousAndNextIgnore = false;
     static boolean reloadOfSong = false;
@@ -194,20 +221,6 @@ public class StaticVariables {
     static boolean canGoToNext = false;
     static boolean canGoToPrevious = false;
     static boolean doVibrateActive = true;
-    static int scrollpageHeight;
-    static int total_pixels_to_scroll = 0;
-    static final int autoscroll_pause_time = 500;
-    static int autoScrollDelay;
-    static int autoScrollDuration;
-    static int audiolength = -1;
-    static int padtime_length = 0;
-    static int autoscroll_modifier = 0;
-    static int padInQuickFade = 0;
-    static float pad1FadeVolume;
-    static float pad2FadeVolume;
-    static String whichbeat = "a";
-    static String metronomeonoff = "off";
-    public static String pad_filename = "null";
 
     // PDF stuff
     public static boolean showstartofpdf = true;

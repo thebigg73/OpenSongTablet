@@ -122,11 +122,11 @@ public class FolderManagementDialog extends DialogFragment {
                     arguments.add("Songs");
                     arguments.add(subdir);
                     arguments.add("");
-                    mainActivityInterface.displayAreYouSure(what, action, arguments, "StorageManagementFragment", callingFragment);
+                    mainActivityInterface.displayAreYouSure(what, action, arguments, "StorageManagementFragment", callingFragment,null);
                     break;
 
                 case "createItem":
-                    DialogFragment dialogFragment = new NewNameDialog(callingFragment,"StorageManagementFragment",false,"Songs",subdir);
+                    DialogFragment dialogFragment = new NewNameDialog(callingFragment,"StorageManagementFragment",false,"Songs",subdir,null);
                     dialogFragment.show(getActivity().getSupportFragmentManager(),"createItem");
             }
 

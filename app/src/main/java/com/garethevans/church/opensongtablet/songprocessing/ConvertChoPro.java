@@ -9,7 +9,6 @@ import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
-import com.garethevans.church.opensongtablet.sqlite.SQLite;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import java.io.OutputStream;
@@ -31,13 +30,13 @@ public class ConvertChoPro {
     private String[] lines;
     private StringBuilder parsedLines;
 
-    public ArrayList<String> convertTextToTags(Context c, StorageAccess storageAccess, Preferences preferences,
+    public Song convertTextToTags(Context c, StorageAccess storageAccess, Preferences preferences,
                                                ProcessSong processSong, SQLiteHelper sqLiteHelper,
-                                               CommonSQL commonSQL, SongXML songXML, Uri uri, String l) {
+                                               CommonSQL commonSQL, SongXML songXML, Uri uri, Song song) {
 
         initialiseTheVariables();
 
-        lyrics = l;
+        lyrics = song.getLyrics();
 
         // Fix line breaks and slashes
         lyrics = processSong.fixLineBreaksAndSlashes(lyrics);
@@ -66,26 +65,32 @@ public class ConvertChoPro {
         // Prepare the new song filename
         newSongFileName = getNewSongFileName(storageAccess, uri, title, processSong);
 
-        // Initialise the variables
-        songXML.initialiseSongTags();
-
         // Set the correct values
-        setCorrectXMLValues();
+        setCorrectXMLValues(song);
 
         // Now prepare the new songXML file
-        String newXML = songXML.getXML(processSong);
+        String newXML = songXML.getXML(song, processSong);
 
         // Get a unique uri for the new song
         Uri newUri = getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);
 
         // Now write the modified song
-        writeTheImprovedSong(c, storageAccess, preferences, sqLiteHelper, commonSQL, oldSongFileName, newSongFileName,
+        writeTheImprovedSong(c, storageAccess, preferences, sqLiteHelper, commonSQL, song, oldSongFileName, newSongFileName,
                 songSubFolder, newUri, uri, newXML);
 
         // Indicate after loading song (which renames it), we need to build the database and song index
         StaticVariables.needtorefreshsongmenu = true;
 
-        return bitsForIndexing(newSongFileName, title, author, copyright, key, time_sig, ccli, lyrics);
+        song.setFilename(newSongFileName);
+        song.setTitle(title);
+        song.setAuthor(author);
+        song.setCopyright(copyright);
+        song.setKey(key);
+        song.setTimesig(time_sig);
+        song.setCcli(ccli);
+        song.setLyrics(lyrics);
+
+        return song;
     }
 
     private void initialiseTheVariables() {
@@ -236,7 +241,6 @@ public class ConvertChoPro {
             line = line.trim() + "\n";
             parsedLines.append(line);
         }
-
         return parsedLines.toString();
     }
 
@@ -334,6 +338,7 @@ public class ConvertChoPro {
             // All chords should be gone now, so remove any remaining [ and ]
             s = s.replace("[", "");
             s = s.replace("]", "");
+            // IV - fix for missing space removed as now handled before loop
             if (tempchordline.length() > 0) {
                 s = "." + tempchordline + "\n" + s;
             }
@@ -398,7 +403,6 @@ public class ConvertChoPro {
         while (s.contains("[]\n\n[")) {
             s = s.replace("[]\n\n[", "\n[");
         }
-
 
         return s;
     }
@@ -502,24 +506,8 @@ public class ConvertChoPro {
         return sf;
     }
 
-    ArrayList<String> bitsForIndexing(String nsf, String title, String author, String copyright,
-                                      String key, String time_sig, String ccli, String lyrics) {
-        // Finally return the appropriate stuff to the IndexSong
-        newSongFileName = nsf;
-        ArrayList<String> bits = new ArrayList<>();
-        bits.add(newSongFileName);
-        bits.add(title);
-        bits.add(author);
-        bits.add(copyright);
-        bits.add(key);
-        bits.add(time_sig);
-        bits.add(ccli);
-        bits.add(lyrics);
-        return bits;
-    }
-
     void writeTheImprovedSong(Context c, StorageAccess storageAccess, Preferences preferences,
-                              SQLiteHelper sqLiteHelper, CommonSQL commonSQL, String oldSongFileName, String nsf,
+                              SQLiteHelper sqLiteHelper, CommonSQL commonSQL, Song song, String oldSongFileName, String nsf,
                               String songSubFolder, Uri newUri, Uri oldUri, String newXML) {
 
         newSongFileName = nsf;
@@ -560,26 +548,23 @@ public class ConvertChoPro {
                 sqLiteHelper.createSong(c,storageAccess,commonSQL,songSubFolder,newSongFileName);
             }
 
-            // Update the song object with the static variables in the database and then add in the statics
-            SQLite sqLite = sqLiteHelper.getSpecificSong(c, commonSQL,songSubFolder,newSongFileName);
-            sqLite = commonSQL.updateSQLiteFromStatics(storageAccess,sqLite,songSubFolder,newSongFileName);
             // Write the song object (full details) back to the database;
-            sqLiteHelper.updateSong(c,commonSQL,sqLite);
+            sqLiteHelper.updateSong(c,commonSQL,song);
         }
     }
 
-    private void setCorrectXMLValues() {
+    private void setCorrectXMLValues(Song song) {
         if (title==null || title.isEmpty()) {
             title = newSongFileName;
         }
-        StaticVariables.mTitle = title.trim();
-        StaticVariables.mAuthor = author.trim();
-        StaticVariables.mCopyright = copyright.trim();
-        StaticVariables.mTempo = tempo.trim();
-        StaticVariables.mTimeSig = time_sig.trim();
-        StaticVariables.mCCLI = ccli.trim();
-        StaticVariables.mKey = key.trim();
-        StaticVariables.mLyrics = lyrics.trim();
+        song.setTitle(title.trim());
+        song.setAuthor(author.trim());
+        song.setCopyright(copyright.trim());
+        song.setMetronomebpm(tempo.trim());
+        song.setTimesig(time_sig.trim());
+        song.setCcli(ccli.trim());
+        song.setKey(key.trim());
+        song.setLyrics(lyrics.trim());
     }
 
     private String getRidOfGuitarTapp(String s) {
@@ -776,6 +761,9 @@ public class ConvertChoPro {
                     }
                     chords_returned = processSong.getChordSections(lines[y], positions_returned);
                     lyrics_returned = processSong.getLyricSections(lines[y + 1], positions_returned);
+
+                    // Mark the beginning of the line
+                    newlyrics.append("¬");
                     for (int w = 0; w < lyrics_returned.length; w++) {
                         String chord_to_add = "";
                         if (w<chords_returned.length) {
@@ -793,18 +781,45 @@ public class ConvertChoPro {
                     break;
 
                 case "chord_only":
+                    // Use same logic as chord_then_lyric to guarantee consistency
+                    String tempString = processSong.fixLineLength("", lines[y].length());
                     positions_returned = processSong.getChordPositions(lines[y]);
+                    // Remove the . at the start of the line
+                    if (lines[y].startsWith(".")) {
+                        lines[y] = lines[y].replaceFirst("."," ");
+                    }
                     chords_returned = processSong.getChordSections(lines[y], positions_returned);
-                    for (String aChords_returned : chords_returned) {
+                    lyrics_returned = processSong.getLyricSections(tempString, positions_returned);
+
+                    // Mark the beginning of the line
+                    newlyrics.append("¬");
+                    for (int w = 0; w < lyrics_returned.length; w++) {
                         String chord_to_add = "";
-                        if (aChords_returned != null && !aChords_returned.trim().equals("")) {
-                            chord_to_add = "[" + aChords_returned.trim() + "]";
+                        if (w<chords_returned.length) {
+                            if (chords_returned[w] != null && !chords_returned[w].trim().equals("")) {
+                                if (chords_returned[w].trim().startsWith(".") || chords_returned[w].trim().startsWith("|") ||
+                                        chords_returned[w].trim().startsWith(":")) {
+                                    chord_to_add = chords_returned[w];
+                                } else {
+                                    chord_to_add = "[" + chords_returned[w].trim() + "]";
+                                }
+                            }
                         }
-                        newlyrics.append(chord_to_add);
+                        newlyrics.append(chord_to_add).append(lyrics_returned[w]);
                     }
                     break;
 
                 case "lyric_no_chord":
+                    // Another place to end a Chorus
+                    if (lines[y].replace(" ","").equals("")) {
+                        if (dealingwithchorus) {
+                            // We've finished with the chorus,
+                            dealingwithchorus = false;
+                            newlyrics.append("{eoc}\n");
+                        }
+                    }
+                    // Mark the beginning of the line
+                    newlyrics.append("¬");
                     newlyrics.append(lines[y]);
                     break;
 
@@ -815,7 +830,6 @@ public class ConvertChoPro {
                 case "heading":
                     // If this is a chorus, deal with it appropriately
                     // Add the heading as a comment with hash
-
                     if (lines[y].startsWith("[C")) {
                         dealingwithchorus = true;
                         newlyrics.append("{soc}\n#").append(lines[y]);
@@ -829,17 +843,36 @@ public class ConvertChoPro {
                         }
                     }
                     break;
+
+                default:
+                    // If a line is blank we need to add it and consider an end of a Chorus
+                    if (lines[y].trim().equals("")) {
+                        // Add just a line beginning (trim the line)
+                        newlyrics.append("¬");
+                        if (dealingwithchorus) {
+                            // We've finished with the chorus,
+                            dealingwithchorus = false;
+                            newlyrics.append("{eoc}\n");
+                        }
+                    }
+                    break;
             }
             newlyrics.append("\n");
 
         }
+        // We end any active chorus processing at the end of the song
+        if (dealingwithchorus) {
+            newlyrics.append("{eoc}");
+        }
         newlyrics.append("\n");
-        newlyrics = new StringBuilder(newlyrics.toString().replace("\n\n{eoc}", "\n{eoc}\n"));
-        newlyrics = new StringBuilder(newlyrics.toString().replace("\n \n{eoc}", "\n{eoc}\n"));
-        newlyrics = new StringBuilder(newlyrics.toString().replace("\n\n{eoc}", "\n{eoc}\n"));
-        newlyrics = new StringBuilder(newlyrics.toString().replace("\n \n{eoc}", "\n{eoc}\n"));
-        newlyrics = new StringBuilder(newlyrics.toString().replace("][", "]  ["));
+
+        // Tidy up
+        // IV - Removed some replaces as the code changes (probably) make them redundant
         newlyrics = new StringBuilder(newlyrics.toString().replace("\n\n", "\n"));
+        // Remove one space from the start of chord/lyric lines
+        newlyrics = new StringBuilder(newlyrics.toString().replace("¬ ", "¬"));
+        // Remove beginning of line marker, it has done the job
+        newlyrics = new StringBuilder(newlyrics.toString().replace("¬", ""));
 
         if (newlyrics.toString().startsWith("\n")) {
             newlyrics = new StringBuilder(newlyrics.toString().replaceFirst("\n", ""));
@@ -872,29 +905,39 @@ public class ConvertChoPro {
 
         for (int x = 0; x < numlines; x++) {
             // Get rid of any extra whitespace and fix the lines
-            line[x] = makeTagsCommon(line[x]);
-            line[x] = removeObsolete(line[x]);
-            line[x] = extractChordLines(line[x]);
-            line[x] = fixHeadings(line[x]);
-            line[x] = guessTags(line[x]);
-            line[x] = extractCommentLines(line[x]);
+            if (line[x].trim().equals("")) {
+                newlyrics.append("\n");
+            } else {
+                line[x] = makeTagsCommon(line[x]);
+                line[x] = removeObsolete(line[x]);
+                line[x] = extractChordLines(line[x]);
+                line[x] = fixHeadings(line[x]);
+                line[x] = guessTags(line[x]);
+                line[x] = extractCommentLines(line[x]);
 
-            // IV - Treat start of chorus as a comment - allows song autofix to fix when it fixes comments
-            line[x] = line[x].replace("{start_of_chorus}",";Chorus");
+                // IV - Treat start of chorus as a comment - allows song autofix to fix when it fixes comments
+                line[x] = line[x].replace("{start_of_chorus}", ";Chorus");
 
-            // IV - For unprocessed lines add a leading space - a fix for mis-aligned lyric only lines
-            if (line[x].length() > 0) {
-                String test = ";. {";
-                if (!test.contains(line[x].substring(0,1))) {
-                    line[x] = " " + line[x];
+                // IV - For unprocessed lines add a leading space - a fix for mis-aligned lyric only lines
+                if (line[x].length() > 0) {
+                    String test = ";. {";
+                    if (!(test.contains(line[x].substring(0, 1)) || (line[x].contains("[")))) {
+                        line[x] = " " + line[x];
+                    }
+                }
+                // Join the individual lines back up (unless they are end of chorus or empty
+                if (!line[x].contains("{end_of_chorus}") && !line[x].contains("{eoc}") && !line[x].equals("")) {
+                    newlyrics.append(line[x]).append("\n");
                 }
             }
-
-            // Join the individual lines back up (unless they are end of chorus)
-            if (!line[x].contains("{end_of_chorus}") && !line[x].contains("{eoc}")) {
-                newlyrics.append(line[x]).append("\n");
-            }
         }
+
+        // Final polish
+        // Remove double reporting of a Chorus
+        newlyrics = new StringBuilder(newlyrics.toString().replace(";Chorus\n[C", "[C"));
+        // Imports can leave fields which need a leading space
+        newlyrics = new StringBuilder(newlyrics.toString().replace("{", " {"));
+
         return newlyrics.toString();
     }
 

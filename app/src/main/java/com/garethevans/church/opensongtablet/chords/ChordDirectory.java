@@ -7,10 +7,8 @@ import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 class ChordDirectory {
 
-    private static String chordtoworkon;
-
-    private static void simplifyChords(Context c, Preferences preferences, String tempchord) {
-        chordtoworkon = tempchord;
+    private String simplifyChords(Context c, Preferences preferences, String tempchord) {
+        String chordtoworkon = tempchord;
         int myformat = preferences.getMyPreferenceInt(c,"chordFormat",1);
         if (myformat==2) {
             //European Bb = B and B = H
@@ -134,12 +132,14 @@ class ChordDirectory {
 
         // Now we can remove the $ sign
         chordtoworkon = chordtoworkon.replace("$", "");
+
+        return chordtoworkon;
     }
 
-    static void guitarChords(Context c, Preferences preferences, String chord) {
+    public String guitarChords(Context c, Preferences preferences, String chord) {
 
         String chordnotes;
-        simplifyChords(c,preferences,chord);
+        String chordtoworkon = simplifyChords(c,preferences,chord);
 
         // MAJOR CHORDS
         switch (chordtoworkon) {
@@ -682,13 +682,13 @@ class ChordDirectory {
         if (!chordnotes.contains("_")) {
             chordnotes = chordnotes + "_0_g_"+chordtoworkon;
         }
-        StaticVariables.chordnotes = chordnotes;
+       return chordnotes;
     }
 
-    static void ukuleleChords(Context c, Preferences preferences, String chord) {
+    public String ukuleleChords(Context c, Preferences preferences, String chord) {
 
         String chordnotes;
-        simplifyChords(c,preferences,chord);
+        String chordtoworkon = simplifyChords(c,preferences,chord);
 
         // MAJOR CHORDS
         switch (chordtoworkon) {
@@ -1228,16 +1228,16 @@ class ChordDirectory {
 
         // Standard ukulele chords all start with u_ (ukulele) and end with _0 (fret to start with)
         if (!chordnotes.contains("_")) {
-            chordnotes = chordnotes + "_0_u_"+chordtoworkon;
+            chordnotes = chordnotes + "_0_u_"+simplifyChords(c,preferences,chord);
         }
 
-        StaticVariables.chordnotes = chordnotes;
+        return chordnotes;
     }
 
-    static void mandolinChords(Context c, Preferences preferences, String chord) {
+    public String mandolinChords(Context c, Preferences preferences, String chord) {
 
         String chordnotes;
-        simplifyChords(c,preferences,chord);
+        String chordtoworkon = simplifyChords(c,preferences,chord);
 
         // MAJOR CHORDS
         switch (chordtoworkon) {
@@ -1781,13 +1781,13 @@ class ChordDirectory {
             chordnotes = chordnotes + "_0_m_"+chordtoworkon;
         }
 
-        StaticVariables.chordnotes = chordnotes;
+        return chordnotes;
     }
 
-    static void cavaquinhoChords(Context c, Preferences preferences, String chord) {
+    public String cavaquinhoChords(Context c, Preferences preferences, String chord) {
 
         String chordnotes;
-        simplifyChords(c,preferences,chord);
+        String chordtoworkon = simplifyChords(c,preferences,chord);
 
         // MAJOR CHORDS
         switch (chordtoworkon) {
@@ -2330,14 +2330,13 @@ class ChordDirectory {
         if (!chordnotes.contains("_")) {
             chordnotes = chordnotes + "_0_c_"+chordtoworkon;
         }
-
-        StaticVariables.chordnotes = chordnotes;
+        return chordnotes;
     }
 
-    static void banjo4stringChords(Context c, Preferences preferences, String chord) {
+    public String banjo4stringChords(Context c, Preferences preferences, String chord) {
 
         String chordnotes;
-        simplifyChords(c,preferences,chord);
+        String chordtoworkon = simplifyChords(c,preferences,chord);
 
         // MAJOR CHORDS
         switch (chordtoworkon) {
@@ -2881,13 +2880,13 @@ class ChordDirectory {
             chordnotes = chordnotes + "_0_b_"+chordtoworkon;
         }
 
-        StaticVariables.chordnotes = chordnotes;
+        return chordnotes;
     }
 
-    static void banjo5stringChords(Context c, Preferences preferences, String chord) {
+    public String banjo5stringChords(Context c, Preferences preferences, String chord) {
 
         String chordnotes;
-        simplifyChords(c,preferences,chord);
+        String chordtoworkon = simplifyChords(c,preferences,chord);
 
         // MAJOR CHORDS
         switch (chordtoworkon) {
@@ -3431,15 +3430,17 @@ class ChordDirectory {
             chordnotes = chordnotes + "_0_B_"+chordtoworkon;
         }
 
-        StaticVariables.chordnotes = chordnotes;
+        return chordnotes;
     }
 
-    static void pianoChords(Context c, Preferences preferences, String chord) {
+    public String pianoChords(Context c, Preferences preferences, String chord) {
 
         String chordnotes;
-        simplifyChords(c,preferences,chord);
+        String chordtoworkon = simplifyChords(c,preferences,chord);
+
         // Notes C  C# D  D# E  F  F# G  G# A  A# B  C  C# D  D# E  F  F# G  G# A  A# B
         //       1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+
         // MAJOR CHORDS
         switch (chordtoworkon) {
             case "A":
@@ -3977,6 +3978,6 @@ class ChordDirectory {
                 break;
         }
 
-        StaticVariables.chordnotes = chordnotes;
+        return chordnotes;
     }
 }

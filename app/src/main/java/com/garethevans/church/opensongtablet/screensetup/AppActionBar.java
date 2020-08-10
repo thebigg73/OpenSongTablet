@@ -3,31 +3,31 @@ package com.garethevans.church.opensongtablet.screensetup;
 import android.view.View;
 import android.widget.TextView;
 
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 public class AppActionBar {
 
-    public void setActionBar(TextView title, TextView author, TextView key, String newtitle) {
+    public void setActionBar(TextView title, TextView author, TextView key, Song song, String newtitle) {
 
-        if (newtitle == null) {
+        if (song != null) {
             // We are in the Performance/Stage mode
-            if (title != null && StaticVariables.mTitle != null) {
-                title.setText(StaticVariables.mTitle);
+            if (title != null && song.getTitle() != null) {
+                title.setText(song.getTitle());
             }
-            if (author != null && StaticVariables.mAuthor != null && !StaticVariables.mAuthor.isEmpty()) {
-                author.setText(StaticVariables.mAuthor);
+            if (author != null && song.getAuthor() != null && !song.getAuthor().isEmpty()) {
+                author.setText(song.getAuthor());
                 hideView(author, false);
             } else {
                 hideView(author, true);
             }
-            if (key != null && StaticVariables.mKey != null && !StaticVariables.mKey.isEmpty()) {
-                String k = " (" + StaticVariables.mKey + ")";
+            if (key != null && song.getKey() != null && !song.getKey().isEmpty()) {
+                String k = " (" + song.getKey() + ")";
                 key.setText(k);
                 hideView(key, false);
             } else {
                 hideView(key, true);
             }
-        } else {
+        } else if (newtitle !=null ){
             // We are in a different fragment, so hide the song info stuff
             if (title != null) {
                 title.setText(newtitle);

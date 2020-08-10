@@ -3,12 +3,11 @@ package com.garethevans.church.opensongtablet.songprocessing;
 import android.content.Context;
 import android.net.Uri;
 
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
-
-import java.util.ArrayList;
 
 public class ConvertOnSong {
 
@@ -31,9 +30,6 @@ public class ConvertOnSong {
     private String duration;
     private String number;
     private String flow;
-    private String pitch;
-    private String restrictions;
-    private String book;
     private String theme;
     private String oldSongFileName;
     private String newSongFileName;
@@ -41,13 +37,13 @@ public class ConvertOnSong {
     private String[] lines;
     private StringBuilder parsedLines;
 
-    public ArrayList<String> convertTextToTags(Context c, StorageAccess storageAccess, Preferences preferences,
+    public Song convertTextToTags(Context c, StorageAccess storageAccess, Preferences preferences,
                                                ProcessSong processSong, SongXML songXML, ConvertChoPro convertChoPro,
-                                               SQLiteHelper sqLiteHelper, Uri uri, String l) {
+                                               SQLiteHelper sqLiteHelper, CommonSQL commonSQL, Uri uri, Song song) {
 
         initialiseTheVariables();
 
-        lyrics = l;
+        lyrics = song.getLyrics();
 
         // Fix line breaks and slashes
         lyrics = processSong.fixLineBreaksAndSlashes(lyrics);
@@ -82,14 +78,12 @@ public class ConvertOnSong {
         // By default, set the title to the new filename
         StaticVariables.songfilename = newSongFileName;
 
-        // Initialise the variables
-        songXML.initialiseSongTags();
 
         // Set the correct values
-        setCorrectXMLValues();
+        setCorrectXMLValues(song);
 
         // Now prepare the new songXML file
-        //StaticVariables.myNewXML = songXML.getXML(processSong);
+        String myNewXML = songXML.getXML(song,processSong);
 
         // Get a unique uri for the new song
         Uri newUri = convertChoPro.getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);
@@ -101,12 +95,23 @@ public class ConvertOnSong {
             newSongFileName = newSongFileName.replace("/","");
         }
 
+        song.setFilename(commonSQL.escapedSQL(newSongFileName));
+
         // Now write the modified song
-        convertChoPro.writeTheImprovedSong(c, storageAccess, preferences, sqLiteHelper, oldSongFileName, newSongFileName,
-                songSubFolder, newUri, uri, songXML.getXML(processSong));
+        convertChoPro.writeTheImprovedSong(c, storageAccess, preferences, sqLiteHelper, commonSQL, song, oldSongFileName, newSongFileName,
+                songSubFolder, newUri, uri, myNewXML);
 
         // Add it to the database
-        return convertChoPro.bitsForIndexing(newSongFileName, title, author, copyright, key, time_sig, ccli, lyrics);
+        song.setFilename(newSongFileName);
+        song.setTitle(title);
+        song.setAuthor(author);
+        song.setCopyright(copyright);
+        song.setKey(key);
+        song.setTimesig(time_sig);
+        song.setCcli(ccli);
+        song.setLyrics(lyrics);
+
+        return song;
     }
 
     private void initialiseTheVariables() {
@@ -128,9 +133,6 @@ public class ConvertOnSong {
         duration = "";
         number = "";
         flow = "";
-        pitch = "";
-        restrictions = "";
-        book = "";
         theme = "";
 
         parsedLines = new StringBuilder();
@@ -271,12 +273,6 @@ public class ConvertOnSong {
                 theme = line.trim();
                 line = "";
 
-            } else if (line.contains("{book:") || line.contains("Book:")) {
-                line = convertChoPro.removeTags(line, "{book:");
-                line = convertChoPro.removeTags(line, "Book:");
-                book = line.trim();
-                line = "";
-
             } else if (line.contains("{midi:") || line.contains("MIDI:")) {
                 line = convertChoPro.removeTags(line, "{midi:");
                 line = convertChoPro.removeTags(line, "MIDI:");
@@ -287,18 +283,6 @@ public class ConvertOnSong {
                 line = convertChoPro.removeTags(line, "{midi-index:");
                 line = convertChoPro.removeTags(line, "MIDI-Index:");
                 midiindex = line.trim();
-                line = "";
-
-            } else if (line.contains("{pitch:") || line.contains("Pitch:")) {
-                line = convertChoPro.removeTags(line, "{pitch:");
-                line = convertChoPro.removeTags(line, "Pitch:");
-                pitch = line.trim();
-                line = "";
-
-            } else if (line.contains("{restrictions:") || line.contains("Restrictions:")) {
-                line = convertChoPro.removeTags(line, "{restrictions:");
-                line = convertChoPro.removeTags(line, "Restrictions:");
-                restrictions = line.trim();
                 line = "";
 
             } else if (line.startsWith("#")) {
@@ -329,30 +313,29 @@ public class ConvertOnSong {
         return parsedLines.toString();
     }
 
-    private void setCorrectXMLValues() {
+    private Song setCorrectXMLValues(Song song) {
         if (title == null || title.isEmpty()) {
-            StaticVariables.mTitle = newSongFileName;
+            song.setTitle(newSongFileName);
         } else {
-            StaticVariables.mTitle = title.trim();
+            song.setTitle(title.trim());
         }
-        StaticVariables.mAuthor = author.trim();
-        StaticVariables.mCopyright = copyright.trim();
-        StaticVariables.mTempo = tempo.trim();
-        StaticVariables.mTimeSig = time_sig.trim();
-        StaticVariables.mCCLI = ccli.trim();
-        StaticVariables.mKey = key.trim();
-        StaticVariables.mLyrics = lyrics.trim();
-        StaticVariables.mCapo = capo.trim();
-        StaticVariables.mCapoPrint = capoprint.trim();
-        StaticVariables.mMidi = midi.trim();
-        StaticVariables.mMidiIndex = midiindex.trim();
-        StaticVariables.mDuration = duration.trim();
-        StaticVariables.mPresentation = flow.trim();
-        StaticVariables.mHymnNumber = number.trim();
-        StaticVariables.mPitch = pitch.trim();
-        StaticVariables.mRestrictions = restrictions.trim();
-        StaticVariables.mBooks = book.trim();
-        StaticVariables.mTheme = theme.trim();
+        song.setAuthor(author.trim());
+        song.setCopyright(copyright.trim());
+        song.setMetronomebpm(tempo.trim());
+        song.setTimesig(time_sig.trim());
+        song.setCcli(ccli.trim());
+        song.setKey(key.trim());
+        song.setLyrics(lyrics.trim());
+        song.setCapo(capo.trim());
+        song.setCapoprint(capoprint.trim());
+        song.setMidi(midi.trim());
+        song.setMidiindex(midiindex.trim());
+        song.setAutoscrolllength(duration.trim());
+        song.setPresentationorder(flow.trim());
+        song.setHymnnum(number.trim());
+        song.setTheme(theme.trim());
+
+        return song;
     }
 
 }

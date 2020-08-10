@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,8 +45,10 @@ import com.garethevans.church.opensongtablet.filemanagement.AreYouSureDialogFrag
 import com.garethevans.church.opensongtablet.filemanagement.EditSongFragment;
 import com.garethevans.church.opensongtablet.filemanagement.EditSongFragmentMain;
 import com.garethevans.church.opensongtablet.filemanagement.ExportFiles;
+import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.filemanagement.StorageManagementFragment;
+import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.LoadSongInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.ShowCaseInterface;
@@ -64,6 +67,7 @@ import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertTextSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songprocessing.SongXML;
 import com.garethevans.church.opensongtablet.songsandsets.SetMenuFragment;
 import com.garethevans.church.opensongtablet.songsandsets.SongListBuildIndex;
@@ -71,7 +75,6 @@ import com.garethevans.church.opensongtablet.songsandsets.SongMenuFragment;
 import com.garethevans.church.opensongtablet.songsandsets.ViewPagerAdapter;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
-import com.garethevans.church.opensongtablet.sqlite.SQLite;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -81,13 +84,12 @@ import java.util.ArrayList;
 //TODO Fix unused and local
 
 public class MainActivity extends AppCompatActivity implements LoadSongInterface,
-        ShowCaseInterface, MainActivityInterface,
+        ShowCaseInterface, MainActivityInterface, EditSongFragmentInterface,
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     private AppBarConfiguration mAppBarConfiguration;
     private StorageAccess storageAccess;
     private Preferences preferences;
-    private SQLite sqLite;
     private SQLiteHelper sqLiteHelper;
     private CommonSQL commonSQL;
     private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
@@ -95,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private ConvertOnSong convertOnSong;
     private ConvertTextSong convertTextSong;
     private ProcessSong processSong;
+    private LoadSong loadSong;
     private SongXML songXML;
     private ShowCase showCase;
     private ShowToast showToast;
@@ -115,6 +118,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private ArrayList<View> targets;
     private ArrayList<String> infos, dismisses;
     private ArrayList<Boolean> rects;
+
+    public MediaPlayer mediaPlayer1, mediaPlayer2;
 
     // Important fragments we get references to (for calling methods)
     PerformanceFragment performanceFragment;
@@ -163,9 +168,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         drawerLayout = activityMainBinding.drawerLayout;
 
         // Fragment work
-        //fragmentManager = getSupportFragmentManager();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        //navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -232,11 +235,11 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Setup the CastContext
         mediaRouter = MediaRouter.getInstance(getApplicationContext());
         mediaRouteSelector = mediaRoute.getMediaRouteSelector();
+
     }
     private void initialiseHelpers() {
         storageAccess = new StorageAccess();
         preferences = new Preferences();
-        sqLite = new SQLite();
         sqLiteHelper = new SQLiteHelper(this);
         nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(this);
         commonSQL = new CommonSQL();
@@ -245,6 +248,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         convertTextSong = new ConvertTextSong();
         songXML = new SongXML();
         processSong = new ProcessSong();
+        loadSong = new LoadSong();
         windowFlags = new WindowFlags(this.getWindow());
         appActionBar = new AppActionBar();
         versionNumber = new VersionNumber();
@@ -276,6 +280,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
         // Set the locale
         fixLocale.fixLocale(this,preferences);
+
+        // MediaPlayer
+        mediaPlayer1 = new MediaPlayer();
+        mediaPlayer2 = new MediaPlayer();
     }
     private void initialiseArrayLists() {
         targets = new ArrayList<>();
@@ -405,7 +413,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            hideDrawer();
+            closeDrawer(true);
         } else if (StaticVariables.homeFragment) {
             Log.d("d","In the home fragment, so deal with back pressed");
         } else {
@@ -428,7 +436,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         if (StaticVariables.orientationChanged) {
             // Set the current orientation
             StaticVariables.currentScreenOrientation = newConfig.orientation; // Set the current orientation
-            hideDrawer();
+            closeDrawer(true);
             doSongLoad();
         }
     }
@@ -437,13 +445,13 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     // The toolbar/menu items
     @Override
-    public void updateToolbar(String title) {
-        // Null titles are for the default song, author, etc.
-        // Otherwise a new title is passed as a string
+    public void updateToolbar(Song song, String title) {
+        // Null titles are for the default song, author, etc.  A song is sent instead
+        // Otherwise a new title is passed as a string and a null song is sent
         windowFlags.setWindowFlags();
         appActionBar.setActionBar(activityMainBinding.appBarMain.myToolBarNew.songtitleAb,
                 activityMainBinding.appBarMain.myToolBarNew.songauthorAb,
-                activityMainBinding.appBarMain.myToolBarNew.songkeyAb,title);
+                activityMainBinding.appBarMain.myToolBarNew.songkeyAb,song,title);
     }
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -543,9 +551,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             runOnUiThread(() -> showToast.doIt(this,getString(R.string.search_index_start)));
             SongListBuildIndex songListBuildIndex = new SongListBuildIndex();
             songListBuildIndex.fullIndex(MainActivity.this,preferences,storageAccess,sqLiteHelper,
-                    songXML,processSong,convertChoPro,convertOnSong,convertTextSong,showToast);
+                    nonOpenSongSQLiteHelper,commonSQL,songXML,processSong,convertChoPro,convertOnSong,convertTextSong,showToast,loadSong);
             runOnUiThread(() -> {
                 StaticVariables.indexRequired = false;
+                StaticVariables.indexComplete = true;
                 showToast.doIt(this,getString(R.string.search_index_end));
                 if (setSongMenuFragment()) {
                     songMenuFragment.updateSongMenu();
@@ -585,12 +594,25 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 super.onPageSelected(position);
             }
         });
-        activityMainBinding.menuTop.versionCode.setOnClickListener(v -> hideDrawer());
+        activityMainBinding.menuTop.versionCode.setOnClickListener(v -> closeDrawer(true));
     }
-    private void hideDrawer() {
-        activityMainBinding.drawerLayout.closeDrawer(GravityCompat.START);
-    }
+    @Override
+    public void closeDrawer(boolean close) {
 
+        if (close) {
+            activityMainBinding.drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            activityMainBinding.drawerLayout.openDrawer(GravityCompat.START);
+        }
+    }
+    @Override
+    public DrawerLayout getDrawer() {
+        return activityMainBinding.drawerLayout;
+    }
+    @Override
+    public ActionBar getAb() {
+        return getSupportActionBar();
+    }
 
     // Overrides called from fragments (Performance and Presentation) using interfaces
     @Override
@@ -618,7 +640,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 Log.d("MainActivity", "performanceFragment not available");
             }
         }
-        hideDrawer();
+        closeDrawer(true);
     }
 
 
@@ -678,9 +700,29 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     // To run in the edit song fragment
     @Override
-    public void updateKeyAndLyrics(String key, String lyrics) {
+    public void updateKeyAndLyrics(Song song) {
         // This is called from the transpose class once it has done its work on the edit song fragment
-        editSongFragmentMain.updateKeyAndLyrics(key, lyrics);
+        editSongFragmentMain.updateKeyAndLyrics(song);
+    }
+    @Override
+    public void updateSong(Song song) {
+        editSongFragment.updateSong(song);
+    }
+    @Override
+    public Song getSong() {
+        return editSongFragment.getSong();
+    }
+    @Override
+    public void setOriginalSong(Song originalSong) {
+        editSongFragment.setOriginalSong(originalSong);
+    }
+    @Override
+    public Song getOriginalSong() {
+        return editSongFragment.getOriginalSong();
+    }
+    @Override
+    public boolean songChanged() {
+        return editSongFragment.songChanged();
     }
     @Override
     public void editSongSaveButtonAnimation(boolean pulse) {
@@ -688,7 +730,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             editSongFragment.pulseSaveChanges(pulse);
         }
     }
-
 
 
     // Run actions from MainActivity (called from fragments)
@@ -704,8 +745,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public void hideActionButton(boolean hide) {
         if (hide) {
             activityMainBinding.pageButtonsRight.actionFAB.hide();
+            activityMainBinding.pageButtonsRight.bottomButtons.setVisibility(View.GONE);
         } else {
             activityMainBinding.pageButtonsRight.actionFAB.show();
+            activityMainBinding.pageButtonsRight.bottomButtons.setVisibility(View.VISIBLE);
         }
     }
     @Override
@@ -718,7 +761,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     @Override
     public void navigateToFragment(int id) {
-        hideDrawer();  // Only the Performance and Presentation fragments allow this.  Switched on in these fragments
+        closeDrawer(true);  // Only the Performance and Presentation fragments allow this.  Switched on in these fragments
         lockDrawer(true);
         hideActionButton(true);
         try {
@@ -744,8 +787,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     // Check this was successful (saved as arguments)
                     if (arguments!=null && arguments.size()>0 && arguments.get(0).equals("success")) {
                         // Write a blank xml file with the song name in it
-                        songXML.initialiseSongTags();
-                        String newSongText = songXML.getXML(processSong);
+                        Song song = new Song();
+                        song = song.initialiseSong(commonSQL);
+                        String newSongText = songXML.getXML(song,processSong);
                         if (storageAccess.doStringWriteToFile(this,preferences,"Songs",StaticVariables.whichSongFolder, StaticVariables.songfilename,newSongText)) {
                             navigateToFragment(R.id.nav_editSong);
                         } else {
@@ -768,7 +812,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             }
         }
     }
-
     @Override
     public void returnToHome(Fragment fragment, Bundle bundle) {
         NavOptions navOptions = new NavOptions.Builder()
@@ -784,12 +827,12 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     }
     @Override
-    public void displayAreYouSure(String what, String action, ArrayList<String> arguments, String fragName, Fragment callingFragment) {
-        AreYouSureDialogFragment dialogFragment = new AreYouSureDialogFragment(what,action,arguments,fragName,callingFragment);
+    public void displayAreYouSure(String what, String action, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song) {
+        AreYouSureDialogFragment dialogFragment = new AreYouSureDialogFragment(what,action,arguments,fragName,callingFragment,song);
         dialogFragment.show(this.getSupportFragmentManager(), "areYouSure");
     }
     @Override
-    public void confirmedAction(boolean agree, String what, ArrayList<String> arguments, String fragName, Fragment callingFragment) {
+    public void confirmedAction(boolean agree, String what, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song) {
         Log.d("d","agree="+agree+"  what="+what);
         if (agree) {
             boolean result = false;
@@ -798,10 +841,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     result = storageAccess.doDeleteFile(this,preferences,"Songs",
                             StaticVariables.whichSongFolder, StaticVariables.songfilename);
                     // Now remove from the SQL database
-                    if (StaticVariables.fileType.equals("PDF") || StaticVariables.fileType.equals("IMG")) {
-                        nonOpenSongSQLiteHelper.deleteSong(this,commonSQL,storageAccess,preferences,sqLite.getFolder(),sqLite.getFilename());
+                    if (song.getFiletype().equals("PDF") || song.getFiletype().equals("IMG")) {
+                        nonOpenSongSQLiteHelper.deleteSong(this,commonSQL,storageAccess,preferences,song.getFolder(),song.getFilename());
                     } else {
-                        sqLiteHelper.deleteSong(this, commonSQL, sqLite.getFolder(),sqLite.getFilename());
+                        sqLiteHelper.deleteSong(this, commonSQL, song.getFolder(),song.getFilename());
                     }
                     // TODO
                     // Send a call to reindex?
@@ -827,10 +870,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             }
         }
     }
-
     @Override
     public void updateSongMenu(String fragName, Fragment callingFragment, ArrayList<String> arguments) {
         // If sent called from another fragment the fragName and callingFragment are used to run an update listener
+        StaticVariables.indexComplete = false;
         // Get all of the files as an array list
         ArrayList<String> songIds = storageAccess.listSongs(this, preferences);
         // Write this to text file
@@ -850,7 +893,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Now build it properly
         indexSongs();
     }
-
     @Override
     public void doExport(String what) {
         Intent intent;
@@ -860,5 +902,33 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 startActivityForResult(Intent.createChooser(intent, "ActivityLog.xml"), 2222);
         }
     }
-
+    @Override
+    public void updateSetList() {
+        Log.d("MainActivity","Update set list");
+    }
+    @Override
+    public void startAutoscroll (){
+        Log.d("MainActivity","Start auto scroll");
+    }
+    @Override
+    public void stopAutoscroll (){
+        Log.d("MainActivity","Stop auto scroll");
+    }
+    @Override
+    public void fadeoutPad() {
+        Log.d("MainActivity","fadeoutPad()");
+    }
+    @Override
+    public void playPad() {
+        Log.d("MainActivity","playPad()");
+    }
+    @Override
+    public MediaPlayer getMediaPlayer(int i) {
+        // Keeping mediaPlayers in the MainActivity so they persist across fragments
+        if (i==1) {
+            return mediaPlayer1;
+        } else {
+            return mediaPlayer2;
+        }
+    }
 }

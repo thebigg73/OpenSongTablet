@@ -269,19 +269,30 @@ public class ProcessSong {
         ArrayList<String> chordpositions = new ArrayList<>();
 
         // Set the start of the line as the first bit
-        chordpositions.add("0");
+        if (string.startsWith(".")) {
+            chordpositions.add("1");
+        } else {
+            chordpositions.add("0");
+        }
 
+
+        // IV - Comments do not seem to reflect the code logic?
         // In order to identify chords at the end of the line
         // (My method looks for a following space)
         // Add a space to the search string.
-        string += " ";
+        if (string.length()<1) {
+            // GE Fix for empty line as substring(1) failed for empty lines.
+            string = " ";
+        } else {
+            string = " " + string.substring(1) + " ";
+        }
 
-        for (int x = 1; x < string.length(); x++) {
+        for (int x = 2; x < string.length(); x++) {
 
             String thischar = "";
             boolean thischarempty = false;
-            if (x < string.length() - 1) {
-                thischar = string.substring(x, x + 1);
+            if (x<string.length()-1) {
+                thischar = string.substring(x,x+1);
             }
             if (thischar.equals(" ") || thischar.equals("|")) {
                 thischarempty = true;
@@ -289,7 +300,7 @@ public class ProcessSong {
 
             String prevchar;
             boolean prevcharempty = false;
-            prevchar = string.substring(x - 1, x);
+            prevchar = string.substring(x-1,x);
             if (prevchar.equals(" ") || prevchar.equals("|")) {
                 prevcharempty = true;
             }

@@ -18,7 +18,6 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -26,14 +25,19 @@ import com.garethevans.church.opensongtablet.databinding.FragmentPerformanceBind
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.metronome.Metronome;
+import com.garethevans.church.opensongtablet.pads.PadFunctions;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songprocessing.SongXML;
+import com.garethevans.church.opensongtablet.songsandsets.SetActions;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
@@ -56,6 +60,11 @@ public class PerformanceFragment extends Fragment {
     private ConvertOnSong convertOnSong;
     private ThemeColors themeColors;
     private ShowToast showToast;
+    private PerformanceGestures performanceGestures;
+    private SetActions setActions;
+    private PadFunctions padFunctions;
+    private Metronome metronome;
+    private DoVibrate doVibrate;
 
     //private ShowCase showCase;
 
@@ -78,6 +87,11 @@ public class PerformanceFragment extends Fragment {
     private Map<String,Integer> colorMap;
     private FragmentPerformanceBinding myView;
 
+    // Handlers and runnables
+    Handler delayactionBarHide;
+    Runnable hideActionBarRunnable;
+
+    private Song song;
 
     // Attaching and destroying
     @Override
@@ -102,7 +116,7 @@ public class PerformanceFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        //((AppCompatActivity) getActivity()).getSupportActionBar().show();
     }
 
     // The logic to start this fragment
@@ -154,7 +168,16 @@ public class PerformanceFragment extends Fragment {
         showToast = new ShowToast();
         nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
         commonSQL = new CommonSQL();
+        setActions = new SetActions();
+        doVibrate = new DoVibrate();
+        padFunctions = new PadFunctions();
+        metronome = new Metronome(getContext(),mainActivityInterface.getAb());
         //showCase = new ShowCase();
+
+        performanceGestures = new PerformanceGestures(getContext(),preferences,storageAccess,setActions,
+                padFunctions,metronome,this,mainActivityInterface,showToast,doVibrate,
+                mainActivityInterface.getDrawer(),mainActivityInterface.getMediaPlayer(1),
+                mainActivityInterface.getMediaPlayer(2),delayactionBarHide,hideActionBarRunnable,0xffff0000);
     }
     private void loadPreferences() {
         colorMap = themeColors.getDefaultColors(getActivity(),preferences);
@@ -198,8 +221,10 @@ public class PerformanceFragment extends Fragment {
             if (sectionViews!=null) {
                 sectionViews.clear();
             }
-            loadSong.doLoadSong(getActivity(),storageAccess,preferences,songXML,processSong,
-                    showToast, sqLiteHelper, convertOnSong, convertChoPro);
+            song = new Song();
+            song = song.initialiseSong(commonSQL);
+            song = loadSong.doLoadSong(getActivity(),storageAccess,preferences,songXML,processSong,
+                    showToast, sqLiteHelper, commonSQL, song, convertOnSong, convertChoPro, false);
 
             requireActivity().runOnUiThread(this::prepareSongViews);
             mainActivityInterface.moveToSongInSongMenu();
@@ -213,13 +238,13 @@ public class PerformanceFragment extends Fragment {
         // Get the song in the layout
         sectionViews = processSong.setSongInLayout(getActivity(),preferences, trimSections, addSectionSpace,
                 trimLines, lineSpacing, colorMap, scaleHeadings, scaleChords, scaleComments,
-                StaticVariables.mLyrics, boldChordHeading);
+                song.getLyrics(), boldChordHeading);
 
         // We now have the 1 column layout ready, so we can set the view observer to measure once drawn
         setUpVTO();
 
         // Update the toolbar
-        mainActivityInterface.updateToolbar(null);
+        mainActivityInterface.updateToolbar(song,null);
     }
     private void setUpVTO() {
         testPane = myView.testPane;
@@ -272,7 +297,9 @@ public class PerformanceFragment extends Fragment {
     @SuppressLint("ClickableViewAccessibility")
     private void setGestureListeners(){
         detector = new GestureDetector(getActivity(), new GestureListener(myView.songscrollview,
-                myView.horizontalscrollview,swipeMinimumDistance,swipeMaxDistanceYError,swipeMinimumVelocity));
+                myView.horizontalscrollview,swipeMinimumDistance,swipeMaxDistanceYError,swipeMinimumVelocity,
+                oktoRegisterGesture(),preferences.getMyPreferenceInt(getContext(),"doubleTapGesture",2),
+                performanceGestures));
         myView.mypage.setOnTouchListener(new MyTouchListener());
         myView.songscrollview.setOnTouchListener(new MyTouchListener());
         myView.horizontalscrollview.setOnTouchListener(new MyTouchListener());
@@ -324,6 +351,11 @@ public class PerformanceFragment extends Fragment {
     }
     public void onBackPressed() {
         Log.d("PerformanceFragment","On back press!!!");
+    }
+
+    private boolean oktoRegisterGesture() {
+        //TODO
+        return true;
     }
 
 

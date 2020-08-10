@@ -7,6 +7,9 @@ import android.net.Uri;
 
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
+
+import java.io.File;
 
 public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
 
@@ -18,11 +21,15 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
     // Database Version
     private static final int DATABASE_VERSION = 2;  // THIS GETS
     private SQLiteDatabase getDB(Context c, CommonSQL commonSQL, StorageAccess storageAccess, Preferences preferences) {
+        // Make sure we have the persistent version ready
         Uri uri = storageAccess.getUriForItem(c,preferences,"Settings","", SQLite.NON_OS_DATABASE_NAME);
         storageAccess.lollipopCreateFileForOutputStream(c,preferences,uri,null,"Settings","", SQLite.NON_OS_DATABASE_NAME);
-        SQLiteDatabase db2 = SQLiteDatabase.openOrCreateDatabase(uri.getPath(),null);
+        // The version we use has to be in local app storage unfortunately.  We can copy this though
+        File f = new File(c.getExternalFilesDir("Database"), SQLite.NON_OS_DATABASE_NAME);
+        SQLiteDatabase db2 = SQLiteDatabase.openOrCreateDatabase(f,null);
         if (db2.getVersion()!=DATABASE_VERSION) {
             // Check we have the columns we need!
+            db2.setVersion(DATABASE_VERSION);
             commonSQL.updateTable(db2);
         }
         return db2;
@@ -66,9 +73,9 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
         return i > -1;
     }
     public void updateSong(Context c, CommonSQL commonSQL, StorageAccess storageAccess,
-                           Preferences preferences, SQLite sqLite) {
+                           Preferences preferences, Song song) {
         try (SQLiteDatabase db2 = getDB(c,commonSQL,storageAccess,preferences)) {
-            commonSQL.updateSong(db2, sqLite);
+            commonSQL.updateSong(db2, song);
         } catch (OutOfMemoryError | Exception e) {
             e.printStackTrace();
         }
@@ -78,12 +85,12 @@ public class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
 
     // TODO MIGHT REMOVE AS THE CONTENTS OF THIS DATABASE ARE PULLED INTO THE MAIN ONE AT RUNTIME
     // Find specific song
-    public SQLite getSpecificSong(Context c, SQLiteHelper sqLiteHelper, CommonSQL commonSQL,
-                                  StorageAccess storageAccess, Preferences preferences,
-                                  String folder, String filename) {
+    public Song getSpecificSong(Context c, SQLiteHelper sqLiteHelper, CommonSQL commonSQL,
+                                StorageAccess storageAccess, Preferences preferences,
+                                String folder, String filename) {
         // This gets basic info from the normal temporary SQLite database
         // It then also adds in any extra stuff found in the NonOpenSongSQLite database
-        SQLite thisSong = new SQLite();
+        Song thisSong = new Song();
         String songId = commonSQL.getAnySongId(folder,filename);
         try (SQLiteDatabase db = sqLiteHelper.getDB(c)) {
             // Get the basics - error here returns the basic stuff as an exception

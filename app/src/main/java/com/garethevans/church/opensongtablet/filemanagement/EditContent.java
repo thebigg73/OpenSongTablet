@@ -1,11 +1,24 @@
 package com.garethevans.church.opensongtablet.filemanagement;
 
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
-import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 class EditContent {
-    static String filename, title, folder, key, artist, lyrics;
 
+    Song song, originalSong;
+
+    Song getCurrentSong() {return song;}
+    void setCurrentSong(Song song) {this.song = song;}
+
+    Song getOriginalSong() {return originalSong;}
+    void setOriginalSong(Song originalSong) {this.originalSong = originalSong;}
+
+    boolean songChanged() {
+        return song==originalSong;
+    }
+
+
+
+/*
     // Initialise the song edit with the saved values
     EditContent(boolean initialise){
         if (initialise) {
@@ -17,9 +30,11 @@ class EditContent {
             lyrics = StaticVariables.mLyrics;
         }
     }
+*/
 
-    EditContent() {}
+/*    EditContent() {}*/
 
+/*
     String getFilename() {return filename;}
     String getTitle() {return title;}
     String getFolder() {return folder;}
@@ -33,8 +48,9 @@ class EditContent {
     void setKey(String s) {key = s;}
     void setArtist(String s) {artist = s;}
     void setLyrics(String s) {lyrics = s;}
+*/
 
-    public boolean areThereChanges() {
+ /*   public boolean areThereChanges() {
         // Compare the originals with the current values.
         return !(StaticVariables.songfilename.equals(filename) && StaticVariables.mTitle.equals(title) &&
                 StaticVariables.whichSongFolder.equals(folder) && StaticVariables.mKey.equals(key) &&
@@ -49,5 +65,5 @@ class EditContent {
         StaticVariables.mAuthor = processSong.parseToHTMLEntities(artist);
         StaticVariables.mLyrics = processSong.parseToHTMLEntities(lyrics);
     }
-
+*/
 }

@@ -56,7 +56,8 @@
                         android:id="@+id/folderName"
                         style="@style/exposedDropDownItem"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:background="@null"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -134,6 +135,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/openSongFormat"
                     style="@style/TextOnlyButton"
+                    app:backgroundTint="@color/colorSecondary"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -171,7 +173,9 @@
                     android:minHeight="200dp"
                     android:singleLine="false"
                     style="@style/editTextLayoutOutline"
-                    android:typeface="monospace" />
+                    android:typeface="monospace"
+                    android:scrollHorizontally="true"
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>

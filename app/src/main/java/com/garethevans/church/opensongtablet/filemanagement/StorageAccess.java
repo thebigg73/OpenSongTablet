@@ -28,6 +28,7 @@ import androidx.documentfile.provider.DocumentFile;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -310,7 +311,7 @@ public class StorageAccess {
         }
     }
     private String niceUriTree_SAF(Uri uriTree) {
-        String text = "";
+        String text;
         try {
             List<String> bits = uriTree.getPathSegments();
             StringBuilder sb = new StringBuilder();
@@ -442,7 +443,7 @@ public class StorageAccess {
         filename = filename.replaceAll("\\s{2,}", " ");  // Removes double spaces
         return filename.trim();  // Returns the trimmed value
     }
-    Uri fixLocalisedUri(Context c, Preferences preferences, String uriString) {
+    public Uri fixLocalisedUri(Context c, Preferences preferences, String uriString) {
         // This checks for localised filenames first and fixes the Uri
         if (uriString.equals("ost_logo.png") || uriString.equals("ost_bg.png")) {
             uriString = "../OpenSong/Backgrounds/" + uriString;
@@ -740,7 +741,7 @@ public class StorageAccess {
         }
         return isvalid;
     }
-    boolean determineFileTypeByExtension() {
+    boolean determineFileTypeByExtension(Song song) {
         // Determines if we can load song as text, image or pdf
         String file_ext = StaticVariables.songfilename;
         boolean isImgOrPDF = false;
@@ -751,11 +752,11 @@ public class StorageAccess {
             file_ext = "";
         }
         if (file_ext.endsWith(".pdf")) {
-            StaticVariables.fileType="PDF";
+            song.setFiletype("PDF");
             isImgOrPDF = true;
         } else if (file_ext.endsWith(".jpg") || file_ext.endsWith(".bmp") ||
                 file_ext.endsWith(".png") || file_ext.endsWith(".gif")) {
-            StaticVariables.fileType="IMG";
+            song.setFiletype("IMG");
             isImgOrPDF = true;
         }
 
@@ -1363,13 +1364,13 @@ public class StorageAccess {
             Log.d("StorageAccess", "Deleting " + child + " = " + child.delete());
         }
     }
-    public void wipeFolder_SAF(Context c, DocumentFile df) {
+    public void wipeFolder_SAF(DocumentFile df) {
         // Already established that this is a directory
         DocumentFile[] dfs = df.listFiles();
         for (DocumentFile idf: dfs) {
             Log.d("d","idf="+idf.getName());
             if (idf.isDirectory()) {
-                wipeFolder_SAF(c,idf);
+                wipeFolder_SAF(idf);
             }
             idf.delete();
         }
@@ -1539,9 +1540,7 @@ public class StorageAccess {
         // Split the text into line and add to the new array
         ArrayList<String> songIDs = new ArrayList<>();
         String[] lines = text.split("\n");
-        for (String line:lines) {
-            songIDs.add(line);
-        }
+        Collections.addAll(songIDs, lines);
         return songIDs;
     }
     @SuppressLint("NewApi")

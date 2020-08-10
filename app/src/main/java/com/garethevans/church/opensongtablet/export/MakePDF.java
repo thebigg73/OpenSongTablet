@@ -15,7 +15,7 @@ import android.util.Log;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
-import com.garethevans.church.opensongtablet.sqlite.SQLite;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.io.OutputStream;
 
@@ -35,12 +35,12 @@ public class MakePDF {
     int dpi;
     Paint paint;
 
-    public Uri createPDF(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong, SQLite thisSongSQL) {
-        String newFilename = thisSongSQL.getFolder().replace("/","_");
+    public Uri createPDF(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong, Song thisSong) {
+        String newFilename = thisSong.getFolder().replace("/","_");
         if (!newFilename.endsWith("_")) {
             newFilename = newFilename + "_";
         }
-        newFilename = newFilename + thisSongSQL.getFilename() + ".pdf";
+        newFilename = newFilename + thisSong.getFilename() + ".pdf";
         Uri uri = storageAccess.getUriForItem(c,preferences,"Export","",newFilename);
         storageAccess.lollipopCreateFileForOutputStream(c,preferences,uri, "application/pdf","Export","",newFilename);
 
@@ -62,7 +62,7 @@ public class MakePDF {
         Canvas cfoot = new Canvas();
         Canvas clyrics = new Canvas();
 
-        writeTheHeader(thisSongSQL,chead,0);
+        writeTheHeader(thisSong,chead,0);
         Log.d("d","headerHeight="+headerHeight);
         // Wipe it for now
         clearPage(page);
@@ -74,7 +74,7 @@ public class MakePDF {
         clearPage(page);
 
         // Test write the footer to the page to get its height
-        writePDFContent(c,processSong,thisSongSQL,clyrics,0,1.0f);
+        writePDFContent(c,processSong,thisSong,clyrics,0,1.0f);
         Log.d("d","lyricWidth="+lyricwidth);
         Log.d("d","lyricHeight="+lyricheight);
         // Wipe it for now
@@ -84,9 +84,9 @@ public class MakePDF {
         float scaling = getScaling();
 
         // Add the header back in
-        writeTheHeader(thisSongSQL,canvas,margin);
+        writeTheHeader(thisSong,canvas,margin);
         // Add the lyrics back in
-        writePDFContent(c,processSong,thisSongSQL,canvas,headerHeight+margin,scaling);
+        writePDFContent(c,processSong,thisSong,canvas,headerHeight+margin,scaling);
         // Add the footer back in
         writeTheFooter(canvas,(docHeight-margin));
 
@@ -125,17 +125,17 @@ public class MakePDF {
         pdfDocument.close();
     }
 
-    private void writeTheHeader(SQLite thisSongSQL, Canvas canvas, int ypos) {
+    private void writeTheHeader(Song thisSong, Canvas canvas, int ypos) {
         int height = 0;
         Rect bounds = new Rect();
         paintSize = 20;
         paint.setTextSize(paintSize);
         paint.setColor(Color.BLACK);
         paint.setTypeface(Typeface.DEFAULT_BOLD);
-        String string = thisSongSQL.getTitle();
+        String string = thisSong.getTitle();
         // Add the title and the key (if it isn't blank)
-        if (thisSongSQL.getKey()!=null && !thisSongSQL.getKey().isEmpty()) {
-            string = string + " (" + thisSongSQL.getKey() + ")";
+        if (thisSong.getKey()!=null && !thisSong.getKey().isEmpty()) {
+            string = string + " (" + thisSong.getKey() + ")";
         }
         paint.getTextBounds(string,0,string.length(),bounds);
         height = height + bounds.height();
@@ -147,8 +147,8 @@ public class MakePDF {
 
         paint.setTypeface(Typeface.DEFAULT);
         // If the author isn't blank
-        if (thisSongSQL.getAuthor()!=null && !thisSongSQL.getAuthor().isEmpty()) {
-            string = thisSongSQL.getAuthor();
+        if (thisSong.getAuthor()!=null && !thisSong.getAuthor().isEmpty()) {
+            string = thisSong.getAuthor();
             paint.getTextBounds(string,0,string.length(),bounds);
             height = height + bounds.height();
             canvas.drawText(string,margin,ypos,paint);
@@ -156,8 +156,8 @@ public class MakePDF {
         }
 
         // If the copyright isn't blank
-        if (thisSongSQL.getCopyright()!=null && !thisSongSQL.getCopyright().isEmpty()) {
-            string = thisSongSQL.getCopyright();
+        if (thisSong.getCopyright()!=null && !thisSong.getCopyright().isEmpty()) {
+            string = thisSong.getCopyright();
             paint.getTextBounds(string,0,string.length(),bounds);
             height = height + bounds.height();
             canvas.drawText(string,margin,ypos,paint);
@@ -179,7 +179,7 @@ public class MakePDF {
         footerHeight = bounds.height();
         canvas.drawText(string,margin,(ypos-10),paint);
     }
-    private void writePDFContent(Context c, ProcessSong processSong, SQLite thisSongSQL, Canvas canvas, int ypos, float scaling) {
+    private void writePDFContent(Context c, ProcessSong processSong, Song thisSong, Canvas canvas, int ypos, float scaling) {
         // Now go though the lyrics
         int height = 0;
         int width = 0;
@@ -187,7 +187,7 @@ public class MakePDF {
         float lineSpacing = (9+1)*scaling;
         paint.setTypeface(Typeface.MONOSPACE);
         Rect bounds = new Rect();
-        String[] lines = thisSongSQL.getLyrics().split("\n");
+        String[] lines = thisSong.getLyrics().split("\n");
         for (String line:lines) {
             // Set the defaults;
             scaledPaintSize = 9*scaling;

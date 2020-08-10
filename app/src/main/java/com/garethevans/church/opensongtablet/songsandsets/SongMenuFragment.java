@@ -29,8 +29,8 @@ import com.garethevans.church.opensongtablet.databinding.MenuSongsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
-import com.garethevans.church.opensongtablet.sqlite.SQLite;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -62,7 +62,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     private boolean songListSearchByFolder, songListSearchByArtist, songListSearchByKey,
             songListSearchByTag, songListSearchByFilter;
     private FastScrollRecyclerView songListRecyclerView;
-    private ArrayList<SQLite> songsFound;
+    private ArrayList<Song> songsFound;
     private ExposedDropDownArrayAdapter folderArrayAdapter, keyArrayAdapter;
     private SongListAdapter songListAdapter;
     private LinearLayoutManager songListLayoutManager;
@@ -131,7 +131,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         songListRecyclerView.setLayoutManager(songListLayoutManager);
         songListRecyclerView.setHasFixedSize(true);
         songListRecyclerView.setOnClickListener(null);
-        List<SQLite> blank = new ArrayList<>();
+        List<Song> blank = new ArrayList<>();
         songListAdapter = new SongListAdapter(requireActivity(), blank, preferences, songForSet,
                 SongMenuFragment.this);
         songListRecyclerView.setAdapter(songListAdapter);
@@ -353,7 +353,7 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
         progressBar.setVisibility(View.GONE);
         buttonsEnabled(true);
     }
-    private void displayIndex(ArrayList<SQLite> songMenuViewItems,
+    private void displayIndex(ArrayList<Song> songMenuViewItems,
                               SongListAdapter songListAdapter) {
         if (preferences.getMyPreferenceBoolean(getActivity(),"songMenuAlphaIndexShow",true)) {
             sideIndex.setVisibility(View.VISIBLE);

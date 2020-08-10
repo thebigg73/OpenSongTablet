@@ -1,11 +1,11 @@
 package com.garethevans.church.opensongtablet.songsandsets;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
+import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
@@ -13,17 +13,14 @@ import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertTextSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.songprocessing.SongXML;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
-
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Locale;
 
 public class SongListBuildIndex {
@@ -33,90 +30,14 @@ public class SongListBuildIndex {
     // It updates the entries in the user sqlite database
 
 
-    private SQLite sqLite;
-    private CommonSQL commonSQL;
+    private Song song;
+    private InputStream inputStream;
 
-
-    private String songid;
-        private String filename;
-        private String folder;
-        private String title;
-        private String author;
-        private String copyright;
-        private String lyrics;
-        private String hymnnum;
-        private String ccli;
-        private String theme;
-        private String alttheme;
-        private String user1;
-        private String user2;
-        private String user3;
-        private String key;
-        private String aka;
-        private String timesig;
-        private String presentationorder;
-        private InputStream inputStream;
-        private Uri uri;
-        private String utf;
-
-
-
-        private SQLite updateSQLite(SQLite sqLite) {
-            sqLite.setSongid(escaped(songid));
-        }
-
-        private String escaped(String string) {
-            return commonSQL.escapedSQL(string);
-        }
-        private void initialiseValues(SQLite sqLite) {
-            //id;
-            songid = "";
-            title = "";
-            folder = "";
-            filename = "";
-            author = "";
-            copyright = "";
-            lyrics = "";
-            capo = "";
-            customchords = "";
-            hymnnum = "";
-            ccli = "";
-            theme = "";
-            alttheme = "";
-            user1 = "";
-            user2 = "";
-            user3 = "";
-            key = "";
-            aka = "";
-            tempo = "";
-            timesig = "";
-            duration = "";
-            delay = "";
-            presentationorder = "";
-            midi = "";
-            midiindex = "";
-            notes = "";
-            notation = "";
-            padfile = "";
-            padloop = "";
-            linkaudio = "";
-            linkweb = "";
-            linkyoutube = "";
-            linkother = "";
-            filetype = "";
-
-
-            inputStream = null;
-            uri = null;
-            utf = "UTF-8";
-
-        }
-
-        public void fullIndex(Context c, Preferences preferences, StorageAccess storageAccess,
+    public void fullIndex(Context c, Preferences preferences, StorageAccess storageAccess,
                               SQLiteHelper sqLiteHelper, NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper,
                               CommonSQL commonSQL, SongXML songXML, ProcessSong processSong,
                               ConvertChoPro convertChoPro, ConvertOnSong convertOnSong,
-                              ConvertTextSong textSongConvert, ShowToast showToast) {
+                              ConvertTextSong textSongConvert, ShowToast showToast, LoadSong loadSong) {
 
             // The basic database was created on boot.
             // Now comes the time consuming bit that fully indexes the songs into the database
@@ -132,57 +53,44 @@ public class SongListBuildIndex {
 
                 // We now iterate through each song in turn!
                 do {
-                    SQLite sqLite = new SQLite();
+                    Song song = new Song();
 
-                    // Get the folder and filename
+                    // Set the folder and filename from the database entry
                     if (cursor.getColumnIndex(SQLite.COLUMN_ID) > -1) {
-                        sqLite.setId(cursor.getInt(cursor.getColumnIndex(SQLite.COLUMN_ID)));
-                        sqLite.setFolder(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER)));
-                        sqLite.setFilename(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME)));
+                        song.setId(cursor.getInt(cursor.getColumnIndex(SQLite.COLUMN_ID)));
+                        song.setFolder(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FOLDER)));
+                        song.setFilename(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_FILENAME)));
 
                         // Now we have the info to open the file and extract what we need
-                        if (!sqLite.getFilename().isEmpty()) {
+                        if (!song.getFilename().isEmpty()) {
                             // Get the uri, utf and inputStream for the file
-                            uri = storageAccess.getUriForItem(c, preferences, "Songs",
-                                    commonSQL.unescapedSQL(sqLite.getFolder()), commonSQL.unescapedSQL(sqLite.getFilename()));
-                            utf = storageAccess.getUTFEncoding(c, uri);
+                            Uri uri = storageAccess.getUriForItem(c, preferences, "Songs",
+                                    commonSQL.unescapedSQL(song.getFolder()), commonSQL.unescapedSQL(song.getFilename()));
+                            String utf = storageAccess.getUTFEncoding(c, uri);
                             inputStream = storageAccess.getInputStream(c, uri);
 
                             // Now try to get the file as an xml.  If it encounters an error, it is treated in the catch statements
-                            if (filenameIsOk(filename)) {
+                            if (filenameIsOk(song.getFilename())) {
                                 try {
                                     // All going well all the other details for sqLite are now set!
-                                    getXMLStuff();
+                                    song = loadSong.readFileAsXML(c,storageAccess,preferences,processSong,showToast,"Songs", song, uri, utf,true);
 
                                 } catch (Exception e) {
                                     // OK, so this wasn't an XML file.  Try to extract as something else
-                                    ArrayList<String> bits = tryToFixSong(c, storageAccess, 
-                                            preferences, processSong, sqLiteHelper, songXML, 
+                                    song = tryToFixSong(c, storageAccess, preferences, processSong,
+                                            sqLiteHelper, commonSQL, songXML,
                                             convertChoPro, convertOnSong, textSongConvert, uri);
-
-                                    if (bits==null || bits.size()==0) {
-                                        sqLite.setTitle(sqLite.getFilename());
-
-                                    } else {
-                                        sqLite.setFilename(escaped(bits.get(0));
-                                        sqLite.setTitle(bits.get(1));
-                                        sqLite.setAuthor(bits.get(2));
-                                        sqLite.setCopyright(bits.get(3));
-                                        sqLite.setKey(bits.get(4));
-                                        sqLite.setTimesig(bits.get(5));
-                                        sqLite.setCcli(bits.get(6));
-                                        sqLite.setLyrics(bits.get(7));
-                                    }
                                 }
                             }
 
                             // Update the database entry
-                            commonSQL.updateSong(db,sqLite);
+                            song.setSongid(commonSQL.getAnySongId(song.getFolder(),song.getFilename()));
+                            commonSQL.updateSong(db,song);
 
                             // If the file is a PDF or IMG file, then we need to check it is in the persistent DB
                             // If not, add it.  Call update, if it fails (no match), the method catches it and creates the entry
-                            if (sqLite.getFiletype().equals("PDF") || sqLite.getFiletype().equals("IMG")) {
-                                nonOpenSongSQLiteHelper.updateSong(c, commonSQL, storageAccess, preferences, sqLite);
+                            if (song.getFiletype().equals("PDF") || song.getFiletype().equals("IMG")) {
+                                nonOpenSongSQLiteHelper.updateSong(c, commonSQL, storageAccess, preferences, song);
                             }
                         }
                     }
@@ -192,7 +100,7 @@ public class SongListBuildIndex {
             } catch (Exception e) {
                 e.printStackTrace();
             } catch (OutOfMemoryError oom) {
-                showToast.doIt(c,"Out of memory: "+folder+"/"+filename);
+                showToast.doIt(c,"Out of memory: "+song.getFolder()+"/"+song.getFilename());
             }
 
         }
@@ -217,110 +125,33 @@ public class SongListBuildIndex {
             return false;
         }
 
-        private void getXMLStuff() throws Exception {
-            try {
-                XmlPullParserFactory factory;
-                factory = XmlPullParserFactory.newInstance();
-                factory.setNamespaceAware(true);
-                XmlPullParser xpp;
-                xpp = factory.newPullParser();
-                xpp.setInput(inputStream, utf);
-                int eventType;
-
-                // Extract all of the stuff we need
-                eventType = xpp.getEventType();
-                while (eventType != XmlPullParser.END_DOCUMENT) {
-                    if (eventType == XmlPullParser.START_TAG) {
-                        switch (xpp.getName()) {
-                            case "author":
-                                author = xpp.nextText();
-                                break;
-
-                            case "title":
-                                title = xpp.nextText();
-                                break;
-
-                            case "lyrics":
-                                lyrics = xpp.nextText();
-                                break;
-
-                            case "key":
-                                key = xpp.nextText();
-                                break;
-
-                            case "theme":
-                                theme = xpp.nextText();
-                                break;
-
-                            case "copyright":
-                                copyright = xpp.nextText();
-                                break;
-
-                            case "ccli":
-                                ccli = xpp.nextText();
-                                break;
-
-                            case "alttheme":
-                                alttheme = xpp.nextText();
-                                break;
-
-                            case "user1":
-                                user1 = xpp.nextText();
-                                break;
-
-                            case "user2":
-                                user2 = xpp.nextText();
-                                break;
-
-                            case "user3":
-                                user3 = xpp.nextText();
-                                break;
-
-                            case "aka":
-                                aka = xpp.nextText();
-                                break;
-
-                            case "hymn_number":
-                                hymnnum = xpp.nextText();
-                                break;
-                        }
-                    }
-                    // This next line will throw an error if the song isn't xml
-                    eventType = xpp.next();
-                }
-
-                // If we got this far, the song information was extracted!
-            } catch (OutOfMemoryError e1) {
-                e1.printStackTrace();
-            }
-        }
-
-        private ArrayList<String> tryToFixSong(Context c, StorageAccess storageAccess, Preferences preferences,
-                                               ProcessSong processSong, SQLiteHelper sqLiteHelper,
-                                               SongXML songXML, ConvertChoPro convertChoPro,
-                                               ConvertOnSong convertOnSong,
-                                               ConvertTextSong textSongConvert, Uri uri) {
-
-            ArrayList<String> bits = new ArrayList<>();
+    private Song tryToFixSong(Context c, StorageAccess storageAccess, Preferences preferences,
+                              ProcessSong processSong, SQLiteHelper sqLiteHelper,
+                              CommonSQL commonSQL, SongXML songXML, ConvertChoPro convertChoPro,
+                              ConvertOnSong convertOnSong, ConvertTextSong textSongConvert, Uri uri) {
 
             if (uri != null) {
-                if (isChordPro(filename)) {
+                if (isChordPro(song.getFilename())) {
+                    song.setFiletype("CHO");
                     // This is a chordpro file
                     // Load the current text contents
                     try {
                         String filecontents = storageAccess.readTextFileToString(inputStream);
-                        bits = convertChoPro.convertTextToTags(c, storageAccess, preferences,
-                                processSong, sqLiteHelper, commonSQL, songXML, uri, filecontents);
+                        song.setLyrics(filecontents);
+                        song = convertChoPro.convertTextToTags(c, storageAccess, preferences,
+                                processSong, sqLiteHelper, commonSQL, songXML, uri, song);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                } else if (filename.toLowerCase(Locale.ROOT).endsWith(".onsong")) {
+                } else if (song.getFilename().toLowerCase(Locale.ROOT).endsWith(".onsong")) {
                     try {
+                        song.setFiletype("iOS");
                         String filecontents = storageAccess.readTextFileToString(inputStream);
-                        bits = convertOnSong.convertTextToTags(c, storageAccess, preferences, 
-                                processSong, songXML, convertChoPro, sqLiteHelper,
-                                uri, filecontents);
+                        song.setLyrics(filecontents);
+                        song = convertOnSong.convertTextToTags(c, storageAccess, preferences,
+                                processSong, songXML, convertChoPro, sqLiteHelper, commonSQL,
+                                uri, song);
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -328,37 +159,37 @@ public class SongListBuildIndex {
 
                 } else if (storageAccess.isTextFile(uri)) {
                     try {
+                        song.setFiletype("TXT");
                         String filecontents = storageAccess.readTextFileToString(inputStream);
-                        bits.add(filename);
-                        bits.add(filename);
-                        bits.add("");
-                        bits.add("");
-                        bits.add("");
-                        bits.add("");
-                        bits.add("");
-                        bits.add(textSongConvert.convertText(c, filecontents));
+                        song.setTitle(song.getFilename());
+                        song.setAuthor("");
+                        song.setCopyright("");
+                        song.setKey("");
+                        song.setTimesig("");
+                        song.setCcli("");
+                        song.setLyrics(textSongConvert.convertText(c, filecontents));
+
 
                     } catch (Exception e) {
-                        bits.add(filename);
-                        bits.add(filename);
-                        bits.add("");
-                        bits.add("");
-                        bits.add("");
-                        bits.add("");
-                        bits.add("");
-                        bits.add("");
+                        song.setTitle(song.getFilename());
+                        song.setAuthor("");
+                        song.setCopyright("");
+                        song.setKey("");
+                        song.setTimesig("");
+                        song.setCcli("");
+                        song.setLyrics("");
+
                     }
                 } else {
-                    bits.add(filename);
-                    bits.add(filename);
-                    bits.add("");
-                    bits.add("");
-                    bits.add("");
-                    bits.add("");
-                    bits.add("");
-                    bits.add("");
+                    song.setTitle(song.getFilename());
+                    song.setAuthor("");
+                    song.setCopyright("");
+                    song.setKey("");
+                    song.setTimesig("");
+                    song.setCcli("");
+                    song.setLyrics("");
                 }
             }
-            return bits;
+            return song;
         }
     }

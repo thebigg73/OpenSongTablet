@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
-import com.garethevans.church.opensongtablet.sqlite.SQLite;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.LinkedHashMap;
@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> implements FastScrollRecyclerView.SectionedAdapter  {
 
-    private final List<SQLite> songList;
+    private final List<Song> songList;
     private final Context c;
     private final Preferences preferences;
     private final SongForSet songForSet;
@@ -36,7 +36,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
         void onItemLongClicked(int position);
     }
 
-    public SongListAdapter(Context context, List<SQLite> songList, Preferences preferences,
+    public SongListAdapter(Context context, List<Song> songList, Preferences preferences,
                            SongForSet songForSet, AdapterCallback callback) {
         this.songList = songList;
         c = context;
@@ -67,7 +67,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
 
     @Override
     public void onBindViewHolder(@NonNull SongItemViewHolder songItemViewHolder, int i) {
-        SQLite song = songList.get(i);
+        Song song = songList.get(i);
         String filename = song.getFilename();
         String folder = song.getFolder();
         String author = song.getAuthor();
@@ -187,7 +187,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
 
     }
 
-    Map<String,Integer> getAlphaIndex(List<SQLite> songlist) {
+    Map<String,Integer> getAlphaIndex(List<Song> songlist) {
         Map<String,Integer> linkedHashMap = new LinkedHashMap<>();
         if (songlist!=null) {
             for (int i=0; i<songlist.size(); i++) {
