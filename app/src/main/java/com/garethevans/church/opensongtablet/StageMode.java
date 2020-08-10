@@ -2595,7 +2595,6 @@ public class StageMode extends AppCompatActivity implements
             case "editsong":
             case "editsongpdf":
             case "changetheme":
-            case "autoscale":
             case "changefonts":
             case "profiles":
             case "gestures":
@@ -2620,6 +2619,14 @@ public class StageMode extends AppCompatActivity implements
                     FullscreenActivity.whattodo = s;
                     openFragment();
                 }
+                break;
+
+            case "autoscale":
+                // IV - Take the current value, lookup in string and set to the next value in the string
+                preferences.setMyPreferenceString(StageMode.this,"songAutoScale", "" + "YWNY".charAt("YWNY".indexOf(preferences.getMyPreferenceString(StageMode.this,"songAutoScale","W")) + 1));
+                // Flag for a reload
+                StaticVariables.reloadOfSong = true;
+                loadSong();
                 break;
 
             case "showchords":
@@ -3863,7 +3870,6 @@ public class StageMode extends AppCompatActivity implements
         if (!FullscreenActivity.alreadyloading) {
             FullscreenActivity.whichDirection = "L2R";
             dealtwithaspdf = false;
-            StaticVariables.showstartofpdf = true; // Default value - change later if need be
 
             // If this is a PDF, check we can't move pages
             if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0) {
@@ -5245,6 +5251,10 @@ public class StageMode extends AppCompatActivity implements
             try {
                 // We know how many columns we are using, so lets go for it.
                 column1_1 = processSong.preparePerformanceColumnView(StageMode.this);
+                // IV - If doing song block - needs own preference
+                if (!(preferences.getMyPreferenceString(StageMode.this, "stickyAutoDisplay", "F").equals("N"))) {
+                    column1_1.setPadding(0, getPixelsFromDpi(12), 0, 0);
+                }
                 songbit = processSong.preparePerformanceSongBitView(StageMode.this, true); // true for horizontal
                 boxbit1_1 = processSong.preparePerformanceBoxView(StageMode.this, preferences,lyricsTextColor,
                         lyricsBackgroundColor, FullscreenActivity.padding);
@@ -5536,7 +5546,12 @@ public class StageMode extends AppCompatActivity implements
                 // We know how many columns we are using, so lets go for it.
                 column1_2 = processSong.preparePerformanceColumnView(StageMode.this);
                 column2_2 = processSong.preparePerformanceColumnView(StageMode.this);
-                songbit = processSong.preparePerformanceSongBitView(StageMode.this, true); // true for horizontal
+                // IV - If doing song block - needs own preference
+                if (!(preferences.getMyPreferenceString(StageMode.this, "stickyAutoDisplay", "F").equals("N"))) {
+                    column1_2.setPadding(0,getPixelsFromDpi(12), 0, 0);
+                    column2_2.setPadding(0,getPixelsFromDpi(12), 0, 0);
+                }
+        songbit = processSong.preparePerformanceSongBitView(StageMode.this, true); // true for horizontal
                 boxbit1_2 = processSong.preparePerformanceBoxView(StageMode.this, preferences, lyricsTextColor,
                         lyricsBackgroundColor, FullscreenActivity.padding);
                 boxbit2_2 = processSong.preparePerformanceBoxView(StageMode.this, preferences, lyricsTextColor,
@@ -5633,6 +5648,12 @@ public class StageMode extends AppCompatActivity implements
                 column1_3 = processSong.preparePerformanceColumnView(StageMode.this);
                 column2_3 = processSong.preparePerformanceColumnView(StageMode.this);
                 column3_3 = processSong.preparePerformanceColumnView(StageMode.this);
+                // IV - If doing song block - needs own preference
+                if (!(preferences.getMyPreferenceString(StageMode.this, "stickyAutoDisplay", "F").equals("N"))) {
+                    column1_3.setPadding(0, getPixelsFromDpi(12), 0, 0);
+                    column2_3.setPadding(0, getPixelsFromDpi(12), 0, 0);
+                    column3_3.setPadding(0, getPixelsFromDpi(12), 0, 0);
+                }
                 songbit = processSong.preparePerformanceSongBitView(StageMode.this, true); // true for horizontal
                 boxbit1_3 = processSong.preparePerformanceBoxView(StageMode.this, preferences,lyricsTextColor,
                         lyricsBackgroundColor, FullscreenActivity.padding);
@@ -5985,6 +6006,10 @@ public class StageMode extends AppCompatActivity implements
             try {
                 // Only 1 column, but many sections
                 column1_1 = processSong.preparePerformanceColumnView(StageMode.this);
+                // IV - If doing song block - needs own preference
+                if (!(preferences.getMyPreferenceString(StageMode.this, "stickyAutoDisplay", "F").equals("N"))) {
+                    column1_1.setPadding(0, getPixelsFromDpi(12), 0, 0);
+                }
                 songbit = processSong.prepareStageSongBitView(StageMode.this);
 
                 // Add the song sections...

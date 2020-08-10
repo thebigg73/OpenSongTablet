@@ -794,7 +794,7 @@ class ChordProConvert {
                     if (lines[y].length() > lines[y+1].length()) {
                         lines[y+1] = processSong.fixLineLength(lines[y+1], lines[y].length());
                     }
-                    positions_returned = processSong.getChordPositions(lines[y]);
+                    positions_returned = processSong.getChordPositions(lines[y], lines[y + 1]);
                     // Remove the . at the start of the line
                     if (lines[y].startsWith(".")) {
                         lines[y] = lines[y].replaceFirst("."," ");
@@ -808,8 +808,8 @@ class ChordProConvert {
                         String chord_to_add = "";
                         if (w<chords_returned.length) {
                             if (chords_returned[w] != null && !chords_returned[w].trim().equals("")) {
-                                if (chords_returned[w].trim().startsWith(".") || chords_returned[w].trim().startsWith("|") ||
-                                        chords_returned[w].trim().startsWith(":")) {
+                                // IV - Removed block on considering '|' as a chord - need to retain for fidelity of conversion during edit
+                                if (chords_returned[w].trim().startsWith(".") || chords_returned[w].trim().startsWith(":")) {
                                     chord_to_add = chords_returned[w];
                                 } else {
                                     chord_to_add = "[" + chords_returned[w].trim() + "]";
@@ -823,7 +823,7 @@ class ChordProConvert {
                 case "chord_only":
                     // Use same logic as chord_then_lyric to guarantee consistency
                     String tempString = processSong.fixLineLength("", lines[y].length());
-                    positions_returned = processSong.getChordPositions(lines[y]);
+                    positions_returned = processSong.getChordPositions(lines[y], tempString);
                     // Remove the . at the start of the line
                     if (lines[y].startsWith(".")) {
                         lines[y] = lines[y].replaceFirst("."," ");
@@ -837,8 +837,8 @@ class ChordProConvert {
                         String chord_to_add = "";
                         if (w<chords_returned.length) {
                             if (chords_returned[w] != null && !chords_returned[w].trim().equals("")) {
-                                if (chords_returned[w].trim().startsWith(".") || chords_returned[w].trim().startsWith("|") ||
-                                        chords_returned[w].trim().startsWith(":")) {
+                                // IV - Removed block on considering '|' as a chord - need to retain for fidelity of conversion during edit
+                                if (chords_returned[w].trim().startsWith(".") || chords_returned[w].trim().startsWith(":")) {
                                     chord_to_add = chords_returned[w];
                                 } else {
                                     chord_to_add = "[" + chords_returned[w].trim() + "]";
