@@ -957,52 +957,29 @@ public class ProcessSong extends Activity {
         return type;
     }
 
-    String[] getChordPositions(String string) {
+    String[] getChordPositions(String string, String lyric) {
+        // IV - Lyric is now needed. Part of preventing lyrics starting too close after a chords above a run of spaces
         // Given a chord line, get the character positions that each chord starts at
         // Go through the line character by character
         // If the character isn't a " " and the character before is " " or "|" it's a new chord
         // Add the positions to an array
         ArrayList<String> chordpositions = new ArrayList<>();
+        String inString = string;
+        boolean thischarempty;
+        boolean prevcharempty;
+//aaaa
 
-        // Set the start of the line as the first bit
-        if (string.startsWith(".")) {
-            chordpositions.add("1");
-        } else {
-            chordpositions.add("0");
-        }
-
-        // IV - Comments do not seem to reflect the code logic?
         // In order to identify chords at the end of the line
-        // (My method looks for a following space)
+        // (My method needs a following space)
         // Add a space to the search string.
-        if (string.length() < 1) {
-            // GE Fix for empty line as substring(1) failed for empty lines.
-            string = " ";
-        } else {
-            string = " " + string.substring(1) + " ";
-        }
+        inString = inString + " ";
 
-        for (int x = 2; x < string.length(); x++) {
-
-            String thischar = "";
-            boolean thischarempty = false;
-            if (x < string.length() - 1) {
-                thischar = string.substring(x, x + 1);
-            }
-            if (thischar.equals(" ") || thischar.equals("|")) {
-                thischarempty = true;
-            }
-
-            String prevchar;
-            boolean prevcharempty = false;
-            prevchar = string.substring(x - 1, x);
-            if (prevchar.equals(" ") || prevchar.equals("|")) {
-                prevcharempty = true;
-            }
-
-            if (!thischarempty && prevcharempty) {
-                // This is a chord position
-                chordpositions.add(x + "");
+        for (int x = 1; x < (inString.length() - 1); x++) {
+            thischarempty =  inString.substring(x, x + 1).equals(" ");
+            prevcharempty =  inString.substring(x - 1, x).equals(" ");
+            // Add the start of chord and the end of a chord where it ends above a space in the lyric
+            if ((!thischarempty && prevcharempty) || ((thischarempty && !prevcharempty && lyric.substring(x - 1 ,x).equals(" ")))) {
+                    chordpositions.add(x + "");
             }
         }
 
@@ -1042,7 +1019,6 @@ public class ProcessSong extends Activity {
                 if (startpos < endpos) {
                     chordsections.add(string.substring(startpos, endpos));
                 }
-
             } else {
                 // We are at the start of a chord somewhere other than the start or end
                 // Get the bit of text in the previous section;
@@ -1277,7 +1253,7 @@ public class ProcessSong extends Activity {
                     for (int i = 1; i < lyrics.length; i++) {
                         sb.append(lyrics[i]);
                     }
-                    // IV - 2 spaces added to try to stop right overrun.  Needs proper solution.  Bold marker removed as line has been reconstructed.
+                    // IV - 2 spaces added to try to stop right overrun.  Bold marker removed as line has been reconstructed.
                     bit = sb.toString().replace("B_","").replaceAll("_", "").replaceAll("\\s+-\\s+", "").replaceAll("\\s{2,}", " ").trim() + "  ";
                     // IV - flag used to break loop
                     lyricsOnly = true;
@@ -1746,7 +1722,8 @@ public class ProcessSong extends Activity {
         song = song.replace("-!!", "");
 
         if (StaticVariables.whichMode.equals("Presentation") || StaticVariables.whichMode.equals("Stage")) {
-            song = song.replace("||", "%%LATERSPLITHERE%%");
+            // IV - Song block dividers ||| are not processed as splits
+            song = song.replace("|||","|").replace("||", "%%LATERSPLITHERE%%");
         } else {
             song = song.replace("||", "");
         }
@@ -1796,7 +1773,7 @@ public class ProcessSong extends Activity {
             temp = song.split("\n");
             StringBuilder songBuilder1 = new StringBuilder();
             for (String t : temp) {
-                if (t.startsWith(".") || t.startsWith(";")) {
+                if (t.startsWith(".") || t.startsWith(";"))  {
                     songBuilder1.append(t).append("\n");
                 } else {
                     songBuilder1.append(t.replace("|", " ")).append("\n");
@@ -2130,7 +2107,8 @@ public class ProcessSong extends Activity {
                     if (StaticVariables.sectionContents[x][y].length() > StaticVariables.sectionContents[x][y + 1].length()) {
                         StaticVariables.sectionContents[x][y + 1] = fixLineLength(StaticVariables.sectionContents[x][y + 1], StaticVariables.sectionContents[x][y].length());
                     }
-                    positions_returned = getChordPositions(StaticVariables.sectionContents[x][y]);
+                    // IV - Chord positioning now uses the lyric line
+                    positions_returned = getChordPositions(StaticVariables.sectionContents[x][y], StaticVariables.sectionContents[x][y + 1]);
                     chords_returned = getChordSections(StaticVariables.sectionContents[x][y], positions_returned);
                     lyrics_returned = getLyricSections(StaticVariables.sectionContents[x][y + 1], positions_returned);
                     for (int w = 0; w < lyrics_returned.length; w++) {
@@ -2145,7 +2123,8 @@ public class ProcessSong extends Activity {
                     break;
 
                 case "chord_only":
-                    positions_returned = getChordPositions(StaticVariables.sectionContents[x][y]);
+                    // IV - Chord positioning now uses the lyric line
+                    positions_returned = getChordPositions(StaticVariables.sectionContents[x][y], StaticVariables.sectionContents[x][y + 1]);
                     chords_returned = getChordSections(StaticVariables.sectionContents[x][y], positions_returned);
                     for (String aChords_returned : chords_returned) {
                         String chord_to_add = "";
@@ -2229,7 +2208,12 @@ public class ProcessSong extends Activity {
 
         String[] returnvals = beautifyHeadings(StaticVariables.songSectionsLabels[x], c);
 
-        ll.addView(titletoTextView(c, preferences, lyricsTextColor, returnvals[0], fontsize));
+        // IV - If first title is empty then do not do add to view and mark section as comment.  This helps the song details block.
+        if (x == 0 & returnvals[0].equals("")) {
+            returnvals[1] = "comment";
+        } else {
+            ll.addView(titletoTextView(c, preferences, lyricsTextColor, returnvals[0], fontsize));
+        }
 
         // Identify the section type
         if (x < StaticVariables.songSectionsTypes.length) {
@@ -2292,7 +2276,8 @@ public class ProcessSong extends Activity {
                     } else {
                         nextLine = fixLineLength(nextLine, thisLine.length());
                     }
-                    positions_returned = getChordPositions(thisLine);
+                    // IV - Chord positioning now uses the lyric line
+                    positions_returned = getChordPositions(thisLine, nextLine);
                     chords_returned = getChordSections(thisLine, positions_returned);
                     if (docapochords) {
                         tl.addView(capolinetoTableRow(c, preferences, lyricsCapoColor, chords_returned, fontsize));
@@ -2493,7 +2478,8 @@ public class ProcessSong extends Activity {
                     } else {
                         nextLine = fixLineLength(nextLine, thisLine.length());
                     }
-                    positions_returned = getChordPositions(thisLine);
+                    // IV - Chord positioning now uses the lyric line
+                    positions_returned = getChordPositions(thisLine, nextLine);
                     chords_returned = getChordSections(thisLine, positions_returned);
                     if (docapochords) {
                         tl.addView(capolinetoTableRow(c, preferences, lyricsCapoColor, chords_returned, fontsize));
@@ -2902,30 +2888,30 @@ public class ProcessSong extends Activity {
             }
         }
 
-        // IV - New extra info section for song details - needs it's own menu option!
+        // IV - New extra info section for song details - needs own preference (piggy backing on sad at moment)
         StringBuilder s = new StringBuilder();
 
         if (!sad.equals("N")) {
             // IV - We handle long fields by splitting up lines.  This is based on the longest line length.
             String[] lines = StaticVariables.mLyrics.split("\n");
-            Integer longestLine = 0;
-            for (int i = 0; i < lines.length; i++) {
-                if (lines[i].length() > longestLine) {
-                    longestLine = lines[i].length();
+            int longestLine = 0;
+            for (String line : lines) {
+                if (line.length() > longestLine) {
+                    longestLine = line.length();
                 }
             }
             // IV - Go multiline if a line is longer than the longest line
             // IV - This avoids causing small text for multi-column songs
             String tempString = multiLine(StaticVariables.mTitle, longestLine);
-            s.append(" B_" + tempString.replaceAll("\n","\n B_") + "  \n");
+            s.append(" B_").append(tempString.replaceAll("\n", "\n B_")).append("  \n");
 
             if (!StaticVariables.mAuthor.equals("")) {
                 tempString = multiLine(StaticVariables.mAuthor, longestLine);
-                s.append(";" + tempString.replaceAll("\n","\n;") + "  \n");
+                s.append(";").append(tempString.replaceAll("\n", "\n;")).append("  \n");
             }
             if (!StaticVariables.mCopyright.equals("")) {
                 tempString = multiLine(StaticVariables.mCopyright, longestLine);
-                s.append(";Copyright: " + tempString.replaceAll("\n","\n;") + "  \n");
+                s.append(";Copyright: ").append(tempString.replaceAll("\n", "\n;")).append("  \n");
             }
 
             // IV - Try to generate a copo/key/tempo/time line
@@ -2945,7 +2931,7 @@ public class ProcessSong extends Activity {
                     if ((mcapo > 0) && (preferences.getMyPreferenceBoolean(c, "capoInfoAsNumerals", false))) {
                         s.append(numberToNumeral(mcapo));
                     } else {
-                        s.append("" + mcapo);
+                        s.append("").append(mcapo);
                     }
 
                     Transpose transpose = new Transpose();
@@ -2963,15 +2949,15 @@ public class ProcessSong extends Activity {
             }
 
             if (!StaticVariables.mKey.equals("")) {
-                s.append(sprefix).append("Key - " + StaticVariables.mKey);
+                s.append(sprefix).append("Key - ").append(StaticVariables.mKey);
                 sprefix = " ||| ";
             }
             if (!StaticVariables.mTempo.equals("")) {
-                s.append(sprefix).append("Tempo - " + StaticVariables.mTempo);
+                s.append(sprefix).append("Tempo - ").append(StaticVariables.mTempo);
                 sprefix = " ||| ";
             }
             if (!StaticVariables.mTimeSig.equals("")) {
-                s.append(sprefix).append("Time - " + StaticVariables.mTimeSig);
+                s.append(sprefix).append("Time - ").append(StaticVariables.mTimeSig);
                 sprefix = " ||| ";
             }
 
@@ -3015,16 +3001,16 @@ public class ProcessSong extends Activity {
     private String multiLine(String longString, int maxLength) {
         if (longString.length() > maxLength) {
             String inLongString = longString;
-            String outLongString = "";
+            StringBuilder outLongString = new StringBuilder();
             // IV - Work out word positions using the get chord position logic
-            String[] positions = getChordPositions(longString);
-            Integer startpos = 0;
-            Integer endpos = 0;
+            String[] positions = getChordPositions(longString,longString);
+            int startpos = 0;
+            int endpos = 0;
 
             for (int i = 1; i < positions.length; i++) {
                 if (Integer.parseInt(positions[i]) > (maxLength + startpos) || inLongString.substring(Integer.parseInt(positions[i - 1])).startsWith("(")) {
-                    outLongString = outLongString + inLongString.substring(startpos, endpos) + "\n";
-                    // IV - Remove ( when we have processed it - stops endless loop
+                    outLongString.append(inLongString.substring(startpos, endpos)).append("\n");
+                    // IV - Remove '(' when we have processed it - stops endless loop
                     if (inLongString.substring(Integer.parseInt(positions[i - 1])).startsWith("(")) {
                         inLongString = inLongString.replace("("," ");
                     }
@@ -3035,8 +3021,8 @@ public class ProcessSong extends Activity {
                     endpos = Integer.parseInt(positions[i]);
                 }
             }
-            outLongString = outLongString + longString.substring(startpos);
-            return outLongString;
+            outLongString.append(longString.substring(startpos));
+            return outLongString.toString();
         } else {
             return longString;
         }
