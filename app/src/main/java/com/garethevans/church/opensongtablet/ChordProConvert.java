@@ -966,7 +966,12 @@ class ChordProConvert {
                 }
                 // Join the individual lines back up (unless they are end of chorus or empty
                 if (!line[x].contains("{end_of_chorus}") && !line[x].contains("{eoc}") && !line[x].equals("")) {
-                    newlyrics.append(line[x]).append("\n");
+                    // Imports can leave fields which need a leading space
+                    if (line[x].startsWith("{")){
+                        newlyrics.append(" ").append(line[x]).append("\n");
+                    } else{
+                        newlyrics.append(line[x]).append("\n");
+                    }
                 }
             }
         }
@@ -974,9 +979,6 @@ class ChordProConvert {
         // Final polish
         // Remove double reporting of a Chorus
         newlyrics = new StringBuilder(newlyrics.toString().replace(";Chorus\n[C", "[C"));
-        // Imports can leave fields which need a leading space
-        newlyrics = new StringBuilder(newlyrics.toString().replace("{", " {"));
-
         return newlyrics.toString();
     }
 }

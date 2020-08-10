@@ -968,13 +968,13 @@ public class ProcessSong extends Activity {
         boolean thischarempty;
         boolean prevcharempty;
 //aaaa
-
+        if (inString.startsWith(".")) { inString = inString.replaceFirst("."," "); }
         // In order to identify chords at the end of the line
         // (My method needs a following space)
         // Add a space to the search string.
         inString = inString + " ";
 
-        for (int x = 1; x < (inString.length() - 1); x++) {
+        for (int x = 1; x < (inString.length()); x++) {
             thischarempty =  inString.substring(x, x + 1).equals(" ");
             prevcharempty =  inString.substring(x - 1, x).equals(" ");
             // Add the start of chord and the end of a chord where it ends above a space in the lyric
