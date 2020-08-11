@@ -633,40 +633,6 @@ class ExportPreparer {
             document.close();*/
     }
 
-/*    private void addImage(Document document, Bitmap bmp) {
-        try {
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] bArray = stream.toByteArray();
-            Image myimage = Image.getInstance(bArray);
-            float A4_width  = document.getPageSize().getWidth() - document.leftMargin() - document.rightMargin() - 80;
-            float A4_height = document.getPageSize().getHeight() - document.topMargin() - document.bottomMargin();
-            int bmp_width   = bmp.getWidth();
-            int bmp_height  = bmp.getHeight();
-            // If width is bigger than height, then landscape it!
-
-            float x_scale = A4_width/(float)bmp_width;
-            float y_scale = A4_height/(float)bmp_height;
-            float new_width;
-            float new_height;
-
-            if (x_scale>y_scale) {
-                new_width  = bmp_width  * y_scale;
-                new_height = bmp_height * y_scale;
-            } else {
-                new_width  = bmp_width  * x_scale;
-                new_height = bmp_height * x_scale;
-            }
-            myimage.scaleAbsolute(new_width,new_height);
-            myimage.scaleToFit(A4_width,A4_height);
-            myimage.setAlignment(Image.ALIGN_CENTER | Image.ALIGN_BOTTOM);
-            document.add(myimage);
-
-        } catch (Exception | OutOfMemoryError e) {
-            e.printStackTrace();
-        }
-    }*/
-
     void createSelectedOSB(Context c, Preferences preferences, String selected, StorageAccess storageAccess) {
         folderstoexport = selected;
         if (backup_create_selected!=null) {
@@ -795,8 +761,12 @@ class ExportPreparer {
 
         // Go through each song section and add the ChordPro formatted chords
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
-            s.append(processSong.songSectionChordPro(c, f, false));
+            // IV - Quick exit if Heading or Note
+            if (!StaticVariables.songSections[f].startsWith("B_") && !StaticVariables.songSections[f].startsWith(";__")) {
+                s.append(processSong.songSectionChordPro(c, f, false));
+            }
         }
+
         String string = s.toString();
         string = string.replace("\n\n\n", "\n\n");
         return string;
@@ -816,14 +786,16 @@ class ExportPreparer {
 
         // Go through each song section and add the ChordPro formatted chords
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
-            s.append(processSong.songSectionChordPro(c, f, true));
+            // IV - Quick exit if Heading or Note
+            if (!StaticVariables.songSections[f].startsWith("B_") && !StaticVariables.songSections[f].startsWith(";__")) {
+                s.append(processSong.songSectionChordPro(c, f, true));
+            }
         }
 
         String string = s.toString();
-        string = string.replace("\n\n\n", "\n\n");
+        string = string.replaceAll("\n\n\n", "\n\n");
         // IV - remove empty comments
         string = string.replace("{c:}\n", "");
-
         return string;
     }
     private String prepareTextFile(Context c, Preferences preferences, ProcessSong processSong) {
@@ -841,13 +813,15 @@ class ExportPreparer {
 
         // Go through each song section and add the text trimmed lines
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
-            // IV - Separate sections by a line breaks - to correctly layout txt output
-            s.append(processSong.songSectionText(c, preferences, f)).append("\n\n");
+            // IV - Quick exit if Heading or Note
+            if (!StaticVariables.songSections[f].startsWith("B_") && !StaticVariables.songSections[f].startsWith(";__")) {
+                // IV - Separate sections by a line breaks - to correctly layout txt output
+                s.append(processSong.songSectionText(c, preferences, f)).append("\n\n");
+            }
         }
 
         String string = s.toString();
         string = string.replaceAll("\n\n\n", "\n\n");
         return string;
     }
-
 }

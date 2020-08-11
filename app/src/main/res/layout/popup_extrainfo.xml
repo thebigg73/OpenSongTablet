@@ -28,6 +28,33 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/section_box"
+            android:color="@android:color/transparent"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/stickyBlockInfo"
+                style="@style/MyTextSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:checked="false"
+                android:text="@string/songsheet"
+                android:textColor="#ff0"
+                android:textOff="@string/off"
+                android:textOn="@string/on"
+                app:showText="true"
+                app:switchTextAppearance="@style/MyInfoText"
+                app:thumbTextPadding="4dp"
+                app:thumbTint="#444488" />
+
+        </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

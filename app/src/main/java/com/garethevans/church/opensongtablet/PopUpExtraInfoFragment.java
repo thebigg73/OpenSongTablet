@@ -1,21 +1,20 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import java.util.Objects;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class PopUpExtraInfoFragment extends DialogFragment {
 
@@ -32,10 +31,9 @@ public class PopUpExtraInfoFragment extends DialogFragment {
     private MyInterface mListener;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        mListener = (MyInterface) context;
+        super.onAttach(context);
     }
 
     @Override
@@ -45,7 +43,8 @@ public class PopUpExtraInfoFragment extends DialogFragment {
     }
 
     private SwitchCompat nextSongOnOff_Switch, nextSongTopBottom_Switch,stickyNotesOnOff_Switch,
-            stickyNotesFloat_Switch,stickyNotesTopBottom_Switch, highlightNotesOnOff_Switch;
+            stickyNotesFloat_Switch,stickyNotesTopBottom_Switch, highlightNotesOnOff_Switch,
+            stickyBlockInfo;
     private SeekBar stickyNotesTime_SeekBar, highlightTime_SeekBar;
     private TextView stickyNotesTime_TextView, stickNotesTimeInfo_TextView, highlightTime_TextView,
             highlightTimeInfo_TextView;
@@ -68,16 +67,13 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_extrainfo, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.extra));
+        title.setText(getContext().getResources().getString(R.string.extra));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                mListener.refreshAll();
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            mListener.refreshAll();
+            dismiss();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
@@ -97,6 +93,8 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         highlightTime_TextView = V.findViewById(R.id.highlightTime_TextView);
         highlightTime_SeekBar = V.findViewById(R.id.highlightTime_SeekBar);
         highlightTimeInfo_TextView = V.findViewById(R.id.highlightTimeInfo_TextView);
+        // Add new option for showing songsheet style block info
+        stickyBlockInfo = V.findViewById(R.id.stickyBlockInfo);
 
         // Set the default values
         showNextButtons();
@@ -104,75 +102,61 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         showHighlightButtons();
 
         // Set the listeners
-        nextSongOnOff_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    //nextSongTopBottom_Switch.setVisibility((View.VISIBLE));
-                    if (nextSongTopBottom_Switch.isChecked()) {
-                        preferences.setMyPreferenceString(getActivity(),"displayNextInSet","B");
-                    } else {
-                        preferences.setMyPreferenceString(getActivity(),"displayNextInSet","T");
-                    }
-                } else {
-                    preferences.setMyPreferenceString(getActivity(),"displayNextInSet","N");
-                }
-                showNextButtons();
-            }
-        });
-        nextSongTopBottom_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
+        nextSongOnOff_Switch.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                if (nextSongTopBottom_Switch.isChecked()) {
                     preferences.setMyPreferenceString(getActivity(),"displayNextInSet","B");
                 } else {
                     preferences.setMyPreferenceString(getActivity(),"displayNextInSet","T");
                 }
+            } else {
+                preferences.setMyPreferenceString(getActivity(),"displayNextInSet","N");
+            }
+            showNextButtons();
+        });
+        nextSongTopBottom_Switch.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                preferences.setMyPreferenceString(getActivity(),"displayNextInSet","B");
+            } else {
+                preferences.setMyPreferenceString(getActivity(),"displayNextInSet","T");
             }
         });
-        stickyNotesOnOff_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    if (stickyNotesFloat_Switch.isChecked()) {
-                        preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","F");
-                    } else if (stickyNotesTopBottom_Switch.isChecked()) {
-                        preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","B");
-                    } else {
-                        preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","T");
-                    }
-                } else {
-                    preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","N");
-                }
-                showStickyButtons();
-            }
-        });
-        stickyNotesFloat_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
+        stickyNotesOnOff_Switch.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                if (stickyNotesFloat_Switch.isChecked()) {
                     preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","F");
-                } else if (stickyNotesOnOff_Switch.isChecked()) {
-                    if (stickyNotesTopBottom_Switch.isChecked()) {
-                        preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","B");
-                    } else {
-                        preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","T");
-                    }
-                } else {
-                    preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","N");
-                }
-                showStickyButtons();
-            }
-        });
-
-        stickyNotesTopBottom_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
+                } else if (stickyNotesTopBottom_Switch.isChecked()) {
                     preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","B");
                 } else {
                     preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","T");
                 }
+            } else {
+                preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","N");
+            }
+            showStickyButtons();
+        });
+        stickyNotesFloat_Switch.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","F");
+            } else if (stickyNotesOnOff_Switch.isChecked()) {
+                if (stickyNotesTopBottom_Switch.isChecked()) {
+                    preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","B");
+                } else {
+                    preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","T");
+                }
+            } else {
+                preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","N");
+            }
+            showStickyButtons();
+        });
+        stickyBlockInfo.setOnCheckedChangeListener((view,checked) -> preferences.setMyPreferenceBoolean(getActivity(),"stickyBlockInfo",checked));
+
+
+        stickyNotesTopBottom_Switch.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","B");
+            } else {
+                preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","T");
             }
         });
         stickyNotesTime_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -180,7 +164,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 String s;
                 if (i==0) {
-                    s = Objects.requireNonNull(getActivity()).getResources().getString(R.string.on);
+                    s = getContext().getResources().getString(R.string.on);
                 } else {
                     s = i + " s";
                 }
@@ -195,19 +179,16 @@ public class PopUpExtraInfoFragment extends DialogFragment {
                 preferences.setMyPreferenceInt(getActivity(),"timeToDisplaySticky",seekBar.getProgress());
             }
         });
-        highlightNotesOnOff_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(getActivity(),"drawingAutoDisplay",b);
-                showHighlightButtons();
-            }
+        highlightNotesOnOff_Switch.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(getActivity(),"drawingAutoDisplay",b);
+            showHighlightButtons();
         });
         highlightTime_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 String s;
                 if (i==0) {
-                    s = Objects.requireNonNull(getActivity()).getResources().getString(R.string.on);
+                    s = getContext().getResources().getString(R.string.on);
                 } else {
                     s = i + " s";
                 }
@@ -252,6 +233,9 @@ public class PopUpExtraInfoFragment extends DialogFragment {
 
     private void showStickyButtons() {
 
+        // GE - To switch on/off the song info block at the top
+        stickyBlockInfo.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"stickyBlockInfo",false));
+
         switch (preferences.getMyPreferenceString(getActivity(),"stickyAutoDisplay","F")) {
 
             case "N":
@@ -294,7 +278,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
                 stickyNotesTime_SeekBar.setProgress(preferences.getMyPreferenceInt(getActivity(),"timeToDisplaySticky",5));
                 String s;
                 if (preferences.getMyPreferenceInt(getActivity(),"timeToDisplaySticky",5)==0) {
-                    s = Objects.requireNonNull(getActivity()).getResources().getString(R.string.on);
+                    s = getContext().getResources().getString(R.string.on);
                 } else {
                     s = preferences.getMyPreferenceInt(getActivity(),"timeToDisplaySticky",5) + " s";
                 }
@@ -321,7 +305,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         highlightTime_SeekBar.setProgress(time);
         String s;
         if (time==0) {
-            s = Objects.requireNonNull(getActivity()).getResources().getString(R.string.on);
+            s = getContext().getResources().getString(R.string.on);
         } else {
             s = time + " s";
         }
@@ -329,7 +313,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
         mListener.refreshAll();
     }
