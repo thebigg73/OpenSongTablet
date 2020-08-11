@@ -2888,10 +2888,12 @@ public class ProcessSong extends Activity {
             }
         }
 
-        // IV - New extra info section for song details - needs own preference (piggy backing on sad at moment)
+
         StringBuilder s = new StringBuilder();
 
-        if (!sad.equals("N")) {
+        // IV - New extra info section for song details
+        // GE new variable given (set in PopUpExtraInfoFragment.java)
+        if (preferences.getMyPreferenceBoolean(c,"stickyBlockInfo",false)) {
             // IV - We handle long fields by splitting up lines.  This is based on the longest line length.
             String[] lines = StaticVariables.mLyrics.split("\n");
             int longestLine = 0;

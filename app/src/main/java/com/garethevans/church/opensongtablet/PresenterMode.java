@@ -590,26 +590,28 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         dealWithIntent();
     }
     private void dealWithIntent() {
-        try {
-            switch (FullscreenActivity.whattodo) {
-                case "importfile_customreusable_scripture":
-                    // Receiving scripture text
-                    FullscreenActivity.whattodo = "customreusable_scripture";
-                    openFragment();
-                    break;
-                case "importfile_processimportosb":
-                    // Receiving an OpenSongApp backup file
-                    FullscreenActivity.whattodo = "processimportosb";
-                    openFragment();
-                    break;
-                case "importfile_doimport":
-                    // Receiving another file
-                    FullscreenActivity.whattodo = "doimport";
-                    openFragment();
-                    break;
+        if (FullscreenActivity.whattodo!=null) {
+            try {
+                switch (FullscreenActivity.whattodo) {
+                    case "importfile_customreusable_scripture":
+                        // Receiving scripture text
+                        FullscreenActivity.whattodo = "customreusable_scripture";
+                        openFragment();
+                        break;
+                    case "importfile_processimportosb":
+                        // Receiving an OpenSongApp backup file
+                        FullscreenActivity.whattodo = "processimportosb";
+                        openFragment();
+                        break;
+                    case "importfile_doimport":
+                        // Receiving another file
+                        FullscreenActivity.whattodo = "doimport";
+                        openFragment();
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

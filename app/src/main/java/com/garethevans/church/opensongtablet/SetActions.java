@@ -163,11 +163,6 @@ class SetActions {
             // Break the saved set up into a new String[]
             StaticVariables.mSet = setparse.split("%%%");
 
-            //Log.d("SetActions","Preparing Set list.  setparse="+setparse);
-            /*for (String str:StaticVariables.mSet) {
-                Log.d("SetActions","mSet item="+str);
-            }*/
-
             // Fix any MAIN folder saved in set
             for (int s=0; s<StaticVariables.mSet.length; s++) {
                 StaticVariables.mSet[s] = StaticVariables.mSet[s].replace("MAIN/","");
@@ -177,9 +172,6 @@ class SetActions {
             StaticVariables.mSetList = StaticVariables.mSet.clone();
 
             StaticVariables.setSize = StaticVariables.mSetList.length;
-
-            /*Log.d("SetActions","mSet.length="+StaticVariables.mSet.length);
-            Log.d("SetActions","mSetList.length="+StaticVariables.mSetList.length);*/
 
             // Get rid of tags before and after folder/filenames
             for (int x = 0; x < StaticVariables.mSetList.length; x++) {
