@@ -622,7 +622,6 @@ public class ProcessSong extends Activity {
         FullscreenActivity.thirdsplit_section = thirdsplit_section;
         FullscreenActivity.twothirdsplit_section = twothirdsplit_section;
     }
-
     String fixLineLength(String string, int newlength) {
         int extraspacesrequired = newlength - string.length();
         StringBuilder stringBuilder = new StringBuilder(string);
@@ -967,7 +966,7 @@ public class ProcessSong extends Activity {
         String inString = string;
         boolean thischarempty;
         boolean prevcharempty;
-//aaaa
+
         if (inString.startsWith(".")) { inString = inString.replaceFirst("."," "); }
         // In order to identify chords at the end of the line
         // (My method needs a following space)
@@ -978,7 +977,7 @@ public class ProcessSong extends Activity {
             thischarempty =  inString.substring(x, x + 1).equals(" ");
             prevcharempty =  inString.substring(x - 1, x).equals(" ");
             // Add the start of chord and the end of a chord where it ends above a space in the lyric
-            if ((!thischarempty && prevcharempty) || ((thischarempty && !prevcharempty && lyric.substring(x - 1 ,x).equals(" ")))) {
+            if ((!thischarempty && prevcharempty) || (thischarempty && !prevcharempty && lyric.substring(x - 1 ,x).equals(" "))) {
                     chordpositions.add(x + "");
             }
         }
@@ -1887,18 +1886,23 @@ public class ProcessSong extends Activity {
 
     String[] matchPresentationOrder(Context c, Preferences preferences, String[] currentSections) {
 
-        // Get the currentSectionLabels - these will change after we reorder the song
-        String[] currentSectionLabels = new String[currentSections.length];
-        for (int sl = 0; sl < currentSections.length; sl++) {
-            currentSectionLabels[sl] = getSectionHeadings(currentSections[sl]);
-        }
-
         // mPresentation probably looks like "Intro V1 V2 C V3 C C Guitar Solo C Outro"
         // We need to identify the sections in the song that are in here
         // What if sections aren't in the song (e.g. Intro V2 and Outro)
         // The other issue is that custom tags (e.g. Guitar Solo) can have spaces in them
 
         String tempPresentationOrder = StaticVariables.mPresentation + " ";
+
+        // Get the currentSectionLabels - these will change after we reorder the song
+        // IV - We look for extra information header and footer and add into presentation order to ensure display
+        String[] currentSectionLabels = new String[currentSections.length];
+        for (int sl = 0; sl < currentSections.length; sl++) {
+            currentSectionLabels[sl] = getSectionHeadings(currentSections[sl]);
+            if (currentSectionLabels[sl].equals("H__1")) { tempPresentationOrder = "H__1 " + tempPresentationOrder; }
+            if (currentSectionLabels[sl].equals("F__1")) { tempPresentationOrder = tempPresentationOrder + "F__1 "; }
+
+        }
+
         StringBuilder errors = new StringBuilder();
 
         // Go through each tag in the song
@@ -1962,9 +1966,7 @@ public class ProcessSong extends Activity {
 
         // Display any errors
         StaticVariables.myToastMessage = errors.toString();
-
         return splitSongIntoSections(c, preferences, newSongText.toString());
-
     }
 
     String getSongTitle() {
@@ -2101,16 +2103,25 @@ public class ProcessSong extends Activity {
             String[] chords_returned;
             String[] lyrics_returned;
 
+            String thisLine;
+            String nextLine;
+            thisLine = StaticVariables.sectionContents[x][y].replaceAll("\\s+$", "");
+
             switch (howToProcessLines(y, linenums, StaticVariables.sectionLineTypes[x][y], nextlinetype, previouslinetype)) {
                 // If this is a chord line followed by a lyric line.
                 case "chord_then_lyric":
-                    if (StaticVariables.sectionContents[x][y].length() > StaticVariables.sectionContents[x][y + 1].length()) {
-                        StaticVariables.sectionContents[x][y + 1] = fixLineLength(StaticVariables.sectionContents[x][y + 1], StaticVariables.sectionContents[x][y].length());
+                    // IV - We have a next line - now make lines the same length.
+                    nextLine = StaticVariables.sectionContents[x][y + 1].replaceAll("\\s+$", "");
+                    if (thisLine.length() < nextLine.length()) {
+                        thisLine = fixLineLength(thisLine, nextLine.length());
+                    } else {
+                        nextLine = fixLineLength(nextLine, thisLine.length());
                     }
+
                     // IV - Chord positioning now uses the lyric line
-                    positions_returned = getChordPositions(StaticVariables.sectionContents[x][y], StaticVariables.sectionContents[x][y + 1]);
-                    chords_returned = getChordSections(StaticVariables.sectionContents[x][y], positions_returned);
-                    lyrics_returned = getLyricSections(StaticVariables.sectionContents[x][y + 1], positions_returned);
+                    positions_returned = getChordPositions(thisLine, nextLine);
+                    chords_returned = getChordSections(thisLine, positions_returned);
+                    lyrics_returned = getLyricSections(nextLine, positions_returned);
                     for (int w = 0; w < lyrics_returned.length; w++) {
                         String chord_to_add = "";
                         if (w < chords_returned.length) {
@@ -2123,25 +2134,30 @@ public class ProcessSong extends Activity {
                     break;
 
                 case "chord_only":
+                    // Use same logic as chord_then_lyric to guarantee consistency
+                    String tempString = fixLineLength("", thisLine.length());
                     // IV - Chord positioning now uses the lyric line
-                    positions_returned = getChordPositions(StaticVariables.sectionContents[x][y], StaticVariables.sectionContents[x][y + 1]);
-                    chords_returned = getChordSections(StaticVariables.sectionContents[x][y], positions_returned);
-                    for (String aChords_returned : chords_returned) {
+                    positions_returned = getChordPositions(thisLine, tempString);
+                    chords_returned = getChordSections(thisLine, positions_returned);
+                    lyrics_returned = getLyricSections(tempString, positions_returned);
+                    for (int w = 0; w < lyrics_returned.length; w++) {
                         String chord_to_add = "";
-                        if (aChords_returned != null && !aChords_returned.trim().equals("")) {
-                            chord_to_add = "[" + aChords_returned.trim() + "]";
+                        if (w < chords_returned.length) {
+                            if (chords_returned[w] != null && !chords_returned[w].trim().equals("")) {
+                                chord_to_add = "[" + chords_returned[w].trim() + "]";
+                            }
                         }
-                        chopro.append(chord_to_add);
+                        chopro.append(chord_to_add).append(lyrics_returned[w]);
                     }
                     break;
 
                 case "lyric_no_chord":
-                    chopro.append(StaticVariables.sectionContents[x][y].trim());
+                    chopro.append(thisLine.trim());
 
                     break;
 
                 case "comment_no_chord":
-                    chopro.append("{c:").append(StaticVariables.sectionContents[x][y].trim()).append("}");
+                    chopro.append("{c:").append(thisLine.trim()).append("}");
                     break;
             }
             chopro.append("\n");
@@ -2365,13 +2381,20 @@ public class ProcessSong extends Activity {
             } catch (Exception | OutOfMemoryError e) {
                 e.printStackTrace();
             }
-        }
-        TextView emptyline = new TextView(c);
-        emptyline.setLayoutParams(linearlayout_params());
-        emptyline.setText(" ");
-        emptyline.setTextSize(fontsize * 0.5f);
-        if (preferences.getMyPreferenceBoolean(c, "addSectionSpace", true)) {
-            ll.addView(emptyline);
+
+            // IV - 'Section space' moved within loop to support change of colour for empty line when after an extra info lines
+            if ( y == linenums -1) {
+                if (preferences.getMyPreferenceBoolean(c, "addSectionSpace", true)) {
+                    TextView emptyline = new TextView(c);
+                    emptyline.setLayoutParams(linearlayout_params());
+                    emptyline.setText(" ");
+                    emptyline.setTextSize(fontsize * 0.5f);
+                    if (thisLine.startsWith("__")) {
+                        emptyline.setBackgroundColor(lyricsCustomColor);
+                    }
+                    ll.addView(emptyline);
+                }
+            }
         }
         return ll;
     }
@@ -2860,6 +2883,7 @@ public class ProcessSong extends Activity {
 
     void addExtraInfo(Context c, StorageAccess storageAccess, Preferences preferences) {
         String nextinset = "";
+        String displayNextInSet = preferences.getMyPreferenceString(c, "displayNextInSet", "B");
 
         if (StaticVariables.setView) {
             // Get the index in the set
@@ -2880,7 +2904,14 @@ public class ProcessSong extends Activity {
 
         StringBuilder stickyNotes = new StringBuilder();
         String sad = preferences.getMyPreferenceString(c, "stickyAutoDisplay", "F");
-        if (sad.equals("T") || sad.equals("B")) {
+
+        // Change Ts to Bs when not in Performance mode
+        if (!(StaticVariables.whichMode.equals("Performance"))) {
+            if (sad.equals("T")) sad = "B";
+            if (displayNextInSet.equals("T")) displayNextInSet = "B";
+        }
+
+        if (((sad.equals("T") || sad.equals("B")) && !StaticVariables.mNotes.equals(""))) {
             String[] notes = StaticVariables.mNotes.split("\n");
             stickyNotes.append(";__").append(c.getString(R.string.note)).append(": ");
             for (String line : notes) {
@@ -2888,12 +2919,12 @@ public class ProcessSong extends Activity {
             }
         }
 
-
-        StringBuilder s = new StringBuilder();
-
-        // IV - New extra info section for song details
+        // IV - New extra info section for song details - performance mode only
         // GE new variable given (set in PopUpExtraInfoFragment.java)
-        if (preferences.getMyPreferenceBoolean(c,"stickyBlockInfo",false)) {
+
+        StringBuilder songInformation = new StringBuilder();
+
+        if (StaticVariables.whichMode.equals("Performance") && preferences.getMyPreferenceBoolean(c, "stickyBlockInfo", false)) {
             // IV - We handle long fields by splitting up lines.  This is based on the longest line length.
             String[] lines = StaticVariables.mLyrics.split("\n");
             int longestLine = 0;
@@ -2905,15 +2936,15 @@ public class ProcessSong extends Activity {
             // IV - Go multiline if a line is longer than the longest line
             // IV - This avoids causing small text for multi-column songs
             String tempString = multiLine(StaticVariables.mTitle, longestLine);
-            s.append(" B_").append(tempString.replaceAll("\n", "\n B_")).append("  \n");
+            songInformation.append(" B_").append(tempString.replaceAll("\n", "\n B_")).append("  \n");
 
             if (!StaticVariables.mAuthor.equals("")) {
                 tempString = multiLine(StaticVariables.mAuthor, longestLine);
-                s.append(";").append(tempString.replaceAll("\n", "\n;")).append("  \n");
+                songInformation.append(";").append(tempString.replaceAll("\n", "\n;")).append("  \n");
             }
             if (!StaticVariables.mCopyright.equals("")) {
                 tempString = multiLine(StaticVariables.mCopyright, longestLine);
-                s.append(";Copyright: ").append(tempString.replaceAll("\n", "\n;")).append("  \n");
+                songInformation.append(";Copyright: ").append(tempString.replaceAll("\n", "\n;")).append("  \n");
             }
 
             // IV - Try to generate a copo/key/tempo/time line
@@ -2922,7 +2953,7 @@ public class ProcessSong extends Activity {
             if (preferences.getMyPreferenceBoolean(c, "displayCapoChords", true)) {
                 if (!StaticVariables.mCapo.equals("") && !StaticVariables.mCapo.equals("0")) {
                     // If we are using a capo, add the capo display
-                    s.append(sprefix).append("Capo - ");
+                    songInformation.append(sprefix).append("Capo - ");
                     sprefix = " ||| ";
                     int mcapo;
                     try {
@@ -2931,9 +2962,9 @@ public class ProcessSong extends Activity {
                         mcapo = -1;
                     }
                     if ((mcapo > 0) && (preferences.getMyPreferenceBoolean(c, "capoInfoAsNumerals", false))) {
-                        s.append(numberToNumeral(mcapo));
+                        songInformation.append(numberToNumeral(mcapo));
                     } else {
-                        s.append("").append(mcapo);
+                        songInformation.append("").append(mcapo);
                     }
 
                     Transpose transpose = new Transpose();
@@ -2945,58 +2976,79 @@ public class ProcessSong extends Activity {
                         e.printStackTrace();
                     }
                     if (!StaticVariables.temptranspChords.equals("")) {
-                        s.append(" (").append(StaticVariables.temptranspChords).append(")");
+                        songInformation.append(" (").append(StaticVariables.temptranspChords).append(")");
                     }
                 }
             }
 
             if (!StaticVariables.mKey.equals("")) {
-                s.append(sprefix).append("Key - ").append(StaticVariables.mKey);
+                songInformation.append(sprefix).append("Key - ").append(StaticVariables.mKey);
                 sprefix = " ||| ";
             }
             if (!StaticVariables.mTempo.equals("")) {
-                s.append(sprefix).append("Tempo - ").append(StaticVariables.mTempo);
+                songInformation.append(sprefix).append("Tempo - ").append(StaticVariables.mTempo);
                 sprefix = " ||| ";
             }
             if (!StaticVariables.mTimeSig.equals("")) {
-                s.append(sprefix).append("Time - ").append(StaticVariables.mTimeSig);
+                songInformation.append(sprefix).append("Time - ").append(StaticVariables.mTimeSig);
                 sprefix = " ||| ";
             }
 
             // If we have added elements finish off the line
             if (!sprefix.equals(";")) {
-                s.append("  \n");
+                songInformation.append("  \n");
             }
         }
 
-        if (sad.equals("T") && !StaticVariables.mNotes.equals("")) {
-            // If we have song details to display put them before a left aligned note otherwise just right align the note.
-            if (s.length() > 0) {
-                s.append(stickyNotes.toString().replace(";__" + c.getString(R.string.note) + ": " + ";__", ";" + c.getString(R.string.note) + ": ").replaceAll(";__", ";"));
-            } else {
-                s.append(stickyNotes.toString().replace(";__" + c.getString(R.string.note) + ": " + ";__", ";__" + c.getString(R.string.note) + ": ")).append("\n");
+        // If we have song details and a top sticky note, combine and empty stckyNotes variable
+        if (sad.equals("T") && (songInformation.length() > 0) && (stickyNotes.length() > 0)) {
+                songInformation.append(stickyNotes.toString().replace(";__" + c.getString(R.string.note) + ": " + ";__", ";" + c.getString(R.string.note) + ": ").replaceAll(";__", ";"));
+                stickyNotes = new StringBuilder();
+        }
+
+        // Build an [H__1] header section
+        StringBuilder headerInformation = new StringBuilder();
+
+        // If top 'next in set'
+        if (displayNextInSet.equals("T") && (nextinset.length() > 0)) {
+            headerInformation.append(nextinset).append("\n");
+        }
+
+        // If top (still) 'sticky note'
+        if (sad.equals("T") && (stickyNotes.length() > 0)) {
+            headerInformation.append(stickyNotes.toString().replace(";__" + c.getString(R.string.note) + ": " + ";__", ";__" + c.getString(R.string.note) + ": ")).append("\n");
+        }
+
+        // If (alays top) song details
+        if (songInformation.length() > 0) {
+            // If we have song details with information above, add a separator first
+            if (headerInformation.length() > 0) {
+                headerInformation = headerInformation.append(";__\n");
             }
-        }
-        FullscreenActivity.myLyrics = s.toString() + FullscreenActivity.myLyrics;
-
-        // If we want to add this to the top of the song page,
-        if (StaticVariables.setView &&
-                StaticVariables.indexSongInSet < StaticVariables.mSetList.length &&
-                preferences.getMyPreferenceString(c, "displayNextInSet", "B").equals(("T"))) {
-            FullscreenActivity.myLyrics = nextinset + "\n" + FullscreenActivity.myLyrics;
+            headerInformation.append(songInformation);
         }
 
-        if (sad.equals("B")) {
-            if (!StaticVariables.mNotes.equals("")) {
-                FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "\n\n" + stickyNotes.toString().replace(";__" + c.getString(R.string.note) + ": " + ";__", ";__" + c.getString(R.string.note) + ": ") + "\n";
-            }
+        // If we have header information add as [H__1] section
+        if (headerInformation.length() > 0) {
+            FullscreenActivity.myLyrics = "[H__1]\n" + headerInformation.toString() + FullscreenActivity.myLyrics;
         }
 
-        // If we want to add this to the top of the song page,
-        if (StaticVariables.setView &&
-                StaticVariables.indexSongInSet < StaticVariables.mSetList.length &&
-                preferences.getMyPreferenceString(c, "displayNextInSet", "B").equals(("B"))) {
-            FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "\n\n" + nextinset;
+        // Build an [F__1] footer section
+        StringBuilder footerInformation = new StringBuilder();
+
+        // If bottom 'sticky note'
+        if (sad.equals("B") && (stickyNotes.length() > 0)) {
+            footerInformation.append(stickyNotes.toString().replace(";__" + c.getString(R.string.note) + ": " + ";__", ";__" + c.getString(R.string.note) + ": "));
+        }
+
+        // If bottom 'next in set'
+        if (displayNextInSet.equals("B") && (nextinset.length() > 0)) {
+            footerInformation.append(nextinset).append("\n");
+        }
+
+        // If we have footer information add as [F__1] section
+        if (footerInformation.length() > 0) {
+            FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "[F__1]\n" + footerInformation.toString();
         }
     }
 

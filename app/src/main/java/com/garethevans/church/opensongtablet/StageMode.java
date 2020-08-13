@@ -5251,8 +5251,8 @@ public class StageMode extends AppCompatActivity implements
             try {
                 // We know how many columns we are using, so lets go for it.
                 column1_1 = processSong.preparePerformanceColumnView(StageMode.this);
-                // IV - If doing song block - needs own preference
-                if (!(preferences.getMyPreferenceString(StageMode.this, "stickyAutoDisplay", "F").equals("N"))) {
+                 // IV - If doing song block add a padding
+                if (preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
                     column1_1.setPadding(0, getPixelsFromDpi(12), 0, 0);
                 }
                 songbit = processSong.preparePerformanceSongBitView(StageMode.this, true); // true for horizontal
@@ -5546,8 +5546,8 @@ public class StageMode extends AppCompatActivity implements
                 // We know how many columns we are using, so lets go for it.
                 column1_2 = processSong.preparePerformanceColumnView(StageMode.this);
                 column2_2 = processSong.preparePerformanceColumnView(StageMode.this);
-                // IV - If doing song block - needs own preference
-                if (!(preferences.getMyPreferenceString(StageMode.this, "stickyAutoDisplay", "F").equals("N"))) {
+                // IV - If doing song block add a padding
+                if (preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
                     column1_2.setPadding(0,getPixelsFromDpi(12), 0, 0);
                     column2_2.setPadding(0,getPixelsFromDpi(12), 0, 0);
                 }
@@ -5648,8 +5648,8 @@ public class StageMode extends AppCompatActivity implements
                 column1_3 = processSong.preparePerformanceColumnView(StageMode.this);
                 column2_3 = processSong.preparePerformanceColumnView(StageMode.this);
                 column3_3 = processSong.preparePerformanceColumnView(StageMode.this);
-                // IV - If doing song block - needs own preference
-                if (!(preferences.getMyPreferenceString(StageMode.this, "stickyAutoDisplay", "F").equals("N"))) {
+                // IV - If doing song block add a padding
+                if (preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
                     column1_3.setPadding(0, getPixelsFromDpi(12), 0, 0);
                     column2_3.setPadding(0, getPixelsFromDpi(12), 0, 0);
                     column3_3.setPadding(0, getPixelsFromDpi(12), 0, 0);
@@ -6006,8 +6006,8 @@ public class StageMode extends AppCompatActivity implements
             try {
                 // Only 1 column, but many sections
                 column1_1 = processSong.preparePerformanceColumnView(StageMode.this);
-                // IV - If doing song block - needs own preference
-                if (!(preferences.getMyPreferenceString(StageMode.this, "stickyAutoDisplay", "F").equals("N"))) {
+                // IV - If doing song block add a padding
+                if (preferences.getMyPreferenceBoolean(StageMode.this,"stickyBlockInfo",false)) {
                     column1_1.setPadding(0, getPixelsFromDpi(12), 0, 0);
                 }
                 songbit = processSong.prepareStageSongBitView(StageMode.this);
@@ -6999,7 +6999,11 @@ public class StageMode extends AppCompatActivity implements
                     // 4. Get the section headings/types (may have changed after presentationorder
                     StaticVariables.songSectionsLabels = new String[StaticVariables.songSections.length];
                     StaticVariables.songSectionsTypes = new String[StaticVariables.songSections.length];
+                    // IV - Set value before entry to loop
+                    StaticVariables.songSection_holder = "";
                     for (int sl = 0; sl < StaticVariables.songSections.length; sl++) {
+                        // IV - A useful loop for removing extra information header and footer headings
+                        StaticVariables.songSections[sl] = StaticVariables.songSections[sl].replace("[H__1]\n","").replace("[F__1]\n","");
                         StaticVariables.songSectionsLabels[sl] = processSong.getSectionHeadings(StaticVariables.songSections[sl]);
                     }
 
@@ -7457,12 +7461,11 @@ public class StageMode extends AppCompatActivity implements
     }
 
     // IV - code supporting intentional page turns when using pedal for next/previous.
-    // IV - 'Are you sure?' is displayed and the user can repeat the action to continue after 2 seconds
+    // IV - 'Are you sure?' is displayed and the user must stop, wait and can repeat the action to continue after 2 seconds (an intentional action)
     // IV - After continue there is a 10s grace period where further pedal use is not tested.  Any pedal 'page' or 'scroll' use extends a further 10s grace period.
     private void pedalPreviousAndNextConfirm() {
         // IV - isSong and Stage mode limitations moved elsewhere
          // If we confirm a move then we will ignore the move
-        StaticVariables.pedalPreviousAndNextIgnore = StaticVariables.pedalPreviousAndNextNeedsConfirm;
         if (StaticVariables.pedalPreviousAndNextNeedsConfirm) {
             StaticVariables.myToastMessage = getString(R.string.pedal) + " - " + getString(R.string.areyousure);
             ShowToast.showToast(StageMode.this);
@@ -7471,17 +7474,7 @@ public class StageMode extends AppCompatActivity implements
             StaticVariables.pedalPreviousAndNextIgnore = true;
             // Use a runnable to end the ignore period.
             pedalPreviousAndNextIgnoreHandler.postDelayed(pedalPreviousAndNextIgnoreRunnable, 2000);
-        } else {
-            // At this point StaticVariables.pedalPreviousAndNextNeedsConfirm = false
-            // and StaticVariables.pedalPreviousAndNextIgnore = false;
-            try {
-                // If pedal used again in the ignore period - extend the ignore period.
-                pedalPreviousAndNextIgnoreHandler.removeCallbacks(pedalPreviousAndNextIgnoreRunnable);
-                pedalPreviousAndNextIgnoreHandler.postDelayed(pedalPreviousAndNextIgnoreRunnable, 2000);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+         }
     }
 
     private void PedalNeedsConfirmTrueAfterDelay() {
@@ -7514,13 +7507,20 @@ public class StageMode extends AppCompatActivity implements
             }
         }
 
-        if ((!drawerOrFragmentActive) && goToItemRequired) {
+        // If pedal used again in the ignore period (which starts with song change 'are you sure' warning)  - extend the ignore period
+        if (StaticVariables.pedalPreviousAndNextIgnore) {
+            pedalPreviousAndNextIgnoreHandler.removeCallbacks(pedalPreviousAndNextIgnoreRunnable);
+            pedalPreviousAndNextIgnoreHandler.postDelayed(pedalPreviousAndNextIgnoreRunnable, 2000);
+        }
+
+        // Ignore the move if in the ignore period or a drawer is open
+        goToItemRequired = goToItemRequired && !StaticVariables.pedalPreviousAndNextIgnore && !drawerOrFragmentActive;
+
+        if (goToItemRequired) {
             // IV - isSong limitation removed.  Preference acts to block feature here
             // Consider a song change warning
             if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
                 // IV - We warn only if we can sucessfully move
-                // Set to a known state
-                StaticVariables.pedalPreviousAndNextIgnore = false;
                 if (StaticVariables.setView) {
                     checkCanGoTo();
                     // If in a set and able to move
@@ -7555,7 +7555,7 @@ public class StageMode extends AppCompatActivity implements
                         }
                     }
                 }
-                // Ignore the move if a warning was given
+                // Ignore the move if in the ignore period
                 goToItemRequired = !StaticVariables.pedalPreviousAndNextIgnore;
             }
 
@@ -7592,13 +7592,19 @@ public class StageMode extends AppCompatActivity implements
             }
         }
 
-        if (!drawerOrFragmentActive && goToItemRequired) {
+        // If pedal used again in the ignore period (which starts with song change 'are you sure' warning)  - extend the ignore period
+        if (StaticVariables.pedalPreviousAndNextIgnore) {
+            pedalPreviousAndNextIgnoreHandler.removeCallbacks(pedalPreviousAndNextIgnoreRunnable);
+            pedalPreviousAndNextIgnoreHandler.postDelayed(pedalPreviousAndNextIgnoreRunnable, 2000);
+        }
+        // Ignore the move if in the ignore period
+        goToItemRequired = goToItemRequired && !StaticVariables.pedalPreviousAndNextIgnore && !drawerOrFragmentActive;
+
+        if (goToItemRequired) {
             // IV - isSong limitation removed.  Preference acts to block feature here
             // Consider a song change warning
             if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
                 // IV - We warn only if we can sucessfully move
-                // Set to a known state
-                StaticVariables.pedalPreviousAndNextIgnore = false;
                 if (StaticVariables.setView) {
                     checkCanGoTo();
                     // If in a set and able to move
@@ -7636,7 +7642,7 @@ public class StageMode extends AppCompatActivity implements
                         e.printStackTrace();
                     }
                 }
-                // Ignore the move if a warning was given
+                // Ignore the move if in the ignore period
                 goToItemRequired = !StaticVariables.pedalPreviousAndNextIgnore;
             }
 
