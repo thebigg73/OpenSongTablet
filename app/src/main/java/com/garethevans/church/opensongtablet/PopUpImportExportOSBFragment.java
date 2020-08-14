@@ -168,7 +168,8 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         if (FullscreenActivity.file_uri!=null && FullscreenActivity.whattodo.equals("processimportosb")) {
             // We must be importing and have selected an appropriate .osb file
             importfilechooser.setVisibility(View.VISIBLE);
-            String nameoffile = FullscreenActivity.file_uri.getLastPathSegment();
+            // IV - Adjusted to handle files at root of drive
+            String nameoffile = FullscreenActivity.file_uri.getLastPathSegment().replace(":","/");
             if (nameoffile != null && nameoffile.contains("/")) {
                 nameoffile = nameoffile.substring(nameoffile.lastIndexOf("/") + 1);
             }
