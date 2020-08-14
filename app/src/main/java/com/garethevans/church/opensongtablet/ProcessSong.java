@@ -2925,26 +2925,24 @@ public class ProcessSong extends Activity {
         StringBuilder songInformation = new StringBuilder();
 
         if (StaticVariables.whichMode.equals("Performance") && preferences.getMyPreferenceBoolean(c, "stickyBlockInfo", false)) {
-            // IV - We handle long fields by splitting up lines.  This is based on the longest line length.
+            // IV - We handle long fields by splitting up lines.  This is based on the longest line length
             String[] lines = StaticVariables.mLyrics.split("\n");
-            int longestLine = 0;
+            // We do not split 30 or less characters
+            int longestLine = 30;
             for (String line : lines) {
                 if (line.length() > longestLine) {
                     longestLine = line.length();
                 }
             }
-            // IV - Go multiline if a line is longer than the longest line
-            // IV - This avoids causing small text for multi-column songs
-            String tempString = multiLine(StaticVariables.mTitle, longestLine);
-            songInformation.append(" B_").append(tempString.replaceAll("\n", "\n B_")).append("  \n");
+            // IV - Go multiline if needed, to avoid causing small text for multi-column songs
+            songInformation.append(" B_").append(multiLine(StaticVariables.mTitle, longestLine).replaceAll("\n", "\n B_")).append("  \n");
 
             if (!StaticVariables.mAuthor.equals("")) {
-                tempString = multiLine(StaticVariables.mAuthor, longestLine);
-                songInformation.append(";").append(tempString.replaceAll("\n", "\n;")).append("  \n");
+                songInformation.append(";").append(multiLine(StaticVariables.mAuthor, longestLine).replaceAll("\n", "\n;")).append("  \n");
             }
+
             if (!StaticVariables.mCopyright.equals("")) {
-                tempString = multiLine(StaticVariables.mCopyright, longestLine);
-                songInformation.append(";Copyright: ").append(tempString.replaceAll("\n", "\n;")).append("  \n");
+                songInformation.append(";Copyright: ").append(multiLine(StaticVariables.mCopyright, longestLine).replaceAll("\n", "\n;")).append("  \n");
             }
 
             // IV - Try to generate a copo/key/tempo/time line
@@ -3052,34 +3050,50 @@ public class ProcessSong extends Activity {
         }
     }
 
-    private String multiLine(String longString, int maxLength) {
-        if (longString.length() > maxLength) {
-            String inLongString = longString;
-            StringBuilder outLongString = new StringBuilder();
-            // IV - Work out word positions using the get chord position logic
-            String[] positions = getChordPositions(longString,longString);
-            int startpos = 0;
-            int endpos = 0;
+    private String multiLine(String longString, int targetLength) {
+        if (longString.length() > targetLength) {
+            try {
+                String inLongString = longString;
+                StringBuilder outLongString = new StringBuilder();
+                // IV - Work out word positions using the get chord position logic
+                String[] positions = getChordPositions(inLongString,inLongString);
+                int startpos = 0;
+                int endpos = 0;
 
-            for (int i = 1; i < positions.length; i++) {
-                if (Integer.parseInt(positions[i]) > (maxLength + startpos) || inLongString.substring(Integer.parseInt(positions[i - 1])).startsWith("(")) {
-                    outLongString.append(inLongString.substring(startpos, endpos)).append("\n");
-                    // IV - Remove '(' when we have processed it - stops endless loop
-                    if (inLongString.substring(Integer.parseInt(positions[i - 1])).startsWith("(")) {
-                        inLongString = inLongString.replace("("," ");
+                for (int i = 0; i < positions.length; i++) {
+                    // Split if this word starts with '(' and there is a word before
+                    if ((inLongString.substring(Integer.parseInt(positions[i])).startsWith("(")) && (endpos > startpos) ) {
+                        endpos = Integer.parseInt(positions[i]);
+                        outLongString.append(inLongString.substring(startpos, endpos)).append("\n");
+                        startpos = endpos;
+                    } else {
+                        // Split if this section is greater than target length
+                        if (Integer.parseInt(positions[i]) > (targetLength + startpos)) {
+                            // If there is no word before, split at this word (more than target length)
+                            if (endpos == startpos) {
+                                endpos = Integer.parseInt(positions[i]);
+                            } else {
+                                // Otherwise split at the previous word (target length or less)
+                                endpos = Integer.parseInt(positions[i - 1]);
+                                // Go back to previous word on next pass
+                                i = i - 2;
+                            }
+                            outLongString.append(inLongString.substring(startpos, endpos)).append("\n");
+                            startpos = endpos;
+                        } else {
+                            endpos = Integer.parseInt(positions[i]);
+                            // A word has been considered so endpos > starpos
+                        }
                     }
-                    startpos = Integer.parseInt(positions[i - 1]);
-                    // Go back to startpos position on next pass
-                    i = i - 2;
-                } else {
-                    endpos = Integer.parseInt(positions[i]);
                 }
+                outLongString.append(inLongString.substring(startpos));
+                return outLongString.toString();
+            } catch (Exception e) {
+                // Just in case, if there is a fail return full line
+                return longString;
             }
-            outLongString.append(longString.substring(startpos));
-            return outLongString.toString();
-        } else {
-            return longString;
         }
+        return longString;
     }
 
     // The stuff for PresenterMode
