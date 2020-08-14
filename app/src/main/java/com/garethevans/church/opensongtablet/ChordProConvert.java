@@ -788,19 +788,27 @@ class ChordProConvert {
             String[] chords_returned;
             String[] lyrics_returned;
 
+            String thisLine;
+            String nextLine;
+            thisLine = lines[y].replaceAll("\\s+$", "");
+
             switch (processSong.howToProcessLines(y, linenums, thislinetype, nextlinetype, previouslinetype)) {
                 // If this is a chord line followed by a lyric line.
                 case "chord_then_lyric":
-                    if (lines[y].length() > lines[y+1].length()) {
-                        lines[y+1] = processSong.fixLineLength(lines[y+1], lines[y].length());
+                    // IV - We have a next line - now make lines the same length.
+                    nextLine = lines[y + 1].replaceAll("\\s+$", "");
+                    if (thisLine.length() < nextLine.length()) {
+                        thisLine = processSong.fixLineLength(thisLine, nextLine.length());
+                    } else {
+                        nextLine = processSong.fixLineLength(nextLine, thisLine.length());
                     }
-                    positions_returned = processSong.getChordPositions(lines[y], lines[y + 1]);
+                    positions_returned = processSong.getChordPositions(thisLine, nextLine);
                     // Remove the . at the start of the line
-                    if (lines[y].startsWith(".")) {
-                        lines[y] = lines[y].replaceFirst("."," ");
+                    if (thisLine.startsWith(".")) {
+                        thisLine = thisLine.replaceFirst("."," ");
                     }
-                    chords_returned = processSong.getChordSections(lines[y], positions_returned);
-                    lyrics_returned = processSong.getLyricSections(lines[y + 1], positions_returned);
+                    chords_returned = processSong.getChordSections(thisLine, positions_returned);
+                    lyrics_returned = processSong.getLyricSections(nextLine, positions_returned);
 
                     // Mark the beginning of the line
                     newlyrics.append("¬");
@@ -822,13 +830,14 @@ class ChordProConvert {
 
                 case "chord_only":
                     // Use same logic as chord_then_lyric to guarantee consistency
-                    String tempString = processSong.fixLineLength("", lines[y].length());
-                    positions_returned = processSong.getChordPositions(lines[y], tempString);
+                    String tempString = processSong.fixLineLength("", thisLine.length());
+                    // IV - Chord positioning now uses a lyric line - in this case just spaces!
+                    positions_returned = processSong.getChordPositions(thisLine, tempString);
                     // Remove the . at the start of the line
-                    if (lines[y].startsWith(".")) {
-                        lines[y] = lines[y].replaceFirst("."," ");
+                    if (thisLine.startsWith(".")) {
+                        thisLine = thisLine.replaceFirst("."," ");
                     }
-                    chords_returned = processSong.getChordSections(lines[y], positions_returned);
+                    chords_returned = processSong.getChordSections(thisLine, positions_returned);
                     lyrics_returned = processSong.getLyricSections(tempString, positions_returned);
 
                     // Mark the beginning of the line
@@ -851,7 +860,7 @@ class ChordProConvert {
 
                 case "lyric_no_chord":
                     // Another place to end a Chorus
-                    if (lines[y].replace(" ","").equals("")) {
+                    if (thisLine.replace(" ","").equals("")) {
                         if (dealingwithchorus) {
                             // We've finished with the chorus,
                             dealingwithchorus = false;
@@ -860,33 +869,33 @@ class ChordProConvert {
                     }
                     // Mark the beginning of the line
                     newlyrics.append("¬");
-                    newlyrics.append(lines[y]);
+                    newlyrics.append(thisLine);
                     break;
 
                 case "comment_no_chord":
-                    newlyrics.append("{c:").append(lines[y].replaceFirst(";","")).append("}");
+                    newlyrics.append("{c:").append(thisLine.replaceFirst(";","")).append("}");
                     break;
 
                 case "heading":
                     // If this is a chorus, deal with it appropriately
                     // Add the heading as a comment with hash
-                    if (lines[y].startsWith("[C")) {
+                    if (thisLine.startsWith("[C")) {
                         dealingwithchorus = true;
-                        newlyrics.append("{soc}\n#").append(lines[y]);
+                        newlyrics.append("{soc}\n#").append(thisLine);
                     } else {
                         if (dealingwithchorus) {
                             // We've finished with the chorus,
                             dealingwithchorus = false;
-                            newlyrics.append("{eoc}\n" + "#").append(lines[y]);
+                            newlyrics.append("{eoc}\n" + "#").append(thisLine);
                         } else {
-                            newlyrics.append("#").append(lines[y]);
+                            newlyrics.append("#").append(thisLine);
                         }
                     }
                     break;
 
                 default:
                     // If a line is blank we need to add it and consider an end of a Chorus
-                    if (lines[y].trim().equals("")) {
+                    if (thisLine.trim().equals("")) {
                         // Add just a line beginning (trim the line)
                         newlyrics.append("¬");
                         if (dealingwithchorus) {
