@@ -455,7 +455,9 @@ class ChordProConvert {
     String getOldSongFileName(Uri uri) {
         String fn = "_";
         if (uri != null && uri.getLastPathSegment() != null) {
-            fn = uri.getLastPathSegment();
+            // IV - Adjusted to handle files at root of drive
+            fn = uri.getLastPathSegment().replace(":","/");
+
             // Since this is likely to be from a treeUri, look again (last bit after the final /)
             if (fn.contains("/")) {
                 fn = fn.substring(fn.lastIndexOf("/"));
@@ -466,7 +468,8 @@ class ChordProConvert {
     }
 
     String getNewSongFileName(StorageAccess storageAccess, Uri uri, String title) {
-        String fn = uri.getLastPathSegment();
+        // IV - Adjusted to handle files at root of drive
+        String fn = uri.getLastPathSegment().replace(":","/");;
         if (fn == null) {
             fn = "";
         }
