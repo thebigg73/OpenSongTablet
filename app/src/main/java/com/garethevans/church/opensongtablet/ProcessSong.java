@@ -1301,7 +1301,6 @@ public class ProcessSong extends Activity {
                 }
 
             } else {
-                Log.d("ProcessSong", "Performance: bit=" + bit + "    Color=" + lyricsTextColor);
                 lyricbit.setTextColor(lyricsTextColor);
                 if (fakeBold) {
                     lyricbit.setPaintFlags(lyricbit.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
@@ -2871,7 +2870,6 @@ public class ProcessSong extends Activity {
 
     float getProjectedFontSize(float scale) {
         float tempfontsize = 12.0f * scale;
-        Log.d("ProcessSong", "tempfontsize=" + tempfontsize);
         int start = (int) tempfontsize;
         float end = tempfontsize - start;
         if (end < 0.5) {
