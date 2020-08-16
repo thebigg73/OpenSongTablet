@@ -1,0 +1,140 @@
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/PrefScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/exposedDropDown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/choose_theme"
+            android:labelFor="@+id/themeName">
+
+            <AutoCompleteTextView
+                android:id="@+id/themeName"
+                style="@style/exposedDropDownItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/section_box"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="Main song display" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/lyricsButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_song_lyrics"
+                app:icon="@drawable/rectangle"
+                app:iconGravity="start"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chordsButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/chords"
+                app:icon="@drawable/rectangle"
+                app:iconGravity="start"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/capoButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Capo"
+                app:icon="@drawable/rectangle"
+                app:iconGravity="start"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chordsColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/page_background"
+                app:icon="@drawable/rectangle"
+                app:iconGravity="start"
+                app:iconSize="32dp" />
+
+
+            <LinearLayout
+                android:id="@+id/mainDisplay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/section_box"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="Section highlighting" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/verseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/verse"
+                app:icon="@drawable/rectangle"
+                app:iconGravity="start"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chorusButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tag_chorus"
+                app:icon="@drawable/rectangle"
+                app:iconGravity="start"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/prechorusButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tag_prechorus"
+                app:icon="@drawable/rectangle"
+                app:iconGravity="start"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bridgeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tag_bridge"
+                app:icon="@drawable/rectangle"
+                app:iconGravity="start"
+                app:iconSize="32dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

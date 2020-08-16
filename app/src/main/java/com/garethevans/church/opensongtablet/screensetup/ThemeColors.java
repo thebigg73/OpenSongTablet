@@ -159,4 +159,3 @@ public class ThemeColors {
         return colorMap;
     }
 }
-

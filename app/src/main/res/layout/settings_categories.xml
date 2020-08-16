@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".preferences.SettingsCategories"
     style="@style/PrefScrollView">
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,13 +23,22 @@
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+            android:id="@+id/displayButton"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            app:main="Display"
+            app:sub="Change display settings (what you see on screen)" />
+
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
             android:id="@+id/ccliButton"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             app:main="CCLI"
             app:sub="Change CCLI log" />
 
-    <TableRow style="@style/DividerLine" />
+        <TableRow style="@style/DividerLine" />
 
 
     </LinearLayout>

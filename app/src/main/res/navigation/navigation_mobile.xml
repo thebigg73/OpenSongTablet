@@ -57,16 +57,21 @@
     <fragment
         android:id="@+id/nav_preference"
         android:name="com.garethevans.church.opensongtablet.preferences.SettingsCategories"
-        android:label="@string/settings">
+        android:label="@string/settings"
+        tools:layout="@layout/settings_categories">
         <action
             android:id="@+id/action_nav_preference_to_nav_preference_ccli"
             app:destination="@id/nav_preference_ccli" />
+        <action
+            android:id="@+id/action_nav_preference_to_displayMenuFragment"
+            app:destination="@id/displayMenuFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_preference_ccli"
         android:name="com.garethevans.church.opensongtablet.ccli.SettingsCCLI"
-        android:label="@string/edit_song_ccli"/>
+        android:label="@string/edit_song_ccli"
+        tools:layout="@layout/settings_ccli"/>
     <fragment
         android:id="@+id/nav_storageManagement"
         android:name="com.garethevans.church.opensongtablet.filemanagement.StorageManagementFragment"
@@ -76,7 +81,31 @@
         android:id="@+id/nav_presentation"
         android:name="com.garethevans.church.opensongtablet.presentation.PresentationFragment"
         android:label="PresentationFragment"
-        tools:layout="@layout/fragment_presentation"/>
+        tools:layout="@layout/fragment_presentation">
+        <action
+            android:id="@+id/action_nav_presentation_to_nav_preference"
+            app:destination="@id/nav_preference" />
+        <action
+            android:id="@+id/action_nav_presentation_to_nav_editSong"
+            app:destination="@id/nav_editSong" />
+        <action
+            android:id="@+id/action_nav_presentation_to_nav_storageManagement"
+            app:destination="@id/nav_storageManagement" />
+    </fragment>
+    <fragment
+        android:id="@+id/displayMenuFragment"
+        android:name="com.garethevans.church.opensongtablet.screensetup.DisplayMenuFragment"
+        android:label="DisplayMenuFragment"
+        tools:layout="@layout/settings_display">
+        <action
+            android:id="@+id/action_displayMenuFragment_to_themeSetupFragment"
+            app:destination="@id/themeSetupFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/themeSetupFragment"
+        android:name="com.garethevans.church.opensongtablet.screensetup.ThemeSetupFragment"
+        android:label="ThemeSetupFragment"
+        tools:layout="@layout/settings_theme"/>
 
 
 </navigation>
