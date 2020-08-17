@@ -214,9 +214,7 @@ public class NearbyConnections implements NearbyInterface {
                 // Try to connect again after 2 seconds
                 if (!StaticVariables.isHost) {
                     Handler h = new Handler();
-                    h.postDelayed(() -> {
-                        startDiscovery();
-                    }, 2000);
+                    h.postDelayed(() -> startDiscovery(), 2000);
                 }
                 // Check if we have valid connections
                 StaticVariables.isConnected = stillValidConnections();

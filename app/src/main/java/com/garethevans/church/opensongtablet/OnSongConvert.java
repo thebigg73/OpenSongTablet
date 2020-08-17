@@ -87,7 +87,8 @@ class OnSongConvert {
 
         // Get a unique uri for the new song
         Uri newUri = chordProConvert.getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);
-        newSongFileName = newUri.getLastPathSegment();
+        // IV - Adjusted to handle files at root of drive
+        newSongFileName = newUri.getLastPathSegment().replace(":","/");
         // Just in case it had _ appended due to name conflict.
         // Get rid of the rubbish...
         if (newSongFileName.contains("/")) {

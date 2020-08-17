@@ -726,6 +726,9 @@ public class PopUpImportExternalFile extends DialogFragment {
         if (fileUri!=null) {
             betterFilename = fileUri.getLastPathSegment();
         }
+        // IV - Adjusted to handle files at root of drive
+        betterFilename = betterFilename.replace(":","/");
+
         if (betterFilename.contains("/")) {
             betterFilename = betterFilename.substring(betterFilename.lastIndexOf("/"));
             betterFilename = betterFilename.replace("/","");
