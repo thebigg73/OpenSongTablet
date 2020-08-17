@@ -1728,6 +1728,12 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         setTextTextView(menuUp,c.getResources().getString(R.string.connections_connect));
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
+        // Set the default values
+        enableNearby.setChecked(StaticVariables.usingNearby);
+        actAsHost.setChecked(StaticVariables.isHost);
+        receiveHostFiles.setChecked(StaticVariables.receiveHostFiles);
+        keepHostFiles.setChecked(StaticVariables.keepHostFiles);
+
         // Set the listeners
         menuUp.setOnClickListener(view -> {
             StaticVariables.whichOptionMenu = "MAIN";
@@ -1743,6 +1749,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
 
         enableNearby.setOnCheckedChangeListener((view,isChecked) -> {
             StaticVariables.usingNearby = isChecked;
+            StaticVariables.isHost = actAsHost.isChecked();
             if (isChecked) {
                 if (StaticVariables.isHost) {
                     nearbyInterface.startAdvertising();
@@ -1750,10 +1757,15 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                     nearbyInterface.startDiscovery();
                 }
             } else {
-                if (StaticVariables.isHost) {
+                try {
                     nearbyInterface.stopAdvertising();
-                } else {
-                    nearbyInterface.startDiscovery();
+                } catch (Exception e) {
+                    Log.d("OptionMenuListener","Can't stop advertising, probably wasn't a host!");
+                }
+                try {
+                    nearbyInterface.stopDiscovery();
+                } catch (Exception e) {
+                    Log.d("OptionMenuListener","Can't stop discovery, probably wasn't discovering");
                 }
                 nearbyInterface.turnOffNearby();
             }
@@ -1787,11 +1799,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             setTextTextView(connectionLog,StaticVariables.connectionLog);
         });
 
-        // Set the default values
-        enableNearby.setChecked(StaticVariables.usingNearby);
-        actAsHost.setChecked(StaticVariables.isHost);
-        receiveHostFiles.setChecked(StaticVariables.receiveHostFiles);
-        keepHostFiles.setChecked(StaticVariables.keepHostFiles);
+
 
         if (!mListener.requestNearbyPermissions()) {
             StaticVariables.whichOptionMenu = "MAIN";
