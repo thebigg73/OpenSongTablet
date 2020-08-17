@@ -313,45 +313,40 @@ public class NearbyConnections implements NearbyInterface {
 
         ArrayList<String> receivedBits = processSong.getNearbyIncoming(incoming);
 
-        Uri properUri = storageAccess.getUriForItem(context, preferences, "Songs", receivedBits.get(0), receivedBits.get(1));
-        Uri tempUri = storageAccess.getUriForItem(context, preferences, "Received", "", "ReceivedSong");
-
         // Only songs sent via bytes payload trigger this.
         boolean songReceived = (receivedBits.size()>=4);
 
-        if (StaticVariables.receiveHostFiles) {
-            boolean writeTemp = true;
-            OutputStream outputStream = null;
-            if (songReceived && StaticVariables.keepHostFiles) {
-                // Check if we have the song already.  If we do, grab the song into the Received folder,
-                // Otherwise, we'll write into the user's storage
-                writeTemp = storageAccess.uriExists(context, properUri);
-            }
-            if (songReceived && writeTemp) {
-                storageAccess.lollipopCreateFileForOutputStream(context, preferences, tempUri, null, "Received", "", "ReceivedSong");
-                outputStream = storageAccess.getOutputStream(context, tempUri);
-                StaticVariables.songfilename = "ReceivedSong";
-                StaticVariables.whichSongFolder = "../Received";
-            } else if (songReceived){
-                storageAccess.lollipopCreateFileForOutputStream(context, preferences, properUri, null, "Songs", receivedBits.get(0), receivedBits.get(1));
-                outputStream = storageAccess.getOutputStream(context, properUri);
-                StaticVariables.songfilename = receivedBits.get(1);
-                StaticVariables.whichSongFolder = receivedBits.get(0);
-                // Add to the sqldatabase
-                sqLiteHelper.createSong(context,StaticVariables.whichSongFolder,StaticVariables.songfilename);
-                if (nearbyReturnActionsInterface!=null) {
-                    nearbyReturnActionsInterface.prepareSongMenu();
+        if (songReceived) {
+            Uri properUri = storageAccess.getUriForItem(context, preferences, "Songs", receivedBits.get(0), receivedBits.get(1));
+            Uri tempUri = storageAccess.getUriForItem(context, preferences, "Received", "", "ReceivedSong");
+            // IV - Default to display of existing song - can be overidden
+            StaticVariables.whichSongFolder = receivedBits.get(0);
+            StaticVariables.songfilename = receivedBits.get(1);
+            if (StaticVariables.receiveHostFiles) {
+                boolean writeTemp = true;
+                OutputStream outputStream = null;
+                if (StaticVariables.keepHostFiles) {
+                    // Check if we have the song already.  If we do, grab the song into the Received folder,
+                    // Otherwise, we'll write into the user's storage
+                    writeTemp = storageAccess.uriExists(context, properUri);
                 }
-            }
-            if (songReceived) {
+                if (writeTemp) {
+                    storageAccess.lollipopCreateFileForOutputStream(context, preferences, tempUri, null, "Received", "", "ReceivedSong");
+                    outputStream = storageAccess.getOutputStream(context, tempUri);
+                    StaticVariables.songfilename = "ReceivedSong";
+                    StaticVariables.whichSongFolder = "../Received";
+                } else {
+                    storageAccess.lollipopCreateFileForOutputStream(context, preferences, properUri, null, "Songs", receivedBits.get(0), receivedBits.get(1));
+                    outputStream = storageAccess.getOutputStream(context, properUri);
+                    // Add to the sqldatabase
+                    sqLiteHelper.createSong(context,StaticVariables.whichSongFolder,StaticVariables.songfilename);
+                    if (nearbyReturnActionsInterface!=null) {
+                        nearbyReturnActionsInterface.prepareSongMenu();
+                    }
+                }
                 // Receiving an OpenSong file via bytes.  PDFs etc are sent separately
                 storageAccess.writeFileFromString(receivedBits.get(3), outputStream);
             }
-
-        }
-        if (songReceived) {
-            StaticVariables.whichSongFolder = receivedBits.get(0);
-            StaticVariables.songfilename = receivedBits.get(1);
             Log.d("d","received: "+StaticVariables.whichSongFolder+"/"+StaticVariables.songfilename);
             FullscreenActivity.whichDirection = receivedBits.get(2);
             if (nearbyReturnActionsInterface!=null) {
