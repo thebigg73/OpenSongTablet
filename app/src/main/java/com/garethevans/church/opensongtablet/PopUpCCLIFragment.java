@@ -468,7 +468,7 @@ public class PopUpCCLIFragment extends DialogFragment {
                     StreamResult result = new StreamResult(outputStream);
                     transformer.transform(source, result);
                 } else {
-                    Log.d("CCLI", "doument was null");
+                    Log.d("CCLI", "document was null");
                 }
 
             } catch (Exception e) {
@@ -520,7 +520,9 @@ public class PopUpCCLIFragment extends DialogFragment {
                     if (eventType == XmlPullParser.START_TAG) {
                         if (xpp.getName().startsWith("Entry")) {
                             // If the song isn't blank (first time), extract them
-                            if (!curr_song.equals("")) {
+                            // IV - Changed to consider 'a'ction' as create and delete entries where made with blank song
+                            // IV - Entries now include song.  This is perhaps a better field to test
+                            if (!curr_action.equals("")) {
                                 songfile.add(curr_file);
                                 song.add(curr_song);
                                 author.add(curr_author);
@@ -567,7 +569,7 @@ public class PopUpCCLIFragment extends DialogFragment {
                 }
 
                 // Add the last item
-                if (!curr_song.equals("")) {
+                if (!curr_action.equals("")) {
                     songfile.add(curr_file);
                     song.add(curr_song);
                     author.add(curr_author);
@@ -607,7 +609,7 @@ public class PopUpCCLIFragment extends DialogFragment {
     private String buildMyTable(String sizeoffile) {
         StringBuilder table;
         if (song == null || song.size() == 0) {
-            table = new StringBuilder("<html><body><h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
+            table = new StringBuilder("<!DOCTYPE html><html><body><h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
                     "<h3>" + getString(R.string.ccli_church) + ": " +
                     preferences.getMyPreferenceString(getActivity(),"ccliChurchName","") + "</h3>\n" +
                     "<h3>" + getString(R.string.ccli_licence) + ": " +
@@ -616,12 +618,12 @@ public class PopUpCCLIFragment extends DialogFragment {
                     "</body></html>");
 
         } else {
-            table = new StringBuilder("<html><head>\n" +
-                    "<style>\n#mytable {\nborder-collapse: collapse; width: 100%;\n}\n" +
-                    "#mytable td, #mytable th {\nborder: 1px solid #ddd; padding: 2px;\n}\n" +
-                    "#mytable tr:nth-child(even) {\nbackground-color: #f2f2f2;\n}\n" +
-                    "#mytable th {\npadding-top: 2px; padding-bottom: 2px; text-align: left; " +
-                    "background-color: #4CAF50; color: white;\n}\n" +
+            table = new StringBuilder("<!DOCTYPE html><html><head>\n" +
+                    "<style>\n" +
+                    "th, td {border: 1px solid lightgrey; padding: 2px;}\n" +
+                    "tr:nth-child(even) {background: ghostwhite}\n" +
+                    "th {\npadding-top: 2px; padding-bottom: 2px; text-align: left; " +
+                    "background-color: green; color: white;}\n" +
                     "</style>\n</head><body>" +
                     "<h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
                     "<h3>" + getString(R.string.ccli_church) + ": " +
@@ -629,7 +631,7 @@ public class PopUpCCLIFragment extends DialogFragment {
                     "<h3>" + getString(R.string.ccli_licence) + ": " +
                     preferences.getMyPreferenceString(getActivity(),"ccliLicence","")+ "</h3>\n" +
                     "<h4>" + sizeoffile + "</h4>\n" +
-                    "<body><table id=\"mytable\">\n<tr>");
+                    "<table id=\"mytable\">\n<tr>");
             table.append("<th>").append(getString(R.string.item)).append("</th>");
             table.append("<th>").append(getString(R.string.edit_song_title)).append("</th>");
             table.append("<th>").append(getString(R.string.edit_song_author)).append("</th>");
@@ -683,7 +685,7 @@ public class PopUpCCLIFragment extends DialogFragment {
                         table.append("<td>").append(getString(R.string.songsheet)).append("</td>");
                         break;
                 }
-                table.append("<tr>\n");
+                table.append("</tr>\n");
             }
             table.append("</table></body></html>");
         }
