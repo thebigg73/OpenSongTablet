@@ -817,7 +817,6 @@ class StorageAccess {
                     }
                 }
             }
-            return true;
         } else {
             // Must be a file
 
@@ -868,8 +867,8 @@ class StorageAccess {
                     return docContractCreate(c, parentUri, mimeType, completefilename);
                 }
             }
-            return true;
         }
+        return true;
     }
     private boolean createFile_File(Context c, Preferences preferences, String folder, String subfolder, String filename) {
         boolean stuffCreated = false;
@@ -1423,13 +1422,13 @@ class StorageAccess {
         boolean istext = false;
         if (uri!=null && uri.getLastPathSegment()!=null) {
             String name = uri.getLastPathSegment().toLowerCase(StaticVariables.locale);
-            if ((!name.contains(".pdf") && !name.contains(".PDF") &&
-                    !name.contains(".doc") && !name.contains(".DOC") &&
-                    !name.contains(".docx") && !name.contains(".DOCX") &&
-                    !name.contains(".png") && !name.contains(".PNG") &&
-                    !name.contains(".jpg") && !name.contains(".JPG") &&
-                    !name.contains(".gif") && !name.contains(".GIF") &&
-                    !name.contains(".jpeg") && !name.contains(".JPEG")) ||
+            if ((!name.contains(".pdf") &&
+                    !name.contains(".doc") &&
+                    !name.contains(".docx") &&
+                    !name.contains(".png") &&
+                    !name.contains(".jpg") &&
+                    !name.contains(".gif") &&
+                    !name.contains(".jpeg")) ||
                     name.endsWith(".txt")) {
                 istext = true;
             }

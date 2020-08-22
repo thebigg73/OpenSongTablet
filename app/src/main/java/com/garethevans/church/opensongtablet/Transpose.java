@@ -452,18 +452,14 @@ class Transpose {
         checkChordFormat(c,preferences);
 
         Log.d("Transpose","convertTo="+convertTo+"\ndetetctedChordFormat="+StaticVariables.detectedChordFormat);
+        if (StaticVariables.detectedChordFormat >= 5) {
+            convertFromNumerals(c, storageAccess, preferences);
+        }
         if (convertTo>=5) {
             // We want to convert to a numeral.  If it is normal format, just do it, otherwise, convert to a normal format
-            if (StaticVariables.detectedChordFormat >= 5) {
-                convertFromNumerals(c, storageAccess, preferences);
-            }
             // Now convert to the correct value
             convertToNumerals(c, storageAccess, preferences);
         } else {
-            if (StaticVariables.detectedChordFormat >= 5) {
-                // Convert to a normal format to start with
-                convertFromNumerals(c, storageAccess, preferences);
-            }
             StaticVariables.transposeDirection = "0";
             checkChordFormat(c, preferences);
             try {

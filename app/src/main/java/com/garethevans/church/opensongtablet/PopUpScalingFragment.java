@@ -1,20 +1,21 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class PopUpScalingFragment extends DialogFragment {
 
@@ -40,10 +41,9 @@ public class PopUpScalingFragment extends DialogFragment {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        mListener = (MyInterface) context;
+        super.onAttach(context);
     }
 
     @Override
@@ -69,14 +69,11 @@ public class PopUpScalingFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getResources().getString(R.string.autoscale_toggle));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                mListener.refreshAll();
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            mListener.refreshAll();
+            dismiss();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
@@ -133,12 +130,7 @@ public class PopUpScalingFragment extends DialogFragment {
                 break;
         }
         switchAutoScaleMaxColumns_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"songAutoScaleColumnMaximise",true));
-        switchAutoScaleMaxColumns_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(getActivity(),"songAutoScaleColumnMaximise",b);
-            }
-        });
+        switchAutoScaleMaxColumns_SwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(),"songAutoScaleColumnMaximise",b));
 
         overrideFull_Switch.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideFull",true));
         overrideWidth_Switch.setChecked(preferences.getMyPreferenceBoolean(getActivity(), "songAutoScaleOverrideWidth", false));
@@ -191,54 +183,38 @@ public class PopUpScalingFragment extends DialogFragment {
                 updatefontsize();
             }
         });
-        overrideFull_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideFull",isChecked);
-            }
-        });
-        overrideWidth_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(), "songAutoScaleOverrideWidth", isChecked);
-             }
-        });
-        switchAutoScaleOnOff_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    switchAutoScaleWidthFull_SwitchCompat.setEnabled(true);
-                    switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.VISIBLE);
-                    maxAutoScale_Group.setVisibility(View.VISIBLE);
-                    if (switchAutoScaleWidthFull_SwitchCompat.isChecked()) {
-                        preferences.setMyPreferenceString(getActivity(),"songAutoScale","Y");
-                    } else {
-                        preferences.setMyPreferenceString(getActivity(),"songAutoScale","W");
-                    }
+        overrideFull_Switch.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideFull",isChecked));
+        overrideWidth_Switch.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(), "songAutoScaleOverrideWidth", isChecked));
+        switchAutoScaleOnOff_SwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                switchAutoScaleWidthFull_SwitchCompat.setEnabled(true);
+                switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.VISIBLE);
+                maxAutoScale_Group.setVisibility(View.VISIBLE);
+                if (switchAutoScaleWidthFull_SwitchCompat.isChecked()) {
+                    preferences.setMyPreferenceString(getActivity(),"songAutoScale","Y");
                 } else {
-                    preferences.setMyPreferenceString(getActivity(),"songAutoScale","N");
-                    switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.GONE);
-                    maxAutoScale_Group.setVisibility(View.GONE);
+                    preferences.setMyPreferenceString(getActivity(),"songAutoScale","W");
                 }
-                maxColsSwitchVisibilty();
+            } else {
+                preferences.setMyPreferenceString(getActivity(),"songAutoScale","N");
+                switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.GONE);
+                maxAutoScale_Group.setVisibility(View.GONE);
             }
+            maxColsSwitchVisibilty();
         });
 
-        switchAutoScaleWidthFull_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b && switchAutoScaleOnOff_SwitchCompat.isChecked()) {
-                    preferences.setMyPreferenceString(getActivity(),"songAutoScale","Y");
-                    maxAutoScale_Group.setVisibility(View.VISIBLE);
-                } else if (!b &&switchAutoScaleOnOff_SwitchCompat.isChecked()) {
-                    preferences.setMyPreferenceString(getActivity(),"songAutoScale","W");
-                    maxAutoScale_Group.setVisibility(View.VISIBLE);
-                } else {
-                    preferences.setMyPreferenceString(getActivity(),"songAutoScale","N");
-                    maxAutoScale_Group.setVisibility(View.GONE);
-                }
-                maxColsSwitchVisibilty();
+        switchAutoScaleWidthFull_SwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b && switchAutoScaleOnOff_SwitchCompat.isChecked()) {
+                preferences.setMyPreferenceString(getActivity(),"songAutoScale","Y");
+                maxAutoScale_Group.setVisibility(View.VISIBLE);
+            } else if (!b &&switchAutoScaleOnOff_SwitchCompat.isChecked()) {
+                preferences.setMyPreferenceString(getActivity(),"songAutoScale","W");
+                maxAutoScale_Group.setVisibility(View.VISIBLE);
+            } else {
+                preferences.setMyPreferenceString(getActivity(),"songAutoScale","N");
+                maxAutoScale_Group.setVisibility(View.GONE);
             }
+            maxColsSwitchVisibilty();
         });
 
         stagemode_scale_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -378,7 +354,7 @@ public class PopUpScalingFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 

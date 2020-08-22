@@ -1,13 +1,9 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
@@ -39,10 +40,9 @@ public class PopUpAutoscrollFragment extends DialogFragment {
     private MyInterface mListener;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (MyInterface) context;
     }
 
     @Override
@@ -91,14 +91,11 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.autoscroll));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, PopUpAutoscrollFragment.this.getActivity());
-                closeMe.setEnabled(false);
-                // IV - doSave is now in dismiss
-                PopUpAutoscrollFragment.this.dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe, PopUpAutoscrollFragment.this.getActivity());
+            closeMe.setEnabled(false);
+            // IV - doSave is now in dismiss
+            PopUpAutoscrollFragment.this.dismiss();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
@@ -143,29 +140,23 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         mListener.stopLearnAutoScroll();
 
         // Set up the listeners
-        popupautoscroll_learnbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener!=null) {
-                    try {
-                        mListener.prepareLearnAutoScroll();
-                        // IV - Flag to perform doSave on dismiss
-                        doSaveNeeded = true;
-                        dismiss();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+        popupautoscroll_learnbutton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                try {
+                    mListener.prepareLearnAutoScroll();
+                    // IV - Flag to perform doSave on dismiss
+                    doSaveNeeded = true;
+                    dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
-        popupautoscroll_duration.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                doSaveNeeded = true;
-                StaticVariables.mDuration = textView.getText().toString();
-                StaticVariables.autoscrollok = processSong.isAutoScrollValid(getActivity(),preferences);
-                return false;
-            }
+        popupautoscroll_duration.setOnEditorActionListener((textView, i, keyEvent) -> {
+            doSaveNeeded = true;
+            StaticVariables.mDuration = textView.getText().toString();
+            StaticVariables.autoscrollok = processSong.isAutoScrollValid(getActivity(),preferences);
+            return false;
         });
         popupautoscroll_delay.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -184,13 +175,10 @@ public class PopUpAutoscrollFragment extends DialogFragment {
                 StaticVariables.autoscrollok = processSong.isAutoScrollValid(getActivity(),preferences);
             }
         });
-        uselinkaudiolength_ImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(uselinkaudiolength_ImageButton, PopUpAutoscrollFragment.this.getActivity());
-                PopUpAutoscrollFragment.this.grabLinkAudioTime();
-                StaticVariables.autoscrollok = processSong.isAutoScrollValid(getActivity(),preferences);
-            }
+        uselinkaudiolength_ImageButton.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(uselinkaudiolength_ImageButton, PopUpAutoscrollFragment.this.getActivity());
+            PopUpAutoscrollFragment.this.grabLinkAudioTime();
+            StaticVariables.autoscrollok = processSong.isAutoScrollValid(getActivity(),preferences);
         });
         if (StaticVariables.isautoscrolling) {
             popupautoscroll_startstopbutton.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.stop));
@@ -200,19 +188,16 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         }
 
         // IV - Use fo the gesture means that the button onClick is the same for start and stop
-        popupautoscroll_startstopbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopUpAutoscrollFragment.this.doSave();
-                // gesture contains the start/stop logic
-                // If the current state is not as requested, change it. Autoscroll can be reported as running but have stopeed since.
-                boolean b = popupautoscroll_startstopbutton.getText() == Objects.requireNonNull(getActivity()).getResources().getString(R.string.start);
-                // Request a start/stop if needed to get to the chosen state
-                if ((!StaticVariables.isautoscrolling && b) || (StaticVariables.isautoscrolling && !b)) {
-                    mListener.gesture5();
-                }
-                        PopUpAutoscrollFragment.this.dismiss();
+        popupautoscroll_startstopbutton.setOnClickListener(view -> {
+            PopUpAutoscrollFragment.this.doSave();
+            // gesture contains the start/stop logic
+            // If the current state is not as requested, change it. Autoscroll can be reported as running but have stopeed since.
+            boolean b = popupautoscroll_startstopbutton.getText() == Objects.requireNonNull(getActivity()).getResources().getString(R.string.start);
+            // Request a start/stop if needed to get to the chosen state
+            if ((!StaticVariables.isautoscrolling && b) || (StaticVariables.isautoscrolling && !b)) {
+                mListener.gesture5();
             }
+                    PopUpAutoscrollFragment.this.dismiss();
         });
 
         mHandler.post(runnable);
@@ -223,7 +208,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
     }
 
     @Override
-    public void onDismiss(final DialogInterface dialog) {
+    public void onDismiss(@NonNull final DialogInterface dialog) {
         // IV - Do save now in dismiss
         if (doSaveNeeded) { doSave(); }
         if (mListener!=null) {
@@ -233,7 +218,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         mStopHandler = true;
         this.dismiss();
     }

@@ -1,20 +1,21 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
@@ -39,10 +40,9 @@ public class PopUpEditStickyFragment extends DialogFragment {
     private StorageAccess storageAccess;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (MyInterface) context;
     }
 
     @Override
@@ -70,22 +70,16 @@ public class PopUpEditStickyFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.stickynotes_edit));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
-                saveMe.setEnabled(false);
-                doSave();
-            }
+        saveMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(saveMe,getActivity());
+            saveMe.setEnabled(false);
+            doSave();
         });
 
         preferences = new Preferences();
@@ -112,12 +106,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
         // Set the switch up based on preferences
         stickyTextSize.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"stickyLargeFont",true));
 
-        stickyTextSize.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(getActivity(),"stickyLargeFont",b);
-            }
-        });
+        stickyTextSize.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(),"stickyLargeFont",b));
 
         stickyNotesWidth_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -186,14 +175,14 @@ public class PopUpEditStickyFragment extends DialogFragment {
     }
 
     @Override
-    public void onDismiss(final DialogInterface dialog) {
+    public void onDismiss(@NonNull final DialogInterface dialog) {
         if (mListener!=null) {
             mListener.pageButtonAlpha("");
         }
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 

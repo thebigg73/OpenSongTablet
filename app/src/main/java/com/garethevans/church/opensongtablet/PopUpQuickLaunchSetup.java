@@ -1,14 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +15,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -37,10 +40,9 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
     private Preferences preferences;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (MyInterface) context;
     }
 
     @Override
@@ -67,20 +69,12 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         preferences = new Preferences();
 
         // Do this in a new thread
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        initialiseViews();
-                        setFABS();
-                        setUpSpinners();
-                        setListeners();
-                    }
-                });
-            }
-        }).start();
+        new Thread(() -> Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+            initialiseViews();
+            setFABS();
+            setUpSpinners();
+            setListeners();
+        })).start();
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
 
@@ -99,22 +93,16 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getString(R.string.quicklaunch_title));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
-                saveMe.setEnabled(false);
-                doSave();
-            }
+        saveMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(saveMe,getActivity());
+            saveMe.setEnabled(false);
+            doSave();
         });
 
         // Initialise the views
@@ -225,18 +213,15 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
     }
 
     private void setListeners() {
-        showAll_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FullscreenActivity.whattodo = "pagebuttons";
-                try {
-                    if (mListener != null) {
-                        mListener.openFragment();
-                    }
-                    dismiss();
-                } catch (Exception e) {
-                    e.printStackTrace();
+        showAll_Button.setOnClickListener(v -> {
+            FullscreenActivity.whattodo = "pagebuttons";
+            try {
+                if (mListener != null) {
+                    mListener.openFragment();
                 }
+                dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
         button1_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -470,93 +455,94 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
 
     static Drawable getButtonImage(Context c, String t) {
         Drawable d;
+        Resources res = c.getResources();
         switch (t) {
             case "":
             default:
-                d = c.getResources().getDrawable(R.drawable.ic_help_outline_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_help_outline_white_36dp,null);
                 break;
 
             case "editsong":
-                d = c.getResources().getDrawable(R.drawable.ic_table_edit_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_table_edit_white_36dp,null);
                 break;
 
             case "changetheme":
-                d = c.getResources().getDrawable(R.drawable.ic_theme_light_dark_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_theme_light_dark_white_36dp,null);
                 break;
 
             case "autoscale":
-                d = c.getResources().getDrawable(R.drawable.ic_arrow_expand_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_arrow_expand_white_36dp,null);
                 break;
 
             case "changefonts":
-                d = c.getResources().getDrawable(R.drawable.ic_format_text_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_format_text_white_36dp,null);
                 break;
 
             case "profiles":
-                d = c.getResources().getDrawable(R.drawable.ic_account_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_account_white_36dp,null);
                 break;
 
             case "gestures":
-                d = c.getResources().getDrawable(R.drawable.ic_fingerprint_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_fingerprint_white_36dp,null);
                 break;
 
             case "footpedal":
-                d = c.getResources().getDrawable(R.drawable.ic_pedal_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_pedal_white_36dp,null);
                 break;
 
             case "transpose":
-                d = c.getResources().getDrawable(R.drawable.ic_transpose_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_transpose_white_36dp,null);
                 break;
 
             case "showchords":
-                d = c.getResources().getDrawable(R.drawable.ic_guitar_electric_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_guitar_electric_white_36dp,null);
                 break;
 
             case "showcapo":
-                d = c.getResources().getDrawable(R.drawable.ic_capo_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_capo_white_36dp,null);
                 break;
 
             case "showlyrics":
-                d = c.getResources().getDrawable(R.drawable.ic_voice_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_voice_white_36dp,null);
                 break;
 
             case "fullsearch":
-                d = c.getResources().getDrawable(R.drawable.ic_magnify_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_magnify_white_36dp,null);
                 break;
 
             case "randomsong":
-                d = c.getResources().getDrawable(R.drawable.ic_shuffle_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_shuffle_white_36dp,null);
                 break;
 
             case "abcnotation_edit":
-                d = c.getResources().getDrawable(R.drawable.ic_clef_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_clef_white_36dp,null);
                 break;
 
             case "inc_autoscroll_speed":
-                d = c.getResources().getDrawable(R.drawable.ic_autoscroll_plus_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_autoscroll_plus_white_36dp,null);
                 break;
 
             case "dec_autoscroll_speed":
-                d = c.getResources().getDrawable(R.drawable.ic_autoscroll_minus_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_autoscroll_minus_white_36dp,null);
                 break;
 
             case "toggle_autoscroll_pause":
-                d = c.getResources().getDrawable(R.drawable.ic_autoscroll_pause_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_autoscroll_pause_white_36dp,null);
                 break;
 
             case "showmidicommands":
-                d = c.getResources().getDrawable(R.drawable.ic_midi_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_midi_white_36dp,null);
                 break;
 
             case "exit":
-                d = c.getResources().getDrawable(R.drawable.ic_exit_to_app_white_36dp);
+                d = ResourcesCompat.getDrawable(res,R.drawable.ic_exit_to_app_white_36dp,null);
                 break;
         }
         return d;
     }
 
     @Override
-    public void onDismiss(final DialogInterface dialog) {
+    public void onDismiss(@NonNull final DialogInterface dialog) {
         if (mListener!=null) {
             mListener.pageButtonAlpha("");
         }
@@ -564,7 +550,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 

@@ -151,34 +151,35 @@ class Midi extends Activity {
         String b1 = "0x";                               // This initialises the hex numbering convention
         String b2 = " 0x" + Integer.toHexString(byte2).toUpperCase(Locale.ROOT); // Convert numbers 0-127 to hex
         String b3 = " 0x" + Integer.toHexString(byte3).toUpperCase(Locale.ROOT);
+        String ch = Integer.toHexString(channel).toUpperCase(Locale.ROOT);
         switch(action) {
             case "NoteOn":
-                b1 += "9" + Integer.toHexString(channel).toUpperCase(Locale.ROOT);
+                b1 += "9" + ch;
                 s = b1 + b2 + b3;
                 break;
 
             case "NoteOff":
-                b1 += "8" + Integer.toHexString(channel).toUpperCase(Locale.ROOT);
+                b1 += "8" + ch;
                 s = b1 + b2 + " 0x00";
                 break;
 
             case "PC":
-                b1 += "C" + Integer.toHexString(channel).toUpperCase(Locale.ROOT);
+                b1 += "C" + ch;
                 s = b1 + b2;
                 break;
 
             case "CC":
-                b1 += "B" + Integer.toHexString(channel).toUpperCase(Locale.ROOT);
+                b1 += "B" + ch;
                 s = b1 + b2 + b3;
                 break;
 
             case "MSB":
-                b1 += "B" + Integer.toHexString(channel).toUpperCase(Locale.ROOT);
+                b1 += "B" + ch;
                 s = b1 + " 0x00" + b3;
                 break;
 
             case "LSB":
-                b1 += "B" + Integer.toHexString(channel).toUpperCase(Locale.ROOT);
+                b1 += "B" + ch;
                 s = b1 + " 0x20" + b3;
                 break;
         }

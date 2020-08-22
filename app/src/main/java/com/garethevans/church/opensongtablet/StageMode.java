@@ -70,6 +70,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.core.view.animation.PathInterpolatorCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -3244,7 +3245,7 @@ public class StageMode extends AppCompatActivity implements
             songauthor_ab.setText(getResources().getString(R.string.nothighenoughapi));
 
             // Set the image to the unhappy android
-            Drawable myDrawable = getResources().getDrawable(R.drawable.unhappy_android);
+            Drawable myDrawable = ResourcesCompat.getDrawable(getResources(),R.drawable.unhappy_android,null);
             glideimage.setImageDrawable(myDrawable);
 
             // Set an intent to try and open the pdf with an appropriate application
@@ -5428,9 +5429,7 @@ public class StageMode extends AppCompatActivity implements
         // IV - Block false short key press if fragment used during long press
         blockActionOnKeyUp = true;
         Handler resetBlockActionOnKeyUp = new Handler();
-        resetBlockActionOnKeyUp.postDelayed(() -> {
-            blockActionOnKeyUp = false;
-        }, 300);
+        resetBlockActionOnKeyUp.postDelayed(() -> blockActionOnKeyUp = false, 300);
 
 
         // Load the whichSongFolder in case we were browsing elsewhere

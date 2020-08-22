@@ -1,31 +1,30 @@
 package com.garethevans.church.opensongtablet;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.media.midi.MidiDevice;
 import android.media.midi.MidiDeviceInfo;
 import android.media.midi.MidiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -50,12 +49,6 @@ public class PopUpUSBMidiFragment extends DialogFragment {
     private Midi m;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
@@ -73,16 +66,13 @@ public class PopUpUSBMidiFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getResources().getString(R.string.midi_usb));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
-                closeMe.setEnabled(false);
-                try {
-                    dismiss();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe, getActivity());
+            closeMe.setEnabled(false);
+            try {
+                dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
@@ -111,27 +101,12 @@ public class PopUpUSBMidiFragment extends DialogFragment {
         }
 
         selected = new Handler();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                displayCurrentDevice();
-            }
-        };
+        runnable = this::displayCurrentDevice;
 
         displayCurrentDevice();
 
-        disconnectDevice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                disconnectDevices(true);
-            }
-        });
-        testDevice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendTestNote();
-            }
-        });
+        disconnectDevice.setOnClickListener(view -> disconnectDevices(true));
+        testDevice.setOnClickListener(view -> sendTestNote());
         progressBar.setVisibility(View.GONE);
         scanStartStop.setEnabled(true);
 
@@ -139,20 +114,16 @@ public class PopUpUSBMidiFragment extends DialogFragment {
             permissionAllowed();
         }
 
-        scanStartStop.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            @Override
-            public void onClick(View view) {
-                if (permissionAllowed()) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    usbDevices.setEnabled(false);
-                    scanStartStop.setEnabled(false);
-                    startScan();
-                } else {
-                    progressBar.setVisibility(View.GONE);
-                    scanStartStop.setEnabled(true);
-                    usbDevices.setEnabled(true);
-                }
+        scanStartStop.setOnClickListener(view -> {
+            if (permissionAllowed()) {
+                progressBar.setVisibility(View.VISIBLE);
+                usbDevices.setEnabled(false);
+                scanStartStop.setEnabled(false);
+                startScan();
+            } else {
+                progressBar.setVisibility(View.GONE);
+                scanStartStop.setEnabled(true);
+                usbDevices.setEnabled(true);
             }
         });
 
@@ -174,6 +145,7 @@ public class PopUpUSBMidiFragment extends DialogFragment {
         return allowed;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void updateDevices() {
         try {
             Log.d("d", "update devices");
@@ -181,54 +153,47 @@ public class PopUpUSBMidiFragment extends DialogFragment {
                 ArrayAdapter<String> aa = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), android.R.layout.simple_list_item_1, usbNames);
                 aa.notifyDataSetChanged();
                 usbDevices.setAdapter(aa);
-                usbDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.M)
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        disconnectDevices(false);
-                        // Display the current device
-                        StaticVariables.midiDeviceName = usbNames.get(i);
-                        StaticVariables.midiDeviceAddress = usbManufact.get(i);
-                        StaticVariables.midiManager.openDevice(infos[i],
-                                new MidiManager.OnDeviceOpenedListener() {
-                                    @Override
-                                    public void onDeviceOpened(MidiDevice midiDevice) {
-                                        StaticVariables.midiDevice = midiDevice;
-                                        // Check the ports aren't opened!
-                                        StaticVariables.midiInputPort = null;
-                                        StaticVariables.midiOutputPort = null;
-                                        Log.d("d", "Device opened = " + midiDevice);
-                                        MidiDeviceInfo midiDeviceInfo = midiDevice.getInfo();
-                                        int numInputs = midiDeviceInfo.getInputPortCount();
-                                        int numOutputs = midiDeviceInfo.getOutputPortCount();
-                                        Log.d("d", "Input ports = " + numInputs + ", Output ports = " + numOutputs);
+                usbDevices.setOnItemClickListener((adapterView, view, i, l) -> {
+                    disconnectDevices(false);
+                    // Display the current device
+                    StaticVariables.midiDeviceName = usbNames.get(i);
+                    StaticVariables.midiDeviceAddress = usbManufact.get(i);
+                    StaticVariables.midiManager.openDevice(infos[i],
+                            midiDevice -> {
+                                StaticVariables.midiDevice = midiDevice;
+                                // Check the ports aren't opened!
+                                StaticVariables.midiInputPort = null;
+                                StaticVariables.midiOutputPort = null;
+                                Log.d("d", "Device opened = " + midiDevice);
+                                MidiDeviceInfo midiDeviceInfo = midiDevice.getInfo();
+                                int numInputs = midiDeviceInfo.getInputPortCount();
+                                int numOutputs = midiDeviceInfo.getOutputPortCount();
+                                Log.d("d", "Input ports = " + numInputs + ", Output ports = " + numOutputs);
 
-                                        boolean foundinport = false;  // We will only grab the first one
-                                        boolean foundoutport = false; // We will only grab the first one
+                                boolean foundinport = false;  // We will only grab the first one
+                                boolean foundoutport = false; // We will only grab the first one
 
-                                        MidiDeviceInfo.PortInfo[] portInfos = midiDeviceInfo.getPorts();
-                                        for (MidiDeviceInfo.PortInfo pi : portInfos) {
-                                            switch (pi.getType()) {
-                                                case MidiDeviceInfo.PortInfo.TYPE_INPUT:
-                                                    if (!foundinport) {
-                                                        Log.d("d", "Input port found = " + pi.getPortNumber());
-                                                        StaticVariables.midiInputPort = StaticVariables.midiDevice.openInputPort(pi.getPortNumber());
-                                                        foundinport = true;
-                                                    }
-                                                    break;
-                                                case MidiDeviceInfo.PortInfo.TYPE_OUTPUT:
-                                                    if (!foundoutport) {
-                                                        Log.d("d", "Output port found = " + pi.getPortNumber());
-                                                        StaticVariables.midiOutputPort = StaticVariables.midiDevice.openOutputPort(pi.getPortNumber());
-                                                        foundoutport = true;
-                                                    }
-                                                    break;
+                                MidiDeviceInfo.PortInfo[] portInfos = midiDeviceInfo.getPorts();
+                                for (MidiDeviceInfo.PortInfo pi : portInfos) {
+                                    switch (pi.getType()) {
+                                        case MidiDeviceInfo.PortInfo.TYPE_INPUT:
+                                            if (!foundinport) {
+                                                Log.d("d", "Input port found = " + pi.getPortNumber());
+                                                StaticVariables.midiInputPort = StaticVariables.midiDevice.openInputPort(pi.getPortNumber());
+                                                foundinport = true;
                                             }
-                                        }
-                                        selected.postDelayed(runnable, 1000);
+                                            break;
+                                        case MidiDeviceInfo.PortInfo.TYPE_OUTPUT:
+                                            if (!foundoutport) {
+                                                Log.d("d", "Output port found = " + pi.getPortNumber());
+                                                StaticVariables.midiOutputPort = StaticVariables.midiDevice.openOutputPort(pi.getPortNumber());
+                                                foundoutport = true;
+                                            }
+                                            break;
                                     }
-                                }, null);
-                    }
+                                }
+                                selected.postDelayed(runnable, 1000);
+                            }, null);
                 });
             }
         } catch (Exception e) {
@@ -300,14 +265,11 @@ public class PopUpUSBMidiFragment extends DialogFragment {
             m.sendMidi(buffer1);
 
             Handler h = new Handler();
-            h.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    String s2 = m.buildMidiString("NoteOff",1,60,0);
-                    byte[] buffer2 = m.returnBytesFromHexText(s2);
-                    //byte[] buffer2 = m.buildMidiCommand("NoteOn","C5","0","1",null);
-                    m.sendMidi(buffer2);
-                }
+            h.postDelayed(() -> {
+                String s2 = m.buildMidiString("NoteOff",1,60,0);
+                byte[] buffer2 = m.returnBytesFromHexText(s2);
+                //byte[] buffer2 = m.buildMidiCommand("NoteOn","C5","0","1",null);
+                m.sendMidi(buffer2);
             },1000);
             StaticVariables.myToastMessage = getString(R.string.ok);
             ShowToast.showToast(getContext());

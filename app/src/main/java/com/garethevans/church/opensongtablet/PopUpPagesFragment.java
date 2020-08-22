@@ -1,11 +1,8 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +10,11 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
@@ -32,10 +34,9 @@ public class PopUpPagesFragment extends DialogFragment {
     private MyInterface mListener;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        mListener = (MyInterface) context;
+        super.onAttach(context);
     }
 
     @Override
@@ -68,13 +69,10 @@ public class PopUpPagesFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.pdf_selectpage));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
@@ -100,26 +98,20 @@ public class PopUpPagesFragment extends DialogFragment {
             pageseekbar.setProgress(FullscreenActivity.pdfPageCurrent);
 
             // Set the listeners
-            nextpage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int newpos = pageseekbar.getProgress()+1;
-                    if (newpos<FullscreenActivity.pdfPageCount) {
-                        FullscreenActivity.whichDirection = "R2L";
-                        pageseekbar.setProgress(newpos);
-                        moveToSelectedPage(newpos);
-                    }
+            nextpage.setOnClickListener(view -> {
+                int newpos = pageseekbar.getProgress()+1;
+                if (newpos<FullscreenActivity.pdfPageCount) {
+                    FullscreenActivity.whichDirection = "R2L";
+                    pageseekbar.setProgress(newpos);
+                    moveToSelectedPage(newpos);
                 }
             });
-            previouspage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int newpos = pageseekbar.getProgress()-1;
-                    if (newpos>-1) {
-                        FullscreenActivity.whichDirection = "L2R";
-                        pageseekbar.setProgress(newpos);
-                        moveToSelectedPage(newpos);
-                    }
+            previouspage.setOnClickListener(view -> {
+                int newpos = pageseekbar.getProgress()-1;
+                if (newpos>-1) {
+                    FullscreenActivity.whichDirection = "L2R";
+                    pageseekbar.setProgress(newpos);
+                    moveToSelectedPage(newpos);
                 }
             });
             pageseekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -164,14 +156,14 @@ public class PopUpPagesFragment extends DialogFragment {
     }
 
     @Override
-    public void onDismiss(final DialogInterface dialog) {
+    public void onDismiss(@NonNull final DialogInterface dialog) {
         if (mListener!=null) {
             mListener.pageButtonAlpha("");
         }
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 

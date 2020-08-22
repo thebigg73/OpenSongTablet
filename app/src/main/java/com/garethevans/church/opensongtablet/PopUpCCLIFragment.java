@@ -1,16 +1,12 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +15,11 @@ import android.view.Window;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -62,10 +63,9 @@ public class PopUpCCLIFragment extends DialogFragment {
     private static MyInterface mListener;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        mListener = (MyInterface) context;
+        super.onAttach(context);
     }
 
     private TextView title, churchNameTextView, licenceTextView, logTextView, resetText;
@@ -103,12 +103,9 @@ public class PopUpCCLIFragment extends DialogFragment {
         churchNameEditText.setText(preferences.getMyPreferenceString(getActivity(),"ccliChurchName",""));
 
         // Set up save/tick listener
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                preferences.setMyPreferenceString(getActivity(),"ccliChurchName",churchNameEditText.getText().toString());
-                doSave();
-            }
+        saveMe.setOnClickListener(view -> {
+            preferences.setMyPreferenceString(getActivity(),"ccliChurchName",churchNameEditText.getText().toString());
+            doSave();
         });
     }
 
@@ -120,12 +117,9 @@ public class PopUpCCLIFragment extends DialogFragment {
         licenceEditText.setText(preferences.getMyPreferenceString(getActivity(),"ccliLicence",""));
 
         // Set up save/tick listener
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                preferences.setMyPreferenceString(getActivity(),"ccliLicence",licenceEditText.getText().toString());
-                doSave();
-            }
+        saveMe.setOnClickListener(view -> {
+            preferences.setMyPreferenceString(getActivity(),"ccliLicence",licenceEditText.getText().toString());
+            doSave();
         });
     }
 
@@ -184,13 +178,10 @@ public class PopUpCCLIFragment extends DialogFragment {
         title = V.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.edit_song_ccli));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                doSave();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            doSave();
         });
         saveMe = V.findViewById(R.id.saveMe);
 
@@ -289,26 +280,23 @@ public class PopUpCCLIFragment extends DialogFragment {
 
         // Set up the default values
         // Set up save/tick listener
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (createBlankXML(getActivity(), preferences)) {
-                    StaticVariables.myToastMessage = getString(R.string.ok);
-                } else {
-                    StaticVariables.myToastMessage = getString(R.string.error);
-                }
-                ShowToast.showToast(getActivity());
-                try {
-                    dismiss();
-                } catch (Exception e) {
-                    Log.d("d", "Error closing the fragment");
-                }
+        saveMe.setOnClickListener(view -> {
+            if (createBlankXML(getActivity(), preferences)) {
+                StaticVariables.myToastMessage = getString(R.string.ok);
+            } else {
+                StaticVariables.myToastMessage = getString(R.string.error);
+            }
+            ShowToast.showToast(getActivity());
+            try {
+                dismiss();
+            } catch (Exception e) {
+                Log.d("d", "Error closing the fragment");
             }
         });
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         try {
             this.dismiss();
         } catch (Exception e) {

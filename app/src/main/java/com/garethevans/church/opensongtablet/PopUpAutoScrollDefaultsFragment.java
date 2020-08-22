@@ -54,22 +54,16 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.default_autoscroll));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, PopUpAutoScrollDefaultsFragment.this.getActivity());
-                closeMe.setEnabled(false);
-                PopUpAutoScrollDefaultsFragment.this.dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe, PopUpAutoScrollDefaultsFragment.this.getActivity());
+            closeMe.setEnabled(false);
+            PopUpAutoScrollDefaultsFragment.this.dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, PopUpAutoScrollDefaultsFragment.this.getActivity());
-                saveMe.setEnabled(false);
-                PopUpAutoScrollDefaultsFragment.this.doSave();
-            }
+        saveMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe, PopUpAutoScrollDefaultsFragment.this.getActivity());
+            saveMe.setEnabled(false);
+            PopUpAutoScrollDefaultsFragment.this.doSave();
         });
 
         preferences = new Preferences();
@@ -154,7 +148,7 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 

@@ -1,9 +1,10 @@
 package com.garethevans.church.opensongtablet;
 
 import android.os.Handler;
-import androidx.drawerlayout.widget.DrawerLayout;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import static androidx.drawerlayout.widget.DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
 
@@ -77,20 +78,10 @@ class DrawerTweaks {
                 drawer.closeDrawer(option);
                 break;
             case "option_delayed":
-                optionMenuFlickClosed.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        drawer.closeDrawer(option);
-                    }
-                }, 1000);
+                optionMenuFlickClosed.postDelayed(() -> drawer.closeDrawer(option), 1000);
                 break;
             case "song_delayed":
-                songMenuFlickClosed.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        drawer.closeDrawer(song);
-                    }
-                }, 1000);
+                songMenuFlickClosed.postDelayed(() -> drawer.closeDrawer(song), 1000);
                 break;
             case "locked":
                 drawer.closeDrawer(song);

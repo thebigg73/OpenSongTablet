@@ -384,12 +384,16 @@ public class BootUpCheck extends AppCompatActivity {
         if (storageGranted) {
             Intent intent;
             if (storageAccess.lollipopOrLater()) {
-                intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
-                intent.putExtra("android.content.extra.FANCY", true);
-                intent.putExtra("android.content.extra.SHOW_FILESIZE", true);
-                intent.putExtra("android.content.extra.INITIAL_URI", uriTree);
-                startActivityForResult(intent, 42);
+                try {
+                    intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                    intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
+                    intent.putExtra("android.content.extra.FANCY", true);
+                    intent.putExtra("android.content.extra.SHOW_FILESIZE", true);
+                    intent.putExtra("android.content.extra.INITIAL_URI", uriTree);
+                    startActivityForResult(intent, 42);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
                 openFragment();
             }

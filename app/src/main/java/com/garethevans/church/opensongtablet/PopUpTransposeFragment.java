@@ -1,21 +1,22 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class PopUpTransposeFragment extends DialogFragment {
 
@@ -32,10 +33,9 @@ public class PopUpTransposeFragment extends DialogFragment {
     private MyInterface mListener;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        mListener = (MyInterface) context;
+        super.onAttach(context);
     }
 
     @Override
@@ -76,22 +76,16 @@ public class PopUpTransposeFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getResources().getString(R.string.transpose));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
-                saveMe.setEnabled(false);
-                doTranspose();
-            }
+        saveMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(saveMe,getActivity());
+            saveMe.setEnabled(false);
+            doTranspose();
         });
 
         preferences = new Preferences();
@@ -219,12 +213,9 @@ public class PopUpTransposeFragment extends DialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-        assumePreferred_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",isChecked);
-                usePreferredChordFormat(isChecked);
-            }
+        assumePreferred_SwitchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            preferences.setMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",isChecked);
+            usePreferredChordFormat(isChecked);
         });
     }
 

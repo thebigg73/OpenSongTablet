@@ -1,6 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,10 +35,9 @@ public class PopUpLyricsSettings extends DialogFragment {
     private StorageAccess storageAccess;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (MyInterface) context;
     }
 
     @Override
@@ -148,38 +147,32 @@ public class PopUpLyricsSettings extends DialogFragment {
     }
 
     private void setUpListeners() {
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                try {
-                    if (mListener!=null) {
-                        mListener.refreshAll();
-                    }
-                    dismiss();
-                } catch (Exception e) {
-                    e.printStackTrace();
+        closeMe.setOnClickListener(v -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            try {
+                if (mListener!=null) {
+                    mListener.refreshAll();
                 }
+                dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
         songLyricsToggleSwitch.setOnCheckedChangeListener(new SaveCheckedState("displayLyrics"));
         songLyricsBoxSwitch.setOnCheckedChangeListener(new SaveCheckedState("hideLyricsBox"));
         songTrimSwitch.setOnCheckedChangeListener(new SaveCheckedState("trimSections"));
         songSectionSpaceSwitch.setOnCheckedChangeListener(new SaveCheckedState("addSectionSpace"));
-        trimlinespacing_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean b) {
-                // Disable the linespacing seekbar if required
-                if (b) {
-                    lineSpacing_SeekBar.setVisibility(View.VISIBLE);
-                    lineSpacing_TextView.setVisibility(View.VISIBLE);
-                } else {
-                    lineSpacing_SeekBar.setVisibility(View.GONE);
-                    lineSpacing_TextView.setVisibility(View.GONE);
-                }
-                lineSpacing_SeekBar.setEnabled(b);
-                preferences.setMyPreferenceBoolean(getActivity(),"trimLines",b);
+        trimlinespacing_SwitchCompat.setOnCheckedChangeListener((buttonView, b) -> {
+            // Disable the linespacing seekbar if required
+            if (b) {
+                lineSpacing_SeekBar.setVisibility(View.VISIBLE);
+                lineSpacing_TextView.setVisibility(View.VISIBLE);
+            } else {
+                lineSpacing_SeekBar.setVisibility(View.GONE);
+                lineSpacing_TextView.setVisibility(View.GONE);
             }
+            lineSpacing_SeekBar.setEnabled(b);
+            preferences.setMyPreferenceBoolean(getActivity(),"trimLines",b);
         });
         songPresentationOrderSwitch.setOnCheckedChangeListener(new SaveCheckedState("usePresentationOrder"));
         songLyricsBoxSwitch.setOnCheckedChangeListener(new SaveCheckedState("hideLyricsBox"));

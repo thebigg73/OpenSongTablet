@@ -1,19 +1,19 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
@@ -26,12 +26,6 @@ public class PopUpLanguageFragment extends DialogFragment {
         PopUpLanguageFragment frag;
         frag = new PopUpLanguageFragment();
         return frag;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
     }
 
     @Override
@@ -54,22 +48,16 @@ public class PopUpLanguageFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.language));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
-                saveMe.setEnabled(false);
-                doSave();
-            }
+        saveMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(saveMe,getActivity());
+            saveMe.setEnabled(false);
+            doSave();
         });
 
         preferences = new Preferences();
@@ -139,60 +127,57 @@ public class PopUpLanguageFragment extends DialogFragment {
 
         languagescroll.setItemChecked(positionselected, true);
 
-        languagescroll.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        tempLanguage = "af";
-                        break;
-                    case 1:
-                        tempLanguage = "cs";
-                        break;
-                    case 2:
-                        tempLanguage = "de";
-                        break;
-                    case 3:
-                        tempLanguage = "el";
-                        break;
-                    case 4:
-                        tempLanguage = "en";
-                        break;
-                    case 5:
-                        tempLanguage = "es";
-                        break;
-                    case 6:
-                        tempLanguage = "fr";
-                        break;
-                    case 7:
-                        tempLanguage = "hu";
-                        break;
-                    case 8:
-                        tempLanguage = "it";
-                        break;
-                    case 9:
-                        tempLanguage = "ja";
-                        break;
-                    case 10:
-                        tempLanguage = "pl";
-                        break;
-                    case 11:
-                        tempLanguage = "pt";
-                        break;
-                    case 12:
-                        tempLanguage = "ru";
-                        break;
-                    case 13:
-                        tempLanguage = "sr";
-                        break;
-                    case 14:
-                        tempLanguage = "sv";
-                        break;
-                    case 15:
-                        tempLanguage = "zh";
-                        break;
+        languagescroll.setOnItemClickListener((parent, view, position, id) -> {
+            switch (position) {
+                case 0:
+                    tempLanguage = "af";
+                    break;
+                case 1:
+                    tempLanguage = "cs";
+                    break;
+                case 2:
+                    tempLanguage = "de";
+                    break;
+                case 3:
+                    tempLanguage = "el";
+                    break;
+                case 4:
+                    tempLanguage = "en";
+                    break;
+                case 5:
+                    tempLanguage = "es";
+                    break;
+                case 6:
+                    tempLanguage = "fr";
+                    break;
+                case 7:
+                    tempLanguage = "hu";
+                    break;
+                case 8:
+                    tempLanguage = "it";
+                    break;
+                case 9:
+                    tempLanguage = "ja";
+                    break;
+                case 10:
+                    tempLanguage = "pl";
+                    break;
+                case 11:
+                    tempLanguage = "pt";
+                    break;
+                case 12:
+                    tempLanguage = "ru";
+                    break;
+                case 13:
+                    tempLanguage = "sr";
+                    break;
+                case 14:
+                    tempLanguage = "sv";
+                    break;
+                case 15:
+                    tempLanguage = "zh";
+                    break;
 
-                }
             }
         });
 
@@ -209,7 +194,7 @@ public class PopUpLanguageFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 

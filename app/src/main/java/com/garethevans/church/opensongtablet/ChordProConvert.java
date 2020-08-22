@@ -469,7 +469,7 @@ class ChordProConvert {
 
     String getNewSongFileName(StorageAccess storageAccess, Uri uri, String title) {
         // IV - Adjusted to handle files at root of drive
-        String fn = uri.getLastPathSegment().replace(":","/");;
+        String fn = uri.getLastPathSegment().replace(":","/");
         if (fn == null) {
             fn = "";
         }

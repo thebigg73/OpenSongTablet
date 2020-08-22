@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
 import android.Manifest;
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -12,29 +11,29 @@ import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.media.midi.MidiDevice;
 import android.media.midi.MidiDeviceInfo;
 import android.media.midi.MidiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ParcelUuid;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,9 +60,8 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
     private Midi m;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
     }
 
     @Override
@@ -84,16 +82,13 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.midi_bluetooth));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
-                closeMe.setEnabled(false);
-                try {
-                    dismiss();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe, getActivity());
+            closeMe.setEnabled(false);
+            try {
+                dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
@@ -115,27 +110,12 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         m = new Midi();
 
         selected = new Handler();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                displayCurrentDevice();
-            }
-        };
+        runnable = this::displayCurrentDevice;
 
         displayCurrentDevice();
 
-        disconnectDevice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                disconnectDevices(true);
-            }
-        });
-        testDevice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendTestNote();
-            }
-        });
+        disconnectDevice.setOnClickListener(view -> disconnectDevices(true));
+        testDevice.setOnClickListener(view -> sendTestNote());
         progressBar.setVisibility(View.GONE);
         scanStartStop.setEnabled(true);
 
@@ -143,24 +123,20 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
             permissionAllowed();
         }
 
-        scanStartStop.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            @Override
-            public void onClick(View view) {
-                try {
-                    if (permissionAllowed()) {
-                        progressBar.setVisibility(View.VISIBLE);
-                        bluetoothDevices.setEnabled(false);
-                        scanStartStop.setEnabled(false);
-                        startScan();
-                    } else {
-                        progressBar.setVisibility(View.GONE);
-                        scanStartStop.setEnabled(true);
-                        bluetoothDevices.setEnabled(true);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+        scanStartStop.setOnClickListener(view -> {
+            try {
+                if (permissionAllowed()) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    bluetoothDevices.setEnabled(false);
+                    scanStartStop.setEnabled(false);
+                    startScan();
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                    scanStartStop.setEnabled(true);
+                    bluetoothDevices.setEnabled(true);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
@@ -189,60 +165,54 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         return allowed;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void updateDevices(final ArrayList<String> bn, final List<BluetoothDevice> bd) {
         try {
             if (bluetoothDevices != null) {
                 ArrayAdapter<String> aa = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), android.R.layout.simple_list_item_1, bn);
                 aa.notifyDataSetChanged();
                 bluetoothDevices.setAdapter(aa);
-                bluetoothDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.M)
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        disconnectDevices(false);
-                        // Display the current device
-                        StaticVariables.midiDeviceName = bd.get(i).getName();
-                        StaticVariables.midiDeviceAddress = bd.get(i).getAddress();
-                        //displayCurrentDevice();
-                        StaticVariables.midiManager = (MidiManager) Objects.requireNonNull(getActivity()).getSystemService(Context.MIDI_SERVICE);
-                        if (StaticVariables.midiManager != null) {
-                            StaticVariables.midiManager.openBluetoothDevice(bd.get(i),
-                                    new MidiManager.OnDeviceOpenedListener() {
-                                        @Override
-                                        public void onDeviceOpened(MidiDevice midiDevice) {
-                                            StaticVariables.midiDevice = midiDevice;
-                                            Log.d("d", "Device opened = " + midiDevice);
-                                            MidiDeviceInfo midiDeviceInfo = midiDevice.getInfo();
-                                            int numInputs = midiDeviceInfo.getInputPortCount();
-                                            int numOutputs = midiDeviceInfo.getOutputPortCount();
-                                            Log.d("d", "Input ports = " + numInputs + ", Output ports = " + numOutputs);
+                bluetoothDevices.setOnItemClickListener((adapterView, view, i, l) -> {
+                    disconnectDevices(false);
+                    // Display the current device
+                    StaticVariables.midiDeviceName = bd.get(i).getName();
+                    StaticVariables.midiDeviceAddress = bd.get(i).getAddress();
+                    //displayCurrentDevice();
+                    StaticVariables.midiManager = (MidiManager) Objects.requireNonNull(getActivity()).getSystemService(Context.MIDI_SERVICE);
+                    if (StaticVariables.midiManager != null) {
+                        StaticVariables.midiManager.openBluetoothDevice(bd.get(i),
+                                midiDevice -> {
+                                    StaticVariables.midiDevice = midiDevice;
+                                    Log.d("d", "Device opened = " + midiDevice);
+                                    MidiDeviceInfo midiDeviceInfo = midiDevice.getInfo();
+                                    int numInputs = midiDeviceInfo.getInputPortCount();
+                                    int numOutputs = midiDeviceInfo.getOutputPortCount();
+                                    Log.d("d", "Input ports = " + numInputs + ", Output ports = " + numOutputs);
 
-                                            boolean foundinport = false;  // We will only grab the first one
-                                            boolean foundoutport = false; // We will only grab the first one
+                                    boolean foundinport = false;  // We will only grab the first one
+                                    boolean foundoutport = false; // We will only grab the first one
 
-                                            MidiDeviceInfo.PortInfo[] portInfos = midiDeviceInfo.getPorts();
-                                            for (MidiDeviceInfo.PortInfo pi : portInfos) {
-                                                switch (pi.getType()) {
-                                                    case MidiDeviceInfo.PortInfo.TYPE_INPUT:
-                                                        if (!foundinport) {
-                                                            Log.d("d", "Input port found = " + pi.getPortNumber());
-                                                            StaticVariables.midiInputPort = StaticVariables.midiDevice.openInputPort(pi.getPortNumber());
-                                                            foundinport = true;
-                                                        }
-                                                        break;
-                                                    case MidiDeviceInfo.PortInfo.TYPE_OUTPUT:
-                                                        if (!foundoutport) {
-                                                            Log.d("d", "Output port found = " + pi.getPortNumber());
-                                                            StaticVariables.midiOutputPort = StaticVariables.midiDevice.openOutputPort(pi.getPortNumber());
-                                                            foundoutport = true;
-                                                        }
-                                                        break;
+                                    MidiDeviceInfo.PortInfo[] portInfos = midiDeviceInfo.getPorts();
+                                    for (MidiDeviceInfo.PortInfo pi : portInfos) {
+                                        switch (pi.getType()) {
+                                            case MidiDeviceInfo.PortInfo.TYPE_INPUT:
+                                                if (!foundinport) {
+                                                    Log.d("d", "Input port found = " + pi.getPortNumber());
+                                                    StaticVariables.midiInputPort = StaticVariables.midiDevice.openInputPort(pi.getPortNumber());
+                                                    foundinport = true;
                                                 }
-                                            }
-                                            selected.postDelayed(runnable, 1000);
+                                                break;
+                                            case MidiDeviceInfo.PortInfo.TYPE_OUTPUT:
+                                                if (!foundoutport) {
+                                                    Log.d("d", "Output port found = " + pi.getPortNumber());
+                                                    StaticVariables.midiOutputPort = StaticVariables.midiDevice.openOutputPort(pi.getPortNumber());
+                                                    foundoutport = true;
+                                                }
+                                                break;
                                         }
-                                    }, null);
-                        }
+                                    }
+                                    selected.postDelayed(runnable, 1000);
+                                }, null);
                     }
                 });
             }
@@ -261,16 +231,13 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         // Stops scanning after a pre-defined scan period.
         Handler mHandler = new Handler();
         long SCAN_PERIOD = 8000;
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mBluetoothLeScanner.stopScan(scanCallback);
-                Log.d("d", "Scan timeout");
-                progressBar.setVisibility(View.GONE);
-                scanStartStop.setEnabled(true);
-                bluetoothDevices.setEnabled(true);
+        mHandler.postDelayed(() -> {
+            mBluetoothLeScanner.stopScan(scanCallback);
+            Log.d("d", "Scan timeout");
+            progressBar.setVisibility(View.GONE);
+            scanStartStop.setEnabled(true);
+            bluetoothDevices.setEnabled(true);
 
-            }
         }, SCAN_PERIOD);
 
         //scan specified devices only with ScanFilter
@@ -294,6 +261,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private final ScanCallback scanCallback = new ScanCallback() {
+        @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
             super.onScanResult(callbackType, result);
@@ -350,14 +318,11 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
             m.sendMidi(buffer1);
 
             Handler h = new Handler();
-            h.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    String s2 = m.buildMidiString("NoteOff",1,60,0);
-                    byte[] buffer2 = m.returnBytesFromHexText(s2);
-                    //byte[] buffer2 = m.buildMidiCommand("NoteOn","C5","0","1",null);
-                    m.sendMidi(buffer2);
-                }
+            h.postDelayed(() -> {
+                String s2 = m.buildMidiString("NoteOff",1,60,0);
+                byte[] buffer2 = m.returnBytesFromHexText(s2);
+                //byte[] buffer2 = m.buildMidiCommand("NoteOn","C5","0","1",null);
+                m.sendMidi(buffer2);
             },1000);
             StaticVariables.myToastMessage = getString(R.string.ok);
             ShowToast.showToast(getContext());

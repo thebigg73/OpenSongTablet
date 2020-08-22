@@ -7,9 +7,6 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +15,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class PopUpSoundLevelMeterFragment extends DialogFragment {
 
@@ -50,12 +52,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
 
     private Preferences preferences;
 
-    private final Runnable r = new Runnable() {
-        @Override
-        public void run() {
-            sampleSound();
-        }
-    };
+    private final Runnable r = this::sampleSound;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,13 +73,10 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getResources().getString(R.string.volume));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
@@ -105,13 +99,10 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
         averagevol = V.findViewById(R.id.averagevol);
         Button resetaverage = V.findViewById(R.id.resetaverage);
 
-        resetaverage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                totalvols = 0;
-                counts = 0;
-                avvol = 0.0f;
-            }
+        resetaverage.setOnClickListener(v -> {
+            totalvols = 0;
+            counts = 0;
+            avvol = 0.0f;
         });
 
         volval = V.findViewById(R.id.volval);
@@ -250,7 +241,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
     }
 
     @Override
-    public void onDismiss(final DialogInterface dialog) {
+    public void onDismiss(@NonNull final DialogInterface dialog) {
         super.onDismiss(dialog);
         try {
             audio.stop();
@@ -423,7 +414,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 

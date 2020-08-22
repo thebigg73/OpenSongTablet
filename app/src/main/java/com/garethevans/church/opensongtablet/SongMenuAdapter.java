@@ -13,6 +13,8 @@ import android.widget.CheckBox;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -39,7 +41,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
     private final ArrayList<SongMenuViewItems> songList;
     private final Preferences preferences;
     private ViewHolder viewHolder;
-    private float textSize = 14.0f;
+    private float textSize;
 
     @SuppressLint("UseSparseArrays")
     SongMenuAdapter(Context context, Preferences p, ArrayList<SongMenuViewItems> songList) {
@@ -181,7 +183,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                     viewHolder.lblListCheck.setVisibility(View.GONE);
                     viewHolder.lblListCheck.setEnabled(false);
                     viewHolder.lblListItemAuthor.setVisibility(View.GONE);
-                    Drawable d = c.getResources().getDrawable(R.drawable.ic_folder_edit_white_36dp);
+                    Drawable d = ResourcesCompat.getDrawable(c.getResources(),R.drawable.ic_folder_edit_white_36dp,null);
                     viewHolder.lblListItem.setGravity(Gravity.CENTER_VERTICAL);
                     viewHolder.lblListItem.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
                 }
@@ -211,20 +213,17 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                     viewHolder.lblListItem.setOnLongClickListener(SongMenuListeners.itemLongClickListener(item_filename, StaticVariables.whichSongFolder, position));
                     viewHolder.lblListItemAuthor.setOnLongClickListener(SongMenuListeners.itemLongClickListener(item_filename, StaticVariables.whichSongFolder, position));
                 } else {
-                    viewHolder.lblListItem.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                    viewHolder.lblListItem.setOnClickListener(v -> {
 
-                            // Don't save the folder preference yet until a song is clicked.
-                            if (StaticVariables.whichSongFolder.equals("")||StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername))||
-                            StaticVariables.whichSongFolder.equals("MAIN")) {
-                                StaticVariables.whichSongFolder = item_filename;
-                            } else {
-                                StaticVariables.whichSongFolder = StaticVariables.whichSongFolder + "/" + item_filename;
-                            }
-                            if (mListener != null) {
-                                mListener.prepareSongMenu();
-                            }
+                        // Don't save the folder preference yet until a song is clicked.
+                        if (StaticVariables.whichSongFolder.equals("")||StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername))||
+                        StaticVariables.whichSongFolder.equals("MAIN")) {
+                            StaticVariables.whichSongFolder = item_filename;
+                        } else {
+                            StaticVariables.whichSongFolder = StaticVariables.whichSongFolder + "/" + item_filename;
+                        }
+                        if (mListener != null) {
+                            mListener.prepareSongMenu();
                         }
                     });
                 }
@@ -237,75 +236,72 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                 // Now either hide the tick boxes or set up their actions
                 if (preferences.getMyPreferenceBoolean(c,"songMenuSetTicksShow",true)) {
 
-                    viewHolder.lblListCheck.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            int position = (Integer) v.getTag();
-                            // Create the text to add to the set (sets FullscreenActivity.whatsongforsetwork
-                            convertSongToSetItemText(c, item_filename);
+                    viewHolder.lblListCheck.setOnClickListener(v -> {
+                        int position1 = (Integer) v.getTag();
+                        // Create the text to add to the set (sets FullscreenActivity.whatsongforsetwork
+                        convertSongToSetItemText(c, item_filename);
 
-                            // If it was checked already, uncheck it and remove it from the set
-                            if (songList.get(position).getInSet()) {
+                        // If it was checked already, uncheck it and remove it from the set
+                        if (songList.get(position1).getInSet()) {
+                            viewHolder.isTicked = false;
+                            songList.get(position1).setInSet(false);
+                            String val = preferences.getMyPreferenceString(c,"setCurrent","").replace(StaticVariables.whatsongforsetwork,"");
+                            preferences.setMyPreferenceString(c,"setCurrent",val);
+                            SetActions setActions = new SetActions();
+                            setActions.prepareSetList(c,preferences);
+
+                            // Tell the user that the song has been removed.
+                            StaticVariables.myToastMessage = "\"" + item_title + "\" " + c.getResources().getString(R.string.removedfromset);
+                            ShowToast.showToast(c);
+
+                        } else {
+                            // Trying to add to the set
+                            if (userShouldConvertSongFormat(item_filename)) {
+                                // Tried to add a ChordPro song - Don't add song yet, but tell the user
+                                StaticVariables.myToastMessage = c.getResources().getString(R.string.convert_song);
+                                ShowToast.showToast(c);
                                 viewHolder.isTicked = false;
-                                songList.get(position).setInSet(false);
-                                String val = preferences.getMyPreferenceString(c,"setCurrent","").replace(StaticVariables.whatsongforsetwork,"");
+                                songList.get(position1).setInSet(false);
+
+                            } else if (unsupportedSongFormat(item_filename)) {
+                                // Tried to add an unsupported song (MS Word) - Don't add song yet, but tell the user
+                                StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
+                                ShowToast.showToast(c);
+                                viewHolder.lblListCheck.setChecked(false);
+                                viewHolder.isTicked = false;
+                                songList.get(position1).setInSet(false);
+                            } else {
+                                viewHolder.isTicked = true;
+                                songList.get(position1).setInSet(true);
+
+                                // If we are autologging CCLI information
+                                if (preferences.getMyPreferenceBoolean(c,"ccliAutomaticLogging",false)) {
+                                    // Now we need to get the song info quickly to log it correctly
+                                    // as this might not be the song loaded
+                                    String[] vals = LoadXML.getCCLILogInfo(c, preferences, StaticVariables.whichSongFolder, item_filename);
+                                    if (vals.length == 4 && vals[0] != null && vals[1] != null && vals[2] != null && vals[3] != null) {
+                                        PopUpCCLIFragment.addUsageEntryToLog(c, preferences, StaticVariables.whichSongFolder + "/" + item_filename,
+                                                vals[0], vals[1], vals[2], vals[3], "6"); // Printed
+                                    }
+                                }
+
+                                // Add the song
+                                String val = preferences.getMyPreferenceString(c,"setCurrent","") + StaticVariables.whatsongforsetwork;
                                 preferences.setMyPreferenceString(c,"setCurrent",val);
                                 SetActions setActions = new SetActions();
                                 setActions.prepareSetList(c,preferences);
 
-                                // Tell the user that the song has been removed.
-                                StaticVariables.myToastMessage = "\"" + item_title + "\" " + c.getResources().getString(R.string.removedfromset);
+                                // Tell the user that the song has been added.
+                                StaticVariables.myToastMessage = "\"" + item_title + "\" " + c.getResources().getString(R.string.addedtoset);
                                 ShowToast.showToast(c);
 
-                            } else {
-                                // Trying to add to the set
-                                if (userShouldConvertSongFormat(item_filename)) {
-                                    // Tried to add a ChordPro song - Don't add song yet, but tell the user
-                                    StaticVariables.myToastMessage = c.getResources().getString(R.string.convert_song);
-                                    ShowToast.showToast(c);
-                                    viewHolder.isTicked = false;
-                                    songList.get(position).setInSet(false);
-
-                                } else if (unsupportedSongFormat(item_filename)) {
-                                    // Tried to add an unsupported song (MS Word) - Don't add song yet, but tell the user
-                                    StaticVariables.myToastMessage = c.getResources().getString(R.string.not_allowed);
-                                    ShowToast.showToast(c);
-                                    viewHolder.lblListCheck.setChecked(false);
-                                    viewHolder.isTicked = false;
-                                    songList.get(position).setInSet(false);
-                                } else {
-                                    viewHolder.isTicked = true;
-                                    songList.get(position).setInSet(true);
-
-                                    // If we are autologging CCLI information
-                                    if (preferences.getMyPreferenceBoolean(c,"ccliAutomaticLogging",false)) {
-                                        // Now we need to get the song info quickly to log it correctly
-                                        // as this might not be the song loaded
-                                        String[] vals = LoadXML.getCCLILogInfo(c, preferences, StaticVariables.whichSongFolder, item_filename);
-                                        if (vals.length == 4 && vals[0] != null && vals[1] != null && vals[2] != null && vals[3] != null) {
-                                            PopUpCCLIFragment.addUsageEntryToLog(c, preferences, StaticVariables.whichSongFolder + "/" + item_filename,
-                                                    vals[0], vals[1], vals[2], vals[3], "6"); // Printed
-                                        }
-                                    }
-
-                                    // Add the song
-                                    String val = preferences.getMyPreferenceString(c,"setCurrent","") + StaticVariables.whatsongforsetwork;
-                                    preferences.setMyPreferenceString(c,"setCurrent",val);
-                                    SetActions setActions = new SetActions();
-                                    setActions.prepareSetList(c,preferences);
-
-                                    // Tell the user that the song has been added.
-                                    StaticVariables.myToastMessage = "\"" + item_title + "\" " + c.getResources().getString(R.string.addedtoset);
-                                    ShowToast.showToast(c);
-
-                                }
-
                             }
-                            // Check updates to the set in the Option menu
-                            if (mListener != null) {
-                                mListener.prepareOptionMenu();
-                                mListener.fixSet();
-                            }
+
+                        }
+                        // Check updates to the set in the Option menu
+                        if (mListener != null) {
+                            mListener.prepareOptionMenu();
+                            mListener.fixSet();
                         }
                     });
 

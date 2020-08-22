@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
@@ -89,8 +88,7 @@ import lib.folderpicker.FolderPicker;
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
 import static com.google.android.material.snackbar.Snackbar.make;
 
-@SuppressWarnings("ALL")
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+//@SuppressWarnings("ALL")
 
 public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyInterface,
         SongMenuListeners.MyInterface, PopUpChooseFolderFragment.MyInterface,

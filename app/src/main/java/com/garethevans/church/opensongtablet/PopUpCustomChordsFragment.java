@@ -1,15 +1,13 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +21,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -44,10 +48,9 @@ public class PopUpCustomChordsFragment extends DialogFragment {
     private MyInterface mListener;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (MyInterface) context;
     }
 
     @Override
@@ -119,13 +122,10 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.customchords));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
@@ -134,21 +134,22 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         preferences = new Preferences();
 
         // Initialise the views
-        stringtop = getActivity().getResources().getDrawable(R.drawable.string_top);
-        stringtop_X = getActivity().getResources().getDrawable(R.drawable.string_top_x);
-        stringtop_O = getActivity().getResources().getDrawable(R.drawable.string_top_o);
-        string6 = getActivity().getResources().getDrawable(R.drawable.string_6);
-        string6_on = getActivity().getResources().getDrawable(R.drawable.string_6_on);
-        string5 = getActivity().getResources().getDrawable(R.drawable.string_5);
-        string5_on = getActivity().getResources().getDrawable(R.drawable.string_5_on);
-        string4 = getActivity().getResources().getDrawable(R.drawable.string_4);
-        string4_on = getActivity().getResources().getDrawable(R.drawable.string_4_on);
-        string3 = getActivity().getResources().getDrawable(R.drawable.string_3);
-        string3_on = getActivity().getResources().getDrawable(R.drawable.string_3_on);
-        string2 = getActivity().getResources().getDrawable(R.drawable.string_2);
-        string2_on = getActivity().getResources().getDrawable(R.drawable.string_2_on);
-        string1 = getActivity().getResources().getDrawable(R.drawable.string_1);
-        string1_on = getActivity().getResources().getDrawable(R.drawable.string_1_on);
+        Resources res = getActivity().getResources();
+        stringtop = ResourcesCompat.getDrawable(res,R.drawable.string_top,null);
+        stringtop_X = ResourcesCompat.getDrawable(res,R.drawable.string_top_x,null);
+        stringtop_O = ResourcesCompat.getDrawable(res,R.drawable.string_top_o,null);
+        string6 = ResourcesCompat.getDrawable(res,R.drawable.string_6,null);
+        string6_on = ResourcesCompat.getDrawable(res,R.drawable.string_6_on,null);
+        string5 = ResourcesCompat.getDrawable(res,R.drawable.string_5,null);
+        string5_on = ResourcesCompat.getDrawable(res,R.drawable.string_5_on,null);
+        string4 = ResourcesCompat.getDrawable(res,R.drawable.string_4,null);
+        string4_on = ResourcesCompat.getDrawable(res,R.drawable.string_4_on,null);
+        string3 = ResourcesCompat.getDrawable(res,R.drawable.string_3,null);
+        string3_on = ResourcesCompat.getDrawable(res,R.drawable.string_3_on,null);
+        string2 = ResourcesCompat.getDrawable(res,R.drawable.string_2,null);
+        string2_on = ResourcesCompat.getDrawable(res,R.drawable.string_2_on,null);
+        string1 = ResourcesCompat.getDrawable(res,R.drawable.string_1,null);
+        string1_on = ResourcesCompat.getDrawable(res,R.drawable.string_1_on,null);
 
         Spinner customchords_instrument = V.findViewById(R.id.customchords_instrument);
         customchords_fret = V.findViewById(R.id.customchords_fret);
@@ -272,229 +273,44 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         });
 
         // Prepare the listeners
-        string6_top.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string6_top();
-            }
-        });
-        string6_f1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string6_f1();
-            }
-        });
-        string6_f2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string6_f2();
-            }
-        });
-        string6_f3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string6_f3();
-            }
-        });
-        string6_f4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string6_f4();
-            }
-        });
-        string6_f5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string6_f5();
-            }
-        });
-        string5_top.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string5_top();
-            }
-        });
-        string5_f1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string5_f1();
-            }
-        });
-        string5_f2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string5_f2();
-            }
-        });
-        string5_f3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string5_f3();
-            }
-        });
-        string5_f4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string5_f4();
-            }
-        });
-        string5_f5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string5_f5();
-            }
-        });
-        string4_top.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string4_top();
-            }
-        });
-        string4_f1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string4_f1();
-            }
-        });
-        string4_f2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string4_f2();
-            }
-        });
-        string4_f3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string4_f3();
-            }
-        });
-        string4_f4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string4_f4();
-            }
-        });
-        string4_f5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string4_f5();
-            }
-        });
-        string3_top.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string3_top();
-            }
-        });
-        string3_f1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string3_f1();
-            }
-        });
-        string3_f2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string3_f2();
-            }
-        });
-        string3_f3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string3_f3();
-            }
-        });
-        string3_f4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string3_f4();
-            }
-        });
-        string3_f5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string3_f5();
-            }
-        });
-        string2_top.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string2_top();
-            }
-        });
-        string2_f1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string2_f1();
-            }
-        });
-        string2_f2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string2_f2();
-            }
-        });
-        string2_f3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string2_f3();
-            }
-        });
-        string2_f4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string2_f4();
-            }
-        });
-        string2_f5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string2_f5();
-            }
-        });
-        string1_top.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string1_top();
-            }
-        });
-        string1_f1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string1_f1();
-            }
-        });
-        string1_f2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string1_f2();
-            }
-        });
-        string1_f3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string1_f3();
-            }
-        });
-        string1_f4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string1_f4();
-            }
-        });
-        string1_f5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                string1_f5();
-            }
-        });
+        string6_top.setOnClickListener(view -> string6_top());
+        string6_f1.setOnClickListener(view -> string6_f1());
+        string6_f2.setOnClickListener(view -> string6_f2());
+        string6_f3.setOnClickListener(view -> string6_f3());
+        string6_f4.setOnClickListener(view -> string6_f4());
+        string6_f5.setOnClickListener(view -> string6_f5());
+        string5_top.setOnClickListener(view -> string5_top());
+        string5_f1.setOnClickListener(view -> string5_f1());
+        string5_f2.setOnClickListener(view -> string5_f2());
+        string5_f3.setOnClickListener(view -> string5_f3());
+        string5_f4.setOnClickListener(view -> string5_f4());
+        string5_f5.setOnClickListener(view -> string5_f5());
+        string4_top.setOnClickListener(view -> string4_top());
+        string4_f1.setOnClickListener(view -> string4_f1());
+        string4_f2.setOnClickListener(view -> string4_f2());
+        string4_f3.setOnClickListener(view -> string4_f3());
+        string4_f4.setOnClickListener(view -> string4_f4());
+        string4_f5.setOnClickListener(view -> string4_f5());
+        string3_top.setOnClickListener(view -> string3_top());
+        string3_f1.setOnClickListener(view -> string3_f1());
+        string3_f2.setOnClickListener(view -> string3_f2());
+        string3_f3.setOnClickListener(view -> string3_f3());
+        string3_f4.setOnClickListener(view -> string3_f4());
+        string3_f5.setOnClickListener(view -> string3_f5());
+        string2_top.setOnClickListener(view -> string2_top());
+        string2_f1.setOnClickListener(view -> string2_f1());
+        string2_f2.setOnClickListener(view -> string2_f2());
+        string2_f3.setOnClickListener(view -> string2_f3());
+        string2_f4.setOnClickListener(view -> string2_f4());
+        string2_f5.setOnClickListener(view -> string2_f5());
+        string1_top.setOnClickListener(view -> string1_top());
+        string1_f1.setOnClickListener(view -> string1_f1());
+        string1_f2.setOnClickListener(view -> string1_f2());
+        string1_f3.setOnClickListener(view -> string1_f3());
+        string1_f4.setOnClickListener(view -> string1_f4());
+        string1_f5.setOnClickListener(view -> string1_f5());
 
-        customChordSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                customChordSave();
-            }
-        });
+        customChordSave.setOnClickListener(view -> customChordSave());
 
         String[] fret_choice = {"","1","2","3","4","5","6","7","8","9"};
         ArrayAdapter<String> adapter_fret = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, fret_choice);
@@ -615,7 +431,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
                     deleteChord.setTransformationMethod(null);
                     newtext = getResources().getString(R.string.delete) + "\n" + tempCustomChords[q];
                     deleteChord.setText(newtext);
-                    deleteChord.setBackgroundDrawable(getResources().getDrawable(R.drawable.red_button));
+                    deleteChord.setBackgroundDrawable(ResourcesCompat.getDrawable(getContext().getResources(),R.drawable.red_button,null));
                     deleteChord.setOnClickListener(new OnDelete(deleteChord));
                     if (!workingChord.isEmpty()) {
                         savedcustomchords.addView(chordvalue);
@@ -1694,7 +1510,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
     }
 
     @Override
-    public void onDismiss(final DialogInterface dialog) {
+    public void onDismiss(@NonNull final DialogInterface dialog) {
         if (mListener!=null) {
             mListener.pageButtonAlpha("chords");
             FullscreenActivity.whattodo = "page_chords";
@@ -1703,7 +1519,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
         if (prepare_custom!=null) {
             prepare_custom.cancel(true);

@@ -88,15 +88,12 @@ class PresentationServiceHDMI extends Presentation
 
             // Prepare the display after 2 secs (a chance for stuff to be measured and show the logo
             Handler h = new Handler();
-            h.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (!StaticVariables.whichMode.equals("Presentation")) {
-                        normalStartUp();
-                    } else {
-                        // Switch to the user background and logo
-                        presenterStartUp();
-                    }
+            h.postDelayed(() -> {
+                if (!StaticVariables.whichMode.equals("Presentation")) {
+                    normalStartUp();
+                } else {
+                    // Switch to the user background and logo
+                    presenterStartUp();
                 }
             }, 2000);
 

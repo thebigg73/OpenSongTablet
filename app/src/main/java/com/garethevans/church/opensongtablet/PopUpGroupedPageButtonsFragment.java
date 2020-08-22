@@ -1,16 +1,18 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
@@ -34,10 +36,9 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
     private PopUpGroupedPageButtonsFragment.MyInterface mListener;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (PopUpGroupedPageButtonsFragment.MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (MyInterface) context;
     }
 
     @Override
@@ -73,13 +74,10 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.pagebuttons));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
@@ -139,155 +137,77 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         group_custom4.setBackgroundTintList(ColorStateList.valueOf(color));
 
         // Set shortclick listeners
-        group_set.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openAction("editset");
-            }
-        }));
-        group_pad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openAction("page_pad");
-            }
-        });
-        group_autoscroll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) { openAction("page_autoscroll");
+        group_set.setOnClickListener((view -> openAction("editset")));
+        group_pad.setOnClickListener(view -> openAction("page_pad"));
+        group_autoscroll.setOnClickListener(view -> openAction("page_autoscroll"));
+        group_metronome.setOnClickListener(view -> openAction("page_metronome"));
+        group_chords.setOnClickListener(view -> openAction("page_chords"));
+        group_links.setOnClickListener(view -> openAction("page_links"));
+        group_sticky.setOnClickListener(view -> openAction("page_sticky"));
+        group_notation.setOnClickListener(view -> {
+            if (StaticVariables.mNotation.equals("")) {
+                openAction("abcnotation_edit");
+            } else {
+                openAction("abcnotation");
             }
         });
-        group_metronome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) { openAction("page_metronome");
+        group_highlight.setOnClickListener(view -> {
+            FullscreenActivity.highlightOn = !FullscreenActivity.highlightOn;
+            FullscreenActivity.whattodo = "page_highlight";
+            if (mListener!=null) {
+                mListener.displayHighlight(false);
             }
+            dismiss();
         });
-        group_chords.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openAction("page_chords");
-            }
-        });
-        group_links.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) { openAction("page_links");
-            }
-        });
-        group_sticky.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openAction("page_sticky");
-            }
-        });
-        group_notation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (StaticVariables.mNotation.equals("")) {
-                    openAction("abcnotation_edit");
-                } else {
-                    openAction("abcnotation");
-                }
-            }
-        });
-        group_highlight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.highlightOn = !FullscreenActivity.highlightOn;
-                FullscreenActivity.whattodo = "page_highlight";
-                if (mListener!=null) {
-                    mListener.displayHighlight(false);
-                }
-                dismiss();
-            }
-        });
-        group_pages.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) { openAction("page_pageselect");
-            }
-        });
-        group_custom1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {customButtonAction(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom1Action",""));}
-        });
-        group_custom2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {customButtonAction(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom2Action",""));}
-        });
-        group_custom3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {customButtonAction(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom3Action",""));}
-        });
-        group_custom4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {customButtonAction(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom4Action",""));}
-        });
+        group_pages.setOnClickListener(view -> openAction("page_pageselect"));
+        group_custom1.setOnClickListener(view -> customButtonAction(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom1Action","")));
+        group_custom2.setOnClickListener(view -> customButtonAction(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom2Action","")));
+        group_custom3.setOnClickListener(view -> customButtonAction(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom3Action","")));
+        group_custom4.setOnClickListener(view -> customButtonAction(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom4Action","")));
 
         // Set longclick listeners
-        group_pad.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                if (mListener!=null) {
-                    mListener.gesture6();
-                }
-                dismiss();
-                return true;
+        group_pad.setOnLongClickListener(view -> {
+            if (mListener!=null) {
+                mListener.gesture6();
             }
+            dismiss();
+            return true;
         });
-        group_notation.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                openAction("abcnotation_edit");
-                return true;
-            }
+        group_notation.setOnLongClickListener(view -> {
+            openAction("abcnotation_edit");
+            return true;
         });
-        group_autoscroll.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                if (mListener!=null) {
-                    mListener.gesture5();
-                }
-                dismiss();
-                return true;
+        group_autoscroll.setOnLongClickListener(view -> {
+            if (mListener!=null) {
+                mListener.gesture5();
             }
+            dismiss();
+            return true;
         });
 
-        group_metronome.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                if (mListener!=null) {
-                    mListener.gesture7();
-                }
-                dismiss();
-                return true;
+        group_metronome.setOnLongClickListener(view -> {
+            if (mListener!=null) {
+                mListener.gesture7();
             }
+            dismiss();
+            return true;
         });
 
-        group_custom1.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                openAction("quicklaunch");
-                return true;
-            }
+        group_custom1.setOnLongClickListener(view -> {
+            openAction("quicklaunch");
+            return true;
         });
-        group_custom2.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                openAction("quicklaunch");
-                return true;
-            }
+        group_custom2.setOnLongClickListener(view -> {
+            openAction("quicklaunch");
+            return true;
         });
-        group_custom3.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                openAction("quicklaunch");
-                return true;
-            }
+        group_custom3.setOnLongClickListener(view -> {
+            openAction("quicklaunch");
+            return true;
         });
-        group_custom4.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                openAction("quicklaunch");
-                return true;
-            }
+        group_custom4.setOnLongClickListener(view -> {
+            openAction("quicklaunch");
+            return true;
         });
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);

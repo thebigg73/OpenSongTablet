@@ -36,7 +36,11 @@ class SQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // If the table doesn't exist, create it.
-        db.execSQL(SQLite.CREATE_TABLE);
+        try {
+            db.execSQL(SQLite.CREATE_TABLE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -66,10 +70,8 @@ class SQLiteHelper extends SQLiteOpenHelper {
             s = s.replace("''", "^&*");
             s = s.replace("'", "''");
             s = s.replace("^&*", "''");
-            return s;
-        } else {
-            return s;
         }
+        return s;
     }
 
     private String unescapedSQL(String s) {
@@ -77,10 +79,8 @@ class SQLiteHelper extends SQLiteOpenHelper {
             while (s.contains("''")) {
                 s = s.replace("''","'");
             }
-            return s;
-        } else {
-            return s;
         }
+        return s;
     }
 
     void createImportedSong(Context c, String folder, String filename, String title, String author,
@@ -561,8 +561,12 @@ class SQLiteHelper extends SQLiteOpenHelper {
                 stmt.bindString(2, filename);
                 stmt.bindString(3, foldername);
 
-                stmt.execute();
-                stmt.clearBindings();
+                try {
+                    stmt.execute();
+                    stmt.clearBindings();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             db.setTransactionSuccessful();

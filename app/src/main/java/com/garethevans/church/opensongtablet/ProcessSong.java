@@ -27,6 +27,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1313,7 +1315,7 @@ public class ProcessSong extends Activity {
                 ImageView img = new ImageView(c);
 
                 // By default, the image should be the not found one
-                Drawable drw = c.getResources().getDrawable(R.drawable.notfound);
+                Drawable drw = ResourcesCompat.getDrawable(c.getResources(),R.drawable.notfound,null);
 
                 int maxwidth = 320;
                 if (FullscreenActivity.myWidthAvail > 0) {

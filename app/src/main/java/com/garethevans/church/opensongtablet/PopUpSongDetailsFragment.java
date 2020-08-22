@@ -1,17 +1,19 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class PopUpSongDetailsFragment extends DialogFragment {
 
@@ -28,10 +30,9 @@ public class PopUpSongDetailsFragment extends DialogFragment {
     private MyInterface mListener;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        mListener = (MyInterface) context;
+        super.onAttach(context);
     }
 
     @Override
@@ -59,13 +60,10 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(StaticVariables.songfilename);
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
@@ -74,12 +72,9 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         Preferences preferences = new Preferences();
 
         Button editSongDetails = V.findViewById(R.id.editSongDetails);
-        editSongDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.doEdit();
-                dismiss();
-            }
+        editSongDetails.setOnClickListener(v -> {
+            mListener.doEdit();
+            dismiss();
         });
         TextView t_mAuthor = V.findViewById(R.id.t_mAuthor);
         TextView t_mKey = V.findViewById(R.id.t_mKey);
@@ -139,7 +134,7 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         }
     }
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 

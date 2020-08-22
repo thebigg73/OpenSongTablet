@@ -1,20 +1,21 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
@@ -35,10 +36,9 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
     private Preferences preferences;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (MyInterface) context;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 
@@ -75,13 +75,10 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.actionbar));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe, getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
@@ -192,43 +189,31 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-        batteryDialOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(getActivity(),"batteryDialOn",b);
-                hideshowbatterylinesize(b);
-                if (mListener!=null) {
-                    mListener.adjustABInfo();
-                }
+        batteryDialOnOff.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(getActivity(),"batteryDialOn",b);
+            hideshowbatterylinesize(b);
+            if (mListener!=null) {
+                mListener.adjustABInfo();
             }
         });
-        batteryTextOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(getActivity(),"batteryTextOn",b);
-                hideshowbatterytextsize(b);
-                if (mListener!=null) {
-                    mListener.adjustABInfo();
-                }
+        batteryTextOnOff.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(getActivity(),"batteryTextOn",b);
+            hideshowbatterytextsize(b);
+            if (mListener!=null) {
+                mListener.adjustABInfo();
             }
         });
-        clockTextOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(getActivity(),"clockOn",b);
-                hideshowclocktextsize(b);
-                if (mListener!=null) {
-                    mListener.adjustABInfo();
-                }
+        clockTextOnOff.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(getActivity(),"clockOn",b);
+            hideshowclocktextsize(b);
+            if (mListener!=null) {
+                mListener.adjustABInfo();
             }
         });
-        clock24hrOnOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                preferences.setMyPreferenceBoolean(getActivity(),"clock24hFormat",b);
-                if (mListener!=null) {
-                    mListener.adjustABInfo();
-                }
+        clock24hrOnOff.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(getActivity(),"clock24hFormat",b);
+            if (mListener!=null) {
+                mListener.adjustABInfo();
             }
         });
 

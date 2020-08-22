@@ -1,16 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.widget.SwitchCompat;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -24,13 +19,18 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -776,23 +776,15 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                         V.getContext(), R.anim.slide_out_left));
                 // Wait 300ms before hiding the general settings and unhiding the advanced settings
                 Handler delayfadeinredraw = new Handler();
-                delayfadeinredraw.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        generalSettings.setVisibility(View.GONE);
-                    }
-                }, 300); // 300ms
+                delayfadeinredraw.postDelayed(() -> generalSettings.setVisibility(View.GONE), 300); // 300ms
 
                 // Wait 300ms before sliding in the advanced settings
                 Handler delayfadeinredraw2 = new Handler();
-                delayfadeinredraw2.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        advancedSettings.startAnimation(AnimationUtils
-                                .loadAnimation(V.getContext(),
-                                        R.anim.slide_in_right));
-                        advancedSettings.setVisibility(View.VISIBLE);
-                    }
+                delayfadeinredraw2.postDelayed(() -> {
+                    advancedSettings.startAnimation(AnimationUtils
+                            .loadAnimation(V.getContext(),
+                                    R.anim.slide_in_right));
+                    advancedSettings.setVisibility(View.VISIBLE);
                 }, 600); // 300ms
 
             } else {
@@ -801,23 +793,15 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                         V.getContext(), R.anim.slide_out_right));
                 // Wait 300ms before hiding the advanced settings and unhiding the general settings
                 Handler delayfadeinredraw = new Handler();
-                delayfadeinredraw.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        advancedSettings.setVisibility(View.GONE);
-                    }
-                }, 300); // 300ms
+                delayfadeinredraw.postDelayed(() -> advancedSettings.setVisibility(View.GONE), 300); // 300ms
 
                 // Wait 300ms before sliding in the general settings
                 Handler delayfadeinredraw2 = new Handler();
-                delayfadeinredraw2.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        generalSettings.startAnimation(AnimationUtils
-                                .loadAnimation(V.getContext(),
-                                        R.anim.slide_in_left));
-                        generalSettings.setVisibility(View.VISIBLE);
-                    }
+                delayfadeinredraw2.postDelayed(() -> {
+                    generalSettings.startAnimation(AnimationUtils
+                            .loadAnimation(V.getContext(),
+                                    R.anim.slide_in_left));
+                    generalSettings.setVisibility(View.VISIBLE);
                 }, 600); // 300ms
             }
         });

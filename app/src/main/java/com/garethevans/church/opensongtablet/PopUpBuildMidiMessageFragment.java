@@ -1,12 +1,8 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +14,12 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -49,9 +51,8 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
     }
 
     @Override
@@ -75,26 +76,20 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.midi_commands));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
-                closeMe.setEnabled(false);
-                try {
-                    dismiss();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe, getActivity());
+            closeMe.setEnabled(false);
+            try {
+                dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe, getActivity());
-                saveMe.setEnabled(false);
-                doSave();
-            }
+        saveMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(saveMe, getActivity());
+            saveMe.setEnabled(false);
+            doSave();
         });
 
         // Initialise the midi
@@ -112,19 +107,9 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
         Button testMidiMessage = V.findViewById(R.id.midiTest);
         Button addMidiMessage = V.findViewById(R.id.midiAdd);
 
-        testMidiMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                testTheMidiMessage(midiMessage.getText().toString());
-            }
-        });
+        testMidiMessage.setOnClickListener(view -> testTheMidiMessage(midiMessage.getText().toString()));
 
-        addMidiMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addMidiToList();
-            }
-        });
+        addMidiMessage.setOnClickListener(view -> addMidiToList());
 
         // Initialise the midi messages in the song
         initialiseCurrentMessages();
@@ -351,38 +336,21 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
         midiMessagesAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),R.layout.my_spinner,songMidiMessages);
         midiMessagesAdapter.notifyDataSetChanged();
         midiActionList.setAdapter(midiMessagesAdapter);
-        midiActionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                sendMidiFromList(i);
-            }
-        });
-        midiActionList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                deleteMidiFromList(i);
-                return true;
-            }
+        midiActionList.setOnItemClickListener((adapterView, view, i, l) -> sendMidiFromList(i));
+        midiActionList.setOnItemLongClickListener((adapterView, view, i, l) -> {
+            deleteMidiFromList(i);
+            return true;
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void updateCurrentMessages() {
         midiMessagesAdapter.notifyDataSetChanged();
         midiActionList.setAdapter(midiMessagesAdapter);
-        midiActionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                sendMidiFromList(i);
-            }
-        });
-        midiActionList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                deleteMidiFromList(i);
-                return true;
-            }
+        midiActionList.setOnItemClickListener((adapterView, view, i, l) -> sendMidiFromList(i));
+        midiActionList.setOnItemLongClickListener((adapterView, view, i, l) -> {
+            deleteMidiFromList(i);
+            return true;
         });
     }
 
@@ -402,6 +370,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void deleteMidiFromList(int i) {
         try {
             songMidiMessages.remove(i);

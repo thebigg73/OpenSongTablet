@@ -1,15 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +14,11 @@ import android.view.Window;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
@@ -49,10 +50,9 @@ public class PopUpLinks extends DialogFragment {
     private MyInterface mListener;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (MyInterface) context;
     }
 
     @Override
@@ -78,22 +78,16 @@ public class PopUpLinks extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.link));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(saveMe,getActivity());
-                saveMe.setEnabled(false);
-                doSave();
-            }
+        saveMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(saveMe,getActivity());
+            saveMe.setEnabled(false);
+            doSave();
         });
 
         // Initialise the views
@@ -117,30 +111,10 @@ public class PopUpLinks extends DialogFragment {
         linkOther_EditText.setText(StaticVariables.mLinkOther);
 
         // Set listeners to clear the fields
-        linkYouTubeClear_ImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                linkYouTube_EditText.setText("");
-            }
-        });
-        linkWebClear_ImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                linkWeb_EditText.setText("");
-            }
-        });
-        linkAudioClear_ImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                linkAudio_EditText.setText("");
-            }
-        });
-        linkOtherClear_ImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                linkOther_EditText.setText("");
-            }
-        });
+        linkYouTubeClear_ImageButton.setOnClickListener(v -> linkYouTube_EditText.setText(""));
+        linkWebClear_ImageButton.setOnClickListener(v -> linkWeb_EditText.setText(""));
+        linkAudioClear_ImageButton.setOnClickListener(v -> linkAudio_EditText.setText(""));
+        linkOtherClear_ImageButton.setOnClickListener(v -> linkOther_EditText.setText(""));
 
         // Listen for user clicking on EditText that shouldn't really be editable
         // This is because I want a file browser/picker to fill the text in
@@ -149,114 +123,96 @@ public class PopUpLinks extends DialogFragment {
         linkOther_EditText.setFocusable(false);
         linkOther_EditText.setFocusableInTouchMode(false);
 
-        linkAudio_EditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FullscreenActivity.whattodo = "filechooser";
-                openDocumentPicker("audio/*",StaticVariables.LINK_AUDIO);
-            }
+        linkAudio_EditText.setOnClickListener(v -> {
+            FullscreenActivity.whattodo = "filechooser";
+            openDocumentPicker("audio/*",StaticVariables.LINK_AUDIO);
         });
-        linkOther_EditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FullscreenActivity.whattodo = "filechooser";
-                openDocumentPicker("*/*",StaticVariables.LINK_OTHER);
-            }
+        linkOther_EditText.setOnClickListener(v -> {
+            FullscreenActivity.whattodo = "filechooser";
+            openDocumentPicker("*/*",StaticVariables.LINK_OTHER);
         });
 
         // Set up button actions
-        linkYouTube_ImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(linkYouTube_EditText.getText().toString())));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    StaticVariables.myToastMessage = getResources().getString(R.string.notset);
-                    ShowToast.showToast(getActivity());
-                }
+        linkYouTube_ImageButton.setOnClickListener(v -> {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(linkYouTube_EditText.getText().toString())));
+            } catch (Exception e) {
+                e.printStackTrace();
+                StaticVariables.myToastMessage = getResources().getString(R.string.notset);
+                ShowToast.showToast(getActivity());
             }
         });
-        linkWeb_ImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    String weblink = linkWeb_EditText.getText().toString();
-                    if (!weblink.trim().startsWith("http://") && !weblink.trim().startsWith("https://")) {
-                        weblink = "http://"+weblink.trim();
-                        linkWeb_EditText.setText(weblink);
-                    }
-                    startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse(weblink)));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    StaticVariables.myToastMessage = getResources().getString(R.string.notset);
-                    ShowToast.showToast(getActivity());
+        linkWeb_ImageButton.setOnClickListener(v -> {
+            try {
+                String weblink = linkWeb_EditText.getText().toString();
+                if (!weblink.trim().startsWith("http://") && !weblink.trim().startsWith("https://")) {
+                    weblink = "http://"+weblink.trim();
+                    linkWeb_EditText.setText(weblink);
                 }
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(weblink)));
+            } catch (Exception e) {
+                e.printStackTrace();
+                StaticVariables.myToastMessage = getResources().getString(R.string.notset);
+                ShowToast.showToast(getActivity());
             }
         });
-        linkAudio_ImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String mytext = linkAudio_EditText.getText().toString();
+        linkAudio_ImageButton.setOnClickListener(v -> {
+            String mytext = linkAudio_EditText.getText().toString();
+            uri = storageAccess.fixLocalisedUri(getActivity(), preferences, mytext);
+            Log.d("PopUpLinks","uri="+uri);
+            if (!mytext.equals("")) {
+                MimeTypeMap myMime = MimeTypeMap.getSingleton();
+                String mimeType = myMime.getMimeTypeFromExtension(mytext);
+                Intent newIntent = new Intent(Intent.ACTION_VIEW);
+
+                if (mimeType == null) {
+                    // If using a proper content uri, it will be null!
+                    mimeType = "audio/*";
+                }
+
+                newIntent.setDataAndType(uri, mimeType);
+                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                newIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                setAudioLength(uri);
+                Log.d("d","uri="+uri);
+                try {
+                    startActivity(newIntent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                StaticVariables.myToastMessage = getResources().getString(R.string.notset);
+                ShowToast.showToast(getActivity());
+            }
+        });
+        linkOther_ImageButton.setOnClickListener(v -> {
+            String mytext = linkOther_EditText.getText().toString();
+            if (!mytext.equals("")) {
+                MimeTypeMap myMime = MimeTypeMap.getSingleton();
+                Intent newIntent = new Intent(Intent.ACTION_VIEW);
                 uri = storageAccess.fixLocalisedUri(getActivity(), preferences, mytext);
                 Log.d("PopUpLinks","uri="+uri);
-                if (!mytext.equals("")) {
-                    MimeTypeMap myMime = MimeTypeMap.getSingleton();
-                    String mimeType = myMime.getMimeTypeFromExtension(mytext);
-                    Intent newIntent = new Intent(Intent.ACTION_VIEW);
+                String mimeType = myMime.getMimeTypeFromExtension(mytext);
 
-                    if (mimeType == null) {
-                        // If using a proper content uri, it will be null!
-                        mimeType = "audio/*";
-                    }
-
-                    newIntent.setDataAndType(uri, mimeType);
-                    newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    newIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-                    setAudioLength(uri);
-                    Log.d("d","uri="+uri);
-                    try {
-                        startActivity(newIntent);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    StaticVariables.myToastMessage = getResources().getString(R.string.notset);
-                    ShowToast.showToast(getActivity());
+                if (mimeType == null) {
+                    mimeType = "*/*";
                 }
-            }
-        });
-        linkOther_ImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String mytext = linkOther_EditText.getText().toString();
-                if (!mytext.equals("")) {
-                    MimeTypeMap myMime = MimeTypeMap.getSingleton();
-                    Intent newIntent = new Intent(Intent.ACTION_VIEW);
-                    uri = storageAccess.fixLocalisedUri(getActivity(), preferences, mytext);
-                    Log.d("PopUpLinks","uri="+uri);
-                    String mimeType = myMime.getMimeTypeFromExtension(mytext);
 
-                    if (mimeType == null) {
-                        mimeType = "*/*";
-                    }
+                newIntent.setDataAndType(uri, mimeType);
+                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                newIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-                    newIntent.setDataAndType(uri, mimeType);
-                    newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    newIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-                    try {
-                        startActivity(newIntent);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    StaticVariables.myToastMessage = getResources().getString(R.string.notset);
-                    ShowToast.showToast(getActivity());
+                try {
+                    startActivity(newIntent);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+            } else {
+                StaticVariables.myToastMessage = getResources().getString(R.string.notset);
+                ShowToast.showToast(getActivity());
             }
         });
 
@@ -293,14 +249,14 @@ public class PopUpLinks extends DialogFragment {
     }
 
     @Override
-    public void onDismiss(final DialogInterface dialog) {
+    public void onDismiss(@NonNull final DialogInterface dialog) {
         if (mListener!=null) {
             mListener.pageButtonAlpha("");
         }
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 
@@ -357,12 +313,9 @@ public class PopUpLinks extends DialogFragment {
         try {
             mediafile.setDataSource(Objects.requireNonNull(getActivity()),uri);
             mediafile.prepareAsync();
-            mediafile.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    StaticVariables.audiolength = (int) (mp.getDuration() / 1000.0f);
-                    mp.release();
-                }
+            mediafile.setOnPreparedListener(mp -> {
+                StaticVariables.audiolength = (int) (mp.getDuration() / 1000.0f);
+                mp.release();
             });
         } catch (Exception e) {
             e.printStackTrace();

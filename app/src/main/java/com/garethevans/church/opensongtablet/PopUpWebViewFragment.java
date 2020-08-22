@@ -3,9 +3,6 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +10,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.WebView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class PopUpWebViewFragment extends DialogFragment {
 
@@ -57,13 +59,10 @@ public class PopUpWebViewFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(mTitle);
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
@@ -71,20 +70,17 @@ public class PopUpWebViewFragment extends DialogFragment {
         WebView webview = V.findViewById(R.id.webview);
         TextView textview = V.findViewById(R.id.textview);
 
-        webview.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    WebView webView = (WebView) v;
-                    if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        if (webView.canGoBack()) {
-                            webView.goBack();
-                            return true;
-                        }
+        webview.setOnKeyListener((v, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                WebView webView = (WebView) v;
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    if (webView.canGoBack()) {
+                        webView.goBack();
+                        return true;
                     }
                 }
-                return true; // Stops the window closing
             }
+            return true; // Stops the window closing
         });
 
         switch (FullscreenActivity.whattodo) {
@@ -99,12 +95,7 @@ public class PopUpWebViewFragment extends DialogFragment {
                 webview.getSettings().setJavaScriptEnabled(true);
                 webview.canGoBackOrForward(1);
                 webview.loadUrl(FullscreenActivity.webpage);
-                closeMe.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        FullscreenActivity.whattodo = "changefonts";
-                    }
-                });
+                closeMe.setOnClickListener(v -> FullscreenActivity.whattodo = "changefonts");
                 break;
             default:
                 webview.setVisibility(View.VISIBLE);
@@ -118,7 +109,7 @@ public class PopUpWebViewFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 

@@ -23,7 +23,7 @@ class FadeoutMediaPlayer extends AsyncTask<Object,Void,String> {
 
         // Prevent double running of fades
         if ((which == 1 && !StaticVariables.pad1Fading) || (which == 2 && !StaticVariables.pad2Fading)) {
-            int fadetime = time;
+            int fadetime;
             while (i < 50) {
                 i = i + 1;
                 if (i == 50) {

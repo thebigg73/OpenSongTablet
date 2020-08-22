@@ -161,12 +161,7 @@ class AutoScrollFunctions {
             animator.setInterpolator(linearInterpolator);
             animator.setDuration(StaticVariables.autoscroll_pause_time);
             if (!FullscreenActivity.isManualDragging) {
-                sv.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        animator.start();
-                    }
-                });
+                sv.post(animator::start);
             }
         }
     }
@@ -207,12 +202,11 @@ class AutoScrollFunctions {
                     currtimesecs = StaticVariables.autoScrollDelay - currtimesecs;
                     text = TimeTools.timeFormatFixer(currtimesecs);
                     tv.setTextColor(0xffff0000);
-                    tv.setText(text);
                 } else {
                     text = TimeTools.timeFormatFixer(currtimesecs);
                     tv.setTextColor(0xffffffff);
-                    tv.setText(text);
                 }
+                tv.setText(text);
             }
         }
     }

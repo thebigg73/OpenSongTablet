@@ -2,9 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +9,11 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
@@ -54,13 +56,10 @@ public class PopUpDefaultsFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.display_popups));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
@@ -130,73 +129,45 @@ public class PopUpDefaultsFragment extends DialogFragment {
             }
         });
 
-        tl_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                preferences.setMyPreferenceString(getActivity(),"popupPosition","tl");
-                fixbuttons();
-            }
+        tl_button.setOnClickListener(view -> {
+            preferences.setMyPreferenceString(getActivity(),"popupPosition","tl");
+            fixbuttons();
         });
-        tc_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                preferences.setMyPreferenceString(getActivity(),"popupPosition","tc");
-                fixbuttons();
-            }
+        tc_button.setOnClickListener(view -> {
+            preferences.setMyPreferenceString(getActivity(),"popupPosition","tc");
+            fixbuttons();
         });
-        tr_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                preferences.setMyPreferenceString(getActivity(),"popupPosition","tr");
-                fixbuttons();
-            }
+        tr_button.setOnClickListener(view -> {
+            preferences.setMyPreferenceString(getActivity(),"popupPosition","tr");
+            fixbuttons();
         });
-        l_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                preferences.setMyPreferenceString(getActivity(),"popupPosition","l");
-                fixbuttons();
-            }
+        l_button.setOnClickListener(view -> {
+            preferences.setMyPreferenceString(getActivity(),"popupPosition","l");
+            fixbuttons();
         });
-        c_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                preferences.setMyPreferenceString(getActivity(),"popupPosition","c");
-                fixbuttons();
-            }
+        c_button.setOnClickListener(view -> {
+            preferences.setMyPreferenceString(getActivity(),"popupPosition","c");
+            fixbuttons();
         });
-        r_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                preferences.setMyPreferenceString(getActivity(),"popupPosition","r");
-                fixbuttons();
-            }
+        r_button.setOnClickListener(view -> {
+            preferences.setMyPreferenceString(getActivity(),"popupPosition","r");
+            fixbuttons();
         });
-        bl_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                preferences.setMyPreferenceString(getActivity(),"popupPosition","bl");
-                fixbuttons();
-            }
+        bl_button.setOnClickListener(view -> {
+            preferences.setMyPreferenceString(getActivity(),"popupPosition","bl");
+            fixbuttons();
         });
-        bc_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                preferences.setMyPreferenceString(getActivity(),"popupPosition","bc");
-                fixbuttons();
-            }
+        bc_button.setOnClickListener(view -> {
+            preferences.setMyPreferenceString(getActivity(),"popupPosition","bc");
+            fixbuttons();
         });
-        br_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                preferences.setMyPreferenceString(getActivity(),"popupPosition","br");
-                fixbuttons();
-            }
+        br_button.setOnClickListener(view -> {
+            preferences.setMyPreferenceString(getActivity(),"popupPosition","br");
+            fixbuttons();
         });
         return V;
     }
 
-    //@SuppressWarnings("deprecation")
     private void fixbuttons() {
 
             tl_button.setBackgroundResource(R.drawable.grey_button);
@@ -244,7 +215,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 

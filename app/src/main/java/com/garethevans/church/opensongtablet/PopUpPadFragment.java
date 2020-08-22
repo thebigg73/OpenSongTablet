@@ -1,16 +1,12 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +15,15 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -45,10 +46,9 @@ public class PopUpPadFragment extends DialogFragment {
     private MyInterface mListener;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        mListener = (MyInterface) context;
+        super.onAttach(context);
     }
 
     @Override
@@ -112,14 +112,11 @@ public class PopUpPadFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.pad));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                // IV - doSave now in dismiss
-                PopUpPadFragment.this.dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            // IV - doSave now in dismiss
+            PopUpPadFragment.this.dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
@@ -167,12 +164,7 @@ public class PopUpPadFragment extends DialogFragment {
         popupPad_file.setOnItemSelectedListener(new popupPad_fileListener());
         popupPad_volume.setOnSeekBarChangeListener(new popupPad_volumeListener());
         popupPad_pan.setOnSeekBarChangeListener(new popupPad_volumeListener());
-        popupPad_loopaudio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                StaticVariables.mLoopAudio = isChecked + "";
-            }
-        });
+        popupPad_loopaudio.setOnCheckedChangeListener((buttonView, isChecked) -> StaticVariables.mLoopAudio = isChecked + "");
 
         mHandler.post(runnable);
 
@@ -418,19 +410,16 @@ public class PopUpPadFragment extends DialogFragment {
             }
                 start_stop_padplay.setText(text);
 
-                start_stop_padplay.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                    // IV - gesture6 has the start and stop logic
-                        mListener.gesture6();
-                    PopUpPadFragment.this.dismiss();
-                    }
+                start_stop_padplay.setOnClickListener(view -> {
+                // IV - gesture6 has the start and stop logic
+                    mListener.gesture6();
+                PopUpPadFragment.this.dismiss();
                 });
         }
     }
 
     @Override
-    public void onDismiss(final DialogInterface dialog) {
+    public void onDismiss(@NonNull final DialogInterface dialog) {
         if (mListener!=null) {
             mListener.pageButtonAlpha("");
         }
@@ -445,7 +434,7 @@ public class PopUpPadFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 

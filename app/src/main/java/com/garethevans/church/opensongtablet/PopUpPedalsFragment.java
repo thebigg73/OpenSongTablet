@@ -10,7 +10,6 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -62,13 +61,10 @@ public class PopUpPedalsFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.footpedal));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
@@ -126,12 +122,7 @@ public class PopUpPedalsFragment extends DialogFragment {
     }
 
     private void airTurnModeActions() {
-        autoRepeatLongPress_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.setMyPreferenceBoolean(getActivity(),"airTurnMode",isChecked);
-            }
-        });
+        autoRepeatLongPress_Switch.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"airTurnMode",isChecked));
         autoRepeatCount_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -641,7 +632,7 @@ public class PopUpPedalsFragment extends DialogFragment {
 
     private void setSpinner(Spinner s, final String which) {
         int chosen = convertSelectionTextToNumberOption(getSavedOptionForPedal(which));
-        ArrayAdapter a = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, availableactions);
+        ArrayAdapter<String> a = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, availableactions);
         s.setAdapter(a);
         s.setSelection(chosen);
         s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -667,15 +658,12 @@ public class PopUpPedalsFragment extends DialogFragment {
         t = t + "\n" + getString(R.string.footpedal);
         b.setText(t);
 
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resetButtons();
-                b.setEnabled(false);
-                b.setText(getResources().getString(
-                        R.string.pageturn_waiting));
-                assignWhich = which;
-            }
+        b.setOnClickListener(v -> {
+            resetButtons();
+            b.setEnabled(false);
+            b.setText(getResources().getString(
+                    R.string.pageturn_waiting));
+            assignWhich = which;
         });
     }
 
@@ -768,55 +756,53 @@ public class PopUpPedalsFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_UP) {
-                    // Reset buttons already using this keycode
-                    if (preferences.getMyPreferenceInt(getActivity(),"pedal1Code",21) == keyCode) {
-                        preferences.setMyPreferenceInt(getActivity(),"pedal1Code",-1);
-                    } else if (preferences.getMyPreferenceInt(getActivity(),"pedal2Code",22) == keyCode) {
-                        preferences.setMyPreferenceInt(getActivity(),"pedal2Code",-1);
-                    } else if (preferences.getMyPreferenceInt(getActivity(),"pedal3Code",19) == keyCode) {
-                        preferences.setMyPreferenceInt(getActivity(),"pedal3Code",-1);
-                    } else if (preferences.getMyPreferenceInt(getActivity(),"pedal4Code",20) == keyCode) {
-                        preferences.setMyPreferenceInt(getActivity(),"pedal4Code",-1);
-                    } else if (preferences.getMyPreferenceInt(getActivity(),"pedal5Code",92) == keyCode) {
-                        preferences.setMyPreferenceInt(getActivity(),"pedal5Code",-1);
-                    } else if (preferences.getMyPreferenceInt(getActivity(),"pedal6Code",93) == keyCode) {
-                        preferences.setMyPreferenceInt(getActivity(),"pedal6Code",-1);
-                    }
-
-                    if (keyCode == KeyEvent.KEYCODE_BACK && assignWhich>-1) {
-                        //User has pressed the back key - not allowed!!!!
-                        StaticVariables.myToastMessage = getResources().getString(R.string.no);
-                        ShowToast.showToast(getActivity());
-                    } else if (keyCode == KeyEvent.KEYCODE_BACK && assignWhich==-1) {
-                        dismiss();
-                        return false;
-                    } else if (assignWhich==1) {
-                        preferences.setMyPreferenceInt(getActivity(),"pedal1Code",keyCode);
-                    } else if (assignWhich==2) {
-                        preferences.setMyPreferenceInt(getActivity(),"pedal2Code",keyCode);
-                    } else if (assignWhich==3) {
-                        preferences.setMyPreferenceInt(getActivity(),"pedal3Code",keyCode);
-                    } else if (assignWhich==4) {
-                        preferences.setMyPreferenceInt(getActivity(),"pedal4Code",keyCode);
-                    } else if (assignWhich==5) {
-                        preferences.setMyPreferenceInt(getActivity(),"pedal5Code",keyCode);
-                    } else if (assignWhich==6) {
-                        preferences.setMyPreferenceInt(getActivity(),"pedal6Code",keyCode);
-                    }
-                    assignWhich = -1;
-                    resetButtons();
+        getDialog().setOnKeyListener((dialog, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_UP) {
+                // Reset buttons already using this keycode
+                if (preferences.getMyPreferenceInt(getActivity(),"pedal1Code",21) == keyCode) {
+                    preferences.setMyPreferenceInt(getActivity(),"pedal1Code",-1);
+                } else if (preferences.getMyPreferenceInt(getActivity(),"pedal2Code",22) == keyCode) {
+                    preferences.setMyPreferenceInt(getActivity(),"pedal2Code",-1);
+                } else if (preferences.getMyPreferenceInt(getActivity(),"pedal3Code",19) == keyCode) {
+                    preferences.setMyPreferenceInt(getActivity(),"pedal3Code",-1);
+                } else if (preferences.getMyPreferenceInt(getActivity(),"pedal4Code",20) == keyCode) {
+                    preferences.setMyPreferenceInt(getActivity(),"pedal4Code",-1);
+                } else if (preferences.getMyPreferenceInt(getActivity(),"pedal5Code",92) == keyCode) {
+                    preferences.setMyPreferenceInt(getActivity(),"pedal5Code",-1);
+                } else if (preferences.getMyPreferenceInt(getActivity(),"pedal6Code",93) == keyCode) {
+                    preferences.setMyPreferenceInt(getActivity(),"pedal6Code",-1);
                 }
-                return true; // pretend we've processed it
+
+                if (keyCode == KeyEvent.KEYCODE_BACK && assignWhich>-1) {
+                    //User has pressed the back key - not allowed!!!!
+                    StaticVariables.myToastMessage = getResources().getString(R.string.no);
+                    ShowToast.showToast(getActivity());
+                } else if (keyCode == KeyEvent.KEYCODE_BACK && assignWhich==-1) {
+                    dismiss();
+                    return false;
+                } else if (assignWhich==1) {
+                    preferences.setMyPreferenceInt(getActivity(),"pedal1Code",keyCode);
+                } else if (assignWhich==2) {
+                    preferences.setMyPreferenceInt(getActivity(),"pedal2Code",keyCode);
+                } else if (assignWhich==3) {
+                    preferences.setMyPreferenceInt(getActivity(),"pedal3Code",keyCode);
+                } else if (assignWhich==4) {
+                    preferences.setMyPreferenceInt(getActivity(),"pedal4Code",keyCode);
+                } else if (assignWhich==5) {
+                    preferences.setMyPreferenceInt(getActivity(),"pedal5Code",keyCode);
+                } else if (assignWhich==6) {
+                    preferences.setMyPreferenceInt(getActivity(),"pedal6Code",keyCode);
+                }
+                assignWhich = -1;
+                resetButtons();
             }
+            return true; // pretend we've processed it
         });
 
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 

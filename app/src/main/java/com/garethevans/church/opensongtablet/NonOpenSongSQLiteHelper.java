@@ -75,10 +75,8 @@ class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
             s = s.replace("''", "^&*");
             s = s.replace("'", "''");
             s = s.replace("^&*", "''");
-            return s;
-        } else {
-            return s;
         }
+        return s;
     }
 
     private String unescapedSQL(String s) {
@@ -86,10 +84,8 @@ class NonOpenSongSQLiteHelper extends SQLiteOpenHelper {
             while (s.contains("''")) {
                 s = s.replace("''","'");
             }
-            return s;
-        } else {
-            return s;
         }
+        return s;
     }
 
     void createBasicSong(Context c, StorageAccess storageAccess, Preferences preferences, String folder, String filename) {

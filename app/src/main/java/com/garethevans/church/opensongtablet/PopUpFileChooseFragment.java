@@ -1,20 +1,21 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -40,10 +41,9 @@ public class PopUpFileChooseFragment extends DialogFragment {
     private MyInterface mListener;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (MyInterface) context;
     }
 
     @Override
@@ -158,21 +158,18 @@ public class PopUpFileChooseFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(myTitle);
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                if (FullscreenActivity.whattodo.equals("customnote") ||
-                        FullscreenActivity.whattodo.equals("customslide") ||
-                        FullscreenActivity.whattodo.equals("customimage") ||
-                        FullscreenActivity.whattodo.equals("customscripture")) {
-                    dismiss();
-                    DialogFragment newFragment = PopUpCustomSlideFragment.newInstance();
-                    newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
-                } else {
-                    dismiss();
-                }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            if (FullscreenActivity.whattodo.equals("customnote") ||
+                    FullscreenActivity.whattodo.equals("customslide") ||
+                    FullscreenActivity.whattodo.equals("customimage") ||
+                    FullscreenActivity.whattodo.equals("customscripture")) {
+                dismiss();
+                DialogFragment newFragment = PopUpCustomSlideFragment.newInstance();
+                newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
+            } else {
+                dismiss();
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
@@ -182,54 +179,51 @@ public class PopUpFileChooseFragment extends DialogFragment {
         fileListView.setAdapter(new ArrayAdapter<>(Objects.requireNonNull(getActivity()), android.R.layout.simple_list_item_single_choice, foundFiles));
 
         // Listen for clicks inside
-        fileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Get the appropriate file
-                switch (myswitch) {
-                    case "logo":
-                        preferences.setMyPreferenceString(getActivity(),"customLogo",foundFiles[position]);
-                        break;
+        fileListView.setOnItemClickListener((parent, view, position, id) -> {
+            // Get the appropriate file
+            switch (myswitch) {
+                case "logo":
+                    preferences.setMyPreferenceString(getActivity(),"customLogo",foundFiles[position]);
+                    break;
 
-                    case "image1":
-                        preferences.setMyPreferenceString(getActivity(),"backgroundImage1",foundFiles[position]);
-                        break;
+                case "image1":
+                    preferences.setMyPreferenceString(getActivity(),"backgroundImage1",foundFiles[position]);
+                    break;
 
-                    case "image2":
-                        preferences.setMyPreferenceString(getActivity(),"backgroundImage2",foundFiles[position]);
-                        break;
+                case "image2":
+                    preferences.setMyPreferenceString(getActivity(),"backgroundImage2",foundFiles[position]);
+                    break;
 
-                    case "video1":
-                        preferences.setMyPreferenceString(getActivity(),"backgroundVideo1",foundFiles[position]);
-                        break;
+                case "video1":
+                    preferences.setMyPreferenceString(getActivity(),"backgroundVideo1",foundFiles[position]);
+                    break;
 
-                    case "video2":
-                        preferences.setMyPreferenceString(getActivity(),"backgroundVideo2",foundFiles[position]);
-                        break;
+                case "video2":
+                    preferences.setMyPreferenceString(getActivity(),"backgroundVideo2",foundFiles[position]);
+                    break;
 
-                    case "customnote":
-                        FullscreenActivity.customreusabletoload = Objects.requireNonNull(getActivity()).getResources().getString(R.string.note)  + "/" + foundFiles[position];
-                        mListener.loadCustomReusable();
-                        break;
+                case "customnote":
+                    FullscreenActivity.customreusabletoload = Objects.requireNonNull(getActivity()).getResources().getString(R.string.note)  + "/" + foundFiles[position];
+                    mListener.loadCustomReusable();
+                    break;
 
-                    case "customslide":
-                        FullscreenActivity.customreusabletoload = Objects.requireNonNull(getActivity()).getResources().getString(R.string.slide)  + "/" + foundFiles[position];
-                        mListener.loadCustomReusable();
-                        break;
+                case "customslide":
+                    FullscreenActivity.customreusabletoload = Objects.requireNonNull(getActivity()).getResources().getString(R.string.slide)  + "/" + foundFiles[position];
+                    mListener.loadCustomReusable();
+                    break;
 
-                    case "customimage":
-                        FullscreenActivity.customreusabletoload = Objects.requireNonNull(getActivity()).getResources().getString(R.string.image)  + "/" + foundFiles[position];
-                        mListener.loadCustomReusable();
-                        break;
+                case "customimage":
+                    FullscreenActivity.customreusabletoload = Objects.requireNonNull(getActivity()).getResources().getString(R.string.image)  + "/" + foundFiles[position];
+                    mListener.loadCustomReusable();
+                    break;
 
-                    case "customscripture":
-                        FullscreenActivity.customreusabletoload = Objects.requireNonNull(getActivity()).getResources().getString(R.string.scripture)  + "/" + foundFiles[position];
-                        mListener.loadCustomReusable();
-                        break;
+                case "customscripture":
+                    FullscreenActivity.customreusabletoload = Objects.requireNonNull(getActivity()).getResources().getString(R.string.scripture)  + "/" + foundFiles[position];
+                    mListener.loadCustomReusable();
+                    break;
 
-                }
-                dismiss();
             }
+            dismiss();
         });
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
@@ -299,7 +293,7 @@ public class PopUpFileChooseFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 

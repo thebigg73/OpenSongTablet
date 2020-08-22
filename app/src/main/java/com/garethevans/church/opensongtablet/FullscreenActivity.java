@@ -16,7 +16,6 @@ import java.util.ArrayList;
 @SuppressLint({"DefaultLocale", "RtlHardcoded", "InflateParams", "SdCardPath"})
 public class FullscreenActivity extends AppCompatActivity {
 
-
     public static Uri file_uri;
 
     // Screencapture variables
@@ -45,7 +44,6 @@ public class FullscreenActivity extends AppCompatActivity {
 
     @SuppressLint("StaticFieldLeak")
     public static Context mContext;
-    public static boolean receiveHostFiles;
 
     public static String emailtext = "";
 

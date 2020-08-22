@@ -1,18 +1,19 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
@@ -33,10 +34,9 @@ public class PopUpLongSongPressFragment extends DialogFragment {
     private MyInterface mListener;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (MyInterface) context;
     }
 
     @Override
@@ -112,7 +112,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 
@@ -126,13 +126,10 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(StaticVariables.songfilename);
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
@@ -151,65 +148,47 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         Button editSong_Button = V.findViewById(R.id.editSong_Button);
 
         // Set up listeners for the buttons
-        addSongToSet_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addtoSet(getActivity(), preferences);
-                if (mListener!=null) {
-                    mListener.songLongClick();
-                }
-                dismiss();
+        addSongToSet_Button.setOnClickListener(view -> {
+            addtoSet(getActivity(), preferences);
+            if (mListener!=null) {
+                mListener.songLongClick();
             }
+            dismiss();
         });
-        deleteSong_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "deletesong";
-                if (mListener!=null) {
-                    mListener.openFragment();
-                }
-                dismiss();
+        deleteSong_Button.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "deletesong";
+            if (mListener!=null) {
+                mListener.openFragment();
             }
+            dismiss();
         });
-        shareSong_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "exportsong";
-                if (mListener!=null) {
-                    mListener.shareSong();
-                }
-                dismiss();
+        shareSong_Button.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "exportsong";
+            if (mListener!=null) {
+                mListener.shareSong();
             }
+            dismiss();
         });
-        renameSong_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "renamesong";
-                if (mListener!=null) {
-                    mListener.openFragment();
-                }
-                dismiss();
+        renameSong_Button.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "renamesong";
+            if (mListener!=null) {
+                mListener.openFragment();
             }
+            dismiss();
         });
-        duplicateSong_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "duplicate";
-                if (mListener!=null) {
-                    mListener.openFragment();
-                }
-                dismiss();
+        duplicateSong_Button.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "duplicate";
+            if (mListener!=null) {
+                mListener.openFragment();
             }
+            dismiss();
         });
-        editSong_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "editsong";
-                if (mListener!=null) {
-                    mListener.openFragment();
-                }
-                dismiss();
+        editSong_Button.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "editsong";
+            if (mListener!=null) {
+                mListener.openFragment();
             }
+            dismiss();
         });
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);

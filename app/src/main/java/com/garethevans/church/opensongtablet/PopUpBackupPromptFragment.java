@@ -1,18 +1,20 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
@@ -27,10 +29,9 @@ public class PopUpBackupPromptFragment extends DialogFragment {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (MyInterface) context;
     }
 
     @Override
@@ -65,13 +66,10 @@ public class PopUpBackupPromptFragment extends DialogFragment {
         TextView title = v.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.backupnow));
         final FloatingActionButton closeMe = v.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe, getActivity());
-                closeMe.setEnabled(false);
-                doClose();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe, getActivity());
+            closeMe.setEnabled(false);
+            doClose();
         });
         FloatingActionButton saveMe = v.findViewById(R.id.saveMe);
         saveMe.hide();
@@ -85,26 +83,18 @@ public class PopUpBackupPromptFragment extends DialogFragment {
         Button backupLater_Button = v.findViewById(R.id.backupLater_Button);
 
         // Set listeners
-        backupNow_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FullscreenActivity.whattodo = "exportosb";
-                if (mListener != null) {
-                    mListener.openFragment();
-                }
-                try {
-                    dismiss();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        backupNow_Button.setOnClickListener(v1 -> {
+            FullscreenActivity.whattodo = "exportosb";
+            if (mListener != null) {
+                mListener.openFragment();
+            }
+            try {
+                dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
-        backupLater_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doClose();
-            }
-        });
+        backupLater_Button.setOnClickListener(v12 -> doClose());
 
         Dialog dialog = getDialog();
         if (dialog != null && getActivity() != null) {
@@ -114,7 +104,7 @@ public class PopUpBackupPromptFragment extends DialogFragment {
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         try {
             this.dismiss();
         } catch (Exception e) {

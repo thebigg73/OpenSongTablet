@@ -2,11 +2,11 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import androidx.appcompat.app.ActionBar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.ViewConfiguration;
+
+import androidx.appcompat.app.ActionBar;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

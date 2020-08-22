@@ -3,28 +3,28 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.database.Cursor;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
-import androidx.loader.content.CursorLoader;
-import androidx.cursoradapter.widget.CursorAdapter;
-import androidx.cursoradapter.widget.SimpleCursorAdapter;
-import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.CompoundButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.fragment.app.DialogFragment;
+import androidx.loader.content.CursorLoader;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -73,13 +73,10 @@ public class PopUpMediaStoreFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.media_chooser));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
@@ -95,31 +92,9 @@ public class PopUpMediaStoreFragment extends DialogFragment {
         mediaSelected = V.findViewById(R.id.mediaSelected);
         mediaSelected.setText(PresenterMode.mpTitle);
         SwitchCompat externalSwitch = V.findViewById(R.id.externalSwitch);
-        /*if (FullscreenActivity.mediaStore.equals("ext")) {
-            externalSwitch.setChecked(true);
-        } else {
-            externalSwitch.setChecked(false);
-        }
-        */
-        externalSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                /*if (isChecked) {
-                    FullscreenActivity.mediaStore = "ext";
-                } else {
-                    FullscreenActivity.mediaStore = "int";
-                }
-                Preferences.savePreferences();*/
-                updateMedia();
-            }
-        });
+        externalSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> updateMedia());
         startPlay = V.findViewById(R.id.startPlay);
-        startPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startPlay();
-            }
-        });
+        startPlay.setOnClickListener(v -> startPlay());
 
         updateMedia();
 
@@ -151,7 +126,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
                 scrubbar_SeekBar.setMax(duration);
                 scrubbar_SeekBar.setProgress(position);
                 if (PresenterMode.mp.isPlaying()) {
-                    startPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_stop_white_36dp));
+                    startPlay.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_stop_white_36dp,null));
                     seekHandler = new Handler();
                     seekHandler.post(run);
                 }
@@ -164,12 +139,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
         return V;
     }
 
-    private final Runnable run = new Runnable() {
-        @Override
-        public void run() {
-            seekUpdate();
-        }
-    };
+    private final Runnable run = this::seekUpdate;
 
     private void seekUpdate() {
         if (PresenterMode.mp!=null && PresenterMode.mp.isPlaying()) {
@@ -210,41 +180,35 @@ public class PopUpMediaStoreFragment extends DialogFragment {
 
         mediaStore_ListView.setAdapter(adapter);
 
-        mediaStore_ListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Cursor cursor = ((SimpleCursorAdapter) mediaStore_ListView.getAdapter()).getCursor();
-                cursor.moveToPosition(position);
-                String fullname = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
-                String data = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-                mediaSelected.setText(fullname);
-                startPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_white_36dp));
-                PresenterMode.mpTitle = fullname;
-                if (PresenterMode.mp.isPlaying()) {
-                    PresenterMode.mp.stop();
-                }
-                PresenterMode.mp.reset();
-                try {
-                    PresenterMode.mp.setDataSource(data);
-                    PresenterMode.mp.prepareAsync();
-                    PresenterMode.mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mediaPlayer) {
-                            if (seekHandler!=null) {
-                                seekHandler.removeCallbacks(run);
-                            }
-                            seekHandler = new Handler();
-                            mptotaltimesecs = (int) ((float) PresenterMode.mp.getDuration()/1000.0f);
-                            scrubbar_SeekBar.setMax(mptotaltimesecs);
-                            scrubbar_SeekBar.setProgress(0);
-                            String totaltime = TimeTools.timeFormatFixer(mptotaltimesecs);
-                            String currentposition = TimeTools.timeFormatFixer(0) + " / " + totaltime;
-                            scrubbar_TextView.setText(currentposition);
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        mediaStore_ListView.setOnItemClickListener((parent, view, position, id) -> {
+            Cursor cursor1 = ((SimpleCursorAdapter) mediaStore_ListView.getAdapter()).getCursor();
+            cursor1.moveToPosition(position);
+            String fullname = cursor1.getString(cursor1.getColumnIndex(MediaStore.Audio.Media.TITLE));
+            String data = cursor1.getString(cursor1.getColumnIndex(MediaStore.Audio.Media.DATA));
+            mediaSelected.setText(fullname);
+            startPlay.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_play_white_36dp,null));
+            PresenterMode.mpTitle = fullname;
+            if (PresenterMode.mp.isPlaying()) {
+                PresenterMode.mp.stop();
+            }
+            PresenterMode.mp.reset();
+            try {
+                PresenterMode.mp.setDataSource(data);
+                PresenterMode.mp.prepareAsync();
+                PresenterMode.mp.setOnPreparedListener(mediaPlayer -> {
+                    if (seekHandler!=null) {
+                        seekHandler.removeCallbacks(run);
+                    }
+                    seekHandler = new Handler();
+                    mptotaltimesecs = (int) ((float) PresenterMode.mp.getDuration()/1000.0f);
+                    scrubbar_SeekBar.setMax(mptotaltimesecs);
+                    scrubbar_SeekBar.setProgress(0);
+                    String totaltime = TimeTools.timeFormatFixer(mptotaltimesecs);
+                    String currentposition = TimeTools.timeFormatFixer(0) + " / " + totaltime;
+                    scrubbar_TextView.setText(currentposition);
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
     }
@@ -257,7 +221,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
             seekHandler = null;
             // Stop the media player
             PresenterMode.mp.pause();
-            startPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_white_36dp));
+            startPlay.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_play_white_36dp,null));
         } else {
             if (!mediaSelected.getText().toString().equals("")) {
                 if (seekHandler!=null) {
@@ -266,13 +230,13 @@ public class PopUpMediaStoreFragment extends DialogFragment {
                 seekHandler = new Handler();
                 seekHandler.postDelayed(run,1000);
                 PresenterMode.mp.start();
-                startPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_stop_white_36dp));
+                startPlay.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_stop_white_36dp,null));
             }
         }
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();
     }
 

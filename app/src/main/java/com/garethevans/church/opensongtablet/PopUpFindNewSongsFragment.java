@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.CookieManager;
-import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.URLUtil;
 import android.webkit.WebChromeClient;
@@ -139,16 +138,13 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(mTitle);
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    CustomAnimations.animateFAB(closeMe,getActivity());
-                    closeMe.setEnabled(false);
-                    dismiss();
-                } catch (Exception e) {
-                    // Error cancelling
-                }
+        closeMe.setOnClickListener(view -> {
+            try {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                dismiss();
+            } catch (Exception e) {
+                // Error cancelling
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
@@ -202,40 +198,24 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         // Listen for the buttons
 
-        doSearch_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String searchtext = searchphrase_EditText.getText().toString();
-                if (!searchtext.equals("")) {
-                    FullscreenActivity.phrasetosearchfor = searchtext;
-                    doSearch(searchtext);
-                }
+        doSearch_Button.setOnClickListener(view -> {
+            String searchtext = searchphrase_EditText.getText().toString();
+            if (!searchtext.equals("")) {
+                FullscreenActivity.phrasetosearchfor = searchtext;
+                doSearch(searchtext);
             }
         });
 
-        webBack_ImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    webresults_WebView.goBack();
-                } catch (Exception e) {
-                    // Error going back in the web view
-                }
+        webBack_ImageButton.setOnClickListener(view -> {
+            try {
+                webresults_WebView.goBack();
+            } catch (Exception e) {
+                // Error going back in the web view
             }
         });
-        grabSongData_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                grabchordpro();
-            }
-        });
+        grabSongData_Button.setOnClickListener(view -> grabchordpro());
 
-        saveSong_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doSaveSong();
-            }
-        });
+        saveSong_Button.setOnClickListener(view -> doSaveSong());
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
@@ -285,11 +265,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         //String newUA = "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0";
         String newUA = "Mozilla/5.0 (X11; Linux i686; rv:64.0) Gecko/20100101 Firefox/64.0";
         //String oldUA = "Mozilla/5.0 (Linux; U; Android 4.0.4; en-gb; GT-I9300 Build/IMM76D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30";
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            webresults_WebView.getSettings().setUserAgentString(newUA);
-        } else {
-            webresults_WebView.getSettings().setUserAgentString(newUA);
-        }
+        webresults_WebView.getSettings().setUserAgentString(newUA);
         webresults_WebView.getSettings().getJavaScriptEnabled();
         webresults_WebView.getSettings().setJavaScriptEnabled(true);
         webresults_WebView.getSettings().setDomStorageEnabled(true);
@@ -306,40 +282,34 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         } catch (Exception e) {
             Log.d("d","Error registering download complete listener");
         }
-        webresults_WebView.setDownloadListener(new DownloadListener() {
+        webresults_WebView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
+            final String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
+            if (FullscreenActivity.whattodo.equals("songselect") && (filename.endsWith(".pdf")||filename.endsWith(".PDF"))) {
 
-            @Override
-            public void onDownloadStart(String url, String userAgent,
-                                        String contentDisposition, String mimetype,
-                                        long contentLength) {
-                final String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
-                if (FullscreenActivity.whattodo.equals("songselect") && (filename.endsWith(".pdf")||filename.endsWith(".PDF"))) {
+                try {
+                    // Hide the WebView
+                    searchresults_RelativeLayout.setVisibility(View.GONE);
+                    StaticVariables.myToastMessage = "Downloading...";
+                    saveSong_Button.setEnabled(false);
+                    ShowToast.showToast(getActivity());
 
-                    try {
-                        // Hide the WebView
-                        searchresults_RelativeLayout.setVisibility(View.GONE);
-                        StaticVariables.myToastMessage = "Downloading...";
-                        saveSong_Button.setEnabled(false);
-                        ShowToast.showToast(getActivity());
+                    String cookie = CookieManager.getInstance().getCookie(url);
 
-                        String cookie = CookieManager.getInstance().getCookie(url);
+                    DownloadManager.Request request = new DownloadManager.Request(
+                            Uri.parse(url));
 
-                        DownloadManager.Request request = new DownloadManager.Request(
-                                Uri.parse(url));
-
-                        request.allowScanningByMediaScanner();
-                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-                        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename);
-                        downloadedFile = Uri.fromFile(file);
-                        DownloadManager dm = (DownloadManager) Objects.requireNonNull(getActivity()).getSystemService(DOWNLOAD_SERVICE);
-                        request.addRequestHeader("Cookie", cookie);
-                        if (dm != null) {
-                            dm.enqueue(request);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    request.allowScanningByMediaScanner();
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
+                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+                    File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename);
+                    downloadedFile = Uri.fromFile(file);
+                    DownloadManager dm = (DownloadManager) Objects.requireNonNull(getActivity()).getSystemService(DOWNLOAD_SERVICE);
+                    request.addRequestHeader("Cookie", cookie);
+                    if (dm != null) {
+                        dm.enqueue(request);
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -368,14 +338,14 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     }
 
     @Override
-    public void onDismiss(final DialogInterface dialog) {
+    public void onDismiss(@NonNull final DialogInterface dialog) {
         if (mListener != null) {
             mListener.pageButtonAlpha("");
         }
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         try {
             this.dismiss();
         } catch (Exception e) {

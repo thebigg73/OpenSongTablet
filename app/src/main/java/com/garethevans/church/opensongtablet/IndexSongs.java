@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -259,11 +258,11 @@ class IndexSongs {
                             break;
 
                         case "user2":
-                            user1 = xpp.nextText();
+                            user2 = xpp.nextText();
                             break;
 
                         case "user3":
-                            user1 = xpp.nextText();
+                            user3 = xpp.nextText();
                             break;
 
                         case "aka":

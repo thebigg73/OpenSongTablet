@@ -5,13 +5,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
-import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
+
+import com.google.android.material.snackbar.Snackbar;
 
 public class ImportIntent extends AppCompatActivity implements PopUpImportExportOSBFragment.MyInterface,
         PopUpImportExternalFile.MyInterface {
@@ -63,13 +64,8 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             try {
                 Snackbar.make(findViewById(R.id.page), R.string.storage_rationale,
-                        Snackbar.LENGTH_INDEFINITE).setAction(R.string.ok, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ActivityCompat.requestPermissions(ImportIntent.this,
-                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-                    }
-                }).show();
+                        Snackbar.LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(ImportIntent.this,
+                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101)).show();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -129,12 +125,11 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
                         if (file_name.endsWith(".osb")) {
                             // This is an OpenSong backup file
                             FullscreenActivity.whattodo = "processimportosb";
-                            showFragment();
                         } else {
                             // This is an file opensong can deal with (hopefully)
                             FullscreenActivity.whattodo = "doimport";
-                            showFragment();
                         }
+                        showFragment();
                     }
                 }
 
@@ -185,13 +180,12 @@ public class ImportIntent extends AppCompatActivity implements PopUpImportExport
 
             FullscreenActivity.whattodo = "importfile_customreusable_scripture";
             FullscreenActivity.scripture_title = title;
-            FullscreenActivity.scripture_verse = sharedText.toString();
         } else {
             // Just standard text, so create a new song
             FullscreenActivity.whattodo = "importfile_newsong_text";
             FullscreenActivity.scripture_title = "importedtext_in_scripture_verse";
-            FullscreenActivity.scripture_verse = sharedText.toString();
         }
+        FullscreenActivity.scripture_verse = sharedText.toString();
     }
 
     private void showFragment() {

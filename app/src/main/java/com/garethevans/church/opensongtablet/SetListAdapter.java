@@ -1,15 +1,16 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Collections;
 import java.util.List;
@@ -90,43 +91,40 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
         }
         getitemnum--;
         final int item = getitemnum;
-        setitemViewHolder.vCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StaticVariables.songfilename = songname;
-                if (songfolder.equals(c.getString(R.string.mainfoldername)) || songfolder.equals("MAIN") || songfolder.equals("")) {
-                    StaticVariables.whatsongforsetwork = "$**_" + songname + "_**$";
-                } else {
-                    StaticVariables.whatsongforsetwork = "$**_" + songfolder + "/" + songname + "_**$";
-                }
-                StaticVariables.whichSongFolder = songfolder;
-                StaticVariables.indexSongInSet = item;
-                StaticVariables.nextSongInSet = "";
-                StaticVariables.previousSongInSet = "";
-                // Get set position
-                boolean issue = false;
-                if (item > 0 && StaticVariables.mSet.length >= item - 1) {
-                    StaticVariables.previousSongInSet = StaticVariables.mSet[item - 1];
-                } else {
-                    issue = true;
-                }
-                if (item != StaticVariables.setSize - 1 && StaticVariables.mSet.length>(item+1)) {
-                    StaticVariables.nextSongInSet = StaticVariables.mSet[item + 1];
-                } else {
-                    issue = true;
-                }
+        setitemViewHolder.vCard.setOnClickListener(v -> {
+            StaticVariables.songfilename = songname;
+            if (songfolder.equals(c.getString(R.string.mainfoldername)) || songfolder.equals("MAIN") || songfolder.equals("")) {
+                StaticVariables.whatsongforsetwork = "$**_" + songname + "_**$";
+            } else {
+                StaticVariables.whatsongforsetwork = "$**_" + songfolder + "/" + songname + "_**$";
+            }
+            StaticVariables.whichSongFolder = songfolder;
+            StaticVariables.indexSongInSet = item;
+            StaticVariables.nextSongInSet = "";
+            StaticVariables.previousSongInSet = "";
+            // Get set position
+            boolean issue = false;
+            if (item > 0 && StaticVariables.mSet.length >= item - 1) {
+                StaticVariables.previousSongInSet = StaticVariables.mSet[item - 1];
+            } else {
+                issue = true;
+            }
+            if (item != StaticVariables.setSize - 1 && StaticVariables.mSet.length>(item+1)) {
+                StaticVariables.nextSongInSet = StaticVariables.mSet[item + 1];
+            } else {
+                issue = true;
+            }
 
-                if (issue) {
-                    SetActions setActions = new SetActions();
-                    setActions.indexSongInSet();
-                }
+            if (issue) {
+                SetActions setActions = new SetActions();
+                setActions.indexSongInSet();
+            }
 
-                if (FullscreenActivity.whattodo.equals("setitemvariation")) {
-                    PopUpSetViewNew.makeVariation(c, preferences);
+            if (FullscreenActivity.whattodo.equals("setitemvariation")) {
+                PopUpSetViewNew.makeVariation(c, preferences);
 
-                } else {
-                    PopUpSetViewNew.loadSong(c,preferences);
-                }
+            } else {
+                PopUpSetViewNew.loadSong(c,preferences);
             }
         });
 

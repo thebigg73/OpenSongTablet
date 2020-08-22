@@ -1,14 +1,12 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +20,12 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -42,10 +46,9 @@ public class PopUpChordsFragment extends DialogFragment {
     private MyInterface mListener;
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (MyInterface) context;
     }
 
     @Override
@@ -94,62 +97,57 @@ public class PopUpChordsFragment extends DialogFragment {
         }
 
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
         processSong = new ProcessSong();
         preferences = new Preferences();
+        Resources res = getActivity().getResources();
 
         // Initialise the views
         Spinner popupchord_instrument = V.findViewById(R.id.popupchord_instrument);
         chordimageshere = V.findViewById(R.id.chordimageshere);
         // Identify the chord images
-        f1 = getActivity().getResources().getDrawable(R.drawable.chord_f1);
-        f2 = getActivity().getResources().getDrawable(R.drawable.chord_f2);
-        f3 = getActivity().getResources().getDrawable(R.drawable.chord_f3);
-        f4 = getActivity().getResources().getDrawable(R.drawable.chord_f4);
-        f5 = getActivity().getResources().getDrawable(R.drawable.chord_f5);
-        f6 = getActivity().getResources().getDrawable(R.drawable.chord_f6);
-        f7 = getActivity().getResources().getDrawable(R.drawable.chord_f7);
-        f8 = getActivity().getResources().getDrawable(R.drawable.chord_f8);
-        f9 = getActivity().getResources().getDrawable(R.drawable.chord_f9);
-        lx = getActivity().getResources().getDrawable(R.drawable.chord_l_x);
-        l0 = getActivity().getResources().getDrawable(R.drawable.chord_l_0);
-        l1 = getActivity().getResources().getDrawable(R.drawable.chord_l_1);
-        l2 = getActivity().getResources().getDrawable(R.drawable.chord_l_2);
-        l3 = getActivity().getResources().getDrawable(R.drawable.chord_l_3);
-        l4 = getActivity().getResources().getDrawable(R.drawable.chord_l_4);
-        l5 = getActivity().getResources().getDrawable(R.drawable.chord_l_5);
-        mx = getActivity().getResources().getDrawable(R.drawable.chord_m_x);
-        m0 = getActivity().getResources().getDrawable(R.drawable.chord_m_0);
-        m1 = getActivity().getResources().getDrawable(R.drawable.chord_m_1);
-        m2 = getActivity().getResources().getDrawable(R.drawable.chord_m_2);
-        m3 = getActivity().getResources().getDrawable(R.drawable.chord_m_3);
-        m4 = getActivity().getResources().getDrawable(R.drawable.chord_m_4);
-        m5 = getActivity().getResources().getDrawable(R.drawable.chord_m_5);
-        rx = getActivity().getResources().getDrawable(R.drawable.chord_r_x);
-        r0 = getActivity().getResources().getDrawable(R.drawable.chord_r_0);
-        r1 = getActivity().getResources().getDrawable(R.drawable.chord_r_1);
-        r2 = getActivity().getResources().getDrawable(R.drawable.chord_r_2);
-        r3 = getActivity().getResources().getDrawable(R.drawable.chord_r_3);
-        r4 = getActivity().getResources().getDrawable(R.drawable.chord_r_4);
-        r5 = getActivity().getResources().getDrawable(R.drawable.chord_r_5);
+        f1 = ResourcesCompat.getDrawable(res,R.drawable.chord_f1,null);
+        f2 = ResourcesCompat.getDrawable(res,R.drawable.chord_f2,null);
+        f3 = ResourcesCompat.getDrawable(res,R.drawable.chord_f3,null);
+        f4 = ResourcesCompat.getDrawable(res,R.drawable.chord_f4,null);
+        f5 = ResourcesCompat.getDrawable(res,R.drawable.chord_f5,null);
+        f6 = ResourcesCompat.getDrawable(res,R.drawable.chord_f6,null);
+        f7 = ResourcesCompat.getDrawable(res,R.drawable.chord_f7,null);
+        f8 = ResourcesCompat.getDrawable(res,R.drawable.chord_f8,null);
+        f9 = ResourcesCompat.getDrawable(res,R.drawable.chord_f9,null);
+        lx = ResourcesCompat.getDrawable(res,R.drawable.chord_l_x,null);
+        l0 = ResourcesCompat.getDrawable(res,R.drawable.chord_l_0,null);
+        l1 = ResourcesCompat.getDrawable(res,R.drawable.chord_l_1,null);
+        l2 = ResourcesCompat.getDrawable(res,R.drawable.chord_l_2,null);
+        l3 = ResourcesCompat.getDrawable(res,R.drawable.chord_l_3,null);
+        l4 = ResourcesCompat.getDrawable(res,R.drawable.chord_l_4,null);
+        l5 = ResourcesCompat.getDrawable(res,R.drawable.chord_l_5,null);
+        mx = ResourcesCompat.getDrawable(res,R.drawable.chord_m_x,null);
+        m0 = ResourcesCompat.getDrawable(res,R.drawable.chord_m_0,null);
+        m1 = ResourcesCompat.getDrawable(res,R.drawable.chord_m_1,null);
+        m2 = ResourcesCompat.getDrawable(res,R.drawable.chord_m_2,null);
+        m3 = ResourcesCompat.getDrawable(res,R.drawable.chord_m_3,null);
+        m4 = ResourcesCompat.getDrawable(res,R.drawable.chord_m_4,null);
+        m5 = ResourcesCompat.getDrawable(res,R.drawable.chord_m_5,null);
+        rx = ResourcesCompat.getDrawable(res,R.drawable.chord_r_x,null);
+        r0 = ResourcesCompat.getDrawable(res,R.drawable.chord_r_0,null);
+        r1 = ResourcesCompat.getDrawable(res,R.drawable.chord_r_1,null);
+        r2 = ResourcesCompat.getDrawable(res,R.drawable.chord_r_2,null);
+        r3 = ResourcesCompat.getDrawable(res,R.drawable.chord_r_3,null);
+        r4 = ResourcesCompat.getDrawable(res,R.drawable.chord_r_4,null);
+        r5 = ResourcesCompat.getDrawable(res,R.drawable.chord_r_5,null);
         customchordedit = V.findViewById(R.id.customchordedit);
-        customchordedit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "customchords";
-                mListener.openFragment();
-                dismiss();
-            }
+        customchordedit.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "customchords";
+            mListener.openFragment();
+            dismiss();
         });
 
         // Set the spinner options
@@ -987,14 +985,14 @@ public class PopUpChordsFragment extends DialogFragment {
     }
 
     @Override
-    public void onDismiss(final DialogInterface dialog) {
+    public void onDismiss(@NonNull final DialogInterface dialog) {
         if (mListener!=null) {
             mListener.pageButtonAlpha("");
         }
     }
 
     @Override
-    public void onCancel(DialogInterface dialog) {
+    public void onCancel(@NonNull DialogInterface dialog) {
         if (prepare_chords!=null) {
             prepare_chords.cancel(true);
         }
