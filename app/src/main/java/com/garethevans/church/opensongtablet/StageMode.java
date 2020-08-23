@@ -17,6 +17,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -378,6 +379,7 @@ public class StageMode extends AppCompatActivity implements
     private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
     private Transpose transpose;
     private ProfileActions profileActions;
+    private MakePDF makePDF;
 
     private boolean pdfCanContinueScrolling;
     private boolean dealtwithaspdf;
@@ -410,6 +412,7 @@ public class StageMode extends AppCompatActivity implements
         processSong = new ProcessSong();
         transpose = new Transpose();
         profileActions = new ProfileActions();
+        makePDF = new MakePDF();
         OptionMenuListeners optionMenuListeners = new OptionMenuListeners(this);
         nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong, optionMenuListeners, sqLiteHelper);
 
@@ -4506,7 +4509,7 @@ public class StageMode extends AppCompatActivity implements
             if (StaticVariables.mNotes != null && !StaticVariables.mNotes.isEmpty()) {
                 LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 if (layoutInflater!=null) {
-                    final View popupView = layoutInflater.inflate(R.layout.popup_float_sticky, null,false);
+                    final View popupView = layoutInflater.inflate(R.layout.popup_float_sticky, new LinearLayout(this),false);
                     // Decide on the popup position
                     int hp = preferences.getMyPreferenceInt(StageMode.this, "stickyXPosition", -1);
                     int vp = preferences.getMyPreferenceInt(StageMode.this, "stickyYPosition", -1);
@@ -4973,11 +4976,21 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onPreExecute() {
             try {
-                songscrollview.destroyDrawingCache();
-                songscrollview.setDrawingCacheEnabled(true);
-                songscrollview.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_AUTO);
+                // If the song height is bigger than the screen height (scrollable), scale it down for memory
+                int childheight = songscrollview.getChildAt(0).getHeight();
+                int scrollheight = songscrollview.getHeight();
+                float scale = 1.0f;
+                if (childheight>scrollheight) {
+                    scale = (float)scrollheight/(float)childheight;
+                }
                 FullscreenActivity.bmScreen = null;
-                FullscreenActivity.bmScreen = songscrollview.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
+                FullscreenActivity.bmScreen = Bitmap.createBitmap((int)(songscrollview.getChildAt(0).getWidth()*scale),
+                        (int)(songscrollview.getChildAt(0).getHeight()*scale), Bitmap.Config.ARGB_8888);
+
+                Canvas canvas = new Canvas(FullscreenActivity.bmScreen);
+                canvas.scale(scale,scale);
+                songscrollview.getChildAt(0).draw(canvas);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -4989,7 +5002,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 String title = getString(R.string.exportcurrentsong);
                 Intent emailIntent = exportPreparer.exportSong(StageMode.this, preferences,
-                        FullscreenActivity.bmScreen, storageAccess, processSong);
+                        FullscreenActivity.bmScreen, storageAccess, processSong,makePDF,sqLiteHelper);
                 Intent chooser = Intent.createChooser(emailIntent, title);
                 startActivity(chooser);
             } catch (Exception e) {
@@ -5389,23 +5402,22 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public boolean requestNearbyPermissions() {
-        Log.d("d","Requesting nearby permissions");
-            if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) {
-                return true;
-            } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
-                try {
-                    make(findViewById(R.id.mypage), R.string.location_rationale,
+        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
+            try {
+                make(findViewById(R.id.mypage), R.string.location_rationale,
                         LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 404)).show();
                 return false;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return false;
-                }
-            } else {
-                ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},404);
+            } catch (Exception e) {
+                e.printStackTrace();
                 return false;
             }
+        } else {
+            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},404);
+            return false;
+        }
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -5415,7 +5427,7 @@ public class StageMode extends AppCompatActivity implements
             // Send this off to be processed and sent via an intent
             try {
                 String title = getString(R.string.exportsavedset);
-                Intent emailIntent = exportPreparer.exportSet(StageMode.this, preferences, storageAccess);
+                Intent emailIntent = exportPreparer.exportSet(StageMode.this, preferences, storageAccess, processSong, makePDF, sqLiteHelper);
                 Intent chooser = Intent.createChooser(emailIntent, title);
                 startActivity(chooser);
             } catch (Exception e) {
@@ -6882,7 +6894,6 @@ public class StageMode extends AppCompatActivity implements
                     // After animate out, load the song
                     Handler h = new Handler();
                     h.postDelayed(() -> {
-                        Log.d("d","loadSong() called - Runnable going");
                         try {
                             glideimage_HorizontalScrollView.setVisibility(View.GONE);
                             glideimage_ScrollView.setVisibility(View.GONE);
@@ -6918,7 +6929,6 @@ public class StageMode extends AppCompatActivity implements
                         doCancelAsyncTask(resizeperformance_async);
                         loadsong_async = new LoadSongAsync();
                         try {
-                            Log.d("d","loadSong() called - about to start async load");
                             loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -7136,7 +7146,6 @@ public class StageMode extends AppCompatActivity implements
                         prepareView();
                     }
 
-                    Log.d("StageMode","clickedOnPadStart="+StaticVariables.clickedOnPadStart+"   reloadOfSong="+StaticVariables.reloadOfSong+"    dealtwithaspdf="+dealtwithaspdf);
                     // Do the pad fade and play here after display. This ensures a good cross-fade once the song is displayed
                     if (StaticVariables.clickedOnPadStart) {
                         // Do not touch on a reload
@@ -7366,7 +7375,6 @@ public class StageMode extends AppCompatActivity implements
                     if (s!=null && s.getFolder()!=null && s.getFilename()!=null) {
                         Uri u = storageAccess.getUriForItem(StageMode.this, preferences, "Songs", s.getFolder(), s.getFilename());
                         if (!storageAccess.uriExists(StageMode.this, u)) {
-                            Log.d("StageMode", s.getFolder() + "/" + s.getFilename() + " doesn't exist - remove it");
                             songsInFolder.remove(s);
                         }
                     }
@@ -8555,7 +8563,6 @@ public class StageMode extends AppCompatActivity implements
         Intent intent;
         // Start location
         Uri uri = storageAccess.getUriForItem(StageMode.this,preferences,"","","");
-        Log.d("d","Start uri="+uri);
         if (storageAccess.lollipopOrLater()) {
             intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);

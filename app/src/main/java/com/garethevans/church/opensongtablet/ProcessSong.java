@@ -233,7 +233,7 @@ public class ProcessSong extends Activity {
         return string;
     }
 
-    private String[] beautifyHeadings(String string, Context c) {
+    String[] beautifyHeadings(String string, Context c) {
 
         if (string == null) {
             string = "";

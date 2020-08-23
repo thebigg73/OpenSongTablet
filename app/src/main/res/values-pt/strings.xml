@@ -182,7 +182,6 @@
     <string name="export_desktop">"Arquivo da área de trabalho (sem extensão de arquivo)"</string>
     <string name="export_onsong">"Canção OnSong (.onsong)"</string>
     <string name="export_ost">"Canção OpenSongApp (.ost)"</string>
-    <string name="export_pdf">"Screenshot PDF (.pdf)"</string>
     <string name="export_png">"Imagem de captura de tela (.png)"</string>
     <string name="export_set">"Conjunto OpenSongApp (.osts)"</string>
     <string name="export_text">"Texto (.txt)"</string>

@@ -182,7 +182,6 @@
     <string name="export_desktop">"デスクトップファイル（ファイル拡張子なし）"</string>
     <string name="export_onsong">"OnSongの歌（韻）"</string>
     <string name="export_ost">"OpenSongAppの歌（.ost）"</string>
-    <string name="export_pdf">"スクリーンショットPDF（.pdf）"</string>
     <string name="export_png">"スクリーンショットイメージ（.png）"</string>
     <string name="export_set">"OpenSongAppセット（.osts）"</string>
     <string name="export_text">"テキスト（.txt）"</string>

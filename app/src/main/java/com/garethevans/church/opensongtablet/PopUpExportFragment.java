@@ -52,7 +52,6 @@ public class PopUpExportFragment extends DialogFragment {
     }
 
     private CheckBox exportImageCheckBox;
-    private CheckBox exportPDFCheckBox;
 
     private Preferences preferences;
 
@@ -91,7 +90,7 @@ public class PopUpExportFragment extends DialogFragment {
         CheckBox exportChordProCheckBox = V.findViewById(R.id.exportChordProCheckBox);
         CheckBox exportOnSongCheckBox = V.findViewById(R.id.exportOnSongCheckBox);
         exportImageCheckBox = V.findViewById(R.id.exportImageCheckBox);
-        exportPDFCheckBox = V.findViewById(R.id.exportPDFCheckBox);
+        CheckBox exportPDFCheckBox = V.findViewById(R.id.exportPDFCheckBox);
 
         // Hide the ones we don't need
         if (FullscreenActivity.whattodo.equals("customise_exportsong")) {
@@ -100,7 +99,7 @@ public class PopUpExportFragment extends DialogFragment {
             exportChordProCheckBox.setVisibility(View.GONE);
             exportOnSongCheckBox.setVisibility(View.GONE);
             exportImageCheckBox.setVisibility(View.GONE);
-            exportPDFCheckBox.setVisibility(View.GONE);
+            //exportPDFCheckBox.setVisibility(View.GONE);  Not using screenshot anymore, so can create
         }
 
         if (!StaticVariables.whichMode.equals("Performance")) {
@@ -127,26 +126,17 @@ public class PopUpExportFragment extends DialogFragment {
         exportChordProCheckBox.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(),"exportChordPro",b));
         exportOnSongCheckBox.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(),"exportOnSong",b));
         exportImageCheckBox.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (StaticVariables.thisSongScale !=null && StaticVariables.thisSongScale.equals("Y") && StaticVariables.whichMode.equals("Performance")) {
+            //StaticVariables.thisSongScale !=null && StaticVariables.thisSongScale.equals("Y") &&
+            if (StaticVariables.whichMode.equals("Performance")) {
                 preferences.setMyPreferenceBoolean(getActivity(),"exportImage",b);
             } else {
                 preferences.setMyPreferenceBoolean(getActivity(),"exportImage",false);
                 exportImageCheckBox.setChecked(false);
-                StaticVariables.myToastMessage = requireActivity().getString(R.string.toobig);
+                StaticVariables.myToastMessage = requireActivity().getString(R.string.switchtoperformmode);
                 ShowToast.showToast(getActivity());
             }
         });
-        exportPDFCheckBox.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (StaticVariables.thisSongScale!=null && StaticVariables.thisSongScale.equals("Y") &&
-                    StaticVariables.whichMode.equals("Performance")) {
-                preferences.setMyPreferenceBoolean(getActivity(),"exportPDF",b);
-            } else {
-                preferences.setMyPreferenceBoolean(getActivity(),"exportPDF",false);
-                exportPDFCheckBox.setChecked(false);
-                StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.toobig);
-                ShowToast.showToast(getActivity());
-            }
-        });
+        exportPDFCheckBox.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(),"exportPDF",b));
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 

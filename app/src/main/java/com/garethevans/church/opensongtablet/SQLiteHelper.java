@@ -207,6 +207,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
             values.put(SQLite.COLUMN_USER3, escapedSQL(sqLite.getUser3()));
             values.put(SQLite.COLUMN_KEY, escapedSQL(sqLite.getKey()));
             values.put(SQLite.COLUMN_TIMESIG, escapedSQL(sqLite.getTimesig()));
+            values.put(SQLite.COLUMN_TEMPO, escapedSQL(sqLite.getTempo()));
             values.put(SQLite.COLUMN_AKA, escapedSQL(sqLite.getAka()));
 
             long l = db.update(SQLite.TABLE_NAME, values, SQLite.COLUMN_ID + "=?", new String[]{String.valueOf(sqLite.getId())});
@@ -225,7 +226,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
                             SQLite.COLUMN_TITLE, SQLite.COLUMN_AUTHOR, SQLite.COLUMN_COPYRIGHT, SQLite.COLUMN_LYRICS,
                             SQLite.COLUMN_HYMNNUM, SQLite.COLUMN_CCLI, SQLite.COLUMN_THEME,
                             SQLite.COLUMN_ALTTHEME, SQLite.COLUMN_USER1, SQLite.COLUMN_USER2,
-                            SQLite.COLUMN_USER3, SQLite.COLUMN_KEY, SQLite.COLUMN_TIMESIG, SQLite.COLUMN_AKA},
+                            SQLite.COLUMN_USER3, SQLite.COLUMN_KEY, SQLite.COLUMN_TIMESIG, SQLite.COLUMN_TEMPO, SQLite.COLUMN_AKA},
                     SQLite.COLUMN_SONGID + "=?",
                     new String[]{String.valueOf((songid))}, null, null, SQLite.COLUMN_FILENAME, null);
 
@@ -252,6 +253,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
                             unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_USER3))),
                             unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_KEY))),
                             unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_TIMESIG))),
+                            unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_TEMPO))),
                             unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AKA))));
 
                     // close the db connection

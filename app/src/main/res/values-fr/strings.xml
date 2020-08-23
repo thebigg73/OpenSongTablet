@@ -182,7 +182,6 @@
     <string name="export_desktop">"Fichier de bureau (pas d'extension de fichier)"</string>
     <string name="export_onsong">"Chanson OnSong (.onsong)"</string>
     <string name="export_ost">"Chanson OpenSongApp (.ost)"</string>
-    <string name="export_pdf">"Capture d'écran PDF (.pdf)"</string>
     <string name="export_png">"Image de capture d'écran (.png)"</string>
     <string name="export_set">"Ensemble OpenSongApp (.osts)"</string>
     <string name="export_text">"Texte (.txt)"</string>

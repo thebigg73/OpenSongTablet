@@ -182,7 +182,6 @@
     <string name="export_desktop">"Skrivbordsfil (ingen filtillägg)"</string>
     <string name="export_onsong">"OnSong Song (.onsong)"</string>
     <string name="export_ost">"OpenSongApp-låt (.ost)"</string>
-    <string name="export_pdf">"Skärmdump PDF (.pdf)"</string>
     <string name="export_png">"Skärmdump (.png)"</string>
     <string name="export_set">"OpenSongApp set (.osts)"</string>
     <string name="export_text">"Text (.txt)"</string>

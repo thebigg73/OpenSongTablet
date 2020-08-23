@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.util.Log;
 
 import java.util.Locale;
 
@@ -24,7 +23,6 @@ class FixLocale {
                 // No locale is set, so let's see if the user's language is supported
                 // Get device setting
                 String deviceval = Locale.getDefault().getLanguage();
-                Log.d("FixLocale","User device languange = "+deviceval);
 
                 // If this is supported, set the user preference, otherwise use English
                 String translations = "af cs de el es fr hu it ja pl pt ru sr sv zh";

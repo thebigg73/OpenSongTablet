@@ -182,7 +182,6 @@
     <string name="export_desktop">"Файл настольной версии Open Song (без расширения)"</string>
     <string name="export_onsong">"Файл в формате OnSong (.ongong)"</string>
     <string name="export_ost">"Файл в формате OpenSongApp (.ost)"</string>
-    <string name="export_pdf">"Скриншот PDF (.pdf)"</string>
     <string name="export_png">"Скриншот PNG (.png)"</string>
     <string name="export_set">"Список OpenSongApp (.osts)"</string>
     <string name="export_text">"Текстовый файл (.txt)"</string>

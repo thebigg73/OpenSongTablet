@@ -90,7 +90,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
 
         fm = fragman;
         LinearLayout menu;
-        Log.d("d","whichOptionMenu="+StaticVariables.whichOptionMenu);
         switch (StaticVariables.whichOptionMenu) {
             case "MAIN":
             default:

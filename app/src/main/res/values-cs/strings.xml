@@ -182,7 +182,6 @@
     <string name="export_desktop">"Soubor plochy (bez přípony souboru)"</string>
     <string name="export_onsong">"OnSong píseň (.ong)"</string>
     <string name="export_ost">"OpenSongApp song (.ost)"</string>
-    <string name="export_pdf">"Screenshot PDF (.pdf)"</string>
     <string name="export_png">"Obrázek snímku (.png)"</string>
     <string name="export_set">"Sada OpenSongApp (.osts)"</string>
     <string name="export_text">"Text (.txt)"</string>

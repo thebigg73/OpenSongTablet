@@ -22,6 +22,7 @@ class SQLite {
     static final String COLUMN_USER3 = "user3";
     static final String COLUMN_KEY = "key";
     static final String COLUMN_TIMESIG = "timesig";
+    static final String COLUMN_TEMPO = "tempo";
     static final String COLUMN_AKA = "aka";
 
     private int id;
@@ -41,6 +42,7 @@ class SQLite {
     private String user3;
     private String key;
     private String timesig;
+    private String tempo;
     private String aka;
 
     SQLite() {
@@ -49,7 +51,7 @@ class SQLite {
 
     SQLite(int id, String songid, String filename, String folder, String title, String author,
            String copyright, String lyrics, String hymn_num, String ccli, String theme,
-           String alttheme, String user1, String user2, String user3, String key, String timesig, String aka) {
+           String alttheme, String user1, String user2, String user3, String key, String timesig, String tempo, String aka) {
         this.id = id;
         this.songid = songid;
         this.filename = filename;
@@ -68,6 +70,7 @@ class SQLite {
         this.key = key;
         this.aka = aka;
         this.timesig = timesig;
+        this.tempo = tempo;
     }
 
     int getId() {
@@ -119,6 +122,7 @@ class SQLite {
         return key;
     }
     String getTimesig() {return timesig;}
+    String getTempo() {return tempo;}
     String getAka() {
         return aka;
     }
@@ -172,6 +176,7 @@ class SQLite {
         this.key = key;
     }
     void setTimesig(String timesig) {this.timesig = timesig;}
+    void setTempo(String tempo) {this.tempo = tempo;}
     void setAka(String aka) {
         this.aka = aka;
     }
@@ -196,6 +201,7 @@ class SQLite {
                     + COLUMN_USER3 + " TEXT,"
                     + COLUMN_KEY + " TEXT,"
                     + COLUMN_TIMESIG + " TEXT,"
+                    + COLUMN_TEMPO + " TEXT,"
                     + COLUMN_AKA + " TEXT"
                     + ");";
 

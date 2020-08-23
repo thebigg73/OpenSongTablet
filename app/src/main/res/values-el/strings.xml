@@ -182,7 +182,6 @@
     <string name="export_desktop">"Επιφάνεια εργασίας (χωρίς επέκταση αρχείου)"</string>
     <string name="export_onsong">"OnSong τραγούδι (.ong)"</string>
     <string name="export_ost">"Τραγούδι OpenSongApp (.ost)"</string>
-    <string name="export_pdf">"Στιγμιότυπο PDF (.pdf)"</string>
     <string name="export_png">"Εικόνα οθόνης (.png)"</string>
     <string name="export_set">"Σετ OpenSongApp (.osts)"</string>
     <string name="export_text">"Κείμενο (.txt)"</string>

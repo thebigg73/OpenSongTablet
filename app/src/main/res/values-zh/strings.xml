@@ -182,7 +182,6 @@
     <string name="export_desktop">"桌面文件（无文件扩展名）"</string>
     <string name="export_onsong">"安松歌（.onsong）"</string>
     <string name="export_ost">"OpenSongApp歌曲（.ost）"</string>
-    <string name="export_pdf">"截图PDF（.pdf）"</string>
     <string name="export_png">"截图图片（.png）"</string>
     <string name="export_set">"OpenSongApp集（.osts）"</string>
     <string name="export_text">"文字（.txt）"</string>

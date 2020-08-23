@@ -182,7 +182,6 @@
     <string name="export_desktop">"Plik pulpitu (brak rozszerzenia plików)"</string>
     <string name="export_onsong">"Piosenka OnSong (.onsong)"</string>
     <string name="export_ost">"Utwór OpenSongApp (.ost)"</string>
-    <string name="export_pdf">"Screenshot PDF (.pdf)"</string>
     <string name="export_png">"Obraz zrzutu (.png)"</string>
     <string name="export_set">"Pakiet OpenSongApp (.osts)"</string>
     <string name="export_text">"Tekst (.txt)"</string>

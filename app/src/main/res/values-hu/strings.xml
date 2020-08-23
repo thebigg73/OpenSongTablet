@@ -182,7 +182,6 @@
     <string name="export_desktop">"Asztali fájl (nincs fájlkiterjesztés)"</string>
     <string name="export_onsong">"OnSong dal (.onsong)"</string>
     <string name="export_ost">"OpenSongApp dal (ost)"</string>
-    <string name="export_pdf">"Screenshot PDF (.pdf)"</string>
     <string name="export_png">"Screenshot-kép (.png)"</string>
     <string name="export_set">"OpenSongApp szett (.osts)"</string>
     <string name="export_text">"Szöveg (.txt)"</string>

@@ -5,9 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -39,7 +36,7 @@ class ExportPreparer {
     private Backup_Create_Selected backup_create_selected;
     private ZipOutputStream outSelected;
 
-    Intent exportSet(Context c, Preferences preferences, StorageAccess storageAccess) {
+    Intent exportSet(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong, MakePDF makePDF, SQLiteHelper sqLiteHelper) {
         String nicename = StaticVariables.settoload;
 
         // This is the actual set file
@@ -105,6 +102,8 @@ class ExportPreparer {
             storageAccess.copyFile(inputStream,outputStream);
         }
 
+
+
         // Add the uris for each file requested
         ArrayList<Uri> uris = new ArrayList<>();
         if (texturi!=null) {
@@ -127,32 +126,30 @@ class ExportPreparer {
                 Uri songtoload = storageAccess.getFileProviderUri(c, preferences, "Songs", "",
                         FullscreenActivity.exportsetfilenames.get(q));
 
-                boolean isimage = false;
+
                 String s = songtoload.toString();
                 try {
-                    s = songtoload.getLastPathSegment();
+                    s = songtoload.getLastPathSegment().toLowerCase(StaticVariables.locale);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
 
-                if (s != null && (s.endsWith(".jpg") || s.endsWith(".JPG") || s.endsWith(".jpeg") || s.endsWith(".JPEG") ||
-                        s.endsWith(".gif") || s.endsWith(".GIF") || s.endsWith(".png") || s.endsWith(".PNG") ||
-                        s.endsWith(".bmp") || s.endsWith(".BMP"))) {
-                    isimage = true;
-                }
-
                 // Copy the song
-                if (!storageAccess.lollipopOrLater() || storageAccess.uriExists(c, songtoload) && !isimage) {
-                    InputStream inputStream = storageAccess.getInputStream(c,songtoload);
-                    if (inputStream != null) {
-                        Uri ostsongcopy = storageAccess.getFileProviderUri(c, preferences, "Notes", "_cache",
-                                storageAccess.safeFilename(tempsong_ost) + ".ost");
-                        // Check the uri exists for the outputstream to be valid
-                        storageAccess.lollipopCreateFileForOutputStream(c, preferences, ostsongcopy, null, "Notes", "_cache", storageAccess.safeFilename(tempsong_ost) + ".ost");
-                        OutputStream outputStream = storageAccess.getOutputStream(c, ostsongcopy);
-                        storageAccess.copyFile(inputStream, outputStream);
-                        uris.add(ostsongcopy);
+                if (!storageAccess.lollipopOrLater() || storageAccess.uriExists(c, songtoload)) {
+
+                    // We want to add a .ost file (OpenSongApp song)
+                    if (preferences.getMyPreferenceBoolean(c,"exportOpenSongApp",true) && !isImgOrPDF(s)) {
+                        InputStream inputStream = storageAccess.getInputStream(c, songtoload);
+                        if (inputStream != null) {
+                            Uri ostsongcopy = storageAccess.getFileProviderUri(c, preferences, "Notes", "_cache",
+                                    storageAccess.safeFilename(tempsong_ost) + ".ost");
+                            // Check the uri exists for the outputstream to be valid
+                            storageAccess.lollipopCreateFileForOutputStream(c, preferences, ostsongcopy, null, "Notes", "_cache", storageAccess.safeFilename(tempsong_ost) + ".ost");
+                            OutputStream outputStream = storageAccess.getOutputStream(c, ostsongcopy);
+                            storageAccess.copyFile(inputStream, outputStream);
+                            uris.add(ostsongcopy);
+                        }
                     }
                 }
             }
@@ -161,9 +158,36 @@ class ExportPreparer {
         // Add the standard song file (desktop version) - if it exists
         if (preferences.getMyPreferenceBoolean(c,"exportDesktop",false)) {
             for (int q = 0; q < FullscreenActivity.exportsetfilenames.size(); q++) {
-                Uri uri = storageAccess.getFileProviderUri(c, preferences, "Songs", "", FullscreenActivity.exportsetfilenames.get(q));
-                if (storageAccess.uriExists(c, uri)) {
-                    uris.add(uri);
+                if (!isImgOrPDF(FullscreenActivity.exportsetfilenames.get(q))) {
+                    Uri uri = storageAccess.getFileProviderUri(c, preferences, "Songs", "", FullscreenActivity.exportsetfilenames.get(q));
+                    if (storageAccess.uriExists(c, uri)) {
+                        uris.add(uri);
+                    }
+                }
+            }
+        }
+
+        // Add a pdf
+        if (preferences.getMyPreferenceBoolean(c,"exportPDF",false)) {
+            for (int q = 0; q < FullscreenActivity.exportsetfilenames.size(); q++) {
+                String s = FullscreenActivity.exportsetfilenames.get(q);
+
+                if (!isImgOrPDF(s)) {
+                    if (s.startsWith("/") && !s.contains(c.getResources().getString(R.string.mainfoldername))) {
+                        s = c.getResources().getString(R.string.mainfoldername) + s;
+                    }
+                    if (!s.contains("/")) {
+                        s = c.getResources().getString(R.string.mainfoldername) + "/" + s;
+                    }
+                    Log.d("ExportPreparer","s="+s);
+                    SQLite thisSong = sqLiteHelper.getSong(c,s);
+                    Uri pdfuri = makePDF.createPDF(c,preferences,storageAccess,processSong,thisSong);
+                    uris.add(pdfuri);
+                } else if (isPDF(s)) {
+                    Uri pdfuri = storageAccess.getFileProviderUri(c, preferences, "Songs", "", FullscreenActivity.exportsetfilenames.get(q));
+                    if (storageAccess.uriExists(c, pdfuri)) {
+                        uris.add(pdfuri);
+                    }
                 }
             }
         }
@@ -173,7 +197,7 @@ class ExportPreparer {
         return emailIntent;
     }
 
-    Intent exportSong(Context c, Preferences preferences, Bitmap bmp, StorageAccess storageAccess, ProcessSong processSong) {
+    Intent exportSong(Context c, Preferences preferences, Bitmap bmp, StorageAccess storageAccess, ProcessSong processSong, MakePDF makePDF, SQLiteHelper sqLiteHelper) {
         // Prepare the appropriate attachments
         String emailcontent = "";
         Uri text = null;
@@ -258,7 +282,21 @@ class ExportPreparer {
             storageAccess.writeFileFromString(exportOnSong_String,outputStream);
         }
 
-        // IV - Image based exports  - did not investigate why but swapped position of PDF with PNG to get them working when both selected
+        // GE Improved PDF method (text based)
+        // Uses SQLite, so song doesn't need to be displayed on the screen
+        if (preferences.getMyPreferenceBoolean(c,"exportPDF",false)) {
+            String songid;
+            if (StaticVariables.whichSongFolder.equals("")) {
+                songid = c.getResources().getString(R.string.mainfoldername) + "/" + StaticVariables.songfilename;
+            } else {
+                songid = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
+            }
+
+            SQLite thisSong = sqLiteHelper.getSong(c,songid);
+            pdf = makePDF.createPDF(c,preferences,storageAccess,processSong,thisSong);
+        }
+
+        /*// IV - Image based exports  - did not investigate why but swapped position of PDF with PNG to get them working when both selected
         if (StaticVariables.whichMode.equals("Performance") && preferences.getMyPreferenceBoolean(c,"exportPDF",false)) {
             // Prepare a pdf version of the song.
             pdf = storageAccess.getUriForItem(c, preferences, "Export", "",
@@ -271,6 +309,7 @@ class ExportPreparer {
 
             makePDF(c,pdfbmp,pdf,storageAccess);
         }
+*/
 
         if (StaticVariables.whichMode.equals("Performance") &&
                 preferences.getMyPreferenceBoolean(c,"exportImage",false)) {
@@ -389,9 +428,9 @@ class ExportPreparer {
                     if (xpp.getName().equals("slide_group")) {
                         switch (xpp.getAttributeValue(null, "type")) {
                             case "song":
+                                String fname = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
                                 Uri songuri = storageAccess.getUriForItem(c, preferences, "Songs",
-                                        LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "path")),
-                                        LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name")));
+                                        LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "path")), fname);
                                 String thisline;
 
                                 // Ensure there is a folder '/'
@@ -409,7 +448,7 @@ class ExportPreparer {
                                 song_hymnnumber = "";
                                 song_key = "";
                                 // Now try to improve on this info
-                                if (storageAccess.uriExists(c,songuri)) {
+                                if (storageAccess.uriExists(c,songuri) && !isImgOrPDF(fname)) {
                                     // Read in the song title, author, copyright, hymnnumber, key
                                     getSongData(c,songuri,storageAccess);
                                 }
@@ -547,6 +586,9 @@ class ExportPreparer {
         }
 	}
 
+	// Old method that converted bitmap to pdf.  Poor quality
+/*
+
     private void makePDF(Context c, Bitmap bmp, Uri uri, StorageAccess storageAccess) {
         try {
             PdfDocument pdfDocument = new PdfDocument();
@@ -610,7 +652,8 @@ class ExportPreparer {
         } catch (Exception | OutOfMemoryError e) {
             e.printStackTrace();
         }
-        /*Document document = new Document();
+        */
+/*Document document = new Document();
         OutputStream outputStream = storageAccess.getOutputStream(c,uri);
         try {
             PdfWriter.getInstance(document, outputStream);
@@ -630,8 +673,10 @@ class ExportPreparer {
             document.add(new Paragraph(StaticVariables.mTitle,TitleFontName));
             document.add(new Paragraph(StaticVariables.mAuthor,AuthorFontName));
             addImage(document,bmp);
-            document.close();*/
+            document.close();*//*
+
     }
+*/
 
     void createSelectedOSB(Context c, Preferences preferences, String selected, StorageAccess storageAccess) {
         folderstoexport = selected;
@@ -823,5 +868,18 @@ class ExportPreparer {
         String string = s.toString();
         string = string.replaceAll("\n\n\n", "\n\n");
         return string;
+    }
+
+    private boolean isImgOrPDF(String s) {
+        return isImg(s) || isPDF(s);
+    }
+    private boolean isImg(String s) {
+        s = s.toLowerCase(StaticVariables.locale);
+        return s != null && (s.endsWith(".jpg") || s.endsWith(".jpeg") || s.endsWith(".gif") ||
+                s.endsWith(".png") || s.endsWith(".bmp"));
+    }
+    private boolean isPDF(String s) {
+        s = s.toLowerCase(StaticVariables.locale);
+        return s != null && s.endsWith(".pdf");
     }
 }

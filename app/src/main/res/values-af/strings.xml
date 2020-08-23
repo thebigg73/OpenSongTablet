@@ -182,7 +182,6 @@
     <string name="export_desktop">"Desktop lêer (geen lêer uitbreiding)"</string>
     <string name="export_onsong">"On song song (.onsong)"</string>
     <string name="export_ost">"OpenSongApp liedjie (.ost)"</string>
-    <string name="export_pdf">"Screenshot PDF (. Pdf)"</string>
     <string name="export_png">"Screenshot image (. Png)"</string>
     <string name="export_set">"OpenSongApp stel (.osts)"</string>
     <string name="export_text">"Teks (.txt)"</string>

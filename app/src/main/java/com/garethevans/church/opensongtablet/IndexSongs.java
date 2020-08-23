@@ -35,6 +35,7 @@ class IndexSongs {
     private String key;
     private String aka;
     private String timesig;
+    private String tempo;
     private InputStream inputStream;
     private Uri uri;
     private String utf;
@@ -56,6 +57,7 @@ class IndexSongs {
         key = "";
         aka = "";
         timesig = "";
+        tempo = "";
         inputStream = null;
         uri = null;
         utf = "UTF-8";
@@ -135,15 +137,15 @@ class IndexSongs {
                             }
                         }
 
-                        // Make the lyrics nicer for the database (remove chord lines and headings)
-                        String[] lines = lyrics.split("\n");
+                        // Make the lyrics nicer for the database (remove chord lines and headings) - take this out to allow PDFs to be generated on the fly
+                        /*String[] lines = lyrics.split("\n");
                         StringBuilder sb = new StringBuilder();
                         for (String l : lines) {
                             if (!l.startsWith("[") && !l.startsWith(".")) {
                                 sb.append(l).append("\n");
                             }
                         }
-                        lyrics = sb.toString();
+                        lyrics = sb.toString();*/
 
                         String songid = folder.replaceAll("'", "''") + "/" + filename.replaceAll("'", "''");
                         // Now we have the song info, update the table row
@@ -163,6 +165,7 @@ class IndexSongs {
                                 SQLite.COLUMN_USER3 + "='" + user3.replaceAll("'", "''") + "', " +
                                 SQLite.COLUMN_HYMNNUM + "='" + hymnnum.replaceAll("'", "''") + "', " +
                                 SQLite.COLUMN_CCLI + "='" + ccli.replaceAll("'", "''") + "', " +
+                                SQLite.COLUMN_TEMPO + "='" + tempo.replaceAll("'", "''") + "', " +
                                 SQLite.COLUMN_TIMESIG + "='" + timesig.replaceAll("'", "''") + "' " +
                                 "WHERE " + SQLite.COLUMN_SONGID + "='" + songid + "';";
                         try {
@@ -271,6 +274,14 @@ class IndexSongs {
 
                         case "hymn_number":
                             hymnnum = xpp.nextText();
+                            break;
+
+                        case "tempo":
+                            tempo = xpp.nextText();
+                            break;
+
+                        case "time_sig":
+                            timesig = xpp.nextText();
                             break;
                     }
                 }

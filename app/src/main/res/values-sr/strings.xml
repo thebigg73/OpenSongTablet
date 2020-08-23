@@ -392,7 +392,6 @@
     <string name="export_desktop">"Desktop file (no file extension)"</string>
     <string name="export_onsong">"OnSong song (.onsong)"</string>
     <string name="export_ost">"OpenSongApp song (.ost)"</string>
-    <string name="export_pdf">"Screenshot PDF (.pdf)"</string>
     <string name="export_png">"Screenshot image (.png)"</string>
     <string name="export_set">"OpenSongApp set (.osts)"</string>
     <string name="export_text">"Text (.txt)"</string>
