@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -187,7 +188,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         //19  Exit/close app
         actionOptions.add(getString(R.string.drawer_close));
 
-        ArrayAdapter<String> adapter_1 = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, actionOptions);
+        ArrayAdapter<String> adapter_1 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
         ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
         ArrayAdapter<String> adapter_3 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
         ArrayAdapter<String> adapter_4 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
@@ -201,12 +202,12 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         button3_spinner.setAdapter(adapter_3);
         button4_spinner.setAdapter(adapter_4);
 
-        button1_spinner.setSelection(decideOnItemPosition(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom1Action","")));
+        button1_spinner.setSelection(decideOnItemPosition(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom1Action","transpose")));
         button2_spinner.setSelection(decideOnItemPosition(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom2Action","")));
         button3_spinner.setSelection(decideOnItemPosition(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom3Action","")));
         button4_spinner.setSelection(decideOnItemPosition(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom4Action","")));
 
-        button1_image.setBackgroundDrawable(getButtonImage(getActivity(),preferences.getMyPreferenceString(getActivity(),"pageButtonCustom1Action","")));
+        button1_image.setBackgroundDrawable(getButtonImage(getActivity(),preferences.getMyPreferenceString(getActivity(),"pageButtonCustom1Action","transpose")));
         button2_image.setBackgroundDrawable(getButtonImage(getActivity(),preferences.getMyPreferenceString(getActivity(),"pageButtonCustom2Action","")));
         button3_image.setBackgroundDrawable(getButtonImage(getActivity(),preferences.getMyPreferenceString(getActivity(),"pageButtonCustom3Action","")));
         button4_image.setBackgroundDrawable(getButtonImage(getActivity(),preferences.getMyPreferenceString(getActivity(),"pageButtonCustom4Action","")));
@@ -369,6 +370,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
     }
 
     private static int decideOnItemPosition(String s) {
+        Log.d("QuickLaunch","value="+s);
         int i;
         switch (s) {
             case "":
@@ -420,7 +422,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
                 i = 11;
                 break;
 
-            case "search":
+            case "fullsearch":
                 i = 12;
                 break;
 
@@ -448,7 +450,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
                 i = 19;
                 break;
         }
-
+        Log.d("QuickLaunch","i="+i);
         return i;
 
     }
