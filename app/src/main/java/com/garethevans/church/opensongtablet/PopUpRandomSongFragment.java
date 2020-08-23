@@ -127,6 +127,21 @@ public class PopUpRandomSongFragment extends DialogFragment {
 
     private void generateFolderList() {
         // Since users change their folders, update this chosen list with those actually available
+
+        // Due to a previous bug where $$__ wasn't added to some folders in the preference, meaning it can't be removed
+        // Tidy up the preferences
+        String prefs = preferences.getMyPreferenceString(getActivity(),"randomSongFolderChoice","");
+        prefs = prefs.replace("$$__","%%");
+        prefs = prefs.replace("__$$","%%");
+        String[] bits = prefs.split("%%");
+        StringBuilder sb = new StringBuilder();
+        for (String bit:bits) {
+            if (bit!=null && !bit.isEmpty()) {
+                sb.append("$$__").append(bit).append("__$$");
+            }
+        }
+        preferences.setMyPreferenceString(getActivity(),"randomSongFolderChoice",sb.toString());
+
         StringBuilder newRandomFoldersChosen = new StringBuilder();
         if (foldernames!=null) {
             ArrayAdapter<String> songfolders = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
@@ -135,7 +150,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
 
             // Go through each folder available and tick it if the folder is in the randomFolders string
             for (int i = 0; i < foldernames.size(); i++) {
-                if (preferences.getMyPreferenceString(getActivity(),"randomSongFolderChoice","").contains("$$__"+foldernames.get(i)+"__$$")) {
+                if (preferences.getMyPreferenceString(getContext(),"randomSongFolderChoice","").contains("$$__"+foldernames.get(i)+"__$$")) {
                     chooseFolders_ListView.setItemChecked(i,true);
                     newRandomFoldersChosen.append("$$__").append(foldernames.get(i)).append("__$$");
                 } else {
@@ -148,7 +163,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
                     if (!preferences.getMyPreferenceString(getActivity(),"randomSongFolderChoice","").contains("$$__"+foldernames.get(i)+"__$$")) {
                         // Not there, so add it
                         String rf = preferences.getMyPreferenceString(getActivity(),"randomSongFolderChoice","") +
-                                foldernames.get(i)+"__$$";
+                                "$$__" + foldernames.get(i)+"__$$";
                         preferences.setMyPreferenceString(getActivity(),"randomSongFolderChoice",rf);
                     }
                 } else {
@@ -168,9 +183,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
     private class BuildSongsToChooseFrom extends AsyncTask<Void, Void, String> {
 
         @Override
-        protected void onPreExecute() {
-
-        }
+        protected void onPreExecute() { }
 
         @Override
         protected String doInBackground(Void... voids) {
@@ -186,7 +199,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
     private void updateRandomSong(String song) {
         // Update the button with the randomly found song
         if (!song.equals("")) {
-            String[] r_song = song.split("__");
+            String[] r_song = song.split("_%%_");
             if (r_song.length>=2 && r_song[0]!=null && r_song[1]!=null && !r_song[0].equals("") && !r_song[1].equals("")) {
                 foundSongTitle_TextView.setText(r_song[1]);
                 foundSongFolder_TextView.setText(r_song[0]);
@@ -211,8 +224,8 @@ public class PopUpRandomSongFragment extends DialogFragment {
 
             for (SQLite check : allsongs) {
                 if (preferences.getMyPreferenceString(getActivity(), "randomSongFolderChoice", "").
-                        contains(check.getFolder())) {
-                    songstochoosefrom.add(check.getFolder() + "__" + check.getFilename());
+                        contains(check.getFolder()) && check.getFilename()!=null && !check.getFilename().isEmpty()) {
+                    songstochoosefrom.add(check.getFolder() + "_%%_" + check.getFilename());
                 }
             }
             int rand = getRandomNumber(songstochoosefrom.size());

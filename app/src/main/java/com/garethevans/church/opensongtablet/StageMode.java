@@ -4504,87 +4504,88 @@ public class StageMode extends AppCompatActivity implements
             }
         } else {
             if (StaticVariables.mNotes != null && !StaticVariables.mNotes.isEmpty()) {
-                LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                assert layoutInflater != null;
-                @SuppressLint("InflateParams") final View popupView = layoutInflater.inflate(R.layout.popup_float_sticky, null);
-                // Decide on the popup position
-                int hp = preferences.getMyPreferenceInt(StageMode.this,"stickyXPosition",-1);
-                int vp = preferences.getMyPreferenceInt(StageMode.this,"stickyYPosition",-1);
-                int sw = getAvailableWidth();
-                int sh = getAvailableHeight();
-                int stickywidth = preferences.getMyPreferenceInt(StageMode.this,"stickyWidth",400);
-                if (hp==-1 || hp>sw) {
-                    hp = sw - stickywidth - (int) ((float) setButton.getMeasuredWidth() * 1.2f);
-                }
-                if (hp < 0) {
-                    hp = 0;
-                }
-                if (vp==-1 || hp>sh) {
-                    vp = (int) ((float) ab_toolbar.getMeasuredHeight() * 1.2f);
-                }
-                if (vp < 0) {
-                    vp = 0;
-                }
-                preferences.setMyPreferenceInt(StageMode.this,"stickyXPosition",hp);
-                preferences.setMyPreferenceInt(StageMode.this,"stickyYPosition",vp);
-                stickyPopUpWindow = new PopupWindow(popupView);
-                stickyPopUpWindow.setFocusable(false);
-                stickyPopUpWindow.setWidth(stickywidth);
-                stickyPopUpWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-                stickyPopUpWindow.setContentView(popupView);
-                FloatingActionButton closeStickyFloat = popupView.findViewById(R.id.closeMe);
-                LinearLayout myTitle = popupView.findViewById(R.id.myTitle);
-                TextView mySticky = popupView.findViewById(R.id.mySticky);
-                mySticky.setTextColor(defstickytextcolor);
-                float sts;
-                if (preferences.getMyPreferenceBoolean(StageMode.this,"stickyLargeFont",true)) {
-                    sts = StaticVariables.infoBarLargeTextSize;
-                } else {
-                    sts = StaticVariables.infoBarSmallTextSize;
-                }
-                mySticky.setTextSize(sts);
-                mySticky.setTypeface(StaticVariables.typefaceSticky);
-                mySticky.setText(StaticVariables.mNotes);
-                popupView.setBackgroundResource(R.drawable.popup_sticky);
-                GradientDrawable drawable = (GradientDrawable) popupView.getBackground();
-                drawable.setColor(defstickybgcolor);
-                popupView.setPadding(10, 10, 10, 10);
-                stickyPopUpWindow.showAtLocation(mypage, Gravity.TOP | Gravity.START, hp, vp);
-                RelativeLayout stickyfloat = popupView.findViewById(R.id.stickyfloat);
-                stickyfloat.setAlpha(preferences.getMyPreferenceFloat(StageMode.this,"stickyOpacity",0.8f));
-                closeStickyFloat.setOnClickListener(view -> {
-                    // If there is a sticky note showing, remove it
-                    if (stickyPopUpWindow != null && stickyPopUpWindow.isShowing()) {
-                        try {
-                            stickyPopUpWindow.dismiss();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                if (layoutInflater!=null) {
+                    final View popupView = layoutInflater.inflate(R.layout.popup_float_sticky, null,false);
+                    // Decide on the popup position
+                    int hp = preferences.getMyPreferenceInt(StageMode.this, "stickyXPosition", -1);
+                    int vp = preferences.getMyPreferenceInt(StageMode.this, "stickyYPosition", -1);
+                    int sw = getAvailableWidth();
+                    int sh = getAvailableHeight();
+                    int stickywidth = preferences.getMyPreferenceInt(StageMode.this, "stickyWidth", 400);
+                    if (hp == -1 || hp > sw) {
+                        hp = sw - stickywidth - (int) ((float) setButton.getMeasuredWidth() * 1.2f);
                     }
-                });
-                myTitle.setOnTouchListener(new View.OnTouchListener() {
-                    int orgX, orgY;
-                    int offsetX, offsetY;
+                    if (hp < 0) {
+                        hp = 0;
+                    }
+                    if (vp == -1 || hp > sh) {
+                        vp = (int) ((float) ab_toolbar.getMeasuredHeight() * 1.2f);
+                    }
+                    if (vp < 0) {
+                        vp = 0;
+                    }
+                    preferences.setMyPreferenceInt(StageMode.this, "stickyXPosition", hp);
+                    preferences.setMyPreferenceInt(StageMode.this, "stickyYPosition", vp);
+                    stickyPopUpWindow = new PopupWindow(popupView);
+                    stickyPopUpWindow.setFocusable(false);
+                    stickyPopUpWindow.setWidth(stickywidth);
+                    stickyPopUpWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                    stickyPopUpWindow.setContentView(popupView);
+                    FloatingActionButton closeStickyFloat = popupView.findViewById(R.id.closeMe);
+                    LinearLayout myTitle = popupView.findViewById(R.id.myTitle);
+                    TextView mySticky = popupView.findViewById(R.id.mySticky);
+                    mySticky.setTextColor(defstickytextcolor);
+                    float sts;
+                    if (preferences.getMyPreferenceBoolean(StageMode.this, "stickyLargeFont", true)) {
+                        sts = StaticVariables.infoBarLargeTextSize;
+                    } else {
+                        sts = StaticVariables.infoBarSmallTextSize;
+                    }
+                    mySticky.setTextSize(sts);
+                    mySticky.setTypeface(StaticVariables.typefaceSticky);
+                    mySticky.setText(StaticVariables.mNotes);
+                    popupView.setBackgroundResource(R.drawable.popup_sticky);
+                    GradientDrawable drawable = (GradientDrawable) popupView.getBackground();
+                    drawable.setColor(defstickybgcolor);
+                    popupView.setPadding(10, 10, 10, 10);
+                    stickyPopUpWindow.showAtLocation(mypage, Gravity.TOP | Gravity.START, hp, vp);
+                    RelativeLayout stickyfloat = popupView.findViewById(R.id.stickyfloat);
+                    stickyfloat.setAlpha(preferences.getMyPreferenceFloat(StageMode.this, "stickyOpacity", 0.8f));
+                    closeStickyFloat.setOnClickListener(view -> {
+                        // If there is a sticky note showing, remove it
+                        if (stickyPopUpWindow != null && stickyPopUpWindow.isShowing()) {
+                            try {
+                                stickyPopUpWindow.dismiss();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    myTitle.setOnTouchListener(new View.OnTouchListener() {
+                        int orgX, orgY;
+                        int offsetX, offsetY;
 
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        switch (event.getAction()) {
-                            case MotionEvent.ACTION_DOWN:
-                                orgX = (int) event.getX();
-                                orgY = (int) event.getY();
-                                break;
-                            case MotionEvent.ACTION_MOVE:
-                                offsetX = (int) event.getRawX() - orgX;
-                                offsetY = (int) event.getRawY() - orgY;
-                                stickyPopUpWindow.update(offsetX, offsetY, -1, -1, true);
-                                break;
-                            case MotionEvent.ACTION_UP:
-                                preferences.setMyPreferenceInt(StageMode.this,"stickyXPosition",offsetX);
-                                preferences.setMyPreferenceInt(StageMode.this,"stickyYPosition",offsetY);
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            switch (event.getAction()) {
+                                case MotionEvent.ACTION_DOWN:
+                                    orgX = (int) event.getX();
+                                    orgY = (int) event.getY();
+                                    break;
+                                case MotionEvent.ACTION_MOVE:
+                                    offsetX = (int) event.getRawX() - orgX;
+                                    offsetY = (int) event.getRawY() - orgY;
+                                    stickyPopUpWindow.update(offsetX, offsetY, -1, -1, true);
+                                    break;
+                                case MotionEvent.ACTION_UP:
+                                    preferences.setMyPreferenceInt(StageMode.this, "stickyXPosition", offsetX);
+                                    preferences.setMyPreferenceInt(StageMode.this, "stickyYPosition", offsetY);
+                            }
+                            return true;
                         }
-                        return true;
-                    }
-                });
+                    });
+                }
             } else {
                 // No sticky note, so show the edit window
                 FullscreenActivity.whattodo = "page_sticky";
