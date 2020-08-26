@@ -1458,8 +1458,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         // If we are autologging CCLI information
         if (preferences.getMyPreferenceBoolean(getActivity(),"ccliAutomaticLogging",false)) {
             PopUpCCLIFragment.addUsageEntryToLog(getActivity(), preferences, StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename,
-                    StaticVariables.songfilename, "",
-                    "", "", "1"); // Created
+                    StaticVariables.songfilename, StaticVariables.mAuthor,
+                    StaticVariables.mCopyright, StaticVariables.mCCLI, "1"); // Created
         }
 
         // Indicate after loading song (which renames it), we need to build the database and song index

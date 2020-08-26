@@ -1747,8 +1747,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 // If we are autologging CCLI information
                 if (preferences.getMyPreferenceBoolean(PresenterMode.this,"ccliAutomaticLogging",false)) {
                     PopUpCCLIFragment.addUsageEntryToLog(PresenterMode.this, preferences, StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename,
-                            "", "",
-                            "", "", "2"); // Deleted
+                            StaticVariables.mTitle, StaticVariables.mAuthor,
+                            StaticVariables.mCopyright, StaticVariables.mCCLI, "2"); // Deleted
                 }
 
                 // Remove the item from the SQL database
