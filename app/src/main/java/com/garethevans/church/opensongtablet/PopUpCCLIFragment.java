@@ -508,7 +508,7 @@ public class PopUpCCLIFragment extends DialogFragment {
                     if (eventType == XmlPullParser.START_TAG) {
                         if (xpp.getName().startsWith("Entry")) {
                             // If the song isn't blank (first time), extract them
-                            // IV - Changed to consider 'a'ction' as create and delete entries where made with blank song
+                            // IV - Changed to consider 'action', as the create and delete entries where being made with blank song
                             // IV - Entries now include song.  This is perhaps a better field to test
                             if (!curr_action.equals("")) {
                                 songfile.add(curr_file);
@@ -596,6 +596,7 @@ public class PopUpCCLIFragment extends DialogFragment {
 
     private String buildMyTable(String sizeoffile) {
         StringBuilder table;
+        // IV - HTML tweaked to better terminate table rows and use color names - will now display on my device!
         if (song == null || song.size() == 0) {
             table = new StringBuilder("<!DOCTYPE html><html><body><h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
                     "<h3>" + getString(R.string.ccli_church) + ": " +
