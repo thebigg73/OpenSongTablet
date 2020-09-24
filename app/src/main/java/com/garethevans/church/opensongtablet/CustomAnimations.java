@@ -117,30 +117,28 @@ class CustomAnimations {
     }
 
     static void faderAnimation(final View v, int time, boolean fadeIn) {
-        float startAlpha;
         float endAlpha;
-        final int startVisibility;
         final int endVisibility;
 
         if (fadeIn) {
-            startAlpha = 0f;
-            endAlpha = 1f;
-            startVisibility = View.VISIBLE;
+            endAlpha = 1.0f;
             endVisibility = View.VISIBLE;
         } else {
-            startAlpha = 1f;
-            endAlpha = 0f;
-            startVisibility = View.VISIBLE;
+            endAlpha = 0.0f;
             endVisibility = View.GONE;
         }
+
+        // IV - Always visible - moved from within animator
+        v.setVisibility(View.VISIBLE);
+
         AnimatorSet mAnimationSet = new AnimatorSet();
 
-        final ObjectAnimator fadeView = ObjectAnimator.ofFloat(v, View.ALPHA,  startAlpha, endAlpha);
+        // IV - Fade from the current alpha
+        ObjectAnimator fadeView = ObjectAnimator.ofFloat(v, View.ALPHA, (float) (v.getAlpha()), endAlpha);
 
         fadeView.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                v.setVisibility(startVisibility);
             }
 
             @Override
@@ -159,22 +157,24 @@ class CustomAnimations {
         //fadeView.setInterpolator(new LinearInterpolator());
         fadeView.setInterpolator(new AccelerateInterpolator());
 
-        mAnimationSet.setDuration(time);
+        // IV - Added start delay of 2 animation cycles(!) and shortened 2 animation cycles - seems to help stability of fades
+        fadeView.setStartDelay(20);
+        mAnimationSet.setDuration(time - 40);
         mAnimationSet.play(fadeView);
         mAnimationSet.start();
     }
 
     static void faderAnimationCustomAlpha(final View v, int time, float startAlpha, float endAlpha) {
-        final int startVisibility;
         final int endVisibility;
 
         if (endAlpha>=startAlpha) {
-            startVisibility = View.VISIBLE;
             endVisibility = View.VISIBLE;
         } else {
-            startVisibility = View.VISIBLE;
             endVisibility = View.GONE;
         }
+
+        v.setVisibility(View.VISIBLE);
+
         AnimatorSet mAnimationSet = new AnimatorSet();
 
         final ObjectAnimator fadeView = ObjectAnimator.ofFloat(v, View.ALPHA,  startAlpha, endAlpha);
@@ -182,7 +182,6 @@ class CustomAnimations {
         fadeView.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                v.setVisibility(startVisibility);
             }
 
             @Override
@@ -200,7 +199,8 @@ class CustomAnimations {
         });
         fadeView.setInterpolator(new AccelerateInterpolator());
 
-        mAnimationSet.setDuration(time);
+        fadeView.setStartDelay(20);
+        mAnimationSet.setDuration(time - 40);
         mAnimationSet.play(fadeView);
         mAnimationSet.start();
     }

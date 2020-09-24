@@ -507,9 +507,8 @@ public class PopUpCCLIFragment extends DialogFragment {
                 while (eventType != XmlPullParser.END_DOCUMENT) {
                     if (eventType == XmlPullParser.START_TAG) {
                         if (xpp.getName().startsWith("Entry")) {
-                            // If the song isn't blank (first time), extract them
-                            // IV - Changed to consider 'action', as the create and delete entries where being made with blank song
-                            // IV - Entries now include song.  This is perhaps a better field to test
+                            // If the action isn't blank (first time), extract them
+                            // IV - Changed to test 'action' - to fix missing lines if entry did not have a song
                             if (!curr_action.equals("")) {
                                 songfile.add(curr_file);
                                 song.add(curr_song);
@@ -596,7 +595,7 @@ public class PopUpCCLIFragment extends DialogFragment {
 
     private String buildMyTable(String sizeoffile) {
         StringBuilder table;
-        // IV - HTML tweaked to better terminate table rows and use color names - will now display on my device!
+        // IV - HTML adjusted to terminate table rows and use color names - better compatibility
         if (song == null || song.size() == 0) {
             table = new StringBuilder("<!DOCTYPE html><html><body><h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
                     "<h3>" + getString(R.string.ccli_church) + ": " +
@@ -608,7 +607,7 @@ public class PopUpCCLIFragment extends DialogFragment {
 
         } else {
             table = new StringBuilder("<!DOCTYPE html><html><head>\n" +
-                    "<style>\n" +
+                    "<style>\n{border-collapse: collapse; width: 100%}\n" +
                     "th, td {border: 1px solid lightgrey; padding: 2px;}\n" +
                     "tr:nth-child(even) {background: ghostwhite}\n" +
                     "th {\npadding-top: 2px; padding-bottom: 2px; text-align: left; " +

@@ -1247,7 +1247,7 @@ public class ProcessSong extends Activity {
                 if (StaticVariables.whichMode.equals("Presentation") && !preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
                     bit = bit.replace("_", "");
                 } else if ((StaticVariables.whichMode.equals("Stage") || StaticVariables.whichMode.equals("Performance")) &&
-                        !preferences.getMyPreferenceBoolean(c, "displayChords", true)) {
+                        !preferences.getMyPreferenceBoolean(c, "displayChords", true) && !preferences.getMyPreferenceBoolean(c,"presoShowChords",false)) {
                     // IV - Lyric line only so assemble and do the line in one go.  Remove typical word splits and white space - beautify!
                     final StringBuilder sb = new StringBuilder();
                     sb.append(lyrics[0]);
@@ -1267,7 +1267,7 @@ public class ProcessSong extends Activity {
 
             if (StaticVariables.whichMode.equals("Presentation") && !preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
                 // Temp fix to ensure space either side.  Not an issue in proposed MaterialApp where view is zoomed instead of scaling fontsize
-                bit = bit + "  ";
+                bit = "  " + bit + "  ";
             }
 
             if (StaticVariables.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout &&
@@ -2490,10 +2490,10 @@ public class ProcessSong extends Activity {
             String thisLine;
             String nextLine;
             thisLine = whattoprocess[y].replaceAll("\\s+$", "");
+            if (thisLine.startsWith(".")) { thisLine = thisLine.replaceFirst("."," "); }
 
             switch (what) {
                 // If this is a chord line followed by a lyric line.
-
                 case "chord_then_lyric":
                     // IV - We have a next line - make lines the same length.
                     nextLine = whattoprocess[y + 1].replaceAll("\\s+$", "");

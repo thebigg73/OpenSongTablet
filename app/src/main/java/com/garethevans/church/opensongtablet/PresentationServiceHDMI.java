@@ -85,6 +85,9 @@ class PresentationServiceHDMI extends Presentation
 
             // Set up the logo
             setUpLogo();
+            if (PresenterMode.logoButton_isSelected) {
+                showLogo();
+            }
 
             // Prepare the display after 2 secs (a chance for stuff to be measured and show the logo
             Handler h = new Handler();
@@ -126,6 +129,16 @@ class PresentationServiceHDMI extends Presentation
         col1_3 = findViewById(R.id.col1_3);
         col2_3 = findViewById(R.id.col2_3);
         col3_3 = findViewById(R.id.col3_3);
+    }
+    public static void wipeProjectedLinearLayout() {
+        projected_LinearLayout.removeAllViews();
+        presentermode_title.setText("");
+        presentermode_author.setText("");
+        presentermode_copyright.setText("");
+        presentermode_title.setAlpha(0.0f);
+        presentermode_author.setAlpha(0.0f);
+        presentermode_copyright.setAlpha(0.0f);
+        CustomAnimations.faderAnimation(bottom_infobar,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
     }
     private static void getScreenSizes() {
         presentationCommon.getScreenSizes(myscreen,bottom_infobar,projectedPage_RelativeLayout,preferences.getMyPreferenceFloat(c,"castRotation",0.0f));
@@ -238,5 +251,7 @@ class PresentationServiceHDMI extends Presentation
     static void blankUnblankDisplay(boolean unblank) {
         presentationCommon.blankUnblankDisplay(c,preferences,pageHolder,unblank);
     }
-
+    static void restoreInfobar() {
+        presentationCommon.restoreInfobar(c,preferences,projected_ImageView,projected_LinearLayout,projected_Logo,bottom_infobar);
+    }
 }

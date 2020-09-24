@@ -249,6 +249,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private boolean blankButton_isSelected = false;
     static boolean logoButton_isSelected = false;
     static String alert_on = "N";
+    // IV - Support a half highlight of buttons during transitions
+    private boolean buttonInTransition = false;
 
     // Auto slideshow
     private boolean isplayingautoslideshow = false;
@@ -259,6 +261,30 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     // Battery
     private BroadcastReceiver br;
+
+    // IV - Called after delay to enable and set correct highlights of action buttons
+    private final Handler enableActionButtonsHandler = new Handler();
+    private final Runnable enableActionButtonsRunnable = () -> {
+        if (blankButton_isSelected) {
+            highlightButtonClicked(presenter_blank_group);
+        } else {
+            unhighlightButtonClicked(presenter_blank_group);
+        }
+        if (logoButton_isSelected) {
+            highlightButtonClicked(presenter_logo_group);
+        } else {
+            unhighlightButtonClicked(presenter_logo_group);
+        }
+        if (projectButton_isSelected) {
+            highlightButtonClicked(presenter_project_group);
+        } else {
+            unhighlightButtonClicked(presenter_project_group);
+        }
+        presenter_project_group.setEnabled(true);
+        presenter_logo_group.setEnabled(true);
+        presenter_blank_group.setEnabled(true);
+        buttonInTransition = false;
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -383,6 +409,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
             // Setup the options drawer reset on close
             setupOptionDrawerReset();
+            closeMyDrawers("song");
 
             // Click on the first item in the set
             if (presenter_set_buttonsListView.getChildCount() > 0) {
@@ -1294,6 +1321,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             openFragment();
         });
         presenter_display_group.setOnClickListener(view -> {
+            // IV - Display the song so that (if there is content) the effect of a setting can be seen
+            if (blankButton_isSelected || logoButton_isSelected) {
+                presenter_project_group.performClick();
+            }
             FullscreenActivity.whattodo = "connecteddisplay";
             openFragment();
         });
@@ -1873,6 +1904,18 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     // The right hand column buttons
     private void projectButtonClick() {
+        // IV - Button clicks can be called from other button clicks as a subroutine
+        // IV - Only the first button sets the highlights, subroutine calls do not
+        if (!buttonInTransition) {
+            highlightButtonClickedHalf(presenter_project_group);
+            unhighlightButtonClicked(presenter_logo_group);
+            unhighlightButtonClicked(presenter_blank_group);
+        }
+        // IV - Disable action buttons here
+        presenter_project_group.setEnabled(false);
+        presenter_logo_group.setEnabled(false);
+        presenter_blank_group.setEnabled(false);
+
         try {
             projectButton_isSelected = !projectButton_isSelected;
 
@@ -1893,11 +1936,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             if (blankButton_isSelected) {
                 presenter_blank_group.performClick();
             }
-
-
-            // Turn on the project button for now
-            highlightButtonClicked(presenter_project_group);
-
 
             // Update the projector
             if (mSelectedDevice != null) {
@@ -1929,15 +1967,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     e.printStackTrace();
                 }
             }
-
-            Handler unhighlight = new Handler();
-            unhighlight.postDelayed(() -> {
-                projectButton_isSelected = false;
-                unhighlightButtonClicked(presenter_project_group);
-            }, 500);
+            projectButton_isSelected = false;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // IV - After a delay enable and set correct highlights of action buttons
+        enableActionButtonsHandler.removeCallbacks(enableActionButtonsRunnable);
+        enableActionButtonsHandler.postDelayed(enableActionButtonsRunnable, (long) (3.2 * preferences.getMyPreferenceInt(this, "presoTransitionTime",800)));
     }
 
     @Override
@@ -2150,9 +2186,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 loadSongPreview();
             }
 
-            // Since the slide has been armed, but not projected, turn off the project button
-            // This encourages the user to click it again to update the projector screen
-            unhighlightButtonClicked(presenter_project_group);
             projectButton_isSelected = false;
         }
     }
@@ -2973,74 +3006,89 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
     private void logoButtonClick() {
-        if (projectButton_isSelected) {
-            projectButton_isSelected = false;
+        if (!buttonInTransition) {
             unhighlightButtonClicked(presenter_project_group);
-        }
-        if (blankButton_isSelected) {
-            blankButton_isSelected = false;
+            highlightButtonClickedHalf(presenter_logo_group);
             unhighlightButtonClicked(presenter_blank_group);
         }
+        presenter_project_group.setEnabled(false);
+        presenter_logo_group.setEnabled(false);
+        presenter_blank_group.setEnabled(false);
 
         logoButton_isSelected = !logoButton_isSelected;
 
         if (logoButton_isSelected) {
-            // Fade in the logo after highlighting the button and disabling
-            presenter_logo_group.setEnabled(false);
-            highlightButtonClicked(presenter_logo_group);
-            if (mSelectedDevice != null) {
-                try {
-                    PresentationService.ExternalDisplay.showLogo();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (FullscreenActivity.isHDMIConnected) {
-                try {
-                    PresentationServiceHDMI.showLogo();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
+            if (blankButton_isSelected) {
+                Handler h = new Handler();
+                h.postDelayed(() -> {
+                    // IV - Do the work of a click to end blank
+                    presenter_blank_group.performClick();
+                }, 800);
             }
-            Handler h = new Handler();
-            h.postDelayed(() -> presenter_logo_group.setEnabled(true), 800);
+            // Fade in the logo after a transition delay
+            if (mSelectedDevice != null) {
+                Handler h = new Handler();
+                h.postDelayed(() -> {
+                    // IV - Do the work after a transition delay
+                    try {
+                        PresentationService.ExternalDisplay.showLogo();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                },preferences.getMyPreferenceInt(this, "presoTransitionTime",800));;
+            } else if (FullscreenActivity.isHDMIConnected) {
+                Handler h = new Handler();
+                h.postDelayed(() -> {
+                    try {
+                        PresentationServiceHDMI.showLogo();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                },preferences.getMyPreferenceInt(this, "presoTransitionTime",800));
+            }
         } else {
-            // Fade out the logo after unhighlighting the button and disabling
-            presenter_logo_group.setEnabled(false);
-            unhighlightButtonClicked(presenter_logo_group);
+            // Fade out the logo
             if (mSelectedDevice != null) {
                 try {
+                    PresentationService.ExternalDisplay.wipeProjectedLinearLayout();
+                    PresentationService.ExternalDisplay.restoreInfobar();
                     PresentationService.ExternalDisplay.hideLogo();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (FullscreenActivity.isHDMIConnected) {
                 try {
+                    PresentationServiceHDMI.wipeProjectedLinearLayout();
+                    PresentationServiceHDMI.restoreInfobar();
                     PresentationServiceHDMI.hideLogo();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            Handler h = new Handler();
-            h.postDelayed(() -> presenter_logo_group.setEnabled(true), 800);
         }
+        // IV - If we end up not blank and not log then a project is needed
+        if (!blankButton_isSelected && !logoButton_isSelected && !projectButton_isSelected) {
+            presenter_project_group.performClick();
+        }
+
+        enableActionButtonsHandler.removeCallbacks(enableActionButtonsRunnable);
+        enableActionButtonsHandler.postDelayed(enableActionButtonsRunnable, (long) (3.2 * preferences.getMyPreferenceInt(this, "presoTransitionTime",800)));
     }
     private void blankButtonClick() {
-        if (projectButton_isSelected) {
-            projectButton_isSelected = false;
+        if (!buttonInTransition) {
             unhighlightButtonClicked(presenter_project_group);
-        }
-        if (logoButton_isSelected) {
-            logoButton_isSelected = false;
             unhighlightButtonClicked(presenter_logo_group);
+            highlightButtonClickedHalf(presenter_blank_group);
         }
+
+        presenter_project_group.setEnabled(false);
+        presenter_logo_group.setEnabled(false);
+        presenter_blank_group.setEnabled(false);
 
         blankButton_isSelected = !blankButton_isSelected;
 
         if (blankButton_isSelected) {
             // Fade out everything after highlighting the button and disabling
-            presenter_blank_group.setEnabled(false);
-            highlightButtonClicked(presenter_blank_group);
             if (mSelectedDevice != null) {
                 try {
                     PresentationService.ExternalDisplay.blankUnblankDisplay(false);
@@ -3053,31 +3101,44 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 } catch (Exception e) {/**/
                     e.printStackTrace();
                 }
-
             }
-            Handler h = new Handler();
-            h.postDelayed(() -> presenter_blank_group.setEnabled(true), 800);
+            if (logoButton_isSelected) {
+                Handler h = new Handler();
+                h.postDelayed(() -> {
+                     // IV - Do the work of a click to end logo
+                     presenter_logo_group.performClick();
+                 }, 800);
+            }
         } else {
-            // Fade back everything after unhighlighting the button and disabling
-            presenter_blank_group.setEnabled(false);
-            unhighlightButtonClicked(presenter_blank_group);
+             // Fade back everything
             if (mSelectedDevice != null) {
                 try {
+                    if (!logoButton_isSelected) {
+                        // IV - We prep so that when there is a return to song diaply it starts from a clear screen
+                        PresentationService.ExternalDisplay.wipeProjectedLinearLayout();
+                        PresentationService.ExternalDisplay.restoreInfobar();
+                    }
                     PresentationService.ExternalDisplay.blankUnblankDisplay(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (FullscreenActivity.isHDMIConnected) {
                 try {
+                    if (!logoButton_isSelected) {
+                        PresentationServiceHDMI.wipeProjectedLinearLayout();
+                        PresentationServiceHDMI.restoreInfobar();
+                    }
                     PresentationServiceHDMI.blankUnblankDisplay(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
-            Handler h = new Handler();
-            h.postDelayed(() -> presenter_blank_group.setEnabled(true), 800);
         }
+        if (!blankButton_isSelected && !logoButton_isSelected && !projectButton_isSelected) {
+            presenter_project_group.performClick();
+        }
+        enableActionButtonsHandler.removeCallbacks(enableActionButtonsRunnable);
+        enableActionButtonsHandler.postDelayed(enableActionButtonsRunnable, (long) (3.2 * preferences.getMyPreferenceInt(this, "presoTransitionTime",800)));
     }
     private void alertButtonClick() {
         highlightButtonClicked(presenter_alert_group);
@@ -3124,6 +3185,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     private void unhighlightButtonClicked(View v) {
         v.setBackground(null);
+    }
+    private void highlightButtonClickedHalf(View v) {
+        buttonInTransition = true;
+        v.setBackground(ContextCompat.getDrawable(PresenterMode.this, R.drawable.presenter_box_blue_half_active));
     }
 
     // Enable or disable the buttons in the final column

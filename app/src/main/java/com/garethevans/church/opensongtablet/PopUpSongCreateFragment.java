@@ -293,8 +293,8 @@ public class PopUpSongCreateFragment extends DialogFragment {
                         // If we are autologging CCLI information
                         if (preferences.getMyPreferenceBoolean(getActivity(),"ccliAutomaticLogging",false)) {
                             PopUpCCLIFragment.addUsageEntryToLog(getActivity(), preferences, StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename,
-                                    StaticVariables.songfilename, StaticVariables.mAuthor,
-                                    StaticVariables.mCopyright, StaticVariables.mCCLI, "1"); // Created
+                                    StaticVariables.songfilename, "",
+                                    "", "", "1"); // Created
                         }
 
                         // Add the new song to the SQLite database

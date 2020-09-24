@@ -525,6 +525,8 @@ public class StageMode extends AppCompatActivity implements
 
                 // Prepare abhide listener
                 setupAbHide();
+                closeMyDrawers("song");
+
             });
 
             // Set up the Nearby connection service
@@ -3355,7 +3357,7 @@ public class StageMode extends AppCompatActivity implements
             padcurrentTime_TextView.setText(text);
             // When 0:00 we get the pad total time and make Pad progress visible
             if (text.equals("0:00")) {
-                // Display the '/' as now in use
+                // Display the '/' as now active
                 padTimeSeparator_TextView.setText("/");
                 padtotalTime_TextView.setText(TimeTools.timeFormatFixer(StaticVariables.padtime_length));
                 backingtrackProgress.setVisibility(View.VISIBLE);
@@ -3816,7 +3818,7 @@ public class StageMode extends AppCompatActivity implements
         if (StaticVariables.clickedOnAutoScrollStart && (preferences.getMyPreferenceBoolean(StageMode.this, "autoscrollAutoStart", false) || pdfCanContinueScrolling)) {
             // IV - Using a runnable to autostart if needed - proceeds only after settled on an item
             // IV - Avoids unneeded work during quick song changes
-            // IV - Longer delay to start autoscroll when nearby host - to give time for remote song to render and (hopefully) to have starts in sync
+            // IV - Longer delay to start autoscroll when acting as a nearby host - to give time for remote song to render and (hopefully) to have starts in sync
             startAutoscrollHandler.removeCallbacks(startAutoscrollRunnable);
             if (StaticVariables.isHost && StaticVariables.isConnected) {
                 startAutoscrollHandler.postDelayed(startAutoscrollRunnable, 8000);
@@ -3834,7 +3836,7 @@ public class StageMode extends AppCompatActivity implements
         if (!StaticVariables.reloadOfSong) {
             // If autoshowing sticky notes as a popup
             if (preferences.getMyPreferenceString(StageMode.this, "stickyAutoDisplay", "F").equals("F") && !StaticVariables.mNotes.equals("")) {
-                // IV - First put queue in known state (empty)
+                // IV - Empty then add to queue (known state)
                 showStickyHandler.removeCallbacks(showStickyRunnable);
                 showStickyHandler.postDelayed(showStickyRunnable, 2000);
             }
@@ -3883,7 +3885,7 @@ public class StageMode extends AppCompatActivity implements
             // Highlight the capoInfo to draw attention to it
             // IV - Using a runnable to start capo animation - proceeds only after settled on an item
             // IV - This avoids mis-display during rapid song changes
-            // IV - First put queue in known state (empty)
+            // IV - Empty then add to queue (known state)
             startCapoAnimationHandler.removeCallbacks(startCapoAnimationRunnable);
             startCapoAnimationHandler.postDelayed(startCapoAnimationRunnable, 2000);
         }
@@ -6401,7 +6403,7 @@ public class StageMode extends AppCompatActivity implements
         updateExtraInfoColorsAndSizes("autoscroll");
         currentTime_TextView.setText(R.string.time_zero);
         AutoScrollFunctions.getMultiPagePDFValues();  // This splits the time for multiple pages
-        // Display the '/' as now in use
+        // Display the '/' as now active
         timeSeparator_TextView.setText("/");
         totalTime_TextView.setText(TimeTools.timeFormatFixer(StaticVariables.autoScrollDuration));
         playbackProgress.setVisibility(View.VISIBLE);
@@ -7222,12 +7224,12 @@ public class StageMode extends AppCompatActivity implements
                     }
                     // Send Nearby song intent
                     if (StaticVariables.isConnected && StaticVariables.isHost && !orientationChanged) {
-                        // Only the first (with no delay) and last (with delay) of a long sequence of song changes is sent
+                        // Only the first (with no delay) and last (with delay) of a long sequence of song changes is actually sent
                         // sendSongDelay will be 0 for the first song
-                        // IV - First put queue in known state (empty)
+                        // IV - Always empty then add to queue (known state)
                         sendSongAfterDelayHandler.removeCallbacks(sendSongAfterDelayRunnable);
                         sendSongAfterDelayHandler.postDelayed(sendSongAfterDelayRunnable, sendSongDelay);
-                        // IV - First put queue in known state (empty)
+                        // IV - Always empty then add to queue (known state)
                         resetSendSongAfterDelayHandler.removeCallbacks(resetSendSongAfterDelayRunnable);
                         resetSendSongAfterDelayHandler.postDelayed(resetSendSongAfterDelayRunnable, 3500);
                     }
@@ -8423,7 +8425,7 @@ public class StageMode extends AppCompatActivity implements
 
                             } else {
                                 // Prepare the default auto pad
-                                // IV - These can be slow to prepare, display pad icon only to indicate pending
+                                // IV - These can be slow to prepare, display just pad icon to indicate pending
                                 padcurrentTime_TextView.setText("");
                                 padTimeSeparator_TextView.setText("");
                                 padtotalTime_TextView.setText("");
