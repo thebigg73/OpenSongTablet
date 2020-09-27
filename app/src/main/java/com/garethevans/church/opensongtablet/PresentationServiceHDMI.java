@@ -156,7 +156,14 @@ class PresentationServiceHDMI extends Presentation
     }
     static void fixBackground() {
         presentationCommon.fixBackground(c,preferences,storageAccess,projected_BackgroundImage,projected_SurfaceHolder,projected_SurfaceView);
-        updateAlpha();
+        // Just in case there is a glitch, make the stuff visible after a time
+        Handler panic = new Handler();
+        panic.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateAlpha();
+            }
+        }, (long) (1.1*preferences.getMyPreferenceInt(c,"presoTransitionTime",800)));
     }
     private static void getDefaultColors() {
         presentationCommon.getDefaultColors(c,preferences);

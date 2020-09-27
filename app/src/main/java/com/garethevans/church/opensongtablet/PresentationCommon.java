@@ -549,7 +549,7 @@ class PresentationCommon {
             // IV - Quick section moves mean multiple panics are active, a time based test ensures action is only taken for the last call
             // If after delay the time test fails a newer post has been made
             // After the panic delay time, make sure the correct view is visible regardless of animations
-            if (!animateOutActive && ((panicAfterTime - 5) < System.currentTimeMillis())) {
+            if (panicRequired && !animateOutActive && ((panicAfterTime - 5) < System.currentTimeMillis())) {
                 if (StaticVariables.whichMode.equals("Presentation")) {
                     if (FullscreenActivity.isImage || FullscreenActivity.isPDF || FullscreenActivity.isImageSlide) {
                         projected_ImageView.setVisibility(View.VISIBLE);
