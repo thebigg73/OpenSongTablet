@@ -1321,10 +1321,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             openFragment();
         });
         presenter_display_group.setOnClickListener(view -> {
-            // IV - Display the song so that (if there is content) the effect of a setting can be seen
-            if (blankButton_isSelected || logoButton_isSelected) {
-                presenter_project_group.performClick();
-            }
             FullscreenActivity.whattodo = "connecteddisplay";
             openFragment();
         });
@@ -3066,7 +3062,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }
             }
         }
-        // IV - If we end up not blank and not log then a project is needed
+        // IV - If we end up not 'blank' and not 'logo' then a 'project' is needed
         if (!blankButton_isSelected && !logoButton_isSelected && !projectButton_isSelected) {
             presenter_project_group.performClick();
         }
@@ -3114,7 +3110,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             if (mSelectedDevice != null) {
                 try {
                     if (!logoButton_isSelected) {
-                        // IV - We prep so that when there is a return to song diaply it starts from a clear screen
+                        // IV - We prep so that when there is a return to song dispaly it starts from a clear screen
                         PresentationService.ExternalDisplay.wipeProjectedLinearLayout();
                         PresentationService.ExternalDisplay.restoreInfobar();
                     }

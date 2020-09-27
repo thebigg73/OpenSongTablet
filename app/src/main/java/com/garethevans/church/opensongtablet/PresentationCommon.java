@@ -191,7 +191,7 @@ class PresentationCommon {
                     }
                     projected_BackgroundImage.setVisibility(View.VISIBLE);
                     CustomAnimations.faderAnimationCustomAlpha(projected_BackgroundImage,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),
-                            0.0f,preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
+                            projected_BackgroundImage.getAlpha(),preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
 
                 }
                 break;
@@ -214,7 +214,7 @@ class PresentationCommon {
                 projected_BackgroundImage.setVisibility(View.GONE);
 
                 CustomAnimations.faderAnimationCustomAlpha(projected_SurfaceView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),
-                        0.0f,preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
+                        projected_SurfaceView.getAlpha(),preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
 
                 break;
             default:
@@ -345,8 +345,8 @@ class PresentationCommon {
     long lyricDelay;
     long panicAfterTime;
     long panicDelay;
-    // IV - doUpdate can run too frequently - this supports one instance only
-    Boolean doUpdateActive = false;
+    // IV - doUpdate can run frequently - this supports better transiitons
+    Boolean animateOutActive;
 
     void presenterStartUp(final Context c, final Preferences preferences, final StorageAccess storageAccess, final ImageView projected_BackgroundImage,
                           final SurfaceHolder projected_SurfaceHolder, final SurfaceView projected_SurfaceView) {
@@ -448,7 +448,7 @@ class PresentationCommon {
         }
     }
     private void animateIn(Context c, Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
-        // IV  - Fade in the main page using a Delay, songDelay is a transition delay when there is an info block/song change.
+        // IV  - Fade in the main page using a Delay, songDelay is a full transition delay when there is an info block/song change.
         Handler h = new Handler();
         h.postDelayed(() -> {
             if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
@@ -467,7 +467,7 @@ class PresentationCommon {
             CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
         }
         // IV - If we are not already doing a lyric fade
-        if (lyricAfterTime < System.currentTimeMillis()) {
+        if ((lyricAfterTime - 5) < System.currentTimeMillis()) {
             // Fade out the lyrics a bit quicker, the info block is always present during fade (no jump should the info block fade first)
             if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
                 if (projected_ImageView.getAlpha() > 0.0f) {
@@ -485,7 +485,7 @@ class PresentationCommon {
         // IV - Delay the following lyric display - info block fade in before lyrics to avoid 'jump' of lyrics
         songChangeDelay = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
         if (tv.getAlpha() > 0.0f) {
-            CustomAnimations.faderAnimation(tv, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), false);
+            CustomAnimations.faderAnimation(tv,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
         }
 
         // IV - Longer delay helps fade stability (Hmmm!)
@@ -505,6 +505,7 @@ class PresentationCommon {
         }, (long) (1.07 * preferences.getMyPreferenceInt(c,"presoTransitionTime",800)));
     }
 
+
     // Update the screen content
     void doUpdate(final Context c, final Preferences preferences, final StorageAccess storageAccess, final ProcessSong processSong,
                   final Display myscreen, final TextView songinfo_TextView, LinearLayout presentermode_bottombit, final SurfaceView projected_SurfaceView,
@@ -513,7 +514,10 @@ class PresentationCommon {
                   TextView presentermode_title, TextView presentermode_author, TextView presentermode_copyright,
                   final LinearLayout col1_1, final LinearLayout col1_2, final LinearLayout col2_2, final LinearLayout col1_3,
                   final LinearLayout col2_3, final LinearLayout col3_3) {
+
+        // IV - Can be called whilst previous call is still running...  Always do fade out.  Only do fade in if we are not animating out due to a later call
         // First up, animate everything away
+        animateOutActive = true;
         animateOut(c,preferences,myscreen,projected_Logo,projected_ImageView,projected_LinearLayout,bottom_infobar,projectedPage_RelativeLayout);
 
         // If we have forced an update due to switching modes, set that up
@@ -527,10 +531,6 @@ class PresentationCommon {
 
         }
 
-        // Just in case there is a glitch, make the stuff visible after 5x transition time
-        Handler panic = new Handler();
-        panic.postDelayed(() -> panicShowViews(projected_ImageView,projected_LinearLayout,projected_SurfaceView), 5 * preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
-
         // Set the title of the song and author (if available).  Only does this for changes
         if (StaticVariables.whichMode.equals("Presentation")) {
             presenterWriteSongInfo(c,preferences,presentermode_title,presentermode_author,presentermode_copyright,bottom_infobar);
@@ -538,15 +538,48 @@ class PresentationCommon {
             setSongTitle(c,preferences,songinfo_TextView);
         }
 
+        // Just in case there is a glitch, make the stuff visible after 5x transition time
+        // IV - Panic request is prevented on display of logo or blank by setting panicRequired = false;
+        panicRequired = true;
         // IV -  There can be multiple postDelayed calls running, each call sets a later 'After' time.
+        panicDelay = 5 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800);
+        panicAfterTime = System.currentTimeMillis() + panicDelay;
+        Handler panic = new Handler();
+        panic.postDelayed(() -> {
+            // IV - Quick section moves mean multiple panics are active, a time based test ensures action is only taken for the last call
+            // If after delay the time test fails a newer post has been made
+            // After the panic delay time, make sure the correct view is visible regardless of animations
+            if (!animateOutActive && ((panicAfterTime - 5) < System.currentTimeMillis())) {
+                if (StaticVariables.whichMode.equals("Presentation")) {
+                    if (FullscreenActivity.isImage || FullscreenActivity.isPDF || FullscreenActivity.isImageSlide) {
+                        projected_ImageView.setVisibility(View.VISIBLE);
+                        projected_LinearLayout.setVisibility(View.GONE);
+                        projected_ImageView.setAlpha(1.0f);
+                    } else if (FullscreenActivity.isVideo) {
+                        projected_SurfaceView.setVisibility(View.VISIBLE);
+                        projected_LinearLayout.setVisibility(View.GONE);
+                        projected_ImageView.setVisibility(View.GONE);
+                        //projected_SurfaceView.setAlpha(1.0f);
+                    } else {
+                        projected_LinearLayout.setVisibility(View.VISIBLE);
+                        projected_ImageView.setVisibility(View.GONE);
+                        projected_LinearLayout.setAlpha(1.0f);
+                    }
+                }
+            }
+        }, panicDelay);
+
+        // IV - There can be multiple postDelayed calls running, each call sets a later 'After' time.
         lyricDelay = preferences.getMyPreferenceInt(c, "presoTransitionTime", 800);
         lyricAfterTime = System.currentTimeMillis() + lyricDelay;
+
+        animateOutActive = false;
 
         // Now run the next bit post delayed (to wait for the animate out)
         Handler h = new Handler();
         h.postDelayed(() -> {
-            // IV - If the time test fails a newer post has been made
-            if ((lyricAfterTime - 5) < System.currentTimeMillis()) {
+            // IV - Not if animating out and not if the time test fails as newer post has been made
+            if (!animateOutActive && (lyricAfterTime - 5) < System.currentTimeMillis()) {
                 // Wipe any current views
                 wipeAllViews(projected_LinearLayout,projected_ImageView);
 
@@ -579,30 +612,8 @@ class PresentationCommon {
                     }
                 }
             }
-        }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
-    }
-    private void panicShowViews(ImageView projected_ImageView, LinearLayout projected_LinearLayout, SurfaceView projected_SurfaceView) {
-        // IV - Quick section means multiple panics are active, a time based test ensures action is only taken for the last call
-        // If after delay the time test fails a newer post has been made
-        // After 3x the transition times, make sure the correct view is visible regardless of animations
-        if ((panicRequired) && ((panicAfterTime - 5) < System.currentTimeMillis())) {
-            if (StaticVariables.whichMode.equals("Presentation")) {
-                if (FullscreenActivity.isImage || FullscreenActivity.isPDF || FullscreenActivity.isImageSlide) {
-                    projected_ImageView.setVisibility(View.VISIBLE);
-                    projected_LinearLayout.setVisibility(View.GONE);
-                    projected_ImageView.setAlpha(1.0f);
-                } else if (FullscreenActivity.isVideo) {
-                    projected_SurfaceView.setVisibility(View.VISIBLE);
-                    projected_LinearLayout.setVisibility(View.GONE);
-                    projected_ImageView.setVisibility(View.GONE);
-                    //projected_SurfaceView.setAlpha(1.0f);
-                } else {
-                    projected_LinearLayout.setVisibility(View.VISIBLE);
-                    projected_ImageView.setVisibility(View.GONE);
-                    projected_LinearLayout.setAlpha(1.0f);
-                }
-            }
-        }
+        }, lyricDelay);
+
     }
     private void presenterWriteSongInfo(Context c, Preferences preferences, TextView presentermode_title, TextView presentermode_author,
                                        TextView presentermode_copyright, LinearLayout bottom_infobar) {

@@ -167,7 +167,7 @@ class CustomAnimations {
     static void faderAnimationCustomAlpha(final View v, int time, float startAlpha, float endAlpha) {
         final int endVisibility;
 
-        if (endAlpha>=startAlpha) {
+        if (endAlpha > 0.0f) {
             endVisibility = View.VISIBLE;
         } else {
             endVisibility = View.GONE;

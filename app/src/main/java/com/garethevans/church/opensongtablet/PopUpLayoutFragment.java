@@ -195,7 +195,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         blockShadowAlpha.setMax(100);
         blockShadowAlpha.setProgress((int)(preferences.getMyPreferenceFloat(getActivity(),"blockShadowAlpha",0.7f)*100));
         toggleChordsButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"presoShowChords",false));
-        toggleAutoScaleButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"presoAutoscale",true));
+        toggleAutoScaleButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"presoAutoScale",true));
         boldTextButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"presoLyricsBold",false));
         setMaxFontSizeProgressBar.setMax(70);
         setMaxFontSizeProgressBar.setProgress((int)preferences.getMyPreferenceFloat(getActivity(),"fontSizePresoMax",40.0f) - 4);

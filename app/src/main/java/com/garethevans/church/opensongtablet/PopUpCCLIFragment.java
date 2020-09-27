@@ -508,7 +508,7 @@ public class PopUpCCLIFragment extends DialogFragment {
                     if (eventType == XmlPullParser.START_TAG) {
                         if (xpp.getName().startsWith("Entry")) {
                             // If the action isn't blank (first time), extract them
-                            // IV - Changed to test 'action' - to fix missing lines if entry did not have a song
+                            // IV - Changed to test 'action' - to fix missing lines if entry did not have a song name
                             if (!curr_action.equals("")) {
                                 songfile.add(curr_file);
                                 song.add(curr_song);
