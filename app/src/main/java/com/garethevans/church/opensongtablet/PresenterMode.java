@@ -3023,6 +3023,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
             // Fade in the logo after a transition delay
             if (mSelectedDevice != null) {
+                PresentationService.ExternalDisplay.showLogoPrep();
                 Handler h = new Handler();
                 h.postDelayed(() -> {
                     // IV - Do the work after a transition delay
@@ -3033,6 +3034,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     }
                 },preferences.getMyPreferenceInt(this, "presoTransitionTime",800));;
             } else if (FullscreenActivity.isHDMIConnected) {
+                PresentationServiceHDMI.showLogoPrep();
                 Handler h = new Handler();
                 h.postDelayed(() -> {
                     try {
@@ -3109,21 +3111,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
              // Fade back everything
             if (mSelectedDevice != null) {
                 try {
-                    if (!logoButton_isSelected) {
-                        // IV - We prep so that when there is a return to song dispaly it starts from a clear screen
-                        PresentationService.ExternalDisplay.wipeProjectedLinearLayout();
-                        PresentationService.ExternalDisplay.restoreInfobar();
-                    }
+                    PresentationService.ExternalDisplay.wipeProjectedLinearLayout();
+                    PresentationService.ExternalDisplay.restoreInfobar();
                     PresentationService.ExternalDisplay.blankUnblankDisplay(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (FullscreenActivity.isHDMIConnected) {
                 try {
-                    if (!logoButton_isSelected) {
-                        PresentationServiceHDMI.wipeProjectedLinearLayout();
-                        PresentationServiceHDMI.restoreInfobar();
-                    }
+                    PresentationServiceHDMI.wipeProjectedLinearLayout();
+                    PresentationServiceHDMI.restoreInfobar();
                     PresentationServiceHDMI.blankUnblankDisplay(true);
                 } catch (Exception e) {
                     e.printStackTrace();

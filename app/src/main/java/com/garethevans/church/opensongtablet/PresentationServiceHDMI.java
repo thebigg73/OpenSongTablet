@@ -249,6 +249,9 @@ class PresentationServiceHDMI extends Presentation
     static void setUpLogo() {
         presentationCommon.setUpLogo(c,preferences,storageAccess,projected_Logo,StaticVariables.cast_availableWidth_1col,StaticVariables.cast_availableScreenHeight);
     }
+    static void showLogoPrep() {
+        presentationCommon.showLogoPrep();
+    }
     static void showLogo() {
         presentationCommon.showLogo(c,preferences,projected_ImageView,projected_LinearLayout,pageHolder,bottom_infobar,projected_Logo);
     }

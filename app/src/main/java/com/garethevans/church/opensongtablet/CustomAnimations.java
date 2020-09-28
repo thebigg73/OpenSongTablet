@@ -130,6 +130,7 @@ class CustomAnimations {
 
         // IV - Always visible - moved from within animator
         v.setVisibility(View.VISIBLE);
+        v.clearAnimation();
 
         AnimatorSet mAnimationSet = new AnimatorSet();
 
@@ -174,6 +175,7 @@ class CustomAnimations {
         }
 
         v.setVisibility(View.VISIBLE);
+        v.clearAnimation();
 
         AnimatorSet mAnimationSet = new AnimatorSet();
 
