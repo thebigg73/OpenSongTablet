@@ -2494,6 +2494,7 @@ public class ProcessSong extends Activity {
 
             switch (what) {
                 // If this is a chord line followed by a lyric line.
+
                 case "chord_then_lyric":
                     // IV - We have a next line - make lines the same length.
                     nextLine = whattoprocess[y + 1].replaceAll("\\s+$", "");

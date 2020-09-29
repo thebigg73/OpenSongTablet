@@ -138,6 +138,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                 // Set up the logo
                 setUpLogo();
                 if (PresenterMode.logoButton_isSelected) {
+                    bottom_infobar.setAlpha(0.0f);
                     showLogo();
                 }
 
@@ -183,13 +184,22 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             col3_3 = findViewById(R.id.col3_3);
         }
         public static void wipeProjectedLinearLayout() {
-            projected_LinearLayout.removeAllViews();
-            presentermode_title.setText("");
-            presentermode_author.setText("");
-            presentermode_copyright.setText("");
-            presentermode_title.setAlpha(0.0f);
-            presentermode_author.setAlpha(0.0f);
-            presentermode_copyright.setAlpha(0.0f);
+            Handler h = new Handler();
+            h.postDelayed(() -> {
+                // IV - Do the work after a transition delay
+                try {
+                    projected_LinearLayout.removeAllViews();
+                    presentermode_title.setAlpha(0.0f);
+                    presentermode_author.setAlpha(0.0f);
+                    presentermode_copyright.setAlpha(0.0f);
+                    presentermode_alert.setAlpha(0.0f);
+                    presentermode_title.setText("¬");
+                    presentermode_author.setText("¬");
+                    presentermode_copyright.setText("¬");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            },preferences.getMyPreferenceInt(c, "presoTransitionTime",800));
             CustomAnimations.faderAnimation(bottom_infobar,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
         }
 
@@ -291,6 +301,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
         // Update the screen content
         static void doUpdate() {
+            presentermode_alert.setAlpha(1.0f);
             presentationCommon.doUpdate(c,preferences,storageAccess,processSong,myscreen,songinfo_TextView,presentermode_bottombit,projected_SurfaceView,
                     projected_BackgroundImage, pageHolder,projected_Logo,projected_ImageView,projected_LinearLayout,bottom_infobar,projectedPage_RelativeLayout,
                     presentermode_title, presentermode_author, presentermode_copyright, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3);
@@ -312,9 +323,6 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         }
         static void blankUnblankDisplay(boolean unblank) {
             presentationCommon.blankUnblankDisplay(c,preferences,pageHolder,unblank);
-        }
-        static void restoreInfobar() {
-            presentationCommon.restoreInfobar(c,preferences,projected_ImageView,projected_LinearLayout,projected_Logo,bottom_infobar);
         }
 
 

@@ -409,6 +409,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
             // Setup the options drawer reset on close
             setupOptionDrawerReset();
+            // IV - Force display of top level of option menu - needed after mode change
             closeMyDrawers("song");
 
             // Click on the first item in the set
@@ -3014,50 +3015,55 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         logoButton_isSelected = !logoButton_isSelected;
 
         if (logoButton_isSelected) {
+            // IV - If comming from a blank screen do fade quicker
+            long tDelay;
             if (blankButton_isSelected) {
-                Handler h = new Handler();
-                h.postDelayed(() -> {
-                    // IV - Do the work of a click to end blank
-                    presenter_blank_group.performClick();
-                }, 800);
+                tDelay = 0;
+            } else {
+                tDelay = preferences.getMyPreferenceInt(this, "presoTransitionTime",800);
             }
-            // Fade in the logo after a transition delay
+            // Fade in the logo
             if (mSelectedDevice != null) {
                 PresentationService.ExternalDisplay.showLogoPrep();
                 Handler h = new Handler();
                 h.postDelayed(() -> {
-                    // IV - Do the work after a transition delay
                     try {
                         PresentationService.ExternalDisplay.showLogo();
+                        PresentationService.ExternalDisplay.wipeProjectedLinearLayout();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                },preferences.getMyPreferenceInt(this, "presoTransitionTime",800));;
+                }, tDelay);
+                if (blankButton_isSelected) {
+                    PresentationService.ExternalDisplay.blankUnblankDisplay(true);
+                    blankButton_isSelected = false;
+                }
             } else if (FullscreenActivity.isHDMIConnected) {
                 PresentationServiceHDMI.showLogoPrep();
                 Handler h = new Handler();
                 h.postDelayed(() -> {
                     try {
                         PresentationServiceHDMI.showLogo();
+                        PresentationServiceHDMI.wipeProjectedLinearLayout();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                },preferences.getMyPreferenceInt(this, "presoTransitionTime",800));
+                },tDelay);
+                if (blankButton_isSelected) {
+                    PresentationServiceHDMI.blankUnblankDisplay(true);
+                    blankButton_isSelected = false;
+                }
             }
         } else {
             // Fade out the logo
             if (mSelectedDevice != null) {
                 try {
-                    PresentationService.ExternalDisplay.wipeProjectedLinearLayout();
-                    PresentationService.ExternalDisplay.restoreInfobar();
                     PresentationService.ExternalDisplay.hideLogo();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (FullscreenActivity.isHDMIConnected) {
                 try {
-                    PresentationServiceHDMI.wipeProjectedLinearLayout();
-                    PresentationServiceHDMI.restoreInfobar();
                     PresentationServiceHDMI.hideLogo();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -3090,37 +3096,31 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             if (mSelectedDevice != null) {
                 try {
                     PresentationService.ExternalDisplay.blankUnblankDisplay(false);
+                    PresentationService.ExternalDisplay.wipeProjectedLinearLayout();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (FullscreenActivity.isHDMIConnected) {
                 try {
                     PresentationServiceHDMI.blankUnblankDisplay(false);
-                } catch (Exception e) {/**/
+                    PresentationServiceHDMI.wipeProjectedLinearLayout();
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
             if (logoButton_isSelected) {
-                Handler h = new Handler();
-                h.postDelayed(() -> {
-                     // IV - Do the work of a click to end logo
-                     presenter_logo_group.performClick();
-                 }, 800);
-            }
+                presenter_logo_group.performClick();
+             }
         } else {
              // Fade back everything
             if (mSelectedDevice != null) {
                 try {
-                    PresentationService.ExternalDisplay.wipeProjectedLinearLayout();
-                    PresentationService.ExternalDisplay.restoreInfobar();
                     PresentationService.ExternalDisplay.blankUnblankDisplay(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (FullscreenActivity.isHDMIConnected) {
                 try {
-                    PresentationServiceHDMI.wipeProjectedLinearLayout();
-                    PresentationServiceHDMI.restoreInfobar();
                     PresentationServiceHDMI.blankUnblankDisplay(true);
                 } catch (Exception e) {
                     e.printStackTrace();

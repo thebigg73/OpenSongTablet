@@ -298,7 +298,6 @@ class PresentationCommon {
         }
     }
     void updateAlpha(Context c, Preferences preferences, ImageView projected_BackgroundImage, SurfaceView projected_SurfaceView) {
-        // IV - Always make a small change to 'kick' display
         projected_BackgroundImage.setAlpha(preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
         projected_SurfaceView.setAlpha(preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
     }
@@ -414,7 +413,7 @@ class PresentationCommon {
     }
 
     void showLogoPrep () {
-        // IV - Indicates if a delayed showLogo call will be active or not
+        // IV - Indicates the delayed showLogo call will be active unless overridden
         showLogoActive = true;
     }
     void showLogo(Context c, Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout, RelativeLayout pageHolder,
@@ -438,7 +437,7 @@ class PresentationCommon {
                     CustomAnimations.faderAnimation(projected_Logo, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
                     // If we are black screen, fade the page back in
                     if (pageHolder.getVisibility() == View.INVISIBLE) {
-                        CustomAnimations.faderAnimation(pageHolder, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                        CustomAnimations.faderAnimation(pageHolder,2 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
                     }
                 }
             }, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
@@ -448,7 +447,7 @@ class PresentationCommon {
                   LinearLayout bottom_infobar) {
         // IV - Makes sure any delayed showLogo calls do not undo the fade!
         showLogoActive = false;
-        CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800) + 40,false);
+        CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
         songChangeDelay = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
     }
 
@@ -460,7 +459,7 @@ class PresentationCommon {
 
     void blankUnblankDisplay(Context c, Preferences preferences, RelativeLayout pageHolder, boolean unblank) {
         panicRequired = false;
-        CustomAnimations.faderAnimation(pageHolder,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),unblank);
+        CustomAnimations.faderAnimation(pageHolder, (int) (preferences.getMyPreferenceInt(c,"presoTransitionTime",800) * 0.97),unblank);
         if (!unblank) {
             songChangeDelay = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
         }
@@ -500,9 +499,9 @@ class PresentationCommon {
         }
     }
     private void presenterFadeOutSongInfo(final Context c, final Preferences preferences, final TextView tv, final String s, final LinearLayout bottom_infobar) {
-        // IV - Delay the following lyric display - info block fade in before lyrics to avoid 'jump' of lyrics
+        // IV - Delay the following lyric display - so that info block fades in before lyrics to avoid 'jump' of lyrics
         songChangeDelay = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
-        if (tv.getAlpha() > 0.0f) {
+        if ((tv.getAlpha() > 0.0f) || (tv.getText().equals("¬"))) {
             CustomAnimations.faderAnimation(tv,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
         }
 
@@ -551,6 +550,12 @@ class PresentationCommon {
                 CustomAnimations.faderAnimation(pageHolder, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
             }
 
+            // IV - Restore the info bar if necessary
+            if (bottom_infobar.getAlpha() != 1.0f) {
+                CustomAnimations.faderAnimation(bottom_infobar,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+                songChangeDelay = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
+            }
+
             // Set the title of the song and author (if available).  Only does this for changes
             if (StaticVariables.whichMode.equals("Presentation")) {
                 presenterWriteSongInfo(c, preferences, presentermode_title, presentermode_author, presentermode_copyright, bottom_infobar);
@@ -574,7 +579,6 @@ class PresentationCommon {
                         if (FullscreenActivity.isImage || FullscreenActivity.isPDF || FullscreenActivity.isImageSlide) {
                             projected_ImageView.setVisibility(View.VISIBLE);
                             projected_LinearLayout.setVisibility(View.GONE);
-                            CustomAnimations.faderAnimationCustomAlpha(projected_ImageView, 60, 0.95f, 1.0f);
                             projected_ImageView.setAlpha(1.0f);
                         } else if (FullscreenActivity.isVideo) {
                             projected_SurfaceView.setVisibility(View.VISIBLE);
@@ -584,7 +588,6 @@ class PresentationCommon {
                         } else {
                             projected_LinearLayout.setVisibility(View.VISIBLE);
                             projected_ImageView.setVisibility(View.GONE);
-                            CustomAnimations.faderAnimationCustomAlpha(projected_LinearLayout, 60, 0.95f, 1.0f);
                             projected_LinearLayout.setAlpha(1.0f);
                         }
                     }
@@ -603,7 +606,7 @@ class PresentationCommon {
                 // IV - Not if animating out and not if the time test fails as newer post has been made
                 if (!animateOutActive && (lyricAfterTime - 5) < System.currentTimeMillis()) {
                     // Wipe any current views
-                    wipeAllViews(projected_LinearLayout, projected_ImageView);
+                    wipeAllViews(projected_LinearLayout,projected_ImageView);
 
                     // Check the colours colour
                     if (!StaticVariables.whichMode.equals("Presentation")) {
@@ -613,23 +616,23 @@ class PresentationCommon {
                     }
                     // Decide on what we are going to show
                     if (FullscreenActivity.isPDF) {
-                        doPDFPage(c, preferences, storageAccess, processSong, projected_ImageView, projected_LinearLayout);
+                        doPDFPage(c,preferences,storageAccess,processSong,projected_ImageView,projected_LinearLayout);
                     } else if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide) {
-                        doImagePage(c, preferences, storageAccess, projected_ImageView, projected_LinearLayout);
+                        doImagePage(c,preferences,storageAccess,projected_ImageView,projected_LinearLayout);
                     } else {
                         projected_ImageView.setVisibility(View.GONE);
                         switch (StaticVariables.whichMode) {
                             case "Stage":
-                                prepareStageProjected(c, preferences, processSong, storageAccess, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3,
-                                        projected_LinearLayout, projected_ImageView);
+                                prepareStageProjected(c,preferences,processSong,storageAccess,col1_1,col1_2,col2_2,col1_3,col2_3,col3_3,
+                                        projected_LinearLayout,projected_ImageView);
                                 break;
                             case "Performance":
-                                prepareFullProjected(c, preferences, processSong, storageAccess, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3,
-                                        projected_LinearLayout, projected_ImageView);
+                                prepareFullProjected(c,preferences,processSong,storageAccess,col1_1,col1_2,col2_2,col1_3,col2_3,col3_3,
+                                        projected_LinearLayout,projected_ImageView);
                                 break;
                             default:
-                                preparePresenterProjected(c, preferences, processSong, storageAccess, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3,
-                                        projected_LinearLayout, projected_ImageView);
+                                preparePresenterProjected(c,preferences,processSong,storageAccess,col1_1,col1_2,col2_2,col1_3,col2_3,col3_3,
+                                        projected_LinearLayout,projected_ImageView);
                                 break;
                         }
                     }

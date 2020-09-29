@@ -525,8 +525,8 @@ public class StageMode extends AppCompatActivity implements
 
                 // Prepare abhide listener
                 setupAbHide();
+                // IV - Force display of top level of option menu - needed after mode change
                 closeMyDrawers("song");
-
             });
 
             // Set up the Nearby connection service
