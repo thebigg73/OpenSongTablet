@@ -145,6 +145,7 @@ class CustomAnimations {
             @Override
             public void onAnimationEnd(Animator animation) {
                 v.setVisibility(endVisibility);
+                v.setAlpha(endAlpha);
             }
 
             @Override
@@ -189,6 +190,7 @@ class CustomAnimations {
             @Override
             public void onAnimationEnd(Animator animation) {
                 v.setVisibility(endVisibility);
+                v.setAlpha(endAlpha);
             }
 
             @Override
