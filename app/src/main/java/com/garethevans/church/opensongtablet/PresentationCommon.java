@@ -451,12 +451,6 @@ class PresentationCommon {
         songChangeDelay = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
     }
 
-    void restoreInfobar(Context c, Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout, ImageView projected_Logo,
-                  LinearLayout bottom_infobar) {
-        CustomAnimations.faderAnimation(bottom_infobar,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
-        songChangeDelay = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
-    }
-
     void blankUnblankDisplay(Context c, Preferences preferences, RelativeLayout pageHolder, boolean unblank) {
         panicRequired = false;
         CustomAnimations.faderAnimation(pageHolder, (int) (preferences.getMyPreferenceInt(c,"presoTransitionTime",800) * 0.97),unblank);

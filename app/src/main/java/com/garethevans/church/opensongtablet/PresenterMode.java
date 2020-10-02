@@ -641,6 +641,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         StaticVariables.mDisplayTheme = preferences.getMyPreferenceString(PresenterMode.this,"appTheme","dark");
 
+        // The mode we are in
+        StaticVariables.whichMode = preferences.getMyPreferenceString(PresenterMode.this, "whichMode", "Performance");
+
         // Locale
         try {
             StaticVariables.locale = new Locale(preferences.getMyPreferenceString(PresenterMode.this, "locale", "en"));
@@ -3015,7 +3018,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         logoButton_isSelected = !logoButton_isSelected;
 
         if (logoButton_isSelected) {
-            // IV - If comming from a blank screen do fade quicker
+            // IV - If coming from a blank screen do fade quicker
             long tDelay;
             if (blankButton_isSelected) {
                 tDelay = 0;
