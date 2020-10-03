@@ -238,6 +238,7 @@ public class StageMode extends AppCompatActivity implements
     private ScrollView extrabuttons;
     private ScrollView extrabuttons2;
     private int keyRepeatCount = 0;
+    private int sendSongDelay = 0;
     Handler airTurn;
     boolean airTurnCheckRunning;
 
@@ -339,6 +340,15 @@ public class StageMode extends AppCompatActivity implements
             StaticVariables.isautoscrolling = false;
         }
     };
+    // Handlers to support nearby send of first and last song only for a sequence of rapid song changes
+    // This reduces stress on clients
+    private final Handler sendSongAfterDelayHandler = new Handler();
+    private final Runnable sendSongAfterDelayRunnable = () -> {
+        sendSongToConnected();
+        sendSongDelay = 3000;
+    };
+    private final Handler resetSendSongAfterDelayHandler = new Handler();
+    private final Runnable resetSendSongAfterDelayRunnable = () -> sendSongDelay = 0;
 
     // Handlers for fonts
     private Handler lyrichandler;
@@ -515,6 +525,8 @@ public class StageMode extends AppCompatActivity implements
 
                 // Prepare abhide listener
                 setupAbHide();
+                // IV - Force display of top level of option menu - needed after mode change
+                closeMyDrawers("song");
             });
 
             // Set up the Nearby connection service
@@ -1366,6 +1378,11 @@ public class StageMode extends AppCompatActivity implements
             infoPayload += "stop";
         }
         nearbyConnections.doSendPayloadBytes(infoPayload);
+    }
+
+    // Needed to support send activty from within runnable
+    private void sendSongToConnected () {
+        nearbyConnections.sendSongPayload();
     }
 
     private void sendSongSectionToConnected() {
@@ -3086,8 +3103,8 @@ public class StageMode extends AppCompatActivity implements
                 // If we are autologging CCLI information
                 if (preferences.getMyPreferenceBoolean(StageMode.this,"ccliAutomaticLogging",false)) {
                     PopUpCCLIFragment.addUsageEntryToLog(StageMode.this, preferences, StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename,
-                            "", "",
-                            "", "", "2"); // Deleted
+                            StaticVariables.mTitle, StaticVariables.mAuthor,
+                            StaticVariables.mCopyright, StaticVariables.mCCLI,"2"); // Deleted
                 }
                 // Remove the item from the SQL database
                 if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
@@ -3340,6 +3357,8 @@ public class StageMode extends AppCompatActivity implements
             padcurrentTime_TextView.setText(text);
             // When 0:00 we get the pad total time and make Pad progress visible
             if (text.equals("0:00")) {
+                // Display the '/' as now active
+                padTimeSeparator_TextView.setText("/");
                 padtotalTime_TextView.setText(TimeTools.timeFormatFixer(StaticVariables.padtime_length));
                 backingtrackProgress.setVisibility(View.VISIBLE);
             }
@@ -3799,13 +3818,26 @@ public class StageMode extends AppCompatActivity implements
         if (StaticVariables.clickedOnAutoScrollStart && (preferences.getMyPreferenceBoolean(StageMode.this, "autoscrollAutoStart", false) || pdfCanContinueScrolling)) {
             // IV - Using a runnable to autostart if needed - proceeds only after settled on an item
             // IV - Avoids unneeded work during quick song changes
-            startAutoscrollHandler.postDelayed(startAutoscrollRunnable, 2000);
+            // IV - Longer delay to start autoscroll when acting as a nearby host - to give time for remote song to render and (hopefully) to have starts in sync
+            startAutoscrollHandler.removeCallbacks(startAutoscrollRunnable);
+            if (StaticVariables.isHost && StaticVariables.isConnected) {
+                startAutoscrollHandler.postDelayed(startAutoscrollRunnable, 8000);
+                // There will be a wait, display autoscroll icon only to indicate pending
+                currentTime_TextView.setText("");
+                timeSeparator_TextView.setText("");
+                totalTime_TextView.setText("");
+                playbackProgress.setVisibility(View.VISIBLE);
+            } else {
+                startAutoscrollHandler.postDelayed(startAutoscrollRunnable, 2000);
+            }
         }
 
         // Do not touch on a reload
         if (!StaticVariables.reloadOfSong) {
             // If autoshowing sticky notes as a popup
             if (preferences.getMyPreferenceString(StageMode.this, "stickyAutoDisplay", "F").equals("F") && !StaticVariables.mNotes.equals("")) {
+                // IV - Empty then add to queue (known state)
+                showStickyHandler.removeCallbacks(showStickyRunnable);
                 showStickyHandler.postDelayed(showStickyRunnable, 2000);
             }
         }
@@ -3853,6 +3885,8 @@ public class StageMode extends AppCompatActivity implements
             // Highlight the capoInfo to draw attention to it
             // IV - Using a runnable to start capo animation - proceeds only after settled on an item
             // IV - This avoids mis-display during rapid song changes
+            // IV - Empty then add to queue (known state)
+            startCapoAnimationHandler.removeCallbacks(startCapoAnimationRunnable);
             startCapoAnimationHandler.postDelayed(startCapoAnimationRunnable, 2000);
         }
 
@@ -6369,6 +6403,8 @@ public class StageMode extends AppCompatActivity implements
         updateExtraInfoColorsAndSizes("autoscroll");
         currentTime_TextView.setText(R.string.time_zero);
         AutoScrollFunctions.getMultiPagePDFValues();  // This splits the time for multiple pages
+        // Display the '/' as now active
+        timeSeparator_TextView.setText("/");
         totalTime_TextView.setText(TimeTools.timeFormatFixer(StaticVariables.autoScrollDuration));
         playbackProgress.setVisibility(View.VISIBLE);
         doCancelAsyncTask(mtask_autoscroll_music);
@@ -6817,6 +6853,8 @@ public class StageMode extends AppCompatActivity implements
                 startCapoAnimationHandler.removeCallbacks(startCapoAnimationRunnable);
                 startAutoscrollHandler.removeCallbacks(startAutoscrollRunnable);
                 showStickyHandler.removeCallbacks(showStickyRunnable);
+                sendSongAfterDelayHandler.removeCallbacks(sendSongAfterDelayRunnable);
+                resetSendSongAfterDelayHandler.removeCallbacks(resetSendSongAfterDelayRunnable);
 
                 // If there is a sticky note showing, remove it early
                 if (stickyPopUpWindow != null && stickyPopUpWindow.isShowing()) {
@@ -7186,7 +7224,14 @@ public class StageMode extends AppCompatActivity implements
                     }
                     // Send Nearby song intent
                     if (StaticVariables.isConnected && StaticVariables.isHost && !orientationChanged) {
-                        nearbyConnections.sendSongPayload();
+                        // Only the first (with no delay) and last (with delay) of a long sequence of song changes is actually sent
+                        // sendSongDelay will be 0 for the first song
+                        // IV - Always empty then add to queue (known state)
+                        sendSongAfterDelayHandler.removeCallbacks(sendSongAfterDelayRunnable);
+                        sendSongAfterDelayHandler.postDelayed(sendSongAfterDelayRunnable, sendSongDelay);
+                        // IV - Always empty then add to queue (known state)
+                        resetSendSongAfterDelayHandler.removeCallbacks(resetSendSongAfterDelayRunnable);
+                        resetSendSongAfterDelayHandler.postDelayed(resetSendSongAfterDelayRunnable, 3500);
                     }
 
                     // IV - Sticky display moved until after song display so that timings are correct
@@ -8380,6 +8425,11 @@ public class StageMode extends AppCompatActivity implements
 
                             } else {
                                 // Prepare the default auto pad
+                                // IV - These can be slow to prepare, display just pad icon to indicate pending
+                                padcurrentTime_TextView.setText("");
+                                padTimeSeparator_TextView.setText("");
+                                padtotalTime_TextView.setText("");
+                                backingtrackProgress.setVisibility(View.VISIBLE);
                                 path = getResources().getIdentifier(StaticVariables.pad_filename, "raw", getPackageName());
                                 try {
                                     afd = getResources().openRawResourceFd(path);

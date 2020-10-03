@@ -96,6 +96,7 @@ public class PopUpAlertFragment extends DialogFragment {
         // This will either switch on the alert, or turn it off.
         alertToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (mListener != null) {
+                preferences.setMyPreferenceString(getActivity(),"presoAlertText",alertMessage.getText().toString().trim());
                 mListener.updateAlert(isChecked);
             }
         });

@@ -1455,18 +1455,18 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             StaticVariables.songfilename = nameofpdffile;
         }
 
-        // If we are autologging CCLI information
-        if (preferences.getMyPreferenceBoolean(getActivity(),"ccliAutomaticLogging",false)) {
-            PopUpCCLIFragment.addUsageEntryToLog(getActivity(), preferences, StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename,
-                    StaticVariables.songfilename, "",
-                    "", "", "1"); // Created
-        }
-
         // Indicate after loading song (which renames it), we need to build the database and song index
         FullscreenActivity.needtorefreshsongmenu = true;
 
         if (mListener != null) {
             mListener.loadSong();
+            // IV - Moved after load to better report details of the song
+            // If we are autologging CCLI information
+            if (preferences.getMyPreferenceBoolean(getActivity(),"ccliAutomaticLogging",false)) {
+                PopUpCCLIFragment.addUsageEntryToLog(getActivity(), preferences, StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename,
+                    StaticVariables.songfilename, StaticVariables.mAuthor,
+                    StaticVariables.mCopyright, StaticVariables.mCCLI, "1"); // Created
+            }
             dismiss();
         }
     }

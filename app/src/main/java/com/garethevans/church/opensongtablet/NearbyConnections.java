@@ -315,10 +315,9 @@ public class NearbyConnections implements NearbyInterface {
     }
     private void payloadAutoscroll(String incoming) {
         // It sends autoscroll startstops as autoscroll_start or autoscroll_stop
-        // Start or stop by stating we were already doing the other!
         if (StaticVariables.whichMode.equals("Performance")) {
-            if (nearbyReturnActionsInterface != null) {
-                StaticVariables.isautoscrolling = !incoming.equals("autoscroll_start");
+            // Adjust only when not already in the correct state
+            if (nearbyReturnActionsInterface != null && !(StaticVariables.isautoscrolling == incoming.equals("autoscroll_start"))) {
                 nearbyReturnActionsInterface.gesture5();
             }
         }
