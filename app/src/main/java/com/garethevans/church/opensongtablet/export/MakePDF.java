@@ -158,6 +158,9 @@ public class MakePDF {
         // If the copyright isn't blank
         if (thisSong.getCopyright()!=null && !thisSong.getCopyright().isEmpty()) {
             string = thisSong.getCopyright();
+            if (!string.toLowerCase().contains(c.getString(R.string.edit_song_copyright).toLowerCase())) {
+                string = c.getString(R.string.edit_song_copyright) + " " + string;
+            }
             paint.getTextBounds(string,0,string.length(),bounds);
             height = height + bounds.height();
             canvas.drawText(string,margin,ypos,paint);
