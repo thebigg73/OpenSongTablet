@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
@@ -49,6 +48,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
@@ -72,14 +72,9 @@ import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 import com.google.android.gms.common.api.Status;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.peak.salut.Callbacks.SalutDataCallback;
-import com.peak.salut.Salut;
-import com.peak.salut.SalutDataReceiver;
-import com.peak.salut.SalutServiceData;
 
 import java.io.File;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -91,7 +86,9 @@ import java.util.Set;
 
 import lib.folderpicker.FolderPicker;
 
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
+import static com.google.android.material.snackbar.Snackbar.make;
+
 
 public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyInterface,
         SongMenuListeners.MyInterface, PopUpChooseFolderFragment.MyInterface,
@@ -115,13 +112,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         PopUpPadFragment.MyInterface, PopUpAutoscrollFragment.MyInterface,
         PopUpMetronomeFragment.MyInterface, PopUpStickyFragment.MyInterface,
         PopUpLinks.MyInterface, PopUpAreYouSureFragment.MyInterface,
-        SongMenuAdapter.MyInterface, BatteryMonitor.MyInterface, SalutDataCallback,
+        SongMenuAdapter.MyInterface, BatteryMonitor.MyInterface,
         PopUpMenuSettingsFragment.MyInterface, PopUpAlertFragment.MyInterface,
         PopUpLayoutFragment.MyInterface, DownloadTask.MyInterface,
         PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
         PopUpCreateDrawingFragment.MyInterface,
         PopUpRandomSongFragment.MyInterface,
-        PopUpCCLIFragment.MyInterface,
+        PopUpCCLIFragment.MyInterface, NearbyReturnActionsInterface, NearbyInterface,
         PopUpBibleXMLFragment.MyInterface, PopUpShowMidiMessageFragment.MyInterface {
 
     private DialogFragment newFragment;
@@ -143,6 +140,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
     private ProcessSong processSong;
     private ProfileActions profileActions;
+    private NearbyConnections nearbyConnections;
+    private MakePDF makePDF;
 
     // MIDI
     private Midi midi;
@@ -250,25 +249,48 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private boolean blankButton_isSelected = false;
     static boolean logoButton_isSelected = false;
     static String alert_on = "N";
+    // IV - Support a half highlight of buttons during transitions
+    private boolean buttonInTransition = false;
 
     // Auto slideshow
     private boolean isplayingautoslideshow = false;
     private boolean autoslideloop = false;
     private int autoslidetime = 0;
 
-    // Network discovery / connections
-    private static final String TAG = "StageMode";
-    private SalutMessage myMessage;
-    private SalutMessage mySongMessage;
-    private SalutMessage mySectionMessage;
+    private OptionMenuListeners optionMenuListeners;
 
     // Battery
     private BroadcastReceiver br;
+
+    // IV - Called after delay to enable and set correct highlights of action buttons
+    private final Handler enableActionButtonsHandler = new Handler();
+    private final Runnable enableActionButtonsRunnable = () -> {
+        if (blankButton_isSelected) {
+            highlightButtonClicked(presenter_blank_group);
+        } else {
+            unhighlightButtonClicked(presenter_blank_group);
+        }
+        if (logoButton_isSelected) {
+            highlightButtonClicked(presenter_logo_group);
+        } else {
+            unhighlightButtonClicked(presenter_logo_group);
+        }
+        if (projectButton_isSelected) {
+            highlightButtonClicked(presenter_project_group);
+        } else {
+            unhighlightButtonClicked(presenter_project_group);
+        }
+        presenter_project_group.setEnabled(true);
+        presenter_logo_group.setEnabled(true);
+        presenter_blank_group.setEnabled(true);
+        buttonInTransition = false;
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("d", "Welcome to Presentation Mode");
+
         StaticVariables.activity = PresenterMode.this;
         FullscreenActivity.mContext = PresenterMode.this;
         FullscreenActivity.appRunning = true;
@@ -288,6 +310,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(PresenterMode.this);
         processSong = new ProcessSong();
         profileActions = new ProfileActions();
+        optionMenuListeners = new OptionMenuListeners(this);
+        nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong,optionMenuListeners,sqLiteHelper);
+        makePDF = new MakePDF();
 
         new Thread(() -> {
             runOnUiThread(() -> {
@@ -344,6 +369,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         // Since this mode has just been opened, force an update to the cast screen
         StaticVariables.forcecastupdate = true;
 
+
+
         // Set up the toolbar and views
         runOnUiThread(() -> {
             ab_toolbar = findViewById(R.id.mytoolbar); // Attaching the layout to the toolbar object
@@ -373,12 +400,17 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // Set up the song buttons
             setupSongButtons();
 
-            // Set up the Salut service
+            // Set up the Wifi service
             getBluetoothName();
-            startRegistration();
+            nearbyConnections.getUserNickname();
 
             // Initialise the ab info
             adjustABInfo();
+
+            // Setup the options drawer reset on close
+            setupOptionDrawerReset();
+            // IV - Force display of top level of option menu - needed after mode change
+            closeMyDrawers("song");
 
             // Click on the first item in the set
             if (presenter_set_buttonsListView.getChildCount() > 0) {
@@ -430,13 +462,18 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     @Override
     protected void onResume() {
+        // Be sure to call the super class.
+        super.onResume();
         FullscreenActivity.appRunning = true;
         StaticVariables.activity = PresenterMode.this;
         resizeDrawers();
         // Fix the page flags
         windowFlags();
-        // Be sure to call the super class.
-        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -451,20 +488,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
         }
         tryCancelAsyncTasks();
-
-        if (FullscreenActivity.network!=null && FullscreenActivity.network.isRunningAsHost) {
-            try {
-                FullscreenActivity.network.stopNetworkService(false);
-            } catch (Exception e) {
-                Log.d("d","Error closing network service");
-            }
-        } else if (FullscreenActivity.network!=null) {
-            try {
-                FullscreenActivity.network.unregisterClient(false);
-            } catch (Exception e) {
-                Log.d("d","Error closing network service");
-            }
-        }
 
         //Second screen
         try {
@@ -481,6 +504,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // Ooops
             e.printStackTrace();
         }
+        nearbyConnections.turnOffNearby();
     }
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
@@ -572,7 +596,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         doCancelAsyncTask(check_storage);
 
     }
-    private void doCancelAsyncTask(AsyncTask ast) {
+    private void doCancelAsyncTask(AsyncTask<?,?,?> ast) {
         if (ast != null) {
             try {
                 ast.cancel(true);
@@ -587,26 +611,28 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         dealWithIntent();
     }
     private void dealWithIntent() {
-        try {
-            switch (FullscreenActivity.whattodo) {
-                case "importfile_customreusable_scripture":
-                    // Receiving scripture text
-                    FullscreenActivity.whattodo = "customreusable_scripture";
-                    openFragment();
-                    break;
-                case "importfile_processimportosb":
-                    // Receiving an OpenSongApp backup file
-                    FullscreenActivity.whattodo = "processimportosb";
-                    openFragment();
-                    break;
-                case "importfile_doimport":
-                    // Receiving another file
-                    FullscreenActivity.whattodo = "doimport";
-                    openFragment();
-                    break;
+        if (FullscreenActivity.whattodo!=null) {
+            try {
+                switch (FullscreenActivity.whattodo) {
+                    case "importfile_customreusable_scripture":
+                        // Receiving scripture text
+                        FullscreenActivity.whattodo = "customreusable_scripture";
+                        openFragment();
+                        break;
+                    case "importfile_processimportosb":
+                        // Receiving an OpenSongApp backup file
+                        FullscreenActivity.whattodo = "processimportosb";
+                        openFragment();
+                        break;
+                    case "importfile_doimport":
+                        // Receiving another file
+                        FullscreenActivity.whattodo = "doimport";
+                        openFragment();
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -614,6 +640,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private void loadStartUpVariables() {
 
         StaticVariables.mDisplayTheme = preferences.getMyPreferenceString(PresenterMode.this,"appTheme","dark");
+
+        // The mode we are in
+        StaticVariables.whichMode = preferences.getMyPreferenceString(PresenterMode.this, "whichMode", "Performance");
 
         // Locale
         try {
@@ -745,14 +774,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 // This stops us reporting projecting every section
                 newsongloaded = true;
 
-                // Send WiFiP2P intent
-                if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
-                    try {
-                        sendSongLocationToConnected();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                // Send Nearby payload
+                if (StaticVariables.isHost && StaticVariables.isConnected) {
+                    nearbyConnections.sendSongPayload();
                 }
+
                 doCancelAsyncTask(loadsong_async);
                 loadsong_async = new LoadSong();
                 try {
@@ -1179,6 +1205,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         batterycharge = findViewById(R.id.batterycharge);
         batteryimage = findViewById(R.id.batteryimage);
         batteryholder = findViewById(R.id.batteryholder);
+        ab_toolbar = findViewById(R.id.mytoolbar);
 
         // The song menu
         songmenu = findViewById(R.id.songmenu);
@@ -1546,6 +1573,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         selectSectionButtonInSong(StaticVariables.currentSection);
     }
 
+    @Override
+    public void selectSection(int which) {
+        selectSectionButtonInSong(which);
+    }
     private void selectSectionButtonInSong(int which) {
 
         try {
@@ -1623,6 +1654,34 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             enabledisableButton(nav_nextsong, false);
         }
 
+        //if (FullscreenActivity.songSections!=null && FullscreenActivity.currentSection>=FullscreenActivity.songSections.length) {
+        //    enabledisableButton(nav_nextsection,false);
+        //} else if (FullscreenActivity.songSections!=null){
+        //    enabledisableButton(nav_nextsection,true);
+        //} else {
+        //    enabledisableButton(nav_nextsection,false);
+        // }
+        // Initially disable the set buttons
+        //enabledisableButton(nav_prevsong,false);
+        //enabledisableButton(nav_nextsong,false);
+
+        //if (FullscreenActivity.setView && FullscreenActivity.indexSongInSet>0) {
+        //    enabledisableButton(nav_prevsong,true);
+        //}
+        //if (FullscreenActivity.setView && FullscreenActivity.indexSongInSet>=0 &&
+        //        FullscreenActivity.indexSongInSet<FullscreenActivity.mSetList.length-1) {
+        //    enabledisableButton(nav_nextsong, true);
+        //}
+    }
+    @Override
+    public void goToPreviousItem() {
+        // Called from nearby connection
+        tryClickPreviousSection();
+    }
+    @Override
+    public void goToNextItem() {
+        // Called from nearby connection
+        tryClickPreviousSection();
     }
     private void tryClickNextSection() {
         if (StaticVariables.currentSection < StaticVariables.songSections.length - 1) {
@@ -1682,27 +1741,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
-    // Salut stuff
-    @Override
-    public void onDataReceived(Object data) {
-        // Attempt to extract the song details
-        if (data != null && (data.toString().contains("_____") || data.toString().contains("<lyrics>") ||
-                data.toString().contains("___section___"))) {
-            String action = processSong.getSalutReceivedLocation(data.toString(), PresenterMode.this, preferences, storageAccess);
-            switch (action) {
-                case "Location":
-                    holdBeforeLoading();
-                    break;
-                case "HostFile":
-                    holdBeforeLoadingXML();
-                    break;
-                case "SongSection":
-                    holdBeforeLoadingSection(processSong.getSalutReceivedSection(data.toString()));
-                    break;
-            }
-        }
-    }
-
     public void doMoveInSet() {
         doCancelAsyncTask(do_moveinset);
         do_moveinset = new DoMoveInSet();
@@ -1740,8 +1778,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 // If we are autologging CCLI information
                 if (preferences.getMyPreferenceBoolean(PresenterMode.this,"ccliAutomaticLogging",false)) {
                     PopUpCCLIFragment.addUsageEntryToLog(PresenterMode.this, preferences, StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename,
-                            "", "",
-                            "", "", "2"); // Deleted
+                            StaticVariables.mTitle, StaticVariables.mAuthor,
+                            StaticVariables.mCopyright, StaticVariables.mCCLI, "2"); // Deleted
                 }
 
                 // Remove the item from the SQL database
@@ -1767,137 +1805,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 // Wipe all songs - Getting rid of this!!!!!
                 Log.d("PresenterMode", "Trying wipe songs folder - ignoring");
                 break;
-
         }
     }
 
-    private void holdBeforeLoading() {
-        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
-        // As soon as we receive if, check this is the first time
-        if (FullscreenActivity.firstReceivingOfSalut) {
-            // Now turn it off
-            FullscreenActivity.firstReceivingOfSalut = false;
-            // Decide if the file exists on this device first
-            Uri uri = storageAccess.getUriForItem(PresenterMode.this, preferences, "Songs",
-                    StaticVariables.whichSongFolder, StaticVariables.songfilename);
 
-            if (storageAccess.uriExists(PresenterMode.this, uri)) {
-                loadSong();
-            }
-
-            // After a delay of 2 seconds, reset the firstReceivingOfSalut;
-            Handler h = new Handler();
-            h.postDelayed(() -> FullscreenActivity.firstReceivingOfSalut = true, 500);
-        }
-    }
-    private void holdBeforeSending() {
-        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
-        // As soon as we send it, check this is the first time
-        if (FullscreenActivity.firstSendingOfSalut) {
-            // Now turn it off
-            FullscreenActivity.firstSendingOfSalut = false;
-            if (FullscreenActivity.network != null) {
-                if (FullscreenActivity.network.isRunningAsHost) {
-                    try {
-                        FullscreenActivity.network.sendToAllDevices(myMessage, () -> Log.e(TAG, "Oh no! The data failed to send."));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                // After a delay of 2 seconds, reset the firstSendingOfSalut;
-                Handler h = new Handler();
-                h.postDelayed(() -> FullscreenActivity.firstSendingOfSalut = true, 500);
-            }
-        }
-    }
-    private void holdBeforeSendingXML() {
-        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
-        // As soon as we send it, check this is the first time
-        if (FullscreenActivity.firstSendingOfSalutXML) {
-            // Now turn it off
-            FullscreenActivity.firstSendingOfSalutXML = false;
-            if (FullscreenActivity.network != null) {
-                if (FullscreenActivity.network.isRunningAsHost) {
-                    try {
-                        FullscreenActivity.network.sendToAllDevices(mySongMessage, () -> Log.e(TAG, "Oh no! The data failed to send."));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        Log.d("d", "mySongMessage being sent=" + mySongMessage.description);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                // After a delay of 2 seconds, reset the firstSendingOfSalut;
-                Handler h = new Handler();
-                h.postDelayed(() -> FullscreenActivity.firstSendingOfSalutXML = true, 500);
-            }
-        }
-    }
-    private void holdBeforeSendingSection() {
-        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
-        // As soon as we send it, check this is the first time
-        if (FullscreenActivity.firstSendingOfSalutSection) {
-            // Now turn it off
-            FullscreenActivity.firstSendingOfSalutSection = false;
-            if (FullscreenActivity.network != null) {
-                if (FullscreenActivity.network.isRunningAsHost) {
-                    try {
-                        FullscreenActivity.network.sendToAllDevices(mySectionMessage, () -> Log.e(TAG, "Oh no! The data failed to send."));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                // After a delay of 2 seconds, reset the firstSendingOfSalutSection;
-                Handler h = new Handler();
-                h.postDelayed(() -> FullscreenActivity.firstSendingOfSalutSection = true, 500);
-            }
-        }
-    }
-
-    private void holdBeforeLoadingXML() {
-        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
-        // As soon as we receive if, check this is the first time
-        if (FullscreenActivity.firstReceivingOfSalutXML) {
-            // Now turn it off
-            FullscreenActivity.firstReceivingOfSalutXML = false;
-
-            Uri uri = storageAccess.getUriForItem(PresenterMode.this, preferences, "Songs",
-                    StaticVariables.whichSongFolder, StaticVariables.songfilename);
-            if (!storageAccess.uriExists(PresenterMode.this, uri) || FullscreenActivity.receiveHostFiles) {
-                FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\n", "$$__$$");
-                FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\", "");
-                FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("$$__$$", "\n");
-
-                // Create the temp song file
-                Uri receivedUri = storageAccess.getUriForItem(PresenterMode.this, preferences,
-                        "Received", "", "ReceivedSong");
-                storageAccess.lollipopCreateFileForOutputStream(PresenterMode.this, preferences, receivedUri,
-                        null, "Received", "", "ReceivedSong");
-                OutputStream outputStream = storageAccess.getOutputStream(PresenterMode.this, receivedUri);
-                storageAccess.writeFileFromString(FullscreenActivity.mySalutXML, outputStream);
-
-                StaticVariables.songfilename = "ReceivedSong";
-                StaticVariables.whichSongFolder = "../Received";
-
-                loadSong();
-
-            } else if (storageAccess.uriExists(PresenterMode.this,uri)) {
-                // Just load the song
-                loadSong();
-            } else {
-                StaticVariables.myToastMessage = getResources().getString(R.string.songdoesntexist);
-                ShowToast.showToast(PresenterMode.this);
-            }
-
-            // After a delay of 2 seconds, reset the firstReceivingOfSalut;
-            Handler h = new Handler();
-            h.postDelayed(() -> FullscreenActivity.firstReceivingOfSalutXML = true,500);
-        }
-    }
 
     private void loadImagePreview() {
         // Make the appropriate bits visible
@@ -1936,49 +1847,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
         }
     }
-    private void holdBeforeLoadingSection(int s) {
-        if (FullscreenActivity.firstReceivingOfSalutSection) {
-            // Now turn it off
-            FullscreenActivity.firstReceivingOfSalutSection = false;
-            StaticVariables.currentSection = s;
-            selectSectionButtonInSong(StaticVariables.currentSection);
 
-            // After a delay of 2 seconds, reset the firstReceivingOfSalutSection;
-            Handler h = new Handler();
-            h.postDelayed(() -> FullscreenActivity.firstReceivingOfSalutSection = true, 500);
-        }
-    }
 
-    private void sendSongLocationToConnected() {
-        Log.d("d","Sending song");
-        String messageString = StaticVariables.whichSongFolder + "_____" +
-                StaticVariables.songfilename + "_____" +
-                FullscreenActivity.whichDirection;
-
-        myMessage = new SalutMessage();
-        myMessage.description = messageString;
-        holdBeforeSending();
-    }
-    private void sendSongXMLToConnected() {
-        String myXML;
-        if (FullscreenActivity.isSong && FullscreenActivity.myXML != null) {
-            myXML = FullscreenActivity.presenterSendSong;
-        } else {
-            myXML = "";
-        }
-        mySongMessage = new SalutMessage();
-        mySongMessage.description = myXML;
-        holdBeforeSendingXML();
-    }
     private void sendSongSectionToConnected() {
-        int sectionval;
-        if (StaticVariables.whichMode.equals("Stage") || StaticVariables.whichMode.equals("Presentation")) {
-            sectionval = StaticVariables.currentSection;
-            mySectionMessage = new SalutMessage();
-            mySectionMessage.description = "___section___" + sectionval;
-            holdBeforeSendingSection();
-        }
+        String infoPayload = "___section___" + StaticVariables.currentSection;
+        nearbyConnections.doSendPayloadBytes(infoPayload);
     }
+
     private void getBluetoothName() {
         try {
             if (FullscreenActivity.mBluetoothAdapter == null) {
@@ -1992,19 +1867,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             FullscreenActivity.mBluetoothName = "Unknown";
         }
     }
-    private void startRegistration() {
-        try {
-            FullscreenActivity.dataReceiver = new SalutDataReceiver(PresenterMode.this, PresenterMode.this);
-            FullscreenActivity.serviceData = new SalutServiceData("OpenSongApp", 60606,
-                    FullscreenActivity.mBluetoothName);
 
-            FullscreenActivity.network = new Salut(FullscreenActivity.dataReceiver, FullscreenActivity.serviceData, () -> FullscreenActivity.salutLog += "\n" + getResources().getString(R.string.nowifidirect));
-
-        } catch (Exception e) {
-            FullscreenActivity.salutLog += "\n" + getResources().getString(R.string.nowifidirect);
-            e.printStackTrace();
-        }
-    }
 
     // Loading the song
     @Override
@@ -2027,6 +1890,18 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     // The right hand column buttons
     private void projectButtonClick() {
+        // IV - Button clicks can be called from other button clicks as a subroutine
+        // IV - Only the first button sets the highlights, subroutine calls do not
+        if (!buttonInTransition) {
+            highlightButtonClickedHalf(presenter_project_group);
+            unhighlightButtonClicked(presenter_logo_group);
+            unhighlightButtonClicked(presenter_blank_group);
+        }
+        // IV - Disable action buttons here
+        presenter_project_group.setEnabled(false);
+        presenter_logo_group.setEnabled(false);
+        presenter_blank_group.setEnabled(false);
+
         try {
             projectButton_isSelected = !projectButton_isSelected;
 
@@ -2047,11 +1922,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             if (blankButton_isSelected) {
                 presenter_blank_group.performClick();
             }
-
-
-            // Turn on the project button for now
-            highlightButtonClicked(presenter_project_group);
-
 
             // Update the projector
             if (mSelectedDevice != null) {
@@ -2083,15 +1953,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     e.printStackTrace();
                 }
             }
-
-            Handler unhighlight = new Handler();
-            unhighlight.postDelayed(() -> {
-                projectButton_isSelected = false;
-                unhighlightButtonClicked(presenter_project_group);
-            }, 500);
+            projectButton_isSelected = false;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // IV - After a delay enable and set correct highlights of action buttons
+        enableActionButtonsHandler.removeCallbacks(enableActionButtonsRunnable);
+        enableActionButtonsHandler.postDelayed(enableActionButtonsRunnable, (long) (3.2 * preferences.getMyPreferenceInt(this, "presoTransitionTime",800)));
     }
 
     @Override
@@ -2256,14 +2124,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // Fix the nav buttons
             fixNavButtons();
 
-            // Send section to other devices (checks we are in stage or presentation mode in called method
-            if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
-                try {
-                    sendSongSectionToConnected();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            // Send section to other devices
+            if (StaticVariables.isHost && StaticVariables.isConnected) {
+                sendSongSectionToConnected();
             }
+
 
             // Scroll this section to the top of the list
             // Have to do this manually - add the height of the buttons before the one wanted + margin
@@ -2307,9 +2172,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 loadSongPreview();
             }
 
-            // Since the slide has been armed, but not projected, turn off the project button
-            // This encourages the user to click it again to update the projector screen
-            unhighlightButtonClicked(presenter_project_group);
             projectButton_isSelected = false;
         }
     }
@@ -2422,6 +2284,34 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }
                 break;
         }
+    }
+
+
+    // Nearby
+    // These are dealt with in NearbyConnections.  Pulled in from interface to listen from optionmenulistener
+    @Override
+    public void startDiscovery() {
+        nearbyConnections.startDiscovery();
+    }
+    @Override
+    public void startAdvertising() {
+        nearbyConnections.startAdvertising();
+    }
+    @Override
+    public void stopDiscovery() {
+        nearbyConnections.stopDiscovery();
+    }
+    @Override
+    public void stopAdvertising() {
+        nearbyConnections.stopAdvertising();
+    }
+    @Override
+    public void turnOffNearby() {
+        nearbyConnections.turnOffNearby();
+    }
+    @Override
+    public void doSendPayloadBytes(String infoPayload) {
+        nearbyConnections.doSendPayloadBytes(infoPayload);
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -2560,7 +2450,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 String title = getString(R.string.exportcurrentsong);
                 Intent emailIntent = exportPreparer.exportSong(PresenterMode.this, preferences,
-                        FullscreenActivity.bmScreen, storageAccess, processSong);
+                        FullscreenActivity.bmScreen, storageAccess, processSong,makePDF,sqLiteHelper);
                 Intent chooser = Intent.createChooser(emailIntent, title);
                 startActivity(chooser);
             } catch (Exception e) {
@@ -2673,7 +2563,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 String title = getString(R.string.exportsavedset);
                 ExportPreparer exportPreparer = new ExportPreparer();
-                Intent emailIntent = exportPreparer.exportSet(PresenterMode.this, preferences, storageAccess);
+                Intent emailIntent = exportPreparer.exportSet(PresenterMode.this, preferences, storageAccess, processSong, makePDF, sqLiteHelper);
                 Intent chooser = Intent.createChooser(emailIntent, title);
                 startActivity(chooser);
             } catch (Exception e) {
@@ -3102,41 +2992,59 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
     private void logoButtonClick() {
-        if (projectButton_isSelected) {
-            projectButton_isSelected = false;
+        if (!buttonInTransition) {
             unhighlightButtonClicked(presenter_project_group);
-        }
-        if (blankButton_isSelected) {
-            blankButton_isSelected = false;
+            highlightButtonClickedHalf(presenter_logo_group);
             unhighlightButtonClicked(presenter_blank_group);
         }
+        presenter_project_group.setEnabled(false);
+        presenter_logo_group.setEnabled(false);
+        presenter_blank_group.setEnabled(false);
 
         logoButton_isSelected = !logoButton_isSelected;
 
         if (logoButton_isSelected) {
-            // Fade in the logo after highlighting the button and disabling
-            presenter_logo_group.setEnabled(false);
-            highlightButtonClicked(presenter_logo_group);
+            // IV - If coming from a blank screen do fade quicker
+            long tDelay;
+            if (blankButton_isSelected) {
+                tDelay = 0;
+            } else {
+                tDelay = preferences.getMyPreferenceInt(this, "presoTransitionTime",800);
+            }
+            // Fade in the logo
             if (mSelectedDevice != null) {
-                try {
-                    PresentationService.ExternalDisplay.showLogo();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                PresentationService.ExternalDisplay.showLogoPrep();
+                Handler h = new Handler();
+                h.postDelayed(() -> {
+                    try {
+                        PresentationService.ExternalDisplay.showLogo();
+                        PresentationService.ExternalDisplay.wipeProjectedLinearLayout();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }, tDelay);
+                if (blankButton_isSelected) {
+                    PresentationService.ExternalDisplay.blankUnblankDisplay(true);
+                    blankButton_isSelected = false;
                 }
             } else if (FullscreenActivity.isHDMIConnected) {
-                try {
-                    PresentationServiceHDMI.showLogo();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                PresentationServiceHDMI.showLogoPrep();
+                Handler h = new Handler();
+                h.postDelayed(() -> {
+                    try {
+                        PresentationServiceHDMI.showLogo();
+                        PresentationServiceHDMI.wipeProjectedLinearLayout();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                },tDelay);
+                if (blankButton_isSelected) {
+                    PresentationServiceHDMI.blankUnblankDisplay(true);
+                    blankButton_isSelected = false;
                 }
-
             }
-            Handler h = new Handler();
-            h.postDelayed(() -> presenter_logo_group.setEnabled(true), 800);
         } else {
-            // Fade out the logo after unhighlighting the button and disabling
-            presenter_logo_group.setEnabled(false);
-            unhighlightButtonClicked(presenter_logo_group);
+            // Fade out the logo
             if (mSelectedDevice != null) {
                 try {
                     PresentationService.ExternalDisplay.hideLogo();
@@ -3150,46 +3058,50 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     e.printStackTrace();
                 }
             }
-            Handler h = new Handler();
-            h.postDelayed(() -> presenter_logo_group.setEnabled(true), 800);
         }
+        // IV - If we end up not 'blank' and not 'logo' then a 'project' is needed
+        if (!blankButton_isSelected && !logoButton_isSelected && !projectButton_isSelected) {
+            presenter_project_group.performClick();
+        }
+
+        enableActionButtonsHandler.removeCallbacks(enableActionButtonsRunnable);
+        enableActionButtonsHandler.postDelayed(enableActionButtonsRunnable, (long) (3.2 * preferences.getMyPreferenceInt(this, "presoTransitionTime",800)));
     }
     private void blankButtonClick() {
-        if (projectButton_isSelected) {
-            projectButton_isSelected = false;
+        if (!buttonInTransition) {
             unhighlightButtonClicked(presenter_project_group);
-        }
-        if (logoButton_isSelected) {
-            logoButton_isSelected = false;
             unhighlightButtonClicked(presenter_logo_group);
+            highlightButtonClickedHalf(presenter_blank_group);
         }
+
+        presenter_project_group.setEnabled(false);
+        presenter_logo_group.setEnabled(false);
+        presenter_blank_group.setEnabled(false);
 
         blankButton_isSelected = !blankButton_isSelected;
 
         if (blankButton_isSelected) {
             // Fade out everything after highlighting the button and disabling
-            presenter_blank_group.setEnabled(false);
-            highlightButtonClicked(presenter_blank_group);
             if (mSelectedDevice != null) {
                 try {
                     PresentationService.ExternalDisplay.blankUnblankDisplay(false);
+                    PresentationService.ExternalDisplay.wipeProjectedLinearLayout();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (FullscreenActivity.isHDMIConnected) {
                 try {
                     PresentationServiceHDMI.blankUnblankDisplay(false);
+                    PresentationServiceHDMI.wipeProjectedLinearLayout();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
-            Handler h = new Handler();
-            h.postDelayed(() -> presenter_blank_group.setEnabled(true), 800);
+            if (logoButton_isSelected) {
+                presenter_logo_group.performClick();
+            }
         } else {
-            // Fade back everything after unhighlighting the button and disabling
-            presenter_blank_group.setEnabled(false);
-            unhighlightButtonClicked(presenter_blank_group);
+            // Fade back everything
             if (mSelectedDevice != null) {
                 try {
                     PresentationService.ExternalDisplay.blankUnblankDisplay(true);
@@ -3203,10 +3115,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     e.printStackTrace();
                 }
             }
-
-            Handler h = new Handler();
-            h.postDelayed(() -> presenter_blank_group.setEnabled(true), 800);
         }
+        if (!blankButton_isSelected && !logoButton_isSelected && !projectButton_isSelected) {
+            presenter_project_group.performClick();
+        }
+        enableActionButtonsHandler.removeCallbacks(enableActionButtonsRunnable);
+        enableActionButtonsHandler.postDelayed(enableActionButtonsRunnable, (long) (3.2 * preferences.getMyPreferenceInt(this, "presoTransitionTime",800)));
     }
     private void alertButtonClick() {
         highlightButtonClicked(presenter_alert_group);
@@ -3254,6 +3168,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private void unhighlightButtonClicked(View v) {
         v.setBackground(null);
     }
+    private void highlightButtonClickedHalf(View v) {
+        buttonInTransition = true;
+        v.setBackground(ContextCompat.getDrawable(PresenterMode.this, R.drawable.presenter_box_blue_half_active));
+    }
 
     // Enable or disable the buttons in the final column
     private void noSecondScreen() {
@@ -3294,6 +3212,28 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         blankButton_isSelected = false;
     }
 
+    // Google Nearby
+    @Override
+    public boolean requestNearbyPermissions() {
+        Log.d("d","Requesting nearby permissions");
+        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
+            try {
+                make(findViewById(R.id.mypage), R.string.location_rationale,
+                        LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 404)).show();
+                return false;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},404);
+            return false;
+        }
+    }
+
     // The camera permissions and stuff
     @Override
     public void useCamera() {
@@ -3310,13 +3250,20 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
-        // If request is cancelled, the result arrays are empty.
-        if (requestCode == StaticVariables.REQUEST_CAMERA_CODE) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                // Success, go for it
-                startCamera();
+        // If request is cancelled, the result arrays are empty.
+        if (grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            switch (requestCode) {
+                case StaticVariables.REQUEST_CAMERA_CODE:
+                    startCamera();
+                    break;
+
+                case 404:
+                    // Access fine location, so can open the menu at 'Connect devices'
+                    Log.d("d", "FINE LOCATION granted!");
+                    break;
             }
         }
     }
@@ -3327,7 +3274,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         @Override
         protected String doInBackground(Object... objects) {
             try {
-                Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
                 // Load up the song
                 try {
                     LoadXML.loadXML(PresenterMode.this, preferences, storageAccess, processSong);
@@ -3371,7 +3317,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     StaticVariables.songSections = processSong.removeTagLines(StaticVariables.songSections);
 
                     // If we are a host then rebuild
-                    if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
+                    if (StaticVariables.isHost && StaticVariables.isConnected) {
                         PopUpEditSongFragment.prepareSongXML();
                         // Replace the lyrics
                         FullscreenActivity.presenterSendSong = FullscreenActivity.myXML.replace(StaticVariables.mLyrics,
@@ -3387,9 +3333,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         if (!preferences.getMyPreferenceBoolean(PresenterMode.this,"presoShowChords",false)) {
                             StaticVariables.songSections[i] = processSong.removeChordLines(StaticVariables.songSections[i]);
                         }
-                        if (FullscreenActivity.network == null || !FullscreenActivity.network.isRunningAsHost) {
+                        if (!StaticVariables.isHost || !StaticVariables.isConnected || !StaticVariables.usingNearby) {
                             StaticVariables.songSections[i] = processSong.removeCommentLines(StaticVariables.songSections[i]);
                         }
+
                         StaticVariables.songSections[i] = processSong.removeUnderScores(PresenterMode.this,
                                 preferences, StaticVariables.songSections[i]);
                     }
@@ -3450,6 +3397,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 if (!cancelled) {
                     // Now, reset the orientation.
+                    // Keep for check
+                    boolean orientationChanged = FullscreenActivity.orientationchanged;
                     FullscreenActivity.orientationchanged = false;
 
                     // Get the current orientation
@@ -3466,16 +3415,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
 
                     // Send WiFiP2P intent
-                    if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
-                        try {
-                            sendSongXMLToConnected();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    if (StaticVariables.isHost && StaticVariables.isConnected && !orientationChanged) {
+                        nearbyConnections.sendSongPayload();
                     }
 
                     // Send the midi data if we can
-                    sendMidi();
+                    if (!orientationChanged) {
+                        sendMidi();
+                    }
 
                     // If the user has shown the 'Welcome to OpenSongApp' file, and their song lists are empty,
                     // open the find new songs menu
@@ -3778,6 +3725,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     });
         } else {
             // Might be a hdmi connection
+
+
+            // Try this code (Alternative to use HDMI as Chromebooks not coping with above
             try {
                 DisplayManager dm = (DisplayManager) getSystemService(DISPLAY_SERVICE);
                 if (dm!=null) {
@@ -4070,7 +4020,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         if (storageAccess.lollipopOrLater()) {
             intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("* / *");  //TODO take out the spce before and after the /
+            //intent.setType("*_/_*"); // TODO IF REUSING REMOVE UNDERSCORES - PUT IN TO STOP COMMENTING OF ALL CODE FAILING
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri);
             }
@@ -4084,5 +4034,24 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
         }
         startActivityForResult(intent, StaticVariables.REQUEST_FILE_CHOOSER);
+    }
+
+    // IV - Make option menu return to MAIN after use - same as for other modes
+    private void setupOptionDrawerReset() {
+        // Called when a drawer has settled in a completely open state.
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(PresenterMode.this, mDrawerLayout, ab_toolbar, R.string.drawer_open, R.string.drawer_close) {
+            // Called when a drawer has settled in a completely closed state.
+            @Override
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                // Set a runnable to return option menu to MAIN, This ensures 'Activated/Running' in sub menus work properly
+                Handler resetoptionmenu = new Handler();
+                resetoptionmenu.postDelayed(() -> {
+                    StaticVariables.whichOptionMenu = "MAIN";
+                    prepareOptionMenu();
+                }, 300);
+            }
+        };
+        mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
     }
 }*/

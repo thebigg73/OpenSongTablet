@@ -21,6 +21,7 @@
             style="@style/MyHeadingText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:text="@string/edit_song_title" />
 
         <TextView
@@ -28,6 +29,7 @@
             style="@style/MyInfoText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:text="@string/edit_song_author" />
 
         <TextView
@@ -35,6 +37,7 @@
             style="@style/MyInfoText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:text="@string/edit_song_copyright" />
 
     </LinearLayout>
@@ -52,6 +55,7 @@
             style="@style/MyHeadingText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
             android:text="@string/edit_song_presentation" />
 
         <CheckBox

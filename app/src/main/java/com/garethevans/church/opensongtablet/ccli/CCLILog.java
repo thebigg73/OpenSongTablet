@@ -208,7 +208,7 @@ public class CCLILog {
                 StreamResult result = new StreamResult(outputStream);
                 transformer.transform(source, result);
             } else {
-                Log.d("CCLI", "doument was null");
+                Log.d("CCLI", "document was null");
             }
 
         } catch (Exception e) {
@@ -333,7 +333,7 @@ public class CCLILog {
 
     String buildMyTable(Context c, Preferences preferences, String sizeoffile) {
         if (title == null || title.size() == 0) {
-            return "<html><body><h2>" + c.getResources().getString(R.string.edit_song_ccli) + "</h2>\n" +
+            return "<!DOCTYPE html><html><body><h2>" + c.getResources().getString(R.string.edit_song_ccli) + "</h2>\n" +
                     "<h3>" + c.getResources().getString(R.string.ccli_church) + ": " +
                     preferences.getMyPreferenceString(c,"ccliChurchName","") + "</h3>\n" +
                     "<h3>" + c.getResources().getString(R.string.ccli_licence) + ": " +
@@ -342,12 +342,12 @@ public class CCLILog {
                     "</body></html>";
 
         } else {
-            StringBuilder table = new StringBuilder("<html><head>\n" +
-                    "<style>\n#mytable {\nborder-collapse: collapse; width: 100%;\n}\n" +
-                    "#mytable td, #mytable th {\nborder: 1px solid #ddd; padding: 2px;\n}\n" +
-                    "#mytable tr:nth-child(even) {\nbackground-color: #f2f2f2;\n}\n" +
-                    "#mytable th {\npadding-top: 2px; padding-bottom: 2px; text-align: left; " +
-                    "background-color: #4CAF50; color: white;\n}\n" +
+            StringBuilder table = new StringBuilder("<!DOCTYPE html><html><head>\n" +
+                    "<style>\n{border-collapse: collapse; width: 100%}\n" +
+                    "th, td {border: 1px solid lightgrey; padding: 2px;}\n" +
+                    "tr:nth-child(even) {background: ghostwhite}\n" +
+                    "th {\npadding-top: 2px; padding-bottom: 2px; text-align: left; " +
+                    "background-color: green; color: white;}\n" +
                     "</style>\n</head><body>" +
                     "<h2>" + c.getResources().getString(R.string.edit_song_ccli) + "</h2>\n" +
                     "<h3>" + c.getResources().getString(R.string.ccli_church) + ": " +
@@ -355,7 +355,7 @@ public class CCLILog {
                     "<h3>" + c.getResources().getString(R.string.ccli_licence) + ": " +
                     preferences.getMyPreferenceString(c,"ccliLicence","")+ "</h3>\n" +
                     "<h4>" + sizeoffile + "</h4>\n" +
-                    "<body><table id=\"mytable\">\n<tr>");
+                    "<table id=\"mytable\">\n<tr>");
             table.append("<th>").append(c.getResources().getString(R.string.item)).append("</th>");
             table.append("<th>").append(c.getResources().getString(R.string.edit_song_title)).append("</th>");
             table.append("<th>").append(c.getResources().getString(R.string.edit_song_author)).append("</th>");

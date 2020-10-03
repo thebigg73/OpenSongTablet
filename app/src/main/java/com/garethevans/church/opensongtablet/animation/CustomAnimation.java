@@ -25,10 +25,9 @@ public class CustomAnimation {
         if (fadeIn) {
             fader.setInterpolator(new DecelerateInterpolator()); //add this
         } else {
-            fader.setInterpolator(new AccelerateInterpolator()); //and this
+            fader.setInterpolator(new AccelerateInterpolator()); //add this
         }
         fader.setDuration(time);
-
 
         AnimationSet animation = new AnimationSet(false); //change to false
         animation.addAnimation(fader);

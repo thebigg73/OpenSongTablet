@@ -103,7 +103,8 @@ public class PopUpAlertFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (mListener != null) {
-                    mListener.updateAlert(isChecked);
+                preferences.setMyPreferenceString(getActivity(),"presoAlertText",alertMessage.getText().toString().trim());
+                mListener.updateAlert(isChecked);
                 }
             }
         });

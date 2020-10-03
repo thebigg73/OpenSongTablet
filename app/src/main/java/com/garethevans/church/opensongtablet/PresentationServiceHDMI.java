@@ -15,9 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
-
 // All of the classes after initialisation are the same for the PresentationService and PresentationServiceHDMI files
 // The both call functions in the PresentationCommon file
 // Both files are needed as they initialise and communicate with the display differently, but after that the stuff is identical.
@@ -51,7 +48,7 @@ class PresentationServiceHDMI extends Presentation
     private static SurfaceView projected_SurfaceView;
     private static SurfaceHolder projected_SurfaceHolder;
     private static StorageAccess storageAccess;
-    private static _Preferences preferences;
+    private static Preferences preferences;
     private static ProcessSong processSong;
     private static PresentationCommon presentationCommon;
     @SuppressLint("StaticFieldLeak")
@@ -65,7 +62,7 @@ class PresentationServiceHDMI extends Presentation
             setContentView(R.layout.cast_screen);
 
             storageAccess = new StorageAccess();
-            preferences = new _Preferences();
+            preferences = new Preferences();
             presentationCommon = new PresentationCommon();
 
             getDefaultColors();
@@ -89,18 +86,19 @@ class PresentationServiceHDMI extends Presentation
 
             // Set up the logo
             setUpLogo();
+            if (PresenterMode.logoButton_isSelected) {
+                bottom_infobar.setAlpha(0.0f);
+                showLogo();
+            }
 
             // Prepare the display after 2 secs (a chance for stuff to be measured and show the logo
             Handler h = new Handler();
-            h.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (!StaticVariables.whichMode.equals("Presentation")) {
-                        normalStartUp();
-                    } else {
-                        // Switch to the user background and logo
-                        presenterStartUp();
-                    }
+            h.postDelayed(() -> {
+                if (!StaticVariables.whichMode.equals("Presentation")) {
+                    normalStartUp();
+                } else {
+                    // Switch to the user background and logo
+                    presenterStartUp();
                 }
             }, 2000);
 
@@ -134,6 +132,25 @@ class PresentationServiceHDMI extends Presentation
         col2_3 = findViewById(R.id.col2_3);
         col3_3 = findViewById(R.id.col3_3);
     }
+    public static void wipeProjectedLinearLayout() {
+        Handler h = new Handler();
+        h.postDelayed(() -> {
+            // IV - Do the work after a transition delay
+            try {
+                projected_LinearLayout.removeAllViews();
+                presentermode_title.setAlpha(0.0f);
+                presentermode_author.setAlpha(0.0f);
+                presentermode_copyright.setAlpha(0.0f);
+                presentermode_alert.setAlpha(0.0f);
+                presentermode_title.setText("¬");
+                presentermode_author.setText("¬");
+                presentermode_copyright.setText("¬");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        },preferences.getMyPreferenceInt(c, "presoTransitionTime",800));
+        CustomAnimations.faderAnimation(bottom_infobar,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+    }
     private static void getScreenSizes() {
         presentationCommon.getScreenSizes(myscreen,bottom_infobar,projectedPage_RelativeLayout,preferences.getMyPreferenceFloat(c,"castRotation",0.0f));
     }
@@ -146,11 +163,18 @@ class PresentationServiceHDMI extends Presentation
         }
     }
     static void changeMargins() {
-        presentationCommon.changeMargins(c,preferences,songinfo_TextView,projectedPage_RelativeLayout, StaticVariables.cast_presoInfoColor);
+        presentationCommon.changeMargins(c,preferences,songinfo_TextView,projectedPage_RelativeLayout,StaticVariables.cast_presoInfoColor);
     }
     static void fixBackground() {
         presentationCommon.fixBackground(c,preferences,storageAccess,projected_BackgroundImage,projected_SurfaceHolder,projected_SurfaceView);
-        updateAlpha();
+        // Just in case there is a glitch, make the stuff visible after a time
+        Handler panic = new Handler();
+        panic.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateAlpha();
+            }
+        }, (long) (1.1*preferences.getMyPreferenceInt(c,"presoTransitionTime",800)));
     }
     private static void getDefaultColors() {
         presentationCommon.getDefaultColors(c,preferences);
@@ -226,6 +250,7 @@ class PresentationServiceHDMI extends Presentation
 
     // Update the screen content
     static void doUpdate() {
+        presentermode_alert.setAlpha(1.0f);
         presentationCommon.doUpdate(c,preferences,storageAccess,processSong,myscreen,songinfo_TextView,presentermode_bottombit,projected_SurfaceView,
                 projected_BackgroundImage, pageHolder,projected_Logo,projected_ImageView,projected_LinearLayout,bottom_infobar,projectedPage_RelativeLayout,
                 presentermode_title, presentermode_author, presentermode_copyright, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3);
@@ -235,6 +260,9 @@ class PresentationServiceHDMI extends Presentation
     }
     static void setUpLogo() {
         presentationCommon.setUpLogo(c,preferences,storageAccess,projected_Logo,StaticVariables.cast_availableWidth_1col,StaticVariables.cast_availableScreenHeight);
+    }
+    static void showLogoPrep() {
+        presentationCommon.showLogoPrep();
     }
     static void showLogo() {
         presentationCommon.showLogo(c,preferences,projected_ImageView,projected_LinearLayout,pageHolder,bottom_infobar,projected_Logo);
@@ -246,5 +274,4 @@ class PresentationServiceHDMI extends Presentation
         presentationCommon.blankUnblankDisplay(c,preferences,pageHolder,unblank);
     }
 
-}
-*/
+}*/

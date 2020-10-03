@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -25,12 +24,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.ColorUtils;
 
 import com.bumptech.glide.request.RequestOptions;
-import com.garethevans.church.opensongtablet.OLD_TO_DELETE._CustomAnimations;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 import java.io.InputStream;
 
@@ -43,7 +41,7 @@ class PresentationCommon {
         myscreen.getRealMetrics(metrics);
         Drawable icon = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            icon = bottom_infobar.getContext().getDrawable(R.mipmap.ic_round_launcher);
+            icon = ContextCompat.getDrawable(bottom_infobar.getContext(),R.mipmap.ic_round_launcher);
         }
         int bottombarheight = 0;
         if (icon != null) {
@@ -80,7 +78,7 @@ class PresentationCommon {
         lp.width = StaticVariables.cast_screenWidth;
         projectedPage_RelativeLayout.requestLayout();
 
-        StaticVariables.cast_availableScreenWidth = StaticVariables.cast_screenWidth - leftpadding - rightpadding;
+        StaticVariables.cast_availableScreenWidth = StaticVariables.cast_screenWidth - leftpadding - rightpadding - (StaticVariables.cast_padding * 2);
         StaticVariables.cast_availableScreenHeight = StaticVariables.cast_screenHeight - toppadding - bottompadding - bottombarheight - (StaticVariables.cast_padding * 4);
         StaticVariables.cast_availableWidth_1col = StaticVariables.cast_availableScreenWidth - (StaticVariables.cast_padding * 2);
         StaticVariables.cast_availableWidth_2col = (int) ((float) StaticVariables.cast_availableScreenWidth / 2.0f) - (StaticVariables.cast_padding * 3);
@@ -88,11 +86,7 @@ class PresentationCommon {
     }
 
     void setDefaultBackgroundImage(Context c) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            StaticVariables.cast_defimage = c.getResources().getDrawable(R.drawable.preso_default_bg, null);
-        } else {
-            StaticVariables.cast_defimage = c.getResources().getDrawable(R.drawable.preso_default_bg);
-        }
+        StaticVariables.cast_defimage = ResourcesCompat.getDrawable(c.getResources(),R.drawable.preso_default_bg, null);
     }
     boolean matchPresentationToMode(TextView songinfo_TextView, LinearLayout presentermode_bottombit,
                                     SurfaceView projected_SurfaceView, ImageView projected_BackgroundImage,
@@ -120,13 +114,14 @@ class PresentationCommon {
         StaticVariables.forcecastupdate = false;
         return runfixbackground;
     }
-    void changeMargins(Context c, _Preferences preferences, TextView songinfo_TextView, RelativeLayout projectedPage_RelativeLayout, int presoInfoColor) {
+    void changeMargins(Context c, Preferences preferences, TextView songinfo_TextView, RelativeLayout projectedPage_RelativeLayout, int presoInfoColor) {
         songinfo_TextView.setTextColor(presoInfoColor);
-        projectedPage_RelativeLayout.setPadding(preferences.getMyPreferenceInt(c,"presoXMargin",20),
-                preferences.getMyPreferenceInt(c,"presoYMargin",10), preferences.getMyPreferenceInt(c,"presoXMargin",20),
-                preferences.getMyPreferenceInt(c,"presoYMargin",10));
+        projectedPage_RelativeLayout.setPadding(preferences.getMyPreferenceInt(c,"presoXMargin",20)+StaticVariables.cast_padding,
+                preferences.getMyPreferenceInt(c,"presoYMargin",10)+StaticVariables.cast_padding,
+                preferences.getMyPreferenceInt(c,"presoXMargin",20)+StaticVariables.cast_padding,
+                preferences.getMyPreferenceInt(c,"presoYMargin",10)+StaticVariables.cast_padding);
     }
-    void fixBackground(Context c, _Preferences preferences, StorageAccess storageAccess, ImageView projected_BackgroundImage,
+    void fixBackground(Context c, Preferences preferences, StorageAccess storageAccess, ImageView projected_BackgroundImage,
                        SurfaceHolder projected_SurfaceHolder, SurfaceView projected_SurfaceView) {
         // Images and video backgrounds
         String img1 = preferences.getMyPreferenceString(c,"backgroundImage1","ost_bg.png");
@@ -196,8 +191,8 @@ class PresentationCommon {
                         GlideApp.with(c).load(imgUri).apply(myOptions).into(projected_BackgroundImage);
                     }
                     projected_BackgroundImage.setVisibility(View.VISIBLE);
-                    _CustomAnimations.faderAnimationCustomAlpha(projected_BackgroundImage,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),
-                            0.0f,preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
+                    CustomAnimations.faderAnimationCustomAlpha(projected_BackgroundImage,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),
+                            projected_BackgroundImage.getAlpha(),preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
 
                 }
                 break;
@@ -219,8 +214,8 @@ class PresentationCommon {
                 projected_BackgroundImage.setImageDrawable(null);
                 projected_BackgroundImage.setVisibility(View.GONE);
 
-                _CustomAnimations.faderAnimationCustomAlpha(projected_SurfaceView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),
-                        0.0f,preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
+                CustomAnimations.faderAnimationCustomAlpha(projected_SurfaceView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),
+                        projected_SurfaceView.getAlpha(),preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
 
                 break;
             default:
@@ -229,7 +224,7 @@ class PresentationCommon {
                 break;
         }
     }
-    void getDefaultColors(Context c, _Preferences preferences) {
+    void getDefaultColors(Context c, Preferences preferences) {
         switch (StaticVariables.mDisplayTheme) {
             case "dark":
             default:
@@ -253,8 +248,8 @@ class PresentationCommon {
             case "light":
                 StaticVariables.cast_lyricsCapoColor = preferences.getMyPreferenceInt(c, "light_lyricsCapoColor", StaticVariables.red);
                 StaticVariables.cast_lyricsChordsColor = preferences.getMyPreferenceInt(c, "light_lyricsChordsColor", StaticVariables.yellow);
-                StaticVariables.cast_presoFontColor = preferences.getMyPreferenceInt(c, "light_presoFontColor", StaticVariables.black);
-                StaticVariables.cast_lyricsBackgroundColor = preferences.getMyPreferenceInt(c,"light_lyricsBackgroundColor",StaticVariables.white);
+                StaticVariables.cast_presoFontColor = preferences.getMyPreferenceInt(c, "light_presoFontColor", StaticVariables.white);
+                StaticVariables.cast_lyricsBackgroundColor = preferences.getMyPreferenceInt(c,"light_lyricsBackgroundColor",StaticVariables.black);
                 StaticVariables.cast_lyricsTextColor = preferences.getMyPreferenceInt(c,"light_lyricsTextColor",StaticVariables.black);
                 StaticVariables.cast_presoInfoColor = preferences.getMyPreferenceInt(c,"light_presoInfoColor", StaticVariables.black);
                 StaticVariables.cast_presoAlertColor = preferences.getMyPreferenceInt(c,"light_presoAlertColor",StaticVariables.red);
@@ -287,8 +282,8 @@ class PresentationCommon {
             case "custom2":
                 StaticVariables.cast_lyricsCapoColor = preferences.getMyPreferenceInt(c, "custom2_lyricsCapoColor", StaticVariables.red);
                 StaticVariables.cast_lyricsChordsColor = preferences.getMyPreferenceInt(c, "custom2_lyricsChordsColor", StaticVariables.yellow);
-                StaticVariables.cast_presoFontColor = preferences.getMyPreferenceInt(c, "custom2_presoFontColor", StaticVariables.black);
-                StaticVariables.cast_lyricsBackgroundColor = preferences.getMyPreferenceInt(c,"custom2_lyricsBackgroundColor",StaticVariables.white);
+                StaticVariables.cast_presoFontColor = preferences.getMyPreferenceInt(c, "custom2_presoFontColor", StaticVariables.white);
+                StaticVariables.cast_lyricsBackgroundColor = preferences.getMyPreferenceInt(c,"custom2_lyricsBackgroundColor",StaticVariables.black);
                 StaticVariables.cast_lyricsTextColor = preferences.getMyPreferenceInt(c,"custom2_lyricsTextColor",StaticVariables.black);
                 StaticVariables.cast_presoInfoColor = preferences.getMyPreferenceInt(c,"custom2_presoInfoColor", StaticVariables.black);
                 StaticVariables.cast_presoAlertColor = preferences.getMyPreferenceInt(c,"custom2_presoAlertColor",StaticVariables.red);
@@ -303,15 +298,15 @@ class PresentationCommon {
                 break;
         }
     }
-    void updateAlpha(Context c, _Preferences preferences, ImageView projected_BackgroundImage, SurfaceView projected_SurfaceView) {
+    void updateAlpha(Context c, Preferences preferences, ImageView projected_BackgroundImage, SurfaceView projected_SurfaceView) {
         projected_BackgroundImage.setAlpha(preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
         projected_SurfaceView.setAlpha(preferences.getMyPreferenceFloat(c,"presoBackgroundAlpha",0.8f));
     }
-    void normalStartUp(Context c, _Preferences preferences, ImageView projected_Logo) {
+    void normalStartUp(Context c, Preferences preferences, ImageView projected_Logo) {
         // Animate out the default logo
-        _CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+        CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
     }
-    void presenterThemeSetUp(Context c, _Preferences preferences, LinearLayout presentermode_bottombit, TextView presentermode_title,
+    void presenterThemeSetUp(Context c, Preferences preferences, LinearLayout presentermode_bottombit, TextView presentermode_title,
                              TextView presentermode_author, TextView presentermode_copyright, TextView presentermode_alert) {
         // Set the text at the bottom of the page to match the presentation text colour
         presentermode_title.setTypeface(StaticVariables.typefacePresoInfo);
@@ -341,30 +336,36 @@ class PresentationCommon {
         }
         presentermode_bottombit.setBackgroundColor(ColorUtils.setAlphaComponent(StaticVariables.cast_presoShadowColor,100));
     }
-    void presenterStartUp(final Context c, final _Preferences preferences, final StorageAccess storageAccess, final ImageView projected_BackgroundImage,
+
+    // IV - panic action can cause text to appear with blank and logo display - so support override
+    Boolean panicRequired = true;
+    // IV - Lyric display is delayed for a change of song - not at other times
+    long songChangeDelay;
+    // IV - Support for 'last change only' fade in of content
+    long lyricAfterTime;
+    long lyricDelay;
+    long panicAfterTime;
+    long panicDelay;
+    // IV - doUpdate can run frequently - this supports better transitions
+    Boolean doUpdateActive = false;
+    Boolean animateOutActive = false;
+    Boolean showLogoActive = false;
+
+    void presenterStartUp(final Context c, final Preferences preferences, final StorageAccess storageAccess, final ImageView projected_BackgroundImage,
                           final SurfaceHolder projected_SurfaceHolder, final SurfaceView projected_SurfaceView) {
         // After the fadeout time, set the background and fade in
         Handler h = new Handler();
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Try to set the new background
-                fixBackground(c, preferences, storageAccess, projected_BackgroundImage,projected_SurfaceHolder,projected_SurfaceView);
-
-                if (preferences.getMyPreferenceString(c,"backgroundTypeToUse","image").equals("image")) {
-                    _CustomAnimations.faderAnimation(projected_BackgroundImage,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
-
-                } else if (preferences.getMyPreferenceString(c,"backgroundTypeToUse","image").equals("video")) {
-                    _CustomAnimations.faderAnimation(projected_SurfaceView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
-                }
-            }
+        h.postDelayed(() -> {
+            // Try to set the new background
+            fixBackground(c, preferences, storageAccess, projected_BackgroundImage,projected_SurfaceHolder,projected_SurfaceView);
+            // IV - fixBackground does a logo fade in
         }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
     }
 
 
 
     // The logo stuff, animations and blanking the screen
-    void setUpLogo(Context c, _Preferences preferences, StorageAccess storageAccess, ImageView projected_Logo, int availableWidth_1col, int availableScreenHeight) {
+    void setUpLogo(Context c, Preferences preferences, StorageAccess storageAccess, ImageView projected_Logo, int availableWidth_1col, int availableScreenHeight) {
         // If the customLogo doesn't exist, use the default one
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -407,207 +408,281 @@ class PresentationCommon {
                     .override(logowidth, logoheight);
             GlideApp.with(c).load(customLogo).apply(myOptions).into(projected_Logo);
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                projected_Logo.setImageDrawable(c.getResources().getDrawable(R.drawable.ost_logo, c.getTheme()));
-            } else {
-                projected_Logo.setImageDrawable(c.getResources().getDrawable(R.drawable.ost_logo));
-            }
+            projected_Logo.setImageDrawable(ResourcesCompat.getDrawable(c.getResources(),R.drawable.ost_logo, c.getTheme()));
         }
-        if (PresenterMode.logoButton_isSelected) {
-            _CustomAnimations.faderAnimation(projected_Logo, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
-        }
+        // IV - Logo display removed.  A change meaning showLogo (with all of it's logic) must be explicitly made to display logo
     }
-    void showLogo(Context c, _Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout, RelativeLayout pageHolder,
+
+    void showLogoPrep () {
+        // IV - Indicates the delayed showLogo call will be active unless overridden
+        showLogoActive = true;
+    }
+    void showLogo(Context c, Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout, RelativeLayout pageHolder,
                   LinearLayout bottom_infobar, ImageView projected_Logo) {
-        // Animate out the lyrics if they were visible and animate in the logo
-        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-            _CustomAnimations.faderAnimation(projected_ImageView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+        panicRequired = false;
+        if (showLogoActive) {
+            // Fade out the lyrics
+            if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                CustomAnimations.faderAnimation(projected_ImageView, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), false);
 
-        } else {
-            _CustomAnimations.faderAnimation(projected_LinearLayout,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+            } else {
+                CustomAnimations.faderAnimation(projected_LinearLayout, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), false);
+            }
+            // Fade out the infobar
+            CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), false);
+
+            Handler h = new Handler();
+            h.postDelayed(() -> {
+                if (showLogoActive) {
+                    // Fade in logo
+                    CustomAnimations.faderAnimation(projected_Logo, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                    // If we are black screen, fade the page back in
+                    if (pageHolder.getVisibility() == View.INVISIBLE) {
+                        CustomAnimations.faderAnimation(pageHolder,2 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                    }
+                }
+            }, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
         }
-
-        // If we had a black screen, fade that in
-        if (pageHolder.getVisibility() == View.INVISIBLE) {
-            _CustomAnimations.faderAnimation(pageHolder,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
-
-        }
-        _CustomAnimations.faderAnimation(bottom_infobar,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
-        _CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
     }
-    void hideLogo(Context c, _Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout, ImageView projected_Logo,
+    void hideLogo(Context c, Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout, ImageView projected_Logo,
                   LinearLayout bottom_infobar) {
-        // Animate out the logo and animate in the lyrics if they were visible
-        // Animate out the lyrics if they were visible and animate in the logo
-        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-            _CustomAnimations.faderAnimation(projected_ImageView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
-        } else {
-            _CustomAnimations.faderAnimation(projected_LinearLayout,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
-        }
-        _CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
-        _CustomAnimations.faderAnimation(bottom_infobar,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+        // IV - Makes sure any delayed showLogo calls do not undo the fade!
+        showLogoActive = false;
+        CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+        songChangeDelay = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
     }
-    void blankUnblankDisplay(Context c, _Preferences preferences, RelativeLayout pageHolder, boolean unblank) {
-        _CustomAnimations.faderAnimation(pageHolder,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),unblank);
-    }
-    private void animateIn(Context c, _Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
-        // Fade in the main page
-        if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
-            _CustomAnimations.faderAnimation(projected_ImageView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
 
-        } else {
-            _CustomAnimations.faderAnimation(projected_LinearLayout,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+    void blankUnblankDisplay(Context c, Preferences preferences, RelativeLayout pageHolder, boolean unblank) {
+        panicRequired = false;
+        CustomAnimations.faderAnimation(pageHolder, (int) (preferences.getMyPreferenceInt(c,"presoTransitionTime",800) * 0.97),unblank);
+        if (!unblank) {
+            songChangeDelay = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
         }
     }
-    private void animateOut(Context c, _Preferences preferences, Display myscreen, ImageView projected_Logo, ImageView projected_ImageView,
+    private void animateIn(Context c, Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
+        // IV  - Fade in the main page using a Delay, songDelay is a full transition delay when there is an info block/song change.
+        Handler h = new Handler();
+        h.postDelayed(() -> {
+            if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
+                CustomAnimations.faderAnimation(projected_ImageView, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+
+            } else {
+                CustomAnimations.faderAnimation(projected_LinearLayout, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+            }
+        }, songChangeDelay);
+        songChangeDelay = 10;
+    }
+    private void animateOut(Context c, Preferences preferences, Display myscreen, ImageView projected_Logo, ImageView projected_ImageView,
                             LinearLayout projected_LinearLayout, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout) {
         // If the logo is showing, fade it away
         if (projected_Logo.getAlpha() > 0.0f) {
-            _CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+            CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
         }
-        // Fade in the main page
-        if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
-            _CustomAnimations.faderAnimation(projected_ImageView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
-        } else {
-            _CustomAnimations.faderAnimation(projected_LinearLayout,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
-        }
-        getScreenSizes(myscreen,bottom_infobar, projectedPage_RelativeLayout, preferences.getMyPreferenceFloat(c,"castRotation",0.0f));  // Just in case something changed
-    }
-    private void presenterFadeOutSongInfo(final Context c, final _Preferences preferences, final TextView tv, final String s, final LinearLayout bottom_infobar) {
-        if (tv.getAlpha() > 0.0f) {
-            _CustomAnimations.faderAnimation(tv,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
-        }
-        // After the transition time, change the text and fade it back in
-        Handler h = new Handler();
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                tv.setText(s);
-                // If this is a pdf or image, hide the song info
-                if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
-                    bottom_infobar.setVisibility(View.GONE);
-                } else {
-                    bottom_infobar.setVisibility(View.VISIBLE);
-                    _CustomAnimations.faderAnimation(tv,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+        // IV - If we are not already doing a lyric fade
+        if ((lyricAfterTime - 5) < System.currentTimeMillis()) {
+            // Fade out the lyrics a bit quicker, the info block is always present during fade (no jump should the info block fade first)
+            if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
+                if (projected_ImageView.getAlpha() > 0.0f) {
+                    CustomAnimations.faderAnimation(projected_ImageView, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
+                }
+            } else {
+                if (projected_LinearLayout.getAlpha() > 0.0f) {
+                    CustomAnimations.faderAnimation(projected_LinearLayout, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
                 }
             }
-        }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
+            getScreenSizes(myscreen, bottom_infobar, projectedPage_RelativeLayout, preferences.getMyPreferenceFloat(c, "castRotation", 0.0f));  // Just in case something changed
+        }
+    }
+    private void presenterFadeOutSongInfo(final Context c, final Preferences preferences, final TextView tv, final String s, final LinearLayout bottom_infobar) {
+        // IV - Delay the following lyric display - so that info block fades in before lyrics to avoid 'jump' of lyrics
+        songChangeDelay = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
+        if ((tv.getAlpha() > 0.0f) || (tv.getText().equals("¬"))) {
+            CustomAnimations.faderAnimation(tv,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+        }
+
+        // IV - Longer delay helps fade stability (Hmmm!)
+        Handler h = new Handler();
+        h.postDelayed(() -> {
+            tv.setText(s);
+            // If this is a pdf or image, hide the song info
+            if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
+                bottom_infobar.setVisibility(View.GONE);
+            } else {
+                bottom_infobar.setVisibility(View.VISIBLE);
+                if (s.length() > 0) {
+                    CustomAnimations.faderAnimation(tv, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                }
+            }
+            //}
+        }, (long) (1.07 * preferences.getMyPreferenceInt(c,"presoTransitionTime",800)));
     }
 
 
     // Update the screen content
-    void doUpdate(final Context c, final _Preferences preferences, final StorageAccess storageAccess, final ProcessSong processSong,
+    void doUpdate(final Context c, final Preferences preferences, final StorageAccess storageAccess, final ProcessSong processSong,
                   final Display myscreen, final TextView songinfo_TextView, LinearLayout presentermode_bottombit, final SurfaceView projected_SurfaceView,
                   ImageView projected_BackgroundImage, RelativeLayout pageHolder, ImageView projected_Logo, final ImageView projected_ImageView,
                   final LinearLayout projected_LinearLayout, LinearLayout bottom_infobar, final RelativeLayout projectedPage_RelativeLayout,
                   TextView presentermode_title, TextView presentermode_author, TextView presentermode_copyright,
                   final LinearLayout col1_1, final LinearLayout col1_2, final LinearLayout col2_2, final LinearLayout col1_3,
                   final LinearLayout col2_3, final LinearLayout col3_3) {
-        // First up, animate everything away
-        animateOut(c,preferences,myscreen,projected_Logo,projected_ImageView,projected_LinearLayout,bottom_infobar,projectedPage_RelativeLayout);
 
-        // If we have forced an update due to switching modes, set that up
-        if (StaticVariables.forcecastupdate) {
-            matchPresentationToMode(songinfo_TextView, presentermode_bottombit, projected_SurfaceView, projected_BackgroundImage, projected_ImageView);
-        }
+        if (!doUpdateActive) {
+            doUpdateActive = true;
 
-        // If we had a black screen, fade that in
-        if (pageHolder.getVisibility() == View.INVISIBLE) {
-            _CustomAnimations.faderAnimation(pageHolder,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+            // IV - Can be called whilst previous call is still running...  Always do fade out.  Only do fade in if we are not animating out due to a later call
+            // First up, animate everything away
+            animateOutActive = true;
+            animateOut(c, preferences, myscreen, projected_Logo, projected_ImageView, projected_LinearLayout, bottom_infobar, projectedPage_RelativeLayout);
 
-        }
-
-        // Just in case there is a glitch, make the stuff visible after 5x transition time
-        Handler panic = new Handler();
-        panic.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                panicShowViews(projected_ImageView,projected_LinearLayout,projected_SurfaceView);
+            // If we have forced an update due to switching modes, set that up
+            if (StaticVariables.forcecastupdate) {
+                matchPresentationToMode(songinfo_TextView, presentermode_bottombit, projected_SurfaceView, projected_BackgroundImage, projected_ImageView);
             }
-        }, 5 * preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
 
-        // Set the title of the song and author (if available).  Only does this for changes
-        if (StaticVariables.whichMode.equals("Presentation")) {
-            presenterWriteSongInfo(c,preferences,presentermode_title,presentermode_author,presentermode_copyright,bottom_infobar);
-        } else {
-            setSongTitle(c,preferences,songinfo_TextView);
-        }
+            // If we had a black screen, fade that in
+            if (pageHolder.getVisibility() == View.INVISIBLE) {
+                CustomAnimations.faderAnimation(pageHolder, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+            }
 
-        // Now run the next bit post delayed (to wait for the animate out)
-        Handler h = new Handler();
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Wipe any current views
-                wipeAllViews(projected_LinearLayout,projected_ImageView);
+            // IV - Restore the info bar if necessary
+            if (bottom_infobar.getAlpha() != 1.0f) {
+                CustomAnimations.faderAnimation(bottom_infobar,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+                songChangeDelay = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
+            }
 
-                // Check the colours colour
-                if (!StaticVariables.whichMode.equals("Presentation")) {
-                    // Set the page background to the correct colour for Peformance/Stage modes
-                    projectedPage_RelativeLayout.setBackgroundColor(StaticVariables.cast_lyricsBackgroundColor);
-                    songinfo_TextView.setTextColor(StaticVariables.cast_presoInfoColor);
-                }
+            // Set the title of the song and author (if available).  Only does this for changes
+            if (StaticVariables.whichMode.equals("Presentation")) {
+                presenterWriteSongInfo(c, preferences, presentermode_title, presentermode_author, presentermode_copyright, bottom_infobar);
+            } else {
+                setSongTitle(c, preferences, songinfo_TextView);
+            }
 
-                // Decide on what we are going to show
-                if (FullscreenActivity.isPDF) {
-                    doPDFPage(c,preferences,storageAccess,processSong,projected_ImageView,projected_LinearLayout);
-                } else if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide) {
-                    doImagePage(c,preferences,storageAccess,projected_ImageView,projected_LinearLayout);
-                } else {
-                    projected_ImageView.setVisibility(View.GONE);
-                    switch (StaticVariables.whichMode) {
-                        case "Stage":
-                            prepareStageProjected(c,preferences,processSong,storageAccess,col1_1,col1_2,col2_2,col1_3,col2_3,col3_3,
-                                    projected_LinearLayout,projected_ImageView);
-                            break;
-                        case "Performance":
-                            prepareFullProjected(c,preferences,processSong,storageAccess,col1_1,col1_2,col2_2,col1_3,col2_3,col3_3,
-                                    projected_LinearLayout,projected_ImageView);
-                            break;
-                        default:
-                            preparePresenterProjected(c,preferences,processSong,storageAccess,col1_1,col1_2,col2_2,col1_3,col2_3,col3_3,
-                                    projected_LinearLayout,projected_ImageView);
-                            break;
+            // Just in case there is a glitch, make the stuff visible after 5x transition time
+            // IV - Panic request is prevented on display of logo or blank by setting panicRequired = false;
+            panicRequired = true;
+            // IV -  There can be multiple postDelayed calls running, each call sets a later 'After' time.
+            panicDelay = 5 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800);
+            panicAfterTime = System.currentTimeMillis() + panicDelay;
+            Handler panic = new Handler();
+            panic.postDelayed(() -> {
+                // IV - Quick section moves mean multiple panics are active, a time based test ensures action is only taken for the last call
+                // If after delay the time test fails a newer post has been made
+                // After the panic delay time, make sure the correct view is visible regardless of animations
+                if (panicRequired && !animateOutActive && ((panicAfterTime - 5) < System.currentTimeMillis())) {
+                    if (StaticVariables.whichMode.equals("Presentation")) {
+                        if (FullscreenActivity.isImage || FullscreenActivity.isPDF || FullscreenActivity.isImageSlide) {
+                            projected_ImageView.setVisibility(View.VISIBLE);
+                            projected_LinearLayout.setVisibility(View.GONE);
+                            projected_ImageView.setAlpha(1.0f);
+                        } else if (FullscreenActivity.isVideo) {
+                            projected_SurfaceView.setVisibility(View.VISIBLE);
+                            projected_LinearLayout.setVisibility(View.GONE);
+                            projected_ImageView.setVisibility(View.GONE);
+                            //projected_SurfaceView.setAlpha(1.0f);
+                        } else {
+                            projected_LinearLayout.setVisibility(View.VISIBLE);
+                            projected_ImageView.setVisibility(View.GONE);
+                            projected_LinearLayout.setAlpha(1.0f);
+                        }
                     }
                 }
-            }
-        }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
-    }
-    private void panicShowViews(ImageView projected_ImageView, LinearLayout projected_LinearLayout, SurfaceView projected_SurfaceView) {
-        // After 3x the transition times, make sure the correct view is visible regardless of animations
-        if (StaticVariables.whichMode.equals("Presentation")) {
-            if (FullscreenActivity.isImage || FullscreenActivity.isPDF || FullscreenActivity.isImageSlide) {
-                projected_ImageView.setVisibility(View.VISIBLE);
-                projected_LinearLayout.setVisibility(View.GONE);
-                projected_ImageView.setAlpha(1.0f);
-            } else if (FullscreenActivity.isVideo) {
-                projected_SurfaceView.setVisibility(View.VISIBLE);
-                projected_LinearLayout.setVisibility(View.GONE);
-                projected_ImageView.setVisibility(View.GONE);
-                //projected_SurfaceView.setAlpha(1.0f);
-            } else {
-                projected_LinearLayout.setVisibility(View.VISIBLE);
-                projected_ImageView.setVisibility(View.GONE);
-                projected_LinearLayout.setAlpha(1.0f);
-            }
+            }, panicDelay);
+
+            // IV - There can be multiple postDelayed calls running, each call sets a later 'After' time.
+            lyricDelay = preferences.getMyPreferenceInt(c, "presoTransitionTime", 800);
+            lyricAfterTime = System.currentTimeMillis() + lyricDelay;
+
+            animateOutActive = false;
+
+            // Now run the next bit post delayed (to wait for the animate out)
+            Handler h = new Handler();
+            h.postDelayed(() -> {
+                // IV - Not if animating out and not if the time test fails as newer post has been made
+                if (!animateOutActive && (lyricAfterTime - 5) < System.currentTimeMillis()) {
+                    // Wipe any current views
+                    wipeAllViews(projected_LinearLayout,projected_ImageView);
+
+                    // Check the colours colour
+                    if (!StaticVariables.whichMode.equals("Presentation")) {
+                        // Set the page background to the correct colour for Peformance/Stage modes
+                        projectedPage_RelativeLayout.setBackgroundColor(StaticVariables.cast_lyricsBackgroundColor);
+                        songinfo_TextView.setTextColor(StaticVariables.cast_presoInfoColor);
+                    }
+                    // Decide on what we are going to show
+                    if (FullscreenActivity.isPDF) {
+                        doPDFPage(c,preferences,storageAccess,processSong,projected_ImageView,projected_LinearLayout);
+                    } else if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide) {
+                        doImagePage(c,preferences,storageAccess,projected_ImageView,projected_LinearLayout);
+                    } else {
+                        projected_ImageView.setVisibility(View.GONE);
+                        switch (StaticVariables.whichMode) {
+                            case "Stage":
+                                prepareStageProjected(c,preferences,processSong,storageAccess,col1_1,col1_2,col2_2,col1_3,col2_3,col3_3,
+                                        projected_LinearLayout,projected_ImageView);
+                                break;
+                            case "Performance":
+                                prepareFullProjected(c,preferences,processSong,storageAccess,col1_1,col1_2,col2_2,col1_3,col2_3,col3_3,
+                                        projected_LinearLayout,projected_ImageView);
+                                break;
+                            default:
+                                preparePresenterProjected(c,preferences,processSong,storageAccess,col1_1,col1_2,col2_2,col1_3,col2_3,col3_3,
+                                        projected_LinearLayout,projected_ImageView);
+                                break;
+                        }
+                    }
+                }
+            }, lyricDelay);
+            doUpdateActive = false;
         }
     }
-    private void presenterWriteSongInfo(Context c, _Preferences preferences, TextView presentermode_title, TextView presentermode_author,
+    private void presenterWriteSongInfo(Context c, Preferences preferences, TextView presentermode_title, TextView presentermode_author,
                                         TextView presentermode_copyright, LinearLayout bottom_infobar) {
+        // IV - Adjusted to try to make info block more CCLI compliant
         String old_title = presentermode_title.getText().toString();
         String old_author = presentermode_author.getText().toString();
         String old_copyright = presentermode_copyright.getText().toString();
+        String new_author = StaticVariables.mAuthor;
+        String new_copyright = "";
+
         if (!old_title.contentEquals(StaticVariables.mTitle)) {
             presenterFadeOutSongInfo(c, preferences, presentermode_title, StaticVariables.mTitle, bottom_infobar);
         }
-        if (!old_author.contentEquals(StaticVariables.mAuthor)) {
-            presenterFadeOutSongInfo(c, preferences, presentermode_author, StaticVariables.mAuthor, bottom_infobar);
+
+        // IV - CCLI would be...
+        //if (!new_author.equals("")) {
+        //    new_author = "words and music by " + new_author;
+        //}
+        // localisation would be needed
+        if (!old_author.contentEquals(new_author)) {
+            presenterFadeOutSongInfo(c, preferences, presentermode_author, new_author, bottom_infobar);
         }
-        if (!old_copyright.contentEquals(StaticVariables.mCopyright)) {
-            presenterFadeOutSongInfo(c, preferences, presentermode_copyright, StaticVariables.mCopyright, bottom_infobar);
+
+        // IV - CCLI would be...
+        // new_copyright = "Used by permission. CCLI Licence #" + new_copyright;
+        // Instead using 'CCLI #' as this is international(?)
+        // The song must have a CCLI no and the system a CCLI licence number to see display
+        if (StaticVariables.mCCLI.length() > 0) {
+            new_copyright = preferences.getMyPreferenceString(c, "ccliLicence", "");
+            if (new_copyright.length() > 0) {
+                new_copyright = "CCLI #" + new_copyright;
+            }
+        }
+
+        // IV - © is internationally recognised, so is used without needing localisation
+        if (StaticVariables.mCopyright.length() > 0) {
+            if (new_copyright.length() > 0) {
+                new_copyright = "©" + StaticVariables.mCopyright + "\n" + new_copyright;
+            } else {
+                new_copyright = "©" + StaticVariables.mCopyright;
+            }
+        }
+
+        if (!old_copyright.contentEquals(new_copyright)) {
+            presenterFadeOutSongInfo(c, preferences, presentermode_copyright, new_copyright, bottom_infobar);
         }
     }
-    private void setSongTitle(Context c, _Preferences preferences, TextView songinfo_TextView) {
+    private void setSongTitle(Context c, Preferences preferences, TextView songinfo_TextView) {
         String old_title = songinfo_TextView.getText().toString();
         String new_title = StaticVariables.mTitle;
         if (!StaticVariables.mAuthor.equals("")) {
@@ -618,13 +693,13 @@ class PresentationCommon {
             normalChangeSongInfo(c,preferences,songinfo_TextView,new_title);
         }
     }
-    private void doPDFPage(Context c, _Preferences preferences, StorageAccess storageAccess, ProcessSong processSong, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
+    private void doPDFPage(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
         Bitmap bmp = processSong.createPDFPage(c, preferences, storageAccess, StaticVariables.cast_availableScreenWidth, StaticVariables.cast_availableScreenHeight, "Y");
         projected_ImageView.setBackgroundColor(StaticVariables.white);
         projected_ImageView.setImageBitmap(bmp);
         animateIn(c,preferences,projected_ImageView,projected_LinearLayout);
     }
-    private void doImagePage(Context c, _Preferences preferences, StorageAccess storageAccess, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
+    private void doImagePage(Context c, Preferences preferences, StorageAccess storageAccess, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
         projected_ImageView.setVisibility(View.GONE);
         projected_ImageView.setBackgroundColor(0x00000000);
         // Process the image location into an URI
@@ -643,26 +718,23 @@ class PresentationCommon {
         projected_LinearLayout.removeAllViews();
         projected_ImageView.setImageBitmap(null);
     }
-    private void normalChangeSongInfo(final Context c, final _Preferences preferences, final TextView songinfo_TextView, final String s) {
-        _CustomAnimations.faderAnimation(songinfo_TextView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+    private void normalChangeSongInfo(final Context c, final Preferences preferences, final TextView songinfo_TextView, final String s) {
+        CustomAnimations.faderAnimation(songinfo_TextView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
 
         // After the transition delay, write the new value and fade it back in
         Handler h = new Handler();
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                songinfo_TextView.setTextColor(StaticVariables.cast_presoInfoColor);
-                songinfo_TextView.setText(s);
-                _CustomAnimations.faderAnimation(songinfo_TextView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+        h.postDelayed(() -> {
+            songinfo_TextView.setTextColor(StaticVariables.cast_presoInfoColor);
+            songinfo_TextView.setText(s);
+            CustomAnimations.faderAnimation(songinfo_TextView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
 
-            }
         }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
     }
 
 
 
     // Alert
-    void updateAlert(Context c, _Preferences preferences, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout, boolean show, TextView presentermode_alert) {
+    void updateAlert(Context c, Preferences preferences, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout, boolean show, TextView presentermode_alert) {
         if (show) {
             PresenterMode.alert_on = "Y";
             fadeinAlert(c, preferences, myscreen, bottom_infobar, projectedPage_RelativeLayout, presentermode_alert);
@@ -671,7 +743,7 @@ class PresentationCommon {
             fadeoutAlert(c, preferences, presentermode_alert);
         }
     }
-    private void fadeinAlert(Context c, _Preferences preferences, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout, TextView presentermode_alert) {
+    private void fadeinAlert(Context c, Preferences preferences, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout, TextView presentermode_alert) {
         presentermode_alert.setText(preferences.getMyPreferenceString(c,"presoAlertText",""));
         presentermode_alert.setTypeface(StaticVariables.typefacePresoInfo);
         presentermode_alert.setTextSize(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f));
@@ -680,17 +752,17 @@ class PresentationCommon {
 
         presentermode_alert.setVisibility(View.VISIBLE);
         getScreenSizes(myscreen,bottom_infobar,projectedPage_RelativeLayout,preferences.getMyPreferenceFloat(c,"castRotation",0.0f));
-        _CustomAnimations.faderAnimation(presentermode_alert,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
+        CustomAnimations.faderAnimation(presentermode_alert,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
     }
-    private void fadeoutAlert(Context c, _Preferences preferences, TextView presentermode_alert) {
-        _CustomAnimations.faderAnimation(presentermode_alert,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+    private void fadeoutAlert(Context c, Preferences preferences, TextView presentermode_alert) {
+        CustomAnimations.faderAnimation(presentermode_alert,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
     }
 
 
 
 
     // MediaPlayer stuff
-    void prepareMediaPlayer(Context c, _Preferences preferences, SurfaceHolder projected_SurfaceHolder, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout) {
+    void prepareMediaPlayer(Context c, Preferences preferences, SurfaceHolder projected_SurfaceHolder, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout) {
         // Get the size of the SurfaceView
         getScreenSizes(myscreen,bottom_infobar,projectedPage_RelativeLayout,preferences.getMyPreferenceFloat(c,"castRotation",0.0f));
         StaticVariables.cast_mediaPlayer = new MediaPlayer();
@@ -728,7 +800,7 @@ class PresentationCommon {
             e.printStackTrace();
         }
     }
-    void reloadVideo(final Context c, final _Preferences preferences, final SurfaceHolder projected_SurfaceHolder, final SurfaceView projected_SurfaceView) {
+    void reloadVideo(final Context c, final Preferences preferences, final SurfaceHolder projected_SurfaceHolder, final SurfaceView projected_SurfaceView) {
         if (StaticVariables.cast_mediaPlayer == null) {
             StaticVariables.cast_mediaPlayer = new MediaPlayer();
             try {
@@ -748,48 +820,42 @@ class PresentationCommon {
             try {
                 Log.d("Presemttion Common","cast_viUri="+StaticVariables.cast_vidUri);
                 StaticVariables.cast_mediaPlayer.setDataSource(c, StaticVariables.cast_vidUri);
-                StaticVariables.cast_mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        try {
-                            // Get the video sizes so we can scale appropriately
-                            int width = mp.getVideoWidth();
-                            int height = mp.getVideoHeight();
-                            float max_xscale = (float) StaticVariables.cast_screenWidth / (float) width;
-                            float max_yscale = (float) StaticVariables.cast_screenHeight / (float) height;
-                            if (max_xscale > max_yscale) {
-                                // Use the y scale
-                                width = (int) (max_yscale * (float) width);
-                                height = (int) (max_yscale * (float) height);
+                StaticVariables.cast_mediaPlayer.setOnPreparedListener(mp -> {
+                    try {
+                        // Get the video sizes so we can scale appropriately
+                        int width = mp.getVideoWidth();
+                        int height = mp.getVideoHeight();
+                        float max_xscale = (float) StaticVariables.cast_screenWidth / (float) width;
+                        float max_yscale = (float) StaticVariables.cast_screenHeight / (float) height;
+                        if (max_xscale > max_yscale) {
+                            // Use the y scale
+                            width = (int) (max_yscale * (float) width);
+                            height = (int) (max_yscale * (float) height);
 
-                            } else {
-                                // Else use the x scale
-                                width = (int) (max_xscale * (float) width);
-                                height = (int) (max_xscale * (float) height);
-                            }
-                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
-                            params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-                            projected_SurfaceView.setLayoutParams(params);
-                            mp.start();
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        } else {
+                            // Else use the x scale
+                            width = (int) (max_xscale * (float) width);
+                            height = (int) (max_xscale * (float) height);
                         }
+                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
+                        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+                        projected_SurfaceView.setLayoutParams(params);
+                        mp.start();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 });
-                StaticVariables.cast_mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mediaPlayer) {
-                        if (mediaPlayer != null) {
-                            if (mediaPlayer.isPlaying()) {
-                                mediaPlayer.stop();
-                            }
-                            mediaPlayer.reset();
+                StaticVariables.cast_mediaPlayer.setOnCompletionListener(mediaPlayer -> {
+                    if (mediaPlayer != null) {
+                        if (mediaPlayer.isPlaying()) {
+                            mediaPlayer.stop();
                         }
-                        try {
-                            reloadVideo(c,preferences,projected_SurfaceHolder,projected_SurfaceView);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        mediaPlayer.reset();
+                    }
+                    try {
+                        reloadVideo(c,preferences,projected_SurfaceHolder,projected_SurfaceView);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 });
                 StaticVariables.cast_mediaPlayer.prepare();
@@ -804,190 +870,190 @@ class PresentationCommon {
 
 
     // Writing the views for PerformanceMode
-    private void prepareFullProjected (final Context c, final _Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
+    private void prepareFullProjected (final Context c, final Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
                                        final LinearLayout col1_1, final LinearLayout col1_2, final LinearLayout col2_2, final LinearLayout col1_3,
                                        final LinearLayout col2_3, final LinearLayout col3_3, final LinearLayout projected_LinearLayout, final ImageView projected_ImageView) {
         if (StaticVariables.activity!=null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+            new Thread(() -> {
 
-                    // Updating views on the UI
-                    //activity.runOnUiThread(new Runnable() {
-                    StaticVariables.activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // Remove the old view contents
-                            try {
-                                col1_1.removeAllViews();
-                                col1_2.removeAllViews();
-                                col2_2.removeAllViews();
-                                col1_3.removeAllViews();
-                                col2_3.removeAllViews();
-                                col3_3.removeAllViews();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                // Updating views on the UI
+                StaticVariables.activity.runOnUiThread(() -> {
+                    // Remove the old view contents
+                    try {
+                        col1_1.removeAllViews();
+                        col1_2.removeAllViews();
+                        col2_2.removeAllViews();
+                        col1_3.removeAllViews();
+                        col2_3.removeAllViews();
+                        col3_3.removeAllViews();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
-                            LinearLayout test1_1, test1_2, test2_2, test1_3, test2_3, test3_3;
+                    LinearLayout test1_1, test1_2, test2_2, test1_3, test2_3, test3_3;
 
-                            // Prepare the new views to add to 1,2 and 3 colums ready for measuring
-                            // Go through each section
-                            for (int x = 0; x < StaticVariables.songSections.length; x++) {
+                    // Prepare the new views to add to 1,2 and 3 colums ready for measuring
+                    // Go through each section
+                    for (int x = 0; x < StaticVariables.songSections.length; x++) {
 
-                                test1_1 = processSong.projectedSectionView(c, x, 12.0f,
-                                        storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
-                                        StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
-                                col1_1.addView(test1_1);
+                        test1_1 = processSong.projectedSectionView(c, x, 12.0f,
+                                storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                                StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
+                        col1_1.addView(test1_1);
 
-                                if (x < FullscreenActivity.halfsplit_section) {
-                                    test1_2 = processSong.projectedSectionView(c, x, 12.0f,
-                                            storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
-                                            StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
-                                    col1_2.addView(test1_2);
-                                } else {
-                                    test2_2 = processSong.projectedSectionView(c, x, 12.0f,
-                                            storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
-                                            StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
-                                    col2_2.addView(test2_2);
-                                }
-
-                                if (x < FullscreenActivity.thirdsplit_section) {
-                                    test1_3 = processSong.projectedSectionView(c, x, 12.0f,
-                                            storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
-                                            StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
-                                    col1_3.addView(test1_3);
-                                } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
-                                    test2_3 = processSong.projectedSectionView(c, x, 12.0f,
-                                            storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
-                                            StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
-                                    col2_3.addView(test2_3);
-                                } else {
-                                    test3_3 = processSong.projectedSectionView(c, x, 12.0f,
-                                            storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
-                                            StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
-                                    col3_3.addView(test3_3);
-                                }
-                            }
-
-                            // Now premeasure the views
-                            col1_1.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                            col1_2.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                            col2_2.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                            col1_3.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                            col2_3.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                            col3_3.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-                            // Get the widths and heights of the sections
-                            int widthofsection1_1 = col1_1.getMeasuredWidth();
-                            int heightofsection1_1 = col1_1.getMeasuredHeight();
-                            int widthofsection1_2 = col1_2.getMeasuredWidth();
-                            int heightofsection1_2 = col1_2.getMeasuredHeight();
-                            int widthofsection2_2 = col2_2.getMeasuredWidth();
-                            int heightofsection2_2 = col2_2.getMeasuredHeight();
-                            int widthofsection1_3 = col1_3.getMeasuredWidth();
-                            int heightofsection1_3 = col1_3.getMeasuredHeight();
-                            int widthofsection2_3 = col2_3.getMeasuredWidth();
-                            int heightofsection2_3 = col2_3.getMeasuredHeight();
-                            int widthofsection3_3 = col3_3.getMeasuredWidth();
-                            int heightofsection3_3 = col3_3.getMeasuredHeight();
-
-                            // Now display the song!
-                            projected_LinearLayout.removeAllViews();
-
-                            // We know the widths and heights of all of the view (1,2 and 3 columns).
-                            // Decide which is best by looking at the scaling
-
-                            int colstouse = 1;
-                            // We know the size of each section, so we just need to know which one to display
-                            float maxwidth_scale1_1 = ((float) StaticVariables.cast_availableWidth_1col) / (float) widthofsection1_1;
-                            float maxwidth_scale1_2 = ((float) StaticVariables.cast_availableWidth_2col) / (float) widthofsection1_2;
-                            float maxwidth_scale2_2 = ((float) StaticVariables.cast_availableWidth_2col) / (float) widthofsection2_2;
-                            float maxwidth_scale1_3 = ((float) StaticVariables.cast_availableWidth_3col) / (float) widthofsection1_3;
-                            float maxwidth_scale2_3 = ((float) StaticVariables.cast_availableWidth_3col) / (float) widthofsection2_3;
-                            float maxwidth_scale3_3 = ((float) StaticVariables.cast_availableWidth_3col) / (float) widthofsection3_3;
-                            float maxheight_scale1_1 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_1;
-                            float maxheight_scale1_2 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_2;
-                            float maxheight_scale2_2 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection2_2;
-                            float maxheight_scale1_3 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_3;
-                            float maxheight_scale2_3 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection2_3;
-                            float maxheight_scale3_3 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection3_3;
-
-                            if (maxheight_scale1_1 < maxwidth_scale1_1) {
-                                maxwidth_scale1_1 = maxheight_scale1_1;
-                            }
-                            if (maxheight_scale1_2 < maxwidth_scale1_2) {
-                                maxwidth_scale1_2 = maxheight_scale1_2;
-                            }
-                            if (maxheight_scale2_2 < maxwidth_scale2_2) {
-                                maxwidth_scale2_2 = maxheight_scale2_2;
-                            }
-                            if (maxheight_scale1_3 < maxwidth_scale1_3) {
-                                maxwidth_scale1_3 = maxheight_scale1_3;
-                            }
-                            if (maxheight_scale2_3 < maxwidth_scale2_3) {
-                                maxwidth_scale2_3 = maxheight_scale2_3;
-                            }
-                            if (maxheight_scale3_3 < maxwidth_scale3_3) {
-                                maxwidth_scale3_3 = maxheight_scale3_3;
-                            }
-
-                            // Decide on the best scaling to use
-                            float myfullscale = maxwidth_scale1_1;
-
-                            if (maxwidth_scale1_2 > myfullscale && maxwidth_scale2_2 > myfullscale) {
-                                colstouse = 2;
-                                myfullscale = Math.min(maxwidth_scale1_2, maxwidth_scale2_2);
-                            }
-
-                            if (maxwidth_scale1_3 > myfullscale && maxwidth_scale2_3 > myfullscale && maxwidth_scale3_3 > myfullscale) {
-                                colstouse = 3;
-                            }
-
-                            // Now we know how many columns we should use, let's do it!
-                            float maxscale = preferences.getMyPreferenceFloat(c, "fontSizePresoMax", 40.0f) / 12.0f;
-
-                            switch (colstouse) {
-                                case 1:
-                                    if (maxwidth_scale1_1 > maxscale) {
-                                        maxwidth_scale1_1 = maxscale;
-                                    }
-                                    projectedPerformanceView1col(c, preferences, storageAccess, processSong, maxwidth_scale1_1,
-                                            projected_LinearLayout, projected_ImageView);
-                                    break;
-
-                                case 2:
-                                    if (maxwidth_scale1_2 > maxscale) {
-                                        maxwidth_scale1_2 = maxscale;
-                                    }
-                                    if (maxwidth_scale2_2 > maxscale) {
-                                        maxwidth_scale2_2 = maxscale;
-                                    }
-                                    projectedPerformanceView2col(c, preferences, storageAccess, processSong, maxwidth_scale1_2, maxwidth_scale2_2,
-                                            projected_LinearLayout, projected_ImageView);
-                                    break;
-
-                                case 3:
-                                    if (maxwidth_scale1_3 > maxscale) {
-                                        maxwidth_scale1_3 = maxscale;
-                                    }
-                                    if (maxwidth_scale2_3 > maxscale) {
-                                        maxwidth_scale2_3 = maxscale;
-                                    }
-                                    if (maxwidth_scale3_3 > maxscale) {
-                                        maxwidth_scale3_3 = maxscale;
-                                    }
-                                    projectedPerformanceView3col(c, preferences, storageAccess, processSong, maxwidth_scale1_3, maxwidth_scale2_3, maxwidth_scale3_3,
-                                            projected_LinearLayout, projected_ImageView);
-                                    break;
-                            }
+                        if (x < FullscreenActivity.halfsplit_section) {
+                            test1_2 = processSong.projectedSectionView(c, x, 12.0f,
+                                    storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                                    StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
+                            col1_2.addView(test1_2);
+                        } else {
+                            test2_2 = processSong.projectedSectionView(c, x, 12.0f,
+                                    storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                                    StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
+                            col2_2.addView(test2_2);
                         }
-                    });
-                }
+
+                        if (x < FullscreenActivity.thirdsplit_section) {
+                            test1_3 = processSong.projectedSectionView(c, x, 12.0f,
+                                    storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                                    StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
+                            col1_3.addView(test1_3);
+                        } else if (x >= FullscreenActivity.thirdsplit_section && x < FullscreenActivity.twothirdsplit_section) {
+                            test2_3 = processSong.projectedSectionView(c, x, 12.0f,
+                                    storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                                    StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
+                            col2_3.addView(test2_3);
+                        } else {
+                            test3_3 = processSong.projectedSectionView(c, x, 12.0f,
+                                    storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                                    StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
+                            col3_3.addView(test3_3);
+                        }
+                    }
+
+                    // Now premeasure the views
+                    // GE try to catch errors sometimes occuring
+                    tryMeasure(col1_1,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    tryMeasure(col1_2,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    tryMeasure(col2_2,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    tryMeasure(col1_3,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    tryMeasure(col2_3,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    tryMeasure(col3_3,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    //col1_1.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    //col1_2.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    //col2_2.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    //col1_3.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    //col2_3.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    //col3_3.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+                    // Get the widths and heights of the sections
+                    int widthofsection1_1 = col1_1.getMeasuredWidth();
+                    int heightofsection1_1 = col1_1.getMeasuredHeight();
+                    int widthofsection1_2 = col1_2.getMeasuredWidth();
+                    int heightofsection1_2 = col1_2.getMeasuredHeight();
+                    int widthofsection2_2 = col2_2.getMeasuredWidth();
+                    int heightofsection2_2 = col2_2.getMeasuredHeight();
+                    int widthofsection1_3 = col1_3.getMeasuredWidth();
+                    int heightofsection1_3 = col1_3.getMeasuredHeight();
+                    int widthofsection2_3 = col2_3.getMeasuredWidth();
+                    int heightofsection2_3 = col2_3.getMeasuredHeight();
+                    int widthofsection3_3 = col3_3.getMeasuredWidth();
+                    int heightofsection3_3 = col3_3.getMeasuredHeight();
+
+                    // Now display the song!
+                    projected_LinearLayout.removeAllViews();
+
+                    // We know the widths and heights of all of the view (1,2 and 3 columns).
+                    // Decide which is best by looking at the scaling
+
+                    int colstouse = 1;
+                    // We know the size of each section, so we just need to know which one to display
+                    float maxwidth_scale1_1 = ((float) StaticVariables.cast_availableWidth_1col) / (float) widthofsection1_1;
+                    float maxwidth_scale1_2 = ((float) StaticVariables.cast_availableWidth_2col) / (float) widthofsection1_2;
+                    float maxwidth_scale2_2 = ((float) StaticVariables.cast_availableWidth_2col) / (float) widthofsection2_2;
+                    float maxwidth_scale1_3 = ((float) StaticVariables.cast_availableWidth_3col) / (float) widthofsection1_3;
+                    float maxwidth_scale2_3 = ((float) StaticVariables.cast_availableWidth_3col) / (float) widthofsection2_3;
+                    float maxwidth_scale3_3 = ((float) StaticVariables.cast_availableWidth_3col) / (float) widthofsection3_3;
+                    float maxheight_scale1_1 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_1;
+                    float maxheight_scale1_2 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_2;
+                    float maxheight_scale2_2 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection2_2;
+                    float maxheight_scale1_3 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_3;
+                    float maxheight_scale2_3 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection2_3;
+                    float maxheight_scale3_3 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection3_3;
+
+                    if (maxheight_scale1_1 < maxwidth_scale1_1) {
+                        maxwidth_scale1_1 = maxheight_scale1_1;
+                    }
+                    if (maxheight_scale1_2 < maxwidth_scale1_2) {
+                        maxwidth_scale1_2 = maxheight_scale1_2;
+                    }
+                    if (maxheight_scale2_2 < maxwidth_scale2_2) {
+                        maxwidth_scale2_2 = maxheight_scale2_2;
+                    }
+                    if (maxheight_scale1_3 < maxwidth_scale1_3) {
+                        maxwidth_scale1_3 = maxheight_scale1_3;
+                    }
+                    if (maxheight_scale2_3 < maxwidth_scale2_3) {
+                        maxwidth_scale2_3 = maxheight_scale2_3;
+                    }
+                    if (maxheight_scale3_3 < maxwidth_scale3_3) {
+                        maxwidth_scale3_3 = maxheight_scale3_3;
+                    }
+
+                    // Decide on the best scaling to use
+                    float myfullscale = maxwidth_scale1_1;
+
+                    if (maxwidth_scale1_2 > myfullscale && maxwidth_scale2_2 > myfullscale) {
+                        colstouse = 2;
+                        myfullscale = Math.min(maxwidth_scale1_2, maxwidth_scale2_2);
+                    }
+
+                    if (maxwidth_scale1_3 > myfullscale && maxwidth_scale2_3 > myfullscale && maxwidth_scale3_3 > myfullscale) {
+                        colstouse = 3;
+                    }
+
+                    // Now we know how many columns we should use, let's do it!
+                    float maxscale = preferences.getMyPreferenceFloat(c, "fontSizePresoMax", 40.0f) / 12.0f;
+
+                    switch (colstouse) {
+                        case 1:
+                            if (maxwidth_scale1_1 > maxscale) {
+                                maxwidth_scale1_1 = maxscale;
+                            }
+                            projectedPerformanceView1col(c, preferences, storageAccess, processSong, maxwidth_scale1_1,
+                                    projected_LinearLayout, projected_ImageView);
+                            break;
+
+                        case 2:
+                            if (maxwidth_scale1_2 > maxscale) {
+                                maxwidth_scale1_2 = maxscale;
+                            }
+                            if (maxwidth_scale2_2 > maxscale) {
+                                maxwidth_scale2_2 = maxscale;
+                            }
+                            projectedPerformanceView2col(c, preferences, storageAccess, processSong, maxwidth_scale1_2, maxwidth_scale2_2,
+                                    projected_LinearLayout, projected_ImageView);
+                            break;
+
+                        case 3:
+                            if (maxwidth_scale1_3 > maxscale) {
+                                maxwidth_scale1_3 = maxscale;
+                            }
+                            if (maxwidth_scale2_3 > maxscale) {
+                                maxwidth_scale2_3 = maxscale;
+                            }
+                            if (maxwidth_scale3_3 > maxscale) {
+                                maxwidth_scale3_3 = maxscale;
+                            }
+                            projectedPerformanceView3col(c, preferences, storageAccess, processSong, maxwidth_scale1_3, maxwidth_scale2_3, maxwidth_scale3_3,
+                                    projected_LinearLayout, projected_ImageView);
+                            break;
+                    }
+                });
             }).start();
         }
     }
-    private void projectedPerformanceView1col(Context c, _Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
+    private void projectedPerformanceView1col(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
                                               float scale1_1, LinearLayout projected_LinearLayout, ImageView projected_ImageView) {
         // This is run inside the UI thread from the calling class (prepareFullProjected)
         try {
@@ -1028,7 +1094,7 @@ class PresentationCommon {
             e.printStackTrace();
         }
     }
-    private void projectedPerformanceView2col(Context c, _Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
+    private void projectedPerformanceView2col(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
                                               float scale1_2, float scale2_2, LinearLayout projected_LinearLayout, ImageView projected_ImageView) {
         // This is run inside the UI thread from the calling class (prepareFullProjected)
         try {
@@ -1093,7 +1159,7 @@ class PresentationCommon {
             e.printStackTrace();
         }
     }
-    private void projectedPerformanceView3col(Context c, _Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
+    private void projectedPerformanceView3col(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
                                               float scale1_3, float scale2_3, float scale3_3, LinearLayout projected_LinearLayout, ImageView projected_ImageView) {
         // This is run inside the UI thread from the calling class (prepareFullProjected)
         try {
@@ -1181,72 +1247,65 @@ class PresentationCommon {
 
 
     // Writing the views for StageMode
-    private void prepareStageProjected(final Context c, final _Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
+    private void prepareStageProjected(final Context c, final Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
                                        final LinearLayout col1_1, final LinearLayout col1_2, final LinearLayout col2_2, final LinearLayout col1_3,
                                        final LinearLayout col2_3, final LinearLayout col3_3, final LinearLayout projected_LinearLayout, final ImageView projected_ImageView) {
 
         if (StaticVariables.activity!=null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        // Updating views on the UI
-                        //activity.runOnUiThread(new Runnable() {
-                        StaticVariables.activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                // Remove the old views
-                                col1_1.removeAllViews();
-                                col1_2.removeAllViews();
-                                col2_2.removeAllViews();
-                                col1_3.removeAllViews();
-                                col2_3.removeAllViews();
-                                col3_3.removeAllViews();
+            new Thread(() -> {
+                try {
+                    // Updating views on the UI
+                    //activity.runOnUiThread(new Runnable() {
+                    StaticVariables.activity.runOnUiThread(() -> {
+                        // Remove the old views
+                        col1_1.removeAllViews();
+                        col1_2.removeAllViews();
+                        col2_2.removeAllViews();
+                        col1_3.removeAllViews();
+                        col2_3.removeAllViews();
+                        col3_3.removeAllViews();
 
-                                LinearLayout test1_1;
+                        LinearLayout test1_1;
 
-                                // Prepare the new view ready for measuring
-                                // Go through each section
-                                test1_1 = processSong.projectedSectionView(c, StaticVariables.currentSection, 12.0f,
-                                        storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
-                                        StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
-                                col1_1.addView(test1_1);
+                        // Prepare the new view ready for measuring
+                        // Go through each section
+                        test1_1 = processSong.projectedSectionView(c, StaticVariables.currentSection, 12.0f,
+                                storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                                StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
+                        col1_1.addView(test1_1);
 
-                                // Now premeasure the views
-                                col1_1.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                        // Now premeasure the views
+                        col1_1.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-                                // Get the widths and heights of the sections
-                                int widthofsection1_1 = col1_1.getMeasuredWidth();
-                                int heightofsection1_1 = col1_1.getMeasuredHeight();
+                        // Get the widths and heights of the sections
+                        int widthofsection1_1 = col1_1.getMeasuredWidth();
+                        int heightofsection1_1 = col1_1.getMeasuredHeight();
 
-                                // We know the size of each section, so we just need to know which one to display
-                                float maxwidth_scale1_1 = ((float) StaticVariables.cast_availableWidth_1col) / (float) widthofsection1_1;
-                                float maxheight_scale1_1 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_1;
+                        // We know the size of each section, so we just need to know which one to display
+                        float maxwidth_scale1_1 = ((float) StaticVariables.cast_availableWidth_1col) / (float) widthofsection1_1;
+                        float maxheight_scale1_1 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_1;
 
-                                if (maxheight_scale1_1 < maxwidth_scale1_1) {
-                                    maxwidth_scale1_1 = maxheight_scale1_1;
-                                }
+                        if (maxheight_scale1_1 < maxwidth_scale1_1) {
+                            maxwidth_scale1_1 = maxheight_scale1_1;
+                        }
 
-                                // Now we know how many columns we should use, let's do it!
-                                float maxscale = preferences.getMyPreferenceFloat(c, "fontSizePresoMax", 40.0f) / 12.0f;
+                        // Now we know how many columns we should use, let's do it!
+                        float maxscale = preferences.getMyPreferenceFloat(c, "fontSizePresoMax", 40.0f) / 12.0f;
 
-                                if (maxwidth_scale1_1 > maxscale) {
-                                    maxwidth_scale1_1 = maxscale;
-                                }
-                                projectedStageView1Col(c, preferences, storageAccess, processSong, maxwidth_scale1_1,
-                                        projected_LinearLayout, projected_ImageView);
-                            }
+                        if (maxwidth_scale1_1 > maxscale) {
+                            maxwidth_scale1_1 = maxscale;
+                        }
+                        projectedStageView1Col(c, preferences, storageAccess, processSong, maxwidth_scale1_1,
+                                projected_LinearLayout, projected_ImageView);
+                    });
 
-                        });
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }).start();
         }
     }
-    private void projectedStageView1Col(Context c, _Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
+    private void projectedStageView1Col(Context c, Preferences preferences,StorageAccess storageAccess,ProcessSong processSong,
                                         float scale1_1, LinearLayout projected_LinearLayout, ImageView projected_ImageView) {
         // This is run inside the UI thread from the calling class (prepareFullProjected)
         try {
@@ -1288,69 +1347,63 @@ class PresentationCommon {
 
 
     // Writing the views for PresenterMode
-    private void preparePresenterProjected(final Context c, final _Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
+    private void preparePresenterProjected(final Context c, final Preferences preferences, final ProcessSong processSong, final StorageAccess storageAccess,
                                            final LinearLayout col1_1, final LinearLayout col1_2, final LinearLayout col2_2, final LinearLayout col1_3,
                                            final LinearLayout col2_3, final LinearLayout col3_3, final LinearLayout projected_LinearLayout, final ImageView projected_ImageView) {
         if (StaticVariables.activity != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        //activity.runOnUiThread(new Runnable() {
-                        StaticVariables.activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                // Remove the old views
-                                col1_1.removeAllViews();
-                                col1_2.removeAllViews();
-                                col2_2.removeAllViews();
-                                col1_3.removeAllViews();
-                                col2_3.removeAllViews();
-                                col3_3.removeAllViews();
+            new Thread(() -> {
+                try {
+                    StaticVariables.activity.runOnUiThread(() -> {
+                        // Remove the old views
+                        col1_1.removeAllViews();
+                        col1_2.removeAllViews();
+                        col2_2.removeAllViews();
+                        col1_3.removeAllViews();
+                        col2_3.removeAllViews();
+                        col3_3.removeAllViews();
 
-                                LinearLayout test1_1;
+                        LinearLayout test1_1;
 
-                                // Prepare the new view ready for measuring
-                                // Go through each section
-                                test1_1 = processSong.projectedSectionView(c, StaticVariables.currentSection, 12.0f,
-                                        storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
-                                        StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
-                                col1_1.addView(test1_1);
+                        // Prepare the new view ready for measuring
+                        // Go through each section
+                        test1_1 = processSong.projectedSectionView(c, StaticVariables.currentSection, 12.0f,
+                                storageAccess, preferences,StaticVariables.cast_lyricsTextColor, StaticVariables.cast_lyricsChordsColor,
+                                StaticVariables.cast_lyricsCapoColor,StaticVariables.cast_presoFontColor,StaticVariables.cast_presoShadowColor);
+                        col1_1.addView(test1_1);
 
-                                // Now premeasure the views
-                                col1_1.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                        // Now premeasure the views
+                        tryMeasure(col1_1,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                        // GE Catch error detected
 
-                                // Get the widths and heights of the sections
-                                int widthofsection1_1 = col1_1.getMeasuredWidth();
-                                int heightofsection1_1 = col1_1.getMeasuredHeight();
+                        // Get the widths and heights of the sections
+                        int widthofsection1_1 = col1_1.getMeasuredWidth();
+                        int heightofsection1_1 = col1_1.getMeasuredHeight();
 
-                                // We know the size of each section, so we just need to know which one to display
-                                float maxwidth_scale1_1 = ((float) StaticVariables.cast_availableWidth_1col) / (float) widthofsection1_1;
-                                float maxheight_scale1_1 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_1;
+                        // We know the size of each section, so we just need to know which one to display
+                        float maxwidth_scale1_1 = ((float) StaticVariables.cast_availableWidth_1col) / (float) widthofsection1_1;
+                        float maxheight_scale1_1 = ((float) StaticVariables.cast_availableScreenHeight) / (float) heightofsection1_1;
 
-                                if (maxheight_scale1_1 < maxwidth_scale1_1) {
-                                    maxwidth_scale1_1 = maxheight_scale1_1;
-                                }
+                        if (maxheight_scale1_1 < maxwidth_scale1_1) {
+                            maxwidth_scale1_1 = maxheight_scale1_1;
+                        }
 
-                                // Now we know how many columns we should use, let's do it!
-                                float maxscale = preferences.getMyPreferenceFloat(c, "fontSizePresoMax", 40.0f) / 12.0f;
+                        // Now we know how many columns we should use, let's do it!
+                        float maxscale = preferences.getMyPreferenceFloat(c, "fontSizePresoMax", 40.0f) / 12.0f;
 
-                                if (maxwidth_scale1_1 > maxscale) {
-                                    maxwidth_scale1_1 = maxscale;
-                                }
-                                projectedPresenterView1Col(c, preferences, storageAccess, processSong, maxwidth_scale1_1,
-                                        projected_LinearLayout, projected_ImageView);
+                        if (maxwidth_scale1_1 > maxscale) {
+                            maxwidth_scale1_1 = maxscale;
+                        }
+                        projectedPresenterView1Col(c, preferences, storageAccess, processSong, maxwidth_scale1_1,
+                                projected_LinearLayout, projected_ImageView);
 
-                            }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }).start();
         }
     }
-    private void projectedPresenterView1Col(Context c, _Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
+    private void projectedPresenterView1Col(Context c, Preferences preferences,StorageAccess storageAccess,ProcessSong processSong,
                                             float scale1_1, LinearLayout projected_LinearLayout, ImageView projected_ImageView) {
         // This is run inside the UI thread from the calling class (prepareFullProjected)
         try {
@@ -1361,6 +1414,7 @@ class PresentationCommon {
 
             // Remove all views from the projector
             projected_LinearLayout.removeAllViews();
+            lyrics1_1.setPadding(0, 0, 0, 0);
             lyrics1_1.setPadding(0, 0, 0, 0);
 
             // Add this section
@@ -1388,5 +1442,14 @@ class PresentationCommon {
     }
 
 
-}
-*/
+    private void tryMeasure(View view, int x_size, int y_size) {
+        try {
+            if (view.getLayoutParams()==null) {
+                view.setLayoutParams(new ViewGroup.LayoutParams(0,0));
+            }
+            view.measure(x_size,y_size);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}*/

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/pres_col3"
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pres_col3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -31,100 +32,118 @@
                 android:id="@+id/presenter_project_group"
                 style="@style/MyInfoText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:layout_margin="4dp"
-                android:drawableStart="@drawable/ic_projector_white_36dp"
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
-                android:text="@string/sendtoprojector" />
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text="@string/sendtoprojector"
+                app:drawableStartCompat="@drawable/ic_projector_white_36dp" />
 
             <TextView
                 android:id="@+id/presenter_logo_group"
                 style="@style/MyInfoText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:layout_margin="4dp"
-                android:drawableStart="@drawable/ic_projector_logo_white_36dp"
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
-                android:text="@string/presoShowLogo" />
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text="@string/presoShowLogo"
+                app:drawableStartCompat="@drawable/ic_projector_logo_white_36dp" />
 
             <TextView
                 android:id="@+id/presenter_blank_group"
                 style="@style/MyInfoText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:layout_margin="4dp"
-                android:drawableStart="@drawable/ic_video_off_white_36dp"
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
-                android:text="@string/black_screen" />
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text="@string/black_screen"
+                app:drawableStartCompat="@drawable/ic_video_off_white_36dp" />
 
             <TextView
                 android:id="@+id/presenter_alert_group"
                 style="@style/MyInfoText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:layout_margin="4dp"
-                android:drawableStart="@drawable/ic_message_alert_white_36dp"
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
-                android:text="@string/alert" />
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text="@string/alert"
+                app:drawableStartCompat="@drawable/ic_message_alert_white_36dp" />
 
             <TextView
                 android:id="@+id/presenter_audio_group"
                 style="@style/MyInfoText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:layout_margin="4dp"
-                android:drawableStart="@drawable/ic_amplifier_white_36dp"
                 android:drawablePadding="4dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
                 android:gravity="center_vertical"
-                android:text="@string/media" />
+                android:text="@string/media"
+                app:drawableStartCompat="@drawable/ic_amplifier_white_36dp" />
 
             <TextView
                 android:id="@+id/presenter_dB_group"
                 style="@style/MyInfoText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:layout_margin="4dp"
-                android:drawableStart="@drawable/ic_volume_high_white_36dp"
                 android:drawablePadding="8dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
                 android:gravity="center_vertical"
-                android:text="@string/volume" />
+                android:text="@string/volume"
+                app:drawableStartCompat="@drawable/ic_volume_high_white_36dp" />
 
             <TextView
                 android:id="@+id/presenter_slide_group"
                 style="@style/MyInfoText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:layout_margin="4dp"
-                android:drawableStart="@drawable/ic_projector_screen_white_36dp"
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
-                android:text="@string/slide" />
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text="@string/slide"
+                app:drawableStartCompat="@drawable/ic_projector_screen_white_36dp" />
 
             <TextView
                 android:id="@+id/presenter_scripture_group"
                 style="@style/MyInfoText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:layout_margin="4dp"
-                android:drawableStart="@drawable/ic_bible_white_36dp"
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
-                android:text="@string/scripture" />
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text="@string/scripture"
+                app:drawableStartCompat="@drawable/ic_bible_white_36dp" />
 
             <TextView
                 android:id="@+id/presenter_display_group"
                 style="@style/MyInfoText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:layout_margin="4dp"
-                android:drawableStart="@drawable/ic_monitor_white_36dp"
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
-                android:text="@string/connected_display" />
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:text="@string/connected_display"
+                app:drawableStartCompat="@drawable/ic_monitor_white_36dp" />
 
         </LinearLayout>
     </ScrollView>
