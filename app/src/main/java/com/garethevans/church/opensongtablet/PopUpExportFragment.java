@@ -99,12 +99,10 @@ public class PopUpExportFragment extends DialogFragment {
             exportChordProCheckBox.setVisibility(View.GONE);
             exportOnSongCheckBox.setVisibility(View.GONE);
             exportImageCheckBox.setVisibility(View.GONE);
-            //exportPDFCheckBox.setVisibility(View.GONE);  Not using screenshot anymore, so can create
         }
 
         if (!StaticVariables.whichMode.equals("Performance")) {
             exportImageCheckBox.setVisibility(View.GONE);
-            exportPDFCheckBox.setVisibility(View.GONE);
         }
 
         // Set the checkboxes to their last set value

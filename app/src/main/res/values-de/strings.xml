@@ -510,4 +510,5 @@
     <string name="connections_keephostsongs">Behalten Sie Host-Songs</string>
     <string name="location_rationale">Diese Funktion ist erforderlich, um andere Netzwerkgeräte zu finden</string>
     <string name="bold_text">Zeigen Sie die Texte in Fettdruck an</string>
+    <string name="respectcopyright">Respektieren Sie das Urheberrecht - verwenden Sie es immer legal</string>
 </resources>

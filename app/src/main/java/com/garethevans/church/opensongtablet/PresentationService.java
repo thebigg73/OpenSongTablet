@@ -30,6 +30,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             FullscreenActivity.isPresenting = true;
 
         } catch (WindowManager.InvalidDisplayException ex) {
+            ex.printStackTrace();
             dismissPresentation();
             FullscreenActivity.isPresenting = false;
         }

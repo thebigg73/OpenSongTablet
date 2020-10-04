@@ -85,11 +85,10 @@ class AutoScrollFunctions {
             }
 
 
-
             // Ok figure out the size of amount of scrolling needed
             int height;
             try {
-                height = (scrollpage.getChildAt(0).getMeasuredHeight() - (main_page.getHeight() - toolbar.getHeight()));
+                height = (scrollpage.getChildAt(0).getMeasuredHeight() - (main_page.getMeasuredHeight() - toolbar.getMeasuredHeight()));
             } catch (Exception e) {
                 height = 0;
             }
@@ -157,9 +156,11 @@ class AutoScrollFunctions {
         public void run() {
             final ObjectAnimator animator;
             animator = ObjectAnimator.ofInt(sv, "scrollY", (int) FullscreenActivity.newPosFloat);
-            Interpolator linearInterpolator = new LinearInterpolator();
-            animator.setInterpolator(linearInterpolator);
-            animator.setDuration(StaticVariables.autoscroll_pause_time);
+            Interpolator interpolator = new LinearInterpolator();
+            animator.setInterpolator(interpolator);
+            // The animation duration should be 500ms, but this means if there is a delay in processing, the time slips.
+            int triggerTime = (int) (StaticVariables.autoscroll_pause_time - (System.currentTimeMillis() - FullscreenActivity.time_passed));
+            animator.setDuration((int) (triggerTime));
             if (!FullscreenActivity.isManualDragging) {
                 sv.post(animator::start);
             }
@@ -203,6 +204,9 @@ class AutoScrollFunctions {
                     text = TimeTools.timeFormatFixer(currtimesecs);
                     tv.setTextColor(0xffff0000);
                 } else {
+                    if (currtimesecs>StaticVariables.autoScrollDuration) {
+                        currtimesecs = StaticVariables.autoScrollDuration;
+                    }
                     text = TimeTools.timeFormatFixer(currtimesecs);
                     tv.setTextColor(0xffffffff);
                 }
