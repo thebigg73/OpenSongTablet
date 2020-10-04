@@ -511,4 +511,6 @@
     <string name="location_rationale">Cette fonction est requise pour localiser d\'autres périphériques réseau</string>
     <string name="bold_text">Afficher les paroles en gras</string>
     <string name="respectcopyright">Respectez les droits d\'auteur - utilisez toujours légalement</string>
+    <string name="wordsandmusicby">Paroles et musique de</string>
+    <string name="usedbypermision">Utilisé avec permission.</string>
 </resources>

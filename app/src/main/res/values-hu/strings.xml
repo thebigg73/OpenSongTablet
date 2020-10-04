@@ -511,4 +511,6 @@
     <string name="warn_before_changing_song">Mutasson figyelmeztetést, mielőtt a következő dalra lépne (hasznos a véletlen megnyomás elkerülése érdekében)</string>
     <string name="bold_text">A dalszövegeket vastag betűvel jelenítheti meg</string>
     <string name="respectcopyright">Tisztelet a szerzői jogoknak - mindig legálisan használja</string>
+    <string name="wordsandmusicby">Szavak és zene</string>
+    <string name="usedbypermision">Engedély alapján használják.</string>
 </resources>

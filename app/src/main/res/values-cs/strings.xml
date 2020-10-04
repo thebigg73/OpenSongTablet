@@ -511,4 +511,6 @@
     <string name="location_rationale">Tato funkce je vyžadována k nalezení dalších síťových zařízení</string>
     <string name="bold_text">Zobrazit text tučně</string>
     <string name="respectcopyright">Respektujte autorská práva - vždy používejte legálně</string>
+    <string name="usedbypermision">Používáno se svolením.</string>
+    <string name="wordsandmusicby">Slova a hudba od</string>
 </resources>

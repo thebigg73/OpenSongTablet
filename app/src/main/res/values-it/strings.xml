@@ -511,4 +511,6 @@
     <string name="warn_before_changing_song">Mostra un avviso prima di passare al brano successivo (utile per evitare pressioni accidentali)</string>
     <string name="bold_text">Mostra i testi in grassetto</string>
     <string name="respectcopyright">Rispetta il copyright: usa sempre legalmente</string>
+    <string name="wordsandmusicby">Parole e musica di</string>
+    <string name="usedbypermision">Utilizzato su autorizzazione.</string>
 </resources>

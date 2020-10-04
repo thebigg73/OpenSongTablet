@@ -511,4 +511,6 @@
     <string name="location_rationale">Эта функция требуется для поиска других сетевых устройств</string>
     <string name="bold_text">Показать текст жирным шрифтом</string>
     <string name="respectcopyright">Уважайте авторские права - всегда используйте легально</string>
+    <string name="usedbypermision">Используется с разрешения.</string>
+    <string name="wordsandmusicby">Слова и музыка</string>
 </resources>

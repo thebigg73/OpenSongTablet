@@ -511,4 +511,6 @@
     <string name="location_rationale">Esse recurso é necessário para localizar outros dispositivos de rede</string>
     <string name="bold_text">Exibir letras em negrito</string>
     <string name="respectcopyright">Respeite os direitos autorais - use sempre legalmente</string>
+    <string name="usedbypermision">Usado com permissão.</string>
+    <string name="wordsandmusicby">Palavras e música de</string>
 </resources>

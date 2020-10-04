@@ -511,4 +511,6 @@
     <string name="location_rationale">Diese Funktion ist erforderlich, um andere Netzwerkgeräte zu finden</string>
     <string name="bold_text">Zeigen Sie die Texte in Fettdruck an</string>
     <string name="respectcopyright">Respektieren Sie das Urheberrecht - verwenden Sie es immer legal</string>
+    <string name="wordsandmusicby">Worte und Musik von</string>
+    <string name="usedbypermision">Mit Genehmigung verwendet.</string>
 </resources>

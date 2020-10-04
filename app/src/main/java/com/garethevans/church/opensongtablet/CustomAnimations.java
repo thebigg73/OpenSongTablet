@@ -120,7 +120,7 @@ class CustomAnimations {
         float endAlpha;
         final int endVisibility;
 
-        // IV - Allow for 0.01f kick of ALpha at the end of animation
+        // IV - Allow for 0.01f kick of Alpha at the end of animation
         if (fadeIn) {
             endAlpha = 0.99f;
             endVisibility = View.VISIBLE;
@@ -136,7 +136,7 @@ class CustomAnimations {
         AnimatorSet mAnimationSet = new AnimatorSet();
 
         // IV - Fade from the current alpha
-        ObjectAnimator fadeView = ObjectAnimator.ofFloat(v, View.ALPHA, (float) (v.getAlpha()), endAlpha);
+        ObjectAnimator fadeView = ObjectAnimator.ofFloat(v, View.ALPHA, v.getAlpha(), endAlpha);
 
         fadeView.addListener(new Animator.AnimatorListener() {
             @Override

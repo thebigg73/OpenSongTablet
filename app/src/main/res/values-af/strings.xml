@@ -511,4 +511,6 @@
     <string name="location_rationale">Hierdie funksie is nodig om ander netwerktoestelle op te spoor</string>
     <string name="bold_text">Vertoon lirieke vetdruk</string>
     <string name="respectcopyright">Respekteer kopiereg - gebruik dit altyd wettig</string>
+    <string name="usedbypermision">Gebruik met toestemming.</string>
+    <string name="wordsandmusicby">Woorde en musiek deur</string>
 </resources>

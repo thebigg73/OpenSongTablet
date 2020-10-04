@@ -511,4 +511,6 @@
     <string name="warn_before_changing_song">Pokažite upozorenje pre prelaska na sledeću pesmu (korisno da izbegnete slučajne pritiske)</string>
     <string name="bold_text">Prikažite tekst podebljano</string>
     <string name="respectcopyright">Poštujte autorska prava - uvek ih koristite legalno</string>
+    <string name="wordsandmusicby">Reči i muzika</string>
+    <string name="usedbypermision">Koristi se uz dozvolu.</string>
 </resources>

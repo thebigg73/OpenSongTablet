@@ -40,7 +40,8 @@ class PresentationServiceHDMI extends Presentation
     @SuppressLint("StaticFieldLeak")
     private static ImageView projected_ImageView, projected_Logo, projected_BackgroundImage;
     @SuppressLint("StaticFieldLeak")
-    private static TextView songinfo_TextView, presentermode_title, presentermode_author, presentermode_copyright, presentermode_alert;
+    private static TextView songinfo_TextView, presentermode_title, presentermode_author,
+            presentermode_copyright, presentermode_ccli, presentermode_alert;
     @SuppressLint("StaticFieldLeak")
     private static LinearLayout bottom_infobar, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3;
     @SuppressLint("StaticFieldLeak")
@@ -122,6 +123,7 @@ class PresentationServiceHDMI extends Presentation
         presentermode_title = findViewById(R.id.presentermode_title);
         presentermode_author = findViewById(R.id.presentermode_author);
         presentermode_copyright = findViewById(R.id.presentermode_copyright);
+        presentermode_ccli = findViewById(R.id.presentermode_ccli);
         presentermode_alert = findViewById(R.id.presentermode_alert);
         bottom_infobar = findViewById(R.id.bottom_infobar);
         col1_1 = findViewById(R.id.col1_1);
@@ -168,12 +170,7 @@ class PresentationServiceHDMI extends Presentation
         presentationCommon.fixBackground(c,preferences,storageAccess,projected_BackgroundImage,projected_SurfaceHolder,projected_SurfaceView);
         // Just in case there is a glitch, make the stuff visible after a time
         Handler panic = new Handler();
-        panic.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                updateAlpha();
-            }
-        }, (long) (1.1*preferences.getMyPreferenceInt(c,"presoTransitionTime",800)));
+        panic.postDelayed(PresentationServiceHDMI::updateAlpha, (long) (1.1*preferences.getMyPreferenceInt(c,"presoTransitionTime",800)));
     }
     private static void getDefaultColors() {
         presentationCommon.getDefaultColors(c,preferences);
@@ -197,7 +194,7 @@ class PresentationServiceHDMI extends Presentation
         getDefaultColors();
         // Set the text at the bottom of the page to match the presentation text colour
         presentationCommon.presenterThemeSetUp(c,preferences,presentermode_bottombit, presentermode_title, presentermode_author,
-                presentermode_copyright,presentermode_alert);
+                presentermode_copyright, presentermode_ccli, presentermode_alert);
     }
     static void updateFonts() {
         getDefaultColors();
@@ -252,7 +249,7 @@ class PresentationServiceHDMI extends Presentation
         presentermode_alert.setAlpha(1.0f);
         presentationCommon.doUpdate(c,preferences,storageAccess,processSong,myscreen,songinfo_TextView,presentermode_bottombit,projected_SurfaceView,
                 projected_BackgroundImage, pageHolder,projected_Logo,projected_ImageView,projected_LinearLayout,bottom_infobar,projectedPage_RelativeLayout,
-                presentermode_title, presentermode_author, presentermode_copyright, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3);
+                presentermode_title, presentermode_author, presentermode_copyright, presentermode_ccli, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3);
     }
     static void updateAlert(boolean show) {
         presentationCommon.updateAlert(c, preferences, myscreen, bottom_infobar,projectedPage_RelativeLayout,show, presentermode_alert);
@@ -267,7 +264,7 @@ class PresentationServiceHDMI extends Presentation
         presentationCommon.showLogo(c,preferences,projected_ImageView,projected_LinearLayout,pageHolder,bottom_infobar,projected_Logo);
     }
     static void hideLogo() {
-        presentationCommon.hideLogo(c,preferences,projected_ImageView,projected_LinearLayout,projected_Logo,bottom_infobar);
+        presentationCommon.hideLogo(c,preferences, projected_Logo);
     }
     static void blankUnblankDisplay(boolean unblank) {
         presentationCommon.blankUnblankDisplay(c,preferences,pageHolder,unblank);
