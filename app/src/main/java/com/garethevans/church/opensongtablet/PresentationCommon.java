@@ -573,6 +573,8 @@ class PresentationCommon {
                         if (FullscreenActivity.isImage || FullscreenActivity.isPDF || FullscreenActivity.isImageSlide) {
                             projected_ImageView.setVisibility(View.VISIBLE);
                             projected_LinearLayout.setVisibility(View.GONE);
+                            // IV - Added a manual animation - this is done because cast animations can stall
+                            projected_ImageView.setAlpha(0.99f);
                             projected_ImageView.setAlpha(1.0f);
                         } else if (FullscreenActivity.isVideo) {
                             projected_SurfaceView.setVisibility(View.VISIBLE);
@@ -582,6 +584,7 @@ class PresentationCommon {
                         } else {
                             projected_LinearLayout.setVisibility(View.VISIBLE);
                             projected_ImageView.setVisibility(View.GONE);
+                            projected_LinearLayout.setAlpha(0.99f);
                             projected_LinearLayout.setAlpha(1.0f);
                         }
                     }
