@@ -510,4 +510,5 @@
     <string name="connections_keephostsongs">Κρατήστε τα κεντρικά τραγούδια</string>
     <string name="location_rationale">Αυτή η δυνατότητα απαιτείται για τον εντοπισμό άλλων συσκευών δικτύου</string>
     <string name="bold_text">Εμφάνιση στίχων με έντονη γραφή</string>
+    <string name="respectcopyright">Σεβασμός των πνευματικών δικαιωμάτων - να χρησιμοποιείτε πάντα νόμιμα</string>
 </resources>

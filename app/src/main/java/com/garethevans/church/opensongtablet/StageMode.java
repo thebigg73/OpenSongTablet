@@ -72,12 +72,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.core.view.MenuItemCompat;
 import androidx.core.view.animation.PathInterpolatorCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.mediarouter.app.MediaRouteActionProvider;
+import androidx.mediarouter.app.MediaRouteButton;
 import androidx.mediarouter.media.MediaControlIntent;
 import androidx.mediarouter.media.MediaRouteSelector;
 import androidx.mediarouter.media.MediaRouter;
@@ -86,6 +85,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
+import com.google.android.gms.cast.framework.CastButtonFactory;
+import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.common.api.Status;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -106,7 +107,6 @@ import static com.google.android.material.snackbar.Snackbar.make;
 
 // This includes all recent version pulls from IV and GE
 
-@SuppressWarnings("StatementWithEmptyBody")
 public class StageMode extends AppCompatActivity implements
         PopUpAreYouSureFragment.MyInterface, PopUpPagesFragment.MyInterface,
         PopUpEditSongFragment.MyInterface, PopUpSongDetailsFragment.MyInterface,
@@ -252,6 +252,7 @@ public class StageMode extends AppCompatActivity implements
     private MediaRouteSelector mMediaRouteSelector;
     private final MyMediaRouterCallback mMediaRouterCallback = new MyMediaRouterCallback();
     private CastDevice mSelectedDevice;
+    private CastContext mCastContext;
     private PresentationServiceHDMI hdmi;
     private boolean newsongloaded = false;
 
@@ -469,8 +470,10 @@ public class StageMode extends AppCompatActivity implements
                 presohandler, presoinfohandler, customhandler);
 
 
-
         // Setup the CastContext
+        MediaRouteButton mediaRouteButton = findViewById(R.id.media_route_menu_item);
+        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mediaRouteButton);
+        mCastContext = CastContext.getSharedInstance(this);
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
         mMediaRouteSelector = new MediaRouteSelector.Builder()
                 .addControlCategory(CastMediaControlIntent.categoryForCast("4E2B0891"))
@@ -1146,7 +1149,9 @@ public class StageMode extends AppCompatActivity implements
         getMenuInflater().inflate(R.menu.stage_actions, menu);
 
         // Setup the menu item for connecting to cast devices
-        MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
+        MenuItem mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
+
+        /*MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
         View mr = menu.findItem(R.id.media_route_menu_item).getActionView();
         if (mr!=null) {
             mr.setFocusable(false);
@@ -1156,7 +1161,7 @@ public class StageMode extends AppCompatActivity implements
                 (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
         if (mMediaRouteSelector != null) {
             mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
-        }
+        }*/
 
         // Force overflow icon to show, even if hardware key is present
         MenuHandlers.forceOverFlow(StageMode.this, ab, menu);
@@ -1633,7 +1638,9 @@ public class StageMode extends AppCompatActivity implements
     private void scrollButtons() {
         delaycheckscroll = new Handler();
         checkScrollPosition = () -> {
-            FullscreenActivity.newPosFloat = songscrollview.getScrollY();
+            if (!StaticVariables.isautoscrolling) { // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
+                FullscreenActivity.newPosFloat = songscrollview.getScrollY();
+            }
             if (!(preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowScroll", true))) {
                 showFAB(scrollDownButton, false);
                 showFAB(scrollUpButton, false);
@@ -3330,8 +3337,11 @@ public class StageMode extends AppCompatActivity implements
                     (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0);
 
             // If we aren't at the end of the set or inside a multipage pdf, indicate a setForwardButton
+            if (StaticVariables.mSetList==null) {
+                StaticVariables.mSetList = new String[0];
+            }
             StaticVariables.canGoToNext = (StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) ||
-                    (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < FullscreenActivity.pdfPageCount - 1);
+                        (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < FullscreenActivity.pdfPageCount - 1);
         } else {
             StaticVariables.canGoToPrevious = (FullscreenActivity.currentSongIndex > FullscreenActivity.previousSongIndex); // i.e there is a song before in the list/menu
             StaticVariables.canGoToNext = (FullscreenActivity.currentSongIndex < FullscreenActivity.nextSongIndex); // i.e there is a song after in the list/menu
@@ -4673,18 +4683,6 @@ public class StageMode extends AppCompatActivity implements
                     });
         } else {
             // Might be a hdmi connection
-            /*try {
-                Display mDisplay = mMediaRouter.getSelectedRoute().getPresentationDisplay();
-                if (mDisplay != null) {
-                    hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong);
-                    hdmi.show();
-                    FullscreenActivity.isHDMIConnected = true;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
-
-            // Try this code (Alternative to use HDMI as Chromebooks not coping with above
             try {
                 DisplayManager dm = (DisplayManager) getSystemService(DISPLAY_SERVICE);
                 if (dm!=null) {
@@ -5366,6 +5364,7 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void callIntent(String what, Intent i) {
+        Log.d("StageMode","what="+what);
         switch (what) {
             case "web":
                 startActivity(i);
@@ -5391,8 +5390,13 @@ public class StageMode extends AppCompatActivity implements
                 break;
 
             case "activity":
-                finish();
-                startActivity(i);
+                if (i!=null && i.toString()!=null && i.toString().contains("StageMode")) {
+                    Log.d("StageMode","Recreating");
+                    StageMode.this.recreate();
+                } else {
+                    finish();
+                    startActivity(i);
+                }
                 break;
 
             case "openpdf":
@@ -6530,8 +6534,8 @@ public class StageMode extends AppCompatActivity implements
             try {
                 while (StaticVariables.isautoscrolling) {
                     // IV - update the scroll buttons as we go
-                    delaycheckscroll.post(checkScrollPosition);
                     FullscreenActivity.time_passed = System.currentTimeMillis();
+                    delaycheckscroll.post(checkScrollPosition);
                     boolean doscroll = ((FullscreenActivity.time_passed - FullscreenActivity.time_start) / 1000) >= StaticVariables.autoScrollDelay;
                     if (doscroll) {
                         publishProgress(1);
@@ -6670,7 +6674,9 @@ public class StageMode extends AppCompatActivity implements
                     height = 0;
                 }
                 if (glideimage_ScrollView!=null) {
-                    FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY();
+                    if (!StaticVariables.isautoscrolling) {  // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
+                        FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY();
+                    }
                     showscrolldown = height > glideimage_ScrollView.getScrollY() && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu);
                 }
             } else {
@@ -6680,7 +6686,9 @@ public class StageMode extends AppCompatActivity implements
                     height = 0;
                 }
                 if (songscrollview != null) {
-                    FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY();
+                    if (!StaticVariables.isautoscrolling) { // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
+                        FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY();
+                    }
                     showscrolldown = height > songscrollview.getScrollY() && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu);
                 }
             }
@@ -6696,12 +6704,16 @@ public class StageMode extends AppCompatActivity implements
         } else {
             if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
                 if (glideimage_ScrollView!=null) {
-                    FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY();
+                    if (!StaticVariables.isautoscrolling) { // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
+                        FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY();
+                    }
                     showscrollup = glideimage_ScrollView.getScrollY() > 0 && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu);
                 }
             } else {
                 if (songscrollview != null) {
-                    FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY();
+                    if (!StaticVariables.isautoscrolling) { // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
+                        FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY();
+                    }
                     showscrollup = songscrollview.getScrollY() > 0 && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu);
                 }
             }

@@ -510,4 +510,5 @@
     <string name="connections_keephostsongs">Conserver les chansons des hôtes</string>
     <string name="location_rationale">Cette fonction est requise pour localiser d\'autres périphériques réseau</string>
     <string name="bold_text">Afficher les paroles en gras</string>
+    <string name="respectcopyright">Respectez les droits d\'auteur - utilisez toujours légalement</string>
 </resources>

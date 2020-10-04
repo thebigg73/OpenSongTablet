@@ -54,11 +54,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.core.view.MenuItemCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.mediarouter.app.MediaRouteActionProvider;
+import androidx.mediarouter.app.MediaRouteButton;
 import androidx.mediarouter.media.MediaControlIntent;
 import androidx.mediarouter.media.MediaRouteSelector;
 import androidx.mediarouter.media.MediaRouter;
@@ -68,6 +68,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
+import com.google.android.gms.cast.framework.CastButtonFactory;
+import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.common.api.Status;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -151,6 +153,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private MediaRouteSelector mMediaRouteSelector;
     private final MyMediaRouterCallback mMediaRouterCallback = new MyMediaRouterCallback();
     private CastDevice mSelectedDevice;
+    private CastContext mCastContext;
     private PresentationServiceHDMI hdmi;
 
     // The toolbar and menu
@@ -257,8 +260,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private boolean autoslideloop = false;
     private int autoslidetime = 0;
 
-    private OptionMenuListeners optionMenuListeners;
-
     // Battery
     private BroadcastReceiver br;
 
@@ -310,8 +311,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(PresenterMode.this);
         processSong = new ProcessSong();
         profileActions = new ProfileActions();
-        optionMenuListeners = new OptionMenuListeners(this);
-        nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong,optionMenuListeners,sqLiteHelper);
+        OptionMenuListeners optionMenuListeners = new OptionMenuListeners(this);
+        nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong, optionMenuListeners,sqLiteHelper);
         makePDF = new MakePDF();
 
         new Thread(() -> {
@@ -358,8 +359,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             Log.d("PresenterMode", "Didn't register battery");
         }
 
-
         // Setup the CastContext
+        MediaRouteButton mediaRouteButton = findViewById(R.id.media_route_menu_item);
+        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mediaRouteButton);
+        mCastContext = CastContext.getSharedInstance(this);
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
         mMediaRouteSelector = new MediaRouteSelector.Builder()
                 .addControlCategory(CastMediaControlIntent.categoryForCast("4E2B0891"))
@@ -368,8 +371,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         // Since this mode has just been opened, force an update to the cast screen
         StaticVariables.forcecastupdate = true;
-
-
 
         // Set up the toolbar and views
         runOnUiThread(() -> {
@@ -875,7 +876,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         } else {
             // Set the image to the unhappy android
-            Drawable myDrawable = getResources().getDrawable(R.drawable.unhappy_android);
+            Drawable myDrawable = ResourcesCompat.getDrawable(getResources(),R.drawable.unhappy_android,null);
             presenter_lyrics_image.setImageDrawable(myDrawable);
 
             // Set an intent to try and open the pdf with an appropriate application
@@ -1028,18 +1029,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         getMenuInflater().inflate(R.menu.presenter_actions, menu);
 
         // Setup the menu item for connecting to cast devices
-        // Setup the menu item for connecting to cast devices
-        MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
-        View mr = menu.findItem(R.id.media_route_menu_item).getActionView();
-        if (mr!=null) {
-            mr.setFocusable(false);
-            mr.setFocusableInTouchMode(false);
-        }
-        MediaRouteActionProvider mediaRouteActionProvider =
-                (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
-        if (mMediaRouteSelector != null) {
-            mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
-        }
+        MenuItem mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
 
         // Force overflow icon to show, even if hardware key is present
         MenuHandlers.forceOverFlow(PresenterMode.this, ab, menu);
@@ -1918,7 +1908,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         try {
             projectButton_isSelected = !projectButton_isSelected;
-
+            if (presenter_lyrics.getText()==null) {
+                presenter_lyrics.setText("");
+            }
             if (!FullscreenActivity.isPDF && !FullscreenActivity.isImage && !FullscreenActivity.isImageSlide) {
                 StaticVariables.projectedContents[StaticVariables.currentSection] = presenter_lyrics.getText().toString().split("\n");
                 int linesnow = StaticVariables.projectedContents[StaticVariables.currentSection].length;

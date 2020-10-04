@@ -510,4 +510,5 @@
     <string name="connections_keephostsongs">保留主持人的歌曲</string>
     <string name="location_rationale">查找其他网络设备需要此功能</string>
     <string name="bold_text">以粗体显示歌词</string>
+    <string name="respectcopyright">尊重版权-始终合法使用</string>
 </resources>
