@@ -306,27 +306,32 @@ class PresentationCommon {
         CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
     }
     void presenterThemeSetUp(Context c, Preferences preferences, LinearLayout presentermode_bottombit, TextView presentermode_title,
-                             TextView presentermode_author, TextView presentermode_copyright, TextView presentermode_alert) {
+                             TextView presentermode_author, TextView presentermode_copyright, TextView presentermode_ccli, TextView presentermode_alert) {
         // Set the text at the bottom of the page to match the presentation text colour
         presentermode_title.setTypeface(StaticVariables.typefacePresoInfo);
         presentermode_author.setTypeface(StaticVariables.typefacePresoInfo);
         presentermode_copyright.setTypeface(StaticVariables.typefacePresoInfo);
+        presentermode_ccli.setTypeface(StaticVariables.typefacePresoInfo);
         presentermode_alert.setTypeface(StaticVariables.typefacePresoInfo);
         presentermode_title.setTextColor(StaticVariables.cast_presoInfoColor);
         presentermode_author.setTextColor(StaticVariables.cast_presoInfoColor);
         presentermode_copyright.setTextColor(StaticVariables.cast_presoInfoColor);
+        presentermode_ccli.setTextColor(StaticVariables.cast_presoInfoColor);
         presentermode_alert.setTextColor(StaticVariables.cast_presoAlertColor);
         presentermode_title.setTextSize(preferences.getMyPreferenceFloat(c,"presoTitleTextSize", 14.0f));
         presentermode_author.setTextSize(preferences.getMyPreferenceFloat(c,"presoAuthorTextSize", 12.0f));
         presentermode_copyright.setTextSize(preferences.getMyPreferenceFloat(c,"presoCopyrightTextSize", 12.0f));
+        presentermode_ccli.setTextSize(preferences.getMyPreferenceFloat(c,"presoCopyrightTextSize", 12.0f));
         presentermode_alert.setTextSize(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f));
         presentermode_title.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoTitleTextSize", 14.0f) / 2.0f, 4, 4, StaticVariables.cast_presoShadowColor);
         presentermode_author.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoAuthorTextSize", 12.0f) / 2.0f, 4, 4, StaticVariables.cast_presoShadowColor);
         presentermode_copyright.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoCopyrightTextSize", 14.0f) / 2.0f, 4, 4, StaticVariables.cast_presoShadowColor);
+        presentermode_ccli.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoCopyrightTextSize", 14.0f) / 2.0f, 4, 4, StaticVariables.cast_presoShadowColor);
         presentermode_alert.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f) / 2.0f, 4, 4, StaticVariables.cast_presoShadowColor);
         presentermode_title.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
         presentermode_author.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
         presentermode_copyright.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
+        presentermode_ccli.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
         presentermode_alert.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
         if (PresenterMode.alert_on.equals("Y")) {
             presentermode_alert.setVisibility(View.VISIBLE);
@@ -443,8 +448,7 @@ class PresentationCommon {
             }, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
         }
     }
-    void hideLogo(Context c, Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout, ImageView projected_Logo,
-                  LinearLayout bottom_infobar) {
+    void hideLogo(Context c, Preferences preferences, ImageView projected_Logo) {
         // IV - Makes sure any delayed showLogo calls do not undo the fade!
         showLogoActive = false;
         CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
@@ -522,7 +526,7 @@ class PresentationCommon {
                   final Display myscreen, final TextView songinfo_TextView, LinearLayout presentermode_bottombit, final SurfaceView projected_SurfaceView,
                   ImageView projected_BackgroundImage, RelativeLayout pageHolder, ImageView projected_Logo, final ImageView projected_ImageView,
                   final LinearLayout projected_LinearLayout, LinearLayout bottom_infobar, final RelativeLayout projectedPage_RelativeLayout,
-                  TextView presentermode_title, TextView presentermode_author, TextView presentermode_copyright,
+                  TextView presentermode_title, TextView presentermode_author, TextView presentermode_copyright, TextView presentermode_ccli,
                   final LinearLayout col1_1, final LinearLayout col1_2, final LinearLayout col2_2, final LinearLayout col1_3,
                   final LinearLayout col2_3, final LinearLayout col3_3) {
 
@@ -552,7 +556,7 @@ class PresentationCommon {
 
             // Set the title of the song and author (if available).  Only does this for changes
             if (StaticVariables.whichMode.equals("Presentation")) {
-                presenterWriteSongInfo(c, preferences, presentermode_title, presentermode_author, presentermode_copyright, bottom_infobar);
+                presenterWriteSongInfo(c, preferences, presentermode_title, presentermode_author, presentermode_copyright, presentermode_ccli, bottom_infobar);
             } else {
                 setSongTitle(c, preferences, songinfo_TextView);
             }
@@ -573,6 +577,8 @@ class PresentationCommon {
                         if (FullscreenActivity.isImage || FullscreenActivity.isPDF || FullscreenActivity.isImageSlide) {
                             projected_ImageView.setVisibility(View.VISIBLE);
                             projected_LinearLayout.setVisibility(View.GONE);
+                            // IV - Added a manual animation - this is done because cast animations can stall
+                            projected_ImageView.setAlpha(0.99f);
                             projected_ImageView.setAlpha(1.0f);
                         } else if (FullscreenActivity.isVideo) {
                             projected_SurfaceView.setVisibility(View.VISIBLE);
@@ -582,6 +588,8 @@ class PresentationCommon {
                         } else {
                             projected_LinearLayout.setVisibility(View.VISIBLE);
                             projected_ImageView.setVisibility(View.GONE);
+                            // IV - Added a manual animation - this is done because cast animations can stall
+                            projected_ImageView.setAlpha(0.99f);
                             projected_LinearLayout.setAlpha(1.0f);
                         }
                     }
@@ -636,50 +644,46 @@ class PresentationCommon {
         }
     }
     private void presenterWriteSongInfo(Context c, Preferences preferences, TextView presentermode_title, TextView presentermode_author,
-                                       TextView presentermode_copyright, LinearLayout bottom_infobar) {
+                                       TextView presentermode_copyright, TextView presentermode_ccli, LinearLayout bottom_infobar) {
         // IV - Adjusted to try to make info block more CCLI compliant
         String old_title = presentermode_title.getText().toString();
-        String old_author = presentermode_author.getText().toString();
-        String old_copyright = presentermode_copyright.getText().toString();
-        String new_author = StaticVariables.mAuthor;
-        String new_copyright = "";
-
-        if (!old_title.contentEquals(StaticVariables.mTitle)) {
-            presenterFadeOutSongInfo(c, preferences, presentermode_title, StaticVariables.mTitle, bottom_infobar);
+        String new_title = "\"" + StaticVariables.mTitle + "\"";
+        if (!old_title.contentEquals(new_title)) {
+            presenterFadeOutSongInfo(c, preferences, presentermode_title, new_title, bottom_infobar);
         }
 
-        // IV - CCLI would be...
-        //if (!new_author.equals("")) {
-        //    new_author = "words and music by " + new_author;
-        //}
-        // localisation would be needed
+        String old_author = presentermode_author.getText().toString();
+        String new_author = StaticVariables.mAuthor;
+        if (!new_author.equals("")) {
+            new_author = c.getString(R.string.wordsandmusicby) + " " + StaticVariables.mAuthor;
+        }
         if (!old_author.contentEquals(new_author)) {
             presenterFadeOutSongInfo(c, preferences, presentermode_author, new_author, bottom_infobar);
         }
 
-        // IV - CCLI would be...
-        // new_copyright = "Used by permission. CCLI Licence #" + new_copyright;
-        // Instead using 'CCLI #' as this is international(?)
-        // The song must have a CCLI no and the system a CCLI licence number to see display
-        if (StaticVariables.mCCLI.length() > 0) {
-            new_copyright = preferences.getMyPreferenceString(c, "ccliLicence", "");
-            if (new_copyright.length() > 0) {
-                new_copyright = "CCLI #" + new_copyright;
+        String old_copyright = presentermode_copyright.getText().toString();
+        String new_copyright = StaticVariables.mCopyright;
+        if (!new_copyright.isEmpty()) {
+            if (!new_copyright.contains("©")) {
+                new_copyright = "© " + new_copyright;
             }
         }
-
-        // IV - © is internationally recognised, so is used without needing localisation
-        if (StaticVariables.mCopyright.length() > 0) {
-            if (new_copyright.length() > 0) {
-                new_copyright = "©" + StaticVariables.mCopyright + "\n" + new_copyright;
-            } else {
-                new_copyright = "©" + StaticVariables.mCopyright;
-            }
-        }
-
         if (!old_copyright.contentEquals(new_copyright)) {
             presenterFadeOutSongInfo(c, preferences, presentermode_copyright, new_copyright, bottom_infobar);
         }
+
+        String old_ccli = presentermode_ccli.getText().toString();
+        String new_ccli = "";
+        if (!StaticVariables.mCCLI.isEmpty()) {
+            new_ccli = preferences.getMyPreferenceString(c,"ccliLicence","");
+            if (!new_ccli.isEmpty()) {
+                new_ccli = c.getString(R.string.usedbypermision) + ". CCLI " + c.getString(R.string.ccli_licence) + new_ccli;
+            }
+        }
+        if (!old_ccli.contentEquals(new_ccli)) {
+            presenterFadeOutSongInfo(c, preferences, presentermode_ccli, new_ccli, bottom_infobar);
+        }
+
     }
     private void setSongTitle(Context c, Preferences preferences, TextView songinfo_TextView) {
         String old_title = songinfo_TextView.getText().toString();
@@ -726,7 +730,11 @@ class PresentationCommon {
             songinfo_TextView.setTextColor(StaticVariables.cast_presoInfoColor);
             songinfo_TextView.setText(s);
             CustomAnimations.faderAnimation(songinfo_TextView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
-
+            if (s.isEmpty()) {
+                songinfo_TextView.setVisibility(View.GONE);
+            } else {
+                songinfo_TextView.setVisibility(View.VISIBLE);
+            }
         }, preferences.getMyPreferenceInt(c,"presoTransitionTime",800));
     }
 
@@ -748,7 +756,6 @@ class PresentationCommon {
         presentermode_alert.setTextSize(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f));
         presentermode_alert.setTextColor(StaticVariables.cast_presoAlertColor);
         presentermode_alert.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f) / 2.0f, 4, 4, StaticVariables.cast_presoShadowColor);
-
         presentermode_alert.setVisibility(View.VISIBLE);
         getScreenSizes(myscreen,bottom_infobar,projectedPage_RelativeLayout,preferences.getMyPreferenceFloat(c,"castRotation",0.0f));
         CustomAnimations.faderAnimation(presentermode_alert,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
@@ -932,12 +939,12 @@ class PresentationCommon {
 
                     // Now premeasure the views
                     // GE try to catch errors sometimes occuring
-                    tryMeasure(col1_1,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    tryMeasure(col1_2,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    tryMeasure(col2_2,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    tryMeasure(col1_3,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    tryMeasure(col2_3,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    tryMeasure(col3_3,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    tryMeasure(col1_1);
+                    tryMeasure(col1_2);
+                    tryMeasure(col2_2);
+                    tryMeasure(col1_3);
+                    tryMeasure(col2_3);
+                    tryMeasure(col3_3);
                     //col1_1.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                     //col1_2.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                     //col2_2.measure(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -1371,7 +1378,7 @@ class PresentationCommon {
                         col1_1.addView(test1_1);
 
                         // Now premeasure the views
-                        tryMeasure(col1_1,RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                        tryMeasure(col1_1);
                         // GE Catch error detected
 
                         // Get the widths and heights of the sections
@@ -1441,12 +1448,12 @@ class PresentationCommon {
     }
 
 
-    private void tryMeasure(View view, int x_size, int y_size) {
+    private void tryMeasure(View view) {
         try {
             if (view.getLayoutParams()==null) {
                 view.setLayoutParams(new ViewGroup.LayoutParams(0,0));
             }
-            view.measure(x_size,y_size);
+            view.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         } catch (Exception e) {
             e.printStackTrace();
         }

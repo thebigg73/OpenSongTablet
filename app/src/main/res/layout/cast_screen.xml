@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/projectedPage_RelativeLayout"
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/projectedPage_RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000"
@@ -67,14 +68,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="0dp"
-                android:drawableStart="@mipmap/ic_round_launcher"
                 android:drawablePadding="12dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="24dp"
                 android:paddingTop="8dp"
                 android:paddingRight="24dp"
                 android:paddingBottom="8dp"
-                android:visibility="visible" />
+                android:visibility="visible"
+                app:drawableStartCompat="@mipmap/ic_round_launcher" />
 
             <LinearLayout
                 android:id="@+id/presentermode_bottombit"
@@ -82,7 +83,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingTop="4dp"
-                android:paddingRight="24dp"
+                android:paddingEnd="24dp"
+                android:paddingStart="24dp"
                 android:paddingBottom="8dp"
                 android:visibility="visible">
 
@@ -98,6 +100,11 @@
 
                 <TextView
                     android:id="@+id/presentermode_copyright"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/presentermode_ccli"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

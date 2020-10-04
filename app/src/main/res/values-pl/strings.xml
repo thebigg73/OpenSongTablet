@@ -511,4 +511,6 @@
     <string name="location_rationale">Ta funkcja jest wymagana do lokalizowania innych urządzeń sieciowych</string>
     <string name="bold_text">Wyświetlaj teksty pogrubioną czcionką</string>
     <string name="respectcopyright">Szanuj prawa autorskie - zawsze korzystaj z nich legalnie</string>
+    <string name="usedbypermision">Wykorzystane za zgodą.</string>
+    <string name="wordsandmusicby">Słowa i muzyka wg</string>
 </resources>

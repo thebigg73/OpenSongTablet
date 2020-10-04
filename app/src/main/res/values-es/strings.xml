@@ -511,4 +511,6 @@
     <string name="warn_before_changing_song">Mostrar una advertencia antes de pasar a la siguiente canción (útil para evitar prensas accidentales)</string>
     <string name="bold_text">Mostrar letras en negrita</string>
     <string name="respectcopyright">Respete los derechos de autor: utilice siempre legalmente</string>
+    <string name="wordsandmusicby">Palabras y música de</string>
+    <string name="usedbypermision">Usado con permiso.</string>
 </resources>

@@ -3782,6 +3782,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     if (FullscreenActivity.isPresenting && !FullscreenActivity.isHDMIConnected) {
                         try {
                             PresentationService.ExternalDisplay.setUpLogo();
+                            // IV - Do a full showLogo if needed
+                            if (PresenterMode.logoButton_isSelected) {
+                                PresentationService.ExternalDisplay.showLogoPrep();
+                                PresentationService.ExternalDisplay.showLogo();
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -3789,6 +3794,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     if (FullscreenActivity.isHDMIConnected) {
                         try {
                             PresentationServiceHDMI.setUpLogo();
+                            if (PresenterMode.logoButton_isSelected) {
+                                PresentationServiceHDMI.showLogoPrep();
+                                PresentationServiceHDMI.showLogo();
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

@@ -120,11 +120,12 @@ class CustomAnimations {
         float endAlpha;
         final int endVisibility;
 
+        // IV - Allow for 0.01f kick of Alpha at the end of animation
         if (fadeIn) {
-            endAlpha = 1.0f;
+            endAlpha = 0.99f;
             endVisibility = View.VISIBLE;
         } else {
-            endAlpha = 0.0f;
+            endAlpha = 0.01f;
             endVisibility = View.GONE;
         }
 
@@ -135,7 +136,7 @@ class CustomAnimations {
         AnimatorSet mAnimationSet = new AnimatorSet();
 
         // IV - Fade from the current alpha
-        ObjectAnimator fadeView = ObjectAnimator.ofFloat(v, View.ALPHA, (float) (v.getAlpha()), endAlpha);
+        ObjectAnimator fadeView = ObjectAnimator.ofFloat(v, View.ALPHA, v.getAlpha(), endAlpha);
 
         fadeView.addListener(new Animator.AnimatorListener() {
             @Override
@@ -145,6 +146,19 @@ class CustomAnimations {
             @Override
             public void onAnimationEnd(Animator animation) {
                 v.setVisibility(endVisibility);
+                // IV - Give the end Alpha a manual animate - this is done because cast animations can stall
+                // IV - We do not assume the animation completed - we adjust the current Alpha value
+                float kickAlpha;
+                kickAlpha = v.getAlpha();
+                if (endAlpha == 0.99f) {
+                    v.setAlpha(kickAlpha + 0.01f);
+                    v.setAlpha(kickAlpha);
+                    v.setAlpha(kickAlpha + 0.01f);
+                } else {
+                    v.setAlpha(kickAlpha - 0.01f);
+                    v.setAlpha(kickAlpha);
+                    v.setAlpha(kickAlpha - 0.01f);
+                }
             }
 
             @Override

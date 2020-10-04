@@ -720,4 +720,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="accept_code">Confirm the code matches on both devices:</string>
     <string name="time_zero" translatable="false">0:00</string>
     <string name="respectcopyright">Respect copyright - always use legally</string>
+    <string name="wordsandmusicby">Words and music by</string>
+    <string name="usedbypermision">Used by permission.</string>
 </resources>

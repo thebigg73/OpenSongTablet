@@ -511,4 +511,6 @@
     <string name="location_rationale">查找其他网络设备需要此功能</string>
     <string name="bold_text">以粗体显示歌词</string>
     <string name="respectcopyright">尊重版权-始终合法使用</string>
+    <string name="usedbypermision">经许可使用。</string>
+    <string name="wordsandmusicby">文字和音乐</string>
 </resources>
