@@ -102,6 +102,7 @@ class PresentationCommon {
                 projected_BackgroundImage.setImageDrawable(null);
                 projected_BackgroundImage.setVisibility(View.GONE);
                 projected_ImageView.setVisibility(View.GONE);
+                projected_ImageView.setAlpha(0.0f);
                 break;
 
             case "Presentation":
@@ -341,8 +342,6 @@ class PresentationCommon {
         presentermode_bottombit.setBackgroundColor(ColorUtils.setAlphaComponent(StaticVariables.cast_presoShadowColor,100));
     }
 
-    // IV - panic action can cause text to appear with blank and logo display - so support override
-    Boolean panicRequired = true;
     // IV - Lyric display is delayed for a change of song - not at other times
     long songChangeDelay;
     // IV - Support for 'last change only' fade in of content
@@ -354,6 +353,7 @@ class PresentationCommon {
     Boolean doUpdateActive = false;
     Boolean animateOutActive = false;
     Boolean showLogoActive = false;
+    Boolean blankActive = false;
 
     void presenterStartUp(final Context c, final Preferences preferences, final StorageAccess storageAccess, final ImageView projected_BackgroundImage,
                           final SurfaceHolder projected_SurfaceHolder, final SurfaceView projected_SurfaceView) {
@@ -423,17 +423,18 @@ class PresentationCommon {
     }
     void showLogo(Context c, Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout, RelativeLayout pageHolder,
                   LinearLayout bottom_infobar, ImageView projected_Logo) {
-        panicRequired = false;
+        // Fade out the infobar
+        if (projected_Logo.getAlpha() > 0.0f) {
+            CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
+        }
         if (showLogoActive) {
-            // Fade out the lyrics
-            if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-                CustomAnimations.faderAnimation(projected_ImageView, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), false);
-
-            } else {
-                CustomAnimations.faderAnimation(projected_LinearLayout, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), false);
+            // IV - Fade out stale content
+            if (projected_ImageView.getAlpha() > 0.0f) {
+                CustomAnimations.faderAnimation(projected_ImageView, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
             }
-            // Fade out the infobar
-            CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), false);
+            if (projected_LinearLayout.getAlpha() > 0.0f) {
+                CustomAnimations.faderAnimation(projected_LinearLayout, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
+            }
 
             Handler h = new Handler();
             h.postDelayed(() -> {
@@ -446,6 +447,17 @@ class PresentationCommon {
                     }
                 }
             }, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
+
+            // IV - Another panic!
+            Handler h2 = new Handler();
+            h2.postDelayed(() -> {
+                if (showLogoActive) {
+                    projected_Logo.setAlpha(0.99f);
+                    projected_Logo.setAlpha(1.00f);
+                    pageHolder.setAlpha(0.99f);
+                    pageHolder.setAlpha(1.00f);
+                }
+            }, 5 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
         }
     }
     void hideLogo(Context c, Preferences preferences, ImageView projected_Logo) {
@@ -456,8 +468,23 @@ class PresentationCommon {
     }
 
     void blankUnblankDisplay(Context c, Preferences preferences, RelativeLayout pageHolder, boolean unblank) {
-        panicRequired = false;
-        CustomAnimations.faderAnimation(pageHolder, (int) (preferences.getMyPreferenceInt(c,"presoTransitionTime",800) * 0.97),unblank);
+        blankActive = !unblank;
+        //StaticVariables.panicRequired = false;
+        CustomAnimations.faderAnimation(pageHolder, (int) (preferences.getMyPreferenceInt(c,"presoTransitionTime",800)),unblank);
+
+        // IV - Another panic!
+        Handler h2 = new Handler();
+        h2.postDelayed(() -> {
+            if (blankActive) {
+                pageHolder.setAlpha(0.01f);
+                pageHolder.setAlpha(0.00f);
+            } else {
+                pageHolder.setAlpha(0.99f);
+                pageHolder.setAlpha(1.00f);
+            }
+        }, 5 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
+
+
         if (!unblank) {
             songChangeDelay = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
         }
@@ -479,19 +506,18 @@ class PresentationCommon {
                             LinearLayout projected_LinearLayout, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout) {
         // If the logo is showing, fade it away
         if (projected_Logo.getAlpha() > 0.0f) {
+            showLogoActive = false;
             CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
         }
         // IV - If we are not already doing a lyric fade
         if ((lyricAfterTime - 5) < System.currentTimeMillis()) {
+            // IV - Fade out stale content
             // Fade out the lyrics a bit quicker, the info block is always present during fade (no jump should the info block fade first)
-            if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
-                if (projected_ImageView.getAlpha() > 0.0f) {
-                    CustomAnimations.faderAnimation(projected_ImageView, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
-                }
-            } else {
-                if (projected_LinearLayout.getAlpha() > 0.0f) {
-                    CustomAnimations.faderAnimation(projected_LinearLayout, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
-                }
+            if (projected_ImageView.getAlpha() > 0.0f) {
+                CustomAnimations.faderAnimation(projected_ImageView, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
+            }
+            if (projected_LinearLayout.getAlpha() > 0.0f) {
+                CustomAnimations.faderAnimation(projected_LinearLayout, (int) (0.97 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800)), false);
             }
             getScreenSizes(myscreen, bottom_infobar, projectedPage_RelativeLayout, preferences.getMyPreferenceFloat(c, "castRotation", 0.0f));  // Just in case something changed
         }
@@ -535,6 +561,7 @@ class PresentationCommon {
 
             // IV - Can be called whilst previous call is still running...  Always do fade out.  Only do fade in if we are not animating out due to a later call
             // First up, animate everything away
+            StaticVariables.panicRequired = false;
             animateOutActive = true;
             animateOut(c, preferences, myscreen, projected_Logo, projected_ImageView, projected_LinearLayout, bottom_infobar, projectedPage_RelativeLayout);
 
@@ -548,8 +575,8 @@ class PresentationCommon {
                 CustomAnimations.faderAnimation(pageHolder, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
             }
 
-            // IV - Restore the info bar if necessary
-            if (bottom_infobar.getAlpha() != 1.0f) {
+            // IV - Restore the info bar for a song if necessary
+            if ((FullscreenActivity.isSong) && (bottom_infobar.getAlpha() != 1.0f)){
                 CustomAnimations.faderAnimation(bottom_infobar,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),true);
                 songChangeDelay = preferences.getMyPreferenceInt(c,"presoTransitionTime",800);
             }
@@ -563,7 +590,6 @@ class PresentationCommon {
 
             // Just in case there is a glitch, make the stuff visible after 5x transition time
             // IV - Panic request is prevented on display of logo or blank by setting panicRequired = false;
-            panicRequired = true;
             // IV -  There can be multiple postDelayed calls running, each call sets a later 'After' time.
             panicDelay = 5 * preferences.getMyPreferenceInt(c, "presoTransitionTime", 800);
             panicAfterTime = System.currentTimeMillis() + panicDelay;
@@ -572,7 +598,7 @@ class PresentationCommon {
                 // IV - Quick section moves mean multiple panics are active, a time based test ensures action is only taken for the last call
                 // If after delay the time test fails a newer post has been made
                 // After the panic delay time, make sure the correct view is visible regardless of animations
-                if (panicRequired && !animateOutActive && ((panicAfterTime - 5) < System.currentTimeMillis())) {
+                if (StaticVariables.panicRequired && !animateOutActive && ((panicAfterTime - 5) < System.currentTimeMillis())) {
                     if (StaticVariables.whichMode.equals("Presentation")) {
                         if (FullscreenActivity.isImage || FullscreenActivity.isPDF || FullscreenActivity.isImageSlide) {
                             projected_ImageView.setVisibility(View.VISIBLE);
@@ -589,7 +615,7 @@ class PresentationCommon {
                             projected_LinearLayout.setVisibility(View.VISIBLE);
                             projected_ImageView.setVisibility(View.GONE);
                             // IV - Added a manual animation - this is done because cast animations can stall
-                            projected_ImageView.setAlpha(0.99f);
+                            projected_LinearLayout.setAlpha(0.99f);
                             projected_LinearLayout.setAlpha(1.0f);
                         }
                     }
@@ -616,6 +642,7 @@ class PresentationCommon {
                         projectedPage_RelativeLayout.setBackgroundColor(StaticVariables.cast_lyricsBackgroundColor);
                         songinfo_TextView.setTextColor(StaticVariables.cast_presoInfoColor);
                     }
+                    StaticVariables.panicRequired = true;
                     // Decide on what we are going to show
                     if (FullscreenActivity.isPDF) {
                         doPDFPage(c,preferences,storageAccess,processSong,projected_ImageView,projected_LinearLayout);
@@ -623,6 +650,7 @@ class PresentationCommon {
                         doImagePage(c,preferences,storageAccess,projected_ImageView,projected_LinearLayout);
                     } else {
                         projected_ImageView.setVisibility(View.GONE);
+                        projected_ImageView.setAlpha(0.0f);
                         switch (StaticVariables.whichMode) {
                             case "Stage":
                                 prepareStageProjected(c,preferences,processSong,storageAccess,col1_1,col1_2,col2_2,col1_3,col2_3,col3_3,
@@ -698,13 +726,16 @@ class PresentationCommon {
     }
     private void doPDFPage(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
         Bitmap bmp = processSong.createPDFPage(c, preferences, storageAccess, StaticVariables.cast_availableScreenWidth, StaticVariables.cast_availableScreenHeight, "Y");
+        projected_ImageView.setVisibility(View.GONE);
+        projected_ImageView.setAlpha(0.0f);
         projected_ImageView.setBackgroundColor(StaticVariables.white);
         projected_ImageView.setImageBitmap(bmp);
         animateIn(c,preferences,projected_ImageView,projected_LinearLayout);
     }
     private void doImagePage(Context c, Preferences preferences, StorageAccess storageAccess, ImageView projected_ImageView, LinearLayout projected_LinearLayout) {
         projected_ImageView.setVisibility(View.GONE);
-        projected_ImageView.setBackgroundColor(0x00000000);
+        projected_ImageView.setAlpha(0.0f);
+        projected_ImageView.setBackgroundColor(StaticVariables.white);
         // Process the image location into an URI
         Uri imageUri;
         if (StaticVariables.uriToLoad==null) {
@@ -720,6 +751,7 @@ class PresentationCommon {
     private void wipeAllViews(LinearLayout projected_LinearLayout, ImageView projected_ImageView) {
         projected_LinearLayout.removeAllViews();
         projected_ImageView.setImageBitmap(null);
+        projected_ImageView.setAlpha(0.0f);
     }
     private void normalChangeSongInfo(final Context c, final Preferences preferences, final TextView songinfo_TextView, final String s) {
         CustomAnimations.faderAnimation(songinfo_TextView,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);

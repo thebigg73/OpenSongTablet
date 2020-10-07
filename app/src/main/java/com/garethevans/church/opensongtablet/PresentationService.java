@@ -141,6 +141,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                 setUpLogo();
                 if (PresenterMode.logoButton_isSelected) {
                     bottom_infobar.setAlpha(0.0f);
+                    showLogoPrep();
                     showLogo();
                 }
 
@@ -186,7 +187,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             col2_3 = findViewById(R.id.col2_3);
             col3_3 = findViewById(R.id.col3_3);
         }
-        public static void wipeProjectedLinearLayout() {
+        public static void wipeProjectedLayout() {
             Handler h = new Handler();
             h.postDelayed(() -> {
                 // IV - Do the work after a transition delay
@@ -199,6 +200,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     presentermode_title.setText("¬");
                     presentermode_author.setText("¬");
                     presentermode_copyright.setText("¬");
+                    presentermode_ccli.setText("¬");
+                    projected_ImageView.setAlpha(0.0f);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
