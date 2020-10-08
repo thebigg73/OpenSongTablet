@@ -208,6 +208,7 @@ class StaticVariables {
     static Drawable cast_defimage;
     static boolean forcecastupdate;
     static boolean panicRequired;
+    static boolean infoBarIfRequired;
     static Uri cast_vidUri;
     static MediaPlayer cast_mediaPlayer;
     static Activity activity;

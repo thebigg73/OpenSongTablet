@@ -760,6 +760,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     public void loadSong() {
         StaticVariables.panicRequired = false;
+        StaticVariables.infoBarIfRequired = true;
+        // IV - Prevent slide shows continuing to be active on change of song(!)
+        prepareStopAutoSlideShow();
+
         if (!FullscreenActivity.alreadyloading) {
             FullscreenActivity.alreadyloading = true;
             // Get the song indexes
