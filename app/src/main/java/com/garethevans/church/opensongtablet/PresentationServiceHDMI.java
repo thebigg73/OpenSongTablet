@@ -140,14 +140,7 @@ class PresentationServiceHDMI extends Presentation
             // IV - Do the work after a transition delay
             try {
                 projected_LinearLayout.removeAllViews();
-                presentermode_title.setAlpha(0.0f);
-                presentermode_author.setAlpha(0.0f);
-                presentermode_copyright.setAlpha(0.0f);
-                presentermode_alert.setAlpha(0.0f);
-                presentermode_title.setText("¬");
-                presentermode_author.setText("¬");
-                presentermode_copyright.setText("¬");
-                presentermode_ccli.setText("¬");
+                bottom_infobar.setAlpha(0.0f);
                 projected_ImageView.setAlpha(0.0f);
             } catch (Exception e) {
                 e.printStackTrace();

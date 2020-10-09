@@ -1430,7 +1430,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         // Create a new button for each songSection
         // If the 'song' is custom images, set them as the background
         presenter_song_buttonsListView.removeAllViews();
-        // IV - We there is no song title use filename
+        // IV - When there is no song title use filename
         if (StaticVariables.mTitle.isEmpty()) {
             presenter_songtitle.setText(StaticVariables.songfilename);
         } else {
@@ -1438,7 +1438,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
         presenter_author.setText(StaticVariables.mAuthor);
         presenter_copyright.setText(StaticVariables.mCopyright);
-        // IV - PDF files wil have null mPresentation
+        // IV - PDF files will have null mPresentation
         if ((StaticVariables.mPresentation == null) || (StaticVariables.mPresentation.isEmpty())) {
             presenter_order_text.setText(getResources().getString(R.string.notset));
         } else {
@@ -1458,7 +1458,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             if (pages > 0) {
                 for (int p = 0; p < pages; p++) {
                     String sectionText = (p + 1) + "";
-                    // IV - Make the buttons bigger!
+                    // IV - Make the buttons bigger (fudge!)
                     String buttonText = "▼\n" + getResources().getString(R.string.pdf_selectpage) + " " + (p + 1) + "\n▲";
                     newSongSectionGroup = processSong.makePresenterSongButtonLayout(PresenterMode.this);
                     newSongSectionText = processSong.makePresenterSongButtonSection(PresenterMode.this, sectionText);
@@ -1686,7 +1686,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         tryClickPreviousSection();
     }
     private void tryClickNextSection() {
-        // IV - Next and Previous rely on sections in a song - other types do not load valid sections. The 'fix' for other types is not to allow!
+        // IV - Next and Previous rely on section, The 'fix' for types without valid sections is to not allow!
         if (FullscreenActivity.isImage || FullscreenActivity.isPDF || !FullscreenActivity.isSong) {
             showToastMessage(getResources().getString(R.string.not_allowed));
         } else {
@@ -2393,7 +2393,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     @Override
     public void doEdit() {
-        // IV - Was "extractPDF" for PDF which crashed(!). All now get editsong
+        // IV - Was "extractPDF" for PDF which crashed(!), all now get editsong
         FullscreenActivity.whattodo = "editsong";
         openFragment();
     }
