@@ -344,6 +344,8 @@ class PresentationCommon {
     // IV - Support for 'last change only' fade in of content
     long lyricAfterTime;
     long lyricDelay;
+    long infoBarUntilTime;
+
     long panicAfterTime;
     long panicDelay;
     // IV - doUpdate can run frequently - this supports better transitions
@@ -641,75 +643,80 @@ class PresentationCommon {
     }
     private void presenterWriteSongInfo(Context c, Preferences preferences, TextView presentermode_title, TextView presentermode_author,
                                        TextView presentermode_copyright, TextView presentermode_ccli, LinearLayout bottom_infobar) {
-        // IV - infoBar fade in is considered once per song
-        // IV - Now run the next bit post delayed (to wait for the animate out)
-        Handler h = new Handler();
-        h.postDelayed(() -> {
-            if ((StaticVariables.infoBarIfRequired) && !(FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF)) {
-                String new_author = StaticVariables.mAuthor.trim();
-                if (!new_author.equals("")) {
-                    new_author = c.getString(R.string.wordsandmusicby) + " " + new_author;
-                }
-
-                if (new_author.isEmpty()) {
-                    presentermode_author.setVisibility(View.GONE);
-                } else {
-                    presentermode_author.setVisibility(View.VISIBLE);
-                }
-
-                String new_copyright = StaticVariables.mCopyright.trim();
-                if (!new_copyright.isEmpty() && (!new_copyright.contains("©"))) {
-                    new_copyright = "© " + new_copyright;
-                }
-                if (new_copyright.isEmpty()) {
-                    presentermode_copyright.setVisibility(View.GONE);
-                } else {
-                    presentermode_copyright.setVisibility(View.VISIBLE);
-                }
-
-                String new_ccli = preferences.getMyPreferenceString(c, "ccliLicence", "");
-                if (!new_ccli.isEmpty() && (!StaticVariables.mCCLI.isEmpty())) {
-                    new_ccli = c.getString(R.string.usedbypermision) + " CCLI " + c.getString(R.string.ccli_licence) + " " + new_ccli;
-                } else {
-                    new_ccli = "";
-                }
-
-                if (new_ccli.isEmpty()) {
-                    presentermode_ccli.setVisibility(View.GONE);
-                } else {
-                    presentermode_ccli.setVisibility(View.VISIBLE);
-                }
-
-                // IV - Suppress if title starts with _
-                String new_title = StaticVariables.mTitle;
-                if (new_title.startsWith("_")) {
-                    new_title = "";
-                } else {
-                    // IV - If we have only a title use without quotes
-                    if ((new_author + new_copyright + new_ccli).equals("")) {
-                        new_title = StaticVariables.mTitle.trim();
-                    } else {
-                        new_title = "\"" + StaticVariables.mTitle.trim() + "\"";
+        if (!(FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF)) {
+            // IV - We want a 10s (at least) continuous display of the infobar for each song
+            // IV - If first time for this song or within the 'Until' period added by a previous run...
+            if ((StaticVariables.infoBarIfRequired) || (infoBarUntilTime > System.currentTimeMillis())) {
+                // IV - Now run the next bit post delayed (to wait for the animate out)
+                Handler h = new Handler();
+                h.postDelayed(() -> {
+                    String new_author = StaticVariables.mAuthor.trim();
+                    if (!new_author.equals("")) {
+                        new_author = c.getString(R.string.wordsandmusicby) + " " + new_author;
                     }
-                }
-                if (new_title.isEmpty()) {
-                    presentermode_title.setVisibility(View.GONE);
-                } else {
-                    presentermode_title.setVisibility(View.VISIBLE);
-                }
 
-                presentermode_title.setText(new_title);
-                presentermode_author.setText(new_author);
-                presentermode_copyright.setText(new_copyright);
-                presentermode_ccli.setText(new_ccli);
+                    if (new_author.isEmpty()) {
+                        presentermode_author.setVisibility(View.GONE);
+                    } else {
+                        presentermode_author.setVisibility(View.VISIBLE);
+                    }
 
-                // IV - If we have something then fade in
-                if (!(new_title + new_author + new_copyright + new_ccli).equals("")) {
-                    CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
-                }
+                    String new_copyright = StaticVariables.mCopyright.trim();
+                    if (!new_copyright.isEmpty() && (!new_copyright.contains("©"))) {
+                        new_copyright = "© " + new_copyright;
+                    }
+                    if (new_copyright.isEmpty()) {
+                        presentermode_copyright.setVisibility(View.GONE);
+                    } else {
+                        presentermode_copyright.setVisibility(View.VISIBLE);
+                    }
+
+                    String new_ccli = preferences.getMyPreferenceString(c, "ccliLicence", "");
+                    if (!new_ccli.isEmpty() && (!StaticVariables.mCCLI.isEmpty())) {
+                        new_ccli = c.getString(R.string.usedbypermision) + " CCLI " + c.getString(R.string.ccli_licence) + " " + new_ccli;
+                    } else {
+                        new_ccli = "";
+                    }
+
+                    if (new_ccli.isEmpty()) {
+                        presentermode_ccli.setVisibility(View.GONE);
+                    } else {
+                        presentermode_ccli.setVisibility(View.VISIBLE);
+                    }
+
+                    // IV - Suppress if title starts with _
+                    String new_title = StaticVariables.mTitle;
+                    if (new_title.startsWith("_")) {
+                        new_title = "";
+                    } else {
+                        // IV - If we have only a title use without quotes
+                        if ((new_author + new_copyright + new_ccli).equals("")) {
+                            new_title = StaticVariables.mTitle.trim();
+                        } else {
+                            new_title = "\"" + StaticVariables.mTitle.trim() + "\"";
+                        }
+                    }
+                    if (new_title.isEmpty()) {
+                        presentermode_title.setVisibility(View.GONE);
+                    } else {
+                        presentermode_title.setVisibility(View.VISIBLE);
+                    }
+
+                    presentermode_title.setText(new_title);
+                    presentermode_author.setText(new_author);
+                    presentermode_copyright.setText(new_copyright);
+                    presentermode_ccli.setText(new_ccli);
+
+                    // IV - If we have something then fade in
+                    if (!(new_title + new_author + new_copyright + new_ccli).equals("")) {
+                        CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                    }
+                    // IV - Make sure it is seen clearly for at least 10s
+                    infoBarUntilTime = System.currentTimeMillis() + 10000;
+                    StaticVariables.infoBarIfRequired = false;
+                }, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
             }
-            StaticVariables.infoBarIfRequired = false;
-        }, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
+        }
     }
     private void standardWriteSongInfo(Context c, Preferences preferences, TextView songinfo_TextView, LinearLayout bottom_infobar) {
         String old_title = songinfo_TextView.getText().toString();
