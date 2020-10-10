@@ -149,35 +149,6 @@ class StorageAccess {
         }
     }
 
-/*    // This gets a DocumentFile for the app folder, ready to create files and folders
-    private DocumentFile getAppFolderDocumentFile(Context c, Preferences preferences) {
-        // This simply gets a documentfile location for the OpenSongApp folder
-        // It is then saved to FullscreenActivity.
-        // FullscreenActivity.uriTree is already valid and set
-
-        String uriTree = getStoragePreference(c, preferences);
-        //Make sure FullscreenActivity.uriTree is set
-        homeFolder(c, null,preferences);
-        FullscreenActivity.appHome = null;
-        DocumentFile df = documentFileFromRootUri(c, FullscreenActivity.uriTree, uriTree);
-
-        if (df != null) {
-            // Check if we are in the app folder
-            if (df.getName() != null && df.getName().equals(appFolder)) {
-                // Already in the app folder
-                FullscreenActivity.appHome = df;
-            } else if (df.findFile(appFolder) != null) {
-                // Need to move into the app folder
-                FullscreenActivity.appHome = df.findFile(appFolder);
-            } else {
-                // No app folder, so create it
-                df.createDirectory(appFolder);
-                FullscreenActivity.appHome = df.findFile(appFolder);
-            }
-        }
-        return FullscreenActivity.appHome;
-    }*/
-
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     String createOrCheckRootFolders(Context c, Uri uri, Preferences preferences) {
         // uri if the uriTree.  If not sent/null, load from preferences
@@ -608,22 +579,6 @@ class StorageAccess {
         return songIds;
     }
 
-    /*@SuppressLint("NewApi")
-    Uri getUriFromId(Uri uri, String id) {
-        if (lollipopOrLater()) {
-            return getUriFromId_SAF(uri, id);
-        } else {
-            return getUriFromId_File(id);
-        }
-    }
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private Uri getUriFromId_SAF(Uri uri, String id) {
-        return DocumentsContract.buildDocumentUriUsingTree(uri,id);
-    }
-    private Uri getUriFromId_File(String id) {
-        File f = new File (id);
-        return Uri.fromFile(f);
-    }*/
 
     // Here are all the file accesses used in the app!!!
     Uri getUriForItem(Context c, Preferences preferences, String folder, String subfolder, String filename) {
@@ -1051,7 +1006,6 @@ class StorageAccess {
 
     Uri fixLocalisedUri(Context c, Preferences preferences, String uriString) {
         // This checks for localised filenames first and fixes the Uri
-        Log.d("d","uriString="+uriString);
         if (uriString.equals("ost_logo.png") || uriString.equals("ost_bg.png")) {
             uriString = "../OpenSong/Backgrounds/" + uriString;
         }
@@ -1092,7 +1046,6 @@ class StorageAccess {
         String path = "";
         if (uri!=null && uri.getPath()!=null) {
             path = uri.getPath();
-            Log.d("StorageAccess","path="+path);
             if (path.contains("OpenSong/Media/") || path.contains("OpenSong/Pads/") || path.contains("OpenSong/Backgrounds/")) {
                 path = path.substring(path.lastIndexOf("OpenSong/") + 9);
                 path = "../OpenSong/" + path;
@@ -1152,7 +1105,6 @@ class StorageAccess {
                 e.printStackTrace();
             }
         }
-        Log.d("StorageAccess","Ended listing files in folder");
         return al;
     }
     private ArrayList<String> listFilesInFolder_File(Context c, Preferences preferences, String folder, String subfolder) {
