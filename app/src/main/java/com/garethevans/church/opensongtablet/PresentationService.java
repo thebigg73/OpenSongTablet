@@ -310,7 +310,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             presentationCommon.showLogoPrep();
         }
         static void showLogo() {
-            presentationCommon.showLogo(c,preferences,projected_ImageView,projected_LinearLayout,pageHolder,bottom_infobar,projected_Logo);
+            presentationCommon.showLogo(c,preferences,projected_ImageView,projected_LinearLayout,pageHolder, projected_Logo);
         }
         static void hideLogo() {
             presentationCommon.hideLogo(c,preferences, projected_Logo);

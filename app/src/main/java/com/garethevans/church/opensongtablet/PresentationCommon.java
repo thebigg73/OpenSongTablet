@@ -420,7 +420,7 @@ class PresentationCommon {
         showLogoActive = true;
     }
     void showLogo(Context c, Preferences preferences, ImageView projected_ImageView, LinearLayout projected_LinearLayout, RelativeLayout pageHolder,
-                  LinearLayout bottom_infobar, ImageView projected_Logo) {
+                  ImageView projected_Logo) {
         if (showLogoActive) {
             StaticVariables.panicRequired = false;
             // IV - Fade out stale content
@@ -508,9 +508,9 @@ class PresentationCommon {
             // If the infobar is showing, fade it away
             // GE only if it has changed though
             String new_author = getNewAuthor(c);
-            String new_copyright = getNewCopyright(c);
+            String new_copyright = getNewCopyright();
             String new_ccli = getNewCCLI(c,preferences);
-            String new_title = getNewTitle(c,new_author,new_copyright,new_ccli);
+            String new_title = getNewTitle(new_author,new_copyright,new_ccli);
             String old_title = getCurrValue(presentermode_title);
             String old_author = getCurrValue(presentermode_author);
             String old_copyright = getCurrValue(presentermode_copyright);
@@ -666,14 +666,14 @@ class PresentationCommon {
                     String new_author = getNewAuthor(c);
                     adjustVisibility(presentermode_author,new_author);
 
-                    String new_copyright = getNewCopyright(c);
+                    String new_copyright = getNewCopyright();
                     adjustVisibility(presentermode_copyright,new_copyright);
 
                     String new_ccli = getNewCCLI(c,preferences);
                     adjustVisibility(presentermode_ccli,new_ccli);
 
                     // IV - Suppress if title starts with _
-                    String new_title = getNewTitle(c,new_author,new_copyright,new_ccli);
+                    String new_title = getNewTitle(new_author,new_copyright,new_ccli);
                     adjustVisibility(presentermode_title,new_title);
 
                     // GE check for updates - don't need to animate in/out if not
@@ -710,7 +710,7 @@ class PresentationCommon {
             return "";
         }
     }
-    private String getNewTitle(Context c, String new_author, String new_copyright, String new_ccli) {
+    private String getNewTitle(String new_author, String new_copyright, String new_ccli) {
         String new_title = StaticVariables.mTitle;
         if (new_title.startsWith("_")) {
             new_title = "";
@@ -731,7 +731,7 @@ class PresentationCommon {
         }
         return new_author;
     }
-    private String getNewCopyright(Context c) {
+    private String getNewCopyright() {
         String new_copyright = StaticVariables.mCopyright.trim();
         if (!new_copyright.isEmpty() && (!new_copyright.contains("©"))) {
             new_copyright = "© " + new_copyright;
