@@ -349,10 +349,10 @@ class PresentationCommon {
     long panicAfterTime;
     long panicDelay;
     // IV - doUpdate can run frequently - this supports better transitions
-    Boolean doUpdateActive = false;
-    Boolean animateOutActive = false;
-    Boolean showLogoActive = false;
-    Boolean blankActive = false;
+    boolean doUpdateActive = false;
+    boolean animateOutActive = false;
+    boolean showLogoActive = false;
+    boolean blankActive = false;
 
     void presenterStartUp(final Context c, final Preferences preferences, final StorageAccess storageAccess, final ImageView projected_BackgroundImage,
                           final SurfaceHolder projected_SurfaceHolder, final SurfaceView projected_SurfaceView) {
@@ -378,7 +378,7 @@ class PresentationCommon {
         float yscale;
         boolean usingcustom = false;
         Uri customLogo = storageAccess.fixLocalisedUri(c, preferences, preferences.getMyPreferenceString(c, "customLogo", "ost_logo.png"));
-        if (storageAccess.uriExists(c, customLogo)) {
+        if (customLogo!=null && !customLogo.toString().contains("ost_logo") && storageAccess.uriExists(c, customLogo)) {
             InputStream inputStream = storageAccess.getInputStream(c, customLogo);
             // Get the sizes of the custom logo
             BitmapFactory.decodeStream(inputStream, null, options);
@@ -404,7 +404,6 @@ class PresentationCommon {
         RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(logowidth, logoheight);
         rlp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         projected_Logo.setLayoutParams(rlp);
-
         if (usingcustom) {
             RequestOptions myOptions = new RequestOptions()
                     .fitCenter()
@@ -498,7 +497,8 @@ class PresentationCommon {
         }, 60);
     }
     private void animateOut(Context c, Preferences preferences, Display myscreen, ImageView projected_Logo, ImageView projected_ImageView,
-                            LinearLayout projected_LinearLayout, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout) {
+                            LinearLayout projected_LinearLayout, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout,
+                            TextView presentermode_title, TextView presentermode_author, TextView presentermode_copyright, TextView presentermode_ccli) {
         if (projected_Logo.getAlpha() > 0.0f) {
             showLogoActive = false;
             CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
@@ -506,7 +506,19 @@ class PresentationCommon {
 
         if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF || StaticVariables.whichMode.equals("Presentation")) {
             // If the infobar is showing, fade it away
-            if (bottom_infobar.getAlpha() > 0.0f) {
+            // GE only if it has changed though
+            String new_author = getNewAuthor(c);
+            String new_copyright = getNewCopyright(c);
+            String new_ccli = getNewCCLI(c,preferences);
+            String new_title = getNewTitle(c,new_author,new_copyright,new_ccli);
+            String old_title = getCurrValue(presentermode_title);
+            String old_author = getCurrValue(presentermode_author);
+            String old_copyright = getCurrValue(presentermode_copyright);
+            String old_ccli = getCurrValue(presentermode_ccli);
+            boolean nolongerneeded = System.currentTimeMillis() >= infoBarUntilTime;
+            boolean needupdate = !old_title.equals(new_title) || !old_author.equals(new_author) ||
+                    !old_copyright.equals(new_copyright) || !old_ccli.equals(new_ccli);
+            if ((nolongerneeded || needupdate) && bottom_infobar.getAlpha() > 0.0f) {
                 CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), false);
             }
         }
@@ -539,7 +551,8 @@ class PresentationCommon {
             // First up, animate everything away
             StaticVariables.panicRequired = false;
             animateOutActive = true;
-            animateOut(c, preferences, myscreen, projected_Logo, projected_ImageView, projected_LinearLayout, bottom_infobar, projectedPage_RelativeLayout);
+            animateOut(c, preferences, myscreen, projected_Logo, projected_ImageView, projected_LinearLayout, bottom_infobar, projectedPage_RelativeLayout,
+                    presentermode_title, presentermode_author, presentermode_copyright, presentermode_ccli);
 
             // If we have forced an update due to switching modes, set that up
             if (StaticVariables.forcecastupdate) {
@@ -650,72 +663,96 @@ class PresentationCommon {
                 // IV - Now run the next bit post delayed (to wait for the animate out)
                 Handler h = new Handler();
                 h.postDelayed(() -> {
-                    String new_author = StaticVariables.mAuthor.trim();
-                    if (!new_author.equals("")) {
-                        new_author = c.getString(R.string.wordsandmusicby) + " " + new_author;
-                    }
+                    String new_author = getNewAuthor(c);
+                    adjustVisibility(presentermode_author,new_author);
 
-                    if (new_author.isEmpty()) {
-                        presentermode_author.setVisibility(View.GONE);
-                    } else {
-                        presentermode_author.setVisibility(View.VISIBLE);
-                    }
+                    String new_copyright = getNewCopyright(c);
+                    adjustVisibility(presentermode_copyright,new_copyright);
 
-                    String new_copyright = StaticVariables.mCopyright.trim();
-                    if (!new_copyright.isEmpty() && (!new_copyright.contains("©"))) {
-                        new_copyright = "© " + new_copyright;
-                    }
-                    if (new_copyright.isEmpty()) {
-                        presentermode_copyright.setVisibility(View.GONE);
-                    } else {
-                        presentermode_copyright.setVisibility(View.VISIBLE);
-                    }
-
-                    String new_ccli = preferences.getMyPreferenceString(c, "ccliLicence", "");
-                    if (!new_ccli.isEmpty() && (!StaticVariables.mCCLI.isEmpty())) {
-                        new_ccli = c.getString(R.string.usedbypermision) + " CCLI " + c.getString(R.string.ccli_licence) + " " + new_ccli;
-                    } else {
-                        new_ccli = "";
-                    }
-
-                    if (new_ccli.isEmpty()) {
-                        presentermode_ccli.setVisibility(View.GONE);
-                    } else {
-                        presentermode_ccli.setVisibility(View.VISIBLE);
-                    }
+                    String new_ccli = getNewCCLI(c,preferences);
+                    adjustVisibility(presentermode_ccli,new_ccli);
 
                     // IV - Suppress if title starts with _
-                    String new_title = StaticVariables.mTitle;
-                    if (new_title.startsWith("_")) {
-                        new_title = "";
-                    } else {
-                        // IV - If we have only a title use without quotes
-                        if ((new_author + new_copyright + new_ccli).equals("")) {
-                            new_title = StaticVariables.mTitle.trim();
-                        } else {
-                            new_title = "\"" + StaticVariables.mTitle.trim() + "\"";
+                    String new_title = getNewTitle(c,new_author,new_copyright,new_ccli);
+                    adjustVisibility(presentermode_title,new_title);
+
+                    // GE check for updates - don't need to animate in/out if not
+                    String old_title = getCurrValue(presentermode_title);
+                    String old_author = getCurrValue(presentermode_author);
+                    String old_copyright = getCurrValue(presentermode_copyright);
+                    String old_ccli = getCurrValue(presentermode_ccli);
+
+                    boolean needupdate = !old_title.equals(new_title) || !old_author.equals(new_author) ||
+                            !old_copyright.equals(new_copyright) || !old_ccli.equals(new_ccli);
+
+                    if (needupdate) {
+                        presentermode_title.setText(new_title);
+                        presentermode_author.setText(new_author);
+                        presentermode_copyright.setText(new_copyright);
+                        presentermode_ccli.setText(new_ccli);
+
+                        // IV - If we have something then fade in
+                        if (!(new_title + new_author + new_copyright + new_ccli).equals("")) {
+                            CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
                         }
+                        // IV - Make sure it is seen clearly for at least 10s
+                        infoBarUntilTime = System.currentTimeMillis() + 10000;
+                        StaticVariables.infoBarIfRequired = false;
                     }
-                    if (new_title.isEmpty()) {
-                        presentermode_title.setVisibility(View.GONE);
-                    } else {
-                        presentermode_title.setVisibility(View.VISIBLE);
-                    }
-
-                    presentermode_title.setText(new_title);
-                    presentermode_author.setText(new_author);
-                    presentermode_copyright.setText(new_copyright);
-                    presentermode_ccli.setText(new_ccli);
-
-                    // IV - If we have something then fade in
-                    if (!(new_title + new_author + new_copyright + new_ccli).equals("")) {
-                        CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
-                    }
-                    // IV - Make sure it is seen clearly for at least 10s
-                    infoBarUntilTime = System.currentTimeMillis() + 10000;
-                    StaticVariables.infoBarIfRequired = false;
                 }, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
             }
+        }
+    }
+    private String getCurrValue(TextView v) {
+        if (v!=null && v.getText()!=null) {
+           return v.getText().toString();
+        } else {
+            return "";
+        }
+    }
+    private String getNewTitle(Context c, String new_author, String new_copyright, String new_ccli) {
+        String new_title = StaticVariables.mTitle;
+        if (new_title.startsWith("_")) {
+            new_title = "";
+        } else {
+            // IV - If we have only a title use without quotes
+            if ((new_author + new_copyright + new_ccli).equals("")) {
+                new_title = StaticVariables.mTitle.trim();
+            } else {
+                new_title = "\"" + StaticVariables.mTitle.trim() + "\"";
+            }
+        }
+        return new_title;
+    }
+    private String getNewAuthor(Context c) {
+        String new_author = StaticVariables.mAuthor.trim();
+        if (!new_author.equals("")) {
+            new_author = c.getString(R.string.wordsandmusicby) + " " + new_author;
+        }
+        return new_author;
+    }
+    private String getNewCopyright(Context c) {
+        String new_copyright = StaticVariables.mCopyright.trim();
+        if (!new_copyright.isEmpty() && (!new_copyright.contains("©"))) {
+            new_copyright = "© " + new_copyright;
+        }
+        return new_copyright;
+    }
+    private String getNewCCLI(Context c, Preferences preferences) {
+        String new_ccli = preferences.getMyPreferenceString(c, "ccliLicence", "");
+        if (!new_ccli.isEmpty() && (!StaticVariables.mCCLI.isEmpty())) {
+            new_ccli = c.getString(R.string.usedbypermision) + " CCLI " + c.getString(R.string.ccli_licence) + " " + new_ccli;
+        } else {
+            new_ccli = "";
+        }
+        return new_ccli;
+    }
+
+    private void adjustVisibility(View v, String val) {
+        if (val==null || val.isEmpty()) {
+            v.setVisibility(View.GONE);
+        } else {
+            v.setVisibility(View.VISIBLE);
         }
     }
     private void standardWriteSongInfo(Context c, Preferences preferences, TextView songinfo_TextView, LinearLayout bottom_infobar) {

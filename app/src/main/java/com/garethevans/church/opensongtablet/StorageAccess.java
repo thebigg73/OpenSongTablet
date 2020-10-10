@@ -283,20 +283,23 @@ class StorageAccess {
                 String filetocopy = filename.replace("backgrounds/", "");
                 // See if they are already there first
                 Uri uritocheck = getUriForItem(c,preferences,"Backgrounds","",filetocopy);
-                if (!uriExists(c, uritocheck)) {
-                    if (lollipopOrLater()) {
-                        DocumentsContract.createDocument(c.getContentResolver(),backgrounds,"image/png",filetocopy);
-                    } else {
-                        df.createFile("image/png", filetocopy);
-                    }
-                    if (uritocheck!=null) {
-                        OutputStream out = getOutputStream(c, uritocheck);
-                        try {
-                            InputStream in = assetManager.open(filename);
-                            copyFile(in, out);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                if (uritocheck!=null && uriExists(c,uritocheck)) {
+                    deleteFile(c,uritocheck);
+                }
+                // GE overwrite files incase I've updated the logos
+                if (lollipopOrLater()) {
+                    DocumentsContract.createDocument(c.getContentResolver(),backgrounds,"image/png",filetocopy);
+                } else {
+                    df.createFile("image/png", filetocopy);
+                }
+
+                if (uritocheck!=null) {
+                    OutputStream out = getOutputStream(c, uritocheck);
+                    try {
+                        InputStream in = assetManager.open(filename);
+                        copyFile(in, out);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -1048,6 +1051,7 @@ class StorageAccess {
 
     Uri fixLocalisedUri(Context c, Preferences preferences, String uriString) {
         // This checks for localised filenames first and fixes the Uri
+        Log.d("d","uriString="+uriString);
         if (uriString.equals("ost_logo.png") || uriString.equals("ost_bg.png")) {
             uriString = "../OpenSong/Backgrounds/" + uriString;
         }

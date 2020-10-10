@@ -75,7 +75,7 @@
                 android:paddingRight="24dp"
                 android:paddingBottom="8dp"
                 android:visibility="visible"
-                app:drawableStartCompat="@mipmap/ic_round_launcher" />
+                android:drawableStart="@mipmap/ic_round_launcher" />
 
             <LinearLayout
                 android:id="@+id/presentermode_bottombit"

@@ -738,26 +738,27 @@ public class PopUpLayoutFragment extends DialogFragment {
     }
 
     private void updatePreview (Context c, ImageView view, Uri uri) {
-        Log.d("PopUpLayout","updatePreview, uri="+uri);
         if (uri==null || !storageAccess.uriExists(getActivity(),uri)) {
             view.setBackgroundColor(0xff000000);
         } else {
             view.setBackgroundColor(0x00000000);
             RequestOptions myOptions = new RequestOptions().fitCenter().override(120, 90);
-            GlideApp.with(c).load(uri).apply(myOptions).into(view);
+            if (uri!=null && uri.toString().contains("ost_logo")) {
+                GlideApp.with(c).load(R.drawable.ost_logo).apply(myOptions).into(view);
+            } else if (uri!=null && uri.toString().contains("ost_bg")) {
+                GlideApp.with(c).load(R.drawable.preso_default_bg).apply(myOptions).into(view);
+            } else if (uri!=null) {
+                GlideApp.with(c).load(uri).apply(myOptions).into(view);
+            }
         }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         // This gets sent back here from the parent activity
-        Log.d("PopUpLayout","onActivityResult triggered");
-        Log.d("PopUpLayout","requestCode="+requestCode);
         if (resultData!=null && resultData.getData()!=null) {
             Uri uri = resultData.getData();
             if (getActivity()!=null && uri!=null) {
-                Log.d("PopUpLayout","uri="+uri);
                 String uriString = storageAccess.fixUriToLocal(uri);
-                Log.d("PopUpLayout","uriString="+uriString);
 
                 if (requestCode == StaticVariables.REQUEST_BACKGROUND_IMAGE1) {
                     preferences.setMyPreferenceString(getActivity(), "backgroundImage1", uriString);
