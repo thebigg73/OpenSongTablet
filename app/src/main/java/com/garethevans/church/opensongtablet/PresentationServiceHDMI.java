@@ -88,6 +88,7 @@ class PresentationServiceHDMI extends Presentation
             setUpLogo();
             if (PresenterMode.logoButton_isSelected) {
                 bottom_infobar.setAlpha(0.0f);
+                showLogoPrep();
                 showLogo();
             }
 
@@ -133,19 +134,14 @@ class PresentationServiceHDMI extends Presentation
         col2_3 = findViewById(R.id.col2_3);
         col3_3 = findViewById(R.id.col3_3);
     }
-    public static void wipeProjectedLinearLayout() {
+    public static void wipeProjectedLayout() {
         Handler h = new Handler();
         h.postDelayed(() -> {
             // IV - Do the work after a transition delay
             try {
                 projected_LinearLayout.removeAllViews();
-                presentermode_title.setAlpha(0.0f);
-                presentermode_author.setAlpha(0.0f);
-                presentermode_copyright.setAlpha(0.0f);
-                presentermode_alert.setAlpha(0.0f);
-                presentermode_title.setText("¬");
-                presentermode_author.setText("¬");
-                presentermode_copyright.setText("¬");
+                bottom_infobar.setAlpha(0.0f);
+                projected_ImageView.setAlpha(0.0f);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -15,17 +15,18 @@
         android:layout_margin="2dp"
         android:layout_weight="0.5"
         android:background="@drawable/presenter_box_black"
-        android:orientation="vertical"
+        android:descendantFocusability="beforeDescendants"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:descendantFocusability="beforeDescendants">
+        android:orientation="vertical"
+        android:paddingBottom="8dp">
 
         <TextView
             android:id="@+id/preso_slide_title"
             style="@style/MyHeadingText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
             android:text="@string/slide" />
 
         <ScrollView
@@ -36,20 +37,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:orientation="vertical"
+                android:descendantFocusability="beforeDescendants"
                 android:focusableInTouchMode="true"
-                android:descendantFocusability="beforeDescendants">
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/autoProject"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:text="@string/update_projector"
+                    android:textColor="#fff"
+                    android:theme="@style/SwitchStyle" />
 
                 <EditText
                     android:id="@+id/presenter_lyrics"
                     style="@style/MyEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
                     android:gravity="top"
                     android:hint="@string/edit_song_lyrics"
                     android:inputType="textAutoCorrect|text|textMultiLine"
@@ -64,23 +74,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
                     android:contentDescription="@string/page_background" />
 
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/autoProject"
-                    android:text="@string/update_projector"
-                    android:padding="8dp"
-                    style="@style/MyHeadingText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:theme="@style/SwitchStyle"
-                    android:textColor="#ff0" />
 
                 <LinearLayout
                     android:id="@+id/loopandtimeLinearLayout"
@@ -89,39 +86,40 @@
                     android:layout_gravity="center_vertical"
                     android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:gravity="center_vertical"
-                    android:layout_gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <CheckBox
-                        android:id="@+id/loopCheckBox"
-                        style="@style/MyHeadingText"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="12dp"
-                        android:text="@string/loop" />
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="4dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/startstopSlideShow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_play_white_36dp"
-                        app:elevation="0dp"
-                        app:fabSize="mini"
-                        android:layout_margin="12dp"
-                        app:useCompatPadding="true" />
+                        <CheckBox
+                            android:id="@+id/loopCheckBox"
+                            style="@style/MyHeadingText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="12dp"
+                            android:text="@string/loop" />
 
-                </LinearLayout>
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/startstopSlideShow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="12dp"
+                            android:src="@drawable/ic_play_white_36dp"
+                            app:elevation="0dp"
+                            app:fabSize="mini"
+                            app:useCompatPadding="true" />
+
+                    </LinearLayout>
+
                     <TextView
                         android:id="@+id/timeTextView"
                         style="@style/MyHeadingText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="4dp"
                         android:text="@string/time" />
 
                     <EditText
@@ -129,7 +127,7 @@
                         style="@style/MyEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
+                        android:layout_margin="4dp"
                         android:inputType="number"
                         android:minWidth="16dp"
                         tools:ignore="Autofill,LabelFor" />
@@ -154,7 +152,7 @@
             style="@style/MyHeadingText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
             android:text="@string/song_sections" />
 
         <ScrollView

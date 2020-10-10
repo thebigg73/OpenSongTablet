@@ -124,13 +124,12 @@ class CustomAnimations {
         if (fadeIn) {
             endAlpha = 0.99f;
             endVisibility = View.VISIBLE;
+            v.setVisibility(View.VISIBLE);
         } else {
             endAlpha = 0.01f;
             endVisibility = View.GONE;
         }
 
-        // IV - Always visible - moved from within animator
-        v.setVisibility(View.VISIBLE);
         v.clearAnimation();
 
         AnimatorSet mAnimationSet = new AnimatorSet();
@@ -184,11 +183,11 @@ class CustomAnimations {
 
         if (endAlpha > 0.0f) {
             endVisibility = View.VISIBLE;
+            v.setVisibility(View.VISIBLE);
         } else {
             endVisibility = View.GONE;
         }
 
-        v.setVisibility(View.VISIBLE);
         v.clearAnimation();
 
         AnimatorSet mAnimationSet = new AnimatorSet();

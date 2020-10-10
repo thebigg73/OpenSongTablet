@@ -759,6 +759,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
 
     public void loadSong() {
+        StaticVariables.panicRequired = false;
+        StaticVariables.infoBarIfRequired = true;
+        // IV - Prevent slide shows continuing to be active on change of song(!)
+        prepareStopAutoSlideShow();
+
         if (!FullscreenActivity.alreadyloading) {
             FullscreenActivity.alreadyloading = true;
             // Get the song indexes
@@ -871,7 +876,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(bmp.getWidth(), bmp.getHeight());
             presenter_lyrics_image.setLayoutParams(llp);
             // Set the image to the view
-            presenter_lyrics_image.setBackgroundColor(0xffffffff);
+            presenter_lyrics_image.setBackgroundColor(StaticVariables.white);
             presenter_lyrics_image.setImageBitmap(bmp);
 
         } else {
@@ -1425,10 +1430,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         // Create a new button for each songSection
         // If the 'song' is custom images, set them as the background
         presenter_song_buttonsListView.removeAllViews();
-        presenter_songtitle.setText(StaticVariables.mTitle);
+        // IV - When there is no song title use filename
+        if (StaticVariables.mTitle.isEmpty()) {
+            presenter_songtitle.setText(StaticVariables.songfilename);
+        } else {
+            presenter_songtitle.setText(StaticVariables.mTitle);
+        }
         presenter_author.setText(StaticVariables.mAuthor);
         presenter_copyright.setText(StaticVariables.mCopyright);
-        if (StaticVariables.mPresentation.isEmpty()) {
+        // IV - PDF files will have null mPresentation
+        if ((StaticVariables.mPresentation == null) || (StaticVariables.mPresentation.isEmpty())) {
             presenter_order_text.setText(getResources().getString(R.string.notset));
         } else {
             presenter_order_text.setText(StaticVariables.mPresentation);
@@ -1447,7 +1458,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             if (pages > 0) {
                 for (int p = 0; p < pages; p++) {
                     String sectionText = (p + 1) + "";
-                    String buttonText = getResources().getString(R.string.pdf_selectpage) + " " + (p + 1);
+                    // IV - Make the buttons bigger (fudge!)
+                    String buttonText = "▼\n" + getResources().getString(R.string.pdf_selectpage) + " " + (p + 1) + "\n▲";
                     newSongSectionGroup = processSong.makePresenterSongButtonLayout(PresenterMode.this);
                     newSongSectionText = processSong.makePresenterSongButtonSection(PresenterMode.this, sectionText);
                     newSongButton = processSong.makePresenterSongButtonContent(PresenterMode.this, buttonText);
@@ -1674,20 +1686,28 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         tryClickPreviousSection();
     }
     private void tryClickNextSection() {
-        if (StaticVariables.currentSection < StaticVariables.songSections.length - 1) {
-            StaticVariables.currentSection += 1;
-            autoproject = true;
-            preso_action_buttons_scroll.smoothScrollTo(0, presenter_project_group.getTop());
-            selectSectionButtonInSong(StaticVariables.currentSection);
+        // IV - Next and Previous rely on section, The 'fix' for types without valid sections is to not allow!
+        if (FullscreenActivity.isImage || FullscreenActivity.isPDF || !FullscreenActivity.isSong) {
+            showToastMessage(getResources().getString(R.string.not_allowed));
+        } else {
+            if (StaticVariables.currentSection < StaticVariables.songSections.length - 1) {
+                StaticVariables.currentSection += 1;
+                autoproject = true;
+                preso_action_buttons_scroll.smoothScrollTo(0, presenter_project_group.getTop());
+                selectSectionButtonInSong(StaticVariables.currentSection);
+            }
         }
     }
     private void tryClickPreviousSection() {
-        // Enable or disable the previous section button
-        if (StaticVariables.currentSection > 0) {
-            StaticVariables.currentSection -= 1;
-            autoproject = true;
-            preso_action_buttons_scroll.smoothScrollTo(0, presenter_project_group.getTop());
-            selectSectionButtonInSong(StaticVariables.currentSection);
+            if (FullscreenActivity.isImage || FullscreenActivity.isPDF || !FullscreenActivity.isSong) {
+            showToastMessage(getResources().getString(R.string.not_allowed));
+        } else {
+            if (StaticVariables.currentSection > 0) {
+                StaticVariables.currentSection -= 1;
+                autoproject = true;
+                preso_action_buttons_scroll.smoothScrollTo(0, presenter_project_group.getTop());
+                selectSectionButtonInSong(StaticVariables.currentSection);
+            }
         }
     }
     private void tryClickNextSongInSet() {
@@ -2373,13 +2393,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     @Override
     public void doEdit() {
-        if (FullscreenActivity.isPDF) {
-            FullscreenActivity.whattodo = "extractPDF";
-            openFragment();
-        } else if (FullscreenActivity.isSong) {
-            FullscreenActivity.whattodo = "editsong";
-            openFragment();
-        }
+        // IV - Was "extractPDF" for PDF which crashed(!), all now get editsong
+        FullscreenActivity.whattodo = "editsong";
+        openFragment();
     }
     private boolean justSong(Context c) {
         boolean isallowed = true;
@@ -3024,7 +3040,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 h.postDelayed(() -> {
                     try {
                         PresentationService.ExternalDisplay.showLogo();
-                        PresentationService.ExternalDisplay.wipeProjectedLinearLayout();
+                        PresentationService.ExternalDisplay.wipeProjectedLayout();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -3039,7 +3055,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 h.postDelayed(() -> {
                     try {
                         PresentationServiceHDMI.showLogo();
-                        PresentationServiceHDMI.wipeProjectedLinearLayout();
+                        PresentationServiceHDMI.wipeProjectedLayout();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -3091,14 +3107,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             if (mSelectedDevice != null) {
                 try {
                     PresentationService.ExternalDisplay.blankUnblankDisplay(false);
-                    PresentationService.ExternalDisplay.wipeProjectedLinearLayout();
+                    PresentationService.ExternalDisplay.wipeProjectedLayout();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (FullscreenActivity.isHDMIConnected) {
                 try {
                     PresentationServiceHDMI.blankUnblankDisplay(false);
-                    PresentationServiceHDMI.wipeProjectedLinearLayout();
+                    PresentationServiceHDMI.wipeProjectedLayout();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -3110,12 +3126,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
              // Fade back everything
             if (mSelectedDevice != null) {
                 try {
+                    PresentationService.ExternalDisplay.wipeProjectedLayout();
                     PresentationService.ExternalDisplay.blankUnblankDisplay(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (FullscreenActivity.isHDMIConnected) {
                 try {
+                    PresentationServiceHDMI.wipeProjectedLayout();
                     PresentationServiceHDMI.blankUnblankDisplay(true);
                 } catch (Exception e) {
                     e.printStackTrace();
