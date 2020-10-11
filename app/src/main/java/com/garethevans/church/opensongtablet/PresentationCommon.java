@@ -722,7 +722,7 @@ class PresentationCommon {
                             CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
                             // IV - Make sure song info is seen for at least 10s
                             if (StaticVariables.infoBarIfRequired) {
-                                infoBarUntilTime = System.currentTimeMillis() + 2000;
+                                infoBarUntilTime = System.currentTimeMillis() + 10000;
                             }
                             StaticVariables.infoBarIfRequired = false;
                         }, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
@@ -791,12 +791,15 @@ class PresentationCommon {
         projected_ImageView.setImageBitmap(null);
     }
     void updateAlert(Context c, Preferences preferences, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout, boolean show, TextView presentermode_alert) {
+        // IV - A screen update will follow, set up to ensure no song info disaply
+        infoBarUntilTime = 0;
+        StaticVariables.infoBarIfRequired = false;
         if (show) {
             PresenterMode.alert_on = "Y";
             fadeinAlert(c, preferences, myscreen, bottom_infobar, projectedPage_RelativeLayout, presentermode_alert);
         } else {
             PresenterMode.alert_on = "N";
-            fadeoutAlert(c, preferences, presentermode_alert);
+            fadeoutAlert(c, preferences, bottom_infobar, presentermode_alert);
         }
     }
     private void fadeinAlert(Context c, Preferences preferences, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout, TextView presentermode_alert) {
@@ -806,7 +809,10 @@ class PresentationCommon {
         presentermode_alert.setTextColor(StaticVariables.cast_presoAlertColor);
         presentermode_alert.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f) / 2.0f, 4, 4, StaticVariables.cast_presoShadowColor);
     }
-    private void fadeoutAlert(Context c, Preferences preferences, TextView presentermode_alert) {
+    private void fadeoutAlert(Context c, Preferences preferences, LinearLayout bottom_infobar, TextView presentermode_alert) {
+        if (presentermode_alert.getVisibility() == View.VISIBLE) {
+            CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), false);
+        }
         presentermode_alert.setText("");
     }
 

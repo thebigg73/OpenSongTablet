@@ -249,6 +249,7 @@ class PresentationServiceHDMI extends Presentation
     }
     static void updateAlert(boolean show) {
         presentationCommon.updateAlert(c, preferences, myscreen, bottom_infobar,projectedPage_RelativeLayout,show, presentermode_alert);
+        doUpdate();
     }
     static void setUpLogo() {
         presentationCommon.setUpLogo(c,preferences,storageAccess,projected_Logo,StaticVariables.cast_availableWidth_1col,StaticVariables.cast_availableScreenHeight);
