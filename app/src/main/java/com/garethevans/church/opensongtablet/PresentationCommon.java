@@ -647,7 +647,7 @@ class PresentationCommon {
                                        TextView presentermode_copyright, TextView presentermode_ccli, TextView presentermode_alert, LinearLayout bottom_infobar) {
         if (!(FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF)) {
             // IV - If first time for this song or within the 'Until' period added by a previous run or alerts are on...
-            if ((StaticVariables.infoBarIfRequired) || (infoBarUntilTime < System.currentTimeMillis()) || (PresenterMode.alert_on.equals("Y"))) {
+            if ((StaticVariables.infoBarIfRequired) || (infoBarUntilTime < System.currentTimeMillis()) || ((PresenterMode.alert_on.equals("Y") && (System.currentTimeMillis() > infoBarUntilTime)))) {
                 String new_author;
                 String new_title;
                 String new_copyright;
