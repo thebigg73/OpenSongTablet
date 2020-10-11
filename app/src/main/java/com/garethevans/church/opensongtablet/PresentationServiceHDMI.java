@@ -245,7 +245,7 @@ class PresentationServiceHDMI extends Presentation
         presentermode_alert.setAlpha(1.0f);
         presentationCommon.doUpdate(c,preferences,storageAccess,processSong,myscreen,songinfo_TextView,presentermode_bottombit,projected_SurfaceView,
                 projected_BackgroundImage, pageHolder,projected_Logo,projected_ImageView,projected_LinearLayout,bottom_infobar,projectedPage_RelativeLayout,
-                presentermode_title, presentermode_author, presentermode_copyright, presentermode_ccli, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3);
+                presentermode_title, presentermode_author, presentermode_copyright, presentermode_ccli, presentermode_alert, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3);
     }
     static void updateAlert(boolean show) {
         presentationCommon.updateAlert(c, preferences, myscreen, bottom_infobar,projectedPage_RelativeLayout,show, presentermode_alert);
