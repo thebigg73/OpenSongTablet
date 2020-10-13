@@ -56,7 +56,6 @@ public class PopUpAlertFragment extends DialogFragment {
     private void doClose() {
         preferences.setMyPreferenceString(getActivity(),"presoAlertText",alertMessage.getText().toString().trim());
         try {
-            mListener.updateAlert(PresenterMode.alert_on.equals("Y"));
             dismiss();
         } catch (Exception e) {
             e.printStackTrace();

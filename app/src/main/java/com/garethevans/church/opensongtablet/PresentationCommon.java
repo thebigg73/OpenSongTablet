@@ -689,7 +689,7 @@ class PresentationCommon {
                     if (StaticVariables.infoBarIfRequired || (presentermode_title.getVisibility() == View.VISIBLE)) {
                         float endAlpha = 0.0f;
                         if ((StaticVariables.infoBarIfRequired) && displayneeded) {
-                            endAlpha = 0.1f;
+                            endAlpha = 0.01f;
                         }
                         if (bottom_infobar.getAlpha() > 0.0f) {
                             CustomAnimations.faderAnimationCustomAlpha(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), bottom_infobar.getAlpha(), endAlpha);
@@ -706,7 +706,10 @@ class PresentationCommon {
                         String finalNew_ccli = new_ccli;
                         Handler h = new Handler();
                         h.postDelayed(() -> {
-                            bottom_infobar.setAlpha(0.0f);
+                            // IV - Take the 0.01f special case to 0.0f
+                            if (bottom_infobar.getAlpha() < 0.05) {
+                                bottom_infobar.setAlpha(0.0f);
+                            }
                             adjustVisibility(presentermode_author, finalNew_author);
                             adjustVisibility(presentermode_copyright, finalNew_copyright);
                             adjustVisibility(presentermode_ccli, finalNew_ccli);
