@@ -627,15 +627,12 @@ public class PopUpLayoutFragment extends DialogFragment {
     private void sendUpdateToScreen(String what) {
         if (!firsttime) {
             if (mListener != null) {
-                // IV - Set so that infoBar appears - so adjustments can be seen
-                StaticVariables.infoBarIfRequired = true;
                 mListener.refreshSecondaryDisplay(what);
             }
         } else {
             // We have just initialised the variables
             firsttime = false;
             if (mListener != null) {
-                StaticVariables.infoBarIfRequired = true;
                 mListener.refreshSecondaryDisplay("logo");
             }
         }
