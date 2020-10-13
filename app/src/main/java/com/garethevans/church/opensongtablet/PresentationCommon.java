@@ -687,7 +687,13 @@ class PresentationCommon {
                     boolean displayneeded = (!(new_title + new_author + new_copyright + new_ccli).equals("") || (PresenterMode.alert_on.equals("Y")));
 
                     if (StaticVariables.infoBarIfRequired || (presentermode_title.getVisibility() == View.VISIBLE)) {
-                        CustomAnimations.faderAnimationCustomAlpha(bottom_infobar,preferences.getMyPreferenceInt(c, "presoTransitionTime", 800),bottom_infobar.getAlpha(),0.01f);
+                        float endAlpha = 0.0f;
+                        if ((StaticVariables.infoBarIfRequired) && displayneeded) {
+                            endAlpha = 0.1f;
+                        }
+                        if (bottom_infobar.getAlpha() > 0.0f) {
+                            CustomAnimations.faderAnimationCustomAlpha(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), bottom_infobar.getAlpha(), endAlpha);
+                        }
                         // IV - The lyrics are delayed to ensure correct screen build
                         infoBarChangeDelay = 210;
                     }
@@ -700,6 +706,7 @@ class PresentationCommon {
                         String finalNew_ccli = new_ccli;
                         Handler h = new Handler();
                         h.postDelayed(() -> {
+                            bottom_infobar.setAlpha(0.0f);
                             adjustVisibility(presentermode_author, finalNew_author);
                             adjustVisibility(presentermode_copyright, finalNew_copyright);
                             adjustVisibility(presentermode_ccli, finalNew_ccli);
