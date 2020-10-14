@@ -760,7 +760,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     public void loadSong() {
         StaticVariables.panicRequired = false;
-        StaticVariables.infoBarIfRequired = true;
+        StaticVariables.infoBarChangeRequired = true;
         // IV - Prevent slide shows continuing to be active on change of song(!)
         prepareStopAutoSlideShow();
 

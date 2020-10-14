@@ -341,6 +341,7 @@ class PresentationCommon {
     // IV - Lyric display is delayed for a change of infobar - not at other times
     long infoBarChangeDelay;
     long infoBarUntilTime;
+    String infoBarAlertState;
     // IV - Support for 'last change only' fade in of content
     long lyricAfterTime;
     long lyricDelay;
@@ -423,7 +424,7 @@ class PresentationCommon {
             StaticVariables.panicRequired = false;
             // IV - If the infobar has not completed an 'Until' period, reset
             if (System.currentTimeMillis() < infoBarUntilTime) {
-                StaticVariables.infoBarIfRequired = true;
+                StaticVariables.infoBarChangeRequired = true;
             }
             // IV - Fade out stale content
             if (projected_ImageView.getAlpha() > 0.0f) {
@@ -469,7 +470,7 @@ class PresentationCommon {
         if (!unblank) {
             // IV - If the infobar has not completed an 'Until' period, reset
             if (System.currentTimeMillis() < infoBarUntilTime) {
-                StaticVariables.infoBarIfRequired = true;
+                StaticVariables.infoBarChangeRequired = true;
             }
         }
         CustomAnimations.faderAnimation(pageHolder, (preferences.getMyPreferenceInt(c,"presoTransitionTime",800)),unblank);
@@ -642,14 +643,16 @@ class PresentationCommon {
     private void presenterWriteSongInfo(Context c, Preferences preferences, TextView presentermode_title, TextView presentermode_author,
                                        TextView presentermode_copyright, TextView presentermode_ccli, TextView presentermode_alert, LinearLayout bottom_infobar) {
         if (!(FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF)) {
-            // IV - If first time for this song or past the 'Until' period or alerts are on...
-            if ((StaticVariables.infoBarIfRequired) || (System.currentTimeMillis() > infoBarUntilTime) || ((PresenterMode.alert_on.equals("Y") && (System.currentTimeMillis() > infoBarUntilTime)))) {
+            // IV - Exceutes for first section after a change is requested (for fresh song info display)
+            // IV - and section changes AFTER the subsequent 'Until' period end (for alert display)
+            // IV - NOT for section changes after the first that occur BEFORE the end of the Until period
+            if ((StaticVariables.infoBarChangeRequired) || (System.currentTimeMillis() > infoBarUntilTime)) {
                 String new_author = "";
                 String new_title = "";
                 String new_copyright = "";
                 String new_ccli = "";
 
-                if ((StaticVariables.infoBarIfRequired) || (System.currentTimeMillis() < infoBarUntilTime)) {
+                if (StaticVariables.infoBarChangeRequired) {
                     new_author = StaticVariables.mAuthor.trim();
                     if (!new_author.equals(""))
                         new_author = c.getString(R.string.wordsandmusicby) + " " + new_author;
@@ -677,57 +680,44 @@ class PresentationCommon {
                     }
                 }
 
-                // GE check for updates - only animate in/out if found
-                if (!presentermode_title.toString().equals(new_title) || !presentermode_author.toString().equals(new_author) ||
-                    !presentermode_copyright.toString().equals(new_copyright) || !presentermode_ccli.toString().equals(new_ccli)) {
+                // IV - We will need to animate if we pass this test
+                if ((StaticVariables.infoBarChangeRequired) || (infoBarAlertState != PresenterMode.alert_on)) {
+                    // IV - This fade to 0.01f stops lyrics jumping
+                    CustomAnimations.faderAnimationCustomAlpha(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), bottom_infobar.getAlpha(), 0.01f);
+                    // IV - This dlay to lyrics ensures any new infobar is available for correct screen sizing - Set to a little more than the minimum fade time
+                    infoBarChangeDelay = 250;
 
-                    boolean needupdate = (!(new_title + new_author + new_copyright + new_ccli).equals("") || (PresenterMode.alert_on.equals("Y")));
-
-                    if (StaticVariables.infoBarIfRequired || (presentermode_title.getVisibility() == View.VISIBLE)) {
-                        float endAlpha = 0.0f;
-                        if ((StaticVariables.infoBarIfRequired) && needupdate) {
-                            // IV - Special case for song change - leave infobar on screen for screen sizing
-                            endAlpha = 0.01f;
-                        }
-                        if (bottom_infobar.getAlpha() > 0.0f) {
-                            CustomAnimations.faderAnimationCustomAlpha(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), bottom_infobar.getAlpha(), endAlpha);
-                        }
-                        // IV - The lyrics are delayed to ensure new infobar is displayed for correct screen sizing - a little longer than the minimum fade time
-                        infoBarChangeDelay = 210;
-                    }
-
-                    // IV - If we have something to do, run the next bit post delayed (to wait for the animate out)
-                    if (needupdate) {
-                        String finalNew_title = new_title;
-                        String finalNew_author = new_author;
-                        String finalNew_copyright = new_copyright;
-                        String finalNew_ccli = new_ccli;
-                        Handler h = new Handler();
-                        h.postDelayed(() -> {
-                            // IV - Take the 0.01f special case to 0.0f full fade
-                            if (bottom_infobar.getAlpha() < 0.05) {
-                                bottom_infobar.setAlpha(0.0f);
-                            }
-                            adjustVisibility(presentermode_author, finalNew_author);
-                            adjustVisibility(presentermode_copyright, finalNew_copyright);
-                            adjustVisibility(presentermode_ccli, finalNew_ccli);
-                            adjustVisibility(presentermode_title, finalNew_title);
-                            // IV - Display either song stuff or alert
-                            if ((finalNew_title + finalNew_author + finalNew_copyright + finalNew_ccli).equals("")) {
+                    // IV - Run the next bit post delayed (to wait for the animate out)
+                    Handler h = new Handler();
+                    String finalNew_title = new_title;
+                    String finalNew_author = new_author;
+                    String finalNew_copyright = new_copyright;
+                    String finalNew_ccli = new_ccli;
+                    h.postDelayed(() -> {
+                        // IV - Finish the fade
+                        bottom_infobar.setAlpha(0.0f);
+                        adjustVisibility(presentermode_author, finalNew_author);
+                        adjustVisibility(presentermode_copyright, finalNew_copyright);
+                        adjustVisibility(presentermode_ccli, finalNew_ccli);
+                        adjustVisibility(presentermode_title, finalNew_title);
+                        if (StaticVariables.infoBarChangeRequired) {
+                            StaticVariables.infoBarChangeRequired = false;
+                            // IV - Make sure song info is seen for at least 10s
+                            infoBarUntilTime = System.currentTimeMillis() + 10000;
+                            presentermode_alert.setVisibility(View.GONE);
+                            // IV - Force consideration of alert state after the Until period
+                            infoBarAlertState = "";
+                            CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                        } else {
+                            if (PresenterMode.alert_on == "Y") {
                                 presentermode_alert.setVisibility(View.VISIBLE);
+                                CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
                             } else {
                                 presentermode_alert.setVisibility(View.GONE);
                             }
-                            if (bottom_infobar.getAlpha() < 1.0f) {
-                                CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
-                            }
-                            // IV - Make sure song info is seen for at least 10s
-                            if (StaticVariables.infoBarIfRequired) {
-                                infoBarUntilTime = System.currentTimeMillis() + 10000;
-                            }
-                            StaticVariables.infoBarIfRequired = false;
-                        }, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
-                    }
+                            infoBarAlertState = PresenterMode.alert_on;
+                        }
+                    }, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
                 }
             }
         }
@@ -795,7 +785,7 @@ class PresentationCommon {
     void updateAlert(Context c, Preferences preferences, boolean show, TextView presentermode_alert) {
         // IV - A screen update may follow, set up to ensure no song info display
         infoBarUntilTime = 0;
-        StaticVariables.infoBarIfRequired = false;
+        StaticVariables.infoBarChangeRequired = false;
         if (show) {
             PresenterMode.alert_on = "Y";
             fadeinAlert(c, preferences, presentermode_alert);
