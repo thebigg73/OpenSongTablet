@@ -3364,19 +3364,22 @@ public class StageMode extends AppCompatActivity implements
 
         if (!text.equals(padcurrentTime_TextView.toString())) {
             updateExtraInfoColorsAndSizes("pad");
-            // When 0:00 we get the pad total time and make Pad progress visible
             if (text.equals("")) {
                 padcurrentTime_TextView.setText("");
                 padTimeSeparator_TextView.setText("");
                 padtotalTime_TextView.setText("");
                 backingtrackProgress.setVisibility(View.VISIBLE);
             } else {
-                // Display the '/' as now active
-                backingtrackProgress.setVisibility(View.GONE);
-                padtotalTime_TextView.setText(TimeTools.timeFormatFixer(StaticVariables.padtime_length));
-                padTimeSeparator_TextView.setText("/");
-                padcurrentTime_TextView.setText(text);
-                backingtrackProgress.setVisibility(View.VISIBLE);
+                // When 0:00 we get the pad total time and make Pad progress visible
+                if (text.equals("0:00")) {
+                    backingtrackProgress.setVisibility(View.GONE);
+                    padcurrentTime_TextView.setText(text);
+                    padTimeSeparator_TextView.setText("/");
+                    padtotalTime_TextView.setText(TimeTools.timeFormatFixer(StaticVariables.padtime_length));
+                    backingtrackProgress.setVisibility(View.VISIBLE);
+                } else {
+                    padcurrentTime_TextView.setText(text);
+                }
             }
         }
     }

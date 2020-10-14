@@ -342,11 +342,10 @@ class PresentationCommon {
 
     // IV - Lyric display is delayed for a change of infobar - not at other times
     long infoBarChangeDelay;
+    long infoBarUntilTime;
     // IV - Support for 'last change only' fade in of content
     long lyricAfterTime;
     long lyricDelay;
-    long infoBarUntilTime;
-
     long panicAfterTime;
     long panicDelay;
     // IV - doUpdate can run frequently - this supports better transitions
@@ -507,6 +506,7 @@ class PresentationCommon {
         if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
             CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), false);
         }
+        // IV - Infobar fade and screen sizing handled elsewhere
         // IV - If we are not already doing a lyric fade
         if ((lyricAfterTime - 5) < System.currentTimeMillis()) {
             // IV - Fade out stale content
@@ -684,29 +684,30 @@ class PresentationCommon {
                 if (!presentermode_title.equals(new_title) || !presentermode_author.equals(new_author) ||
                     !presentermode_copyright.equals(new_copyright) || !presentermode_ccli.equals(new_ccli)) {
 
-                    boolean displayneeded = (!(new_title + new_author + new_copyright + new_ccli).equals("") || (PresenterMode.alert_on.equals("Y")));
+                    boolean needupdate = (!(new_title + new_author + new_copyright + new_ccli).equals("") || (PresenterMode.alert_on.equals("Y")));
 
                     if (StaticVariables.infoBarIfRequired || (presentermode_title.getVisibility() == View.VISIBLE)) {
                         float endAlpha = 0.0f;
-                        if ((StaticVariables.infoBarIfRequired) && displayneeded) {
+                        if ((StaticVariables.infoBarIfRequired) && needupdate) {
+                            // IV - Special case for song change - leave infobar on screen for screen sizing
                             endAlpha = 0.01f;
                         }
                         if (bottom_infobar.getAlpha() > 0.0f) {
                             CustomAnimations.faderAnimationCustomAlpha(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), bottom_infobar.getAlpha(), endAlpha);
                         }
-                        // IV - The lyrics are delayed to ensure correct screen build
+                        // IV - The lyrics are delayed to ensure new infobar is displayed for correct screen sizing - a little longer than the minimum fade time
                         infoBarChangeDelay = 210;
                     }
 
                     // IV - If we have something to do, run the next bit post delayed (to wait for the animate out)
-                    if (displayneeded) {
+                    if (needupdate) {
                         String finalNew_title = new_title;
                         String finalNew_author = new_author;
                         String finalNew_copyright = new_copyright;
                         String finalNew_ccli = new_ccli;
                         Handler h = new Handler();
                         h.postDelayed(() -> {
-                            // IV - Take the 0.01f special case to 0.0f
+                            // IV - Take the 0.01f special case to 0.0f full fade
                             if (bottom_infobar.getAlpha() < 0.05) {
                                 bottom_infobar.setAlpha(0.0f);
                             }
@@ -720,7 +721,9 @@ class PresentationCommon {
                             } else {
                                 presentermode_alert.setVisibility(View.GONE);
                             }
-                            CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                            if (bottom_infobar.getAlpha() < 1.0f) {
+                                CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
+                            }
                             // IV - Make sure song info is seen for at least 10s
                             if (StaticVariables.infoBarIfRequired) {
                                 infoBarUntilTime = System.currentTimeMillis() + 10000;
@@ -793,7 +796,7 @@ class PresentationCommon {
         projected_ImageView.setImageBitmap(null);
     }
     void updateAlert(Context c, Preferences preferences, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout, boolean show, TextView presentermode_alert) {
-        // IV - A screen update will follow, set up to ensure no song info disaply
+        // IV - A screen update may follow, set up to ensure no song info display
         infoBarUntilTime = 0;
         StaticVariables.infoBarIfRequired = false;
         if (show) {
@@ -812,9 +815,6 @@ class PresentationCommon {
         presentermode_alert.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f) / 2.0f, 4, 4, StaticVariables.cast_presoShadowColor);
     }
     private void fadeoutAlert(Context c, Preferences preferences, LinearLayout bottom_infobar, TextView presentermode_alert) {
-        if (presentermode_alert.getVisibility() == View.VISIBLE) {
-            CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), false);
-        }
         presentermode_alert.setText("");
     }
 
