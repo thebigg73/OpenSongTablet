@@ -681,11 +681,16 @@ class PresentationCommon {
                 }
 
                 // IV - We will need to animate if we pass this test
-                if ((StaticVariables.infoBarChangeRequired) || (infoBarAlertState != PresenterMode.alert_on)) {
+                if ((StaticVariables.infoBarChangeRequired) || (!infoBarAlertState.equals(PresenterMode.alert_on))) {
                     // IV - This fade to 0.01f stops lyrics jumping
                     CustomAnimations.faderAnimationCustomAlpha(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), bottom_infobar.getAlpha(), 0.01f);
                     // IV - This dlay to lyrics ensures any new infobar is available for correct screen sizing - Set to a little more than the minimum fade time
                     infoBarChangeDelay = 250;
+                    if (StaticVariables.infoBarChangeRequired) {
+                        infoBarAlertState = "N";
+                    } else {
+                        infoBarAlertState = PresenterMode.alert_on;
+                    }
 
                     // IV - Run the next bit post delayed (to wait for the animate out)
                     Handler h = new Handler();
@@ -709,13 +714,12 @@ class PresentationCommon {
                             infoBarAlertState = "";
                             CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
                         } else {
-                            if (PresenterMode.alert_on == "Y") {
+                            if (infoBarAlertState.equals("Y")) {
                                 presentermode_alert.setVisibility(View.VISIBLE);
                                 CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
                             } else {
                                 presentermode_alert.setVisibility(View.GONE);
                             }
-                            infoBarAlertState = PresenterMode.alert_on;
                         }
                     }, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800));
                 }
