@@ -5,7 +5,6 @@ package com.garethevans.church.opensongtablet;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -23,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.ColorUtils;
 
@@ -495,9 +493,8 @@ class PresentationCommon {
             CustomAnimations.faderAnimation(projected_LinearLayout, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
         }
     }
-    private void animateOut(Context c, Preferences preferences, Display myscreen, ImageView projected_Logo, ImageView projected_ImageView,
-                            LinearLayout projected_LinearLayout, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout,
-                            TextView presentermode_title, TextView presentermode_author, TextView presentermode_copyright, TextView presentermode_ccli) {
+    private void animateOut(Context c, Preferences preferences, ImageView projected_Logo, ImageView projected_ImageView,
+                            LinearLayout projected_LinearLayout, LinearLayout bottom_infobar) {
         if (projected_Logo.getAlpha() > 0.0f) {
             showLogoActive = false;
             CustomAnimations.faderAnimation(projected_Logo,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
@@ -535,8 +532,8 @@ class PresentationCommon {
             // First up, animate everything away
             StaticVariables.panicRequired = false;
             animateOutActive = true;
-            animateOut(c, preferences, myscreen, projected_Logo, projected_ImageView, projected_LinearLayout, bottom_infobar, projectedPage_RelativeLayout,
-                    presentermode_title, presentermode_author, presentermode_copyright, presentermode_ccli);
+            animateOut(c, preferences, projected_Logo, projected_ImageView, projected_LinearLayout, bottom_infobar
+            );
 
             // If we have forced an update due to switching modes, set that up
             if (StaticVariables.forcecastupdate) {
@@ -681,8 +678,8 @@ class PresentationCommon {
                 }
 
                 // GE check for updates - only animate in/out if found
-                if (!presentermode_title.equals(new_title) || !presentermode_author.equals(new_author) ||
-                    !presentermode_copyright.equals(new_copyright) || !presentermode_ccli.equals(new_ccli)) {
+                if (!presentermode_title.toString().equals(new_title) || !presentermode_author.toString().equals(new_author) ||
+                    !presentermode_copyright.toString().equals(new_copyright) || !presentermode_ccli.toString().equals(new_ccli)) {
 
                     boolean needupdate = (!(new_title + new_author + new_copyright + new_ccli).equals("") || (PresenterMode.alert_on.equals("Y")));
 
@@ -795,26 +792,26 @@ class PresentationCommon {
         projected_LinearLayout.removeAllViews();
         projected_ImageView.setImageBitmap(null);
     }
-    void updateAlert(Context c, Preferences preferences, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout, boolean show, TextView presentermode_alert) {
+    void updateAlert(Context c, Preferences preferences, boolean show, TextView presentermode_alert) {
         // IV - A screen update may follow, set up to ensure no song info display
         infoBarUntilTime = 0;
         StaticVariables.infoBarIfRequired = false;
         if (show) {
             PresenterMode.alert_on = "Y";
-            fadeinAlert(c, preferences, myscreen, bottom_infobar, projectedPage_RelativeLayout, presentermode_alert);
+            fadeinAlert(c, preferences, presentermode_alert);
         } else {
             PresenterMode.alert_on = "N";
-            fadeoutAlert(c, preferences, bottom_infobar, presentermode_alert);
+            fadeoutAlert(presentermode_alert);
         }
     }
-    private void fadeinAlert(Context c, Preferences preferences, Display myscreen, LinearLayout bottom_infobar, RelativeLayout projectedPage_RelativeLayout, TextView presentermode_alert) {
+    private void fadeinAlert(Context c, Preferences preferences, TextView presentermode_alert) {
         presentermode_alert.setText(preferences.getMyPreferenceString(c,"presoAlertText",""));
         presentermode_alert.setTypeface(StaticVariables.typefacePresoInfo);
         presentermode_alert.setTextSize(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f));
         presentermode_alert.setTextColor(StaticVariables.cast_presoAlertColor);
         presentermode_alert.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f) / 2.0f, 4, 4, StaticVariables.cast_presoShadowColor);
     }
-    private void fadeoutAlert(Context c, Preferences preferences, LinearLayout bottom_infobar, TextView presentermode_alert) {
+    private void fadeoutAlert(TextView presentermode_alert) {
         presentermode_alert.setText("");
     }
 

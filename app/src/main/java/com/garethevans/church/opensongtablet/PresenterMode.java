@@ -1553,11 +1553,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         if (StaticVariables.mUser1 != null) {
                             timeEditText.setText(StaticVariables.mUser1);
                         }
-                        if (StaticVariables.mUser2 != null && StaticVariables.mUser2.equals("true")) {
-                            loopCheckBox.setChecked(true);
-                        } else {
-                            loopCheckBox.setChecked(false);
-                        }
+                        loopCheckBox.setChecked(StaticVariables.mUser2 != null && StaticVariables.mUser2.equals("true"));
 
                     } else {
                         // Otherwise, hide them
@@ -1624,37 +1620,21 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         enabledisableButton(nav_nextsong, false);
 
         // Show the previous section button if we currently showing a section higher than 0
-        if (StaticVariables.currentSection > 0) {
-            enabledisableButton(nav_prevsection, true);
-        } else {
-            enabledisableButton(nav_prevsection, false);
-        }
+        enabledisableButton(nav_prevsection, StaticVariables.currentSection > 0);
 
         // Show the next section button if we are currently in a section lower than the count by 1
         int sectionsavailable = presenter_song_buttonsListView.getChildCount();
-        if (StaticVariables.currentSection < sectionsavailable - 1) {
-            enabledisableButton(nav_nextsection, true);
-        } else {
-            enabledisableButton(nav_nextsection, false);
-        }
+        enabledisableButton(nav_nextsection, StaticVariables.currentSection < sectionsavailable - 1);
 
         // Enable the previous set button if we are in set view and indexSongInSet is >0 (but less than set size)
         int numsongsinset = 0;
         if (StaticVariables.mSetList != null) {
             numsongsinset = StaticVariables.mSetList.length;
         }
-        if (StaticVariables.setView && StaticVariables.indexSongInSet > 0 && StaticVariables.indexSongInSet < numsongsinset) {
-            enabledisableButton(nav_prevsong, true);
-        } else {
-            enabledisableButton(nav_prevsong, false);
-        }
+        enabledisableButton(nav_prevsong, StaticVariables.setView && StaticVariables.indexSongInSet > 0 && StaticVariables.indexSongInSet < numsongsinset);
 
         // Enable the next set button if we are in set view and index SongInSet is < set size -1
-        if (StaticVariables.setView && StaticVariables.indexSongInSet > -1 && StaticVariables.indexSongInSet < numsongsinset - 1) {
-            enabledisableButton(nav_nextsong, true);
-        } else {
-            enabledisableButton(nav_nextsong, false);
-        }
+        enabledisableButton(nav_nextsong, StaticVariables.setView && StaticVariables.indexSongInSet > -1 && StaticVariables.indexSongInSet < numsongsinset - 1);
 
         /*if (FullscreenActivity.songSections!=null && FullscreenActivity.currentSection>=FullscreenActivity.songSections.length) {
             enabledisableButton(nav_nextsection,false);

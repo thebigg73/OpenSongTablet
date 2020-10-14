@@ -301,7 +301,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     presentermode_title, presentermode_author, presentermode_copyright, presentermode_ccli, presentermode_alert, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3);
         }
         static void updateAlert(boolean show) {
-            presentationCommon.updateAlert(c, preferences, myscreen, bottom_infobar,projectedPage_RelativeLayout,show, presentermode_alert);
+            presentationCommon.updateAlert(c, preferences, show, presentermode_alert);
             doUpdate();
         }
         static void setUpLogo() {
