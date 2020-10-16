@@ -72,6 +72,7 @@ import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.common.api.Status;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
@@ -89,8 +90,6 @@ import lib.folderpicker.FolderPicker;
 
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
 import static com.google.android.material.snackbar.Snackbar.make;
-
-//@SuppressWarnings("ALL")
 
 public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyInterface,
         SongMenuListeners.MyInterface, PopUpChooseFolderFragment.MyInterface,
@@ -153,7 +152,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private MediaRouteSelector mMediaRouteSelector;
     private final MyMediaRouterCallback mMediaRouterCallback = new MyMediaRouterCallback();
     private CastDevice mSelectedDevice;
-    private CastContext mCastContext;
     private PresentationServiceHDMI hdmi;
 
     // The toolbar and menu
@@ -362,7 +360,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         // Setup the CastContext
         MediaRouteButton mediaRouteButton = findViewById(R.id.media_route_menu_item);
         CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mediaRouteButton);
-        mCastContext = CastContext.getSharedInstance(this);
+        try {
+            CastContext.getSharedInstance(this);
+        } catch (Exception e) {
+            Log.d("PresenterMode", "No Google Services");
+        }
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
         mMediaRouteSelector = new MediaRouteSelector.Builder()
                 .addControlCategory(CastMediaControlIntent.categoryForCast("4E2B0891"))
@@ -1034,7 +1036,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         getMenuInflater().inflate(R.menu.presenter_actions, menu);
 
         // Setup the menu item for connecting to cast devices
-        MenuItem mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
+        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
 
         // Force overflow icon to show, even if hardware key is present
         MenuHandlers.forceOverFlow(PresenterMode.this, ab, menu);
@@ -3256,6 +3258,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},404);
             return false;
         }
+    }
+
+    @Override
+    public void installPlayServices() {
+        Snackbar.make(findViewById(R.id.coordinator_layout), R.string.play_services_error,
+                BaseTransientBottomBar.LENGTH_LONG).setAction(R.string.play_services_how, v -> {
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.play_services_help)));
+            startActivity(i);
+        })
+                .show();
     }
 
     // The camera permissions and stuff

@@ -44,7 +44,7 @@ android {
             jcenter()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:4.0.1'
+            classpath 'com.android.tools.build:gradle:4.0.2'
             classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
             classpath 'me.tatarka:gradle-retrolambda:3.7.0'
         }
@@ -72,9 +72,9 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'org.apache.commons:commons-compress:1.12'
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation 'org.apache.commons:commons-compress:1.20'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'androidx.annotation:annotation:1.1.0'
     annotationProcessor 'androidx.annotation:annotation:1.1.0'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.9.8'

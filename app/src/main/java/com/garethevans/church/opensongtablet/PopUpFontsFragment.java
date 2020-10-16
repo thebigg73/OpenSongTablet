@@ -23,6 +23,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.BufferedReader;
@@ -56,25 +58,19 @@ public class PopUpFontsFragment extends DialogFragment {
         super.onDetach();
     }
 
-    private TextView scaleHeading_TextView;
-    private TextView scaleComment_TextView;
-    private TextView scaleChords_TextView;
-    private TextView lineSpacing_TextView;
-    private TextView lyricPreviewTextView;
-    private TextView chordPreviewTextView;
-    private TextView stickyPreviewTextView;
-    private TextView presoPreviewTextView;
-    private TextView presoinfoPreviewTextView;
+    private TextView scaleHeading_TextView, scaleComment_TextView, scaleChords_TextView, lineSpacing_TextView,
+            lyricPreviewTextView, chordPreviewTextView, stickyPreviewTextView, presoPreviewTextView,
+            presoinfoPreviewTextView, fontBrowse;
+    SwitchCompat boldChordsHeadings, trimlinespacing_SwitchCompat, hideBox_SwitchCompat,
+            trimSections_SwitchCompat, addSectionSpace_SwitchCompat;
     private ArrayAdapter<String> choose_fonts;
     private SeekBar scaleHeading_SeekBar, scaleComment_SeekBar, scaleChords_SeekBar, lineSpacing_SeekBar;
     private SetTypeFace setTypeFace;
     private Preferences preferences;
+    private StorageAccess storageAccess;
+
     // Handlers for fonts
-    private Handler lyrichandler;
-    private Handler chordhandler;
-    private Handler stickyhandler;
-    private Handler presohandler;
-    private Handler presoinfohandler;
+    private Handler lyrichandler, chordhandler, stickyhandler, presohandler, presoinfohandler, customhandler;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -94,19 +90,50 @@ public class PopUpFontsFragment extends DialogFragment {
         });
 
         // Initialise the helper classes
-        preferences = new Preferences();
-        setTypeFace = new SetTypeFace();
-        StorageAccess storageAccess = new StorageAccess();
+        initialseHelpers();
 
         // Initialise the font handlers
+        initialiseFontHandlers();
+
+        // Initialise the views
+        initialiseViews(V);
+
+        // Set out preferences
+        setPreferences();
+
+        // Initialise default listeners
+        initialiseBasicListeners();
+
+        // Decide if we have access to the font chooser
+        if (hasPlayServices()) {
+            // Set up the typefaces
+            setUpFonts();
+
+        } else {
+            // Hide the font chooser and show the warning/info
+            disableFonts(V);
+        }
+
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        return V;
+    }
+
+    private void initialseHelpers() {
+        preferences = new Preferences();
+        setTypeFace = new SetTypeFace();
+        storageAccess = new StorageAccess();
+    }
+
+    private void initialiseFontHandlers() {
         lyrichandler = new Handler();
         chordhandler = new Handler();
         stickyhandler = new Handler();
         presohandler = new Handler();
         presoinfohandler = new Handler();
-        Handler customhandler = new Handler();
+        customhandler = new Handler();
+    }
 
-        // Initialise the views
+    private void initialiseViews(View V) {
         lyricsFontSpinner = V.findViewById(R.id.lyricsFontSpinner);
         chordsFontSpinner = V.findViewById(R.id.chordsFontSpinner);
         stickyFontSpinner = V.findViewById(R.id.stickyFontSpinner);
@@ -117,36 +144,41 @@ public class PopUpFontsFragment extends DialogFragment {
         stickyPreviewTextView = V.findViewById(R.id.stickyPreviewTextView);
         presoPreviewTextView = V.findViewById(R.id.presoPreviewTextView);
         presoinfoPreviewTextView = V.findViewById(R.id.presoinfoPreviewTextView);
-        TextView fontBrowse = V.findViewById(R.id.fontBrowse);
-        fontBrowse.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("https://fonts.google.com"));
-            startActivity(intent);
-        });
+        fontBrowse = V.findViewById(R.id.fontBrowse);
         scaleChords_TextView = V.findViewById(R.id.scaleChords_TextView);
         scaleChords_SeekBar = V.findViewById(R.id.scaleChords_SeekBar);
         scaleComment_TextView = V.findViewById(R.id.scaleComment_TextView);
         scaleComment_SeekBar = V.findViewById(R.id.scaleComment_SeekBar);
         scaleHeading_TextView = V.findViewById(R.id.scaleHeading_TextView);
         scaleHeading_SeekBar = V.findViewById(R.id.scaleHeading_SeekBar);
-        SwitchCompat boldChordsHeadings = V.findViewById(R.id.boldChordsHeadings);
+        boldChordsHeadings = V.findViewById(R.id.boldChordsHeadings);
         lineSpacing_TextView = V.findViewById(R.id.lineSpacing_TextView);
         lineSpacing_SeekBar = V.findViewById(R.id.lineSpacing_SeekBar);
-        SwitchCompat trimlinespacing_SwitchCompat = V.findViewById(R.id.trimlinespacing_SwitchCompat);
-        SwitchCompat hideBox_SwitchCompat = V.findViewById(R.id.hideBox_SwitchCompat);
-        SwitchCompat trimSections_SwitchCompat = V.findViewById(R.id.trimSections_SwitchCompat);
-        SwitchCompat addSectionSpace_SwitchCompat = V.findViewById(R.id.addSectionSpace_SwitchCompat);
+        trimlinespacing_SwitchCompat = V.findViewById(R.id.trimlinespacing_SwitchCompat);
+        hideBox_SwitchCompat = V.findViewById(R.id.hideBox_SwitchCompat);
+        trimSections_SwitchCompat = V.findViewById(R.id.trimSections_SwitchCompat);
+        addSectionSpace_SwitchCompat = V.findViewById(R.id.addSectionSpace_SwitchCompat);
+    }
 
-        // Set up the typefaces
-        setTypeFace.setUpAppFonts(getActivity(), preferences, lyrichandler, chordhandler, stickyhandler,
-                presohandler, presoinfohandler, customhandler);
-
+    private void setPreferences() {
         boldChordsHeadings.setChecked(preferences.getMyPreferenceBoolean(getActivity(), "displayBoldChordsHeadings", false));
         trimSections_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"trimSections",true));
         hideBox_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"hideLyricsBox",false));
         addSectionSpace_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"addSectionSpace",true));
         trimlinespacing_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"trimLines",false));
         lineSpacing_SeekBar.setEnabled(preferences.getMyPreferenceBoolean(getActivity(),"trimLines",false));
+    }
+
+    private boolean hasPlayServices() {
+        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getActivity()) == ConnectionResult.SUCCESS;
+    }
+
+    private void initialiseBasicListeners() {
+        fontBrowse.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("https://fonts.google.com"));
+            startActivity(intent);
+        });
 
         // Listen for seekbar changes
         scaleHeading_SeekBar.setMax(200);
@@ -248,14 +280,28 @@ public class PopUpFontsFragment extends DialogFragment {
             lineSpacing_TextView.setVisibility(View.GONE);
             trimlinespacing_SwitchCompat.setVisibility(View.GONE);
         }
+    }
 
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
-
+    private void setUpFonts() {
+        setTypeFace.setUpAppFonts(getActivity(), preferences, lyrichandler, chordhandler, stickyhandler,
+                presohandler, presoinfohandler, customhandler);
         // Try to get a list of fonts from Google
         GetFontList getFontList = new GetFontList();
         getFontList.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
 
-        return V;
+    private void disableFonts(View V) {
+        V.findViewById(R.id.play_services_error).setVisibility(View.VISIBLE);
+        V.findViewById(R.id.fontBrowse).setVisibility(View.GONE);
+        V.findViewById(R.id.choose_fonts1).setVisibility(View.GONE);
+        V.findViewById(R.id.choose_fonts2).setVisibility(View.GONE);
+        V.findViewById(R.id.choose_fonts3).setVisibility(View.GONE);
+        V.findViewById(R.id.choose_fonts4).setVisibility(View.GONE);
+        V.findViewById(R.id.choose_fonts5).setVisibility(View.GONE);
+        V.findViewById(R.id.play_services_how).setOnClickListener(v -> {
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.play_services_help)));
+            startActivity(i);
+        });
     }
 
     @Override

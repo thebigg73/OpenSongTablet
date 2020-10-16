@@ -36,6 +36,33 @@
                 tools:ignore="HardcodedText" />
 
             <LinearLayout
+                android:id="@+id/play_services_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:padding="12dp"
+                android:background="@drawable/presenter_box_red"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/play_services_error"/>
+
+                <Button
+                    android:id="@+id/play_services_how"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/play_services_how"
+                    android:layout_margin="12dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/choose_fonts1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -67,6 +94,7 @@
 
 
             <LinearLayout
+                android:id="@+id/choose_fonts2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -98,6 +126,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/choose_fonts3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -128,6 +157,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/choose_fonts4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -158,6 +188,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/choose_fonts5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"

@@ -89,6 +89,8 @@ import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.common.api.Status;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.io.InputStream;
@@ -252,7 +254,6 @@ public class StageMode extends AppCompatActivity implements
     private MediaRouteSelector mMediaRouteSelector;
     private final MyMediaRouterCallback mMediaRouterCallback = new MyMediaRouterCallback();
     private CastDevice mSelectedDevice;
-    private CastContext mCastContext;
     private PresentationServiceHDMI hdmi;
     private boolean newsongloaded = false;
 
@@ -473,7 +474,11 @@ public class StageMode extends AppCompatActivity implements
         // Setup the CastContext
         MediaRouteButton mediaRouteButton = findViewById(R.id.media_route_menu_item);
         CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mediaRouteButton);
-        mCastContext = CastContext.getSharedInstance(this);
+        try {
+            CastContext.getSharedInstance(this);
+        } catch (Exception e) {
+            Log.d("StageMode", "No Google Services");
+        }
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
         mMediaRouteSelector = new MediaRouteSelector.Builder()
                 .addControlCategory(CastMediaControlIntent.categoryForCast("4E2B0891"))
@@ -1123,8 +1128,6 @@ public class StageMode extends AppCompatActivity implements
         nearbyConnections.doSendPayloadBytes(infoPayload);
     }
 
-
-
     @SuppressLint("StaticFieldLeak")
     private class CheckStorage extends AsyncTask<Object, Void, String> {
 
@@ -1149,9 +1152,11 @@ public class StageMode extends AppCompatActivity implements
         getMenuInflater().inflate(R.menu.stage_actions, menu);
 
         // Setup the menu item for connecting to cast devices
-        MenuItem mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
+        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
 
-        /*MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
+        /*
+        MenuItem mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
+        MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
         View mr = menu.findItem(R.id.media_route_menu_item).getActionView();
         if (mr!=null) {
             mr.setFocusable(false);
@@ -1349,6 +1354,16 @@ public class StageMode extends AppCompatActivity implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void installPlayServices() {
+        Snackbar.make(findViewById(R.id.coordinator_layout), R.string.play_services_error,
+                BaseTransientBottomBar.LENGTH_LONG).setAction(R.string.play_services_how, v -> {
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.play_services_help)));
+            startActivity(i);
+        })
+                .show();
     }
 
     @Override

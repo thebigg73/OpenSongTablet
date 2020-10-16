@@ -74,6 +74,7 @@ public class NearbyConnections implements NearbyInterface {
     }
     @Override
     public void startAdvertising() {
+        Log.d("NearbyConnections","Nearby.getConnectionsClient(context)="+Nearby.getConnectionsClient(context));
         Log.d("d","startAdvertising()");
         if (!StaticVariables.isConnected) {
             AdvertisingOptions advertisingOptions =

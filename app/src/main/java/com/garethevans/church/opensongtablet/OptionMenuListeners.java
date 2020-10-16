@@ -22,6 +22,8 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class OptionMenuListeners extends AppCompatActivity implements MenuInterface{
@@ -75,6 +77,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         void selectAFileUri(String s);
         void profileWork(String s);
         boolean requestNearbyPermissions();
+        void installPlayServices();
     }
 
     private static MyInterface mListener;
@@ -561,9 +564,15 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             });
         }
         menuConnectButton.setOnClickListener(view -> {
-            StaticVariables.whichOptionMenu = "CONNECT";
-            if (mListener!=null) {
-                mListener.prepareOptionMenu();
+            // Check for Google Play availability
+            if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(c) == ConnectionResult.SUCCESS) {
+                Log.d("d","Success");
+                StaticVariables.whichOptionMenu = "CONNECT";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            } else {
+                mListener.installPlayServices();
             }
         });
         menuModeButton.setOnClickListener(view -> {

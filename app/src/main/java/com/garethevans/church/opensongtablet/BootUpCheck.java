@@ -31,6 +31,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.documentfile.provider.DocumentFile;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -131,6 +134,12 @@ public class BootUpCheck extends AppCompatActivity {
 
             // Identify the views
             identifyViews();
+
+            // Check for Google Play availability
+            if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) != ConnectionResult.SUCCESS) {
+                Log.d("StageMode", "onresume()  Play store isn't installed");
+                installPlayServices();
+            }
 
             // Update the verion and storage
             showCurrentStorage(uriTreeHome);
@@ -917,4 +926,13 @@ public class BootUpCheck extends AppCompatActivity {
         }
     }
 
+    private void installPlayServices() {
+        // We've identified that the user doesn't have the Google Play Store installed
+        // Warn them that some features won't work, but give them the option to fix it!
+        findViewById(R.id.play_services_error).setVisibility(View.VISIBLE);
+        findViewById(R.id.play_services_how).setOnClickListener(v -> {
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.play_services_help)));
+            startActivity(i);
+        });
+    }
 }
