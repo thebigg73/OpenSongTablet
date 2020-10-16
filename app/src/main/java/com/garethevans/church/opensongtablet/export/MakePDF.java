@@ -111,8 +111,9 @@ public class MakePDF {
 
         paint.setColor(Color.BLACK);
         paint.setTextSize(paintSize);
-        chordColor = preferences.getMyPreferenceInt(c,"custom2_lyricsChordsColor",0xff0000aa);
-        lyricColor = preferences.getMyPreferenceInt(c, "custom2_lyricsTextColor", 0xff000000);
+        // Keep the colours black and white for now
+        chordColor = Color.BLACK;
+        lyricColor = Color.BLACK;
     }
     private void saveThePDF(Context c, StorageAccess storageAccess, Uri uri, PdfDocument pdfDocument) {
         OutputStream outputStream = storageAccess.getOutputStream(c, uri);
@@ -158,13 +159,16 @@ public class MakePDF {
         // If the copyright isn't blank
         if (thisSong.getCopyright()!=null && !thisSong.getCopyright().isEmpty()) {
             string = thisSong.getCopyright();
+            if (!string.toLowerCase().contains(c.getString(R.string.edit_song_copyright).toLowerCase())) {
+                string = c.getString(R.string.edit_song_copyright) + " " + string;
+            }
             paint.getTextBounds(string,0,string.length(),bounds);
             height = height + bounds.height();
             canvas.drawText(string,margin,ypos,paint);
             ypos = ypos + paintSize;
         }
         paint.setStrokeWidth(2);
-        paint.setColor(0xff0000aa);
+        paint.setColor(Color.BLACK);
         canvas.drawLine(margin,ypos,docWidth-margin,ypos,paint);
         headerHeight = height + 22;
     }
