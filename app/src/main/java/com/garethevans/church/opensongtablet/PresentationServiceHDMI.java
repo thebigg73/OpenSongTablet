@@ -247,9 +247,11 @@ class PresentationServiceHDMI extends Presentation
                 projected_BackgroundImage, pageHolder,projected_Logo,projected_ImageView,projected_LinearLayout,bottom_infobar,projectedPage_RelativeLayout,
                 presentermode_title, presentermode_author, presentermode_copyright, presentermode_ccli, presentermode_alert, col1_1, col1_2, col2_2, col1_3, col2_3, col3_3);
     }
-    static void updateAlert(boolean show) {
+    static void updateAlert(boolean show, boolean update) {
         presentationCommon.updateAlert(c, preferences, show, presentermode_alert);
-        doUpdate();
+        if (update) {
+            doUpdate();
+        }
     }
     static void setUpLogo() {
         presentationCommon.setUpLogo(c,preferences,storageAccess,projected_Logo,StaticVariables.cast_availableWidth_1col,StaticVariables.cast_availableScreenHeight);

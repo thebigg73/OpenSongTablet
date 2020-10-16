@@ -3049,12 +3049,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // Fade out the logo
             if (mSelectedDevice != null) {
                 try {
+                    PresentationService.ExternalDisplay.wipeProjectedLayout();
                     PresentationService.ExternalDisplay.hideLogo();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (FullscreenActivity.isHDMIConnected) {
                 try {
+                    PresentationServiceHDMI.wipeProjectedLayout();
                     PresentationServiceHDMI.hideLogo();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -3882,16 +3884,17 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     @Override
     public void updateAlert(boolean ison) {
+        boolean displayAllowed = !(logoButton_isSelected || blankButton_isSelected);
         if (FullscreenActivity.isPresenting && !FullscreenActivity.isHDMIConnected) {
             try {
-                PresentationService.ExternalDisplay.updateAlert(ison);
+                PresentationService.ExternalDisplay.updateAlert(ison, displayAllowed);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         if (FullscreenActivity.isHDMIConnected) {
             try {
-                PresentationServiceHDMI.updateAlert(ison);
+                PresentationServiceHDMI.updateAlert(ison, displayAllowed);
             } catch (Exception e) {
                 e.printStackTrace();
             }

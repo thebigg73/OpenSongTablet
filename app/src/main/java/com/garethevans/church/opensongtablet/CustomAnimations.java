@@ -151,11 +151,7 @@ class CustomAnimations {
                 kickAlpha = v.getAlpha();
                 if (endAlpha == 0.99f) {
                     v.setAlpha(kickAlpha + 0.01f);
-                    v.setAlpha(kickAlpha);
-                    v.setAlpha(kickAlpha + 0.01f);
                 } else {
-                    v.setAlpha(kickAlpha - 0.01f);
-                    v.setAlpha(kickAlpha);
                     v.setAlpha(kickAlpha - 0.01f);
                 }
             }
