@@ -30,7 +30,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/section_box"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_margin="8dp">
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
@@ -49,6 +50,15 @@
                 app:iconSize="32dp" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/presoButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/presoFont"
+                app:icon="@drawable/rectangle"
+                app:iconGravity="start"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/chordsButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,13 +71,13 @@
                 android:id="@+id/capoButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Capo"
+                android:text="Capo chords"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/chordsColor"
+                android:id="@+id/pageButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/page_background"
@@ -88,7 +98,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/section_box"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_margin="8dp">
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
@@ -129,6 +140,135 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/tag_bridge"
+                app:icon="@drawable/rectangle"
+                app:iconGravity="start"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tagButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tag_tag"
+                app:icon="@drawable/rectangle"
+                app:iconGravity="start"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/commentButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comment"
+                app:icon="@drawable/rectangle"
+                app:iconGravity="start"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/customButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/custom"
+                app:icon="@drawable/rectangle"
+                app:iconGravity="start"
+                app:iconSize="32dp" />
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/section_box"
+        android:orientation="vertical"
+        android:layout_margin="8dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="@string/song_features" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/metronomeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/metronome"
+            app:icon="@drawable/rectangle"
+            app:iconGravity="start"
+            app:iconSize="32dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pagebuttonButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pagebuttons"
+            app:icon="@drawable/rectangle"
+            app:iconGravity="start"
+            app:iconSize="32dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/section_box"
+        android:orientation="vertical"
+        android:layout_margin="8dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="@string/stickynotes" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/stickytextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text"
+            app:icon="@drawable/rectangle"
+            app:iconGravity="start"
+            app:iconSize="32dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/stickybackgroundButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/presoBackground"
+            app:icon="@drawable/rectangle"
+            app:iconGravity="start"
+            app:iconSize="32dp" />
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/section_box"
+            android:orientation="vertical"
+            android:layout_margin="8dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@string/extra" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/extratextButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text"
+                app:icon="@drawable/rectangle"
+                app:iconGravity="start"
+                app:iconSize="32dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/extrabackgroundButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/presoBackground"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />

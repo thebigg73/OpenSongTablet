@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             app:main="CCLI"
-            app:sub="Change CCLI log" />
+            app:sub="CCLI settings" />
 
         <TableRow style="@style/DividerLine" />
 

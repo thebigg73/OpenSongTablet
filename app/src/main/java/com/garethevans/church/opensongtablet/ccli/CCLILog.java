@@ -343,7 +343,7 @@ public class CCLILog {
 
         } else {
             StringBuilder table = new StringBuilder("<!DOCTYPE html><html><head>\n" +
-                    "<style>\n{border-collapse: collapse; width: 100%}\n" +
+                    "<style>\ntable {border-collapse: collapse; width: 100%}\n" +
                     "th, td {border: 1px solid lightgrey; padding: 2px;}\n" +
                     "tr:nth-child(even) {background: ghostwhite}\n" +
                     "th {\npadding-top: 2px; padding-bottom: 2px; text-align: left; " +

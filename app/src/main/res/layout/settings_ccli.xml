@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:main="@string/export"
-            app:sub="Export your CCLI log as a .csv file"/>
+            app:sub="Export your CCLI log as an .xml file"/>
 
         <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
             android:id="@+id/ccliDelete"

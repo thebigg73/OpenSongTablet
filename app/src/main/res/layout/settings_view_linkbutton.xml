@@ -11,10 +11,10 @@
         android:textColor="@color/white"
         tools:text="Main text"
         android:layout_margin="0dp"
-        android:paddingStart="16dp"
+        android:paddingStart="8dp"
         android:paddingTop="16dp"
         android:paddingBottom="0dp"
-        android:paddingEnd="16dp"
+        android:paddingEnd="8dp"
         tools:ignore="HardcodedText" />
     <TextView
         android:id="@+id/subText"
@@ -23,10 +23,10 @@
         android:textColor="@color/lightgrey"
         style="?android:textAppearanceSmall"
         tools:text="Info text"
-        android:paddingStart="16dp"
+        android:paddingStart="8dp"
         android:paddingTop="0dp"
         android:paddingBottom="16dp"
-        android:paddingEnd="16dp"
+        android:paddingEnd="8dp"
         tools:ignore="HardcodedText" />
 
 </LinearLayout>

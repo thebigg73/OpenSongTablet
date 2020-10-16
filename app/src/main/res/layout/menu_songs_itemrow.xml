@@ -26,37 +26,44 @@
             android:layout_toStartOf="@+id/cardview_setcheck"
             android:text="@string/title"
             android:textSize="18sp"
-            android:layout_margin="4dp"/>
+            android:layout_margin="0dp"/>
+
+        <TextView
+            android:id="@+id/cardview_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:layout_toStartOf="@+id/cardview_setcheck"
+            android:layout_below="@+id/cardview_title"
+            android:text="@string/edit_song_author"
+            android:layout_margin="0dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@id/cardview_title"
-            android:layout_toStartOf="@id/cardview_setcheck">
-        <TextView
-            android:id="@+id/cardview_author"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="@string/edit_song_author"
-            android:layout_margin="4dp" />
+            android:layout_below="@+id/cardview_author"
+            android:layout_toStartOf="@id/cardview_setcheck"
+            android:id="@+id/content"
+            android:paddingBottom="8dp">
 
         <TextView
             android:id="@+id/cardview_folder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
-            android:layout_margin="4dp"
+            android:layout_weight="0.7"
+            android:layout_margin="0dp"
+            android:textSize="12sp"
             android:text="@string/mainfoldername" />
         <TextView
             android:id="@+id/cardview_key"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:gravity="center_vertical"
+            android:layout_weight="0.3"
+            android:gravity="center_vertical|end"
             android:text="@string/edit_song_key"
-            android:layout_margin="4dp"
+            android:textSize="12sp"
+            android:layout_margin="0dp"
             android:textStyle="italic" />
 
         </LinearLayout>
@@ -70,7 +77,10 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="24dp"
-            android:padding="4dp"
-/>
+            android:padding="4dp" />
+
+        <TableRow style="@style/DividerLine"
+            android:layout_below="@+id/content"/>
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

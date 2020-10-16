@@ -138,6 +138,7 @@ public class PerformanceFragment extends Fragment {
 
         // Build the song index if we are here for the first time
         if (StaticVariables.indexRequired) {
+            StaticVariables.indexRequired = false;
             mainActivityInterface.indexSongs();
         }
 
@@ -234,7 +235,7 @@ public class PerformanceFragment extends Fragment {
 
     private void prepareSongViews() {
         // This is called on UI thread above;
-        myView.pageHolder.setBackgroundColor(colorMap.get("lyricsBackground"));
+        myView.pageHolder.setBackgroundColor(colorMap.get("lyricsBackgroundColor"));
         // Get the song in the layout
         sectionViews = processSong.setSongInLayout(getActivity(),preferences, trimSections, addSectionSpace,
                 trimLines, lineSpacing, colorMap, scaleHeadings, scaleChords, scaleComments,

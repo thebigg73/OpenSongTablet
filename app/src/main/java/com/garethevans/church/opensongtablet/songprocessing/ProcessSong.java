@@ -1083,7 +1083,7 @@ public class ProcessSong {
                 section = section + "\n ";
             }
             LinearLayout linearLayout = newLinearLayout(c); // transparent color
-            int backgroundColor = colorMap.get("lyricsVerse");
+            int backgroundColor = colorMap.get("lyricsVerseColor");
             // Now split by line
             String[] lines = section.split("\n");
             for (String line:lines) {
@@ -1094,10 +1094,10 @@ public class ProcessSong {
                 }
                 Typeface typeface = getTypeface(linetype);
                 float size = getFontSize(linetype,headingScale,commentScale,chordScale);
-                int color = getFontColor(linetype,colorMap.get("lyricsText"),colorMap.get("lyricsChords"));
+                int color = getFontColor(linetype,colorMap.get("lyricsTextColor"),colorMap.get("lyricsChordsColor"));
                 if (line.contains("____groupline_____")) {
                     linearLayout.addView(groupTable(c,line,headingScale,commentScale,chordScale,
-                            colorMap.get("lyricsText"),colorMap.get("lyricsChords"),trimLines,lineSpacing,boldChordHeading));
+                            colorMap.get("lyricsTextColor"),colorMap.get("lyricsChordsColor"),trimLines,lineSpacing,boldChordHeading));
                 } else {
                     linearLayout.addView(lineText(c,linetype,line,typeface,size,color,
                             trimLines,lineSpacing,boldChordHeading));
@@ -1144,21 +1144,21 @@ public class ProcessSong {
     }
     private int getBGColor(Context c, Map<String,Integer> colorMap,String line) {
         if (line.startsWith(";")) {
-            return colorMap.get("lyricsComment");
+            return colorMap.get("lyricsCommentColor");
         } else if (fixHeading(c,line).contains(c.getString(R.string.tag_verse))) {
-            return colorMap.get("lyricsVerse");
+            return colorMap.get("lyricsVerseColorColor");
         } else if (fixHeading(c,line).contains(c.getString(R.string.tag_prechorus))) {
-            return colorMap.get("lyricsPreChorus");
+            return colorMap.get("lyricsPreChorusColor");
         } else if (fixHeading(c,line).contains(c.getString(R.string.tag_chorus))) {
-            return colorMap.get("lyricsChorus");
+            return colorMap.get("lyricsChorusColor");
         } else if (fixHeading(c,line).contains(c.getString(R.string.tag_bridge))) {
-            return colorMap.get("lyricsBridge");
+            return colorMap.get("lyricsBridgeColor");
         } else if (fixHeading(c,line).contains(c.getString(R.string.tag_tag))) {
-            return colorMap.get("lyricsTag");
+            return colorMap.get("lyricsTagColor");
         } else if (fixHeading(c,line).contains(c.getString(R.string.custom))) {
-            return colorMap.get("lyricsCustom");
+            return colorMap.get("lyricsCustomColor");
         } else {
-            return colorMap.get("lyricsVerse");
+            return colorMap.get("lyricsVerseColor");
         }
     }
 
