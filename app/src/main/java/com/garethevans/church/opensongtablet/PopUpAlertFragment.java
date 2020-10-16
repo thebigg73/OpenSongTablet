@@ -86,11 +86,7 @@ public class PopUpAlertFragment extends DialogFragment {
         SwitchCompat alertToggle = V.findViewById(R.id.alertToggleButton);
 
         // If an alert is currently being shown, make sure the toggle button is on.  If not, off!
-        if (PresenterMode.alert_on.equals("Y")) {
-            alertToggle.setChecked(true);
-        } else {
-            alertToggle.setChecked(false);
-        }
+        alertToggle.setChecked(PresenterMode.alert_on.equals("Y"));
 
         // Now set a listener for the toggle changing.
         // This will either switch on the alert, or turn it off.

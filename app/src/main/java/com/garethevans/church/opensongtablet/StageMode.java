@@ -3366,7 +3366,7 @@ public class StageMode extends AppCompatActivity implements
 
     private void getPadProgress() {
         // IV - Pad time display logic is concentrated here
-        String text = "0:00";
+        String text = "";
 
         if (StaticVariables.clickedOnPadStart) {
             // Decide which player and get time
@@ -3379,13 +3379,22 @@ public class StageMode extends AppCompatActivity implements
 
         if (!text.equals(padcurrentTime_TextView.toString())) {
             updateExtraInfoColorsAndSizes("pad");
-            padcurrentTime_TextView.setText(text);
-            // When 0:00 we get the pad total time and make Pad progress visible
-            if (text.equals("0:00")) {
-                // Display the '/' as now active
-                padTimeSeparator_TextView.setText("/");
-                padtotalTime_TextView.setText(TimeTools.timeFormatFixer(StaticVariables.padtime_length));
+            if (text.equals("")) {
+                padcurrentTime_TextView.setText("");
+                padTimeSeparator_TextView.setText("");
+                padtotalTime_TextView.setText("");
                 backingtrackProgress.setVisibility(View.VISIBLE);
+            } else {
+                // When 0:00 we get the pad total time and make Pad progress visible
+                if (text.equals("0:00")) {
+                    backingtrackProgress.setVisibility(View.GONE);
+                    padcurrentTime_TextView.setText(text);
+                    padTimeSeparator_TextView.setText("/");
+                    padtotalTime_TextView.setText(TimeTools.timeFormatFixer(StaticVariables.padtime_length));
+                    backingtrackProgress.setVisibility(View.VISIBLE);
+                } else {
+                    padcurrentTime_TextView.setText(text);
+                }
             }
         }
     }
@@ -6218,9 +6227,6 @@ public class StageMode extends AppCompatActivity implements
     // IV - Logic to fade playing pad(s)
     private void fadeoutPad() {
 
-        // Put the display time into a known state
-        padcurrentTime_TextView.setText(R.string.time_zero);
-
         // Put the quick fade mechainism into a known state
         StaticVariables.padInQuickFade = 0;
 
@@ -8394,7 +8400,6 @@ public class StageMode extends AppCompatActivity implements
         doCancelAsyncTask(play_pads);
         play_pads = new PlayPads();
         try {
-            padcurrentTime_TextView.setText(R.string.time_zero);
             play_pads.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
             e.printStackTrace();

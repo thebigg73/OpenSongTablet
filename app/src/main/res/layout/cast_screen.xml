@@ -91,27 +91,32 @@
                 <TextView
                     android:id="@+id/presentermode_title"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false" />
 
                 <TextView
                     android:id="@+id/presentermode_author"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false" />
 
                 <TextView
                     android:id="@+id/presentermode_copyright"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false" />
 
                 <TextView
                     android:id="@+id/presentermode_ccli"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false" />
 
                 <TextView
                     android:id="@+id/presentermode_alert"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false" />
             </LinearLayout>
         </LinearLayout>
 

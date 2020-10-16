@@ -7,7 +7,6 @@ import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -627,15 +626,12 @@ public class PopUpLayoutFragment extends DialogFragment {
     private void sendUpdateToScreen(String what) {
         if (!firsttime) {
             if (mListener != null) {
-                // IV - Set so that infoBar appears - so adjustments can be seen
-                StaticVariables.infoBarIfRequired = true;
                 mListener.refreshSecondaryDisplay(what);
             }
         } else {
             // We have just initialised the variables
             firsttime = false;
             if (mListener != null) {
-                StaticVariables.infoBarIfRequired = true;
                 mListener.refreshSecondaryDisplay("logo");
             }
         }
