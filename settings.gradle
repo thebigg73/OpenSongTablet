@@ -1,3 +1,2 @@
-include ':mylibrary'
 include ':app'
 //rootProject.name = 'opensongtablet'
