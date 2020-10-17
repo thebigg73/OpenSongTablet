@@ -1496,7 +1496,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                     // Get the image locations if they exist
                     String thisloc = null;
-                    if (imagelocs != null && imagelocs[x] != null) {
+                    if (imagelocs != null && imagelocs[x] != null && imagelocs.length>x) {
                         thisloc = imagelocs[x];
                     }
 
@@ -2069,6 +2069,17 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                             File f = new File(filelocation);
                             FullscreenActivity.file_uri = FileProvider.getUriForFile(PresenterMode.this,
                                     "OpenSongAppFiles", f);
+                        }
+
+                        // Get persistent permissions
+                        try {
+                            final int takeFlags = data.getFlags()
+                                    & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                            // Check for the freshest data.
+                            getContentResolver().takePersistableUriPermission(FullscreenActivity.file_uri, takeFlags);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                         openFragment();
                     } else {
@@ -3645,11 +3656,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         updateDisplays();
     }
 
-    @SuppressLint("NewApi")
     private class MyMediaRouterCallback extends MediaRouter.Callback {
 
         @Override
-        public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
+        public void onRouteSelected(MediaRouter router, int type, MediaRouter.RouteInfo info) {
             mSelectedDevice = CastDevice.getFromBundle(info.getExtras());
             isSecondScreen();
             logoButton_isSelected = true;
@@ -3658,7 +3668,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
 
         @Override
-        public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
+        public void onRouteUnselected(MediaRouter router, int type, MediaRouter.RouteInfo info) {
             teardown();
             mSelectedDevice = null;
             FullscreenActivity.isPresenting = false;

@@ -3710,6 +3710,18 @@ public class StageMode extends AppCompatActivity implements
                             FullscreenActivity.file_uri = FileProvider.getUriForFile(StageMode.this,
                                     "OpenSongAppFiles", f);
                         }
+
+                        // Get persistent permissions
+                        try {
+                            final int takeFlags = data.getFlags()
+                                    & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                            // Check for the freshest data.
+                            getContentResolver().takePersistableUriPermission(FullscreenActivity.file_uri, takeFlags);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                         openFragment();
                     } else {
                         StaticVariables.myToastMessage = getString(R.string.file_type_unknown);

@@ -432,6 +432,16 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             Uri uri = intent.getData();
             Log.d("onActivityResult","uri="+uri);
 
+            // Get persistent permissions
+            try {
+                final int takeFlags = intent.getFlags()
+                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                getContext().getContentResolver().takePersistableUriPermission(uri, takeFlags);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             if (requestCode==StaticVariables.REQUEST_IMAGE_CODE) {
                 // Create a new row in the table
                 // Each row has the file name, an image thumbnail and a delete button
