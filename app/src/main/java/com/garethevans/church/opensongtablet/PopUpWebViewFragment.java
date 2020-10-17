@@ -49,8 +49,10 @@ public class PopUpWebViewFragment extends DialogFragment {
                 mTitle = getString(R.string.websearch);
                 break;
         }
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+        }
 
         View V = inflater.inflate(R.layout.popup_webview, container, false);
 

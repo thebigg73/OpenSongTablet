@@ -82,8 +82,11 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         if (savedInstanceState != null) {
             this.dismiss();
         }
-        getDialog().setCanceledOnTouchOutside(true);
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (getDialog()!=null) {
+            getDialog().setCanceledOnTouchOutside(true);
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
+
         mListener.pageButtonAlpha("autoscroll");
 
         View V = inflater.inflate(R.layout.popup_page_autoscroll, container, false);

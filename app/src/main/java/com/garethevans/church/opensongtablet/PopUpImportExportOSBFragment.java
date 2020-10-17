@@ -101,8 +101,10 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         } else {
             mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.backup_export);
         }
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(false);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(false);
+        }
 
         View V = inflater.inflate(R.layout.popup_importexportosb, container, false);
 
@@ -169,8 +171,11 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
             // We must be importing and have selected an appropriate .osb file
             importfilechooser.setVisibility(View.VISIBLE);
             // IV - Adjusted to handle files at root of drive
-            String nameoffile = FullscreenActivity.file_uri.getLastPathSegment().replace(":","/");
-            if (nameoffile != null && nameoffile.contains("/")) {
+            String nameoffile = "";
+            if (FullscreenActivity.file_uri!=null && FullscreenActivity.file_uri.getLastPathSegment()!=null) {
+                nameoffile = FullscreenActivity.file_uri.getLastPathSegment().replace(":", "/");
+            }
+            if (nameoffile.contains("/")) {
                 nameoffile = nameoffile.substring(nameoffile.lastIndexOf("/") + 1);
             }
             chooseosbfile.setText(nameoffile);

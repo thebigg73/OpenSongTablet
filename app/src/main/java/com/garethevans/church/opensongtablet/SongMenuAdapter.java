@@ -41,7 +41,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
     private final ArrayList<SongMenuViewItems> songList;
     private final Preferences preferences;
     private ViewHolder viewHolder;
-    private float textSize;
+    private final float textSize;
 
     @SuppressLint("UseSparseArrays")
     SongMenuAdapter(Context context, Preferences p, ArrayList<SongMenuViewItems> songList) {
@@ -108,7 +108,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
 
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         TextView lblListItem;
         TextView lblListItemAuthor;
         CheckBox lblListCheck;

@@ -69,10 +69,12 @@ public class PopUpABCNotationFragment extends DialogFragment {
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(false);
-        if (getDialog().getWindow()!=null) {
-            getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(false);
+            if (getDialog().getWindow() != null) {
+                getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            }
         }
         View V = inflater.inflate(R.layout.popup_abcnotation, container, false);
 

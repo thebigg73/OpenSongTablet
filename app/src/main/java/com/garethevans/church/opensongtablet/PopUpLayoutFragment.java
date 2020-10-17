@@ -90,8 +90,10 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+        }
 
         final View V = inflater.inflate(R.layout.popup_layout, container, false);
 
@@ -739,11 +741,11 @@ public class PopUpLayoutFragment extends DialogFragment {
         } else {
             view.setBackgroundColor(0x00000000);
             RequestOptions myOptions = new RequestOptions().fitCenter().override(120, 90);
-            if (uri!=null && uri.toString().contains("ost_logo")) {
+            if (uri.toString().contains("ost_logo")) {
                 GlideApp.with(c).load(R.drawable.ost_logo).apply(myOptions).into(view);
-            } else if (uri!=null && uri.toString().contains("ost_bg")) {
+            } else if (uri.toString().contains("ost_bg")) {
                 GlideApp.with(c).load(R.drawable.preso_default_bg).apply(myOptions).into(view);
-            } else if (uri!=null) {
+            } else {
                 GlideApp.with(c).load(uri).apply(myOptions).into(view);
             }
         }

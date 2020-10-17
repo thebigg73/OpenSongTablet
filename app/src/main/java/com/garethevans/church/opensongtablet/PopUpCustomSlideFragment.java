@@ -116,8 +116,10 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+        }
 
         // Initialise the helper classes
         storageAccess = new StorageAccess();
@@ -437,7 +439,9 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 final int takeFlags = intent.getFlags()
                         & (Intent.FLAG_GRANT_READ_URI_PERMISSION
                         | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                getContext().getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                if (uri!=null) {
+                    requireContext().getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

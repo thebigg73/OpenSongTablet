@@ -5,7 +5,7 @@ import android.content.res.Configuration;
 
 import java.util.Locale;
 
-// This is used to get the device lovcale and check if it is one of the supported languages.  If not, used the save value
+// This is used to get the device locale and check if it is one of the supported languages.  If not, used the save value
 // If the user had a saved value - use this instead
 class FixLocale {
 

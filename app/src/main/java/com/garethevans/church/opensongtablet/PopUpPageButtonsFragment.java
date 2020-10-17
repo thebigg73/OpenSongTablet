@@ -64,8 +64,10 @@ public class PopUpPageButtonsFragment extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+        }
 
         View V = inflater.inflate(R.layout.popup_pagebuttons, container, false);
 
@@ -108,12 +110,8 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         SwitchCompat setMoveVisible_Switch = V.findViewById(R.id.setMoveVisible_Switch);
 
         // Set the default values
-        if (preferences.getMyPreferenceInt(getActivity(),"pageButtonSize",FloatingActionButton.SIZE_NORMAL) ==
-                FloatingActionButton.SIZE_NORMAL) {
-            pageButtonSize_Switch.setChecked(true);
-        } else {
-            pageButtonSize_Switch.setChecked(false);
-        }
+        pageButtonSize_Switch.setChecked(preferences.getMyPreferenceInt(getActivity(), "pageButtonSize", FloatingActionButton.SIZE_NORMAL) ==
+                FloatingActionButton.SIZE_NORMAL);
         int gettransp = (int) (preferences.getMyPreferenceFloat(getActivity(), "pageButtonAlpha", 0.5f) * 100);
         String text = gettransp + "%";
         pageButtonTransparency_seekBar.setProgress(gettransp);

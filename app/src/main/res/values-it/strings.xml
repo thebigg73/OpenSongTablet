@@ -513,4 +513,6 @@
     <string name="respectcopyright">Rispetta il copyright: usa sempre legalmente</string>
     <string name="wordsandmusicby">Parole e musica di</string>
     <string name="usedbypermision">Utilizzato su autorizzazione.</string>
+    <string name="play_services_error">Per utilizzare Google Cast, i caratteri e le connessioni nelle vicinanze, dovrai installare Google Play Services.</string>
+    <string name="play_services_how">Mostrami come</string>
 </resources>

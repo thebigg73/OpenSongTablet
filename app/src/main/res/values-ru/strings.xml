@@ -513,4 +513,6 @@
     <string name="respectcopyright">Уважайте авторские права - всегда используйте легально</string>
     <string name="usedbypermision">Используется с разрешения.</string>
     <string name="wordsandmusicby">Слова и музыка</string>
+    <string name="play_services_how">Показать мне, как</string>
+    <string name="play_services_error">Чтобы использовать Google Cast, Fonts и Nearby Connections, вам необходимо установить Google Play Services.</string>
 </resources>

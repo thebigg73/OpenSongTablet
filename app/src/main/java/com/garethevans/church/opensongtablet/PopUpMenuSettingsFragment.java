@@ -64,8 +64,10 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+        }
         View V = inflater.inflate(R.layout.popup_menusettings, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);

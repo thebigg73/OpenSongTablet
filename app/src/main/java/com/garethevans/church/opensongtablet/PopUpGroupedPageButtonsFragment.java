@@ -66,8 +66,10 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+        }
 
         View V = inflater.inflate(R.layout.popup_groupedpagebuttons, container, false);
 
@@ -218,10 +220,10 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
     private void setupQuickLaunchButtons() {
         // Based on the user's choices for the custom quicklaunch buttons,
         // set the appropriate icons and onClick listeners
-        group_custom1.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(getActivity(), preferences.getMyPreferenceString(getActivity(),"pageButtonCustom1Action","")));
-        group_custom2.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(getActivity(), preferences.getMyPreferenceString(getActivity(),"pageButtonCustom2Action","")));
-        group_custom3.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(getActivity(), preferences.getMyPreferenceString(getActivity(),"pageButtonCustom3Action","")));
-        group_custom4.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(getActivity(), preferences.getMyPreferenceString(getActivity(),"pageButtonCustom4Action","")));
+        group_custom1.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(requireActivity(), preferences.getMyPreferenceString(getActivity(),"pageButtonCustom1Action","")));
+        group_custom2.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(requireActivity(), preferences.getMyPreferenceString(getActivity(),"pageButtonCustom2Action","")));
+        group_custom3.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(requireActivity(), preferences.getMyPreferenceString(getActivity(),"pageButtonCustom3Action","")));
+        group_custom4.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(requireActivity(), preferences.getMyPreferenceString(getActivity(),"pageButtonCustom4Action","")));
     }
 
     private void customButtonAction(String s) {

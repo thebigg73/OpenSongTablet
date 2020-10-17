@@ -44,8 +44,11 @@ public class PopUpGesturesFragment extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+        }
+
         View V = inflater.inflate(R.layout.popup_gestures, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
@@ -83,10 +86,10 @@ public class PopUpGesturesFragment extends DialogFragment {
         vals.add(getString(R.string.autoscrollPedalText)+" + "+getString(R.string.metronomePedalText));
         vals.add(getString(R.string.padPedalText)+" + "+getString(R.string.metronomePedalText));
         vals.add(getString(R.string.autoscrollPedalText)+" + "+getString(R.string.padPedalText) + " + " + getString(R.string.metronomePedalText));
-        vals.add(getActivity().getString(R.string.currentset));
+        vals.add(requireContext().getString(R.string.currentset));
 
         // Set up the spinners
-        ArrayAdapter<String> gestures = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, vals);
+        ArrayAdapter<String> gestures = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, vals);
         gestures.setDropDownViewResource(R.layout.my_spinner);
         screenDoubleTap.setAdapter(gestures);
         screenLongPress.setAdapter(gestures);

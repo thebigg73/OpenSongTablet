@@ -54,8 +54,10 @@ public class PopUpStickyFragment extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setCanceledOnTouchOutside(true);
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (getDialog()!=null) {
+            getDialog().setCanceledOnTouchOutside(true);
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
         mListener.pageButtonAlpha("sticky");
 
         View V = inflater.inflate(R.layout.popup_page_sticky, container, false);

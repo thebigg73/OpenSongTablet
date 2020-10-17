@@ -46,8 +46,10 @@ public class PopUpExportSongListFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View V = inflater.inflate(R.layout.popup_exportsonglist, container, false);
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+        }
 
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.exportsongdirectory));
@@ -74,7 +76,7 @@ public class PopUpExportSongListFragment extends DialogFragment {
         // Prepare a list of the song directories
         songfolders = songFolders.prepareSongFolders(getActivity(),preferences);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, songfolders);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_list_item_multiple_choice, songfolders);
         songDirectoy_ListView.setAdapter(adapter);
         songDirectoy_ListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 

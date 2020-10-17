@@ -62,12 +62,15 @@ public class PopUpExtraInfoFragment extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+        }
+
         View V = inflater.inflate(R.layout.popup_extrainfo, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getContext().getResources().getString(R.string.extra));
+        title.setText(requireContext().getString(R.string.extra));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
             CustomAnimations.animateFAB(closeMe,getActivity());
@@ -164,7 +167,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 String s;
                 if (i==0) {
-                    s = getContext().getResources().getString(R.string.on);
+                    s = requireContext().getResources().getString(R.string.on);
                 } else {
                     s = i + " s";
                 }
@@ -188,7 +191,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 String s;
                 if (i==0) {
-                    s = getContext().getResources().getString(R.string.on);
+                    s = requireContext().getString(R.string.on);
                 } else {
                     s = i + " s";
                 }
@@ -278,7 +281,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
                 stickyNotesTime_SeekBar.setProgress(preferences.getMyPreferenceInt(getActivity(),"timeToDisplaySticky",5));
                 String s;
                 if (preferences.getMyPreferenceInt(getActivity(),"timeToDisplaySticky",5)==0) {
-                    s = getContext().getResources().getString(R.string.on);
+                    s = requireContext().getString(R.string.on);
                 } else {
                     s = preferences.getMyPreferenceInt(getActivity(),"timeToDisplaySticky",5) + " s";
                 }
@@ -305,7 +308,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         highlightTime_SeekBar.setProgress(time);
         String s;
         if (time==0) {
-            s = getContext().getResources().getString(R.string.on);
+            s = requireContext().getString(R.string.on);
         } else {
             s = time + " s";
         }

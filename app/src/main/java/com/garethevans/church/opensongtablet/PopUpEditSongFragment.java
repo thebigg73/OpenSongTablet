@@ -253,7 +253,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             mListener.prepareSongMenu();
 
             // Now dismiss this popup
-            forceHideKeyboard(edit_song_lyrics);
+            forceHideKeyboard();
             dismiss();
         }
     }
@@ -276,7 +276,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            forceHideKeyboard(edit_song_lyrics);
+            forceHideKeyboard();
             this.dismiss();
         }
     }
@@ -346,7 +346,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         } catch (Exception e) {
             e.printStackTrace();
         }
-        forceHideKeyboard(edit_song_lyrics);
+        forceHideKeyboard();
         dismiss();
     }
 
@@ -510,7 +510,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     @Override
     public void onCancel(@NonNull DialogInterface dialog) {
         try {
-            forceHideKeyboard(edit_song_lyrics);
+            forceHideKeyboard();
             this.dismiss();
         } catch (Exception e) {
             e.printStackTrace();
@@ -551,9 +551,13 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+            if (getDialog().getWindow()!=null) {
+                getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            }
+        }
         V = inflater.inflate(R.layout.popup_editsong, container, false);
         storageAccess = new StorageAccess();
         textSongConvert = new TextSongConvert();
@@ -615,7 +619,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
 
             DialogFragment newFragment = PopUpPresentationOrderFragment.newInstance();
             newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
-            forceHideKeyboard(edit_song_lyrics);
+            forceHideKeyboard();
             dismiss();
         });
         hideIfPDF(V.findViewById(R.id.myPresentation));
@@ -689,7 +693,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 addBrackets.hide();
                 transposeDown_RelativeLayout.setVisibility(View.GONE);
                 transposeUp_RelativeLayout.setVisibility(View.GONE);
-                forceHideKeyboard(edit_song_lyrics);
+                forceHideKeyboard();
             }
         });
         edit_song_lyrics.setOnClickListener(v -> {
@@ -720,7 +724,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             FullscreenActivity.whattodo = "abcnotation_edit";
             DialogFragment newFragment = PopUpABCNotationFragment.newInstance();
             newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
-            forceHideKeyboard(edit_song_lyrics);
+            forceHideKeyboard();
             dismiss();
         });
         fix_lyrics = V.findViewById(R.id.fix_lyrics);
@@ -1032,7 +1036,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         }*/
     }
 
-    private void forceHideKeyboard(View v) {
+    private void forceHideKeyboard() {
             /*try {
                 if (v==null && getActivity()!=null) {
                     v = new TextView(getActivity());
@@ -1068,6 +1072,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
 
     @Override
     public void onDismiss(@NonNull final DialogInterface dialog) {
-        forceHideKeyboard(null);
+        forceHideKeyboard();
     }
 }

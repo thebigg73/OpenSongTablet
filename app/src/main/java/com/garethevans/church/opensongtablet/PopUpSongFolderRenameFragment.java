@@ -54,14 +54,16 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getString(R.string.rename));
         if ("create".equals(myTask)) {
             mTitle = getString(R.string.folder_new);
         } else {
             mTitle = getString(R.string.rename);
         }
-        getDialog().setCanceledOnTouchOutside(true);
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (getDialog()!=null) {
+            getDialog().setTitle(getString(R.string.rename));
+            getDialog().setCanceledOnTouchOutside(true);
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
         View V = inflater.inflate(R.layout.popup_songfolderrename, container, false);
 
         title = V.findViewById(R.id.dialogtitle);

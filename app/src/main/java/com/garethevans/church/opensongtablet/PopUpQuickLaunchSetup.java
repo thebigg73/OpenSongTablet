@@ -61,8 +61,10 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         if (savedInstanceState != null) {
             this.dismiss();
         }
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+        }
         mListener.pageButtonAlpha("");
 
         V = inflater.inflate(R.layout.popup_quicklaunch, container, false);
@@ -188,10 +190,10 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         //19  Exit/close app
         actionOptions.add(getString(R.string.drawer_close));
 
-        ArrayAdapter<String> adapter_1 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
-        ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
-        ArrayAdapter<String> adapter_3 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
-        ArrayAdapter<String> adapter_4 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
+        ArrayAdapter<String> adapter_1 = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, actionOptions);
+        ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, actionOptions);
+        ArrayAdapter<String> adapter_3 = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, actionOptions);
+        ArrayAdapter<String> adapter_4 = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, actionOptions);
         adapter_1.setDropDownViewResource(R.layout.my_spinner);
         adapter_2.setDropDownViewResource(R.layout.my_spinner);
         adapter_3.setDropDownViewResource(R.layout.my_spinner);
@@ -207,10 +209,10 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         button3_spinner.setSelection(decideOnItemPosition(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom3Action","")));
         button4_spinner.setSelection(decideOnItemPosition(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom4Action","")));
 
-        button1_image.setBackgroundDrawable(getButtonImage(getActivity(),preferences.getMyPreferenceString(getActivity(),"pageButtonCustom1Action","transpose")));
-        button2_image.setBackgroundDrawable(getButtonImage(getActivity(),preferences.getMyPreferenceString(getActivity(),"pageButtonCustom2Action","")));
-        button3_image.setBackgroundDrawable(getButtonImage(getActivity(),preferences.getMyPreferenceString(getActivity(),"pageButtonCustom3Action","")));
-        button4_image.setBackgroundDrawable(getButtonImage(getActivity(),preferences.getMyPreferenceString(getActivity(),"pageButtonCustom4Action","")));
+        button1_image.setBackgroundDrawable(getButtonImage(requireActivity(),preferences.getMyPreferenceString(getActivity(),"pageButtonCustom1Action","transpose")));
+        button2_image.setBackgroundDrawable(getButtonImage(requireActivity(),preferences.getMyPreferenceString(getActivity(),"pageButtonCustom2Action","")));
+        button3_image.setBackgroundDrawable(getButtonImage(requireActivity(),preferences.getMyPreferenceString(getActivity(),"pageButtonCustom3Action","")));
+        button4_image.setBackgroundDrawable(getButtonImage(requireActivity(),preferences.getMyPreferenceString(getActivity(),"pageButtonCustom4Action","")));
     }
 
     private void setListeners() {
@@ -228,7 +230,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         button1_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                button1_image.setImageDrawable(getButtonImage(getActivity(),decideOnItemText(i)));
+                button1_image.setImageDrawable(getButtonImage(requireActivity(),decideOnItemText(i)));
             }
 
             @Override
@@ -237,7 +239,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         button2_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                button2_image.setImageDrawable(getButtonImage(getActivity(),decideOnItemText(i)));
+                button2_image.setImageDrawable(getButtonImage(requireActivity(),decideOnItemText(i)));
             }
 
             @Override
@@ -246,7 +248,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         button3_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                button3_image.setImageDrawable(getButtonImage(getActivity(),decideOnItemText(i)));
+                button3_image.setImageDrawable(getButtonImage(requireActivity(),decideOnItemText(i)));
             }
 
             @Override
@@ -255,7 +257,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         button4_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                button4_image.setImageDrawable(getButtonImage(getActivity(),decideOnItemText(i)));
+                button4_image.setImageDrawable(getButtonImage(requireActivity(),decideOnItemText(i)));
             }
 
             @Override

@@ -160,7 +160,7 @@ class AutoScrollFunctions {
             animator.setInterpolator(interpolator);
             // The animation duration should be 500ms, but this means if there is a delay in processing, the time slips.
             int triggerTime = (int) (StaticVariables.autoscroll_pause_time - (System.currentTimeMillis() - FullscreenActivity.time_passed));
-            animator.setDuration((int) (triggerTime));
+            animator.setDuration(triggerTime);
             if (!FullscreenActivity.isManualDragging) {
                 sv.post(animator::start);
             }

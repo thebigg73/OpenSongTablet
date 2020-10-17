@@ -104,8 +104,10 @@ public class PopUpImportExternalFile extends DialogFragment {
         sqLiteHelper = new SQLiteHelper(getActivity());
 
         View v = inflater.inflate(R.layout.popup_importexternalfile, container, false);
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(false);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(false);
+        }
 
         initialiseViews(v);
 
@@ -325,7 +327,7 @@ public class PopUpImportExternalFile extends DialogFragment {
     private void importOpenSongSet() {
         // Get the new file name
         String filename = improveFileName(FullscreenActivity.file_uri);
-        if (filename!=null && filename.endsWith(".osts")) {
+        if (filename.endsWith(".osts")) {
             filename = filename.replace(".osts","");
         }
 
@@ -395,7 +397,7 @@ public class PopUpImportExternalFile extends DialogFragment {
     private void importFile() {
         // Get the new file name
         String filename = improveFileName(FullscreenActivity.file_uri);
-        if (filename!=null && filename.endsWith(".ost")) {
+        if (filename.endsWith(".ost")) {
             filename = filename.replace(".ost","");
         }
 
@@ -723,7 +725,7 @@ public class PopUpImportExternalFile extends DialogFragment {
 
     private String improveFileName(Uri fileUri) {
         String betterFilename = "";
-        if (fileUri!=null) {
+        if (fileUri!=null && fileUri.getLastPathSegment()!=null) {
             betterFilename = fileUri.getLastPathSegment();
         }
         // IV - Adjusted to handle files at root of drive

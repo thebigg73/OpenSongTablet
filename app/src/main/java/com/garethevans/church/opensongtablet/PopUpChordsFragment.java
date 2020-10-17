@@ -58,7 +58,6 @@ public class PopUpChordsFragment extends DialogFragment {
     }
 
     private TableLayout chordimageshere;
-    private Button customchordedit;
     private ArrayList<String> unique_chords;
     private AsyncTask<Object,Void,String> prepare_chords;
 
@@ -79,8 +78,11 @@ public class PopUpChordsFragment extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setCanceledOnTouchOutside(true);
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (getDialog()!=null) {
+            getDialog().setCanceledOnTouchOutside(true);
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
+
         if (mListener!=null) {
             mListener.pageButtonAlpha("chords");
         }
@@ -143,7 +145,7 @@ public class PopUpChordsFragment extends DialogFragment {
         r3 = ResourcesCompat.getDrawable(res,R.drawable.chord_r_3,null);
         r4 = ResourcesCompat.getDrawable(res,R.drawable.chord_r_4,null);
         r5 = ResourcesCompat.getDrawable(res,R.drawable.chord_r_5,null);
-        customchordedit = V.findViewById(R.id.customchordedit);
+        Button customchordedit = V.findViewById(R.id.customchordedit);
         customchordedit.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "customchords";
             mListener.openFragment();

@@ -513,4 +513,6 @@
     <string name="respectcopyright">Σεβασμός των πνευματικών δικαιωμάτων - να χρησιμοποιείτε πάντα νόμιμα</string>
     <string name="wordsandmusicby">Λέξεις και μουσική από</string>
     <string name="usedbypermision">Χρησιμοποιείται με άδεια.</string>
+    <string name="play_services_how">Δείξε μου πώς</string>
+    <string name="play_services_error">Για να χρησιμοποιήσετε το Google Cast, τις γραμματοσειρές και τις κοντινές συνδέσεις, θα πρέπει να εγκαταστήσετε τις Υπηρεσίες Google Play.</string>
 </resources>

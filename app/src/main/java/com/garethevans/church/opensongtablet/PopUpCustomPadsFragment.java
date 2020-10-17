@@ -39,8 +39,10 @@ public class PopUpCustomPadsFragment extends DialogFragment {
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setCanceledOnTouchOutside(true);
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (getDialog()!=null) {
+            getDialog().setCanceledOnTouchOutside(true);
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
 
         View V = inflater.inflate(R.layout.popup_custompads, container, false);
 
@@ -86,8 +88,8 @@ public class PopUpCustomPadsFragment extends DialogFragment {
         preferences = new Preferences();
 
         padfiles = storageAccess.listFilesInFolder(getActivity(), preferences, "Pads", "");
-        padfiles.add(0,getActivity().getString(R.string.pad_auto));
-        ArrayAdapter<String> aa = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,padfiles);
+        padfiles.add(0,requireContext().getString(R.string.pad_auto));
+        ArrayAdapter<String> aa = new ArrayAdapter<>(requireContext(),R.layout.my_spinner,padfiles);
         padAb.setAdapter(aa);
         padA.setAdapter(aa);
         padBb.setAdapter(aa);

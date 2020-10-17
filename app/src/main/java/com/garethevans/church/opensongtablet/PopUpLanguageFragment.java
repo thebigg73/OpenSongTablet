@@ -40,13 +40,16 @@ public class PopUpLanguageFragment extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(Objects.requireNonNull(getActivity()).getResources().getString(R.string.language));
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        if (getDialog()!=null) {
+            getDialog().setTitle(Objects.requireNonNull(getActivity()).getResources().getString(R.string.language));
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+        }
+
         View V = inflater.inflate(R.layout.popup_language, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.language));
+        title.setText(requireContext().getString(R.string.language));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
             CustomAnimations.animateFAB(closeMe,getActivity());
@@ -120,9 +123,9 @@ public class PopUpLanguageFragment extends DialogFragment {
                 break;
         }
 
-        ArrayAdapter<String> la = new ArrayAdapter<>(getActivity(),
+        ArrayAdapter<String> la = new ArrayAdapter<>(requireActivity(),
                 android.R.layout.simple_list_item_single_choice,
-                getActivity().getResources().getStringArray(R.array.languagelist));
+                requireContext().getResources().getStringArray(R.array.languagelist));
         languagescroll.setAdapter(la);
 
         languagescroll.setItemChecked(positionselected, true);

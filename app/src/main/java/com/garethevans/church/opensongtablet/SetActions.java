@@ -115,7 +115,7 @@ class SetActions {
                     switch (xpp.getAttributeValue(null, "type")) {
                         case "song":
                             // Get song
-                            getSong(c,preferences);
+                            getSong();
                             break;
                         case "scripture":
                             // Get Scripture
@@ -518,7 +518,7 @@ class SetActions {
         currentSet = currentSet + set_item;
     }
 
-    private void getSong(Context c, Preferences preferences) {
+    private void getSong() {
         try {
             // Get path and remove leading /
             String p_name = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"path"));
@@ -811,7 +811,7 @@ class SetActions {
                             break;
                         case "filename":
                             image_filename = LoadXML.parseFromHTMLEntities(xpp.nextText());
-                            if (image_filename != null && !image_filename.equals("") && !image_filename.isEmpty()) {
+                            if (!image_filename.equals("") && !image_filename.isEmpty()) {
                                 slide_images.append(image_filename).append("\n");
                                 slide_image_titles.append("[").append(c.getResources().getString(R.string.image))
                                         .append("_").append(imagenums + 1).append("]\n").append(image_filename)

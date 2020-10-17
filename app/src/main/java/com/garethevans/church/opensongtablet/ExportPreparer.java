@@ -129,7 +129,9 @@ class ExportPreparer {
 
                 String s = songtoload.toString();
                 try {
-                    s = songtoload.getLastPathSegment().toLowerCase(StaticVariables.locale);
+                    if (songtoload.getLastPathSegment() != null) {
+                        s = songtoload.getLastPathSegment().toLowerCase(StaticVariables.locale);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -875,11 +877,10 @@ class ExportPreparer {
     }
     private boolean isImg(String s) {
         s = s.toLowerCase(StaticVariables.locale);
-        return s != null && (s.endsWith(".jpg") || s.endsWith(".jpeg") || s.endsWith(".gif") ||
-                s.endsWith(".png") || s.endsWith(".bmp"));
+        return s.endsWith(".jpg") || s.endsWith(".jpeg") || s.endsWith(".gif") || s.endsWith(".png") || s.endsWith(".bmp");
     }
     private boolean isPDF(String s) {
         s = s.toLowerCase(StaticVariables.locale);
-        return s != null && s.endsWith(".pdf");
+        return s.endsWith(".pdf");
     }
 }

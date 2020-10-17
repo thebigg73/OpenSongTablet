@@ -131,8 +131,10 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.ultimateguitarsearch);
                 break;
         }
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+        }
         View V = inflater.inflate(R.layout.popup_findnewsongs, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);

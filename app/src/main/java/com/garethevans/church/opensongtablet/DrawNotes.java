@@ -11,11 +11,12 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.net.Uri;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.annotation.Nullable;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -27,9 +28,6 @@ public class DrawNotes extends View {
     private Paint drawPaint, canvasPaint;
     private Bitmap canvasBitmap;
     private boolean imageloaded = false;
-    //private boolean drawingapath = false;
-    private int imagewidth = 0;
-    private int imageheight = 0;
     private ArrayList<Path> paths = new ArrayList<>();
     private ArrayList<Path> undonePaths = new ArrayList<>();
     private ArrayList<Integer> colourList = new ArrayList<>();
@@ -105,11 +103,7 @@ public class DrawNotes extends View {
             drawPaint.setStyle(Paint.Style.STROKE);
             drawPaint.setStrokeJoin(Paint.Join.ROUND);
             drawPaint.setStrokeCap(Paint.Cap.ROUND);
-            if (toolList.get(p).equals("eraser")) {
-                setErase(true);
-            } else {
-                setErase(false);
-            }
+            setErase(toolList.get(p).equals("eraser"));
             canvas.drawPath(path, drawPaint);
         }
 
@@ -119,11 +113,7 @@ public class DrawNotes extends View {
         drawPaint.setStyle(Paint.Style.STROKE);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
-        if (preferences.getMyPreferenceString(c,"drawingTool","pen").equals("eraser")) {
-            setErase(true);
-        } else {
-            setErase(false);
-        }
+        setErase(preferences.getMyPreferenceString(c, "drawingTool", "pen").equals("eraser"));
         canvas.drawPath(drawPath, drawPaint);
     }
 
@@ -252,9 +242,8 @@ public class DrawNotes extends View {
         //drawingapath = false;
     }
 
-    public void setDrawingSize(int w, int h) {
-        imagewidth = w;
-        imageheight = h;
+    public void setDrawingSize() {
+        //private boolean drawingapath = false;
     }
 
     private int getSavedPaintSize(Context c) {
@@ -300,11 +289,7 @@ public class DrawNotes extends View {
         drawPaint.setStyle(Paint.Style.STROKE);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
-        if (preferences.getMyPreferenceString(c,"drawingTool","pen").equals("eraser")) {
-            setErase(true);
-        } else {
-            setErase(false);
-        }
+        setErase(preferences.getMyPreferenceString(c, "drawingTool", "pen").equals("eraser"));
         canvasPaint = new Paint(Paint.DITHER_FLAG);
         setLayerType(View.LAYER_TYPE_SOFTWARE, canvasPaint);
     }
@@ -376,11 +361,7 @@ public class DrawNotes extends View {
         drawPaint.setStyle(Paint.Style.STROKE);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
-        if (preferences.getMyPreferenceString(c,"drawingTool","pen").equals("eraser")) {
-            setErase(true);
-        } else {
-            setErase(false);
-        }
+        setErase(preferences.getMyPreferenceString(c, "drawingTool", "pen").equals("eraser"));
 
 
     }

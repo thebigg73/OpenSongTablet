@@ -513,4 +513,6 @@
     <string name="respectcopyright">Respektujte autorská práva - vždy používejte legálně</string>
     <string name="usedbypermision">Používáno se svolením.</string>
     <string name="wordsandmusicby">Slova a hudba od</string>
+    <string name="play_services_error">Abyste mohli používat Google Cast, písma a připojení v okolí, budete si muset nainstalovat služby Google Play.</string>
+    <string name="play_services_how">Ukaž mi jak</string>
 </resources>

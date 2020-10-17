@@ -111,8 +111,11 @@ public class PopUpCustomChordsFragment extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setCanceledOnTouchOutside(true);
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (getDialog()!=null) {
+            getDialog().setCanceledOnTouchOutside(true);
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
+
         if (mListener!=null) {
             mListener.pageButtonAlpha("chords");
         }
@@ -313,12 +316,12 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         customChordSave.setOnClickListener(view -> customChordSave());
 
         String[] fret_choice = {"","1","2","3","4","5","6","7","8","9"};
-        ArrayAdapter<String> adapter_fret = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, fret_choice);
+        ArrayAdapter<String> adapter_fret = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, fret_choice);
         adapter_fret.setDropDownViewResource(R.layout.my_spinner);
         customchords_fret.setAdapter(adapter_fret);
         customchords_fret.setOnItemSelectedListener(new FretListener());
         prepareCustomChords();
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
+        PopUpSizeAndAlpha.decoratePopUp(requireActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -431,7 +434,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
                     deleteChord.setTransformationMethod(null);
                     newtext = getResources().getString(R.string.delete) + "\n" + tempCustomChords[q];
                     deleteChord.setText(newtext);
-                    deleteChord.setBackgroundDrawable(ResourcesCompat.getDrawable(getContext().getResources(),R.drawable.red_button,null));
+                    deleteChord.setBackgroundDrawable(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.red_button,null));
                     deleteChord.setOnClickListener(new OnDelete(deleteChord));
                     if (!workingChord.isEmpty()) {
                         savedcustomchords.addView(chordvalue);

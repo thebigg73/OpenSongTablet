@@ -513,4 +513,6 @@
     <string name="respectcopyright">尊重版权-始终合法使用</string>
     <string name="usedbypermision">经许可使用。</string>
     <string name="wordsandmusicby">文字和音乐</string>
+    <string name="play_services_error">要使用Google Cast，字体和附近的连接，您需要安装Google Play服务。</string>
+    <string name="play_services_how">告诉我如何</string>
 </resources>

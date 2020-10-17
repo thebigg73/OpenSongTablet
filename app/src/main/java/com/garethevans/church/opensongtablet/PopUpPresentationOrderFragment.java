@@ -64,8 +64,10 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
     @SuppressWarnings("deprecation")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+        }
 
         View V = inflater.inflate(R.layout.popup_presentation_order, container, false);
 
@@ -110,9 +112,9 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
                 but.setTextAppearance(android.R.style.TextAppearance_Small);
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                but.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.green_button));
+                but.setBackground(ContextCompat.getDrawable(requireContext(),R.drawable.green_button));
             } else {
-                but.setBackgroundDrawable(ContextCompat.getDrawable(getContext(),R.drawable.green_button));
+                but.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.green_button));
             }
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,

@@ -23,29 +23,34 @@ class MenuHandlers {
         MyInterface mListener = (MyInterface) c;
         StaticVariables.setMoveDirection = "";
 
+        final int search = R.id.action_search;
+        final int settings = R.id.action_settings;
+        final int fullsearch = R.id.action_fullsearch;
+        final int setadd = R.id.set_add;
+
         switch (menuitem) {
 
-            case R.id.action_search:
+            case search:
                 // Open/close the song drawer
                 if (mListener !=null) {
                     mListener.openMyDrawers("song_toggle");
                 }
                 break;
 
-            case R.id.action_settings:
+            case settings:
                 // Open/close the option drawer
                 if (mListener !=null) {
                     mListener.openMyDrawers("option_toggle");
                 }
                 break;
 
-            case R.id.action_fullsearch:
+            case fullsearch:
                 // Full search window
                 FullscreenActivity.whattodo = "fullsearch";
                 mListener.openFragment();
                 break;
 
-            case R.id.set_add:
+            case setadd:
                 if ((FullscreenActivity.isSong || FullscreenActivity.isPDF) && !StaticVariables.whichSongFolder.startsWith("..")) {
                     if (StaticVariables.whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
                             StaticVariables.whichSongFolder.equals("MAIN") ||

@@ -589,9 +589,9 @@ public class LoadXML extends Activity {
                             break;
                         case "title":
                             String testthetitle = parseFromHTMLEntities(xpp.nextText());
-                            if (testthetitle != null && !testthetitle.equals("") && !testthetitle.isEmpty()) {
+                            if (!testthetitle.equals("") && !testthetitle.isEmpty()) {
                                 StaticVariables.mTitle = parseFromHTMLEntities(testthetitle);
-                            } else if (testthetitle != null && testthetitle.equals("")) {
+                            } else if (testthetitle.equals("")) {
                                 StaticVariables.mTitle = StaticVariables.songfilename;
                             }
                             isxml = true;

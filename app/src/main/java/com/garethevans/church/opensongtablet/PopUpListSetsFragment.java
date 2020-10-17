@@ -113,8 +113,10 @@ public class PopUpListSetsFragment extends DialogFragment {
             getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         }
 
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+        }
 
         V = inflater.inflate(R.layout.popup_listsets, container, false);
 
@@ -574,11 +576,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                             StaticVariables.setnamechosen.contains("%_%" + filteredsets.get(f)));
             boolean inotherfolder = StaticVariables.setnamechosen.contains(filter + filteredsets.get(f));
 
-            if (inmainfolder || (!filter.equals("") && inotherfolder)) {
-                set_ListView.setItemChecked(f, true);
-            } else {
-                set_ListView.setItemChecked(f, false);
-            }
+            set_ListView.setItemChecked(f, inmainfolder || (!filter.equals("") && inotherfolder));
         }
     }
 

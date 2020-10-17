@@ -74,8 +74,10 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+        }
 
         View V = inflater.inflate(R.layout.popup_mididevices, container, false);
 
@@ -141,7 +143,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         });
 
         // Get scanner.  This is only allowed for Marshmallow or later
-        BluetoothManager bluetoothManager = (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
+        BluetoothManager bluetoothManager = (BluetoothManager) requireActivity().getSystemService(Context.BLUETOOTH_SERVICE);
         if (bluetoothManager!=null) {
             BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
             mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();

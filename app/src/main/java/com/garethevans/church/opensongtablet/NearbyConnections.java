@@ -30,6 +30,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
 
 public class NearbyConnections implements NearbyInterface {
@@ -43,8 +44,8 @@ public class NearbyConnections implements NearbyInterface {
 
     NearbyReturnActionsInterface nearbyReturnActionsInterface;
 
-    private ArrayList<String> connectedEndPoints;
-    private ArrayList<String> connectedEndPointsNames;
+    private final ArrayList<String> connectedEndPoints;
+    private final ArrayList<String> connectedEndPointsNames;
 
     NearbyConnections(Context context, Preferences preferences, StorageAccess storageAccess,
                       ProcessSong processSong, OptionMenuListeners optionMenuListeners,
@@ -289,8 +290,10 @@ public class NearbyConnections implements NearbyInterface {
             try {
                 Uri uri = storageAccess.getUriForItem(context, preferences, "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
                 ParcelFileDescriptor parcelFileDescriptor = context.getContentResolver().openFileDescriptor(uri, "r");
-                payloadFile = Payload.fromFile(parcelFileDescriptor);
-                infoFilePayload = "FILE:"+payloadFile.getId()+":"+infoFilePayload;
+                if (parcelFileDescriptor!=null) {
+                    payloadFile = Payload.fromFile(parcelFileDescriptor);
+                    infoFilePayload = "FILE:"+payloadFile.getId()+":"+infoFilePayload;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 payloadFile = null;
@@ -440,9 +443,9 @@ public class NearbyConnections implements NearbyInterface {
                     nearbyReturnActionsInterface.goToNextItem();
                 }
             }
-        } else if (newLocation!=null) { // i.e. we have received the file by choice
-            InputStream inputStream = new FileInputStream(payload.asFile().asParcelFileDescriptor().getFileDescriptor());
-            Uri originalUri = Uri.parse(payload.asFile().asParcelFileDescriptor().getFileDescriptor().toString());
+        } else if (newLocation!=null && payload!=null && payload.asFile()!=null) { // i.e. we have received the file by choice
+            InputStream inputStream = new FileInputStream(Objects.requireNonNull(payload.asFile()).asParcelFileDescriptor().getFileDescriptor());
+            Uri originalUri = Uri.parse(Objects.requireNonNull(payload.asFile()).asParcelFileDescriptor().getFileDescriptor().toString());
             OutputStream outputStream = storageAccess.getOutputStream(context, newLocation);
             if (storageAccess.copyFile(inputStream, outputStream)) {
                 if (nearbyReturnActionsInterface!=null) {
@@ -471,21 +474,27 @@ public class NearbyConnections implements NearbyInterface {
 
                     } else if (payload.getType() == Payload.Type.BYTES) {
                         // We're dealing with bytes
-                        String incoming = new String(payload.asBytes());
-                        if (incoming!=null && incoming.startsWith("FILE:")) {
+                        String incoming = null;
+                        if (payload.asBytes() != null) {
+                            byte[] bytes = payload.asBytes();
+                            if (bytes!=null) {
+                                incoming = new String(bytes);
+                            }
+                        }
+                        if (incoming != null && incoming.startsWith("FILE:")) {
                             // Add the file location to the arraymap
-                            incoming = incoming.replaceFirst("FILE:","");
-                            String id = incoming.substring(0,incoming.indexOf(":"));
-                            id = id.replace(":","");
+                            incoming = incoming.replaceFirst("FILE:", "");
+                            String id = incoming.substring(0, incoming.indexOf(":"));
+                            id = id.replace(":", "");
                             String foldernamepair = incoming.substring(incoming.indexOf(":"));
-                            foldernamepair = foldernamepair.replace(":","");
-                            fileNewLocation.put(Long.parseLong(id),foldernamepair);
+                            foldernamepair = foldernamepair.replace(":", "");
+                            fileNewLocation.put(Long.parseLong(id), foldernamepair);
 
-                        } else if (incoming!=null && incoming.contains("autoscroll_")) {
+                        } else if (incoming != null && incoming.contains("autoscroll_")) {
                             payloadAutoscroll(incoming);
-                        } else if (incoming!=null && incoming.contains("___section___")) {
+                        } else if (incoming != null && incoming.contains("___section___")) {
                             payloadSection(incoming);
-                        } else if (incoming!=null) {
+                        } else if (incoming != null) {
                             payloadOpenSong(incoming);
                         }
                     }

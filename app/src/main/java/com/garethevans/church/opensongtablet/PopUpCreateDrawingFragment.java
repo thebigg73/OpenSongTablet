@@ -81,8 +81,6 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
     private FloatingActionButton color_blue;
     private SeekBar size_SeekBar;
     private TextView size_TextView;
-    private int screenshot_width;
-    private int screenshot_height;
     private final float off_alpha = 0.4f;
     private final int isvis = View.VISIBLE;
     private final int isgone = View.GONE;
@@ -94,8 +92,11 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(false);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(false);
+        }
+
         View V = inflater.inflate(R.layout.popup_createdrawing, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
@@ -194,7 +195,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         // Set the appropriate highlighter file
         setHighlighterFile();
 
-        drawView.setDrawingSize(screenshot_width,screenshot_height);
+        drawView.setDrawingSize();
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
@@ -212,11 +213,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
     private void updateTool(String what) {
         preferences.setMyPreferenceString(getActivity(),"drawingTool",what);
-        if (what.equals("eraser")) {
-            drawView.setErase(true);
-        } else {
-            drawView.setErase(false);
-        }
+        drawView.setErase(what.equals("eraser"));
         setCurrentTool();
         setCurrentColor();
         setCurrentSize();
@@ -428,11 +425,11 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
         float scale = Math.min(max_h_scale, max_w_scale);
 
-        screenshot_width = (int) (w* scale);
-        screenshot_height = (int) (h* scale);
+        int screenshot_width = (int) (w * scale);
+        int screenshot_height = (int) (h * scale);
 
-        RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(screenshot_width,screenshot_height);
-        RelativeLayout.LayoutParams rlp2 = new RelativeLayout.LayoutParams(screenshot_width,screenshot_height);
+        RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(screenshot_width, screenshot_height);
+        RelativeLayout.LayoutParams rlp2 = new RelativeLayout.LayoutParams(screenshot_width, screenshot_height);
         screenShot.setLayoutParams(rlp);
         drawView.setLayoutParams(rlp2);
     }

@@ -681,7 +681,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             try {
                 presenter_lyrics.clearFocus();
                 InputMethodManager imm =(InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                if (imm!=null) {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
                 setWindowFlags();
                 setWindowFlagsAdvanced();
 
@@ -1496,7 +1498,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                     // Get the image locations if they exist
                     String thisloc = null;
-                    if (imagelocs != null && imagelocs[x] != null && imagelocs.length>x) {
+                    if (imagelocs != null && imagelocs[x] != null) {
                         thisloc = imagelocs[x];
                     }
 
@@ -3659,7 +3661,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private class MyMediaRouterCallback extends MediaRouter.Callback {
 
         @Override
-        public void onRouteSelected(MediaRouter router, int type, MediaRouter.RouteInfo info) {
+        public void onRouteSelected(@NonNull MediaRouter router, @NonNull MediaRouter.RouteInfo info, int reason) {
+            super.onRouteSelected(router,info,reason);
             mSelectedDevice = CastDevice.getFromBundle(info.getExtras());
             isSecondScreen();
             logoButton_isSelected = true;
@@ -3668,7 +3671,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
 
         @Override
-        public void onRouteUnselected(MediaRouter router, int type, MediaRouter.RouteInfo info) {
+        public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info, int reason) {
+            super.onRouteUnselected(router,info,reason);
             teardown();
             mSelectedDevice = null;
             FullscreenActivity.isPresenting = false;

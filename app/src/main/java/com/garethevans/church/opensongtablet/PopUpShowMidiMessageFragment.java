@@ -67,8 +67,10 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
         if (savedInstanceState != null) {
             this.dismiss();
         }
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+        }
 
         View V = inflater.inflate(R.layout.popup_showmidimessages, container, false);
 

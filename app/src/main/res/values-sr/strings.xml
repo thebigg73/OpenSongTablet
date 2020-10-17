@@ -513,4 +513,6 @@
     <string name="respectcopyright">Poštujte autorska prava - uvek ih koristite legalno</string>
     <string name="wordsandmusicby">Reči i muzika</string>
     <string name="usedbypermision">Koristi se uz dozvolu.</string>
+    <string name="play_services_error">Da biste koristili Google Cast, fontove i veze u blizini, moraćete da instalirate Google Plai usluge.</string>
+    <string name="play_services_how">Pokaži mi kako</string>
 </resources>

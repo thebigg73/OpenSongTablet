@@ -513,4 +513,6 @@
     <string name="respectcopyright">Tisztelet a szerzői jogoknak - mindig legálisan használja</string>
     <string name="wordsandmusicby">Szavak és zene</string>
     <string name="usedbypermision">Engedély alapján használják.</string>
+    <string name="play_services_error">A Google Cast, a Betűtípusok és a Közeli kapcsolatok használatához telepítenie kell a Google Play szolgáltatásokat.</string>
+    <string name="play_services_how">Mutassa meg, hogyan</string>
 </resources>

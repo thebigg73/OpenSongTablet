@@ -64,6 +64,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -3474,6 +3475,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void sendMidi() {
         if ((Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M &&
@@ -3486,9 +3488,7 @@ public class StageMode extends AppCompatActivity implements
             mh.post(() -> {
                 try {
                     if (midi==null) {
-                        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M ) {
-                            midi = new Midi();
-                        }
+                        midi = new Midi();
                     }
                     // Split the midi messages by line, after changing , into new line
                     StaticVariables.mMidi = StaticVariables.mMidi.replace(",", "\n");
@@ -3496,9 +3496,7 @@ public class StageMode extends AppCompatActivity implements
                     String[] midilines = StaticVariables.mMidi.trim().split("\n");
                     for (String ml : midilines) {
                         if (midi!=null) {
-                            if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M ) {
-                                midi.sendMidi(midi.returnBytesFromHexText(ml));
-                            }
+                            midi.sendMidi(midi.returnBytesFromHexText(ml));
                         }
                     }
                 } catch (Exception e) {
@@ -5426,7 +5424,7 @@ public class StageMode extends AppCompatActivity implements
                 break;
 
             case "activity":
-                if (i!=null && i.toString()!=null && i.toString().contains("StageMode")) {
+                if (i != null && i.toString().contains("StageMode")) {
                     Log.d("StageMode","Recreating");
                     StageMode.this.recreate();
                 } else {
@@ -7264,7 +7262,8 @@ public class StageMode extends AppCompatActivity implements
                         find.postDelayed(() -> openMyDrawers("option"), 2000);
                     }
                     // Send the midi data if we can
-                    if (preferences.getMyPreferenceBoolean(StageMode.this,"midiSendAuto",false)) {
+                    if (preferences.getMyPreferenceBoolean(StageMode.this,"midiSendAuto",false) &&
+                            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         sendMidi();
                     }
                     // Send Nearby song intent
@@ -8353,11 +8352,11 @@ public class StageMode extends AppCompatActivity implements
         updateDisplays();
     }
 
-    //@SuppressLint("NewApi")
     private class MyMediaRouterCallback extends MediaRouter.Callback {
 
         @Override
-        public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
+        public void onRouteSelected(@NonNull MediaRouter router, @NonNull MediaRouter.RouteInfo info, int reason) {
+            super.onRouteSelected(router,info,reason);
             mSelectedDevice = CastDevice.getFromBundle(info.getExtras());
             try {
                 updateDisplays();
@@ -8367,7 +8366,8 @@ public class StageMode extends AppCompatActivity implements
         }
 
         @Override
-        public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
+        public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info, int reason) {
+            super.onRouteUnselected(router,info,reason);
             teardown();
             mSelectedDevice = null;
             FullscreenActivity.isPresenting = false;

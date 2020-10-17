@@ -513,4 +513,6 @@
     <string name="respectcopyright">著作権を尊重する-常に合法的に使用する</string>
     <string name="wordsandmusicby">言葉と音楽</string>
     <string name="usedbypermision">許可を得て使用。</string>
+    <string name="play_services_error">Google Cast、Fonts、Nearby Connectionsを使用するには、GooglePlayサービスをインストールする必要があります。</string>
+    <string name="play_services_how">どうするか教えて</string>
 </resources>

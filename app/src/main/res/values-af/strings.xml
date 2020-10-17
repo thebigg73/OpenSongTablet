@@ -513,4 +513,6 @@
     <string name="respectcopyright">Respekteer kopiereg - gebruik dit altyd wettig</string>
     <string name="usedbypermision">Gebruik met toestemming.</string>
     <string name="wordsandmusicby">Woorde en musiek deur</string>
+    <string name="play_services_error">Om Google Cast, lettertipes en verbindings in die buurt te gebruik, moet u Google Play Services installeer.</string>
+    <string name="play_services_how">Wys my hoe</string>
 </resources>

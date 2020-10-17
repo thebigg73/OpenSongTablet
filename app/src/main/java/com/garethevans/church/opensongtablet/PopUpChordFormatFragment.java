@@ -45,8 +45,10 @@ public class PopUpChordFormatFragment extends DialogFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
+        if (getDialog()!=null) {
+            getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getDialog().setCanceledOnTouchOutside(true);
+        }
 
         View V = inflater.inflate(R.layout.popup_chordformat, container, false);
 
@@ -146,23 +148,30 @@ public class PopUpChordFormatFragment extends DialogFragment {
         switchGbm.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"prefKeyGbm",!isChecked));
         assumePreferred_SwitchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",isChecked));
         chordFormat.setOnCheckedChangeListener((group, checkedId) -> {
+            final int cf1 = R.id.chordFormat1;
+            final int cf2 = R.id.chordFormat2;
+            final int cf3 = R.id.chordFormat3;
+            final int cf4 = R.id.chordFormat4;
+            final int cf5 = R.id.chordFormat5;
+            final int cf6 = R.id.chordFormat6;
+
             switch (checkedId) {
-                case R.id.chordFormat1:
+                case cf1:
                     preferences.setMyPreferenceInt(getActivity(), "chordFormat", 1);
                     break;
-                case R.id.chordFormat2:
+                case cf2:
                     preferences.setMyPreferenceInt(getActivity(), "chordFormat", 2);
                     break;
-                case R.id.chordFormat3:
+                case cf3:
                     preferences.setMyPreferenceInt(getActivity(), "chordFormat", 3);
                     break;
-                case R.id.chordFormat4:
+                case cf4:
                     preferences.setMyPreferenceInt(getActivity(), "chordFormat", 4);
                     break;
-                case R.id.chordFormat5:
+                case cf5:
                     preferences.setMyPreferenceInt(getActivity(), "chordFormat", 5);
                     break;
-                case R.id.chordFormat6:
+                case cf6:
                     preferences.setMyPreferenceInt(getActivity(), "chordFormat", 6);
                     break;
             }

@@ -38,7 +38,7 @@ public class MakePDF {
         storageAccess.lollipopCreateFileForOutputStream(c,preferences,uri, "application/pdf","Export","",newFilename);
 
         // Set the paint values
-        setPaintDefaults(c,preferences);
+        setPaintDefaults();
 
         // create a new document
         PdfDocument pdfDocument = new PdfDocument();
@@ -93,7 +93,7 @@ public class MakePDF {
         canvas.drawRect(0, 0, 0, 0, clearPaint);
     }
 
-    private void setPaintDefaults(Context c, Preferences preferences) {
+    private void setPaintDefaults() {
         paint = new Paint();
         paintSize = 16;
         margin = 54;
