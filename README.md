@@ -8,7 +8,7 @@ If you add new settings, please add a comment line in the Preferences.java file 
 
 The app online manual can be found at http://www.opensongapp.com
 
-To use (and install) this code, copy the git address (the https:// bit).  Open Android Studio and select File > New > Project from Version Control.
+To use (and install) this code, copy the git address (https://github.com/thebigg73/OpenSongTablet.git).  Open Android Studio and select File > New > Project from Version Control.  Paste in the git address.
 You can then run on an emulator or plugged in Android device as appropriate.
 
 Gareth Evans
