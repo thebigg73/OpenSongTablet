@@ -707,11 +707,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                     slideTitleEditText.setText(FullscreenActivity.customslide_title);
                     slideContentEditText.setText(FullscreenActivity.customslide_content);
                     timeEditText.setText(FullscreenActivity.customimage_time);
-                    if (FullscreenActivity.customimage_loop.equals("true")) {
-                        loopCheckBox.setChecked(true);
-                    } else {
-                        loopCheckBox.setChecked(false);
-                    }
+                    loopCheckBox.setChecked(FullscreenActivity.customimage_loop.equals("true"));
                     break;
                 case "customreusable_image":
                     // Fill in the details
@@ -723,11 +719,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                     slideTitleEditText.setText(FullscreenActivity.customslide_title);
                     slideContentEditText.setText("");
                     timeEditText.setText(FullscreenActivity.customimage_time);
-                    if (FullscreenActivity.customimage_loop.equals("true")) {
-                        loopCheckBox.setChecked(true);
-                    } else {
-                        loopCheckBox.setChecked(false);
-                    }
+                    loopCheckBox.setChecked(FullscreenActivity.customimage_loop.equals("true"));
                     // Now parse the list of images...
                     String[] imgs = FullscreenActivity.customimage_list.split("\n");
                     slideImageTable.removeAllViews();
