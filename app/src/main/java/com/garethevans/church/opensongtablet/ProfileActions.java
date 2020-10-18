@@ -848,7 +848,7 @@ class ProfileActions {
                         case "drawingHighlighterColor":        // New preference
                         case "drawingHighlightColor":          // Old preference
                             //drawingHighlighterColor         int         The color of the highlighter
-                            preferences.setMyPreferenceInt(c,"drawingHighlighterColor",getIntegerValue(xppValue,StaticVariables.highighteryellow));
+                            preferences.setMyPreferenceInt(c,"drawingHighlighterColor",getIntegerValue(xppValue,StaticVariables.highlighteryellow));
                             break;
 
                         case "drawingHighlighterSize":        // New preference

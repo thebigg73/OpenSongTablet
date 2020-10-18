@@ -142,8 +142,6 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         // Get the screenshot size and ajust the drawing to match
         getSizes();
         screenShot.setImageBitmap(FullscreenActivity.bmScreen);
-        //screenShot.setScaleType(ImageView.ScaleType.FIT_XY);
-        //screenShot.setPadding(2,2,2,2);
 
         // Set the current tool image
         setCurrentTool();
@@ -217,6 +215,9 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         setCurrentTool();
         setCurrentColor();
         setCurrentSize();
+        if (what.equals("highlighter")) {
+
+        }
         showorhideToolOptions(isvis);
     }
 
@@ -226,7 +227,28 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
                 preferences.setMyPreferenceInt(getActivity(),"drawingPenColor",what);
                 break;
             case "highlighter":
-                preferences.setMyPreferenceInt(getActivity(),"drawingHighlighterColor",what);
+                int val = StaticVariables.highlighteryellow;
+                switch (what) {
+                    case StaticVariables.black:
+                        val = StaticVariables.highlighterblack;
+                        break;
+                    case StaticVariables.white:
+                        val = StaticVariables.highlighterwhite;
+                        break;
+                    case StaticVariables.yellow:
+                        val = StaticVariables.highlighteryellow;
+                        break;
+                    case StaticVariables.red:
+                        val = StaticVariables.highlighterred;
+                        break;
+                    case StaticVariables.green:
+                        val = StaticVariables.highlightergreen;
+                        break;
+                    case StaticVariables.blue:
+                        val = StaticVariables.highlighterblue;
+                        break;
+                }
+                preferences.setMyPreferenceInt(getActivity(),"drawingHighlighterColor",val);
                 break;
         }
         setCurrentTool();
@@ -269,48 +291,65 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         }
     }
 
+    private int getPenColor() {
+        return preferences.getMyPreferenceInt(getActivity(),"drawingPenColor",StaticVariables.black);
+    }
+    private int getHighlighterColor() {
+        return preferences.getMyPreferenceInt(getActivity(),"drawingHighlighterColor",StaticVariables.highlighteryellow);
+    }
+    private String getDrawingTool() {
+        return preferences.getMyPreferenceString(getActivity(),"drawingTool","pen");
+    }
+
     private void setCurrentColor() {
         String color;
-        int val;
-        switch (preferences.getMyPreferenceString(getActivity(),"drawingTool","pen")) {
-            case "pen":
-            default:
-                color = "black";
-                val = preferences.getMyPreferenceInt(getActivity(),"drawingPenColor",StaticVariables.black);
-                if (val==StaticVariables.white) {
+        int pencolor = getPenColor();
+        int highlightercolor = getHighlighterColor();
+        String tool = getDrawingTool();
+
+        if (tool.equals("pen")) {
+            switch (pencolor) {
+                case StaticVariables.white:
+                default:
                     color = "white";
-                } else if (val==StaticVariables.yellow) {
-                    color = "yellow";
-                } else if (val==StaticVariables.red) {
-                    color = "red";
-                } else if (val==StaticVariables.green) {
-                    color = "green";
-                } else if (val==StaticVariables.blue) {
-                    color = "blue";
-                }
-                break;
-
-
-
-            case "highlighter":
-                color = "yellow";
-                val = preferences.getMyPreferenceInt(getActivity(),"drawingHighlighterColor",StaticVariables.yellow);
-                if (val==StaticVariables.highlighterblack) {
+                    break;
+                case StaticVariables.black:
                     color = "black";
-                } else if (val==StaticVariables.highlighterwhite) {
-                    color = "white";
-                } else if (val==StaticVariables.highlighterred) {
-                    color = "red";
-                } else if (val==StaticVariables.highlightergreen) {
-                    color = "green";
-                } else if (val==StaticVariables.highlighterblue) {
+                    break;
+                case StaticVariables.blue:
                     color = "blue";
-                }
-                break;
-
-            case "eraser":
-                color = "null";
-                break;
+                    break;
+                case StaticVariables.red:
+                    color = "red";
+                    break;
+                case StaticVariables.green:
+                    color = "green";
+                    break;
+            }
+        } else if (tool.equals("highlighter")) {
+            switch (highlightercolor) {
+                case StaticVariables.highlighterwhite:
+                    color = "white";
+                    break;
+                case StaticVariables.highlighterblack:
+                    color = "black";
+                    break;
+                case StaticVariables.highlighterblue:
+                    color = "blue";
+                    break;
+                case StaticVariables.highlighterred:
+                    color = "red";
+                    break;
+                case StaticVariables.highlightergreen:
+                    color = "green";
+                    break;
+                case StaticVariables.highlighteryellow:
+                default:
+                    color = "yellow";
+                    break;
+            }
+        } else {
+            color = "null";
         }
 
         int i = R.drawable.ic_check_white_36dp;
@@ -405,6 +444,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
     private void setColorAlpha(float c_black, float c_white, float c_yellow,
                                float c_red, float c_green, float c_blue) {
+
         color_black.setAlpha(c_black);
         color_white.setAlpha(c_white);
         color_yellow.setAlpha(c_yellow);

@@ -902,7 +902,7 @@ class SetActions {
 
     void prepareFirstItem(Context c,Preferences preferences) {
         // If we have just loaded a set, and it isn't empty,  load the first item
-        if (StaticVariables.mSetList.length>0) {
+        if (StaticVariables.mSetList!=null && StaticVariables.mSetList.length>0) {
             StaticVariables.whatsongforsetwork = StaticVariables.mSetList[0];
             StaticVariables.setView = true;
 

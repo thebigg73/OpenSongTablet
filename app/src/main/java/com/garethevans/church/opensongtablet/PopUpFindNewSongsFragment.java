@@ -239,7 +239,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 //weblink = "https://www.ultimate-guitar.com/search.php?search_type=title&order=&value=" + searchtext;
                 break;
             case "worshiptogether":
-                weblink = "https://worship-songs-resources.worshiptogether.com/search?w=" + searchtext;
+                weblink = "https://www.worshiptogether.com/search-results/#?cludoquery=" + searchtext;
                 break;
             case "worshipready":
                 weblink = "https://www.worshipready.com/chord-charts";
@@ -500,9 +500,11 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             filename = filenametosave;
         }
 
+        Log.d("WT","filename="+filename);
+
         String song_taxonomy;
         startpos = resultposted.indexOf("<div class=\"song_taxonomy\">");
-        endpos = resultposted.indexOf("<div class=\"t-setlist-details__related-list\">");
+        endpos = resultposted.indexOf("</body>",startpos);
         if (startpos > -1 && endpos > -1 && startpos < endpos) {
             // Extract the song taxonomy so we can edit this bit quickly
             song_taxonomy = resultposted.substring(startpos,endpos);
@@ -544,14 +546,26 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         }
 
+        Log.d("WT","authorname="+authorname);
+        Log.d("WT","copyright="+copyright);
+        Log.d("WT","ccli="+ccli);
+
+        String[] lines = resultposted.split("\n");
+        for (String l:lines) {
+            //Log.d("all","l:"+l);
+        }
+
         // Now try to get the chordpro file contents
-        startpos = resultposted.indexOf("<div class='chord-pro-line'");
+        startpos = resultposted.indexOf("<div class='chord-pro-line'>");
         endpos = resultposted.indexOf("<div class=\"song_taxonomy\">",startpos);
         if (startpos > -1 && endpos > -1 && startpos < endpos) {
             lyrics = new StringBuilder(resultposted.substring(startpos, endpos));
 
             // Split the lines up
-            String[] lines = lyrics.toString().split("\n");
+            String[] ls = lyrics.toString().split("\n");
+            for (String l:ls) {
+                Log.d("WT","l:"+l);
+            }
             StringBuilder newline = new StringBuilder();
             lyrics = new StringBuilder();
             // Go through each line and do what we need
@@ -559,11 +573,11 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 l = l.trim();
                 boolean emptystuff = false;
                 if (l.equals("</div") || l.contains("<div class='chord-pro-br'>") ||
-                        l.contains("<div class='chord-pro-segment'>") || l.contains("<div class=\"inner_col")) {
+                        l.contains("<div class='chord-pro-segment'>") || l.contains("<div class='inner_col'")) {
                     emptystuff = true;
                 }
 
-                if (!emptystuff && l.contains("<div class=\"chord-pro-disp\"")) {
+                if (!emptystuff && l.contains("<div class='chord-pro-disp'")) {
                     // Start section, so initialise the newline and lyrics
                     lyrics = new StringBuilder();
                     newline = new StringBuilder();
@@ -578,6 +592,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     startpos = l.indexOf("<div class='chord-pro-note'>");
                     startpos = l.indexOf("'>",startpos);
                     endpos = l.indexOf("</div>",startpos);
+                    if (endpos==-1) {
+                        endpos = l.length();
+                    }
                     if (startpos > -1 && endpos > -1 && startpos < endpos) {
                         String chordbit = l.substring(startpos+2,endpos);
                         if (!chordbit.isEmpty()) {
@@ -592,14 +609,15 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     startpos = l.indexOf("<div class='chord-pro-lyric'>");
                     startpos = l.indexOf("'>",startpos);
                     endpos = l.indexOf("</div>",startpos);
+                    if (endpos==-1) {
+                        endpos = l.length();
+                    }
                     if (startpos > -1 && endpos > -1 && startpos < endpos) {
                         newline.append(l, startpos + 2, endpos);
                         //newline.append(l.substring(startpos + 2, endpos));
                     }
                 }
-
             }
-
         }
 
         // Build the chordpro file contents:
@@ -610,6 +628,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         filecontents += "{key:"+key+"}\n";
         filecontents += "{tempo:"+bpm+"}\n\n";
         filecontents += lyrics.toString().trim();
+
+        newtext = filecontents;
 
         if (lyrics.toString().trim().isEmpty() || lyrics.toString().trim().equals("")) {
             filecontents = null;
@@ -1026,11 +1046,29 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         endpos = resultposted.indexOf(">",startpos);
         if (startpos>-1 && endpos>-1 && endpos>startpos) {
             title_resultposted = resultposted.substring(startpos,endpos);
-            title_resultposted = title_resultposted.replace("/","");
-            title_resultposted = title_resultposted.replace("/","");
-            title_resultposted = title_resultposted.replace("\"","");
-            title_resultposted = title_resultposted.trim();
         }
+
+        // If there is a song tag, even better
+        startpos = resultposted.indexOf("<meta property=\"music:song\" content=\"") + 37;
+        endpos = resultposted.indexOf(">",startpos);
+        if (startpos>-1 && endpos>-1 && endpos>startpos) {
+            title_resultposted = resultposted.substring(startpos,endpos);
+        }
+
+        // If there is a musician tag, even better
+        startpos = resultposted.indexOf("<meta property=\"music:musician\" content=\"") + 41;
+        endpos = resultposted.indexOf(">",startpos);
+        if (startpos>-1 && endpos>-1 && endpos>startpos) {
+            authorname = resultposted.substring(startpos,endpos);
+        }
+
+        title_resultposted = title_resultposted.replace("/","");
+        title_resultposted = title_resultposted.replace("/","");
+        title_resultposted = title_resultposted.replace("\"","");
+        title_resultposted = title_resultposted.replace(">","");
+        title_resultposted = title_resultposted.trim();
+
+        authorname = authorname.trim();
 
         filenametosave = title_resultposted;
 
@@ -1534,14 +1572,14 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     fixChordieContent(result);
                     setFileNameAndFolder();
 
+                } else if (result !=null && result.contains("https://www.worshiptogether.com/")) {
+                    // Using WorshipTogether
+                    fixWTContent(result);
+                    setFileNameAndFolder();
+
                 } else if (result != null && (result.contains("<div class=\"tb_ct\">") || result.contains("ultimate-guitar"))) {
                     // Using UG
                     fixUGContent(result);
-                    setFileNameAndFolder();
-
-                } else if (result !=null && result.contains("http://worship-songs-resources.worshiptogether.com/")) {
-                    // Using WorshipTogether
-                    fixWTContent(result);
                     setFileNameAndFolder();
 
                 } else if (result !=null && result.contains("UkuTabs")) {

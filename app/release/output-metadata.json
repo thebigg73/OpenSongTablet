@@ -1,19 +1,17 @@
 {
-  "version": 1,
+  "version": 2,
   "artifactType": {
     "type": "APK",
     "kind": "Directory"
   },
   "applicationId": "com.garethevans.church.opensongtablet",
-  "variantName": "release",
+  "variantName": "processReleaseResources",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
-      "properties": [],
-      "versionCode": 184,
-      "versionName": "5.2.4",
-      "enabled": true,
+      "versionCode": 185,
+      "versionName": "5.2.5",
       "outputFile": "app-release.apk"
     }
   ]

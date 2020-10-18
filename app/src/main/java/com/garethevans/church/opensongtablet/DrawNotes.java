@@ -273,7 +273,7 @@ public class DrawNotes extends View {
             return preferences.getMyPreferenceInt(c,"drawingPenColor",StaticVariables.black);
 
         } else {
-            return preferences.getMyPreferenceInt(c, "drawingHighlighterColor", StaticVariables.highighteryellow);
+            return preferences.getMyPreferenceInt(c, "drawingHighlighterColor", StaticVariables.highlighteryellow);
         }
     }
 

@@ -163,6 +163,11 @@ public class PopUpImportExternalFile extends DialogFragment {
                     s = getActivity().getString(R.string.importnewset);
                     what = "set";
                     filetype = getActivity().getString(R.string.export_set);
+                } else if ((ext.endsWith(".onsong") || ext.endsWith(".xml")) && FullscreenActivity.whattodo.equals("doimportset")) {
+                    what = "onsongset";
+                    filetype = "OnSong";
+                    overWrite_CheckBox.setChecked(false);
+                    overWrite_CheckBox.setEnabled(true);
                 } else if (ext.endsWith(".onsong")) {
                     what = "onsongfile";
                     filetype = getActivity().getString(R.string.export_onsong);
@@ -289,7 +294,7 @@ public class PopUpImportExternalFile extends DialogFragment {
     }
 
     private void initialiseLocationsToSave() {
-        if (what.equals("set")) {
+        if (what.equals("set") || what.equals("onsongset")) {
             folderlist = new ArrayList<>();
             folderlist.add(Objects.requireNonNull(getActivity()).getString(R.string.set));
         } else if (what.contains("onsong")) {
@@ -314,6 +319,10 @@ public class PopUpImportExternalFile extends DialogFragment {
                 importOpenSongSet();
                 break;
 
+            case "onsongset":
+                convertOnSongSet();
+                break;
+
             case "bible":
                 importBibleText();
                 break;
@@ -322,6 +331,127 @@ public class PopUpImportExternalFile extends DialogFragment {
                 importFile();
                 break;
         }
+    }
+
+    private void convertOnSongSet() {
+        String ext = FullscreenActivity.file_uri.getPath();
+        // Check that the OnSong folder exists.  If not, create it
+        Uri onSong = storageAccess.getUriForItem(getContext(),preferences,"Songs","OnSong",null);
+        storageAccess.lollipopCreateFileForOutputStream(getContext(),preferences,onSong, DocumentsContract.Document.MIME_TYPE_DIR,"Songs","OnSong",null);
+
+        if (ext!=null) {
+            // Read in the file as text ready for parsing
+            InputStream inputStream = storageAccess.getInputStream(getContext(),FullscreenActivity.file_uri);
+            String text = storageAccess.readTextFileToString(inputStream);
+            String[] setsongs;
+            StringBuilder openSongSetText = new StringBuilder();
+
+            if (ext.endsWith(".onsong")) {
+                // Songs are split with ---
+                setsongs = text.split("---");
+                Log.d("d","text:"+text);
+
+                Log.d("ImportExternal","setsongs.length"+setsongs.length);
+                // Go through each song and get the contents and write to the file in the OnSong folder
+                for (String song:setsongs) {
+                    song = song.trim();
+                    if (!song.startsWith("Title:")) {
+                        song = "Title:"+song;
+                    }
+                    // Get the song title
+                    String title="unknown";
+                    if (song.startsWith("Title:")||song.startsWith("Title :")) {
+                        int startpos = song.indexOf("Title");
+                        startpos = song.indexOf(":"+1,startpos);
+                        int endpos = song.indexOf("\n",startpos);
+                        if (startpos>-1 && endpos>-1 && endpos>startpos) {
+                            title = song.substring(startpos, endpos);
+                            Log.d("d", "title=" + title);
+                        }
+                    }
+
+                    // Save the onsong formatted song
+                    Uri uri = saveTheSong(title+".onsong",song);
+                    Log.d("d","uri of saved song="+uri);
+                    // Convert the song to OpenSong format
+                    ArrayList<String> songtags = onSongConvert.convertTextToTags(getContext(),storageAccess,preferences,songXML,chordProConvert,uri,song);
+
+                    // Build openSongSetText
+                    openSongSetText.append("     <slide_group name=\"").append(storageAccess.safeFilename(songtags.get(0))).append("\" type=\"song\" presentation=\"\" path=\"OnSong/\"/>\n");
+                }
+
+            } else if (ext.endsWith("xml")) {
+                // Songs are split by <song>
+                text = text.substring(text.indexOf("<set>"));
+                text = text.replace("<set>","");
+                text = text.replace("</set>","");
+
+                setsongs = text.split("<song>");
+
+                // Go through each one
+                for (String song:setsongs) {
+                    song = song.trim();
+                    if (!song.isEmpty()) {
+                        String title = "unknown";
+                        if (song.contains("<title>") && song.contains("</title>") && song.indexOf("<title>") < song.indexOf("</title>")) {
+                            title = song.substring(song.indexOf("<title>") + 7, song.indexOf("</title>"));
+                        }
+                        song = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<song>\n  " + song;
+
+                        // Save the song
+                        saveTheSong(title, song);
+
+                        // Build openSongSetText
+                        openSongSetText.append("     <slide_group name=\"").append(storageAccess.safeFilename(title)).append("\" type=\"song\" presentation=\"\" path=\"OnSong/\"/>\n");
+                    }
+                }
+            }
+
+            // Now build the OpenSongSet file, load it and then parse it
+            String currSet = openSongSetText.toString();
+            if (!currSet.isEmpty()) {
+                // Save the set
+                convertOnSongSetToOpenSongSet(currSet);
+            }
+        }
+    }
+
+    private Uri saveTheSong(String title, String contents) {
+        // Check the OnSong folder exixts
+        Uri uri = storageAccess.getUriForItem(getContext(),preferences,"Songs","OnSong",storageAccess.safeFilename(title));
+        // If the song doesn't exist, create it
+        boolean exists = storageAccess.uriExists(getContext(),uri);
+        storageAccess.lollipopCreateFileForOutputStream(getContext(),preferences,uri,null,"Songs","OnSong",storageAccess.safeFilename(title));
+        if (overWrite_CheckBox.isChecked() || !exists) {
+            OutputStream outputStream = storageAccess.getOutputStream(getContext(), uri);
+            storageAccess.writeFileFromString(contents,outputStream);
+        }
+        return uri;
+    }
+
+    private void convertOnSongSetToOpenSongSet(String currSet) {
+        // Add the start and end bits
+        String setname = fileTitle_TextView.getText().toString();
+        setname = setname.replace(".onsong","");
+        setname = setname.replace(".xml","");
+        setname = storageAccess.safeFilename(setname);
+        currSet = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<set name=\""+
+                setname+"\">\n  <slide_groups>\n" + currSet + "  </slide_groups>\n</set>";
+        // Create the file
+        Uri setUri = storageAccess.getUriForItem(getContext(),preferences,"Sets","",setname);
+        if (overWrite_CheckBox.isChecked()||!storageAccess.uriExists(getContext(),setUri)) {
+            storageAccess.lollipopCreateFileForOutputStream(getContext(),preferences,setUri,null,"Sets","",setname);
+            OutputStream outputStreamSet = storageAccess.getOutputStream(getContext(),setUri);
+            storageAccess.writeFileFromString(currSet,outputStreamSet);
+        }
+
+        // close the popupwindow and get tha app to load the set.
+        preferences.setMyPreferenceString(getContext(),"setCurrent","");
+        StaticVariables.mSetList = null;
+        StaticVariables.setView = false;
+        preferences.setMyPreferenceString(getContext(),"setCurrentLastName","");
+        LoadASet loadASet = new LoadASet(setname);
+        loadASet.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void importOpenSongSet() {
@@ -494,6 +624,57 @@ public class PopUpImportExternalFile extends DialogFragment {
                 }
 
             } catch (Exception e) {
+                StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.error);
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            try {
+                mListener.showToastMessage(StaticVariables.myToastMessage);
+                if (!error) {
+                    mListener.refreshAll();
+                    FullscreenActivity.whattodo = "editset";
+                    mListener.openFragment();
+                }
+                dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class LoadASet extends AsyncTask<String, Void, String> {
+
+        final String setname;
+
+        LoadASet(String set) {
+            setname = set;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            StaticVariables.settoload = setname;
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                setActions.loadASet(getActivity(), preferences, storageAccess);
+                StaticVariables.setView = true;
+
+                setActions.prepareSetList(getContext(), preferences);
+
+                // Get the set first item
+                setActions.prepareFirstItem(getActivity(), preferences);
+
+                StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.success);
+
+            }catch (Exception e) {
                 StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.error);
                 e.printStackTrace();
             }

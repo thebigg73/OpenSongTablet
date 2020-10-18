@@ -120,7 +120,7 @@ class StaticVariables {
     static final int highlighterblue = 0x660000ff;
     static final int highlighterred = 0x66ff0000;
     static final int highlightergreen = 0x6600ff00;
-    static final int highighteryellow = 0x66ffff00;
+    static final int highlighteryellow = 0x66ffff00;
 
     // Option menu defines which menu we are in
     static String whichOptionMenu = "MAIN";

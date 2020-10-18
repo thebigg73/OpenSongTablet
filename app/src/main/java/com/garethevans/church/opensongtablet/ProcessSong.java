@@ -47,6 +47,7 @@ public class ProcessSong extends Activity {
         myLyrics = myLyrics.replace("\b", "    ");
         myLyrics = myLyrics.replace("\f", "    ");
         myLyrics = myLyrics.replace("&#27;", "'");
+        myLyrics = myLyrics.replace("&#x27;", "'");
         myLyrics = myLyrics.replace("&#027;", "'");
         myLyrics = myLyrics.replace("&#39;", "'");
         myLyrics = myLyrics.replace("&#34;", "'");
