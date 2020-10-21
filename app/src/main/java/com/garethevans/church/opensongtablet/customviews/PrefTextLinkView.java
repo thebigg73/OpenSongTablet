@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.preferences;
+package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,7 +13,7 @@ import com.garethevans.church.opensongtablet.R;
 public class PrefTextLinkView extends LinearLayout {
     public PrefTextLinkView(Context context, @Nullable AttributeSet attrs) {
         super(context,attrs);
-        inflate(context, R.layout.settings_view_linkbutton,this);
+        inflate(context, R.layout.view_linkbutton,this);
 
         TextView main = findViewById(R.id.mainText);
         TextView sub = findViewById(R.id.subText);

@@ -1,8 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <color name="transparent">#00000000</color>
-    <color name="colorPrimary">#1F1B24</color>
+    <color name="colorPrimary">#141B22</color>
     <color name="showcaseColor">#ee0e0a13</color>
-    <color name="primaryDark">#010D12</color>
+    <color name="primaryDark">#010D18</color>
     <color name="darkBackground">#121212</color>
     <color name="altPrimary">#0F1130</color>
     <color name="secPrimary">#D2C5D2</color>

@@ -12,13 +12,13 @@ import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.util.Log;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.io.OutputStream;
-
 
 public class MakePDF {
 
@@ -45,7 +45,7 @@ public class MakePDF {
         storageAccess.lollipopCreateFileForOutputStream(c,preferences,uri, "application/pdf","Export","",newFilename);
 
         // Set the paint values
-        setPaintDefaults(c,preferences);
+        setPaintDefaults();
 
         // create a new document
         PdfDocument pdfDocument = new PdfDocument();
@@ -62,7 +62,7 @@ public class MakePDF {
         Canvas cfoot = new Canvas();
         Canvas clyrics = new Canvas();
 
-        writeTheHeader(thisSong,chead,0);
+        writeTheHeader(c,thisSong,chead,0);
         Log.d("d","headerHeight="+headerHeight);
         // Wipe it for now
         clearPage(page);
@@ -84,7 +84,7 @@ public class MakePDF {
         float scaling = getScaling();
 
         // Add the header back in
-        writeTheHeader(thisSong,canvas,margin);
+        writeTheHeader(c,thisSong,canvas,margin);
         // Add the lyrics back in
         writePDFContent(c,processSong,thisSong,canvas,headerHeight+margin,scaling);
         // Add the footer back in
@@ -104,7 +104,7 @@ public class MakePDF {
         canvas.drawRect(0, 0, 0, 0, clearPaint);
     }
 
-    private void setPaintDefaults(Context c, Preferences preferences) {
+    private void setPaintDefaults() {
         paint = new Paint();
         paintSize = 16;
         margin = 54;
@@ -126,7 +126,7 @@ public class MakePDF {
         pdfDocument.close();
     }
 
-    private void writeTheHeader(Song thisSong, Canvas canvas, int ypos) {
+    private void writeTheHeader(Context c, Song thisSong, Canvas canvas, int ypos) {
         int height = 0;
         Rect bounds = new Rect();
         paintSize = 20;

@@ -1,8 +1,10 @@
 package com.garethevans.church.opensongtablet;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -17,12 +19,16 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.mediarouter.app.MediaRouteActionProvider;
+import androidx.mediarouter.app.MediaRouteButton;
+import androidx.mediarouter.media.MediaControlIntent;
 import androidx.mediarouter.media.MediaRouteSelector;
 import androidx.mediarouter.media.MediaRouter;
 import androidx.navigation.NavController;
@@ -38,7 +44,10 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.garethevans.church.opensongtablet.animation.PageButtonFAB;
 import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.FixLocale;
+import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
+import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
+import com.garethevans.church.opensongtablet.ccli.SettingsCCLI;
 import com.garethevans.church.opensongtablet.databinding.ActivityMainBinding;
 import com.garethevans.church.opensongtablet.databinding.AppBarMainBinding;
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureDialogFragment;
@@ -48,10 +57,14 @@ import com.garethevans.church.opensongtablet.filemanagement.ExportFiles;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.filemanagement.StorageManagementFragment;
+import com.garethevans.church.opensongtablet.interfaces.DialogReturnInterface;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.LoadSongInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.interfaces.NearbyInterface;
 import com.garethevans.church.opensongtablet.interfaces.ShowCaseInterface;
+import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
+import com.garethevans.church.opensongtablet.nearby.NearbyConnectionsFragment;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
@@ -59,9 +72,8 @@ import com.garethevans.church.opensongtablet.presentation.PresentationFragment;
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
-import com.garethevans.church.opensongtablet.screensetup.VersionNumber;
+import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
-import com.garethevans.church.opensongtablet.secondarydisplay.MediaRoute;
 import com.garethevans.church.opensongtablet.secondarydisplay.MediaRouterCallback;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
@@ -76,20 +88,31 @@ import com.garethevans.church.opensongtablet.songsandsets.ViewPagerAdapter;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
+import com.google.android.gms.cast.CastMediaControlIntent;
+import com.google.android.gms.cast.framework.CastButtonFactory;
+import com.google.android.gms.cast.framework.CastContext;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 
+import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
+import static com.google.android.material.snackbar.Snackbar.make;
+
 //TODO Fix unused and local
 
 public class MainActivity extends AppCompatActivity implements LoadSongInterface,
         ShowCaseInterface, MainActivityInterface, EditSongFragmentInterface,
-        PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+        PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, DialogReturnInterface,
+        NearbyInterface {
 
     private AppBarConfiguration mAppBarConfiguration;
     private StorageAccess storageAccess;
     private Preferences preferences;
+    private ThemeColors themeColors;
+    private SetTypeFace setTypeFace;
     private SQLiteHelper sqLiteHelper;
     private CommonSQL commonSQL;
     private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
@@ -110,7 +133,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private ExportFiles exportFiles;
     private PageButtonFAB pageButtonFAB;
     private boolean pageButtonActive = true;
-    private MediaRoute mediaRoute;
     private MediaRouter mediaRouter;
     private MediaRouteSelector mediaRouteSelector;
     private MediaRouterCallback mediaRouterCallback;
@@ -128,7 +150,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     SetMenuFragment setMenuFragment;
     EditSongFragment editSongFragment;
     EditSongFragmentMain editSongFragmentMain;
+    NearbyConnectionsFragment nearbyConnectionsFragment;
     Fragment registeredFragment;
+    int fragmentOpen;
 
     NavController navController;
 
@@ -136,6 +160,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     DrawerLayout drawerLayout;
 
     MenuItem settingsButton;
+
+    // Network discovery / connections
+    NearbyConnections nearbyConnections;
 
     ViewPagerAdapter adapter;
     ViewPager2 viewPager;
@@ -197,6 +224,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Battery monitor
         IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         this.registerReceiver(batteryStatus, filter);
+
+        // Set up the Nearby connection service
+        nearbyConnections.getUserNickname();
     }
 
     // Initialise the MainActivity components
@@ -215,11 +245,11 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             case "Performance":
             case "Stage":
             default:
-                navController.navigate(R.id.nav_performance);
+                navigateToFragment(R.id.nav_performance);
                 break;
 
             case "Presentation":
-                navController.navigate(R.id.nav_presentation);
+                navigateToFragment(R.id.nav_presentation);
                 break;
         }
 
@@ -233,13 +263,26 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         setListeners();
 
         // Setup the CastContext
+        MediaRouteButton mediaRouteButton = findViewById(R.id.media_route_menu_item);
+        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mediaRouteButton);
+        try {
+            CastContext.getSharedInstance(this);
+        } catch (Exception e) {
+            Log.d("StageMode", "No Google Services");
+        }
+
         mediaRouter = MediaRouter.getInstance(getApplicationContext());
-        mediaRouteSelector = mediaRoute.getMediaRouteSelector();
+        mediaRouteSelector = new MediaRouteSelector.Builder()
+                .addControlCategory(CastMediaControlIntent.categoryForCast("4E2B0891"))
+                .addControlCategory(MediaControlIntent.CATEGORY_LIVE_VIDEO)
+                .build();
 
     }
     private void initialiseHelpers() {
         storageAccess = new StorageAccess();
         preferences = new Preferences();
+        setTypeFace = new SetTypeFace();
+        themeColors = new ThemeColors();
         sqLiteHelper = new SQLiteHelper(this);
         nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(this);
         commonSQL = new CommonSQL();
@@ -257,13 +300,14 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         exportFiles = new ExportFiles();
         showCase = new ShowCase();
         showToast = new ShowToast();
-        mediaRoute = new MediaRoute();
+        //MediaRoute mediaRoute = new MediaRoute();
         mediaRouterCallback = new MediaRouterCallback();
         pageButtonFAB = new PageButtonFAB(activityMainBinding.pageButtonsRight.actionFAB, activityMainBinding.pageButtonsRight.custom1Button,
                 activityMainBinding.pageButtonsRight.custom2Button,activityMainBinding.pageButtonsRight.custom3Button,
                 activityMainBinding.pageButtonsRight.custom4Button,activityMainBinding.pageButtonsRight.custom5Button,
                 activityMainBinding.pageButtonsRight.custom6Button);
         pageButtonFAB.animatePageButton(this,false);
+        nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong,sqLiteHelper,commonSQL);
     }
     private void initialiseStartVariables() {
         StaticVariables.mDisplayTheme = preferences.getMyPreferenceString(this, "appTheme", "dark");
@@ -284,6 +328,12 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // MediaPlayer
         mediaPlayer1 = new MediaPlayer();
         mediaPlayer2 = new MediaPlayer();
+
+        // ThemeColors
+        themeColors.getDefaultColors(this,preferences);
+
+        // Typefaces
+        setTypeFace.setUpAppFonts(this,preferences,new Handler(),new Handler(),new Handler(),new Handler(),new Handler());
     }
     private void initialiseArrayLists() {
         targets = new ArrayList<>();
@@ -327,11 +377,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     private void animatePageButtons() {
         float rotation = activityMainBinding.pageButtonsRight.actionFAB.getRotation();
-        if (rotation==0) {
-            pageButtonFAB.animatePageButton(this,true);
-        } else {
-            pageButtonFAB.animatePageButton(this,false);
-        }
+        pageButtonFAB.animatePageButton(this, rotation == 0);
     }
     void setWindowFlags() {
         // Fix the page flags
@@ -394,6 +440,12 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             setWindowFlags();
         }
     }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -441,7 +493,11 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        nearbyConnections.turnOffNearby();
+    }
 
     // The toolbar/menu items
     @Override
@@ -456,16 +512,50 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         settingsButton = (MenuItem) menu.findItem(R.id.settings_menu_item).getActionView();
+        MenuItem nearbyConnectButton = (MenuItem) menu.findItem(R.id.nearby_menu_item).getActionView();
+
+        // Decide if we should hide the Google Nearby button
+        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) != ConnectionResult.SUCCESS) {
+            nearbyConnectButton.setVisible(false);
+        }
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Log.d("d","item="+item);
-        if (item!=null && item.toString().equals("Settings")) {
-            hideActionButton(true);
-            navController.navigate(R.id.nav_preference);
+        switch (item.toString()) {
+            case "Settings":
+                if (fragmentOpen != R.id.nav_preference) {
+                    //hideActionButton(true);
+                    navigateToFragment(R.id.nav_preference);
+                    //showingsettings = true;
+                } else {
+                    navHome();
+                }
+                break;
+
+            case "Nearby":
+                if (fragmentOpen!=R.id.nearbyConnectionsFragment) {
+                    navigateToFragment(R.id.nearbyConnectionsFragment);
+                } else {
+                    navHome();
+                }
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void navHome() {
+        if (StaticVariables.whichMode.equals("Presentation")) {
+            navigateToFragment(R.id.nav_presentation);
+            //hideActionButton(true);
+        } else {
+            navigateToFragment(R.id.nav_performance);
+            //hideActionButton(false);
+        }
+        //showingsettings = false;
+        StaticVariables.whattodo = "";
+        //getSupportFragmentManager().popBackStack();
     }
 
     @Override
@@ -535,7 +625,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     }
 
-
     // Deal with stuff in the song menu
     @Override
     public void moveToSongInSongMenu() {
@@ -579,11 +668,13 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             switch (position) {
                 case 0:
                     tab.setText(getString(R.string.song));
-                    tab.setIcon(getResources().getDrawable(R.drawable.ic_music_note_white_36dp));
+                    tab.setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_music_note_white_36dp,null));
+                    //tab.setIcon(getResources().getDrawable(R.drawable.ic_music_note_white_36dp));
                     break;
                 case 1:
                     tab.setText(getString(R.string.set));
-                    tab.setIcon(getResources().getDrawable(R.drawable.ic_format_list_numbers_white_36dp));
+                    tab.setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_format_list_numbers_white_36dp,null));
+                    //tab.setIcon(getResources().getDrawable(R.drawable.ic_format_list_numbers_white_36dp));
                     break;
             }
         }).attach();
@@ -660,6 +751,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             case "EditSongFragmentMain":
                 editSongFragmentMain = (EditSongFragmentMain) frag;
                 break;
+            case "NearbyConnectionsFragment":
+                nearbyConnectionsFragment = (NearbyConnectionsFragment) frag;
+                break;
         }
         registeredFragment = frag;
     }
@@ -673,7 +767,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         fragment.setArguments(args);
         fragment.setTargetFragment(caller, 0);
         // Replace the existing Fragment with the new Fragment
-        navController.navigate(caller.getId());
+        navigateToFragment(caller.getId());
+        //navController.navigate(caller.getId());
         /*fragmentManager.beginTransaction()
                 .replace(R.id.nav_host_fragment, fragment)
                 .addToBackStack(null)
@@ -764,8 +859,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         closeDrawer(true);  // Only the Performance and Presentation fragments allow this.  Switched on in these fragments
         lockDrawer(true);
         hideActionButton(true);
+
         try {
             navController.navigate(id);
+            fragmentOpen = id;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -818,9 +915,11 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 .setPopUpTo(fragment.getId(), true)
                 .build();
         if (StaticVariables.whichMode.equals("Presentation")) {
+            fragmentOpen = R.id.nav_presentation;
             NavHostFragment.findNavController(fragment)
                     .navigate(R.id.nav_presentation,bundle,navOptions);
         } else {
+            fragmentOpen = R.id.nav_performance;
             NavHostFragment.findNavController(fragment)
                     .navigate(R.id.nav_performance,bundle,navOptions);
         }
@@ -922,6 +1021,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public void playPad() {
         Log.d("MainActivity","playPad()");
     }
+
+
+
     @Override
     public MediaPlayer getMediaPlayer(int i) {
         // Keeping mediaPlayers in the MainActivity so they persist across fragments
@@ -930,5 +1032,139 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         } else {
             return mediaPlayer2;
         }
+    }
+
+    @Override
+    public SetTypeFace getMyFonts() {
+        return setTypeFace;
+    }
+    @Override
+    public ThemeColors getMyThemeColors() {
+        return themeColors;
+    }
+
+    @Override
+    public void updateValue(Fragment fragment, String fragname, String which, String value) {
+        if (fragment!=null) {
+            switch (fragname) {
+                case "SettingsCCLI":
+                    ((SettingsCCLI)fragment).updateValue(which,value);
+                    break;
+                case "NearbyConnectionsFragment":
+                    ((NearbyConnectionsFragment)fragment).updateValue(which,value);
+                    break;
+            }
+        }
+    }
+
+
+    // These are called from Nearby Interfaces
+    // Nearby
+    // These are dealt with in NearbyConnections.  Pulled in from interface to listen from optionmenulistener
+    @Override
+    public void startDiscovery() {
+        nearbyConnections.startDiscovery();
+    }
+    @Override
+    public void startAdvertising() {
+        nearbyConnections.startAdvertising();
+    }
+    @Override
+    public void stopDiscovery() {
+        nearbyConnections.stopDiscovery();
+    }
+    @Override
+    public void stopAdvertising() {
+        nearbyConnections.stopAdvertising();
+    }
+    @Override
+    public void turnOffNearby() {
+        nearbyConnections.turnOffNearby();
+    }
+    @Override
+    public void doSendPayloadBytes(String infoPayload) {
+        nearbyConnections.doSendPayloadBytes(infoPayload);
+    }
+    @Override
+    public boolean requestNearbyPermissions() {
+        boolean coarse;
+        boolean fine;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)== PackageManager.PERMISSION_GRANTED) {
+            coarse = true;
+        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_COARSE_LOCATION)){
+            try {
+                make(findViewById(R.id.mypage), R.string.location_rationale,
+                        LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 403)).show();
+                coarse = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+                coarse = false;
+            }
+        } else {
+            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_COARSE_LOCATION},403);
+            coarse = false;
+        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED) {
+            fine = true;
+        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
+            try {
+                make(findViewById(R.id.mypage), R.string.location_rationale,
+                        LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 404)).show();
+                fine = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+                fine =false;
+            }
+        } else {
+            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},404);
+            fine = false;
+        }
+        return coarse && fine;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
+        // If request is cancelled, the result arrays are empty.
+        if (grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            switch (requestCode) {
+                case StaticVariables.REQUEST_CAMERA_CODE:
+                    //startCamera();
+                    break;
+
+                case 404:
+                case 403:
+                    // Access fine location, so can open the menu at 'Connect devices'
+                    Log.d("d", "LOCATION granted!");
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void updateConnectionsLog() {
+        // Send the command to the Nearby Connections fragment (if it exists!)
+        try {
+            if (nearbyConnectionsFragment!=null) {
+                try {
+                    nearbyConnectionsFragment.updateConnectionsLog();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface) {
+        // First update the mainActivityInterface used in nearby connections
+        nearbyConnections.setMainActivityInterface(mainActivityInterface);
+        // Return a reference to nearbyConnections
+        return nearbyConnections;
     }
 }

@@ -1054,7 +1054,7 @@ public class StorageAccess {
         }
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    boolean createFile(Context c, Preferences preferences, String mimeType, String folder, String subfolder, String filename) {
+    public boolean createFile(Context c, Preferences preferences, String mimeType, String folder, String subfolder, String filename) {
         String[] fixedfolders = fixFoldersAndFiles(c, folder, subfolder, filename);
         if (lollipopOrLater()) {
             return createFile_SAF(c, preferences, mimeType, fixedfolders[0], fixedfolders[1], fixedfolders[2]);

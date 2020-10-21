@@ -13,14 +13,57 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/display"
+            style="@style/MyWhiteHeadingText"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="32dp"/>
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/themeButton"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            app:main="@string/dark_theme"
-            app:sub="@string/choose_theme" />
-
+            android:layout_height="wrap_content"
+            app:sub="@string/dark_theme"
+            app:main="@string/choose_theme" />
         <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/fontButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/choose_fonts"
+            app:sub="Change song display fonts" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/performanceMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="Performance mode settings"
+            app:sub="Settings specific to Performance mode" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/menuSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="Menu settings"
+            app:sub="Change menu settings" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/connectedDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="Connected displays"
+            app:sub="Settings specific to Chromecast/HDMI output" />
+        <TableRow style="@style/DividerLine" />
+
+
 
     </LinearLayout>
 

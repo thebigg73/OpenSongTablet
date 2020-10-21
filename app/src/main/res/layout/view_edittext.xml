@@ -5,14 +5,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="0dp">
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/holderLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:hint="Hint"
         android:labelFor="@+id/artistSearch"
-        android:layout_margin="2dp"
         style="@style/editTextLayoutOutline"
         app:backgroundTint="@color/transparent"
         app:boxBackgroundColor="@color/transparent">

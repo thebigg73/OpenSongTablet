@@ -13,33 +13,87 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/category"
+            style="@style/MyWhiteHeadingText"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="32dp"/>
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/storageButton"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             app:main="@string/storage"
             app:sub="Manage your app and song folders" />
-
         <TableRow style="@style/DividerLine" />
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/displayButton"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             app:main="Display"
             app:sub="Change display settings (what you see on screen)" />
-
         <TableRow style="@style/DividerLine" />
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/actionsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="Song actions"
+            app:sub="Settings for actions and features" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/gesturesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="Control"
+            app:sub="Foot pedals and screen gestures" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/connectButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/connections_connect"
+            app:sub="Connect to other devices running OpenSongApp" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/midiButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/midi"
+            app:sub="Connect midi devices and change settings" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/profilesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/profile"
+            app:sub="Backup and restore your settings" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/ccliButton"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             app:main="CCLI"
             app:sub="CCLI settings" />
-
         <TableRow style="@style/DividerLine" />
 
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/aboutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/about"
+            app:sub="@string/app_name" />
+        <TableRow style="@style/DividerLine" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

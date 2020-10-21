@@ -8,6 +8,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
+import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
+import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.ArrayList;
@@ -49,7 +52,12 @@ public interface MainActivityInterface {
     void startAutoscroll();
     void fadeoutPad();
     void playPad();
+    void updateConnectionsLog();
+    boolean requestNearbyPermissions();
+    NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface);
     DrawerLayout getDrawer();
     ActionBar getAb();
     MediaPlayer getMediaPlayer(int i);
+    SetTypeFace getMyFonts();
+    ThemeColors getMyThemeColors();
 }

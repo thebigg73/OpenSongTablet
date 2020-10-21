@@ -491,7 +491,7 @@ public class SetStorageLocationFragment extends Fragment {
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) { }
                     });
-                    ArrayAdapter<String> listAdapter = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, locations);
+                    ArrayAdapter<String> listAdapter = new ArrayAdapter<>(requireActivity(), R.layout._my_spinner, locations);
                     previousStorageSpinner.setAdapter(listAdapter);
                     previousStorageSpinner.setVisibility(View.GONE);
                 }

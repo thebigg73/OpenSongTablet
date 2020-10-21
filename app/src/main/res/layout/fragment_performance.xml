@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/mypage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        tools:context=".performance.PerformanceFragment">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mypage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    tools:context=".performance.PerformanceFragment">
 
         <ImageView
             android:layout_width="120dp"
@@ -26,7 +26,24 @@
             android:layout_height="wrap_content"
             android:visibility="invisible"/>
 
-        <HorizontalScrollView
+    <com.otaliastudios.zoom.ZoomLayout
+        android:id="@+id/zoomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:scrollbarStyle="insideOverlay"
+        app:alignment="top|left"
+        app:transformation="none"
+        app:overScrollHorizontal="false"
+        app:overScrollVertical="false"
+        app:minZoom="0.2"
+        app:maxZoom="4.0"
+        android:padding="0dp">
+
+    <!--<HorizontalScrollView
             android:id="@+id/horizontalscrollview"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
@@ -44,7 +61,7 @@
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:scrollbarStyle="outsideOverlay"
-                android:padding="0dp">
+                android:padding="0dp">-->
 
                 <RelativeLayout
                     android:id="@+id/pageHolder"
@@ -103,7 +120,8 @@
 
                 </RelativeLayout>
 
-            </ScrollView>
-        </HorizontalScrollView>
+            <!--</ScrollView>
+        </HorizontalScrollView>-->
 
+    </com.otaliastudios.zoom.ZoomLayout>
     </RelativeLayout>

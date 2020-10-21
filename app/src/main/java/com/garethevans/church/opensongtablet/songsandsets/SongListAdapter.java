@@ -27,7 +27,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
     private final Context c;
     private final Preferences preferences;
     private final SongForSet songForSet;
-    private SparseBooleanArray checkedArray = new SparseBooleanArray();
+    private final SparseBooleanArray checkedArray = new SparseBooleanArray();
 
     AdapterCallback callback;
 

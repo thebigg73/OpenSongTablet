@@ -1,6 +1,5 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     style="@style/PrefScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,6 +8,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_song_theme"
+            style="@style/MyWhiteHeadingText"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="32dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/exposedDropDown"
@@ -38,22 +47,13 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:text="Main song display" />
+                android:text="@string/main_song_display" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/lyricsButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/edit_song_lyrics"
-                app:icon="@drawable/rectangle"
-                app:iconGravity="start"
-                app:iconSize="32dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/presoButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/presoFont"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -71,7 +71,7 @@
                 android:id="@+id/capoButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Capo chords"
+                android:text="@string/capo_chords"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -84,7 +84,6 @@
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
-
 
             <LinearLayout
                 android:id="@+id/mainDisplay"
@@ -106,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:text="Section highlighting" />
+                android:text="@string/section_highlighting" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/verseButton"
@@ -157,7 +156,7 @@
                 android:id="@+id/commentButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Comment"
+                android:text="@string/comment"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -172,6 +171,40 @@
                 app:iconSize="32dp" />
 
         </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/section_box"
+        android:orientation="vertical"
+        android:layout_margin="8dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="@string/presentermode" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/presoButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/presoFont"
+            app:icon="@drawable/rectangle"
+            app:iconGravity="start"
+            app:iconSize="32dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/presoInfoButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/presoInfoFont"
+            app:icon="@drawable/rectangle"
+            app:iconGravity="start"
+            app:iconSize="32dp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

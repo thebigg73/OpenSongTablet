@@ -144,6 +144,9 @@
     <string name="connections_service_start">Start service</string>
     <string name="connections_service_stop">Stop service</string>
     <string name="connections_success">Connection success</string>
+    <string name="connections_enable">Enable nearby connections</string>
+    <string name="connections_actashost">Act as host</string>
+    <string name="connections_keephostsongs">Keep host songs</string>
     <string name="content">Content</string>
     <string name="continuous">Continuous</string>
     <string name="convert_song">Please convert this song into OpenSong format (by viewing it) before adding it to a set</string>
@@ -486,6 +489,8 @@
     <string name="quicklaunch_button2">Button 2</string>
     <string name="quicklaunch_button3">Button 3</string>
     <string name="quicklaunch_button4">Button 4</string>
+    <string name="quicklaunch_button5">Button 5</string>
+    <string name="quicklaunch_button6">Button 6</string>
     <string name="quicklaunch_currentaction">Current action</string>
     <string name="quicklaunch_title">Customise quick launch buttons</string>
     <string name="random_song">Find a random song</string>
@@ -729,7 +734,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="worshipready" translatable="false">WorshipReady.com</string>
     <string name="worshiptogether" translatable="false">WorshipTogether</string>
     <string name="youtube">Search YouTube for current song</string>
-    <string name="zerotime" translatable="false">0:00</string>
     <string name="duplicate">Duplicate</string>
     <string name="storage_warning">Please do not select the \'Songs\' folder as your storage location.  You should select the parent \'OpenSong\' folder location instead.</string>
     <string name="rotate_display">Rotate display</string>
@@ -759,8 +763,26 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="delete_folder_warning">If you delete this subdirectory, this will also delete any songs or folders that it contains.  You cannot undo this change!</string>
     <string name="root">ROOT</string>
     <string name="get_songs">Get songs</string>
-    <string name="warn_before_changing_song">Show a warning before moving to the next song (useful to avoid accidental presses)</string>
-    <string name="bold_chords_headings">Display chords and headings in bold</string>
     <string name="filename">Filename</string>
     <string name="chord_fingering">Chord fingering</string>
+    <string name="webfontpreview">Choose with web preview</string>
+    <string name="about">About</string>
+    <string name="warn_before_changing_song">Show a warning before moving to the next song (useful to avoid accidental presses)</string>
+    <string name="bold_chords_headings">Display chords and headings in bold</string>
+    <string name="bold_text">Display lyrics in bold</string>
+    <string name="location_rationale">This feature is required to locate other network devices</string>
+    <string name="accept_connection">Connect with</string>
+    <string name="accept_code">Confirm the code matches on both devices:</string>
+    <string name="time_zero" translatable="false">0:00</string>
+    <string name="respectcopyright">Respect copyright - always use legally</string>
+    <string name="wordsandmusicby">Words and music by</string>
+    <string name="usedbypermision">Used by permission.</string>
+    <string name="play_services_error">To use Google Cast, Fonts and Nearby Connections, you will need to install Google Play Services.</string>
+    <string name="play_services_how">Show me how</string>
+    <string name="play_services_help" translatable="false">https://www.opensongapp.com/user-guide/devices-without-google-play</string>
+    <string name="main_song_display">Main song display</string>
+    <string name="capo_chords">Capo chords</string>
+    <string name="section_highlighting">Section highlighting</string>
+    <string name="comment">Comment</string>
+    <string name="device_name">Device name</string>
 </resources>

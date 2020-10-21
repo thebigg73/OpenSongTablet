@@ -22,7 +22,6 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class ThemeSetupFragment extends Fragment {
 
@@ -32,9 +31,6 @@ public class ThemeSetupFragment extends Fragment {
     private Preferences preferences;
     private ThemeColors themeColors;
 
-    private int lyricsColor, chordsColor, capoColor, pageColor, verseColor, chorusColor, prechorusColor,
-            tagColor, bridgeColor, customColor, commentColor, presoColor, metronomeColor, pagebuttonColor,
-            stickytextColor, stickybackgroundColor, extraInfoTextColor, extraInfoBgColor;
     private String myTheme;
     private ArrayList<String> themes;
 
@@ -64,14 +60,15 @@ public class ThemeSetupFragment extends Fragment {
         preferences = new Preferences();
         themeColors = new ThemeColors();
     }
+
     private void setUpTheme() {
         themes = new ArrayList<>();
-        themes.add(getContext().getResources().getString(R.string.dark_theme));
-        themes.add(getContext().getResources().getString(R.string.light_theme));
-        themes.add(getContext().getResources().getString(R.string.custom1_theme));
-        themes.add(getContext().getResources().getString(R.string.custom2_theme));
+        themes.add(requireContext().getString(R.string.dark_theme));
+        themes.add(requireContext().getString(R.string.light_theme));
+        themes.add(requireContext().getString(R.string.custom1_theme));
+        themes.add(requireContext().getString(R.string.custom2_theme));
 
-        ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(getActivity(),R.layout.exposed_dropdown,themes);
+        ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),R.layout.exposed_dropdown,themes);
         myTheme = preferences.getMyPreferenceString(getContext(),"appTheme","dark");
         switch (myTheme) {
             case "dark":
@@ -118,52 +115,31 @@ public class ThemeSetupFragment extends Fragment {
     }
 
     private void updateColors() {
-        Map<String, Integer> colors = themeColors.getDefaultColors(getContext(), preferences);
-        pageColor = colors.get("lyricsBackgroundColor");
-        lyricsColor = colors.get("lyricsTextColor");
-        chordsColor = colors.get("lyricsChordsColor");
-        capoColor = colors.get("lyricsCapoColor");
-
-        verseColor = colors.get("lyricsVerseColor");
-        chorusColor = colors.get("lyricsChorusColor");
-        bridgeColor = colors.get("lyricsBridgeColor");
-        commentColor = colors.get("lyricsCommentColor");
-        prechorusColor = colors.get("lyricsPreChorusColor");
-        tagColor = colors.get("lyricsTagColor");
-        customColor = colors.get("lyricsCustomColor");
-
-        presoColor = colors.get("presoFontColor");
-
-        metronomeColor = colors.get("metronomeColor");
-        pagebuttonColor = colors.get("pageButtonsColor");
-        stickytextColor = colors.get("stickyTextColor");
-        stickybackgroundColor = colors.get("stickyBackgroundColor");
-        extraInfoTextColor = colors.get("extraInfoTextColor");
-        extraInfoBgColor = colors.get("extraInfoBgColor");
+        themeColors.getDefaultColors(getContext(), preferences);
     }
 
     private void updateButtons() {
-        myView.pageButton.getIcon().setColorFilter(new PorterDuffColorFilter(pageColor, PorterDuff.Mode.SRC_IN));
-        myView.lyricsButton.getIcon().setColorFilter(new PorterDuffColorFilter(lyricsColor, PorterDuff.Mode.SRC_IN));
-        myView.chordsButton.getIcon().setColorFilter(new PorterDuffColorFilter(chordsColor, PorterDuff.Mode.SRC_IN));
-        myView.capoButton.getIcon().setColorFilter(new PorterDuffColorFilter(capoColor, PorterDuff.Mode.SRC_IN));
+        myView.pageButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsBackgroundColor(), PorterDuff.Mode.SRC_IN));
+        myView.lyricsButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsTextColor(), PorterDuff.Mode.SRC_IN));
+        myView.chordsButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsChordsColor(), PorterDuff.Mode.SRC_IN));
+        myView.capoButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsCapoColor(), PorterDuff.Mode.SRC_IN));
 
-        myView.verseButton.getIcon().setColorFilter(new PorterDuffColorFilter(verseColor, PorterDuff.Mode.SRC_IN));
-        myView.chorusButton.getIcon().setColorFilter(new PorterDuffColorFilter(chorusColor, PorterDuff.Mode.SRC_IN));
-        myView.bridgeButton.getIcon().setColorFilter(new PorterDuffColorFilter(bridgeColor, PorterDuff.Mode.SRC_IN));
-        myView.commentButton.getIcon().setColorFilter(new PorterDuffColorFilter(commentColor, PorterDuff.Mode.SRC_IN));
-        myView.prechorusButton.getIcon().setColorFilter(new PorterDuffColorFilter(prechorusColor, PorterDuff.Mode.SRC_IN));
-        myView.tagButton.getIcon().setColorFilter(new PorterDuffColorFilter(tagColor, PorterDuff.Mode.SRC_IN));
-        myView.customButton.getIcon().setColorFilter(new PorterDuffColorFilter(customColor, PorterDuff.Mode.SRC_IN));
+        myView.verseButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsVerseColor(), PorterDuff.Mode.SRC_IN));
+        myView.chorusButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsChorusColor(), PorterDuff.Mode.SRC_IN));
+        myView.bridgeButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsBridgeColor(), PorterDuff.Mode.SRC_IN));
+        myView.commentButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsCommentColor(), PorterDuff.Mode.SRC_IN));
+        myView.prechorusButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsPreChorusColor(), PorterDuff.Mode.SRC_IN));
+        myView.tagButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsTagColor(), PorterDuff.Mode.SRC_IN));
+        myView.customButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getLyricsCustomColor(), PorterDuff.Mode.SRC_IN));
 
-        myView.presoButton.getIcon().setColorFilter(new PorterDuffColorFilter(presoColor, PorterDuff.Mode.SRC_IN));
+        myView.presoButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getPresoFontColor(), PorterDuff.Mode.SRC_IN));
 
-        myView.metronomeButton.getIcon().setColorFilter(new PorterDuffColorFilter(metronomeColor, PorterDuff.Mode.SRC_IN));
-        myView.pagebuttonButton.getIcon().setColorFilter(new PorterDuffColorFilter(pagebuttonColor, PorterDuff.Mode.SRC_IN));
-        myView.stickytextButton.getIcon().setColorFilter(new PorterDuffColorFilter(stickytextColor, PorterDuff.Mode.SRC_IN));
-        myView.stickybackgroundButton.getIcon().setColorFilter(new PorterDuffColorFilter(stickybackgroundColor, PorterDuff.Mode.SRC_IN));
-        myView.extratextButton.getIcon().setColorFilter(new PorterDuffColorFilter(extraInfoTextColor, PorterDuff.Mode.SRC_IN));
-        myView.extrabackgroundButton.getIcon().setColorFilter(new PorterDuffColorFilter(extraInfoBgColor, PorterDuff.Mode.SRC_IN));
+        myView.metronomeButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getMetronomeColor(), PorterDuff.Mode.SRC_IN));
+        myView.pagebuttonButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getPageButtonsColor(), PorterDuff.Mode.SRC_IN));
+        myView.stickytextButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getStickyTextColor(), PorterDuff.Mode.SRC_IN));
+        myView.stickybackgroundButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getStickyBackgroundColor(), PorterDuff.Mode.SRC_IN));
+        myView.extratextButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getExtraInfoTextColor(), PorterDuff.Mode.SRC_IN));
+        myView.extrabackgroundButton.getIcon().setColorFilter(new PorterDuffColorFilter(themeColors.getExtraInfoBgColor(), PorterDuff.Mode.SRC_IN));
     }
 
     private void setListeners() {

@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -154,14 +152,6 @@ public class BootUpFragment extends Fragment {
 
     private void startBootProcess() {
         // Start the boot process
-
-        Handler lyrichandler = new Handler();
-        Handler chordhandler = new Handler();
-        Handler stickyhandler = new Handler();
-        Handler presohandler = new Handler();
-        Handler presoinfohandler = new Handler();
-        Handler customhandler = new Handler();
-
         if (getActivity() != null) {
             new Thread(() -> {
                 // Set up the Typefaces
@@ -171,10 +161,7 @@ public class BootUpFragment extends Fragment {
                         myView.currentAction.setText(message);
                     });
                 }
-                Looper.prepare();
-
-                setTypeFace.setUpAppFonts(getActivity(), preferences, lyrichandler, chordhandler,
-                        stickyhandler, presohandler, presoinfohandler, customhandler);
+                //Looper.prepare();
 
                 message = initialising + getString(R.string.storage);
 

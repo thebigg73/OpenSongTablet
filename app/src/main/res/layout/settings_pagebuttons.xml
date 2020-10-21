@@ -1,10 +1,10 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/PrefScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ccli.SettingsCCLI"
-    style="@style/PrefScrollView">
+    tools:context=".ccli.SettingsCCLI">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,325 +12,287 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
+            style="@style/MyWhiteHeadingText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="32dp"
             android:text="@string/pagebuttons" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:useCompatPadding="true"
-                android:src="@drawable/ic_help_outline_white_36dp"/>
+                android:contentDescription="@string/quicklaunch_button1"
+                android:src="@drawable/ic_help_outline_white_36dp"
+                app:useCompatPadding="false" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 android:layout_weight="1"
-                android:hint="@string/action"
-                android:labelFor="@+id/actionList1"
-                android:layout_gravity="center_vertical">
+                android:padding="16dp"
+                android:text="@string/quicklaunch_button1" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/actionList1"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"/>
-            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/button1ShortPress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:main="Short press/click action"
             app:sub="" />
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/button1LongPress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:main="Additional long press action"
             app:sub="" />
 
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/button1Active"
+            style="@style/PrefSwitch"
+            android:text="@string/show" />
+
         <TableRow style="@style/DividerLine" />
 
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/pagebuttons"
-            android:padding="16dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:useCompatPadding="true"
-                android:src="@drawable/ic_help_outline_white_36dp"/>
+                android:contentDescription="@string/quicklaunch_button2"
+                android:src="@drawable/ic_help_outline_white_36dp"
+                app:useCompatPadding="false" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 android:layout_weight="1"
-                android:hint="@string/action"
-                android:labelFor="@+id/actionList2"
-                android:layout_gravity="center_vertical">
+                android:padding="16dp"
+                android:text="@string/quicklaunch_button2" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/actionList2"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"/>
-            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/button2ShortPress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:main="Short press/click action"
             app:sub="" />
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/button2LongPress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:main="Additional long press action"
-            app:sub="Open your current CCLI log for viewing" />
+            app:sub="" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/button2Active"
+            style="@style/PrefSwitch"
+            android:text="@string/show" />
 
         <TableRow style="@style/DividerLine" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/pagebuttons" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:useCompatPadding="true"
-                android:src="@drawable/ic_help_outline_white_36dp"/>
+                android:contentDescription="@string/quicklaunch_button3"
+                android:src="@drawable/ic_help_outline_white_36dp"
+                app:useCompatPadding="false" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 android:layout_weight="1"
-                android:hint="@string/action"
-                android:labelFor="@+id/actionList3"
-                android:layout_gravity="center_vertical">
+                android:padding="16dp"
+                android:text="@string/quicklaunch_button3" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/actionList3"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"/>
-            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/button3ShortPress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:main="Short press/click action"
             app:sub="" />
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/button3LongPress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:main="Additional long press action"
             app:sub="" />
 
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/button3Active"
+            style="@style/PrefSwitch"
+            android:text="@string/show" />
+
         <TableRow style="@style/DividerLine" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/pagebuttons" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:useCompatPadding="true"
-                android:src="@drawable/ic_help_outline_white_36dp"/>
+                android:contentDescription="@string/quicklaunch_button4"
+                android:src="@drawable/ic_help_outline_white_36dp"
+                app:useCompatPadding="false" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 android:layout_weight="1"
-                android:hint="@string/action"
-                android:labelFor="@+id/actionList4"
-                android:layout_gravity="center_vertical">
+                android:padding="16dp"
+                android:text="@string/quicklaunch_button4" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/actionList4"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"/>
-            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/button4ShortPress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:main="Short press/click action"
             app:sub="" />
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/button4LongPress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:main="Additional long press action"
             app:sub="" />
 
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/button4Active"
+            style="@style/PrefSwitch"
+            android:text="@string/show" />
+
         <TableRow style="@style/DividerLine" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/pagebuttons" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:useCompatPadding="true"
-                android:src="@drawable/ic_help_outline_white_36dp"/>
+                android:contentDescription="@string/quicklaunch_button5"
+                android:src="@drawable/ic_help_outline_white_36dp"
+                app:useCompatPadding="false" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 android:layout_weight="1"
-                android:hint="@string/action"
-                android:labelFor="@+id/actionList5"
-                android:layout_gravity="center_vertical">
+                android:padding="16dp"
+                android:text="@string/quicklaunch_button5" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/actionList5"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"/>
-            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/button5ShortPress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:main="Short press/click action"
             app:sub="" />
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/button5LongPress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:main="Additional long press action"
             app:sub="" />
 
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/button5Active"
+            style="@style/PrefSwitch"
+            android:text="@string/show" />
+
         <TableRow style="@style/DividerLine" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/pagebuttons" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/button6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:useCompatPadding="true"
-                android:src="@drawable/ic_help_outline_white_36dp"/>
+                android:contentDescription="@string/quicklaunch_button6"
+                android:src="@drawable/ic_help_outline_white_36dp"
+                app:useCompatPadding="false" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/exposedDropDown"
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 android:layout_weight="1"
-                android:hint="@string/action"
-                android:labelFor="@+id/actionList6"
-                android:layout_gravity="center_vertical">
+                android:padding="16dp"
+                android:text="@string/quicklaunch_button6" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/actionList6"
-                    style="@style/exposedDropDownItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"/>
-            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/button6ShortPress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:main="Short press/click action"
             app:sub="" />
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/button6LongPress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:main="Additional long press action"
             app:sub="" />
 
-        <TableRow style="@style/DividerLine" />
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/button6Active"
+            style="@style/PrefSwitch"
+            android:text="@string/show" />
 
 
     </LinearLayout>

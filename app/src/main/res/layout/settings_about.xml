@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--//TODO Extract the text strings -->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".preferences.SettingsCategories"
+    style="@style/PrefScrollView">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about"
+            style="@style/MyWhiteHeadingText"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="32dp"/>
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/latestVersion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/latest_updates"
+            app:sub="@string/app_name" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/manualButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/user_guide"
+            app:sub="@string/help" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/forumButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="Forum"
+            app:sub="Report bugs, get help and request features" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/rateButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/rate"
+            app:sub="Please leave a review" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/languageButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/language"
+            app:sub="English" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/gitbubButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="GitHub"
+            app:sub="Contribute to app development" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/paypalButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/paypal"
+            app:sub="Donate to the app development" />
+        <TableRow style="@style/DividerLine" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

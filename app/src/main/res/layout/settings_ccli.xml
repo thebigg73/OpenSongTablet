@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ccli.SettingsCCLI"
     style="@style/PrefScrollView">
 
     <LinearLayout
@@ -11,45 +10,65 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_song_ccli"
+            style="@style/MyWhiteHeadingText"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="32dp"/>
+
+        <TableRow style="@style/DividerLine"/>
+
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/ccliAutomatic"
             style="@style/PrefSwitch"
-            android:text="@string/ccli_automatic"/>
+            android:text="@string/ccli_automatic"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"/>
+        <TableRow style="@style/DividerLine"/>
 
-        <com.garethevans.church.opensongtablet.preferences.PrefEditTextView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/ccliChurch"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:hintTextVal="@string/ccli_church"
-            app:editTextVal="My Church"/>
+            android:layout_height="match_parent"
+            app:main="@string/ccli_church"
+            app:sub="@string/ccli_church"/>
+        <TableRow style="@style/DividerLine"/>
 
-        <com.garethevans.church.opensongtablet.preferences.PrefEditTextView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/ccliLicence"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintTextVal="@string/ccli_licence"
-            app:editTextVal="#Number"/>
+            app:main="@string/ccli_licence"
+            app:sub="@string/ccli_licence"/>
+        <TableRow style="@style/DividerLine"/>
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/ccliView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:main="@string/ccli_view"
             app:sub="Open your current CCLI log for viewing"/>
+        <TableRow style="@style/DividerLine"/>
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/ccliExport"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:main="@string/export"
             app:sub="Export your CCLI log as an .xml file"/>
+        <TableRow style="@style/DividerLine"/>
 
-        <com.garethevans.church.opensongtablet.preferences.PrefTextLinkView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/ccliDelete"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:main="@string/delete"
             app:sub="@string/ccli_reset"/>
+        <TableRow style="@style/DividerLine"/>
 
 
     </LinearLayout>

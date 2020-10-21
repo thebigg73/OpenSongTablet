@@ -207,6 +207,7 @@ public class Preferences extends Activity {
     dark_stickyBackgroundColor      int         The color for the sticky note background info text in the dark theme
     dark_extraInfoTextColor         int         The color for the extra info text in the dark theme
     dark_extraInfoBgColor           int         The color for the extra info background in the dark theme
+    deviceName                      String      The device name for Nearby Connections (def:Bluetooth name/device manufacturer+model)
     displayCapoChords               boolean     Should capo chords be shown (def:true)
     displayCapoAndNativeChords      boolean     Should both chords be shown at once (def:false)
     displayChords                   boolean     Decides if chords should be shown (def:true)
@@ -233,7 +234,6 @@ public class Preferences extends Activity {
     fontSizeMax                     float       The max font size (def:50.0f)
     fontSizeMin                     float       The min font size (def:8.0f)
     fontChord                       String      The name of the font used for the chords.  From fonts.google.com (def:lato)
-    fontCustom                      String      The name of the font used for custom fonts.  From fonts.google.com (def:lato)
     fontLyric                       String      The name of the font used for the lyrics.  From fonts.google.com (def:lato)
     fontPreso                       String      The name of the font used for the preso.  From fonts.google.com (def:lato)
     fontPresoInfo                   String      The name of the font used for the presoinfo.  From fonts.google.com (def:lato)

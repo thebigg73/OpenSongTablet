@@ -14,7 +14,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:padding="12dp"
-        android:background="@drawable/rounded_dialog"/>
+        android:background="@drawable/rounded_dialog_node"/>
 
     <TextView
         android:id="@+id/actualButton"

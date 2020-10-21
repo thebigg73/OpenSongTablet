@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.screensetup;
+package com.garethevans.church.opensongtablet.appdata;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;

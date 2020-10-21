@@ -15,7 +15,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsPagebuttonsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.PrefTextLinkView;
+import com.garethevans.church.opensongtablet.customviews.PrefTextLinkView;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -92,22 +92,9 @@ public class PageButtonFragment extends Fragment {
             opt5 = buttonActions.indexOf(preferences.getMyPreferenceString(getContext(),"pageButtonCustom5Action",""));
             opt6 = buttonActions.indexOf(preferences.getMyPreferenceString(getContext(),"pageButtonCustom6Action",""));
 
-            ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(getActivity(), R.layout.my_spinner, buttonActions);
+            ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(getActivity(), R.layout._my_spinner, buttonActions);
 
             getActivity().runOnUiThread(() -> {
-                myView.actionList1.setAdapter(arrayAdapter);
-                myView.actionList2.setAdapter(arrayAdapter);
-                myView.actionList3.setAdapter(arrayAdapter);
-                myView.actionList4.setAdapter(arrayAdapter);
-                myView.actionList5.setAdapter(arrayAdapter);
-                myView.actionList6.setAdapter(arrayAdapter);
-
-                myView.actionList1.setSelection(opt1);
-                myView.actionList2.setSelection(opt2);
-                myView.actionList3.setSelection(opt3);
-                myView.actionList4.setSelection(opt4);
-                myView.actionList5.setSelection(opt5);
-                myView.actionList6.setSelection(opt6);
 
                 setTheText(myView.button1ShortPress, myView.button1LongPress,opt1);
                 setTheText(myView.button2ShortPress, myView.button2LongPress,opt2);

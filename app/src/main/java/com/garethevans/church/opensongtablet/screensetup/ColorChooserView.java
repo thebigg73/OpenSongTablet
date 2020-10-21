@@ -10,32 +10,29 @@ import android.graphics.PorterDuff;
 import android.graphics.Shader;
 import android.graphics.Shader.TileMode;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 
 public class ColorChooserView extends View {
-        private Paint paint;
-        private ComposeShader shader;
-        private final float[] color = { 1.f, 1.f, 1.f };
+        Paint paint;
+        Shader luar;
+        ComposeShader shader;
+        final float[] color = { 1.f, 1.f, 1.f };
 
         public ColorChooserView(Context context){
                 super(context);
-                initialise();
         }
 
         public ColorChooserView(Context context, AttributeSet attrs) {
                 super(context, attrs);
-                initialise();
         }
 
         public ColorChooserView(Context context, AttributeSet attrs, int defStyle) {
                 super(context, attrs, defStyle);
-                initialise();
         }
 
         private void initialise() {
                 int rgb = Color.HSVToColor(color);
-                Shader luar = new LinearGradient(0.f, 0.f, 0.f, this.getMeasuredHeight(), 0xffffffff, 0xff000000, TileMode.CLAMP);
+                luar = new LinearGradient(0.f, 0.f, 0.f, this.getMeasuredHeight(), 0xffffffff, 0xff000000, TileMode.CLAMP);
                 Shader dalam = new LinearGradient(0.f, 0.f, this.getMeasuredWidth(), 0.f, 0xffffffff, rgb, TileMode.CLAMP);
                 shader = new ComposeShader(luar, dalam, PorterDuff.Mode.MULTIPLY);
         }
@@ -53,26 +50,22 @@ public class ColorChooserView extends View {
                 canvas.drawRect(0.f, 0.f, this.getMeasuredWidth(), this.getMeasuredHeight(), paint);
         }
 
-        @Override
+       /* @Override
         public boolean onTouchEvent(MotionEvent event) {
                 super.onTouchEvent(event);
-
-                /* switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                                return true;
-
-                        case MotionEvent.ACTION_UP:
-                                performClick();
-                                return true;
-                }*/
-                performClick();
+                if (event.getAction()==MotionEvent.ACTION_UP) {
+                        performClick();
+                        return false;
+                }
                 return false;
         }
 
+
+        */
         @Override
         public boolean performClick() {
                 super.performClick();
-                return true;
+                return false;
         }
 
         void setHue(float hue) {

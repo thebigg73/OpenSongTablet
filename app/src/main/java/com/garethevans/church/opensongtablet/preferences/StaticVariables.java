@@ -53,6 +53,16 @@ public class StaticVariables {
     public static boolean indexRequired = true;
     public static boolean indexComplete = false;
     public static boolean needtorefreshsongmenu;
+    public static String connectionLog;
+    public static boolean isConnected;
+    public static String deviceName;
+    public static String mBluetoothName;
+    public static boolean usingNearby;
+    public static boolean isHost;
+    public static boolean keepHostFiles;
+    public static boolean receiveHostFiles;
+    public static boolean isSong;
+    public static String myXML;
     static String nextSongKeyInSet = "";
     public static String whatsongforsetwork = "";
     public static String newSetContents = "";
@@ -231,7 +241,7 @@ public class StaticVariables {
     public static String temptranspChords = "";
 
     // Request codes for callbacks
-    static final int REQUEST_CAMERA_CODE = 1973;
+    public static final int REQUEST_CAMERA_CODE = 1973;
     static final int REQUEST_MICROPHONE_CODE = 1974;
     static final int REQUEST_PDF_CODE = 1975;
     static final int LINK_AUDIO = 1000;

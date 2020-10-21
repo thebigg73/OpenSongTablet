@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.preferences;
+package com.garethevans.church.opensongtablet.customviews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -17,7 +17,7 @@ public class PrefEditTextView extends LinearLayout {
 
     public PrefEditTextView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.settings_view_edittext,this);
+        inflate(context, R.layout.view_edittext,this);
 
         editText = findViewById(R.id.editText);
         TextInputLayout hint = findViewById(R.id.holderLayout);

@@ -24,13 +24,14 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 
 public class ProcessSong {
@@ -171,7 +172,7 @@ public class ProcessSong {
                     !line.startsWith("5") && !line.startsWith("6") && !line.startsWith("7") && !line.startsWith("8") &&
                     !line.startsWith("9") && !line.startsWith("-")) {
                 line = " " + line;
-            } else if (line.matches("^[0-9].*$") && line.length() > 1 && !line.substring(1, 2).equals(".")) {
+            } else if (line.matches("^[0-9].*$") && line.length() > 1 && !line.startsWith(".", 1)) {
                 // Multiline verse
                 line = line.substring(0, 1) + ". " + line.substring(1);
             }
@@ -676,7 +677,6 @@ public class ProcessSong {
     // This is used for preparing the lyrics as views
     // When processing the lyrics, chords+lyrics or chords+comments or multiple chords+chords are processed
     // as groups of lines and returned as a TableLayout containing two or more rows to allow alignment
-    @SuppressWarnings("ConstantConditions")
 
 
     // Splitting the song up in to manageable chunks
@@ -758,7 +758,7 @@ public class ProcessSong {
     }
 
     private TableLayout groupTable(Context c, String string, float headingScale, float commentScale,
-                                   float chordScale, int lyricColor, int chordColor,
+                                   float chordScale, int lyricColor, int chordColor, SetTypeFace setTypeFace,
                                    boolean trimLines, float lineSpacing, boolean boldChordHeading) {
         TableLayout tableLayout = newTableLayout(c);
         // Split the group into lines
@@ -803,7 +803,7 @@ public class ProcessSong {
         for (int t = 0; t < lines.length; t++) {
             TableRow tableRow = newTableRow(c);
             String linetype = getLineType(lines[t]);
-            Typeface typeface = getTypeface(linetype);
+            Typeface typeface = getTypeface(setTypeFace, linetype);
             float size = getFontSize(linetype, headingScale, commentScale, chordScale);
             int color = getFontColor(linetype, lyricColor, chordColor);
             int startpos = 0;
@@ -1056,7 +1056,7 @@ public class ProcessSong {
     }
     public ArrayList<View> setSongInLayout(Context c, Preferences preferences, boolean trimSections,
                                            boolean addSectionSpace, boolean trimLines, float lineSpacing,
-                                           Map<String,Integer> colorMap, float headingScale,
+                                           ThemeColors themeColors, SetTypeFace setTypeFace, float headingScale,
                                            float chordScale, float commentScale, String string,
                                            boolean boldChordHeading) {
         ArrayList<View> sectionViews = new ArrayList<>();
@@ -1083,21 +1083,21 @@ public class ProcessSong {
                 section = section + "\n ";
             }
             LinearLayout linearLayout = newLinearLayout(c); // transparent color
-            int backgroundColor = colorMap.get("lyricsVerseColor");
+            int backgroundColor = themeColors.getLyricsVerseColor();
             // Now split by line
             String[] lines = section.split("\n");
             for (String line:lines) {
                 // Get the text stylings
                 String linetype = getLineType(line);
                 if (linetype.equals("heading") || linetype.equals("comment") || linetype.equals("tab")) {
-                    backgroundColor = getBGColor(c,colorMap,line);
+                    backgroundColor = getBGColor(c,themeColors,line);
                 }
-                Typeface typeface = getTypeface(linetype);
+                Typeface typeface = getTypeface(setTypeFace,linetype);
                 float size = getFontSize(linetype,headingScale,commentScale,chordScale);
-                int color = getFontColor(linetype,colorMap.get("lyricsTextColor"),colorMap.get("lyricsChordsColor"));
+                int color = getFontColor(linetype,themeColors.getLyricsTextColor(),themeColors.getLyricsChordsColor());
                 if (line.contains("____groupline_____")) {
                     linearLayout.addView(groupTable(c,line,headingScale,commentScale,chordScale,
-                            colorMap.get("lyricsTextColor"),colorMap.get("lyricsChordsColor"),trimLines,lineSpacing,boldChordHeading));
+                            themeColors.getLyricsTextColor(),themeColors.getLyricsChordsColor(),setTypeFace,trimLines,lineSpacing,boldChordHeading));
                 } else {
                     linearLayout.addView(lineText(c,linetype,line,typeface,size,color,
                             trimLines,lineSpacing,boldChordHeading));
@@ -1111,13 +1111,13 @@ public class ProcessSong {
 
 
     // Get properties for creating the views
-    private Typeface getTypeface(String string) {
+    private Typeface getTypeface(SetTypeFace setTypeFace, String string) {
         if (string.equals("chord")) {
-            return StaticVariables.typefaceChords;
+            return setTypeFace.getChordFont();
         } else if (string.equals("tab")) {
-            return StaticVariables.typefaceMono;
+            return setTypeFace.getMonoFont();
         } else {
-            return StaticVariables.typefaceLyrics;
+            return setTypeFace.getLyricFont();
         }
     }
     private int getFontColor(String string, int lyricColor, int chordColor) {
@@ -1142,23 +1142,23 @@ public class ProcessSong {
         }
         return f;
     }
-    private int getBGColor(Context c, Map<String,Integer> colorMap,String line) {
+    private int getBGColor(Context c, ThemeColors themeColors,String line) {
         if (line.startsWith(";")) {
-            return colorMap.get("lyricsCommentColor");
+            return themeColors.getLyricsCommentColor();
         } else if (fixHeading(c,line).contains(c.getString(R.string.tag_verse))) {
-            return colorMap.get("lyricsVerseColorColor");
+            return themeColors.getLyricsVerseColor();
         } else if (fixHeading(c,line).contains(c.getString(R.string.tag_prechorus))) {
-            return colorMap.get("lyricsPreChorusColor");
+            return themeColors.getLyricsPreChorusColor();
         } else if (fixHeading(c,line).contains(c.getString(R.string.tag_chorus))) {
-            return colorMap.get("lyricsChorusColor");
+            return themeColors.getLyricsChorusColor();
         } else if (fixHeading(c,line).contains(c.getString(R.string.tag_bridge))) {
-            return colorMap.get("lyricsBridgeColor");
+            return themeColors.getLyricsBridgeColor();
         } else if (fixHeading(c,line).contains(c.getString(R.string.tag_tag))) {
-            return colorMap.get("lyricsTagColor");
+            return themeColors.getLyricsTagColor();
         } else if (fixHeading(c,line).contains(c.getString(R.string.custom))) {
-            return colorMap.get("lyricsCustomColor");
+            return themeColors.getLyricsCustomColor();
         } else {
-            return colorMap.get("lyricsVerseColor");
+            return themeColors.getLyricsVerseColor();
         }
     }
 
@@ -1231,7 +1231,7 @@ public class ProcessSong {
 
     // Stuff for resizing/scaling
     private int padding = 8;
-    private float defFontSize = 8.0f;
+    private final float defFontSize = 8.0f;
     private String thisAutoScale;
     private int getMaxValue(ArrayList<Integer> values, int start, int end) {
         int maxValue = 0;
@@ -1904,5 +1904,16 @@ public class ProcessSong {
             e.printStackTrace();
         }
         return bitmap;
+    }
+
+
+    // These functions deal with nearby navigations
+    public int getNearbySection(String incoming) {
+        //TODO
+        return -1;
+    }
+    public ArrayList<String> getNearbyIncoming(String incoming) {
+        ArrayList<String> arrayList = new ArrayList<>();
+        return arrayList;
     }
 }

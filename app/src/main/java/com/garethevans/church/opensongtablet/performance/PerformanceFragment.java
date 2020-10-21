@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.databinding.FragmentPerformanceBinding;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
@@ -43,7 +44,6 @@ import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class PerformanceFragment extends Fragment {
 
@@ -65,6 +65,7 @@ public class PerformanceFragment extends Fragment {
     private PadFunctions padFunctions;
     private Metronome metronome;
     private DoVibrate doVibrate;
+    private SetTypeFace setTypeFace;
 
     //private ShowCase showCase;
 
@@ -84,7 +85,6 @@ public class PerformanceFragment extends Fragment {
     private ArrayList<View> sectionViews;
     private ArrayList<Integer> sectionWidths, sectionHeights;
     private String autoScale;
-    private Map<String,Integer> colorMap;
     private FragmentPerformanceBinding myView;
 
     // Handlers and runnables
@@ -165,7 +165,7 @@ public class PerformanceFragment extends Fragment {
         sqLiteHelper = new SQLiteHelper(getActivity());
         convertOnSong = new ConvertOnSong();
         convertChoPro = new ConvertChoPro();
-        themeColors = new ThemeColors();
+        themeColors = mainActivityInterface.getMyThemeColors();
         showToast = new ShowToast();
         nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
         commonSQL = new CommonSQL();
@@ -173,6 +173,8 @@ public class PerformanceFragment extends Fragment {
         doVibrate = new DoVibrate();
         padFunctions = new PadFunctions();
         metronome = new Metronome(getContext(),mainActivityInterface.getAb());
+        setTypeFace = mainActivityInterface.getMyFonts();
+
         //showCase = new ShowCase();
 
         performanceGestures = new PerformanceGestures(getContext(),preferences,storageAccess,setActions,
@@ -181,7 +183,7 @@ public class PerformanceFragment extends Fragment {
                 mainActivityInterface.getMediaPlayer(2),delayactionBarHide,hideActionBarRunnable,0xffff0000);
     }
     private void loadPreferences() {
-        colorMap = themeColors.getDefaultColors(getActivity(),preferences);
+        themeColors.getDefaultColors(getContext(),preferences);
         scaleHeadings = preferences.getMyPreferenceFloat(getActivity(),"scaleHeadings",0.6f);
         scaleChords = preferences.getMyPreferenceFloat(getActivity(),"scaleChords",0.8f);
         scaleComments = preferences.getMyPreferenceFloat(getActivity(),"scaleComments",0.8f);
@@ -203,6 +205,7 @@ public class PerformanceFragment extends Fragment {
         fontSizeMax = 90.0f;
         songAutoScaleOverrideWidth = false;
         songAutoScaleOverrideFull = false;
+        myView.mypage.setBackgroundColor(themeColors.getLyricsBackgroundColor());
     }
 
     // Displaying the song
@@ -212,11 +215,12 @@ public class PerformanceFragment extends Fragment {
             requireActivity().runOnUiThread(() -> {
                 Animation animSlide;
                 if (R2L) {
-                    animSlide = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_left);
+                    animSlide = AnimationUtils.loadAnimation(requireActivity(), R.anim.slide_out_left);
                 } else {
-                    animSlide = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_right);
+                    animSlide = AnimationUtils.loadAnimation(requireActivity(), R.anim.slide_out_right);
                 }
                 myView.songView.startAnimation(animSlide);
+                myView.zoomLayout.moveTo(1,0,0,false);
             });
             // Load up the song
             if (sectionViews!=null) {
@@ -235,10 +239,10 @@ public class PerformanceFragment extends Fragment {
 
     private void prepareSongViews() {
         // This is called on UI thread above;
-        myView.pageHolder.setBackgroundColor(colorMap.get("lyricsBackgroundColor"));
+        myView.pageHolder.setBackgroundColor(themeColors.getLyricsBackgroundColor());
         // Get the song in the layout
         sectionViews = processSong.setSongInLayout(getActivity(),preferences, trimSections, addSectionSpace,
-                trimLines, lineSpacing, colorMap, scaleHeadings, scaleChords, scaleComments,
+                trimLines, lineSpacing, themeColors, setTypeFace, scaleHeadings, scaleChords, scaleComments,
                 song.getLyrics(), boldChordHeading);
 
         // We now have the 1 column layout ready, so we can set the view observer to measure once drawn
@@ -297,14 +301,17 @@ public class PerformanceFragment extends Fragment {
     private GestureDetector detector;
     @SuppressLint("ClickableViewAccessibility")
     private void setGestureListeners(){
-        detector = new GestureDetector(getActivity(), new GestureListener(myView.songscrollview,
+        /*detector = new GestureDetector(getActivity(), new GestureListener(myView.songscrollview,
                 myView.horizontalscrollview,swipeMinimumDistance,swipeMaxDistanceYError,swipeMinimumVelocity,
                 oktoRegisterGesture(),preferences.getMyPreferenceInt(getContext(),"doubleTapGesture",2),
                 performanceGestures));
         myView.mypage.setOnTouchListener(new MyTouchListener());
         myView.songscrollview.setOnTouchListener(new MyTouchListener());
         myView.horizontalscrollview.setOnTouchListener(new MyTouchListener());
-        scaleDetector = new ScaleGestureDetector(getActivity(), new PinchToZoomGestureListener(myView.pageHolder));
+        scaleDetector = new ScaleGestureDetector(getActivity(), new PinchToZoomGestureListener(myView.pageHolder));*/
+        detector = new GestureDetector(getActivity(), new GestureListener(myView.zoomLayout,swipeMinimumDistance,swipeMaxDistanceYError,swipeMinimumVelocity,
+                oktoRegisterGesture(),preferences.getMyPreferenceInt(getContext(),"doubleTapGesture",2),
+                performanceGestures));
     }
     private class MyTouchListener implements View.OnTouchListener {
         @Override

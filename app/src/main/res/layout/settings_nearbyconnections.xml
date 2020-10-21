@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--//TODO Extract the text strings -->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/PrefScrollView">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/connections_connect"
+            style="@style/MyWhiteHeadingText"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="32dp"/>
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/deviceButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/device_name"
+            app:sub="@string/device_name" />
+        <TableRow style="@style/DividerLine" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/actAsHost"
+            style="@style/PrefSwitch"
+            android:text="@string/connections_actashost"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"/>
+        <TableRow style="@style/DividerLine"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/enableNearby"
+            style="@style/PrefSwitch"
+            android:text="@string/connections_enable"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"/>
+        <TableRow style="@style/DividerLine"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/receiveHostFiles"
+            style="@style/PrefSwitch"
+            android:text="@string/connections_receive_host"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"/>
+        <TableRow style="@style/DividerLine"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/keepHostFiles"
+            style="@style/PrefSwitch"
+            android:text="@string/connections_keephostsongs"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"/>
+        <TableRow style="@style/DividerLine"/>
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/connectionsLog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/connections_log"
+            app:sub="" />
+        <TableRow style="@style/DividerLine" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

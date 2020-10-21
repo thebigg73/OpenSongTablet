@@ -219,7 +219,7 @@
 
             <include
                 android:id="@+id/pagebuttons"
-                layout="@layout/page_buttons"
+                layout="@layout/_page_buttons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
