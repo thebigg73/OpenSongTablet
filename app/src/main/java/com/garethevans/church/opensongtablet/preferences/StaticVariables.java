@@ -155,13 +155,6 @@ public class StaticVariables {
     // Option menu defines which menu we are in
     static String whichOptionMenu = "MAIN";
 
-    // MIDI stuff
-    static MidiDevice midiDevice;
-    static MidiManager midiManager;
-    static MidiInputPort midiInputPort;
-    static MidiOutputPort midiOutputPort;
-    static String midiDeviceName = "", midiDeviceAddress = "";
-    static MidiReceiver loggingReceiver;
 
     // Stuff for transposing songs
     public static int detectedChordFormat = 1;

@@ -275,6 +275,7 @@ public class Preferences extends Activity {
     metronomePan                    String      The panning of the metronome sound L, C, R (def:C)
     metronomeVol                    float       The volume of the metronome (def:0.5f)
     metronomeShowVisual             boolean     Should the metronome be visual (flash action bar) (def:false)
+    midiAsPedal                     boolean     Should the midi device trigger pedal commands (def:false)
     midiSendAuto                    boolean     Should the midi info in the song be sent on song load automatically (def:false)
     multiLineVerseKeepCompact       boolean     Should multiline verses be kept compact (def:false)
     padAutoStart                    boolean     Should the pad autostart with song (after manually starting first time) (def:false)

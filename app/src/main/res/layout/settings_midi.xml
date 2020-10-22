@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/PrefScrollView">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/midi"
+            style="@style/MyWhiteHeadingText"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="32dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/section_box"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/connections_connect"/>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/enableBluetooth"
+                style="@style/PrefSwitch"
+                android:text="@string/midi_bluetooth"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/searchDevices"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextOnlyButton"
+                android:text="@string/search"/>
+
+            <RelativeLayout
+                android:id="@+id/searchProgressLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/devicesText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:padding="8dp"
+                    android:text="@string/device_list"/>
+                    
+            <LinearLayout
+                android:id="@+id/foundDevicesLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@+id/devicesText"
+                android:gravity="center_horizontal"/>
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/devicesText"
+                    android:layout_centerInParent="true"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/connectionStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/section_box"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/device_name"
+                style="@style/MyWhiteHeadingText"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"/>
+            
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/connectedDevice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/device_name"
+            app:sub="@string/device_name" />
+        <TableRow style="@style/DividerLine" />
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/testMidiDevice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextOnlyButton"
+                    android:padding="16dp"
+                    android:layout_margin="16dp"
+                    android:text="@string/midi_test"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/disconnectMidiDevice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextOnlyButton"
+                    android:padding="16dp"
+                    android:layout_margin="16dp"
+                    android:text="@string/cast_disconnect"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/midiMessages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/section_box"
+        android:layout_margin="8dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/midi_commands"
+            style="@style/MyWhiteHeadingText"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/autoSendBluetooth"
+            style="@style/PrefSwitch"
+            android:text="@string/midi_auto"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/midiAsPedal"
+            style="@style/PrefSwitch"
+            android:text="@string/midi_pedal"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:baselineAligned="false">
+
+            <LinearLayout
+                android:id="@+id/songActionsLayout"
+                android:layout_width="0dp"
+                android:layout_weight="0.6"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:orientation="vertical">
+
+                <com.garethevans.church.opensongtablet.customviews.PrefEditTextView
+                    android:id="@+id/actionChoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintTextVal="@string/action"
+                    app:editTextVal="@string/midi_program"
+                    android:padding="8dp"
+                    android:layout_margin="0dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                <com.garethevans.church.opensongtablet.customviews.PrefEditTextView
+                    android:id="@+id/channelChoice"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    app:hintTextVal="@string/midi_channel"
+                    app:editTextVal="1"
+                    android:padding="8dp"
+                    android:layout_margin="0dp"/>
+                    <com.garethevans.church.opensongtablet.customviews.PrefEditTextView
+                        android:id="@+id/valueChoice"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        app:hintTextVal="@string/midi_value"
+                        app:editTextVal="1"
+                        android:padding="8dp"
+                        android:layout_margin="0dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/midiCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/midi_value"
+                    android:padding="8dp"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/lightgrey"/>
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/TextOnlyButton"
+                        android:padding="8dp"
+                        android:text="@string/midi_test"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/TextOnlyButton"
+                        android:padding="8dp"
+                        android:text="@string/midi_add"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/songCommandsLayout"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/midi_list"
+                    android:padding="8dp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

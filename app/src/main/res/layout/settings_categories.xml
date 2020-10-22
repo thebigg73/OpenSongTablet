@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             app:main="@string/connections_connect"
             app:sub="Connect to other devices running OpenSongApp" />
-        <TableRow style="@style/DividerLine" />
+        <TableRow android:id="@+id/connectLine" style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/midiButton"

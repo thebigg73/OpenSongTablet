@@ -785,4 +785,5 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="section_highlighting">Section highlighting</string>
     <string name="comment">Comment</string>
     <string name="device_name">Device name</string>
+    <string name="midi_pedal">Listen for incoming MIDI (e.g. footpedal)</string>
 </resources>

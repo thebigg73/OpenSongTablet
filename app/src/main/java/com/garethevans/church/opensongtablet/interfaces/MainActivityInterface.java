@@ -9,6 +9,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
+import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -54,7 +55,9 @@ public interface MainActivityInterface {
     void playPad();
     void updateConnectionsLog();
     boolean requestNearbyPermissions();
+    boolean requestCoarseLocationPermissions();
     NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface);
+    Midi getMidi(MainActivityInterface mainActivityInterface);
     DrawerLayout getDrawer();
     ActionBar getAb();
     MediaPlayer getMediaPlayer(int i);

@@ -63,6 +63,7 @@ import com.garethevans.church.opensongtablet.interfaces.LoadSongInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyInterface;
 import com.garethevans.church.opensongtablet.interfaces.ShowCaseInterface;
+import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnectionsFragment;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
@@ -130,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private VersionNumber versionNumber;
     private FixLocale fixLocale;
     private CCLILog ccliLog;
+    private Midi midi;
     private ExportFiles exportFiles;
     private PageButtonFAB pageButtonFAB;
     private boolean pageButtonActive = true;
@@ -308,6 +310,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 activityMainBinding.pageButtonsRight.custom6Button);
         pageButtonFAB.animatePageButton(this,false);
         nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong,sqLiteHelper,commonSQL);
+        midi = new Midi(this,preferences);
     }
     private void initialiseStartVariables() {
         StaticVariables.mDisplayTheme = preferences.getMyPreferenceString(this, "appTheme", "dark");
@@ -535,9 +538,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 break;
 
             case "Nearby":
-                if (fragmentOpen!=R.id.nearbyConnectionsFragment) {
+                if (requestNearbyPermissions() && fragmentOpen!=R.id.nearbyConnectionsFragment) {
                     navigateToFragment(R.id.nearbyConnectionsFragment);
-                } else {
+                } else if (fragmentOpen==R.id.nearbyConnectionsFragment){
                     navHome();
                 }
                 break;
@@ -1058,9 +1061,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
 
 
-    // These are called from Nearby Interfaces
     // Nearby
-    // These are dealt with in NearbyConnections.  Pulled in from interface to listen from optionmenulistener
     @Override
     public void startDiscovery() {
         nearbyConnections.startDiscovery();
@@ -1087,64 +1088,50 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     @Override
     public boolean requestNearbyPermissions() {
-        boolean coarse;
-        boolean fine;
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)== PackageManager.PERMISSION_GRANTED) {
-            coarse = true;
-        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_COARSE_LOCATION)){
+        // Only do this if the user has Google APIs installed, otherwise, there is no point
+        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) != ConnectionResult.SUCCESS) {
+            return requestCoarseLocationPermissions() && requestFineLocationPermissions();
+        }
+        // Not allowed on this device
+        return false;
+    }
+    @Override
+    public boolean requestCoarseLocationPermissions() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
             try {
                 make(findViewById(R.id.mypage), R.string.location_rationale,
                         LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 403)).show();
-                coarse = false;
+                return false;
             } catch (Exception e) {
                 e.printStackTrace();
-                coarse = false;
+                return false;
             }
         } else {
-            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_COARSE_LOCATION},403);
-            coarse = false;
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 403);
+            return false;
         }
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED) {
-            fine = true;
-        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
+    }
+    private boolean requestFineLocationPermissions() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
             try {
                 make(findViewById(R.id.mypage), R.string.location_rationale,
                         LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 404)).show();
-                fine = false;
+                return false;
             } catch (Exception e) {
                 e.printStackTrace();
-                fine =false;
+                return false;
             }
         } else {
-            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},404);
-            fine = false;
-        }
-        return coarse && fine;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
-        // If request is cancelled, the result arrays are empty.
-        if (grantResults.length > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-            switch (requestCode) {
-                case StaticVariables.REQUEST_CAMERA_CODE:
-                    //startCamera();
-                    break;
-
-                case 404:
-                case 403:
-                    // Access fine location, so can open the menu at 'Connect devices'
-                    Log.d("d", "LOCATION granted!");
-                    break;
-            }
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 404);
+            return false;
         }
     }
-
     @Override
     public void updateConnectionsLog() {
         // Send the command to the Nearby Connections fragment (if it exists!)
@@ -1166,5 +1153,38 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         nearbyConnections.setMainActivityInterface(mainActivityInterface);
         // Return a reference to nearbyConnections
         return nearbyConnections;
+    }
+
+
+    // Midi
+
+    @Override
+    public Midi getMidi(MainActivityInterface mainActivityInterface) {
+        // First update the mainActivityInterface used in midi
+        midi.setMainActivityInterface(mainActivityInterface);
+        // Return a reference to midi
+        return midi;
+    }
+
+    // Get permissions request callback
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
+        // If request is cancelled, the result arrays are empty.
+        if (grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            switch (requestCode) {
+                case StaticVariables.REQUEST_CAMERA_CODE:
+                    //startCamera();
+                    break;
+
+                case 404:
+                case 403:
+                    // Access fine location, so can open the menu at 'Connect devices'
+                    Log.d("d", "LOCATION granted!");
+                    break;
+            }
+        }
     }
 }

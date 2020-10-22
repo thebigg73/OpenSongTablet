@@ -74,6 +74,9 @@
         <action
             android:id="@+id/action_nav_preference_to_nearbyConnectionsFragment"
             app:destination="@id/nearbyConnectionsFragment" />
+        <action
+            android:id="@+id/action_nav_preference_to_midiFragment"
+            app:destination="@id/midiFragment" />
     </fragment>
 
     <fragment
@@ -163,5 +166,10 @@
         android:name="com.garethevans.church.opensongtablet.nearby.NearbyConnectionsFragment"
         android:label="NearbyConnectionsFragment"
         tools:layout="@layout/settings_nearbyconnections"/>
+    <fragment
+        android:id="@+id/midiFragment"
+        android:name="com.garethevans.church.opensongtablet.midi.MidiFragment"
+        android:label="MidiFragment"
+        tools:layout="@layout/settings_midi"/>
 
 </navigation>
