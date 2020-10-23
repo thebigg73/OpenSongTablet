@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -61,9 +63,11 @@ import com.garethevans.church.opensongtablet.interfaces.DialogReturnInterface;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.LoadSongInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.interfaces.MidiAdapterInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyInterface;
 import com.garethevans.church.opensongtablet.interfaces.ShowCaseInterface;
 import com.garethevans.church.opensongtablet.midi.Midi;
+import com.garethevans.church.opensongtablet.midi.MidiFragment;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnectionsFragment;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
@@ -105,7 +109,7 @@ import static com.google.android.material.snackbar.Snackbar.make;
 //TODO Fix unused and local
 
 public class MainActivity extends AppCompatActivity implements LoadSongInterface,
-        ShowCaseInterface, MainActivityInterface, EditSongFragmentInterface,
+        ShowCaseInterface, MainActivityInterface, MidiAdapterInterface, EditSongFragmentInterface,
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, DialogReturnInterface,
         NearbyInterface {
 
@@ -122,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private ConvertTextSong convertTextSong;
     private ProcessSong processSong;
     private LoadSong loadSong;
+    private Song song;
     private SongXML songXML;
     private ShowCase showCase;
     private ShowToast showToast;
@@ -311,6 +316,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         pageButtonFAB.animatePageButton(this,false);
         nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong,sqLiteHelper,commonSQL);
         midi = new Midi(this,preferences);
+        song = new Song();
     }
     private void initialiseStartVariables() {
         StaticVariables.mDisplayTheme = preferences.getMyPreferenceString(this, "appTheme", "dark");
@@ -408,7 +414,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         View view = getCurrentFocus();
-        if (view!=null) {
+        if (view!=null && imm!=null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
@@ -612,8 +618,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             case "songsetmenu":
                 // Initialise the arraylists
                 initialiseArrayLists();
-                targets.add(activityMainBinding.menuTop.tabs.getTabAt(0).view);
-                targets.add(activityMainBinding.menuTop.tabs.getTabAt(1).view);
+                if (activityMainBinding != null) {
+                    targets.add(activityMainBinding.menuTop.tabs.getTabAt(0).view);
+                    targets.add(activityMainBinding.menuTop.tabs.getTabAt(1).view);
+                }
                 infos.add(getString(R.string.menu_song));
                 infos.add(getString(R.string.menu_set));
                 dismisses.add(null);
@@ -808,7 +816,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     @Override
     public Song getSong() {
-        return editSongFragment.getSong();
+        return song;
     }
     @Override
     public void setOriginalSong(Song originalSong) {
@@ -852,9 +860,13 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void hideActionBar(boolean hide) {
         if (hide) {
-            getSupportActionBar().hide();
+            if (getSupportActionBar()!=null) {
+                getSupportActionBar().hide();
+            }
         } else {
-            getSupportActionBar().show();
+            if (getSupportActionBar()!=null) {
+                getSupportActionBar().show();
+            }
         }
     }
     @Override
@@ -1045,7 +1057,38 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public ThemeColors getMyThemeColors() {
         return themeColors;
     }
-
+    @Override
+    public StorageAccess getStorageAccess() {
+        return storageAccess;
+    }
+    @Override
+    public SongXML getSongXML() {
+        return songXML;
+    }
+    @Override
+    public ConvertChoPro getConvertChoPro() {
+        return convertChoPro;
+    }
+    @Override
+    public ProcessSong getProcessSong() {
+        return processSong;
+    }
+    @Override
+    public SQLiteHelper getSQLiteHelper() {
+        return sqLiteHelper;
+    }
+    @Override
+    public NonOpenSongSQLiteHelper getNonOpenSongSQLiteHelper() {
+        return nonOpenSongSQLiteHelper;
+    }
+    @Override
+    public CommonSQL getCommonSQL() {
+        return commonSQL;
+    }
+    @Override
+    public CCLILog getCCLILog() {
+        return ccliLog;
+    }
     @Override
     public void updateValue(Fragment fragment, String fragname, String which, String value) {
         if (fragment!=null) {
@@ -1089,7 +1132,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public boolean requestNearbyPermissions() {
         // Only do this if the user has Google APIs installed, otherwise, there is no point
-        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) != ConnectionResult.SUCCESS) {
+        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
             return requestCoarseLocationPermissions() && requestFineLocationPermissions();
         }
         // Not allowed on this device
@@ -1101,7 +1144,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             return true;
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
             try {
-                make(findViewById(R.id.mypage), R.string.location_rationale,
+
+                make(findViewById(R.id.navView), R.string.location_rationale,
                         LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 403)).show();
                 return false;
@@ -1185,6 +1229,21 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     Log.d("d", "LOCATION granted!");
                     break;
             }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void sendMidiFromList(int item) {
+        if (fragmentOpen==R.id.midiFragment) {
+            ((MidiFragment)registeredFragment).sendMidiFromList(item);
+        }
+    }
+
+    @Override
+    public void deleteMidiFromList(int item) {
+        if (fragmentOpen==R.id.midiFragment) {
+            ((MidiFragment)registeredFragment).deleteMidiFromList(item);
         }
     }
 }

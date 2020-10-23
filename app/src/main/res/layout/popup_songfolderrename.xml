@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
 
-        <include layout="@layout/popup_dialogtitle" />
+        <include layout="@layout/_popup_dialogtitle" />
     </FrameLayout>
 
 

@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.midi;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.media.midi.MidiDevice;
 import android.media.midi.MidiInputPort;
@@ -32,6 +33,7 @@ public class Midi {
     }
 
 
+    private BluetoothDevice bluetoothDevice;
     private MidiDevice midiDevice;
     private MidiManager midiManager;
     private MidiInputPort midiInputPort;
@@ -222,12 +224,11 @@ public class Midi {
 
     String buildMidiString(String action, int channel, int byte2, int byte3) {
         String s = "";
-        channel = channel - 1;  // Since midi channels 1-16 are actually 0-15
-        String b1 = "0x";                               // This initialises the hex numbering convention
+        String b1 =  "0x";                               // This initialises the hex numbering convention
         String b2 = " 0x" + Integer.toHexString(byte2).toUpperCase(Locale.ROOT); // Convert numbers 0-127 to hex
         String b3 = " 0x" + Integer.toHexString(byte3).toUpperCase(Locale.ROOT);
         String hexString = Integer.toHexString(channel).toUpperCase(Locale.ROOT);
-        String bCommon = "B" + Integer.toHexString(channel).toUpperCase(Locale.ROOT);
+        String bCommon = b1 + "B" + Integer.toHexString(channel).toUpperCase(Locale.ROOT);
         switch(action) {
             case "NoteOn":
                 b1 += "9" + hexString;
@@ -241,22 +242,19 @@ public class Midi {
 
             case "PC":
                 b1 += "C" + hexString;
-                s = b1 + b2;
+                s = b1 + b3;
                 break;
 
             case "CC":
-                b1 += bCommon;
-                s = b1 + b2 + b3;
+                s = bCommon + b2 + b3;
                 break;
 
             case "MSB":
-                b1 += bCommon;
-                s = b1 + " 0x00" + b3;
+                s = bCommon+ " 0x00" + b3;
                 break;
 
             case "LSB":
-                b1 += bCommon;
-                s = b1 + " 0x20" + b3;
+                s = bCommon + " 0x20" + b3;
                 break;
         }
         return s;

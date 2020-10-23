@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/page"
+<androidx.core.widget.NestedScrollView
+    android:id="@+id/scrollView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout android:id="@+id/page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,12 +16,12 @@
         android:id="@+id/headerText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableStart="@mipmap/ic_round_launcher"
         android:gravity="center"
         android:text="@string/welcome"
         android:textSize="22sp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="8dp"
+        app:drawableStartCompat="@mipmap/ic_round_launcher" />
 
     <TextView
         android:layout_width="match_parent"
@@ -144,3 +149,5 @@
             android:visibility="gone"/>
 
 </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

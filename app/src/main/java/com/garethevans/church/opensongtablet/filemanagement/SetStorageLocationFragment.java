@@ -36,7 +36,6 @@ import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import lib.folderpicker.FolderPicker;
 
@@ -73,8 +72,6 @@ public class SetStorageLocationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        Log.d("SetStorageFragment","Here");
-
         bundle = savedInstanceState;
         myView = FragmentSetstoragelocationBinding.inflate(inflater, container, false);
 
@@ -105,9 +102,6 @@ public class SetStorageLocationFragment extends Fragment {
     private void initialiseViews() {
         setStorage = myView.setStorage;
         setStorage.setOnClickListener(v -> {
-            Log.d("SetStorageLocation","isStorageGranted()="+isStorageGranted());
-            Log.d("SetStorageLocation","isstorageSet()="+isStorageSet());
-            Log.d("SetStorageLocation","isStorageValid()="+isStorageValid());
             if (isStorageGranted()) {
                 chooseStorageLocation();
             } else {
@@ -155,57 +149,12 @@ public class SetStorageLocationFragment extends Fragment {
     }
 
     private boolean isStorageValid() {
-        Log.d("d","uriTree="+uriTree);
         return (isStorageSet() && storageAccess.uriTreeValid(getActivity(),uriTree));
     }
 
     private void setStorageLocation() {
-        progressText.setText(parseLocation());
+        progressText.setText(storageAccess.niceUriTree(getContext(),preferences));
         checkStatus();
-    }
-
-    private String parseLocation() {
-        String text;
-        if (isStorageValid()) {
-            if (storageAccess.lollipopOrLater()) {
-                try {
-                    List<String> bits = uriTreeHome.getPathSegments();
-                    StringBuilder sb = new StringBuilder();
-                    for (String b : bits) {
-                        sb.append("/");
-                        sb.append(b);
-                    }
-                    text = sb.toString();
-                    Log.d("SetStorageLocation", "text=" + text);
-                    if (!text.endsWith(storageAccess.appFolder)) {
-                        text += "/" + storageAccess.appFolder;
-                    }
-                    text = text.replace("tree", "/");
-                    text = text.replace(":", "/");
-                    while (text.contains("//")) {
-                        text = text.replace("//", "/");
-                    }
-
-                    // Finally, the storage location is likely something like /9016-4EF8/OpenSong/document/9016-4EF8/OpenSong
-                    // This is due to the content using a document contract
-                    // Strip this back to the bit after document
-                    if (text.contains("OpenSong/document/")) {
-                        text = text.substring(text.lastIndexOf("OpenSong/document/") + 18);
-                    }
-                    if (text.startsWith("primary/")) {
-                        text = text.replace("primary/","");
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    text = "" + uriTreeHome;
-                }
-            } else {
-                text = uriTreeHome.getPath();
-            }
-            return text;
-        }
-        return getString(R.string.notset);
     }
 
     private void chooseStorageLocation() {
@@ -336,7 +285,6 @@ public class SetStorageLocationFragment extends Fragment {
 
             // Save the location uriTree and uriTreeHome
             saveUriLocation();
-            Log.d("d","onActivityResult()");
             // Update the storage text
             setStorageLocation();
 
@@ -368,6 +316,7 @@ public class SetStorageLocationFragment extends Fragment {
         } else {
             notWriteable();
         }
+        checkStatus();
     }
     private void lollipopDealWithUri(Intent resultData) {
         // This is the newer version for Lollipop+ This is preferred!
@@ -385,23 +334,29 @@ public class SetStorageLocationFragment extends Fragment {
         if (uriTree==null || uriTreeHome==null) {
             notWriteable();
         }
+        checkStatus();
     }
 
 
     private void checkStatus() {
+        Log.d("d","checkStatus()");
+        Log.d("d","isStorageValid()="+isStorageValid());
+        Log.d("d","isStorageGranted()="+isStorageGranted());
         if (isStorageGranted() && isStorageSet() && isStorageValid()) {
             startApp.setVisibility(View.VISIBLE);
             pulseButton(startApp);
             setStorage.clearAnimation();
+            myView.scrollView.scrollTo(0,(int)startApp.getY());
         } else {
             startApp.setVisibility(View.GONE);
+            setStorage.setVisibility(View.VISIBLE);
             pulseButton(setStorage);
+            myView.scrollView.scrollTo(0,(int)setStorage.getY());
             startApp.clearAnimation();
         }
     }
 
     private void goToSongs() {
-        Log.d("d","Going to songs()");
         NavOptions navOptions = new NavOptions.Builder()
                 .build();
         NavHostFragment.findNavController(SetStorageLocationFragment.this)

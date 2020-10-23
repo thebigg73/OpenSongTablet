@@ -118,10 +118,18 @@ public class StorageAccess {
         } else {
             if (lollipopOrLater()) {
                 DocumentFile df = DocumentFile.fromTreeUri(c, uri);
-                return df.canWrite();
+                if (df!=null) {
+                    return df.canWrite();
+                } else {
+                    return false;
+                }
             } else {
-                File f = new File(uri.getPath());
-                return f.canWrite();
+                if (uri!=null) {
+                    File f = new File(uri.getPath());
+                    return f.canWrite();
+                } else {
+                    return false;
+                }
             }
         }
     }
@@ -302,13 +310,16 @@ public class StorageAccess {
     // This gets the File location for the app as a String (for appending).  PreLollipop only
     public String niceUriTree(Context c, Preferences preferences) {
         String uriTree = getStoragePreference(c,preferences);
-        Uri uri = Uri.parse(uriTree);
-        Uri uriTreeHome = homeFolder(c,uri,preferences);  // In case we specified the folder containing /OpenSong as the root
-        if (lollipopOrLater()) {
-            return niceUriTree_SAF(uriTreeHome);
-        } else {
-            return niceUriTree_File(uriTreeHome);
+        if (uriTree!=null) {
+            Uri uri = Uri.parse(uriTree);
+            Uri uriTreeHome = homeFolder(c, uri, preferences);  // In case we specified the folder containing /OpenSong as the root
+            if (lollipopOrLater()) {
+                return niceUriTree_SAF(uriTreeHome);
+            } else {
+                return niceUriTree_File(uriTreeHome);
+            }
         }
+        return c.getString(R.string.notset);
     }
     private String niceUriTree_SAF(Uri uriTree) {
         String text;
@@ -320,6 +331,10 @@ public class StorageAccess {
                 sb.append(b);
             }
             text = sb.toString();
+            if (text.contains("primary:")) {
+                int p = text.lastIndexOf("primary");
+                text = text.substring(p);
+            }
             Log.d("SetStorageLocation", "text=" + text);
             if (!text.endsWith(appFolder)) {
                 text += "/" + appFolder;

@@ -74,7 +74,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-nearby:17.0.0'                 // For Google Nearby Connect devices
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition:16.1.1' // For OCR text recognition (PDF/Camera)
     implementation fileTree(include: ['*.jar'], dir: 'libs')                            // To allow local jar files in libs
-    implementation 'androidx.annotation:annotation:1.1.0'                               // Allows annotations
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview-selection:1.0.0'// Allows annotations
     annotationProcessor 'androidx.annotation:annotation:1.1.0'                          // Allows annotations
     implementation 'androidx.appcompat:appcompat:1.2.0'                                 // Allows access to app: features for older devices
     implementation 'androidx.cardview:cardview:1.0.0'                                   // Cardview for recycler list items

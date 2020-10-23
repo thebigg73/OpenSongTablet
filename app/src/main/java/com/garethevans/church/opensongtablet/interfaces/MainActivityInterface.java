@@ -9,10 +9,18 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
+import com.garethevans.church.opensongtablet.ccli.CCLILog;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
+import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
+import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.garethevans.church.opensongtablet.songprocessing.SongXML;
+import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
+import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
+import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import java.util.ArrayList;
 
@@ -44,7 +52,6 @@ public interface MainActivityInterface {
     void updateFragment(String fragName, Fragment callingFragment, ArrayList<String> arguments);
     void updateSongMenu(String fragName, Fragment callingFragment, ArrayList<String> arguments);
     void updateSong(Song song);
-    Song getSong();
     void setOriginalSong(Song originalSong);
     Song getOriginalSong();
     boolean songChanged();
@@ -56,6 +63,8 @@ public interface MainActivityInterface {
     void updateConnectionsLog();
     boolean requestNearbyPermissions();
     boolean requestCoarseLocationPermissions();
+
+    // Get the helpers initialised in the main activity
     NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface);
     Midi getMidi(MainActivityInterface mainActivityInterface);
     DrawerLayout getDrawer();
@@ -63,4 +72,13 @@ public interface MainActivityInterface {
     MediaPlayer getMediaPlayer(int i);
     SetTypeFace getMyFonts();
     ThemeColors getMyThemeColors();
+    StorageAccess getStorageAccess();
+    SongXML getSongXML();
+    ConvertChoPro getConvertChoPro();
+    ProcessSong getProcessSong();
+    Song getSong();
+    SQLiteHelper getSQLiteHelper();
+    NonOpenSongSQLiteHelper getNonOpenSongSQLiteHelper();
+    CommonSQL getCommonSQL();
+    CCLILog getCCLILog();
 }

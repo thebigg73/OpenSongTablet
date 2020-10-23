@@ -138,7 +138,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/section_box"
         android:layout_margin="8dp"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
@@ -164,51 +164,125 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
-
             <LinearLayout
                 android:id="@+id/songActionsLayout"
-                android:layout_width="0dp"
-                android:layout_weight="0.6"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:orientation="vertical">
 
-                <com.garethevans.church.opensongtablet.customviews.PrefEditTextView
-                    android:id="@+id/actionChoice"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/exposedDropDown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintTextVal="@string/action"
-                    app:editTextVal="@string/midi_program"
-                    android:padding="8dp"
-                    android:layout_margin="0dp"/>
+                    android:hint="@string/action"
+                    android:labelFor="@+id/midiCommand">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/midiCommand"
+                        style="@style/exposedDropDownItem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                <com.garethevans.church.opensongtablet.customviews.PrefEditTextView
-                    android:id="@+id/channelChoice"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.5"
-                    android:layout_height="wrap_content"
-                    app:hintTextVal="@string/midi_channel"
-                    app:editTextVal="1"
-                    android:padding="8dp"
-                    android:layout_margin="0dp"/>
-                    <com.garethevans.church.opensongtablet.customviews.PrefEditTextView
-                        android:id="@+id/valueChoice"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:baselineAligned="false">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/midiChannelLayout"
+                        style="@style/exposedDropDown"
                         android:layout_width="0dp"
-                        android:layout_weight="0.5"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        app:hintTextVal="@string/midi_value"
-                        app:editTextVal="1"
-                        android:padding="8dp"
-                        android:layout_margin="0dp"/>
+                        android:layout_marginEnd="8dp"
+                        android:hint="@string/midi_channel"
+                        android:labelFor="@+id/midiChannel">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/midiChannel"
+                            style="@style/exposedDropDownItem"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/midiNoteLayout"
+                        style="@style/exposedDropDown"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:hint="@string/midi_note"
+                        android:labelFor="@+id/midiNote">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/midiNote"
+                            style="@style/exposedDropDownItem"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/midiControllerLayout"
+                        style="@style/exposedDropDown"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:hint="@string/midi_controller"
+                        android:labelFor="@+id/midiController">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/midiController"
+                            style="@style/exposedDropDownItem"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/midiValueLayout"
+                        style="@style/exposedDropDown"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:hint="@string/midi_value"
+                        android:labelFor="@+id/midiValue">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/midiValue"
+                            style="@style/exposedDropDownItem"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/midiVelocityLayout"
+                        style="@style/exposedDropDown"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:hint="@string/midi_velocity"
+                        android:labelFor="@+id/midiVelocity">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/midiVelocity"
+                            style="@style/exposedDropDownItem"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
@@ -223,6 +297,7 @@
 
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/midiTest"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/TextOnlyButton"
@@ -230,6 +305,7 @@
                         android:text="@string/midi_test"/>
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/midiAdd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/TextOnlyButton"
@@ -238,14 +314,6 @@
 
 
             </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/songCommandsLayout"
-                android:layout_width="0dp"
-                android:layout_weight="0.4"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -256,17 +324,11 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-
-
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
-
-
-    </LinearLayout>
 </androidx.core.widget.NestedScrollView>

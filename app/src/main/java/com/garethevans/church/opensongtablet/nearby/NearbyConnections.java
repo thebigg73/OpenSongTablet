@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
-import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -175,11 +174,6 @@ public class NearbyConnections implements NearbyInterface {
 
     public String getUserNickname() {
         String model = android.os.Build.MODEL.trim();
-        try {
-           model = Settings.Secure.getString(context.getContentResolver(), "bluetooth_name") + " ("+model+")";
-        } catch (Exception e) {
-            Log.d("NearbyConnections","No Bluetooth name");
-        }
         // If the user has saved a value for their device name, use that instead
         // Don't need to save the device name unless the user edits it to make it custom
         return StaticVariables.deviceName = preferences.getMyPreferenceString(context,"deviceName", model);
