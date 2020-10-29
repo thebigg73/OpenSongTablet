@@ -17,6 +17,10 @@ import android.widget.TextView;
 import com.google.android.gms.cast.CastPresentation;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 
+// All of the classes after initialisation are the same for the PresentationService and PresentationServiceHDMI files
+// They both call functions in the PresentationCommon file
+// Both files are needed as they initialise and communicate with the display differently, but after that the stuff is almost entirely identical
+
 public class PresentationService extends CastRemoteDisplayLocalService {
 
     private ExternalDisplay myPresentation;
@@ -71,13 +75,17 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         FullscreenActivity.isPresenting = false;
     }
 
+    // Indent of common content kept the same across versions
+    // This is the cast version (so HDMI commented out)
+
     static class ExternalDisplay extends CastPresentation
+    //class PresentationServiceHDMI extends Presentation
             implements MediaPlayer.OnVideoSizeChangedListener,
             MediaPlayer.OnPreparedListener,
             MediaPlayer.OnCompletionListener, SurfaceHolder.Callback {
 
-
         ExternalDisplay(Context context, Display display, ProcessSong pS) {
+        //PresentationServiceHDMI(Context context, Display display, ProcessSong pS) {
             super(context, display);
             c = context;
             myscreen = display;
@@ -221,6 +229,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             // Just in case there is a glitch, make the stuff visible after a time
             Handler panic = new Handler();
             panic.postDelayed(ExternalDisplay::updateAlpha, (long) (1.1*preferences.getMyPreferenceInt(c,"presoTransitionTime",800)));
+            //panic.postDelayed(PresentationServiceHDMI::updateAlpha, (long) (1.1*preferences.getMyPreferenceInt(c,"presoTransitionTime",800)));
         }
         private static void getDefaultColors() {
             presentationCommon.getDefaultColors(c,preferences);
@@ -240,7 +249,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             presenterThemeSetUp();
             presentationCommon.presenterStartUp(c,preferences,storageAccess,projected_BackgroundImage,projected_SurfaceHolder,projected_SurfaceView);
         }
-        private static void presenterThemeSetUp() {
+        static void presenterThemeSetUp() {
             getDefaultColors();
             // Set the text at the bottom of the page to match the presentation text colour
             presentationCommon.presenterThemeSetUp(c,preferences,presentermode_bottombit, presentermode_title,
@@ -321,7 +330,5 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         static void blankUnblankDisplay(boolean unblank) {
             presentationCommon.blankUnblankDisplay(c,preferences,pageHolder,unblank);
         }
-
-
     }
 }

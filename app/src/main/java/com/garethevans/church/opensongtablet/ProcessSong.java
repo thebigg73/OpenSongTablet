@@ -1200,7 +1200,7 @@ public class ProcessSong extends Activity {
 
     private TableRow lyriclinetoTableRow(Context c, int lyricsTextColor, int presoFontColor,
                                          String[] lyrics, float fontsize,
-                                         StorageAccess storageAccess, Preferences preferences) {
+                                         StorageAccess storageAccess, Preferences preferences, Boolean presentation) {
         TableRow lyricrow = new TableRow(c);
         if (StaticVariables.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout &&
                 !preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
@@ -1245,18 +1245,22 @@ public class ProcessSong extends Activity {
             }
 
             if (!StaticVariables.whichSongFolder.contains(c.getResources().getString(R.string.image))) {
-                if (StaticVariables.whichMode.equals("Presentation") && !preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
-                    bit = bit.replace("_", "");
-                } else if ((StaticVariables.whichMode.equals("Stage") || StaticVariables.whichMode.equals("Performance")) &&
-                        !preferences.getMyPreferenceBoolean(c, "displayChords", true) && !preferences.getMyPreferenceBoolean(c,"presoShowChords",false)) {
-                    // IV - Lyric line only so assemble and do the line in one go.  Remove typical word splits and white space - beautify!
+                // IV - If lyric line only, assemble and do the line in one go
+                if (presentation && !preferences.getMyPreferenceBoolean(c, "presoShowChords", true) || !presentation && !preferences.getMyPreferenceBoolean(c,"displayChords",false)) {
                     final StringBuilder sb = new StringBuilder();
                     sb.append(lyrics[0]);
                     for (int i = 1; i < lyrics.length; i++) {
                         sb.append(lyrics[i]);
                     }
-                    // IV - 2 spaces added to try to stop right overrun.  Bold marker removed as line has been reconstructed.
-                    bit = sb.toString().replace("B_","").replaceAll("_", "").replaceAll("\\s+-\\s+", "").replaceAll("\\s{2,}", " ").trim() + "  ";
+                    // IV -   Remove any bold marker, typical word splits, white space and then trim - beautify!
+                    bit = sb.toString().replace("B_","").replaceAll("_", "").replaceAll("\\s+-\\s+", "").replaceAll("\\s{2,}", " ").trim();
+                    // IV - 2 spaces added to reduce occurance of right edge overrun
+                    if (StaticVariables.whichMode.equals("Presentation")) {
+                        // And before as well for presentation mode, so that block text shadow has spaces on both sides
+                        bit = "  " + bit + "  ";
+                    } else {
+                        bit = bit + "  ";
+                    }
                     // IV - flag used to break loop
                     lyricsOnly = true;
                 } else {
@@ -1265,11 +1269,6 @@ public class ProcessSong extends Activity {
             }
 
             TextView lyricbit = new TextView(c);
-
-            if (StaticVariables.whichMode.equals("Presentation") && !preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
-                // Temp fix to ensure space either side.  Not an issue in proposed MaterialApp where view is zoomed instead of scaling fontsize
-                bit = "  " + bit + "  ";
-            }
 
             if (StaticVariables.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout &&
                     !preferences.getMyPreferenceBoolean(c, "presoShowChords", false)) {
@@ -2281,7 +2280,7 @@ public class ProcessSong extends Activity {
             // IV - Using variables to contain end trimmed lines
             String thisLine;
             String nextLine;
-            // IV - 2 spaces added to reduce occurance of right edge overrun.  Needs proper solution
+            // IV - 2 spaces added to reduce occurance of right edge overrun
             thisLine = StaticVariables.sectionContents[x][y].replaceAll("\\s+$", "") + "  ";
 
             switch (howToProcessLines(y, linenums, StaticVariables.sectionLineTypes[x][y], nextlinetype, previouslinetype)) {
@@ -2307,7 +2306,7 @@ public class ProcessSong extends Activity {
                         // IV - Lyric processing moved here to be done only when required
                         lyrics_returned = getLyricSections(nextLine, positions_returned);
                         tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor,
-                                lyrics_returned, fontsize, storageAccess, preferences));
+                                lyrics_returned, fontsize, storageAccess, preferences, false));
                     }
                     break;
 
@@ -2327,7 +2326,7 @@ public class ProcessSong extends Activity {
                     lyrics_returned[0] = thisLine;
                     if (preferences.getMyPreferenceBoolean(c, "displayLyrics", true)) {
                         tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor,
-                                lyrics_returned, fontsize, storageAccess, preferences));
+                                lyrics_returned, fontsize, storageAccess, preferences, false));
                     }
                     break;
 
@@ -2490,7 +2489,9 @@ public class ProcessSong extends Activity {
             // IV - Using variables to contain end trimmed lines
             String thisLine;
             String nextLine;
-            thisLine = whattoprocess[y].replaceAll("\\s+$", "");
+
+            // IV - 2 spaces added to reduce occurance of right edge overrun
+            thisLine = whattoprocess[y].replaceAll("\\s+$", "") + "  ";
             if (thisLine.startsWith(".")) { thisLine = thisLine.replaceFirst("."," "); }
 
             switch (what) {
@@ -2498,7 +2499,7 @@ public class ProcessSong extends Activity {
 
                 case "chord_then_lyric":
                     // IV - We have a next line - make lines the same length.
-                    nextLine = whattoprocess[y + 1].replaceAll("\\s+$", "");
+                    nextLine = whattoprocess[y + 1].replaceAll("\\s+$", "") + "  ";
                     if (thisLine.length() < nextLine.length()) {
                         thisLine = fixLineLength(thisLine, nextLine.length());
                     } else {
@@ -2517,7 +2518,7 @@ public class ProcessSong extends Activity {
                         // IV - Lyric processing moved here to be done when required
                         lyrics_returned = getLyricSections(nextLine, positions_returned);
                         tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor,
-                                lyrics_returned, fontsize, storageAccess, preferences));
+                                lyrics_returned, fontsize, storageAccess, preferences, true));
                     }
                     break;
 
@@ -2538,7 +2539,7 @@ public class ProcessSong extends Activity {
                     lyrics_returned[0] = thisLine;
                     if (preferences.getMyPreferenceBoolean(c, "displayLyrics", true)) {
                         tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor,
-                                lyrics_returned, fontsize, storageAccess, preferences));
+                                lyrics_returned, fontsize, storageAccess, preferences, true));
                     }
                     break;
 

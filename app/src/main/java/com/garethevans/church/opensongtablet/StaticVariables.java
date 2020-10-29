@@ -164,7 +164,6 @@ class StaticVariables {
     static boolean pedalPreviousAndNextIgnore = false;
     static boolean reloadOfSong = false;
     static boolean showCapoInChordsFragment = false;
-    static boolean ignoreGesture = false;
     static boolean canGoToNext = false;
     static boolean canGoToPrevious = false;
     static boolean doVibrateActive = true;

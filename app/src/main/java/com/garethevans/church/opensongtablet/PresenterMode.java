@@ -343,6 +343,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         // In order to quickly start, load the minimum variables we need
         loadStartUpVariables();
+        setActions.prepareSetList(PresenterMode.this,preferences);
 
         // Set the fullscreen window flags
         runOnUiThread(() -> {
@@ -2843,9 +2844,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         presenter_lyrics.setText("");
         setupSetButtons();
 
-        prepareSongMenu();
         prepareOptionMenu();
+        prepareSongMenu();
 
+        // IV - Update second screen theme
+        if (FullscreenActivity.isPresenting && !FullscreenActivity.isHDMIConnected) {
+            PresentationService.ExternalDisplay.presenterThemeSetUp();
+        }
+        if (FullscreenActivity.isHDMIConnected) {
+            PresentationServiceHDMI.presenterThemeSetUp();
+        }
         // Load the song
         loadSong();
     }

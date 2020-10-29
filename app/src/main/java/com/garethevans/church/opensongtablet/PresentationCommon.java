@@ -335,14 +335,8 @@ class PresentationCommon {
         presentermode_author.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
         presentermode_copyright.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
         presentermode_ccli.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
-        presentermode_alert.setGravity(preferences.getMyPreferenceInt(c,"presoInfoAlign", Gravity.END));
         // IV - Align alert text the same as lyrics
         presentermode_alert.setGravity(preferences.getMyPreferenceInt(c,"presoLyricsAlign", Gravity.END));
-        if (PresenterMode.alert_on.equals("Y")) {
-            presentermode_alert.setVisibility(View.VISIBLE);
-        } else {
-            presentermode_alert.setVisibility(View.GONE);
-        }
         presentermode_bottombit.setBackgroundColor(ColorUtils.setAlphaComponent(StaticVariables.cast_presoShadowColor,100));
     }
     void presenterStartUp(final Context c, final Preferences preferences, final StorageAccess storageAccess, final ImageView projected_BackgroundImage,
@@ -698,6 +692,8 @@ class PresentationCommon {
                             CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
                         } else {
                             if (infoBarAlertState.equals("Y")) {
+                                // IV - Align alert text the same as lyrics
+                                presentermode_alert.setGravity(preferences.getMyPreferenceInt(c,"presoLyricsAlign", Gravity.END));
                                 presentermode_alert.setVisibility(View.VISIBLE);
                                 CustomAnimations.faderAnimation(bottom_infobar, preferences.getMyPreferenceInt(c, "presoTransitionTime", 800), true);
                             } else {
@@ -783,7 +779,6 @@ class PresentationCommon {
             presentermode_alert.setShadowLayer(preferences.getMyPreferenceFloat(c,"presoAlertTextSize", 12.0f) / 2.0f, 4, 4, StaticVariables.cast_presoShadowColor);
         } else {
             PresenterMode.alert_on = "N";
-            presentermode_alert.setText("");
         }
     }
 
