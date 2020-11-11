@@ -3,6 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="2dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
@@ -29,6 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            app:backgroundTint="@color/red"
             app:fabSize="mini"
             android:src="@drawable/ic_close_white_36dp"/>
 
@@ -51,122 +53,122 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/storageNewFolderButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_folder_new_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/folder_new"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/storageNewFolderButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_folder_new_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/folder_new"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/storageEditButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_folder_edit_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/folder_rename"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/storageEditButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_folder_edit_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/folder_rename"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/storageManageButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_sd_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/storage_choose"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/storageManageButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_sd_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/storage_choose"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/exportSongListButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_format_list_bulleted_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/exportsongdirectory"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/exportSongListButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_format_list_bulleted_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/exportsongdirectory"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/storageImportOSBButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_unarchive_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/backup_import"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/storageImportOSBButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_unarchive_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/backup_import"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/storageExportOSBButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_archive_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/backup_export"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/storageExportOSBButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_archive_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/backup_export"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/storageImportOnSongButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_unarchive_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/import_onsong_choose"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/storageImportOnSongButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_unarchive_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/import_onsong_choose"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/storageSongMenuButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_sync_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/refreshsongs"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/storageSongMenuButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_sync_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/refreshsongs"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/storageDatabaseButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_update_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/search_rebuild"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/storageDatabaseButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_update_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/search_rebuild"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
             <Button
                 android:id="@+id/storageLogButton"

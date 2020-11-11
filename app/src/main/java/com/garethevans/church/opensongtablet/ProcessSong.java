@@ -383,6 +383,7 @@ public class ProcessSong extends Activity {
             section = "bridge";
         }
 
+        string = string.trim();
         String[] vals = new String[2];
         vals[0] = string;
         vals[1] = section;
@@ -2945,7 +2946,7 @@ public class ProcessSong extends Activity {
             }
 
             if (!StaticVariables.mCopyright.equals("")) {
-                songInformation.append(";Copyright: ").append(multiLine(StaticVariables.mCopyright, longestLine).replaceAll("\n", "\n;")).append("  \n");
+                songInformation.append(";© ").append(multiLine(StaticVariables.mCopyright, longestLine).replaceAll("\n", "\n;")).append("  \n");
             }
 
             // IV - Try to generate a copo/key/tempo/time line
@@ -2954,7 +2955,7 @@ public class ProcessSong extends Activity {
             if (preferences.getMyPreferenceBoolean(c, "displayCapoChords", true)) {
                 if (!StaticVariables.mCapo.equals("") && !StaticVariables.mCapo.equals("0")) {
                     // If we are using a capo, add the capo display
-                    songInformation.append(sprefix).append("Capo - ");
+                    songInformation.append(sprefix).append("Capo: ");
                     sprefix = " ||| ";
                     int mcapo;
                     try {
@@ -2983,15 +2984,15 @@ public class ProcessSong extends Activity {
             }
 
             if (!StaticVariables.mKey.equals("")) {
-                songInformation.append(sprefix).append("Key - ").append(StaticVariables.mKey);
+                songInformation.append(sprefix).append(c.getResources().getString(R.string.edit_song_key)).append(": ").append(StaticVariables.mKey);
                 sprefix = " ||| ";
             }
             if (!StaticVariables.mTempo.equals("")) {
-                songInformation.append(sprefix).append("Tempo - ").append(StaticVariables.mTempo);
+                songInformation.append(sprefix).append(c.getResources().getString(R.string.edit_song_tempo)).append(": ").append(StaticVariables.mTempo);
                 sprefix = " ||| ";
             }
             if (!StaticVariables.mTimeSig.equals("")) {
-                songInformation.append(sprefix).append("Time - ").append(StaticVariables.mTimeSig);
+                songInformation.append(sprefix).append(c.getResources().getString(R.string.edit_song_timesig)).append(": ").append(StaticVariables.mTimeSig);
                 sprefix = " ||| ";
             }
 
@@ -3020,7 +3021,7 @@ public class ProcessSong extends Activity {
             headerInformation.append(stickyNotes.toString().replace(";__" + c.getString(R.string.note) + ": " + ";__", ";__" + c.getString(R.string.note) + ": ")).append("\n");
         }
 
-        // If (alays top) song details
+        // If (always top) song details
         if (songInformation.length() > 0) {
             // If we have song details with information above, add a separator first
             if (headerInformation.length() > 0) {

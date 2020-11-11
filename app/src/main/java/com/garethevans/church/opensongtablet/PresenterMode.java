@@ -4112,7 +4112,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 resetoptionmenu.postDelayed(() -> {
                     StaticVariables.whichOptionMenu = "MAIN";
                     prepareOptionMenu();
-                }, 300);
+                }, 100);
             }
         };
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);

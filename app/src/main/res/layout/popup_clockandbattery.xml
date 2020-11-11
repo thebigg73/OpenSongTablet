@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
@@ -23,6 +24,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/displayMenuToggleSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hide_actionbar"
+                android:layout_margin="15dp"
+                android:theme="@style/SwitchStyle"/>
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -45,7 +54,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginRight="4dp"
                     android:layout_marginBottom="0dp"
-                    style="@style/MyWhiteHeadingText"/>
+                    android:theme="@style/SwitchStyle"/>
 
                 <SeekBar
                     android:layout_width="match_parent"
@@ -69,7 +78,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginRight="4dp"
                     android:layout_marginBottom="0dp"
-                    style="@style/MyWhiteHeadingText"/>
+                    android:theme="@style/SwitchStyle"/>
 
                 <SeekBar
                     android:layout_width="match_parent"
@@ -85,7 +94,6 @@
                     android:max="8"/>
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:orientation="vertical"
@@ -107,7 +115,7 @@
                     android:layout_margin="4dp"
                     android:gravity="center_vertical"
                     android:text="@string/image"
-                    style="@style/MyWhiteHeadingText"/>
+                    android:theme="@style/SwitchStyle"/>
 
                 <TextView
                     android:id="@+id/batteryDialSizeLabel"
@@ -118,7 +126,7 @@
                     android:layout_marginRight="4dp"
                     android:layout_marginBottom="0dp"
                     android:text="@string/size"
-                    style="@style/MyWhiteHeadingText"/>
+                    android:theme="@style/SwitchStyle"/>
 
                 <SeekBar
                     android:layout_width="match_parent"
@@ -141,7 +149,7 @@
                     android:layout_margin="4dp"
                     android:gravity="center_vertical"
                     android:text="@string/text"
-                    style="@style/MyWhiteHeadingText"/>
+                    android:theme="@style/SwitchStyle"/>
 
                 <TextView
                     android:id="@+id/batteryTextSizeLabel"
@@ -152,7 +160,7 @@
                     android:layout_marginRight="4dp"
                     android:layout_marginBottom="0dp"
                     android:text="@string/size"
-                    style="@style/MyWhiteHeadingText"/>
+                    android:theme="@style/SwitchStyle"/>
 
                 <SeekBar
                     android:layout_width="match_parent"
@@ -189,7 +197,7 @@
                     android:layout_margin="4dp"
                     android:gravity="center_vertical"
                     android:text="@string/text"
-                    style="@style/MyWhiteHeadingText"/>
+                    android:theme="@style/SwitchStyle"/>
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/clock24hrOnOff"
@@ -198,7 +206,7 @@
                     android:layout_margin="4dp"
                     android:gravity="center_vertical"
                     android:text="@string/timeformat"
-                    style="@style/MyWhiteHeadingText"/>
+                    android:theme="@style/SwitchStyle"/>
 
                 <TextView
                     android:id="@+id/clockTextSizeLabel"
@@ -209,7 +217,7 @@
                     android:layout_marginRight="4dp"
                     android:layout_marginBottom="0dp"
                     android:text="@string/size"
-                    style="@style/MyWhiteHeadingText"/>
+                    android:theme="@style/SwitchStyle"/>
 
                 <SeekBar
                     android:layout_width="match_parent"

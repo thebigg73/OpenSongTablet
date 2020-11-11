@@ -155,23 +155,12 @@ class SQLiteHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    private String shortenLyrics(String lyrics) {
-        // This strips out chord lines from the lyrics ready for the sql database
-        String[] lines = lyrics.split("\n");
-        StringBuilder sb = new StringBuilder();
-        for (String line:lines) {
-            if (!line.startsWith(".") && !line.startsWith("[")) {
-                sb.append(line).append("\n");
-            }
-        }
-        return sb.toString();
-    }
-
     SQLite setSong(SQLite sqLite) {
         sqLite.setTitle(StaticVariables.mTitle);
         sqLite.setAuthor(StaticVariables.mAuthor);
         sqLite.setCopyright(StaticVariables.mCopyright);
-        sqLite.setLyrics(shortenLyrics(StaticVariables.mLyrics));
+        // IV - print of pdfs need all lines in the db, previous 'shortenLyrics' logic no longer required
+        sqLite.setLyrics(StaticVariables.mLyrics);
         sqLite.setHymn_num(StaticVariables.mHymnNumber);
         sqLite.setCcli(StaticVariables.mCCLI);
         sqLite.setTheme(StaticVariables.mTheme);

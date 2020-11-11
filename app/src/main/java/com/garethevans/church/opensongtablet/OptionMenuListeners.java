@@ -386,7 +386,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 break;
 
             case "DISPLAY":
-                displayOptionListener(v,c);
+                displayOptionListener(v,c, preferences);
                 break;
 
             case "FIND":
@@ -407,10 +407,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
 
             case "MODE":
                 modeOptionListener(v,c,preferences);
-                break;
-
-            case "GESTURES":
-                gestureOptionListener(v,c,preferences);
                 break;
 
             case "AUTOSCROLL":
@@ -460,7 +456,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         Button menuProfileButton = v.findViewById(R.id.menuProfileButton);
         Button menuChordsButton = v.findViewById(R.id.menuChordsButton);
         Button menuDisplayButton = v.findViewById(R.id.menuDisplayButton);
-        Button menuGesturesButton = v.findViewById(R.id.menuGesturesButton);
         Button menuConnectButton = v.findViewById(R.id.menuConnectButton);
         Button menuModeButton = v.findViewById(R.id.menuModeButton);
         Button menuMidiButton = v.findViewById(R.id.menuMidiButton);
@@ -479,7 +474,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         setTextButtons(menuProfileButton,c.getString(R.string.profile));
         setTextButtons(menuChordsButton,c.getString(R.string.chords));
         setTextButtons(menuDisplayButton,c.getString(R.string.display));
-        setTextButtons(menuGesturesButton,c.getString(R.string.gesturesandmenus));
         setTextButtons(menuConnectButton,c.getString(R.string.connections_connect));
         setTextButtons(menuMidiButton,c.getString(R.string.midi));
         setTextButtons(menuModeButton,c.getString(R.string.choose_app_mode));
@@ -527,12 +521,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         });
         menuDisplayButton.setOnClickListener(view -> {
             StaticVariables.whichOptionMenu = "DISPLAY";
-            if (mListener!=null) {
-                mListener.prepareOptionMenu();
-            }
-        });
-        menuGesturesButton.setOnClickListener(view -> {
-            StaticVariables.whichOptionMenu = "GESTURES";
             if (mListener!=null) {
                 mListener.prepareOptionMenu();
             }
@@ -1333,7 +1321,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         });
     }
 
-    private static void displayOptionListener(View v, final Context c) {
+    private static void displayOptionListener(View v, final Context c, final Preferences preferences) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -1349,6 +1337,14 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         Button displayHDMIButton = v.findViewById(R.id.displayHDMIButton);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
+        Button gesturesPedalButton = v.findViewById(R.id.gesturesPedalButton);
+        Button gesturesPageButton = v.findViewById(R.id.gesturesPageButton);
+        Button gesturesCustomButton = v.findViewById(R.id.gesturesCustomButton);
+        Button gesturesMenuOptions = v.findViewById(R.id.gesturesMenuOptions);
+        Button gesturesScrollButton = v.findViewById(R.id.gesturesScrollButton);
+        //SwitchCompat displayMenuToggleSwitch = v.findViewById(R.id.displayMenuToggleSwitch);
+        Button gesturesSongSwipeButton = v.findViewById(R.id.gesturesSongSwipeButton);
+
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.display).toUpperCase(StaticVariables.locale));
         setTextButtons(displayThemeButton,c.getString(R.string.choose_theme));
@@ -1360,6 +1356,16 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         setTextButtons(displayActionBarButton,c.getString(R.string.actionbar));
         setTextButtons(displayConnectedDisplayButton,c.getString(R.string.connected_display));
         setTextButtons(displayHDMIButton,c.getString(R.string.hdmi));
+
+        setTextButtons(gesturesPedalButton,c.getString(R.string.footpedal));
+        setTextButtons(gesturesPageButton,c.getString(R.string.quicklaunch_title));
+        setTextButtons(gesturesCustomButton,c.getString(R.string.custom_gestures));
+        setTextButtons(gesturesMenuOptions,c.getString(R.string.menu_settings));
+        setTextButtons(gesturesScrollButton,c.getString(R.string.scrollbuttons));
+        setTextButtons(gesturesSongSwipeButton,c.getString(R.string.swipe));
+
+        // Set the switches up based on preferences
+        //displayMenuToggleSwitch.setChecked(preferences.getMyPreferenceBoolean(c,"hideActionBar",false));
 
         // Set the button listeners
         menuup.setOnClickListener(view -> {
@@ -1444,13 +1450,54 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 mListener.connectHDMI();
             }
         });
+        gesturesPedalButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "footpedal";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
+        gesturesPageButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "quicklaunch";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
+        gesturesCustomButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "gestures";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
+        gesturesMenuOptions.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "menuoptions";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
+        gesturesScrollButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "scrollsettings";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
+        gesturesSongSwipeButton.setOnClickListener(view -> {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "swipesettings";
+                mListener.closeMyDrawers("option");
+                mListener.openFragment();
+            }
+        });
 
         closeOptionsFAB.setOnClickListener(view -> {
             if (mListener!=null) {
                 mListener.closeMyDrawers("option");
             }
         });
-
     }
 
     private static void findSongsOptionListener(View v, final Context c) {
@@ -1973,100 +2020,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             }
         });
 
-    }
-
-    private static void gestureOptionListener(View v, final Context c, final Preferences preferences) {
-        mListener = (MyInterface) c;
-
-        // Identify the buttons
-        TextView menuup = v.findViewById(R.id.optionGestureTitle);
-        Button gesturesPedalButton = v.findViewById(R.id.gesturesPedalButton);
-        Button gesturesPageButton = v.findViewById(R.id.gesturesPageButton);
-        Button gesturesCustomButton = v.findViewById(R.id.gesturesCustomButton);
-        Button gesturesMenuOptions = v.findViewById(R.id.gesturesMenuOptions);
-        Button gesturesScrollButton = v.findViewById(R.id.gesturesScrollButton);
-        SwitchCompat displayMenuToggleSwitch = v.findViewById(R.id.displayMenuToggleSwitch);
-        Button gesturesSongSwipeButton = v.findViewById(R.id.gesturesSongSwipeButton);
-        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
-
-        // Capitalise all the text by locale
-        menuup.setText(c.getString(R.string.gesturesandmenus).toUpperCase(StaticVariables.locale));
-        setTextButtons(gesturesPedalButton,c.getString(R.string.footpedal));
-        setTextButtons(gesturesPageButton,c.getString(R.string.quicklaunch_title));
-        setTextButtons(gesturesCustomButton,c.getString(R.string.custom_gestures));
-        setTextButtons(gesturesMenuOptions,c.getString(R.string.menu_settings));
-        setTextButtons(gesturesScrollButton,c.getString(R.string.scrollbuttons));
-        setTextButtons(displayMenuToggleSwitch,c.getString(R.string.hide_actionbar));
-        setTextButtons(gesturesSongSwipeButton,c.getString(R.string.swipe));
-
-        // Set the switches up based on preferences
-        displayMenuToggleSwitch.setChecked(preferences.getMyPreferenceBoolean(c,"hideActionBar",false));
-
-        // Set the button listeners
-        menuup.setOnClickListener(view -> {
-            StaticVariables.whichOptionMenu = "MAIN";
-            if (mListener!=null) {
-                mListener.prepareOptionMenu();
-            }
-        });
-        gesturesPedalButton.setOnClickListener(view -> {
-            if (mListener!=null) {
-                FullscreenActivity.whattodo = "footpedal";
-                mListener.closeMyDrawers("option");
-                mListener.openFragment();
-            }
-        });
-        gesturesPageButton.setOnClickListener(view -> {
-            if (mListener!=null) {
-                FullscreenActivity.whattodo = "quicklaunch";
-                mListener.closeMyDrawers("option");
-                mListener.openFragment();
-            }
-        });
-        gesturesCustomButton.setOnClickListener(view -> {
-            if (mListener!=null) {
-                FullscreenActivity.whattodo = "gestures";
-                mListener.closeMyDrawers("option");
-                mListener.openFragment();
-            }
-        });
-        gesturesMenuOptions.setOnClickListener(view -> {
-            if (mListener!=null) {
-                FullscreenActivity.whattodo = "menuoptions";
-                mListener.closeMyDrawers("option");
-                mListener.openFragment();
-            }
-        });
-        gesturesScrollButton.setOnClickListener(view -> {
-            if (mListener!=null) {
-                FullscreenActivity.whattodo = "scrollsettings";
-                mListener.closeMyDrawers("option");
-                mListener.openFragment();
-            }
-        });
-        gesturesSongSwipeButton.setOnClickListener(view -> {
-            if (mListener!=null) {
-                FullscreenActivity.whattodo = "swipesettings";
-                mListener.closeMyDrawers("option");
-                mListener.openFragment();
-            }
-        });
-        displayMenuToggleSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-            preferences.setMyPreferenceBoolean(c,"hideActionBar",b);
-            if (mListener!=null) {
-                if (b) {
-                    mListener.hideActionBar();
-                } else {
-                    mListener.showActionBar();
-                }
-                mListener.loadSong();
-            }
-        });
-        closeOptionsFAB.setOnClickListener(view -> {
-            if (mListener!=null) {
-                mListener.closeMyDrawers("option");
-            }
-        });
     }
 
     private static void autoscrollOptionListener(View v, final Context c, final Preferences preferences) {

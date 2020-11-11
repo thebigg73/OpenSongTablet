@@ -931,7 +931,7 @@ public class StageMode extends AppCompatActivity implements
                 resetoptionmenu.postDelayed(() -> {
                     StaticVariables.whichOptionMenu = "MAIN";
                     prepareOptionMenu();
-                }, 300);
+                }, 100);
                 // Set a runnable to re-enable swipe
                 Handler allowswipe = new Handler();
                 allowswipe.postDelayed(() -> {
@@ -1779,11 +1779,11 @@ public class StageMode extends AppCompatActivity implements
         });
         padButton.setOnLongClickListener(view -> {
             CustomAnimations.animateFABLong(padButton,StageMode.this);
-            // IV - Indicate a fade with just the icon
+            // IV - Indicate a fade with just the pad icon to give immediate feedback
             if (backingtrackProgress.getVisibility() == View.VISIBLE) {
-                padcurrentTime_TextView.setText("");
-                padTimeSeparator_TextView.setText("");
                 padtotalTime_TextView.setText("");
+                padTimeSeparator_TextView.setText("");
+                padcurrentTime_TextView.setText("");
             }
             gesture6();
             return true;
@@ -3373,6 +3373,12 @@ public class StageMode extends AppCompatActivity implements
                 } else {
                     padcurrentTime_TextView.setText(text);
                 }
+            }
+            // IV - If we have no active, just fading, pads - Indicate fade with just the pad icon
+            if (!StaticVariables.clickedOnPadStart) {
+                    padtotalTime_TextView.setText("");
+                    padTimeSeparator_TextView.setText("");
+                    padcurrentTime_TextView.setText("");
             }
         }
     }
@@ -6201,7 +6207,7 @@ public class StageMode extends AppCompatActivity implements
     }
     private void fadeoutPad() {
 
-        // Put the quick fade mechainism into a known state
+        // Put the quick fade mechanism into a known state
         StaticVariables.padInQuickFade = 0;
 
         // Set false as all pads will fade. preparePad sets this true if a pad is played
@@ -8392,12 +8398,15 @@ public class StageMode extends AppCompatActivity implements
 
                             } else {
                                 // Prepare the default auto pad
-                                // IV - These can be slow to prepare, after 1s indicate pending with just icon. If pad has started it will already be visible and showing progress.
-                                padcurrentTime_TextView.setText("");
-                                padTimeSeparator_TextView.setText("");
-                                padtotalTime_TextView.setText("");
-                                Handler h = new Handler();
-                                h.postDelayed(() -> backingtrackProgress.setVisibility(View.VISIBLE),1000);
+                                // IV - These can be slow to prepare. we may need to display just the pad icon to indicate a pending start
+                                if (backingtrackProgress.getVisibility() == View.VISIBLE) {
+                                    padcurrentTime_TextView.setText("");
+                                    padTimeSeparator_TextView.setText("");
+                                    padtotalTime_TextView.setText("");
+                                    // Note that if start completes within 1s then the settings above will have been overwritten
+                                    Handler h = new Handler();
+                                    h.postDelayed(() -> backingtrackProgress.setVisibility(View.VISIBLE),1000);
+                                }
                                 path = getResources().getIdentifier(StaticVariables.pad_filename, "raw", getPackageName());
                                 try {
                                     afd = getResources().openRawResourceFd(path);

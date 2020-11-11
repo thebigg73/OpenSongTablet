@@ -18,6 +18,8 @@
         android:id="@+id/popuppad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_below="@+id/myTitle"
         android:visibility="visible">
 
@@ -26,12 +28,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/sing_separator_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/song" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/edit_song_key"
                 style="@style/MyHeadingText" />
 
@@ -64,10 +72,26 @@
                 style="@style/MyHeadingText"
                 app:switchPadding="24dp" />
 
+            <Button
+                android:id="@+id/start_stop_padplay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/blue_button"
+                android:text="@string/start"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/option_separator_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/options" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/volume"
                 style="@style/MyHeadingText" />
 
@@ -130,15 +154,6 @@
         android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/start_stop_padplay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="@drawable/blue_button"
-            android:text="@string/start"
-            android:textColor="#fff" />
 
     </LinearLayout>
         </LinearLayout>

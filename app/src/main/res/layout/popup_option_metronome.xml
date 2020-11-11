@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="2dp"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
@@ -32,6 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            app:backgroundTint="@color/red"
             app:fabSize="mini"
             android:src="@drawable/ic_close_white_36dp"/>
 
@@ -54,11 +56,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/song_separator_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/song" />
+
             <Button
                 android:id="@+id/metronomeButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
                 android:drawableStart="@drawable/ic_pulse_white_36dp"
                 android:drawableLeft="@drawable/ic_pulse_white_36dp"
@@ -69,11 +79,35 @@
                 android:textSize="12sp"
                 tools:ignore="RtlHardcoded" />
 
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/metronomeActivatedSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:background="@drawable/menu_button"
+                android:drawableStart="@drawable/ic_check_white_36dp"
+                android:drawableLeft="@drawable/ic_check_white_36dp"
+                android:drawablePadding="4dp"
+                android:text="@string/activated"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:theme="@style/SwitchStyle"
+                app:showText="false"
+                tools:ignore="RtlHardcoded" />
+
+            <TextView
+                android:id="@+id/option_separator_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/options" />
+
             <Button
                 android:id="@+id/metronomeLengthButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
                 android:drawableStart="@drawable/ic_update_white_36dp"
                 android:drawableLeft="@drawable/ic_update_white_36dp"
@@ -88,33 +122,18 @@
                 android:id="@+id/metronomeStartButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
+                android:drawableStart="@drawable/ic_pulse_white_36dp"
                 android:drawableLeft="@drawable/ic_pulse_white_36dp"
                 android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_pulse_white_36dp"
                 android:text="@string/autostartmetronome"
                 android:textColor="#fff"
-                android:theme="@style/SwitchStyle"
                 android:textSize="12sp"
+                android:theme="@style/SwitchStyle"
                 app:showText="false"
                 tools:ignore="RtlHardcoded" />
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/metronomeActivatedSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_check_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_check_white_36dp"
-                android:text="@string/activated"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                android:theme="@style/SwitchStyle"
-                app:showText="false"
-                tools:ignore="RtlHardcoded" />
         </LinearLayout>
     </ScrollView>
 
