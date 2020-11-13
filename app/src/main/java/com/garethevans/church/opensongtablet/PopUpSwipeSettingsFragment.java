@@ -89,6 +89,7 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
         swipesimulateion_ImageView = V.findViewById(R.id.swipesimulateion_ImageView);
         swipesettings = V.findViewById(R.id.swipesettings);
         SwitchCompat gesturesSongSwipeButton = V.findViewById(R.id.gesturesSongSwipeButton);
+        SwitchCompat gesturesMenuSwipeButton = V.findViewById(R.id.gesturesMenuSwipeButton);
 
         // Get the maximum values allowed for the seekbars
         // maxwidth is 80% of the screen width
@@ -177,6 +178,13 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
                 swipeAnimate();
             }
         });
+
+        gesturesMenuSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"swipeForMenus",true));
+
+        gesturesMenuSwipeButton.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(getActivity(),"swipeForMenus",b);
+        });
+
         gesturesSongSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"swipeForSongs",true));
         hideorunhideSettings();
 

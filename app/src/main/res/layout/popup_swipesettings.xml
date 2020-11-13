@@ -29,25 +29,50 @@
             android:padding="10dp">
 
             <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/gesturesMenuSwipeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/menu_swipe_toggle"
+                android:textColor="#ff0"
+                android:textOff="@string/off"
+                android:textOn="@string/on"
+                style="@style/MyTextSwitch"
+                app:showText="true"
+                app:switchTextAppearance="@style/MyInfoText"
+                app:thumbTextPadding="4dp"
+                app:thumbTint="#444488" />
+
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/gesturesSongSwipeButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/SwitchStyle"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:text="@string/song_swipe_toggle"
-                style="@style/MyHeadingText"
-                app:showText="false" />
+                android:textColor="#ff0"
+                android:textOff="@string/off"
+                android:textOn="@string/on"
+                style="@style/MyTextSwitch"
+                app:showText="true"
+                app:switchTextAppearance="@style/MyInfoText"
+                app:thumbTextPadding="4dp"
+                app:thumbTint="#444488" />
 
             <LinearLayout
                 android:id="@+id/swipesettings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:orientation="vertical">
+
             <TextView
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="0dp"
                 android:text="@string/swipe_distance" />
 
             <LinearLayout
@@ -106,15 +131,15 @@
             </LinearLayout>
 
 
-            <TextView
-                style="@style/MyHeadingText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="0dp"
-                android:text="@string/swipe_allowance" />
+                <TextView
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="0dp"
+                    android:text="@string/swipe_allowance" />
 
-            <LinearLayout
+                <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">

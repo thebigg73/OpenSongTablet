@@ -217,7 +217,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
 
     private void setListeners() {
         showAll_Button.setOnClickListener(v -> {
-            FullscreenActivity.whattodo = "pagebuttons";
+            FullscreenActivity.whattodo = "groupedpagebuttons";
             try {
                 if (mListener != null) {
                     mListener.openFragment();

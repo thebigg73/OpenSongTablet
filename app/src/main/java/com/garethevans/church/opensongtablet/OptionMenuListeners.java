@@ -1338,7 +1338,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         Button gesturesPedalButton = v.findViewById(R.id.gesturesPedalButton);
-        Button gesturesPageButton = v.findViewById(R.id.gesturesPageButton);
         Button gesturesCustomButton = v.findViewById(R.id.gesturesCustomButton);
         Button gesturesMenuOptions = v.findViewById(R.id.gesturesMenuOptions);
         Button gesturesScrollButton = v.findViewById(R.id.gesturesScrollButton);
@@ -1358,7 +1357,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         setTextButtons(displayHDMIButton,c.getString(R.string.hdmi));
 
         setTextButtons(gesturesPedalButton,c.getString(R.string.footpedal));
-        setTextButtons(gesturesPageButton,c.getString(R.string.quicklaunch_title));
         setTextButtons(gesturesCustomButton,c.getString(R.string.custom_gestures));
         setTextButtons(gesturesMenuOptions,c.getString(R.string.menu_settings));
         setTextButtons(gesturesScrollButton,c.getString(R.string.scrollbuttons));
@@ -1453,13 +1451,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         gesturesPedalButton.setOnClickListener(view -> {
             if (mListener!=null) {
                 FullscreenActivity.whattodo = "footpedal";
-                mListener.closeMyDrawers("option");
-                mListener.openFragment();
-            }
-        });
-        gesturesPageButton.setOnClickListener(view -> {
-            if (mListener!=null) {
-                FullscreenActivity.whattodo = "quicklaunch";
                 mListener.closeMyDrawers("option");
                 mListener.openFragment();
             }
