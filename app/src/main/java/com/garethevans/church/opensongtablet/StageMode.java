@@ -121,7 +121,7 @@ public class StageMode extends AppCompatActivity implements
         SearchView.OnQueryTextListener, PopUpSetViewNew.MyInterface,
         PopUpChooseFolderFragment.MyInterface, PopUpCustomSlideFragment.MyInterface,
         PopUpImportExternalFile.MyInterface, PopUpRandomSongFragment.MyInterface,
-        PopUpBackupPromptFragment.MyInterface,
+        PopUpBackupPromptFragment.MyInterface, PopUpSwipeSettingsFragment.MyInterface,
         PopUpSongFolderRenameFragment.MyInterface, PopUpThemeChooserFragment.MyInterface,
         PopUpExtraInfoFragment.MyInterface,
         PopUpPageButtonsFragment.MyInterface, PopUpScalingFragment.MyInterface,

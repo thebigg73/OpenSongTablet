@@ -100,7 +100,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         PopUpSetViewNew.MyInterface, IndexSongs.MyInterface, SearchView.OnQueryTextListener,
         OptionMenuListeners.MyInterface, PopUpFullSearchFragment.MyInterface,
         PopUpListSetsFragment.MyInterface,
-        PopUpLongSongPressFragment.MyInterface,
+        PopUpLongSongPressFragment.MyInterface, PopUpSwipeSettingsFragment.MyInterface,
         PopUpFileChooseFragment.MyInterface, PopUpBackupPromptFragment.MyInterface,
         PopUpSongFolderRenameFragment.MyInterface, PopUpSongCreateFragment.MyInterface,
         PopUpSongRenameFragment.MyInterface, PopUpImportExportOSBFragment.MyInterface,
