@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/PrefScrollView">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pedal_controls"
+            style="@style/MyWhiteHeadingText"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="32dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pedal_instructions"
+            style="@style/MyWhiteHeadingText"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/pedalToggleScrollBeforeSwipeButton"
+            style="@style/PrefSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/toggleScrollBeforeSwipe" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/pedalToggleWarnBeforeSwipeButton"
+            style="@style/PrefSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/warn_before_changing_song" />
+
+        <!--BUTTON 1-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/section_box">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_pedal_white_36dp"
+                android:text="1"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/button1Code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_toEndOf="@+id/button1"
+                android:layout_alignBaseline="@+id/button1"
+                android:text="@string/notset"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/exposedDropDown"
+                android:id="@+id/shortButton1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button1"
+                android:hint="@string/tap"
+                android:labelFor="@+id/shortButton1Text">
+
+                <AutoCompleteTextView
+                    android:id="@+id/shortButton1Text"
+                    style="@style/exposedDropDownItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/exposedDropDown"
+                android:id="@+id/longButton1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/shortButton1"
+                android:hint="@string/longpress"
+                android:labelFor="@+id/longButton1Text">
+
+                <AutoCompleteTextView
+                    android:id="@+id/longButton1Text"
+                    style="@style/exposedDropDownItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </RelativeLayout>
+
+
+        <!--BUTTON 2-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/section_box">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_pedal_white_36dp"
+                android:text="2"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/button2Code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_toEndOf="@+id/button2"
+                android:layout_alignBaseline="@+id/button2"
+                android:text="@string/notset"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/exposedDropDown"
+                android:id="@+id/shortButton2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button2"
+                android:hint="@string/tap"
+                android:labelFor="@+id/shortButton2Text">
+
+                <AutoCompleteTextView
+                    android:id="@+id/shortButton2Text"
+                    style="@style/exposedDropDownItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/exposedDropDown"
+                android:id="@+id/longButton2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/shortButton2"
+                android:hint="@string/longpress"
+                android:labelFor="@+id/longButton2Text">
+
+                <AutoCompleteTextView
+                    android:id="@+id/longButton2Text"
+                    style="@style/exposedDropDownItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </RelativeLayout>
+
+
+
+
+        <!--BUTTON 3-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/section_box">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_pedal_white_36dp"
+                android:text="3"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/button3Code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_toEndOf="@+id/button3"
+                android:layout_alignBaseline="@+id/button3"
+                android:text="@string/notset"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/exposedDropDown"
+                android:id="@+id/shortButton3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button3"
+                android:hint="@string/tap"
+                android:labelFor="@+id/shortButton3Text">
+
+                <AutoCompleteTextView
+                    android:id="@+id/shortButton3Text"
+                    style="@style/exposedDropDownItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/exposedDropDown"
+                android:id="@+id/longButton3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/shortButton3"
+                android:hint="@string/longpress"
+                android:labelFor="@+id/longButton3Text">
+
+                <AutoCompleteTextView
+                    android:id="@+id/longButton3Text"
+                    style="@style/exposedDropDownItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </RelativeLayout>
+
+
+
+        <!--BUTTON 4-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/section_box">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/button4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_pedal_white_36dp"
+                android:text="4"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/button4Code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_toEndOf="@+id/button4"
+                android:layout_alignBaseline="@+id/button4"
+                android:text="@string/notset"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/exposedDropDown"
+                android:id="@+id/shortButton4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button4"
+                android:hint="@string/tap"
+                android:labelFor="@+id/shortButton4Text">
+
+                <AutoCompleteTextView
+                    android:id="@+id/shortButton4Text"
+                    style="@style/exposedDropDownItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/exposedDropDown"
+                android:id="@+id/longButton4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/shortButton4"
+                android:hint="@string/longpress"
+                android:labelFor="@+id/longButton4Text">
+
+                <AutoCompleteTextView
+                    android:id="@+id/longButton4Text"
+                    style="@style/exposedDropDownItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </RelativeLayout>
+
+
+
+        <!--BUTTON 5-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/section_box">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/button5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_pedal_white_36dp"
+                android:text="5"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/button5Code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_toEndOf="@+id/button5"
+                android:layout_alignBaseline="@+id/button5"
+                android:text="@string/notset"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/exposedDropDown"
+                android:id="@+id/shortButton5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button5"
+                android:hint="@string/tap"
+                android:labelFor="@+id/shortButton5Text">
+
+                <AutoCompleteTextView
+                    android:id="@+id/shortButton5Text"
+                    style="@style/exposedDropDownItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/exposedDropDown"
+                android:id="@+id/longButton5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/shortButton5"
+                android:hint="@string/longpress"
+                android:labelFor="@+id/longButton5Text">
+
+                <AutoCompleteTextView
+                    android:id="@+id/longButton5Text"
+                    style="@style/exposedDropDownItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </RelativeLayout>
+
+
+        <!--BUTTON 6-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/section_box">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/button6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_pedal_white_36dp"
+                android:text="6"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/button6Code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_toEndOf="@+id/button6"
+                android:layout_alignBaseline="@+id/button6"
+                android:text="@string/notset"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/exposedDropDown"
+                android:id="@+id/shortButton6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button6"
+                android:hint="@string/tap"
+                android:labelFor="@+id/shortButton6Text">
+
+                <AutoCompleteTextView
+                    android:id="@+id/shortButton6Text"
+                    style="@style/exposedDropDownItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/exposedDropDown"
+                android:id="@+id/longButton6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/shortButton6"
+                android:hint="@string/longpress"
+                android:labelFor="@+id/longButton6Text">
+
+                <AutoCompleteTextView
+                    android:id="@+id/longButton6Text"
+                    style="@style/exposedDropDownItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </RelativeLayout>
+
+
+
+
+        <!--BUTTON 7-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/section_box">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/button7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_pedal_white_36dp"
+                android:text="7"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/button7Code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_toEndOf="@+id/button7"
+                android:layout_alignBaseline="@+id/button7"
+                android:text="@string/notset"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/exposedDropDown"
+                android:id="@+id/shortButton7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button7"
+                android:hint="@string/tap"
+                android:labelFor="@+id/shortButton7Text">
+
+                <AutoCompleteTextView
+                    android:id="@+id/shortButton7Text"
+                    style="@style/exposedDropDownItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/exposedDropDown"
+                android:id="@+id/longButton7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/shortButton7"
+                android:hint="@string/longpress"
+                android:labelFor="@+id/longButton7Text">
+
+                <AutoCompleteTextView
+                    android:id="@+id/longButton7Text"
+                    style="@style/exposedDropDownItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </RelativeLayout>
+
+
+        <!--BUTTON 8-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/section_box">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/button8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_pedal_white_36dp"
+                android:text="8"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/button8Code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_toEndOf="@+id/button8"
+                android:layout_alignBaseline="@+id/button8"
+                android:text="@string/notset"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/exposedDropDown"
+                android:id="@+id/shortButton8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button8"
+                android:hint="@string/tap"
+                android:labelFor="@+id/shortButton8Text">
+
+                <AutoCompleteTextView
+                    android:id="@+id/shortButton8Text"
+                    style="@style/exposedDropDownItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/exposedDropDown"
+                android:id="@+id/longButton8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/shortButton8"
+                android:hint="@string/longpress"
+                android:labelFor="@+id/longButton8Text">
+
+                <AutoCompleteTextView
+                    android:id="@+id/longButton8Text"
+                    style="@style/exposedDropDownItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

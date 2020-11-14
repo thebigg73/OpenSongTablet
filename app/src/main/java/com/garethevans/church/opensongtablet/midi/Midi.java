@@ -1,19 +1,21 @@
 package com.garethevans.church.opensongtablet.midi;
 
-import android.bluetooth.BluetoothDevice;
+import android.app.Instrumentation;
 import android.content.Context;
 import android.media.midi.MidiDevice;
 import android.media.midi.MidiInputPort;
 import android.media.midi.MidiManager;
 import android.media.midi.MidiOutputPort;
-import android.media.midi.MidiReceiver;
 import android.os.Build;
+import android.util.Log;
+import android.view.KeyEvent;
 
 import androidx.annotation.RequiresApi;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -25,6 +27,7 @@ public class Midi {
     Context c;
     Preferences preferences;
     MainActivityInterface mainActivityInterface;
+    PedalMidiReceiver pedalMidiReceiver;
 
     // Initialise
     public Midi(Context c, Preferences preferences) {
@@ -32,14 +35,11 @@ public class Midi {
         this.preferences = preferences;
     }
 
-
-    private BluetoothDevice bluetoothDevice;
     private MidiDevice midiDevice;
     private MidiManager midiManager;
     private MidiInputPort midiInputPort;
     private MidiOutputPort midiOutputPort;
     private String midiDeviceName = "", midiDeviceAddress = "";
-    private MidiReceiver loggingReceiver;
     private boolean includeBluetoothMidi;
     private final List<String> notes = Arrays.asList("C0","C#0","D0","D#0","E0","F0","F#0","G0","G#0","A0","A#0","B0",
             "C1","C#1","D1","D#1","E1","F1","F#1","G1","G#1","A1","A#1","B1",
@@ -72,9 +72,6 @@ public class Midi {
     public String getMidiDeviceAddress() {
         return midiDeviceAddress;
     }
-    public MidiReceiver getLoggingReceiver() {
-        return loggingReceiver;
-    }
     public boolean getIncludeBluetoothMidi() {
         return includeBluetoothMidi;
     }
@@ -96,9 +93,6 @@ public class Midi {
     }
     public void setMidiDeviceAddress(String midiDeviceAddress) {
         this.midiDeviceAddress = midiDeviceAddress;
-    }
-    public void setLoggingReceiver(MidiReceiver loggingReceiver) {
-        this.loggingReceiver = loggingReceiver;
     }
     public void setIncludeBluetoothMidi(boolean includeBluetoothMidi) {
         this.includeBluetoothMidi = includeBluetoothMidi;
@@ -223,6 +217,7 @@ public class Midi {
     }
 
     String buildMidiString(String action, int channel, int byte2, int byte3) {
+        Log.d("buildMidSitring()","action="+action+"  channel:"+channel+"  byte2="+byte2+"  byte3="+byte3);
         String s = "";
         String b1 =  "0x";                               // This initialises the hex numbering convention
         String b2 = " 0x" + Integer.toHexString(byte2).toUpperCase(Locale.ROOT); // Convert numbers 0-127 to hex
@@ -308,9 +303,45 @@ public class Midi {
         }
         midiDeviceName = "";
         midiDeviceAddress = "";
-        if (midiOutputPort!=null && loggingReceiver!=null) {
-            midiOutputPort.disconnect(loggingReceiver);
+        if (midiOutputPort!=null && pedalMidiReceiver!=null) {
+            try {
+                midiOutputPort.disconnect(pedalMidiReceiver);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void enableMidiListener() {
+        if (midiDevice!=null && midiOutputPort!=null) {
+            pedalMidiReceiver = new PedalMidiReceiver(this);
+            try {
+                midiOutputPort.connect(pedalMidiReceiver);
+            } catch (Exception e) {
+                e.printStackTrace();
+                pedalMidiReceiver = null;
+            }
+        } else {
+            ShowToast.showToast(c,c.getString(R.string.midi_error));
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void disableMidiListener() {
+        if (midiDevice!=null && midiOutputPort!=null && pedalMidiReceiver!=null) {
+            try {
+                midiOutputPort.disconnect(pedalMidiReceiver);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // The code to map midi event to key press
+    public void doSendKeyCode(int val) {
+        Instrumentation inst = new Instrumentation();
+        inst.sendKeyDownUpSync(KeyEvent.KEYCODE_MENU);
     }
 
 }

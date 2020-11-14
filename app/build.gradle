@@ -79,7 +79,7 @@ dependencies {
     annotationProcessor 'androidx.annotation:annotation:1.1.0'                          // Allows annotations
     implementation 'androidx.appcompat:appcompat:1.2.0'                                 // Allows access to app: features for older devices
     implementation 'androidx.cardview:cardview:1.0.0'                                   // Cardview for recycler list items
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'                   // Constraint layouts with FAB
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'                   // Constraint layouts with FAB
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'                            // Older device support in views
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.mediarouter:mediarouter:1.2.0'

@@ -786,4 +786,7 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="comment">Comment</string>
     <string name="device_name">Device name</string>
     <string name="midi_pedal">Listen for incoming MIDI (e.g. footpedal)</string>
+    <string name="pedal_instructions">Click on a pedal button below to assign it to a keyboard action or midi note and assign actions to it. Most Bluetooth pedals send keyboard commands (e.g. arrow up/down). To use a midi pedal, make sure you have connected it using the midi ssettings in the app first.</string>
+    <string name="controls">Controls</string>
+    <string name="pedal_controls">Set up foot pedal buttons and actions</string>
 </resources>

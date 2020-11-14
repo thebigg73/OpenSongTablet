@@ -81,7 +81,6 @@ public class MidiFragment extends Fragment {
             midiNote, midiValue, songMidiMessages, songMidiMessagesToSave;
     private MidiMessagesAdapter midiMessagesAdapter;
 
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -187,7 +186,7 @@ public class MidiFragment extends Fragment {
     }
     private void setValues() {
         displayCurrentDevice();
-        myView.enableBluetooth.setChecked(allowBluetoothSearch());
+        myView.enableBluetooth.setChecked(allowBluetoothSearch(midi.getIncludeBluetoothMidi()));
         myView.midiCommand.setText(midiCommand.get(2));     // Default to program change
         myView.midiChannel.setText(midiChannel.get(0));     // Default to 0->1
         myView.midiNote.setText(midiNote.get(60));          // Default to C5 (used instead of midiProgram)
@@ -266,6 +265,13 @@ public class MidiFragment extends Fragment {
     private void setListeners() {
         myView.enableBluetooth.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
+                // Check we have the permission
+                if (!allowBluetoothSearch(true)) {
+                    myView.enableBluetooth.setChecked(false);
+                    return;
+                }
+            }
+            if (isChecked) {
                 // Get scanner.  This is only allowed for Marshmallow or later
                 BluetoothManager bluetoothManager = (BluetoothManager) requireActivity().getSystemService(Context.BLUETOOTH_SERVICE);
                 if (bluetoothManager!=null) {
@@ -288,6 +294,13 @@ public class MidiFragment extends Fragment {
         myView.midiVelocity.addTextChangedListener(new MyTextWatcher());
         myView.midiTest.setOnClickListener(v -> testTheMidiMessage(myView.midiCode.getText().toString()));
         myView.midiAdd.setOnClickListener(v -> addMidiToList());
+        myView.midiAsPedal.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked && midi.getMidiDevice()!=null && midi.getMidiOutputPort()!=null) {
+                midi.enableMidiListener();
+            } else if (!isChecked && midi.getMidiDevice()!=null && midi.getMidiOutputPort()!=null) {
+                midi.disableMidiListener();
+            }
+        });
     }
     private class MyTextWatcher implements TextWatcher {
         @Override
@@ -305,8 +318,8 @@ public class MidiFragment extends Fragment {
     }
 
     // Check permissions
-    private boolean allowBluetoothSearch() {
-        return mainActivityInterface.requestCoarseLocationPermissions() && midi.getIncludeBluetoothMidi();
+    private boolean allowBluetoothSearch(boolean switchOn) {
+        return mainActivityInterface.requestCoarseLocationPermissions() && mainActivityInterface.requestFineLocationPermissions() && switchOn;
     }
 
 
@@ -522,9 +535,11 @@ public class MidiFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void sendTestNote() {
         try {
+            byte[] b = midi.returnBytesFromHexText("0x90 0x3C 0x63");
             String s1 = midi.buildMidiString("NoteOn", 1, 60, 100);
+            Log.d("d","s1="+s1);
             byte[] buffer1 = midi.returnBytesFromHexText(s1);
-            boolean sent = midi.sendMidi(buffer1);
+            boolean sent = midi.sendMidi(b);
 
             Handler h = new Handler();
             h.postDelayed(() -> {
@@ -592,6 +607,9 @@ public class MidiFragment extends Fragment {
                     if (!foundoutport) {
                         Log.d("d", "Output port found = " + pi.getPortNumber());
                         midi.setMidiOutputPort(midi.getMidiDevice().openOutputPort(pi.getPortNumber()));
+                        if (myView.midiAsPedal.isChecked()) {
+                            midi.enableMidiListener();
+                        }
                         foundoutport = true;
                     }
                     break;

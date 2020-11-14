@@ -51,7 +51,7 @@
             android:id="@+id/gesturesButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:main="Control"
+            app:main="@string/controls"
             app:sub="Foot pedals and screen gestures" />
         <TableRow style="@style/DividerLine" />
 

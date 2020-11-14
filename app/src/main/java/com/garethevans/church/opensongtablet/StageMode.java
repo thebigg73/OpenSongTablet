@@ -65,6 +65,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,12 +74,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.core.view.MenuItemCompat;
 import androidx.core.view.animation.PathInterpolatorCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.mediarouter.app.MediaRouteActionProvider;
+import androidx.mediarouter.app.MediaRouteButton;
 import androidx.mediarouter.media.MediaControlIntent;
 import androidx.mediarouter.media.MediaRouteSelector;
 import androidx.mediarouter.media.MediaRouter;
@@ -87,8 +87,14 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
+import com.google.android.gms.cast.framework.CastButtonFactory;
+import com.google.android.gms.cast.framework.CastContext;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.Status;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.io.InputStream;
@@ -107,7 +113,6 @@ import static com.google.android.material.snackbar.Snackbar.make;
 
 // This includes all recent version pulls from IV and GE
 
-@SuppressWarnings("StatementWithEmptyBody")
 public class StageMode extends AppCompatActivity implements
         PopUpAreYouSureFragment.MyInterface, PopUpPagesFragment.MyInterface,
         PopUpEditSongFragment.MyInterface, PopUpSongDetailsFragment.MyInterface,
@@ -470,8 +475,14 @@ public class StageMode extends AppCompatActivity implements
                 presohandler, presoinfohandler, customhandler);
 
 
-
         // Setup the CastContext
+        MediaRouteButton mediaRouteButton = findViewById(R.id.media_route_menu_item);
+        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mediaRouteButton);
+        try {
+            CastContext.getSharedInstance(this);
+        } catch (Exception e) {
+            Log.d("StageMode", "No Google Services");
+        }
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
         mMediaRouteSelector = new MediaRouteSelector.Builder()
                 .addControlCategory(CastMediaControlIntent.categoryForCast("4E2B0891"))
@@ -1121,8 +1132,6 @@ public class StageMode extends AppCompatActivity implements
         nearbyConnections.doSendPayloadBytes(infoPayload);
     }
 
-
-
     @SuppressLint("StaticFieldLeak")
     private class CheckStorage extends AsyncTask<Object, Void, String> {
 
@@ -1147,6 +1156,13 @@ public class StageMode extends AppCompatActivity implements
         getMenuInflater().inflate(R.menu.stage_actions, menu);
 
         // Setup the menu item for connecting to cast devices
+        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
+            CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
+        }
+
+        */
+/*
+        MenuItem mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
         MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
         View mr = menu.findItem(R.id.media_route_menu_item).getActionView();
         if (mr!=null) {
@@ -1157,7 +1173,8 @@ public class StageMode extends AppCompatActivity implements
                 (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
         if (mMediaRouteSelector != null) {
             mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
-        }
+        }*//*
+
 
         // Force overflow icon to show, even if hardware key is present
         MenuHandlers.forceOverFlow(StageMode.this, ab, menu);
@@ -1345,6 +1362,16 @@ public class StageMode extends AppCompatActivity implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void installPlayServices() {
+        Snackbar.make(findViewById(R.id.coordinator_layout), R.string.play_services_error,
+                BaseTransientBottomBar.LENGTH_LONG).setAction(R.string.play_services_how, v -> {
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.play_services_help)));
+            startActivity(i);
+        })
+                .show();
     }
 
     @Override
@@ -1634,7 +1661,9 @@ public class StageMode extends AppCompatActivity implements
     private void scrollButtons() {
         delaycheckscroll = new Handler();
         checkScrollPosition = () -> {
-            FullscreenActivity.newPosFloat = songscrollview.getScrollY();
+            if (!StaticVariables.isautoscrolling) { // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
+                FullscreenActivity.newPosFloat = songscrollview.getScrollY();
+            }
             if (!(preferences.getMyPreferenceBoolean(StageMode.this, "pageButtonShowScroll", true))) {
                 showFAB(scrollDownButton, false);
                 showFAB(scrollUpButton, false);
@@ -3331,6 +3360,9 @@ public class StageMode extends AppCompatActivity implements
                     (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0);
 
             // If we aren't at the end of the set or inside a multipage pdf, indicate a setForwardButton
+            if (StaticVariables.mSetList==null) {
+                StaticVariables.mSetList = new String[0];
+            }
             StaticVariables.canGoToNext = (StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) ||
                     (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < FullscreenActivity.pdfPageCount - 1);
         } else {
@@ -3342,7 +3374,7 @@ public class StageMode extends AppCompatActivity implements
 
     private void getPadProgress() {
         // IV - Pad time display logic is concentrated here
-        String text = "0:00";
+        String text = "";
 
         if (StaticVariables.clickedOnPadStart) {
             // Decide which player and get time
@@ -3355,13 +3387,22 @@ public class StageMode extends AppCompatActivity implements
 
         if (!text.equals(padcurrentTime_TextView.toString())) {
             updateExtraInfoColorsAndSizes("pad");
-            padcurrentTime_TextView.setText(text);
-            // When 0:00 we get the pad total time and make Pad progress visible
-            if (text.equals("0:00")) {
-                // Display the '/' as now active
-                padTimeSeparator_TextView.setText("/");
-                padtotalTime_TextView.setText(TimeTools.timeFormatFixer(StaticVariables.padtime_length));
+            if (text.equals("")) {
+                padcurrentTime_TextView.setText("");
+                padTimeSeparator_TextView.setText("");
+                padtotalTime_TextView.setText("");
                 backingtrackProgress.setVisibility(View.VISIBLE);
+            } else {
+                // When 0:00 we get the pad total time and make Pad progress visible
+                if (text.equals("0:00")) {
+                    backingtrackProgress.setVisibility(View.GONE);
+                    padcurrentTime_TextView.setText(text);
+                    padTimeSeparator_TextView.setText("/");
+                    padtotalTime_TextView.setText(TimeTools.timeFormatFixer(StaticVariables.padtime_length));
+                    backingtrackProgress.setVisibility(View.VISIBLE);
+                } else {
+                    padcurrentTime_TextView.setText(text);
+                }
             }
         }
     }
@@ -3441,6 +3482,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void sendMidi() {
         if ((Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M &&
@@ -3453,9 +3495,7 @@ public class StageMode extends AppCompatActivity implements
             mh.post(() -> {
                 try {
                     if (midi==null) {
-                        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M ) {
-                            midi = new Midi();
-                        }
+                        midi = new Midi();
                     }
                     // Split the midi messages by line, after changing , into new line
                     StaticVariables.mMidi = StaticVariables.mMidi.replace(",", "\n");
@@ -3463,9 +3503,7 @@ public class StageMode extends AppCompatActivity implements
                     String[] midilines = StaticVariables.mMidi.trim().split("\n");
                     for (String ml : midilines) {
                         if (midi!=null) {
-                            if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M ) {
-                                midi.sendMidi(midi.returnBytesFromHexText(ml));
-                            }
+                            midi.sendMidi(midi.returnBytesFromHexText(ml));
                         }
                     }
                 } catch (Exception e) {
@@ -3677,6 +3715,18 @@ public class StageMode extends AppCompatActivity implements
                             FullscreenActivity.file_uri = FileProvider.getUriForFile(StageMode.this,
                                     "OpenSongAppFiles", f);
                         }
+
+                        // Get persistent permissions
+                        try {
+                            final int takeFlags = data.getFlags()
+                                    & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                            // Check for the freshest data.
+                            getContentResolver().takePersistableUriPermission(FullscreenActivity.file_uri, takeFlags);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                         openFragment();
                     } else {
                         StaticVariables.myToastMessage = getString(R.string.file_type_unknown);
@@ -4674,20 +4724,6 @@ public class StageMode extends AppCompatActivity implements
                     });
         } else {
             // Might be a hdmi connection
-            */
-/*try {
-                Display mDisplay = mMediaRouter.getSelectedRoute().getPresentationDisplay();
-                if (mDisplay != null) {
-                    hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong);
-                    hdmi.show();
-                    FullscreenActivity.isHDMIConnected = true;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*//*
-
-
-            // Try this code (Alternative to use HDMI as Chromebooks not coping with above
             try {
                 DisplayManager dm = (DisplayManager) getSystemService(DISPLAY_SERVICE);
                 if (dm!=null) {
@@ -5371,6 +5407,7 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void callIntent(String what, Intent i) {
+        Log.d("StageMode","what="+what);
         switch (what) {
             case "web":
                 startActivity(i);
@@ -5396,8 +5433,13 @@ public class StageMode extends AppCompatActivity implements
                 break;
 
             case "activity":
-                finish();
-                startActivity(i);
+                if (i != null && i.toString().contains("StageMode")) {
+                    Log.d("StageMode","Recreating");
+                    StageMode.this.recreate();
+                } else {
+                    finish();
+                    startActivity(i);
+                }
                 break;
 
             case "openpdf":
@@ -6210,9 +6252,6 @@ public class StageMode extends AppCompatActivity implements
     // IV - Logic to fade playing pad(s)
     private void fadeoutPad() {
 
-        // Put the display time into a known state
-        padcurrentTime_TextView.setText(R.string.time_zero);
-
         // Put the quick fade mechainism into a known state
         StaticVariables.padInQuickFade = 0;
 
@@ -6541,8 +6580,8 @@ public class StageMode extends AppCompatActivity implements
             try {
                 while (StaticVariables.isautoscrolling) {
                     // IV - update the scroll buttons as we go
-                    delaycheckscroll.post(checkScrollPosition);
                     FullscreenActivity.time_passed = System.currentTimeMillis();
+                    delaycheckscroll.post(checkScrollPosition);
                     boolean doscroll = ((FullscreenActivity.time_passed - FullscreenActivity.time_start) / 1000) >= StaticVariables.autoScrollDelay;
                     if (doscroll) {
                         publishProgress(1);
@@ -6681,7 +6720,9 @@ public class StageMode extends AppCompatActivity implements
                     height = 0;
                 }
                 if (glideimage_ScrollView!=null) {
-                    FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY();
+                    if (!StaticVariables.isautoscrolling) {  // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
+                        FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY();
+                    }
                     showscrolldown = height > glideimage_ScrollView.getScrollY() && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu);
                 }
             } else {
@@ -6691,7 +6732,9 @@ public class StageMode extends AppCompatActivity implements
                     height = 0;
                 }
                 if (songscrollview != null) {
-                    FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY();
+                    if (!StaticVariables.isautoscrolling) { // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
+                        FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY();
+                    }
                     showscrolldown = height > songscrollview.getScrollY() && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu);
                 }
             }
@@ -6707,12 +6750,16 @@ public class StageMode extends AppCompatActivity implements
         } else {
             if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
                 if (glideimage_ScrollView!=null) {
-                    FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY();
+                    if (!StaticVariables.isautoscrolling) { // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
+                        FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY();
+                    }
                     showscrollup = glideimage_ScrollView.getScrollY() > 0 && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu);
                 }
             } else {
                 if (songscrollview != null) {
-                    FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY();
+                    if (!StaticVariables.isautoscrolling) { // GE Added as this was breaking the autoscroll - grabbing the rounded pixel value
+                        FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY();
+                    }
                     showscrollup = songscrollview.getScrollY() > 0 && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu);
                 }
             }
@@ -7230,7 +7277,8 @@ public class StageMode extends AppCompatActivity implements
                         find.postDelayed(() -> openMyDrawers("option"), 2000);
                     }
                     // Send the midi data if we can
-                    if (preferences.getMyPreferenceBoolean(StageMode.this,"midiSendAuto",false)) {
+                    if (preferences.getMyPreferenceBoolean(StageMode.this,"midiSendAuto",false) &&
+                            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         sendMidi();
                     }
                     // Send Nearby song intent
@@ -8319,11 +8367,11 @@ public class StageMode extends AppCompatActivity implements
         updateDisplays();
     }
 
-    //@SuppressLint("NewApi")
     private class MyMediaRouterCallback extends MediaRouter.Callback {
 
         @Override
-        public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
+        public void onRouteSelected(@NonNull MediaRouter router, @NonNull MediaRouter.RouteInfo info, int reason) {
+            super.onRouteSelected(router,info,reason);
             mSelectedDevice = CastDevice.getFromBundle(info.getExtras());
             try {
                 updateDisplays();
@@ -8333,7 +8381,8 @@ public class StageMode extends AppCompatActivity implements
         }
 
         @Override
-        public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
+        public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info, int reason) {
+            super.onRouteUnselected(router,info,reason);
             teardown();
             mSelectedDevice = null;
             FullscreenActivity.isPresenting = false;
@@ -8378,7 +8427,6 @@ public class StageMode extends AppCompatActivity implements
         doCancelAsyncTask(play_pads);
         play_pads = new PlayPads();
         try {
-            padcurrentTime_TextView.setText(R.string.time_zero);
             play_pads.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
             e.printStackTrace();
@@ -8627,7 +8675,7 @@ public class StageMode extends AppCompatActivity implements
         if (storageAccess.lollipopOrLater()) {
             intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("*_/_*");  // TODO REMOVE UNDERSCORES
+            intent.setType("*_/_*"); //TODO remove underscore
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri);
             }

@@ -63,6 +63,7 @@ public interface MainActivityInterface {
     void updateConnectionsLog();
     boolean requestNearbyPermissions();
     boolean requestCoarseLocationPermissions();
+    boolean requestFineLocationPermissions();
 
     // Get the helpers initialised in the main activity
     NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface);

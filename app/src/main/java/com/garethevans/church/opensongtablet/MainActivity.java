@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,6 +51,7 @@ import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
 import com.garethevans.church.opensongtablet.ccli.SettingsCCLI;
+import com.garethevans.church.opensongtablet.controls.PedalsFragment;
 import com.garethevans.church.opensongtablet.databinding.ActivityMainBinding;
 import com.garethevans.church.opensongtablet.databinding.AppBarMainBinding;
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureDialogFragment;
@@ -877,6 +879,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
         try {
             navController.navigate(id);
+            Fragment f = getSupportFragmentManager().findFragmentById(id);
+            Log.d("MainActivity","f="+f);
             fragmentOpen = id;
         } catch (Exception e) {
             e.printStackTrace();
@@ -1039,6 +1043,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
 
 
+    // Get references to the objects set in MainActivity
     @Override
     public MediaPlayer getMediaPlayer(int i) {
         // Keeping mediaPlayers in the MainActivity so they persist across fragments
@@ -1048,7 +1053,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             return mediaPlayer2;
         }
     }
-
     @Override
     public SetTypeFace getMyFonts() {
         return setTypeFace;
@@ -1158,7 +1162,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             return false;
         }
     }
-    private boolean requestFineLocationPermissions() {
+    @Override
+    public boolean requestFineLocationPermissions() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             return true;
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -1201,7 +1206,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
 
     // Midi
-
     @Override
     public Midi getMidi(MainActivityInterface mainActivityInterface) {
         // First update the mainActivityInterface used in midi
@@ -1209,7 +1213,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Return a reference to midi
         return midi;
     }
-
     // Get permissions request callback
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -1231,7 +1234,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             }
         }
     }
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void sendMidiFromList(int item) {
@@ -1239,11 +1241,46 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             ((MidiFragment)registeredFragment).sendMidiFromList(item);
         }
     }
-
     @Override
     public void deleteMidiFromList(int item) {
         if (fragmentOpen==R.id.midiFragment) {
             ((MidiFragment)registeredFragment).deleteMidiFromList(item);
         }
+    }
+
+
+    // Pedal listeners
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
+        // If pedalsFragment is open, send the keyCode and event there
+        if (fragmentOpen==R.id.pedalsFragment && ((PedalsFragment)registeredFragment).isListening()) {
+            ((PedalsFragment)registeredFragment).keyDownListener(keyCode);
+            return true;
+        } else {
+            // TODO Deal with the rest of the actions need to copy from GitHub
+        }
+        return super.onKeyDown(keyCode, keyEvent);
+    }
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent keyEvent) {
+        // If pedalsFragment is open, send the keyCode and event there
+        if (fragmentOpen==R.id.pedalsFragment && ((PedalsFragment)registeredFragment).isListening()) {
+            ((PedalsFragment)registeredFragment).keyUpListener(keyCode);
+            return true;
+        } else {
+            // TODO Deal with the rest of the actions need to copy from GitHub
+        }
+        return super.onKeyUp(keyCode, keyEvent);
+    }
+    @Override
+    public boolean onKeyLongPress(int keyCode, KeyEvent keyEvent) {
+        // If pedalsFragment is open, send the keyCode and event there
+        if (fragmentOpen==R.id.pedalsFragment && ((PedalsFragment)registeredFragment).isListening()) {
+            ((PedalsFragment)registeredFragment).keyLongPressListener(keyCode);
+            return true;
+        } else {
+            // TODO Deal with the rest of the actions need to copy from GitHub
+        }
+        return super.onKeyLongPress(keyCode, keyEvent);
     }
 }
