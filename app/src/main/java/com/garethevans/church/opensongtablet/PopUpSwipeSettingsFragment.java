@@ -22,6 +22,24 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.Objects;
 
 public class PopUpSwipeSettingsFragment extends DialogFragment {
+    
+    public interface MyInterface {
+        void toggleDrawerSwipe();
+    }
+
+    private PopUpMenuSettingsFragment.MyInterface mListener;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        mListener = (PopUpMenuSettingsFragment.MyInterface) context;
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        mListener = null;
+        super.onDetach();
+    }
 
     private String speed;
     private String distance;
@@ -183,6 +201,9 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
 
         gesturesMenuSwipeButton.setOnCheckedChangeListener((compoundButton, b) -> {
             preferences.setMyPreferenceBoolean(getActivity(),"swipeForMenus",b);
+            if (mListener!=null) {
+                mListener.toggleDrawerSwipe();
+            }
         });
 
         gesturesSongSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"swipeForSongs",true));
