@@ -294,7 +294,6 @@ public class StageMode extends AppCompatActivity implements
     private AsyncTask<Void, Void, String> resizeperformance_async;
     private AsyncTask<Void, Void, String> resizestage_async;
     private AsyncTask<String, Integer, String> mtask_autoscroll_music;
-    // IV - prepare_pad not in use - using play_pads
     private AsyncTask<Void, Void, Integer> play_pads;
     private AsyncTask<String, Integer, String> do_download;
     private AsyncTask<Object, Integer, String> get_scrollheight;
@@ -304,7 +303,6 @@ public class StageMode extends AppCompatActivity implements
     private boolean firstrun_song = true;
 
     // Handlers and Runnables
-    // IV - padoncheck no in use. handle not used
     private final Handler dopadProgressTime = new Handler();
     private final Runnable padprogressTimeRunnable = this::getPadProgress;
     private final Runnable onEverySecond = this::preparePadProgress;
@@ -335,7 +333,15 @@ public class StageMode extends AppCompatActivity implements
     private final Runnable startCapoAnimationRunnable = () -> CustomAnimations.highlightAction(capoInfo,StageMode.this);
     // Handler for temporary pause of autoscroll
     private final Handler endManualDraggingHandler = new Handler();
-    private final Runnable endManualDraggingRunnable = () -> FullscreenActivity.isManualDragging = false;
+    private final Runnable endManualDraggingRunnable = () -> {
+        FullscreenActivity.isManualDragging = false;
+        // IV - Use current position (it may have been moved) for autoscroll resume
+        if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
+            FullscreenActivity.newPosFloat = (float) glideimage_ScrollView.getScrollY();
+        } else {
+            FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY();
+        }
+    };
     // Handler for stop of autoscroll
     private final Handler endAutoScrollHandler = new Handler();
     private final Runnable endAutoScrollRunnable = () -> {
@@ -531,8 +537,6 @@ public class StageMode extends AppCompatActivity implements
 
                 // Load the song and get started
                 loadSong();
-
-                // IV - Dynamic buttons (scroll and set) are done later
 
                 // Prepare abhide listener
                 setupAbHide();
@@ -927,7 +931,7 @@ public class StageMode extends AppCompatActivity implements
                 resetoptionmenu.postDelayed(() -> {
                     StaticVariables.whichOptionMenu = "MAIN";
                     prepareOptionMenu();
-                }, 300);
+                }, 100);
                 // Set a runnable to re-enable swipe
                 Handler allowswipe = new Handler();
                 allowswipe.postDelayed(() -> {
@@ -1344,7 +1348,6 @@ public class StageMode extends AppCompatActivity implements
         doCancelAsyncTask(do_moveinset);
         doCancelAsyncTask(add_slidetoset);
         doCancelAsyncTask(dualscreenwork_async);
-        // IV - prepare_pad not in use
         doCancelAsyncTask(play_pads);
         doCancelAsyncTask(do_download);
         doCancelAsyncTask(show_sticky);
@@ -1450,6 +1453,15 @@ public class StageMode extends AppCompatActivity implements
 
         prepareOptionMenu();
         prepareSongMenu();
+
+        // IV - Update second screen theme
+        if (FullscreenActivity.isPresenting && !FullscreenActivity.isHDMIConnected) {
+            PresentationService.ExternalDisplay.presenterThemeSetUp();
+        }
+        if (FullscreenActivity.isHDMIConnected) {
+            PresentationServiceHDMI.presenterThemeSetUp();
+        }
+        // Load the song
         loadSong();
     }
 
@@ -1738,7 +1750,6 @@ public class StageMode extends AppCompatActivity implements
             scrollUpButton = findViewById(R.id.scrollUpButton);
             setBackButton = findViewById(R.id.setBackButton);
             setForwardButton = findViewById(R.id.setForwardButton);
-            // IV - minor name change setUp -> setup
             setupPageButtonsColors();
             setupQuickLaunchButtons();
         });
@@ -1749,16 +1760,13 @@ public class StageMode extends AppCompatActivity implements
         // Set the sizes and the alphas
         pageButtonAlpha("");
 
-        // IV - Animations for grouped buttons below removed as they fire in the wrong place
-        // IV - that is on next return to group, perhaps a long time after use
-        // IV - the collapse of the group will 'animate' the click
+        // IV - No animations for grouped buttons as the collapse of the group will 'animate' the click
         // Set the listeners
         setButton.setOnClickListener(view -> {
             CustomAnimations.animateFAB(setButton,StageMode.this);
             FullscreenActivity.whattodo = "editset";
             openFragment();
         });
-        // IV - New Long click to set item variation
         setButton.setOnLongClickListener(view -> {
             FullscreenActivity.whattodo = "setitemvariation";
             openFragment();
@@ -1771,6 +1779,12 @@ public class StageMode extends AppCompatActivity implements
         });
         padButton.setOnLongClickListener(view -> {
             CustomAnimations.animateFABLong(padButton,StageMode.this);
+            // IV - Indicate a fade with just the pad icon to give immediate feedback
+            if (backingtrackProgress.getVisibility() == View.VISIBLE) {
+                padtotalTime_TextView.setText("");
+                padTimeSeparator_TextView.setText("");
+                padcurrentTime_TextView.setText("");
+            }
             gesture6();
             return true;
         });
@@ -1997,7 +2011,6 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void setupPageButtonsColors() {
-        // IV - Added the complete range of buttons get the color on all
         // Set the colors
         autoscrollButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
         chordButton.setBackgroundTintList(ColorStateList.valueOf(defpagebuttoncolor));
@@ -2154,7 +2167,8 @@ public class StageMode extends AppCompatActivity implements
 
         }
     }
-    private void hideAllFABs() {
+    public void groupPageButtons() {
+        // Hide activity buttons to begin with
         showFAB(setButton, false);
         showFAB(padButton, false);
         showFAB(autoscrollButton, false);
@@ -2173,22 +2187,6 @@ public class StageMode extends AppCompatActivity implements
         showFAB(custom2Button_ungrouped, false);
         showFAB(custom3Button_ungrouped, false);
         showFAB(custom4Button_ungrouped, false);
-        // We can be doing a button reorg where we want to keep seeing these buttons
-        if (!StaticVariables.ignoreGesture) {
-            showFAB(setBackButton, false);
-            showFAB(setForwardButton, false);
-            showFAB(scrollDownButton, false);
-            showFAB(scrollUpButton, false);
-        }
-    }
-
-    public void groupPageButtons() {
-
-        // Flag to ignore full screen long press activity for a short while
-        StaticVariables.ignoreGesture = true;
-
-        // Hide everything to begin with
-        hideAllFABs();
 
         // Get the preference of what should show
         boolean showsetbutton = preferences.getMyPreferenceBoolean(StageMode.this,"pageButtonShowSet", true);
@@ -2261,10 +2259,6 @@ public class StageMode extends AppCompatActivity implements
                 showFAB(custom4Button_ungrouped,showcustom4button);
             }
         }
-
-        // Restore full screen gesture activity after a delay
-        Handler h = new Handler();
-        h.postDelayed(() -> StaticVariables.ignoreGesture = false, 300);
     }
 
     @Override
@@ -2520,9 +2514,6 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void customButtonAction(String s) {
-        // Flag to ignore full screen long press activity for a short while
-        StaticVariables.ignoreGesture = true;
-
         boolean val;
         switch (s) {
             case "":
@@ -2622,17 +2613,9 @@ public class StageMode extends AppCompatActivity implements
         }
 
         pageButtonAlpha("");
-
-        // Restore full screen gesture activity after a delay
-        Handler h = new Handler();
-        h.postDelayed(() -> StaticVariables.ignoreGesture = false, 300);
     }
 
-    // IV - Long click activites added
     private void customButtonLongPressAction(String s) {
-        // Flag to ignore full screen long press activity for a short while
-        StaticVariables.ignoreGesture = true;
-
         switch (s) {
             case "":
             default:
@@ -2709,9 +2692,6 @@ public class StageMode extends AppCompatActivity implements
                 break;
         }
         pageButtonAlpha("");
-        // Restore full screen gesture activity after a delay
-        Handler h = new Handler();
-        h.postDelayed(() -> StaticVariables.ignoreGesture = false, 300);
     }
 
     private void increaseAutoScrollSpeed() {
@@ -3338,9 +3318,7 @@ public class StageMode extends AppCompatActivity implements
         openFragment();
     }
 
-    // IV - Set buttons not displaying correctly when pedalShowWarningBeforeMove block - so moved block to pedalNeeds code
     private void checkCanGoTo() {
-        // IV - Change to use of variables for results
         // Set default state
         StaticVariables.canGoToPrevious = false;
         StaticVariables.canGoToNext = false;
@@ -3384,12 +3362,7 @@ public class StageMode extends AppCompatActivity implements
 
         if (!text.equals(padcurrentTime_TextView.toString())) {
             updateExtraInfoColorsAndSizes("pad");
-            if (text.equals("")) {
-                padcurrentTime_TextView.setText("");
-                padTimeSeparator_TextView.setText("");
-                padtotalTime_TextView.setText("");
-                backingtrackProgress.setVisibility(View.VISIBLE);
-            } else {
+            if (!text.equals("")) {
                 // When 0:00 we get the pad total time and make Pad progress visible
                 if (text.equals("0:00")) {
                     backingtrackProgress.setVisibility(View.GONE);
@@ -3401,6 +3374,12 @@ public class StageMode extends AppCompatActivity implements
                     padcurrentTime_TextView.setText(text);
                 }
             }
+            // IV - If we have no active, just fading, pads - Indicate fade with just the pad icon
+            if (!StaticVariables.clickedOnPadStart) {
+                    padtotalTime_TextView.setText("");
+                    padTimeSeparator_TextView.setText("");
+                    padcurrentTime_TextView.setText("");
+            }
         }
     }
 
@@ -3408,7 +3387,6 @@ public class StageMode extends AppCompatActivity implements
     public void goToNextItem() {
         dealtwithaspdf = false;
 
-        // IV - Stops errors on rapid song changes
         if (!FullscreenActivity.alreadyloading) {
             FullscreenActivity.whichDirection = "R2L";
             StaticVariables.showstartofpdf = true;
@@ -3431,7 +3409,7 @@ public class StageMode extends AppCompatActivity implements
             // If this hasn't been dealt with
             if (!dealtwithaspdf && StaticVariables.setView) {
                 // Is there another song in the set?  If so move, if not, do nothing
-                // IV - Now made song section aware for Stage mode
+                // IV - Song section aware for Stage mode
                 if ((StaticVariables.indexSongInSet < StaticVariables.mSetList.length - 1) ||
                         (StaticVariables.whichMode.equals("Stage") && StaticVariables.songSections != null && StaticVariables.currentSection < StaticVariables.songSections.length - 1)) {
                     //FullscreenActivity.indexSongInSet += 1;
@@ -3805,9 +3783,6 @@ public class StageMode extends AppCompatActivity implements
         // Do not touch on a reload
         if (!StaticVariables.reloadOfSong && StaticVariables.clickedOnMetronomeStart) {
             // GE - metronome was stopped before loading the song and StaticVariables.clickedOnMetronomeStart was reset manually to true afterwards
-            // IV - gesture used for stop and start
-            // GE - I moved this to later in the process
-
             // Metronome was playing before loading the song - if requested autostart start the metronome for the new song
             if (preferences.getMyPreferenceBoolean(StageMode.this, "metronomeAutoStart", false) &&
                     FullscreenActivity.isSong) {
@@ -3974,7 +3949,7 @@ public class StageMode extends AppCompatActivity implements
             // If this hasn't been dealt with
             if (!dealtwithaspdf && StaticVariables.setView) {
                 StaticVariables.showstartofpdf = false; // Moving backwards, so start at end of pdf
-                // IV - Now made song section aware for Stage mode
+                // IV - Song section aware for Stage mode
                 // Is there another song in the set?  If so move, if not, do nothing
                 if ((StaticVariables.indexSongInSet > 0 && StaticVariables.mSetList.length > 0) ||
                         (StaticVariables.whichMode.equals("Stage") && StaticVariables.songSections != null && StaticVariables.currentSection > 0)) {
@@ -4093,7 +4068,7 @@ public class StageMode extends AppCompatActivity implements
         // Smooth scroll to show this view at the top of the page unless we are autoscrolling
         try {
             if (!StaticVariables.isautoscrolling) {
-                songscrollview.smoothScrollTo(0, FullscreenActivity.sectionviews[whichone].getTop());
+                songscrollview.smoothScrollTo(0, FullscreenActivity.sectionviews[whichone].getTop() - (int) (getAvailableHeight() * (1.0f - preferences.getMyPreferenceFloat(StageMode.this, "scrollDistance", 0.7f))));
             }
         } catch (Exception e) {
             Log.d("StageMode", "Section not found");
@@ -4199,8 +4174,6 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
-
-    // IV - getPadOnStatus is not used
     private void resizePerformanceView() {
         doCancelAsyncTask(resizeperformance_async);
         resizeperformance_async = new ResizePerformanceView();
@@ -5009,7 +4982,6 @@ public class StageMode extends AppCompatActivity implements
         StaticVariables.pad1Playing = PadFunctions.getPad1Status();
         StaticVariables.pad2Playing = PadFunctions.getPad2Status();
         // IV - If playing pads then fade to stop
-        // IV - StaticVariables.clickedOnPadStart handled elsewhere
         if ((StaticVariables.pad1Playing && !StaticVariables.pad1Fading)  || (StaticVariables.pad2Playing && !StaticVariables.pad2Fading)) {
             DoVibrate.vibrate(StageMode.this, 50);
             fadeoutPad();
@@ -5019,7 +4991,6 @@ public class StageMode extends AppCompatActivity implements
                 playPad();
             } else {
                 // We inform the user - 'Not set' which can be valid
-                // IV - gesture6 is now used in page_pad - a page_pad call may result in a loop!
                 showToastMessage(getResources().getString(R.string.pad) + " - " +
                         getResources().getString(R.string.notset));
             }
@@ -5890,7 +5861,6 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
-    // IV - preparePad() lost all function on rework except for a call of playpad so has been removed.
     @SuppressLint("StaticFieldLeak")
     private class PrepareSongView extends AsyncTask<Object, Void, String> {
 
@@ -6179,7 +6149,6 @@ public class StageMode extends AppCompatActivity implements
             });
             // IV - Logic of time display content is elsewhere
             FullscreenActivity.mPlayer1.start();
-            // IV - padson is not in use
             dopadProgressTime.removeCallbacks((onEverySecond));
             dopadProgressTime.post(onEverySecond);
         }
@@ -6232,16 +6201,13 @@ public class StageMode extends AppCompatActivity implements
             });
             // IV - Logic of time display content is elsewhere
             FullscreenActivity.mPlayer2.start();
-            // IV - padson is not in use
             dopadProgressTime.removeCallbacks((onEverySecond));
             dopadProgressTime.post(onEverySecond);
         }
     }
-
-    // IV - Logic to fade playing pad(s)
     private void fadeoutPad() {
 
-        // Put the quick fade mechainism into a known state
+        // Put the quick fade mechanism into a known state
         StaticVariables.padInQuickFade = 0;
 
         // Set false as all pads will fade. preparePad sets this true if a pad is played
@@ -6264,9 +6230,8 @@ public class StageMode extends AppCompatActivity implements
         }
         // IV - Pad time display logic is elsewhere
 
-        // Wait until a pad is free for use
         while (StaticVariables.pad1Playing && StaticVariables.pad2Playing) {
-            //Waiting for pad to become available
+            // Wait until a pad is free for use
         }
         StaticVariables.padInQuickFade = 0;
     }
@@ -6648,7 +6613,6 @@ public class StageMode extends AppCompatActivity implements
                         goToNextItem();
                     } else {
                         pdfCanContinueScrolling = false;
-                        // IV - updateExtra... not needed as done elsewhere
                         playbackProgress.setVisibility(View.GONE);
                     }
                 }
@@ -6666,7 +6630,6 @@ public class StageMode extends AppCompatActivity implements
             doCancelAsyncTask(mtask_autoscroll_music);
         }
     }
-    // IV - No longer needs to be public
     private void stopAutoScroll() {
         try {
             updateExtraInfoColorsAndSizes("autoscroll");
@@ -6691,9 +6654,6 @@ public class StageMode extends AppCompatActivity implements
             endManualDraggingHandler.postDelayed(endManualDraggingRunnable, 2000);
         }
     }
-
-    // IV - stopMetronome not needed as logic is concentrated in the gesture
-
     private boolean checkCanScrollDown() {
         boolean showscrolldown = false;
         if (StaticVariables.whichMode!=null && StaticVariables.whichMode.equals("Stage")) {
@@ -6728,7 +6688,6 @@ public class StageMode extends AppCompatActivity implements
                 }
             }
         }
-        // IV - Scrollbuttons considers the preference when displaying
         return showscrolldown;
     }
 
@@ -6753,7 +6712,6 @@ public class StageMode extends AppCompatActivity implements
                 }
             }
         }
-        // IV - Scrollbuttons considers the preference when displaying
         return showscrollup;
     }
 
@@ -6861,33 +6819,6 @@ public class StageMode extends AppCompatActivity implements
         loadSong();
     }
 
-    // The page action gestures stuff is below
-    private boolean oktoregistergesture() {
-
-        boolean oktogo = false;
-        // IV - gestures can be ignored at times
-        if (!StaticVariables.ignoreGesture & !FullscreenActivity.pressing_button  // Button pressing
-                && !setButton.isPressed() && !padButton.isPressed() && !autoscrollButton.isPressed()
-                && !metronomeButton.isPressed() && !extraButton.isPressed() && !chordButton.isPressed()
-                && !linkButton.isPressed() && !stickyButton.isPressed() && !notationButton.isPressed()
-                && !highlightButton.isPressed() && !pageselectButton.isPressed()
-                && !customButton.isPressed() && !custom1Button.isPressed() && !custom2Button.isPressed()
-                && !custom3Button.isPressed() && !custom4Button.isPressed() && !linkButton_ungrouped.isPressed()
-                && !chordButton_ungrouped.isPressed() && !pageselectButton_ungrouped.isPressed()
-                && !stickyButton_ungrouped.isPressed() && !notationButton_ungrouped.isPressed()
-                && !highlightButton_ungrouped.isPressed()
-                && !custom1Button_ungrouped.isPressed() && !custom2Button_ungrouped.isPressed()
-                && !custom3Button_ungrouped.isPressed() && !custom4Button_ungrouped.isPressed()
-                && !scrollDownButton.isPressed() && !scrollUpButton.isPressed()
-                && !setBackButton.isPressed() && !setForwardButton.isPressed()
-                && !mDrawerLayout.isDrawerOpen(songmenu) && !mDrawerLayout.isDrawerVisible(songmenu)
-                && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerVisible(optionmenu)) {
-            oktogo = true;
-        }
-
-        return oktogo;
-    }
-
     @Override
     public void loadSong() {
         try {
@@ -6975,7 +6906,6 @@ public class StageMode extends AppCompatActivity implements
                         stopAutoScroll();
                     }
 
-                    // IV - Pad time display handled elsewhere
                     // After animate out, load the song
                     Handler h = new Handler();
                     h.postDelayed(() -> {
@@ -7009,7 +6939,6 @@ public class StageMode extends AppCompatActivity implements
                             }
                         }
 
-                        // IV - added a few more tasks to cancel
                         doCancelAsyncTask(resizestage_async);
                         doCancelAsyncTask(resizeperformance_async);
                         loadsong_async = new LoadSongAsync();
@@ -7204,7 +7133,6 @@ public class StageMode extends AppCompatActivity implements
                     if (!StaticVariables.myToastMessage.equals("")) {
                         ShowToast.showToast(StageMode.this);
                     }
-                    // IV - Handling pads moved to later
                     // Now, reset the orientation.
                     FullscreenActivity.orientationchanged = false;
 
@@ -7281,8 +7209,6 @@ public class StageMode extends AppCompatActivity implements
                         resetSendSongAfterDelayHandler.removeCallbacks(resetSendSongAfterDelayRunnable);
                         resetSendSongAfterDelayHandler.postDelayed(resetSendSongAfterDelayRunnable, 3500);
                     }
-
-                    // IV - Sticky display moved until after song display so that timings are correct
 
                     // If we have created, or converted a song format (e.g from OnSong or ChordPro), rebuild the database
                     // or pull up the edit screen
@@ -7392,8 +7318,6 @@ public class StageMode extends AppCompatActivity implements
         }
 
         if (shortKeyPress) {
-            FullscreenActivity.pressing_button = false;
-
             // Reset immersive mode
             if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
                 restoreTranslucentBarsDelayed();
@@ -7565,7 +7489,6 @@ public class StageMode extends AppCompatActivity implements
     // IV - 'Are you sure?' is displayed and the user must stop, wait and can repeat the action to continue after 2 seconds (an intentional action)
     // IV - After continue there is a 10s grace period where further pedal use is not tested.  Any pedal 'page' or 'scroll' use extends a further 10s grace period.
     private void pedalPreviousAndNextConfirm() {
-        // IV - isSong and Stage mode limitations moved elsewhere
          // If we confirm a move then we will ignore the move
         if (StaticVariables.pedalPreviousAndNextNeedsConfirm) {
             StaticVariables.myToastMessage = getString(R.string.pedal) + " - " + getString(R.string.areyousure);
@@ -7588,7 +7511,6 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void pedalPrevious() {
-        // IV - Logic changed to - assume will do move unless cancelled
         // This can be cancelled
         boolean goToItemRequired = true;
 
@@ -7618,7 +7540,6 @@ public class StageMode extends AppCompatActivity implements
         goToItemRequired = goToItemRequired && !StaticVariables.pedalPreviousAndNextIgnore && !drawerOrFragmentActive;
 
         if (goToItemRequired) {
-            // IV - isSong limitation removed.  Preference acts to block feature here
             // Consider a song change warning
             if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
                 // IV - We warn only if we can sucessfully move
@@ -7637,7 +7558,6 @@ public class StageMode extends AppCompatActivity implements
                         }
                     }
                 } else {
-                    // IV - Now in use for non set songs
                     // If in a folder and able to move
                     boolean isfolder = false;
                     if (FullscreenActivity.previousSongIndex >= 0) {
@@ -7702,7 +7622,6 @@ public class StageMode extends AppCompatActivity implements
         goToItemRequired = goToItemRequired && !StaticVariables.pedalPreviousAndNextIgnore && !drawerOrFragmentActive;
 
         if (goToItemRequired) {
-            // IV - isSong limitation removed.  Preference acts to block feature here
             // Consider a song change warning
             if (preferences.getMyPreferenceBoolean(StageMode.this, "pedalShowWarningBeforeMove", false)) {
                 // IV - We warn only if we can sucessfully move
@@ -7721,7 +7640,6 @@ public class StageMode extends AppCompatActivity implements
                         }
                     }
                 } else {
-                    // IV - Now in use for non set songs
                     // If in a folder and able to move
                     boolean isfolder = false;
                     try {
@@ -7975,7 +7893,6 @@ public class StageMode extends AppCompatActivity implements
                     }
                     FullscreenActivity.wasscrolling = false;
                     FullscreenActivity.scrollbutton = false;
-                    // IV - Manual drag handled elsewhere
                 }
             }
         } catch (Exception e) {
@@ -8091,9 +8008,6 @@ public class StageMode extends AppCompatActivity implements
 
         setActions.prepareSetList(StageMode.this,preferences);
         prepareOptionMenu();
-
-        // IV - Option menu is not shown (original code was not showing set)
-        // IV - The function now behaves like other 'add to set' methods - no display of set
     }
 
     // Redraw the lyrics page
@@ -8137,59 +8051,65 @@ public class StageMode extends AppCompatActivity implements
             //11 = start/stop autoscroll + pad + metronome
             // 0/else = off (highest menu item)
 
-            // First test conditions
-            if (oktoregistergesture()) {
-
-                // Now find out which gesture we've gone for
-                switch (preferences.getMyPreferenceInt(StageMode.this,"gestureScreenDoubleTap",2)) {
-                    case 1:
-                        gesture1();  // Open/close the drawers
-                        break;
-                    case 2:
-                        if (FullscreenActivity.isSong) {
-                            gesture2();
-                        } else {
-                            FullscreenActivity.whattodo = "extractPDF";
-                            openFragment();
-                        }
-                        break;
-                    case 3:
-                        gesture3();  // Add the song to the set
-                        break;
-                    case 4:
-                        gesture4();  // Refresh the current song
-                        break;
-                    case 5:
-                        gesture5();  // Stop/start autoscroll
-                        break;
-                    case 6:
-                        gesture6();  // Stop/start pad
-                        break;
-                    case 7:
-                        gesture7();  // Stop/start metronome
-                        break;
-                    case 8:
-                        gesture5();  // Stop/start autoscroll
-                        gesture6();  // Stop/start pad
-                        break;
-                    case 9:
-                        gesture5();  // Stop/start autoscroll
-                        gesture7();  // Stop/start metronome
-                        break;
-                    case 10:
-                        gesture6();  // Stop/start pad
-                        gesture7();  // Stop/start metronome
-                        break;
-                    case 11:
-                        gesture5();  // Stop/start autoscroll
-                        gesture6();  // Stop/start pad
-                        gesture7();  // Stop/start metronome
-                        break;
-                    default:
-                        // Do nothing
-                        break;
+            // IV - Proceed if drawers closed...
+            if (!mDrawerLayout.isDrawerOpen(songmenu) && !mDrawerLayout.isDrawerVisible(songmenu) &&
+                    !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerVisible(optionmenu)) {
+                // IV - ... and in centre of screen
+                int width = horizontalscrollview.getRight();
+                int height = horizontalscrollview.getBottom();
+                int x = (int) e.getX();
+                int y = (int) e.getY();
+                if ((x > (width * 0.37)) && (x < (width * 0.63)) && (y > height * 0.37) && (y < (height * 0.63))) {
+                    // Now find out which gesture we've gone for
+                    switch (preferences.getMyPreferenceInt(StageMode.this, "gestureScreenDoubleTap", 2)) {
+                        case 1:
+                            gesture1();  // Open/close the drawers
+                            break;
+                        case 2:
+                            if (FullscreenActivity.isSong) {
+                                gesture2();
+                            } else {
+                                FullscreenActivity.whattodo = "extractPDF";
+                                openFragment();
+                            }
+                            break;
+                        case 3:
+                            gesture3();  // Add the song to the set
+                            break;
+                        case 4:
+                            gesture4();  // Refresh the current song
+                            break;
+                        case 5:
+                            gesture5();  // Stop/start autoscroll
+                            break;
+                        case 6:
+                            gesture6();  // Stop/start pad
+                            break;
+                        case 7:
+                            gesture7();  // Stop/start metronome
+                            break;
+                        case 8:
+                            gesture5();  // Stop/start autoscroll
+                            gesture6();  // Stop/start pad
+                            break;
+                        case 9:
+                            gesture5();  // Stop/start autoscroll
+                            gesture7();  // Stop/start metronome
+                            break;
+                        case 10:
+                            gesture6();  // Stop/start pad
+                            gesture7();  // Stop/start metronome
+                            break;
+                        case 11:
+                            gesture5();  // Stop/start autoscroll
+                            gesture6();  // Stop/start pad
+                            gesture7();  // Stop/start metronome
+                            break;
+                        default:
+                            // Do nothing
+                            break;
+                    }
                 }
-
             }
             return true;
         }
@@ -8206,60 +8126,67 @@ public class StageMode extends AppCompatActivity implements
             // 7 = start/stop metronome
             // 0/else = off (highest menu item)
 
-            // First test conditions
-            if (oktoregistergesture()) {
-                // Now find out which gesture we've gone for
-                switch (preferences.getMyPreferenceInt(StageMode.this,"gestureScreenLongPress",0)) {
-                    case 1:
-                        gesture1();  // Open/close the drawers
-                        break;
-                    case 2:
-                        gesture2();  // Edit the song
-                        break;
-                    case 3:
-                        gesture3();  // Add the song to the set
-                        break;
-                    case 4:
-                        gesture4();  // Refresh the current song
-                        break;
-                    case 5:
-                        gesture5();  // Stop/start autoscroll
-                        break;
-                    case 6:
-                        gesture6();  // Stop/start pad
-                        break;
-                    case 7:
-                        gesture7();  // Stop/start metronome
-                        break;
-                    case 8:
-                        gesture5();  // Stop/start autoscroll
-                        gesture6();  // Stop/start pad
-                        break;
-                    case 9:
-                        gesture5();  // Stop/start autoscroll
-                        gesture7();  // Stop/start metronome
-                        break;
-                    case 10:
-                        gesture6();  // Stop/start pad
-                        gesture7();  // Stop/start metronome
-                        break;
-                    case 11:
-                        gesture5();  // Stop/start autoscroll
-                        gesture6();  // Stop/start pad
-                        gesture7();  // Stop/start metronome
-                        break;
-                    default:
-                        // Do nothing
-                        break;
+            // IV - Proceed if drawers closed...
+            if (!mDrawerLayout.isDrawerOpen(songmenu) && !mDrawerLayout.isDrawerVisible(songmenu) &&
+                    !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerVisible(optionmenu)) {
+                // IV - ... and in centre of screen
+                int width = horizontalscrollview.getRight();
+                int height = horizontalscrollview.getBottom();
+                int x = (int) e.getX();
+                int y = (int) e.getY();
+                if ((x > (width * 0.37)) && (x < (width * 0.63)) && (y > height * 0.37) && (y < (height * 0.63))) {
+                    // Now find out which gesture we've gone for
+                    switch (preferences.getMyPreferenceInt(StageMode.this, "gestureScreenLongPress", 0)) {
+                        case 1:
+                            gesture1();  // Open/close the drawers
+                            break;
+                        case 2:
+                            gesture2();  // Edit the song
+                            break;
+                        case 3:
+                            gesture3();  // Add the song to the set
+                            break;
+                        case 4:
+                            gesture4();  // Refresh the current song
+                            break;
+                        case 5:
+                            gesture5();  // Stop/start autoscroll
+                            break;
+                        case 6:
+                            gesture6();  // Stop/start pad
+                            break;
+                        case 7:
+                            gesture7();  // Stop/start metronome
+                            break;
+                        case 8:
+                            gesture5();  // Stop/start autoscroll
+                            gesture6();  // Stop/start pad
+                            break;
+                        case 9:
+                            gesture5();  // Stop/start autoscroll
+                            gesture7();  // Stop/start metronome
+                            break;
+                        case 10:
+                            gesture6();  // Stop/start pad
+                            gesture7();  // Stop/start metronome
+                            break;
+                        case 11:
+                            gesture5();  // Stop/start autoscroll
+                            gesture6();  // Stop/start pad
+                            gesture7();  // Stop/start metronome
+                            break;
+                        default:
+                            // Do nothing
+                            break;
+                    }
+                    super.onLongPress(e);
                 }
             }
-            super.onLongPress(e);
         }
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
                                 float distanceY) {
-            // IV wasscrolling and isManualDragging are dealt with elsewhere
             // Temporarily pause any running autoscroll
             pauseAutoscroll();
             return true;
@@ -8411,7 +8338,6 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    // IV - playPad no longer uses a pad number parameter as it works out which player to use
     private void playPad() {
         doCancelAsyncTask(play_pads);
         play_pads = new PlayPads();
@@ -8429,7 +8355,6 @@ public class StageMode extends AppCompatActivity implements
         boolean validlinkaudio;
         boolean error;
 
-        // IV - No pad parameter as the logic of which pad to start is now internal to the function
         PlayPads() {}
 
         @Override
@@ -8473,11 +8398,15 @@ public class StageMode extends AppCompatActivity implements
 
                             } else {
                                 // Prepare the default auto pad
-                                // IV - These can be slow to prepare, display just pad icon to indicate pending
-                                padcurrentTime_TextView.setText("");
-                                padTimeSeparator_TextView.setText("");
-                                padtotalTime_TextView.setText("");
-                                backingtrackProgress.setVisibility(View.VISIBLE);
+                                // IV - These can be slow to prepare. we may need to display just the pad icon to indicate a pending start
+                                if (backingtrackProgress.getVisibility() == View.VISIBLE) {
+                                    padcurrentTime_TextView.setText("");
+                                    padTimeSeparator_TextView.setText("");
+                                    padtotalTime_TextView.setText("");
+                                    // Note that if start completes within 1s then the settings above will have been overwritten
+                                    Handler h = new Handler();
+                                    h.postDelayed(() -> backingtrackProgress.setVisibility(View.VISIBLE),1000);
+                                }
                                 path = getResources().getIdentifier(StaticVariables.pad_filename, "raw", getPackageName());
                                 try {
                                     afd = getResources().openRawResourceFd(path);
@@ -8560,7 +8489,6 @@ public class StageMode extends AppCompatActivity implements
                             error = true;
                         }
                     }
-                    // IV - As we start from fading all pads we do not need fade code here
                     if (error) {
                         ShowToast.showToast(StageMode.this);
                     }

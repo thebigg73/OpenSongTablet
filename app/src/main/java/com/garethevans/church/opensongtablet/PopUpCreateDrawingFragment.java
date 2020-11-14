@@ -325,6 +325,9 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
                 case StaticVariables.green:
                     color = "green";
                     break;
+                case StaticVariables.yellow:
+                    color = "yellow";
+                    break;
             }
         } else if (tool.equals("highlighter")) {
             switch (highlightercolor) {
@@ -353,6 +356,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         }
 
         int i = R.drawable.ic_check_white_36dp;
+        int j = R.drawable.ic_check_black_36dp;
         int o = android.R.color.transparent;
 
         switch (color) {
@@ -362,11 +366,11 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
                 break;
             case "white":
                 setColorAlpha(off_alpha, 1.0f, off_alpha, off_alpha, off_alpha, off_alpha);
-                setColorTick(o, i, o, o, o, o);
+                setColorTick(o, j, o, o, o, o);
                 break;
             case "yellow":
                 setColorAlpha(off_alpha, off_alpha, 1.0f, off_alpha, off_alpha, off_alpha);
-                setColorTick(o, o, i, o, o, o);
+                setColorTick(o, o, j, o, o, o);
                 break;
             case "red":
                 setColorAlpha(off_alpha, off_alpha, off_alpha, 1.0f, off_alpha, off_alpha);

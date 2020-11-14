@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="2dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -29,6 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            app:backgroundTint="@color/red"
             app:fabSize="mini"
             android:src="@drawable/ic_close_white_36dp"/>
 
@@ -51,97 +53,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/gesturesPedalButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_pedal_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/footpedal"
-                android:textColor="#fff"
-                android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/gesturesPageButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_bullseye_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/quicklaunch_title"
-                android:textColor="#fff"
-                android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/gesturesCustomButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_fingerprint_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/custom_gestures"
-                android:textColor="#fff"
-                android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/gesturesScrollButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_arrow_down_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/scrollbuttons"
-                android:textColor="#fff"
-                android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/gesturesMenuOptions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_menuswipe_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/menu_settings"
-                android:textColor="#fff"
-                android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/gesturesSongSwipeButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_swipe_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/swipe"
-                android:textColor="#fff"
-                android:textSize="12sp" />
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/displayMenuToggleSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_menu_white_36dp"
-                android:text="@string/hide_actionbar"
-                android:theme="@style/SwitchStyle"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                app:showText="false" />
+
+
 
         </LinearLayout>
     </ScrollView>

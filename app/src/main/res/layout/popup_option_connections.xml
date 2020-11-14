@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="2dp"
     android:orientation="vertical"
     android:weightSum="1">
 
@@ -30,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            app:backgroundTint="@color/red"
             app:fabSize="mini"
             android:src="@drawable/ic_close_white_36dp"/>
 
@@ -56,10 +58,10 @@
             android:id="@+id/deviceName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_margin="2dp"
             android:background="@drawable/menu_button"
-            android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_account_white_36dp"
+            android:drawablePadding="4dp"
             android:gravity="center_vertical"
             android:text="@string/app_name"
             android:textColor="#fff"
@@ -69,37 +71,37 @@
             android:id="@+id/actAsHost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_margin="2dp"
             android:background="@drawable/menu_button"
-            android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_access_point_white_36dp"
+            android:drawablePadding="4dp"
             android:gravity="center_vertical"
             android:text="@string/connections_actashost"
             android:textColor="#fff"
             android:textSize="12sp" />
 
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/enableNearby"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_access_point_network_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/connections_enable"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/enableNearby"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_access_point_network_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/connections_enable"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/receiveHostFiles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_margin="2dp"
             android:background="@drawable/menu_button"
-            android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_download_white_36dp"
+            android:drawablePadding="4dp"
             android:gravity="center_vertical"
             android:text="@string/connections_receive_host"
             android:textColor="#fff"
@@ -109,22 +111,23 @@
             android:id="@+id/keepHostFiles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_margin="2dp"
             android:background="@drawable/menu_button"
-            android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_content_save_white_36dp"
+            android:drawablePadding="4dp"
             android:gravity="center_vertical"
             android:text="@string/connections_keephostsongs"
             android:textColor="#fff"
             android:textSize="12sp" />
-            <TextView
-                android:id="@+id/options_connections_log"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/MyInfoText"
-                android:layout_margin="4dp"
-                android:padding="4dp"
-                android:text="@string/connections_log"/>
+
+        <TextView
+            android:id="@+id/options_connections_log"
+            style="@style/MyInfoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:padding="4dp"
+            android:text="@string/connections_log" />
 
         </LinearLayout>
     </ScrollView>

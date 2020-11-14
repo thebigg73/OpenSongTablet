@@ -29,6 +29,9 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
 
     public interface MyInterface {
         void adjustABInfo();
+        void hideActionBar();
+        void showActionBar();
+        void loadSong();
     }
 
     private MyInterface mListener;
@@ -100,6 +103,10 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         batteryTextSizeLabel = V.findViewById(R.id.batteryTextSizeLabel);
         batteryDialSizeLabel = V.findViewById(R.id.batteryDialSizeLabel);
         clockTextSizeLabel = V.findViewById(R.id.clockTextSizeLabel);
+        SwitchCompat displayMenuToggleSwitch = V.findViewById(R.id.displayMenuToggleSwitch);
+
+        // Set the switches up based on preferences
+        displayMenuToggleSwitch.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"hideActionBar",false));
 
         // Set initial values
         setTitleTextSize();
@@ -216,6 +223,17 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
             preferences.setMyPreferenceBoolean(getActivity(),"clock24hFormat",b);
             if (mListener!=null) {
                 mListener.adjustABInfo();
+            }
+        });
+        displayMenuToggleSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(getActivity(),"hideActionBar",b);
+            if (mListener!=null) {
+                if (b) {
+                    mListener.hideActionBar();
+                } else {
+                    mListener.showActionBar();
+                }
+                mListener.loadSong();
             }
         });
 

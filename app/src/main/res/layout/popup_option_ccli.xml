@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="2dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -29,6 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            app:backgroundTint="@color/red"
             app:fabSize="mini"
             android:src="@drawable/ic_close_white_36dp"/>
 
@@ -55,7 +57,7 @@
                 android:id="@+id/ccliChurchButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_account_white_36dp"
@@ -68,7 +70,7 @@
                 android:id="@+id/ccliLicenceButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_information_white_36dp"
@@ -81,7 +83,7 @@
                 android:id="@+id/ccliAutoButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_format_list_numbers_white_36dp"
@@ -95,7 +97,7 @@
                 android:id="@+id/ccliViewButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_file_xml_white_36dp"
@@ -105,28 +107,28 @@
                 android:textSize="12sp" />
 
             <Button
-                android:id="@+id/ccliExportButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_share_variant_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/export"
-                android:textColor="#fff"
-                android:textSize="12sp" />
-
-            <Button
                 android:id="@+id/ccliResetButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_delete_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/ccli_reset"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/ccliExportButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:background="@drawable/menu_button"
+                android:drawableStart="@drawable/ic_share_variant_white_36dp"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:text="@string/export"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 

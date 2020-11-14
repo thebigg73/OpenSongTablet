@@ -22,6 +22,24 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.Objects;
 
 public class PopUpSwipeSettingsFragment extends DialogFragment {
+    
+    public interface MyInterface {
+        void toggleDrawerSwipe();
+    }
+
+    private PopUpMenuSettingsFragment.MyInterface mListener;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        mListener = (PopUpMenuSettingsFragment.MyInterface) context;
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        mListener = null;
+        super.onDetach();
+    }
 
     private String speed;
     private String distance;
@@ -89,6 +107,7 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
         swipesimulateion_ImageView = V.findViewById(R.id.swipesimulateion_ImageView);
         swipesettings = V.findViewById(R.id.swipesettings);
         SwitchCompat gesturesSongSwipeButton = V.findViewById(R.id.gesturesSongSwipeButton);
+        SwitchCompat gesturesMenuSwipeButton = V.findViewById(R.id.gesturesMenuSwipeButton);
 
         // Get the maximum values allowed for the seekbars
         // maxwidth is 80% of the screen width
@@ -177,6 +196,16 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
                 swipeAnimate();
             }
         });
+
+        gesturesMenuSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"swipeForMenus",true));
+
+        gesturesMenuSwipeButton.setOnCheckedChangeListener((compoundButton, b) -> {
+            preferences.setMyPreferenceBoolean(getActivity(),"swipeForMenus",b);
+            if (mListener!=null) {
+                mListener.toggleDrawerSwipe();
+            }
+        });
+
         gesturesSongSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"swipeForSongs",true));
         hideorunhideSettings();
 

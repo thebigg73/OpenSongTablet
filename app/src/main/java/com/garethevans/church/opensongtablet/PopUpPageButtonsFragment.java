@@ -106,6 +106,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         SwitchCompat custom3Visible_Switch = V.findViewById(R.id.custom3Visible_Switch);
         SwitchCompat custom4Visible_Switch = V.findViewById(R.id.custom4Visible_Switch);
         Button showPageButtons = V.findViewById(R.id.showPageButtons);
+        Button customiseQuickLaunchButtons = V.findViewById(R.id.customiseQuickLaunchButtons);
         SwitchCompat scrollVisible_Switch = V.findViewById(R.id.scrollVisible_Switch);
         SwitchCompat setMoveVisible_Switch = V.findViewById(R.id.setMoveVisible_Switch);
 
@@ -202,6 +203,13 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         setMoveVisible_Switch.setOnCheckedChangeListener((compoundButton, b) -> saveValue("pageButtonShowSetMove",b));
         showPageButtons.setOnClickListener(view -> {
             FullscreenActivity.whattodo = "groupedpagebuttons";
+            dismiss();
+            if (mListener!=null) {
+                mListener.openFragment();
+            }
+        });
+        customiseQuickLaunchButtons.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "quicklaunch";
             dismiss();
             if (mListener!=null) {
                 mListener.openFragment();

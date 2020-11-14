@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="2dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -29,6 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            app:backgroundTint="@color/red"
             app:fabSize="mini"
             android:src="@drawable/ic_close_white_36dp"/>
 
@@ -51,124 +53,212 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/displayThemeButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_theme_light_dark_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/choose_theme"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/displayThemeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_theme_light_dark_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/choose_theme"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/displayAutoScaleButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_arrow_expand_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/autoscale_toggle"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/displayFontButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_format_text_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/choose_fonts"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/displayFontButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_format_text_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/choose_fonts"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <TextView
+            android:id="@+id/song_separator_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/song" />
 
-            <Button
-                android:id="@+id/displayButtonsButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_bullseye_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/pagebuttons"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/displayAutoScaleButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_arrow_expand_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/autoscale_toggle"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/displayPopUpsButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_settings_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/display_popups"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/displayInfoButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_information_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/extra"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/displayInfoButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_information_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/extra"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/gesturesScrollButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_arrow_down_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/scrollbuttons"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/displayActionBarButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_menu_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/actionbar"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/gesturesMenuOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_menuswipe_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/menu_settings"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/displayConnectedDisplayButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_monitor_multiple_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/connected_display"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/gesturesSongSwipeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_swipe_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/swipe"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/displayHDMIButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_monitor_multiple_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/hdmi"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <TextView
+            android:id="@+id/button_separator_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/custom" />
 
-        </LinearLayout>
+        <Button
+            android:id="@+id/displayButtonsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_bullseye_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/pagebuttons"
+            android:textColor="#fff"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/gesturesCustomButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_fingerprint_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/custom_gestures"
+            android:textColor="#fff"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/displayActionBarButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_menu_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/actionbar"
+            android:textColor="#fff"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/displayPopUpsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_settings_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/display_popups"
+            android:textColor="#fff"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/gesturesPedalButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_pedal_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/footpedal"
+            android:textColor="#fff"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/dsiplay_separator_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/connected_display" />
+
+        <Button
+            android:id="@+id/displayConnectedDisplayButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_monitor_multiple_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/connected_display"
+            android:textColor="#fff"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/displayHDMIButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_monitor_multiple_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/hdmi"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            android:layout_margin="2dp" />
+
+    </LinearLayout>
     </ScrollView>
 
 </LinearLayout>

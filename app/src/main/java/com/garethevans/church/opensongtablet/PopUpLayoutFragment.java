@@ -627,6 +627,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     private void sendUpdateToScreen(String what) {
         if (!firsttime) {
+            StaticVariables.infoBarChangeRequired = true;
             if (mListener != null) {
                 mListener.refreshSecondaryDisplay(what);
             }

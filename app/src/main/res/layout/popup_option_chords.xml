@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="2dp"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
@@ -32,6 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            app:backgroundTint="@color/red"
             app:fabSize="mini"
             android:src="@drawable/ic_close_white_36dp"/>
 
@@ -54,11 +56,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/song_separator_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/song" />
+
         <Button
             android:id="@+id/chordsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_margin="2dp"
             android:background="@drawable/menu_button"
             android:drawableStart="@drawable/ic_guitar_electric_white_36dp"
             android:drawableLeft="@drawable/ic_guitar_electric_white_36dp"
@@ -73,7 +83,7 @@
                 android:id="@+id/chordsTransposeButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
                 android:drawableLeft="@drawable/ic_transpose_white_36dp"
                 android:drawablePadding="4dp"
@@ -88,7 +98,7 @@
                 android:id="@+id/chordsSharpButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
                 android:drawableLeft="@drawable/ic_sharp_white_36dp"
                 android:drawablePadding="4dp"
@@ -103,7 +113,7 @@
                 android:id="@+id/chordsFlatButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
                 android:drawableLeft="@drawable/ic_flat_white_36dp"
                 android:drawablePadding="4dp"
@@ -114,11 +124,66 @@
                 android:textSize="12sp"
                 tools:ignore="RtlHardcoded" />
 
-            <androidx.appcompat.widget.SwitchCompat
+        <Button
+            android:id="@+id/chordsConvertButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_chordconvert_white_36dp"
+            android:drawableLeft="@drawable/ic_chordconvert_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/chord_convert"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/option_separator_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/options" />
+
+        <Button
+            android:id="@+id/chordsFormatButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_chordformat_white_36dp"
+            android:drawableLeft="@drawable/ic_chordformat_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/choose_chordformat"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/chordsLyricsToggleSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:checked="true"
+            android:drawableStart="@drawable/ic_comment_text_white_36dp"
+            android:drawableLeft="@drawable/ic_comment_text_white_36dp"
+            android:drawablePadding="4dp"
+            android:text="@string/showlyrics"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            android:theme="@style/SwitchStyle"
+            app:showText="false"
+            tools:ignore="RtlHardcoded" />
+
+        <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/chordsToggleSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
                 android:checked="true"
                 android:drawableLeft="@drawable/ic_guitar_electric_white_36dp"
@@ -131,28 +196,11 @@
                 app:showText="false"
                 tools:ignore="RtlHardcoded" />
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/chordsLyricsToggleSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:checked="true"
-                android:drawableLeft="@drawable/ic_comment_text_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_comment_text_white_36dp"
-                android:text="@string/showlyrics"
-                android:textColor="#fff"
-                android:theme="@style/SwitchStyle"
-                android:textSize="12sp"
-                app:showText="false"
-                tools:ignore="RtlHardcoded" />
-
-            <androidx.appcompat.widget.SwitchCompat
+        <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/chordsCapoToggleSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
                 android:checked="true"
                 android:drawableLeft="@drawable/ic_capo_white_36dp"
@@ -169,7 +217,7 @@
                 android:id="@+id/chordsNativeAndCapoToggleSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/menu_button"
                 android:drawableLeft="@drawable/ic_capo_white_36dp"
                 android:drawablePadding="4dp"
@@ -185,7 +233,7 @@
             android:id="@+id/capoAsNumeralsToggleSwitch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_margin="2dp"
             android:background="@drawable/menu_button"
             android:drawableLeft="@drawable/ic_capo_white_36dp"
             android:drawablePadding="4dp"
@@ -201,56 +249,26 @@
             android:id="@+id/switchCapoTextSize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_margin="2dp"
             android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_format_text_white_36dp"
             android:drawableLeft="@drawable/ic_format_text_white_36dp"
             android:drawablePadding="4dp"
-            android:drawableStart="@drawable/ic_format_text_white_36dp"
             android:gravity="center_vertical"
             android:text="@string/size"
             android:textColor="#fff"
-            android:textSize="12sp"
-            app:showText="true"
-            app:textAllCaps="false"
             android:textOff="@string/size_mini"
             android:textOn="@string/size_normal"
-            app:splitTrack="false"
+            android:textSize="12sp"
             android:thumb="@drawable/switch_button"
+            app:showText="true"
+            app:splitTrack="false"
+            app:textAllCaps="false"
             app:thumbTextPadding="4dp"
             app:thumbTint="#444488"
             tools:ignore="RtlHardcoded" />
 
-        <Button
-                android:id="@+id/chordsFormatButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_chordformat_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_chordformat_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/choose_chordformat"
-                android:textColor="#fff"
-            android:textSize="12sp"
-            tools:ignore="RtlHardcoded" />
-
-            <Button
-                android:id="@+id/chordsConvertButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_chordconvert_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_chordconvert_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/chord_convert"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                tools:ignore="RtlHardcoded" />
-
-        </LinearLayout>
+    </LinearLayout>
     </ScrollView>
 
 </LinearLayout>

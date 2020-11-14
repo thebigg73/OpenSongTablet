@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
@@ -26,7 +27,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/sing_separator_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="@string/song" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -35,6 +45,12 @@
                 android:baselineAligned="false"
                 android:orientation="horizontal"
                 android:weightSum="1.0">
+
+                <!-- This is added to stop the EditText below grabbing focus and showing the keyboard-->
+                <LinearLayout android:focusable="true"
+                    android:focusableInTouchMode="true" android:layout_width="0px"
+                    android:layout_height="0px"
+                    tools:ignore="UselessLeaf" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -113,6 +129,23 @@
                 android:background="@drawable/yellow_button"
                 android:text="@string/tap_tempo"
                 android:textColor="#fff" />
+
+            <Button
+                android:id="@+id/popupmetronome_startstopbutton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/blue_button"
+                android:text="@string/start"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/option_separator_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/options" />
 
             <TextView
                 style="@style/MyHeadingText"
@@ -210,14 +243,6 @@
                 android:text="@string/visualmetronome"
                 android:theme="@style/SwitchStyle" />
 
-            <Button
-                android:id="@+id/popupmetronome_startstopbutton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/blue_button"
-                android:text="@string/start"
-                android:textColor="#fff" />
         </LinearLayout>
     </ScrollView>
 

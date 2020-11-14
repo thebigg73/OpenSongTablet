@@ -47,6 +47,22 @@
                 app:thumbTextPadding="4dp"
                 app:thumbTint="#444488" />
 
+            <Button
+                android:id="@+id/showPageButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/green_button"
+                android:text="@string/pagebuttons" />
+
+            <Button
+                android:id="@+id/customiseQuickLaunchButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/green_button"
+                android:text="@string/quicklaunch_title" />
+
             <TextView
                 style="@style/MyHeadingText"
                 android:layout_width="wrap_content"
@@ -135,20 +151,7 @@
                     android:textColor="#ff0"
                     android:theme="@style/SwitchStyle" />
 
-                <Button
-                    android:id="@+id/showPageButtons"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:background="@drawable/green_button"
-                    android:drawablePadding="4dp"
-                    android:drawableStart="@drawable/ic_bullseye_white_36dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/pagebuttons"
-                    style="@style/MyHeadingText" />
-
-
-            </LinearLayout>
+              </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

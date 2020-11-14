@@ -159,7 +159,7 @@
     <string name="custom1_theme">Custom 1</string>
     <string name="custom2_theme">Custom 2</string>
     <string name="custom_background">Custom tag background</string>
-    <string name="custom_gestures">Assign custom gestures</string>
+    <string name="custom_gestures">Assign page gestures</string>
     <string name="custom_slide">Custom slide (with content)</string>
     <string name="customchords">Custom chords</string>
     <string name="customchords_code">Custom code</string>
@@ -169,7 +169,7 @@
     <string name="customchords_noinstrument">Instrument has not been selected</string>
     <string name="customchords_save">Save new custom chord to song</string>
     <string name="customchords_saved">Currently saved custom chords</string>
-    <string name="customgestures">Assign custom gestures</string>
+    <string name="customgestures">Assign page gestures</string>
     <string name="customise_set_item">Make a set item variation</string>
     <string name="dark_theme">Dark theme</string>
     <string name="date">Date</string>
@@ -414,7 +414,7 @@
     <string name="ok">OK</string>
     <string name="oldchordformat">Detected current chord format</string>
     <string name="on">ON</string>
-    <string name="options">OPTIONS</string>
+    <string name="options">Options</string>
     <string name="options_clearthisset">CLEAR THE CURRENT SET AND CREATE A NEW ONE</string>
     <string name="other">Other</string>
     <string name="override_fullautoscale">Override full autoscale to width only</string>
@@ -501,7 +501,7 @@
     <string name="sendtoprojector">Project</string>
     <string name="separator" translatable="false"> / </string>
     <string name="service_id" translatable="false">com.garethevans.church.opensongtablet</string>
-    <string name="set">SET</string>
+    <string name="set">Set</string>
     <string name="set_help">Drag songs around to change the order of your set</string>
     <string name="set_manage_click">Click on an item in the set to view it</string>
     <string name="set_manage_swipe">Swipe to remove an item from your set list</string>
@@ -522,7 +522,7 @@
     <string name="size_normal">Normal</string>
     <string name="slide">Slide</string>
     <string name="slide_add_page">Insert new page to custom slide</string>
-    <string name="song">SONG</string>
+    <string name="song">Song</string>
     <string name="song_functionnotavailable">This function is not available for songs</string>
     <string name="song_new_name">Enter a new file name for this song (this is how it will appear in your song menu)</string>
     <string name="song_sections">Song sections</string>
@@ -610,8 +610,9 @@
     <string name="user_guide_lyrics" translatable="false">"[Intro]
  Welcome to OpenSongApp!
  This is a test page to show you some of the features of the app.
- The app contains 2 modes -
+ The app contains 3 modes -
 • Performance Mode - use your Android device as a song book on stage
+• Stage Mode - control stage display monitors or hook up to a projector
 • Presentation Mode - hook up to a projector and displaying lyrics\n
 [Menus]
  The left hand slide out menu - lists all folders and songs.
@@ -630,11 +631,11 @@
  The app only comes with this \'song\' by default due to copyright.
  You can also import songs from other services:
 • Desktop OpenSong - I highly recommend syncing using Dropbox
-• OnSong files
 • ChordPro files
 • Ultimate Guitar website (using the import feature)
 • Chordie website (using the import feature)
 • SongSelect .usr files
+• some iOS app song files
  Songs are stored in OpenSong format (XML files without the .xml etension)\n
  Songs are stored on your device in the /OpenSong/Songs folder.
  This location is found at the storage location you chose
@@ -658,7 +659,7 @@
 [Sets]
  Add songs to sets by long pressing on them in the song menu\n
 [Customising]
- You can customise colours, themes,fonts, gestures, pedals, etc.
+ You can customise colours, themes, fonts, gestures, pedal actions, etc.
  These customisations can be saved as user profiles.
  Check out the categories in the right hand options menu.\n\n
  HERE IS AN EXAMPLE OF HOW A SONG WOULD LOOK\n\n
@@ -703,7 +704,7 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="wait">Wait....</string>
     <string name="warning">This option should only be used for presentation mode.  Be aware that this feature uses lots of memory and can cause crashes.  You have been warned!</string>
     <string name="webLink" translatable="false">http://www.opensongapp.com</string>
-    <string name="websearch">Search internet for this song</string>
+    <string name="websearch">Search Internet for current song</string>
     <string name="width">Width</string>
     <string name="worshipready" translatable="false">WorshipReady.com</string>
     <string name="worshiptogether" translatable="false">WorshipTogether</string>

@@ -78,19 +78,6 @@
                 android:textSize="12sp" />
 
             <Button
-                android:id="@+id/shareSong_Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_share_variant_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/export"
-                android:textColor="#fff"
-                android:textSize="12sp" />
-
-            <Button
                 android:id="@+id/deleteSong_Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -100,6 +87,19 @@
                 android:drawableStart="@drawable/ic_delete_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/delete"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/shareSong_Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableStart="@drawable/ic_share_variant_white_36dp"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:text="@string/export"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="2dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
@@ -30,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            app:backgroundTint="@color/red"
             app:fabSize="mini"
             android:src="@drawable/ic_close_white_36dp"/>
 
@@ -52,97 +54,97 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/otherHelpButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_help_outline_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/help"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/otherHelpButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_help_outline_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/help"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/otherTweetButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_twitter_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/twitteruser"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                tools:ignore="HardcodedText" />
+        <Button
+            android:id="@+id/otherTweetButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_twitter_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/twitteruser"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            tools:ignore="HardcodedText" />
 
-            <Button
-                android:id="@+id/otherEmailButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_forum_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/forum"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/otherEmailButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_forum_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/forum"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/otherLanguageButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_g_translate_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/language"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/otherLanguageButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_g_translate_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/language"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/otherStartButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_exit_to_app_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/start_screen"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/otherStartButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_exit_to_app_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/start_screen"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/otherRateButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_thumbs_up_down_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/rate"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/otherRateButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_thumbs_up_down_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/rate"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/otherPayPalButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_papypal_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/paypal"
-                android:textColor="#fff"
-                android:textSize="12sp" />
+        <Button
+            android:id="@+id/otherPayPalButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_papypal_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/paypal"
+            android:textColor="#fff"
+            android:textSize="12sp" />
 
         </LinearLayout>
     </ScrollView>

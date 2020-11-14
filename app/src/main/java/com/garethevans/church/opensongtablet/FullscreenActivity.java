@@ -49,8 +49,6 @@ public class FullscreenActivity extends AppCompatActivity {
 
     public static String whattodo;
 
-    public static boolean pressing_button = false;
-
     public static String mCurrentPhotoPath;
 
     public static int pdfPageCurrent = 0, pdfPageCount = 0;
