@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -19,19 +20,17 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpSwipeSettingsFragment extends DialogFragment {
     
     public interface MyInterface {
         void toggleDrawerSwipe();
     }
 
-    private PopUpMenuSettingsFragment.MyInterface mListener;
+    private MyInterface mListener;
 
     @Override
     public void onAttach(@NonNull Context context) {
-        mListener = (PopUpMenuSettingsFragment.MyInterface) context;
+        mListener = (MyInterface) context;
         super.onAttach(context);
     }
 
@@ -115,7 +114,7 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
         // Speed is 2000 pixels per second
 
         DisplayMetrics metrics = new DisplayMetrics();
-        Objects.requireNonNull(getActivity()).getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
         int maxheight = 400 - 100;
         int maxwidth = ((int) (0.8f * metrics.widthPixels)) - 100;
         int maxspeed = 2000;

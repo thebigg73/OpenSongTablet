@@ -116,7 +116,7 @@ public class MakePDF {
     }
 
     private void writeTheHeader(Context c, SQLite thisSong, Canvas canvas, int ypos, float scaling) {
-        int height = 0;
+        int height;
         int width = 0;
         Rect bounds = new Rect();
         paintSize = (int) (20 * scaling);
@@ -202,7 +202,7 @@ public class MakePDF {
 
         Rect bounds = new Rect();
         paint.setTextSize(10 * scaling);
-        paint.setTypeface(Typeface.DEFAULT_BOLD);
+        paint.setTypeface(Typeface.DEFAULT);
         paint.setColor(0xFFAAAAAA);
         String string = "Prepared by OpenSongApp (https://www.opensongapp.com)";
         paint.getTextBounds(string,0,string.length(),bounds);
@@ -267,13 +267,13 @@ public class MakePDF {
     private float getScaling(float width, float height) {
         float scaleVal;
         int availWidth = (docWidth-(3*margin));
-        float xscale = (float)availWidth/(float)width;
+        float xscale = (float)availWidth/ width;
         if (height == 0) {
             // For header and footer, consider width. With a max scale of 1.0f, so never larger.
             scaleVal = Math.min(xscale, 1.0f);
         } else {
             int availHeight = (docHeight-(2*margin)-headerHeight-footerHeight);
-            float yscale = (float) availHeight / (float) height;
+            float yscale = (float) availHeight / height;
             // For lyric, consider width and height. With a max scale of 1.7f otherwise monospace is bigger than the title!
             scaleVal = Math.min(Math.min(xscale,yscale),1.7f);
         }
