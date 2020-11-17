@@ -309,7 +309,7 @@
     <string name="ok">"Bene"</string>
     <string name="oldchordformat">"Formato accordo corrente rilevato"</string>
     <string name="on">"ACCESO"</string>
-    <string name="options">"OPZIONI"</string>
+    <string name="options">"Opzioni"</string>
     <string name="options_clearthisset">"CHIARO QUESTO INSIEME"</string>
     <string name="other">"Altro"</string>
     <string name="override_fullautoscale">"Override scala automatica alla larghezza solo"</string>
@@ -411,7 +411,7 @@
     <string name="size_normal">"Normale"</string>
     <string name="slide">"Pagina"</string>
     <string name="slide_add_page">"Inserisci nuova pagina di presentazione personalizzata"</string>
-    <string name="song">"CANZONE"</string>
+    <string name="song">"Canzone"</string>
     <string name="song_functionnotavailable">"Questa funzione non è disponibile per le canzoni"</string>
     <string name="song_new_name">"Immettere un nuovo nome di file per questa canzone ( questo è come apparirà nel vostro menu canzone )"</string>
     <string name="song_sections">Sezioni canzone</string>

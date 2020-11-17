@@ -309,7 +309,7 @@
     <string name="ok">"OK"</string>
     <string name="oldchordformat">"Detected current chord format"</string>
     <string name="on">"ON"</string>
-    <string name="options">"ΕΠΙΛΟΓΕΣ"</string>
+    <string name="options">"Επιλογές"</string>
     <string name="options_clearthisset">"Διαγραφή της σειράς και δημιουργία νέας"</string>
     <string name="other">"Άλλα"</string>
     <string name="override_fullautoscale">"Override full autoscale to width only"</string>
@@ -411,7 +411,7 @@
     <string name="size_normal">"Κανονικός"</string>
     <string name="slide">"Διαφάνεια"</string>
     <string name="slide_add_page">"Insert new page to custom slide"</string>
-    <string name="song">"ΤΡΑΓΟΥΔΙ"</string>
+    <string name="song">"Τραγούδι"</string>
     <string name="song_functionnotavailable">"Αυτή η λειτουργία δεν είναι διαθέσιμη στα τραγούδια"</string>
     <string name="song_new_name">"Enter a new file name for this song (this is how it will appear in your song menu)"</string>
     <string name="song_sections">"Song sections"</string>

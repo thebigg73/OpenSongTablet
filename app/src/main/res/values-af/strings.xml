@@ -309,7 +309,7 @@
     <string name="ok">"Ok"</string>
     <string name="oldchordformat">"Bespeur huidige koord formaat"</string>
     <string name="on">"OP"</string>
-    <string name="options">"OPSIES"</string>
+    <string name="options">"Opsies"</string>
     <string name="options_clearthisset">"Duidelik dat dit SET"</string>
     <string name="other">"ander"</string>
     <string name="override_fullautoscale">"Ignoreer volle autoscale slegs breedte"</string>
@@ -411,7 +411,7 @@
     <string name="size_normal">"Normaal"</string>
     <string name="slide">"Page"</string>
     <string name="slide_add_page">"Voeg nuwe bladsy om persoonlike slide"</string>
-    <string name="song">"LIED"</string>
+    <string name="song">"Lied"</string>
     <string name="song_functionnotavailable">"Hierdie funksie is nie beskikbaar vir liedjies"</string>
     <string name="song_new_name">"Voer 'n nuwe lêer naam vir hierdie liedjie (dit is hoe dit in jou liedjie spyskaart sal verskyn)"</string>
     <string name="song_sections">Song artikels</string>

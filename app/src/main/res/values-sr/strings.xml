@@ -128,7 +128,7 @@
     <string name="stickynotes_edit">"Izmeniti lepljive beleške pesme"</string>
     <string name="folder_new">"Napraviti novu fasciklu pesama"</string>
     <string name="folder_rename">"Promeniti ime fascikle pesama"</string>
-    <string name="options">"OPCIJE"</string>
+    <string name="options">"Opcije"</string>
     <string name="choose_theme">"Promeniti temu"</string>
     <string name="autoscale_toggle">"Uključiti opcije automatskog skaliranja"</string>
     <string name="choose_fontsize">"Odabrati veličinu fonta"</string>

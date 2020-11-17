@@ -309,7 +309,7 @@
     <string name="ok">"Valider"</string>
     <string name="oldchordformat">"Format d\'accords actuel détecté"</string>
     <string name="on">"OUI"</string>
-    <string name="options">"OPTIONS"</string>
+    <string name="options">"Options"</string>
     <string name="options_clearthisset">"VIDER CETTE SET"</string>
     <string name="other">"autre"</string>
     <string name="override_fullautoscale">"Remplacer l\'échelle automatique complet largeur seulement"</string>
@@ -411,7 +411,7 @@
     <string name="size_normal">"Normal"</string>
     <string name="slide">"Page"</string>
     <string name="slide_add_page">"Insérer un nouvelle page de diaporamas personnalisés"</string>
-    <string name="song">CHANSON</string>
+    <string name="song">Chanson</string>
     <string name="song_functionnotavailable">"Cette fonction n\'est pas disponible pour les chansons"</string>
     <string name="song_new_name">"Entrez un nouveau nom de fichier pour cette chanson (c\'est ainsi qu\'il apparaîtra dans votre menu de la chanson )"</string>
     <string name="song_sections">Sections de chansons</string>
@@ -438,9 +438,9 @@
     <string name="storage_rationale">"Un accès à votre espace de stockage est nécessaire pour lire et écrire des chansons et des listes."</string>
     <string name="subscription">"(Souscription requise)"</string>
     <string name="success">"le succès"</string>
-    <string name="swipe">"Paramètres de défilement"</string>
+    <string name="swipe">"Paramètres de balayage"</string>
     <string name="swipe_allowance">"Mouvement vertical autorisé"</string>
-    <string name="swipe_distance">"Balayez la distance"</string>
+    <string name="swipe_distance">"Distance de balayage"</string>
     <string name="switchtoperformmode">"Passer en mode performances"</string>
     <string name="tag_background">"Fond des Tags"</string>
     <string name="tag_bridge">Pont</string>

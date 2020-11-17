@@ -309,7 +309,7 @@
     <string name="ok">"ok"</string>
     <string name="oldchordformat">"Upptäckt nuvarande ackordformat"</string>
     <string name="on">"PÅ"</string>
-    <string name="options">"ALTERNATIV"</string>
+    <string name="options">"Alternativ"</string>
     <string name="options_clearthisset">"Rensa den nuvarande inställningen och skapa en ny en"</string>
     <string name="other">"Andra"</string>
     <string name="override_fullautoscale">"Åsidosätt fullständig autoskala till bredd bara"</string>
@@ -411,7 +411,7 @@
     <string name="size_normal">"Vanligt"</string>
     <string name="slide">"Glida"</string>
     <string name="slide_add_page">"Infoga ny sida till anpassad bild"</string>
-    <string name="song">"LÅT"</string>
+    <string name="song">"Låt"</string>
     <string name="song_functionnotavailable">"Den här funktionen är inte tillgänglig för låtar"</string>
     <string name="song_new_name">"Ange ett nytt filnamn för den här låten (så här visas den i din låtmeny)"</string>
     <string name="song_sections">"Song sektioner"</string>

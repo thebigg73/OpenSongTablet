@@ -309,7 +309,7 @@
     <string name="ok">"Działa prawidłowo "</string>
     <string name="oldchordformat">"Wykryto Format akord prądu"</string>
     <string name="on">"Wł."</string>
-    <string name="options">"OPCJE"</string>
+    <string name="options">"Opcje"</string>
     <string name="options_clearthisset">"JASNE, TEGO SET"</string>
     <string name="other">"inny"</string>
     <string name="override_fullautoscale">"Przestawianie Full Auto skalę tylko do szerokości"</string>
@@ -411,7 +411,7 @@
     <string name="size_normal">"Normalna"</string>
     <string name="slide">"Paź"</string>
     <string name="slide_add_page">"Włóż nową stronę obyczajowa slajdu"</string>
-    <string name="song">"PIOSENKA"</string>
+    <string name="song">"Piosenka"</string>
     <string name="song_functionnotavailable">"Ta funkcja nie jest dostępna dla piosenek"</string>
     <string name="song_new_name">"Wpisz nową nazwę pliku dźwiękowego (to , jak będzie wyglądał w menu utworu )"</string>
     <string name="song_sections">Sekcje piosenki</string>

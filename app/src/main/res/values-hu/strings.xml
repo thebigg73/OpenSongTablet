@@ -309,7 +309,7 @@
     <string name="ok">"Rendben"</string>
     <string name="oldchordformat">"Észlelt aktuális akkord formátumban"</string>
     <string name="on">"BE"</string>
-    <string name="options">"OPCIÓK"</string>
+    <string name="options">"Alternatíva"</string>
     <string name="options_clearthisset">"Töröljük a SET"</string>
     <string name="other">"más"</string>
     <string name="override_fullautoscale">"Felülbírálása teljesen automatikus skála szélesség csak"</string>
@@ -411,7 +411,7 @@
     <string name="size_normal">"Normál"</string>
     <string name="slide">"Oldal"</string>
     <string name="slide_add_page">"Helyezze be az új oldalt egyedi dia"</string>
-    <string name="song">"DAL"</string>
+    <string name="song">"Dal"</string>
     <string name="song_functionnotavailable">"Ez a funkció nem elérhető dalok"</string>
     <string name="song_new_name">"Adjon meg egy új fájlnevet ezt a dalt ( ez így is fog jelenni a dal menüben)"</string>
     <string name="song_sections">Song szakaszok</string>
