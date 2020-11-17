@@ -326,33 +326,29 @@ public class PopUpFullSearchFragment extends DialogFragment {
                 searchlist = sqLiteHelper.getAllSongs(getActivity());
                 Log.d("FullSearchFragment","size of searchlist="+searchlist.size());
                 // Add the relevant stuff
+                // IV - Folders are no longer returned by getAllSongs
                 for (int i=0;i<searchlist.size();i++) {
                     String searchableContent = "";
-                    // Don't add folders
-                    if (searchlist.get(i).getFilename() != null && !searchlist.get(i).getFilename().isEmpty() &&
-                            !searchlist.get(i).getFilename().equals(" ")) {
-                        // If the title is empty, use the filename
-                        if (searchlist.get(i).getTitle()==null || searchlist.get(i).getTitle().isEmpty()) {
-                            searchlist.get(i).setTitle(searchlist.get(i).getFilename());
-                        }
-
-                        Log.d("FullSearchFragment", "getFilename()="+searchlist.get(i).getFilename());
-                        searchableContent = searchableContent + searchlist.get(i).getFilename();
-                        searchableContent = searchableContent + addIfWanted(searchFolder, searchlist.get(i).getFilename());
-                        searchableContent = searchableContent + addIfWanted(searchAka, searchlist.get(i).getAka());
-                        searchableContent = searchableContent + addIfWanted(searchAuthor, searchlist.get(i).getAuthor());
-                        searchableContent = searchableContent + addIfWanted(searchCCLI, searchlist.get(i).getCcli());
-                        searchableContent = searchableContent + addIfWanted(searchCopyright, searchlist.get(i).getCopyright());
-                        searchableContent = searchableContent + addIfWanted(searchHymn, searchlist.get(i).getHymn_num());
-                        searchableContent = searchableContent + addIfWanted(searchKey, getString(R.string.edit_song_key) + " " + searchlist.get(i).getKey());
-                        searchableContent = searchableContent + addIfWanted(searchLyrics, searchlist.get(i).getLyrics());
-                        searchableContent = searchableContent + addIfWanted(searchTheme, searchlist.get(i).getTheme() + " " + searchlist.get(i).getAlttheme());
-                        searchableContent = searchableContent + addIfWanted(searchTitle, searchlist.get(i).getTitle());
-                        searchableContent = searchableContent + addIfWanted(searchUser1, searchlist.get(i).getUser1());
-                        searchableContent = searchableContent + addIfWanted(searchUser2, searchlist.get(i).getUser2());
-                        searchableContent = searchableContent + addIfWanted(searchUser3, searchlist.get(i).getUser3());
-                        searchlist.get(i).setLyrics(searchableContent);
+                    if (searchlist.get(i).getTitle()==null || searchlist.get(i).getTitle().isEmpty()) {
+                        searchlist.get(i).setTitle(searchlist.get(i).getFilename());
                     }
+
+                    Log.d("FullSearchFragment", "getFilename()="+searchlist.get(i).getFilename());
+                    searchableContent = searchableContent + searchlist.get(i).getFilename();
+                    searchableContent = searchableContent + addIfWanted(searchFolder, searchlist.get(i).getFilename());
+                    searchableContent = searchableContent + addIfWanted(searchAka, searchlist.get(i).getAka());
+                    searchableContent = searchableContent + addIfWanted(searchAuthor, searchlist.get(i).getAuthor());
+                    searchableContent = searchableContent + addIfWanted(searchCCLI, searchlist.get(i).getCcli());
+                    searchableContent = searchableContent + addIfWanted(searchCopyright, searchlist.get(i).getCopyright());
+                    searchableContent = searchableContent + addIfWanted(searchHymn, searchlist.get(i).getHymn_num());
+                    searchableContent = searchableContent + addIfWanted(searchKey, getString(R.string.edit_song_key) + " " + searchlist.get(i).getKey());
+                    searchableContent = searchableContent + addIfWanted(searchLyrics, searchlist.get(i).getLyrics());
+                    searchableContent = searchableContent + addIfWanted(searchTheme, searchlist.get(i).getTheme() + " " + searchlist.get(i).getAlttheme());
+                    searchableContent = searchableContent + addIfWanted(searchTitle, searchlist.get(i).getTitle());
+                    searchableContent = searchableContent + addIfWanted(searchUser1, searchlist.get(i).getUser1());
+                    searchableContent = searchableContent + addIfWanted(searchUser2, searchlist.get(i).getUser2());
+                    searchableContent = searchableContent + addIfWanted(searchUser3, searchlist.get(i).getUser3());
+                    searchlist.get(i).setLyrics(searchableContent);
                 }
 
                 adapter = new SearchViewAdapter(getActivity(), searchlist, searchPhrase);
