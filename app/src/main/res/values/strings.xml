@@ -248,7 +248,7 @@
     <string name="folder_new">Create new song folder</string>
     <string name="folder_rename">Edit song folder name</string>
     <string name="folderexists">This folder already exists!</string>
-    <string name="fontsize">You need to turn off auto scale song.</string>
+    <string name="fontsize">to use when AUTOSCALE is OFF</string>
     <string name="footpedal">Assign foot pedal</string>
     <string name="forum" translatable="false">opensongapp@googlegroups.com</string>
     <string name="found">You have already used the following install locations.  You will still need to locate and set this manually using the red button above.</string>
@@ -361,7 +361,7 @@
     <string name="managesets">Rename sets</string>
     <string name="mandolin">Mandolin</string>
     <string name="maxfontsize">Maximum autoscale font size</string>
-    <string name="maximise_columns">Scale columns independently.</string>
+    <string name="maximise_columns">Scale columns independently</string>
     <string name="maxvolrange">Graphical volume indicator range</string>
     <string name="media">Audio</string>
     <string name="media_chooser">Media chooser</string>
