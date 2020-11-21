@@ -423,7 +423,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                         // If this is a file, check if it exists, if not, create it
                         if (!ze.isDirectory()) {
                             // Get a uri for the song
-                            String thisfile = storageAccess.safeFilename(ze.getName());
+                            String thisfile = ze.getName();
                             Uri file_uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", "", thisfile);
                             publishProgress(numfile + "&&_" + thisfile);
 

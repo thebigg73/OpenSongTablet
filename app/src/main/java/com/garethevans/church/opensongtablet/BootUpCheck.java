@@ -383,6 +383,9 @@ public class BootUpCheck extends AppCompatActivity {
             }
         }
 
+        if (text.startsWith("primary/")) {
+            text = text.replace("primary/","/");
+        }
         if (progressText!=null) {
             // We aren't just passing through, so we can set the text
             progressText.setText(text);

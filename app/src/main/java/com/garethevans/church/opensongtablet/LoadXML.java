@@ -88,7 +88,7 @@ public class LoadXML extends Activity {
 
         if (StaticVariables.songfilename.equals("Welcome to OpenSongApp") || StaticVariables.songfilename.equals("")) {
             setWelcome(c);
-            preferences.setMyPreferenceBoolean(c,"songLoadSuccess",true);
+            preferences.setMyPreferenceBoolean(c,"songLoadSuccess",false);
             isxml = true;
         }
 
@@ -105,14 +105,16 @@ public class LoadXML extends Activity {
                     grabOpenSongXML(c, preferences,processSong);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    preferences.setMyPreferenceBoolean(c, "songLoadSuccess", false);
                     setNotFound(c);
                     isxml = false;
                 }
             } else {
+                preferences.setMyPreferenceBoolean(c, "songLoadSuccess", false);
                 setNotFound(c);
             }
 
-            if (isxml && !FullscreenActivity.myLyrics.equals("ERROR!")) {
+            if (isxml && !FullscreenActivity.myLyrics.isEmpty() && !FullscreenActivity.myLyrics.equals("ERROR!")) {
                 // Song was loaded correctly and was xml format
                 preferences.setMyPreferenceBoolean(c,"songLoadSuccess",true);
                 preferences.setMyPreferenceString(c,"songfilename",StaticVariables.songfilename);
@@ -151,12 +153,15 @@ public class LoadXML extends Activity {
                     inputStream.close();
                     bufferedReader.close();
                     // Set the song load status to true:
-                    preferences.setMyPreferenceBoolean(c,"songLoadSuccess",true);
+                    if (FullscreenActivity.myXML!=null && !FullscreenActivity.myXML.isEmpty()) {
+                        preferences.setMyPreferenceBoolean(c, "songLoadSuccess", true);
+                    }
                     preferences.setMyPreferenceString(c,"songfilename",StaticVariables.songfilename);
                     preferences.setMyPreferenceString(c,"whichSongFolder",StaticVariables.whichSongFolder);
 
                 } catch (java.io.FileNotFoundException e) {
                     e.printStackTrace();
+                    preferences.setMyPreferenceBoolean(c, "songLoadSuccess", false);
                     setNotFound(c);
                 } catch (OutOfMemoryError e1) {
                     e1.printStackTrace();

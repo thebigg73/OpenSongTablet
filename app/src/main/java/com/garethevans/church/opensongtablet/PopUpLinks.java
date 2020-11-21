@@ -260,7 +260,6 @@ public class PopUpLinks extends DialogFragment {
         this.dismiss();
     }
 
-    //@RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void openDocumentPicker(String mimeType, int requestCode) {
         // This uses the new Storage Access Framework to return a uri for a file of the user's choice
         Intent intent;
@@ -283,6 +282,17 @@ public class PopUpLinks extends DialogFragment {
             if (resultData!=null) {
                 uri = resultData.getData();
                 Log.d("PopUpLinks","uri="+uri);
+
+                // Get persistent permissions
+                try {
+                    final int takeFlags = resultData.getFlags()
+                            & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    // Check for the freshest data.
+                    getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 if (uri!=null) {
                     String uriPath = uri.getPath();

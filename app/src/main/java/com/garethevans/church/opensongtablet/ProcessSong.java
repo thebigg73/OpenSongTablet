@@ -978,12 +978,14 @@ public class ProcessSong extends Activity {
         inString = inString + " ";
 
         for (int x = 1; x < (inString.length()); x++) {
-            thischarempty =  inString.substring(x, x + 1).equals(" ");
-            prevcharempty =  inString.substring(x - 1, x).equals(" ");
+            thischarempty =  inString.startsWith(" ", x);
+            prevcharempty =  inString.startsWith(" ", x - 1);
+
             // Add the start of chord and the end of a chord where it ends above a space in the lyric
-            if ((!thischarempty && prevcharempty) || (thischarempty && !prevcharempty && lyric.substring(x - 1 ,x).equals(" "))) {
+            if ((!thischarempty && prevcharempty) || (thischarempty && !prevcharempty && lyric.startsWith(" ", x - 1))) {
                     chordpositions.add(x + "");
             }
+
         }
 
         String[] chordpos = new String[chordpositions.size()];
@@ -1247,7 +1249,7 @@ public class ProcessSong extends Activity {
 
             if (!StaticVariables.whichSongFolder.contains(c.getResources().getString(R.string.image))) {
                 // IV - If lyric line only, assemble and do the line in one go
-                if (presentation && !preferences.getMyPreferenceBoolean(c, "presoShowChords", true) || !presentation && !preferences.getMyPreferenceBoolean(c,"displayChords",false)) {
+                if ((presentation && !preferences.getMyPreferenceBoolean(c, "presoShowChords", true)) || (!presentation && !preferences.getMyPreferenceBoolean(c,"displayChords",true))) {
                     final StringBuilder sb = new StringBuilder();
                     sb.append(lyrics[0]);
                     for (int i = 1; i < lyrics.length; i++) {
@@ -1893,15 +1895,15 @@ public class ProcessSong extends Activity {
         // What if sections aren't in the song (e.g. Intro V2 and Outro)
         // The other issue is that custom tags (e.g. Guitar Solo) can have spaces in them
 
-        String tempPresentationOrder = StaticVariables.mPresentation + " ";
+        StringBuilder tempPresentationOrder = new StringBuilder(StaticVariables.mPresentation + " ");
 
         // Get the currentSectionLabels - these will change after we reorder the song
         // IV - We look for extra information header and footer and add into presentation order to ensure display
         String[] currentSectionLabels = new String[currentSections.length];
         for (int sl = 0; sl < currentSections.length; sl++) {
             currentSectionLabels[sl] = getSectionHeadings(currentSections[sl]);
-            if (currentSectionLabels[sl].equals("H__1")) { tempPresentationOrder = "H__1 " + tempPresentationOrder; }
-            if (currentSectionLabels[sl].equals("F__1")) { tempPresentationOrder = tempPresentationOrder + "F__1 "; }
+            if (currentSectionLabels[sl].equals("H__1")) { tempPresentationOrder.insert(0, "H__1 "); }
+            if (currentSectionLabels[sl].equals("F__1")) { tempPresentationOrder.append("F__1 "); }
 
         }
 
@@ -1911,8 +1913,8 @@ public class ProcessSong extends Activity {
         for (String tag : currentSectionLabels) {
             if (tag.equals("") || tag.equals(" ")) {
                 Log.d("d", "Empty search");
-            } else if (tempPresentationOrder.contains(tag)) {
-                tempPresentationOrder = tempPresentationOrder.replace(tag + " ", "<__" + tag + "__>");
+            } else if (tempPresentationOrder.toString().contains(tag)) {
+                tempPresentationOrder = new StringBuilder(tempPresentationOrder.toString().replace(tag + " ", "<__" + tag + "__>"));
             } else {
                 // IV - this logic avoids a trailing new line
                 if (errors.length() > 0) {
@@ -1925,7 +1927,7 @@ public class ProcessSong extends Activity {
         // tempPresentationOrder now looks like "Intro <__V1__>V2 <__C__><__V3__><__C__><__C__><__Guitar Solo__><__C__>Outro "
         // Assuming V2 and Outro aren't in the song anymore
         // Split the string by <__
-        String[] tempPresOrderArray = tempPresentationOrder.split("<__");
+        String[] tempPresOrderArray = tempPresentationOrder.toString().split("<__");
         // tempPresOrderArray now looks like "Intro ", "V1__>V2 ", "C__>", "V3__>", "C__>", "C__>", "Guitar Solo__>", "C__>Outro "
         // So, if entry doesn't contain __> it isn't in the song
         // Also, anything after __> isn't in the song
@@ -2324,6 +2326,7 @@ public class ProcessSong extends Activity {
 
                 case "lyric_no_chord":
                     lyrics_returned = new String[1];
+
                     lyrics_returned[0] = thisLine;
                     if (preferences.getMyPreferenceBoolean(c, "displayLyrics", true)) {
                         tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor,
@@ -3057,18 +3060,17 @@ public class ProcessSong extends Activity {
     private String multiLine(String longString, int targetLength) {
         if (longString.length() > targetLength) {
             try {
-                String inLongString = longString;
                 StringBuilder outLongString = new StringBuilder();
                 // IV - Work out word positions using the get chord position logic
-                String[] positions = getChordPositions(inLongString,inLongString);
+                String[] positions = getChordPositions(longString, longString);
                 int startpos = 0;
                 int endpos = 0;
 
                 for (int i = 0; i < positions.length; i++) {
                     // Split if this word starts with '(' and there is a word before
-                    if ((inLongString.substring(Integer.parseInt(positions[i])).startsWith("(")) && (endpos > startpos) ) {
+                    if ((longString.substring(Integer.parseInt(positions[i])).startsWith("(")) && (endpos > startpos) ) {
                         endpos = Integer.parseInt(positions[i]);
-                        outLongString.append(inLongString.substring(startpos, endpos)).append("\n");
+                        outLongString.append(longString.substring(startpos, endpos)).append("\n");
                         startpos = endpos;
                     } else {
                         // Split if this section is greater than target length
@@ -3082,7 +3084,7 @@ public class ProcessSong extends Activity {
                                 // Go back to previous word on next pass
                                 i = i - 2;
                             }
-                            outLongString.append(inLongString.substring(startpos, endpos)).append("\n");
+                            outLongString.append(longString.substring(startpos, endpos)).append("\n");
                             startpos = endpos;
                         } else {
                             endpos = Integer.parseInt(positions[i]);
@@ -3090,7 +3092,7 @@ public class ProcessSong extends Activity {
                         }
                     }
                 }
-                outLongString.append(inLongString.substring(startpos));
+                outLongString.append(longString.substring(startpos));
                 return outLongString.toString();
             } catch (Exception e) {
                 // Just in case, if there is a fail return full line

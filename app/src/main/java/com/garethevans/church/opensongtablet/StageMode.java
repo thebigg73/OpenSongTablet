@@ -3690,7 +3690,6 @@ public class StageMode extends AppCompatActivity implements
                             FullscreenActivity.file_uri = FileProvider.getUriForFile(StageMode.this,
                                     "OpenSongAppFiles", f);
                         }
-
                         // Get persistent permissions
                         try {
                             final int takeFlags = data.getFlags()
@@ -8037,6 +8036,7 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
+            Log.d("d","Double tap");
             // Decide what the double tap action is
             // 1 = both menus
             // 2 = edit song
@@ -8055,11 +8055,13 @@ public class StageMode extends AppCompatActivity implements
             if (!mDrawerLayout.isDrawerOpen(songmenu) && !mDrawerLayout.isDrawerVisible(songmenu) &&
                     !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerVisible(optionmenu)) {
                 // IV - ... and in centre of screen
+                // GE reduced threshold to 20% - on a smaller screen 33% touch zone too small, 60% better.
+                // larger screen 33% dead space too large, 20% better
                 int width = horizontalscrollview.getRight();
                 int height = horizontalscrollview.getBottom();
                 int x = (int) e.getX();
                 int y = (int) e.getY();
-                if ((x > (width * 0.37)) && (x < (width * 0.63)) && (y > height * 0.37) && (y < (height * 0.63))) {
+                if ((x > (width * 0.2)) && (x < (width * 0.8)) && (y > height * 0.2) && (y < (height * 0.8))) {
                     // Now find out which gesture we've gone for
                     switch (preferences.getMyPreferenceInt(StageMode.this, "gestureScreenDoubleTap", 2)) {
                         case 1:

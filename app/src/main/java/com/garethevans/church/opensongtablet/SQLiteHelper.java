@@ -473,7 +473,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
                     sqLite.setAka(unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AKA))));
 
                     if (sqLite.getFilename() != null && !sqLite.getFilename().isEmpty() &&
-                            !sqLite.getFilename().equals(" ")) {
+                            !sqLite.getFilename().equals(" ") && !sqLite.getFilename().equals("(invalid)")) {
                         songs.add(sqLite);
                     }
                 } while (cursor.moveToNext());
