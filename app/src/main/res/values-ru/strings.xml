@@ -309,7 +309,7 @@
     <string name="ok">"Ok"</string>
     <string name="oldchordformat">"Определен текущий формат аккордов"</string>
     <string name="on">"ВКЛ"</string>
-    <string name="options">"МЕНЮ"</string>
+    <string name="options">"Меню"</string>
     <string name="options_clearthisset">"Очистить текущий список и создать новый"</string>
     <string name="other">"другой"</string>
     <string name="override_fullautoscale">"Полное автомасштабирование"</string>
@@ -411,7 +411,7 @@
     <string name="size_normal">"Нормальный"</string>
     <string name="slide">"Слайд"</string>
     <string name="slide_add_page">"Вставьте новую страницу  слайд пользователя"</string>
-    <string name="song">"ПЕСНЯ"</string>
+    <string name="song">"Песня"</string>
     <string name="song_functionnotavailable">"Эта функция не доступна"</string>
     <string name="song_new_name">"Введите новое имя файла для этой песни ( то, как она появится в вашем меню песен )"</string>
     <string name="song_sections">Части песни</string>

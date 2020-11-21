@@ -17,38 +17,48 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/closeSongsFAB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:backgroundTint="@color/toolbar"
+            app:fabSize="mini"
+            android:src="@drawable/ic_arrow_left_white_36dp"/> />
+
         <LinearLayout
             android:id="@+id/changefolder_LinearLayout"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:layout_weight="1"
             android:orientation="horizontal">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_margin="8dp"
-                android:contentDescription="@string/choosefolder"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_folder_upload_white_36dp" />
+                android:paddingLeft="10dp">
 
-            <TextView
-                android:id="@+id/menuCount_TextView"
-                android:background="@drawable/count_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:textSize="12sp"
-                tools:ignore="RelativeOverlap" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:contentDescription="@string/choosefolder"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_folder_upload_white_36dp" />
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/menuCount_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/count_icon"
+                    android:textSize="12sp"
+                    tools:ignore="RelativeOverlap" />
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/menuFolder_TextView"
@@ -60,18 +70,7 @@
                 android:textColor="@color/white"
                 android:layout_margin="8dp" />
 
-
         </LinearLayout>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/closeSongsFAB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:backgroundTint="@color/red"
-            android:src="@drawable/ic_close_white_36dp"
-            app:fabSize="mini" />
-
     </LinearLayout>
 
     <LinearLayout

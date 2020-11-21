@@ -258,7 +258,7 @@ public class PopUpScalingFragment extends DialogFragment {
         }
 
         int progressbar = (int) preferences.getMyPreferenceFloat(getActivity(),"fontSize",42.0f) - 4;
-        String text = preferences.getMyPreferenceFloat(getActivity(),"fontSize",42.0f) + " sp";
+        String text = (int) preferences.getMyPreferenceFloat(getActivity(),"fontSize",42.0f) + " sp";
 
         fontsize_seekbar.setProgress(progressbar);
         fontsize_TextView.setText(text);
@@ -284,7 +284,7 @@ public class PopUpScalingFragment extends DialogFragment {
         }
 
         int progressbar = (int) preferences.getMyPreferenceFloat(getActivity(),"fontSizeMax",50.0f) - 20;
-        String text = preferences.getMyPreferenceFloat(getActivity(),"fontSizeMax",50.0f) + " sp";
+        String text = (int) preferences.getMyPreferenceFloat(getActivity(),"fontSizeMax",50.0f) + " sp";
 
         maxAutoScale_seekBar.setProgress(progressbar);
         maxAutoScale_TextView.setText(text);

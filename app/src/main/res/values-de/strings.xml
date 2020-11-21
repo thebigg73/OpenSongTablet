@@ -309,7 +309,7 @@
     <string name="ok">"OK"</string>
     <string name="oldchordformat">"Aktuelles Akkord-Format ermitteln"</string>
     <string name="on">"EIN"</string>
-    <string name="options">"OPTIONEN"</string>
+    <string name="options">"Optionen"</string>
     <string name="options_clearthisset">"SET ZURÜCKSETZEN"</string>
     <string name="other">"Sonstiges"</string>
     <string name="override_fullautoscale">"Automatische Skalierung ignorieren und nur auf Breite anwenden"</string>
@@ -411,7 +411,7 @@
     <string name="size_normal">"Normal"</string>
     <string name="slide">"Folie"</string>
     <string name="slide_add_page">"Neue Seite in benutzerdefinierte Folie einfügen"</string>
-    <string name="song">SONG</string>
+    <string name="song">Song</string>
     <string name="song_functionnotavailable">"Diese Funktion ist bei Songs nicht verfügbar"</string>
     <string name="song_new_name">"Geben Sie einen neuen Dateinamen für dieses Lied ein (das Lied wird später so im Song-Menü angezeigt)"</string>
     <string name="song_sections">Song Abschnitte</string>

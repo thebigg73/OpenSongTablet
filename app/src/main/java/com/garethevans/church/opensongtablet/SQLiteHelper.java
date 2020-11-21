@@ -472,7 +472,10 @@ class SQLiteHelper extends SQLiteOpenHelper {
                     sqLite.setKey(unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_KEY))));
                     sqLite.setAka(unescapedSQL(cursor.getString(cursor.getColumnIndex(SQLite.COLUMN_AKA))));
 
-                    songs.add(sqLite);
+                    if (sqLite.getFilename() != null && !sqLite.getFilename().isEmpty() &&
+                            !sqLite.getFilename().equals(" ")) {
+                        songs.add(sqLite);
+                    }
                 } while (cursor.moveToNext());
             }
 

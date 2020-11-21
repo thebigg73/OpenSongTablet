@@ -31,9 +31,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            app:backgroundTint="@color/red"
+            app:backgroundTint="@color/toolbar"
             app:fabSize="mini"
-            android:src="@drawable/ic_close_white_36dp"/>
+            android:src="@drawable/ic_arrow_right_white_36dp"/>
 
     </LinearLayout>
 
