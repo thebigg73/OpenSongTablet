@@ -329,11 +329,11 @@
     <string name="pagebutton_group">"Groepeer alle bladsy knoppies"</string>
     <string name="pagebutton_visibility">"Wys / verberg bladsy knoppies"</string>
     <string name="pagebuttons">"Page knoppies"</string>
-    <string name="pageturn_down">"Stel 'Scroll down \"-knoppie"</string>
+    <string name="pageturn_down">Scroll down</string>
     <string name="pageturn_instructions">"Hierdie bladsy laat jou knoppies van 'n bladsy draai toestel (soos 'n bluetooth voet schakelaar) toe te ken, te beheer beweeg deur stelle of blaai op en af ​​op 'n liedjie bladsy. \ N \ nJy moet verseker dat die toestel is reeds gekoppel aan jou Android-tablet en aangeskakel. \ n \ nKliek op die groen of blou knoppies druk dan op die verlangde beheer knoppie op jou voet schakelaar, ens"</string>
-    <string name="pageturn_next">"Stel 'Volgende' knoppie"</string>
-    <string name="pageturn_previous">"Stel 'Vorige' knoppie"</string>
-    <string name="pageturn_up">"Stel 'Scroll up \"knoppie"</string>
+    <string name="pageturn_next">Volgende</string>
+    <string name="pageturn_previous">Vorige</string>
+    <string name="pageturn_up">Scroll up</string>
     <string name="pageturn_waiting">"Wag vir knoppie ...."</string>
     <string name="pan">"Links / regs"</string>
     <string name="pdf_functionnotavailable">"Hierdie funksie is nie beskikbaar vir PDF-dokumente"</string>

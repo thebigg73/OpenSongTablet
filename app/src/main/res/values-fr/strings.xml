@@ -329,11 +329,11 @@
     <string name="pagebutton_group">"Grouper tous les boutons de page"</string>
     <string name="pagebutton_visibility">"Afficher / masquer les boutons de page"</string>
     <string name="pagebuttons">"Boutons sur la page"</string>
-    <string name="pageturn_down">"Assigner la touche \'défiler vers le bas\'"</string>
+    <string name="pageturn_down">défiler vers le bas</string>
     <string name="pageturn_instructions">"Cette page vous permet d\'assigner les touches d\'un dispositif pour tourner les pages (comme une pédale bluetooth) pour contrôler le déplacement dans une liste ou le défilement vers le haut et vers le bas sur la page d\'un chanson. \n \nVous devez vous assurer que l\'appareil est déjà connecté à votre tablette Android et qu\'il est allumé. \n \nCliquez sur les boutons verts ou bleus ci-dessous, puis appuyez sur le bouton de commande désiré sur votre pédale, etc"</string>
-    <string name="pageturn_next">"Assigner la touche \'Suivant\'"</string>
-    <string name="pageturn_previous">"Assigner la touche \'Précédent\'"</string>
-    <string name="pageturn_up">"Assigner la touche \'défiler vers le haut\'"</string>
+    <string name="pageturn_next">Suivant</string>
+    <string name="pageturn_previous">Précédent</string>
+    <string name="pageturn_up">défiler vers le haut</string>
     <string name="pageturn_waiting">"En attente de touche …."</string>
     <string name="pan">"Gauche / Droite"</string>
     <string name="pdf_functionnotavailable">"Cette fonction n\'est pas disponible pour les documents PDF"</string>

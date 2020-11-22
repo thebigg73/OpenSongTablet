@@ -329,11 +329,11 @@
     <string name="pagebutton_group">"Gruppo tutti i pulsanti di pagina"</string>
     <string name="pagebutton_visibility">"Mostra / nascondi i pulsanti della pagina"</string>
     <string name="pagebuttons">"Pulsanti pagina"</string>
-    <string name="pageturn_down">"Set 'Scorrere verso il basso pulsante'"</string>
+    <string name="pageturn_down">Scorrere verso il basso pulsante</string>
     <string name="pageturn_instructions">"Questa pagina consente di assegnare tasti di un dispositivo di girare pagina (come un interruttore a pedale bluetooth) per controllare muove attraverso insiemi o scorrere su e giù su una pagina di canzone. \n \nÈ deve garantire che il dispositivo è già collegato al tablet Android e acceso. \n \nCliccare sui pulsanti verdi o blu sotto e poi premere il pulsante di controllo desiderato sul pedale, ecc"</string>
-    <string name="pageturn_next">"Imposta pulsante 'Avanti'"</string>
-    <string name="pageturn_previous">"Impostare il pulsante 'Indietro'"</string>
-    <string name="pageturn_up">"Impostare 'Scorrere verso l'alto' pulsante"</string>
+    <string name="pageturn_next">Avanti</string>
+    <string name="pageturn_previous">Indietro</string>
+    <string name="pageturn_up">Scorrere verso l\'alto</string>
     <string name="pageturn_waiting">"Aspettando il pulsante …."</string>
     <string name="pan">"Sinistra / Destra"</string>
     <string name="pdf_functionnotavailable">"Questa funzione non è disponibile per i documenti PDF"</string>

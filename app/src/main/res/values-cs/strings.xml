@@ -329,11 +329,11 @@
     <string name="pagebutton_group">"Skupiny všech tlačítek stránky"</string>
     <string name="pagebutton_visibility">"Zobrazit / skrýt tlačítka stránky"</string>
     <string name="pagebuttons">"Tlačítka strana"</string>
-    <string name="pageturn_down">"Set \"Přejděte dolů\" tlačítko"</string>
+    <string name="pageturn_down">Přejděte dolů</string>
     <string name="pageturn_instructions">"Tato stránka vám umožňuje přiřadit tlačítka ze zařízení na otáčení stránek (např. bluetooth nožního spínače) pro ovládání pohybu pomocí sady nebo rolování nahoru a dolů na stránce písně.\n\nK musí zajistit, že zařízení je již připojen k Android tabletu a zapnout.\n\nKlikněte na zelených nebo modrých tlačítek níže a stiskněte tlačítko požadovaného ovládání na nožním spínačem, atd."</string>
-    <string name="pageturn_next">"Nastavte tlačítko \"Další\""</string>
-    <string name="pageturn_previous">"Nastavte tlačítko 'Předchozí'"</string>
-    <string name="pageturn_up">"Nastavení \"Scroll up\" tlačítko"</string>
+    <string name="pageturn_next">Další</string>
+    <string name="pageturn_previous">Předchozí</string>
+    <string name="pageturn_up">Scroll up</string>
     <string name="pageturn_waiting">"Čekání na tlačítko ...."</string>
     <string name="pan">"Levý / Pravý"</string>
     <string name="pdf_functionnotavailable">"Tato funkce není k dispozici pro dokumenty ve formátu PDF"</string>

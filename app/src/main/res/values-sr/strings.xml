@@ -262,10 +262,10 @@
     <string name="custom_background">"Pozadina prilagođene oznake"</string>
     <string name="reset_colours">"Resetovanje boja"</string>
     <string name="pageturn_instructions">"Ova strana Vam omogućava da dodelite dugme sa uređaja za promenu strane (kao npr bluetooth pedala) za kontrolu pomeranja po set listi ili skrolovanja gore ili dole prikaza pesme. \n\nMorate osigurati da je uređaj već povezan sa Vašim Android tabletom i uključen. \n\nKliknuti na zelenu ili plavu dugmad ispod, zatim pritisnuti željeno kontrolno dugme na Vašoj pedali, itd"</string>
-    <string name="pageturn_next">"Postaviti 'Sledeće' dugme"</string>
-    <string name="pageturn_previous">"Postaviti 'Prethodno' dugme"</string>
-    <string name="pageturn_up">"Postaviti 'Gore' dugme"</string>
-    <string name="pageturn_down">"Postaviti 'Dole' dugme"</string>
+    <string name="pageturn_next">Sledeće</string>
+    <string name="pageturn_previous">Prethodno</string>
+    <string name="pageturn_up">Gore</string>
+    <string name="pageturn_down">Dole</string>
     <string name="pageturn_waiting">"Čekanje na dugme&#8230;."</string>
     <string name="chooselyricfont">"Promena fonta teksta"</string>
     <string name="choosechordfont">"Promena fonta akroda"</string>

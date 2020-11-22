@@ -37,6 +37,8 @@ public class NearbyConnectionsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsNearbyconnectionsBinding.inflate(inflater,container,false);
 
+        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.connections_connect));
+
         // Set the helpers
         setHelpers();
 

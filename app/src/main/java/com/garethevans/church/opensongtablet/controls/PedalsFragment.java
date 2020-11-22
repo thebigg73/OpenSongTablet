@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,7 +23,6 @@ import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter
 import com.garethevans.church.opensongtablet.databinding.SettingsPedalBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,7 @@ public class PedalsFragment extends Fragment {
 
     SettingsPedalBinding myView;
     Preferences preferences;
+    PedalActions pedalActions;
     MainActivityInterface mainActivityInterface;
 
     private ArrayList<String> actionCodes;
@@ -37,8 +39,15 @@ public class PedalsFragment extends Fragment {
 
     private boolean longPressCapable = false;
     private long downTime, upTime;
-    private String pedalListening;
-    private int keyDownCode;
+    private String currentMidiCode;
+    private int currentListening, currentPedalCode;
+    private int[] defKeyCodes;
+    private String[] defMidiCodes;
+    private String[] shortActions;
+    private String[] longActions;
+    private TextView[] buttonCodes, buttonMidis;
+    private RelativeLayout[] buttonHeaders;
+    private AutoCompleteTextView[] shortTexts, longTexts;
 
     Handler pageButtonWaiting;
     Runnable stopListening;
@@ -55,11 +64,22 @@ public class PedalsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsPedalBinding.inflate(inflater,container,false);
 
+        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.controls) + " / " + getString(R.string.pedal));
+
         // Setup the helper classes
         setupHelpers();
 
+        // Grab views
+        grabViews();
+
         // Initialise the array items
-        setupActions();
+        pedalActions = mainActivityInterface.getPedalActions(mainActivityInterface);
+        actionCodes = pedalActions.getActionCodes();
+        actions = pedalActions.getActions();
+        defKeyCodes = pedalActions.defPedalCodes;
+        defMidiCodes = pedalActions.defPedalMidis;
+        shortActions = pedalActions.defShortActions;
+        longActions = pedalActions.defLongActions;
 
         // Set up the drop down menus
         setupDropDowns();
@@ -77,46 +97,24 @@ public class PedalsFragment extends Fragment {
         preferences = new Preferences();
     }
 
-    private void setupActions() {
-        actions = new ArrayList<>();
-        actionCodes = new ArrayList<>();
-        addString("","");
-        addString("prev",getString(R.string.pageturn_previous));
-        addString("next",getString(R.string.pageturn_next));
-        addString("up",getString(R.string.pageturn_up));
-        addString("down",getString(R.string.pageturn_down));
-        addString("pad",getString(R.string.padPedalText));
-        addString("autoscroll",getString(R.string.autoscrollPedalText));
-        addString("metronome",getString(R.string.metronomePedalText));
-        addString("pad_autoscroll",getString(R.string.padPedalText) + " & " + getString(R.string.autoscrollPedalText));
-        addString("pad_metronome",getString(R.string.padPedalText) + " & " + getString(R.string.metronomePedalText));
-        addString("autoscroll_metronome",getString(R.string.autoscrollPedalText) + " & " + getString(R.string.metronomePedalText));
-        addString("pad_autoscroll_metronome",getString(R.string.padPedalText) + " & " + getString(R.string.autoscrollPedalText) + " & " + getString(R.string.metronomePedalText));
-        addString("editsong",getString(R.string.edit));
-        addString("changetheme",getString(R.string.choose_theme));
-        addString("autoscale",getString(R.string.autoscale));
-        addString("transpose",getString(R.string.transpose));
-        addString("showchords",getString(R.string.showchords));
-        addString("showcapo",getString(R.string.showcapo));
-        addString("showlyrics",getString(R.string.showlyrics));
-        addString("fullsearch",getString(R.string.action_search));
-        addString("randomsong",getString(R.string.random_song));
-        addString("abcnotation",getString(R.string.music_score));
-        addString("highlight",getString(R.string.highlight));
-        addString("sticky",getString(R.string.stickynotes));
-        addString("speedup",getString(R.string.inc_autoscroll_speed));
-        addString("slowdown",getString(R.string.dec_autoscroll_speed));
-        addString("pause",getString(R.string.toggle_autoscroll_pause));
-        addString("songmenu",getString(R.string.gesture1));
-        addString("optionmenu",getString(R.string.action_settings));
-        addString("editset",getString(R.string.currentset));
-        addString("refreshsong",getString(R.string.gesture4));
-        addString("addsongtoset",getString(R.string.add_song_to_set));
-    }
+    private void grabViews() {
+        buttonCodes = new TextView[] {null,myView.button1Code,myView.button2Code,myView.button3Code,myView.button4Code,
+                myView.button5Code,myView.button6Code,myView.button7Code,myView.button8Code};
 
-    private void addString(String id, String val) {
-        actionCodes.add(id);
-        actions.add(val);
+        buttonMidis = new TextView[] {null,myView.button1Midi,myView.button2Midi,myView.button3Midi,myView.button4Midi,
+                myView.button5Midi,myView.button6Midi,myView.button7Midi,myView.button8Midi};
+
+        buttonHeaders = new RelativeLayout[] {null, myView.button1Header, myView.button2Header,
+                myView.button3Header, myView.button4Header, myView.button5Header,
+                myView.button6Header, myView.button7Header, myView.button8Header};
+
+        shortTexts = new AutoCompleteTextView[]{null, myView.shortButton1Text, myView.shortButton2Text,
+                myView.shortButton3Text, myView.shortButton4Text, myView.shortButton5Text,
+                myView.shortButton6Text, myView.shortButton7Text, myView.shortButton8Text};
+
+        longTexts = new AutoCompleteTextView[]{null, myView.longButton1Text, myView.longButton2Text,
+                myView.longButton3Text, myView.longButton4Text, myView.longButton5Text,
+                myView.longButton6Text, myView.longButton7Text, myView.longButton8Text};
     }
 
     private String charFromInt(int i) {
@@ -127,137 +125,166 @@ public class PedalsFragment extends Fragment {
         }
     }
 
-
     private void setupDropDowns() {
         arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),R.layout.exposed_dropdown,actions);
-        doDropDowns(myView.shortButton1Text,"pedal1ShortPressAction","prev");
-        doDropDowns(myView.shortButton2Text,"pedal2ShortPressAction","next");
-        doDropDowns(myView.shortButton3Text,"pedal3ShortPressAction","up");
-        doDropDowns(myView.shortButton4Text,"pedal4ShortPressAction","down");
-        doDropDowns(myView.shortButton5Text,"pedal5ShortPressAction","prev");
-        doDropDowns(myView.shortButton6Text,"pedal6ShortPressAction","next");
-        doDropDowns(myView.shortButton7Text,"pedal7ShortPressAction","prev");
-        doDropDowns(myView.shortButton8Text,"pedal8ShortPressAction","next");
-
-        doDropDowns(myView.longButton1Text,"pedal1LongPressAction","songmenu");
-        doDropDowns(myView.longButton1Text,"pedal2LongPressAction","set");
-        doDropDowns(myView.longButton1Text,"pedal3LongPressAction","songmenu");
-        doDropDowns(myView.longButton1Text,"pedal4LongPressAction","set");
-        doDropDowns(myView.longButton1Text,"pedal5LongPressAction","songmenu");
-        doDropDowns(myView.longButton1Text,"pedal6LongPressAction","set");
-        doDropDowns(myView.longButton1Text,"pedal7LongPressAction","songmenu");
-        doDropDowns(myView.longButton1Text,"pedal8LongPressAction","set");
+        for (int s=1; s<=8; s++) {
+            doDropDowns(s,true);
+        }
+        for (int l=1; l<=8; l++) {
+            doDropDowns(l,false);
+        }
     }
-    private void doDropDowns(AutoCompleteTextView autoCompleteTextView, String pref, String prefdef) {
-        autoCompleteTextView.setAdapter(arrayAdapter);
-        autoCompleteTextView.setText(getActionFromActionCode(preferences.getMyPreferenceString(getContext(), pref, prefdef)));
-        autoCompleteTextView.addTextChangedListener(new MyTextWatcher(pref));
+    private void doDropDowns(int which,boolean isShort) {
+        AutoCompleteTextView tv;
+        String pref;
+        String defpref;
+        if (isShort) {
+            tv = shortTexts[which];
+            pref = "pedal"+which+"ShortPressAction";
+            defpref = shortActions[which];
+        } else {
+            tv = longTexts[which];
+            pref = "pedal" + which + "LongPressAction";
+            defpref = longActions[which];
+        }
+        tv.setAdapter(arrayAdapter);
+        tv.setText(getActionFromActionCode(preferences.getMyPreferenceString(getContext(),
+                    pref, defpref)));
+        tv.addTextChangedListener(new MyTextWatcher(pref));
     }
 
     private String getActionCodeFromAction(String s) {
         return actionCodes.get(actions.indexOf(s));
     }
     private String getActionFromActionCode(String s) {
-        return actions.get(actionCodes.indexOf(s));
+        Log.d("d","s="+s);
+        int val = actionCodes.indexOf(s);
+        Log.d("d","val="+val);
+        if (val>-1 && actions.size()>=val) {
+            return actions.get(actionCodes.indexOf(s));
+        } else {
+            return "";
+        }
     }
 
     private void setupButtons() {
-        doButtons(myView.button1,myView.button1Code,"pedal1Code",21);
-        doButtons(myView.button2,myView.button2Code,"pedal2Code",22);
-        doButtons(myView.button3,myView.button3Code,"pedal3Code",19);
-        doButtons(myView.button4,myView.button4Code,"pedal4Code",20);
-        doButtons(myView.button5,myView.button5Code,"pedal5Code",92);
-        doButtons(myView.button6,myView.button6Code,"pedal6Code",93);
-        doButtons(myView.button7,myView.button7Code,"pedal7Code",-1);
-        doButtons(myView.button8,myView.button8Code,"pedal8Code",-1);
+        for (int w=1; w<=8; w++) {
+            doButtons(w);
+        }
     }
-    private void doButtons(ExtendedFloatingActionButton extendedFloatingActionButton, TextView textView, String pref, int defpref) {
-       textView.setText(charFromInt(preferences.getMyPreferenceInt(getContext(), pref, defpref)));
-       extendedFloatingActionButton.setOnClickListener(v -> prepareButtonListener(textView,pref,defpref));
+    private void doButtons(int which) {
+        buttonCodes[which].setText(charFromInt(preferences.getMyPreferenceInt(getContext(), "pedal"+which+"Code",defKeyCodes[which])));
+        buttonMidis[which].setText(preferences.getMyPreferenceString(getContext(), "pedal"+which+"Midi",defMidiCodes[which]));
+        buttonHeaders[which].setOnClickListener(v -> prepareButtonListener(which));
     }
-    private void prepareButtonListener(TextView textView, String pref, int defpref) {
-        pedalListening = pref;
-        textView.setText(getString(R.string.pageturn_waiting));
+
+    private void prepareButtonListener(int which) {
+        currentListening = which;
+        String codePref = "pedal"+which+"Code";
+        String midiPref = "midi"+which+"Code";
+        currentPedalCode = preferences.getMyPreferenceInt(getContext(),codePref,defKeyCodes[which]);
+        currentMidiCode = preferences.getMyPreferenceString(getContext(),midiPref,defMidiCodes[which]);
+        buttonCodes[which].setText(getString(R.string.pageturn_waiting));
+        buttonMidis[which].setText(getString(R.string.pageturn_waiting));
         pageButtonWaiting = new Handler();
         stopListening = () -> {
-            textView.setText(charFromInt(defpref));
-            if (keyDownCode>-1) {
-                checkForKeyUp(pedalListening,keyDownCode);
-            }
+            buttonCodes[which].setText(charFromInt(currentPedalCode));
+            buttonMidis[which].setText(currentMidiCode);
         };
         pageButtonWaiting.postDelayed(stopListening,8000);
     }
 
     private void setupSwitches() {
+        myView.pedalToggleScrollBeforeSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"pedalScrollBeforeMove",true));
+        myView.pedalToggleWarnBeforeSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"pedalShowWarningBeforeMove",false));
         myView.pedalToggleScrollBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.getMyPreferenceBoolean(getContext(),"pedalScrollBeforeMove",isChecked));
-        myView.pedalToggleScrollBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.getMyPreferenceBoolean(getContext(),"pedalShowWarningBeforeMove",isChecked));
+        myView.pedalToggleWarnBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.getMyPreferenceBoolean(getContext(),"pedalShowWarningBeforeMove",isChecked));
     }
 
     // Key listeners called from MainActivity
+    // Key down to register button in this fragment.
+    // Key up and long press to detect if this is possible for test
     public void keyDownListener(int keyCode) {
-        // Keep a note of the keyDown
-        keyDownCode = keyCode;
+        if (currentListening > 0) {
+            // Get a text version of the keyCode
+            String pedalText = charFromInt(keyCode);
+
+            // Run the common actions for midi and key registrations
+            commonEventDown(currentListening,keyCode,pedalText, null);
+
+            // Check and remove any other pedals using this code
+            removePreviouslySetKey(keyCode);
+        }
+    }
+    public void midiDownListener(String note) {
+        if (currentListening>0) {
+            commonEventDown(currentListening,0,null, note);
+
+            // Check and remove any other pedals using this code
+            removePreviouslySetMidi(note);
+        }
+    }
+    private void commonEventDown(int which, int pedalCode, String pedalText, String pedalMidi) {
         // Reset the keyDown and keyUpTimes
         downTime = System.currentTimeMillis();
         upTime = downTime;
+
+        // Reset the listening pedal
+        currentListening = 0;
         pageButtonWaiting.removeCallbacks(stopListening);
-    }
-    public void keyUpListener(int keyCode) {
-        // Set the keyUpTime
-        upTime = System.currentTimeMillis();
-        // Decide if longPressCapable
-        longPressCapable = isLongPressCapable();
+
+        // Update the on screen value
+        updateButtonText(pedalText, pedalMidi);
+
         // Set the preference
-        preferences.setMyPreferenceInt(getContext(),pedalListening,keyCode);
-        String keyChar = charFromInt(keyCode);
-        switch(pedalListening) {
-            case "pedal1Code":
-                myView.button1Code.setText(keyChar);
-                break;
-            case "pedal2Code":
-                myView.button2Code.setText(keyChar);
-                break;
-            case "pedal3Code":
-                myView.button3Code.setText(keyChar);
-                break;
-            case "pedal4Code":
-                myView.button4Code.setText(keyChar);
-                break;
-            case "pedal5Code":
-                myView.button5Code.setText(keyChar);
-                break;
-            case "pedal6Code":
-                myView.button6Code.setText(keyChar);
-                break;
-            case "pedal7Code":
-                myView.button7Code.setText(keyChar);
-                break;
-            case "pedal8Code":
-                myView.button8Code.setText(keyChar);
-                break;
-        }
-        pedalListening = null;
-        pageButtonWaiting.removeCallbacks(stopListening);
-    }
-    public void keyLongPressListener(int keyCode) {
-        // Register that long press is available
-        longPressCapable = true;
-        // Register as a short press to deal with it
-        keyUpListener(keyCode);
-    }
-    private boolean isLongPressCapable () {
-        // Get the time between keyDown and keyUp.  Standard long press is 500ms.  Look for a time around this
-        return ((upTime - downTime)>300 && (upTime - downTime)<1000) || longPressCapable;
-    }
-    public boolean isListening() {
-        return pedalListening!=null;
-    }
-    private void checkForKeyUp(String pref, int i) {
-        // Timed out waiting for onKeyUp or onLongPress, but keyDown was registered
-        // Send it as a keyUp
-        keyUpListener(i);
+        setPedalPreference(which, pedalCode, pedalMidi);
     }
 
+    public void commonEventUp() {
+        // Set the keyUpTime
+        upTime = System.currentTimeMillis();
+
+        // Decide if longPressCapable
+        longPressCapable = ((upTime - downTime)>300 && (upTime - downTime)<1000) || longPressCapable;
+    }
+    public void commonEventLong() {
+        longPressCapable = true;
+    }
+
+
+    public boolean isListening() {
+        return currentListening>-1;
+    }
+
+    private void updateButtonText(String keyText, String midiText) {
+        if (midiText==null) {
+            midiText = currentMidiCode;
+        }
+        if (keyText==null) {
+            keyText = charFromInt(currentPedalCode);
+        }
+        buttonCodes[currentListening].setText(keyText);
+        buttonMidis[currentListening].setText(midiText);
+    }
+
+    private void removePreviouslySetKey(int keyCode) {
+        // Check for any other pedals currently set to this value and remove them.
+        for (int x=1; x<=8; x++) {
+            if (currentListening!=x && preferences.getMyPreferenceInt(getContext(),"pedal"+x+"Code",defKeyCodes[x])==keyCode) {
+                setPedalPreference(x,defKeyCodes[x],null);
+                buttonCodes[x].setText(R.string.notset);
+            }
+        }
+    }
+    private void removePreviouslySetMidi(String midiCode) {
+        // Check for any other pedals currently set to this value and remove them.
+        for (int x=1; x<=8; x++) {
+            if (currentListening!=x && preferences.getMyPreferenceString(getContext(),"pedal"+x+"Midi",defMidiCodes[x]).equals(midiCode)) {
+                preferences.setMyPreferenceString(getContext(),"pedal"+x+"Midi","");
+                buttonMidis[x].setText(R.string.notset);
+            }
+        }
+    }
     private class MyTextWatcher implements TextWatcher {
 
         String which;
@@ -280,4 +307,13 @@ public class PedalsFragment extends Fragment {
         }
     }
 
+    private void setPedalPreference(int which, int pedalCode, String pedalMidi) {
+        if (pedalMidi==null) {
+            // Normal key press
+            preferences.setMyPreferenceInt(getContext(),"pedal"+which+"Code",pedalCode);
+        } else {
+            // Midi press
+            preferences.setMyPreferenceString(getContext(), "pedal"+which+"Midi", pedalMidi);
+        }
+    }
 }

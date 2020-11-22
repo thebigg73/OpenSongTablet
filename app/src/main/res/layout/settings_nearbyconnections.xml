@@ -11,16 +11,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/connections_connect"
-            style="@style/MyWhiteHeadingText"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="32dp"/>
-
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/deviceButton"
             android:layout_width="match_parent"

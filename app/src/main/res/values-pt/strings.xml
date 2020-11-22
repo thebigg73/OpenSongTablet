@@ -329,11 +329,11 @@
     <string name="pagebutton_group">"Agrupar todos os botões de página"</string>
     <string name="pagebutton_visibility">"Mostrar / ocultar botões de página"</string>
     <string name="pagebuttons">"Botões de página"</string>
-    <string name="pageturn_down">"Definir 'Role' botão"</string>
+    <string name="pageturn_down">Role</string>
     <string name="pageturn_instructions">"Esta página permite que você atribua teclas de um dispositivo de viragem página (como um pedal Bluetooth) para controlar o movimento através de conjuntos ou rolagem para cima e para baixo em uma página de música. \n \n Você deve garantir que o dispositivo já está conectado ao seu tablet Android e ligado. \n \n Clique nos botões verdes ou azuis abaixo e pressione o botão de controle desejado no seu pedal, etc"</string>
-    <string name="pageturn_next">"Definir botão 'Next'"</string>
-    <string name="pageturn_previous">"Definir botão 'Anterior'"</string>
-    <string name="pageturn_up">"Definir 'Vá para cima' botão"</string>
+    <string name="pageturn_next">Next</string>
+    <string name="pageturn_previous">Anterior</string>
+    <string name="pageturn_up">Vá para cima</string>
     <string name="pageturn_waiting">"À espera de botão …."</string>
     <string name="pan">"Esquerda / Direita"</string>
     <string name="pdf_functionnotavailable">"Esta função não está disponível para documentos PDF"</string>

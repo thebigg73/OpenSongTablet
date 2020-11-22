@@ -161,19 +161,14 @@ public class BootUpFragment extends Fragment {
                         myView.currentAction.setText(message);
                     });
                 }
-                //Looper.prepare();
 
                 message = initialising + getString(R.string.storage);
 
-                Log.d("BootUpFragment", message);
-
-
                 getActivity().runOnUiThread(() -> {
-
-
                     // Tell the user we're initialising the storage
                     myView.currentAction.setText(message);
                 });
+
                 setFolderAndSong();
 
                 // Check for saved storage locations

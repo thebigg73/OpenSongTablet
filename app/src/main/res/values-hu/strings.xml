@@ -329,11 +329,11 @@
     <string name="pagebutton_group">"Csoport minden oldal gombok"</string>
     <string name="pagebutton_visibility">"Show / hide oldal gombok"</string>
     <string name="pagebuttons">"Oldal gombok"</string>
-    <string name="pageturn_down">"Set \"Görgessen le\" gomb"</string>
+    <string name="pageturn_down">Görgessen le</string>
     <string name="pageturn_instructions">"Ez az oldal lehetővé teszi, hogy hozzá gombokat a lapozás eszközt (például a bluetooth lábkapcsoló) ellenőrzése mozognak készletek vagy fel-le irányú egy dalt oldalon. \n\nA gondoskodnia kell arról, hogy a készülék már csatlakoztatva van az Android tablet és be van kapcsolva. \n\nA a zöld vagy a kék gomb alatt, majd nyomja meg a kívánt gombot a lábkapcsoló stb"</string>
-    <string name="pageturn_next">"A 'Tovább' gombra"</string>
-    <string name="pageturn_previous">"A 'Előző' gombra"</string>
-    <string name="pageturn_up">"Beállítása \"Görgetés fel 'gombra"</string>
+    <string name="pageturn_next">Tovább</string>
+    <string name="pageturn_previous">Előző</string>
+    <string name="pageturn_up">Görgetés fel</string>
     <string name="pageturn_waiting">"Várakozás a gomb …."</string>
     <string name="pan">"Bal / Jobb"</string>
     <string name="pdf_functionnotavailable">"Ez a funkció nem elérhető a PDF dokumentumok"</string>

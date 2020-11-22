@@ -43,9 +43,8 @@ android {
             jcenter()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:4.1.0'
+            classpath 'com.android.tools.build:gradle:4.1.1'
             classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.1"
-            //classpath 'me.tatarka:gradle-retrolambda:3.7.0'  //Only needed for Java 6/7
         }
     }
 

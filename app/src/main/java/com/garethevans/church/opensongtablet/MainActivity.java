@@ -51,6 +51,7 @@ import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
 import com.garethevans.church.opensongtablet.ccli.SettingsCCLI;
+import com.garethevans.church.opensongtablet.controls.PedalActions;
 import com.garethevans.church.opensongtablet.controls.PedalsFragment;
 import com.garethevans.church.opensongtablet.databinding.ActivityMainBinding;
 import com.garethevans.church.opensongtablet.databinding.AppBarMainBinding;
@@ -104,6 +105,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
 import static com.google.android.material.snackbar.Snackbar.make;
@@ -145,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private MediaRouter mediaRouter;
     private MediaRouteSelector mediaRouteSelector;
     private MediaRouterCallback mediaRouterCallback;
+    private PedalActions pedalActions;
 
     private ArrayList<View> targets;
     private ArrayList<String> infos, dismisses;
@@ -318,6 +321,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         pageButtonFAB.animatePageButton(this,false);
         nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong,sqLiteHelper,commonSQL);
         midi = new Midi(this,preferences);
+        pedalActions = new PedalActions(this,preferences);
         song = new Song();
     }
     private void initialiseStartVariables() {
@@ -621,8 +625,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 // Initialise the arraylists
                 initialiseArrayLists();
                 if (activityMainBinding != null) {
-                    targets.add(activityMainBinding.menuTop.tabs.getTabAt(0).view);
-                    targets.add(activityMainBinding.menuTop.tabs.getTabAt(1).view);
+                    targets.add(Objects.requireNonNull(activityMainBinding.menuTop.tabs.getTabAt(0)).view);
+                    targets.add(Objects.requireNonNull(activityMainBinding.menuTop.tabs.getTabAt(1)).view);
                 }
                 infos.add(getString(R.string.menu_song));
                 infos.add(getString(R.string.menu_set));
@@ -1094,6 +1098,20 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         return ccliLog;
     }
     @Override
+    public Midi getMidi(MainActivityInterface mainActivityInterface) {
+        // First update the mainActivityInterface used in midi
+        midi.setMainActivityInterface(mainActivityInterface);
+        // Return a reference to midi
+        return midi;
+    }
+    @Override
+    public PedalActions getPedalActions(MainActivityInterface mainActivityInterface) {
+        if (mainActivityInterface!=null) {
+            pedalActions.setInterface(mainActivityInterface);
+        }
+        return pedalActions;
+    }
+    @Override
     public void updateValue(Fragment fragment, String fragname, String which, String value) {
         if (fragment!=null) {
             switch (fragname) {
@@ -1206,13 +1224,11 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
 
     // Midi
-    @Override
-    public Midi getMidi(MainActivityInterface mainActivityInterface) {
-        // First update the mainActivityInterface used in midi
-        midi.setMainActivityInterface(mainActivityInterface);
-        // Return a reference to midi
-        return midi;
-    }
+
+
+
+
+
     // Get permissions request callback
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -1249,15 +1265,15 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
 
 
-    // Pedal listeners
+    // Pedal listeners either dealt with in PedalActions or sent to PedalsFragment for setup
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
         // If pedalsFragment is open, send the keyCode and event there
         if (fragmentOpen==R.id.pedalsFragment && ((PedalsFragment)registeredFragment).isListening()) {
             ((PedalsFragment)registeredFragment).keyDownListener(keyCode);
-            return true;
+            return false;
         } else {
-            // TODO Deal with the rest of the actions need to copy from GitHub
+            pedalActions.commonEventDown(keyCode, null);
         }
         return super.onKeyDown(keyCode, keyEvent);
     }
@@ -1265,10 +1281,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public boolean onKeyUp(int keyCode, KeyEvent keyEvent) {
         // If pedalsFragment is open, send the keyCode and event there
         if (fragmentOpen==R.id.pedalsFragment && ((PedalsFragment)registeredFragment).isListening()) {
-            ((PedalsFragment)registeredFragment).keyUpListener(keyCode);
+            ((PedalsFragment)registeredFragment).commonEventUp();
             return true;
         } else {
-            // TODO Deal with the rest of the actions need to copy from GitHub
+            pedalActions.commonEventUp(keyCode,null);
         }
         return super.onKeyUp(keyCode, keyEvent);
     }
@@ -1276,11 +1292,33 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public boolean onKeyLongPress(int keyCode, KeyEvent keyEvent) {
         // If pedalsFragment is open, send the keyCode and event there
         if (fragmentOpen==R.id.pedalsFragment && ((PedalsFragment)registeredFragment).isListening()) {
-            ((PedalsFragment)registeredFragment).keyLongPressListener(keyCode);
+            ((PedalsFragment)registeredFragment).commonEventLong();
             return true;
         } else {
-            // TODO Deal with the rest of the actions need to copy from GitHub
+            pedalActions.commonEventLong(keyCode,null);
         }
         return super.onKeyLongPress(keyCode, keyEvent);
     }
+    @Override
+    public void registerMidiAction(boolean actionDown, boolean actionUp, boolean actionLong, String note) {
+        // If pedalsFragment is open, send the midiNote and event there
+        if (fragmentOpen==R.id.pedalsFragment && ((PedalsFragment)registeredFragment).isListening()) {
+            if (actionDown) {
+                ((PedalsFragment) registeredFragment).midiDownListener(note);
+            } else if (actionUp) {
+                ((PedalsFragment) registeredFragment).commonEventUp();
+            } else if (actionLong) {
+                ((PedalsFragment) registeredFragment).commonEventLong();
+            }
+        } else {
+            if (actionDown) {
+                pedalActions.commonEventDown(-1,note);
+            } else if (actionUp) {
+                pedalActions.commonEventUp(-1,note);
+            } else if (actionLong) {
+                pedalActions.commonEventLong(-1,note);
+            }
+        }
+    }
+
 }

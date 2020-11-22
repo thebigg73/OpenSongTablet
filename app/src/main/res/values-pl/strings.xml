@@ -329,11 +329,11 @@
     <string name="pagebutton_group">"Grupuj wszystkie przyciski strony"</string>
     <string name="pagebutton_visibility">"Pokaż / ukryj przyciski strony"</string>
     <string name="pagebuttons">"Przyciski page"</string>
-    <string name="pageturn_down">"Zestaw \"Przewiń\" przycisk"</string>
+    <string name="pageturn_down">Przewiń</string>
     <string name="pageturn_instructions">"Ta strona pozwala na przypisanie przycisków z urządzenia strona zwrotnym (np. jednego przycisku Bluetooth) do kontroli ruchu przez zestawów lub przewijanie w górę lub w dół na stronie piosenki. \n \nW musi upewnić się, że urządzenie jest już podłączone do tabletu z systemem Android i włączony. \n \nKliknij na zielonych lub niebieskich przycisków poniżej, a następnie naciśnij przycisk sterowania żądaną na nożnym itp."</string>
-    <string name="pageturn_next">"Ustaw przycisk \"Dalej\""</string>
-    <string name="pageturn_previous">"Przycisk \"Wstecz\" ustawić"</string>
-    <string name="pageturn_up">"Ustaw 'W górę' przycisk"</string>
+    <string name="pageturn_next">Dalej</string>
+    <string name="pageturn_previous">Wstecz</string>
+    <string name="pageturn_up">W górę</string>
     <string name="pageturn_waiting">"Czekam na przycisk …."</string>
     <string name="pan">"Lewo / Prawo"</string>
     <string name="pdf_functionnotavailable">"Ta funkcja nie jest dostępna dla dokumentów w formacie PDF"</string>

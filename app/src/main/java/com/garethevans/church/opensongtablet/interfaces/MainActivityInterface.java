@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
+import com.garethevans.church.opensongtablet.controls.PedalActions;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
@@ -64,6 +65,7 @@ public interface MainActivityInterface {
     boolean requestNearbyPermissions();
     boolean requestCoarseLocationPermissions();
     boolean requestFineLocationPermissions();
+    void registerMidiAction(boolean actionDown, boolean actionUp, boolean actionLong, String note);
 
     // Get the helpers initialised in the main activity
     NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface);
@@ -82,4 +84,5 @@ public interface MainActivityInterface {
     NonOpenSongSQLiteHelper getNonOpenSongSQLiteHelper();
     CommonSQL getCommonSQL();
     CCLILog getCCLILog();
+    PedalActions getPedalActions(MainActivityInterface mainActivityInterface);
 }

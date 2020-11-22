@@ -329,11 +329,11 @@
     <string name="pagebutton_group">"Alle Seitentasten gruppieren"</string>
     <string name="pagebutton_visibility">"Schaltflächen anzeigen / ausblenden"</string>
     <string name="pagebuttons">"Schaltflächen konfigurieren"</string>
-    <string name="pageturn_down">"\'Herunter scrollen\' Taste zuweisen"</string>
+    <string name="pageturn_down">Herunter scrollen</string>
     <string name="pageturn_instructions">"Auf dieser Seite können Sie die Tasten eines externen Schalters zum Seitenwechsel (z.B. Bluetooth-Fußschalter) zuweisen, um damit durch Sets zu navigieren oder eine Liedseite hoch und runter zu scrollen. \n\n Sie müssen sicherstellen, dass das Gerät bereits mit Ihrem Android-Tablet verbunden und eingeschaltet ist. \n\nKlicken Sie auf die grünen oder blauen Tasten unten und betätigen Sie dann die gewünschte Taste auf Ihrem Fußschalter."</string>
-    <string name="pageturn_next">"\'Weiter\' Taste zuweisen"</string>
-    <string name="pageturn_previous">"\'Zurück\' Taste zuweisen"</string>
-    <string name="pageturn_up">"\'Hoch scrollen\' Taste zuweisen"</string>
+    <string name="pageturn_next">Weiter</string>
+    <string name="pageturn_previous">Zurück</string>
+    <string name="pageturn_up">Hoch scrollen</string>
     <string name="pageturn_waiting">"Warten auf Taste …."</string>
     <string name="pan">"Links / Rechts"</string>
     <string name="pdf_functionnotavailable">"Diese Funktion ist für PDF-Dokumente nicht verfügbar"</string>

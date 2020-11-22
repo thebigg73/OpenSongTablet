@@ -329,11 +329,11 @@
     <string name="pagebutton_group">"Gruppera alla sidoknappar"</string>
     <string name="pagebutton_visibility">"Visa / dölj sidoknappar"</string>
     <string name="pagebuttons">"Sidoknappar"</string>
-    <string name="pageturn_down">"Ange \"Scroll down\" -knappen"</string>
+    <string name="pageturn_down">Scroll down</string>
     <string name="pageturn_instructions">"På den här sidan kan du tilldela knappar från en sidvändande enhet (t.ex. en bluetooth fotströmbrytare) för att styra rörelser genom uppsättningar eller bläddra upp och ner på en sångsida. \ N \ nDu måste se till att enheten redan är ansluten till din Android-surfplatta Och slås på. \ N \ nKlicka på de gröna eller blå knapparna nedan och tryck sedan på önskad kontrollknapp på fotkontakten etc."</string>
-    <string name="pageturn_next">"Ange \"Nästa\" -knappen"</string>
-    <string name="pageturn_previous">"Ange \"Föregående\" -knappen"</string>
-    <string name="pageturn_up">"Ange \"Scroll up\" -knappen"</string>
+    <string name="pageturn_next">Nästa</string>
+    <string name="pageturn_previous">Föregående</string>
+    <string name="pageturn_up">Scroll up</string>
     <string name="pageturn_waiting">"Väntar på knappen ...."</string>
     <string name="pan">"Panorera"</string>
     <string name="pdf_functionnotavailable">"Den här funktionen är inte tillgänglig för PDF-dokument"</string>

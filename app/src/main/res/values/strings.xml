@@ -449,11 +449,11 @@
     <string name="pagebutton_group">Group all page buttons</string>
     <string name="pagebutton_visibility">Show/hide page buttons</string>
     <string name="pagebuttons">Page buttons</string>
-    <string name="pageturn_down">"Set 'Scroll down' button"</string>
+    <string name="pageturn_down">Scroll down</string>
     <string name="pageturn_instructions">"This page allows you to assign buttons from a page turning device (such as a bluetooth footswitch) to control moving through sets or scrolling up and down on a song page.\n\nYou must ensure that the device is already connected to your Android tablet and switched on.\n\nClick on the green or blue buttons below then press the desired control button on your footswitch, etc."</string>
-    <string name="pageturn_next">"Set 'Next' button"</string>
-    <string name="pageturn_previous">"Set 'Previous' button"</string>
-    <string name="pageturn_up">"Set 'Scroll up' button"</string>
+    <string name="pageturn_next">Next</string>
+    <string name="pageturn_previous">Previous</string>
+    <string name="pageturn_up">"Scroll up</string>
     <string name="pageturn_waiting">"Waiting for button…."</string>
     <string name="pan">Pan</string>
     <string name="paypal" translatable="false">paypal.me/opensongapp</string>

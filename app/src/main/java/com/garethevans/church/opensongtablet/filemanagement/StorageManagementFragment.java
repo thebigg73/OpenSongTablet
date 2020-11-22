@@ -28,7 +28,6 @@ import de.blox.graphview.GraphView;
 import de.blox.graphview.Node;
 import de.blox.graphview.tree.BuchheimWalkerAlgorithm;
 import de.blox.graphview.tree.BuchheimWalkerConfiguration;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 public class StorageManagementFragment extends DialogFragment {
 
@@ -58,6 +57,9 @@ public class StorageManagementFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = StorageFolderDisplayBinding.inflate(inflater, container, false);
+
+        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.storage));
+
         graphView = myView.graph;
 
         sqLiteHelper = new SQLiteHelper(requireContext());
@@ -67,10 +69,6 @@ public class StorageManagementFragment extends DialogFragment {
         redColor = getActivity().getResources().getColor(R.color.lightred);
         greenColor = getActivity().getResources().getColor(R.color.lightgreen);
 
-        // TODO remove this once this fragment is finished development
-        MaterialShowcaseView.resetSingleUse(requireContext(),"storageManagement");
-
-        mainActivityInterface.updateToolbar(null,getActivity().getResources().getString(R.string.storage_choose));
         graph = new Graph();
 
         // Do this as separate tasks in a new thread

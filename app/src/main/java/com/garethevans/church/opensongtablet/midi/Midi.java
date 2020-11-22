@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.midi;
 
-import android.app.Instrumentation;
 import android.content.Context;
 import android.media.midi.MidiDevice;
 import android.media.midi.MidiInputPort;
@@ -8,7 +7,6 @@ import android.media.midi.MidiManager;
 import android.media.midi.MidiOutputPort;
 import android.os.Build;
 import android.util.Log;
-import android.view.KeyEvent;
 
 import androidx.annotation.RequiresApi;
 
@@ -315,7 +313,7 @@ public class Midi {
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void enableMidiListener() {
         if (midiDevice!=null && midiOutputPort!=null) {
-            pedalMidiReceiver = new PedalMidiReceiver(this);
+            pedalMidiReceiver = new PedalMidiReceiver(this,mainActivityInterface);
             try {
                 midiOutputPort.connect(pedalMidiReceiver);
             } catch (Exception e) {
@@ -338,10 +336,6 @@ public class Midi {
         }
     }
 
-    // The code to map midi event to key press
-    public void doSendKeyCode(int val) {
-        Instrumentation inst = new Instrumentation();
-        inst.sendKeyDownUpSync(KeyEvent.KEYCODE_MENU);
-    }
+
 
 }

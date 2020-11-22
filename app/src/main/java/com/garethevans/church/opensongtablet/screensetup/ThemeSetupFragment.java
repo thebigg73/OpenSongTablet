@@ -44,6 +44,8 @@ public class ThemeSetupFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsThemeBinding.inflate(inflater,container,false);
 
+        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.display) + " / " + getString(R.string.edit_song_theme));
+
         // Set up the helper classes
         setUpHelpers();
 

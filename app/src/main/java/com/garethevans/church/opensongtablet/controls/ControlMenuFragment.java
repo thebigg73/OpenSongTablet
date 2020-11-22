@@ -31,6 +31,8 @@ public class ControlMenuFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsControlBinding.inflate(inflater,container,false);
 
+        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.controls));
+
         // Set the listeners
         setListeners();
 

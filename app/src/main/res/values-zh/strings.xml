@@ -329,11 +329,11 @@
     <string name="pagebutton_group">"分组所有页面按钮"</string>
     <string name="pagebutton_visibility">"显示/隐藏页面按钮"</string>
     <string name="pagebuttons">"页按钮"</string>
-    <string name="pageturn_down">"设置“向下滚动”按钮"</string>
+    <string name="pageturn_down">向下滚动</string>
     <string name="pageturn_instructions">"此页面允许你指定从一个翻页按钮设备（如蓝牙脚踏开关）来控制移动，通过设置或向上和向下滚动一首歌页面上。\n \n您必须确保该设备已经连接到你的Andr​​oid平板电脑并打开。\n \n单击下面的绿色或蓝色按钮，然后按你的脚踏开关所需的控制按钮等"</string>
-    <string name="pageturn_next">"设定“下一步”按钮"</string>
-    <string name="pageturn_previous">"设置“上一页”按钮"</string>
-    <string name="pageturn_up">"设置“向上滚动”按钮"</string>
+    <string name="pageturn_next">下一步</string>
+    <string name="pageturn_previous">上一页</string>
+    <string name="pageturn_up">向上滚动</string>
     <string name="pageturn_waiting">"等待按钮…."</string>
     <string name="pan">"左/右"</string>
     <string name="pdf_functionnotavailable">"此功能不适用于PDF文档"</string>

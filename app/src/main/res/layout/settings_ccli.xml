@@ -10,18 +10,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/edit_song_ccli"
-            style="@style/MyWhiteHeadingText"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="32dp"/>
-
-        <TableRow style="@style/DividerLine"/>
-
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/ccliAutomatic"
             style="@style/PrefSwitch"

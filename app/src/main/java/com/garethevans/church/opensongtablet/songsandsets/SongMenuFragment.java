@@ -165,25 +165,29 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
 
     private void setUpExposedDropDowns() {
         new Thread(() -> {
-            foundFolders = sqLiteHelper.getFolders(getActivity(), commonSQL);
-            folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, foundFolders);
-            keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, getResources().getStringArray(R.array.key_choice));
-            getActivity().runOnUiThread(() -> {
-                folderSearch.setAdapter(folderArrayAdapter);
-                folderSearchVal = StaticVariables.whichSongFolder;
-                folderSearch.addTextChangedListener(new MyTextWatcher("folder"));
-                if (folderSearch!=null) {
-                    int pos = foundFolders.indexOf(StaticVariables.whichSongFolder);
-                    if (pos>=0) {
-                        folderSearch.setText(foundFolders.get(pos));
+            try {
+                foundFolders = sqLiteHelper.getFolders(getContext(), commonSQL);
+                folderArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, foundFolders);
+                keyArrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, getResources().getStringArray(R.array.key_choice));
+                getActivity().runOnUiThread(() -> {
+                    folderSearch.setAdapter(folderArrayAdapter);
+                    folderSearchVal = StaticVariables.whichSongFolder;
+                    folderSearch.addTextChangedListener(new MyTextWatcher("folder"));
+                    if (folderSearch != null) {
+                        int pos = foundFolders.indexOf(StaticVariables.whichSongFolder);
+                        if (pos >= 0) {
+                            folderSearch.setText(foundFolders.get(pos));
+                        }
                     }
-                }
-                keySearch.setAdapter(keyArrayAdapter);
-                keySearch.addTextChangedListener(new MyTextWatcher("key"));
-                artistSearch.addTextChangedListener(new MyTextWatcher("artist"));
-                tagSearch.addTextChangedListener(new MyTextWatcher("tag"));
-                filterSearch.addTextChangedListener(new MyTextWatcher("filter"));
-            });
+                    keySearch.setAdapter(keyArrayAdapter);
+                    keySearch.addTextChangedListener(new MyTextWatcher("key"));
+                    artistSearch.addTextChangedListener(new MyTextWatcher("artist"));
+                    tagSearch.addTextChangedListener(new MyTextWatcher("tag"));
+                    filterSearch.addTextChangedListener(new MyTextWatcher("filter"));
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }).start();
     }
 

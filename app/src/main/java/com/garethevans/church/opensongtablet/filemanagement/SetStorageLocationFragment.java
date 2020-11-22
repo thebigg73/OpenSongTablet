@@ -33,6 +33,7 @@ import com.garethevans.church.opensongtablet.databinding.FragmentSetstoragelocat
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -154,6 +155,7 @@ public class SetStorageLocationFragment extends Fragment {
 
     private void setStorageLocation() {
         progressText.setText(storageAccess.niceUriTree(getContext(),preferences));
+        warningCheck();
         checkStatus();
     }
 
@@ -353,6 +355,19 @@ public class SetStorageLocationFragment extends Fragment {
             pulseButton(setStorage);
             myView.scrollView.scrollTo(0,(int)setStorage.getY());
             startApp.clearAnimation();
+        }
+    }
+
+    private void warningCheck() {
+        // If the user tries to set the app storage to OpenSong/Songs/ warn them!
+        if (progressText!=null && progressText.getText()!=null && progressText.getText().toString().contains("OpenSong/Songs/")) {
+            Snackbar snackbar = make(requireActivity().findViewById(R.id.drawer_layout), R.string.storage_warning,
+                    LENGTH_INDEFINITE).setAction(R.string.ok, view -> {
+            });
+            View snackbarView = snackbar.getView();
+            TextView snackTextView = snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
+            snackTextView.setMaxLines(4);
+            snackbar.show();
         }
     }
 

@@ -329,11 +329,11 @@
     <string name="pagebutton_group">"Agrupar todos los botones de la página"</string>
     <string name="pagebutton_visibility">"Mostrar / ocultar los botones de la página"</string>
     <string name="pagebuttons">"Botones de la página"</string>
-    <string name="pageturn_down">"Set 'Desplácese hacia abajo' botón"</string>
+    <string name="pageturn_down">Desplácese hacia abajo</string>
     <string name="pageturn_instructions">"Esta página le permite asignar los botones de un dispositivo de cambio de página (como un pedal bluetooth) para el control de movimiento a través de juegos o el desplazamiento hacia arriba y hacia abajo en una página de la canción. \n \nNo debe asegurarse de que el dispositivo ya está conectado a la tableta Android y encendida. \n \nHaga clic en los botones verdes o azules debajo luego presione el botón de control deseado en su pedal, etc"</string>
-    <string name="pageturn_next">"Configurar el botón 'Siguiente'"</string>
-    <string name="pageturn_previous">"Ponga el botón 'Anterior'"</string>
-    <string name="pageturn_up">"Set 'Desplácese hacia arriba' botón"</string>
+    <string name="pageturn_next">Siguiente</string>
+    <string name="pageturn_previous">Anterior</string>
+    <string name="pageturn_up">Desplácese hacia arriba</string>
     <string name="pageturn_waiting">"Esperando botón …."</string>
     <string name="pan">"Izquierda / Derecha"</string>
     <string name="pdf_functionnotavailable">"Esta función no está disponible para documentos PDF"</string>

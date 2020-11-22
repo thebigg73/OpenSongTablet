@@ -9,16 +9,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/edit_song_theme"
-            style="@style/MyWhiteHeadingText"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="32dp"/>
-
         <com.google.android.material.textfield.TextInputLayout
             style="@style/exposedDropDown"
             android:layout_width="match_parent"
