@@ -92,7 +92,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/MyWhiteHeadingText"
+                    style="@style/MyInfoText"
                     android:text="@string/storage_help"/>
 
                 <LinearLayout
@@ -102,29 +102,26 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/MyHeadingText"
-                        android:layout_marginEnd="8dp"
-                        android:layout_gravity="center_vertical"
-                        android:text="@string/currentstorage"/>
-
-                    <TextView
                         android:id="@+id/progressText"
-                        android:layout_width="0dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center"
                         style="@style/MyHeadingText"/>
                 </LinearLayout>
 
+
                 <TextView
                     android:id="@+id/warningText"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/storage_warning"
-                    style="@style/MyHeadingText"
-                    android:textColor="@color/red"
+                    android:textColor="#f88"
                     android:visibility="gone"/>
 
                 <Button
@@ -134,51 +131,52 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="8dp"
-                    android:padding="4dp"
+                    android:padding="8dp"
                     android:text="@string/changestorage"
                     android:textColor="#fff" />
 
                 <Button
                     android:id="@+id/previousStorageButton"
+                    android:textSize="14sp"
                     android:background="@drawable/yellow_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="8dp"
-                    android:padding="4dp"
+                    android:padding="8dp"
                     android:text="@string/existing"
                     android:textColor="#fff" />
 
-
-                <TextView
-                    android:id="@+id/previousStorageTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:visibility="gone"/>
-
-                <TextView
-                    android:id="@+id/previousStorageHeading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/found"
-                    style="@style/MyWhiteHeadingText"
-                    android:visibility="gone"/>
-
-                <TextView
-                    android:id="@+id/previousStorageLocationsTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/MyInfoText"/>
-
                 <Spinner
                     android:id="@+id/previousStorageSpinner"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     style="@style/MySpinner"
                     android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/previousStorageHeading"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/found"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/previousStorageLocationsTextView"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/previousStorageTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -196,7 +194,7 @@
                     android:background="@drawable/green_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:padding="4dp"
                     android:text="@string/start"
                     android:textSize="24sp"
@@ -205,9 +203,10 @@
 
                 <Spinner
                     android:id="@+id/appMode"
+                    android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     style="@style/MySpinner"
                     android:layout_gravity="center_horizontal" />
 
@@ -240,7 +239,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="8dp"
-                    android:background="@drawable/yellow_button"
+                    android:background="@drawable/grey_button"
                     android:text="@string/reset"
                     android:textColor="#ff0" />
 
@@ -256,23 +255,23 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
                     android:text="@string/intro"
                     style="@style/MyInfoText" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_marginTop="16dp"
                     android:text="@string/user_guide_text"
                     style="@style/MyInfoText" />
 
                 <Button
                     android:id="@+id/userGuideButton"
+                    android:textSize="20sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="8dp"
+                    android:layout_margin="8dp"
                     android:background="@drawable/blue_button"
                     android:text="@string/user_guide"
                     android:textColor="#ff0" />
