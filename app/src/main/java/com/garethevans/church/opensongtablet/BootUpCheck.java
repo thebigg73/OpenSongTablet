@@ -341,6 +341,7 @@ public class BootUpCheck extends AppCompatActivity {
         try {
             text = u.getPath();
             assert text != null;
+            // IV - When not an internal path (more patterns may be needed) indicate as external
             if (!text.contains("/tree/primary")) { extra = this.getResources().getString(R.string.storage_ext); }
             // The  storage location getPath is likely something like /tree/primary:/document/primary:/OpenSong
             // This is due to the content using a document contract
@@ -846,15 +847,21 @@ public class BootUpCheck extends AppCompatActivity {
                 for (File f : list) {
                     if (f.isDirectory()) {
                         String where = f.getAbsolutePath();
-                        if (!where.contains("/emulated/") && !where.contains(".estrongs") && !where.contains("com.ttxapps") && where.endsWith("/OpenSong/Songs")) {
-                            // Found one and it isn't in emulated storage, eStrongs recycle folder or the dropsync temp files!
-                            // IV - Add just the Opensong folder path for internal sdcard0 - for others give parent folder info
-                            if (where.startsWith("/storage/sdcard0/")) {
-                                where = where.substring(16,where.length() - 6);
-                            } else {
+                        if (!where.contains(".estrongs") && !where.contains("com.ttxapps") && where.endsWith("/OpenSong/Songs")) {
+                            // Found one and it isn't in eStrongs recycle folder or the dropsync temp files!
+                            where = where.replace("/Songs","");
+                            // IV - For paths identified as Internal storage (more patterns may be needed) remove the parent folder to reduce to a simple path
+                            where = where.replace("/storage/sdcard0/","");
+                            where = where.replace("/storage/emulated/0/","");
+                            where = where.replace("/storage/emulated/legacy/","");
+                            where = where.replace("/storage/self/primary","");
+                            // IV - Deal with remaining as external and detail the parent folder name
+                            if (where.startsWith("/") ) {
                                 where = where.substring(1);
-                                where = where.substring(where.indexOf("/") + 1,where.length() - 6);
-                                where = where.substring(where.indexOf("/")) + " (" + this.getResources().getString(R.string.storage_ext) + " " + where.substring(0,where.indexOf("/")) + ")";
+                                where = where.substring(where.indexOf("/") + 1);
+                                where = where.substring(where.indexOf("/")) + " (" + this.getResources().getString(R.string.storage_ext) + " " + where.substring(0, where.indexOf("/")) + ")";
+                            } else {
+                                where = "/" + where;
                             }
                             locations.add(where);
                         }
@@ -905,12 +912,12 @@ public class BootUpCheck extends AppCompatActivity {
                     // Add the locations to the textview
                     StringBuilder sb = new StringBuilder();
                     for (String str:locations) {
-                        if (!sb.toString().contains(str+" ")) {
-                            sb.append(str).append(" \n");
+                        if (!sb.toString().contains("¬" + str + "¬")) {
+                            sb.append("¬").append(str).append("¬").append(" \n");
                         }
                     }
                     previousStorageTextView.setVisibility(View.GONE);
-                    previousStorageLocationsTextView.setText(sb.toString().trim());
+                    previousStorageLocationsTextView.setText(sb.toString().replace("¬","").trim());
                     previousStorageLocationsTextView.setVisibility(View.VISIBLE);
                     locations.add(0,"");
                     previousStorageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
