@@ -352,7 +352,11 @@ public class BootUpCheck extends AppCompatActivity {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            text = "" + uriTreeHome;
+            if (uriTreeHome == null) {
+                text = getString(R.string.notset);
+            } else {
+                text = "" + uriTreeHome;
+            }
         }
 
         // Decide if the user needs blocking as  they have selected a subfolder of an OpenSong folder
@@ -847,26 +851,25 @@ public class BootUpCheck extends AppCompatActivity {
                 for (File f : list) {
                     if (f.isDirectory()) {
                         String where = f.getAbsolutePath();
+                        displayWhere(where);
                         if (!where.contains(".estrongs") && !where.contains("com.ttxapps") && where.endsWith("/OpenSong/Songs")) {
                             // Found one and it isn't in eStrongs recycle folder or the dropsync temp files!
-                            where = where.replace("/Songs","");
+                            // IV - Make sure replacements are only at start and end positions
+                            where = ("¬" + where + "¬").replace("/Songs¬","");
                             // IV - For paths identified as Internal storage (more patterns may be needed) remove the parent folder to reduce to a simple path
-                            where = where.replace("/storage/sdcard0/","");
-                            where = where.replace("/storage/emulated/0/","");
-                            where = where.replace("/storage/emulated/legacy/","");
-                            where = where.replace("/storage/self/primary","");
+                            where = where.replace("¬/storage/sdcard0","");
+                            where = where.replace("¬/storage/emulated/0","");
+                            where = where.replace("¬/storage/emulated/legacy","");
+                            where = where.replace("¬/storage/self/primary","");
                             // IV - Deal with remaining as external and detail the parent folder name
-                            if (where.startsWith("/") ) {
-                                where = where.substring(1);
+                            if (where.startsWith("¬/") ) {
+                                where = where.substring(2);
                                 where = where.substring(where.indexOf("/") + 1);
                                 where = where.substring(where.indexOf("/")) + " (" + this.getResources().getString(R.string.storage_ext) + " " + where.substring(0, where.indexOf("/")) + ")";
-                            } else {
-                                where = "/" + where;
                             }
                             locations.add(where);
                         }
                         folder = f;
-                        displayWhere(where);
                         walkFiles(f);
                     }
                 }
