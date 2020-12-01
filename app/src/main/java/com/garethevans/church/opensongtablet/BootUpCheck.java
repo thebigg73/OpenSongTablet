@@ -361,7 +361,7 @@ public class BootUpCheck extends AppCompatActivity {
 
         // Decide if the user needs blocking as  they have selected a subfolder of an OpenSong folder
         if (warningText!=null) {
-            if (text.contains("OpenSong/")) {
+            if (text.contains("/OpenSong/")) {
                 // IV - Force 'Not set'
                 uriTree = null;
                 text = getString(R.string.notset);
@@ -854,17 +854,17 @@ public class BootUpCheck extends AppCompatActivity {
                         displayWhere(where);
                         if (!where.contains(".estrongs") && !where.contains("com.ttxapps") && where.endsWith("/OpenSong/Songs")) {
                             // Found one and it isn't in eStrongs recycle folder or the dropsync temp files!
-                            // IV - Make sure replacements are only at start and end positions
-                            where = ("¬" + where + "¬").replace("/Songs¬","");
-                            // IV - For paths identified as Internal storage (more patterns may be needed) remove the parent folder to reduce to a simple path
-                            where = where.replace("¬/storage/sdcard0","");
-                            where = where.replace("¬/storage/emulated/0","");
-                            where = where.replace("¬/storage/emulated/legacy","");
-                            where = where.replace("¬/storage/self/primary","");
-                            // IV - Deal with remaining as external and detail the parent folder name
-                            if (where.startsWith("¬/") ) {
-                                where = where.substring(2);
-                                where = where.substring(where.indexOf("/") + 1);
+                            // Iv  Add  a leading ¬ and remove trailing /Songs
+                            where = "¬" + where.substring(0, where.length() - 6);
+                            // IV - For paths identified as Internal storage (more patterns may be needed) remove the parent folder
+                            where = where.
+                                replace("¬/storage/sdcard0/"         ,"/").
+                                replace("¬/storage/emulated/0/"      ,"/").
+                                replace("¬/storage/emulated/legacy/" ,"/").
+                                replace("¬/storage/self/primary/"    ,"/");
+                            if (where.startsWith("¬")) {
+                                // IV - Handle others paths as 'External': Re-arrange ¬/storage/xxxx/yyyy/zzzz... to 'yyyy/zzzz... (External storage xxxx)'
+                                where = where.substring(10);
                                 where = where.substring(where.indexOf("/")) + " (" + this.getResources().getString(R.string.storage_ext) + " " + where.substring(0, where.indexOf("/")) + ")";
                             }
                             locations.add(where);
