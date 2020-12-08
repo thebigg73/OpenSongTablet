@@ -834,6 +834,11 @@ class ProfileActions {
                             preferences.setMyPreferenceString(c,"displayNextInSet",getTextValue(xppValue,"B"));
                             break;
 
+                        case "displayBoldChordsHeadings":   //New preference
+                            //displayBoldChordsHeadings    boolean     Should the chords and headings be shown in a bold font (def:false)
+                            preferences.setMyPreferenceBoolean(c,"displayBoldChordsHeadings",getBooleanValue(xppValue,false));
+                            break;
+
                         case "drawingAutoDisplay":        // New preference
                         case "toggleAutoHighlight":       // Old preference
                             //drawingAutoDisplay              boolean     Should the highlighter drawings be shown on page load
@@ -1493,6 +1498,11 @@ class ProfileActions {
                             preferences.setMyPreferenceBoolean(c,"pedalScrollBeforeMove",getBooleanValue(xppValue,true));
                             break;
 
+                        case "pedalShowWarningBeforeMove":        // New preference
+                            //pedalShowWarningBeforeMove      boolean     Should an 'are you sure' toast warning be shown before moving to next item in the set (def:false)
+                            preferences.setMyPreferenceBoolean(c,"pedalShowWarningBeforeMove",getBooleanValue(xppValue,false));
+                            break;
+
                         case "popupAlpha":        // New preference
                         case "popupAlpha_All":        // Old preference
                             //popupAlpha                      float       The opacity of the popup windows
@@ -1681,6 +1691,11 @@ class ProfileActions {
                         case "presoLyricsVAlign":        // New preference
                             //presoLyricsVAlign                int         The vertical align gravity of the lyrics in presentation mode
                             preferences.setMyPreferenceInt(c,"presoLyricsVAlign",getIntegerValue(xppValue,Gravity.TOP));
+                            break;
+
+                        case "presoLyricsBold":   //New preference
+                            //presoLyricsBold    boolean     Should the presentation text be bold (def:false)
+                            preferences.setMyPreferenceBoolean(c,"presoLyricsBold",getBooleanValue(xppValue,false));
                             break;
 
                         case "presoShowChords":        // New preference
