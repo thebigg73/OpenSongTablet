@@ -76,7 +76,6 @@ public class Preferences extends Activity {
         }
     }
 
-
     // Below is an alphabetical list of all the user preferences stored in the app!
     //TODO
     // customLogoSize is specified, but no option in the app to change it
