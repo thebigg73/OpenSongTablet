@@ -578,6 +578,28 @@ class StorageAccess {
         }
         return songIds;
     }
+    int songCountAtLocation(File f) {
+        // Prepare an arraylist for any song folders
+        ArrayList<File> foldersToIndex = new ArrayList<>();
+        foldersToIndex.add(f);
+        int count = 0;
+        try {
+            for (int x = 0; x < foldersToIndex.size(); x++) {
+                File[] fs = foldersToIndex.get(x).listFiles();
+                for (File ff : fs) {
+                    Log.d("d", "ff=" + ff);
+                    if (ff.isDirectory()) {
+                        foldersToIndex.add(ff);
+                    } else {
+                        count++;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 
 
     // Here are all the file accesses used in the app!!!

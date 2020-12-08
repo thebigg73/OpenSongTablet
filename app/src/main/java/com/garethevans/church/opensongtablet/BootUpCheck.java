@@ -378,8 +378,16 @@ public class BootUpCheck extends AppCompatActivity {
                 ArrayList<String> songIds;
                 try {
                     songIds = storageAccess.listSongs(BootUpCheck.this, preferences);
+                    // Only items that don't end with / are songs!
+                    int count = 0;
+                    for (String s:songIds) {
+                        if (!s.endsWith("/")) {
+                            count++;
+                        }
+                    }
+
                     if (extra.length() > 0) { extra = extra + ", "; }
-                    extra = extra + songIds.size() + " " + getString(R.string.songsinfolder).toLowerCase();
+                    extra = extra + getString(R.string.songsinfolder) + ":" + count;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -853,6 +861,7 @@ public class BootUpCheck extends AppCompatActivity {
                         String where = f.getAbsolutePath();
                         displayWhere(where);
                         if (!where.contains(".estrongs") && !where.contains("com.ttxapps") && where.endsWith("/OpenSong/Songs")) {
+                            int count = storageAccess.songCountAtLocation(f);
                             // Found one and it isn't in eStrongs recycle folder or the dropsync temp files!
                             // Iv  Add  a leading ¬ and remove trailing /Songs
                             where = "¬" + where.substring(0, where.length() - 6);
@@ -867,7 +876,7 @@ public class BootUpCheck extends AppCompatActivity {
                                 where = where.substring(10);
                                 where = where.substring(where.indexOf("/")) + " (" + this.getResources().getString(R.string.storage_ext) + " " + where.substring(0, where.indexOf("/")) + ")";
                             }
-                            locations.add(where);
+                            locations.add(where + "   ("+getString(R.string.songsinfolder)+": "+count+")");
                         }
                         folder = f;
                         walkFiles(f);
