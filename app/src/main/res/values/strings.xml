@@ -88,7 +88,7 @@
     <string name="ccli_licence">Licence number</string>
     <string name="ccli_reset">Reset CCLI log</string>
     <string name="ccli_view">View CCLI log</string>
-    <string name="changestorage">Change storage location</string>
+    <string name="changestorage">Change OpenSong folder location</string>
     <string name="chapter">Chapter</string>
     <string name="choose_app_mode">Choose app mode</string>
     <string name="choose_chordformat">Choose chord format</string>
@@ -219,7 +219,7 @@
     <string name="editpdf">Edit in external PDF program</string>
     <string name="error">Error</string>
     <string name="error_missingsection">Missing sections</string>
-    <string name="existing">Find previous installation locations for OpenSong files</string>
+    <string name="existing">Find a previous OpenSong folder</string>
     <string name="exit">Are you sure you want to exit the program?</string>
     <string name="export">Export</string>
     <string name="export_chordpro">ChordPro song (.cho)</string>
@@ -251,7 +251,7 @@
     <string name="fontsize">to use when AUTOSCALE is OFF</string>
     <string name="footpedal">Assign foot pedal</string>
     <string name="forum" translatable="false">opensongapp@googlegroups.com</string>
-    <string name="found">You have already used the following install locations.  You will still need to locate and set this manually using the red button above.</string>
+    <string name="found">You have previously used the following \'OpenSong\' folder.  You will still need to select this manually using the red button above.</string>
     <string name="full">Full</string>
     <string name="gesture1">Open song menu</string>
     <string name="gesture2">Edit song</string>
@@ -534,8 +534,8 @@
     <string name="songsheet">Songsheet</string>
     <string name="songsinfolder">Song folder</string>
     <string name="speed">Speed</string>
-    <string name="stage_section_max">Max section height (Stage Mode)</string>
-    <string name="stagemode">Stage Mode</string>
+    <string name="stage_section_max">Max section height (Stage mode)</string>
+    <string name="stagemode">Stage mode</string>
     <string name="start">Start</string>
     <string name="start_screen">Go back to start screen</string>
     <string name="stickynotes">Song notes</string>
@@ -545,7 +545,7 @@
     <string name="storage_check">Checking storage</string>
     <string name="storage_choose">Manage storage</string>
     <string name="storage_ext">External storage</string>
-    <string name="storage_help">Please choose the default storage location for your OpenSong files.  You can change this at any time from the Options menu.</string>
+    <string name="storage_help">Please choose the location for your \'OpenSong\' folder.  This is the default storage location for OpenSong files.  We recommend using internal storage.  You can change this at any time from the Options menu.\n\nFor an update or re-install:\nIf the current location is not set, use the yellow button below to find your \'OpenSong\' folder.</string>
     <string name="storage_notwritable">Unable to use</string>
     <string name="storage_rationale">Access to your storage is required to read and write songs and sets.</string>
     <string name="subscription">(Subscription required)</string>
@@ -711,7 +711,7 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="youtube">Search YouTube for current song</string>
     <string name="zerotime" translatable="false">0:00</string>
     <string name="duplicate">Duplicate</string>
-    <string name="storage_warning">Please do not select the \'Songs\' folder as your storage location.  You should select the parent \'OpenSong\' folder location instead.</string>
+    <string name="storage_warning">Please do not select a folder within an \'OpenSong\' folder.  You should select the parent \'OpenSong\' folder instead.</string>
     <string name="rotate_display">Rotate display</string>
     <string name="warn_before_changing_song">Show a warning before moving to the next song (useful to avoid accidental presses)</string>
     <string name="bold_chords_headings">Display chords and headings in bold</string>

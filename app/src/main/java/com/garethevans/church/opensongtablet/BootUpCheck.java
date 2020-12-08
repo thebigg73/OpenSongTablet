@@ -36,7 +36,6 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import lib.folderpicker.FolderPicker;
 
@@ -97,8 +96,6 @@ public class BootUpCheck extends AppCompatActivity {
         // Load up all of the preferences and the user specified storage location if it exists
         checkPreferencesForStorage();
 
-        showCurrentStorage(uriTreeHome);
-
         StaticVariables.whichSongFolder = preferences.getMyPreferenceString(BootUpCheck.this, "whichSongFolder",
                 getString(R.string.mainfoldername));
         StaticVariables.songfilename = preferences.getMyPreferenceString(BootUpCheck.this, "songfilename",
@@ -141,7 +138,7 @@ public class BootUpCheck extends AppCompatActivity {
                 installPlayServices();
             }
 
-            // Update the verion and storage
+            // Update the version and storage
             showCurrentStorage(uriTreeHome);
             version.setText(versionCode);
 
@@ -220,6 +217,8 @@ public class BootUpCheck extends AppCompatActivity {
                     preferences.setMyPreferenceString(BootUpCheck.this,"whichMode",whichMode);
                     break;
             }
+            // IV - We're good to do a logo splash startup
+            setContentView(R.layout.activity_logosplash);
             goToSongs();
         });
         chooseStorageButton.setOnClickListener(v -> chooseStorageLocation());
@@ -234,7 +233,7 @@ public class BootUpCheck extends AppCompatActivity {
             }
         });
         userGuideLinearLayout.setOnClickListener(v -> {
-            String url = "http://www.opensongapp.com";
+            String url = "http://www.opensongapp.com/user-guide";
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             try {
@@ -244,7 +243,7 @@ public class BootUpCheck extends AppCompatActivity {
             }
         });
         userGuideButton.setOnClickListener(v -> {
-            String url = "http://www.opensongapp.com";
+            String url = "http://www.opensongapp.com/user-guide";
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             try {
@@ -335,64 +334,73 @@ public class BootUpCheck extends AppCompatActivity {
         // This tries to make the uri more user readable!
         // Declare variables
         String text;
-        if (u!=null) {
-            if (storageAccess.lollipopOrLater()) {
-                try {
-                    List<String> bits = u.getPathSegments();
-                    StringBuilder sb = new StringBuilder();
-                    for (String b : bits) {
-                        sb.append("/");
-                        sb.append(b);
-                    }
-                    text = sb.toString();
-                    if (!text.endsWith(storageAccess.appFolder)) {
-                        text += "/" + storageAccess.appFolder;
-                    }
-                    text = text.replace("tree", "/");
-                    text = text.replace(":", "/");
-                    while (text.contains("//")) {
-                        text = text.replace("//", "/");
-                    }
+        // IV - Provides extra information on the folder
+        String extra = "";
 
-                    // Finally, the storage location is likely something like /9016-4EF8/OpenSong/document/9016-4EF8/OpenSong
-                    // This is due to the content using a document contract
-                    // Strip this back to the bit after document
-                    if (text.contains("OpenSong/document/")) {
-                        text = text.substring(text.lastIndexOf("OpenSong/document/")+18);
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    text = "" + uriTreeHome;
-                }
-            } else {
-                text = u.getPath();
+        // IV - Try to get the path with leading / and trailing /OpenSong
+        try {
+            text = u.getPath();
+            assert text != null;
+            // IV - When not an internal path (more patterns may be needed) indicate as external
+            if (!text.contains("/tree/primary")) { extra = this.getResources().getString(R.string.storage_ext); }
+            // The  storage location getPath is likely something like /tree/primary:/document/primary:/OpenSong
+            // This is due to the content using a document contract
+            text = "/" + text.substring(text.lastIndexOf(":") + 1);
+            text = text.replace("//", "/");
+            if (!text.endsWith("/" + storageAccess.appFolder)) {
+                text += "/" + storageAccess.appFolder;
             }
-
-        } else {
-            text = getString(R.string.notset);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (uriTreeHome == null) {
+                text = getString(R.string.notset);
+            } else {
+                text = "" + uriTreeHome;
+            }
         }
 
-        // Decide if the user needs warned that they have selected the Songs folder.
+        // Decide if the user needs blocking as  they have selected a subfolder of an OpenSong folder
         if (warningText!=null) {
-            if (text!=null && (text.endsWith("OpenSong/Songs/") || text.endsWith("OpenSong/Songs") ||
-                    text.endsWith("OpenSong/Songs/OpenSong/") || text.endsWith("OpenSong/Songs/OpenSong"))) {
+            if (text.contains("/OpenSong/")) {
+                // IV - Force 'Not set'
+                uriTree = null;
+                text = getString(R.string.notset);
+                saveUriLocation();
                 warningText.setVisibility(View.VISIBLE);
             } else {
                 warningText.setVisibility(View.GONE);
             }
         }
 
-        if (text.startsWith("primary/")) {
-            text = text.replace("primary/","/");
-        }
         if (progressText!=null) {
+            // IV - If we have a path try to give extra info of a 'songs' count
+            if (text.startsWith("/")) {
+                ArrayList<String> songIds;
+                try {
+                    songIds = storageAccess.listSongs(BootUpCheck.this, preferences);
+                    if (extra.length() > 0) { extra = extra + ", "; }
+                    extra = extra + songIds.size() + " " + getString(R.string.songsinfolder).toLowerCase();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (extra.equals("")) {
+                text = getString(R.string.currentstorage) + ": " + text;
+            } else {
+                text = getString(R.string.currentstorage) + " (" + extra + "): " + text;
+            }
+
+            // IV - Readiness may have changed
+            checkReadiness();
+
             // We aren't just passing through, so we can set the text
             progressText.setText(text);
         }
     }
     @SuppressLint("InlinedApi")
     private void chooseStorageLocation() {
+        progressText.setText(String.format("%s ...", getString(R.string.currentstorage)));
         if (storageGranted) {
             Intent intent;
             if (storageAccess.lollipopOrLater()) {
@@ -427,12 +435,11 @@ public class BootUpCheck extends AppCompatActivity {
             // Save the location uriTree and uriTreeHome
             saveUriLocation();
 
-            // Update the storage text
-            showCurrentStorage(uriTreeHome);
-
             // See if we can show the start button yet
             checkReadiness();
         }
+        // Always update the storage text
+        showCurrentStorage(uriTreeHome);
     }
 
     private void kitKatDealWithUri(Intent resultData) {
@@ -844,13 +851,25 @@ public class BootUpCheck extends AppCompatActivity {
                 for (File f : list) {
                     if (f.isDirectory()) {
                         String where = f.getAbsolutePath();
-                        if (where.endsWith("/OpenSong/Songs") && !where.contains(".estrongs") && !where.contains("com.ttxapps")) {
+                        displayWhere(where);
+                        if (!where.contains(".estrongs") && !where.contains("com.ttxapps") && where.endsWith("/OpenSong/Songs")) {
                             // Found one and it isn't in eStrongs recycle folder or the dropsync temp files!
-                            where = where.substring(0, where.length() - 15);
+                            // Iv  Add  a leading ¬ and remove trailing /Songs
+                            where = "¬" + where.substring(0, where.length() - 6);
+                            // IV - For paths identified as Internal storage (more patterns may be needed) remove the parent folder
+                            where = where.
+                                replace("¬/storage/sdcard0/"         ,"/").
+                                replace("¬/storage/emulated/0/"      ,"/").
+                                replace("¬/storage/emulated/legacy/" ,"/").
+                                replace("¬/storage/self/primary/"    ,"/");
+                            if (where.startsWith("¬")) {
+                                // IV - Handle others paths as 'External': Re-arrange ¬/storage/xxxx/yyyy/zzzz... to 'yyyy/zzzz... (External storage xxxx)'
+                                where = where.substring(10);
+                                where = where.substring(where.indexOf("/")) + " (" + this.getResources().getString(R.string.storage_ext) + " " + where.substring(0, where.indexOf("/")) + ")";
+                            }
                             locations.add(where);
                         }
                         folder = f;
-                        displayWhere(where);
                         walkFiles(f);
                     }
                 }
@@ -896,12 +915,13 @@ public class BootUpCheck extends AppCompatActivity {
                     // Add the locations to the textview
                     StringBuilder sb = new StringBuilder();
                     for (String str:locations) {
-                        if (!sb.toString().contains(str+" ")) {
-                            sb.append(str).append(" \n");
+                        if (!sb.toString().contains("¬" + str + "¬")) {
+                            sb.append("¬").append(str).append("¬").append(" \n");
                         }
                     }
                     previousStorageTextView.setVisibility(View.GONE);
-                    previousStorageLocationsTextView.setText(sb.toString().trim());
+                    previousStorageLocationsTextView.setText(sb.toString().replace("¬","").trim());
+                    previousStorageLocationsTextView.setVisibility(View.VISIBLE);
                     locations.add(0,"");
                     previousStorageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
