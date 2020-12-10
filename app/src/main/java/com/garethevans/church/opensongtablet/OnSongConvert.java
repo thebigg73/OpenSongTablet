@@ -63,9 +63,6 @@ class OnSongConvert {
         // Get rid of multilple line breaks (max of 3 together)
         lyrics = chordProConvert.getRidOfExtraLines(lyrics);
 
-        // Add spaces to beginnings of lines that aren't comments, chords or tags
-        lyrics = chordProConvert.addSpacesToLines(lyrics);
-
         // Get the filename and subfolder (if any) that the original song was in by parsing the uri
         oldSongFileName = chordProConvert.getOldSongFileName(uri);
         songSubFolder = chordProConvert.getSongFolderLocation(storageAccess, uri, oldSongFileName);
@@ -164,6 +161,16 @@ class OnSongConvert {
         // Break the filecontents into lines
         lines = l.split("\n");
 
+        // IV - Handle tagless 1st and 2nd lines as Title and Artist
+        if ((lines.length > 0) && (!lines[0].contains(":"))) {
+            title = lines[0].trim();
+            lines[0] = "";
+        }
+        if ((lines.length > 1) && (!lines[1].contains(":"))) {
+            // IV - Change ';' to ',' - the separator used by CCLI
+            author = lines[1].trim().replace(";",",");
+            lines[1] = "";
+        }
         // This will be the new lyrics lines
         parsedLines = new StringBuilder();
         for (String line : lines) {

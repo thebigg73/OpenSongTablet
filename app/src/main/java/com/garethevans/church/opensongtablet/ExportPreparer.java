@@ -175,6 +175,9 @@ class ExportPreparer {
                 String s = FullscreenActivity.exportsetfilenames.get(q);
 
                 if (!isImgOrPDF(s)) {
+                    if (s.startsWith("/# Variation # - ")) {
+                        s = s.replace("# Variation # - ","../Variations/");
+                    }
                     if (s.startsWith("/") && !s.contains(c.getResources().getString(R.string.mainfoldername))) {
                         s = c.getResources().getString(R.string.mainfoldername) + s;
                     }
@@ -430,54 +433,62 @@ class ExportPreparer {
                     if (xpp.getName().equals("slide_group")) {
                         switch (xpp.getAttributeValue(null, "type")) {
                             case "song":
-                                String fname = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
-                                Uri songuri = storageAccess.getUriForItem(c, preferences, "Songs",
-                                        LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "path")), fname);
-                                String thisline;
-
-                                // Ensure there is a folder '/'
-                                if (xpp.getAttributeValue(null, "path").equals("")) {
-                                    thisline = "/" + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
-                                } else {
-                                    thisline = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "path")) + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
-                                }
-                                filesinset.add(thisline);
-                                filesinset_ost.add(thisline);
-
-                                // Set the default values exported with the text for the set
-                                song_title = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
-                                song_author = "";
-                                song_hymnnumber = "";
-                                song_key = "";
-                                // Now try to improve on this info
-                                if (storageAccess.uriExists(c,songuri) && !isImgOrPDF(fname)) {
-                                    // Read in the song title, author, copyright, hymnnumber, key
-                                    getSongData(c,songuri,storageAccess);
-                                }
-                                sb.append(song_title);
-                                if (!song_author.isEmpty()) {
-                                    sb.append(", ").append(song_author);
-                                }
-                                if (!song_hymnnumber.isEmpty()) {
-                                    sb.append(", #").append(song_hymnnumber);
-                                }
-                                if (!song_key.isEmpty()) {
-                                    sb.append(" (").append(song_key).append(")");
-                                }
-                                sb.append("\n");
-                                break;
-                            case "scripture":
-                                sb.append(LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"))).append("\n");
-                                break;
                             case "custom":
-                                // Decide if this is a note or a slide
-                                if (xpp.getAttributeValue(null, "name").contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
+                                // Process a song/song variation, note or slide (others)
+                                if (xpp.getAttributeValue(null, "name").contains("# " + c.getResources().getString(R.string.variation) + " # - ") || xpp.getAttributeValue(null, "type").equals("song")) {
+                                    String fname;
+                                    Uri songuri;
+                                    String thisline;
+
+                                    fname = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
+                                    if (fname.contains("# Variation # - ")) {
+                                        fname = fname.replace("# Variation # - ", "");
+                                        songuri = storageAccess.getUriForItem(c, preferences, "Songs", "../Variations", fname);
+                                    } else {
+                                        songuri = storageAccess.getUriForItem(c, preferences, "Songs",
+                                                LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "path")), fname);
+                                    }
+
+                                    // Ensure there is a folder '/'
+                                    if (LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "path")).equals("")) {
+                                        thisline = "/" + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
+                                    } else {
+                                        thisline = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "path")) + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
+                                    }
+                                    filesinset.add(thisline);
+                                    filesinset_ost.add(thisline);
+
+                                    // Set the default values exported with the text for the set
+                                    song_title = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
+                                    song_author = "";
+                                    song_hymnnumber = "";
+                                    song_key = "";
+                                    // Now try to improve on this info
+                                    if (storageAccess.uriExists(c, songuri) && !isImgOrPDF(fname)) {
+                                        // Read in the song title, author, copyright, hymnnumber, key
+                                        getSongData(c, songuri, storageAccess);
+                                    }
+                                    sb.append(song_title);
+                                    if (!song_author.isEmpty()) {
+                                        sb.append(", ").append(song_author);
+                                    }
+                                    if (!song_hymnnumber.isEmpty()) {
+                                        sb.append(", #").append(song_hymnnumber);
+                                    }
+                                    if (!song_key.isEmpty()) {
+                                        sb.append(" (").append(song_key).append(")");
+                                    }
+                                    sb.append("\n");
+                                } else if (xpp.getAttributeValue(null, "name").contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
                                     String nametemp = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
                                     nametemp = nametemp.replace("# " + c.getResources().getString(R.string.note) + " # - ", "");
                                     sb.append(nametemp).append("\n");
                                 } else {
-                                    sb.append(LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"))).append("\n");
+                                    sb.append(LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"))).append("\n");
                                 }
+                                break;
+                            case "scripture":
+                                sb.append(LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"))).append("\n");
                                 break;
                             case "image":
                                 // Go through the descriptions of each image and extract the absolute file locations
@@ -802,20 +813,35 @@ class ExportPreparer {
 
     private String prepareChordProFile(Context c, ProcessSong processSong) {
         // This converts an OpenSong file into a ChordPro file
-        StringBuilder s = new StringBuilder("{ns}\n");
-        s.append("{t:").append(StaticVariables.mTitle).append("}\n");
-        s.append("{st:").append(StaticVariables.mAuthor).append("}\n\n");
-
+        StringBuilder s = new StringBuilder("{new_song}\n");
+        s.append("{title:").append(StaticVariables.mTitle).append("}\n");
+        s.append("{artist:").append(StaticVariables.mAuthor).append("}\n");
+        s.append("{key:").append(StaticVariables.mKey).append("}\n");
+        s.append("{tempo:").append(StaticVariables.mTempo).append("}\n");
+        s.append("{time:").append(StaticVariables.mTimeSig).append("}\n");
         // Go through each song section and add the ChordPro formatted chords
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
-            // IV - Quick exit if Heading or Note
+            // IV - Quick exit if extra information heading or Note
             if (!StaticVariables.songSections[f].startsWith(" B_") && !StaticVariables.songSections[f].startsWith(";__")) {
                 s.append(processSong.songSectionChordPro(c, f, false));
             }
         }
+        s.append("{ccli:").append(StaticVariables.mCCLI).append("}\n");
+        s.append("{copyright:").append(StaticVariables.mCopyright).append("}\n");
 
         String string = s.toString();
-        string = string.replace("\n\n\n", "\n\n");
+        // IV - Replace multiple blank lines with a single blank line and remove empty items
+        string = string.replaceAll("\n\n\n", "\n\n");
+        string = string .
+            replace ("\n\n{ccli","\n{ccli").
+            replace ("{artist:}\n","").
+            replace ("{key:}\n","").
+            replace ("{tempo:}\n","").
+            replace ("{time:}\n","").
+            replace ("{ccli:}\n","").
+            replace ("{copyright:}\n","");
+        // IV - remove empty comments
+        string = string.replaceAll("\\Q{c:}\\E\n", "");
         return string;
     }
     private String prepareOnSongFile(Context c, ProcessSong processSong) {
@@ -824,13 +850,9 @@ class ExportPreparer {
         if (!StaticVariables.mAuthor.equals("")) {
             s.append(StaticVariables.mAuthor).append("\n");
         }
-        if (!StaticVariables.mCopyright.equals("")) {
-            s.append("Copyright: ").append(StaticVariables.mCopyright).append("\n");
-        }
-        if (!StaticVariables.mKey.equals("")) {
-            s.append("Key: ").append(StaticVariables.mKey).append("\n\n");
-        }
-
+        s.append("Key: ").append(StaticVariables.mKey).append("\n");
+        s.append("Tempo: ").append(StaticVariables.mTempo).append("\n");
+        s.append("Time: ").append(StaticVariables.mTimeSig).append("\n");
         // Go through each song section and add the ChordPro formatted chords
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
             // IV - Quick exit if Heading or Note
@@ -838,11 +860,21 @@ class ExportPreparer {
                 s.append(processSong.songSectionChordPro(c, f, true));
             }
         }
+        s.append("CCLI: ").append(StaticVariables.mCCLI).append("\n");
+        s.append("Copyright: ").append(StaticVariables.mCopyright).append("\n");
 
         String string = s.toString();
+        // IV - Replace multiple blank lines with a single blank line and remove empty items
         string = string.replaceAll("\n\n\n", "\n\n");
+        string = string .
+                replace ("\n\nCCLI","\nCCLI").
+                replace ("Key: \n","").
+                replace ("Tempo: \n","").
+                replace ("Time: \n","").
+                replace ("CCLI: \n","").
+                replace ("Copyright: \n","");
         // IV - remove empty comments
-        string = string.replace("{c:}\n", "");
+        string = string.replaceAll("\\Q{c:}\\E\n", "");
         return string;
     }
     private String prepareTextFile(Context c, Preferences preferences, ProcessSong processSong) {
@@ -851,13 +883,10 @@ class ExportPreparer {
         if (!StaticVariables.mAuthor.equals("")) {
             s.append(StaticVariables.mAuthor).append("\n");
         }
-        if (!StaticVariables.mCopyright.equals("")) {
-            s.append("Copyright: ").append(StaticVariables.mCopyright).append("\n");
-        }
-        if (!StaticVariables.mKey.equals("")) {
-            s.append("Key: ").append(StaticVariables.mKey).append("\n\n");
-        }
-
+        s.append("Key: ").append(StaticVariables.mKey).append("\n");
+        s.append("Tempo: ").append(StaticVariables.mTempo).append("\n");
+        s.append("Time: ").append(StaticVariables.mTimeSig).append("\n");
+        s.append("\n");
         // Go through each song section and add the text trimmed lines
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
             // IV - Quick exit if Heading or Note
@@ -866,9 +895,18 @@ class ExportPreparer {
                 s.append(processSong.songSectionText(c, preferences, f)).append("\n\n");
             }
         }
+        s.append("CCLI: ").append(StaticVariables.mCCLI).append("\n");
+        s.append("Copyright: ").append(StaticVariables.mCopyright).append("\n");
 
         String string = s.toString();
+        // IV - Replace multiple blank lines with a single blank line and remove empty items
         string = string.replaceAll("\n\n\n", "\n\n");
+        string = string .
+                replace ("Key: \n","").
+                replace ("Tempo: \n","").
+                replace ("Time: \n","").
+                replace ("CCLI: \n","").
+                replace ("Copyright: \n","");
         return string;
     }
 
