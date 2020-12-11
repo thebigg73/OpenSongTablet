@@ -200,7 +200,7 @@ class OnSongConvert {
 
             } else if (line.contains("{copyright:") || line.contains("Copyright:") || line.contains("Footer:")) {
                 line = chordProConvert.removeTags(line, "{copyright:");
-                line = chordProConvert.removeTags(line, "Copyright::");
+                line = chordProConvert.removeTags(line, "Copyright:");
                 line = chordProConvert.removeTags(line, "Footer:");
                 copyright = line.trim();
                 line = "";

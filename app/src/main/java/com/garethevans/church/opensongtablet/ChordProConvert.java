@@ -167,6 +167,10 @@ class ChordProConvert {
             // Get rid of any extra whitespace
             line = line.trim();
 
+            // IV - SongSelect chordpro files end with a CCLI info block. The english start is 'CCLI Song # ....'.  It is localised with most starting CCLI
+            // IV - When we find an info block, stop adding lines as we are at the end of the lyrics
+            if (line.startsWith("CCLI") || line.startsWith("Número de la canción CCLI") || line.startsWith("Música CCLI")) {break;}
+
             // Remove directive lines we don't need
             line = removeObsolete(line);
 
@@ -182,7 +186,8 @@ class ChordProConvert {
 
             } else if (line.contains("{copyright:")) {
                 // Extract the copyright and empty the line (don't need to keep it)
-                copyright = removeTags(line, "{copyright:");
+                // IV - Replace use of " |" or ";" as copyright holder separator with ,
+                copyright = removeTags(line, "{copyright:").replace(" |",",").replace(";",",");
                 line = "";
 
             } else if (line.contains("{subtitle:")) {
@@ -248,9 +253,10 @@ class ChordProConvert {
     }
 
     String removeObsolete(String s) {
-        // IV - Added removal of SongSelect license tag
+        // IV - Added removal of SongSelect license and footer tag
         if (s.contains("{new_song")
                 || s.contains("{ccli_license")
+                || s.contains("{footer")
                 || s.contains("{inline")
                 || s.contains("{define")
                 || s.contains("{textfont")
@@ -617,7 +623,7 @@ class ChordProConvert {
     private String guessTags(String s) {
         // Only check for definite comment lines on lines that are short enough to maybe be headings
         if (s.startsWith(";") || s.startsWith("#") | s.length() < 16) {
-            // IV - First deal with special cases that usde brackets
+            // IV - First deal with special cases that use brackets
             s = s.replace("(VERSE)", "[V]");
             s = s.replace("(Verse 1)", "[V1]");
             s = s.replace("(Verse 2)", "[V2]");
