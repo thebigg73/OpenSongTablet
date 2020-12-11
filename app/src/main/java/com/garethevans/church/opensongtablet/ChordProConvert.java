@@ -49,6 +49,9 @@ class ChordProConvert {
         // Get rid of multilple line breaks (max of 3 together)
         lyrics = getRidOfExtraLines(lyrics);
 
+        // Add spaces to beginnings of lines that aren't comments, chords or tags
+        lyrics = addSpacesToLines(lyrics);
+
         // Get the filename and subfolder (if any) that the original song was in by parsing the uri
         oldSongFileName = getOldSongFileName(uri);
         songSubFolder = getSongFolderLocation(storageAccess, uri, oldSongFileName);
@@ -417,12 +420,9 @@ class ChordProConvert {
 
         for (String line : lines) {
             line = line.trim();
-            if (!line.startsWith("[") && !line.startsWith(".") && !line.startsWith(";") && !line.startsWith(" ") && !s.equals("")) {
+            if (!line.startsWith("[") && !line.startsWith(".") && !line.startsWith(";") && !s.equals("")) {
                 // Must be a lyric line, so add a space
                 line = " " + line;
-            } else if (line.startsWith(".")) {
-                //the line contains chords, adjust for space inserted to lyrics
-                line = ". " + line.substring(1);
             }
             line = line + "\n";
             parsedLines.append(line);
@@ -655,7 +655,7 @@ class ChordProConvert {
         // IV - s incoming string, m matched word, r start of returned heading
         String wm = m;
         // IV - Lots of variations are considered!
-        s = s.replace(m + ":", "[¬]").
+        s = s.replace(wm + ":", "[¬]").
             replace(wm + " 1:", "[¬ 1]").
             replace(wm + " 2:", "[¬ 2]").
             replace(wm + " 3:", "[¬ 3]").
@@ -663,10 +663,11 @@ class ChordProConvert {
             replace(wm + " 1", "[¬ 1]").
             replace(wm + " 2", "[¬ 2]").
             replace(wm + " 3", "[¬ 3]").
-            replace(wm + " 4", "[¬ 4]");
+            replace(wm + " 4", "[¬ 4]").
+            replace(wm, "[¬]");
         // IV - And when uppercase
         wm = wm.toUpperCase();
-        s = s.replace(m + ":", "[¬]").
+        s = s.replace(wm + ":", "[¬]").
             replace(wm + " 1:", "[¬ 1]").
             replace(wm + " 2:", "[¬ 2]").
             replace(wm + " 3:", "[¬ 3]").
@@ -681,10 +682,9 @@ class ChordProConvert {
         if (s.endsWith("]")) {
             // IV - Single character 'start of returned heading' (V etc.) have no following space
             if (r.length() == 1) {
-                s = s.replace("¬ ", r);
-            } else {
-                s = s.replace("¬", r);
+                s = s.replace("¬ ", "¬");
             }
+            s = s.replace("¬", r);
         } else {
             // IV - For a partial replace, re-work to only replace the matched word
             // IV - For example 'CHORUS1a:' ->  '[¬]1a:' -> 'Chorus1a:'

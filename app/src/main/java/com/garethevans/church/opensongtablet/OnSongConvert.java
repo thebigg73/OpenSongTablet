@@ -63,6 +63,9 @@ class OnSongConvert {
         // Get rid of multilple line breaks (max of 3 together)
         lyrics = chordProConvert.getRidOfExtraLines(lyrics);
 
+        // Add spaces to beginnings of lines that aren't comments, chords or tags
+        lyrics = chordProConvert.addSpacesToLines(lyrics);
+
         // Get the filename and subfolder (if any) that the original song was in by parsing the uri
         oldSongFileName = chordProConvert.getOldSongFileName(uri);
         songSubFolder = chordProConvert.getSongFolderLocation(storageAccess, uri, oldSongFileName);
