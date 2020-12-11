@@ -167,9 +167,10 @@ class ChordProConvert {
             // Get rid of any extra whitespace
             line = line.trim();
 
-            // IV - SongSelect chordpro files end with a CCLI info block. The english start is 'CCLI Song # ....'.  It is localised with most starting CCLI
+            // IV - SongSelect chordpro files end with a CCLI info block. The english start is 'CCLI Song # ....'.
+            // IV - It is localised with most starting 'CCLI ' (following space is important as onsong files may have CCLI:)
             // IV - When we find an info block, stop adding lines as we are at the end of the lyrics
-            if (line.startsWith("CCLI") || line.startsWith("Número de la canción CCLI") || line.startsWith("Música CCLI")) {break;}
+            if (line.startsWith("CCLI ") || line.startsWith("Número de la canción CCLI") || line.startsWith("Música CCLI")) {break;}
 
             // Remove directive lines we don't need
             line = removeObsolete(line);
