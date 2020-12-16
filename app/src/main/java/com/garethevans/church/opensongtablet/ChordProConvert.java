@@ -662,40 +662,40 @@ class ChordProConvert {
         // IV - s incoming string, m matched word, r start of returned heading
         String wm = m;
         // IV - Lots of variations are considered!
-        s = s.replace(wm + ":", "[¬]").
-            replace(wm + " 1:", "[¬ 1]").
-            replace(wm + " 2:", "[¬ 2]").
-            replace(wm + " 3:", "[¬ 3]").
-            replace(wm + " 4:", "[¬ 4]").
-            replace(wm + " 1", "[¬ 1]").
-            replace(wm + " 2", "[¬ 2]").
-            replace(wm + " 3", "[¬ 3]").
-            replace(wm + " 4", "[¬ 4]").
-            replace(wm, "[¬]");
+        s = s.replace(wm + ":", "[¬¹").
+            replace(wm + " 1:", "[¬ 1¹").
+            replace(wm + " 2:", "[¬ 2¹").
+            replace(wm + " 3:", "[¬ 3¹").
+            replace(wm + " 4:", "[¬ 4¹").
+            replace(wm + " 1", "[¬ 1¹").
+            replace(wm + " 2", "[¬ 2¹").
+            replace(wm + " 3", "[¬ 3¹").
+            replace(wm + " 4", "[¬ 4¹").
+            replace(wm, "[¬¹");
         // IV - And when uppercase
         wm = wm.toUpperCase();
-        s = s.replace(wm + ":", "[¬]").
-            replace(wm + " 1:", "[¬ 1]").
-            replace(wm + " 2:", "[¬ 2]").
-            replace(wm + " 3:", "[¬ 3]").
-            replace(wm + " 4:", "[¬ 4]").
-            replace(wm + " 1", "[¬ 1]").
-            replace(wm + " 2", "[¬ 2]").
-            replace(wm + " 3", "[¬ 3]").
-            replace(wm + " 4", "[¬ 4]").
-            replace(wm, "[¬]");
+        s = s.replace(wm + ":", "[¬¹").
+            replace(wm + " 1:", "[¬ 1¹").
+            replace(wm + " 2:", "[¬ 2¹").
+            replace(wm + " 3:", "[¬ 3¹").
+            replace(wm + " 4:", "[¬ 4¹").
+            replace(wm + " 1", "[¬ 1¹").
+            replace(wm + " 2", "[¬ 2¹").
+            replace(wm + " 3", "[¬ 3¹").
+            replace(wm + " 4", "[¬ 4¹").
+            replace(wm, "[¬¹");
 
-        // IV - A complete replace has ] at the end.
-        if (s.endsWith("]")) {
+        // IV - A complete replace has · at the end.
+        if (s.endsWith("¹")) {
             // IV - Single character 'start of returned heading' (V etc.) have no following space
             if (r.length() == 1) {
                 s = s.replace("¬ ", "¬");
             }
-            s = s.replace("¬", r);
+            s = s.replace("¬", r).replace("¹","]");
         } else {
-            // IV - For a partial replace, re-work to only replace the matched word
-            // IV - For example 'CHORUS1a:' ->  '[¬]1a:' -> 'Chorus1a:'
-            s = s.replace("[¬",m).replace("]","");
+            // IV - For any partial replace, re-work to only replace the matched word
+            // IV - For example 'CHORUS1a:' ->  '[¬¹1a:' -> 'Chorus1a:'
+            s = s.replace("[¬",m).replace("¹","");;
         }
         return s;
     }
