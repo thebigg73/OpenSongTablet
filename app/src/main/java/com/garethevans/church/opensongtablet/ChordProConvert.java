@@ -760,8 +760,8 @@ class ChordProConvert {
         // The app will convert it into OpenSong before saving.
         StringBuilder newlyrics = new StringBuilder();
 
-        // Split the lyrics into separate lines
-        String[] lines = lyrics.split("\n");
+        // IV - Protect any chord repeat barlines. Split the lyrics into separate lines
+        String[] lines = lyrics.replace("||:","··>").replace(":||", "<··").split("\n");
         ArrayList<String> type = new ArrayList<>();
         int linenums = lines.length;
 
@@ -927,6 +927,9 @@ class ChordProConvert {
         if (newlyrics.toString().startsWith("\n")) {
             newlyrics = new StringBuilder(newlyrics.toString().replaceFirst("\n", ""));
         }
+
+        //IV - Reset any chord repeat bar lines
+        newlyrics = new StringBuilder(newlyrics.toString().replace("··>","||:").replace("<··", ":||"));
 
         return newlyrics.toString();
     }
