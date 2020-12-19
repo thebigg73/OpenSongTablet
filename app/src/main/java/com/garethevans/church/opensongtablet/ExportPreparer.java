@@ -819,15 +819,16 @@ class ExportPreparer {
         s.append("{key:").append(StaticVariables.mKey).append("}\n");
         s.append("{tempo:").append(StaticVariables.mTempo).append("}\n");
         s.append("{time:").append(StaticVariables.mTimeSig).append("}\n");
-        // Go through each song section and add the ChordPro formatted chords
+	s.append("{ccli:").append(StaticVariables.mCCLI).append("}\n");
+        s.append("{copyright:").append(StaticVariables.mCopyright).append("}\n");
+	
+	// Go through each song section and add the ChordPro formatted chords
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
             // IV - Quick exit if extra information heading or Note
             if (!StaticVariables.songSections[f].startsWith(" B_") && !StaticVariables.songSections[f].startsWith(";__")) {
                 s.append(processSong.songSectionChordPro(c, f, false));
             }
-        }
-        s.append("{ccli:").append(StaticVariables.mCCLI).append("}\n");
-        s.append("{copyright:").append(StaticVariables.mCopyright).append("}\n");
+	}
 
         String string = s.toString();
         // IV - Replace multiple blank lines with a single blank line and remove empty items
@@ -853,16 +854,17 @@ class ExportPreparer {
         s.append("Key: ").append(StaticVariables.mKey).append("\n");
         s.append("Tempo: ").append(StaticVariables.mTempo).append("\n");
         s.append("Time: ").append(StaticVariables.mTimeSig).append("\n");
-        // Go through each song section and add the ChordPro formatted chords
+        s.append("CCLI: ").append(StaticVariables.mCCLI).append("\n");
+        s.append("Copyright: ").append(StaticVariables.mCopyright).append("\n");
+	
+	// Go through each song section and add the ChordPro formatted chords
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
             // IV - Quick exit if Heading or Note
             if (!StaticVariables.songSections[f].startsWith(" B_") && !StaticVariables.songSections[f].startsWith(";__")) {
                 s.append(processSong.songSectionChordPro(c, f, true));
             }
         }
-        s.append("CCLI: ").append(StaticVariables.mCCLI).append("\n");
-        s.append("Copyright: ").append(StaticVariables.mCopyright).append("\n");
-
+        
         String string = s.toString();
         // IV - Replace multiple blank lines with a single blank line and remove empty items
         string = string.replaceAll("\n\n\n", "\n\n");
@@ -887,7 +889,10 @@ class ExportPreparer {
         s.append("Tempo: ").append(StaticVariables.mTempo).append("\n");
         s.append("Time: ").append(StaticVariables.mTimeSig).append("\n");
         s.append("\n");
-        // Go through each song section and add the text trimmed lines
+        s.append("CCLI: ").append(StaticVariables.mCCLI).append("\n");
+        s.append("Copyright: ").append(StaticVariables.mCopyright).append("\n");
+	
+	// Go through each song section and add the text trimmed lines
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
             // IV - Quick exit if Heading or Note
             if (!StaticVariables.songSections[f].startsWith(" B_") && !StaticVariables.songSections[f].startsWith(";__")) {
@@ -895,9 +900,7 @@ class ExportPreparer {
                 s.append(processSong.songSectionText(c, preferences, f)).append("\n\n");
             }
         }
-        s.append("CCLI: ").append(StaticVariables.mCCLI).append("\n");
-        s.append("Copyright: ").append(StaticVariables.mCopyright).append("\n");
-
+        
         String string = s.toString();
         // IV - Replace multiple blank lines with a single blank line and remove empty items
         string = string.replaceAll("\n\n\n", "\n\n");
