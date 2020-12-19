@@ -104,13 +104,10 @@ class ChordProConvert {
         s = s.replace("\n\n\n", "\n\n");
         s = s.replace("&quot;", "\"");
         s = s.replace("\\'", "'");
-        s = s.replace("&quot;", "\"");
         s = s.replace("<", "(");
         s = s.replace(">", ")");
         s = s.replace("&#39;", "'");
         s = s.replace("\t", "    ");
-        s = s.replace("\\'", "'");
-
         return s;
     }
 
@@ -170,22 +167,28 @@ class ChordProConvert {
             // Get rid of any extra whitespace
             line = line.trim();
 
+            // IV - SongSelect chordpro files end with a CCLI info block. The english start is 'CCLI Song # ....'.
+            // IV - It is localised with most starting 'CCLI ' (following space is important as onsong files may have CCLI:)
+            // IV - When we find an info block, stop adding lines as we are at the end of the lyrics
+            if (line.startsWith("CCLI ") || line.startsWith("Número de la canción CCLI") || line.startsWith("Música CCLI")) {break;}
+
             // Remove directive lines we don't need
             line = removeObsolete(line);
 
             if (line.contains("{title:")) {
                 // Extract the title and empty the line (don't need to keep it)
-                title = removeTags(line, "{title:").trim();
+                title = removeTags(line, "{title:");
                 line = "";
 
             } else if (line.contains("{artist:")) {
                 // Extract the author and empty the line (don't need to keep it)
-                author = removeTags(line, "{artist:").trim();
+                author = removeTags(line, "{artist:");
                 line = "";
 
             } else if (line.contains("{copyright:")) {
                 // Extract the copyright and empty the line (don't need to keep it)
-                copyright = removeTags(line, "{copyright:");
+                // IV - Replace use of " |" or ";" as copyright holder separator with ,
+                copyright = removeTags(line, "{copyright:").replace(" |",",").replace(";",",");
                 line = "";
 
             } else if (line.contains("{subtitle:")) {
@@ -201,7 +204,7 @@ class ChordProConvert {
 
             } else if (line.contains("{ccli:")) {
                 // Extract the ccli (not really a chordpro tag, but works for songselect and worship together
-                ccli = removeTags(line, "{ccli::");
+                ccli = removeTags(line, "{ccli:");
                 line = "";
 
             } else if (line.contains("{key:")) {
@@ -225,8 +228,8 @@ class ChordProConvert {
 
             } else if (line.contains("{comments:") || line.contains("{comment:")) {
                 // Change comment lines
-                line = ";" + removeTags(line, "{comments:").trim();
-                line = ";" + removeTags(line, "{comment:").trim();
+                line = ";" + removeTags(line, "{comments:");
+                line = ";" + removeTags(line, "{comment:");
             }
 
             // Get rid of GuitarTapp text
@@ -244,15 +247,17 @@ class ChordProConvert {
             // Now split lines with chords in them into two lines of chords then lyrics
             line = extractChordLines(line);
 
-            line = line.trim() + "\n";
-            parsedLines.append(line);
+            parsedLines.append(line).append("\n");
         }
 
         return parsedLines.toString();
     }
 
     String removeObsolete(String s) {
+        // IV - Added removal of SongSelect license and footer tag
         if (s.contains("{new_song")
+                || s.contains("{ccli_license")
+                || s.contains("{footer")
                 || s.contains("{inline")
                 || s.contains("{define")
                 || s.contains("{textfont")
@@ -360,7 +365,9 @@ class ChordProConvert {
 
         for (String line : lines) {
             // Try to guess tags used
-            line = guessTags(line);
+            if (!line.equals("")) {
+                line = guessTags(line);
+            }
 
             //Removes comment tags in front of heading identifier [
             line = fixHeadings(line);
@@ -371,13 +378,8 @@ class ChordProConvert {
             // Remove {start_of and {end_of tags for choruses, verses, bridges, etc.
             line = removeStartOfEndOfTags(line);
 
-            line = line.trim();
-
-            line = line + "\n";
-
-            parsedLines.append(line);
+            parsedLines.append(line).append("\n");
         }
-
         return parsedLines.toString();
     }
 
@@ -411,6 +413,8 @@ class ChordProConvert {
             s = s.replace("[]\n\n[", "\n[");
         }
 
+        // IV - Trim and remove any trailing [] empty section
+        s = s.trim().replaceAll("\n\\Q[]\\E$","");
 
         return s;
     }
@@ -423,12 +427,9 @@ class ChordProConvert {
 
         for (String line : lines) {
             line = line.trim();
-            if (!line.startsWith("[") && !line.startsWith(".") && !line.startsWith(";") && !line.startsWith(" ") && !s.equals("")) {
+            if (!line.startsWith("[") && !line.startsWith(".") && !line.startsWith(";") && !s.equals("")) {
                 // Must be a lyric line, so add a space
                 line = " " + line;
-            } else if (line.startsWith(".")) {
-                //the line contains chords, adjust for space inserted to lyrics
-                line = ". " + line.substring(1);
             }
             line = line + "\n";
             parsedLines.append(line);
@@ -623,80 +624,78 @@ class ChordProConvert {
     private String guessTags(String s) {
         // Only check for definite comment lines on lines that are short enough to maybe be headings
         if (s.startsWith(";") || s.startsWith("#") | s.length() < 16) {
-            s = s.replace("Intro:", "[Intro]");
-            s = s.replace("Intro", "[Intro]");
-            s = s.replace("Outro:", "[Outro]");
-            s = s.replace("Outro", "[Outro]");
-            s = s.replace("Verse:", "[V]");
-            s = s.replace("VERSE:", "[V]");
-            s = s.replace("Verse 1:", "[V1]");
-            s = s.replace("Verse 2:", "[V2]");
-            s = s.replace("Verse 3:", "[V3]");
-            s = s.replace("Verse 4:", "[V4]");
-            s = s.replace("VERSE 1:", "[V1]");
-            s = s.replace("VERSE 2:", "[V2]");
-            s = s.replace("VERSE 3:", "[V3]");
-            s = s.replace("VERSE 4:", "[V4]");
+            // IV - First deal with special cases that use brackets
             s = s.replace("(VERSE)", "[V]");
             s = s.replace("(Verse 1)", "[V1]");
             s = s.replace("(Verse 2)", "[V2]");
             s = s.replace("(Verse 3)", "[V3]");
-            s = s.replace("Verse 1", "[V1]");
-            s = s.replace("Verse 2", "[V2]");
-            s = s.replace("Verse 3", "[V3]");
-            s = s.replace("Verse 4", "[V4]");
-            s = s.replace("VERSE 1", "[V1]");
-            s = s.replace("VERSE 2", "[V2]");
-            s = s.replace("VERSE 3", "[V3]");
-            s = s.replace("VERSE 4", "[V4]");
-            s = s.replace("Verse", "[V]");
-            s = s.replace("VERSE", "[V]");
-            s = s.replace("Prechorus:", "[P]");
-            s = s.replace("Pre-chorus:", "[P]");
-            s = s.replace("PreChorus:", "[P]");
-            s = s.replace("Pre-Chorus:", "[P]");
-            s = s.replace("PRECHORUS:", "[P]");
-            s = s.replace("Prechorus 1:", "[P1]");
-            s = s.replace("Prechorus 2:", "[P2]");
-            s = s.replace("Prechorus 3:", "[P3]");
-            s = s.replace("PreChorus 1:", "[P1]");
-            s = s.replace("PreChorus 2:", "[P2]");
-            s = s.replace("PreChorus 3:", "[P3]");
-            s = s.replace("Pre-Chorus 1:", "[P1]");
-            s = s.replace("Pre-Chorus 2:", "[P2]");
-            s = s.replace("Pre-Chorus 3:", "[P3]");
             s = s.replace("(Chorus)", "[C]");
-            s = s.replace("Chorus:", "[C]");
-            s = s.replace("CHORUS:", "[C]");
-            s = s.replace("Chorus 1:", "[C1]");
-            s = s.replace("Chorus 2:", "[C2]");
-            s = s.replace("Chorus 3:", "[C3]");
-            s = s.replace("CHORUS 1:", "[C1]");
-            s = s.replace("CHORUS 2:", "[C2]");
-            s = s.replace("CHORUS 3:", "[C3]");
-            s = s.replace("Chorus 1", "[C1]");
-            s = s.replace("Chorus 2", "[C2]");
-            s = s.replace("Chorus 3", "[C3]");
-            s = s.replace("CHORUS 1", "[C1]");
-            s = s.replace("CHORUS 2", "[C2]");
-            s = s.replace("CHORUS 3", "[C3]");
-            s = s.replace("Chorus", "[C]");
-            s = s.replace("CHORUS", "[C]");
-            s = s.replace("Bridge:", "[B]");
-            s = s.replace("BRIDGE:", "[B]");
-            s = s.replace("Bridge 1:", "[B1]");
-            s = s.replace("Bridge 2:", "[B2]");
-            s = s.replace("Bridge 3:", "[B3]");
-            s = s.replace("BRIDGE 1:", "[B1]");
-            s = s.replace("BRIDGE 2:", "[B2]");
-            s = s.replace("BRIDGE 3:", "[B3]");
-            s = s.replace("Tag:", "[T]");
-            if (s.endsWith(":") && s.length() < 12) {
-                // Likely to be another custom tag
-                s = "[" + s.replace(":", "") + "]";
+
+            // IV - Process lines except those that start ;( which we will treat as 'as-is' comments
+            // IV - Further commonly used 'Tags' have been added
+            if (!(s.startsWith(";") && (s.substring(1).replace(" ","").startsWith("("))))  {
+                // IV - Sub-routine supports number variatons of each tags
+                s = guessTagsReplaces(s, "Intro", "Intro");
+                s = guessTagsReplaces(s, "Outro", "Outro");
+                s = guessTagsReplaces(s, "Ending", "Ending");
+                s = guessTagsReplaces(s, "Turnaround", "Turnaround");
+                s = guessTagsReplaces(s, "Instrumental", "Instrumental");
+                s = guessTagsReplaces(s, "Interlude", "Interlude");
+                s = guessTagsReplaces(s, "Verse", "V");
+                s = guessTagsReplaces(s, "Prechorus", "P");
+                s = guessTagsReplaces(s, "Pre-chorus", "P");
+                s = guessTagsReplaces(s, "Chorus", "C");
+                s = guessTagsReplaces(s, "Bridge", "B");
+                s = guessTagsReplaces(s, "Tag", "T");
+                if (s.endsWith(":") && s.length() < 12) {
+                    // Likely to be another custom tag
+                    s = "[" + s.replace(":", "") + "]";
+                }
+                s = s.replace("[[", "[");
+                s = s.replace("]]", "]");
             }
-            s = s.replace("[[", "[");
-            s = s.replace("]]", "]");
+        }
+        return s;
+    }
+
+    private String guessTagsReplaces (String s, String m, String r) {
+        // IV - s incoming string, m matched word, r start of returned heading
+        String wm = m;
+        // IV - Lots of variations are considered!
+        s = s.replace(wm + ":", "[¬¹").
+            replace(wm + " 1:", "[¬ 1¹").
+            replace(wm + " 2:", "[¬ 2¹").
+            replace(wm + " 3:", "[¬ 3¹").
+            replace(wm + " 4:", "[¬ 4¹").
+            replace(wm + " 1", "[¬ 1¹").
+            replace(wm + " 2", "[¬ 2¹").
+            replace(wm + " 3", "[¬ 3¹").
+            replace(wm + " 4", "[¬ 4¹").
+            replace(wm, "[¬¹");
+        // IV - And when uppercase
+        wm = wm.toUpperCase();
+        s = s.replace(wm + ":", "[¬¹").
+            replace(wm + " 1:", "[¬ 1¹").
+            replace(wm + " 2:", "[¬ 2¹").
+            replace(wm + " 3:", "[¬ 3¹").
+            replace(wm + " 4:", "[¬ 4¹").
+            replace(wm + " 1", "[¬ 1¹").
+            replace(wm + " 2", "[¬ 2¹").
+            replace(wm + " 3", "[¬ 3¹").
+            replace(wm + " 4", "[¬ 4¹").
+            replace(wm, "[¬¹");
+
+        // IV - A complete replace has · at the end.
+        if (s.endsWith("¹")) {
+            // IV - Single character 'start of returned heading' (V etc.) have no following space
+            if (r.length() == 1) {
+                s = s.replace("¬ ", "¬");
+            }
+            s = s.replace("¬", r).replace("¹","]");
+        } else {
+            // IV - For any partial replace, re-work to only replace the matched word
+            // IV - For example 'CHORUS1a:' ->  '[¬¹1a:' -> 'Chorus1a:'
+            s = s.replace("[¬",m).replace("¹","");;
         }
         return s;
     }
@@ -761,8 +760,8 @@ class ChordProConvert {
         // The app will convert it into OpenSong before saving.
         StringBuilder newlyrics = new StringBuilder();
 
-        // Split the lyrics into separate lines
-        String[] lines = lyrics.split("\n");
+        // IV - Protect any chord repeat barlines. Split the lyrics into separate lines
+        String[] lines = lyrics.replace("||:","··>").replace(":||", "<··").split("\n");
         ArrayList<String> type = new ArrayList<>();
         int linenums = lines.length;
 
@@ -928,6 +927,9 @@ class ChordProConvert {
         if (newlyrics.toString().startsWith("\n")) {
             newlyrics = new StringBuilder(newlyrics.toString().replaceFirst("\n", ""));
         }
+
+        //IV - Reset any chord repeat bar lines
+        newlyrics = new StringBuilder(newlyrics.toString().replace("··>","||:").replace("<··", ":||"));
 
         return newlyrics.toString();
     }

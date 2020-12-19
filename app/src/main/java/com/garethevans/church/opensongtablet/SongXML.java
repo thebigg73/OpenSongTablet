@@ -187,8 +187,6 @@ class SongXML {
         val = val.replace("&#147;", "'");
         val = val.replace("&#148;", "'");
         val = val.replace("тАЩ", "'");
-        val = val.replace("\u0028", "'");
-        val = val.replace("\u0029", "'");
         val = val.replace("\u0060", "'");
         val = val.replace("\u00B4", "'");
         val = val.replace("\u2018", "'");

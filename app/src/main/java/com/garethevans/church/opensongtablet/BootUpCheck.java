@@ -385,9 +385,8 @@ public class BootUpCheck extends AppCompatActivity {
                             count++;
                         }
                     }
-
-                    if (extra.length() > 0) { extra = extra + ", "; }
-                    extra = extra + getString(R.string.songsinfolder) + ":" + count;
+                    if (extra.length() > 0) { extra = ", " + extra; }
+                    extra = count + " Songs" + extra;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -859,11 +858,13 @@ public class BootUpCheck extends AppCompatActivity {
                 for (File f : list) {
                     if (f.isDirectory()) {
                         String where = f.getAbsolutePath();
+                        String extra = "";
                         displayWhere(where);
                         if (!where.contains(".estrongs") && !where.contains("com.ttxapps") && where.endsWith("/OpenSong/Songs")) {
                             int count = storageAccess.songCountAtLocation(f);
+                            extra = count + " Songs";
                             // Found one and it isn't in eStrongs recycle folder or the dropsync temp files!
-                            // Iv  Add  a leading ¬ and remove trailing /Songs
+                            // IV - Add  a leading ¬ and remove trailing /Songs
                             where = "¬" + where.substring(0, where.length() - 6);
                             // IV - For paths identified as Internal storage (more patterns may be needed) remove the parent folder
                             where = where.
@@ -872,11 +873,13 @@ public class BootUpCheck extends AppCompatActivity {
                                 replace("¬/storage/emulated/legacy/" ,"/").
                                 replace("¬/storage/self/primary/"    ,"/");
                             if (where.startsWith("¬")) {
-                                // IV - Handle others paths as 'External': Re-arrange ¬/storage/xxxx/yyyy/zzzz... to 'yyyy/zzzz... (External storage xxxx)'
+                                // IV - Handle others paths as 'External'
                                 where = where.substring(10);
-                                where = where.substring(where.indexOf("/")) + " (" + this.getResources().getString(R.string.storage_ext) + " " + where.substring(0, where.indexOf("/")) + ")";
+                                extra = extra + ", " + this.getResources().getString(R.string.storage_ext) + " " + where.substring(0, where.indexOf("/"));
+                                where = where.substring(where.indexOf("/"));
                             }
-                            locations.add(where + "   ("+getString(R.string.songsinfolder)+": "+count+")");
+                            where = "(" + extra + "): " + where;
+                            locations.add(where);
                         }
                         folder = f;
                         walkFiles(f);

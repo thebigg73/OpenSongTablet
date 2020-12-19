@@ -1577,7 +1577,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     fixWTContent(result);
                     setFileNameAndFolder();
 
-                } else if (result != null && (result.contains("<div class=\"tb_ct\">") || result.contains("ultimate-guitar"))) {
+                } else if (result != null && (result.contains("<div class=\"tb_ct\">") || (result.contains("ultimate-guitar")) && result.contains("data-action="))) {
                     // Using UG
                     fixUGContent(result);
                     setFileNameAndFolder();

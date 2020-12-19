@@ -1724,6 +1724,9 @@ public class ProcessSong extends Activity {
 
         song = song.replace("-!!", "");
 
+        // IV - Protect any chord repeat bar lines
+        song = song.replace("||:","··>").replace(":||","<··");
+
         if (StaticVariables.whichMode.equals("Presentation") || StaticVariables.whichMode.equals("Stage")) {
             // IV - Song block dividers ||| are not processed as splits
             song = song.replace("|||","|").replace("||", "%%LATERSPLITHERE%%");
@@ -1804,7 +1807,8 @@ public class ProcessSong extends Activity {
             }
         }
 
-        return newsong.toString().split("%%__SPLITHERE__%%");
+        // IV - Reset any chord repeat bar lines. Split the lyrics
+        return newsong.toString().replace("··>","||:").replace("<··",":||").split("%%__SPLITHERE__%%");
     }
 
     String[] splitLaterSplits(Context c, Preferences preferences, String[] currsections) {
