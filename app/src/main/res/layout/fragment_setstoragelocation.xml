@@ -44,18 +44,41 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/MyHeadingText"
                 android:layout_marginEnd="8dp"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="top"
                 android:text="@string/currentstorage"/>
 
-            <TextView
-                android:id="@+id/progressText"
-                android:layout_width="0dp"
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/blue_button">
+
+                <TextView
+                    android:id="@+id/progressText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_gravity="center"
-                style="@style/MyHeadingText"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/section_box">
+
+
+
+                <TextView
+                    android:id="@+id/progressTextInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
         </LinearLayout>
 
         <TextView
@@ -103,22 +126,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/found"
-            style="@style/MyWhiteHeadingText"
             android:visibility="gone"/>
 
         <TextView
             android:id="@+id/previousStorageLocationsTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/MyInfoText"/>
-
-        <Spinner
-            android:id="@+id/previousStorageSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            style="@style/MySpinner"
-            android:visibility="gone"/>
+            android:background="@drawable/section_box" />
 
         <Button
             android:id="@+id/startApp"

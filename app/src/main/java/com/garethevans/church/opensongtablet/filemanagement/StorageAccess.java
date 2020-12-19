@@ -308,61 +308,112 @@ public class StorageAccess {
 
     // Deal with parsing, creating, editing file and folder names
     // This gets the File location for the app as a String (for appending).  PreLollipop only
-    public String niceUriTree(Context c, Preferences preferences) {
-        String uriTree = getStoragePreference(c,preferences);
-        if (uriTree!=null) {
-            Uri uri = Uri.parse(uriTree);
-            Uri uriTreeHome = homeFolder(c, uri, preferences);  // In case we specified the folder containing /OpenSong as the root
-            if (lollipopOrLater()) {
-                return niceUriTree_SAF(uriTreeHome);
-            } else {
-                return niceUriTree_File(uriTreeHome);
-            }
+    public String[] niceUriTree(Context c, Preferences preferences, Uri uri) {
+        if (lollipopOrLater()) {
+            return niceUriTree_SAF(c, preferences, uri, new String[] {"",""});
+        } else {
+            return niceUriTree_File(c, preferences, uri, new String[] {"",""});
         }
-        return c.getString(R.string.notset);
     }
-    private String niceUriTree_SAF(Uri uriTree) {
-        String text;
+    private String[] niceUriTree_SAF(Context c, Preferences preferences, Uri uri, String[] storageDetails) {
+        // storageDetails is currently empty, but will be [0]=extra info  [1]=nice location
         try {
-            List<String> bits = uriTree.getPathSegments();
-            StringBuilder sb = new StringBuilder();
-            for (String b : bits) {
-                sb.append("/");
-                sb.append(b);
-            }
-            text = sb.toString();
-            if (text.contains("primary:")) {
-                int p = text.lastIndexOf("primary");
-                text = text.substring(p);
-            }
-            Log.d("SetStorageLocation", "text=" + text);
-            if (!text.endsWith(appFolder)) {
-                text += "/" + appFolder;
-            }
-            text = text.replace("tree", "/");
-            text = text.replace(":", "/");
-            while (text.contains("//")) {
-                text = text.replace("//", "/");
+            storageDetails[1] = uri.getPath();
+
+            // When not an internal path (more patterns may be needed) indicate as external
+            if (!storageDetails[1].contains("/tree/primary")) {
+                storageDetails[0] = c.getString(R.string.storage_ext);
             }
 
-            // Finally, the storage location is likely something like /9016-4EF8/OpenSong/document/9016-4EF8/OpenSong
+            // The  storage location getPath is likely something like /tree/primary:/document/primary:/OpenSong
             // This is due to the content using a document contract
-            // Strip this back to the bit after document
-            if (text.contains("OpenSong/document/")) {
-                text = text.substring(text.lastIndexOf("OpenSong/document/") + 18);
+            if (storageDetails[1].contains("primary:")) {
+                storageDetails[1] = storageDetails[1].substring(storageDetails[1].lastIndexOf("primary"));
             }
-            if (text.startsWith("primary/")) {
-                text = text.replace("primary/","");
+
+            if (storageDetails[1].contains(":") && !storageDetails[1].endsWith(":")) {
+                storageDetails[1] = "/" + storageDetails[1].substring(storageDetails[1].lastIndexOf(":") + 1);
+            } else {
+                storageDetails[1] = "/" + storageDetails[1];
             }
+            storageDetails[1] = storageDetails[1].replace("//", "/");
+
+            // Add the 'OpenSong' bit to the end if it isn't there already
+            if (!storageDetails[1].endsWith("/" + appFolder)) {
+                storageDetails[1] += "/" + appFolder;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
-            text = "" + uriTreeHome;
+            if (uri == null) {
+                storageDetails[1] = c.getString(R.string.notset);
+            } else {
+                storageDetails[1] = "" + uri;
+            }
         }
-        return text;
+
+
+        // If we have a path try to give extra info of a 'songs' count
+        try {
+            ArrayList<String> songIds = listSongs(c, preferences);
+            // Only items that don't end with / are songs!
+            int count = 0;
+            for (String s : songIds) {
+                if (!s.endsWith("/")) {
+                    count++;
+                }
+            }
+
+            if (storageDetails[0].length() > 0) {
+                storageDetails[0] = storageDetails[0] + ", ";
+            }
+            storageDetails[0] = storageDetails[0] + c.getString(R.string.songsinfolder) + ":" + count;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return storageDetails;
     }
-    private String niceUriTree_File(Uri uriTree) {
-        return uriTree.getPath();
+    public String[] niceUriTree_File(Context c, Preferences preferences, Uri uri, String[] storageDetails) {
+        storageDetails[1] = uri.getPath();
+        storageDetails[1] = "¬" + storageDetails[1];
+        storageDetails[1] = storageDetails[1].
+                replace("¬/storage/sdcard0/"         ,"/").
+                replace("¬/storage/emulated/0/"      ,"/").
+                replace("¬/storage/emulated/legacy/" ,"/").
+                replace("¬/storage/self/primary/"    ,"/");
+
+        // IV - Handle others paths as 'External': Re-arrange ¬/storage/xxxx/yyyy/zzzz... to 'yyyy/zzzz... (External storage xxxx)'
+        if (storageDetails[1].startsWith("¬/storage/")) {
+            storageDetails[1] = storageDetails[1].substring(10);
+            storageDetails[1] = storageDetails[1].substring(storageDetails[1].indexOf("/")) + " (" +
+                    c.getString(R.string.storage_ext) + " " + storageDetails[1].substring(0, storageDetails[1].indexOf("/")) + ")";
+        }
+
+        // Prepare an arraylist for any song folders so we can count the items
+        ArrayList<File> foldersToIndex = new ArrayList<>();
+        foldersToIndex.add(new File(uri.getPath()));
+        int count = 0;
+        try {
+            for (int x = 0; x < foldersToIndex.size(); x++) {
+                File[] fs = foldersToIndex.get(x).listFiles();
+                for (File ff : fs) {
+                    Log.d("d", "ff=" + ff);
+                    if (ff.isDirectory()) {
+                        foldersToIndex.add(ff);
+                    } else {
+                        count++;
+                    }
+                }
+            }
+            storageDetails[0] = "("+count+" songs)";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return storageDetails;
     }
+
     private String stringForFile(Context c, Preferences preferences, String folderpath) {
         if (uriTreeHome==null) {
             String uriTreeHome_String = preferences.getMyPreferenceString(c, "uriTreeHome", "");

@@ -67,7 +67,7 @@ public class FolderManagementDialog extends DialogFragment {
         preferences = new Preferences();
 
         if (root) {
-            myView.currentLocation.setText(storageAccess.niceUriTree(getActivity(),preferences));
+            myView.currentLocation.setText(storageAccess.niceUriTree(getActivity(),preferences,storageAccess.homeFolder(getActivity(),null,preferences))[1]);
             myView.backupFolder.setVisibility(View.GONE);
             myView.createSubdirectory.setVisibility(View.GONE);
             myView.moveContents.setVisibility(View.GONE);

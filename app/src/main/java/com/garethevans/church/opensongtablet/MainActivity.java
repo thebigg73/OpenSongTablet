@@ -1221,13 +1221,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Return a reference to nearbyConnections
         return nearbyConnections;
     }
-
-
-    // Midi
-
-
-
-
+    
 
     // Get permissions request callback
     @Override

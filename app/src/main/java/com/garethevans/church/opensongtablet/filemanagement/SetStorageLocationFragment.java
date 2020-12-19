@@ -14,10 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -52,9 +49,8 @@ public class SetStorageLocationFragment extends Fragment {
     private Uri uriTree, uriTreeHome;
     private Bundle bundle;
     private Button setStorage, findStorage, startApp;
-    private TextView progressText, previousStorageTextView, previousStorageHeading, previousStorageLocationsTextView;
-    private Spinner previousStorageSpinner;
-    private boolean changed;
+    private TextView progressText, progressTextInfo, previousStorageTextView,
+            previousStorageHeading, previousStorageLocationsTextView;
     private ArrayList<String> locations;
     private File folder;
 
@@ -114,7 +110,7 @@ public class SetStorageLocationFragment extends Fragment {
         startApp = myView.startApp;
         startApp.setOnClickListener(v -> goToSongs());
         progressText = myView.progressText;
-        previousStorageSpinner = myView.previousStorageSpinner;
+        progressTextInfo = myView.progressTextInfo;
         previousStorageTextView = myView.previousStorageTextView;
         previousStorageHeading = myView.previousStorageHeading;
         previousStorageLocationsTextView = myView.previousStorageLocationsTextView;
@@ -154,7 +150,10 @@ public class SetStorageLocationFragment extends Fragment {
     }
 
     private void setStorageLocation() {
-        progressText.setText(storageAccess.niceUriTree(getContext(),preferences));
+        String[] niceLocation = storageAccess.niceUriTree(getContext(),preferences,uriTreeHome);
+        Log.d("SetStorageLocation","niceLocation[0]="+niceLocation[0]+"  niceLocation[1]="+niceLocation[1]);
+        progressText.setText(niceLocation[1]);
+        progressTextInfo.setText(niceLocation[0]);
         warningCheck();
         checkStatus();
     }
@@ -201,12 +200,9 @@ public class SetStorageLocationFragment extends Fragment {
         startApp.setEnabled(what);
         setStorage.setEnabled(what);
         findStorage.setEnabled(what);
-        previousStorageSpinner.setEnabled(what);
         if (!what) {
-            //progressBar.setVisibility(View.VISIBLE);
             previousStorageTextView.setVisibility(View.VISIBLE);
         } else {
-            //progressBar.setVisibility(View.GONE);
             previousStorageTextView.setVisibility(View.GONE);
         }
     }
@@ -215,10 +211,6 @@ public class SetStorageLocationFragment extends Fragment {
         uriTree = null;
         uriTreeHome = null;
         showToast.doIt(requireActivity(), getString(R.string.storage_notwritable));
-        if (locations != null && locations.size() > 0) {
-            // Revert back to the blank selection as the one chosen can't be used
-            previousStorageSpinner.setSelection(0);
-        }
     }
     private void saveUriLocation() {
         if (uriTree!=null) {
@@ -387,7 +379,9 @@ public class SetStorageLocationFragment extends Fragment {
                         String where = f.getAbsolutePath();
                         if (where.endsWith("/OpenSong/Songs") && !where.contains(".estrongs") && !where.contains("com.ttxapps")) {
                             // Found one and it isn't in eStrongs recycle folder or the dropsync temp files!
-                            where = where.substring(0, where.length() - 15);
+                            //where = where.substring(0, where.length() - 15);
+                            String[] locs = storageAccess.niceUriTree_File(getContext(),preferences,Uri.fromFile(f),new String[]{"",""});
+                            where = locs[1].substring(0, locs[1].length() - 15) + "  "+locs[0];
                             locations.add(where);
                         }
                         folder = f;
@@ -428,10 +422,8 @@ public class SetStorageLocationFragment extends Fragment {
                     // No previous installations found
                     previousStorageTextView.setText(getString(R.string.nofound));
                     previousStorageTextView.setVisibility(View.VISIBLE);
-                    //previousStorageSpinner.setVisibility(View.GONE);
                     previousStorageHeading.setVisibility(View.GONE);
                 } else {
-                    // Listen for the clicks!
                     previousStorageHeading.setVisibility(View.VISIBLE);
                     // Add the locations to the textview
                     StringBuilder sb = new StringBuilder();
@@ -443,27 +435,6 @@ public class SetStorageLocationFragment extends Fragment {
                     previousStorageTextView.setVisibility(View.GONE);
                     previousStorageLocationsTextView.setText(sb.toString().trim());
                     locations.add(0,"");
-                    previousStorageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            if (changed) {
-                                if (position>0) {
-                                    File f = new File(locations.get(position));
-                                    uriTree = Uri.fromFile(f);
-                                    setStorage.performClick();
-                                }
-                            } else {
-                                changed=true;
-                            }
-
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) { }
-                    });
-                    ArrayAdapter<String> listAdapter = new ArrayAdapter<>(requireActivity(), R.layout._my_spinner, locations);
-                    previousStorageSpinner.setAdapter(listAdapter);
-                    previousStorageSpinner.setVisibility(View.GONE);
                 }
             }
         }
