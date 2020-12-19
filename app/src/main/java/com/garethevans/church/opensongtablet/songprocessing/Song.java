@@ -7,6 +7,8 @@ package com.garethevans.church.opensongtablet.songprocessing;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 
+import java.util.ArrayList;
+
 public class Song {
 
     // The holders
@@ -46,6 +48,9 @@ public class Song {
     private String linkother="";
     private String presentationorder="";
     private String filetype="";
+
+    private ArrayList<String> songSections;
+    private ArrayList<String> songSectionTypes;
 
     // The getters
     public int getId() {
@@ -118,7 +123,20 @@ public class Song {
     public String getLinkother() {return linkother;}
     public String getPresentationorder() {return presentationorder;}
     public String getFiletype() {return filetype;}
-
+    public ArrayList<String> getSongSections() {
+        if (songSections!=null) {
+            return songSections;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+    public ArrayList<String> getSongSectionTypes() {
+        if (songSectionTypes!=null) {
+            return songSectionTypes;
+        } else {
+            return new ArrayList<>();
+        }
+    }
 
 
     // The setters
@@ -192,6 +210,12 @@ public class Song {
     public void setLinkother(String linkother) {this.linkother = linkother;}
     public void setPresentationorder(String presentationorder) {this.presentationorder = presentationorder;}
     public void setFiletype(String filetype) {this.filetype = filetype;}
+    public void setSongSections(ArrayList<String> songSections) {
+        this.songSections = songSections;
+    }
+    public void setSongSectionTypes(ArrayList<String> songSectionTypes) {
+        this.songSectionTypes = songSectionTypes;
+    }
 
     public Song initialiseSong(CommonSQL commonSQL) {
         Song song = new Song();

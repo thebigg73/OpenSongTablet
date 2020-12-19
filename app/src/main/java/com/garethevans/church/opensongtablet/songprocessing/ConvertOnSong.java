@@ -171,6 +171,17 @@ public class ConvertOnSong {
         // Break the filecontents into lines
         lines = l.split("\n");
 
+        // IV - Handle tagless 1st and 2nd lines as Title and Artist
+        if ((lines.length > 0) && (!lines[0].contains(":"))) {
+            title = lines[0].trim();
+            lines[0] = "";
+        }
+        if ((lines.length > 1) && (!lines[1].contains(":"))) {
+            // IV - Change ';' to ',' - the separator used by CCLI
+            author = lines[1].trim().replace(";",",");
+            lines[1] = "";
+        }
+
         // This will be the new lyrics lines
         parsedLines = new StringBuilder();
         for (String line : lines) {
@@ -197,7 +208,7 @@ public class ConvertOnSong {
 
             } else if (line.contains("{copyright:") || line.contains("Copyright:") || line.contains("Footer:")) {
                 line = convertChoPro.removeTags(line, "{copyright:");
-                line = convertChoPro.removeTags(line, "Copyright::");
+                line = convertChoPro.removeTags(line, "Copyright:");
                 line = convertChoPro.removeTags(line, "Footer:");
                 copyright = line.trim();
                 line = "";

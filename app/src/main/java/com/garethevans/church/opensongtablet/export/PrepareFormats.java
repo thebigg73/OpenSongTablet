@@ -21,6 +21,8 @@ public class PrepareFormats {
 
     Song thisSongSQL;
 
+    // TODO IV Request to export Variations properly as it isn't in SQL database
+
     // When a user asks for a song to be exported, it is first copied to the Exports folder in the folder_filename format
     public ArrayList<Uri> makeSongExportCopies(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong,
                                                SQLiteHelper sqLiteHelper, CommonSQL commonSQL, ConvertChoPro convertChoPro, String folder, String filename,
@@ -75,59 +77,79 @@ public class PrepareFormats {
     }
 
     private String getSongAsText(Song thisSong) {
-        String title = replaceNulls(thisSong.getTitle());
-        String key = replaceNulls(thisSong.getKey());
-        String author = replaceNulls(thisSong.getAuthor());
+        StringBuilder s = new StringBuilder();
 
-        if (!key.isEmpty()) {
-            key = " (" + key + ")";
-        }
-        if (!author.isEmpty()) {
-            author = "\n" + author + "\n\n";
-        } else {
-            author = "\n\n";
-        }
-        return title + key + author + replaceNulls(thisSong.getLyrics());
+        s.append(replaceNulls("",thisSong.getTitle(),"\n"));
+        s.append(replaceNulls("",thisSong.getAuthor(),"\n"));
+        s.append(replaceNulls("Key: ",thisSong.getKey(),"\n"));
+        s.append(replaceNulls("Tempo: ",thisSong.getMetronomebpm(),"\n"));
+        s.append(replaceNulls("Time signature: ",thisSong.getTimesig(),"\n"));
+        s.append(replaceNulls("Copyright: ",thisSong.getCopyright(),"\n"));
+        s.append(replaceNulls("CCLI: ",thisSong.getCcli(),"\n"));
+
+        s.append("\n\n");
+
+        s.append(replaceNulls("\n",thisSong.getLyrics(),""));
+
+        String string = s.toString();
+        string = string.replace("\n\n\n", "\n\n");
+
+        // IV - remove empty comments
+        string = string.replaceAll("\\Q{c:}\\E\n", "");
+
+        return string;
     }
     private String getSongAsChoPro(Context c, ProcessSong processSong, Song thisSong, ConvertChoPro convertChoPro) {
         // This converts an OpenSong file into a ChordPro file
-        String string = "{ns}\n" + "{t:" + replaceNulls(thisSong.getTitle()) + "}\n";
+        StringBuilder s = new StringBuilder("{new_song}\n");
+        s.append(replaceNulls("{title:",thisSong.getTitle(),"}\n"));
+        s.append(replaceNulls("{artist:",thisSong.getAuthor(),"}\n"));
+        s.append(replaceNulls("{key:",thisSong.getKey(),"}\n"));
+        s.append(replaceNulls("{tempo:",thisSong.getMetronomebpm(),"}\n"));
+        s.append(replaceNulls("{time:",thisSong.getTimesig(),"}\n"));
+        s.append(replaceNulls("{copyright:",thisSong.getCopyright(),"}\n"));
+        s.append(replaceNulls("{ccli:",thisSong.getCcli(),"}\n"));
 
-        if (thisSong.getAuthor()!=null && !thisSong.getAuthor().isEmpty()) {
-            string = string + "{st:" + replaceNulls(thisSong.getAuthor()) + "}\n";
-        }
-        string = string + "\n" + convertChoPro.fromOpenSongToChordPro(c, processSong, replaceNulls(thisSong.getLyrics()));
+        s.append("\n\n");
+
+        s.append(convertChoPro.fromOpenSongToChordPro(c, processSong, replaceNulls("\n",thisSong.getLyrics(),"")));
+        
+        String string = s.toString();
         string = string.replace("\n\n\n", "\n\n");
+
+        // IV - remove empty comments
+        string = string.replaceAll("\\Q{c:}\\E\n", "");
+
         return string;
     }
     private String getSongAsOnSong(Context c, ProcessSong processSong, Song thisSong, ConvertChoPro convertChoPro) {
         // This converts an OpenSong file into a OnSong file
-        String string = replaceNulls(thisSongSQL.getTitle()) + "\n";
+        StringBuilder s = new StringBuilder();
+        s.append(replaceNulls("",thisSong.getTitle(),"\n"));
+        s.append(replaceNulls("",thisSong.getAuthor(),"\n"));
+        s.append(replaceNulls("Key: ",thisSong.getKey(),"\n"));
+        s.append(replaceNulls("Tempo: ",thisSong.getMetronomebpm(),"\n"));
+        s.append(replaceNulls("Time signature: ",thisSong.getTimesig(),"\n"));
+        s.append(replaceNulls("Copyright: ",thisSong.getCopyright(),"\n"));
+        s.append(replaceNulls("CCLI: ",thisSong.getCcli(),"\n"));
 
-        if (thisSong.getAuthor()!=null && !thisSong.getAuthor().isEmpty()) {
-            string = string + thisSong.getAuthor() + "\n";
-        }
+        s.append("\n\n");
 
-        if (thisSong.getCopyright()!=null && !thisSong.getCopyright().isEmpty()) {
-            string = string + "Copyright: " + thisSong.getCopyright() + "\n";
-        }
+        s.append(convertChoPro.fromOpenSongToChordPro(c, processSong, replaceNulls("\n",thisSong.getLyrics(),"")));
 
-        if (thisSong.getKey()!=null && !thisSong.getKey().isEmpty()) {
-            string = string + "Key: " + thisSong.getKey() + "\n\n";
-        } else {
-            string = string + "\n";
-        }
-
-        string = string + convertChoPro.fromOpenSongToChordPro(c,processSong,replaceNulls(thisSong.getLyrics()));
-
+        String string = s.toString();
         string = string.replace("\n\n\n", "\n\n");
+
+        // IV - remove empty comments
+        string = string.replaceAll("\\Q{c:}\\E\n", "");
+
         return string;
     }
-    private String replaceNulls(String s) {
+    private String replaceNulls(String start, String end, String s) {
         if (s==null) {
             return "";
         } else {
-            return s;
+            return start+s+end;
         }
     }
 
