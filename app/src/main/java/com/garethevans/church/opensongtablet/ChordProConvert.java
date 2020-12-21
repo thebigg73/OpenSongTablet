@@ -32,6 +32,9 @@ class ChordProConvert {
 
         lyrics = l;
 
+        // Fix html code and accented text
+        lyrics = parseHTML(lyrics);
+
         // Fix line breaks and slashes
         lyrics = fixLineBreaksAndSlashes(lyrics);
 
@@ -96,6 +99,77 @@ class ChordProConvert {
         songSubFolder = "";
         lines = null;
         parsedLines = new StringBuilder();
+    }
+
+    // These is used when loading and converting songs (ChordPro, badly formatted XML, etc).
+    public String parseHTML(String s) {
+        if (s == null) {
+            return "";
+        }
+        s = s.replace("&amp;apos;", "'");
+        s = s.replace("&amp;quote;", "\"");
+        s = s.replace("&amp;quot;", "\"");
+        s = s.replace("&amp;lt;", "<");
+        s = s.replace("&amp;gt;", ">");
+        s = s.replace("&amp;", "&");
+        s = s.replace("&lt;", "<");
+        s = s.replace("&gt;", ">");
+        s = s.replace("&apos;", "'");
+        s = s.replace("&quote;", "\"");
+        s = s.replace("&quot;", "\"");
+        s = s.replace("&iquest;","¿");
+        s = s.replace("&Agrave;","À");
+        s = s.replace("&agrave;","à");
+        s = s.replace("&Aacute;","Á");
+        s = s.replace("&aacute;","á");
+        s = s.replace("&Acirc;","Â");
+        s = s.replace("&acirc;","â");
+        s = s.replace("&Atilde;","Ã");
+        s = s.replace("&atilde;","ã");
+        s = s.replace("&Aring;","Å");
+        s = s.replace("&aring;", "å");
+        s = s.replace("&Auml;","Ä");
+        s = s.replace("&auml;","ä");
+        s = s.replace("&AElig;","Æ");
+        s = s.replace("&aelig;","æ");
+        s = s.replace("&Cacute;","Ć");
+        s = s.replace("&cacute;","ć");
+        s = s.replace("&Ccedil;","Ç");
+        s = s.replace("&ccedil;","ç");
+        s = s.replace("&Eacute;","É");
+        s = s.replace("&eacute;","é");
+        s = s.replace("&Ecirc;","Ê");
+        s = s.replace("&ecirc;","ê");
+        s = s.replace("&Egrave;","È");
+        s = s.replace("&egrave;","è");
+        s = s.replace("&Euml;","Ë");
+        s = s.replace("&euml;","ë");
+        s = s.replace("&Iacute;","Í");
+        s = s.replace("&iacute;","í");
+        s = s.replace("&Icirc;","Î");
+        s = s.replace("&icirc;","î");
+        s = s.replace("&Igrave;","Ì");
+        s = s.replace("&igrave;","ì");
+        s = s.replace("&Iuml;","Ï");
+        s = s.replace("&iuml;","ï");
+        s = s.replace("&Oacute;","Ó");
+        s = s.replace("&oacute;","ó");
+        s = s.replace("&Ocirc;","Ô");
+        s = s.replace("&ocirc;","ô");
+        s = s.replace("&Ograve;","Ò");
+        s = s.replace("&ograve;","ò");
+        s = s.replace("&Ouml;","Ö");
+        s = s.replace("&ouml;","ö");
+        s = s.replace("&szlig;", "ß");
+        s = s.replace("&Uacute;","Ú");
+        s = s.replace("&uacute;","ú");
+        s = s.replace("&Ucirc;","Û");
+        s = s.replace("&ucirc;","û");
+        s = s.replace("&Ugrave;","Ù");
+        s = s.replace("&ugrave;","ù");
+        s = s.replace("&Uuml;","Ü");
+        s = s.replace("&uuml;","ü");
+        return s;
     }
 
     String fixLineBreaksAndSlashes(String s) {
@@ -695,7 +769,7 @@ class ChordProConvert {
         } else {
             // IV - For any partial replace, re-work to only replace the matched word
             // IV - For example 'CHORUS1a:' ->  '[¬¹1a:' -> 'Chorus1a:'
-            s = s.replace("[¬",m).replace("¹","");;
+            s = s.replace("[¬",m).replace("¹","");
         }
         return s;
     }

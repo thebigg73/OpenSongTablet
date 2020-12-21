@@ -858,7 +858,7 @@ public class BootUpCheck extends AppCompatActivity {
                 for (File f : list) {
                     if (f.isDirectory()) {
                         String where = f.getAbsolutePath();
-                        String extra = "";
+                        String extra;
                         displayWhere(where);
                         if (!where.contains(".estrongs") && !where.contains("com.ttxapps") && where.endsWith("/OpenSong/Songs")) {
                             int count = storageAccess.songCountAtLocation(f);

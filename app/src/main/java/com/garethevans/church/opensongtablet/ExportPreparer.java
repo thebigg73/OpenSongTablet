@@ -10,7 +10,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.core.content.FileProvider;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -297,24 +296,13 @@ class ExportPreparer {
                 songid = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
             }
 
+            // GE This won't wor for variations, notes, custom slides, etc.
+            // That's because the aren't and shouldn't be in the database
+            // These items are temporary files that are created when importing sets
+            // They will be dealt with in the new material app as this deals with each song as an object
             SQLite thisSong = sqLiteHelper.getSong(c,songid);
             pdf = makePDF.createPDF(c,preferences,storageAccess,processSong,thisSong);
         }
-
-        /*// IV - Image based exports  - did not investigate why but swapped position of PDF with PNG to get them working when both selected
-        if (StaticVariables.whichMode.equals("Performance") && preferences.getMyPreferenceBoolean(c,"exportPDF",false)) {
-            // Prepare a pdf version of the song.
-            pdf = storageAccess.getUriForItem(c, preferences, "Export", "",
-                    storageAccess.safeFilename(StaticVariables.songfilename)+".pdf");
-
-            // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(c, preferences, pdf, null, "Export", "", storageAccess.safeFilename(StaticVariables.songfilename) + ".pdf");
-
-            Bitmap pdfbmp = bmp.copy(bmp.getConfig(),true);
-
-            makePDF(c,pdfbmp,pdf,storageAccess);
-        }
-*/
 
         if (StaticVariables.whichMode.equals("Performance") &&
                 preferences.getMyPreferenceBoolean(c,"exportImage",false)) {
@@ -599,98 +587,6 @@ class ExportPreparer {
         }
 	}
 
-	// Old method that converted bitmap to pdf.  Poor quality
-/*
-
-    private void makePDF(Context c, Bitmap bmp, Uri uri, StorageAccess storageAccess) {
-        try {
-            PdfDocument pdfDocument = new PdfDocument();
-            if (bmp != null) {
-
-                // Decide width and height
-                PdfDocument.PageInfo pi;
-                int scaledWidth;
-                int scaledHeight;
-                int bmpWidth = bmp.getWidth();
-                int bmpHeight = bmp.getHeight();
-                int margin = 15;
-                int maxWidth;
-                int maxHeight;
-                float xscale;
-                float yscale;
-
-                // A4 size is 842x595 in postscript points.
-                // Figure out the best scaling to use
-                if (bmpWidth > bmpHeight) {
-                    // Landscape
-                    pi = new PdfDocument.PageInfo.Builder(842, 595, 1).create();
-                    maxWidth = 842 - (margin * 3);
-                    maxHeight = 595 - (margin * 3);
-
-                } else {
-                    // Portrait
-                    pi = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
-                    maxWidth = 595 - (margin * 3);
-                    maxHeight = 842 - (margin * 3);
-                }
-
-
-                PdfDocument.Page page = pdfDocument.startPage(pi);
-
-                Canvas canvas = page.getCanvas();
-                Paint paint = new Paint();
-                paint.setColor(0xff000000);
-                canvas.drawText(StaticVariables.mTitle + " (" + StaticVariables.mAuthor + ")", margin, margin, paint);
-
-                xscale = (float) maxWidth / (float) bmpWidth;
-                yscale = (float) maxHeight / (float) bmpHeight;
-                if (xscale > yscale) {
-                    xscale = yscale;
-                } else {
-                    yscale = xscale;
-                }
-
-                scaledWidth = (int) (xscale * bmpWidth);
-                scaledHeight = (int) (yscale * bmpHeight);
-                bmp = Bitmap.createScaledBitmap(bmp, scaledWidth, scaledHeight, true);
-
-                canvas.drawBitmap(bmp, margin, margin * 2, null);
-
-                pdfDocument.finishPage(page);
-
-                OutputStream outputStream = storageAccess.getOutputStream(c, uri);
-
-                pdfDocument.writeTo(outputStream);
-            }
-        } catch (Exception | OutOfMemoryError e) {
-            e.printStackTrace();
-        }
-        */
-/*Document document = new Document();
-        OutputStream outputStream = storageAccess.getOutputStream(c,uri);
-        try {
-            PdfWriter.getInstance(document, outputStream);
-            document.addAuthor(StaticVariables.mAuthor);
-            document.addTitle(StaticVariables.mTitle);
-            document.addCreator("OpenSongApp");
-            if (bmp!=null && bmp.getWidth()>bmp.getHeight()) {
-                document.setPageSize(PageSize.A4.rotate());
-            } else {
-                document.setPageSize(PageSize.A4);
-            }
-            document.addTitle(StaticVariables.mTitle);
-            document.open();//document.add(new Header("Song title",FullscreenActivity.mTitle.toString()));
-            BaseFont urName = BaseFont.createFont("assets/fonts/lato-Reg.ttf", "UTF-8",BaseFont.EMBEDDED);
-            Font TitleFontName  = new Font(urName, 14);
-            Font AuthorFontName = new Font(urName, 10);
-            document.add(new Paragraph(StaticVariables.mTitle,TitleFontName));
-            document.add(new Paragraph(StaticVariables.mAuthor,AuthorFontName));
-            addImage(document,bmp);
-            document.close();*//*
-
-    }
-*/
-
     void createSelectedOSB(Context c, Preferences preferences, String selected, StorageAccess storageAccess) {
         folderstoexport = selected;
         if (backup_create_selected!=null) {
@@ -814,85 +710,51 @@ class ExportPreparer {
     private String prepareChordProFile(Context c, ProcessSong processSong) {
         // This converts an OpenSong file into a ChordPro file
         StringBuilder s = new StringBuilder("{new_song}\n");
-        s.append("{title:").append(StaticVariables.mTitle).append("}\n");
-        s.append("{artist:").append(StaticVariables.mAuthor).append("}\n");
-        s.append("{key:").append(StaticVariables.mKey).append("}\n");
-        s.append("{tempo:").append(StaticVariables.mTempo).append("}\n");
-        s.append("{time:").append(StaticVariables.mTimeSig).append("}\n");
-	s.append("{ccli:").append(StaticVariables.mCCLI).append("}\n");
-        s.append("{copyright:").append(StaticVariables.mCopyright).append("}\n");
-	
-	// Go through each song section and add the ChordPro formatted chords
+        String[] headersAndFooters = getHeadersAndFooters("choPro");
+        s.append(headersAndFooters[0]);
+        s.append("\n");
+
+	    // Go through each song section and add the ChordPro formatted chords
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
             // IV - Quick exit if extra information heading or Note
             if (!StaticVariables.songSections[f].startsWith(" B_") && !StaticVariables.songSections[f].startsWith(";__")) {
                 s.append(processSong.songSectionChordPro(c, f, false));
             }
-	}
+	    }
 
-        String string = s.toString();
-        // IV - Replace multiple blank lines with a single blank line and remove empty items
-        string = string.replaceAll("\n\n\n", "\n\n");
-        string = string .
-            replace ("\n\n{ccli","\n{ccli").
-            replace ("{artist:}\n","").
-            replace ("{key:}\n","").
-            replace ("{tempo:}\n","").
-            replace ("{time:}\n","").
-            replace ("{ccli:}\n","").
-            replace ("{copyright:}\n","");
-        // IV - remove empty comments
-        string = string.replaceAll("\\Q{c:}\\E\n", "");
-        return string;
+        s.append("\n");
+        s.append(headersAndFooters[1]);
+
+        return tidyReturnedString(s.toString(),true);
     }
     private String prepareOnSongFile(Context c, ProcessSong processSong) {
         // This converts an OpenSong file into a OnSong file
-        StringBuilder s = new StringBuilder(StaticVariables.mTitle + "\n");
-        if (!StaticVariables.mAuthor.equals("")) {
-            s.append(StaticVariables.mAuthor).append("\n");
-        }
-        s.append("Key: ").append(StaticVariables.mKey).append("\n");
-        s.append("Tempo: ").append(StaticVariables.mTempo).append("\n");
-        s.append("Time: ").append(StaticVariables.mTimeSig).append("\n");
-        s.append("CCLI: ").append(StaticVariables.mCCLI).append("\n");
-        s.append("Copyright: ").append(StaticVariables.mCopyright).append("\n");
+        StringBuilder s = new StringBuilder();
+        String[] headersAndFooters = getHeadersAndFooters("onSong");
+        s.append(headersAndFooters[0]);
+        s.append("\n");
 	
-	// Go through each song section and add the ChordPro formatted chords
+	    // Go through each song section and add the ChordPro formatted chords
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
             // IV - Quick exit if Heading or Note
             if (!StaticVariables.songSections[f].startsWith(" B_") && !StaticVariables.songSections[f].startsWith(";__")) {
                 s.append(processSong.songSectionChordPro(c, f, true));
             }
         }
-        
-        String string = s.toString();
-        // IV - Replace multiple blank lines with a single blank line and remove empty items
-        string = string.replaceAll("\n\n\n", "\n\n");
-        string = string .
-                replace ("\n\nCCLI","\nCCLI").
-                replace ("Key: \n","").
-                replace ("Tempo: \n","").
-                replace ("Time: \n","").
-                replace ("CCLI: \n","").
-                replace ("Copyright: \n","");
-        // IV - remove empty comments
-        string = string.replaceAll("\\Q{c:}\\E\n", "");
-        return string;
+
+        s.append("\n");
+        s.append(headersAndFooters[1]);
+
+        return tidyReturnedString(s.toString(),true);
     }
     private String prepareTextFile(Context c, Preferences preferences, ProcessSong processSong) {
         // This converts an OpenSong file into a text file
-        StringBuilder s = new StringBuilder(StaticVariables.mTitle + "\n");
-        if (!StaticVariables.mAuthor.equals("")) {
-            s.append(StaticVariables.mAuthor).append("\n");
-        }
-        s.append("Key: ").append(StaticVariables.mKey).append("\n");
-        s.append("Tempo: ").append(StaticVariables.mTempo).append("\n");
-        s.append("Time: ").append(StaticVariables.mTimeSig).append("\n");
+        StringBuilder s = new StringBuilder();
+        String[] headersAndFooters = getHeadersAndFooters("textOnly");
+        s.append(headersAndFooters[0]);
         s.append("\n");
-        s.append("CCLI: ").append(StaticVariables.mCCLI).append("\n");
-        s.append("Copyright: ").append(StaticVariables.mCopyright).append("\n");
 	
-	// Go through each song section and add the text trimmed lines
+	    // Go through each song section and add the text trimmed lines
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
             // IV - Quick exit if Heading or Note
             if (!StaticVariables.songSections[f].startsWith(" B_") && !StaticVariables.songSections[f].startsWith(";__")) {
@@ -900,17 +762,52 @@ class ExportPreparer {
                 s.append(processSong.songSectionText(c, preferences, f)).append("\n\n");
             }
         }
-        
-        String string = s.toString();
+
+        s.append("\n");
+        s.append(headersAndFooters[1]);
+
+        return tidyReturnedString(s.toString(),false);
+    }
+
+    private String[] getHeadersAndFooters(String type) {
+        String[] starttag = new String[] {"", "", "Key:", "Tempo:", "Time:", "Copyright:", "CCLI: "};
+        String endtag = "\n";
+        StringBuilder header = new StringBuilder();
+        StringBuilder footer = new StringBuilder();
+
+        if (type.equals("choPro")) {
+            starttag = new String[] {"{title: ", "{artist: ", "{key: ", "{tempo: ", "{time: ", "{copyright: ", "{ccli:"};
+            endtag = "}\n";
+        }
+
+        header.append(getNonEmptyTag(starttag[0],StaticVariables.mTitle,endtag));
+        header.append(getNonEmptyTag(starttag[1],StaticVariables.mAuthor,endtag));
+        header.append(getNonEmptyTag(starttag[2],StaticVariables.mKey,endtag));
+        header.append(getNonEmptyTag(starttag[3],StaticVariables.mTempo,endtag));
+        header.append(getNonEmptyTag(starttag[4],StaticVariables.mTimeSig,endtag));
+        footer.append(getNonEmptyTag(starttag[5],StaticVariables.mCopyright,endtag));
+        footer.append(getNonEmptyTag(starttag[6],StaticVariables.mCCLI,endtag));
+
+        return new String[] {header.toString(),footer.toString()};
+    }
+
+    private String getNonEmptyTag(String start, String content, String end) {
+        if (content==null || content.isEmpty()) {
+            return "";
+        } else {
+            return start + content + end;
+        }
+    }
+
+    private String tidyReturnedString(String string, boolean comments) {
+        if (comments) {
+            // IV - remove empty comments
+            string = string.replaceAll("\\Q{c:}\\E\n", "");
+            string = string.replaceAll("\\Q{comment:}\\E\n", "");
+            string = string.replaceAll("\\Q{comments:}\\E\n", "");
+        }
         // IV - Replace multiple blank lines with a single blank line and remove empty items
-        string = string.replaceAll("\n\n\n", "\n\n");
-        string = string .
-                replace ("Key: \n","").
-                replace ("Tempo: \n","").
-                replace ("Time: \n","").
-                replace ("CCLI: \n","").
-                replace ("Copyright: \n","");
-        return string;
+        return string.replaceAll("\n\n\n", "\n\n");
     }
 
     private boolean isImgOrPDF(String s) {
@@ -921,7 +818,6 @@ class ExportPreparer {
         return s.endsWith(".jpg") || s.endsWith(".jpeg") || s.endsWith(".gif") || s.endsWith(".png") || s.endsWith(".bmp");
     }
     private boolean isPDF(String s) {
-        s = s.toLowerCase(StaticVariables.locale);
-        return s.endsWith(".pdf");
+        return s.toLowerCase(StaticVariables.locale).endsWith(".pdf");
     }
 }

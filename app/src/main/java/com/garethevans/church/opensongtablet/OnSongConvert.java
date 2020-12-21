@@ -55,6 +55,9 @@ class OnSongConvert {
         // Fix content we recognise as OnSongTags
         lyrics = fixRecognisedContent(lyrics, chordProConvert);
 
+        // Fix html code and accented text
+        lyrics = chordProConvert.parseHTML(lyrics);
+
         // Now that we have the basics in place, we will go back through the song and extract headings
         // We have to do this separately as [] were previously identifying chords, not tags.
         // Chords have now been extracted to chord lines

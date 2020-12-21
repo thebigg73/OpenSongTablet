@@ -76,6 +76,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     private Preferences preferences;
     private SongFolders songFolders;
     private Uri downloadedFile;
+    private ChordProConvert chordProConvert;
 
     static PopUpFindNewSongsFragment newInstance() {
         PopUpFindNewSongsFragment frag;
@@ -156,6 +157,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         storageAccess = new StorageAccess();
         preferences = new Preferences();
         songFolders = new SongFolders();
+        chordProConvert = new ChordProConvert();
 
         // Initialise the views
         searchtext_LinearLayout = V.findViewById(R.id.searchtext_LinearLayout);
@@ -551,9 +553,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         Log.d("WT","ccli="+ccli);
 
         String[] lines = resultposted.split("\n");
-        for (String l:lines) {
-            //Log.d("all","l:"+l);
-        }
 
         // Now try to get the chordpro file contents
         startpos = resultposted.indexOf("<div class='chord-pro-line'>");
@@ -731,6 +730,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     }
     private String getLyricsUG(String s) {
         s = s.replace("&quot;", "");
+        s = s.replace("content:","");
         String[] lines = s.split("NEW_LINE_OS");
         StringBuilder stringBuilder = new StringBuilder();
         for (String line : lines) {
@@ -768,6 +768,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         String string = stringBuilder.toString();
         string = PopUpEditSongFragment.parseToHTMLEntities(string);
 
+        // Fix accented characters into UTF
+        string = chordProConvert.parseHTML(string);
 
         return string;
     }
@@ -1361,6 +1363,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         lyrics = lyrics.replace("<sup>","");
         lyrics = lyrics.replace("</sup>","");
 
+        // Fix accented characters into UTF
+        lyrics = chordProConvert.parseHTML(lyrics);
+
         // Finally, trim the lyrics
         return lyrics.trim();
     }
@@ -1560,6 +1565,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             // Split the result into lines
             //Now look to see if the webcontent has the ChordPro text in it
             // Check we aren't trying to use the tab-pro page!
+
             try {
                 String address = webresults_WebView.getUrl();
                 if (address != null && (address.contains("/tab-pro/") || address.contains("/chords-pro/"))) {
@@ -1652,7 +1658,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     }
 
     private class MyJavaScriptInterface {
-        @SuppressWarnings("unused")
         @JavascriptInterface
         public void processHTML(final String html) {
             GetSourceCode getsource = new GetSourceCode(html);
