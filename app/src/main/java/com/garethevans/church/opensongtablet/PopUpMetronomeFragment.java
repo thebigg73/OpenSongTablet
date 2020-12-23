@@ -477,6 +477,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
                 StaticVariables.mTempo = "" + (i1+40);
                 bpm = (short) (i1+40);
             }
+            bpmtext.setText(getResources().getString(R.string.bpm));
             StaticVariables.metronomeok = Metronome.isMetronomeValid();
 
         });
@@ -492,7 +493,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         timesig_numberPicker.setMaxValue(timesigvals.length-1);
         timesig_numberPicker.setDisplayedValues(timesigvals);
 
-        // Set the defaut value:
+        // Set the default value:
         int defpos = 0;
 
         for (int i=0;i<timesigvals.length;i++) {

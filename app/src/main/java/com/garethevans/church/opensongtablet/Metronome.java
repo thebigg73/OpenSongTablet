@@ -4,9 +4,11 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.graphics.Color;
+import androidx.core.graphics.ColorUtils;
 
 class Metronome {
-	
+
 	private double bpm;
 	private short beat, noteValue;
 	private int silence;
@@ -14,7 +16,7 @@ class Metronome {
 
 	private double beatSound, sound;
     private boolean play = true;
-	
+
 	private final AudioGenerator audioGenerator = new AudioGenerator(8000);
     private double[] soundTickArray, soundTockArray, silenceSoundArray;
 	private int currentBeat = 1;
@@ -29,13 +31,13 @@ class Metronome {
 	private Metronome(String pan, float vol) {
 		audioGenerator.createPlayer(pan,vol);
 	}
-	
+
 	private void calcSilence() {
 
         //TEST
-        beat = getBeat();
-        noteValue = getNoteValue();
-        bpm = getBpm();
+        beat = FullscreenActivity.beats;
+        noteValue = FullscreenActivity.noteValue;
+        bpm = PopUpMetronomeFragment.bpm;
 
         if (noteValue<1) {
             noteValue=4;
@@ -45,57 +47,44 @@ class Metronome {
         }
 
         // 3/4 3 beats per bar, each quarter notes
-        // 3/8 3 beats per bar, each eigth notes = tempo is twice as fast
+        // 3/8 3 beats per bar, each eigth notes
+        // 6/8 2 beats per bar. each dotted quarter note
+        // bpm is taken as being given for the beat of the time signature
 
-        // Tempos that I have
+        // Time signatures that I have
         // 2/2   2/4   3/2    3/4   3/8   4/4   5/4   5/8   6/4   6/8   7/4   7/8   1/4
-        // First number is the number of beats and is the easiest bit
-        // The second number is the length of each beat
-        // 2 = half notes, 4 = quarter notes, 8 = eigth notes
 
-        if (beat==6 || beat==9) {
-            noteValue = (short)(noteValue/(beat/3));
-        } else if (beat==5 || beat==7) {
-            noteValue = (short)(noteValue/2);
-        }
-
-        int resolutionmeter = (int) (8.0f / (float) noteValue);
-
-        if (resolutionmeter ==0) {
-            resolutionmeter =1;
+        // IV  - Override for 6/8 compound time signature - 3 sounds (triplet) per beat
+        if (beat == 6 && noteValue == 8) {
+            bpm = bpm * 3;
         }
 
         int tick1 = 600;
         try {
-            silence = (int) (((60/bpm)*(4000* resolutionmeter)- tick1));
+            // IV - Double interval less the tick
+            silence = (int) (((60/bpm)*(8000)) * 2)- tick1;
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         soundTickArray = new double[tick1];
 		soundTockArray = new double[tick1];
-		if (silence>10000) {
-            silence = 10000;
-        }
-		silenceSoundArray = new double[this.silence];
+        silenceSoundArray = new double[this.silence];
         double[] tick;
         double[] tock;
 		if (StaticVariables.mTimeSig.equals("1/4")) {
-            tick = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, beatSound/ resolutionmeter);
-            tock = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, beatSound/ resolutionmeter);
-
+            tick = audioGenerator.getSineWave(tick1, 8000, beatSound);
+            tock = audioGenerator.getSineWave(tick1, 8000, beatSound);
         } else {
-            tick = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, beatSound/ resolutionmeter);
-            tock = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, sound/ resolutionmeter);
+            tick = audioGenerator.getSineWave(tick1, 8000, beatSound);
+            tock = audioGenerator.getSineWave(tick1, 8000, sound);
         }
 		for(int i = 0; i< tick1; i++) {
 			soundTickArray[i] = tick[i];
 			soundTockArray[i] = tock[i];
 		}
-		for(int i=0;i<silence;i++)
-			silenceSoundArray[i] = 0;
 	}
-	
+
 	private void play(String pan, float vol) {
 		calcSilence();
 		do {
@@ -124,25 +113,14 @@ class Metronome {
 		audioGenerator.destroyAudioTrack();
 	}
 
-	private double getBpm() {
-		return PopUpMetronomeFragment.bpm;
-	}
-
 	private void setBpm(int bpm) {
 		this.bpm = bpm;
-	}
-
-	private short getNoteValue() {
-		return FullscreenActivity.noteValue;
 	}
 
 	private void setNoteValue(short noteValue) {
 		this.noteValue = noteValue;
 	}
 
-	private short getBeat() {
-		return FullscreenActivity.beats;
-	}
 	private void setBeat(short beat_set) {
 		this.beat = beat_set;
 	}
@@ -158,6 +136,7 @@ class Metronome {
 	private void setVolume(float metrovol_set) {
 		this.metrovol = metrovol_set;
 	}
+
 	public float getVolume () {
 		return metrovol;
 	}
@@ -235,7 +214,6 @@ class Metronome {
                 Log.d("d","Error starting the metronome");
             }
             startstopVisualMetronome(showvisual,metronomeColor);
-        // IV - A stop perhaps does not need to consider if it is valid
         } else if (StaticVariables.metronomeonoff.equals("on")) {
             // Stop the metronome
             StaticVariables.metronomeonoff = "off";
@@ -244,7 +222,6 @@ class Metronome {
             if (metroTask!=null) {
                 metroTask.stop();
             }
-            // IV - Do not go to setting page as metronome 'not set' may be valid
         }
     }
 
@@ -288,23 +265,35 @@ class Metronome {
 	        this.showvisual = showvis;
         }
 
-        final int beatmultiplier = FullscreenActivity.noteValue;
-        final long time_in_millisecs = (long) (((60.0f / (float) PopUpMetronomeFragment.bpm) * (4.0f / (float) beatmultiplier))* 1000);
+        // IV - Visual is an on & off for each each beat so use half the time
+        final long time_in_millisecs = (long) (((60.0f / (float) PopUpMetronomeFragment.bpm) * 500));
         long oldtime = System.currentTimeMillis();
         long nexttime = oldtime + time_in_millisecs;
         final boolean showvisual;
-
         final int metronomeColor;
 
         @Override
         protected String doInBackground(Void... voids) {
-            publishProgress(1);
+            int beats = FullscreenActivity.beats * 2;
+            // IV - Override for 6/8 compound time signature
+            if ((beats == 12) && (FullscreenActivity.noteValue == 8)) {
+                beats = 4;
+            }
+            int beatsCount = 1;
+            int metronomeColorDarker = ColorUtils.blendARGB(metronomeColor, Color.BLACK, 0.2f);
+            publishProgress(metronomeColor);
             while (StaticVariables.metronomeonoff.equals("on")) {
                 // Post this activity based on the bpm
                 if (System.currentTimeMillis() >= nexttime) {
                     oldtime = nexttime;
                     nexttime = oldtime + time_in_millisecs;
-                    publishProgress(1);
+                    beatsCount = beatsCount + 1;
+                    if (beatsCount > beats) {
+                        beatsCount = 1;
+                        publishProgress(metronomeColor);
+                    } else {
+                        publishProgress(metronomeColorDarker);
+                    }
                 }
             }
             return null;
@@ -321,7 +310,7 @@ class Metronome {
                 } else {
                     StaticVariables.whichbeat = "a";
                     if (StageMode.ab != null) {
-                        StageMode.ab.setBackgroundDrawable(new ColorDrawable(metronomeColor));
+                        StageMode.ab.setBackgroundDrawable(new ColorDrawable(integers[0]));
                     }
                 }
             }
@@ -468,7 +457,7 @@ class Metronome {
             t = 39;
         }
         ProcessSong.processTimeSig();
-        return t >= 40 && t < 299 && StaticVariables.mTimeSigValid;
+        return t >= 40 && t <= 299 && t != 260 && StaticVariables.mTimeSigValid;
 
     }
 }
