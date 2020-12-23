@@ -16,7 +16,8 @@
         android:src="@drawable/ic_sort_white_36dp"
         app:backgroundTint="@color/purple"
         app:borderWidth="0dp"
-        app:fabSize="mini" />
+        app:fabSize="mini"
+        android:contentDescription="@string/alphabetical" />
 
     <com.garethevans.church.opensongtablet.NonScrollListView
         android:id="@+id/set_ListView"

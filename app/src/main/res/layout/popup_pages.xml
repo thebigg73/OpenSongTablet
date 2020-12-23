@@ -61,7 +61,8 @@
                         android:layout_margin="8dp"
                         android:src="@drawable/ic_arrow_left_white_36dp"
                         app:backgroundTint="@color/grey"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/pageturn_previous" />
 
                     <TextView
                         android:id="@+id/pagetextView"
@@ -78,7 +79,8 @@
                         android:layout_margin="8dp"
                         android:src="@drawable/ic_arrow_right_white_36dp"
                         app:backgroundTint="@color/grey"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/next" />
 
                 </LinearLayout>
 

@@ -110,7 +110,8 @@
                             android:src="@drawable/ic_play_white_36dp"
                             app:elevation="0dp"
                             app:fabSize="mini"
-                            app:useCompatPadding="true" />
+                            app:useCompatPadding="true"
+                            android:contentDescription="@string/media_play" />
 
                     </LinearLayout>
 

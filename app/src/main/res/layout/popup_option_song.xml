@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="2dp"
+    android:layout_marginStart="2dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -32,7 +32,8 @@
             android:layout_margin="8dp"
             app:backgroundTint="@color/toolbar"
             app:fabSize="mini"
-            android:src="@drawable/ic_arrow_right_white_36dp"/>
+            android:src="@drawable/ic_arrow_right_white_36dp"
+            android:contentDescription="@string/drawer_close" />
 
     </LinearLayout>
 
@@ -148,7 +149,7 @@
                 android:id="@+id/option_separator2_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="4dp"
                 android:text="@string/actions" />
 
@@ -195,7 +196,7 @@
                 android:id="@+id/option_separator3_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="4dp"
                 android:text="@string/extra" />
 
@@ -269,7 +270,7 @@
                 android:id="@+id/option_separator4_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="4dp"
                 android:text="@string/search" />
 
@@ -303,7 +304,7 @@
                 android:id="@+id/option_separator0_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="4dp"
                 android:text="@string/load_preferences" />
 

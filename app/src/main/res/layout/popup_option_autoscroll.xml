@@ -19,7 +19,6 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_margin="4dp"
-            android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:gravity="center"
@@ -34,7 +33,8 @@
             android:layout_margin="8dp"
             app:backgroundTint="@color/toolbar"
             app:fabSize="mini"
-            android:src="@drawable/ic_arrow_right_white_36dp"/>
+            android:src="@drawable/ic_arrow_right_white_36dp"
+            android:contentDescription="@string/drawer_close" />
 
     </LinearLayout>
 
@@ -59,7 +59,7 @@
                 android:id="@+id/song_separator_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="4dp"
                 android:text="@string/song" />
 
@@ -113,7 +113,7 @@
                 android:id="@+id/option_separator_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="4dp"
                 android:text="@string/options" />
 

@@ -87,7 +87,8 @@
             android:src="@drawable/ic_information_outline_white_36dp"
             app:borderWidth="0dp"
             android:layout_margin="8dp"
-            app:backgroundTint="@color/grey"/>
+            app:backgroundTint="@color/grey"
+            android:contentDescription="@string/extra" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/listSetTweetButton"
@@ -97,7 +98,8 @@
             app:borderWidth="0dp"
             android:src="@drawable/ic_twitter_white_36dp"
             android:layout_margin="8dp"
-            app:backgroundTint="@color/purple"/>
+            app:backgroundTint="@color/purple"
+            android:contentDescription="@string/twitteruser" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/shuffle"
@@ -107,7 +109,8 @@
             app:borderWidth="0dp"
             android:src="@drawable/ic_shuffle_white_36dp"
             android:layout_margin="8dp"
-            app:backgroundTint="@color/purple"/>
+            app:backgroundTint="@color/purple"
+            android:contentDescription="@string/shuffle_set" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/saveAsProperSet"
@@ -117,7 +120,8 @@
             app:borderWidth="0dp"
             android:src="@drawable/ic_content_save_white_36dp"
             android:layout_margin="8dp"
-            app:backgroundTint="@color/purple"/>
+            app:backgroundTint="@color/purple"
+            android:contentDescription="@string/save" />
 
     </LinearLayout>
     </HorizontalScrollView>

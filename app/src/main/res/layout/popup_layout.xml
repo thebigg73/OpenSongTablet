@@ -385,7 +385,9 @@
                                 app:backgroundTint="#555555"
                                 app:elevation="0dp"
                                 app:fabSize="mini"
-                                app:useCompatPadding="true" />
+                                app:useCompatPadding="true"
+                                android:contentDescription="Left"
+                                tools:ignore="HardcodedText" />
 
                             <com.google.android.material.floatingactionbutton.FloatingActionButton
                                 android:id="@+id/lyrics_center_align"
@@ -399,7 +401,9 @@
                                 app:backgroundTint="#555555"
                                 app:elevation="0dp"
                                 app:fabSize="mini"
-                                app:useCompatPadding="true" />
+                                app:useCompatPadding="true"
+                                android:contentDescription="Center"
+                                tools:ignore="HardcodedText" />
 
                             <com.google.android.material.floatingactionbutton.FloatingActionButton
                                 android:id="@+id/lyrics_right_align"
@@ -413,7 +417,9 @@
                                 app:backgroundTint="#555555"
                                 app:elevation="0dp"
                                 app:fabSize="mini"
-                                app:useCompatPadding="true" />
+                                app:useCompatPadding="true"
+                                android:contentDescription="Right"
+                                tools:ignore="HardcodedText" />
 
                             <View
                                 android:id="@+id/divider"
@@ -433,7 +439,8 @@
                                 app:backgroundTint="#555555"
                                 app:elevation="0dp"
                                 app:fabSize="mini"
-                                app:useCompatPadding="true" />
+                                app:useCompatPadding="true"
+                                android:contentDescription="@string/top" />
 
                             <com.google.android.material.floatingactionbutton.FloatingActionButton
                                 android:id="@+id/lyrics_center_valign"
@@ -447,7 +454,9 @@
                                 app:backgroundTint="#555555"
                                 app:elevation="0dp"
                                 app:fabSize="mini"
-                                app:useCompatPadding="true" />
+                                app:useCompatPadding="true"
+                                android:contentDescription="Middle"
+                                tools:ignore="HardcodedText" />
 
                             <com.google.android.material.floatingactionbutton.FloatingActionButton
                                 android:id="@+id/lyrics_bottom_valign"
@@ -461,7 +470,8 @@
                                 app:backgroundTint="#555555"
                                 app:elevation="0dp"
                                 app:fabSize="mini"
-                                app:useCompatPadding="true" />
+                                app:useCompatPadding="true"
+                                android:contentDescription="@string/bottom" />
 
                         </LinearLayout>
 
@@ -497,7 +507,9 @@
                                 app:backgroundTint="#555555"
                                 app:elevation="0dp"
                                 app:fabSize="mini"
-                                app:useCompatPadding="true" />
+                                app:useCompatPadding="true"
+                                android:contentDescription="Left"
+                                tools:ignore="HardcodedText" />
 
                             <com.google.android.material.floatingactionbutton.FloatingActionButton
                                 android:id="@+id/info_center_align"
@@ -511,7 +523,9 @@
                                 app:backgroundTint="#555555"
                                 app:elevation="0dp"
                                 app:fabSize="mini"
-                                app:useCompatPadding="true" />
+                                app:useCompatPadding="true"
+                                android:contentDescription="Center"
+                                tools:ignore="HardcodedText" />
 
                             <com.google.android.material.floatingactionbutton.FloatingActionButton
                                 android:id="@+id/info_right_align"
@@ -525,7 +539,9 @@
                                 app:backgroundTint="#555555"
                                 app:elevation="0dp"
                                 app:fabSize="mini"
-                                app:useCompatPadding="true" />
+                                app:useCompatPadding="true"
+                                android:contentDescription="Right"
+                                tools:ignore="HardcodedText" />
 
 
                         </LinearLayout>
@@ -796,7 +812,8 @@
                                 android:layout_gravity="center_vertical"
                                 android:layout_margin="12dp"
                                 android:contentDescription="@string/choose_video1"
-                                android:src="@drawable/ic_image_white_36dp" />
+                                android:src="@drawable/ic_image_white_36dp"
+                                tools:ignore="TooManyViews" />
 
                             <CheckBox
                                 android:id="@+id/video1CheckBox"
