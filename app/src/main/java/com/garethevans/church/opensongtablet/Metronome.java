@@ -280,7 +280,7 @@ class Metronome {
                 beats = 4;
             }
             int beatsCount = 1;
-            int metronomeColorDarker = ColorUtils.blendARGB(metronomeColor, Color.BLACK, 0.2f);
+            int metronomeColorDarker = ColorUtils.blendARGB(metronomeColor, Color.BLACK, 0.3f);
             publishProgress(metronomeColor);
             while (StaticVariables.metronomeonoff.equals("on")) {
                 // Post this activity based on the bpm

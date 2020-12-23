@@ -714,7 +714,7 @@ class ExportPreparer {
         s.append(headersAndFooters[0]);
         s.append("\n");
 
-	    // Go through each song section and add the ChordPro formatted chords
+        // Go through each song section and add the ChordPro formatted chords
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
             // IV - Quick exit if extra information heading or Note
             if (!StaticVariables.songSections[f].startsWith(" B_") && !StaticVariables.songSections[f].startsWith(";__")) {
@@ -734,7 +734,7 @@ class ExportPreparer {
         s.append(headersAndFooters[0]);
         s.append("\n");
 	
-	    // Go through each song section and add the ChordPro formatted chords
+        // Go through each song section and add the ChordPro formatted chords
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
             // IV - Quick exit if Heading or Note
             if (!StaticVariables.songSections[f].startsWith(" B_") && !StaticVariables.songSections[f].startsWith(";__")) {
@@ -753,8 +753,8 @@ class ExportPreparer {
         String[] headersAndFooters = getHeadersAndFooters("textOnly");
         s.append(headersAndFooters[0]);
         s.append("\n");
-	
-	    // Go through each song section and add the text trimmed lines
+
+        // Go through each song section and add the text trimmed lines
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
             // IV - Quick exit if Heading or Note
             if (!StaticVariables.songSections[f].startsWith(" B_") && !StaticVariables.songSections[f].startsWith(";__")) {
@@ -806,7 +806,7 @@ class ExportPreparer {
             string = string.replaceAll("\\Q{comment:}\\E\n", "");
             string = string.replaceAll("\\Q{comments:}\\E\n", "");
         }
-        // IV - Replace multiple blank lines with a single blank line and remove empty items
+        // Replace multiple blank lines with a single blank line
         return string.replaceAll("\n\n\n", "\n\n");
     }
 
