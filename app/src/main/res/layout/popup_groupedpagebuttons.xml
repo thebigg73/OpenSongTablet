@@ -63,7 +63,8 @@
                         android:src="@drawable/ic_format_list_numbers_white_36dp"
                         app:backgroundTint="@color/purple"
                         app:useCompatPadding="true"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/set" />
 
                     <TextView
                         style="@style/MyInfoText"
@@ -115,7 +116,8 @@
                         android:src="@drawable/ic_amplifier_white_36dp"
                         app:backgroundTint="@color/purple"
                         app:useCompatPadding="true"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/pad" />
 
                     <TextView
                         style="@style/MyInfoText"
@@ -142,7 +144,8 @@
                         android:src="@drawable/ic_rotate_right_white_36dp"
                         app:backgroundTint="@color/purple"
                         app:useCompatPadding="true"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/autoscroll" />
 
                     <TextView
                         style="@style/MyInfoText"
@@ -169,7 +172,8 @@
                         android:src="@drawable/ic_pulse_white_36dp"
                         app:backgroundTint="@color/purple"
                         app:useCompatPadding="true"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/metronome" />
 
                     <TextView
                         style="@style/MyInfoText"
@@ -220,7 +224,8 @@
                         android:src="@drawable/ic_guitar_electric_white_36dp"
                         app:backgroundTint="@color/purple"
                         app:useCompatPadding="true"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/chords" />
 
                     <TextView
                         style="@style/MyInfoText"
@@ -247,7 +252,8 @@
                         android:src="@drawable/ic_link_white_36dp"
                         app:backgroundTint="@color/purple"
                         app:useCompatPadding="true"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/link" />
 
                     <TextView
                         style="@style/MyInfoText"
@@ -274,7 +280,8 @@
                         android:src="@drawable/ic_note_text_white_36dp"
                         app:backgroundTint="@color/purple"
                         app:useCompatPadding="true"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/stickynotes" />
 
                     <TextView
                         style="@style/MyInfoText"
@@ -301,7 +308,8 @@
                         android:src="@drawable/ic_highlighter_white_36dp"
                         app:backgroundTint="@color/purple"
                         app:useCompatPadding="true"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/highlight" />
 
                     <TextView
                         style="@style/MyInfoText"
@@ -329,7 +337,8 @@
                         android:src="@drawable/ic_book_white_36dp"
                         app:backgroundTint="@color/purple"
                         app:useCompatPadding="true"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/pagebutton_group" />
 
                     <TextView
                         style="@style/MyInfoText"
@@ -357,7 +366,8 @@
                         android:src="@drawable/ic_clef_white_36dp"
                         app:backgroundTint="@color/purple"
                         app:useCompatPadding="true"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/music_score" />
 
                     <TextView
                         style="@style/MyInfoText"
@@ -409,7 +419,8 @@
                         android:src="@drawable/ic_help_outline_white_36dp"
                         app:backgroundTint="@color/purple"
                         app:useCompatPadding="true"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/custom" />
 
                     <TextView
                         style="@style/MyInfoText"
@@ -436,7 +447,8 @@
                         android:src="@drawable/ic_help_outline_white_36dp"
                         app:backgroundTint="@color/purple"
                         app:useCompatPadding="true"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/custom" />
 
                     <TextView
                         style="@style/MyInfoText"
@@ -463,7 +475,8 @@
                         android:src="@drawable/ic_help_outline_white_36dp"
                         app:backgroundTint="@color/purple"
                         app:useCompatPadding="true"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/custom" />
 
                     <TextView
                         style="@style/MyInfoText"
@@ -493,7 +506,8 @@
                         android:src="@drawable/ic_help_outline_white_36dp"
                         app:backgroundTint="@color/purple"
                         app:useCompatPadding="true"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/custom" />
 
                     <TextView
                         style="@style/MyInfoText"

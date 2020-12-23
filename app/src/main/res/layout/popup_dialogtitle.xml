@@ -35,7 +35,8 @@
         app:backgroundTint="@color/red"
         app:borderWidth="0dp"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_close_white_36dp"/>
+        android:src="@drawable/ic_close_white_36dp"
+        android:contentDescription="@string/drawer_close" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/saveMe"
@@ -52,6 +53,7 @@
         android:layout_marginRight="8dp"
         app:elevation="0dp"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_check_white_36dp"/>
+        android:src="@drawable/ic_check_white_36dp"
+        android:contentDescription="@string/save" />
 
 </LinearLayout>
