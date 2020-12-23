@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/popup_bg"
     android:padding="8dp">
 
@@ -87,15 +88,31 @@
                     android:orientation="vertical"
                     android:padding="12dp">
 
-                    <TextView
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
                         style="@style/MyHeadingText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:text="@string/edit_song_tempo" />
+                        android:text="@string/edit_song_tempo"
+                    />
 
+                        <TextView
+                            android:id="@+id/bpmtext"
+                            style="@style/MyInfoText"
+                            android:textColor="#ff0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/bpm" />
 
-                    <LinearLayout
+                    </LinearLayout>
+
+                   <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal|center_vertical"
@@ -107,13 +124,6 @@
                             style="@style/MyInfoText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
-
-                        <TextView
-                            android:id="@+id/bpmtext"
-                            style="@style/MyInfoText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/bpm" />
 
                     </LinearLayout>
 
@@ -211,24 +221,22 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="8dp"
                 android:layout_weight="0.5"
                 android:background="@drawable/menu_button"
                 android:gravity="center_horizontal|top"
                 android:orientation="vertical"
-                android:padding="12dp">
+                android:padding="8dp">
 
                 <TextView
                     style="@style/MyHeadingText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
                     android:text="@string/metronome_duration" />
 
                 <NumberPicker
                     android:id="@+id/bar_numberPicker"
                     style="@style/MyInfoText"
+                    android:layout_margin="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -236,12 +244,18 @@
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/visualmetronome"
-                style="@style/MyHeadingText"
+                android:textColor="#ff0"
+                android:textOff="@string/off"
+                android:textOn="@string/on"
+                style="@style/MyTextSwitch"
+                app:showText="true"
+                app:switchTextAppearance="@style/MyInfoText"
+                app:thumbTextPadding="4dp"
+                app:thumbTint="#444488"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="@string/visualmetronome"
-                android:theme="@style/SwitchStyle" />
+                android:text="@string/visualmetronome" />
 
         </LinearLayout>
     </ScrollView>
