@@ -685,7 +685,7 @@ class ChordProConvert {
             replace(wm + " 4", "[¬ 4¹").
             replace(wm, "[¬¹");
 
-        // IV - A complete replace has · at the end.
+        // IV - A complete replace has '¹' at the end.
         if (s.endsWith("¹")) {
             // IV - Single character 'start of returned heading' (V etc.) have no following space
             if (r.length() == 1) {

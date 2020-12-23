@@ -26,11 +26,17 @@
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/displayMenuToggleSwitch"
+                android:textOff="@string/off"
+                android:textOn="@string/on"
+                style="@style/MyTextSwitch"
+                app:showText="true"
+                app:switchTextAppearance="@style/MyInfoText"
+                app:thumbTextPadding="4dp"
+                app:thumbTint="#444488"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/hide_actionbar"
-                android:layout_margin="15dp"
-                android:theme="@style/SwitchStyle"/>
+                android:layout_margin="15dp" />
 
             <LinearLayout
                 android:orientation="vertical"
@@ -46,10 +52,21 @@
                     style="@style/MyHeadingText"/>
 
                 <TextView
+                    style="@style/MyTextSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="@string/edit_song_title"
+                    android:textColor="#fff"/>
+
+                <TextView
                     android:id="@+id/titleTextSizeLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/edit_song_title"
+                    android:text="@string/size"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginRight="4dp"
@@ -70,10 +87,21 @@
                     android:max="8"/>
 
                 <TextView
-                    android:id="@+id/authorTextSizeLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/edit_song_author"
+                    style="@style/MyTextSwitch"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="12dp"
+                    android:textColor="#fff"/>
+
+                <TextView
+                    android:id="@+id/authorTextSizeLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/size"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginRight="4dp"
@@ -110,12 +138,18 @@
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/batteryDialOnOff"
+                    android:textOff="@string/off"
+                    android:textOn="@string/on"
+                    style="@style/MyTextSwitch"
+                    app:showText="true"
+                    app:switchTextAppearance="@style/MyInfoText"
+                    app:thumbTextPadding="4dp"
+                    app:thumbTint="#444488"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:gravity="center_vertical"
-                    android:text="@string/image"
-                    android:theme="@style/SwitchStyle"/>
+                    android:text="@string/image"/>
 
                 <TextView
                     android:id="@+id/batteryDialSizeLabel"
@@ -144,12 +178,18 @@
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/batteryTextOnOff"
+                    android:textOff="@string/off"
+                    android:textOn="@string/on"
+                    style="@style/MyTextSwitch"
+                    app:showText="true"
+                    app:switchTextAppearance="@style/MyInfoText"
+                    app:thumbTextPadding="4dp"
+                    app:thumbTint="#444488"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:gravity="center_vertical"
-                    android:text="@string/text"
-                    android:theme="@style/SwitchStyle"/>
+                    android:text="@string/text"/>
 
                 <TextView
                     android:id="@+id/batteryTextSizeLabel"
@@ -192,21 +232,33 @@
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/clockTextOnOff"
+                    android:textOff="@string/off"
+                    android:textOn="@string/on"
+                    style="@style/MyTextSwitch"
+                    app:showText="true"
+                    app:switchTextAppearance="@style/MyInfoText"
+                    app:thumbTextPadding="4dp"
+                    app:thumbTint="#444488"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:gravity="center_vertical"
-                    android:text="@string/text"
-                    android:theme="@style/SwitchStyle"/>
+                    android:text="@string/text"/>
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/clock24hrOnOff"
+                    android:textOff="@string/off"
+                    android:textOn="@string/on"
+                    style="@style/MyTextSwitch"
+                    app:showText="true"
+                    app:switchTextAppearance="@style/MyInfoText"
+                    app:thumbTextPadding="4dp"
+                    app:thumbTint="#444488"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:gravity="center_vertical"
-                    android:text="@string/timeformat"
-                    android:theme="@style/SwitchStyle"/>
+                    android:text="@string/timeformat"/>
 
                 <TextView
                     android:id="@+id/clockTextSizeLabel"
