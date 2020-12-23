@@ -197,7 +197,7 @@
     <string name="file_type">"Тип файла"</string>
     <string name="file_type_unknown">"неизвестно"</string>
     <string name="findnewsongs">"Поиск новых песен"</string>
-    <string name="firstsong">"Показать первую песню"</string>
+    <string name="firstsong">Первая песня</string>
     <string name="fix">"Автоисправление"</string>
     <string name="floating_window">"Плавающее окно"</string>
     <string name="folder_new">"Создание новой папки"</string>

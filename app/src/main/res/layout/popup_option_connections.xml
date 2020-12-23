@@ -2,6 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginStart="2dp"
@@ -67,9 +68,10 @@
             android:text="@string/app_name"
             android:textColor="#fff"
             android:textSize="12sp"
-            android:autofillHints="@string/device_name"
+            android:autofillHints="Device name"
             android:inputType="text"
-            android:hint="@string/device_name"/>
+            android:hint="Device name"
+            tools:ignore="HardcodedText" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/actAsHost"
