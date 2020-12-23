@@ -714,8 +714,8 @@ class ExportPreparer {
         s.append(headersAndFooters[0]);
         s.append("\n");
 
-	    // Go through each song section and add the ChordPro formatted chords
-        for (int f = 0; f< StaticVariables.songSections.length; f++) {
+       // Go through each song section and add the ChordPro formatted chords
+       for (int f = 0; f< StaticVariables.songSections.length; f++) {
             // IV - Quick exit if extra information heading or Note
             if (!StaticVariables.songSections[f].startsWith(" B_") && !StaticVariables.songSections[f].startsWith(";__")) {
                 s.append(processSong.songSectionChordPro(c, f, false));
@@ -734,7 +734,7 @@ class ExportPreparer {
         s.append(headersAndFooters[0]);
         s.append("\n");
 	
-	    // Go through each song section and add the ChordPro formatted chords
+        // Go through each song section and add the ChordPro formatted chords
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
             // IV - Quick exit if Heading or Note
             if (!StaticVariables.songSections[f].startsWith(" B_") && !StaticVariables.songSections[f].startsWith(";__")) {
@@ -753,8 +753,8 @@ class ExportPreparer {
         String[] headersAndFooters = getHeadersAndFooters("textOnly");
         s.append(headersAndFooters[0]);
         s.append("\n");
-	
-	    // Go through each song section and add the text trimmed lines
+     
+        // Go through each song section and add the text trimmed lines
         for (int f = 0; f< StaticVariables.songSections.length; f++) {
             // IV - Quick exit if Heading or Note
             if (!StaticVariables.songSections[f].startsWith(" B_") && !StaticVariables.songSections[f].startsWith(";__")) {
