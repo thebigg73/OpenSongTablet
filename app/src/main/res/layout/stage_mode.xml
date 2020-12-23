@@ -173,7 +173,8 @@
                 android:src="@drawable/ic_arrow_up_white_36dp"
                 android:visibility="gone"
                 app:backgroundTint="@color/purple"
-                app:fabSize="mini" />
+                app:fabSize="mini"
+                android:contentDescription="@string/pageturn_up" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/scrollDownButton"
@@ -186,7 +187,8 @@
                 android:src="@drawable/ic_arrow_down_white_36dp"
                 android:visibility="gone"
                 app:backgroundTint="@color/purple"
-                app:fabSize="mini" />
+                app:fabSize="mini"
+                android:contentDescription="@string/pageturn_down" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/setBackButton"
@@ -200,7 +202,8 @@
                 android:src="@drawable/ic_arrow_left_white_36dp"
                 android:visibility="invisible"
                 app:backgroundTint="@color/purple"
-                app:fabSize="mini" />
+                app:fabSize="mini"
+                android:contentDescription="@string/pageturn_previous" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/setForwardButton"
@@ -215,7 +218,8 @@
                 android:visibility="invisible"
                 app:backgroundTint="@color/purple"
                 app:fabSize="mini"
-                tools:ignore="RelativeOverlap" />
+                tools:ignore="RelativeOverlap"
+                android:contentDescription="@string/pageturn_next" />
 
             <include
                 android:id="@+id/pagebuttons"

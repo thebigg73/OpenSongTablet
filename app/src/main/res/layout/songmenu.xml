@@ -24,12 +24,13 @@
             android:layout_margin="8dp"
             app:backgroundTint="@color/toolbar"
             app:fabSize="mini"
-            android:src="@drawable/ic_arrow_left_white_36dp"/> />
+            android:src="@drawable/ic_arrow_left_white_36dp"
+            android:contentDescription="@string/drawer_close" />
 
         <LinearLayout
             android:id="@+id/changefolder_LinearLayout"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
@@ -37,7 +38,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:paddingLeft="10dp">
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp">
 
                 <ImageView
                     android:layout_width="wrap_content"

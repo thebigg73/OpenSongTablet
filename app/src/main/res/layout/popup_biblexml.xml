@@ -36,7 +36,8 @@
         app:useCompatPadding="true"
         app:borderWidth="0dp"
         android:src="@drawable/ic_close_white_36dp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:contentDescription="@string/drawer_close" />
 
     <ScrollView
         android:id="@+id/xmlscrollview"

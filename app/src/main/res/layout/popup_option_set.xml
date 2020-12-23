@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="2dp"
+    android:layout_marginStart="2dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
@@ -20,7 +20,6 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_margin="4dp"
-            android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:drawablePadding="4dp"
             android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:gravity="center"
@@ -35,7 +34,8 @@
             android:layout_margin="8dp"
             app:backgroundTint="@color/toolbar"
             app:fabSize="mini"
-            android:src="@drawable/ic_arrow_right_white_36dp"/>
+            android:src="@drawable/ic_arrow_right_white_36dp"
+            android:contentDescription="@string/drawer_close" />
 
     </LinearLayout>
 

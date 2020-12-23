@@ -48,7 +48,8 @@
                         android:src="@drawable/ic_youtube_play_white_36dp"
                         app:borderWidth="0dp"
                         app:backgroundTint="@color/green"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/link_youtube" />
 
                     <TextView
                         android:id="@+id/linkYouTube_Text"
@@ -85,7 +86,8 @@
                         android:src="@drawable/ic_delete_white_36dp"
                         app:borderWidth="0dp"
                         app:backgroundTint="@color/grey"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/delete" />
 
                 </LinearLayout>
 
@@ -112,7 +114,8 @@
                         android:src="@drawable/ic_cloud_white_36dp"
                         app:borderWidth="0dp"
                         app:backgroundTint="@color/green"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/link_web" />
 
                     <TextView
                         android:id="@+id/linkWeb"
@@ -147,7 +150,8 @@
                         android:src="@drawable/ic_delete_white_36dp"
                         app:borderWidth="0dp"
                         app:backgroundTint="@color/grey"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/delete" />
 
                 </LinearLayout>
 
@@ -174,7 +178,8 @@
                         android:src="@drawable/ic_music_note_white_36dp"
                         app:borderWidth="0dp"
                         app:backgroundTint="@color/green"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/link_audio" />
 
                     <TextView
                         android:id="@+id/textView33"
@@ -209,7 +214,8 @@
                         android:src="@drawable/ic_delete_white_36dp"
                         app:borderWidth="0dp"
                         app:backgroundTint="@color/grey"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/delete" />
 
                 </LinearLayout>
 
@@ -236,7 +242,8 @@
                         android:src="@drawable/ic_file_xml_white_36dp"
                         app:borderWidth="0dp"
                         app:backgroundTint="@color/green"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/link_file" />
 
                     <TextView
                         android:id="@+id/textView35"
@@ -271,7 +278,8 @@
                         android:src="@drawable/ic_delete_white_36dp"
                         app:borderWidth="0dp"
                         app:backgroundTint="@color/grey"
-                        app:fabSize="mini" />
+                        app:fabSize="mini"
+                        android:contentDescription="@string/delete" />
 
                 </LinearLayout>
 

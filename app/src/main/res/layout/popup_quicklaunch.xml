@@ -58,7 +58,8 @@
                     android:visibility="visible"
                     app:backgroundTint="@color/red"
                     app:borderWidth="0dp"
-                    app:fabSize="mini" />
+                    app:fabSize="mini"
+                    android:contentDescription="@string/quicklaunch_button1" />
 
                 <TextView
                     android:id="@+id/button1_currently"
@@ -104,7 +105,8 @@
                     android:visibility="visible"
                     app:backgroundTint="@color/red"
                     app:borderWidth="0dp"
-                    app:fabSize="mini" />
+                    app:fabSize="mini"
+                    android:contentDescription="@string/quicklaunch_button2" />
 
                 <TextView
                     android:id="@+id/button2_currently"
@@ -150,7 +152,8 @@
                     android:visibility="visible"
                     app:backgroundTint="@color/red"
                     app:borderWidth="0dp"
-                    app:fabSize="mini" />
+                    app:fabSize="mini"
+                    android:contentDescription="@string/quicklaunch_button3" />
 
                 <TextView
                     android:id="@+id/button3_currently"
@@ -196,7 +199,8 @@
                     android:visibility="visible"
                     app:backgroundTint="@color/red"
                     app:borderWidth="0dp"
-                    app:fabSize="mini" />
+                    app:fabSize="mini"
+                    android:contentDescription="@string/quicklaunch_button4" />
 
                 <TextView
                     android:id="@+id/button4_currently"

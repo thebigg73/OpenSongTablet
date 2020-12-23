@@ -46,7 +46,8 @@
                 android:src="@drawable/ic_settings_white_36dp"
                 app:backgroundTint="@color/grey"
                 app:fabSize="mini"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:contentDescription="@string/search" />
 
         </LinearLayout>
 
@@ -75,7 +76,8 @@
             android:layout_gravity="end"
             android:src="@drawable/ic_arrow_left_white_36dp"
             app:backgroundTint="@color/grey"
-            app:fabSize="mini"/>
+            app:fabSize="mini"
+            android:contentDescription="@string/search" />
 
         <ScrollView
             android:layout_width="match_parent"

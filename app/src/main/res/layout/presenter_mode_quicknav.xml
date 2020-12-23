@@ -15,7 +15,7 @@
         style="@style/MyHeadingText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
         android:text="@string/navigate" />
 
     <HorizontalScrollView
@@ -40,7 +40,8 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
                 android:src="@drawable/ic_skip_backward_white_36dp"
-                app:fabSize="mini" />
+                app:fabSize="mini"
+                android:contentDescription="@string/pageturn_previous" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/nav_prevsection"
@@ -53,7 +54,8 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
                 android:src="@drawable/ic_skip_previous_white_36dp"
-                app:fabSize="mini" />
+                app:fabSize="mini"
+                android:contentDescription="@string/pageturn_previous" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/nav_nextsection"
@@ -66,7 +68,8 @@
                 android:layout_marginBottom="0dp"
                 app:useCompatPadding="true"
                 android:src="@drawable/ic_skip_next_white_36dp"
-                app:fabSize="mini" />
+                app:fabSize="mini"
+                android:contentDescription="@string/pageturn_next" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/nav_nextsong"
@@ -79,7 +82,8 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
                 android:src="@drawable/ic_skip_forward_white_36dp"
-                app:fabSize="mini" />
+                app:fabSize="mini"
+                android:contentDescription="@string/pageturn_next" />
 
         </LinearLayout>
 
