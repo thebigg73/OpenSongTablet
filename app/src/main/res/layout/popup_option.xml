@@ -269,7 +269,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_songselect_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/edit_song_ccli"
+                android:text="@string/ccli"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 

@@ -35,7 +35,7 @@
             style="@style/BottomSheetButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/manage_your_sets"
+            android:text="@string/set_manage"
             app:icon="@drawable/ic_database_white_36dp" />
 
         <com.google.android.material.button.MaterialButton
@@ -51,7 +51,7 @@
             style="@style/BottomSheetButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/shuffle_set"
+            android:text="@string/set_shuffle"
             app:icon="@drawable/ic_shuffle_white_36dp" />
 
     </LinearLayout>

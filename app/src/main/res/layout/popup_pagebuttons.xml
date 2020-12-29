@@ -144,7 +144,7 @@
                     android:drawablePadding="4dp"
                     android:drawableStart="@drawable/ic_bullseye_white_36dp"
                     android:gravity="center_vertical"
-                    android:text="@string/pagebuttons"
+                    android:text="@string/page_buttons"
                     style="@style/MyHeadingText" />
 
 
@@ -173,7 +173,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
-                    android:text="@string/currentset"
+                    android:text="@string/set_current"
                     android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_format_list_numbers_white_36dp"
                     android:drawablePadding="8dp"
@@ -316,7 +316,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
-                    android:text="@string/pdf_selectpage"
+                    android:text="@string/select_page"
                     android:textAllCaps="true"
                     android:drawableStart="@drawable/ic_book_white_36dp"
                     android:drawablePadding="8dp"

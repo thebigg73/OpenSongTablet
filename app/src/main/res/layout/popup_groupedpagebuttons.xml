@@ -34,7 +34,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="2dp"
-            android:text="@string/currentset"/>
+            android:text="@string/set_current"/>
 
         <HorizontalScrollView
             android:layout_width="match_parent"
@@ -70,7 +70,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="@string/currentset" />
+                        android:text="@string/set_current" />
 
                 </LinearLayout>
 
@@ -338,7 +338,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="@string/pdf_selectpage" />
+                        android:text="@string/select_page" />
 
                 </LinearLayout>
 

@@ -10,7 +10,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="@string/info_storage_graph_overview"/>
+            android:text="@string/storage_graph_overview_info"/>
 
     <com.garethevans.church.opensongtablet.screensetup.MyZoomLayout
         android:id="@+id/zoomLayout"

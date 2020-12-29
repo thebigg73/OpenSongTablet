@@ -77,7 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/drawer_close"
+                android:text="@string/close"
                 android:background="@drawable/red_button"
                 android:layout_margin="8dp"/>
 
@@ -88,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/MyHeadingText"
-            android:text="@string/device_list"/>
+            android:text="@string/midi_devices"/>
 
         <ListView
             android:id="@+id/bluetoothDevices"

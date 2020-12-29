@@ -88,7 +88,6 @@ import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertTextSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.songprocessing.SongXML;
 import com.garethevans.church.opensongtablet.songsandsets.SetMenuFragment;
 import com.garethevans.church.opensongtablet.songsandsets.SongListBuildIndex;
 import com.garethevans.church.opensongtablet.songsandsets.SongMenuFragment;
@@ -131,7 +130,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private ProcessSong processSong;
     private LoadSong loadSong;
     private Song song;
-    private SongXML songXML;
     private ShowCase showCase;
     private ShowToast showToast;
     private WindowFlags windowFlags;
@@ -301,7 +299,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         convertChoPro = new ConvertChoPro();
         convertOnSong = new ConvertOnSong();
         convertTextSong = new ConvertTextSong();
-        songXML = new SongXML();
         processSong = new ProcessSong();
         loadSong = new LoadSong();
         windowFlags = new WindowFlags(this.getWindow());
@@ -319,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 activityMainBinding.pageButtonsRight.custom4Button,activityMainBinding.pageButtonsRight.custom5Button,
                 activityMainBinding.pageButtonsRight.custom6Button);
         pageButtonFAB.animatePageButton(this,false);
-        nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong,sqLiteHelper,commonSQL);
+        nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong,sqLiteHelper,commonSQL,song);
         midi = new Midi(this,preferences);
         pedalActions = new PedalActions(this,preferences);
         song = new Song();
@@ -619,7 +616,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         switch (what) {
             case "performanceView":
                 showCase.singleShowCase(this,activityMainBinding.pageButtonsRight.actionFAB,
-                        null,getString(R.string.info_actionButton),false,"pageActionFAB");
+                        null,getString(R.string.action_button_info),false,"pageActionFAB");
                 break;
             case "songsetmenu":
                 // Initialise the arraylists
@@ -628,8 +625,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     targets.add(Objects.requireNonNull(activityMainBinding.menuTop.tabs.getTabAt(0)).view);
                     targets.add(Objects.requireNonNull(activityMainBinding.menuTop.tabs.getTabAt(1)).view);
                 }
-                infos.add(getString(R.string.menu_song));
-                infos.add(getString(R.string.menu_set));
+                infos.add(getString(R.string.menu_song_info));
+                infos.add(getString(R.string.menu_set_info));
                 dismisses.add(null);
                 dismisses.add(null);
                 rects.add(true);
@@ -657,7 +654,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             runOnUiThread(() -> showToast.doIt(this,getString(R.string.search_index_start)));
             SongListBuildIndex songListBuildIndex = new SongListBuildIndex();
             songListBuildIndex.fullIndex(MainActivity.this,preferences,storageAccess,sqLiteHelper,
-                    nonOpenSongSQLiteHelper,commonSQL,songXML,processSong,convertChoPro,convertOnSong,convertTextSong,showToast,loadSong);
+                    nonOpenSongSQLiteHelper,commonSQL,processSong,convertChoPro,convertOnSong,convertTextSong,showToast,loadSong);
             runOnUiThread(() -> {
                 StaticVariables.indexRequired = false;
                 StaticVariables.indexComplete = true;
@@ -909,7 +906,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                         // Write a blank xml file with the song name in it
                         Song song = new Song();
                         song = song.initialiseSong(commonSQL);
-                        String newSongText = songXML.getXML(song,processSong);
+                        String newSongText = song.getXML(song,processSong);
                         if (storageAccess.doStringWriteToFile(this,preferences,"Songs",StaticVariables.whichSongFolder, StaticVariables.songfilename,newSongText)) {
                             navigateToFragment(R.id.nav_editSong);
                         } else {
@@ -1070,10 +1067,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         return storageAccess;
     }
     @Override
-    public SongXML getSongXML() {
-        return songXML;
-    }
-    @Override
     public ConvertChoPro getConvertChoPro() {
         return convertChoPro;
     }
@@ -1168,7 +1161,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             try {
 
                 make(findViewById(R.id.navView), R.string.location_rationale,
-                        LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(this,
+                        LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 403)).show();
                 return false;
             } catch (Exception e) {
@@ -1187,7 +1180,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
             try {
                 make(findViewById(R.id.mypage), R.string.location_rationale,
-                        LENGTH_INDEFINITE).setAction(R.string.ok, view -> ActivityCompat.requestPermissions(this,
+                        LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 404)).show();
                 return false;
             } catch (Exception e) {

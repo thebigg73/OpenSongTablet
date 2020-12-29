@@ -51,7 +51,7 @@ public class FontSetupFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsFontsBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.display) + " / " + getString(R.string.choose_fonts));
+        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.display) + " / " + getString(R.string.font_choose));
 
         setHelpers();
         getPreferences();

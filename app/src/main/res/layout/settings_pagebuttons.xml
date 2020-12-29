@@ -20,7 +20,7 @@
             android:paddingTop="16dp"
             android:paddingEnd="8dp"
             android:paddingBottom="32dp"
-            android:text="@string/pagebuttons" />
+            android:text="@string/page_buttons" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                 android:id="@+id/button1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/quicklaunch_button1"
+                android:contentDescription="@string/button"
                 android:src="@drawable/ic_help_outline_white_36dp"
                 app:useCompatPadding="false" />
 
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="16dp"
-                android:text="@string/quicklaunch_button1" />
+                android:text="@string/button" />
 
 
         </LinearLayout>
@@ -63,7 +63,7 @@
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/button1Active"
             style="@style/PrefSwitch"
-            android:text="@string/show" />
+            android:text="@string/visible" />
 
         <TableRow style="@style/DividerLine" />
 
@@ -78,7 +78,7 @@
                 android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/quicklaunch_button2"
+                android:contentDescription="@string/button"
                 android:src="@drawable/ic_help_outline_white_36dp"
                 app:useCompatPadding="false" />
 
@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="16dp"
-                android:text="@string/quicklaunch_button2" />
+                android:text="@string/button" />
 
 
         </LinearLayout>
@@ -109,7 +109,7 @@
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/button2Active"
             style="@style/PrefSwitch"
-            android:text="@string/show" />
+            android:text="@string/visible" />
 
         <TableRow style="@style/DividerLine" />
 
@@ -123,7 +123,7 @@
                 android:id="@+id/button3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/quicklaunch_button3"
+                android:contentDescription="@string/button"
                 android:src="@drawable/ic_help_outline_white_36dp"
                 app:useCompatPadding="false" />
 
@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="16dp"
-                android:text="@string/quicklaunch_button3" />
+                android:text="@string/button" />
 
 
         </LinearLayout>
@@ -154,7 +154,7 @@
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/button3Active"
             style="@style/PrefSwitch"
-            android:text="@string/show" />
+            android:text="@string/visible" />
 
         <TableRow style="@style/DividerLine" />
 
@@ -169,7 +169,7 @@
                 android:id="@+id/button4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/quicklaunch_button4"
+                android:contentDescription="@string/button"
                 android:src="@drawable/ic_help_outline_white_36dp"
                 app:useCompatPadding="false" />
 
@@ -178,7 +178,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="16dp"
-                android:text="@string/quicklaunch_button4" />
+                android:text="@string/button" />
 
 
         </LinearLayout>
@@ -200,7 +200,7 @@
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/button4Active"
             style="@style/PrefSwitch"
-            android:text="@string/show" />
+            android:text="@string/visible" />
 
         <TableRow style="@style/DividerLine" />
 
@@ -215,7 +215,7 @@
                 android:id="@+id/button5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/quicklaunch_button5"
+                android:contentDescription="@string/button"
                 android:src="@drawable/ic_help_outline_white_36dp"
                 app:useCompatPadding="false" />
 
@@ -224,7 +224,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="16dp"
-                android:text="@string/quicklaunch_button5" />
+                android:text="@string/button" />
 
 
         </LinearLayout>
@@ -246,7 +246,7 @@
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/button5Active"
             style="@style/PrefSwitch"
-            android:text="@string/show" />
+            android:text="@string/visible" />
 
         <TableRow style="@style/DividerLine" />
 
@@ -261,7 +261,7 @@
                 android:id="@+id/button6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/quicklaunch_button6"
+                android:contentDescription="@string/button"
                 android:src="@drawable/ic_help_outline_white_36dp"
                 app:useCompatPadding="false" />
 
@@ -270,7 +270,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="16dp"
-                android:text="@string/quicklaunch_button6" />
+                android:text="@string/button" />
 
 
         </LinearLayout>
@@ -292,7 +292,7 @@
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/button6Active"
             style="@style/PrefSwitch"
-            android:text="@string/show" />
+            android:text="@string/visible" />
 
 
     </LinearLayout>

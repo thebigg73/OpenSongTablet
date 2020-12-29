@@ -82,7 +82,7 @@
                         style="@style/MyHeadingText"
                         android:layout_marginEnd="8dp"
                         android:layout_gravity="center_vertical"
-                        android:text="@string/currentstorage"/>
+                        android:text="@string/current_location"/>
 
                     <TextView
                         android:id="@+id/progressText"
@@ -110,7 +110,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="8dp"
                     android:padding="4dp"
-                    android:text="@string/changestorage"
+                    android:text="@string/storage_change"
                     android:textColor="#fff" />
 
                 <Button
@@ -121,7 +121,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="8dp"
                     android:padding="4dp"
-                    android:text="@string/existing"
+                    android:text="@string/find_existing"
                     android:textColor="#fff" />
 
 
@@ -137,7 +137,7 @@
                     android:id="@+id/previousStorageHeading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/found"
+                    android:text="@string/existing_found"
                     style="@style/MyWhiteHeadingText"
                     android:visibility="gone"/>
 
@@ -232,7 +232,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:text="@string/intro"
+                    android:text="@string/intro_app"
                     style="@style/MyInfoText" />
 
                 <TextView
@@ -257,7 +257,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="8dp"
-                    android:text="@string/webLink"
+                    android:text="@string/website_address"
                     style="@style/MyHeadingText"/>
 
             </LinearLayout>

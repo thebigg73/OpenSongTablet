@@ -118,7 +118,7 @@ public class PerformanceGestures {
                 return true;  // value for clickedOnAutoScrollStart
             } else {
                 showToast.doIt(c,c.getResources().getString(R.string.autoscroll) + " - " +
-                        c.getResources().getString(R.string.notset));
+                        c.getResources().getString(R.string.not_set));
                 return false;  // value for clickedOnAutoScrollStart
             }
         }
@@ -142,7 +142,7 @@ public class PerformanceGestures {
                 // We inform the user - 'Not set' which can be valid
                 // IV - gesture6 is now used in page_pad - a page_pad call may result in a loop!
                 showToast.doIt(c,c.getResources().getString(R.string.pad) + " - " +
-                        c.getResources().getString(R.string.notset));
+                        c.getResources().getString(R.string.not_set));
             }
         }
     }
@@ -160,7 +160,7 @@ public class PerformanceGestures {
                     preferences.getMyPreferenceInt(c, "metronomeLength", 0));
         } else {
             showToast.doIt(c,c.getResources().getString(R.string.metronome) + " - " +
-                    c.getResources().getString(R.string.notset));
+                    c.getResources().getString(R.string.not_set));
         }
     }
 

@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
-        android:hint="@string/edit_song_key"
+        android:hint="@string/key"
         style="@style/exposedDropDown"
         android:labelFor="@+id/keySearch">
 
@@ -57,7 +57,7 @@
         android:id="@+id/tagRow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/edit_song_theme"
+        android:hint="@string/theme"
         android:labelFor="@+id/tagSearch"
         android:layout_margin="2dp"
         style="@style/editTextLayoutOutline">

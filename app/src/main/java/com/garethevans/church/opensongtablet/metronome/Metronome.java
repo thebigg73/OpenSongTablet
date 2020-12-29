@@ -289,7 +289,7 @@ public class Metronome {
             validBPM = false;
         }
 
-        String[] arrayvals = c.getResources().getStringArray(R.array.timesig);
+        String[] arrayvals = c.getResources().getStringArray(R.array.time_signatures);
 
         for (String arrayval : arrayvals) {
             if (song.getMetronomebpm().equals(arrayval)) {

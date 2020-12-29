@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="@string/edit_song_title" />
+            android:text="@string/title" />
 
         <TextView
             android:id="@+id/presenter_author"
@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="@string/edit_song_author" />
+            android:text="@string/author" />
 
         <TextView
             android:id="@+id/presenter_copyright"
@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="@string/edit_song_copyright" />
+            android:text="@string/copyright" />
 
     </LinearLayout>
 
@@ -56,7 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="@string/edit_song_presentation" />
+            android:text="@string/presentation_order" />
 
         <CheckBox
             android:id="@+id/presenter_order_text"
@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minLines="2"
-            android:text="@string/edit_song_presentation" />
+            android:text="@string/presentation_order" />
 
         <Button
             android:id="@+id/presenter_order_button"
@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:text="@string/currentset" />
+                android:text="@string/set_current" />
 
         </LinearLayout>
 

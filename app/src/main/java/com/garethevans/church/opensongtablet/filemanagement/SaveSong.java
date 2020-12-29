@@ -9,7 +9,6 @@ import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.songprocessing.SongXML;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
@@ -20,15 +19,15 @@ import java.io.OutputStream;
 public class SaveSong {
 
     public boolean doSave(Context c, Preferences preferences, StorageAccess storageAccess,
-                          SongXML songXML, ConvertChoPro convertChoPro, ProcessSong processSong,
+                          ConvertChoPro convertChoPro, ProcessSong processSong,
                           Song song, SQLiteHelper sqLiteHelper,
                           NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper, CommonSQL commonSQL,
                           CCLILog ccliLog, boolean imgOrPDF) {
 
         boolean saveOK = false;
 
-        String where = storageAccess.safeFilename(songXML.getLocation(song.getFolder()));  // Either songs or a custom
-        String folder = storageAccess.safeFilename(songXML.getLocation(song.getFolder())); // Removes the ../ from customs
+        String where = storageAccess.safeFilename(song.getLocation(song.getFolder()));  // Either songs or a custom
+        String folder = storageAccess.safeFilename(song.getLocation(song.getFolder())); // Removes the ../ from customs
         String filename = storageAccess.safeFilename(song.getFilename());
         String oldfolder = StaticVariables.whichSongFolder;
         String oldfilename = StaticVariables.songfilename;
@@ -60,7 +59,7 @@ public class SaveSong {
                 saveOK = storageAccess.copyFile(inputStream,outputStream);
             } else {
                 // Prepare a new XML version of the song from the statics (OpenSong song only)
-                String newXML = songXML.getXML(song,processSong);
+                String newXML = song.getXML(song,processSong);
                 saveOK = storageAccess.writeFileFromString(newXML, outputStream);
             }
         }

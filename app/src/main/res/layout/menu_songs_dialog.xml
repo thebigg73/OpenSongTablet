@@ -85,7 +85,7 @@
             style="@style/BottomSheetButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/create"
+            android:text="@string/create_new_song"
             app:icon="@drawable/ic_plus_white_36dp" />
 
         <com.google.android.material.button.MaterialButton

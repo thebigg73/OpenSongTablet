@@ -57,16 +57,16 @@ public class DisplayMenuFragment extends Fragment {
         switch (preferences.getMyPreferenceString(getContext(),"appTheme","dark")) {
             case "dark":
             default:
-                themeName = requireContext().getString(R.string.dark_theme);
+                themeName = requireContext().getString(R.string.theme_dark);
                 break;
             case "light":
-                themeName = requireContext().getString(R.string.light_theme);
+                themeName = requireContext().getString(R.string.theme_light);
                 break;
             case "custom1":
-                themeName = requireContext().getString(R.string.custom1_theme);
+                themeName = requireContext().getString(R.string.theme_custom1);
                 break;
             case "custom2":
-                themeName = requireContext().getString(R.string.custom2_theme);
+                themeName = requireContext().getString(R.string.theme_custom2);
                 break;
         }
         LinearLayout ll = (LinearLayout) myView.themeButton.getChildAt(0);

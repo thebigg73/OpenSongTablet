@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--//TODO Extract the text strings -->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,15 +12,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/visitWebsite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/about"
-            style="@style/MyWhiteHeadingText"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="32dp"/>
+            app:main="@string/website"
+            app:sub="@string/website_address" />
+        <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/latestVersion"
@@ -43,8 +40,8 @@
             android:id="@+id/forumButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:main="Forum"
-            app:sub="Report bugs, get help and request features" />
+            app:main="@string/forum"
+            app:sub="@string/forum_description" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
@@ -52,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:main="@string/rate"
-            app:sub="Please leave a review" />
+            app:sub="@string/rate_description" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
@@ -60,15 +57,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:main="@string/language"
-            app:sub="English" />
+            app:sub="@string/language" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/gitbubButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:main="GitHub"
-            app:sub="Contribute to app development" />
+            app:main="@string/github"
+            app:sub="@string/github_description" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
@@ -76,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:main="@string/paypal"
-            app:sub="Donate to the app development" />
+            app:sub="@string/paypal_description" />
         <TableRow style="@style/DividerLine" />
 
     </LinearLayout>

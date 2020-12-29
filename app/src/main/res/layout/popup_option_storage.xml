@@ -60,7 +60,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_folder_new_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/folder_new"
+                android:text="@string/new_folder"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
@@ -138,7 +138,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_unarchive_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/import_onsong_choose"
+                android:text="@string/onsong_import"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 

@@ -104,7 +104,7 @@ public class BootUpFragment extends Fragment {
         StaticVariables.whichSongFolder = preferences.getMyPreferenceString(getActivity(), "whichSongFolder",
                 getString(R.string.mainfoldername));
         StaticVariables.songfilename = preferences.getMyPreferenceString(getActivity(), "songfilename",
-                "Welcome to OpenSongApp");
+                getString(R.string.welcome));
 
         // Check if we have used the app already, but the last song didn't load
         if (!preferences.getMyPreferenceBoolean(getActivity(),"songLoadSuccess",false)) {
@@ -157,7 +157,7 @@ public class BootUpFragment extends Fragment {
                 // Set up the Typefaces
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
-                        message = initialising + getString(R.string.choose_fonts);
+                        message = initialising + getString(R.string.font_choose);
                         myView.currentAction.setText(message);
                     });
                 }

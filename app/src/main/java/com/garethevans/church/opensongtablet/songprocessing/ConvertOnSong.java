@@ -38,7 +38,7 @@ public class ConvertOnSong {
     private StringBuilder parsedLines;
 
     public Song convertTextToTags(Context c, StorageAccess storageAccess, Preferences preferences,
-                                               ProcessSong processSong, SongXML songXML, ConvertChoPro convertChoPro,
+                                               ProcessSong processSong, ConvertChoPro convertChoPro,
                                                SQLiteHelper sqLiteHelper, CommonSQL commonSQL, Uri uri, Song song) {
 
         initialiseTheVariables();
@@ -83,7 +83,7 @@ public class ConvertOnSong {
         setCorrectXMLValues(song);
 
         // Now prepare the new songXML file
-        String myNewXML = songXML.getXML(song,processSong);
+        String myNewXML = song.getXML(song,processSong);
 
         // Get a unique uri for the new song
         Uri newUri = convertChoPro.getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);

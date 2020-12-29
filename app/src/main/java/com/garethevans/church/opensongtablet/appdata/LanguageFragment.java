@@ -1,7 +1,7 @@
 package com.garethevans.church.opensongtablet.appdata;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsLanguageBinding;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.snackbar.Snackbar;
@@ -21,13 +22,23 @@ public class LanguageFragment extends Fragment {
 
     SettingsLanguageBinding myView;
     Preferences preferences;
+    MainActivityInterface mainActivityInterface;
     String languageCode;
     String[] languageCodes = new String[] {"af","cs","de","el","en","es","fr","hu","it","ja","pl","pt","ru","sr","sv","zh"};
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mainActivityInterface = (MainActivityInterface) context;
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsLanguageBinding.inflate(inflater, container, false);
+
+        // Update the toolbar
+        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.about) + " / " + getString(R.string.language));
 
         // Set the helpers
         setHelpers();

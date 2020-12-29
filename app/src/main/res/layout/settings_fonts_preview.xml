@@ -14,7 +14,7 @@
             style="@style/MyWhiteHeadingText"
             android:gravity="center_horizontal"
             android:padding="16dp"
-            android:text="Choose a font from the list below" />
+            android:text="@string/font_choose_list" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

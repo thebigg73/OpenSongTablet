@@ -2,18 +2,13 @@ package com.garethevans.church.opensongtablet.preferences;
 
 // This class is used to store the static variables the app needs
 // Most used to be in FullscreenActivity, but have been moved here
-// Many have been removed as they can just be loaded from preferences as required
+// Many have been removed as they can just be loaded from preferences or objects as required
 // These are the ones that are frequently accessed, so easier just to be static
 
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
-import android.media.midi.MidiDevice;
-import android.media.midi.MidiInputPort;
-import android.media.midi.MidiManager;
-import android.media.midi.MidiOutputPort;
-import android.media.midi.MidiReceiver;
 import android.net.Uri;
 
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
@@ -23,6 +18,30 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class StaticVariables {
+
+    // KEEP THESE
+
+    // The important starting up ones
+    public static String whichMode = "";
+    public static Locale locale;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // CHECK IF I NEED THESE
 
     // The song fields
     public static String mEncoding = "UTF-8", mExtraStuff1 = "", mExtraStuff2 = "";
@@ -53,14 +72,7 @@ public class StaticVariables {
     public static boolean indexRequired = true;
     public static boolean indexComplete = false;
     public static boolean needtorefreshsongmenu;
-    public static String connectionLog;
-    public static boolean isConnected;
-    public static String deviceName;
     public static String mBluetoothName;
-    public static boolean usingNearby;
-    public static boolean isHost;
-    public static boolean keepHostFiles;
-    public static boolean receiveHostFiles;
     public static boolean isSong;
     public static String myXML;
     static String nextSongKeyInSet = "";
@@ -83,8 +95,7 @@ public class StaticVariables {
     // Storage variables
     static Uri uriTree;
 
-    // The important starting up ones
-    public static Locale locale;
+
 
     // Default text sizes
     static final float infoBarLargeTextSize = 20.0f;
@@ -116,8 +127,6 @@ public class StaticVariables {
     // The theme
     public static String mDisplayTheme = "dark";
 
-    // The app mode
-    public static String whichMode = "";
 
     // Default colours
     public static final int darkblue = 0xff0000dd;

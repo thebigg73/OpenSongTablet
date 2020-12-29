@@ -139,7 +139,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:text="@string/presoFont" />
+                    android:text="@string/font_presentation" />
 
                 <Spinner
                     android:id="@+id/presoFontSpinner"
@@ -169,7 +169,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:text="@string/presoInfoFont" />
+                    android:text="@string/font_presentation_info" />
 
                 <Spinner
                     android:id="@+id/presoInfoFontSpinner"

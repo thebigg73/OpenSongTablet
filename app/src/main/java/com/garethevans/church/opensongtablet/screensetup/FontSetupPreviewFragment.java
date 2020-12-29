@@ -47,7 +47,7 @@ public class FontSetupPreviewFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsFontsPreviewBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.display) + " / " + getString(R.string.choose_fonts) + " / " + getString(R.string.googlefontbrowse));
+        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.display) + " / " + getString(R.string.font_choose) + " / " + getString(R.string.font_browse));
 
         setHelpers();
 

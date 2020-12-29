@@ -123,6 +123,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
-        app:useCompatPadding="true" />
+        app:useCompatPadding="true"
+        android:contentDescription="@string/action" />
 
 </RelativeLayout>

@@ -88,7 +88,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
 
         // Set the key if it exists
         if (!key.isEmpty()) {
-            key = c.getString(R.string.edit_song_key) + ": " + key;
+            key = c.getString(R.string.key) + ": " + key;
             songItemViewHolder.itemKey.setText(key);
             songItemViewHolder.itemKey.setVisibility(View.VISIBLE);
         } else {

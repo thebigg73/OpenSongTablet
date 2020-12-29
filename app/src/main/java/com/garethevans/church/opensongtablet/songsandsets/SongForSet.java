@@ -30,7 +30,7 @@ class SongForSet {
                 folder, filename),"");
         preferences.setMyPreferenceString(c,"setCurrent",StaticVariables.currentSet);
         setActions.prepareSetList(c,preferences);
-        ShowToast.showToast(c,filename + ": " + c.getResources().getString(R.string.removedfromset));
+        ShowToast.showToast(c,filename + ": " + c.getResources().getString(R.string.removed_from_set));
     }
 
     void addOrRemoveFromSet(Context c, Preferences preferences, SetActions setActions, String folder, String filename) {

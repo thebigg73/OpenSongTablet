@@ -25,7 +25,6 @@ import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.songprocessing.SongXML;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
@@ -52,7 +51,6 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     ConvertChoPro convertChoPro;
     ConvertOnSong convertOnSong;
     ProcessSong processSong;
-    SongXML songXML;
     LoadSong loadSong;
     SaveSong saveSong;
     ShowToast showToast;
@@ -109,7 +107,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         song.setSongid(commonSQL.getAnySongId(StaticVariables.whichSongFolder,StaticVariables.songfilename));
 
         // The folder and filename were passed in the starting song object.  Now update with the file contents
-        song = loadSong.doLoadSong(getActivity(),storageAccess,preferences,songXML,processSong,
+        song = loadSong.doLoadSong(getActivity(),storageAccess,preferences,processSong,
                 showToast,sqLiteHelper,commonSQL,song,convertOnSong,convertChoPro,false);
 
         // Can't just do song=originalSong as they become clones.  Changing one changes the other.
@@ -131,7 +129,6 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         preferences = new Preferences();
         convertChoPro = new ConvertChoPro();
         processSong = new ProcessSong();
-        songXML = new SongXML();
         saveSong = new SaveSong();
         loadSong = new LoadSong();
         showToast = new ShowToast();
@@ -161,7 +158,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
                     tab.setText(getString(R.string.song_features));
                     break;
                 case 2:
-                    tab.setText(getString(R.string.tag_tag));
+                    tab.setText(getString(R.string.tag));
                     break;
             }
         }).attach();
@@ -180,14 +177,14 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     private void doSaveChanges() {
         // Send this off for processing in a new Thread
         new Thread(() -> {
-            saveOK = saveSong.doSave(requireContext(),preferences,storageAccess,songXML,convertChoPro,
+            saveOK = saveSong.doSave(requireContext(),preferences,storageAccess,convertChoPro,
                     processSong,editContent.getCurrentSong(),sqLiteHelper,nonOpenSongSQLiteHelper,commonSQL,ccliLog,imgOrPDF);
 
             if (saveOK) {
                 // If successful, go back to the home page.  Otherwise stay here and await user decision from toast
                 requireActivity().runOnUiThread(() -> mainActivityInterface.returnToHome(fragment, savedInstanceState));
             } else {
-                showToast.doIt(getActivity(),requireContext().getResources().getString(R.string.notsaved));
+                showToast.doIt(getActivity(),requireContext().getResources().getString(R.string.not_saved));
             }
         }).start();
     }

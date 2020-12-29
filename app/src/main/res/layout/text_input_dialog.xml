@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     style="@style/TextButtonNoOutline"
                     android:layout_margin="16dp"
-                    android:text="@string/cancel" />
+                    android:text="@android:string/cancel" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/okButton"
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     style="@style/TextButtonNoOutline"
                     android:layout_margin="16dp"
-                    android:text="@string/ok" />
+                    android:text="@android:string/ok" />
 
             </LinearLayout>
 

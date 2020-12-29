@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="@string/newfoldername" />
+                android:text="@string/new_folder_name" />
 
             <LinearLayout
                 android:layout_width="match_parent"

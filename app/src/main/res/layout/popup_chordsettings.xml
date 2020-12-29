@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:text="@string/showchords"
+                android:text="@string/show_chords"
                 android:theme="@style/MySwitch"
                 app:showText="false" />
 
@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:text="@string/showcapo"
+                android:text="@string/show_capo"
                 android:theme="@style/MySwitch"
                 app:showText="false" />
 

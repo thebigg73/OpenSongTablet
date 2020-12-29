@@ -46,7 +46,7 @@
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_song_author" />
+                android:text="@string/author" />
 
             <TextView
                 android:id="@+id/v_mAuthor"
@@ -60,7 +60,7 @@
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_song_key" />
+                android:text="@string/key" />
 
             <TextView
                 android:id="@+id/v_mKey"
@@ -74,7 +74,7 @@
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_song_copyright" />
+                android:text="@string/copyright" />
 
             <TextView
                 android:id="@+id/v_mCopyright"
@@ -88,7 +88,7 @@
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_song_ccli" />
+                android:text="@string/ccli" />
 
             <TextView
                 android:id="@+id/v_mCCLI"
@@ -102,7 +102,7 @@
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_song_presentation" />
+                android:text="@string/presentation_order" />
 
             <TextView
                 android:id="@+id/v_mPresentation"
@@ -144,7 +144,7 @@
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_song_lyrics" />
+                android:text="@string/lyrics" />
 
             <TextView
                 android:id="@+id/v_mLyrics"

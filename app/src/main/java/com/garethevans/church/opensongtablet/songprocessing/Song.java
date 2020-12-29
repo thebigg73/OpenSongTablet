@@ -4,6 +4,9 @@ package com.garethevans.church.opensongtablet.songprocessing;
 // Used whenever the app queries or works with a lyrics, key, author, etc.
 
 
+import android.content.Context;
+
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 
@@ -51,6 +54,13 @@ public class Song {
 
     private ArrayList<String> songSections;
     private ArrayList<String> songSectionTypes;
+    private int currentSection;
+
+    private boolean isSong;
+    private boolean isPDF;
+    private boolean isImage;
+    private String nextDirection = "R2L";
+    public int pdfPageCurrent;
 
     // The getters
     public int getId() {
@@ -137,7 +147,12 @@ public class Song {
             return new ArrayList<>();
         }
     }
-
+    public boolean getIsSong() {return isSong;}
+    public boolean getIsPDF() {return isPDF;}
+    public boolean getIsImage() {return isImage;}
+    public String getNextDirection() {return nextDirection;}
+    public int getPdfPageCurrent() {return pdfPageCurrent;}
+    public int getCurrentSection() {return currentSection;}
 
     // The setters
     public void setId(int id) {
@@ -216,6 +231,12 @@ public class Song {
     public void setSongSectionTypes(ArrayList<String> songSectionTypes) {
         this.songSectionTypes = songSectionTypes;
     }
+    public void setIsSong(boolean isSong) {this.isSong = isSong;}
+    public void setIsPDF(boolean isPDF) {this.isPDF = isPDF;}
+    public void setIsImage(boolean isImage) {this.isSong = isImage;}
+    public void setNextDirection(String nextDirection) {this.nextDirection = nextDirection;}
+    public void setPdfPageCurrent(int pdfPageCurrent) {this.pdfPageCurrent = pdfPageCurrent;}
+    public void setCurrentSection(int currentSection) {this.currentSection = currentSection;}
 
     public Song initialiseSong(CommonSQL commonSQL) {
         Song song = new Song();
@@ -265,6 +286,14 @@ public class Song {
         this.linkother = toCopy.linkother;
         this.presentationorder = toCopy.presentationorder;
         this.filetype = toCopy.filetype;
+        this.isSong = toCopy.isSong;
+        this.isPDF = toCopy.isPDF;
+        this.isImage = toCopy.isImage;
+        this.pdfPageCurrent = toCopy.pdfPageCurrent;
+        this.nextDirection = toCopy.nextDirection;
+        this.songSections = toCopy.songSections;
+        this.songSectionTypes = toCopy.songSectionTypes;
+        this.currentSection = toCopy.currentSection;
     }
 
     // This is used when comparing song objects for changes (when editing a song)
@@ -288,6 +317,85 @@ public class Song {
                     linkweb.equals(song.linkweb) && linkaudio.equals(song.linkaudio) && linkweb.equals(song.linkweb) &&
                     linkother.equals(song.linkother) && presentationorder.equals(song.presentationorder) &&
                     filetype.equals(song.filetype);
+        }
+    }
+
+    // This deals with the song XML file
+    public String getXML(Song song, ProcessSong processSong) {
+        if (StaticVariables.mEncoding==null || StaticVariables.mEncoding.equals("")) {
+            StaticVariables.mEncoding = "UTF-8";
+        }
+        String myNEWXML = "<?xml version=\"1.0\" encoding=\""+ StaticVariables.mEncoding+"\"?>\n";
+        myNEWXML += "<song>\n";
+        myNEWXML += "  <title>" + processSong.parseToHTMLEntities(song.getTitle()) + "</title>\n";
+        myNEWXML += "  <author>" + processSong.parseToHTMLEntities(song.getAuthor()) + "</author>\n";
+        myNEWXML += "  <copyright>" + processSong.parseToHTMLEntities(song.getCopyright()) + "</copyright>\n";
+        myNEWXML += "  <presentation>" + processSong.parseToHTMLEntities(song.getPresentationorder()) + "</presentation>\n";
+        myNEWXML += "  <hymn_number>" + processSong.parseToHTMLEntities(song.getHymnnum()) + "</hymn_number>\n";
+        myNEWXML += "  <capo print=\"" + processSong.parseToHTMLEntities(song.getCapoprint()) + "\">" +
+                processSong.parseToHTMLEntities(song.getCapo()) + "</capo>\n";
+        myNEWXML += "  <tempo>" + processSong.parseToHTMLEntities(song.getMetronomebpm()) + "</tempo>\n";
+        myNEWXML += "  <time_sig>" + processSong.parseToHTMLEntities(song.getTimesig()) + "</time_sig>\n";
+        myNEWXML += "  <duration>" + processSong.parseToHTMLEntities(song.getAutoscrolllength()) + "</duration>\n";
+        myNEWXML += "  <predelay>" + processSong.parseToHTMLEntities(song.getAutoscrolldelay()) + "</predelay>\n";
+        myNEWXML += "  <ccli>" + processSong.parseToHTMLEntities(song.getCcli()) + "</ccli>\n";
+        myNEWXML += "  <theme>" + processSong.parseToHTMLEntities(song.getTheme()) + "</theme>\n";
+        myNEWXML += "  <alttheme>" + processSong.parseToHTMLEntities(song.getAlttheme()) + "</alttheme>\n";
+        myNEWXML += "  <user1>" + processSong.parseToHTMLEntities(song.getUser1()) + "</user1>\n";
+        myNEWXML += "  <user2>" + processSong.parseToHTMLEntities(song.getUser2()) + "</user2>\n";
+        myNEWXML += "  <user3>" + processSong.parseToHTMLEntities(song.getUser3()) + "</user3>\n";
+        myNEWXML += "  <key>" + processSong.parseToHTMLEntities(song.getKey()) + "</key>\n";
+        myNEWXML += "  <aka>" + processSong.parseToHTMLEntities(song.getAka()) + "</aka>\n";
+        myNEWXML += "  <midi>" + processSong.parseToHTMLEntities(song.getMidi()) + "</midi>\n";
+        myNEWXML += "  <midi_index>" + processSong.parseToHTMLEntities(song.getMidiindex()) + "</midi_index>\n";
+        myNEWXML += "  <notes>" + processSong.parseToHTMLEntities(song.getNotes()) + "</notes>\n";
+        myNEWXML += "  <lyrics>" + processSong.parseToHTMLEntities(song.getLyrics()) + "</lyrics>\n";
+        myNEWXML += "  <pad_file>" + processSong.parseToHTMLEntities(song.getPadfile()) + "</pad_file>\n";
+        myNEWXML += "  <custom_chords>" + processSong.parseToHTMLEntities(song.getCustomchords()) + "</custom_chords>\n";
+        myNEWXML += "  <link_youtube>" + processSong.parseToHTMLEntities(song.getLinkyoutube()) + "</link_youtube>\n";
+        myNEWXML += "  <link_web>" + processSong.parseToHTMLEntities(song.getLinkweb()) + "</link_web>\n";
+        myNEWXML += "  <link_audio>" + processSong.parseToHTMLEntities(song.getLinkaudio()) + "</link_audio>\n";
+        myNEWXML += "  <loop_audio>" + processSong.parseToHTMLEntities(song.getPadloop()) + "</loop_audio>\n";
+        myNEWXML += "  <link_other>" + processSong.parseToHTMLEntities(song.getLinkother()) + "</link_other>\n";
+        myNEWXML += "  <abcnotation>" + processSong.parseToHTMLEntities(song.getAbc()) + "</abcnotation>\n";
+
+        if (!StaticVariables.mExtraStuff1.isEmpty()) {
+            myNEWXML += "  " + StaticVariables.mExtraStuff1 + "\n";
+        }
+        if (!StaticVariables.mExtraStuff2.isEmpty()) {
+            myNEWXML += "  " + StaticVariables.mExtraStuff2 + "\n";
+        }
+        myNEWXML += "</song>";
+
+        return myNEWXML;
+    }
+
+    // The welcome song if there is a problem
+    public Song showWelcomeSong(Context c) {
+        Song song = new Song();
+        StaticVariables.songfilename = "Welcome to OpenSongApp";
+        song.setFilename("Welcome to OpenSongApp");
+        song.setTitle("Welcome to OpenSongApp");
+        song.setLyrics(c.getString(R.string.user_guide_lyrics));
+        song.setAuthor("Gareth Evans");
+        song.setKey("G");
+        song.setLinkweb("https://www.opensongapp.com");
+        return song;
+    }
+
+    // These are to deal with custom files (scriptures, etc.)
+    public String getLocation (String string) {
+        if (string.startsWith("../")) {
+            return string.replace("../", "");
+        } else {
+            return "Songs";
+        }
+    }
+    private static String getFolder(String string) {
+        if (string.startsWith("../")) {
+            return "";
+        } else {
+            return string;
         }
     }
 }

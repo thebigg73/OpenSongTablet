@@ -346,7 +346,7 @@ public class StorageAccess {
         } catch (Exception e) {
             e.printStackTrace();
             if (uri == null) {
-                storageDetails[1] = c.getString(R.string.notset);
+                storageDetails[1] = c.getString(R.string.not_set);
             } else {
                 storageDetails[1] = "" + uri;
             }
@@ -367,7 +367,7 @@ public class StorageAccess {
             if (storageDetails[0].length() > 0) {
                 storageDetails[0] = storageDetails[0] + ", ";
             }
-            storageDetails[0] = storageDetails[0] + c.getString(R.string.songsinfolder) + ":" + count;
+            storageDetails[0] = "(" + storageDetails[0] + count + " " + c.getString(R.string.songs) + ")";
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -383,11 +383,16 @@ public class StorageAccess {
                 replace("¬/storage/emulated/legacy/" ,"/").
                 replace("¬/storage/self/primary/"    ,"/");
 
-        // IV - Handle others paths as 'External': Re-arrange ¬/storage/xxxx/yyyy/zzzz... to 'yyyy/zzzz... (External storage xxxx)'
+        // IV - Handle others paths as 'External'
         if (storageDetails[1].startsWith("¬/storage/")) {
             storageDetails[1] = storageDetails[1].substring(10);
             storageDetails[1] = storageDetails[1].substring(storageDetails[1].indexOf("/")) + " (" +
                     c.getString(R.string.storage_ext) + " " + storageDetails[1].substring(0, storageDetails[1].indexOf("/")) + ")";
+        }
+
+        // Add the 'OpenSong' bit to the end if it isn't there already
+        if (!storageDetails[1].endsWith("/" + appFolder)) {
+            storageDetails[1] += "/" + appFolder;
         }
 
         // Prepare an arraylist for any song folders so we can count the items
@@ -406,7 +411,7 @@ public class StorageAccess {
                     }
                 }
             }
-            storageDetails[0] = "("+count+" songs)";
+            storageDetails[0] = "("+ count + " " + c.getString(R.string.songs) + ")";
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1382,22 +1387,22 @@ public class StorageAccess {
                 File newfile = new File(newUri.getPath());
                 if (oldfile.renameTo(newfile)) {
                     StaticVariables.myToastMessage = c.getString(R.string.rename) + " - " +
-                            c.getString(R.string.ok);
+                            c.getString(android.R.string.ok);
                     StaticVariables.whichSongFolder = newsubfolder;
                     return true;
                 } else {
                     StaticVariables.myToastMessage = c.getString(R.string.rename) + " - " +
-                            c.getString(R.string.createfoldererror);
+                            c.getString(R.string.create_folder_error);
                     return false;
                 }
             } else {
                 StaticVariables.myToastMessage = c.getString(R.string.rename) + " - " +
-                        c.getString(R.string.createfoldererror);
+                        c.getString(R.string.create_folder_error);
                 return false;
             }
         } else {
             StaticVariables.myToastMessage = c.getString(R.string.rename) +
-                    " - " + c.getString(R.string.folderexists);
+                    " - " + c.getString(R.string.folder_exists);
             return false;
         }
     }
@@ -1409,19 +1414,19 @@ public class StorageAccess {
             try {
                 DocumentsContract.renameDocument(c.getContentResolver(), oldUri, newsubfolder);
                 StaticVariables.myToastMessage = c.getString(R.string.rename) + " - " +
-                        c.getString(R.string.ok);
+                        c.getString(android.R.string.ok);
                 StaticVariables.whichSongFolder = newsubfolder;
                 return true;
             } catch (Exception e) {
                 StaticVariables.myToastMessage = c.getString(R.string.rename) + " - " +
-                        c.getString(R.string.createfoldererror);
+                        c.getString(R.string.create_folder_error);
                 return false;
             }
         } else {
             // TODO write a script that iterates through the directory and subdirectories it contains
             // And copy them to the new location one at a time, then delete the old folder
             StaticVariables.myToastMessage = c.getString(R.string.rename) + " - " +
-                    c.getString(R.string.createfoldererror);
+                    c.getString(R.string.create_folder_error);
             return false;
         }
     }

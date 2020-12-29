@@ -15,7 +15,6 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsNearbyconnectionsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.preferences.TextInputDialogFragment;
 
 public class NearbyConnectionsFragment extends Fragment {
@@ -58,26 +57,26 @@ public class NearbyConnectionsFragment extends Fragment {
 
     public void updateViews() {
         ((TextView) myView.deviceButton.findViewById(R.id.subText)).setText(nearbyConnections.getUserNickname());
-        myView.actAsHost.setChecked(StaticVariables.isHost);
-        myView.receiveHostFiles.setChecked(StaticVariables.receiveHostFiles);
-        myView.keepHostFiles.setChecked(StaticVariables.keepHostFiles);
-        myView.enableNearby.setChecked(StaticVariables.usingNearby);
+        myView.actAsHost.setChecked(nearbyConnections.isHost);
+        myView.receiveHostFiles.setChecked(nearbyConnections.receiveHostFiles);
+        myView.keepHostFiles.setChecked(nearbyConnections.keepHostFiles);
+        myView.enableNearby.setChecked(nearbyConnections.usingNearby);
         updateConnectionsLog();
     }
 
     public void updateConnectionsLog() {
-        if (StaticVariables.connectionLog ==null) {
-            StaticVariables.connectionLog = "";
+        if (nearbyConnections.connectionLog ==null) {
+            nearbyConnections.connectionLog = "";
         }
-        ((TextView)myView.connectionsLog.findViewById(R.id.subText)).setText(StaticVariables.connectionLog);
+        ((TextView)myView.connectionsLog.findViewById(R.id.subText)).setText(nearbyConnections.connectionLog);
     }
 
     public void setListeners() {
         myView.deviceButton.setOnClickListener(v -> textInputDialog());
         myView.enableNearby.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            StaticVariables.usingNearby = isChecked;
+            nearbyConnections.usingNearby = isChecked;
             if (isChecked) {
-                if (StaticVariables.isHost) {
+                if (nearbyConnections.isHost) {
                     nearbyConnections.startAdvertising();
                 } else {
                     nearbyConnections.startDiscovery();
@@ -90,19 +89,19 @@ public class NearbyConnectionsFragment extends Fragment {
                 nearbyConnections.turnOffNearby();
             }
         });
-        myView.keepHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> StaticVariables.keepHostFiles = isChecked);
-        myView.receiveHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> StaticVariables.receiveHostFiles = isChecked);
-        myView.actAsHost.setOnCheckedChangeListener((buttonView, isChecked) -> StaticVariables.isHost = isChecked);
+        myView.keepHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> nearbyConnections.keepHostFiles = isChecked);
+        myView.receiveHostFiles.setOnCheckedChangeListener((buttonView, isChecked) -> nearbyConnections.receiveHostFiles = isChecked);
+        myView.actAsHost.setOnCheckedChangeListener((buttonView, isChecked) -> nearbyConnections.isHost = isChecked);
         myView.connectionsLog.setOnClickListener(v -> {
-            StaticVariables.connectionLog = "";
+            nearbyConnections.connectionLog = "";
             updateConnectionsLog();
         });
     }
 
     private void textInputDialog() {
         TextInputDialogFragment dialogFragment = new TextInputDialogFragment(preferences, this,
-                "NearbyConnectionsFragment", getString(R.string.device_name), getString(R.string.device_name),
-                "deviceName", StaticVariables.deviceName);
+                "NearbyConnectionsFragment", getString(R.string.connections_device_name), getString(R.string.connections_device_name),
+                "deviceName", nearbyConnections.deviceName);
         dialogFragment.show(requireActivity().getSupportFragmentManager(), "textInputFragment");
     }
 
@@ -110,7 +109,7 @@ public class NearbyConnectionsFragment extends Fragment {
     public void updateValue(String which, String value) {
         if (which.equals("deviceName")) {
             ((TextView) myView.deviceButton.findViewById(R.id.subText)).setText(value);
-            StaticVariables.deviceName = value;
+            nearbyConnections.deviceName = value;
         }
     }
 }

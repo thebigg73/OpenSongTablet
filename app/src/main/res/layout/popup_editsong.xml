@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:text="@string/edit_song_author" />
+                    android:text="@string/author" />
 
                 <EditText
                     android:id="@+id/edit_song_author"
@@ -73,7 +73,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_author"
+                    android:hint="@string/author"
                     android:inputType="text"
                     tools:ignore="Autofill" />
 
@@ -84,7 +84,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:text="@string/edit_song_copyright" />
+                    android:text="@string/copyright" />
 
                 <EditText
                     android:id="@+id/edit_song_copyright"
@@ -94,7 +94,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_copyright"
+                    android:hint="@string/copyright"
                     android:inputType="text"
                     tools:ignore="Autofill" />
 
@@ -105,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:text="@string/edit_song_key" />
+                    android:text="@string/key" />
 
                 <Spinner
                     android:id="@+id/edit_song_key"
@@ -231,7 +231,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:entries="@array/timesig" />
+                    android:entries="@array/time_signatures" />
 
                 <TextView
                     android:id="@+id/myCapo"
@@ -240,7 +240,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:text="@string/edit_song_capo" />
+                    android:text="@string/capo_fret" />
 
                 <Spinner
                     android:id="@+id/edit_song_capo"
@@ -282,7 +282,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:text="@string/edit_song_presentation" />
+                    android:text="@string/presentation_order" />
 
                 <EditText
                     android:id="@+id/edit_song_presentation"
@@ -293,7 +293,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:gravity="start|top"
-                    android:hint="@string/edit_song_presentation"
+                    android:hint="@string/presentation_order"
                     android:inputType="textMultiLine"
                     android:minLines="2"
                     android:scrollbarStyle="insideOverlay"
@@ -307,7 +307,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:text="@string/edit_song_notes" />
+                    android:text="@string/song_notes" />
 
                 <EditText
                     android:id="@+id/edit_song_notes"
@@ -318,7 +318,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:gravity="start|top"
-                    android:hint="@string/edit_song_notes"
+                    android:hint="@string/song_notes"
                     android:inputType="textMultiLine"
                     android:isScrollContainer="true"
                     android:minLines="10"
@@ -357,7 +357,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:text="@string/edit_song_lyrics" />
+                    android:text="@string/lyrics" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/editAsChordPro"
@@ -383,7 +383,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:gravity="start|top"
-                    android:hint="@string/edit_song_lyrics"
+                    android:hint="@string/lyrics"
                     android:textIsSelectable="true"
                     android:inputType="textMultiLine"
                     android:minLines="10"
@@ -429,7 +429,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:text="@string/edit_song_ccli" />
+                    android:text="@string/ccli" />
 
                 <EditText
                     android:id="@+id/edit_song_ccli"
@@ -439,7 +439,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_ccli"
+                    android:hint="@string/ccli"
                     android:inputType="text"
                     tools:ignore="Autofill" />
 
@@ -699,7 +699,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:text="@string/edit_song_theme" />
+                    android:text="@string/theme" />
 
                 <EditText
                     android:id="@+id/customTheme"

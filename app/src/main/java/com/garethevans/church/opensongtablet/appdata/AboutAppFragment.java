@@ -27,7 +27,8 @@ public class AboutAppFragment extends Fragment {
     MainActivityInterface mainActivityInterface;
     String userguide="https://www.opensongapp.com/user-guide", groups="https://groups.google.com/g/opensongapp",
             latest = "https://www.opensongapp.com/latest-updates", paypal="https://www.paypal.me/opensongapp",
-            rate = "https://play.google.com/store/apps/details?id=", github="https://github.com/thebigg73/OpenSongTablet";
+            rate = "https://play.google.com/store/apps/details?id=", github="https://github.com/thebigg73/OpenSongTablet",
+            website = "https://www.opensongapp.com";
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -39,6 +40,9 @@ public class AboutAppFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsAboutBinding.inflate(inflater, container, false);
+
+        // Update the toolbar
+        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.about));
 
         // Set Helpers
         setHelpers();
@@ -63,6 +67,7 @@ public class AboutAppFragment extends Fragment {
     }
 
     private void setListeners() {
+        myView.visitWebsite.setOnClickListener(v -> webLink(website));
         myView.latestVersion.setOnClickListener(v -> webLink(latest));
         myView.manualButton.setOnClickListener(v -> webLink(userguide));
         myView.forumButton.setOnClickListener(v -> webLink(groups));

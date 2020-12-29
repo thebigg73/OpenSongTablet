@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:text="@string/showlyrics"
+                android:text="@string/show_lyrics"
                 android:theme="@style/MySwitch"
                 app:showText="false" />
 
@@ -200,7 +200,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:text="@string/edit_song_presentation"
+                android:text="@string/presentation_order"
                 style="@style/MySwitch"
                 app:showText="false" />
 

@@ -142,7 +142,7 @@
                     android:layout_marginTop="12dp"
                     android:layout_marginRight="12dp"
                     android:layout_marginBottom="24dp"
-                    android:text="@string/showchords"
+                    android:text="@string/show_chords"
                     android:theme="@style/MySwitch" />
 
                 <TextView
@@ -349,7 +349,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="12dp"
-                        android:text="@string/edit_song_lyrics" />
+                        android:text="@string/lyrics" />
 
                     <HorizontalScrollView
                         android:layout_width="match_parent"
@@ -460,7 +460,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="12dp"
-                        android:text="@string/presoInfoFont" />
+                        android:text="@string/font_presentation_info" />
 
                     <HorizontalScrollView
                         android:layout_width="wrap_content"
@@ -559,7 +559,7 @@
                         android:layout_marginTop="12dp"
                         android:layout_marginRight="12dp"
                         android:layout_marginBottom="0dp"
-                        android:text="@string/edit_song_author" />
+                        android:text="@string/author" />
 
                     <SeekBar
                         android:id="@+id/presoAuthorSizeSeekBar"
@@ -581,7 +581,7 @@
                         android:layout_marginTop="12dp"
                         android:layout_marginRight="12dp"
                         android:layout_marginBottom="0dp"
-                        android:text="@string/edit_song_copyright" />
+                        android:text="@string/copyright" />
 
                     <SeekBar
                         android:id="@+id/presoCopyrightSizeSeekBar"

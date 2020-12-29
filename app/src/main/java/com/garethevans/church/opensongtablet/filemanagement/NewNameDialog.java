@@ -23,7 +23,6 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.songprocessing.SongXML;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -34,7 +33,6 @@ public class NewNameDialog extends DialogFragment {
     MainActivityInterface mainActivityInterface;
     Preferences preferences;
     StorageAccess storageAccess;
-    SongXML songXML;
     ProcessSong processSong;
     NewNameDialogBinding myView;
     TextInputEditText title;
@@ -72,7 +70,7 @@ public class NewNameDialog extends DialogFragment {
         setViews();
 
         // Get the current songXML to pass back as an argument if we need it (good for duplicating!)
-        songContent = songXML.getXML(song,processSong);
+        songContent = song.getXML(song,processSong);
 
         // Set listeners
         okButton.setOnClickListener(v -> doSave());
@@ -106,7 +104,6 @@ public class NewNameDialog extends DialogFragment {
     private void setHelpers() {
         storageAccess = new StorageAccess();
         preferences = new Preferences();
-        songXML = new SongXML();
         processSong = new ProcessSong();
     }
 

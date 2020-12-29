@@ -8,8 +8,7 @@
     <TextView
         android:id="@+id/setTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="This is just a line to test how big the drawer will go without having to ellipsize the text"/>
+        android:layout_height="wrap_content" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -33,7 +32,8 @@
         android:layout_gravity="bottom|end"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        android:contentDescription="@string/action" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <ProgressBar

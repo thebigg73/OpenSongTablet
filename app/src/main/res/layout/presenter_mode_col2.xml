@@ -51,7 +51,7 @@
                     android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
                     android:gravity="top"
-                    android:hint="@string/edit_song_lyrics"
+                    android:hint="@string/lyrics"
                     android:inputType="textAutoCorrect|text|textMultiLine"
                     android:isScrollContainer="true"
                     android:minLines="4"
@@ -68,7 +68,7 @@
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="4dp"
                     android:layout_marginStart="4dp"
-                    android:contentDescription="@string/page_background" />
+                    android:contentDescription="@string/background" />
 
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -113,7 +113,8 @@
                         app:elevation="0dp"
                         app:fabSize="mini"
                         android:layout_margin="12dp"
-                        app:useCompatPadding="true" />
+                        app:useCompatPadding="true"
+                        android:contentDescription="@string/start" />
 
                 </LinearLayout>
                     <TextView

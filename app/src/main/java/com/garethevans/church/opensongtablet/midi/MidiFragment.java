@@ -45,7 +45,6 @@ import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.songprocessing.SongXML;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
@@ -62,7 +61,6 @@ public class MidiFragment extends Fragment {
     private MainActivityInterface mainActivityInterface;
     private MidiAdapterInterface midiAdapterInterface;
     private StorageAccess storageAccess;
-    private SongXML songXML;
     private ConvertChoPro convertChoPro;
     private ProcessSong processSong;
     private SQLiteHelper sqLiteHelper;
@@ -129,7 +127,6 @@ public class MidiFragment extends Fragment {
         midi = mainActivityInterface.getMidi(mainActivityInterface);
         song = mainActivityInterface.getSong();
         storageAccess = mainActivityInterface.getStorageAccess();
-        songXML = mainActivityInterface.getSongXML();
         convertChoPro = mainActivityInterface.getConvertChoPro();
         processSong = mainActivityInterface.getProcessSong();
         sqLiteHelper = mainActivityInterface.getSQLiteHelper();
@@ -348,8 +345,8 @@ public class MidiFragment extends Fragment {
             usbManufact = new ArrayList<>();
             usbManufact.clear();
             for (MidiDeviceInfo md : usbDevices) {
-                String manuf = getString(R.string.file_type_unknown);
-                String device = getString(R.string.file_type_unknown);
+                String manuf = getString(R.string.unknown);
+                String device = getString(R.string.unknown);
                 try {
                     device = md.getProperties().getString(MidiDeviceInfo.PROPERTY_NAME);
                     manuf = md.getProperties().getString(MidiDeviceInfo.PROPERTY_MANUFACTURER);
@@ -359,12 +356,12 @@ public class MidiFragment extends Fragment {
                 if (device != null) {
                     usbNames.add(device);
                 } else {
-                    usbNames.add(getString(R.string.file_type_unknown));
+                    usbNames.add(getString(R.string.unknown));
                 }
                 if (manuf != null) {
                     usbManufact.add(manuf);
                 } else {
-                    usbManufact.add(getString(R.string.file_type_unknown));
+                    usbManufact.add(getString(R.string.unknown));
                 }
             }
             myView.progressBar.setVisibility(View.GONE);
@@ -537,11 +534,12 @@ public class MidiFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void sendTestNote() {
         try {
-            byte[] b = midi.returnBytesFromHexText("0x90 0x3C 0x63");
+            //byte[] b = midi.returnBytesFromHexText("0x90 0x3C 0x63");
+            //midi.sendMidi(b);
             String s1 = midi.buildMidiString("NoteOn", 1, 60, 100);
             Log.d("d","s1="+s1);
             byte[] buffer1 = midi.returnBytesFromHexText(s1);
-            boolean sent = midi.sendMidi(b);
+            boolean sent = midi.sendMidi(buffer1);
 
             Handler h = new Handler();
             h.postDelayed(() -> {
@@ -550,7 +548,7 @@ public class MidiFragment extends Fragment {
                 midi.sendMidi(buffer2);
             }, 1000);
             if (sent) {
-                ShowToast.showToast(getContext(), getString(R.string.ok));
+                ShowToast.showToast(getContext(), getString(android.R.string.ok));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -571,7 +569,7 @@ public class MidiFragment extends Fragment {
         if (!success) {
             ShowToast.showToast(getContext(),getString(R.string.midi_error));
         } else {
-            ShowToast.showToast(getContext(), getString(R.string.ok));
+            ShowToast.showToast(getContext(), getString(android.R.string.ok));
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -734,7 +732,7 @@ public class MidiFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         // Save the song
-        saveSong.doSave(getContext(),preferences,storageAccess,songXML,convertChoPro,
+        saveSong.doSave(getContext(),preferences,storageAccess,convertChoPro,
                 processSong,song,sqLiteHelper,nonOpenSongSQLiteHelper,commonSQL,ccliLog,false);
     }
 }

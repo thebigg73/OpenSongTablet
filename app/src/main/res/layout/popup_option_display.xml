@@ -60,7 +60,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_theme_light_dark_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/choose_theme"
+                android:text="@string/theme_choose"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
@@ -86,7 +86,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_format_text_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/choose_fonts"
+                android:text="@string/font_choose"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
@@ -99,7 +99,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_bullseye_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/pagebuttons"
+                android:text="@string/page_buttons"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 

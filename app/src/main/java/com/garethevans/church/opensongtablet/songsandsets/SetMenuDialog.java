@@ -55,7 +55,7 @@ public class SetMenuDialog extends DialogFragment {
         Preferences preferences = new Preferences();
         SetActions setActions = new SetActions();
 
-        menuSetsDialogBinding.createSet.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("newSet",getActivity().getResources().getString(R.string.options_clearthisset),null,fragName,callingFragment,null));
+        menuSetsDialogBinding.createSet.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("newSet",getActivity().getResources().getString(R.string.set_new),null,fragName,callingFragment,null));
         //menuSetsDialogBinding.saveSet.setOnClickListener(v -> setActions.saveTheSet());
         //menuSetsDialogBinding.manageSets.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.nav_manageSets));
         //menuSetsDialogBinding.addCustomSlide.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.customSlide));

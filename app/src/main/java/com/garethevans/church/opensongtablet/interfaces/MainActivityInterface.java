@@ -18,7 +18,6 @@ import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.songprocessing.SongXML;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
@@ -76,7 +75,6 @@ public interface MainActivityInterface {
     SetTypeFace getMyFonts();
     ThemeColors getMyThemeColors();
     StorageAccess getStorageAccess();
-    SongXML getSongXML();
     ConvertChoPro getConvertChoPro();
     ProcessSong getProcessSong();
     Song getSong();

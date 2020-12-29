@@ -208,37 +208,37 @@
                     android:id="@+id/chordFormat1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/chordFormat1" />
+                    android:text="@string/chordformat_1" />
 
                 <RadioButton
                     android:id="@+id/chordFormat2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/chordFormat2" />
+                    android:text="@string/chordformat_2" />
 
                 <RadioButton
                     android:id="@+id/chordFormat3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/chordFormat3" />
+                    android:text="@string/chordformat_3" />
 
                 <RadioButton
                     android:id="@+id/chordFormat4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/chordFormat4" />
+                    android:text="@string/chordformat_4" />
 
                 <RadioButton
                     android:id="@+id/chordFormat5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/chordFormat5" />
+                    android:text="@string/chordformat_5" />
 
                 <RadioButton
                     android:id="@+id/chordFormat6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/chordFormat6" />
+                    android:text="@string/chordformat_6" />
 
             </RadioGroup>
 

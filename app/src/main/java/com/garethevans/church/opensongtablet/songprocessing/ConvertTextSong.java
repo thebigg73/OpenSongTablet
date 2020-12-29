@@ -96,12 +96,12 @@ public class ConvertTextSong {
 
     private boolean stringContainsTag(Context context, Locale locale, String line) {
         Resources res = getLocalizedResources(context, locale);
-        return line.contains(res.getString(R.string.tag_verse)) || line.contains(res.getString(R.string.tag_chorus)) ||
-                line.contains(res.getString(R.string.tag_bridge)) || line.contains(res.getString(R.string.tag_ending)) ||
-                line.contains(res.getString(R.string.tag_instrumental)) || line.contains(res.getString(R.string.tag_interlude)) ||
-                line.contains(res.getString(R.string.tag_intro)) || line.contains(res.getString(R.string.tag_prechorus)) ||
-                line.contains(res.getString(R.string.tag_refrain)) || line.contains(res.getString(R.string.tag_tag)) ||
-                line.contains(res.getString(R.string.tag_reprise));
+        return line.contains(res.getString(R.string.verse)) || line.contains(res.getString(R.string.chorus)) ||
+                line.contains(res.getString(R.string.bridge)) || line.contains(res.getString(R.string.ending)) ||
+                line.contains(res.getString(R.string.instrumental)) || line.contains(res.getString(R.string.interlude)) ||
+                line.contains(res.getString(R.string.intro)) || line.contains(res.getString(R.string.prechorus)) ||
+                line.contains(res.getString(R.string.refrain)) || line.contains(res.getString(R.string.tag)) ||
+                line.contains(res.getString(R.string.reprise));
     }
 
     @NonNull
@@ -206,7 +206,7 @@ public class ConvertTextSong {
 
             // If there isn't any tags declared, set up a verse tag
             if (!compiledtext.contains("[")) {
-                compiledtext = "[" + c.getString(R.string.tag_verse) + "]" + "\n" + compiledtext;
+                compiledtext = "[" + c.getString(R.string.verse) + "]" + "\n" + compiledtext;
             }
             return compiledtext;
         } catch (Exception | OutOfMemoryError e) {

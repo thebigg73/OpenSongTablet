@@ -336,6 +336,4 @@ public class Midi {
         }
     }
 
-
-
 }

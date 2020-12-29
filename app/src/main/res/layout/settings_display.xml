@@ -17,40 +17,40 @@
             android:id="@+id/themeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:sub="@string/dark_theme"
-            app:main="@string/choose_theme" />
+            app:sub="@string/theme_dark"
+            app:main="@string/theme_choose" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/fontButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:main="@string/choose_fonts"
-            app:sub="Change song display fonts" />
+            app:main="@string/font_choose"
+            app:sub="@string/font_choose_description" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/performanceMode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:main="Performance mode settings"
-            app:sub="Settings specific to Performance mode" />
+            app:main="@string/performancemode"
+            app:sub="@string/performancemode_settings" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/menuSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:main="Menu settings"
-            app:sub="Change menu settings" />
+            app:main="@string/menu_settings"
+            app:sub="@string/menu_settings_description" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/connectedDisplay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:main="Connected displays"
-            app:sub="Settings specific to Chromecast/HDMI output" />
+            app:main="@string/connected_display"
+            app:sub="@string/connected_display_description" />
         <TableRow style="@style/DividerLine" />
 
 

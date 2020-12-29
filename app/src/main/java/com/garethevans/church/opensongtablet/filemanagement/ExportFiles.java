@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class ExportFiles {
 
     public Intent exportActivityLog(Context c, Preferences preferences, StorageAccess storageAccess, CCLILog ccliLog) {
-        String title = c.getString(R.string.app_name) + ": " + c.getString(R.string.edit_song_ccli);
+        String title = c.getString(R.string.app_name) + ": " + c.getString(R.string.ccli);
         String subject = title + " - " + c.getString(R.string.ccli_view);
         String text = c.getString(R.string.ccli_church) + ": " +
                 preferences.getMyPreferenceString(c,"ccliChurchName","") + "\n";

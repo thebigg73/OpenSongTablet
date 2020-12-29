@@ -42,7 +42,7 @@ public class SettingsCCLI extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         myView = SettingsCcliBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.edit_song_ccli));
+        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.ccli));
 
         // Prepare helpers
         prepareHelpers();

@@ -32,7 +32,7 @@ public class ConvertChoPro {
 
     public Song convertTextToTags(Context c, StorageAccess storageAccess, Preferences preferences,
                                                ProcessSong processSong, SQLiteHelper sqLiteHelper,
-                                               CommonSQL commonSQL, SongXML songXML, Uri uri, Song song) {
+                                               CommonSQL commonSQL, Uri uri, Song song) {
 
         initialiseTheVariables();
 
@@ -69,7 +69,7 @@ public class ConvertChoPro {
         setCorrectXMLValues(song);
 
         // Now prepare the new songXML file
-        String newXML = songXML.getXML(song, processSong);
+        String newXML = song.getXML(song, processSong);
 
         // Get a unique uri for the new song
         Uri newUri = getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);

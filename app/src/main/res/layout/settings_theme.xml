@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:hint="@string/choose_theme"
+            android:hint="@string/theme_choose"
             android:labelFor="@+id/themeName">
 
             <AutoCompleteTextView
@@ -43,7 +43,7 @@
                 android:id="@+id/lyricsButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_song_lyrics"
+                android:text="@string/lyrics"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -70,16 +70,10 @@
                 android:id="@+id/pageButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/page_background"
+                android:text="@string/background"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
-
-            <LinearLayout
-                android:id="@+id/mainDisplay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
 
         </LinearLayout>
 
@@ -110,7 +104,7 @@
                 android:id="@+id/chorusButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/tag_chorus"
+                android:text="@string/chorus"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -119,7 +113,7 @@
                 android:id="@+id/prechorusButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/tag_prechorus"
+                android:text="@string/prechorus"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -128,7 +122,7 @@
                 android:id="@+id/bridgeButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/tag_bridge"
+                android:text="@string/bridge"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -137,7 +131,7 @@
                 android:id="@+id/tagButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/tag_tag"
+                android:text="@string/tag"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />
@@ -180,7 +174,7 @@
             android:id="@+id/presoButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/presoFont"
+            android:text="@string/text"
             app:icon="@drawable/rectangle"
             app:iconGravity="start"
             app:iconSize="32dp" />
@@ -189,7 +183,7 @@
             android:id="@+id/presoInfoButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/presoInfoFont"
+            android:text="@string/info_text"
             app:icon="@drawable/rectangle"
             app:iconGravity="start"
             app:iconSize="32dp" />
@@ -223,7 +217,7 @@
             android:id="@+id/pagebuttonButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/pagebuttons"
+            android:text="@string/page_buttons"
             app:icon="@drawable/rectangle"
             app:iconGravity="start"
             app:iconSize="32dp" />
@@ -242,7 +236,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:text="@string/stickynotes" />
+            android:text="@string/song_notes" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/stickytextButton"
@@ -257,7 +251,7 @@
             android:id="@+id/stickybackgroundButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/presoBackground"
+            android:text="@string/background"
             app:icon="@drawable/rectangle"
             app:iconGravity="start"
             app:iconSize="32dp" />
@@ -291,7 +285,7 @@
                 android:id="@+id/extrabackgroundButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/presoBackground"
+                android:text="@string/background"
                 app:icon="@drawable/rectangle"
                 app:iconGravity="start"
                 app:iconSize="32dp" />

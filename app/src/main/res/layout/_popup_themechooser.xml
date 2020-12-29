@@ -59,7 +59,7 @@
                     android:background="#222"
                     android:gravity="center_vertical|center_horizontal"
                     android:minHeight="48dp"
-                    android:text="@string/dark_theme"
+                    android:text="@string/theme_dark"
                     android:textColor="#ff0"
                     android:textSize="14sp" />
 
@@ -72,7 +72,7 @@
                     android:background="#222"
                     android:gravity="center_vertical|center_horizontal"
                     android:minHeight="48dp"
-                    android:text="@string/light_theme"
+                    android:text="@string/theme_light"
                     style="@style/MyHeadingText" />
 
                 <TextView
@@ -84,7 +84,7 @@
                     android:background="#222"
                     android:gravity="center_vertical|center_horizontal"
                     android:minHeight="48dp"
-                    android:text="@string/custom1_theme"
+                    android:text="@string/theme_custom1"
                     style="@style/MyHeadingText" />
 
                 <TextView
@@ -96,7 +96,7 @@
                     android:background="#222"
                     android:gravity="center_vertical|center_horizontal"
                     android:minHeight="48dp"
-                    android:text="@string/custom2_theme"
+                    android:text="@string/theme_custom2"
                     style="@style/MyHeadingText" />
             </TableRow>
         </TableLayout>
@@ -138,7 +138,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/page_light"
@@ -147,7 +147,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/page_custom1"
@@ -156,7 +156,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/page_custom2"
@@ -165,7 +165,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -193,7 +193,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/lyrics_light"
@@ -203,7 +203,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/lyrics_custom1"
@@ -213,7 +213,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/lyrics_custom2"
@@ -223,7 +223,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -251,7 +251,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/chords_light"
@@ -261,7 +261,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/chords_custom1"
@@ -271,7 +271,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/chords_custom2"
@@ -280,7 +280,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -307,7 +307,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/capo_light"
@@ -316,7 +316,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/capo_custom1"
@@ -325,7 +325,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/capo_custom2"
@@ -334,7 +334,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -361,7 +361,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/verse_light"
@@ -370,7 +370,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/verse_custom1"
@@ -379,7 +379,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/verse_custom2"
@@ -388,7 +388,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -415,7 +415,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/chorus_light"
@@ -424,7 +424,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/chorus_custom1"
@@ -433,7 +433,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/chorus_custom2"
@@ -442,7 +442,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -469,7 +469,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/prechorus_light"
@@ -478,7 +478,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/prechorus_custom1"
@@ -487,7 +487,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/prechorus_custom2"
@@ -496,7 +496,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -523,7 +523,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/bridge_light"
@@ -532,7 +532,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/bridge_custom1"
@@ -541,7 +541,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/bridge_custom2"
@@ -550,7 +550,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -577,7 +577,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/tag_light"
@@ -586,7 +586,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/tag_custom1"
@@ -595,7 +595,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/tag_custom2"
@@ -604,7 +604,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -631,7 +631,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/custom_light"
@@ -640,7 +640,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/custom_custom1"
@@ -649,7 +649,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/custom_custom2"
@@ -658,7 +658,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -685,7 +685,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/comment_light"
@@ -694,7 +694,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/comment_custom1"
@@ -703,7 +703,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/comment_custom2"
@@ -712,7 +712,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser"
+                        android:contentDescription="@string/color_choose"
                         tools:ignore="TooManyViews" />
                 </TableRow>
 
@@ -730,7 +730,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
-                        android:text="@string/presoFont"
+                        android:text="@string/font_presentation"
                         style="@style/MyWhiteHeadingText" />
 
                     <ImageView
@@ -740,7 +740,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser"
+                        android:contentDescription="@string/color_choose"
                         tools:ignore="TooManyViews" />
 
                     <ImageView
@@ -750,7 +750,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/presofont_custom1"
@@ -759,7 +759,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/presofont_custom2"
@@ -768,7 +768,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -785,7 +785,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
-                        android:text="@string/presoInfoFont"
+                        android:text="@string/font_presentation_info"
                         style="@style/MyWhiteHeadingText" />
 
                     <ImageView
@@ -795,7 +795,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/presoinfofont_light"
@@ -804,7 +804,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/presoinfofont_custom1"
@@ -813,7 +813,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/presoinfofont_custom2"
@@ -822,7 +822,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -849,7 +849,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/presoalertfont_light"
@@ -858,7 +858,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/presoalertfont_custom1"
@@ -867,7 +867,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/presoalertfont_custom2"
@@ -876,7 +876,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -903,7 +903,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/presofontshadow_light"
@@ -912,7 +912,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/presofontshadow_custom1"
@@ -921,7 +921,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/presofontshadow_custom2"
@@ -930,7 +930,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -957,7 +957,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser"
+                        android:contentDescription="@string/color_choose"
                         tools:ignore="TooManyViews" />
 
                     <ImageView
@@ -967,7 +967,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/metronome_custom1"
@@ -976,7 +976,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/metronome_custom2"
@@ -985,7 +985,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -1002,7 +1002,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
-                        android:text="@string/pagebuttons"
+                        android:text="@string/page_buttons"
                         style="@style/MyWhiteHeadingText" />
 
                     <ImageView
@@ -1012,7 +1012,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser"
+                        android:contentDescription="@string/color_choose"
                         tools:ignore="TooManyViews" />
 
                     <ImageView
@@ -1022,7 +1022,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/pagebuttons_custom1"
@@ -1031,7 +1031,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/pagebuttons_custom2"
@@ -1040,7 +1040,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -1067,7 +1067,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser"
+                        android:contentDescription="@string/color_choose"
                         tools:ignore="TooManyViews" />
 
                     <ImageView
@@ -1077,7 +1077,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/stickytext_custom1"
@@ -1086,7 +1086,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/stickytext_custom2"
@@ -1095,7 +1095,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -1122,7 +1122,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser"
+                        android:contentDescription="@string/color_choose"
                         tools:ignore="TooManyViews" />
 
                     <ImageView
@@ -1132,7 +1132,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/stickybg_custom1"
@@ -1141,7 +1141,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/stickybg_custom2"
@@ -1150,7 +1150,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -1177,7 +1177,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser"
+                        android:contentDescription="@string/color_choose"
                         tools:ignore="TooManyViews" />
 
                     <ImageView
@@ -1187,7 +1187,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/custom1_extrainfobg"
@@ -1196,7 +1196,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/custom2_extrainfobg"
@@ -1205,7 +1205,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
                 <TableRow
@@ -1232,7 +1232,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser"
+                        android:contentDescription="@string/color_choose"
                         tools:ignore="TooManyViews" />
 
                     <ImageView
@@ -1242,7 +1242,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/custom1_extrainfo"
@@ -1251,7 +1251,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
 
                     <ImageView
                         android:id="@+id/custom2_extrainfo"
@@ -1260,7 +1260,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.18"
                         android:background="#444"
-                        android:contentDescription="@string/colorchooser" />
+                        android:contentDescription="@string/color_choose" />
                 </TableRow>
 
             </TableLayout>

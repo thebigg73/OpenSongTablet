@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:background="@drawable/green_button"
-                android:text="@string/pagebuttons" />
+                android:text="@string/page_buttons" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

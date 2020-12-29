@@ -14,7 +14,6 @@ import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.songprocessing.SongXML;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
@@ -34,7 +33,7 @@ public class LoadSong {
     private Uri uri;
 
     public Song doLoadSong(Context c, StorageAccess storageAccess, Preferences preferences,
-                           SongXML songXML, ProcessSong processSong, ShowToast showToast,
+                           ProcessSong processSong, ShowToast showToast,
                            SQLiteHelper sqLiteHelper, CommonSQL commonSQL, Song song,
                            ConvertOnSong convertOnSong, ConvertChoPro convertChoPro, boolean indexing) {
 
@@ -45,7 +44,7 @@ public class LoadSong {
         if (!StaticVariables.indexComplete || song.getFolder().contains("../")) {
             // This is set to true once the index is completed
             Log.d("LoadSong","Loading from the xml file");
-            return doLoadSongFile(c,storageAccess,preferences,songXML,processSong,showToast,
+            return doLoadSongFile(c,storageAccess,preferences,processSong,showToast,
                     sqLiteHelper,commonSQL,song,convertOnSong,convertChoPro,indexing);
         } else {
             Log.d("LoadSong","Loading from the database");
@@ -55,7 +54,7 @@ public class LoadSong {
 
     }
     public Song doLoadSongFile(Context c, StorageAccess storageAccess, Preferences preferences,
-                             SongXML songXML, ProcessSong processSong, ShowToast showToast,
+                             ProcessSong processSong, ShowToast showToast,
                              SQLiteHelper sqLiteHelper, CommonSQL commonSQL, Song song,
                              ConvertOnSong convertOnSong, ConvertChoPro convertChoPro, boolean indexing) {
 
@@ -118,7 +117,7 @@ public class LoadSong {
 
         if (song.getFiletype().equals("iOS")) {
             // Run the OnSongConvert script
-            convertOnSong.convertTextToTags(c,storageAccess,preferences,processSong, songXML,
+            convertOnSong.convertTextToTags(c,storageAccess,preferences,processSong,
                     convertChoPro,sqLiteHelper,commonSQL,uri,song);
 
             // Now read in the proper OpenSong xml file
@@ -130,7 +129,7 @@ public class LoadSong {
         } else if (song.getFiletype().equals("CHO") || lyricsHaveChoProTags(song.getLyrics())) {
             // Run the ChordProConvert script
             song = convertChoPro.convertTextToTags(c,storageAccess,preferences,processSong,sqLiteHelper,
-                    commonSQL, songXML, uri, song);
+                    commonSQL, uri, song);
 
             // Now read in the proper OpenSong xml file
             try {
@@ -544,7 +543,7 @@ public class LoadSong {
         song.setLyrics(c.getString(R.string.user_guide_lyrics));
         song.setAuthor("Gareth Evans");
         song.setKey("G");
-        song.setLinkweb("https://www.opensongapp.com");
+        song.setLinkweb(c.getString(R.string.website));
         return song;
     }
 

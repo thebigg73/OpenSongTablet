@@ -15,7 +15,6 @@ import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.songprocessing.SongXML;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
@@ -27,7 +26,7 @@ class CreateNewSet {
 
     boolean doCreation(Context c, Preferences preferences,
                        StorageAccess storageAccess, ProcessSong processSong, LoadSong loadSong,
-                       SongXML songXML, ConvertOnSong convertOnSong, ConvertChoPro convertChoPro,
+                       ConvertOnSong convertOnSong, ConvertChoPro convertChoPro,
                        SQLiteHelper sqLiteHelper, CommonSQL commonSQL, ShowToast showToast) {
 
         // Keep the current song and directory aside for now
@@ -100,8 +99,8 @@ class CreateNewSet {
                     StaticVariables.songfilename = songparts[1];
                     song = song.initialiseSong(commonSQL);
                     try {
-                        song = loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
-                                showToast, sqLiteHelper, commonSQL, song,convertOnSong, convertChoPro,false);
+                        song = loadSong.doLoadSong(c, storageAccess, preferences, processSong,
+                                showToast, sqLiteHelper, commonSQL, song, convertOnSong, convertChoPro,false);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -152,8 +151,8 @@ class CreateNewSet {
                     StaticVariables.songfilename = songparts[1];
                     song = song.initialiseSong(commonSQL);
                     try {
-                        song = loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
-                                showToast, sqLiteHelper, commonSQL, song,convertOnSong, convertChoPro,false);
+                        song = loadSong.doLoadSong(c, storageAccess, preferences, processSong,
+                                showToast, sqLiteHelper, commonSQL, song, convertOnSong, convertChoPro,false);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -206,8 +205,8 @@ class CreateNewSet {
                     StaticVariables.songfilename = songparts[1];
                     song = song.initialiseSong(commonSQL);
                     try {
-                        song = loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
-                                showToast, sqLiteHelper, commonSQL, song,convertOnSong, convertChoPro,false);
+                        song = loadSong.doLoadSong(c, storageAccess, preferences, processSong,
+                                showToast, sqLiteHelper, commonSQL, song, convertOnSong, convertChoPro,false);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -242,8 +241,8 @@ class CreateNewSet {
                     StaticVariables.songfilename = songparts[1];
                     song = song.initialiseSong(commonSQL);
                     try {
-                        song = loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
-                                showToast, sqLiteHelper, commonSQL, song,convertOnSong, convertChoPro,false);
+                        song = loadSong.doLoadSong(c, storageAccess, preferences, processSong,
+                                showToast, sqLiteHelper, commonSQL, song, convertOnSong, convertChoPro,false);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -324,8 +323,8 @@ class CreateNewSet {
                     StaticVariables.songfilename = songparts[1];
                     song = song.initialiseSong(commonSQL);
                     try {
-                        song = loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
-                                showToast, sqLiteHelper, commonSQL, song,convertOnSong, convertChoPro,false);
+                        song = loadSong.doLoadSong(c, storageAccess, preferences, processSong,
+                                showToast, sqLiteHelper, commonSQL, song, convertOnSong, convertChoPro,false);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -404,8 +403,8 @@ class CreateNewSet {
             StaticVariables.whichSongFolder = tempdir;
             song = song.initialiseSong(commonSQL);
             try {
-                song = loadSong.doLoadSong(c, storageAccess, preferences, songXML, processSong,
-                        showToast, sqLiteHelper, commonSQL, song,convertOnSong, convertChoPro,false);
+                song = loadSong.doLoadSong(c, storageAccess, preferences, processSong,
+                        showToast, sqLiteHelper, commonSQL, song, convertOnSong, convertChoPro,false);
             } catch (Exception e) {
                 e.printStackTrace();
             }

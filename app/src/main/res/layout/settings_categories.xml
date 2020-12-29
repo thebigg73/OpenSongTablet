@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--//TODO Extract the text strings -->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -18,23 +17,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:main="@string/storage"
-            app:sub="Manage your app and song folders" />
+            app:sub="@string/storage_settings" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/displayButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:main="Display"
-            app:sub="Change display settings (what you see on screen)" />
+            app:main="@string/display"
+            app:sub="@string/display_settings" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/actionsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:main="Song actions"
-            app:sub="Settings for actions and features" />
+            app:main="@string/song_actions"
+            app:sub="@string/song_actions_description" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
@@ -42,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:main="@string/controls"
-            app:sub="Foot pedals and screen gestures" />
+            app:sub="@string/controls_description" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
@@ -50,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:main="@string/connections_connect"
-            app:sub="Connect to other devices running OpenSongApp" />
+            app:sub="@string/connections_description" />
         <TableRow android:id="@+id/connectLine" style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
@@ -58,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:main="@string/midi"
-            app:sub="Connect midi devices and change settings" />
+            app:sub="@string/midi_description" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
@@ -66,15 +65,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:main="@string/profile"
-            app:sub="Backup and restore your settings" />
+            app:sub="@string/profile_explanation" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/ccliButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:main="CCLI"
-            app:sub="CCLI settings" />
+            app:main="@string/ccli"
+            app:sub="@string/ccli_description" />
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
@@ -82,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:main="@string/about"
-            app:sub="@string/app_name" />
+            app:sub="@string/about_description" />
         <TableRow style="@style/DividerLine" />
 
     </LinearLayout>

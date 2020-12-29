@@ -39,7 +39,7 @@
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/toggleScrollBeforeSwipe"
+                android:text="@string/pedal_scroll_before_move"
                 android:theme="@style/MySwitch"
                 android:background="@drawable/section_box"
                 android:layout_margin="4dp"
@@ -50,7 +50,7 @@
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/warn_before_changing_song"
+                android:text="@string/pedal_avoid_repeat"
                 android:theme="@style/MySwitch"
                 android:background="@drawable/section_box"
                 android:layout_margin="4dp"
@@ -91,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     style="@style/MyInfoText"
-                    android:text="@string/longpress"/>
+                    android:text="@string/long_press"/>
                 <Spinner
                     android:id="@+id/pedallong1choice"
                     android:layout_width="match_parent"
@@ -142,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     style="@style/MyInfoText"
-                    android:text="@string/longpress"/>
+                    android:text="@string/long_press"/>
                 <Spinner
                     android:id="@+id/pedallong2choice"
                     android:layout_width="match_parent"
@@ -192,7 +192,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 style="@style/MyInfoText"
-                android:text="@string/longpress"/>
+                android:text="@string/long_press"/>
                 <Spinner
                     android:id="@+id/pedallong3choice"
                     android:layout_width="match_parent"
@@ -243,7 +243,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     style="@style/MyInfoText"
-                    android:text="@string/longpress"/>
+                    android:text="@string/long_press"/>
                 <Spinner
                     android:id="@+id/pedallong4choice"
                     android:layout_width="match_parent"
@@ -294,7 +294,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     style="@style/MyInfoText"
-                    android:text="@string/longpress"/>
+                    android:text="@string/long_press"/>
                 <Spinner
                     android:id="@+id/pedallong5choice"
                     android:layout_width="match_parent"
@@ -345,7 +345,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     style="@style/MyInfoText"
-                    android:text="@string/longpress"/>
+                    android:text="@string/long_press"/>
                 <Spinner
                     android:id="@+id/pedallong6choice"
                     android:layout_width="match_parent"

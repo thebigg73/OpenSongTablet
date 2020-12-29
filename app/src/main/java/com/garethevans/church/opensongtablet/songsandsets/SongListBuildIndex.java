@@ -14,7 +14,6 @@ import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertTextSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.songprocessing.SongXML;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLite;
@@ -35,7 +34,7 @@ public class SongListBuildIndex {
 
     public void fullIndex(Context c, Preferences preferences, StorageAccess storageAccess,
                               SQLiteHelper sqLiteHelper, NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper,
-                              CommonSQL commonSQL, SongXML songXML, ProcessSong processSong,
+                              CommonSQL commonSQL, ProcessSong processSong,
                               ConvertChoPro convertChoPro, ConvertOnSong convertOnSong,
                               ConvertTextSong textSongConvert, ShowToast showToast, LoadSong loadSong) {
 
@@ -78,7 +77,7 @@ public class SongListBuildIndex {
                                 } catch (Exception e) {
                                     // OK, so this wasn't an XML file.  Try to extract as something else
                                     song = tryToFixSong(c, storageAccess, preferences, processSong,
-                                            sqLiteHelper, commonSQL, songXML,
+                                            sqLiteHelper, commonSQL,
                                             convertChoPro, convertOnSong, textSongConvert, uri);
                                 }
                             }
@@ -127,7 +126,7 @@ public class SongListBuildIndex {
 
     private Song tryToFixSong(Context c, StorageAccess storageAccess, Preferences preferences,
                               ProcessSong processSong, SQLiteHelper sqLiteHelper,
-                              CommonSQL commonSQL, SongXML songXML, ConvertChoPro convertChoPro,
+                              CommonSQL commonSQL, ConvertChoPro convertChoPro,
                               ConvertOnSong convertOnSong, ConvertTextSong textSongConvert, Uri uri) {
 
             if (uri != null) {
@@ -139,7 +138,7 @@ public class SongListBuildIndex {
                         String filecontents = storageAccess.readTextFileToString(inputStream);
                         song.setLyrics(filecontents);
                         song = convertChoPro.convertTextToTags(c, storageAccess, preferences,
-                                processSong, sqLiteHelper, commonSQL, songXML, uri, song);
+                                processSong, sqLiteHelper, commonSQL, uri, song);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -150,7 +149,7 @@ public class SongListBuildIndex {
                         String filecontents = storageAccess.readTextFileToString(inputStream);
                         song.setLyrics(filecontents);
                         song = convertOnSong.convertTextToTags(c, storageAccess, preferences,
-                                processSong, songXML, convertChoPro, sqLiteHelper, commonSQL,
+                                processSong, convertChoPro, sqLiteHelper, commonSQL,
                                 uri, song);
 
                     } catch (Exception e) {

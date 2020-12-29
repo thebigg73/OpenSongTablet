@@ -19,7 +19,7 @@
                 android:id="@+id/currentLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/changestorage"
+                android:text="@string/storage_change"
                 android:layout_marginBottom="16dp"/>
 
             <com.google.android.material.button.MaterialButton
@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/BottomSheetButton"
-                android:text="@string/changestorage"
+                android:text="@string/storage_change"
                 app:icon="@drawable/ic_database_white_36dp" />
 
             <com.google.android.material.button.MaterialButton
@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/BottomSheetButton"
-                android:text="@string/folder_new"
+                android:text="@string/new_folder"
                 app:icon="@drawable/ic_plus_white_36dp" />
 
             <com.google.android.material.button.MaterialButton
@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/BottomSheetButton"
-                android:text="Move folder contents"
+                android:text="@string/folder_move_contents"
                 app:icon="@drawable/ic_content_copy_white_36dp" />
 
             <com.google.android.material.button.MaterialButton

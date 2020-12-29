@@ -43,7 +43,7 @@
             style="@style/BottomSheetButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/customise_set_item"
+            android:text="@string/variation_make"
             app:icon="@drawable/ic_code_brackets_white_36dp" />
 
     </LinearLayout>

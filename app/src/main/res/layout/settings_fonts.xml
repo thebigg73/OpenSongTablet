@@ -11,16 +11,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/choose_fonts"
-            style="@style/MyWhiteHeadingText"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="32dp"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,7 +30,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
-                    android:hint="@string/chooselyricfont"
+                    android:hint="@string/lyrics"
                     android:labelFor="@+id/lyricFont">
 
                     <AutoCompleteTextView
@@ -72,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
-                    android:hint="@string/choosechordfont"
+                    android:hint="@string/chords"
                     android:labelFor="@+id/chordFont">
 
                     <AutoCompleteTextView
@@ -140,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
-                    android:hint="@string/presoFont"
+                    android:hint="@string/font_presentation"
                     android:labelFor="@+id/presoFont">
 
                     <AutoCompleteTextView
@@ -173,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
-                    android:hint="@string/presoInfoFont"
+                    android:hint="@string/font_presentation_info"
                     android:labelFor="@+id/presoInfoFont">
 
                     <AutoCompleteTextView
@@ -239,7 +229,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="1"
-                    android:hint="@string/choosestickyfont"
+                    android:hint="@string/song_notes"
                     android:labelFor="@+id/stickyFont">
 
                     <AutoCompleteTextView

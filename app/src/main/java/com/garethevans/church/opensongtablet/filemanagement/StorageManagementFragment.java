@@ -215,10 +215,10 @@ public class StorageManagementFragment extends DialogFragment {
         infos = new ArrayList<>();
         dismisses = new ArrayList<>();
         rects = new ArrayList<>();
-        infos.add(getActivity().getResources().getString(R.string.info_reset_storage));
+        infos.add(getActivity().getResources().getString(R.string.storage_reset));
         dismisses.add(null);
         rects.add(true);
-        infos.add(getActivity().getResources().getString(R.string.info_songs_folder));
+        infos.add(getActivity().getResources().getString(R.string.storage_main));
         dismisses.add(null);
         rects.add(true);
     }

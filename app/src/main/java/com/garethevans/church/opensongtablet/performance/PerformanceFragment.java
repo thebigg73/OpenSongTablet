@@ -37,7 +37,6 @@ import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.songprocessing.SongXML;
 import com.garethevans.church.opensongtablet.songsandsets.SetActions;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
@@ -52,7 +51,6 @@ public class PerformanceFragment extends Fragment {
     private Preferences preferences;
     private ProcessSong processSong;
     private LoadSong loadSong;
-    private SongXML songXML;
     private SQLiteHelper sqLiteHelper;
     private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
     private CommonSQL commonSQL;
@@ -161,7 +159,6 @@ public class PerformanceFragment extends Fragment {
         preferences = new Preferences();
         loadSong = new LoadSong();
         processSong = new ProcessSong();
-        songXML = new SongXML();
         sqLiteHelper = new SQLiteHelper(getActivity());
         convertOnSong = new ConvertOnSong();
         convertChoPro = new ConvertChoPro();
@@ -228,7 +225,7 @@ public class PerformanceFragment extends Fragment {
             }
             song = new Song();
             song = song.initialiseSong(commonSQL);
-            song = loadSong.doLoadSong(getActivity(),storageAccess,preferences,songXML,processSong,
+            song = loadSong.doLoadSong(getActivity(),storageAccess,preferences,processSong,
                     showToast, sqLiteHelper, commonSQL, song, convertOnSong, convertChoPro, false);
 
             requireActivity().runOnUiThread(this::prepareSongViews);

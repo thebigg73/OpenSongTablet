@@ -18,7 +18,7 @@
         android:id="@+id/close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/drawer_close"
+        android:text="@string/close"
         style="@style/TextButtonNoOutline"
         android:padding="16dp"
         android:layout_alignParentBottom="true"

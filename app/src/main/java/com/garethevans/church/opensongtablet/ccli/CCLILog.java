@@ -333,7 +333,7 @@ public class CCLILog {
 
     String buildMyTable(Context c, Preferences preferences, String sizeoffile) {
         if (title == null || title.size() == 0) {
-            return "<!DOCTYPE html><html><body><h2>" + c.getResources().getString(R.string.edit_song_ccli) + "</h2>\n" +
+            return "<!DOCTYPE html><html><body><h2>" + c.getResources().getString(R.string.ccli) + "</h2>\n" +
                     "<h3>" + c.getResources().getString(R.string.ccli_church) + ": " +
                     preferences.getMyPreferenceString(c,"ccliChurchName","") + "</h3>\n" +
                     "<h3>" + c.getResources().getString(R.string.ccli_licence) + ": " +
@@ -349,7 +349,7 @@ public class CCLILog {
                     "th {\npadding-top: 2px; padding-bottom: 2px; text-align: left; " +
                     "background-color: green; color: white;}\n" +
                     "</style>\n</head><body>" +
-                    "<h2>" + c.getResources().getString(R.string.edit_song_ccli) + "</h2>\n" +
+                    "<h2>" + c.getResources().getString(R.string.ccli) + "</h2>\n" +
                     "<h3>" + c.getResources().getString(R.string.ccli_church) + ": " +
                     preferences.getMyPreferenceString(c,"ccliChurchName","") + "</h3>\n" +
                     "<h3>" + c.getResources().getString(R.string.ccli_licence) + ": " +
@@ -357,10 +357,10 @@ public class CCLILog {
                     "<h4>" + sizeoffile + "</h4>\n" +
                     "<table id=\"mytable\">\n<tr>");
             table.append("<th>").append(c.getResources().getString(R.string.item)).append("</th>");
-            table.append("<th>").append(c.getResources().getString(R.string.edit_song_title)).append("</th>");
-            table.append("<th>").append(c.getResources().getString(R.string.edit_song_author)).append("</th>");
-            table.append("<th>").append(c.getResources().getString(R.string.edit_song_copyright)).append("</th>");
-            table.append("<th>").append(c.getResources().getString(R.string.edit_song_ccli)).append("</th>");
+            table.append("<th>").append(c.getResources().getString(R.string.title)).append("</th>");
+            table.append("<th>").append(c.getResources().getString(R.string.author)).append("</th>");
+            table.append("<th>").append(c.getResources().getString(R.string.copyright)).append("</th>");
+            table.append("<th>").append(c.getResources().getString(R.string.ccli)).append("</th>");
             table.append("<th>").append(c.getResources().getString(R.string.date)).append("</th>");
             table.append("<th>").append(c.getResources().getString(R.string.time)).append("</th>");
             table.append("<th>").append(c.getResources().getString(R.string.action)).append("</th>");
@@ -393,7 +393,7 @@ public class CCLILog {
                         table.append("<td>").append(c.getResources().getString(R.string.rename)).append("</td>");
                         break;
                     case "5":
-                        table.append("<td>").append(c.getResources().getString(R.string.sendtoprojector)).append("</td>");
+                        table.append("<td>").append(c.getResources().getString(R.string.project)).append("</td>");
                         break;
                     case "6":
                         table.append("<td>").append(c.getResources().getString(R.string.songsheet)).append("</td>");

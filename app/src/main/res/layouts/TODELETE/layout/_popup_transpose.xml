@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:gravity="center_horizontal"
-                android:text="@string/edit_song_key"
+                android:text="@string/key"
                 android:textSize="28sp" />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -75,7 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="@string/oldchordformat" />
+                android:text="@string/chordformat_detected" />
 
             <RadioGroup
                 android:id="@+id/detectedChordFormat"
@@ -87,13 +87,13 @@
                     style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/chordFormat1" />
+                    android:text="@string/chordformat_1" />
 
                 <RadioButton
                     android:id="@+id/chordFormat2Radio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/chordFormat2"
+                    android:text="@string/chordformat_2"
                     android:textSize="12sp" />
 
                 <RadioButton
@@ -101,28 +101,28 @@
                     style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/chordFormat3" />
+                    android:text="@string/chordformat_3" />
 
                 <RadioButton
                     android:id="@+id/chordFormat4Radio"
                     style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/chordFormat4" />
+                    android:text="@string/chordformat_4" />
 
                 <RadioButton
                     android:id="@+id/chordFormat5Radio"
                     style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/chordFormat5" />
+                    android:text="@string/chordformat_5" />
 
                 <RadioButton
                     android:id="@+id/chordFormat6Radio"
                     style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/chordFormat6" />
+                    android:text="@string/chordformat_6" />
             </RadioGroup>
             </LinearLayout>
 

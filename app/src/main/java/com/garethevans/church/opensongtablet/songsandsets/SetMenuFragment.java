@@ -120,14 +120,14 @@ public class SetMenuFragment extends Fragment {
         String title;
         String lastSetName = preferences.getMyPreferenceString(getActivity(),"setCurrentLastName","");
         if (lastSetName==null || lastSetName.equals("")) {
-            title = ": " + requireActivity().getString(R.string.currentset) +
-                    " (" + getActivity().getString(R.string.notsaved) + ")";
+            title = ": " + requireActivity().getString(R.string.set_current) +
+                    " (" + getActivity().getString(R.string.not_saved) + ")";
         } else {
             String name = lastSetName.replace("__","/");
             title = ": " + name;
             if (!preferences.getMyPreferenceString(getActivity(),"setCurrent","")
                     .equals(preferences.getMyPreferenceString(getActivity(),"setCurrentBeforeEdits",""))) {
-                title += " (" + requireActivity().getString(R.string.notsaved) + ")";
+                title += " (" + requireActivity().getString(R.string.not_saved) + ")";
             }
         }
         return title;
@@ -318,7 +318,7 @@ public class SetMenuFragment extends Fragment {
         preferences.setMyPreferenceString(getActivity(),"setCurrent",tempmySet.toString());
         StaticVariables.mTempSetList = null;
         setActions.prepareSetList(getActivity(),preferences);
-        showToast.doIt(getActivity(),requireActivity().getString(R.string.currentset) + " - " + getActivity().getString(R.string.ok));
+        showToast.doIt(getActivity(),requireActivity().getString(R.string.set_current) + " - " + getActivity().getString(android.R.string.ok));
     }
 
     private void refresh() {

@@ -185,7 +185,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_code_brackets_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/customise_set_item"
+                android:text="@string/variation_make"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 tools:ignore="RtlHardcoded" />

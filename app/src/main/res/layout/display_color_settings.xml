@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_arrow_right_white_36dp"
             android:layout_gravity="center_vertical"
-            android:contentDescription="@string/colorchooser" />
+            android:contentDescription="@string/color_choose" />
 
         <View
             android:id="@+id/newColor"
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="Alpha: "/>
+                android:text="@string/alpha"/>
             <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/alphaSlider"
                 android:layout_width="0dp"
@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="Red: "/>
+                android:text="@string/red"/>
             <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/redSlider"
                 android:layout_width="0dp"
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="Green: "/>
+                android:text="@string/green"/>
             <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/greenSlider"
                 android:layout_width="0dp"
@@ -109,7 +109,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="Blue: "/>
+                android:text="@string/blue"/>
             <androidx.appcompat.widget.AppCompatSeekBar
                 android:id="@+id/blueSlider"
                 android:layout_width="0dp"

@@ -15,8 +15,8 @@
             android:id="@+id/deviceButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:main="@string/device_name"
-            app:sub="@string/device_name" />
+            app:main="@string/connections_device_name"
+            app:sub="@string/connections_device_name" />
         <TableRow style="@style/DividerLine" />
 
         <androidx.appcompat.widget.SwitchCompat

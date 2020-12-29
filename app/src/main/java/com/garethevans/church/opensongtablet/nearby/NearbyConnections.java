@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet.nearby;
 
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
@@ -21,6 +20,7 @@ import com.garethevans.church.opensongtablet.interfaces.NearbyReturnActionsInter
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.google.android.gms.nearby.Nearby;
@@ -51,21 +51,25 @@ public class NearbyConnections implements NearbyInterface {
     ProcessSong processSong;
     SQLiteHelper sqLiteHelper;
     CommonSQL commonSQL;
+    Song song;
     MainActivityInterface mainActivityInterface;
 
     NearbyReturnActionsInterface nearbyReturnActionsInterface;
 
     private final ArrayList<String> connectedEndPoints;
     private final ArrayList<String> connectedEndPointsNames;
+    public String deviceName, connectionLog;
+    public boolean isConnected, isHost, receiveHostFiles, keepHostFiles, usingNearby;
 
     public NearbyConnections(Context context, Preferences preferences, StorageAccess storageAccess,
-                             ProcessSong processSong, SQLiteHelper sqLiteHelper, CommonSQL commonSQL) {
+                             ProcessSong processSong, SQLiteHelper sqLiteHelper, CommonSQL commonSQL, Song song) {
         this.context = context;
         this.preferences = preferences;
         this.storageAccess = storageAccess;
         this.processSong = processSong;
         this.sqLiteHelper = sqLiteHelper;
         this.commonSQL = commonSQL;
+        this.song = song;
         connectedEndPoints = new ArrayList<>();
         connectedEndPointsNames = new ArrayList<>();
     }
@@ -75,7 +79,7 @@ public class NearbyConnections implements NearbyInterface {
     private void updateConnectionLog(String newMessage) {
         Log.d("Nearby","message="+newMessage+"   mainActivityInterface="+mainActivityInterface);
         if (newMessage!=null && mainActivityInterface!=null) {
-            StaticVariables.connectionLog += newMessage + "\n";
+            connectionLog += newMessage + "\n";
             try {
                 mainActivityInterface.updateConnectionsLog();
             } catch (Exception e) {
@@ -91,9 +95,7 @@ public class NearbyConnections implements NearbyInterface {
     @Override
     public void startAdvertising() {
         try {
-            Log.d("NearbyConnections", "Nearby.getConnectionsClient(context)=" + Nearby.getConnectionsClient(context));
-            Log.d("d", "startAdvertising()");
-            if (!StaticVariables.isConnected) {
+            if (!isConnected) {
                 AdvertisingOptions advertisingOptions =
                         new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
                 Nearby.getConnectionsClient(context)
@@ -102,13 +104,13 @@ public class NearbyConnections implements NearbyInterface {
                         .addOnSuccessListener(
                                 (Void unused) -> {
                                     // We're advertising!
-                                    updateConnectionLog(context.getResources().getString(R.string.connections_broadcast) + " " + getUserNickname());
+                                    updateConnectionLog(context.getResources().getString(R.string.connections_advertise) + " " + getUserNickname());
 
                                 })
                         .addOnFailureListener(
                                 (Exception e) -> {
                                     // We were unable to start advertising.
-                                    updateConnectionLog(context.getResources().getString(R.string.connections_failure) + " " + getUserNickname());
+                                    updateConnectionLog(context.getResources().getString(R.string.error));
                                     e.printStackTrace();
                                 });
             }
@@ -120,8 +122,7 @@ public class NearbyConnections implements NearbyInterface {
     @Override
     public void startDiscovery() {
         try {
-            Log.d("d", "startDiscovery()");
-            if (!StaticVariables.isConnected) {
+            if (!isConnected) {
                 DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
                 Nearby.getConnectionsClient(context)
                         .startDiscovery(serviceId, endpointDiscoveryCallback(), discoveryOptions)
@@ -133,7 +134,7 @@ public class NearbyConnections implements NearbyInterface {
                         .addOnFailureListener(
                                 (Exception e) -> {
                                     // We're unable to start discovering.
-                                    updateConnectionLog(context.getResources().getString(R.string.connections_discover_stop));
+                                    updateConnectionLog(context.getResources().getString(R.string.error));
                                     stopDiscovery();
                                     e.printStackTrace();
                                 });
@@ -146,9 +147,11 @@ public class NearbyConnections implements NearbyInterface {
     @Override
     public void stopAdvertising() {
         try {
+            updateConnectionLog(context.getString(R.string.connections_advertise_stop));
             Nearby.getConnectionsClient(context).stopAdvertising();
             Log.d("d", "stopAdvertising()");
         } catch (Exception e) {
+            updateConnectionLog(context.getString(R.string.error));
             Log.d("NearbyConnections","Can't stop advertising");
         }
     }
@@ -156,9 +159,11 @@ public class NearbyConnections implements NearbyInterface {
     @Override
     public void stopDiscovery() {
         try {
+            updateConnectionLog(context.getString(R.string.connections_discover_stop));
             Nearby.getConnectionsClient(context).stopDiscovery();
             Log.d("d", "stopDiscovery()");
         } catch (Exception e) {
+            updateConnectionLog(context.getString(R.string.error));
             Log.d("NearbyConnections","Can't stop discovery");
         }
     }
@@ -176,18 +181,19 @@ public class NearbyConnections implements NearbyInterface {
         String model = android.os.Build.MODEL.trim();
         // If the user has saved a value for their device name, use that instead
         // Don't need to save the device name unless the user edits it to make it custom
-        return StaticVariables.deviceName = preferences.getMyPreferenceString(context,"deviceName", model);
+        return deviceName = preferences.getMyPreferenceString(context,"deviceName", model);
     }
 
     private ConnectionLifecycleCallback connectionLifecycleCallback() {
         return new ConnectionLifecycleCallback() {
             @Override
             public void onConnectionInitiated(@NonNull String endpointId, @NonNull ConnectionInfo connectionInfo) {
+                updateConnectionLog(context.getString(R.string.connections_device_found) + ": " + connectionInfo.getEndpointName());
                 new AlertDialog.Builder(context)
-                        .setTitle(context.getResources().getString(R.string.accept_connection) + " " + connectionInfo.getEndpointName())
-                        .setMessage(context.getResources().getString(R.string.accept_code) + " " + connectionInfo.getAuthenticationToken())
+                        .setTitle(context.getResources().getString(R.string.connections_accept) + " " + connectionInfo.getEndpointName())
+                        .setMessage(context.getResources().getString(R.string.connections_accept_code) + " " + connectionInfo.getAuthenticationToken())
                         .setPositiveButton(
-                                context.getResources().getString(R.string.ok),
+                                context.getResources().getString(android.R.string.ok),
                                 (DialogInterface dialog, int which) -> {
                                     // For stability add a small delay
                                     Handler waitAccept = new Handler();
@@ -200,7 +206,7 @@ public class NearbyConnections implements NearbyInterface {
                                     },200);
                                 })
                         .setNegativeButton(
-                                context.getResources().getString(R.string.cancel),
+                                context.getResources().getString(android.R.string.cancel),
                                 (DialogInterface dialog, int which) ->
                                         // The user canceled, so we should reject the connection.
                                         Nearby.getConnectionsClient(context).rejectConnection(endpointId))
@@ -214,11 +220,11 @@ public class NearbyConnections implements NearbyInterface {
                     case ConnectionsStatusCodes.STATUS_OK:
                         // We're connected! Can now start sending and receiving data.
                         connectedEndPoints.add(endpointId);
-                        StaticVariables.isConnected = true;
+                        isConnected = true;
                         updateConnectionLog(context.getResources().getString(R.string.connections_connected) + " " + getDeviceNameFromId(endpointId));
                         // try to send the current song payload
                         sendSongPayload();
-                        if (!StaticVariables.isHost) {
+                        if (!isHost) {
                             // We can stop discovery now
                             stopDiscovery();
                         }
@@ -227,7 +233,7 @@ public class NearbyConnections implements NearbyInterface {
                     case ConnectionsStatusCodes.STATUS_ERROR:
                         // The connection broke before it was able to be accepted.
                         // The connection was rejected by one or both sides.
-                        updateConnectionLog(context.getResources().getString(R.string.connections_failure) + " " + getUserNickname()+" <-> "+getDeviceNameFromId(endpointId));
+                        updateConnectionLog(context.getResources().getString(R.string.connections_failure) + ": " + getUserNickname()+" <-> "+getDeviceNameFromId(endpointId));
                         break;
                     default:
                         // Unknown status code
@@ -242,12 +248,12 @@ public class NearbyConnections implements NearbyInterface {
                 connectedEndPoints.remove(endpointId);
                 updateConnectionLog(context.getResources().getString(R.string.connections_disconnect) + " " + getDeviceNameFromId(endpointId));
                 // Try to connect again after 2 seconds
-                if (!StaticVariables.isHost) {
+                if (!isHost) {
                     Handler h = new Handler();
                     h.postDelayed(() -> startDiscovery(), 2000);
                 }
                 // Check if we have valid connections
-                StaticVariables.isConnected = stillValidConnections();
+                isConnected = stillValidConnections();
             }
         };
     }
@@ -280,7 +286,7 @@ public class NearbyConnections implements NearbyInterface {
                         .addOnFailureListener(
                                 (Exception e) -> {
                                     // Nearby Connections failed to request the connection.
-                                    updateConnectionLog(context.getResources().getString(R.string.connections_failure) + " " + getDeviceNameFromId(endpointId));
+                                    updateConnectionLog(context.getResources().getString(R.string.connections_failure) + ": " + getDeviceNameFromId(endpointId));
                                     e.printStackTrace();
                                 });
             }
@@ -295,15 +301,15 @@ public class NearbyConnections implements NearbyInterface {
     public void sendSongPayload() {
         String infoPayload;
         Payload payloadFile = null;
-        String infoFilePayload = StaticVariables.whichSongFolder + "_xx____xx_" + StaticVariables.songfilename +
-                "_xx____xx_" + StaticVariables.whichDirection;
-        if (StaticVariables.isSong) {
+        String infoFilePayload = song.getFolder() + "_xx____xx_" + song.getFilename() +
+                "_xx____xx_" + song.getNextDirection();
+        if (song.getIsSong()) {
             // By default, this should be smaller than 32kb, so probably going to send as bytes
             // We'll measure the actual size later to check though
-            infoPayload = StaticVariables.whichSongFolder + "_xx____xx_" +
-                    StaticVariables.songfilename + "_xx____xx_" +
-                    StaticVariables.whichDirection + "_xx____xx_" +
-                    StaticVariables.myXML;
+            infoPayload = song.getFolder() + "_xx____xx_" +
+                    song.getFilename() + "_xx____xx_" +
+                    song.getNextDirection() + "_xx____xx_" +
+                    song.getXML(song, processSong);
         } else {
             // We will send as a file instead
             infoPayload=null;
@@ -320,7 +326,7 @@ public class NearbyConnections implements NearbyInterface {
         if (infoPayload==null) {
             // We will send as a file
             try {
-                Uri uri = storageAccess.getUriForItem(context, preferences, "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
+                Uri uri = storageAccess.getUriForItem(context, preferences, "Songs", song.getFolder(), song.getFilename());
                 ParcelFileDescriptor parcelFileDescriptor = context.getContentResolver().openFileDescriptor(uri, "r");
                 if (parcelFileDescriptor!=null) {
                     payloadFile = Payload.fromFile(parcelFileDescriptor);
@@ -364,7 +370,7 @@ public class NearbyConnections implements NearbyInterface {
             if (mysection >= 0) {
                 if (nearbyReturnActionsInterface != null) {
                     // Look for a section being sent
-                    StaticVariables.currentSection = mysection;
+                    song.setCurrentSection(mysection);
                     nearbyReturnActionsInterface.selectSection(mysection);
                 }
             }
@@ -384,33 +390,33 @@ public class NearbyConnections implements NearbyInterface {
         // Receiving an OpenSong file via bytes.  PDFs etc are sent separately
         boolean songReceived = (receivedBits.size()>=4);
 
-        Log.d("NearbyConnections","isHost="+StaticVariables.isHost+"   isConnected="+StaticVariables.isConnected+"  usingNearby="+StaticVariables.usingNearby);
-        Log.d("NearbyConnections","receiveHostFiles="+StaticVariables.receiveHostFiles+"   keepHostFiles="+StaticVariables.keepHostFiles+"  songReceived="+songReceived);
+        Log.d("NearbyConnections","isHost="+isHost+"   isConnected="+isConnected+"  usingNearby="+usingNearby);
+        Log.d("NearbyConnections","receiveHostFiles="+receiveHostFiles+"   keepHostFiles="+keepHostFiles+"  songReceived="+songReceived);
 
-        if (!StaticVariables.isHost && StaticVariables.isConnected && songReceived && StaticVariables.receiveHostFiles) {
+        if (!isHost && isConnected && songReceived && receiveHostFiles) {
             // We want to receive host files (we aren't the host either!) and an OpenSong song has been sent/received
-            StaticVariables.whichDirection = receivedBits.get(2);
+            song.setNextDirection(receivedBits.get(2));
 
             // If the user wants to keep the host file, we will save it to our storage.
             // If we already have it, it will overwrite it, if not, we add it
-            if (StaticVariables.keepHostFiles) {
+            if (keepHostFiles) {
                 // Prepare the output stream in the client Songs folder
                 // Check the folder exists, if not, create it
                 storageAccess.createFile(context,preferences, DocumentsContract.Document.MIME_TYPE_DIR,"Songs",receivedBits.get(0),"");
                 // Create the file if it doesn't exist
                 storageAccess.lollipopCreateFileForOutputStream(context, preferences, properUri, null, "Songs", receivedBits.get(0), receivedBits.get(1));
                 outputStream = storageAccess.getOutputStream(context, properUri);
-                StaticVariables.whichSongFolder = receivedBits.get(0);
-                StaticVariables.songfilename = receivedBits.get(1);
+                song.setFolder(receivedBits.get(0));
+                song.setFilename(receivedBits.get(1));
                 // Add to the sqldatabase
-                sqLiteHelper.createSong(context,storageAccess,commonSQL,StaticVariables.whichSongFolder,StaticVariables.songfilename);
+                sqLiteHelper.createSong(context,storageAccess,commonSQL,song.getFolder(),song.getFilename());
 
             } else {
                 // Prepare the output stream in the Received folder - just keep a temporary version
                 storageAccess.lollipopCreateFileForOutputStream(context, preferences, tempUri, null, "Received", "", "ReceivedSong");
                 outputStream = storageAccess.getOutputStream(context, tempUri);
-                StaticVariables.whichSongFolder = "../Received";
-                StaticVariables.songfilename = "ReceivedSong";
+                song.setFolder("../Received");
+                song.setFilename("ReceivedSong");
             }
 
             // Write the file to the desired output stream
@@ -420,13 +426,13 @@ public class NearbyConnections implements NearbyInterface {
             }
 
 
-        } else if (!StaticVariables.isHost && StaticVariables.isConnected && songReceived) {
+        } else if (!isHost && isConnected && songReceived) {
             // We just want to trigger loading the song on our device (if we have it).
             // If not, we get notified it doesn't exits
-            StaticVariables.whichSongFolder = receivedBits.get(0);
-            StaticVariables.songfilename = receivedBits.get(1);
-            Log.d("d","received: "+StaticVariables.whichSongFolder+"/"+StaticVariables.songfilename);
-            StaticVariables.whichDirection = receivedBits.get(2);
+            song.setFolder(receivedBits.get(0));
+            song.setFilename(receivedBits.get(1));
+            Log.d("d","received: "+song.getFolder()+"/"+song.getFilename());
+            song.setNextDirection(receivedBits.get(2));
         }
 
         // Now load the song (from wherever it has ended up!)
@@ -440,31 +446,31 @@ public class NearbyConnections implements NearbyInterface {
         String[] bits = foldernamepair.split("_xx____xx_");
         String folder = bits[0];
         String filename = bits[1];
-        StaticVariables.whichDirection = bits[2];
+        song.setNextDirection(bits[2]);
         boolean movepage = false;
-        if ((folder.equals(StaticVariables.whichSongFolder)||StaticVariables.whichSongFolder.equals("../Received"))
-                && filename.equals(StaticVariables.songfilename) && filename.toLowerCase(StaticVariables.locale).endsWith(".pdf")) {
+        if ((folder.equals(song.getFolder())||song.getFolder().equals("../Received"))
+                && filename.equals(song.getFilename()) && filename.toLowerCase(StaticVariables.locale).endsWith(".pdf")) {
             // We are likely trying to move page to an already received file
             movepage = true;
         } else {
-            StaticVariables.pdfPageCurrent = 0;
+            song.setPdfPageCurrent(0);
         }
         Uri newLocation = null;
-        if (!StaticVariables.isHost && StaticVariables.isConnected && StaticVariables.receiveHostFiles && StaticVariables.keepHostFiles) {
+        if (!isHost && isConnected && receiveHostFiles && keepHostFiles) {
             // The new file goes into our main Songs folder
             newLocation = storageAccess.getUriForItem(context,preferences,"Songs",folder,filename);
             storageAccess.lollipopCreateFileForOutputStream(context,preferences,newLocation,null,"Songs",folder,filename);
-        } else if (!StaticVariables.isHost && StaticVariables.isConnected && StaticVariables.receiveHostFiles) {
+        } else if (!isHost && isConnected && receiveHostFiles) {
             // The new file goes into our Received folder
             folder = "../Received";
             newLocation = storageAccess.getUriForItem(context, preferences, "Received", "", filename);
             storageAccess.lollipopCreateFileForOutputStream(context, preferences, newLocation, null, "Received", "", filename);
         }
-        StaticVariables.whichSongFolder = folder;
-        StaticVariables.songfilename = filename;
+        song.setFolder(folder);
+        song.setFilename(filename);
         Log.d("d","newLocation="+newLocation);
         if (movepage) {
-            if (StaticVariables.whichDirection.equals("L2R")) {
+            if (song.getNextDirection().equals("L2R")) {
                 // Go back
                 if (nearbyReturnActionsInterface!=null) {
                     nearbyReturnActionsInterface.goToPreviousItem();
@@ -498,7 +504,7 @@ public class NearbyConnections implements NearbyInterface {
         return new PayloadCallback() {
             @Override
             public void onPayloadReceived(@NonNull String s, @NonNull Payload payload) {
-                if (!StaticVariables.isHost) {
+                if (!isHost) {
                     // We can deal with the incoming payload!
                     if (payload.getType() == Payload.Type.FILE) {
                         // Make a note of it.  Nothing happens until complete
@@ -564,7 +570,7 @@ public class NearbyConnections implements NearbyInterface {
         } catch (Exception e) {
             Log.d("NearbyConnections","Can't turn off nearby");
         }
-        StaticVariables.isConnected = false;
-        StaticVariables.usingNearby = false;
+        isConnected = false;
+        usingNearby = false;
     }
 }

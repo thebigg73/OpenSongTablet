@@ -50,7 +50,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginLeft="8dp"
             android:layout_below="@+id/cardview_folder"
-            android:text="@string/edit_song_author"
+            android:text="@string/author"
             android:theme="@style/MyInfoText"
             android:textColor="#ccc" />
 
@@ -62,7 +62,7 @@
             android:layout_below="@+id/cardview_folder"
             android:layout_toEndOf="@+id/text_author"
             android:layout_toStartOf="@+id/text_key"
-            android:text="@string/edit_song_author"
+            android:text="@string/author"
             android:theme="@style/MyInfoText"
             android:ellipsize="end"/>
 
@@ -74,7 +74,7 @@
             android:layout_marginEnd="8dp"
             android:layout_below="@+id/cardview_folder"
             android:layout_toStartOf="@+id/cardview_key"
-            android:text="@string/edit_song_key"
+            android:text="@string/key"
             android:theme="@style/MyInfoText"
             android:textColor="#ccc" />
 
@@ -86,7 +86,7 @@
             android:layout_below="@+id/cardview_folder"
             android:layout_alignParentEnd="true"
             android:theme="@style/MyInfoText"
-            android:text="@string/edit_song_key" />
+            android:text="@string/key" />
 
 
 
@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
                     android:layout_marginEnd="8dp"
-                    android:text="@string/edit_song_theme"
+                    android:text="@string/theme"
                     android:textColor="#888" />
 
                 <TextView
@@ -173,14 +173,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
                     android:layout_marginEnd="8dp"
-                    android:text="@string/edit_song_lyrics"
+                    android:text="@string/lyrics"
                     android:textColor="#888" />
 
                 <TextView
                     android:id="@+id/cardview_lyrics"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/edit_song_lyrics"
+                    android:text="@string/lyrics"
                     android:textColor="#888" />
             </TableRow>
         </TableLayout>

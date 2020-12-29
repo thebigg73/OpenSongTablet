@@ -38,7 +38,7 @@
                 android:gravity="center_vertical"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="@string/sendtoprojector"
+                android:text="@string/project"
                 app:drawableStartCompat="@drawable/ic_projector_white_36dp" />
 
             <TextView
@@ -51,7 +51,7 @@
                 android:gravity="center_vertical"
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
-                android:text="@string/presoShowLogo"
+                android:text="@string/show_logo"
                 app:drawableStartCompat="@drawable/ic_projector_logo_white_36dp" />
 
             <TextView
@@ -90,7 +90,7 @@
                 android:paddingStart="4dp"
                 android:paddingEnd="4dp"
                 android:gravity="center_vertical"
-                android:text="@string/media"
+                android:text="@string/audio"
                 app:drawableStartCompat="@drawable/ic_amplifier_white_36dp" />
 
             <TextView

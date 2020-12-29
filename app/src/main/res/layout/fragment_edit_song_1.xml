@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:layout_weight="0.8"
-                    android:hint="@string/edit_song_key"
+                    android:hint="@string/key"
                     android:labelFor="@+id/key">
 
                     <AutoCompleteTextView
@@ -161,7 +161,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:gravity="top"
-                android:hint="@string/edit_song_lyrics"
+                android:hint="@string/lyrics"
                 android:labelFor="@+id/lyrics"
                 app:hintEnabled="true">
 

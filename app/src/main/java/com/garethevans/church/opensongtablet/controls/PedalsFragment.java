@@ -22,6 +22,7 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.databinding.SettingsPedalBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
+import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class PedalsFragment extends Fragment {
     SettingsPedalBinding myView;
     Preferences preferences;
     PedalActions pedalActions;
+    Midi midi;
     MainActivityInterface mainActivityInterface;
 
     private ArrayList<String> actionCodes;
@@ -74,12 +76,16 @@ public class PedalsFragment extends Fragment {
 
         // Initialise the array items
         pedalActions = mainActivityInterface.getPedalActions(mainActivityInterface);
+        midi = mainActivityInterface.getMidi(mainActivityInterface);
         actionCodes = pedalActions.getActionCodes();
         actions = pedalActions.getActions();
         defKeyCodes = pedalActions.defPedalCodes;
         defMidiCodes = pedalActions.defPedalMidis;
         shortActions = pedalActions.defShortActions;
         longActions = pedalActions.defLongActions;
+
+        // Decide on midi allowed pedals
+        midiPedalAllowed();
 
         // Set up the drop down menus
         setupDropDowns();
@@ -97,6 +103,14 @@ public class PedalsFragment extends Fragment {
         preferences = new Preferences();
     }
 
+    private void midiPedalAllowed() {
+        if (midi!=null && midi.getMidiDevice()!=null && preferences.getMyPreferenceBoolean(getContext(),"midiAsPedal",false)) {
+            String message = getString(R.string.midi_pedal) + ": " + midi.getMidiDeviceName();
+            myView.midiPedal.setText(message);
+        } else {
+            myView.midiPedal.setText(getString(R.string.pedal_midi_warning));
+        }
+    }
     private void grabViews() {
         buttonCodes = new TextView[] {null,myView.button1Code,myView.button2Code,myView.button3Code,myView.button4Code,
                 myView.button5Code,myView.button6Code,myView.button7Code,myView.button8Code};
@@ -119,7 +133,7 @@ public class PedalsFragment extends Fragment {
 
     private String charFromInt(int i) {
         if (i==-1 || KeyEvent.keyCodeToString(i)==null) {
-            return getString(R.string.notset);
+            return getString(R.string.not_set);
         } else {
             return KeyEvent.keyCodeToString(i);
         }
@@ -184,8 +198,8 @@ public class PedalsFragment extends Fragment {
         String midiPref = "midi"+which+"Code";
         currentPedalCode = preferences.getMyPreferenceInt(getContext(),codePref,defKeyCodes[which]);
         currentMidiCode = preferences.getMyPreferenceString(getContext(),midiPref,defMidiCodes[which]);
-        buttonCodes[which].setText(getString(R.string.pageturn_waiting));
-        buttonMidis[which].setText(getString(R.string.pageturn_waiting));
+        buttonCodes[which].setText(getString(R.string.pedal_waiting));
+        buttonMidis[which].setText(getString(R.string.pedal_waiting));
         pageButtonWaiting = new Handler();
         stopListening = () -> {
             buttonCodes[which].setText(charFromInt(currentPedalCode));
@@ -272,7 +286,7 @@ public class PedalsFragment extends Fragment {
         for (int x=1; x<=8; x++) {
             if (currentListening!=x && preferences.getMyPreferenceInt(getContext(),"pedal"+x+"Code",defKeyCodes[x])==keyCode) {
                 setPedalPreference(x,defKeyCodes[x],null);
-                buttonCodes[x].setText(R.string.notset);
+                buttonCodes[x].setText(R.string.not_set);
             }
         }
     }
@@ -281,7 +295,7 @@ public class PedalsFragment extends Fragment {
         for (int x=1; x<=8; x++) {
             if (currentListening!=x && preferences.getMyPreferenceString(getContext(),"pedal"+x+"Midi",defMidiCodes[x]).equals(midiCode)) {
                 preferences.setMyPreferenceString(getContext(),"pedal"+x+"Midi","");
-                buttonMidis[x].setText(R.string.notset);
+                buttonMidis[x].setText(R.string.not_set);
             }
         }
     }

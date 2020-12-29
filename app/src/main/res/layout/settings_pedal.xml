@@ -15,17 +15,18 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/pedal_controls"
+            android:text="@string/pedal_instructions"
             style="@style/MyWhiteHeadingText"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:paddingTop="16dp"
-            android:paddingBottom="32dp"/>
+            android:paddingBottom="16dp"/>
 
         <TextView
+            android:id="@+id/midiPedal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/pedal_instructions"
+            android:text="@string/pedal_midi_warning"
             style="@style/MyWhiteHeadingText"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
@@ -37,14 +38,14 @@
             style="@style/PrefSwitch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/toggleScrollBeforeSwipe" />
+            android:text="@string/pedal_scroll_before_move" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/pedalToggleWarnBeforeSwipeButton"
             style="@style/PrefSwitch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/warn_before_changing_song" />
+            android:text="@string/pedal_avoid_repeat" />
 
         <!--BUTTON 1-->
         <RelativeLayout
@@ -82,7 +83,7 @@
                         android:layout_toEndOf="@+id/button1"
                         app:drawableStartCompat="@drawable/ic_pedal_white_36dp"
                         android:gravity="center_vertical"
-                        android:text="@string/notset"/>
+                        android:text="@string/not_set"/>
 
                     <TextView
                         android:id="@+id/button1Midi"
@@ -92,7 +93,7 @@
                         android:layout_below="@+id/button1Code"
                         app:drawableStartCompat="@drawable/ic_midi_white_36dp"
                         android:gravity="center_vertical"
-                        android:text="@string/notset"/>
+                        android:text="@string/not_set"/>
 
             </RelativeLayout>
 
@@ -121,7 +122,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/shortButton1"
-                android:hint="@string/longpress"
+                android:hint="@string/long_press"
                 android:labelFor="@+id/longButton1Text">
 
                 <AutoCompleteTextView
@@ -171,7 +172,7 @@
                     android:layout_toEndOf="@+id/button2"
                     app:drawableStartCompat="@drawable/ic_pedal_white_36dp"
                     android:gravity="center_vertical"
-                    android:text="@string/notset"/>
+                    android:text="@string/not_set"/>
 
                 <TextView
                     android:id="@+id/button2Midi"
@@ -181,7 +182,7 @@
                     android:layout_below="@+id/button2Code"
                     app:drawableStartCompat="@drawable/ic_midi_white_36dp"
                     android:gravity="center_vertical"
-                    android:text="@string/notset"/>
+                    android:text="@string/not_set"/>
 
             </RelativeLayout>
 
@@ -210,7 +211,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/shortButton2"
-                android:hint="@string/longpress"
+                android:hint="@string/long_press"
                 android:labelFor="@+id/longButton2Text">
 
                 <AutoCompleteTextView
@@ -262,7 +263,7 @@
                     android:layout_toEndOf="@+id/button3"
                     app:drawableStartCompat="@drawable/ic_pedal_white_36dp"
                     android:gravity="center_vertical"
-                    android:text="@string/notset"/>
+                    android:text="@string/not_set"/>
 
                 <TextView
                     android:id="@+id/button3Midi"
@@ -272,7 +273,7 @@
                     android:layout_below="@+id/button3Code"
                     app:drawableStartCompat="@drawable/ic_midi_white_36dp"
                     android:gravity="center_vertical"
-                    android:text="@string/notset"/>
+                    android:text="@string/not_set"/>
 
             </RelativeLayout>
 
@@ -301,7 +302,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/shortButton3"
-                android:hint="@string/longpress"
+                android:hint="@string/long_press"
                 android:labelFor="@+id/longButton3Text">
 
                 <AutoCompleteTextView
@@ -352,7 +353,7 @@
                     android:layout_toEndOf="@+id/button4"
                     app:drawableStartCompat="@drawable/ic_pedal_white_36dp"
                     android:gravity="center_vertical"
-                    android:text="@string/notset"/>
+                    android:text="@string/not_set"/>
 
                 <TextView
                     android:id="@+id/button4Midi"
@@ -362,7 +363,7 @@
                     android:layout_below="@+id/button4Code"
                     app:drawableStartCompat="@drawable/ic_midi_white_36dp"
                     android:gravity="center_vertical"
-                    android:text="@string/notset"/>
+                    android:text="@string/not_set"/>
 
             </RelativeLayout>
 
@@ -391,7 +392,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/shortButton4"
-                android:hint="@string/longpress"
+                android:hint="@string/long_press"
                 android:labelFor="@+id/longButton4Text">
 
                 <AutoCompleteTextView
@@ -442,7 +443,7 @@
                     android:layout_toEndOf="@+id/button5"
                     app:drawableStartCompat="@drawable/ic_pedal_white_36dp"
                     android:gravity="center_vertical"
-                    android:text="@string/notset"/>
+                    android:text="@string/not_set"/>
 
                 <TextView
                     android:id="@+id/button5Midi"
@@ -452,7 +453,7 @@
                     android:layout_below="@+id/button5Code"
                     app:drawableStartCompat="@drawable/ic_midi_white_36dp"
                     android:gravity="center_vertical"
-                    android:text="@string/notset"/>
+                    android:text="@string/not_set"/>
 
             </RelativeLayout>
 
@@ -481,7 +482,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/shortButton5"
-                android:hint="@string/longpress"
+                android:hint="@string/long_press"
                 android:labelFor="@+id/longButton5Text">
 
                 <AutoCompleteTextView
@@ -531,7 +532,7 @@
                     android:layout_toEndOf="@+id/button6"
                     app:drawableStartCompat="@drawable/ic_pedal_white_36dp"
                     android:gravity="center_vertical"
-                    android:text="@string/notset"/>
+                    android:text="@string/not_set"/>
 
                 <TextView
                     android:id="@+id/button6Midi"
@@ -541,7 +542,7 @@
                     android:layout_below="@+id/button6Code"
                     app:drawableStartCompat="@drawable/ic_midi_white_36dp"
                     android:gravity="center_vertical"
-                    android:text="@string/notset"/>
+                    android:text="@string/not_set"/>
 
             </RelativeLayout>
 
@@ -570,7 +571,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/shortButton6"
-                android:hint="@string/longpress"
+                android:hint="@string/long_press"
                 android:labelFor="@+id/longButton6Text">
 
                 <AutoCompleteTextView
@@ -622,7 +623,7 @@
                     android:layout_toEndOf="@+id/button7"
                     app:drawableStartCompat="@drawable/ic_pedal_white_36dp"
                     android:gravity="center_vertical"
-                    android:text="@string/notset"/>
+                    android:text="@string/not_set"/>
 
                 <TextView
                     android:id="@+id/button7Midi"
@@ -632,7 +633,7 @@
                     android:layout_below="@+id/button7Code"
                     app:drawableStartCompat="@drawable/ic_midi_white_36dp"
                     android:gravity="center_vertical"
-                    android:text="@string/notset"/>
+                    android:text="@string/not_set"/>
 
             </RelativeLayout>
 
@@ -661,7 +662,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/shortButton7"
-                android:hint="@string/longpress"
+                android:hint="@string/long_press"
                 android:labelFor="@+id/longButton7Text">
 
                 <AutoCompleteTextView
@@ -711,7 +712,7 @@
                     android:layout_toEndOf="@+id/button8"
                     app:drawableStartCompat="@drawable/ic_pedal_white_36dp"
                     android:gravity="center_vertical"
-                    android:text="@string/notset"/>
+                    android:text="@string/not_set"/>
 
                 <TextView
                     android:id="@+id/button8Midi"
@@ -721,7 +722,7 @@
                     android:layout_below="@+id/button8Code"
                     app:drawableStartCompat="@drawable/ic_midi_white_36dp"
                     android:gravity="center_vertical"
-                    android:text="@string/notset"/>
+                    android:text="@string/not_set"/>
 
             </RelativeLayout>
 
@@ -750,7 +751,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/shortButton8"
-                android:hint="@string/longpress"
+                android:hint="@string/long_press"
                 android:labelFor="@+id/longButton8Text">
 
                 <AutoCompleteTextView

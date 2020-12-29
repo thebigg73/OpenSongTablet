@@ -26,7 +26,6 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.songprocessing.SongXML;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
@@ -52,7 +51,6 @@ public class TransposeDialogFragment extends DialogFragment {
     private Preferences preferences;
     private StorageAccess storageAccess;
     private Transpose transpose;
-    private SongXML songXML;
     private ProcessSong processSong;
     private SQLiteHelper sqLiteHelper;
     private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
@@ -115,7 +113,6 @@ public class TransposeDialogFragment extends DialogFragment {
         preferences = new Preferences();
         storageAccess = new StorageAccess();
         transpose = new Transpose();
-        songXML = new SongXML();
         processSong = new ProcessSong();
         sqLiteHelper = new SQLiteHelper(requireContext());
         nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(requireContext());
@@ -145,7 +142,7 @@ public class TransposeDialogFragment extends DialogFragment {
 
         // If the song has a key specified, we will add in the text for current and new key
         if (key!=null && !key.equals("")) {
-            String keychange = getString(R.string.edit_song_key) + ": " + key + "\n" +
+            String keychange = getString(R.string.key) + ": " + key + "\n" +
                     getString(R.string.transpose) + ": " + key;
             keyChange_TextView.setText(keychange);
         } else {
@@ -206,7 +203,7 @@ public class TransposeDialogFragment extends DialogFragment {
                     String transpkeynum = transpose.transposeKey(keynum, transposeDirection, transposeTimes);
                     String newkey = transpose.numberToKey(getActivity(), preferences, transpkeynum);
 
-                    String keychange = getString(R.string.edit_song_key) + ": " + key + "\n" +
+                    String keychange = getString(R.string.key) + ": " + key + "\n" +
                             getString(R.string.transpose) + ": " + newkey;
                     keyChange_TextView.setText(keychange);
                 } else {
@@ -308,7 +305,7 @@ public class TransposeDialogFragment extends DialogFragment {
 
             } else {
                 // Write the new improved XML file
-                String newXML = songXML.getXML(song,processSong);
+                String newXML = song.getXML(song,processSong);
 
                 if (song.getFiletype().equals("PDF")||song.getFiletype().equals("XML")) {
                     nonOpenSongSQLiteHelper.updateSong(requireContext(),commonSQL,storageAccess,preferences,song);

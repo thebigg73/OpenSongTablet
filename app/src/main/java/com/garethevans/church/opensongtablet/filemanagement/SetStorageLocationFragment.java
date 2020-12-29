@@ -110,7 +110,6 @@ public class SetStorageLocationFragment extends Fragment {
         startApp = myView.startApp;
         startApp.setOnClickListener(v -> goToSongs());
         progressText = myView.progressText;
-        progressTextInfo = myView.progressTextInfo;
         previousStorageTextView = myView.previousStorageTextView;
         previousStorageHeading = myView.previousStorageHeading;
         previousStorageLocationsTextView = myView.previousStorageLocationsTextView;
@@ -151,9 +150,8 @@ public class SetStorageLocationFragment extends Fragment {
 
     private void setStorageLocation() {
         String[] niceLocation = storageAccess.niceUriTree(getContext(),preferences,uriTreeHome);
-        Log.d("SetStorageLocation","niceLocation[0]="+niceLocation[0]+"  niceLocation[1]="+niceLocation[1]);
-        progressText.setText(niceLocation[1]);
-        progressTextInfo.setText(niceLocation[0]);
+        String outputText = niceLocation[1] + " " + niceLocation[0];
+        progressText.setText(outputText);
         warningCheck();
         checkStatus();
     }
@@ -177,7 +175,7 @@ public class SetStorageLocationFragment extends Fragment {
     }
     private void openFragment() {
         Intent intent = new Intent(requireActivity(), FolderPicker.class);
-        intent.putExtra("title", getString(R.string.changestorage));
+        intent.putExtra("title", getString(R.string.storage_change));
         intent.putExtra("pickFiles", false);
         if (uriTree!=null) {
             intent.putExtra("location", uriTree.getPath());
@@ -234,7 +232,7 @@ public class SetStorageLocationFragment extends Fragment {
         if (getActivity()!=null && ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             try {
                 make(getActivity().findViewById(R.id.drawer_layout), R.string.storage_rationale,
-                        LENGTH_INDEFINITE).setAction(R.string.ok, view -> {
+                        LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> {
                     if (getActivity()!=null) {
                         ActivityCompat.requestPermissions(getActivity(),
                                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
@@ -354,7 +352,7 @@ public class SetStorageLocationFragment extends Fragment {
         // If the user tries to set the app storage to OpenSong/Songs/ warn them!
         if (progressText!=null && progressText.getText()!=null && progressText.getText().toString().contains("OpenSong/Songs/")) {
             Snackbar snackbar = make(requireActivity().findViewById(R.id.drawer_layout), R.string.storage_warning,
-                    LENGTH_INDEFINITE).setAction(R.string.ok, view -> {
+                    LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> {
             });
             View snackbarView = snackbar.getView();
             TextView snackTextView = snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
@@ -420,7 +418,7 @@ public class SetStorageLocationFragment extends Fragment {
 
                 if (locations.size()<1) {
                     // No previous installations found
-                    previousStorageTextView.setText(getString(R.string.nofound));
+                    previousStorageTextView.setText(getString(R.string.no_previous_found));
                     previousStorageTextView.setVisibility(View.VISIBLE);
                     previousStorageHeading.setVisibility(View.GONE);
                 } else {
@@ -433,6 +431,7 @@ public class SetStorageLocationFragment extends Fragment {
                         }
                     }
                     previousStorageTextView.setVisibility(View.GONE);
+                    previousStorageLocationsTextView.setVisibility(View.VISIBLE);
                     previousStorageLocationsTextView.setText(sb.toString().trim());
                     locations.add(0,"");
                 }

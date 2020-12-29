@@ -20,7 +20,7 @@
         android:layout_margin="16dp"
         android:padding="16dp"
         android:layout_centerHorizontal="true"
-        android:text="@string/edit_save"
+        android:text="@string/save_changes"
         app:backgroundTint="@color/colorSecondary"
         android:layout_below="@id/tabButtons"/>
 

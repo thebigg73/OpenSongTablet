@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:main="@string/ccli_view"
-            app:sub="Open your current CCLI log for viewing"/>
+            app:sub="@string/ccli_log"/>
         <TableRow style="@style/DividerLine"/>
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:main="@string/export"
-            app:sub="Export your CCLI log as an .xml file"/>
+            app:sub="@string/ccli_export"/>
         <TableRow style="@style/DividerLine"/>
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView

@@ -44,7 +44,7 @@ public class ThemeSetupFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsThemeBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.display) + " / " + getString(R.string.edit_song_theme));
+        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.display) + " / " + getString(R.string.theme));
 
         // Set up the helper classes
         setUpHelpers();
@@ -65,10 +65,10 @@ public class ThemeSetupFragment extends Fragment {
 
     private void setUpTheme() {
         themes = new ArrayList<>();
-        themes.add(requireContext().getString(R.string.dark_theme));
-        themes.add(requireContext().getString(R.string.light_theme));
-        themes.add(requireContext().getString(R.string.custom1_theme));
-        themes.add(requireContext().getString(R.string.custom2_theme));
+        themes.add(requireContext().getString(R.string.theme_dark));
+        themes.add(requireContext().getString(R.string.theme_light));
+        themes.add(requireContext().getString(R.string.theme_custom1));
+        themes.add(requireContext().getString(R.string.theme_custom2));
 
         ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(),R.layout.exposed_dropdown,themes);
         myTheme = preferences.getMyPreferenceString(getContext(),"appTheme","dark");

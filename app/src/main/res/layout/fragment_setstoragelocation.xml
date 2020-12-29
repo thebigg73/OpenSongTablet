@@ -26,7 +26,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/firstrun"
+        android:text="@string/first_run"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"/>
 
@@ -39,45 +39,22 @@
             android:layout_width="match_parent"
             android:layout_marginTop="8dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:layout_gravity="top"
-                android:text="@string/currentstorage"/>
+                android:text="@string/current_location"/>
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/blue_button">
 
                 <TextView
                     android:id="@+id/progressText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
-
-
-            </RelativeLayout>
-
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/section_box">
-
-
-
-                <TextView
-                    android:id="@+id/progressTextInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"/>
-            </LinearLayout>
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/section_box"
+                    android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -98,7 +75,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
             android:padding="12dp"
-            android:text="@string/changestorage"
+            android:text="@string/storage_change"
             android:textColor="#fff" />
 
         <Button
@@ -109,7 +86,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
             android:padding="12dp"
-            android:text="@string/existing"
+            android:text="@string/find_existing"
             android:textColor="#fff" />
 
 
@@ -125,14 +102,15 @@
             android:id="@+id/previousStorageHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/found"
+            android:text="@string/existing_found"
             android:visibility="gone"/>
 
         <TextView
             android:id="@+id/previousStorageLocationsTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/section_box" />
+            android:background="@drawable/section_box"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/startApp"

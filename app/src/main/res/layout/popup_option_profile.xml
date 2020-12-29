@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 style="@style/MyInfoText"
                 android:layout_margin="4dp"
-                android:text="@string/profile_description"/>
+                android:text="@string/profile_explanation"/>
 
             <Button
                 android:id="@+id/profileLoadButton"

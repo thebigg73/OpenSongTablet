@@ -201,7 +201,7 @@ public class ProcessSong {
         String type;
         if (string.indexOf(".") == 0) {
             type = "chord";
-        } else if (string.indexOf(";__" + c.getResources().getString(R.string.edit_song_capo)) == 0) {
+        } else if (string.indexOf(";__" + c.getResources().getString(R.string.capo_fret)) == 0) {
             type = "capoinfo";
         } else if (string.indexOf(";__") == 0) {
             type = "extra";
@@ -479,7 +479,7 @@ public class ProcessSong {
         myLyrics = myLyrics.replace("[p", "[P");
 
         // Replace [Verse] with [V] and [Verse 1] with [V1]
-        String languageverse = c.getResources().getString(R.string.tag_verse);
+        String languageverse = c.getResources().getString(R.string.verse);
         String languageverse_lowercase = languageverse.toLowerCase(StaticVariables.locale);
         String languageverse_uppercase = languageverse.toUpperCase(StaticVariables.locale);
         myLyrics = myLyrics.replace("[" + languageverse_lowercase, "[" + languageverse);
@@ -496,7 +496,7 @@ public class ProcessSong {
         myLyrics = myLyrics.replace("[" + languageverse + " 9]", "[V9]");
 
         // Replace [Chorus] with [C] and [Chorus 1] with [C1]
-        String languagechorus = c.getResources().getString(R.string.tag_chorus);
+        String languagechorus = c.getResources().getString(R.string.chorus);
         String languagechorus_lowercase = languagechorus.toLowerCase(StaticVariables.locale);
         String languagechorus_uppercase = languagechorus.toUpperCase(StaticVariables.locale);
         myLyrics = myLyrics.replace("[" + languagechorus_lowercase, "[" + languagechorus);
@@ -603,7 +603,7 @@ public class ProcessSong {
             case "V8 -":
             case "V9 -":
             case "V - 10":
-                line = line.replace("V", c.getResources().getString(R.string.tag_verse) + " ");
+                line = line.replace("V", c.getResources().getString(R.string.verse) + " ");
                 line = line.replace("-", "");
                 break;
 
@@ -620,7 +620,7 @@ public class ProcessSong {
             case "T8":
             case "T9":
             case "T10":
-                line = line.replace("T", c.getResources().getString(R.string.tag_tag) + " ");
+                line = line.replace("T", c.getResources().getString(R.string.tag) + " ");
                 break;
 
             case "C-":
@@ -636,7 +636,7 @@ public class ProcessSong {
             case "C8":
             case "C9":
             case "C10":
-                line = line.replace("C", c.getResources().getString(R.string.tag_chorus) + " ");
+                line = line.replace("C", c.getResources().getString(R.string.chorus) + " ");
                 break;
 
             case "B-":
@@ -652,7 +652,7 @@ public class ProcessSong {
             case "B8":
             case "B9":
             case "B10":
-                line = line.replace("B", c.getResources().getString(R.string.tag_bridge) + " ");
+                line = line.replace("B", c.getResources().getString(R.string.bridge) + " ");
                 break;
 
             case "P-":
@@ -668,7 +668,7 @@ public class ProcessSong {
             case "P8":
             case "P9":
             case "P10":
-                line = line.replace("P", c.getResources().getString(R.string.tag_prechorus) + " ");
+                line = line.replace("P", c.getResources().getString(R.string.prechorus) + " ");
                 break;
         }
         return line;
@@ -1145,15 +1145,15 @@ public class ProcessSong {
     private int getBGColor(Context c, ThemeColors themeColors,String line) {
         if (line.startsWith(";")) {
             return themeColors.getLyricsCommentColor();
-        } else if (fixHeading(c,line).contains(c.getString(R.string.tag_verse))) {
+        } else if (fixHeading(c,line).contains(c.getString(R.string.verse))) {
             return themeColors.getLyricsVerseColor();
-        } else if (fixHeading(c,line).contains(c.getString(R.string.tag_prechorus))) {
+        } else if (fixHeading(c,line).contains(c.getString(R.string.prechorus))) {
             return themeColors.getLyricsPreChorusColor();
-        } else if (fixHeading(c,line).contains(c.getString(R.string.tag_chorus))) {
+        } else if (fixHeading(c,line).contains(c.getString(R.string.chorus))) {
             return themeColors.getLyricsChorusColor();
-        } else if (fixHeading(c,line).contains(c.getString(R.string.tag_bridge))) {
+        } else if (fixHeading(c,line).contains(c.getString(R.string.bridge))) {
             return themeColors.getLyricsBridgeColor();
-        } else if (fixHeading(c,line).contains(c.getString(R.string.tag_tag))) {
+        } else if (fixHeading(c,line).contains(c.getString(R.string.tag))) {
             return themeColors.getLyricsTagColor();
         } else if (fixHeading(c,line).contains(c.getString(R.string.custom))) {
             return themeColors.getLyricsCustomColor();

@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:drawableTop="@drawable/ic_microphone_variant_white_36dp"
-            android:text="@string/edit_song_author"
+            android:text="@string/author"
             style="@style/songListButtonOff"
             android:visibility="gone"/>
 
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:drawableTop="@drawable/ic_microphone_variant_white_36dp"
-            android:text="@string/edit_song_author"
+            android:text="@string/author"
             style="@style/songListButtonOn"/>
         <TextView
             android:id="@+id/authorCount"

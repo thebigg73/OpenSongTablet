@@ -84,7 +84,7 @@
                     android:id="@+id/authorTextSizeLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/edit_song_author"
+                    android:text="@string/author"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginRight="4dp"
