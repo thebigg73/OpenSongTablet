@@ -386,7 +386,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 break;
 
             case "DISPLAY":
-                displayOptionListener(v,c, preferences);
+                displayOptionListener(v,c);
                 break;
 
             case "FIND":
@@ -1321,7 +1321,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         });
     }
 
-    private static void displayOptionListener(View v, final Context c, final Preferences preferences) {
+    private static void displayOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
