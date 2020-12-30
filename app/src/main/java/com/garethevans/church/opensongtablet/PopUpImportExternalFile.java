@@ -33,7 +33,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -133,7 +132,7 @@ public class PopUpImportExternalFile extends DialogFragment {
     }
 
     private void setAction() {
-        String s = Objects.requireNonNull(getActivity()).getString(R.string.importnewsong);
+        String s = requireActivity().getString(R.string.importnewsong);
         String ext;
 
         // Defaults
@@ -252,7 +251,7 @@ public class PopUpImportExternalFile extends DialogFragment {
 
     private void notValid() {
         // Not a valid or recognised file, so warn the user and close the popup
-        StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.file_type_unknown);
+        StaticVariables.myToastMessage = requireActivity().getString(R.string.file_type_unknown);
         if (mListener != null) {
             mListener.showToastMessage(StaticVariables.myToastMessage);
         }
@@ -296,7 +295,7 @@ public class PopUpImportExternalFile extends DialogFragment {
     private void initialiseLocationsToSave() {
         if (what.equals("set") || what.equals("onsongset")) {
             folderlist = new ArrayList<>();
-            folderlist.add(Objects.requireNonNull(getActivity()).getString(R.string.set));
+            folderlist.add(requireActivity().getString(R.string.set));
         } else if (what.contains("onsong")) {
             folderlist = new ArrayList<>();
             folderlist.clear();
@@ -305,7 +304,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         } else {
             folderlist = songFolders.prepareSongFolders(getActivity(),preferences);
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, folderlist);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, folderlist);
         chooseFolder_Spinner.setAdapter(arrayAdapter);
     }
 
@@ -516,11 +515,11 @@ public class PopUpImportExternalFile extends DialogFragment {
             ok = storageAccess.copyFile(inputStream, outputStream);
 
             if (!ok) {
-                errormessage = errormessage + filename + ": " + Objects.requireNonNull(getActivity()).getString(R.string.backup_error) + "\n";
+                errormessage = errormessage + filename + ": " + requireActivity().getString(R.string.backup_error) + "\n";
             }
         } else {
             error = true;
-            errormessage = errormessage + filename + ": " + Objects.requireNonNull(getActivity()).getString(R.string.file_exists) + "\n";
+            errormessage = errormessage + filename + ": " + requireActivity().getString(R.string.file_exists) + "\n";
         }
     }
 
@@ -558,7 +557,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         }
 
         if (ok && !error) {
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.success);
+            StaticVariables.myToastMessage = requireActivity().getString(R.string.success);
         } else {
             StaticVariables.myToastMessage = errormessage;
         }
@@ -616,7 +615,7 @@ public class PopUpImportExternalFile extends DialogFragment {
                     // Get the set first item
                     setActions.prepareFirstItem(getActivity(),preferences);
 
-                    StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.success);
+                    StaticVariables.myToastMessage = requireActivity().getString(R.string.success);
 
                 } else {
 
@@ -624,7 +623,7 @@ public class PopUpImportExternalFile extends DialogFragment {
                 }
 
             } catch (Exception e) {
-                StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.error);
+                StaticVariables.myToastMessage = requireActivity().getString(R.string.error);
                 e.printStackTrace();
             }
 
@@ -672,10 +671,10 @@ public class PopUpImportExternalFile extends DialogFragment {
                 // Get the set first item
                 setActions.prepareFirstItem(getActivity(), preferences);
 
-                StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.success);
+                StaticVariables.myToastMessage = requireActivity().getString(R.string.success);
 
             }catch (Exception e) {
-                StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.error);
+                StaticVariables.myToastMessage = requireActivity().getString(R.string.error);
                 e.printStackTrace();
             }
 
@@ -731,7 +730,7 @@ public class PopUpImportExternalFile extends DialogFragment {
 
         @Override
         protected String doInBackground(Object... objects) {
-            File onsongdbfile = new File(Objects.requireNonNull(getActivity()).getExternalFilesDir("OnSong"), "OnSong.Backup.sqlite3");
+            File onsongdbfile = new File(requireActivity().getExternalFilesDir("OnSong"), "OnSong.Backup.sqlite3");
             try {
                 if (!onsongdbfile.createNewFile()) {
                     Log.d("PopUpImportExternal","Error creating file");
