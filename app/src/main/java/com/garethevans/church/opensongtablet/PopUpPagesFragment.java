@@ -16,8 +16,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpPagesFragment extends DialogFragment {
 
     static PopUpPagesFragment newInstance() {
@@ -69,10 +67,10 @@ public class PopUpPagesFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_pages, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.pdf_selectpage));
+        title.setText(getString(R.string.pdf_selectpage));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });

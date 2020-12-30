@@ -19,7 +19,6 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PopUpChooseFolderFragment extends DialogFragment {
 
@@ -71,10 +70,10 @@ public class PopUpChooseFolderFragment extends DialogFragment {
         final View V = inflater.inflate(R.layout.popup_choosefolder, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.songfolder));
+        title.setText(getString(R.string.songfolder));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe, PopUpChooseFolderFragment.this.getActivity());
+            CustomAnimations.animateFAB(closeMe, PopUpChooseFolderFragment.this.getContext());
             closeMe.setEnabled(false);
             PopUpChooseFolderFragment.this.dismiss();
         });
@@ -84,7 +83,7 @@ public class PopUpChooseFolderFragment extends DialogFragment {
         lv = V.findViewById(R.id.songfolders_ListView);
 
         Preferences preferences = new Preferences();
-        sqLiteHelper = new SQLiteHelper(getActivity());
+        sqLiteHelper = new SQLiteHelper(getContext());
 
         // Update the song folders
 
@@ -109,7 +108,7 @@ public class PopUpChooseFolderFragment extends DialogFragment {
         protected String doInBackground(Object... objects) {
             try {
                 songfolders = sqLiteHelper.getFolders(c);
-                if (!songfolders.contains(c.getResources().getString(R.string.mainfoldername))) {
+                if (!songfolders.contains(getString(R.string.mainfoldername))) {
                     songfolders.add(c.getResources().getString(R.string.mainfoldername));
                 }
             } catch (Exception e) {

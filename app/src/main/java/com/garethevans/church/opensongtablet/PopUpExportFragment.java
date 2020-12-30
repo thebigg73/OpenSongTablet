@@ -15,8 +15,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpExportFragment extends DialogFragment {
 
     static PopUpExportFragment newInstance() {
@@ -65,19 +63,19 @@ public class PopUpExportFragment extends DialogFragment {
 
         TextView title = V.findViewById(R.id.dialogtitle);
         if (FullscreenActivity.whattodo.equals("customise_exportsong")) {
-            title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.exportcurrentsong));
+            title.setText(getString(R.string.exportcurrentsong));
         } else {
-            title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.exportsavedset));
+            title.setText(getString(R.string.exportsavedset));
         }
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(saveMe, getActivity());
+            CustomAnimations.animateFAB(saveMe, getContext());
             saveMe.setEnabled(false);
             doExportPrepare();
         });
@@ -108,35 +106,35 @@ public class PopUpExportFragment extends DialogFragment {
         }
 
         // Set the checkboxes to their last set value
-        exportOpenSongAppSetCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportOpenSongAppSet",true));
-        exportOpenSongAppCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportOpenSongApp",true));
+        exportOpenSongAppSetCheckBox.setChecked(preferences.getMyPreferenceBoolean(getContext(),"exportOpenSongAppSet",true));
+        exportOpenSongAppCheckBox.setChecked(preferences.getMyPreferenceBoolean(getContext(),"exportOpenSongApp",true));
         // IV - preference name corrections
-        exportDesktopCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportDesktop",false));
-        exportTextCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportText",true));
-        exportChordProCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportChordPro",false));
-        exportOnSongCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportOnSong",false));
-        exportImageCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportImage",false));
-        exportPDFCheckBox.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"exportPDF",false));
+        exportDesktopCheckBox.setChecked(preferences.getMyPreferenceBoolean(getContext(),"exportDesktop",false));
+        exportTextCheckBox.setChecked(preferences.getMyPreferenceBoolean(getContext(),"exportText",true));
+        exportChordProCheckBox.setChecked(preferences.getMyPreferenceBoolean(getContext(),"exportChordPro",false));
+        exportOnSongCheckBox.setChecked(preferences.getMyPreferenceBoolean(getContext(),"exportOnSong",false));
+        exportImageCheckBox.setChecked(preferences.getMyPreferenceBoolean(getContext(),"exportImage",false));
+        exportPDFCheckBox.setChecked(preferences.getMyPreferenceBoolean(getContext(),"exportPDF",false));
 
         // Set the listeners
-        exportOpenSongAppSetCheckBox.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(),"exportOpenSongAppSet",b));
-        exportOpenSongAppCheckBox.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(),"exportOpenSongApp",b));
-        exportDesktopCheckBox.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(),"exportDesktop",b));
-        exportTextCheckBox.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(),"exportText",b));
-        exportChordProCheckBox.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(),"exportChordPro",b));
-        exportOnSongCheckBox.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(),"exportOnSong",b));
+        exportOpenSongAppSetCheckBox.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getContext(),"exportOpenSongAppSet",b));
+        exportOpenSongAppCheckBox.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getContext(),"exportOpenSongApp",b));
+        exportDesktopCheckBox.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getContext(),"exportDesktop",b));
+        exportTextCheckBox.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getContext(),"exportText",b));
+        exportChordProCheckBox.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getContext(),"exportChordPro",b));
+        exportOnSongCheckBox.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getContext(),"exportOnSong",b));
         exportImageCheckBox.setOnCheckedChangeListener((compoundButton, b) -> {
             //StaticVariables.thisSongScale !=null && StaticVariables.thisSongScale.equals("Y") &&
             if (StaticVariables.whichMode.equals("Performance")) {
-                preferences.setMyPreferenceBoolean(getActivity(),"exportImage",b);
+                preferences.setMyPreferenceBoolean(getContext(),"exportImage",b);
             } else {
-                preferences.setMyPreferenceBoolean(getActivity(),"exportImage",false);
+                preferences.setMyPreferenceBoolean(getContext(),"exportImage",false);
                 exportImageCheckBox.setChecked(false);
                 StaticVariables.myToastMessage = requireActivity().getString(R.string.switchtoperformmode);
-                ShowToast.showToast(getActivity());
+                ShowToast.showToast(getContext());
             }
         });
-        exportPDFCheckBox.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(),"exportPDF",b));
+        exportPDFCheckBox.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getContext(),"exportPDF",b));
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 

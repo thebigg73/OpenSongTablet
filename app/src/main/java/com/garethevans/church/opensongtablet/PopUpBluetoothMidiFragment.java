@@ -37,7 +37,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class PopUpBluetoothMidiFragment extends DialogFragment {
 
@@ -82,7 +81,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_mididevices, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.midi_bluetooth));
+        title.setText(getString(R.string.midi_bluetooth));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
             CustomAnimations.animateFAB(closeMe, getActivity());
@@ -157,10 +156,10 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private boolean permissionAllowed() {
         boolean allowed = true;
-        int permissionCheck = Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+        int permissionCheck = requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             allowed = false;
-            if (!getActivity().shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            if (!requireActivity().shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
             }
         }
@@ -171,7 +170,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
     private void updateDevices(final ArrayList<String> bn, final List<BluetoothDevice> bd) {
         try {
             if (bluetoothDevices != null) {
-                ArrayAdapter<String> aa = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), android.R.layout.simple_list_item_1, bn);
+                ArrayAdapter<String> aa = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, bn);
                 aa.notifyDataSetChanged();
                 bluetoothDevices.setAdapter(aa);
                 bluetoothDevices.setOnItemClickListener((adapterView, view, i, l) -> {
@@ -180,7 +179,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
                     StaticVariables.midiDeviceName = bd.get(i).getName();
                     StaticVariables.midiDeviceAddress = bd.get(i).getAddress();
                     //displayCurrentDevice();
-                    StaticVariables.midiManager = (MidiManager) Objects.requireNonNull(getActivity()).getSystemService(Context.MIDI_SERVICE);
+                    StaticVariables.midiManager = (MidiManager) requireActivity().getSystemService(Context.MIDI_SERVICE);
                     if (StaticVariables.midiManager != null) {
                         StaticVariables.midiManager.openBluetoothDevice(bd.get(i),
                                 midiDevice -> {
@@ -256,7 +255,7 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         if (mBluetoothLeScanner!=null) {
             mBluetoothLeScanner.startScan(scanFilters, scanSettings, scanCallback);
         } else {
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.nothighenoughapi);
+            StaticVariables.myToastMessage = getString(R.string.nothighenoughapi);
             ShowToast.showToast(getActivity());
         }
     }

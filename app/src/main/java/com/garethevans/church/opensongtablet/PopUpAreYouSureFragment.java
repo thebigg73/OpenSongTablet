@@ -102,7 +102,7 @@ public class PopUpAreYouSureFragment extends DialogFragment {
 
         TextView title = V.findViewById(R.id.dialogtitle);
         if (getActivity()!=null) {
-            title.setText(getActivity().getString(R.string.areyousure));
+            title.setText(getString(R.string.areyousure));
         }
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {

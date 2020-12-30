@@ -24,8 +24,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpABCNotationFragment extends DialogFragment {
 
     static PopUpABCNotationFragment newInstance() {
@@ -79,7 +77,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_abcnotation, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getString(R.string.music_score));
+        title.setText(getString(R.string.music_score));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
             CustomAnimations.animateFAB(closeMe, getActivity());

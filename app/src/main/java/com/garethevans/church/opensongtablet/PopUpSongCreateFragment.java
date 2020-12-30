@@ -26,7 +26,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PopUpSongCreateFragment extends DialogFragment {
     // This is a quick popup to enter a new song folder name, or rename a current one
@@ -86,16 +85,16 @@ public class PopUpSongCreateFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_songcreate, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getResources().getString(R.string.createanewsong));
+        title.setText(getString(R.string.createanewsong));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(saveMe,getActivity());
+            CustomAnimations.animateFAB(saveMe,getContext());
             //saveMe.setEnabled(false);
             doSave();
         });
@@ -183,12 +182,12 @@ public class PopUpSongCreateFragment extends DialogFragment {
         @Override
         protected String doInBackground(Object... objects) {
             // Get the variables
-            Uri to = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.newFolder, tempNewSong);
+            Uri to = storageAccess.getUriForItem(getContext(), preferences, "Songs", FullscreenActivity.newFolder, tempNewSong);
             Log.d("PopUpCreate", "to=" + to);
 
             // Decide if this song already exists.  If so, alert the user and do nothing more
             StaticVariables.myToastMessage = "";
-            if (storageAccess.uriExists(getActivity(), to)) {
+            if (storageAccess.uriExists(getContext(), to)) {
                 StaticVariables.myToastMessage = getString(R.string.songnamealreadytaken);
             } else {
 
@@ -210,16 +209,16 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
                     Log.d("PopUpCreate", "tempNewSong=" + tempNewSong);
 
-                    InputStream inputStream = storageAccess.getInputStream(getActivity(), from);
+                    InputStream inputStream = storageAccess.getInputStream(getContext(), from);
 
                     Log.d("PopUpCreate", "inputStream=" + inputStream);
 
                     // Check the uri exists for the outputstream to be valid
-                    to = storageAccess.getUriForItem(getActivity(), preferences, "Songs", FullscreenActivity.newFolder, tempNewSong);
-                    storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, to, null,
+                    to = storageAccess.getUriForItem(getContext(), preferences, "Songs", FullscreenActivity.newFolder, tempNewSong);
+                    storageAccess.lollipopCreateFileForOutputStream(getContext(), preferences, to, null,
                             "Songs", FullscreenActivity.newFolder, tempNewSong);
 
-                    OutputStream outputStream = storageAccess.getOutputStream(getActivity(), to);
+                    OutputStream outputStream = storageAccess.getOutputStream(getContext(), to);
 
                     Log.d("PopUpCreate", "oututStream=" + outputStream);
 
@@ -227,11 +226,11 @@ public class PopUpSongCreateFragment extends DialogFragment {
                     Log.d("PopUpCreate", "copying file");
                     storageAccess.copyFile(inputStream, outputStream);
                     Log.d("PopUpCreate", "deleting original");
-                    storageAccess.deleteFile(getActivity(), from);
+                    storageAccess.deleteFile(getContext(), from);
 
                     // Add the new song to the SQLite database
-                    SQLiteHelper sqLiteHelper = new SQLiteHelper(getActivity());
-                    sqLiteHelper.createSong(getActivity(),FullscreenActivity.newFolder,tempNewSong);
+                    SQLiteHelper sqLiteHelper = new SQLiteHelper(getContext());
+                    sqLiteHelper.createSong(getContext(),FullscreenActivity.newFolder,tempNewSong);
 
                     try {
                         if (mListener != null) {
@@ -243,13 +242,13 @@ public class PopUpSongCreateFragment extends DialogFragment {
                         }
 
                     } catch (Exception e) {
-                        StaticVariables.myToastMessage = getResources().getString(R.string.error);
+                        StaticVariables.myToastMessage = getString(R.string.error);
                         e.printStackTrace();
                     }
 
                 } else {
                     if (!tempNewSong.equals("") && !tempNewSong.isEmpty()
-                            && !tempNewSong.contains("/") && !storageAccess.uriExists(getActivity(), to)
+                            && !tempNewSong.contains("/") && !storageAccess.uriExists(getContext(), to)
                             && !tempNewSong.equals(getString(R.string.mainfoldername))
                             && !tempNewSong.equals("MAIN")) {
 
@@ -281,29 +280,29 @@ public class PopUpSongCreateFragment extends DialogFragment {
                         }
 
                         // Save the file
-                        storageAccess.createFile(getActivity(), preferences, null, "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
-                        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", StaticVariables.whichSongFolder,
+                        storageAccess.createFile(getContext(), preferences, null, "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
+                        Uri uri = storageAccess.getUriForItem(getContext(), preferences, "Songs", StaticVariables.whichSongFolder,
                                 StaticVariables.songfilename);
 
                         // Check the uri exists for the outputstream to be valid
-                        storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
+                        storageAccess.lollipopCreateFileForOutputStream(getContext(), preferences, uri, null,
                                 "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
 
-                        OutputStream outputStream = storageAccess.getOutputStream(getActivity(), uri);
+                        OutputStream outputStream = storageAccess.getOutputStream(getContext(), uri);
                         storageAccess.writeFileFromString(FullscreenActivity.mynewXML, outputStream);
 
                         // If we are autologging CCLI information
-                        if (preferences.getMyPreferenceBoolean(getActivity(),"ccliAutomaticLogging",false)) {
-                            PopUpCCLIFragment.addUsageEntryToLog(getActivity(), preferences, StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename,
+                        if (preferences.getMyPreferenceBoolean(getContext(),"ccliAutomaticLogging",false)) {
+                            PopUpCCLIFragment.addUsageEntryToLog(getContext(), preferences, StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename,
                                     StaticVariables.songfilename, "",
                                     "", "", "1"); // Created
                         }
 
                         // Add the new song to the SQLite database
-                        SQLiteHelper sqLiteHelper = new SQLiteHelper(getActivity());
-                        sqLiteHelper.createSong(getActivity(),StaticVariables.whichSongFolder,StaticVariables.songfilename);
+                        SQLiteHelper sqLiteHelper = new SQLiteHelper(getContext());
+                        sqLiteHelper.createSong(getContext(),StaticVariables.whichSongFolder,StaticVariables.songfilename);
                     } else {
-                        StaticVariables.myToastMessage = getResources().getString(R.string.notset);
+                        StaticVariables.myToastMessage = getString(R.string.notset);
                     }
                 }
             }
@@ -329,7 +328,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
                 }
 
                 if (!StaticVariables.myToastMessage.equals("")) {
-                    ShowToast.showToast(getActivity());
+                    ShowToast.showToast(getContext());
                 }
                 try {
                     dismiss();
@@ -345,13 +344,13 @@ public class PopUpSongCreateFragment extends DialogFragment {
     private class GetFolders extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
-            foldernames = songFolders.prepareSongFolders(getActivity(),preferences);
+            foldernames = songFolders.prepareSongFolders(getContext(),preferences);
             return null;
         }
 
         protected void onPostExecute(String s) {
 
-            ArrayAdapter<String> folders = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, foldernames);
+            ArrayAdapter<String> folders = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, foldernames);
             folders.setDropDownViewResource(R.layout.my_spinner);
             newFolderSpinner.setAdapter(folders);
 

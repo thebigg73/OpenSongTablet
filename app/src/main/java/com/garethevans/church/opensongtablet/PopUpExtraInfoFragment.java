@@ -70,10 +70,10 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_extrainfo, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(requireContext().getString(R.string.extra));
+        title.setText(getString(R.string.extra));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             mListener.refreshAll();
             dismiss();
@@ -108,58 +108,58 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         nextSongOnOff_Switch.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
                 if (nextSongTopBottom_Switch.isChecked()) {
-                    preferences.setMyPreferenceString(getActivity(),"displayNextInSet","B");
+                    preferences.setMyPreferenceString(getContext(),"displayNextInSet","B");
                 } else {
-                    preferences.setMyPreferenceString(getActivity(),"displayNextInSet","T");
+                    preferences.setMyPreferenceString(getContext(),"displayNextInSet","T");
                 }
             } else {
-                preferences.setMyPreferenceString(getActivity(),"displayNextInSet","N");
+                preferences.setMyPreferenceString(getContext(),"displayNextInSet","N");
             }
             showNextButtons();
         });
         nextSongTopBottom_Switch.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
-                preferences.setMyPreferenceString(getActivity(),"displayNextInSet","B");
+                preferences.setMyPreferenceString(getContext(),"displayNextInSet","B");
             } else {
-                preferences.setMyPreferenceString(getActivity(),"displayNextInSet","T");
+                preferences.setMyPreferenceString(getContext(),"displayNextInSet","T");
             }
         });
         stickyNotesOnOff_Switch.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
                 if (stickyNotesFloat_Switch.isChecked()) {
-                    preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","F");
+                    preferences.setMyPreferenceString(getContext(),"stickyAutoDisplay","F");
                 } else if (stickyNotesTopBottom_Switch.isChecked()) {
-                    preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","B");
+                    preferences.setMyPreferenceString(getContext(),"stickyAutoDisplay","B");
                 } else {
-                    preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","T");
+                    preferences.setMyPreferenceString(getContext(),"stickyAutoDisplay","T");
                 }
             } else {
-                preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","N");
+                preferences.setMyPreferenceString(getContext(),"stickyAutoDisplay","N");
             }
             showStickyButtons();
         });
         stickyNotesFloat_Switch.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
-                preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","F");
+                preferences.setMyPreferenceString(getContext(),"stickyAutoDisplay","F");
             } else if (stickyNotesOnOff_Switch.isChecked()) {
                 if (stickyNotesTopBottom_Switch.isChecked()) {
-                    preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","B");
+                    preferences.setMyPreferenceString(getContext(),"stickyAutoDisplay","B");
                 } else {
-                    preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","T");
+                    preferences.setMyPreferenceString(getContext(),"stickyAutoDisplay","T");
                 }
             } else {
-                preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","N");
+                preferences.setMyPreferenceString(getContext(),"stickyAutoDisplay","N");
             }
             showStickyButtons();
         });
-        stickyBlockInfo.setOnCheckedChangeListener((view,checked) -> preferences.setMyPreferenceBoolean(getActivity(),"stickyBlockInfo",checked));
+        stickyBlockInfo.setOnCheckedChangeListener((view,checked) -> preferences.setMyPreferenceBoolean(getContext(),"stickyBlockInfo",checked));
 
 
         stickyNotesTopBottom_Switch.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
-                preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","B");
+                preferences.setMyPreferenceString(getContext(),"stickyAutoDisplay","B");
             } else {
-                preferences.setMyPreferenceString(getActivity(),"stickyAutoDisplay","T");
+                preferences.setMyPreferenceString(getContext(),"stickyAutoDisplay","T");
             }
         });
         stickyNotesTime_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -167,7 +167,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 String s;
                 if (i==0) {
-                    s = requireContext().getResources().getString(R.string.on);
+                    s = getString(R.string.on);
                 } else {
                     s = i + " s";
                 }
@@ -179,11 +179,11 @@ public class PopUpExtraInfoFragment extends DialogFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                preferences.setMyPreferenceInt(getActivity(),"timeToDisplaySticky",seekBar.getProgress());
+                preferences.setMyPreferenceInt(getContext(),"timeToDisplaySticky",seekBar.getProgress());
             }
         });
         highlightNotesOnOff_Switch.setOnCheckedChangeListener((compoundButton, b) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"drawingAutoDisplay",b);
+            preferences.setMyPreferenceBoolean(getContext(),"drawingAutoDisplay",b);
             showHighlightButtons();
         });
         highlightTime_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -191,7 +191,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 String s;
                 if (i==0) {
-                    s = requireContext().getString(R.string.on);
+                    s = getString(R.string.on);
                 } else {
                     s = i + " s";
                 }
@@ -203,7 +203,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                preferences.setMyPreferenceInt(getActivity(),"timeToDisplayHighlighter",seekBar.getProgress());
+                preferences.setMyPreferenceInt(getContext(),"timeToDisplayHighlighter",seekBar.getProgress());
             }
         });
 
@@ -213,7 +213,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
     }
 
     private void showNextButtons() {
-        switch (preferences.getMyPreferenceString(getActivity(),"displayNextInSet","B")) {
+        switch (preferences.getMyPreferenceString(getContext(),"displayNextInSet","B")) {
             case "N":
                 nextSongOnOff_Switch.setChecked(false);
                 nextSongTopBottom_Switch.setVisibility(View.GONE);
@@ -237,9 +237,9 @@ public class PopUpExtraInfoFragment extends DialogFragment {
     private void showStickyButtons() {
 
         // GE - To switch on/off the song info block at the top
-        stickyBlockInfo.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"stickyBlockInfo",false));
+        stickyBlockInfo.setChecked(preferences.getMyPreferenceBoolean(getContext(),"stickyBlockInfo",false));
 
-        switch (preferences.getMyPreferenceString(getActivity(),"stickyAutoDisplay","F")) {
+        switch (preferences.getMyPreferenceString(getContext(),"stickyAutoDisplay","F")) {
 
             case "N":
                 stickyNotesOnOff_Switch.setChecked(false);
@@ -278,12 +278,12 @@ public class PopUpExtraInfoFragment extends DialogFragment {
                 stickyNotesFloat_Switch.setChecked(true);
                 stickyNotesFloat_Switch.setVisibility(View.VISIBLE);
                 stickyNotesTime_SeekBar.setVisibility(View.VISIBLE);
-                stickyNotesTime_SeekBar.setProgress(preferences.getMyPreferenceInt(getActivity(),"timeToDisplaySticky",5));
+                stickyNotesTime_SeekBar.setProgress(preferences.getMyPreferenceInt(getContext(),"timeToDisplaySticky",5));
                 String s;
-                if (preferences.getMyPreferenceInt(getActivity(),"timeToDisplaySticky",5)==0) {
-                    s = requireContext().getString(R.string.on);
+                if (preferences.getMyPreferenceInt(getContext(),"timeToDisplaySticky",5)==0) {
+                    s = getString(R.string.on);
                 } else {
-                    s = preferences.getMyPreferenceInt(getActivity(),"timeToDisplaySticky",5) + " s";
+                    s = preferences.getMyPreferenceInt(getContext(),"timeToDisplaySticky",5) + " s";
                 }
                 stickyNotesTime_TextView.setText(s);
                 stickyNotesTime_TextView.setVisibility(View.VISIBLE);
@@ -294,8 +294,8 @@ public class PopUpExtraInfoFragment extends DialogFragment {
     }
 
     private void showHighlightButtons() {
-        highlightNotesOnOff_Switch.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"drawingAutoDisplay",true));
-        if (!preferences.getMyPreferenceBoolean(getActivity(),"drawingAutoDisplay",true)) {
+        highlightNotesOnOff_Switch.setChecked(preferences.getMyPreferenceBoolean(getContext(),"drawingAutoDisplay",true));
+        if (!preferences.getMyPreferenceBoolean(getContext(),"drawingAutoDisplay",true)) {
             highlightTime_TextView.setVisibility(View.GONE);
             highlightTimeInfo_TextView.setVisibility(View.GONE);
             highlightTime_SeekBar.setVisibility(View.GONE);
@@ -304,11 +304,11 @@ public class PopUpExtraInfoFragment extends DialogFragment {
             highlightTimeInfo_TextView.setVisibility(View.VISIBLE);
             highlightTime_SeekBar.setVisibility(View.VISIBLE);
         }
-        int time = preferences.getMyPreferenceInt(getActivity(),"timeToDisplayHighlighter",0);
+        int time = preferences.getMyPreferenceInt(getContext(),"timeToDisplayHighlighter",0);
         highlightTime_SeekBar.setProgress(time);
         String s;
         if (time==0) {
-            s = requireContext().getString(R.string.on);
+            s = getString(R.string.on);
         } else {
             s = time + " s";
         }

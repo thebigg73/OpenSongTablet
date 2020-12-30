@@ -27,7 +27,6 @@ import androidx.loader.content.CursorLoader;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public class PopUpMediaStoreFragment extends DialogFragment {
 
@@ -73,10 +72,10 @@ public class PopUpMediaStoreFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_mediastore, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.media_chooser));
+        title.setText(getString(R.string.media_chooser));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -128,7 +127,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
                 scrubbar_SeekBar.setMax(duration);
                 scrubbar_SeekBar.setProgress(position);
                 if (PresenterMode.mp.isPlaying()) {
-                    startPlay.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_stop_white_36dp,null));
+                    startPlay.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.ic_stop_white_36dp,null));
                     seekHandler = new Handler();
                     seekHandler.post(run);
                 }
@@ -156,14 +155,8 @@ public class PopUpMediaStoreFragment extends DialogFragment {
 
     private void updateMedia() {
 
-        /*if (FullscreenActivity.mediaStore.equals("ext")) {
-            sourceUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        } else {
-            sourceUri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
-        }*/
-
         CursorLoader cursorLoader = new CursorLoader(
-                Objects.requireNonNull(getActivity()),
+                requireContext(),
                 sourceUri,
                 null,
                 null,
@@ -173,7 +166,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
         Cursor cursor = cursorLoader.loadInBackground();
 
         ListAdapter adapter = new SimpleCursorAdapter(
-                getActivity(),
+                requireContext(),
                 android.R.layout.simple_list_item_1,
                 cursor,
                 from,
@@ -188,7 +181,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
             String fullname = cursor1.getString(cursor1.getColumnIndex(MediaStore.Audio.Media.TITLE));
             String data = cursor1.getString(cursor1.getColumnIndex(MediaStore.Audio.Media.DATA));
             mediaSelected.setText(fullname);
-            startPlay.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_play_white_36dp,null));
+            startPlay.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.ic_play_white_36dp,null));
             PresenterMode.mpTitle = fullname;
             if (PresenterMode.mp.isPlaying()) {
                 PresenterMode.mp.stop();
@@ -223,7 +216,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
             seekHandler = null;
             // Stop the media player
             PresenterMode.mp.pause();
-            startPlay.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_play_white_36dp,null));
+            startPlay.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.ic_play_white_36dp,null));
         } else {
             if (!mediaSelected.getText().toString().equals("")) {
                 if (seekHandler!=null) {
@@ -232,7 +225,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
                 seekHandler = new Handler();
                 seekHandler.postDelayed(run,1000);
                 PresenterMode.mp.start();
-                startPlay.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_stop_white_36dp,null));
+                startPlay.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.ic_stop_white_36dp,null));
             }
         }
     }

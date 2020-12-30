@@ -30,7 +30,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PopUpCustomChordsFragment extends DialogFragment {
 
@@ -123,10 +122,10 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_customchords, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.customchords));
+        title.setText(getString(R.string.customchords));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -137,7 +136,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         preferences = new Preferences();
 
         // Initialise the views
-        Resources res = getActivity().getResources();
+        Resources res = requireContext().getResources();
         stringtop = ResourcesCompat.getDrawable(res,R.drawable.string_top,null);
         stringtop_X = ResourcesCompat.getDrawable(res,R.drawable.string_top_x,null);
         stringtop_O = ResourcesCompat.getDrawable(res,R.drawable.string_top_o,null);
@@ -198,18 +197,18 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         string1_f5 = V.findViewById(R.id.string1_f5);
 
         ArrayList<String> instrument_choice = new ArrayList<>();
-        instrument_choice.add(getActivity().getResources().getString(R.string.guitar));
-        instrument_choice.add(getActivity().getResources().getString(R.string.ukulele));
-        instrument_choice.add(getActivity().getResources().getString(R.string.mandolin));
-        instrument_choice.add(getActivity().getResources().getString(R.string.cavaquinho));
-        instrument_choice.add(getActivity().getResources().getString(R.string.banjo4));
-        instrument_choice.add(getActivity().getResources().getString(R.string.banjo5));
-        ArrayAdapter<String> adapter_instrument = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, instrument_choice);
+        instrument_choice.add(getString(R.string.guitar));
+        instrument_choice.add(getString(R.string.ukulele));
+        instrument_choice.add(getString(R.string.mandolin));
+        instrument_choice.add(getString(R.string.cavaquinho));
+        instrument_choice.add(getString(R.string.banjo4));
+        instrument_choice.add(getString(R.string.banjo5));
+        ArrayAdapter<String> adapter_instrument = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, instrument_choice);
         adapter_instrument.setDropDownViewResource(R.layout.my_spinner);
         customchords_instrument.setAdapter(adapter_instrument);
 
         // Set the current instrument
-        instrument_text = preferences.getMyPreferenceString(getActivity(),"chordInstrument","g");
+        instrument_text = preferences.getMyPreferenceString(getContext(),"chordInstrument","g");
         switch (instrument_text) {
             case "g":
                 customchords_instrument.setSelection(0);
@@ -266,7 +265,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
                         set5String();
                         break;
                 }
-                preferences.setMyPreferenceString(getActivity(),"chordInstrument",instrument_text);
+                preferences.setMyPreferenceString(getContext(),"chordInstrument",instrument_text);
             }
 
             @Override
@@ -316,12 +315,12 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         customChordSave.setOnClickListener(view -> customChordSave());
 
         String[] fret_choice = {"","1","2","3","4","5","6","7","8","9"};
-        ArrayAdapter<String> adapter_fret = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, fret_choice);
+        ArrayAdapter<String> adapter_fret = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, fret_choice);
         adapter_fret.setDropDownViewResource(R.layout.my_spinner);
         customchords_fret.setAdapter(adapter_fret);
         customchords_fret.setOnItemSelectedListener(new FretListener());
         prepareCustomChords();
-        PopUpSizeAndAlpha.decoratePopUp(requireActivity(),getDialog(), preferences);
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
     }
@@ -364,8 +363,8 @@ public class PopUpCustomChordsFragment extends DialogFragment {
                 numcustomchords = tempCustomChords.length;
                 for (int q = 0; q < numcustomchords; q++) {
                     String workingChord = tempCustomChords[q];
-                    TextView chordvalue = new TextView(getActivity());
-                    Button deleteChord = new Button(getActivity());
+                    TextView chordvalue = new TextView(getContext());
+                    Button deleteChord = new Button(getContext());
                     String chorddetails;
                     if (tempCustomChords[q].contains("_u")) {
                         chorddetails = getResources().getString(R.string.ukulele) + "\n";
@@ -1451,14 +1450,14 @@ public class PopUpCustomChordsFragment extends DialogFragment {
                 !customChordToSave.contains("_c")) {
             //No instrument set
             StaticVariables.myToastMessage = getResources().getString(R.string.customchords_noinstrument);
-            ShowToast.showToast(getActivity());
+            ShowToast.showToast(getContext());
         } else if (customNameToSave.equals("") || customNameToSave.isEmpty()) {
             //No chordname set
             StaticVariables.myToastMessage = getResources().getString(R.string.customchords_nochordname);
-            ShowToast.showToast(getActivity());
+            ShowToast.showToast(getContext());
         } else {
             StaticVariables.myToastMessage = getResources().getString(R.string.customchords_save);
-            ShowToast.showToast(getActivity());
+            ShowToast.showToast(getContext());
             StaticVariables.mCustomChords = StaticVariables.mCustomChords + " " + customChordToSave;
             StaticVariables.mCustomChords = StaticVariables.mCustomChords.trim();
 
@@ -1475,14 +1474,14 @@ public class PopUpCustomChordsFragment extends DialogFragment {
 
     private void doSave() {
         // Add the custom chord code to the xml
-        Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Songs", StaticVariables.whichSongFolder,
+        Uri uri = storageAccess.getUriForItem(getContext(), preferences, "Songs", StaticVariables.whichSongFolder,
                 StaticVariables.songfilename);
 
         // Check the uri exists for the outputstream to be valid
-        storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
+        storageAccess.lollipopCreateFileForOutputStream(getContext(), preferences, uri, null,
                 "Songs", StaticVariables.whichSongFolder, StaticVariables.songfilename);
 
-        OutputStream outputStream = storageAccess.getOutputStream(getActivity(),uri);
+        OutputStream outputStream = storageAccess.getOutputStream(getContext(),uri);
         storageAccess.writeFileFromString(FullscreenActivity.mynewXML,outputStream);
     }
 

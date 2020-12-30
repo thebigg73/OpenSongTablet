@@ -17,8 +17,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpActionBarInfoFragment extends DialogFragment {
 
     static PopUpActionBarInfoFragment newInstance() {
@@ -78,10 +76,10 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_clockandbattery, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.actionbar));
+        title.setText(getString(R.string.actionbar));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe, getActivity());
+            CustomAnimations.animateFAB(closeMe, getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -106,7 +104,7 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         SwitchCompat displayMenuToggleSwitch = V.findViewById(R.id.displayMenuToggleSwitch);
 
         // Set the switches up based on preferences
-        displayMenuToggleSwitch.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"hideActionBar",false));
+        displayMenuToggleSwitch.setChecked(preferences.getMyPreferenceBoolean(getContext(),"hideActionBar",false));
 
         // Set initial values
         setTitleTextSize();
@@ -114,19 +112,19 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         setBatteryTextSize();
         setBatteryDialSize();
         setClockTextSize();
-        batteryDialOnOff.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"batteryDialOn",true));
-        batteryTextOnOff.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"batteryTextOn",true));
-        clockTextOnOff.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"clockOn",true));
-        clock24hrOnOff.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"clock24hFormat",true));
-        hideshowbatterytextsize(preferences.getMyPreferenceBoolean(getActivity(),"batteryTextOn",true));
-        hideshowclocktextsize(preferences.getMyPreferenceBoolean(getActivity(),"clockOn",true));
-        hideshowbatterylinesize(preferences.getMyPreferenceBoolean(getActivity(),"batteryDialOn",true));
+        batteryDialOnOff.setChecked(preferences.getMyPreferenceBoolean(getContext(),"batteryDialOn",true));
+        batteryTextOnOff.setChecked(preferences.getMyPreferenceBoolean(getContext(),"batteryTextOn",true));
+        clockTextOnOff.setChecked(preferences.getMyPreferenceBoolean(getContext(),"clockOn",true));
+        clock24hrOnOff.setChecked(preferences.getMyPreferenceBoolean(getContext(),"clock24hFormat",true));
+        hideshowbatterytextsize(preferences.getMyPreferenceBoolean(getContext(),"batteryTextOn",true));
+        hideshowclocktextsize(preferences.getMyPreferenceBoolean(getContext(),"clockOn",true));
+        hideshowbatterylinesize(preferences.getMyPreferenceBoolean(getContext(),"batteryDialOn",true));
 
         // Set listeners
         titleTextSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                preferences.setMyPreferenceFloat(getActivity(),"songTitleSize",getTitleTextSize());
+                preferences.setMyPreferenceFloat(getContext(),"songTitleSize",getTitleTextSize());
                 if (mListener!=null) {
                     mListener.adjustABInfo();
                 }
@@ -141,7 +139,7 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         authorTextSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                preferences.setMyPreferenceFloat(getActivity(),"songAuthorSize",getAuthorTextSize());
+                preferences.setMyPreferenceFloat(getContext(),"songAuthorSize",getAuthorTextSize());
                 if (mListener!=null) {
                     mListener.adjustABInfo();
                 }
@@ -156,7 +154,7 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         batteryTextSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                preferences.setMyPreferenceFloat(getActivity(),"batteryTextSize",(float)i + 6);
+                preferences.setMyPreferenceFloat(getContext(),"batteryTextSize",(float)i + 6);
                 if (mListener!=null) {
                     mListener.adjustABInfo();
                 }
@@ -171,7 +169,7 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         batteryDialSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                preferences.setMyPreferenceInt(getActivity(),"batteryDialThickness",getBatteryDialSize());
+                preferences.setMyPreferenceInt(getContext(),"batteryDialThickness",getBatteryDialSize());
                 if (mListener!=null) {
                     mListener.adjustABInfo();
                 }
@@ -186,7 +184,7 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         clockTextSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                preferences.setMyPreferenceFloat(getActivity(),"clockTextSize",(float)getClockTextSize());
+                preferences.setMyPreferenceFloat(getContext(),"clockTextSize",(float)getClockTextSize());
                 if (mListener!=null) {
                     mListener.adjustABInfo();
                 }
@@ -199,34 +197,34 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         batteryDialOnOff.setOnCheckedChangeListener((compoundButton, b) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"batteryDialOn",b);
+            preferences.setMyPreferenceBoolean(getContext(),"batteryDialOn",b);
             hideshowbatterylinesize(b);
             if (mListener!=null) {
                 mListener.adjustABInfo();
             }
         });
         batteryTextOnOff.setOnCheckedChangeListener((compoundButton, b) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"batteryTextOn",b);
+            preferences.setMyPreferenceBoolean(getContext(),"batteryTextOn",b);
             hideshowbatterytextsize(b);
             if (mListener!=null) {
                 mListener.adjustABInfo();
             }
         });
         clockTextOnOff.setOnCheckedChangeListener((compoundButton, b) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"clockOn",b);
+            preferences.setMyPreferenceBoolean(getContext(),"clockOn",b);
             hideshowclocktextsize(b);
             if (mListener!=null) {
                 mListener.adjustABInfo();
             }
         });
         clock24hrOnOff.setOnCheckedChangeListener((compoundButton, b) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"clock24hFormat",b);
+            preferences.setMyPreferenceBoolean(getContext(),"clock24hFormat",b);
             if (mListener!=null) {
                 mListener.adjustABInfo();
             }
         });
         displayMenuToggleSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"hideActionBar",b);
+            preferences.setMyPreferenceBoolean(getContext(),"hideActionBar",b);
             if (mListener!=null) {
                 if (b) {
                     mListener.hideActionBar();
@@ -238,7 +236,7 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         });
 
         Dialog dialog = getDialog();
-        if (dialog!=null && getActivity()!=null) {
+        if (dialog!=null && getContext()!=null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog, preferences);
         }
         return V;
@@ -246,7 +244,7 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
 
     private void setTitleTextSize() {
         // Min size is 6, this is 0 on the seekBar
-        int s = (int) preferences.getMyPreferenceFloat(getActivity(),"songTitleSize",13.0f) - 6;
+        int s = (int) preferences.getMyPreferenceFloat(getContext(),"songTitleSize",13.0f) - 6;
         titleTextSize.setProgress(s);
     }
     private int getTitleTextSize() {
@@ -256,7 +254,7 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
 
     private void setAuthorTextSize() {
         // Min size is 6, this is 0 on the seekBar
-        int s = (int) preferences.getMyPreferenceFloat(getActivity(),"songAuthorSize",11.0f) - 6;
+        int s = (int) preferences.getMyPreferenceFloat(getContext(),"songAuthorSize",11.0f) - 6;
         authorTextSize.setProgress(s);
     }
     private int getAuthorTextSize() {
@@ -266,13 +264,13 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
 
     private void setBatteryTextSize() {
         // Min size is 6, this is 0 on the seekBar
-        int s = (int) preferences.getMyPreferenceFloat(getActivity(),"batteryTextSize",9.0f) - 6;
+        int s = (int) preferences.getMyPreferenceFloat(getContext(),"batteryTextSize",9.0f) - 6;
         batteryTextSize.setProgress(s);
     }
 
     private void setBatteryDialSize() {
         // Min size is 1, this is 0 on the seekBar
-        int s = preferences.getMyPreferenceInt(getActivity(),"batteryDialThickness",4) - 1;
+        int s = preferences.getMyPreferenceInt(getContext(),"batteryDialThickness",4) - 1;
         batteryDialSize.setProgress(s);
     }
     private int getBatteryDialSize() {
@@ -282,7 +280,7 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
 
     private void setClockTextSize() {
         // Min size is 6, this is 0 on the seekBar
-        int s = (int) preferences.getMyPreferenceFloat(getActivity(),"clockTextSize",9.0f) - 6;
+        int s = (int) preferences.getMyPreferenceFloat(getContext(),"clockTextSize",9.0f) - 6;
         clockTextSize.setProgress(s);
     }
     private int getClockTextSize() {

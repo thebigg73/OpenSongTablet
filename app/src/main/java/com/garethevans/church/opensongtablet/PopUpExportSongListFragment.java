@@ -19,7 +19,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Objects;
 
 public class PopUpExportSongListFragment extends DialogFragment {
 
@@ -52,16 +51,16 @@ public class PopUpExportSongListFragment extends DialogFragment {
         }
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.exportsongdirectory));
+        title.setText(getString(R.string.exportsongdirectory));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(saveMe,getActivity());
+            CustomAnimations.animateFAB(saveMe,getContext());
             saveMe.setEnabled(false);
             getFoldersSelected();
         });
@@ -74,9 +73,9 @@ public class PopUpExportSongListFragment extends DialogFragment {
         songDirectoy_ListView = V.findViewById(R.id.songDirectoy_ListView);
 
         // Prepare a list of the song directories
-        songfolders = songFolders.prepareSongFolders(getActivity(),preferences);
+        songfolders = songFolders.prepareSongFolders(getContext(),preferences);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_list_item_multiple_choice, songfolders);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_multiple_choice, songfolders);
         songDirectoy_ListView.setAdapter(adapter);
         songDirectoy_ListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
@@ -111,8 +110,8 @@ public class PopUpExportSongListFragment extends DialogFragment {
             if (directory.equals(getString(R.string.mainfoldername)) || directory.equals("MAIN")) {
                 directory = "";
             }
-            ArrayList<String> files_ar = storageAccess.listFilesInFolder(getActivity(), preferences, "Songs", directory);
-            songContents.append(Objects.requireNonNull(getActivity()).getString(R.string.songsinfolder)).append(" \"");
+            ArrayList<String> files_ar = storageAccess.listFilesInFolder(getContext(), preferences, "Songs", directory);
+            songContents.append(getString(R.string.songsinfolder)).append(" \"");
             if (directory.equals("")) {
                 songContents.append(getString(R.string.mainfoldername));
             } else {
@@ -134,14 +133,14 @@ public class PopUpExportSongListFragment extends DialogFragment {
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, Objects.requireNonNull(getActivity()).getString(R.string.app_name) + " " +
-                getActivity().getString(R.string.exportsongdirectory));
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " " +
+                getString(R.string.exportsongdirectory));
         intent.putExtra(Intent.EXTRA_TEXT, songContents.toString());
 
-        String title = getActivity().getResources().getString(R.string.export);
+        String title = getString(R.string.export);
         Intent chooser = Intent.createChooser(intent, title);
-        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-            getActivity().startActivity(chooser);
+        if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
+            requireActivity().startActivity(chooser);
         }
 
         try {

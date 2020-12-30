@@ -16,8 +16,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpBackupPromptFragment extends DialogFragment {
 
     private MyInterface mListener;
@@ -66,7 +64,7 @@ public class PopUpBackupPromptFragment extends DialogFragment {
         View v = inflater.inflate(R.layout.popup_backupprompt, container, false);
 
         TextView title = v.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.backupnow));
+        title.setText(getString(R.string.backupnow));
         final FloatingActionButton closeMe = v.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
             CustomAnimations.animateFAB(closeMe, getActivity());

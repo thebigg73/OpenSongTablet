@@ -15,8 +15,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpDefaultsFragment extends DialogFragment {
 
     private Button tl_button;
@@ -56,10 +54,10 @@ public class PopUpDefaultsFragment extends DialogFragment {
         }
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.display_popups));
+        title.setText(getString(R.string.display_popups));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -83,9 +81,9 @@ public class PopUpDefaultsFragment extends DialogFragment {
         br_button = V.findViewById(R.id.br_button);
 
         // Set the seekBars to their current positions
-        popupAlpha_seekBar.setProgress((int) (preferences.getMyPreferenceFloat(getActivity(),"popupAlpha",0.8f)*10)-6);
-        popupDim_seekBar.setProgress((int) (preferences.getMyPreferenceFloat(getActivity(),"popupDim",0.8f)*10));
-        popupScale_seekBar.setProgress((int) (preferences.getMyPreferenceFloat(getActivity(),"popupScale",0.7f)*10)-3);
+        popupAlpha_seekBar.setProgress((int) (preferences.getMyPreferenceFloat(getContext(),"popupAlpha",0.8f)*10)-6);
+        popupDim_seekBar.setProgress((int) (preferences.getMyPreferenceFloat(getContext(),"popupDim",0.8f)*10));
+        popupScale_seekBar.setProgress((int) (preferences.getMyPreferenceFloat(getContext(),"popupScale",0.7f)*10)-3);
 
         fixbuttons();
 
@@ -93,7 +91,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
         popupAlpha_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                preferences.setMyPreferenceFloat(getActivity(),"popupAlpha",((i+6.0f) / 10.0f));
+                preferences.setMyPreferenceFloat(getContext(),"popupAlpha",((i+6.0f) / 10.0f));
                 PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(),preferences);
             }
 
@@ -106,7 +104,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
         popupDim_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                preferences.setMyPreferenceFloat(getActivity(),"popupDim", (float) i / 10.0f);
+                preferences.setMyPreferenceFloat(getContext(),"popupDim", (float) i / 10.0f);
                 PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(),preferences);
             }
 
@@ -119,7 +117,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
         popupScale_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                preferences.setMyPreferenceFloat(getActivity(),"popupScale", (i+3.0f)/10.0f);
+                preferences.setMyPreferenceFloat(getContext(),"popupScale", (i+3.0f)/10.0f);
             }
 
             @Override
@@ -132,39 +130,39 @@ public class PopUpDefaultsFragment extends DialogFragment {
         });
 
         tl_button.setOnClickListener(view -> {
-            preferences.setMyPreferenceString(getActivity(),"popupPosition","tl");
+            preferences.setMyPreferenceString(getContext(),"popupPosition","tl");
             fixbuttons();
         });
         tc_button.setOnClickListener(view -> {
-            preferences.setMyPreferenceString(getActivity(),"popupPosition","tc");
+            preferences.setMyPreferenceString(getContext(),"popupPosition","tc");
             fixbuttons();
         });
         tr_button.setOnClickListener(view -> {
-            preferences.setMyPreferenceString(getActivity(),"popupPosition","tr");
+            preferences.setMyPreferenceString(getContext(),"popupPosition","tr");
             fixbuttons();
         });
         l_button.setOnClickListener(view -> {
-            preferences.setMyPreferenceString(getActivity(),"popupPosition","l");
+            preferences.setMyPreferenceString(getContext(),"popupPosition","l");
             fixbuttons();
         });
         c_button.setOnClickListener(view -> {
-            preferences.setMyPreferenceString(getActivity(),"popupPosition","c");
+            preferences.setMyPreferenceString(getContext(),"popupPosition","c");
             fixbuttons();
         });
         r_button.setOnClickListener(view -> {
-            preferences.setMyPreferenceString(getActivity(),"popupPosition","r");
+            preferences.setMyPreferenceString(getContext(),"popupPosition","r");
             fixbuttons();
         });
         bl_button.setOnClickListener(view -> {
-            preferences.setMyPreferenceString(getActivity(),"popupPosition","bl");
+            preferences.setMyPreferenceString(getContext(),"popupPosition","bl");
             fixbuttons();
         });
         bc_button.setOnClickListener(view -> {
-            preferences.setMyPreferenceString(getActivity(),"popupPosition","bc");
+            preferences.setMyPreferenceString(getContext(),"popupPosition","bc");
             fixbuttons();
         });
         br_button.setOnClickListener(view -> {
-            preferences.setMyPreferenceString(getActivity(),"popupPosition","br");
+            preferences.setMyPreferenceString(getContext(),"popupPosition","br");
             fixbuttons();
         });
         return V;
@@ -182,7 +180,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
             bc_button.setBackgroundResource(R.drawable.grey_button);
             br_button.setBackgroundResource(R.drawable.grey_button);
 
-            switch (preferences.getMyPreferenceString(getActivity(),"popupPosition","c")) {
+            switch (preferences.getMyPreferenceString(getContext(),"popupPosition","c")) {
                 case "tl":
                     tl_button.setBackgroundResource(R.drawable.blue_button);
                     break;
@@ -198,7 +196,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
                 default:
                 case "c":
                     c_button.setBackgroundResource(R.drawable.blue_button);
-                    preferences.setMyPreferenceString(getActivity(),"popupPosition","c");
+                    preferences.setMyPreferenceString(getContext(),"popupPosition","c");
                     break;
                 case "r":
                     r_button.setBackgroundResource(R.drawable.blue_button);

@@ -55,7 +55,7 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
         title.setText(getString(R.string.scrollbuttons));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -119,13 +119,13 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
         // (min speed should be 0.5 secs and max should be 2.0)
         float val = ((float)s + 5.0f) / 10.0f;
         // Multiply this by 1000 to convert to milliseconds for the preferences
-        preferences.setMyPreferenceInt(getActivity(),"scrollSpeed",(int) (val * 1000));
+        preferences.setMyPreferenceInt(getContext(),"scrollSpeed",(int) (val * 1000));
         speed =  val + " s";
     }
 
     private void setSpeed() {
         // Take the preference and subtract 500 (minimum allowed is 500)
-        int s = preferences.getMyPreferenceInt(getActivity(),"scrollSpeed",1500) - 500;
+        int s = preferences.getMyPreferenceInt(getContext(),"scrollSpeed",1500) - 500;
         // Divide this by 100 to get a value between 0 and 15
         s = s/100;
         scrollspeed_SeekBar.setProgress(s);
@@ -137,15 +137,15 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
         // This will be between 0 and 8
         // Add 2 on as minimum scroll amount is 20%
         d = d+2;
-        preferences.setMyPreferenceFloat(getActivity(),"scrollDistance", ((float)d) / 10.0f);
+        preferences.setMyPreferenceFloat(getContext(),"scrollDistance", ((float)d) / 10.0f);
         distance = (d*10) + " %";
     }
 
     private void setDistance() {
         // Take the preference and multiply by 10, then subtract 2
         // Pref can be between 0.2f and 1.0f, but we want an int betweeen 0 and 8
-        distance = ((int)(preferences.getMyPreferenceFloat(getActivity(),"scrollDistance", 0.7f)* 100.0f)) + " %";
-        int d = ((int)(preferences.getMyPreferenceFloat(getActivity(),"scrollDistance", 0.7f) * 10.0f)) - 2;
+        distance = ((int)(preferences.getMyPreferenceFloat(getContext(),"scrollDistance", 0.7f)* 100.0f)) + " %";
+        int d = ((int)(preferences.getMyPreferenceFloat(getContext(),"scrollDistance", 0.7f) * 10.0f)) - 2;
         scrolldistance_SeekBar.setProgress(d);
         scrolldistance_TextView.setText(distance);
     }

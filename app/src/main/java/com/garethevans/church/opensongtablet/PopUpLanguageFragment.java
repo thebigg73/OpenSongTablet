@@ -15,8 +15,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpLanguageFragment extends DialogFragment {
 
     private String tempLanguage;
@@ -41,7 +39,7 @@ public class PopUpLanguageFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (getDialog()!=null) {
-            getDialog().setTitle(Objects.requireNonNull(getActivity()).getResources().getString(R.string.language));
+            getDialog().setTitle(getString(R.string.language));
             getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
             getDialog().setCanceledOnTouchOutside(true);
         }
@@ -49,16 +47,16 @@ public class PopUpLanguageFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_language, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(requireContext().getString(R.string.language));
+        title.setText(getString(R.string.language));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(saveMe,getActivity());
+            CustomAnimations.animateFAB(saveMe,getContext());
             saveMe.setEnabled(false);
             doSave();
         });
@@ -71,7 +69,7 @@ public class PopUpLanguageFragment extends DialogFragment {
         // Go through the language array and create radio buttons for each
         int positionselected;
 
-        switch (preferences.getMyPreferenceString(getActivity(),"language","en")) {
+        switch (preferences.getMyPreferenceString(getContext(),"language","en")) {
             case "af":
                 positionselected = 0;
                 break;
@@ -123,7 +121,7 @@ public class PopUpLanguageFragment extends DialogFragment {
                 break;
         }
 
-        ArrayAdapter<String> la = new ArrayAdapter<>(requireActivity(),
+        ArrayAdapter<String> la = new ArrayAdapter<>(requireContext(),
                 android.R.layout.simple_list_item_single_choice,
                 requireContext().getResources().getStringArray(R.array.languagelist));
         languagescroll.setAdapter(la);
@@ -190,10 +188,10 @@ public class PopUpLanguageFragment extends DialogFragment {
     }
 
     private void doSave() {
-        preferences.setMyPreferenceString(getActivity(),"language",tempLanguage);
+        preferences.setMyPreferenceString(getContext(),"language",tempLanguage);
         // Unfortunately this means the MAIN folder name isn't right!
         dismiss();
-        Objects.requireNonNull(getActivity()).recreate();
+        requireActivity().recreate();
     }
 
     @Override

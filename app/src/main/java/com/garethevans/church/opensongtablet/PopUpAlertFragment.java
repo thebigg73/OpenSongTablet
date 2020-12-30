@@ -17,8 +17,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpAlertFragment extends DialogFragment {
 
     private EditText alertMessage;
@@ -72,7 +70,7 @@ public class PopUpAlertFragment extends DialogFragment {
         final View V = inflater.inflate(R.layout.popup_alert, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.alert));
+        title.setText(getString(R.string.alert));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
             CustomAnimations.animateFAB(closeMe, getActivity());

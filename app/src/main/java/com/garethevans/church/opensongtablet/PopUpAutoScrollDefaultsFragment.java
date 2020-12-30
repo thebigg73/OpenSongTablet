@@ -17,8 +17,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
 
     static PopUpAutoScrollDefaultsFragment newInstance() {
@@ -54,7 +52,7 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_autoscrolldefaults, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.default_autoscroll));
+        title.setText(getString(R.string.default_autoscroll));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
             CustomAnimations.animateFAB(closeMe, PopUpAutoScrollDefaultsFragment.this.getActivity());

@@ -27,7 +27,6 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PopUpUSBMidiFragment extends DialogFragment {
 
@@ -66,10 +65,10 @@ public class PopUpUSBMidiFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_mididevices, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getResources().getString(R.string.midi_usb));
+        title.setText(getString(R.string.midi_usb));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe, getActivity());
+            CustomAnimations.animateFAB(closeMe, getContext());
             closeMe.setEnabled(false);
             try {
                 dismiss();
@@ -95,11 +94,11 @@ public class PopUpUSBMidiFragment extends DialogFragment {
         // Initialise the Midi classes
         m = new Midi();
         try {
-            StaticVariables.midiManager = (MidiManager) Objects.requireNonNull(getActivity()).getSystemService(Context.MIDI_SERVICE);
+            StaticVariables.midiManager = (MidiManager) requireActivity().getSystemService(Context.MIDI_SERVICE);
         } catch (Exception e) {
             e.printStackTrace();
             StaticVariables.myToastMessage = getString(R.string.nothighenoughapi);
-            ShowToast.showToast(getActivity());
+            ShowToast.showToast(getContext());
         }
 
         selected = new Handler();
@@ -137,10 +136,10 @@ public class PopUpUSBMidiFragment extends DialogFragment {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private boolean permissionAllowed() {
         boolean allowed = true;
-        int permissionCheck = Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+        int permissionCheck = requireActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             allowed = false;
-            if (!getActivity().shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            if (!requireActivity().shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
             }
         }
@@ -152,7 +151,7 @@ public class PopUpUSBMidiFragment extends DialogFragment {
         try {
             Log.d("d", "update devices");
             if (infos != null && infos.length > 0 && usbNames != null && usbNames.size() > 0) {
-                ArrayAdapter<String> aa = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), android.R.layout.simple_list_item_1, usbNames);
+                ArrayAdapter<String> aa = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, usbNames);
                 aa.notifyDataSetChanged();
                 usbDevices.setAdapter(aa);
                 usbDevices.setOnItemClickListener((adapterView, view, i, l) -> {
@@ -201,7 +200,7 @@ public class PopUpUSBMidiFragment extends DialogFragment {
         } catch (Exception e) {
             e.printStackTrace();
             StaticVariables.myToastMessage = getString(R.string.nothighenoughapi);
-            ShowToast.showToast(getActivity());
+            ShowToast.showToast(getContext());
         }
     }
 
@@ -239,7 +238,7 @@ public class PopUpUSBMidiFragment extends DialogFragment {
             updateDevices();
         } else {
             StaticVariables.myToastMessage = getString(R.string.nothighenoughapi);
-            ShowToast.showToast(getActivity());
+            ShowToast.showToast(getContext());
         }
     }
 

@@ -26,7 +26,6 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PopUpPadFragment extends DialogFragment {
 
@@ -111,10 +110,10 @@ public class PopUpPadFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_page_pad, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.pad));
+        title.setText(getString(R.string.pad));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             // IV - doSave now in dismiss
             PopUpPadFragment.this.dismiss();
@@ -122,7 +121,7 @@ public class PopUpPadFragment extends DialogFragment {
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.hide();
 
-        if (getActivity() != null && getDialog() != null) {
+        if (getContext() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog(), preferences);
         }
 
@@ -136,16 +135,16 @@ public class PopUpPadFragment extends DialogFragment {
         popupPad_pan_text = V.findViewById(R.id.popupPad_pan_text);
         start_stop_padplay = V.findViewById(R.id.start_stop_padplay);
 
-        ArrayAdapter<CharSequence> adapter_key = ArrayAdapter.createFromResource(getActivity(),
+        ArrayAdapter<CharSequence> adapter_key = ArrayAdapter.createFromResource(getContext(),
                 R.array.key_choice,
                 R.layout.my_spinner);
         adapter_key.setDropDownViewResource(R.layout.my_spinner);
         popupPad_key.setAdapter(adapter_key);
         ArrayList<String> padfiles = new ArrayList<>();
-        padfiles.add(getResources().getString(R.string.pad_auto));
-        padfiles.add(getResources().getString(R.string.link_audio));
-        padfiles.add(getResources().getString(R.string.off));
-        ArrayAdapter<String> adapter_file = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, padfiles);
+        padfiles.add(getString(R.string.pad_auto));
+        padfiles.add(getString(R.string.link_audio));
+        padfiles.add(getString(R.string.off));
+        ArrayAdapter<String> adapter_file = new ArrayAdapter<>(getContext(), R.layout.my_spinner, padfiles);
         adapter_file.setDropDownViewResource(R.layout.my_spinner);
         popupPad_file.setAdapter(adapter_file);
 
@@ -157,7 +156,7 @@ public class PopUpPadFragment extends DialogFragment {
             Log.d("d","Error setting pad values");
         }
 
-        processSong.processKey(getActivity(), preferences, storageAccess);
+        processSong.processKey(getContext(), preferences, storageAccess);
         popupPad_key.setSelection(FullscreenActivity.keyindex);
 
         // Set the listeners
@@ -181,11 +180,11 @@ public class PopUpPadFragment extends DialogFragment {
             PopUpEditSongFragment.prepareSongXML();
 
             if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
-                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(), storageAccess, preferences, nonOpenSongSQLiteHelper.getSongId());
-                nonOpenSongSQLiteHelper.updateSong(getActivity(), storageAccess, preferences, nonOpenSongSQLite);
+                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getContext());
+                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getContext(), storageAccess, preferences, nonOpenSongSQLiteHelper.getSongId());
+                nonOpenSongSQLiteHelper.updateSong(getContext(), storageAccess, preferences, nonOpenSongSQLite);
             } else {
-                PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+                PopUpEditSongFragment.justSaveSongXML(getContext(), preferences);
             }
             // IV - Start/Stop of pad does not need a song load
         }
@@ -205,24 +204,24 @@ public class PopUpPadFragment extends DialogFragment {
 
     private void startenabled() {
         validpad = false;
-        Uri uri = storageAccess.fixLocalisedUri(getActivity(), preferences, StaticVariables.mLinkAudio);
-        boolean isvalid = storageAccess.uriExists(getActivity(), uri);
+        Uri uri = storageAccess.fixLocalisedUri(getContext(), preferences, StaticVariables.mLinkAudio);
+        boolean isvalid = storageAccess.uriExists(getContext(), uri);
 
         if (popupPad_file.getSelectedItemPosition() == 0 && popupPad_key.getSelectedItemPosition() > 0) {
             validpad = true;
         } else if (popupPad_file.getSelectedItemPosition() == 0 && popupPad_key.getSelectedItemPosition() < 1) {
-            text = getResources().getString(R.string.pad_choose_key);
+            text = getString(R.string.pad_choose_key);
             validpad = false;
 
         } else if (popupPad_file.getSelectedItemPosition() == 1 && isvalid) {
             validpad = true;
         } else if (popupPad_file.getSelectedItemPosition() == 1 && !isvalid) {
             validpad = false;
-            text = getResources().getString(R.string.link_audio) + " - " + getResources().getString(R.string.notset);
+            text = getString(R.string.link_audio) + " - " + getString(R.string.notset);
 
         } else if (popupPad_file.getSelectedItemPosition() == 2) {
             validpad = false;
-            text = getResources().getString(R.string.notset);
+            text = getString(R.string.notset);
         }
     }
 
@@ -284,13 +283,13 @@ public class PopUpPadFragment extends DialogFragment {
 
         public void onStopTrackingTouch(SeekBar seekBar) {
             int temp_padvol = popupPad_volume.getProgress();
-            preferences.setMyPreferenceFloat(getActivity(),"padVol",(float)temp_padvol/100.0f);
+            preferences.setMyPreferenceFloat(getContext(),"padVol",(float)temp_padvol/100.0f);
             if (popupPad_pan.getProgress() == 0) {
-                preferences.setMyPreferenceString(getActivity(),"padPan","L");
+                preferences.setMyPreferenceString(getContext(),"padPan","L");
             } else if (popupPad_pan.getProgress() == 2) {
-                preferences.setMyPreferenceString(getActivity(),"padPan","R");
+                preferences.setMyPreferenceString(getContext(),"padPan","R");
             } else {
-                preferences.setMyPreferenceString(getActivity(),"padPan","C");
+                preferences.setMyPreferenceString(getContext(),"padPan","C");
             }
         }
     }
@@ -306,9 +305,9 @@ public class PopUpPadFragment extends DialogFragment {
         protected void onPostExecute(String s) {
             // Set the pad / backing track
             try {
-                if (StaticVariables.mPadFile.equals(getResources().getString(R.string.off))) {
+                if (StaticVariables.mPadFile.equals(getString(R.string.off))) {
                     popupPad_file.setSelection(2);
-                } else if (StaticVariables.mPadFile.equals(getResources().getString(R.string.link_audio)) && !StaticVariables.mLinkAudio.isEmpty()) {
+                } else if (StaticVariables.mPadFile.equals(getString(R.string.link_audio)) && !StaticVariables.mLinkAudio.isEmpty()) {
                     popupPad_file.setSelection(1);
                 } else {
                     popupPad_file.setSelection(0);
@@ -323,11 +322,11 @@ public class PopUpPadFragment extends DialogFragment {
                 }
 
                 // Set the pad volume and pan
-                int temp_padvol = (int) (100 * preferences.getMyPreferenceFloat(getActivity(),"padVol",1.0f));
+                int temp_padvol = (int) (100 * preferences.getMyPreferenceFloat(getContext(),"padVol",1.0f));
                 popupPad_volume.setProgress(temp_padvol);
                 String text = temp_padvol + " %";
                 popupPad_volume_text.setText(text);
-                switch (preferences.getMyPreferenceString(getActivity(),"padPan","C")) {
+                switch (preferences.getMyPreferenceString(getContext(),"padPan","C")) {
                     case "L":
                         popupPad_pan_text.setText("L");
                         popupPad_pan.setProgress(0);
@@ -355,10 +354,10 @@ public class PopUpPadFragment extends DialogFragment {
                                    int position, long id) {
             if (position == 1) {
                 if (StaticVariables.mLinkAudio != null && StaticVariables.mLinkAudio.isEmpty()) {
-                    StaticVariables.mPadFile = getResources().getString(R.string.link_audio);
+                    StaticVariables.mPadFile = getString(R.string.link_audio);
                     //popupPad_file.setSelection(0);
-                    StaticVariables.myToastMessage = getResources().getString(R.string.notset);
-                    ShowToast.showToast(getActivity());
+                    StaticVariables.myToastMessage = getString(R.string.notset);
+                    ShowToast.showToast(getContext());
                     // Try opening the link file popup to get the user to set one
                     if (mListener != null) {
                         FullscreenActivity.whattodo = "page_links";
@@ -373,11 +372,11 @@ public class PopUpPadFragment extends DialogFragment {
             }
             PopUpEditSongFragment.prepareSongXML();
             if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
-                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
-                nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
+                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getContext());
+                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getContext(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+                nonOpenSongSQLiteHelper.updateSong(getContext(),storageAccess,preferences,nonOpenSongSQLite);
             } else {
-                PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+                PopUpEditSongFragment.justSaveSongXML(getContext(), preferences);
             }
         }
 
@@ -405,7 +404,7 @@ public class PopUpPadFragment extends DialogFragment {
             }
 
             if (((StaticVariables.pad1Playing && !StaticVariables.pad1Fading) || (StaticVariables.pad2Playing & !StaticVariables.pad2Fading))) {
-                text = getResources().getString(R.string.stop);
+                text = getString(R.string.stop);
             } else {
                 text = "Start";
             }

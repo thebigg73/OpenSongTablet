@@ -17,8 +17,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpMenuSettingsFragment extends DialogFragment {
 
     static PopUpMenuSettingsFragment newInstance() {
@@ -71,10 +69,10 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_menusettings, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.menu_settings));
+        title.setText(getString(R.string.menu_settings));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -93,17 +91,17 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         alphabeticalSize_TextView = V.findViewById(R.id.alphabeticalSize_TextView);
         alphabeticalSizeGroup = V.findViewById(R.id.alphabeticalSizeGroup);
 
-        int pos = preferences.getMyPreferenceInt(getActivity(), "menuSize", 250);
+        int pos = preferences.getMyPreferenceInt(getContext(), "menuSize", 250);
         scale = pos + " px";
         pos = (int) (((float) pos -150)/50.0f);
         scalemenu_SeekBar.setProgress(pos);
         scalemenu_TextView.setText(scale);
-        gesturesMenuSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"swipeForMenus",true));
-        showSetTickBoxInSongMenu.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"songMenuSetTicksShow",true));
-        showAlphabetInSongMenu.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"songMenuAlphaIndexShow",true));
-        assignVisibility(alphabeticalSizeGroup, preferences.getMyPreferenceBoolean(getActivity(),"songMenuAlphaIndexShow",true));
-        alphabeticalSize_SeekBar.setProgress(textSizeFloatToInt(preferences.getMyPreferenceFloat(getActivity(),"songMenuAlphaIndexSize",14.0f)));
-        String s = ((int) preferences.getMyPreferenceFloat(getActivity(),"songMenuAlphaIndexSize",14.0f)) + "sp";
+        gesturesMenuSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"swipeForMenus",true));
+        showSetTickBoxInSongMenu.setChecked(preferences.getMyPreferenceBoolean(getContext(),"songMenuSetTicksShow",true));
+        showAlphabetInSongMenu.setChecked(preferences.getMyPreferenceBoolean(getContext(),"songMenuAlphaIndexShow",true));
+        assignVisibility(alphabeticalSizeGroup, preferences.getMyPreferenceBoolean(getContext(),"songMenuAlphaIndexShow",true));
+        alphabeticalSize_SeekBar.setProgress(textSizeFloatToInt(preferences.getMyPreferenceFloat(getContext(),"songMenuAlphaIndexSize",14.0f)));
+        String s = ((int) preferences.getMyPreferenceFloat(getContext(),"songMenuAlphaIndexSize",14.0f)) + "sp";
         alphabeticalSize_TextView.setText(s);
 
         // Set up the listeners
@@ -121,7 +119,7 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int i = (scalemenu_SeekBar.getProgress()*50) + 150;
-                preferences.setMyPreferenceInt(getActivity(),"menuSize",i);
+                preferences.setMyPreferenceInt(getContext(),"menuSize",i);
                 if (mListener!=null) {
                     mListener.resizeDrawers();
                 }
@@ -130,19 +128,19 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         });
         gesturesMenuSwipeButton.setOnCheckedChangeListener((compoundButton, b) -> {
             // IV - Was previous set to true - changed to set from the button
-            preferences.setMyPreferenceBoolean(getActivity(),"swipeForMenus",b);
+            preferences.setMyPreferenceBoolean(getContext(),"swipeForMenus",b);
             if (mListener!=null) {
                 mListener.toggleDrawerSwipe();
             }
         });
         showSetTickBoxInSongMenu.setOnCheckedChangeListener((compoundButton, b) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"songMenuSetTicksShow",b);
+            preferences.setMyPreferenceBoolean(getContext(),"songMenuSetTicksShow",b);
             if (mListener!=null) {
                 mListener.prepareSongMenu();
             }
         });
         showAlphabetInSongMenu.setOnCheckedChangeListener((compoundButton, b) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"songMenuAlphaIndexShow",b);
+            preferences.setMyPreferenceBoolean(getContext(),"songMenuAlphaIndexShow",b);
             assignVisibility(alphabeticalSizeGroup,b);
             if (mListener!=null) {
                 mListener.prepareSongMenu();
@@ -164,7 +162,7 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                preferences.setMyPreferenceFloat(getActivity(),"songMenuAlphaIndexSize",(float) seekBar.getProgress()+8);
+                preferences.setMyPreferenceFloat(getContext(),"songMenuAlphaIndexSize",(float) seekBar.getProgress()+8);
                 if (mListener!=null) {
                     mListener.prepareSongMenu();
                 }

@@ -49,7 +49,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
 
@@ -111,25 +110,25 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         String mTitle;
         switch (FullscreenActivity.whattodo) {
             case "chordie":
-                mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.chordiesearch);
+                mTitle = getString(R.string.chordiesearch);
                 break;
             case "songselect":
-                mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.songselect);
+                mTitle = getString(R.string.songselect);
                 break;
             case "worshiptogether":
-                mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.worshiptogether);
+                mTitle = getString(R.string.worshiptogether);
                 break;
             case "ukutabs":
-                mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.ukutabs);
+                mTitle = getString(R.string.ukutabs);
                 break;
             case "worshipready":
-                mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.worshipready);
+                mTitle = getString(R.string.worshipready);
                 break;
             case "holychords":
-                mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.holychords);
+                mTitle = getString(R.string.holychords);
                 break;
             default:
-                mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.ultimateguitarsearch);
+                mTitle = getString(R.string.ultimateguitarsearch);
                 break;
         }
         if (getDialog()!=null) {
@@ -143,7 +142,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
             try {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                CustomAnimations.animateFAB(closeMe,getContext());
                 closeMe.setEnabled(false);
                 dismiss();
             } catch (Exception e) {
@@ -282,7 +281,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         webresults_WebView.setScrollbarFadingEnabled(false);
         webresults_WebView.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
         try {
-            Objects.requireNonNull(getActivity()).registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+            requireActivity().registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         } catch (Exception e) {
             Log.d("d","Error registering download complete listener");
         }
@@ -295,7 +294,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     searchresults_RelativeLayout.setVisibility(View.GONE);
                     StaticVariables.myToastMessage = "Downloading...";
                     saveSong_Button.setEnabled(false);
-                    ShowToast.showToast(getActivity());
+                    ShowToast.showToast(getContext());
 
                     String cookie = CookieManager.getInstance().getCookie(url);
 
@@ -307,7 +306,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
                     File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename);
                     downloadedFile = Uri.fromFile(file);
-                    DownloadManager dm = (DownloadManager) Objects.requireNonNull(getActivity()).getSystemService(DOWNLOAD_SERVICE);
+                    DownloadManager dm = (DownloadManager) requireActivity().getSystemService(DOWNLOAD_SERVICE);
                     request.addRequestHeader("Cookie", cookie);
                     if (dm != null) {
                         dm.enqueue(request);
@@ -330,7 +329,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 setFileNameAndFolder();
             }
             try {
-                Objects.requireNonNull(getActivity()).unregisterReceiver(onComplete);
+                requireActivity().unregisterReceiver(onComplete);
             } catch (Exception e) {
                 Log.d("d","Error unregistering receiver");
             }
@@ -361,8 +360,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         // Need to run a async task to grab html text
         grabSongData_ProgressBar.setVisibility(View.VISIBLE);
         weblink = webresults_WebView.getUrl();
-        StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getText(R.string.chordproprogress).toString();
-        ShowToast.showToast(getActivity());
+        StaticVariables.myToastMessage = getText(R.string.chordproprogress).toString();
+        ShowToast.showToast(getContext());
         DownloadWebTextTask task = new DownloadWebTextTask();
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, weblink);
 
@@ -594,7 +593,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     if (endpos==-1) {
                         endpos = l.length();
                     }
-                    if (startpos > -1 && endpos > -1 && startpos < endpos) {
+                    if (startpos > -1 && startpos < endpos) {
                         String chordbit = l.substring(startpos+2,endpos);
                         if (!chordbit.isEmpty()) {
                             newline.append("[").append(l, startpos + 2, endpos).append("]");
@@ -611,7 +610,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     if (endpos==-1) {
                         endpos = l.length();
                     }
-                    if (startpos > -1 && endpos > -1 && startpos < endpos) {
+                    if (startpos > -1 && startpos < endpos) {
                         newline.append(l, startpos + 2, endpos);
                         //newline.append(l.substring(startpos + 2, endpos));
                     }
@@ -1434,7 +1433,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         } else {
             // Last check of best practice OpenSong formatting
-            newtext = textSongConvert.convertText(getActivity(),newtext);
+            newtext = textSongConvert.convertText(getContext(),newtext);
 
             filecontents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<song>\n<title>" + PopUpEditSongFragment.parseToHTMLEntities(filename)
                     + "</title>\n<author>"
@@ -1445,15 +1444,15 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         // Get the uri for the new file
         nameoffile = storageAccess.safeFilename(nameoffile);
-        Uri uri_newfile = storageAccess.getUriForItem(getActivity(), preferences, "Songs", whatfolderselected, nameoffile);
+        Uri uri_newfile = storageAccess.getUriForItem(getContext(), preferences, "Songs", whatfolderselected, nameoffile);
         Uri uri_newpdffile;
 
         // Check the uri exists for the outputstream to be valid
-        storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri_newfile, null,
+        storageAccess.lollipopCreateFileForOutputStream(getContext(), preferences, uri_newfile, null,
                 "Songs", whatfolderselected, nameoffile);
 
         // Get the outputstream
-        OutputStream outputStream = storageAccess.getOutputStream(getActivity(),uri_newfile);
+        OutputStream outputStream = storageAccess.getOutputStream(getContext(),uri_newfile);
         OutputStream outputStreamPDF = null;
 
         // Get the inputstream of the downloaded file song select
@@ -1462,31 +1461,31 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         // Get the song select pdf file stuff
         if (FullscreenActivity.whattodo.equals("songselect") && downloadcomplete) {
             nameofpdffile = storageAccess.safeFilename(nameofpdffile);
-            uri_newpdffile = storageAccess.getUriForItem(getActivity(), preferences, "Songs", whatfolderselected, nameofpdffile);
+            uri_newpdffile = storageAccess.getUriForItem(getContext(), preferences, "Songs", whatfolderselected, nameofpdffile);
 
             // Check the uri exists for the outputstream to be valid
-            storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri_newpdffile, null,
+            storageAccess.lollipopCreateFileForOutputStream(getContext(), preferences, uri_newpdffile, null,
                     "Songs", whatfolderselected, nameofpdffile);
 
-            outputStreamPDF = storageAccess.getOutputStream(getActivity(),uri_newpdffile);
-            inputStream = storageAccess.getInputStream(getActivity(),downloadedFile);
+            outputStreamPDF = storageAccess.getOutputStream(getContext(),uri_newpdffile);
+            inputStream = storageAccess.getInputStream(getContext(),downloadedFile);
         }
 
         // Get the database ready
-        SQLiteHelper sqLiteHelper = new SQLiteHelper(getActivity());
+        SQLiteHelper sqLiteHelper = new SQLiteHelper(getContext());
 
         try {
             if (filecontents!=null && !filecontents.equals("")) {
                 storageAccess.writeFileFromString(filecontents,outputStream);
                 // Add song to the database
-                sqLiteHelper.createSong(getActivity(),whatfolderselected,nameoffile);
+                sqLiteHelper.createSong(getContext(),whatfolderselected,nameoffile);
             }
 
             if (FullscreenActivity.whattodo.equals("songselect") && downloadcomplete && outputStreamPDF!=null && inputStream!=null) {
                 // Copy the orignal pdf file
                 storageAccess.copyFile(inputStream,outputStreamPDF);
                 // Add song to the database
-                sqLiteHelper.createSong(getActivity(),whatfolderselected,nameofpdffile);
+                sqLiteHelper.createSong(getContext(),whatfolderselected,nameofpdffile);
                 }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1507,8 +1506,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             mListener.loadSong();
             // IV - Moved after load to better report details of the song
             // If we are autologging CCLI information
-            if (preferences.getMyPreferenceBoolean(getActivity(),"ccliAutomaticLogging",false)) {
-                PopUpCCLIFragment.addUsageEntryToLog(getActivity(), preferences, StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename,
+            if (preferences.getMyPreferenceBoolean(getContext(),"ccliAutomaticLogging",false)) {
+                PopUpCCLIFragment.addUsageEntryToLog(getContext(), preferences, StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename,
                     StaticVariables.songfilename, StaticVariables.mAuthor,
                     StaticVariables.mCopyright, StaticVariables.mCCLI, "1"); // Created
             }
@@ -1569,8 +1568,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             try {
                 String address = webresults_WebView.getUrl();
                 if (address != null && (address.contains("/tab-pro/") || address.contains("/chords-pro/"))) {
-                    StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getText(R.string.not_allowed).toString();
-                    ShowToast.showToast(getActivity());
+                    StaticVariables.myToastMessage = getText(R.string.not_allowed).toString();
+                    ShowToast.showToast(getContext());
                     grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
                 } else if (result != null && (result.contains("<textarea id=\"chordproContent\"") ||
                 result.contains("<h1 class=\"titleLeft\""))) {
@@ -1607,15 +1606,15 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     setFileNameAndFolder();
 
                 } else {
-                    StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getText(R.string.chordpro_false).toString();
-                    ShowToast.showToast(getActivity());
+                    StaticVariables.myToastMessage = getText(R.string.chordpro_false).toString();
+                    ShowToast.showToast(getContext());
                     grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
                 }
             } catch (Exception | OutOfMemoryError e) {
                 e.printStackTrace();
-                if (getActivity()!=null) {
-                    StaticVariables.myToastMessage = getActivity().getResources().getText(R.string.chordpro_false).toString();
-                    ShowToast.showToast(getActivity());
+                if (getContext()!=null) {
+                    StaticVariables.myToastMessage = getContext().getResources().getText(R.string.chordpro_false).toString();
+                    ShowToast.showToast(getContext());
                     grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
                 }
             }
@@ -1628,7 +1627,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         @Override
         protected String doInBackground(Object... objects) {
             try {
-                newtempfolders = songFolders.prepareSongFolders(getActivity(),preferences);
+                newtempfolders = songFolders.prepareSongFolders(getContext(),preferences);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1638,7 +1637,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         protected void onPostExecute(String s) {
             try {
                 // The song folder
-                ArrayAdapter<String> folders = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, newtempfolders);
+                ArrayAdapter<String> folders = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, newtempfolders);
                 folders.setDropDownViewResource(R.layout.my_spinner);
                 choosefolder_Spinner.setAdapter(folders);
 
@@ -1685,18 +1684,18 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         @Override
         protected void onPostExecute(String s) {
-            if (getActivity()!=null) {
+            if (getContext()!=null) {
                 if (filecontents != null && !filecontents.equals("")) {
                     //TODO
                     // setFileNameAndFolder();
                 } else {
                     if (downloadcomplete) {
-                        StaticVariables.myToastMessage = getActivity().getString(R.string.pdfonly);
+                        StaticVariables.myToastMessage = getContext().getString(R.string.pdfonly);
                     } else {
-                        StaticVariables.myToastMessage = getActivity().getResources().getText(R.string.chordpro_false).toString();
+                        StaticVariables.myToastMessage = getContext().getResources().getText(R.string.chordpro_false).toString();
                     }
 
-                    ShowToast.showToast(getActivity());
+                    ShowToast.showToast(getContext());
                     grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
                 }
             }

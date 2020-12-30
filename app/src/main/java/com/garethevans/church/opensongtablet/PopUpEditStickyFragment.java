@@ -17,8 +17,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpEditStickyFragment extends DialogFragment {
 
     static PopUpEditStickyFragment newInstance() {
@@ -70,16 +68,16 @@ public class PopUpEditStickyFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_editsticky, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.stickynotes_edit));
+        title.setText(getString(R.string.stickynotes_edit));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(saveMe,getActivity());
+            CustomAnimations.animateFAB(saveMe,getContext());
             saveMe.setEnabled(false);
             doSave();
         });
@@ -97,18 +95,18 @@ public class PopUpEditStickyFragment extends DialogFragment {
 
         // Set the text if it exists
         editStickyText.setText(StaticVariables.mNotes);
-        int sw = preferences.getMyPreferenceInt(getActivity(),"stickyWidth",400);
+        int sw = preferences.getMyPreferenceInt(getContext(),"stickyWidth",400);
         String s = ""+sw;
         stickyNotesWidth_TextView.setText(s);
         stickyNotesWidth_SeekBar.setProgress(sw-200);
-        int val = (int) (preferences.getMyPreferenceFloat(getActivity(),"stickyOpacity",0.8f) * 10) - 2;
+        int val = (int) (preferences.getMyPreferenceFloat(getContext(),"stickyOpacity",0.8f) * 10) - 2;
         stickyNotesOpacity_SeekBar.setProgress(val);
-        s =  ((int) (preferences.getMyPreferenceFloat(getActivity(),"stickyOpacity",0.8f)*100)) + "%";
+        s =  ((int) (preferences.getMyPreferenceFloat(getContext(),"stickyOpacity",0.8f)*100)) + "%";
         stickyNotesOpacity_TextView.setText(s);
         // Set the switch up based on preferences
-        stickyTextSize.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"stickyLargeFont",true));
+        stickyTextSize.setChecked(preferences.getMyPreferenceBoolean(getContext(),"stickyLargeFont",true));
 
-        stickyTextSize.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(),"stickyLargeFont",b));
+        stickyTextSize.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getContext(),"stickyLargeFont",b));
 
         stickyNotesWidth_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -125,7 +123,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int i = seekBar.getProgress() + 200;
-                preferences.setMyPreferenceInt(getActivity(),"stickyWidth",i);
+                preferences.setMyPreferenceInt(getContext(),"stickyWidth",i);
             }
         });
         stickyNotesOpacity_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -144,7 +142,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 float i = (int)((seekBar.getProgress()+2.0f)/10.0f);
-                preferences.setMyPreferenceFloat(getActivity(),"stickyOpacity",i);
+                preferences.setMyPreferenceFloat(getContext(),"stickyOpacity",i);
             }
         });
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
@@ -158,11 +156,11 @@ public class PopUpEditStickyFragment extends DialogFragment {
         PopUpEditSongFragment.prepareSongXML();
 
         if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-            NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
-            NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
-            nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
+            NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getContext());
+            NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getContext(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+            nonOpenSongSQLiteHelper.updateSong(getContext(),storageAccess,preferences,nonOpenSongSQLite);
         } else {
-            PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+            PopUpEditSongFragment.justSaveSongXML(getContext(), preferences);
         }
 
         if (mListener!=null) {

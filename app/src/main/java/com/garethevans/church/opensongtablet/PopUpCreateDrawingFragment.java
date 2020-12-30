@@ -24,7 +24,6 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.OutputStream;
-import java.util.Objects;
 
 public class PopUpCreateDrawingFragment extends DialogFragment {
 
@@ -202,7 +201,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
     private void setHighlighterFile() {
         // If this file already exists, load it up!
-        String hname = processSong.getHighlighterName(Objects.requireNonNull(getActivity()));
+        String hname = processSong.getHighlighterName(requireContext());
         uri = storageAccess.getUriForItem(getActivity(), preferences, "Highlighter", "", hname);
         if (storageAccess.uriExists(getActivity(),uri)) {
             drawView.loadImage(getActivity(),uri);
@@ -498,7 +497,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
             if (FullscreenActivity.saveHighlight) {
                 FullscreenActivity.highlightOn = true;
                 drawView.setDrawingCacheEnabled(true);
-                String hname = processSong.getHighlighterName(Objects.requireNonNull(getActivity()));
+                String hname = processSong.getHighlighterName(requireContext());
                 newUri = storageAccess.getUriForItem(getActivity(), preferences,
                         "Highlighter", "", hname);
 

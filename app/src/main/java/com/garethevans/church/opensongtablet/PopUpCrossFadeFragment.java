@@ -14,8 +14,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpCrossFadeFragment extends DialogFragment {
 
     static PopUpCrossFadeFragment newInstance() {
@@ -46,7 +44,7 @@ public class PopUpCrossFadeFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_crossfadetime, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.crossfade_time));
+        title.setText(getString(R.string.crossfade_time));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
             CustomAnimations.animateFAB(closeMe,getActivity());

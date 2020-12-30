@@ -25,7 +25,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PopUpSongRenameFragment extends DialogFragment {
     // This is a quick popup to enter a new song folder name, or rename a current one, or duplicate
@@ -59,25 +58,25 @@ public class PopUpSongRenameFragment extends DialogFragment {
             }
         }
 
-        Uri from = storageAccess.getUriForItem(getActivity(), preferences, "Songs", tempOldFolder, oldsongname);
-        Uri to = storageAccess.getUriForItem(getActivity(), preferences, "Songs", tempNewFolder, tempNewSong);
+        Uri from = storageAccess.getUriForItem(getContext(), preferences, "Songs", tempOldFolder, oldsongname);
+        Uri to = storageAccess.getUriForItem(getContext(), preferences, "Songs", tempNewFolder, tempNewSong);
 
-        if (!storageAccess.uriExists(getActivity(), to)) {
+        if (!storageAccess.uriExists(getContext(), to)) {
             try {
-                InputStream inputStream = storageAccess.getInputStream(getActivity(), from);
+                InputStream inputStream = storageAccess.getInputStream(getContext(), from);
 
                 // Check the uri exists for the outputstream to be valid
-                storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, to, null,
+                storageAccess.lollipopCreateFileForOutputStream(getContext(), preferences, to, null,
                         "Songs", tempNewFolder, tempNewSong);
 
-                OutputStream outputStream = storageAccess.getOutputStream(getActivity(), to);
+                OutputStream outputStream = storageAccess.getOutputStream(getContext(), to);
 
                 // Copy
                 storageAccess.copyFile(inputStream, outputStream);
 
                 // Remove the original if it is a new file location and we aren't duplicating
                 if (!FullscreenActivity.whattodo.equals("duplicate") && to.getPath() != null && !to.getPath().equals(from.getPath())) {
-                    storageAccess.deleteFile(getActivity(), from);
+                    storageAccess.deleteFile(getContext(), from);
                 }
 
                 StaticVariables.whichSongFolder = tempNewFolder;
@@ -85,9 +84,9 @@ public class PopUpSongRenameFragment extends DialogFragment {
 
                 // Update the SQLite database
                 if (FullscreenActivity.whattodo.equals("duplicate")) {
-                    sqLiteHelper.createSong(getActivity(),StaticVariables.whichSongFolder,StaticVariables.songfilename);
+                    sqLiteHelper.createSong(getContext(),StaticVariables.whichSongFolder,StaticVariables.songfilename);
                     String songId = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
-                    sqLite = sqLiteHelper.getSong(getActivity(), songId);
+                    sqLite = sqLiteHelper.getSong(getContext(), songId);
                     sqLite.setFolder(StaticVariables.whichSongFolder);
                     sqLite.setLyrics(StaticVariables.mLyrics);
                     sqLite.setTitle(StaticVariables.mTitle);
@@ -110,7 +109,7 @@ public class PopUpSongRenameFragment extends DialogFragment {
                     sqLite.setSongid(songId);
                     sqLite.setFolder(StaticVariables.whichSongFolder);
                     sqLite.setFilename(StaticVariables.songfilename);
-                    sqLiteHelper.updateSong(getActivity(), sqLite);
+                    sqLiteHelper.updateSong(getContext(), sqLite);
                 }
 
                 FullscreenActivity.needtorefreshsongmenu = true;
@@ -129,8 +128,8 @@ public class PopUpSongRenameFragment extends DialogFragment {
             }
 
         } else {
-            StaticVariables.myToastMessage = getResources().getString(R.string.file_exists);
-            ShowToast.showToast(getActivity());
+            StaticVariables.myToastMessage = getString(R.string.file_exists);
+            ShowToast.showToast(getContext());
 
         }
     }
@@ -177,17 +176,17 @@ public class PopUpSongRenameFragment extends DialogFragment {
         if (FullscreenActivity.whattodo.equals("duplicate")) {
             title.setText(R.string.duplicate);
         } else {
-            title.setText(getResources().getString(R.string.rename));
+            title.setText(getString(R.string.rename));
         }
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(saveMe,getActivity());
+            CustomAnimations.animateFAB(saveMe,getContext());
             doSave();
         });
 
@@ -196,9 +195,9 @@ public class PopUpSongRenameFragment extends DialogFragment {
         preferences = new Preferences();
 
         // Get the song details
-        sqLiteHelper = new SQLiteHelper(getActivity());
+        sqLiteHelper = new SQLiteHelper(getContext());
         String songId = StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
-        sqLite = sqLiteHelper.getSong(getActivity(),songId);
+        sqLite = sqLiteHelper.getSong(getContext(),songId);
 
         // Initialise the views
         newFolderSpinner = V.findViewById(R.id.newFolderSpinner);
@@ -246,14 +245,14 @@ public class PopUpSongRenameFragment extends DialogFragment {
 
         @Override
         protected String doInBackground(Object... objects) {
-            foldernames = songFolders.prepareSongFolders(getActivity(),preferences);
+            foldernames = songFolders.prepareSongFolders(getContext(),preferences);
             return null;
         }
 
         protected void onPostExecute(String s) {
             // The song folder
             foldernames.add(0, getString(R.string.mainfoldername));
-            ArrayAdapter<String> folders = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, foldernames);
+            ArrayAdapter<String> folders = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, foldernames);
             folders.setDropDownViewResource(R.layout.my_spinner);
             newFolderSpinner.setAdapter(folders);
 

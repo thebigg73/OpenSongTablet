@@ -63,10 +63,10 @@ public class PopUpStickyFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_page_sticky, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getResources().getString(R.string.stickynotes));
+        title.setText(getString(R.string.stickynotes));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });

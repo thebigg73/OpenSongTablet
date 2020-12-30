@@ -19,7 +19,6 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PopUpShowMidiMessageFragment extends DialogFragment {
 
@@ -75,10 +74,10 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_showmidimessages, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getResources().getString(R.string.midi));
+        title.setText(getString(R.string.midi));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe, getActivity());
+            CustomAnimations.animateFAB(closeMe, getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -130,7 +129,7 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
         }
         if (!success) {
             StaticVariables.myToastMessage = getString(R.string.midi_error);
-            ShowToast.showToast(getActivity());
+            ShowToast.showToast(getContext());
         }
     }
 
@@ -145,7 +144,7 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
             }
         } else {
             StaticVariables.myToastMessage = getString(R.string.nothighenoughapi);
-            ShowToast.showToast(getActivity());
+            ShowToast.showToast(getContext());
         }
         try {
             dismiss();
@@ -165,9 +164,9 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
         String[] bits = StaticVariables.mMidi.trim().split("\n");
         try {
             for (String s : bits) {
-                if (s!=null && !s.equals("") && !s.isEmpty() && getActivity()!=null) {
+                if (s!=null && !s.equals("") && !s.isEmpty() && getContext()!=null) {
                     // Get a human readable version of the midi code
-                    String hr = m.getReadableStringFromHex(s,getActivity());
+                    String hr = m.getReadableStringFromHex(s,getContext());
                     String message = hr + "\n" + "(" + s + ")";
                     songMidiMessagesNice.add(message);
                     songMidiMessages.add(s);
@@ -176,6 +175,6 @@ public class PopUpShowMidiMessageFragment extends DialogFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        midiMessagesAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),R.layout.my_spinner, songMidiMessagesNice);
+        midiMessagesAdapter = new ArrayAdapter<>(requireContext(),R.layout.my_spinner, songMidiMessagesNice);
     }
 }

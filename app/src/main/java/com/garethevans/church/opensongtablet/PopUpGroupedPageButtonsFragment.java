@@ -14,8 +14,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpGroupedPageButtonsFragment extends DialogFragment {
 
     static PopUpGroupedPageButtonsFragment newInstance() {
@@ -74,10 +72,10 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_groupedpagebuttons, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.pagebuttons));
+        title.setText(getString(R.string.pagebuttons));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -110,16 +108,16 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         switch (StaticVariables.mDisplayTheme) {
             case "dark":
             default:
-                 color = preferences.getMyPreferenceInt(getActivity(),"dark_pageButtonsColor",StaticVariables.purplyblue);
+                 color = preferences.getMyPreferenceInt(getContext(),"dark_pageButtonsColor",StaticVariables.purplyblue);
                 break;
             case "light":
-                color = preferences.getMyPreferenceInt(getActivity(),"light_pageButtonsColor",StaticVariables.purplyblue);
+                color = preferences.getMyPreferenceInt(getContext(),"light_pageButtonsColor",StaticVariables.purplyblue);
                 break;
             case "custom1":
-                color = preferences.getMyPreferenceInt(getActivity(),"custom1_pageButtonsColor",StaticVariables.purplyblue);
+                color = preferences.getMyPreferenceInt(getContext(),"custom1_pageButtonsColor",StaticVariables.purplyblue);
                 break;
             case "custom2":
-                color = preferences.getMyPreferenceInt(getActivity(),"custom2_pageButtonsColor",StaticVariables.purplyblue);
+                color = preferences.getMyPreferenceInt(getContext(),"custom2_pageButtonsColor",StaticVariables.purplyblue);
                 break;
         }
 
@@ -162,10 +160,10 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
             dismiss();
         });
         group_pages.setOnClickListener(view -> openAction("page_pageselect"));
-        group_custom1.setOnClickListener(view -> customButtonAction(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom1Action","")));
-        group_custom2.setOnClickListener(view -> customButtonAction(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom2Action","")));
-        group_custom3.setOnClickListener(view -> customButtonAction(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom3Action","")));
-        group_custom4.setOnClickListener(view -> customButtonAction(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom4Action","")));
+        group_custom1.setOnClickListener(view -> customButtonAction(preferences.getMyPreferenceString(getContext(),"pageButtonCustom1Action","")));
+        group_custom2.setOnClickListener(view -> customButtonAction(preferences.getMyPreferenceString(getContext(),"pageButtonCustom2Action","")));
+        group_custom3.setOnClickListener(view -> customButtonAction(preferences.getMyPreferenceString(getContext(),"pageButtonCustom3Action","")));
+        group_custom4.setOnClickListener(view -> customButtonAction(preferences.getMyPreferenceString(getContext(),"pageButtonCustom4Action","")));
 
         // Set longclick listeners
         group_pad.setOnLongClickListener(view -> {
@@ -220,10 +218,10 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
     private void setupQuickLaunchButtons() {
         // Based on the user's choices for the custom quicklaunch buttons,
         // set the appropriate icons and onClick listeners
-        group_custom1.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(requireActivity(), preferences.getMyPreferenceString(getActivity(),"pageButtonCustom1Action","")));
-        group_custom2.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(requireActivity(), preferences.getMyPreferenceString(getActivity(),"pageButtonCustom2Action","")));
-        group_custom3.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(requireActivity(), preferences.getMyPreferenceString(getActivity(),"pageButtonCustom3Action","")));
-        group_custom4.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(requireActivity(), preferences.getMyPreferenceString(getActivity(),"pageButtonCustom4Action","")));
+        group_custom1.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(requireContext(), preferences.getMyPreferenceString(getContext(),"pageButtonCustom1Action","")));
+        group_custom2.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(requireContext(), preferences.getMyPreferenceString(getContext(),"pageButtonCustom2Action","")));
+        group_custom3.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(requireContext(), preferences.getMyPreferenceString(getContext(),"pageButtonCustom3Action","")));
+        group_custom4.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(requireContext(), preferences.getMyPreferenceString(getContext(),"pageButtonCustom4Action","")));
     }
 
     private void customButtonAction(String s) {
@@ -248,14 +246,14 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
                 break;
 
             case "showchords":
-                val = preferences.getMyPreferenceBoolean(getActivity(),"displayChords",true);
-                preferences.setMyPreferenceBoolean(getActivity(),"displayChords",!val);
+                val = preferences.getMyPreferenceBoolean(getContext(),"displayChords",true);
+                preferences.setMyPreferenceBoolean(getContext(),"displayChords",!val);
                 saveSongAndLoadIt();
                 break;
 
             case "showlyrics":
-                val = preferences.getMyPreferenceBoolean(getActivity(),"displayLyrics",true);
-                preferences.setMyPreferenceBoolean(getActivity(),"displayLyrics",!val);
+                val = preferences.getMyPreferenceBoolean(getContext(),"displayLyrics",true);
+                preferences.setMyPreferenceBoolean(getContext(),"displayLyrics",!val);
                 saveSongAndLoadIt();
                 break;
         }

@@ -80,10 +80,10 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
         final View V = inflater.inflate(R.layout.popup_swipesettings, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getResources().getString(R.string.swipe));
+        title.setText(getString(R.string.swipe));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -123,11 +123,11 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
         }
 
         // If our max values are smaller than the stored ones, set the stored ones to match
-        if (preferences.getMyPreferenceInt(getActivity(),"swipeMinimumDistance",250)> maxwidth) {
-            preferences.getMyPreferenceInt(getActivity(),"swipeMinimumDistance", maxwidth);
+        if (preferences.getMyPreferenceInt(getContext(),"swipeMinimumDistance",250)> maxwidth) {
+            preferences.getMyPreferenceInt(getContext(),"swipeMinimumDistance", maxwidth);
         }
-        if (preferences.getMyPreferenceInt(getActivity(),"swipeMaxDistanceYError",200)> maxheight) {
-            preferences.getMyPreferenceInt(getActivity(),"swipeMaxDistanceYError", maxheight);
+        if (preferences.getMyPreferenceInt(getContext(),"swipeMaxDistanceYError",200)> maxheight) {
+            preferences.getMyPreferenceInt(getContext(),"swipeMaxDistanceYError", maxheight);
         }
 
         // Set the SeekBar sizes
@@ -196,20 +196,20 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
             }
         });
 
-        gesturesMenuSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"swipeForMenus",true));
+        gesturesMenuSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"swipeForMenus",true));
 
         gesturesMenuSwipeButton.setOnCheckedChangeListener((compoundButton, b) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"swipeForMenus",b);
+            preferences.setMyPreferenceBoolean(getContext(),"swipeForMenus",b);
             if (mListener!=null) {
                 mListener.toggleDrawerSwipe();
             }
         });
 
-        gesturesSongSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"swipeForSongs",true));
+        gesturesSongSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"swipeForSongs",true));
         hideorunhideSettings();
 
         gesturesSongSwipeButton.setOnCheckedChangeListener((compoundButton, b) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"swipeForSongs",b);
+            preferences.setMyPreferenceBoolean(getContext(),"swipeForSongs",b);
             hideorunhideSettings();
         });
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
@@ -221,15 +221,15 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
         // (min speed should be 0.5 secs and max should be 2.0)
         int val = s+100;
         // Multiply this by 1000 to convert to milliseconds for the preferences
-        preferences.setMyPreferenceInt(getActivity(),"swipeMinimumVelocity",val);
+        preferences.setMyPreferenceInt(getContext(),"swipeMinimumVelocity",val);
         speed =  val + " px/s";
     }
 
     private void setSpeed() {
         // Take the preference and subtract 100 (minimum allowed is 100)
-        int s = preferences.getMyPreferenceInt(getActivity(),"swipeMinimumVelocity",600) - 100;
+        int s = preferences.getMyPreferenceInt(getContext(),"swipeMinimumVelocity",600) - 100;
         if (s<0) {
-            preferences.setMyPreferenceInt(getActivity(),"swipeMinimumVelocity",100);
+            preferences.setMyPreferenceInt(getContext(),"swipeMinimumVelocity",100);
             s=0;
         }
         swipespeed_SeekBar.setProgress(s);
@@ -240,16 +240,16 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
     private void getErrorDistance(int d) {
         // Add 100 (minimum)
         d = d+100;
-        preferences.setMyPreferenceInt(getActivity(),"swipeMaxDistanceYError",d);
+        preferences.setMyPreferenceInt(getContext(),"swipeMaxDistanceYError",d);
         errordistance = d + " px";
     }
 
     private void setErrorDistance() {
         // Take the preference and subtract 100 (minimum allowed is 100)
-        int d = preferences.getMyPreferenceInt(getActivity(),"swipeMaxDistanceYError",200) -100;
+        int d = preferences.getMyPreferenceInt(getContext(),"swipeMaxDistanceYError",200) -100;
         if (d<0) {
             d=0;
-            preferences.setMyPreferenceInt(getActivity(),"swipeMaxDistanceYError",100);
+            preferences.setMyPreferenceInt(getContext(),"swipeMaxDistanceYError",100);
         }
         errordistance = (d+100) + " px";
         swipeerror_SeekBar.setProgress(d);
@@ -259,16 +259,16 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
     private void getDistance(int d) {
         // Add 100 (minimum)
         d = d+100;
-        preferences.setMyPreferenceInt(getActivity(),"swipeMinimumDistance",d);
+        preferences.setMyPreferenceInt(getContext(),"swipeMinimumDistance",d);
         distance = d + " px";
     }
 
     private void setDistance() {
         // Take the preference and subtract 100 (minimum allowed is 100)
-        int d = preferences.getMyPreferenceInt(getActivity(),"swipeMinimumDistance",250) -100;
+        int d = preferences.getMyPreferenceInt(getContext(),"swipeMinimumDistance",250) -100;
         if (d<0) {
             d=0;
-            preferences.setMyPreferenceInt(getActivity(),"swipeMinimumDistance",100);
+            preferences.setMyPreferenceInt(getContext(),"swipeMinimumDistance",100);
         }
         distance = (d+100) + " px";
         swipedistance_SeekBar.setProgress(d);
@@ -276,16 +276,16 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
     }
 
     private void swipeAnimate() {
-        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(preferences.getMyPreferenceInt(getActivity(), "swipeMinimumDistance", 250),
-                preferences.getMyPreferenceInt(getActivity(), "swipeMaxDistanceYError", 200));
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(preferences.getMyPreferenceInt(getContext(), "swipeMinimumDistance", 250),
+                preferences.getMyPreferenceInt(getContext(), "swipeMaxDistanceYError", 200));
         swipesimulateion_ImageView.setLayoutParams(llp);
         CustomAnimations.animateSwipe(swipesimulateion_ImageView,
-                preferences.getMyPreferenceInt(getActivity(),"swipeMinimumDistance",250),
-                preferences.getMyPreferenceInt(getActivity(),"swipeMinimumVelocity",600));
+                preferences.getMyPreferenceInt(getContext(),"swipeMinimumDistance",250),
+                preferences.getMyPreferenceInt(getContext(),"swipeMinimumVelocity",600));
     }
 
     private void hideorunhideSettings() {
-        if (preferences.getMyPreferenceBoolean(getActivity(),"swipeForSongs",true)) {
+        if (preferences.getMyPreferenceBoolean(getContext(),"swipeForSongs",true)) {
             swipesettings.setVisibility(View.VISIBLE);
         } else {
             swipesettings.setVisibility(View.GONE);

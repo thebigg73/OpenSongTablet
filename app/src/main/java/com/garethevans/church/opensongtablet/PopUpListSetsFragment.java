@@ -30,7 +30,6 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PopUpListSetsFragment extends DialogFragment {
 
@@ -129,10 +128,10 @@ public class PopUpListSetsFragment extends DialogFragment {
 
             myTitle = getTheTitle();
 
-            Objects.requireNonNull(getActivity()).runOnUiThread(() -> identifyViews(V));
+            requireActivity().runOnUiThread(() -> identifyViews(V));
 
             // Prepare the toast message using the title.  It is cleared if cancel is clicked
-            StaticVariables.myToastMessage = myTitle + " : " + getActivity().getResources().getString(R.string.ok);
+            StaticVariables.myToastMessage = myTitle + " : " + getString(R.string.ok);
 
             // Reset the setname chosen
             StaticVariables.setnamechosen = "";
@@ -143,7 +142,7 @@ public class PopUpListSetsFragment extends DialogFragment {
 
             // Customise the view depending on what we are doing
 
-            getActivity().runOnUiThread(() -> {
+            requireActivity().runOnUiThread(() -> {
                 // Hide/show the stuff depending on what we are doing
                 hideOrShowViews();
 
@@ -161,8 +160,8 @@ public class PopUpListSetsFragment extends DialogFragment {
                 // Try to set the spinners to match the recently used set category
                 boolean done = false;
                 for (int i = 0; i < cats.size(); i++) {
-                    if (cats.get(i).equals(preferences.getMyPreferenceString(getActivity(), "whichSetCategory",
-                            getActivity().getString(R.string.mainfoldername)))) {
+                    if (cats.get(i).equals(preferences.getMyPreferenceString(getContext(), "whichSetCategory",
+                            getString(R.string.mainfoldername)))) {
                         setCategory_Spinner.setSelection(i);
                         originalSetCategory_Spinner.setSelection(i);
                         done = true;
@@ -183,8 +182,8 @@ public class PopUpListSetsFragment extends DialogFragment {
                 // Set the sort button listener
                 sort_FAB.setOnClickListener(view -> {
                     FullscreenActivity.sortAlphabetically = !FullscreenActivity.sortAlphabetically;
-                    filterByCategory(preferences.getMyPreferenceString(getActivity(), "whichSetCategory",
-                            getActivity().getString(R.string.mainfoldername)));
+                    filterByCategory(preferences.getMyPreferenceString(getContext(), "whichSetCategory",
+                            getString(R.string.mainfoldername)));
                 });
 
                 // Set the new category listener
@@ -218,28 +217,28 @@ public class PopUpListSetsFragment extends DialogFragment {
     }
 
     private String getTheTitle() {
-        String myTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.set);
+        String myTitle = getString(R.string.set);
         String mTitle;
         switch (FullscreenActivity.whattodo) {
             default:
             case "loadset":
-                mTitle = myTitle + " - " + getActivity().getResources().getString(R.string.load);
+                mTitle = myTitle + " - " + getString(R.string.load);
                 break;
 
             case "saveset":
-                mTitle = myTitle + " - " + getActivity().getResources().getString(R.string.save);
+                mTitle = myTitle + " - " + getString(R.string.save);
                 break;
 
             case "deleteset":
-                mTitle = myTitle + " - " + getActivity().getResources().getString(R.string.delete);
+                mTitle = myTitle + " - " + getString(R.string.delete);
                 break;
 
             case "exportset":
-                mTitle = myTitle + " - " + getActivity().getResources().getString(R.string.export);
+                mTitle = myTitle + " - " + getString(R.string.export);
                 break;
 
             case "managesets":
-                mTitle = myTitle + " - " + getActivity().getResources().getString(R.string.managesets);
+                mTitle = myTitle + " - " + getString(R.string.managesets);
                 break;
 
         }
@@ -253,7 +252,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         newCategory_EditText = V.findViewById(R.id.newCategory_EditText);
         setListName = V.findViewById(R.id.setListName);
         // Determine the last set name and category
-        String lastSetName = preferences.getMyPreferenceString(getActivity(), "setCurrentLastName", "");
+        String lastSetName = preferences.getMyPreferenceString(getContext(), "setCurrentLastName", "");
         lastSetCategory = "";
         if (lastSetName.contains("__")) {
             String[] bits = lastSetName.split("__");
@@ -262,7 +261,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 lastSetName = bits[1];
             } catch (Exception e) {
                 lastSetCategory = "";
-                lastSetName = preferences.getMyPreferenceString(getActivity(), "setCurrentLastName", "");
+                lastSetName = preferences.getMyPreferenceString(getContext(), "setCurrentLastName", "");
             }
         }
         if (lastSetName != null && lastSetName.length() > 0) {
@@ -285,7 +284,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         title.setText(myTitle);
         closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe, getActivity());
+            CustomAnimations.animateFAB(closeMe, getContext());
             closeMe.setEnabled(false);
             StaticVariables.myToastMessage = "";
             hideKeyboard(newCategory_EditText);
@@ -296,7 +295,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         });
         saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(saveMe, getActivity());
+            CustomAnimations.animateFAB(saveMe, getContext());
             doAction();
         });
 
@@ -355,7 +354,7 @@ public class PopUpListSetsFragment extends DialogFragment {
 
             case "managesets":
                 set_ListView.setVisibility(View.VISIBLE);
-                setCategory_TextView.setText(Objects.requireNonNull(getActivity()).getString(R.string.new_category));
+                setCategory_TextView.setText(getString(R.string.new_category));
                 setCategory.setVisibility(View.VISIBLE);
                 newSetPromptTitle.setVisibility(View.VISIBLE);
                 setListName.setVisibility(View.VISIBLE);
@@ -384,14 +383,14 @@ public class PopUpListSetsFragment extends DialogFragment {
 
     private void listOfAllSets() {
         // Get a note of the available sets first of all
-        allsets = setActions.listAllSets(getActivity(), preferences, storageAccess);
+        allsets = setActions.listAllSets(getContext(), preferences, storageAccess);
         // Get a note of the available set categories from these
-        cats = setActions.listSetCategories(getActivity(), allsets);
+        cats = setActions.listSetCategories(getContext(), allsets);
     }
 
     private void listOfFilteredSets() {
-        filteredsets = setActions.listFilteredSets(getActivity(), allsets,
-                preferences.getMyPreferenceString(getActivity(), "whichSetCategory",
+        filteredsets = setActions.listFilteredSets(getContext(), allsets,
+                preferences.getMyPreferenceString(getContext(), "whichSetCategory",
                         getString(R.string.mainfoldername)));
     }
 
@@ -401,19 +400,19 @@ public class PopUpListSetsFragment extends DialogFragment {
             default:
             case "deleteset":
                 listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-                arr = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), android.R.layout.simple_list_item_multiple_choice, filteredsets);
+                arr = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_multiple_choice, filteredsets);
                 break;
 
             case "saveset":
                 listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-                arr = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), android.R.layout.simple_list_item_1, filteredsets);
+                arr = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, filteredsets);
                 break;
 
 
             case "exportset":
             case "managesets":
                 listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-                arr = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), android.R.layout.simple_list_item_checked, filteredsets);
+                arr = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_checked, filteredsets);
                 break;
         }
         return arr;
@@ -435,7 +434,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         // Try to set the spinners to match the recently used set category
         boolean done = false;
         for (int i = 0; i < cats.size(); i++) {
-            if (cats.get(i).equals(preferences.getMyPreferenceString(getActivity(), "whichSetCategory",
+            if (cats.get(i).equals(preferences.getMyPreferenceString(getContext(), "whichSetCategory",
                     getString(R.string.mainfoldername)))) {
                 setCategory_Spinner.setSelection(i);
                 originalSetCategory_Spinner.setSelection(i);
@@ -451,7 +450,7 @@ public class PopUpListSetsFragment extends DialogFragment {
     }
 
     private ArrayAdapter<String> categoryAdapter() {
-        ArrayAdapter<String> myadapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, cats);
+        ArrayAdapter<String> myadapter = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, cats);
         myadapter.setDropDownViewResource(R.layout.my_spinner);
         return myadapter;
     }
@@ -462,7 +461,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     String s = cats.get(i);
-                    preferences.setMyPreferenceString(getActivity(), "whichSetCategory", s);
+                    preferences.setMyPreferenceString(getContext(), "whichSetCategory", s);
                     filterByCategory(s);
                 }
 
@@ -476,7 +475,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     String s = cats.get(i);
-                    preferences.setMyPreferenceString(getActivity(), "whichSetCategory", s);
+                    preferences.setMyPreferenceString(getContext(), "whichSetCategory", s);
                     filterByCategory(s);
                 }
 
@@ -539,14 +538,14 @@ public class PopUpListSetsFragment extends DialogFragment {
             if (!StaticVariables.setnamechosen.equals("") && !setListName.getText().toString().equals("")) {
                 doRenameSet();
             } else {
-                StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.notset);
+                StaticVariables.myToastMessage = getString(R.string.notset);
             }
         }
     }
 
     private void filterByCategory(String cat) {
         filteredsets.clear();
-        filteredsets = setActions.listFilteredSets(getActivity(), allsets, cat);
+        filteredsets = setActions.listFilteredSets(getContext(), allsets, cat);
 
         sets_adapter = null;
         set_ListView.setAdapter(null);
@@ -585,10 +584,10 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         // Initialise the saved set
         StaticVariables.settoload = null;
-        preferences.setMyPreferenceString(getActivity(), "setCurrent", "");
+        preferences.setMyPreferenceString(getContext(), "setCurrent", "");
 
         StaticVariables.settoload = StaticVariables.setnamechosen;
-        preferences.setMyPreferenceString(getActivity(), "setCurrentLastName", setListName.getText().toString().replace("%_%", "_"));
+        preferences.setMyPreferenceString(getContext(), "setCurrentLastName", setListName.getText().toString().replace("%_%", "_"));
 
         dataTask = null;
         dataTask = new FetchDataTask();
@@ -602,11 +601,11 @@ public class PopUpListSetsFragment extends DialogFragment {
     private void doSaveSet() {
         new Thread(() -> {
 
-            Objects.requireNonNull(getActivity()).runOnUiThread(() -> progressBar.setVisibility(View.VISIBLE));
+            requireActivity().runOnUiThread(() -> progressBar.setVisibility(View.VISIBLE));
 
             // Save the set into the settoload name
             StaticVariables.settoload = setListName.getText().toString().trim();
-            preferences.setMyPreferenceString(getActivity(), "setCurrentLastName", setListName.getText().toString().trim());
+            preferences.setMyPreferenceString(getContext(), "setCurrentLastName", setListName.getText().toString().trim());
             String new_cat = newCategory_EditText.getText().toString();
 
             if (!new_cat.equals("")) {
@@ -617,16 +616,16 @@ public class PopUpListSetsFragment extends DialogFragment {
             }
 
             // Popup the are you sure alert into another dialog fragment
-            final Uri newsetname = storageAccess.getUriForItem(getActivity(), preferences, "Sets", "",
+            final Uri newsetname = storageAccess.getUriForItem(getContext(), preferences, "Sets", "",
                     StaticVariables.settoload);
 
-            getActivity().runOnUiThread(() -> {
+            requireActivity().runOnUiThread(() -> {
                 // New structure, only give the are you sure prompt if the set name already exists.
-                if (storageAccess.uriExists(getActivity(), newsetname)) {
-                    String message = getResources().getString(R.string.save) + " \"" + setListName.getText().toString().trim() + "\"?";
+                if (storageAccess.uriExists(getContext(), newsetname)) {
+                    String message = getString(R.string.save) + " \"" + setListName.getText().toString().trim() + "\"?";
                     StaticVariables.myToastMessage = message;
                     DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
-                    newFragment.show(getActivity().getSupportFragmentManager(), "dialog");
+                    newFragment.show(requireActivity().getSupportFragmentManager(), "dialog");
                     hideKeyboard(newCategory_EditText);
                     hideKeyboard(setListName);
                     hideKeyboard(originalSetCategory_Spinner);
@@ -669,17 +668,17 @@ public class PopUpListSetsFragment extends DialogFragment {
             newsetname = newcat_spinner + "__" + newsettitle;
         }
 
-        Uri newsetfile = storageAccess.getUriForItem(getActivity(), preferences, "Sets", "",
+        Uri newsetfile = storageAccess.getUriForItem(getContext(), preferences, "Sets", "",
                 newsetname);
 
         Log.d("PopUpListSets", "newsetfile=" + newsetfile);
 
-        boolean exists = storageAccess.uriExists(getActivity(), newsetfile);
+        boolean exists = storageAccess.uriExists(getContext(), newsetfile);
         boolean overwrite = overWrite_CheckBox.isChecked();
         boolean success = false;
 
         if (!exists || overwrite) {
-            success = storageAccess.renameSetFile(getActivity(), preferences, StaticVariables.setnamechosen, newsetname);
+            success = storageAccess.renameSetFile(getContext(), preferences, StaticVariables.setnamechosen, newsetname);
         }
 
         Log.d("PopUpListSets", "exists=" + exists);
@@ -689,15 +688,13 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         if (success) {
             updateAvailableSets();
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.rename) + " - " +
-                    getActivity().getResources().getString(R.string.success);
+            StaticVariables.myToastMessage = getString(R.string.rename) + " - " + getString(R.string.success);
         } else {
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.rename) + " - " +
-                    getActivity().getResources().getString(R.string.file_exists);
+            StaticVariables.myToastMessage = getString(R.string.rename) + " - " + getString(R.string.file_exists);
         }
 
-        ShowToast.showToast(getActivity());
-        preferences.setMyPreferenceString(getActivity(), "setCurrentLastName", StaticVariables.setnamechosen);
+        ShowToast.showToast(getContext());
+        preferences.setMyPreferenceString(getContext(), "setCurrentLastName", StaticVariables.setnamechosen);
         StaticVariables.setnamechosen = "";
 
         // Close the window
@@ -724,7 +721,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         @Override
         protected String doInBackground(String... args) {
             try {
-                setActions.emptyCacheDirectories(getActivity(), preferences, storageAccess);
+                setActions.emptyCacheDirectories(getContext(), preferences, storageAccess);
             } catch (Exception e) {
                 Log.d("PopUpListSets","Error clearing cache");
             }
@@ -743,19 +740,19 @@ public class PopUpListSetsFragment extends DialogFragment {
                 if (tempfile != null && !tempfile.equals("") && !tempfile.isEmpty()) {
                     try {
                         StaticVariables.settoload = tempfile;
-                        setActions.loadASet(getActivity(), preferences, storageAccess);
+                        setActions.loadASet(getContext(), preferences, storageAccess);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    allsongsinset.append(preferences.getMyPreferenceString(getActivity(), "setCurrent", ""));
+                    allsongsinset.append(preferences.getMyPreferenceString(getContext(), "setCurrent", ""));
                 }
             }
 
             // Add all the songs of combined sets back to the mySet
-            preferences.setMyPreferenceString(getActivity(), "setCurrent", allsongsinset.toString());
+            preferences.setMyPreferenceString(getContext(), "setCurrent", allsongsinset.toString());
 
             // Reset the options menu
-            //setActions.prepareSetList(getActivity(), preferences);
+            //setActions.prepareSetList(getContext(), preferences);
             setActions.indexSongInSet();
 
             return "LOADED";
@@ -773,7 +770,7 @@ public class PopUpListSetsFragment extends DialogFragment {
             if (result.equals("LOADED") && !dataTask.isCancelled()) {
                 try {
                     // Get the set first item
-                    setActions.prepareFirstItem(getActivity(),preferences);
+                    setActions.prepareFirstItem(getContext(),preferences);
 
                     // Tell the listener to do something
                     mListener.refreshAll();
@@ -826,10 +823,10 @@ public class PopUpListSetsFragment extends DialogFragment {
             setstodelete = setstodelete.substring(0, setstodelete.length() - 2);
         }
 
-        String message = getResources().getString(R.string.delete) + " \"" + setstodelete + "\"?";
+        String message = getString(R.string.delete) + " \"" + setstodelete + "\"?";
         StaticVariables.myToastMessage = message;
         DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
-        newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), message);
+        newFragment.show(requireActivity().getSupportFragmentManager(), message);
         hideKeyboard(newCategory_EditText);
         hideKeyboard(setListName);
         hideKeyboard(originalSetCategory_Spinner);

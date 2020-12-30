@@ -15,8 +15,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpLongSongPressFragment extends DialogFragment {
 
     static PopUpLongSongPressFragment newInstance() {
@@ -129,7 +127,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         title.setText(StaticVariables.songfilename);
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -139,7 +137,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         preferences = new Preferences();
 
         // Vibrate to let the user know something happened
-        DoVibrate.vibrate(Objects.requireNonNull(getActivity()),50);
+        DoVibrate.vibrate(requireActivity(),50);
 
         // Initialise the views
         Button addSongToSet_Button = V.findViewById(R.id.addSongToSet_Button);
@@ -151,7 +149,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
 
         // Set up listeners for the buttons
         addSongToSet_Button.setOnClickListener(view -> {
-            addtoSet(getActivity(), preferences);
+            addtoSet(getContext(), preferences);
             if (mListener!=null) {
                 mListener.songLongClick();
             }

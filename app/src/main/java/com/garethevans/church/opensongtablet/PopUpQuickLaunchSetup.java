@@ -24,7 +24,6 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PopUpQuickLaunchSetup extends DialogFragment {
 
@@ -72,7 +71,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         preferences = new Preferences();
 
         // Do this in a new thread
-        new Thread(() -> Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+        new Thread(() -> requireActivity().runOnUiThread(() -> {
             initialiseViews();
             setFABS();
             setUpSpinners();
@@ -97,13 +96,13 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         title.setText(getString(R.string.quicklaunch_title));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(saveMe,getActivity());
+            CustomAnimations.animateFAB(saveMe,getContext());
             saveMe.setEnabled(false);
             doSave();
         });
@@ -127,16 +126,16 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         switch (StaticVariables.mDisplayTheme) {
             case "dark":
             default:
-                color = preferences.getMyPreferenceInt(getActivity(),"dark_pageButtonsColor",StaticVariables.purplyblue);
+                color = preferences.getMyPreferenceInt(getContext(),"dark_pageButtonsColor",StaticVariables.purplyblue);
                 break;
             case "light":
-                color = preferences.getMyPreferenceInt(getActivity(),"light_pageButtonsColor",StaticVariables.purplyblue);
+                color = preferences.getMyPreferenceInt(getContext(),"light_pageButtonsColor",StaticVariables.purplyblue);
                 break;
             case "custom1":
-                color = preferences.getMyPreferenceInt(getActivity(),"custom1_pageButtonsColor",StaticVariables.purplyblue);
+                color = preferences.getMyPreferenceInt(getContext(),"custom1_pageButtonsColor",StaticVariables.purplyblue);
                 break;
             case "custom2":
-                color = preferences.getMyPreferenceInt(getActivity(),"custom2_pageButtonsColor",StaticVariables.purplyblue);
+                color = preferences.getMyPreferenceInt(getContext(),"custom2_pageButtonsColor",StaticVariables.purplyblue);
                 break;
         }
         // Set the floatingactionbuttons to the correct color
@@ -190,10 +189,10 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         //19  Exit/close app
         actionOptions.add(getString(R.string.drawer_close));
 
-        ArrayAdapter<String> adapter_1 = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, actionOptions);
-        ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, actionOptions);
-        ArrayAdapter<String> adapter_3 = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, actionOptions);
-        ArrayAdapter<String> adapter_4 = new ArrayAdapter<>(requireActivity(), R.layout.my_spinner, actionOptions);
+        ArrayAdapter<String> adapter_1 = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, actionOptions);
+        ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, actionOptions);
+        ArrayAdapter<String> adapter_3 = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, actionOptions);
+        ArrayAdapter<String> adapter_4 = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, actionOptions);
         adapter_1.setDropDownViewResource(R.layout.my_spinner);
         adapter_2.setDropDownViewResource(R.layout.my_spinner);
         adapter_3.setDropDownViewResource(R.layout.my_spinner);
@@ -204,15 +203,15 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         button3_spinner.setAdapter(adapter_3);
         button4_spinner.setAdapter(adapter_4);
 
-        button1_spinner.setSelection(decideOnItemPosition(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom1Action","transpose")));
-        button2_spinner.setSelection(decideOnItemPosition(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom2Action","")));
-        button3_spinner.setSelection(decideOnItemPosition(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom3Action","")));
-        button4_spinner.setSelection(decideOnItemPosition(preferences.getMyPreferenceString(getActivity(),"pageButtonCustom4Action","")));
+        button1_spinner.setSelection(decideOnItemPosition(preferences.getMyPreferenceString(getContext(),"pageButtonCustom1Action","transpose")));
+        button2_spinner.setSelection(decideOnItemPosition(preferences.getMyPreferenceString(getContext(),"pageButtonCustom2Action","")));
+        button3_spinner.setSelection(decideOnItemPosition(preferences.getMyPreferenceString(getContext(),"pageButtonCustom3Action","")));
+        button4_spinner.setSelection(decideOnItemPosition(preferences.getMyPreferenceString(getContext(),"pageButtonCustom4Action","")));
 
-        button1_image.setBackgroundDrawable(getButtonImage(requireActivity(),preferences.getMyPreferenceString(getActivity(),"pageButtonCustom1Action","transpose")));
-        button2_image.setBackgroundDrawable(getButtonImage(requireActivity(),preferences.getMyPreferenceString(getActivity(),"pageButtonCustom2Action","")));
-        button3_image.setBackgroundDrawable(getButtonImage(requireActivity(),preferences.getMyPreferenceString(getActivity(),"pageButtonCustom3Action","")));
-        button4_image.setBackgroundDrawable(getButtonImage(requireActivity(),preferences.getMyPreferenceString(getActivity(),"pageButtonCustom4Action","")));
+        button1_image.setBackgroundDrawable(getButtonImage(requireContext(),preferences.getMyPreferenceString(getContext(),"pageButtonCustom1Action","transpose")));
+        button2_image.setBackgroundDrawable(getButtonImage(requireContext(),preferences.getMyPreferenceString(getContext(),"pageButtonCustom2Action","")));
+        button3_image.setBackgroundDrawable(getButtonImage(requireContext(),preferences.getMyPreferenceString(getContext(),"pageButtonCustom3Action","")));
+        button4_image.setBackgroundDrawable(getButtonImage(requireContext(),preferences.getMyPreferenceString(getContext(),"pageButtonCustom4Action","")));
     }
 
     private void setListeners() {
@@ -230,7 +229,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         button1_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                button1_image.setImageDrawable(getButtonImage(requireActivity(),decideOnItemText(i)));
+                button1_image.setImageDrawable(getButtonImage(requireContext(),decideOnItemText(i)));
             }
 
             @Override
@@ -239,7 +238,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         button2_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                button2_image.setImageDrawable(getButtonImage(requireActivity(),decideOnItemText(i)));
+                button2_image.setImageDrawable(getButtonImage(requireContext(),decideOnItemText(i)));
             }
 
             @Override
@@ -248,7 +247,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         button3_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                button3_image.setImageDrawable(getButtonImage(requireActivity(),decideOnItemText(i)));
+                button3_image.setImageDrawable(getButtonImage(requireContext(),decideOnItemText(i)));
             }
 
             @Override
@@ -257,7 +256,7 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         button4_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                button4_image.setImageDrawable(getButtonImage(requireActivity(),decideOnItemText(i)));
+                button4_image.setImageDrawable(getButtonImage(requireContext(),decideOnItemText(i)));
             }
 
             @Override
@@ -274,10 +273,10 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
     }
 
     private void doSave() {
-        preferences.setMyPreferenceString(getActivity(),"pageButtonCustom1Action", decideOnItemText(button1_spinner.getSelectedItemPosition()));
-        preferences.setMyPreferenceString(getActivity(),"pageButtonCustom2Action", decideOnItemText(button2_spinner.getSelectedItemPosition()));
-        preferences.setMyPreferenceString(getActivity(),"pageButtonCustom3Action", decideOnItemText(button3_spinner.getSelectedItemPosition()));
-        preferences.setMyPreferenceString(getActivity(),"pageButtonCustom4Action", decideOnItemText(button4_spinner.getSelectedItemPosition()));
+        preferences.setMyPreferenceString(getContext(),"pageButtonCustom1Action", decideOnItemText(button1_spinner.getSelectedItemPosition()));
+        preferences.setMyPreferenceString(getContext(),"pageButtonCustom2Action", decideOnItemText(button2_spinner.getSelectedItemPosition()));
+        preferences.setMyPreferenceString(getContext(),"pageButtonCustom3Action", decideOnItemText(button3_spinner.getSelectedItemPosition()));
+        preferences.setMyPreferenceString(getContext(),"pageButtonCustom4Action", decideOnItemText(button4_spinner.getSelectedItemPosition()));
         if (mListener!=null) {
             mListener.setupQuickLaunchButtons();
         }

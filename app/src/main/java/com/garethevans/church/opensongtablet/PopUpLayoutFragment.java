@@ -25,8 +25,6 @@ import androidx.fragment.app.DialogFragment;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpLayoutFragment extends DialogFragment {
 
     static PopUpLayoutFragment newInstance() {
@@ -98,10 +96,10 @@ public class PopUpLayoutFragment extends DialogFragment {
         final View V = inflater.inflate(R.layout.popup_layout, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.connected_display));
+        title.setText(getString(R.string.connected_display));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -123,7 +121,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         Handler presoinfohandler = new Handler();
         Handler customhandler = new Handler();
 
-        setTypeFace.setUpAppFonts(getActivity(), preferences, lyrichandler, chordhandler, stickyhandler,
+        setTypeFace.setUpAppFonts(getContext(), preferences, lyrichandler, chordhandler, stickyhandler,
                 presohandler, presoinfohandler, customhandler);
 
         prepareViews();
@@ -191,29 +189,29 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     private void prepareViews() {
         // Set the stuff up to what it should be from preferences
-        blockShadow.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"blockShadow",false));
+        blockShadow.setChecked(preferences.getMyPreferenceBoolean(getContext(),"blockShadow",false));
         setBlockAlphaVisibility();
         blockShadowAlpha.setMax(100);
-        blockShadowAlpha.setProgress((int)(preferences.getMyPreferenceFloat(getActivity(),"blockShadowAlpha",0.7f)*100));
-        toggleChordsButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"presoShowChords",false));
-        toggleAutoScaleButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"presoAutoScale",true));
-        boldTextButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"presoLyricsBold",false));
+        blockShadowAlpha.setProgress((int)(preferences.getMyPreferenceFloat(getContext(),"blockShadowAlpha",0.7f)*100));
+        toggleChordsButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"presoShowChords",false));
+        toggleAutoScaleButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"presoAutoScale",true));
+        boldTextButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"presoLyricsBold",false));
         setMaxFontSizeProgressBar.setMax(70);
-        setMaxFontSizeProgressBar.setProgress((int)preferences.getMyPreferenceFloat(getActivity(),"fontSizePresoMax",40.0f) - 4);
+        setMaxFontSizeProgressBar.setProgress((int)preferences.getMyPreferenceFloat(getContext(),"fontSizePresoMax",40.0f) - 4);
         maxfontSizePreview.setTypeface(StaticVariables.typefacePreso);
         setFontSizeProgressBar.setMax(70);
-        setFontSizeProgressBar.setProgress((int)preferences.getMyPreferenceFloat(getActivity(),"fontSizePreso",14.0f) - 4);
+        setFontSizeProgressBar.setProgress((int)preferences.getMyPreferenceFloat(getContext(),"fontSizePreso",14.0f) - 4);
         fontSizePreview.setTypeface(StaticVariables.typefacePreso);
         setUpAlignmentButtons();
         presoTitleSizeSeekBar.setMax(32);
         presoAuthorSizeSeekBar.setMax(32);
         presoCopyrightSizeSeekBar.setMax(32);
         presoAlertSizeSeekBar.setMax(32);
-        presoTitleSizeSeekBar.setProgress((int)preferences.getMyPreferenceFloat(getActivity(),"presoTitleTextSize", 14.0f));
-        presoAuthorSizeSeekBar.setProgress((int)preferences.getMyPreferenceFloat(getActivity(),"presoAuthorTextSize", 12.0f));
-        presoCopyrightSizeSeekBar.setProgress((int)preferences.getMyPreferenceFloat(getActivity(),"presoCopyrightTextSize", 12.0f));
-        presoAlertSizeSeekBar.setProgress((int)preferences.getMyPreferenceFloat(getActivity(),"presoAlertTextSize", 12.0f));
-        float alphaval = preferences.getMyPreferenceFloat(getActivity(),"presoBackgroundAlpha",0.8f);
+        presoTitleSizeSeekBar.setProgress((int)preferences.getMyPreferenceFloat(getContext(),"presoTitleTextSize", 14.0f));
+        presoAuthorSizeSeekBar.setProgress((int)preferences.getMyPreferenceFloat(getContext(),"presoAuthorTextSize", 12.0f));
+        presoCopyrightSizeSeekBar.setProgress((int)preferences.getMyPreferenceFloat(getContext(),"presoCopyrightTextSize", 12.0f));
+        presoAlertSizeSeekBar.setProgress((int)preferences.getMyPreferenceFloat(getContext(),"presoAlertTextSize", 12.0f));
+        float alphaval = preferences.getMyPreferenceFloat(getContext(),"presoBackgroundAlpha",0.8f);
         presoAlphaProgressBar.setProgress((int)(alphaval*100.0f));
         String newtext = (int) (alphaval * 100.0f) + " %";
         presoAlphaText.setText(newtext);
@@ -224,8 +222,8 @@ public class PopUpLayoutFragment extends DialogFragment {
         setCheckBoxes();
         setXMarginProgressBar.setMax(150);
         setYMarginProgressBar.setMax(150);
-        setXMarginProgressBar.setProgress(preferences.getMyPreferenceInt(getActivity(),"presoXMargin",20));
-        setYMarginProgressBar.setProgress(preferences.getMyPreferenceInt(getActivity(),"presoYMargin",10));
+        setXMarginProgressBar.setProgress(preferences.getMyPreferenceInt(getContext(),"presoXMargin",20));
+        setYMarginProgressBar.setProgress(preferences.getMyPreferenceInt(getContext(),"presoYMargin",10));
         setRotationProgressBar.setMax(3);
         setRotationProgressBar.setProgress(getRotationProgressValue());
         rotationTextView.setText(getRotationAngleText(getRotationProgressValue()));
@@ -251,7 +249,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         return angle;
     }
     private int getRotationProgressValue() {
-        float f = preferences.getMyPreferenceFloat(getActivity(),"castRotation",0.0f);
+        float f = preferences.getMyPreferenceFloat(getContext(),"castRotation",0.0f);
         if (f==90.0f) {
             return 1;
         } else if (f==180.0f) {
@@ -279,13 +277,13 @@ public class PopUpLayoutFragment extends DialogFragment {
                 angle = 270.0f;
                 break;
         }
-        preferences.setMyPreferenceFloat(getActivity(),"castRotation",angle);
+        preferences.setMyPreferenceFloat(getContext(),"castRotation",angle);
     }
 
     private void setupListeners() {
         // Set listeners
         blockShadow.setOnCheckedChangeListener((compoundButton, b) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"blockShadow",b);
+            preferences.setMyPreferenceBoolean(getContext(),"blockShadow",b);
             setBlockAlphaVisibility();
             sendUpdateToScreen("all");
         });
@@ -298,12 +296,12 @@ public class PopUpLayoutFragment extends DialogFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                preferences.setMyPreferenceFloat(getActivity(),"blockShadowAlpha",(float)seekBar.getProgress()/100.0f);
+                preferences.setMyPreferenceFloat(getContext(),"blockShadowAlpha",(float)seekBar.getProgress()/100.0f);
                 sendUpdateToScreen("all");
             }
         });
         toggleChordsButton.setOnCheckedChangeListener((compoundButton, b) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"presoShowChords",b);
+            preferences.setMyPreferenceBoolean(getContext(),"presoShowChords",b);
             if (mListener!=null) {
                 try {
                     mListener.loadSong();
@@ -315,11 +313,11 @@ public class PopUpLayoutFragment extends DialogFragment {
             setUpAlignmentButtons();
         });
         boldTextButton.setOnCheckedChangeListener((compoundButton, b) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"presoLyricsBold",b);
+            preferences.setMyPreferenceBoolean(getContext(),"presoLyricsBold",b);
             sendUpdateToScreen("all");
         });
         toggleAutoScaleButton.setOnCheckedChangeListener((compoundButton, b) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"presoAutoScale",b);
+            preferences.setMyPreferenceBoolean(getContext(),"presoAutoScale",b);
             showorhideView(group_maxfontsize,b);
             showorhideView(group_manualfontsize,!b);
             sendUpdateToScreen("autoscale");
@@ -327,56 +325,56 @@ public class PopUpLayoutFragment extends DialogFragment {
         setMaxFontSizeProgressBar.setOnSeekBarChangeListener(new setMaxFontSizeListener());
         setFontSizeProgressBar.setOnSeekBarChangeListener(new setFontSizeListener());
         lyrics_left_align.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(lyrics_left_align, getActivity());
-            preferences.setMyPreferenceInt(getActivity(),"presoLyricsAlign",Gravity.START);
+            CustomAnimations.animateFAB(lyrics_left_align, getContext());
+            preferences.setMyPreferenceInt(getContext(),"presoLyricsAlign",Gravity.START);
             setUpAlignmentButtons();
             sendUpdateToScreen("all");
         });
         lyrics_center_align.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(lyrics_center_align, getActivity());
-            preferences.setMyPreferenceInt(getActivity(),"presoLyricsAlign",Gravity.CENTER);
+            CustomAnimations.animateFAB(lyrics_center_align, getContext());
+            preferences.setMyPreferenceInt(getContext(),"presoLyricsAlign",Gravity.CENTER);
             setUpAlignmentButtons();
             sendUpdateToScreen("all");
         });
         lyrics_right_align.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(lyrics_right_align, getActivity());
-            preferences.setMyPreferenceInt(getActivity(),"presoLyricsAlign",Gravity.END);
+            CustomAnimations.animateFAB(lyrics_right_align, getContext());
+            preferences.setMyPreferenceInt(getContext(),"presoLyricsAlign",Gravity.END);
             setUpAlignmentButtons();
             sendUpdateToScreen("all");
         });
         lyrics_top_valign.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(lyrics_top_valign, getActivity());
-            preferences.setMyPreferenceInt(getActivity(),"presoLyricsVAlign",Gravity.TOP);
+            CustomAnimations.animateFAB(lyrics_top_valign, getContext());
+            preferences.setMyPreferenceInt(getContext(),"presoLyricsVAlign",Gravity.TOP);
             setUpAlignmentButtons();
             sendUpdateToScreen("all");
         });
         lyrics_center_valign.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(lyrics_center_valign, getActivity());
-            preferences.setMyPreferenceInt(getActivity(),"presoLyricsVAlign",Gravity.CENTER_VERTICAL);
+            CustomAnimations.animateFAB(lyrics_center_valign, getContext());
+            preferences.setMyPreferenceInt(getContext(),"presoLyricsVAlign",Gravity.CENTER_VERTICAL);
             setUpAlignmentButtons();
             sendUpdateToScreen("all");
         });
         lyrics_bottom_valign.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(lyrics_bottom_valign, getActivity());
-            preferences.setMyPreferenceInt(getActivity(),"presoLyricsVAlign",Gravity.BOTTOM);
+            CustomAnimations.animateFAB(lyrics_bottom_valign, getContext());
+            preferences.setMyPreferenceInt(getContext(),"presoLyricsVAlign",Gravity.BOTTOM);
             setUpAlignmentButtons();
             sendUpdateToScreen("all");
         });
         info_left_align.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(info_left_align, getActivity());
-            preferences.setMyPreferenceInt(getActivity(),"presoInfoAlign",Gravity.START);
+            CustomAnimations.animateFAB(info_left_align, getContext());
+            preferences.setMyPreferenceInt(getContext(),"presoInfoAlign",Gravity.START);
             setUpAlignmentButtons();
             sendUpdateToScreen("info");
         });
         info_center_align.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(info_center_align, getActivity());
-            preferences.setMyPreferenceInt(getActivity(),"presoInfoAlign",Gravity.CENTER);
+            CustomAnimations.animateFAB(info_center_align, getContext());
+            preferences.setMyPreferenceInt(getContext(),"presoInfoAlign",Gravity.CENTER);
             setUpAlignmentButtons();
             sendUpdateToScreen("info");
         });
         info_right_align.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(info_right_align, getActivity());
-            preferences.setMyPreferenceInt(getActivity(),"presoInfoAlign",Gravity.END);
+            CustomAnimations.animateFAB(info_right_align, getContext());
+            preferences.setMyPreferenceInt(getContext(),"presoInfoAlign",Gravity.END);
             setUpAlignmentButtons();
             sendUpdateToScreen("info");
         });
@@ -393,7 +391,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                preferences.setMyPreferenceInt(getActivity(),"presoTransitionTime",seekBarProgressToTime());
+                preferences.setMyPreferenceInt(getContext(),"presoTransitionTime",seekBarProgressToTime());
             }
         });
         presoTitleSizeSeekBar.setOnSeekBarChangeListener(new presoSectionSizeListener());
@@ -434,8 +432,8 @@ public class PopUpLayoutFragment extends DialogFragment {
                 video1CheckBox.setChecked(false);
                 video2CheckBox.setChecked(false);
                 PresenterMode.whatBackgroundLoaded = "image1";
-                preferences.setMyPreferenceString(getActivity(),"backgroundTypeToUse","image");
-                preferences.setMyPreferenceString(getActivity(),"backgroundToUse","img1");
+                preferences.setMyPreferenceString(getContext(),"backgroundTypeToUse","image");
+                preferences.setMyPreferenceString(getContext(),"backgroundToUse","img1");
                 sendUpdateToScreen("backgrounds");
             }
         });
@@ -445,8 +443,8 @@ public class PopUpLayoutFragment extends DialogFragment {
                 video1CheckBox.setChecked(false);
                 video2CheckBox.setChecked(false);
                 PresenterMode.whatBackgroundLoaded = "image2";
-                preferences.setMyPreferenceString(getActivity(),"backgroundTypeToUse","image");
-                preferences.setMyPreferenceString(getActivity(),"backgroundToUse","img2");
+                preferences.setMyPreferenceString(getContext(),"backgroundTypeToUse","image");
+                preferences.setMyPreferenceString(getContext(),"backgroundToUse","img2");
                 sendUpdateToScreen("backgrounds");
             }
         });
@@ -456,8 +454,8 @@ public class PopUpLayoutFragment extends DialogFragment {
                 image2CheckBox.setChecked(false);
                 video2CheckBox.setChecked(false);
                 PresenterMode.whatBackgroundLoaded = "video1";
-                preferences.setMyPreferenceString(getActivity(),"backgroundTypeToUse","video");
-                preferences.setMyPreferenceString(getActivity(),"backgroundToUse","vid1");
+                preferences.setMyPreferenceString(getContext(),"backgroundTypeToUse","video");
+                preferences.setMyPreferenceString(getContext(),"backgroundToUse","vid1");
                 sendUpdateToScreen("backgrounds");
             }
         });
@@ -467,8 +465,8 @@ public class PopUpLayoutFragment extends DialogFragment {
                 image2CheckBox.setChecked(false);
                 video1CheckBox.setChecked(false);
                 PresenterMode.whatBackgroundLoaded = "video2";
-                preferences.setMyPreferenceString(getActivity(),"backgroundTypeToUse","video");
-                preferences.setMyPreferenceString(getActivity(),"backgroundToUse","vid2");
+                preferences.setMyPreferenceString(getContext(),"backgroundTypeToUse","video");
+                preferences.setMyPreferenceString(getContext(),"backgroundToUse","vid2");
                 sendUpdateToScreen("backgrounds");
             }
         });
@@ -490,7 +488,7 @@ public class PopUpLayoutFragment extends DialogFragment {
     }
 
     private void setBlockAlphaVisibility() {
-        if (preferences.getMyPreferenceBoolean(getActivity(), "blockShadow", false)) {
+        if (preferences.getMyPreferenceBoolean(getContext(), "blockShadow", false)) {
             blockShadowAlphaLayout.setVisibility(View.VISIBLE);
         } else {
             blockShadowAlphaLayout.setVisibility(View.GONE);
@@ -499,7 +497,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     private int timeToSeekBarProgress() {
         // Min time is 200ms, max is 2000ms
-        return (preferences.getMyPreferenceInt(getActivity(),"presoTransitionTime",800)/100) - 2;
+        return (preferences.getMyPreferenceInt(getContext(),"presoTransitionTime",800)/100) - 2;
     }
 
     private int seekBarProgressToTime() {
@@ -511,9 +509,9 @@ public class PopUpLayoutFragment extends DialogFragment {
     }
 
     private void setUpAlignmentButtons() {
-        int lyralign = preferences.getMyPreferenceInt(getActivity(),"presoLyricsAlign",Gravity.CENTER_HORIZONTAL);
-        int lyrvalign = preferences.getMyPreferenceInt(getActivity(),"presoLyricsVAlign",Gravity.CENTER_VERTICAL);
-        int infalign = preferences.getMyPreferenceInt(getActivity(),"presoInfoAlign",Gravity.END);
+        int lyralign = preferences.getMyPreferenceInt(getContext(),"presoLyricsAlign",Gravity.CENTER_HORIZONTAL);
+        int lyrvalign = preferences.getMyPreferenceInt(getContext(),"presoLyricsVAlign",Gravity.CENTER_VERTICAL);
+        int infalign = preferences.getMyPreferenceInt(getContext(),"presoInfoAlign",Gravity.END);
         if (lyralign == Gravity.START) {
             lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
             lyrics_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
@@ -556,7 +554,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
         // If chords are being show, hide the lyrics align, otherwise it is ok to show
         boolean vis = true;
-        if (preferences.getMyPreferenceBoolean(getActivity(),"presoShowChords",false)) {
+        if (preferences.getMyPreferenceBoolean(getContext(),"presoShowChords",false)) {
             vis = false;
         }
         lyrics_left_align.setEnabled(vis);
@@ -577,7 +575,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     private void setCheckBoxes() {
 
-        switch (preferences.getMyPreferenceString(getActivity(),"backgroundToUse","img1")) {
+        switch (preferences.getMyPreferenceString(getContext(),"backgroundToUse","img1")) {
             case "img1":
                 image1CheckBox.setChecked(true);
                 image2CheckBox.setChecked(false);
@@ -607,7 +605,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     private void chooseFile(String mimeType, int requestCode) {
         // This calls an intent to choose a file (image or video)
-        Uri uri = storageAccess.getUriForItem(getActivity(),preferences,"Backgrounds","","");
+        Uri uri = storageAccess.getUriForItem(getContext(),preferences,"Backgrounds","","");
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT,uri);
         if (mimeType.equals("image/*")) {
             intent.setDataAndType(uri,"image/*");
@@ -647,8 +645,8 @@ public class PopUpLayoutFragment extends DialogFragment {
         public void onStartTrackingTouch(SeekBar seekBar) {}
 
         public void onStopTrackingTouch(SeekBar seekBar) {
-            preferences.setMyPreferenceInt(getActivity(),"presoXMargin",setXMarginProgressBar.getProgress());
-            preferences.setMyPreferenceInt(getActivity(),"presoYMargin",setYMarginProgressBar.getProgress());
+            preferences.setMyPreferenceInt(getContext(),"presoXMargin",setXMarginProgressBar.getProgress());
+            preferences.setMyPreferenceInt(getContext(),"presoYMargin",setYMarginProgressBar.getProgress());
             sendUpdateToScreen("margins");
         }
     }
@@ -664,7 +662,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
         public void onStopTrackingTouch(SeekBar seekBar) {
             float val = seekBar.getProgress()+4.0f;
-            preferences.setMyPreferenceFloat(getActivity(),"fontSizePreso",val);
+            preferences.setMyPreferenceFloat(getContext(),"fontSizePreso",val);
             sendUpdateToScreen("manualfontsize");
         }
     }
@@ -680,7 +678,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
         public void onStopTrackingTouch(SeekBar seekBar) {
             float val = seekBar.getProgress() + 4.0f;
-            preferences.setMyPreferenceFloat(getActivity(),"fontSizePresoMax",val);
+            preferences.setMyPreferenceFloat(getContext(),"fontSizePresoMax",val);
             sendUpdateToScreen("maxfontsize");
         }
 
@@ -694,10 +692,10 @@ public class PopUpLayoutFragment extends DialogFragment {
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            preferences.setMyPreferenceFloat(getActivity(),"presoTitleTextSize", (float)presoTitleSizeSeekBar.getProgress());
-            preferences.setMyPreferenceFloat(getActivity(),"presoAuthorTextSize", (float)presoAuthorSizeSeekBar.getProgress());
-            preferences.setMyPreferenceFloat(getActivity(),"presoCopyrightTextSize", (float)presoCopyrightSizeSeekBar.getProgress());
-            preferences.setMyPreferenceFloat(getActivity(),"presoAlertTextSize", (float)presoAlertSizeSeekBar.getProgress());
+            preferences.setMyPreferenceFloat(getContext(),"presoTitleTextSize", (float)presoTitleSizeSeekBar.getProgress());
+            preferences.setMyPreferenceFloat(getContext(),"presoAuthorTextSize", (float)presoAuthorSizeSeekBar.getProgress());
+            preferences.setMyPreferenceFloat(getContext(),"presoCopyrightTextSize", (float)presoCopyrightSizeSeekBar.getProgress());
+            preferences.setMyPreferenceFloat(getContext(),"presoAlertTextSize", (float)presoAlertSizeSeekBar.getProgress());
             sendUpdateToScreen("info");
         }
     }
@@ -712,7 +710,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
         public void onStopTrackingTouch(SeekBar seekBar) {
 
-            preferences.setMyPreferenceFloat(getActivity(),"presoBackgroundAlpha",((float)seekBar.getProgress() / 100f));
+            preferences.setMyPreferenceFloat(getContext(),"presoBackgroundAlpha",((float)seekBar.getProgress() / 100f));
             sendUpdateToScreen("backgrounds");
         }
     }
@@ -724,20 +722,20 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     private void setupPreviews() {
         // This sets the background thumbnails for the images/videos/logo
-        Uri img1Uri = storageAccess.fixLocalisedUri(getActivity(),preferences,preferences.getMyPreferenceString(getActivity(),"backgroundImage1","ost_bg.png"));
-        updatePreview(getActivity(),chooseImage1Button, img1Uri);
-        Uri img2Uri = storageAccess.fixLocalisedUri(getActivity(),preferences,preferences.getMyPreferenceString(getActivity(),"backgroundImage2","ost_bg.png"));
-        updatePreview(getActivity(),chooseImage2Button, img2Uri);
-        Uri vid1Uri = storageAccess.fixLocalisedUri(getActivity(),preferences,preferences.getMyPreferenceString(getActivity(),"backgroundVideo1",""));
-        updatePreview(getActivity(),chooseVideo1Button, vid1Uri);
-        Uri vid2Uri = storageAccess.fixLocalisedUri(getActivity(),preferences,preferences.getMyPreferenceString(getActivity(),"backgroundVideo2",""));
-        updatePreview(getActivity(),chooseVideo2Button, vid2Uri);
-        Uri logoUri = storageAccess.fixLocalisedUri(getActivity(),preferences,preferences.getMyPreferenceString(getActivity(),"customLogo","ost_logo.png"));
-        updatePreview(getActivity(),chooseLogoButton, logoUri);
+        Uri img1Uri = storageAccess.fixLocalisedUri(getContext(),preferences,preferences.getMyPreferenceString(getContext(),"backgroundImage1","ost_bg.png"));
+        updatePreview(getContext(),chooseImage1Button, img1Uri);
+        Uri img2Uri = storageAccess.fixLocalisedUri(getContext(),preferences,preferences.getMyPreferenceString(getContext(),"backgroundImage2","ost_bg.png"));
+        updatePreview(getContext(),chooseImage2Button, img2Uri);
+        Uri vid1Uri = storageAccess.fixLocalisedUri(getContext(),preferences,preferences.getMyPreferenceString(getContext(),"backgroundVideo1",""));
+        updatePreview(getContext(),chooseVideo1Button, vid1Uri);
+        Uri vid2Uri = storageAccess.fixLocalisedUri(getContext(),preferences,preferences.getMyPreferenceString(getContext(),"backgroundVideo2",""));
+        updatePreview(getContext(),chooseVideo2Button, vid2Uri);
+        Uri logoUri = storageAccess.fixLocalisedUri(getContext(),preferences,preferences.getMyPreferenceString(getContext(),"customLogo","ost_logo.png"));
+        updatePreview(getContext(),chooseLogoButton, logoUri);
     }
 
     private void updatePreview (Context c, ImageView view, Uri uri) {
-        if (uri==null || !storageAccess.uriExists(getActivity(),uri)) {
+        if (uri==null || !storageAccess.uriExists(getContext(),uri)) {
             view.setBackgroundColor(0xff000000);
         } else {
             view.setBackgroundColor(0x00000000);
@@ -756,32 +754,32 @@ public class PopUpLayoutFragment extends DialogFragment {
         // This gets sent back here from the parent activity
         if (resultData!=null && resultData.getData()!=null) {
             Uri uri = resultData.getData();
-            if (getActivity()!=null && uri!=null) {
+            if (getContext()!=null && uri!=null) {
                 String uriString = storageAccess.fixUriToLocal(uri);
 
                 if (requestCode == StaticVariables.REQUEST_BACKGROUND_IMAGE1) {
-                    preferences.setMyPreferenceString(getActivity(), "backgroundImage1", uriString);
-                    updatePreview(getActivity(),chooseImage1Button,uri);
+                    preferences.setMyPreferenceString(getContext(), "backgroundImage1", uriString);
+                    updatePreview(getContext(),chooseImage1Button,uri);
                     sendUpdateToScreen("backgrounds");
 
                 } else if (requestCode == StaticVariables.REQUEST_BACKGROUND_IMAGE2) {
-                    preferences.setMyPreferenceString(getActivity(), "backgroundImage2", uriString);
-                    updatePreview(getActivity(),chooseImage2Button,uri);
+                    preferences.setMyPreferenceString(getContext(), "backgroundImage2", uriString);
+                    updatePreview(getContext(),chooseImage2Button,uri);
                     sendUpdateToScreen("backgrounds");
 
                 } else if (requestCode == StaticVariables.REQUEST_BACKGROUND_VIDEO1) {
-                    preferences.setMyPreferenceString(getActivity(), "backgroundVideo1", uriString);
-                    updatePreview(getActivity(),chooseVideo1Button,uri);
+                    preferences.setMyPreferenceString(getContext(), "backgroundVideo1", uriString);
+                    updatePreview(getContext(),chooseVideo1Button,uri);
                     sendUpdateToScreen("backgrounds");
 
                 } else if (requestCode == StaticVariables.REQUEST_BACKGROUND_VIDEO2) {
-                    preferences.setMyPreferenceString(getActivity(), "backgroundVideo2", uriString);
-                    updatePreview(getActivity(),chooseVideo2Button,uri);
+                    preferences.setMyPreferenceString(getContext(), "backgroundVideo2", uriString);
+                    updatePreview(getContext(),chooseVideo2Button,uri);
                     sendUpdateToScreen("backgrounds");
 
                 } else if (requestCode == StaticVariables.REQUEST_CUSTOM_LOGO) {
-                    preferences.setMyPreferenceString(getActivity(), "customLogo", uriString);
-                    updatePreview(getActivity(),chooseLogoButton,uri);
+                    preferences.setMyPreferenceString(getContext(), "customLogo", uriString);
+                    updatePreview(getContext(),chooseLogoButton,uri);
                     sendUpdateToScreen("logo");
                 }
             }

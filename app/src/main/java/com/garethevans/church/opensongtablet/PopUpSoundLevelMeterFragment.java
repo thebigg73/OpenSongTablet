@@ -73,10 +73,10 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_soundlevelmeter, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getResources().getString(R.string.volume));
+        title.setText(getString(R.string.volume));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -113,7 +113,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
         maxvolrange.setMax(7);
         int myprogress;
         String mytext;
-        switch (preferences.getMyPreferenceInt(getActivity(),"soundMeterRange",400)) {
+        switch (preferences.getMyPreferenceInt(getContext(),"soundMeterRange",400)) {
             case 50:
                 myprogress = 0;
                 mytext = "0 - 50";
@@ -204,7 +204,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                         break;
                     }
 
-                preferences.setMyPreferenceInt(getActivity(),"soundMeterRange",volrangechosen);
+                preferences.setMyPreferenceInt(getContext(),"soundMeterRange",volrangechosen);
                 volval.setText(text);
             }
 
@@ -286,7 +286,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
             // Turn the appropriate level lights on or off
             // Assume the highest value is 170
 
-            float maxvolrange = (float) preferences.getMyPreferenceInt(getActivity(),"soundMeterRange",400);
+            float maxvolrange = (float) preferences.getMyPreferenceInt(getContext(),"soundMeterRange",400);
             if (vol>(0.9*maxvolrange)) {
                 // All 10 levels on
                 level_1.setVisibility(View.VISIBLE);

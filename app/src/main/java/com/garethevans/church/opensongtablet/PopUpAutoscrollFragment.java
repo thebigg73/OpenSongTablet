@@ -18,8 +18,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpAutoscrollFragment extends DialogFragment {
 
     static PopUpAutoscrollFragment newInstance() {
@@ -92,7 +90,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_page_autoscroll, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.autoscroll));
+        title.setText(getString(R.string.autoscroll));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
             CustomAnimations.animateFAB(closeMe, PopUpAutoscrollFragment.this.getActivity());
@@ -184,10 +182,10 @@ public class PopUpAutoscrollFragment extends DialogFragment {
             StaticVariables.autoscrollok = processSong.isAutoScrollValid(getActivity(),preferences);
         });
         if (StaticVariables.isautoscrolling) {
-            popupautoscroll_startstopbutton.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.stop));
+            popupautoscroll_startstopbutton.setText(getString(R.string.stop));
 
         } else {
-            popupautoscroll_startstopbutton.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.start));
+            popupautoscroll_startstopbutton.setText(getString(R.string.start));
         }
 
         // IV - Use fo the gesture means that the button onClick is the same for start and stop
@@ -195,7 +193,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
             PopUpAutoscrollFragment.this.doSave();
             // gesture contains the start/stop logic
             // If the current state is not as requested, change it. Autoscroll can be reported as running but have stopeed since.
-            boolean b = popupautoscroll_startstopbutton.getText() == Objects.requireNonNull(getActivity()).getResources().getString(R.string.start);
+            boolean b = popupautoscroll_startstopbutton.getText() == getString(R.string.start);
             // Request a start/stop if needed to get to the chosen state
             if ((!StaticVariables.isautoscrolling && b) || (StaticVariables.isautoscrolling && !b)) {
                 mListener.gesture5();
@@ -250,8 +248,8 @@ public class PopUpAutoscrollFragment extends DialogFragment {
             // IV - Toast removed as we (perhaps) do not need to announce expected behaviour
         } catch (Exception e) {
             e.printStackTrace();
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.save) + " - " +
-                    getActivity().getResources().getString(R.string.error);
+            StaticVariables.myToastMessage = getString(R.string.save) + " - " +
+                    getString(R.string.error);
             ShowToast.showToast(getActivity());
         }
         dismiss();
@@ -264,8 +262,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
             StaticVariables.mDuration = "" + StaticVariables.audiolength;
             popupautoscroll_duration.setText(StaticVariables.mDuration);
         } else {
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.link_audio) + " - " +
-                    getActivity().getResources().getString(R.string.notset);
+            StaticVariables.myToastMessage = getString(R.string.link_audio) + " - " + getString(R.string.notset);
             ShowToast.showToast(getActivity());
         }
     }
@@ -273,7 +270,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
     private void checkAutoScrollStatus() {
         if ((popupautoscroll_duration.getText().toString().equals("") || popupautoscroll_duration.getText().toString().isEmpty()) &&
                 !preferences.getMyPreferenceBoolean(getActivity(),"autoscrollUseDefaultTime",false)) {
-            String text = getResources().getString(R.string.edit_song_duration) + " - " + getResources().getString(R.string.notset);
+            String text = getString(R.string.edit_song_duration) + " - " + getResources().getString(R.string.notset);
             popupautoscroll_startstopbutton.setText(text);
             popupautoscroll_startstopbutton.setEnabled(false);
         } else {

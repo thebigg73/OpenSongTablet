@@ -17,8 +17,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpPageButtonsFragment extends DialogFragment {
 
     static PopUpPageButtonsFragment newInstance() {
@@ -72,10 +70,10 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_pagebuttons, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.pagebuttons));
+        title.setText(getString(R.string.pagebuttons));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -111,9 +109,9 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         SwitchCompat setMoveVisible_Switch = V.findViewById(R.id.setMoveVisible_Switch);
 
         // Set the default values
-        pageButtonSize_Switch.setChecked(preferences.getMyPreferenceInt(getActivity(), "pageButtonSize", FloatingActionButton.SIZE_NORMAL) ==
+        pageButtonSize_Switch.setChecked(preferences.getMyPreferenceInt(getContext(), "pageButtonSize", FloatingActionButton.SIZE_NORMAL) ==
                 FloatingActionButton.SIZE_NORMAL);
-        int gettransp = (int) (preferences.getMyPreferenceFloat(getActivity(), "pageButtonAlpha", 0.5f) * 100);
+        int gettransp = (int) (preferences.getMyPreferenceFloat(getContext(), "pageButtonAlpha", 0.5f) * 100);
         String text = gettransp + "%";
         pageButtonTransparency_seekBar.setProgress(gettransp);
         transparency_TextView.setText(text);
@@ -136,10 +134,10 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         custom4Visible_Switch.setChecked(getValue("pageButtonShowCustom4", true));
         scrollVisible_Switch.setChecked(getValue("pageButtonShowScroll", true));
         setMoveVisible_Switch.setChecked(getValue("pageButtonShowSetMove", true));
-        String c1 = getActivity().getString(R.string.custom) + " (1)";
-        String c2 = getActivity().getString(R.string.custom) + " (2)";
-        String c3 = getActivity().getString(R.string.custom) + " (3)";
-        String c4 = getActivity().getString(R.string.custom) + " (4)";
+        String c1 = getString(R.string.custom) + " (1)";
+        String c2 = getString(R.string.custom) + " (2)";
+        String c3 = getString(R.string.custom) + " (3)";
+        String c4 = getString(R.string.custom) + " (4)";
         custom1Visible_Switch.setText(c1);
         custom2Visible_Switch.setText(c2);
         custom3Visible_Switch.setText(c3);
@@ -151,21 +149,21 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         // Set the listeners
         pageButtonSize_Switch.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
-                preferences.setMyPreferenceInt(getActivity(),"pageButtonSize",FloatingActionButton.SIZE_NORMAL);
+                preferences.setMyPreferenceInt(getContext(),"pageButtonSize",FloatingActionButton.SIZE_NORMAL);
             } else {
-                preferences.setMyPreferenceInt(getActivity(),"pageButtonSize",FloatingActionButton.SIZE_MINI);
+                preferences.setMyPreferenceInt(getContext(),"pageButtonSize",FloatingActionButton.SIZE_MINI);
             }
             updateDisplay();
         });
         pageButtonGroup_Switch.setOnCheckedChangeListener((compoundButton, b) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"pageButtonGroupMain", b);
+            preferences.setMyPreferenceBoolean(getContext(),"pageButtonGroupMain", b);
             updateDisplay();
         });
         pageButtonTransparency_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // Transparency runs from 0% to 100%
-                preferences.setMyPreferenceFloat(getActivity(),"pageButtonAlpha",(float)progress / 100.0f);
+                preferences.setMyPreferenceFloat(getContext(),"pageButtonAlpha",(float)progress / 100.0f);
                 String text = progress + "%";
                 transparency_TextView.setText(text);
             }
@@ -221,11 +219,11 @@ public class PopUpPageButtonsFragment extends DialogFragment {
     }
 
     private void saveValue(String value, boolean trueorfalse) {
-        preferences.setMyPreferenceBoolean(getActivity(),value,trueorfalse);
+        preferences.setMyPreferenceBoolean(getContext(),value,trueorfalse);
         updateDisplay();
     }
     private boolean getValue(String value, boolean fallback) {
-        return preferences.getMyPreferenceBoolean(getActivity(),value,fallback);
+        return preferences.getMyPreferenceBoolean(getContext(),value,fallback);
     }
 
     // IV - enableordisablegrouping() no longer needed with expanding and contracting button groups

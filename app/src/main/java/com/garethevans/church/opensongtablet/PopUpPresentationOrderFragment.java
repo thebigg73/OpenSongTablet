@@ -18,8 +18,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpPresentationOrderFragment extends DialogFragment {
 
     static PopUpPresentationOrderFragment newInstance() {
@@ -72,16 +70,16 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_presentation_order, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.edit_song_presentation));
+        title.setText(getString(R.string.edit_song_presentation));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(saveMe,getActivity());
+            CustomAnimations.animateFAB(saveMe,getContext());
             saveMe.setEnabled(false);
             doSave();
         });
@@ -103,11 +101,11 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
         // Set the buttons up
         int numbuttons = FullscreenActivity.foundSongSections_heading.size();
         for (int r=0;r<numbuttons;r++) {
-            Button but = new Button(getActivity());
+            Button but = new Button(getContext());
             but.setId(r);
             but.setText(FullscreenActivity.foundSongSections_heading.get(r));
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                but.setTextAppearance(getActivity(), android.R.style.TextAppearance_Small);
+                but.setTextAppearance(getContext(), android.R.style.TextAppearance_Small);
             } else {
                 but.setTextAppearance(android.R.style.TextAppearance_Small);
             }
@@ -144,15 +142,15 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
         PopUpEditSongFragment.prepareSongXML();
 
         if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-            NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
-            NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
-            nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
+            NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getContext());
+            NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getContext(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+            nonOpenSongSQLiteHelper.updateSong(getContext(),storageAccess,preferences,nonOpenSongSQLite);
         } else {
-            PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+            PopUpEditSongFragment.justSaveSongXML(getContext(), preferences);
         }
 
         try {
-            LoadXML.loadXML(getActivity(), preferences, storageAccess, processSong);
+            LoadXML.loadXML(getContext(), preferences, storageAccess, processSong);
         } catch (Exception e) {
             e.printStackTrace();
         }

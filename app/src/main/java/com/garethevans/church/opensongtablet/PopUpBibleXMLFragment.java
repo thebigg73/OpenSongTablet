@@ -36,7 +36,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import static android.content.Context.DOWNLOAD_SERVICE;
 
@@ -63,7 +62,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     @Override
     public void onDetach() {
         try {
-            Objects.requireNonNull(getActivity()).unregisterReceiver(onComplete);
+            requireActivity().unregisterReceiver(onComplete);
         } catch (Exception e) {
             Log.d("d","No need to unregister receiver");
         }
@@ -75,7 +74,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
 
         try {
-            Objects.requireNonNull(getActivity()).registerReceiver(onComplete,
+            requireActivity().registerReceiver(onComplete,
                     new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,7 +91,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     public void onDestroy() {
         super.onDestroy();
         try {
-            Objects.requireNonNull(getActivity()).unregisterReceiver(onComplete);
+            requireActivity().unregisterReceiver(onComplete);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,7 +135,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
 
         // Be nice and run the actions as a separate thread
         new Thread(() -> {
-            Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+            requireActivity().runOnUiThread(() -> {
                 // Set the views
                 setTheViews(V);
 
@@ -150,7 +149,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
             // Prepare an empty array
             ArrayList<String> emptyArray = new ArrayList<>();
             emptyArray.add("");
-            blank_array = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,emptyArray);
+            blank_array = new ArrayAdapter<>(requireContext(),R.layout.my_spinner,emptyArray);
 
             quickUpdate = null;
 
@@ -163,7 +162,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
 
     private void setTheViews(View V) {
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.bibleXML));
+        title.setText(getString(R.string.bibleXML));
         closeMe = V.findViewById(R.id.closeMe);
         saveMe = V.findViewById(R.id.saveMe);
         webViewBibleDownload = V.findViewById(R.id.webViewBibleDownload);
@@ -228,7 +227,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         // This looks for bible files inside the OpenSong/OpenSong Scripture/ folder
         // Initialise the views
         new Thread(() -> {
-            Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+            requireActivity().runOnUiThread(() -> {
                 progressBar.setVisibility(View.VISIBLE);
                 previewTextView.setText("");
             });
@@ -240,13 +239,13 @@ public class PopUpBibleXMLFragment extends DialogFragment {
             // Get a list of the bible files in the folder
             bibleFileNames = storageAccess.listFilesInFolder(getActivity(), preferences, "OpenSong Scripture", "");
             bibleFileNames.add(0,"");
-            bibleFileNames.add(1,getActivity().getString(R.string.download_new));
+            bibleFileNames.add(1,getString(R.string.download_new));
             bibleFileNames.add(2,"");
 
             // Set the array adapter
-            aa = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, bibleFileNames);
+            aa = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, bibleFileNames);
 
-            getActivity().runOnUiThread(() -> {
+            requireActivity().runOnUiThread(() -> {
                 // Set up the spinner
                 aa.notifyDataSetChanged();
                 bibleFileSpinner.setAdapter(aa);
@@ -263,7 +262,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                     }
                 }
             }
-            getActivity().runOnUiThread(() -> {
+            requireActivity().runOnUiThread(() -> {
                 // Set the Spinner selection if set
                 if (selectedItem>-1) {
                     bibleFileSpinner.setSelection(selectedItem);
@@ -293,7 +292,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
             if (selectedItem>-1) {
                 loadABible(preferences.getMyPreferenceString(getActivity(),"bibleCurrentFile",""),false);
             } else {
-                Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+                requireActivity().runOnUiThread(() -> {
                     // Hide the loading bar for now
                     progressBar.setVisibility(View.GONE);
                 });
@@ -303,7 +302,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
 
     private void loadABible(final String selectedBible, final boolean biblechanged) {
         new Thread(() -> {
-            Objects.requireNonNull(getActivity()).runOnUiThread(() -> progressBar.setVisibility(View.VISIBLE));
+            requireActivity().runOnUiThread(() -> progressBar.setVisibility(View.VISIBLE));
 
             // Get the bible Uri
             bibleFile = storageAccess.getUriForItem(getActivity(), preferences, "OpenSong Scripture", "", selectedBible);
@@ -341,7 +340,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         // This is only called when the bible is loaded or changed
         new Thread(() -> {
             // Initialise the other spinners beyond this
-            Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+            requireActivity().runOnUiThread(() -> {
                 progressBar.setVisibility(View.VISIBLE);
                 initialiseTheSpinners(false,true,true);
                 previewTextView.setText("");
@@ -353,9 +352,9 @@ public class PopUpBibleXMLFragment extends DialogFragment {
             bibleBookNames = bibleC.getBibleBookNames(getActivity(),bibleFile);
 
             // Build the adapter
-            b_aa = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,bibleBookNames);
+            b_aa = new ArrayAdapter<>(requireContext(),R.layout.my_spinner,bibleBookNames);
 
-            getActivity().runOnUiThread(() -> {
+            requireActivity().runOnUiThread(() -> {
                 b_aa.notifyDataSetChanged();
                 bibleBookSpinner.setAdapter(b_aa);
                 bibleBookSpinner.setSelection(0);
@@ -382,7 +381,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     private void updateBibleChapters(final String bibleBookName) {
         // This is only called when a book is selected
         new Thread(() -> {
-            Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+            requireActivity().runOnUiThread(() -> {
                 // Initialise the other spinners
                 progressBar.setVisibility(View.VISIBLE);
                 previewTextView.setText("");
@@ -393,9 +392,9 @@ public class PopUpBibleXMLFragment extends DialogFragment {
 
             // Get a list of the chapters for this book
             bibleChapters = bibleC.getChaptersForBook(getActivity(), bibleFile, bibleBookName);
-            c_aa = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,bibleChapters);
+            c_aa = new ArrayAdapter<>(requireContext(),R.layout.my_spinner,bibleChapters);
 
-            getActivity().runOnUiThread(() -> {
+            requireActivity().runOnUiThread(() -> {
                 bibleChapterSpinner.setAdapter(c_aa);
                 c_aa.notifyDataSetChanged();
                 bibleChapterSpinner.setSelection(0);
@@ -419,7 +418,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     private void updateBibleVerses(final String bibleBookName, final String bibleChapter) {
         // This is called when the chapter has been changed/set
         new Thread(() -> {
-            Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+            requireActivity().runOnUiThread(() -> {
                 // Initialise the other spinners
                 progressBar.setVisibility(View.VISIBLE);
                 previewTextView.setText("");
@@ -430,10 +429,10 @@ public class PopUpBibleXMLFragment extends DialogFragment {
             quickUpdate = null;
 
             // Get the verses available for this chapter
-            bibleC.getVersesForChapter(getActivity(),bibleFile, bibleBookName, bibleChapter);
-            v_aa = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, bibleVerses);
+            bibleC.getVersesForChapter(requireContext(),bibleFile, bibleBookName, bibleChapter);
+            v_aa = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, bibleVerses);
 
-            getActivity().runOnUiThread(() -> {
+            requireActivity().runOnUiThread(() -> {
                 if (bibleVerses != null && bibleVerses.size() > 0) {
                     v_aa.notifyDataSetChanged();
                     bibleVerseFromSpinner.setAdapter(v_aa);
@@ -490,7 +489,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     private void getBibleText(final String bibleBookName, final String bibleChapter, final String bibleVerseFrom, final String bibleVerseTo) {
         new Thread(() -> {
 
-            Objects.requireNonNull(getActivity()).runOnUiThread(() -> progressBar.setVisibility(View.VISIBLE));
+            requireActivity().runOnUiThread(() -> progressBar.setVisibility(View.VISIBLE));
 
             quickUpdate = new ArrayList<>();
             quickUpdate.add(bible);
@@ -525,7 +524,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
             }
 
             final StringBuilder finalS = s;
-            getActivity().runOnUiThread(() -> previewTextView.setText(finalS.toString()));
+            requireActivity().runOnUiThread(() -> previewTextView.setText(finalS.toString()));
 
             String verses;
             if (from==to) {
@@ -536,7 +535,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
             FullscreenActivity.scripture_title = bibleBookName + " " + bibleChapter + ":" + verses + " (" + bible + ")";
             FullscreenActivity.scripture_verse = bibleC.shortenTheLines(s.toString(),40,6);
 
-            getActivity().runOnUiThread(() -> progressBar.setVisibility(View.GONE));
+            requireActivity().runOnUiThread(() -> progressBar.setVisibility(View.GONE));
         }).start();
     }
 
@@ -556,27 +555,27 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     private void initialiseTheSpinners(final boolean bibles, final boolean books, final boolean chapters) {
         new Thread(() -> {
             if (bibles) {
-                Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+                requireActivity().runOnUiThread(() -> {
                     bibleFileSpinner.setAdapter(blank_array);
                     bibleFileSpinner.setOnItemSelectedListener(null);
                     bibleFileSpinner.setEnabled(false);
                 });
             }
             if (books) {
-                Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+                requireActivity().runOnUiThread(() -> {
                     bibleBookSpinner.setAdapter(blank_array);
                     bibleBookSpinner.setOnItemSelectedListener(null);
                     bibleBookSpinner.setEnabled(false);
                 });
             }
             if (chapters) {
-                Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+                requireActivity().runOnUiThread(() -> {
                     bibleChapterSpinner.setAdapter(blank_array);
                     bibleChapterSpinner.setOnItemSelectedListener(null);
                     bibleChapterSpinner.setEnabled(false);
                 });
             }
-            Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+            requireActivity().runOnUiThread(() -> {
                 bibleVerseFromSpinner.setAdapter(blank_array);
                 bibleVerseToSpinner.setAdapter(blank_array);
                 bibleVerseFromSpinner.setOnItemSelectedListener(null);
@@ -611,7 +610,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
             downloadedFile = Uri.fromFile(file);
             request.allowScanningByMediaScanner();
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            DownloadManager dm = (DownloadManager) Objects.requireNonNull(getActivity()).getSystemService(DOWNLOAD_SERVICE);
+            DownloadManager dm = (DownloadManager) requireActivity().getSystemService(DOWNLOAD_SERVICE);
             if (dm != null) {
                 dm.enqueue(request);
             }
@@ -657,7 +656,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     private final BroadcastReceiver onComplete = new BroadcastReceiver() {
         public void onReceive(Context ctxt, Intent intent) {
             hideViewsIfNeeded(false);
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.wait);
+            StaticVariables.myToastMessage = getString(R.string.wait);
             ShowToast.showToast(getActivity());
 
             // Copy the zip file

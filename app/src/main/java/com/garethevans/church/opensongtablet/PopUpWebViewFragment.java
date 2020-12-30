@@ -40,7 +40,7 @@ public class PopUpWebViewFragment extends DialogFragment {
         String mTitle;
         switch (FullscreenActivity.whattodo) {
             case "errorlog":
-                mTitle = getResources().getString(R.string.search_log);
+                mTitle = getString(R.string.search_log);
                 break;
             case "browsefonts":
                 mTitle = getString(R.string.googlefontbrowse);
@@ -62,7 +62,7 @@ public class PopUpWebViewFragment extends DialogFragment {
         title.setText(mTitle);
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });

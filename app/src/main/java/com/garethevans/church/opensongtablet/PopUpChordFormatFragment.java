@@ -16,8 +16,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpChordFormatFragment extends DialogFragment {
 
     static PopUpChordFormatFragment newInstance() {
@@ -53,10 +51,10 @@ public class PopUpChordFormatFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_chordformat, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.choosechordformat));
+        title.setText(getString(R.string.choosechordformat));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             exitChordFormat();
         });
@@ -101,19 +99,19 @@ public class PopUpChordFormatFragment extends DialogFragment {
     }
 
     private void setButtons() {
-        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyAb",true), switchAb);
-        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyBb",true), switchBb);
-        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyDb",false), switchDb);
-        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyEb",true), switchEb);
-        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyGb",false), switchGb);
-        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyAbm",false), switchAbm);
-        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyBbm",true), switchBbm);
-        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyDbm",false), switchDbm);
-        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyEbm",true), switchEbm);
-        setSwitches(preferences.getMyPreferenceBoolean(getActivity(),"prefKeyGbm",false), switchGbm);
-        setSwitches(preferences.getMyPreferenceBoolean(getActivity(), "chordFormatUsePreferred",true), assumePreferred_SwitchCompat);
+        setSwitches(preferences.getMyPreferenceBoolean(getContext(),"prefKeyAb",true), switchAb);
+        setSwitches(preferences.getMyPreferenceBoolean(getContext(),"prefKeyBb",true), switchBb);
+        setSwitches(preferences.getMyPreferenceBoolean(getContext(),"prefKeyDb",false), switchDb);
+        setSwitches(preferences.getMyPreferenceBoolean(getContext(),"prefKeyEb",true), switchEb);
+        setSwitches(preferences.getMyPreferenceBoolean(getContext(),"prefKeyGb",false), switchGb);
+        setSwitches(preferences.getMyPreferenceBoolean(getContext(),"prefKeyAbm",false), switchAbm);
+        setSwitches(preferences.getMyPreferenceBoolean(getContext(),"prefKeyBbm",true), switchBbm);
+        setSwitches(preferences.getMyPreferenceBoolean(getContext(),"prefKeyDbm",false), switchDbm);
+        setSwitches(preferences.getMyPreferenceBoolean(getContext(),"prefKeyEbm",true), switchEbm);
+        setSwitches(preferences.getMyPreferenceBoolean(getContext(),"prefKeyGbm",false), switchGbm);
+        setSwitches(preferences.getMyPreferenceBoolean(getContext(), "chordFormatUsePreferred",true), assumePreferred_SwitchCompat);
 
-        switch (preferences.getMyPreferenceInt(getActivity(),"chordFormat",1)) {
+        switch (preferences.getMyPreferenceInt(getContext(),"chordFormat",1)) {
             case 1:
                 chordFormat1.setChecked(true);
                 break;
@@ -136,17 +134,17 @@ public class PopUpChordFormatFragment extends DialogFragment {
     }
 
     private void setListeners() {
-        switchAb.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"prefKeyAb",!isChecked));
-        switchBb.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"prefKeyBb",!isChecked));
-        switchDb.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"prefKeyDb",!isChecked));
-        switchEb.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"prefKeyEb",!isChecked));
-        switchGb.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"prefKeyGb",!isChecked));
-        switchAbm.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"prefKeyAbm",!isChecked));
-        switchBbm.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"prefKeyBbm",!isChecked));
-        switchDbm.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"prefKeyDbm",!isChecked));
-        switchEbm.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"prefKeyEbm",!isChecked));
-        switchGbm.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"prefKeyGbm",!isChecked));
-        assumePreferred_SwitchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",isChecked));
+        switchAb.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"prefKeyAb",!isChecked));
+        switchBb.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"prefKeyBb",!isChecked));
+        switchDb.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"prefKeyDb",!isChecked));
+        switchEb.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"prefKeyEb",!isChecked));
+        switchGb.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"prefKeyGb",!isChecked));
+        switchAbm.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"prefKeyAbm",!isChecked));
+        switchBbm.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"prefKeyBbm",!isChecked));
+        switchDbm.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"prefKeyDbm",!isChecked));
+        switchEbm.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"prefKeyEbm",!isChecked));
+        switchGbm.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"prefKeyGbm",!isChecked));
+        assumePreferred_SwitchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"chordFormatUsePreferred",isChecked));
         chordFormat.setOnCheckedChangeListener((group, checkedId) -> {
             final int cf1 = R.id.chordFormat1;
             final int cf2 = R.id.chordFormat2;
@@ -157,22 +155,22 @@ public class PopUpChordFormatFragment extends DialogFragment {
 
             switch (checkedId) {
                 case cf1:
-                    preferences.setMyPreferenceInt(getActivity(), "chordFormat", 1);
+                    preferences.setMyPreferenceInt(getContext(), "chordFormat", 1);
                     break;
                 case cf2:
-                    preferences.setMyPreferenceInt(getActivity(), "chordFormat", 2);
+                    preferences.setMyPreferenceInt(getContext(), "chordFormat", 2);
                     break;
                 case cf3:
-                    preferences.setMyPreferenceInt(getActivity(), "chordFormat", 3);
+                    preferences.setMyPreferenceInt(getContext(), "chordFormat", 3);
                     break;
                 case cf4:
-                    preferences.setMyPreferenceInt(getActivity(), "chordFormat", 4);
+                    preferences.setMyPreferenceInt(getContext(), "chordFormat", 4);
                     break;
                 case cf5:
-                    preferences.setMyPreferenceInt(getActivity(), "chordFormat", 5);
+                    preferences.setMyPreferenceInt(getContext(), "chordFormat", 5);
                     break;
                 case cf6:
-                    preferences.setMyPreferenceInt(getActivity(), "chordFormat", 6);
+                    preferences.setMyPreferenceInt(getContext(), "chordFormat", 6);
                     break;
             }
         });

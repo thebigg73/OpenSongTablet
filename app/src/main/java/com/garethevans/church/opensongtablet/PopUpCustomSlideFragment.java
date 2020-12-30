@@ -51,7 +51,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 
 public class PopUpCustomSlideFragment extends DialogFragment {
 
@@ -131,7 +130,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         // Initialise the views
         initialiseTheViews();
 
-        new Thread(() -> Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+        new Thread(() -> requireActivity().runOnUiThread(() -> {
             grabVerse_Button.setOnClickListener(v -> {
                 searchBible_progressBar.setVisibility(View.VISIBLE);
                 bibleGateway_WebView.setVisibility(View.GONE);
@@ -155,7 +154,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 bibleSearch.clearFocus();
                 bibleVersion.clearFocus();
                 searchBibleGateway_Button.requestFocus(); // Try to hide keyboard
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm!=null) {
                     imm.hideSoftInputFromWindow(bibleSearch.getWindowToken(), 0);
                     imm.hideSoftInputFromWindow(bibleVersion.getWindowToken(), 0);
@@ -200,7 +199,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 // This reopens the choose backgrounds popupFragment
                 dismiss();
                 DialogFragment newFragment = PopUpFileChooseFragment.newInstance();
-                newFragment.show(getActivity().getSupportFragmentManager(), "dialog");
+                newFragment.show(requireActivity().getSupportFragmentManager(), "dialog");
             });
             customRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
                 if (noteRadioButton.isChecked()) {
@@ -223,18 +222,18 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     @SuppressLint("SetJavaScriptEnabled")
     private void initialiseTheViews() {
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.add_custom_slide));
+        title.setText(getString(R.string.add_custom_slide));
 
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.add_custom_slide));
+        title.setText(getString(R.string.add_custom_slide));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe, getActivity());
+            CustomAnimations.animateFAB(closeMe, getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(saveMe, getActivity());
+            CustomAnimations.animateFAB(saveMe, getContext());
             saveMe.setEnabled(false);
             doSave();
         });
@@ -394,7 +393,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             // Prepare the lyrics
             text = new StringBuilder();
             for (int t = 0; t < individual_images.length; t++) {
-                text.append("[").append(Objects.requireNonNull(getActivity()).getResources().getString(R.string.image)).append("_").append(t + 1).append("]\n").append(individual_images[t]).append("\n\n");
+                text.append("[").append(getString(R.string.image)).append("_").append(t + 1).append("]\n").append(individual_images[t]).append("\n\n");
             }
             text = new StringBuilder(text.toString().trim());
 
@@ -486,25 +485,25 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 // Prepare the tag - use the file name and base 64 encode it to make it safe
                 byte[] data = uri.getPath().getBytes(StandardCharsets.UTF_8);
                 String tag = Base64.encodeToString(data, Base64.DEFAULT);
-                TableRow row = new TableRow(getActivity());
+                TableRow row = new TableRow(getContext());
                 TableLayout.LayoutParams layoutRow = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
                 row.setLayoutParams(layoutRow);
                 row.setHorizontalGravity(Gravity.CENTER_HORIZONTAL);row.setTag(tag);
                 Log.d("d", "row.getId()=" + row.getId() + "  row.getTag=" + row.getTag());
-                TextView filename = new TextView(getActivity());
+                TextView filename = new TextView(getContext());
                 filename.setText(uri.toString());
                 filename.setTextSize(0.0f); // Make it take up no space (user doesn't need to see it).
                 filename.setVisibility(View.GONE);
-                ImageView thumbnail = new ImageView(getActivity());
+                ImageView thumbnail = new ImageView(getContext());
                 Bitmap ThumbImage;
                 Resources res = getResources();
                 BitmapDrawable bd;
 
-                if (!storageAccess.uriExists(getActivity(), uri)) {
+                if (!storageAccess.uriExists(getContext(), uri)) {
                     Drawable notfound = ResourcesCompat.getDrawable(getResources(),R.drawable.notfound,null);
                     thumbnail.setImageDrawable(notfound);
                 } else {
-                    InputStream inputStream = storageAccess.getInputStream(getActivity(), uri);
+                    InputStream inputStream = storageAccess.getInputStream(getContext(), uri);
                     ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeStream(inputStream), 200, 150);
                     bd = new BitmapDrawable(res, ThumbImage);
                     thumbnail.setImageDrawable(bd);
@@ -518,7 +517,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 layoutImage.width = 200;
                 layoutImage.height = 150;
                 thumbnail.setLayoutParams(layoutImage);
-                ImageButton delete = new ImageButton(getActivity());
+                ImageButton delete = new ImageButton(getContext());
                 delete.setImageDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_delete_white_36dp,null));
                 delete.setTag(tag + "_delete");
                 delete.setOnClickListener(v -> {
@@ -603,7 +602,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             if (endoffull > startoffull && startoffull > 0) {
                 newbit = newbit.substring(startoffull, endoffull);
             } else {
-                StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.error_missingsection);
+                StaticVariables.myToastMessage = getString(R.string.error_missingsection);
             }
 
             Log.d("CustomSlideFragment","newbit="+newbit);
@@ -642,7 +641,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 FullscreenActivity.scripture_verse = scripture;
 
             } else {
-                StaticVariables.myToastMessage = getResources().getString(R.string.error_missingsection);
+                StaticVariables.myToastMessage = getString(R.string.error_missingsection);
             }
 
             return null;
@@ -651,7 +650,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         @Override
         protected void onPostExecute(String s) {
             if (!StaticVariables.myToastMessage.equals("")) {
-                ShowToast.showToast(getActivity());
+                ShowToast.showToast(getContext());
             }
 
             // Try to update the views sent

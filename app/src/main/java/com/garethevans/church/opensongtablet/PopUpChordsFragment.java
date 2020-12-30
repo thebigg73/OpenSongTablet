@@ -28,7 +28,6 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PopUpChordsFragment extends DialogFragment {
 
@@ -93,14 +92,14 @@ public class PopUpChordsFragment extends DialogFragment {
 
         // Title changed to reflect Native or Capo chord display
         if (StaticVariables.showCapoInChordsFragment) {
-            title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.showcapo));
+            title.setText(getString(R.string.showcapo));
         } else {
-            title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.showchords));
+            title.setText(getString(R.string.showchords));
         }
 
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -109,7 +108,7 @@ public class PopUpChordsFragment extends DialogFragment {
 
         processSong = new ProcessSong();
         preferences = new Preferences();
-        Resources res = getActivity().getResources();
+        Resources res = requireActivity().getResources();
 
         // Initialise the views
         Spinner popupchord_instrument = V.findViewById(R.id.popupchord_instrument);
@@ -154,16 +153,16 @@ public class PopUpChordsFragment extends DialogFragment {
 
         // Set the spinner options
         ArrayList<String> instrument_choice = new ArrayList<>();
-        instrument_choice.add(getResources().getString(R.string.guitar));
-        instrument_choice.add(getResources().getString(R.string.ukulele));
-        instrument_choice.add(getResources().getString(R.string.mandolin));
-        instrument_choice.add(getResources().getString(R.string.cavaquinho));
-        instrument_choice.add(getResources().getString(R.string.banjo4));
-        instrument_choice.add(getResources().getString(R.string.banjo5));
-        ArrayAdapter<String> adapter_instrument = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, instrument_choice);
+        instrument_choice.add(getString(R.string.guitar));
+        instrument_choice.add(getString(R.string.ukulele));
+        instrument_choice.add(getString(R.string.mandolin));
+        instrument_choice.add(getString(R.string.cavaquinho));
+        instrument_choice.add(getString(R.string.banjo4));
+        instrument_choice.add(getString(R.string.banjo5));
+        ArrayAdapter<String> adapter_instrument = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, instrument_choice);
         adapter_instrument.setDropDownViewResource(R.layout.my_spinner);
         popupchord_instrument.setAdapter(adapter_instrument);
-        switch (preferences.getMyPreferenceString(getActivity(),"chordInstrument","g")) {
+        switch (preferences.getMyPreferenceString(requireContext(),"chordInstrument","g")) {
             case "g":
             default:
                 popupchord_instrument.setSelection(0);
@@ -191,22 +190,22 @@ public class PopUpChordsFragment extends DialogFragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i) {
                     case 0:
-                        preferences.setMyPreferenceString(getActivity(),"chordInstrument","g");
+                        preferences.setMyPreferenceString(getContext(),"chordInstrument","g");
                         break;
                     case 1:
-                        preferences.setMyPreferenceString(getActivity(),"chordInstrument","u");
+                        preferences.setMyPreferenceString(getContext(),"chordInstrument","u");
                         break;
                     case 2:
-                        preferences.setMyPreferenceString(getActivity(),"chordInstrument","m");
+                        preferences.setMyPreferenceString(getContext(),"chordInstrument","m");
                         break;
                     case 3:
-                        preferences.setMyPreferenceString(getActivity(),"chordInstrument","c");
+                        preferences.setMyPreferenceString(getContext(),"chordInstrument","c");
                         break;
                     case 4:
-                        preferences.setMyPreferenceString(getActivity(),"chordInstrument","b");
+                        preferences.setMyPreferenceString(getContext(),"chordInstrument","b");
                         break;
                     case 5:
-                        preferences.setMyPreferenceString(getActivity(),"chordInstrument","B");
+                        preferences.setMyPreferenceString(getContext(),"chordInstrument","B");
                         break;
                 }
                 prepareChords();
@@ -262,7 +261,7 @@ public class PopUpChordsFragment extends DialogFragment {
                     Transpose transpose;
                     transpose = new Transpose();
                     StaticVariables.temptranspChords = StaticVariables.allchords;
-                    transpose.capoTranspose(getActivity(), preferences);
+                    transpose.capoTranspose(getContext(), preferences);
                     StaticVariables.allchords = StaticVariables.temptranspChords;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -281,7 +280,7 @@ public class PopUpChordsFragment extends DialogFragment {
 
             if (tempCustomChordsArray.length > 0) {
                 numcustomchords = tempCustomChordsArray.length;
-                String mychordinstrument = preferences.getMyPreferenceString(getActivity(),"chordInstrument","g");
+                String mychordinstrument = preferences.getMyPreferenceString(getContext(),"chordInstrument","g");
                 for (int q = 0; q < numcustomchords; q++) {
                     if (tempCustomChordsArray[q] != null && tempCustomChordsArray[q].contains("_"+mychordinstrument+"_")) {
                         tempCustomChordsToAdd.append(" $$$").append(tempCustomChordsArray[q]);
@@ -329,27 +328,27 @@ public class PopUpChordsFragment extends DialogFragment {
                 // Send the unique chords off to get the string layout
                 // This will eventually be if guitar/ukulele/mandolin/piano/other
                 // Custom chords don't get sent for retrieval as they are already defined
-                String myinstr = preferences.getMyPreferenceString(getActivity(),"chordInstrument","g");
+                String myinstr = preferences.getMyPreferenceString(getContext(),"chordInstrument","g");
                 for (int l = 0; l < unique_chords.size(); l++) {
                     boolean containsit = unique_chords.get(l).contains("$$$");
                     if (myinstr.equals("u") && !containsit) {
-                        ChordDirectory.ukuleleChords(getActivity(),preferences,unique_chords.get(l));
+                        ChordDirectory.ukuleleChords(getContext(),preferences,unique_chords.get(l));
                     } else if (myinstr.equals("m") && !containsit) {
-                        ChordDirectory.mandolinChords(getActivity(),preferences,unique_chords.get(l));
+                        ChordDirectory.mandolinChords(getContext(),preferences,unique_chords.get(l));
                     } else if (myinstr.equals("g") && !containsit) {
-                        ChordDirectory.guitarChords(getActivity(),preferences,unique_chords.get(l));
+                        ChordDirectory.guitarChords(getContext(),preferences,unique_chords.get(l));
                     } else if (myinstr.equals("c") && !containsit) {
-                        ChordDirectory.cavaquinhoChords(getActivity(),preferences,unique_chords.get(l));
+                        ChordDirectory.cavaquinhoChords(getContext(),preferences,unique_chords.get(l));
                     } else if (myinstr.equals("b") && !containsit) {
-                        ChordDirectory.banjo4stringChords(getActivity(),preferences,unique_chords.get(l));
+                        ChordDirectory.banjo4stringChords(getContext(),preferences,unique_chords.get(l));
                     } else if (myinstr.equals("B") && !containsit) {
-                        ChordDirectory.banjo5stringChords(getActivity(),preferences,unique_chords.get(l));
+                        ChordDirectory.banjo5stringChords(getContext(),preferences,unique_chords.get(l));
                     }
 
                     // If chord is custom, prepare this prefix to the name
                     String iscustom = "";
                     if (unique_chords.get(l).contains("$$$")) {
-                        iscustom = "\n" + getResources().getString(R.string.custom) + "";
+                        iscustom = "\n" + getString(R.string.custom) + "";
                         StaticVariables.chordnotes = unique_chords.get(l);
                         StaticVariables.chordnotes = StaticVariables.chordnotes.replace("$$$", "");
                         unique_chords.set(l, unique_chords.get(l).replace("$$$", ""));
@@ -360,7 +359,7 @@ public class PopUpChordsFragment extends DialogFragment {
                     }
 
                     // Prepare a new Horizontal Linear Layout for each chord
-                    TableRow chordview = new TableRow(getActivity());
+                    TableRow chordview = new TableRow(getContext());
                     TableLayout.LayoutParams tableRowParams =
                             new TableLayout.LayoutParams
                                     (TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
@@ -373,14 +372,14 @@ public class PopUpChordsFragment extends DialogFragment {
                     tableRowParams.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);
 
                     chordview.setLayoutParams(tableRowParams);
-                    TextView chordname = new TextView(getActivity());
-                    ImageView image1 = new ImageView(getActivity());
-                    ImageView image2 = new ImageView(getActivity());
-                    ImageView image3 = new ImageView(getActivity());
-                    ImageView image4 = new ImageView(getActivity());
-                    ImageView image5 = new ImageView(getActivity());
-                    ImageView image6 = new ImageView(getActivity());
-                    ImageView image0 = new ImageView(getActivity());
+                    TextView chordname = new TextView(getContext());
+                    ImageView image1 = new ImageView(getContext());
+                    ImageView image2 = new ImageView(getContext());
+                    ImageView image3 = new ImageView(getContext());
+                    ImageView image4 = new ImageView(getContext());
+                    ImageView image5 = new ImageView(getContext());
+                    ImageView image6 = new ImageView(getContext());
+                    ImageView image0 = new ImageView(getContext());
 
                     // Initialise 6 strings and frets
                     String string_6 = "";
@@ -391,7 +390,7 @@ public class PopUpChordsFragment extends DialogFragment {
                     String string_1 = "";
                     String fret = "";
 
-                    switch (preferences.getMyPreferenceString(getActivity(),"chordInstrument","g")) {
+                    switch (preferences.getMyPreferenceString(getContext(),"chordInstrument","g")) {
                         case "g":
 
                             if (StaticVariables.chordnotes.length() > 0) {

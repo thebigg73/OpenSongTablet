@@ -75,16 +75,16 @@ public class PopUpTransposeFragment extends DialogFragment {
         final View V = inflater.inflate(R.layout.popup_transpose, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getResources().getString(R.string.transpose));
+        title.setText(getString(R.string.transpose));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(saveMe,getActivity());
+            CustomAnimations.animateFAB(saveMe,getContext());
             saveMe.setEnabled(false);
             doTranspose();
         });
@@ -107,7 +107,7 @@ public class PopUpTransposeFragment extends DialogFragment {
         StaticVariables.transposeTimes = Math.abs(0);
 
         // Decide if we are using preferred chord format
-        usePreferredChordFormat(preferences.getMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",false));
+        usePreferredChordFormat(preferences.getMyPreferenceBoolean(getContext(),"chordFormatUsePreferred",false));
 
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
@@ -197,7 +197,7 @@ public class PopUpTransposeFragment extends DialogFragment {
                     // Get the new key value
                     String keynum = transpose.keyToNumber(StaticVariables.mKey);
                     String transpkeynum = transpose.transposeKey(keynum, StaticVariables.transposeDirection, StaticVariables.transposeTimes);
-                    String newkey = transpose.numberToKey(getActivity(), preferences, transpkeynum);
+                    String newkey = transpose.numberToKey(getContext(), preferences, transpkeynum);
 
                     String keychange = getString(R.string.edit_song_key) + ": " + StaticVariables.mKey + "\n" +
                             getString(R.string.transpose) + ": " + newkey;
@@ -215,7 +215,7 @@ public class PopUpTransposeFragment extends DialogFragment {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         assumePreferred_SwitchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",isChecked);
+            preferences.setMyPreferenceBoolean(getContext(),"chordFormatUsePreferred",isChecked);
             usePreferredChordFormat(isChecked);
         });
     }
@@ -225,7 +225,7 @@ public class PopUpTransposeFragment extends DialogFragment {
         int formattouse;
 
         if (trueorfalse) {
-            formattouse = preferences.getMyPreferenceInt(getActivity(),"chordFormat",1);
+            formattouse = preferences.getMyPreferenceInt(getContext(),"chordFormat",1);
         } else {
             formattouse = StaticVariables.detectedChordFormat;
         }
@@ -248,7 +248,7 @@ public class PopUpTransposeFragment extends DialogFragment {
                 break;
         }
 
-        boolean usePreferred = preferences.getMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",true);
+        boolean usePreferred = preferences.getMyPreferenceBoolean(getContext(),"chordFormatUsePreferred",true);
         assumePreferred_SwitchCompat.setChecked(usePreferred);
 
         if (usePreferred) {
@@ -282,7 +282,7 @@ public class PopUpTransposeFragment extends DialogFragment {
 
         // Do the transpose
         try {
-            transpose.doTranspose(getActivity(), storageAccess, preferences, false, false, false);
+            transpose.doTranspose(getContext(), storageAccess, preferences, false, false, false);
         } catch (Exception e) {
             e.printStackTrace();
         }

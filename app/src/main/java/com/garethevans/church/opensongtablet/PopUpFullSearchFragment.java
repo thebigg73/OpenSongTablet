@@ -23,10 +23,9 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 
-//TODO Edit this to allow filtered searching
+//TODO Edit this to allow filtered searching - much better search in V6!!!
 
 public class PopUpFullSearchFragment extends DialogFragment {
 
@@ -93,10 +92,10 @@ public class PopUpFullSearchFragment extends DialogFragment {
         V = inflater.inflate(R.layout.popup_searchview, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.action_search));
+        title.setText(getString(R.string.action_search));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -107,7 +106,7 @@ public class PopUpFullSearchFragment extends DialogFragment {
 
         processSong = new ProcessSong();
         preferences = new Preferences();
-        sqLiteHelper = new SQLiteHelper(getActivity());
+        sqLiteHelper = new SQLiteHelper(getContext());
 
         initialiseViews();
         setFABListeners();
@@ -181,19 +180,19 @@ public class PopUpFullSearchFragment extends DialogFragment {
         // Create the new checkboxes
         searchFilters.removeAllViews();
 
-        CheckBox titleCheckBox = new CheckBox(getActivity());
-        CheckBox authorCheckBox = new CheckBox(getActivity());
-        CheckBox copyrightCheckBox = new CheckBox(getActivity());
-        CheckBox lyricsCheckBox = new CheckBox(getActivity());
-        CheckBox themeCheckBox = new CheckBox(getActivity());
-        CheckBox keyCheckBox = new CheckBox(getActivity());
-        CheckBox hymnCheckBox = new CheckBox(getActivity());
-        CheckBox user1CheckBox = new CheckBox(getActivity());
-        CheckBox user2CheckBox = new CheckBox(getActivity());
-        CheckBox user3CheckBox = new CheckBox(getActivity());
-        CheckBox ccliCheckBox = new CheckBox(getActivity());
-        CheckBox folderCheckBox = new CheckBox(getActivity());
-        CheckBox akaCheckBox = new CheckBox(getActivity());
+        CheckBox titleCheckBox = new CheckBox(getContext());
+        CheckBox authorCheckBox = new CheckBox(getContext());
+        CheckBox copyrightCheckBox = new CheckBox(getContext());
+        CheckBox lyricsCheckBox = new CheckBox(getContext());
+        CheckBox themeCheckBox = new CheckBox(getContext());
+        CheckBox keyCheckBox = new CheckBox(getContext());
+        CheckBox hymnCheckBox = new CheckBox(getContext());
+        CheckBox user1CheckBox = new CheckBox(getContext());
+        CheckBox user2CheckBox = new CheckBox(getContext());
+        CheckBox user3CheckBox = new CheckBox(getContext());
+        CheckBox ccliCheckBox = new CheckBox(getContext());
+        CheckBox folderCheckBox = new CheckBox(getContext());
+        CheckBox akaCheckBox = new CheckBox(getContext());
 
         // Set them ticked as appropriate
         titleCheckBox.setChecked(searchTitle);
@@ -227,55 +226,55 @@ public class PopUpFullSearchFragment extends DialogFragment {
 
         // Set the view listeners
         titleCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"searchTitle",isChecked);
+            preferences.setMyPreferenceBoolean(getContext(),"searchTitle",isChecked);
             searchTitle = isChecked;
         });
         authorCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"searchAuthor",isChecked);
+            preferences.setMyPreferenceBoolean(getContext(),"searchAuthor",isChecked);
             searchAuthor = isChecked;
         });
         copyrightCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"searchCopyright",isChecked);
+            preferences.setMyPreferenceBoolean(getContext(),"searchCopyright",isChecked);
             searchCopyright = isChecked;
         });
         lyricsCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"searchLyrics",isChecked);
+            preferences.setMyPreferenceBoolean(getContext(),"searchLyrics",isChecked);
             searchLyrics = isChecked;
         });
         themeCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"searchTheme",isChecked);
+            preferences.setMyPreferenceBoolean(getContext(),"searchTheme",isChecked);
             searchTheme = isChecked;
         });
         keyCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"searchKey",isChecked);
+            preferences.setMyPreferenceBoolean(getContext(),"searchKey",isChecked);
             searchKey = isChecked;
         });
         hymnCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"searchHymn",isChecked);
+            preferences.setMyPreferenceBoolean(getContext(),"searchHymn",isChecked);
             searchHymn = isChecked;
         });
         user1CheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"searchUser1",isChecked);
+            preferences.setMyPreferenceBoolean(getContext(),"searchUser1",isChecked);
             searchUser1 = isChecked;
         });
         user2CheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"searchUser2",isChecked);
+            preferences.setMyPreferenceBoolean(getContext(),"searchUser2",isChecked);
             searchUser2 = isChecked;
         });
         user3CheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"searchUser3",isChecked);
+            preferences.setMyPreferenceBoolean(getContext(),"searchUser3",isChecked);
             searchUser3 = isChecked;
         });
         ccliCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"searchCCLI",isChecked);
+            preferences.setMyPreferenceBoolean(getContext(),"searchCCLI",isChecked);
             searchCCLI = isChecked;
         });
         folderCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"searchFolder",isChecked);
+            preferences.setMyPreferenceBoolean(getContext(),"searchFolder",isChecked);
             searchFolder = isChecked;
         });
         akaCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferences.setMyPreferenceBoolean(getActivity(),"searchAka",isChecked);
+            preferences.setMyPreferenceBoolean(getContext(),"searchAka",isChecked);
             searchAka = isChecked;
         });
 
@@ -305,25 +304,25 @@ public class PopUpFullSearchFragment extends DialogFragment {
     }
 
     private void getSearchPreferences() {
-        searchTitle = preferences.getMyPreferenceBoolean(getActivity(),"searchTitle",true);
-        searchAuthor = preferences.getMyPreferenceBoolean(getActivity(),"searchAuthor",true);
-        searchCopyright = preferences.getMyPreferenceBoolean(getActivity(),"searchCopyright",true);
-        searchLyrics = preferences.getMyPreferenceBoolean(getActivity(),"searchLyrics",true);
-        searchTheme = preferences.getMyPreferenceBoolean(getActivity(),"searchTheme",true);
-        searchKey = preferences.getMyPreferenceBoolean(getActivity(),"searchKey",true);
-        searchHymn = preferences.getMyPreferenceBoolean(getActivity(),"searchHymn",true);
-        searchUser1 = preferences.getMyPreferenceBoolean(getActivity(),"searchUser1",true);
-        searchUser2 = preferences.getMyPreferenceBoolean(getActivity(),"searchUser2",true);
-        searchUser3 = preferences.getMyPreferenceBoolean(getActivity(),"searchUser3",true);
-        searchFolder = preferences.getMyPreferenceBoolean(getActivity(),"searchFolder",true);
-        searchAka = preferences.getMyPreferenceBoolean(getActivity(),"searchAka",true);
-        searchCCLI = preferences.getMyPreferenceBoolean(getActivity(),"searchCCLI",true);
+        searchTitle = preferences.getMyPreferenceBoolean(getContext(),"searchTitle",true);
+        searchAuthor = preferences.getMyPreferenceBoolean(getContext(),"searchAuthor",true);
+        searchCopyright = preferences.getMyPreferenceBoolean(getContext(),"searchCopyright",true);
+        searchLyrics = preferences.getMyPreferenceBoolean(getContext(),"searchLyrics",true);
+        searchTheme = preferences.getMyPreferenceBoolean(getContext(),"searchTheme",true);
+        searchKey = preferences.getMyPreferenceBoolean(getContext(),"searchKey",true);
+        searchHymn = preferences.getMyPreferenceBoolean(getContext(),"searchHymn",true);
+        searchUser1 = preferences.getMyPreferenceBoolean(getContext(),"searchUser1",true);
+        searchUser2 = preferences.getMyPreferenceBoolean(getContext(),"searchUser2",true);
+        searchUser3 = preferences.getMyPreferenceBoolean(getContext(),"searchUser3",true);
+        searchFolder = preferences.getMyPreferenceBoolean(getContext(),"searchFolder",true);
+        searchAka = preferences.getMyPreferenceBoolean(getContext(),"searchAka",true);
+        searchCCLI = preferences.getMyPreferenceBoolean(getContext(),"searchCCLI",true);
     }
 
     private void setUpSearchView() {
         new Thread(() -> {
             try {
-                searchlist = sqLiteHelper.getAllSongs(getActivity());
+                searchlist = sqLiteHelper.getAllSongs(getContext());
                 Log.d("FullSearchFragment","size of searchlist="+searchlist.size());
                 // Add the relevant stuff
                 // IV - Folders are no longer returned by getAllSongs
@@ -359,60 +358,59 @@ public class PopUpFullSearchFragment extends DialogFragment {
                     }
                 }
 
-                adapter = new SearchViewAdapter(getActivity(), searchlist, searchPhrase);
+                adapter = new SearchViewAdapter(getContext(), searchlist, searchPhrase);
 
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(() -> {
-                        mListView.setAdapter(adapter);
-                        mListView.setTextFilterEnabled(true);
-                        mListView.setFastScrollEnabled(true);
-                        mSearchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-                            @Override
-                            public boolean onQueryTextSubmit(String s) {
-                                InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
-                                if (imm != null) {
-                                    imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
-                                }
-                                mListView.requestFocus();
-                                if (mListView.getCount() == 0) {
-                                    dismiss();
-                                    return false;
-
-                                } else {
-                                    SQLite item = (SQLite) adapter.getItem(0);
-                                    StaticVariables.songfilename = item.getFilename();
-                                    StaticVariables.whichSongFolder = item.getFolder();
-                                    StaticVariables.setView = false;
-                                    StaticVariables.myToastMessage = StaticVariables.songfilename;
-
-                                    // Vibrate to indicate something has happened
-                                    DoVibrate.vibrate(getActivity(), 50);
-                                    if (mListener != null) {
-                                        mListener.songLongClick();
-                                        mListener.loadSong();
-                                    }
-                                    dismiss();
-                                    return true;
-                                }
+                requireActivity();
+                requireActivity().runOnUiThread(() -> {
+                    mListView.setAdapter(adapter);
+                    mListView.setTextFilterEnabled(true);
+                    mListView.setFastScrollEnabled(true);
+                    mSearchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String s) {
+                            InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            if (imm != null) {
+                                imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
                             }
-
-                            @Override
-                            public boolean onQueryTextChange(String s) {
-                                // Replace unwanted symbols
-                                if (s == null) {
-                                    s = "";
-                                }
-                                s = processSong.removeUnwantedSymbolsAndSpaces(getActivity(), preferences, s);
-                                if (adapter != null) {
-                                    adapter.getFilter().filter(s);
-                                }
+                            mListView.requestFocus();
+                            if (mListView.getCount() == 0) {
+                                dismiss();
                                 return false;
+
+                            } else {
+                                SQLite item = (SQLite) adapter.getItem(0);
+                                StaticVariables.songfilename = item.getFilename();
+                                StaticVariables.whichSongFolder = item.getFolder();
+                                StaticVariables.setView = false;
+                                StaticVariables.myToastMessage = StaticVariables.songfilename;
+
+                                // Vibrate to indicate something has happened
+                                DoVibrate.vibrate(requireActivity(), 50);
+                                if (mListener != null) {
+                                    mListener.songLongClick();
+                                    mListener.loadSong();
+                                }
+                                dismiss();
+                                return true;
                             }
-                        });
-                        mListView.setOnItemClickListener(new SongClickListener());
-                        mListView.setOnItemLongClickListener(new SongLongClickListener());
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String s) {
+                            // Replace unwanted symbols
+                            if (s == null) {
+                                s = "";
+                            }
+                            s = processSong.removeUnwantedSymbolsAndSpaces(getContext(), preferences, s);
+                            if (adapter != null) {
+                                adapter.getFilter().filter(s);
+                            }
+                            return false;
+                        }
                     });
-                }
+                    mListView.setOnItemClickListener(new SongClickListener());
+                    mListView.setOnItemLongClickListener(new SongLongClickListener());
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -424,7 +422,7 @@ public class PopUpFullSearchFragment extends DialogFragment {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
             // Vibrate to indicate that something has happened.
-            DoVibrate.vibrate(Objects.requireNonNull(getActivity()),50);
+            DoVibrate.vibrate(requireActivity(),50);
 
             TextView mFilename = view.findViewById(R.id.cardview_filename);
             TextView mFoldername = view.findViewById(R.id.cardview_folder);
@@ -433,7 +431,7 @@ public class PopUpFullSearchFragment extends DialogFragment {
             StaticVariables.setView = false;
 
             // Hide the keyboard if it is visible
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
             if (imm != null) {
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
@@ -452,7 +450,7 @@ public class PopUpFullSearchFragment extends DialogFragment {
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
             // Each song is saved in the set string as $**_Love everlasting_**$
             // Vibrate to indicate that something has happened.
-            DoVibrate.vibrate(Objects.requireNonNull(getActivity()),50);
+            DoVibrate.vibrate(requireActivity(),50);
 
             TextView mFilename = view.findViewById(R.id.cardview_filename);
             TextView mFoldername = view.findViewById(R.id.cardview_folder);
@@ -460,18 +458,18 @@ public class PopUpFullSearchFragment extends DialogFragment {
             String tfolder = mFoldername.getText().toString();
 
             // We need to figure out the file name and the folder (if any) it is in
-            if (tfolder.equals(getActivity().getString(R.string.mainfoldername)) || tfolder.equals("MAIN") || tfolder.equals("")) {
+            if (tfolder.equals(getString(R.string.mainfoldername)) || tfolder.equals("MAIN") || tfolder.equals("")) {
                 StaticVariables.whatsongforsetwork = "$**_" + tsong + "_**$";
             } else {
                 StaticVariables.whatsongforsetwork = "$**_" + tfolder + "/"	+ tsong + "_**$";
             }
 
             // Allow the song to be added, even if it is already there
-            String val = preferences.getMyPreferenceString(getActivity(),"setCurrent","") + StaticVariables.whatsongforsetwork;
-            preferences.setMyPreferenceString(getActivity(),"setCurrent",val);
+            String val = preferences.getMyPreferenceString(getContext(),"setCurrent","") + StaticVariables.whatsongforsetwork;
+            preferences.setMyPreferenceString(getContext(),"setCurrent",val);
             // Tell the user that the song has been added.
-            StaticVariables.myToastMessage = "\"" + tsong + "\" " +getResources().getString(R.string.addedtoset);
-            ShowToast.showToast(getActivity());
+            StaticVariables.myToastMessage = "\"" + tsong + "\" " + getString(R.string.addedtoset);
+            ShowToast.showToast(getContext());
 
             if (mListener!=null) {
                 mListener.songLongClick();

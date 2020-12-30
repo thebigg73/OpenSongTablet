@@ -36,7 +36,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -100,11 +99,11 @@ public class PopUpCCLIFragment extends DialogFragment {
         setviewvisiblities(View.VISIBLE, View.GONE, View.GONE, View.GONE);
 
         // Set up the default values
-        churchNameEditText.setText(preferences.getMyPreferenceString(getActivity(),"ccliChurchName",""));
+        churchNameEditText.setText(preferences.getMyPreferenceString(getContext(),"ccliChurchName",""));
 
         // Set up save/tick listener
         saveMe.setOnClickListener(view -> {
-            preferences.setMyPreferenceString(getActivity(),"ccliChurchName",churchNameEditText.getText().toString());
+            preferences.setMyPreferenceString(getContext(),"ccliChurchName",churchNameEditText.getText().toString());
             doSave();
         });
     }
@@ -114,11 +113,11 @@ public class PopUpCCLIFragment extends DialogFragment {
         setviewvisiblities(View.GONE, View.VISIBLE, View.GONE, View.GONE);
 
         // Set up the default values
-        licenceEditText.setText(preferences.getMyPreferenceString(getActivity(),"ccliLicence",""));
+        licenceEditText.setText(preferences.getMyPreferenceString(getContext(),"ccliLicence",""));
 
         // Set up save/tick listener
         saveMe.setOnClickListener(view -> {
-            preferences.setMyPreferenceString(getActivity(),"ccliLicence",licenceEditText.getText().toString());
+            preferences.setMyPreferenceString(getContext(),"ccliLicence",licenceEditText.getText().toString());
             doSave();
         });
     }
@@ -128,7 +127,7 @@ public class PopUpCCLIFragment extends DialogFragment {
         setviewvisiblities(View.GONE, View.GONE, View.VISIBLE, View.GONE);
 
         // Set up the default values
-        buildTable(getActivity());
+        buildTable(getContext());
 
         // Set up save/tick listener
         saveMe.hide();
@@ -176,10 +175,10 @@ public class PopUpCCLIFragment extends DialogFragment {
         // Set the title based on the whattodo
 
         title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.edit_song_ccli));
+        title.setText(getString(R.string.edit_song_ccli));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             doSave();
         });
@@ -221,7 +220,7 @@ public class PopUpCCLIFragment extends DialogFragment {
                 break;
         }
         Dialog dialog = getDialog();
-        if (dialog!=null && getActivity()!=null) {
+        if (dialog!=null && getContext()!=null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog, preferences);
         }
         return V;
@@ -254,7 +253,7 @@ public class PopUpCCLIFragment extends DialogFragment {
 
         // Check if the Log file exists and if not, create it
         Uri uri = storageAccess.getUriForItem(c, preferences, "Settings", "", "ActivityLog.xml");
-        storageAccess.lollipopCreateFileForOutputStream(getActivity(), preferences, uri, null,
+        storageAccess.lollipopCreateFileForOutputStream(getContext(), preferences, uri, null,
                 "Settings", "", "ActivityLog.xml");
         InputStream inputStream = storageAccess.getInputStream(c, uri);
         String actfilesize = getLogFileSize(c, uri);
@@ -274,19 +273,19 @@ public class PopUpCCLIFragment extends DialogFragment {
     }
 
     private void setupReset() {
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.areyousure));
+        title.setText(getString(R.string.areyousure));
         // Show what we want and hide what we don't
         setviewvisiblities(View.GONE, View.GONE, View.GONE, View.VISIBLE);
 
         // Set up the default values
         // Set up save/tick listener
         saveMe.setOnClickListener(view -> {
-            if (createBlankXML(getActivity(), preferences)) {
+            if (createBlankXML(getContext(), preferences)) {
                 StaticVariables.myToastMessage = getString(R.string.ok);
             } else {
                 StaticVariables.myToastMessage = getString(R.string.error);
             }
-            ShowToast.showToast(getActivity());
+            ShowToast.showToast(getContext());
             try {
                 dismiss();
             } catch (Exception e) {
@@ -599,9 +598,9 @@ public class PopUpCCLIFragment extends DialogFragment {
         if (song == null || song.size() == 0) {
             table = new StringBuilder("<!DOCTYPE html><html><body><h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
                     "<h3>" + getString(R.string.ccli_church) + ": " +
-                    preferences.getMyPreferenceString(getActivity(),"ccliChurchName","") + "</h3>\n" +
+                    preferences.getMyPreferenceString(getContext(),"ccliChurchName","") + "</h3>\n" +
                     "<h3>" + getString(R.string.ccli_licence) + ": " +
-                    preferences.getMyPreferenceString(getActivity(),"ccliLicence","")+ "</h3>\n" +
+                    preferences.getMyPreferenceString(getContext(),"ccliLicence","")+ "</h3>\n" +
                     "<h4>" + sizeoffile + "</h4>\n" +
                     "</body></html>");
 
@@ -615,9 +614,9 @@ public class PopUpCCLIFragment extends DialogFragment {
                     "</style>\n</head><body>" +
                     "<h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
                     "<h3>" + getString(R.string.ccli_church) + ": " +
-                    preferences.getMyPreferenceString(getActivity(),"ccliChurchName","") + "</h3>\n" +
+                    preferences.getMyPreferenceString(getContext(),"ccliChurchName","") + "</h3>\n" +
                     "<h3>" + getString(R.string.ccli_licence) + ": " +
-                    preferences.getMyPreferenceString(getActivity(),"ccliLicence","")+ "</h3>\n" +
+                    preferences.getMyPreferenceString(getContext(),"ccliLicence","")+ "</h3>\n" +
                     "<h4>" + sizeoffile + "</h4>\n" +
                     "<table id=\"mytable\">\n<tr>");
             table.append("<th>").append(getString(R.string.item)).append("</th>");

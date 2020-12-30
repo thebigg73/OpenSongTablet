@@ -20,8 +20,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 import static android.app.Activity.RESULT_OK;
 
 public class PopUpLinks extends DialogFragment {
@@ -76,16 +74,16 @@ public class PopUpLinks extends DialogFragment {
         final View V = inflater.inflate(R.layout.popup_links, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.link));
+        title.setText(getString(R.string.link));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(saveMe,getActivity());
+            CustomAnimations.animateFAB(saveMe,getContext());
             saveMe.setEnabled(false);
             doSave();
         });
@@ -139,8 +137,8 @@ public class PopUpLinks extends DialogFragment {
                         Uri.parse(linkYouTube_EditText.getText().toString())));
             } catch (Exception e) {
                 e.printStackTrace();
-                StaticVariables.myToastMessage = getResources().getString(R.string.notset);
-                ShowToast.showToast(getActivity());
+                StaticVariables.myToastMessage = getString(R.string.notset);
+                ShowToast.showToast(getContext());
             }
         });
         linkWeb_ImageButton.setOnClickListener(v -> {
@@ -154,13 +152,13 @@ public class PopUpLinks extends DialogFragment {
                         Uri.parse(weblink)));
             } catch (Exception e) {
                 e.printStackTrace();
-                StaticVariables.myToastMessage = getResources().getString(R.string.notset);
-                ShowToast.showToast(getActivity());
+                StaticVariables.myToastMessage = getString(R.string.notset);
+                ShowToast.showToast(getContext());
             }
         });
         linkAudio_ImageButton.setOnClickListener(v -> {
             String mytext = linkAudio_EditText.getText().toString();
-            uri = storageAccess.fixLocalisedUri(getActivity(), preferences, mytext);
+            uri = storageAccess.fixLocalisedUri(getContext(), preferences, mytext);
             Log.d("PopUpLinks","uri="+uri);
             if (!mytext.equals("")) {
                 MimeTypeMap myMime = MimeTypeMap.getSingleton();
@@ -184,8 +182,8 @@ public class PopUpLinks extends DialogFragment {
                     e.printStackTrace();
                 }
             } else {
-                StaticVariables.myToastMessage = getResources().getString(R.string.notset);
-                ShowToast.showToast(getActivity());
+                StaticVariables.myToastMessage = getString(R.string.notset);
+                ShowToast.showToast(getContext());
             }
         });
         linkOther_ImageButton.setOnClickListener(v -> {
@@ -193,7 +191,7 @@ public class PopUpLinks extends DialogFragment {
             if (!mytext.equals("")) {
                 MimeTypeMap myMime = MimeTypeMap.getSingleton();
                 Intent newIntent = new Intent(Intent.ACTION_VIEW);
-                uri = storageAccess.fixLocalisedUri(getActivity(), preferences, mytext);
+                uri = storageAccess.fixLocalisedUri(getContext(), preferences, mytext);
                 Log.d("PopUpLinks","uri="+uri);
                 String mimeType = myMime.getMimeTypeFromExtension(mytext);
 
@@ -211,8 +209,8 @@ public class PopUpLinks extends DialogFragment {
                     e.printStackTrace();
                 }
             } else {
-                StaticVariables.myToastMessage = getResources().getString(R.string.notset);
-                ShowToast.showToast(getActivity());
+                StaticVariables.myToastMessage = getString(R.string.notset);
+                ShowToast.showToast(getContext());
             }
         });
 
@@ -232,18 +230,17 @@ public class PopUpLinks extends DialogFragment {
         PopUpEditSongFragment.prepareSongXML();
         try {
             if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
-                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getActivity(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
-                nonOpenSongSQLiteHelper.updateSong(getActivity(),storageAccess,preferences,nonOpenSongSQLite);
+                NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getContext());
+                NonOpenSongSQLite nonOpenSongSQLite = nonOpenSongSQLiteHelper.getSong(getContext(),storageAccess,preferences,nonOpenSongSQLiteHelper.getSongId());
+                nonOpenSongSQLiteHelper.updateSong(getContext(),storageAccess,preferences,nonOpenSongSQLite);
             } else {
-                PopUpEditSongFragment.justSaveSongXML(getActivity(), preferences);
+                PopUpEditSongFragment.justSaveSongXML(getContext(), preferences);
             }
             mListener.refreshAll();
             dismiss();
         } catch (Exception e) {
-            StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getResources().getString(R.string.save) + " - " +
-                    getActivity().getResources().getString(R.string.error);
-            ShowToast.showToast(getActivity());
+            StaticVariables.myToastMessage = getString(R.string.save) + " - " + getString(R.string.error);
+            ShowToast.showToast(getContext());
             e.printStackTrace();
         }
     }
@@ -267,9 +264,7 @@ public class PopUpLinks extends DialogFragment {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType(mimeType);
         Log.d("PopUpLinks","opening docment picker with requestCode="+requestCode);
-        if (getActivity()!=null) {
-            getActivity().startActivityForResult(intent, requestCode);
-        }
+        requireActivity().startActivityForResult(intent, requestCode);
     }
 
     @Override
@@ -289,7 +284,7 @@ public class PopUpLinks extends DialogFragment {
                             & (Intent.FLAG_GRANT_READ_URI_PERMISSION
                             | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                     // Check for the freshest data.
-                    getActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                    requireActivity().getContentResolver().takePersistableUriPermission(uri, takeFlags);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -321,7 +316,7 @@ public class PopUpLinks extends DialogFragment {
         // If this is a genuine audio file, give the user the option of setting the song duration to match this file
         MediaPlayer mediafile = new MediaPlayer();
         try {
-            mediafile.setDataSource(Objects.requireNonNull(getActivity()),uri);
+            mediafile.setDataSource(requireContext(),uri);
             mediafile.prepareAsync();
             mediafile.setOnPreparedListener(mp -> {
                 StaticVariables.audiolength = (int) (mp.getDuration() / 1000.0f);
@@ -331,7 +326,7 @@ public class PopUpLinks extends DialogFragment {
             e.printStackTrace();
             linkAudio_EditText.setText("");
             StaticVariables.myToastMessage = getString(R.string.not_allowed);
-            ShowToast.showToast(getActivity());
+            ShowToast.showToast(getContext());
             mediafile.release();
         }
     }

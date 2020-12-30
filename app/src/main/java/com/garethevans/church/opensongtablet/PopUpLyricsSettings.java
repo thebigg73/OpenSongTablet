@@ -16,8 +16,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.Objects;
-
 public class PopUpLyricsSettings extends DialogFragment {
 
     static PopUpLyricsSettings newInstance() {
@@ -101,26 +99,26 @@ public class PopUpLyricsSettings extends DialogFragment {
     }
 
     private void setDefaults() {
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.choose_fonts));
+        title.setText(getString(R.string.choose_fonts));
         saveMe.hide();
-        songLyricsToggleSwitch.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"displayLyrics",true));
-        songLyricsBoxSwitch.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"hideLyricsBox",false));
-        songTrimSwitch.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"trimSections",true));
-        songSectionSpaceSwitch.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"addSectionSpace",false));
-        trimlinespacing_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"trimLines",true));
-        songPresentationOrderSwitch.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"usePresentationOrder",false));
+        songLyricsToggleSwitch.setChecked(preferences.getMyPreferenceBoolean(getContext(),"displayLyrics",true));
+        songLyricsBoxSwitch.setChecked(preferences.getMyPreferenceBoolean(getContext(),"hideLyricsBox",false));
+        songTrimSwitch.setChecked(preferences.getMyPreferenceBoolean(getContext(),"trimSections",true));
+        songSectionSpaceSwitch.setChecked(preferences.getMyPreferenceBoolean(getContext(),"addSectionSpace",false));
+        trimlinespacing_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getContext(),"trimLines",true));
+        songPresentationOrderSwitch.setChecked(preferences.getMyPreferenceBoolean(getContext(),"usePresentationOrder",false));
         scaleHeading_SeekBar.setMax(200);
-        int progress = (int) (preferences.getMyPreferenceFloat(getActivity(),"scaleHeadings", 0.6f) * 100);
+        int progress = (int) (preferences.getMyPreferenceFloat(getContext(),"scaleHeadings", 0.6f) * 100);
         scaleHeading_SeekBar.setProgress(progress);
         String text = progress + "%";
         scaleHeading_TextView.setText(text);
         scaleComment_SeekBar.setMax(200);
-        progress = (int) (preferences.getMyPreferenceFloat(getActivity(),"scaleComments", 0.8f) * 100);
+        progress = (int) (preferences.getMyPreferenceFloat(getContext(),"scaleComments", 0.8f) * 100);
         scaleComment_SeekBar.setProgress(progress);
         text = progress + "%";
         scaleComment_TextView.setText(text);
         lineSpacing_SeekBar.setMax(100);
-        progress = (int) (preferences.getMyPreferenceFloat(getActivity(),"lineSpacing",0.1f) * 100);
+        progress = (int) (preferences.getMyPreferenceFloat(getContext(),"lineSpacing",0.1f) * 100);
         lineSpacing_SeekBar.setProgress(progress);
         text = progress + "%";
         lineSpacing_TextView.setText(text);
@@ -133,7 +131,7 @@ public class PopUpLyricsSettings extends DialogFragment {
     }
 
     private void updateFontSizes() {
-        float menuFontSize = preferences.getMyPreferenceFloat(getActivity(), "songMenuAlphaIndexSize", 14.0f);
+        float menuFontSize = preferences.getMyPreferenceFloat(getContext(), "songMenuAlphaIndexSize", 14.0f);
         ResizeMenuItems resizeMenuItems = new ResizeMenuItems();
         resizeMenuItems.updateTextViewSize(title, menuFontSize, "L", false);
         resizeMenuItems.updateTextViewSize(songLyricsToggleSwitch, menuFontSize, "", false);
@@ -151,7 +149,7 @@ public class PopUpLyricsSettings extends DialogFragment {
 
     private void setUpListeners() {
         closeMe.setOnClickListener(v -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             try {
                 if (mListener!=null) {
                     mListener.refreshAll();
@@ -175,7 +173,7 @@ public class PopUpLyricsSettings extends DialogFragment {
                 lineSpacing_TextView.setVisibility(View.GONE);
             }
             lineSpacing_SeekBar.setEnabled(b);
-            preferences.setMyPreferenceBoolean(getActivity(),"trimLines",b);
+            preferences.setMyPreferenceBoolean(getContext(),"trimLines",b);
         });
         songPresentationOrderSwitch.setOnCheckedChangeListener(new SaveCheckedState("usePresentationOrder"));
         songLyricsBoxSwitch.setOnCheckedChangeListener(new SaveCheckedState("hideLyricsBox"));
@@ -201,7 +199,7 @@ public class PopUpLyricsSettings extends DialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 float num = (float) scaleHeading_SeekBar.getProgress() / 100.0f;
-                preferences.setMyPreferenceFloat(getActivity(), "scaleHeadings", num);
+                preferences.setMyPreferenceFloat(getContext(), "scaleHeadings", num);
             }
         });
         scaleComment_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -218,7 +216,7 @@ public class PopUpLyricsSettings extends DialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 float num = (float) scaleComment_SeekBar.getProgress() / 100.0f;
-                preferences.setMyPreferenceFloat(getActivity(), "scaleComments", num);
+                preferences.setMyPreferenceFloat(getContext(), "scaleComments", num);
             }
         });
         lineSpacing_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -234,7 +232,7 @@ public class PopUpLyricsSettings extends DialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 float num = (float) lineSpacing_SeekBar.getProgress() / 100.0f;
-                preferences.setMyPreferenceFloat(getActivity(), "lineSpacing", num);
+                preferences.setMyPreferenceFloat(getContext(), "lineSpacing", num);
             }
         });
     }
@@ -247,7 +245,7 @@ public class PopUpLyricsSettings extends DialogFragment {
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            preferences.setMyPreferenceBoolean(getActivity(), value, isChecked);
+            preferences.setMyPreferenceBoolean(getContext(), value, isChecked);
         }
     }
 }

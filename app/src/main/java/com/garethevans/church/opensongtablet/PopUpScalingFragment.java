@@ -69,10 +69,10 @@ public class PopUpScalingFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_scaling, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getResources().getString(R.string.autoscale_toggle));
+        title.setText(getString(R.string.autoscale_toggle));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             mListener.refreshAll();
             dismiss();
@@ -107,7 +107,7 @@ public class PopUpScalingFragment extends DialogFragment {
         }
 
         // Set the seekbars to the currently chosen values;
-        switch (preferences.getMyPreferenceString(getActivity(),"songAutoScale","W")) {
+        switch (preferences.getMyPreferenceString(getContext(),"songAutoScale","W")) {
             case "W":
             default:
                 // Width only
@@ -131,11 +131,11 @@ public class PopUpScalingFragment extends DialogFragment {
                 maxAutoScale_Group.setVisibility(View.GONE);
                 break;
         }
-        switchAutoScaleMaxColumns_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"songAutoScaleColumnMaximise",true));
-        switchAutoScaleMaxColumns_SwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(),"songAutoScaleColumnMaximise",b));
+        switchAutoScaleMaxColumns_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getContext(),"songAutoScaleColumnMaximise",true));
+        switchAutoScaleMaxColumns_SwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getContext(),"songAutoScaleColumnMaximise",b));
 
-        overrideFull_Switch.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideFull",true));
-        overrideWidth_Switch.setChecked(preferences.getMyPreferenceBoolean(getActivity(), "songAutoScaleOverrideWidth", false));
+        overrideFull_Switch.setChecked(preferences.getMyPreferenceBoolean(getContext(),"songAutoScaleOverrideFull",true));
+        overrideWidth_Switch.setChecked(preferences.getMyPreferenceBoolean(getContext(), "songAutoScaleOverrideWidth", false));
         setupfontsizeseekbar();
         setupmaxfontsizeseekbar();
         setupminfontsizeseekbar();
@@ -185,20 +185,20 @@ public class PopUpScalingFragment extends DialogFragment {
                 updatefontsize();
             }
         });
-        overrideFull_Switch.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"songAutoScaleOverrideFull",isChecked));
-        overrideWidth_Switch.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(), "songAutoScaleOverrideWidth", isChecked));
+        overrideFull_Switch.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"songAutoScaleOverrideFull",isChecked));
+        overrideWidth_Switch.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(), "songAutoScaleOverrideWidth", isChecked));
         switchAutoScaleOnOff_SwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
                 switchAutoScaleWidthFull_SwitchCompat.setEnabled(true);
                 switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.VISIBLE);
                 maxAutoScale_Group.setVisibility(View.VISIBLE);
                 if (switchAutoScaleWidthFull_SwitchCompat.isChecked()) {
-                    preferences.setMyPreferenceString(getActivity(),"songAutoScale","Y");
+                    preferences.setMyPreferenceString(getContext(),"songAutoScale","Y");
                 } else {
-                    preferences.setMyPreferenceString(getActivity(),"songAutoScale","W");
+                    preferences.setMyPreferenceString(getContext(),"songAutoScale","W");
                 }
             } else {
-                preferences.setMyPreferenceString(getActivity(),"songAutoScale","N");
+                preferences.setMyPreferenceString(getContext(),"songAutoScale","N");
                 switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.GONE);
                 maxAutoScale_Group.setVisibility(View.GONE);
             }
@@ -207,13 +207,13 @@ public class PopUpScalingFragment extends DialogFragment {
 
         switchAutoScaleWidthFull_SwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b && switchAutoScaleOnOff_SwitchCompat.isChecked()) {
-                preferences.setMyPreferenceString(getActivity(),"songAutoScale","Y");
+                preferences.setMyPreferenceString(getContext(),"songAutoScale","Y");
                 maxAutoScale_Group.setVisibility(View.VISIBLE);
             } else if (!b &&switchAutoScaleOnOff_SwitchCompat.isChecked()) {
-                preferences.setMyPreferenceString(getActivity(),"songAutoScale","W");
+                preferences.setMyPreferenceString(getContext(),"songAutoScale","W");
                 maxAutoScale_Group.setVisibility(View.VISIBLE);
             } else {
-                preferences.setMyPreferenceString(getActivity(),"songAutoScale","N");
+                preferences.setMyPreferenceString(getContext(),"songAutoScale","N");
                 maxAutoScale_Group.setVisibility(View.GONE);
             }
             maxColsSwitchVisibilty();
@@ -241,7 +241,7 @@ public class PopUpScalingFragment extends DialogFragment {
     }
 
     private void maxColsSwitchVisibilty() {
-        if (preferences.getMyPreferenceString(getActivity(), "songAutoScale", "W").equals("Y")) {
+        if (preferences.getMyPreferenceString(getContext(), "songAutoScale", "W").equals("Y")) {
             switchAutoScaleMaxColumns_SwitchCompat.setVisibility(View.VISIBLE);
         } else {
             switchAutoScaleMaxColumns_SwitchCompat.setVisibility(View.GONE);
@@ -251,23 +251,23 @@ public class PopUpScalingFragment extends DialogFragment {
     private void setupfontsizeseekbar() {
         // Seekbar size is 80 wide
         // Add 4 to all values - min is then 4, max is then 84
-        if (preferences.getMyPreferenceFloat(getActivity(),"fontSize",42.0f)<4) {
-            preferences.setMyPreferenceFloat(getActivity(),"fontSize",4.0f);
-        } else if (preferences.getMyPreferenceFloat(getActivity(),"fontSize",42.0f)>84) {
-            preferences.setMyPreferenceFloat(getActivity(),"fontSize",84.0f);
+        if (preferences.getMyPreferenceFloat(getContext(),"fontSize",42.0f)<4) {
+            preferences.setMyPreferenceFloat(getContext(),"fontSize",4.0f);
+        } else if (preferences.getMyPreferenceFloat(getContext(),"fontSize",42.0f)>84) {
+            preferences.setMyPreferenceFloat(getContext(),"fontSize",84.0f);
         }
 
-        int progressbar = (int) preferences.getMyPreferenceFloat(getActivity(),"fontSize",42.0f) - 4;
-        String text = (int) preferences.getMyPreferenceFloat(getActivity(),"fontSize",42.0f) + " sp";
+        int progressbar = (int) preferences.getMyPreferenceFloat(getContext(),"fontSize",42.0f) - 4;
+        String text = (int) preferences.getMyPreferenceFloat(getContext(),"fontSize",42.0f) + " sp";
 
         fontsize_seekbar.setProgress(progressbar);
         fontsize_TextView.setText(text);
-        fontsize_TextView.setTextSize(preferences.getMyPreferenceFloat(getActivity(),"fontSize",42.0f));
+        fontsize_TextView.setTextSize(preferences.getMyPreferenceFloat(getContext(),"fontSize",42.0f));
     }
 
     private void updatefontsize() {
         float val = fontsize_seekbar.getProgress() + 4.0f;
-        preferences.setMyPreferenceFloat(getActivity(),"fontSize",val);
+        preferences.setMyPreferenceFloat(getContext(),"fontSize",val);
         String text = (int) val + " sp";
         fontsize_TextView.setText(text);
         fontsize_TextView.setTextSize(val);
@@ -277,38 +277,38 @@ public class PopUpScalingFragment extends DialogFragment {
         // Seekbar size is 60 wide
         // Subtract 20 from all values - min is then 0, max is then 60
         // Actual mMaxFontSize is between 20 and 80 though
-        if (preferences.getMyPreferenceFloat(getActivity(),"fontSizeMax",50.0f)<20) {
-            preferences.setMyPreferenceFloat(getActivity(),"fontSizeMax",20.0f);
-        } else if (preferences.getMyPreferenceFloat(getActivity(),"fontSizeMax",50.0f)>80) {
-            preferences.setMyPreferenceFloat(getActivity(),"fontSizeMax",80.0f);
+        if (preferences.getMyPreferenceFloat(getContext(),"fontSizeMax",50.0f)<20) {
+            preferences.setMyPreferenceFloat(getContext(),"fontSizeMax",20.0f);
+        } else if (preferences.getMyPreferenceFloat(getContext(),"fontSizeMax",50.0f)>80) {
+            preferences.setMyPreferenceFloat(getContext(),"fontSizeMax",80.0f);
         }
 
-        int progressbar = (int) preferences.getMyPreferenceFloat(getActivity(),"fontSizeMax",50.0f) - 20;
-        String text = (int) preferences.getMyPreferenceFloat(getActivity(),"fontSizeMax",50.0f) + " sp";
+        int progressbar = (int) preferences.getMyPreferenceFloat(getContext(),"fontSizeMax",50.0f) - 20;
+        String text = (int) preferences.getMyPreferenceFloat(getContext(),"fontSizeMax",50.0f) + " sp";
 
         maxAutoScale_seekBar.setProgress(progressbar);
         maxAutoScale_TextView.setText(text);
-        maxAutoScale_TextView.setTextSize(preferences.getMyPreferenceFloat(getActivity(),"fontSizeMax",50.0f));
+        maxAutoScale_TextView.setTextSize(preferences.getMyPreferenceFloat(getContext(),"fontSizeMax",50.0f));
     }
 
     private void setupminfontsizeseekbar() {
         // Seekbar size is 28 wide
         // Subtract 2 from all values - min is then 0, max is then 28
         // Actual mMinFontSize is between 2 and 30 though
-        if (preferences.getMyPreferenceFloat(getActivity(),"fontSizeMin",8.0f)<2) {
-            preferences.setMyPreferenceFloat(getActivity(),"fontSizeMin",2.0f);
-        } else if (preferences.getMyPreferenceFloat(getActivity(),"fontSizeMin",8.0f)>32) {
-            preferences.setMyPreferenceFloat(getActivity(),"fontSizeMin",32.0f);
+        if (preferences.getMyPreferenceFloat(getContext(),"fontSizeMin",8.0f)<2) {
+            preferences.setMyPreferenceFloat(getContext(),"fontSizeMin",2.0f);
+        } else if (preferences.getMyPreferenceFloat(getContext(),"fontSizeMin",8.0f)>32) {
+            preferences.setMyPreferenceFloat(getContext(),"fontSizeMin",32.0f);
         }
 
         // Check the min is below the max!
-        if (preferences.getMyPreferenceFloat(getActivity(),"fontSizeMin",8.0f)>preferences.getMyPreferenceFloat(getActivity(),"fontSizeMax",50.0f)) {
-            int val = (int) preferences.getMyPreferenceFloat(getActivity(),"fontSizeMin",8.0f);
+        if (preferences.getMyPreferenceFloat(getContext(),"fontSizeMin",8.0f)>preferences.getMyPreferenceFloat(getContext(),"fontSizeMax",50.0f)) {
+            int val = (int) preferences.getMyPreferenceFloat(getContext(),"fontSizeMin",8.0f);
             val -= 1;
-            preferences.setMyPreferenceFloat(getActivity(),"fontSizeMin",(float)val);
+            preferences.setMyPreferenceFloat(getContext(),"fontSizeMin",(float)val);
         }
 
-        int progressbar = (int) preferences.getMyPreferenceFloat(getActivity(),"fontSizeMin",8.0f) - 2;
+        int progressbar = (int) preferences.getMyPreferenceFloat(getContext(),"fontSizeMin",8.0f) - 2;
         String text = (progressbar+2) + " sp";
 
         minAutoScale_seekBar.setProgress(progressbar);
@@ -317,7 +317,7 @@ public class PopUpScalingFragment extends DialogFragment {
     }
 
     private void setupstagemodescaleseekbar() {
-        int val = (int) (preferences.getMyPreferenceFloat(getActivity(),"stageModeScale", 0.8f) * 100) - 20;
+        int val = (int) (preferences.getMyPreferenceFloat(getContext(),"stageModeScale", 0.8f) * 100) - 20;
         stagemode_scale_SeekBar.setProgress(val);
         String valtext = (val + 20) + "%";
         stagemode_scale_TextView.setText(valtext);
@@ -326,18 +326,18 @@ public class PopUpScalingFragment extends DialogFragment {
     private void updatestagemodescale(int i) {
         String valtext = (i+20) + "%";
         stagemode_scale_TextView.setText(valtext);
-        preferences.setMyPreferenceFloat(getActivity(),"stageModeScale", (float)(i+20) / 100.0f);
+        preferences.setMyPreferenceFloat(getContext(),"stageModeScale", (float)(i+20) / 100.0f);
     }
 
     private void updatemaxfontsize() {
         int val = maxAutoScale_seekBar.getProgress() + 20;
-        preferences.setMyPreferenceFloat(getActivity(),"fontSizeMax",(float)val);
+        preferences.setMyPreferenceFloat(getContext(),"fontSizeMax",(float)val);
         String text = val + " sp";
         maxAutoScale_TextView.setText(text);
         maxAutoScale_TextView.setTextSize((float)val);
         // Check the min is below the max!
-        if (preferences.getMyPreferenceFloat(getActivity(),"fontSizeMin",8.0f)>=val) {
-            preferences.setMyPreferenceFloat(getActivity(),"fontSizeMin",(float) (val - 1));
+        if (preferences.getMyPreferenceFloat(getContext(),"fontSizeMin",8.0f)>=val) {
+            preferences.setMyPreferenceFloat(getContext(),"fontSizeMin",(float) (val - 1));
             setupminfontsizeseekbar();
         }
     }
@@ -348,11 +348,11 @@ public class PopUpScalingFragment extends DialogFragment {
         minAutoScale_TextView.setText(text);
         minAutoScale_TextView.setTextSize((float)val);
         // Check the min is below the max!
-        if (val>=preferences.getMyPreferenceFloat(getActivity(),"fontSizeMax",50.0f)) {
-            preferences.setMyPreferenceFloat(getActivity(),"fontSizeMax",(float)val + 1);
+        if (val>=preferences.getMyPreferenceFloat(getContext(),"fontSizeMax",50.0f)) {
+            preferences.setMyPreferenceFloat(getContext(),"fontSizeMax",(float)val + 1);
             setupmaxfontsizeseekbar();
         }
-        preferences.setMyPreferenceFloat(getActivity(),"fontSizeMin",(float)val);
+        preferences.setMyPreferenceFloat(getContext(),"fontSizeMin",(float)val);
     }
 
     @Override

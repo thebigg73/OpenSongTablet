@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 public class PopUpSetViewNew extends DialogFragment {
 
@@ -161,11 +160,11 @@ public class PopUpSetViewNew extends DialogFragment {
             tempItem = StaticVariables.mTempSetList.get(z);
             tempmySet.append("$**_").append(tempItem).append("_**$");
         }
-        preferences.setMyPreferenceString(getActivity(),"setCurrent",tempmySet.toString());
+        preferences.setMyPreferenceString(getContext(),"setCurrent",tempmySet.toString());
         StaticVariables.mTempSetList = null;
-        setActions.prepareSetList(getActivity(),preferences);
-        StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.currentset) +
-                " - " + getActivity().getString(R.string.ok);
+        setActions.prepareSetList(getContext(),preferences);
+        StaticVariables.myToastMessage = getString(R.string.currentset) +
+                " - " + getString(R.string.ok);
     }
 
     private void refresh() {
@@ -235,11 +234,11 @@ public class PopUpSetViewNew extends DialogFragment {
         final View V = inflater.inflate(R.layout.popup_setview_new, container, false);
         setfrag = getDialog();
         TextView title = V.findViewById(R.id.dialogtitle);
-        String titletext = Objects.requireNonNull(getActivity()).getResources().getString(R.string.set) + displaySetName();
+        String titletext = getString(R.string.set) + displaySetName();
         title.setText(titletext);
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe, PopUpSetViewNew.this.getActivity());
+            CustomAnimations.animateFAB(closeMe, PopUpSetViewNew.this.getContext());
             closeMe.setEnabled(false);
             PopUpSetViewNew.this.dismiss();
         });
@@ -250,7 +249,7 @@ public class PopUpSetViewNew extends DialogFragment {
             close();
         });
         if (FullscreenActivity.whattodo.equals("setitemvariation")) {
-            CustomAnimations.animateFAB(saveMe, getActivity());
+            CustomAnimations.animateFAB(saveMe, getContext());
             saveMe.setEnabled(false);
             saveMe.hide();
         }
@@ -271,7 +270,7 @@ public class PopUpSetViewNew extends DialogFragment {
         TextView helpVariationItem_TextView = V.findViewById(R.id.helpVariationItem_TextView);
         helpVariationItem_TextView.setVisibility(View.GONE);
         mRecyclerView = V.findViewById(R.id.my_recycler_view);
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(RecyclerView.VERTICAL);
 
         mRecyclerView.setLayoutManager(llm);
@@ -288,7 +287,7 @@ public class PopUpSetViewNew extends DialogFragment {
         extractSongsAndFolders();
         StaticVariables.doneshuffle = false;
 
-        SetListAdapter ma = new SetListAdapter(createList(StaticVariables.mTempSetList.size()), getActivity(), preferences);
+        SetListAdapter ma = new SetListAdapter(createList(StaticVariables.mTempSetList.size()), getContext(), preferences);
         mRecyclerView.setAdapter(ma);
         ItemTouchHelper.Callback callback = new SetListItemTouchHelper(ma);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
@@ -339,8 +338,8 @@ public class PopUpSetViewNew extends DialogFragment {
             // Save any changes to current set first
             doSave();
 
-            String lastSetName = preferences.getMyPreferenceString(getActivity(),"setCurrentLastName","");
-            Uri uri = storageAccess.getUriForItem(getActivity(), preferences, "Sets", "",
+            String lastSetName = preferences.getMyPreferenceString(getContext(),"setCurrentLastName","");
+            Uri uri = storageAccess.getUriForItem(getContext(), preferences, "Sets", "",
                     lastSetName);
 
             if (lastSetName==null || lastSetName.equals("")) {
@@ -348,14 +347,14 @@ public class PopUpSetViewNew extends DialogFragment {
                 if (mListener != null) {
                     mListener.openFragment();
                 }
-            } else if (storageAccess.uriExists(getActivity(),uri)) {
+            } else if (storageAccess.uriExists(getContext(),uri)) {
                 // Load the are you sure prompt
                 FullscreenActivity.whattodo = "saveset";
                 String setnamenice = lastSetName.replace("__"," / ");
                 String message = getResources().getString(R.string.save) + " \"" + setnamenice + "\"?";
                 StaticVariables.myToastMessage = message;
                 DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
-                newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
+                newFragment.show(requireActivity().getSupportFragmentManager(), "dialog");
                 dismiss();
             } else {
                 FullscreenActivity.whattodo = "saveset";
@@ -398,23 +397,23 @@ public class PopUpSetViewNew extends DialogFragment {
                 si.songitem = i+".";
                 si.songtitle = mSongName.get(i - 1);
                 si.songfolder = mFolderName.get(i - 1);
-                String songLocation = LoadXML.getTempFileLocation(Objects.requireNonNull(getActivity()),mFolderName.get(i-1),mSongName.get(i-1));
-                si.songkey = LoadXML.grabNextSongInSetKey(getActivity(), preferences, storageAccess, songLocation);
+                String songLocation = LoadXML.getTempFileLocation(requireContext(),mFolderName.get(i-1),mSongName.get(i-1));
+                si.songkey = LoadXML.grabNextSongInSetKey(getContext(), preferences, storageAccess, songLocation);
                 // Decide what image we'll need - song, image, note, slide, scripture, variation
-                if (mFolderName.get(i - 1).equals("**"+ Objects.requireNonNull(getActivity()).getResources().getString(R.string.slide))) {
-                    si.songicon = getActivity().getResources().getString(R.string.slide);
-                } else if (mFolderName.get(i - 1).equals("**"+getActivity().getResources().getString(R.string.note))) {
-                    si.songicon = getActivity().getResources().getString(R.string.note);
-                } else if (mFolderName.get(i - 1).equals("**"+getActivity().getResources().getString(R.string.scripture))) {
-                    si.songicon = getActivity().getResources().getString(R.string.scripture);
-                } else if (mFolderName.get(i - 1).equals("**"+getActivity().getResources().getString(R.string.image))) {
-                    si.songicon = getActivity().getResources().getString(R.string.image);
-                } else if (mFolderName.get(i - 1).equals("**"+getActivity().getResources().getString(R.string.variation))) {
-                    si.songicon = getActivity().getResources().getString(R.string.variation);
+                if (mFolderName.get(i - 1).equals("**"+ getString(R.string.slide))) {
+                    si.songicon = getString(R.string.slide);
+                } else if (mFolderName.get(i - 1).equals("**"+getString(R.string.note))) {
+                    si.songicon = getString(R.string.note);
+                } else if (mFolderName.get(i - 1).equals("**"+getString(R.string.scripture))) {
+                    si.songicon = getString(R.string.scripture);
+                } else if (mFolderName.get(i - 1).equals("**"+getString(R.string.image))) {
+                    si.songicon = getString(R.string.image);
+                } else if (mFolderName.get(i - 1).equals("**"+getString(R.string.variation))) {
+                    si.songicon = getString(R.string.variation);
                 } else if (mSongName.get(i - 1).contains(".pdf") || mSongName.get(i - 1).contains(".PDF")) {
                     si.songicon = ".pdf";
                 } else {
-                    si.songicon = getActivity().getResources().getString(R.string.song);
+                    si.songicon = getString(R.string.song);
                 }
                 result.add(si);
             }
@@ -494,7 +493,7 @@ public class PopUpSetViewNew extends DialogFragment {
                     // AirTurn pedals don't do long press, but instead autorepeat.  To deal with, count onKeyDown
                     // If the app detects more than a set number (reset when onKeyUp/onLongPress) it triggers onLongPress
                     keyRepeatCount++;
-                    if (preferences.getMyPreferenceBoolean(getActivity(), "airTurnMode", false) && keyRepeatCount > preferences.getMyPreferenceInt(getActivity(), "keyRepeatCount", 20)) {
+                    if (preferences.getMyPreferenceBoolean(getContext(), "airTurnMode", false) && keyRepeatCount > preferences.getMyPreferenceInt(getContext(), "keyRepeatCount", 20)) {
                         keyRepeatCount = 0;
                         longKeyPress = true;
                         doLongKeyPressAction(keyCode);
@@ -519,23 +518,23 @@ public class PopUpSetViewNew extends DialogFragment {
                         keyRepeatCount = 0;
 
                         Log.d("PopUpSetViewNew", "Pedal listener onKeyUp:" + keyCode);
-                        if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal1Code", 21)) {
-                            doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal1ShortPressAction", "prev"));
+                        if (keyCode == preferences.getMyPreferenceInt(getContext(), "pedal1Code", 21)) {
+                            doPedalAction(preferences.getMyPreferenceString(getContext(), "pedal1ShortPressAction", "prev"));
                             return true;
-                        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal2Code", 22)) {
-                            doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal2ShortPressAction", "next"));
+                        } else if (keyCode == preferences.getMyPreferenceInt(getContext(), "pedal2Code", 22)) {
+                            doPedalAction(preferences.getMyPreferenceString(getContext(), "pedal2ShortPressAction", "next"));
                             return true;
-                        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal3Code", 19)) {
-                            doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal3ShortPressAction", "prev"));
+                        } else if (keyCode == preferences.getMyPreferenceInt(getContext(), "pedal3Code", 19)) {
+                            doPedalAction(preferences.getMyPreferenceString(getContext(), "pedal3ShortPressAction", "prev"));
                             return true;
-                        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal4Code", 20)) {
-                            doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal4ShortPressAction", "next"));
+                        } else if (keyCode == preferences.getMyPreferenceInt(getContext(), "pedal4Code", 20)) {
+                            doPedalAction(preferences.getMyPreferenceString(getContext(), "pedal4ShortPressAction", "next"));
                             return true;
-                        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal5Code", 92)) {
-                            doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal5LongPressAction", "songmenu"));
+                        } else if (keyCode == preferences.getMyPreferenceInt(getContext(), "pedal5Code", 92)) {
+                            doPedalAction(preferences.getMyPreferenceString(getContext(), "pedal5LongPressAction", "songmenu"));
                             return true;
-                        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(), "pedal6Code", 93)) {
-                            doPedalAction(preferences.getMyPreferenceString(getActivity(), "pedal6ShortPressAction", "next"));
+                        } else if (keyCode == preferences.getMyPreferenceInt(getContext(), "pedal6Code", 93)) {
+                            doPedalAction(preferences.getMyPreferenceString(getContext(), "pedal6ShortPressAction", "next"));
                             return true;
                         }
                         return false;
@@ -549,29 +548,29 @@ public class PopUpSetViewNew extends DialogFragment {
     private boolean doLongKeyPressAction(int keyCode) {
         keyRepeatCount = 0;
         boolean actionrecognised = false;
-        if (keyCode == preferences.getMyPreferenceInt(getActivity(),"pedal1Code",21)) {
+        if (keyCode == preferences.getMyPreferenceInt(getContext(),"pedal1Code",21)) {
             actionrecognised = true;
-            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal1LongPressAction","songmenu"));
+            doPedalAction(preferences.getMyPreferenceString(getContext(),"pedal1LongPressAction","songmenu"));
 
-        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(),"pedal2Code",22)) {
+        } else if (keyCode == preferences.getMyPreferenceInt(getContext(),"pedal2Code",22)) {
             actionrecognised = true;
-            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal2LongPressAction","editset"));
+            doPedalAction(preferences.getMyPreferenceString(getContext(),"pedal2LongPressAction","editset"));
 
-        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(),"pedal3Code",19)) {
+        } else if (keyCode == preferences.getMyPreferenceInt(getContext(),"pedal3Code",19)) {
             actionrecognised = true;
-            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal3LongPressAction","songmenu"));
+            doPedalAction(preferences.getMyPreferenceString(getContext(),"pedal3LongPressAction","songmenu"));
 
-        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(),"pedal4Code",20)) {
+        } else if (keyCode == preferences.getMyPreferenceInt(getContext(),"pedal4Code",20)) {
             actionrecognised = true;
-            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal4LongPressAction","editset"));
+            doPedalAction(preferences.getMyPreferenceString(getContext(),"pedal4LongPressAction","editset"));
 
-        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(),"pedal5Code",92)) {
+        } else if (keyCode == preferences.getMyPreferenceInt(getContext(),"pedal5Code",92)) {
             actionrecognised = true;
-            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal5LongPressAction","songmenu"));
+            doPedalAction(preferences.getMyPreferenceString(getContext(),"pedal5LongPressAction","songmenu"));
 
-        } else if (keyCode == preferences.getMyPreferenceInt(getActivity(),"pedal6Code",93)) {
+        } else if (keyCode == preferences.getMyPreferenceInt(getContext(),"pedal6Code",93)) {
             actionrecognised = true;
-            doPedalAction(preferences.getMyPreferenceString(getActivity(),"pedal6LongPressAction","editset"));
+            doPedalAction(preferences.getMyPreferenceString(getContext(),"pedal6LongPressAction","editset"));
         }
         Log.d("d","actionrecognised="+actionrecognised);
         return actionrecognised;
@@ -583,13 +582,13 @@ public class PopUpSetViewNew extends DialogFragment {
         try {
             switch (action) {
                 case "prev":
-                    if (preferences.getMyPreferenceBoolean(getActivity(), "pedalScrollBeforeMove", true)) {
+                    if (preferences.getMyPreferenceBoolean(getContext(), "pedalScrollBeforeMove", true)) {
                         PopUpSetViewNew.this.doScroll("up");
                     }
                     break;
 
                 case "next":
-                    if (preferences.getMyPreferenceBoolean(getActivity(), "pedalScrollBeforeMove", true)) {
+                    if (preferences.getMyPreferenceBoolean(getContext(), "pedalScrollBeforeMove", true)) {
                         PopUpSetViewNew.this.doScroll("down");
                     }
                     break;
@@ -617,10 +616,10 @@ public class PopUpSetViewNew extends DialogFragment {
     private void doScroll(String direction) {
         Interpolator customInterpolator = PathInterpolatorCompat.create(0.445f, 0.050f, 0.550f, 0.950f);
         if (direction.equals("up")) {
-            mRecyclerView.smoothScrollBy(0,(int) (-preferences.getMyPreferenceFloat(getActivity(),"scrollDistance", 0.7f) *
+            mRecyclerView.smoothScrollBy(0,(int) (-preferences.getMyPreferenceFloat(getContext(),"scrollDistance", 0.7f) *
                     mRecyclerView.getHeight()),customInterpolator);
         } else {
-            mRecyclerView.smoothScrollBy(0,(int) (+preferences.getMyPreferenceFloat(getActivity(),"scrollDistance", 0.7f) *
+            mRecyclerView.smoothScrollBy(0,(int) (+preferences.getMyPreferenceFloat(getContext(),"scrollDistance", 0.7f) *
                     mRecyclerView.getHeight()),customInterpolator);
         }
     }
@@ -637,16 +636,15 @@ public class PopUpSetViewNew extends DialogFragment {
         // If it is a modified, unsaved, loaded set, it will be called 'set name (unsaved)'
 
         String title;
-        String lastSetName = preferences.getMyPreferenceString(getActivity(),"setCurrentLastName","");
+        String lastSetName = preferences.getMyPreferenceString(getContext(),"setCurrentLastName","");
         if (lastSetName==null || lastSetName.equals("")) {
-            title = ": " + Objects.requireNonNull(getActivity()).getString(R.string.currentset) +
-                    " (" + getActivity().getString(R.string.notsaved) + ")";
+            title = ": " + getString(R.string.currentset) + " (" + getString(R.string.notsaved) + ")";
         } else {
             String name = lastSetName.replace("__","/");
             title = ": " + name;
-            if (!preferences.getMyPreferenceString(getActivity(),"setCurrent","")
-                    .equals(preferences.getMyPreferenceString(getActivity(),"setCurrentBeforeEdits",""))) {
-                title += " (" + Objects.requireNonNull(getActivity()).getString(R.string.notsaved) + ")";
+            if (!preferences.getMyPreferenceString(getContext(),"setCurrent","")
+                    .equals(preferences.getMyPreferenceString(getContext(),"setCurrentBeforeEdits",""))) {
+                title += " (" + getString(R.string.notsaved) + ")";
             }
         }
         return title;

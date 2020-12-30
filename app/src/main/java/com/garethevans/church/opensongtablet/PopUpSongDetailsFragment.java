@@ -63,7 +63,7 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         title.setText(StaticVariables.songfilename);
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -101,7 +101,7 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         k = k.replace(")","");
 
         // Get the capo key if it exitst
-        String ck = processSong.getCapoInfo(getActivity(), preferences);
+        String ck = processSong.getCapoInfo(getContext(), preferences);
         if (!ck.equals("")) {
             ck = " (" + getString(R.string.edit_song_capo) + " " + ck + ")";
             k += ck;

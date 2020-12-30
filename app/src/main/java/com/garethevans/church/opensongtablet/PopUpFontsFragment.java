@@ -32,7 +32,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PopUpFontsFragment extends DialogFragment {
 
@@ -81,12 +80,12 @@ public class PopUpFontsFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_font, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.choose_fonts));
+        title.setText(getString(R.string.choose_fonts));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.hide();
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(saveMe,getActivity());
+            CustomAnimations.animateFAB(saveMe,getContext());
             saveMe.setEnabled(false);
             doSave();
         });
@@ -163,16 +162,16 @@ public class PopUpFontsFragment extends DialogFragment {
     }
 
     private void setPreferences() {
-        boldChordsHeadings.setChecked(preferences.getMyPreferenceBoolean(getActivity(), "displayBoldChordsHeadings", false));
-        trimSections_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"trimSections",true));
-        hideBox_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"hideLyricsBox",false));
-        addSectionSpace_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"addSectionSpace",true));
-        trimlinespacing_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"trimLines",false));
-        lineSpacing_SeekBar.setEnabled(preferences.getMyPreferenceBoolean(getActivity(),"trimLines",false));
+        boldChordsHeadings.setChecked(preferences.getMyPreferenceBoolean(getContext(), "displayBoldChordsHeadings", false));
+        trimSections_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getContext(),"trimSections",true));
+        hideBox_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getContext(),"hideLyricsBox",false));
+        addSectionSpace_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getContext(),"addSectionSpace",true));
+        trimlinespacing_SwitchCompat.setChecked(preferences.getMyPreferenceBoolean(getContext(),"trimLines",false));
+        lineSpacing_SeekBar.setEnabled(preferences.getMyPreferenceBoolean(getContext(),"trimLines",false));
     }
 
     private boolean hasPlayServices() {
-        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getActivity()) == ConnectionResult.SUCCESS;
+        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext()) == ConnectionResult.SUCCESS;
     }
 
     private void initialiseBasicListeners() {
@@ -184,7 +183,7 @@ public class PopUpFontsFragment extends DialogFragment {
 
         // Listen for seekbar changes
         scaleHeading_SeekBar.setMax(200);
-        int progress = (int) (preferences.getMyPreferenceFloat(getActivity(),"scaleHeadings", 0.6f) * 100);
+        int progress = (int) (preferences.getMyPreferenceFloat(getContext(),"scaleHeadings", 0.6f) * 100);
         scaleHeading_SeekBar.setProgress(progress);
         String text = progress + "%";
         scaleHeading_TextView.setText(text);
@@ -204,7 +203,7 @@ public class PopUpFontsFragment extends DialogFragment {
             }
         });
         scaleChords_SeekBar.setMax(200);
-        progress = (int) (preferences.getMyPreferenceFloat(getActivity(),"scaleChords",1.0f) * 100);
+        progress = (int) (preferences.getMyPreferenceFloat(getContext(),"scaleChords",1.0f) * 100);
         scaleChords_SeekBar.setProgress(progress);
         text = progress + "%";
         scaleChords_TextView.setText(text);
@@ -225,7 +224,7 @@ public class PopUpFontsFragment extends DialogFragment {
             }
         });
         scaleComment_SeekBar.setMax(200);
-        progress = (int) (preferences.getMyPreferenceFloat(getActivity(),"scaleComments", 0.8f) * 100);
+        progress = (int) (preferences.getMyPreferenceFloat(getContext(),"scaleComments", 0.8f) * 100);
         scaleComment_SeekBar.setProgress(progress);
         text = progress + "%";
         scaleComment_TextView.setText(text);
@@ -244,7 +243,7 @@ public class PopUpFontsFragment extends DialogFragment {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         lineSpacing_SeekBar.setMax(100);
-        progress = (int) (preferences.getMyPreferenceFloat(getActivity(),"lineSpacing",0.1f) * 100);
+        progress = (int) (preferences.getMyPreferenceFloat(getContext(),"lineSpacing",0.1f) * 100);
         lineSpacing_SeekBar.setProgress(progress);
         text = progress + "%";
         lineSpacing_TextView.setText(text);
@@ -265,15 +264,15 @@ public class PopUpFontsFragment extends DialogFragment {
         trimlinespacing_SwitchCompat.setOnCheckedChangeListener((buttonView, b) -> {
             // Disable the linespacing seekbar if required
             lineSpacing_SeekBar.setEnabled(b);
-            preferences.setMyPreferenceBoolean(getActivity(),"trimLines",b);
+            preferences.setMyPreferenceBoolean(getContext(),"trimLines",b);
         });
 
-        boldChordsHeadings.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(), "displayBoldChordsHeadings", b));
-        hideBox_SwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(),"hideLyricsBox",b));
-        trimSections_SwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getActivity(),"trimSections",b));
+        boldChordsHeadings.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getContext(), "displayBoldChordsHeadings", b));
+        hideBox_SwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getContext(),"hideLyricsBox",b));
+        trimSections_SwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> preferences.setMyPreferenceBoolean(getContext(),"trimSections",b));
         addSectionSpace_SwitchCompat.setOnCheckedChangeListener((compoundButton, b) -> {
             // Historic button name - actually asks if space should be added
-            preferences.setMyPreferenceBoolean(getActivity(),"addSectionSpace",b);
+            preferences.setMyPreferenceBoolean(getContext(),"addSectionSpace",b);
         });
 
         // If we are running kitkat, hide the trim options
@@ -285,7 +284,7 @@ public class PopUpFontsFragment extends DialogFragment {
     }
 
     private void setUpFonts() {
-        setTypeFace.setUpAppFonts(getActivity(), preferences, lyrichandler, chordhandler, stickyhandler,
+        setTypeFace.setUpAppFonts(getContext(), preferences, lyrichandler, chordhandler, stickyhandler,
                 presohandler, presoinfohandler, customhandler);
         // Try to get a list of fonts from Google
         GetFontList getFontList = new GetFontList();
@@ -386,13 +385,13 @@ public class PopUpFontsFragment extends DialogFragment {
     }
     private void updateItem(int position, String prefname, String what, TextView textView, Handler handler) {
         String fontchosen = choose_fonts.getItem(position);
-        preferences.setMyPreferenceString(getActivity(), prefname, fontchosen);
-        setTypeFace.setChosenFont(getActivity(), preferences, fontchosen, what,
+        preferences.setMyPreferenceString(getContext(), prefname, fontchosen);
+        setTypeFace.setChosenFont(getContext(), preferences, fontchosen, what,
                 textView, handler);
     }
 
     private int getPositionInList(String what) {
-        String valToFind = preferences.getMyPreferenceString(getActivity(), what, "lato");
+        String valToFind = preferences.getMyPreferenceString(getContext(), what, "lato");
         try {
             return choose_fonts.getPosition(valToFind);
         } catch (Exception e) {
@@ -403,13 +402,13 @@ public class PopUpFontsFragment extends DialogFragment {
     private void doSave() {
         try {
             float num = (float) scaleHeading_SeekBar.getProgress() / 100.0f;
-            preferences.setMyPreferenceFloat(getActivity(), "scaleHeadings", num);
+            preferences.setMyPreferenceFloat(getContext(), "scaleHeadings", num);
             num = (float) scaleComment_SeekBar.getProgress() / 100.0f;
-            preferences.setMyPreferenceFloat(getActivity(), "scaleComments", num);
+            preferences.setMyPreferenceFloat(getContext(), "scaleComments", num);
             num = (float) scaleChords_SeekBar.getProgress() / 100.0f;
-            preferences.setMyPreferenceFloat(getActivity(), "scaleChords", num);
+            preferences.setMyPreferenceFloat(getContext(), "scaleChords", num);
             num = (float) lineSpacing_SeekBar.getProgress() / 100.0f;
-            preferences.setMyPreferenceFloat(getActivity(), "lineSpacing", num);
+            preferences.setMyPreferenceFloat(getContext(), "lineSpacing", num);
             mListener.refreshAll();
             dismiss();
         } catch (Exception e) {
@@ -466,7 +465,7 @@ public class PopUpFontsFragment extends DialogFragment {
                 // Set up the custom fonts - use my preferred Google font lists as local files no longer work!!!
                 ArrayList<String> customfontsavail = setTypeFace.googleFontsAllowed();
                 try {
-                    choose_fonts = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, customfontsavail);
+                    choose_fonts = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, customfontsavail);
                     choose_fonts.setDropDownViewResource(R.layout.my_spinner);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -514,7 +513,7 @@ public class PopUpFontsFragment extends DialogFragment {
                     }
                 }
                 // Set up the custom fonts - use my preferred Google font lists as local files no longer work!!!
-                choose_fonts = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, fontnames);
+                choose_fonts = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, fontnames);
                 choose_fonts.setDropDownViewResource(R.layout.my_spinner);
                 choose_fonts.notifyDataSetChanged();
             }

@@ -16,7 +16,6 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PopUpGesturesFragment extends DialogFragment {
 
@@ -52,16 +51,16 @@ public class PopUpGesturesFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_gestures, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.customgestures));
+        title.setText(getString(R.string.customgestures));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(saveMe,getActivity());
+            CustomAnimations.animateFAB(saveMe,getContext());
             saveMe.setEnabled(false);
             doSave();
         });
@@ -95,8 +94,8 @@ public class PopUpGesturesFragment extends DialogFragment {
         screenLongPress.setAdapter(gestures);
 
         // Set the current choices
-        setSpinnerVal(screenDoubleTap, preferences.getMyPreferenceInt(getActivity(),"gestureScreenDoubleTap",2));
-        setSpinnerVal(screenLongPress, preferences.getMyPreferenceInt(getActivity(),"gestureScreenLongPress",0));
+        setSpinnerVal(screenDoubleTap, preferences.getMyPreferenceInt(getContext(),"gestureScreenDoubleTap",2));
+        setSpinnerVal(screenLongPress, preferences.getMyPreferenceInt(getContext(),"gestureScreenLongPress",0));
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
@@ -115,8 +114,8 @@ public class PopUpGesturesFragment extends DialogFragment {
             val_longpress = 0;
         }
 
-        preferences.setMyPreferenceInt(getActivity(),"gestureScreenDoubleTap",val_doubletap);
-        preferences.setMyPreferenceInt(getActivity(),"gestureScreenLongPress",val_longpress);
+        preferences.setMyPreferenceInt(getContext(),"gestureScreenDoubleTap",val_doubletap);
+        preferences.setMyPreferenceInt(getContext(),"gestureScreenLongPress",val_longpress);
 
         dismiss();
     }

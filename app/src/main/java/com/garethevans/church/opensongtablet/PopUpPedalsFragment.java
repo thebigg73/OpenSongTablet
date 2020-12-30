@@ -21,7 +21,6 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PopUpPedalsFragment extends DialogFragment {
 
@@ -61,10 +60,10 @@ public class PopUpPedalsFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_pedals, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(Objects.requireNonNull(getActivity()).getResources().getString(R.string.footpedal));
+        title.setText(getString(R.string.footpedal));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -124,7 +123,7 @@ public class PopUpPedalsFragment extends DialogFragment {
     }
 
     private void airTurnModeActions() {
-        autoRepeatLongPress_Switch.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"airTurnMode",isChecked));
+        autoRepeatLongPress_Switch.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"airTurnMode",isChecked));
         autoRepeatCount_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -139,7 +138,7 @@ public class PopUpPedalsFragment extends DialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 // Save the value
-                preferences.setMyPreferenceInt(getActivity(),"keyRepeatCount",keyRepeatCount);
+                preferences.setMyPreferenceInt(getContext(),"keyRepeatCount",keyRepeatCount);
                 // If 0 or 1, then no point, so switch off the AirTurn mode
                 if (keyRepeatCount<2) {
                     autoRepeatLongPress_Switch.setChecked(false);
@@ -593,40 +592,40 @@ public class PopUpPedalsFragment extends DialogFragment {
 
         switch (which) {
             case "1s":
-                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal1ShortPressAction","prev");
+                savedoption = preferences.getMyPreferenceString(getContext(),"pedal1ShortPressAction","prev");
                 break;
             case "2s":
-                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal2ShortPressAction","next");
+                savedoption = preferences.getMyPreferenceString(getContext(),"pedal2ShortPressAction","next");
                 break;
             case "3s":
-                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal3ShortPressAction","prev");
+                savedoption = preferences.getMyPreferenceString(getContext(),"pedal3ShortPressAction","prev");
                 break;
             case "4s":
-                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal4ShortPressAction","next");
+                savedoption = preferences.getMyPreferenceString(getContext(),"pedal4ShortPressAction","next");
                 break;
             case "5s":
-                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal5ShortPressAction","prev");
+                savedoption = preferences.getMyPreferenceString(getContext(),"pedal5ShortPressAction","prev");
                 break;
             case "6s":
-                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal6ShortPressAction","next");
+                savedoption = preferences.getMyPreferenceString(getContext(),"pedal6ShortPressAction","next");
                 break;
             case "1l":
-                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal1LongPressAction","songmenu");
+                savedoption = preferences.getMyPreferenceString(getContext(),"pedal1LongPressAction","songmenu");
                 break;
             case "2l":
-                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal2LongPressAction","set");
+                savedoption = preferences.getMyPreferenceString(getContext(),"pedal2LongPressAction","set");
                 break;
             case "3l":
-                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal3LongPressAction","songmenu");
+                savedoption = preferences.getMyPreferenceString(getContext(),"pedal3LongPressAction","songmenu");
                 break;
             case "4l":
-                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal4LongPressAction","set");
+                savedoption = preferences.getMyPreferenceString(getContext(),"pedal4LongPressAction","set");
                 break;
             case "5l":
-                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal5LongPressAction","songmenu");
+                savedoption = preferences.getMyPreferenceString(getContext(),"pedal5LongPressAction","songmenu");
                 break;
             case "6l":
-                savedoption = preferences.getMyPreferenceString(getActivity(),"pedal6LongPressAction","set");
+                savedoption = preferences.getMyPreferenceString(getContext(),"pedal6LongPressAction","set");
                 break;
         }
         return savedoption;
@@ -634,7 +633,7 @@ public class PopUpPedalsFragment extends DialogFragment {
 
     private void setSpinner(Spinner s, final String which) {
         int chosen = convertSelectionTextToNumberOption(getSavedOptionForPedal(which));
-        ArrayAdapter<String> a = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, availableactions);
+        ArrayAdapter<String> a = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, availableactions);
         s.setAdapter(a);
         s.setSelection(chosen);
         s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -663,7 +662,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         b.setOnClickListener(v -> {
             resetButtons();
             b.setEnabled(false);
-            b.setText(getResources().getString(
+            b.setText(getString(
                     R.string.pageturn_waiting));
             assignWhich = which;
         });
@@ -678,51 +677,51 @@ public class PopUpPedalsFragment extends DialogFragment {
         String option = convertSelectionNumberToTextOption(i);
         switch (w) {
             case "1s":
-                preferences.setMyPreferenceString(getActivity(),"pedal1ShortPressAction",option);
+                preferences.setMyPreferenceString(getContext(),"pedal1ShortPressAction",option);
                 break;
             case "2s":
-                preferences.setMyPreferenceString(getActivity(),"pedal2ShortPressAction",option);
+                preferences.setMyPreferenceString(getContext(),"pedal2ShortPressAction",option);
                 break;
             case "3s":
-                preferences.setMyPreferenceString(getActivity(),"pedal3ShortPressAction",option);
+                preferences.setMyPreferenceString(getContext(),"pedal3ShortPressAction",option);
                 break;
             case "4s":
-                preferences.setMyPreferenceString(getActivity(),"pedal4ShortPressAction",option);
+                preferences.setMyPreferenceString(getContext(),"pedal4ShortPressAction",option);
                 break;
             case "5s":
-                preferences.setMyPreferenceString(getActivity(),"pedal5ShortPressAction",option);
+                preferences.setMyPreferenceString(getContext(),"pedal5ShortPressAction",option);
                 break;
             case "6s":
-                preferences.setMyPreferenceString(getActivity(),"pedal6ShortPressAction",option);
+                preferences.setMyPreferenceString(getContext(),"pedal6ShortPressAction",option);
                 break;
             case "1l":
-                preferences.setMyPreferenceString(getActivity(),"pedal1LongPressAction",option);
+                preferences.setMyPreferenceString(getContext(),"pedal1LongPressAction",option);
                 break;
             case "2l":
-                preferences.setMyPreferenceString(getActivity(),"pedal2LongPressAction",option);
+                preferences.setMyPreferenceString(getContext(),"pedal2LongPressAction",option);
                 break;
             case "3l":
-                preferences.setMyPreferenceString(getActivity(),"pedal3LongPressAction",option);
+                preferences.setMyPreferenceString(getContext(),"pedal3LongPressAction",option);
                 break;
             case "4l":
-                preferences.setMyPreferenceString(getActivity(),"pedal4LongPressAction",option);
+                preferences.setMyPreferenceString(getContext(),"pedal4LongPressAction",option);
                 break;
             case "5l":
-                preferences.setMyPreferenceString(getActivity(),"pedal5LongPressAction",option);
+                preferences.setMyPreferenceString(getContext(),"pedal5LongPressAction",option);
                 break;
             case "6l":
-                preferences.setMyPreferenceString(getActivity(),"pedal6LongPressAction",option);
+                preferences.setMyPreferenceString(getContext(),"pedal6LongPressAction",option);
                 break;
         }
     }
 
     private void resetButtons() {
-        pedalToggleScrollBeforeSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"pedalScrollBeforeMove",true));
-        pedalToggleScrollBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"pedalScrollBeforeMove",isChecked));
-        pedalToggleWarnBeforeSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"pedalShowWarningBeforeMove",false));
-        pedalToggleWarnBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getActivity(),"pedalShowWarningBeforeMove",isChecked));
-        autoRepeatLongPress_Switch.setChecked(preferences.getMyPreferenceBoolean(getActivity(),"airTurnMode",false));
-        keyRepeatCount = preferences.getMyPreferenceInt(getActivity(),"keyRepeatCount",20);
+        pedalToggleScrollBeforeSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"pedalScrollBeforeMove",true));
+        pedalToggleScrollBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"pedalScrollBeforeMove",isChecked));
+        pedalToggleWarnBeforeSwipeButton.setChecked(preferences.getMyPreferenceBoolean(getContext(),"pedalShowWarningBeforeMove",false));
+        pedalToggleWarnBeforeSwipeButton.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(getContext(),"pedalShowWarningBeforeMove",isChecked));
+        autoRepeatLongPress_Switch.setChecked(preferences.getMyPreferenceBoolean(getContext(),"airTurnMode",false));
+        keyRepeatCount = preferences.getMyPreferenceInt(getContext(),"keyRepeatCount",20);
         keyRepeatCountText = "" + keyRepeatCount;
         autoRepeatCount_TextView.setText(keyRepeatCountText);
         autoRepeatCount_SeekBar.setProgress(keyRepeatCount);
@@ -734,12 +733,12 @@ public class PopUpPedalsFragment extends DialogFragment {
         setGroupText(pedal5text, 5);
         setGroupText(pedal6text, 6);
 
-        setButtons(pedal1button, preferences.getMyPreferenceInt(getActivity(),"pedal1Code",21), 1);
-        setButtons(pedal2button, preferences.getMyPreferenceInt(getActivity(),"pedal2Code",22), 2);
-        setButtons(pedal3button, preferences.getMyPreferenceInt(getActivity(),"pedal3Code",19), 3);
-        setButtons(pedal4button, preferences.getMyPreferenceInt(getActivity(),"pedal4Code",20), 4);
-        setButtons(pedal5button, preferences.getMyPreferenceInt(getActivity(),"pedal5Code",92), 5);
-        setButtons(pedal6button, preferences.getMyPreferenceInt(getActivity(),"pedal6Code",93), 6);
+        setButtons(pedal1button, preferences.getMyPreferenceInt(getContext(),"pedal1Code",21), 1);
+        setButtons(pedal2button, preferences.getMyPreferenceInt(getContext(),"pedal2Code",22), 2);
+        setButtons(pedal3button, preferences.getMyPreferenceInt(getContext(),"pedal3Code",19), 3);
+        setButtons(pedal4button, preferences.getMyPreferenceInt(getContext(),"pedal4Code",20), 4);
+        setButtons(pedal5button, preferences.getMyPreferenceInt(getContext(),"pedal5Code",92), 5);
+        setButtons(pedal6button, preferences.getMyPreferenceInt(getContext(),"pedal6Code",93), 6);
 
         setSpinner(pedal1choice, "1s");
         setSpinner(pedal2choice, "2s");
@@ -762,39 +761,39 @@ public class PopUpPedalsFragment extends DialogFragment {
             getDialog().setOnKeyListener((dialog, keyCode, event) -> {
                 if (event.getAction() == KeyEvent.ACTION_UP) {
                     // Reset buttons already using this keycode
-                    if (preferences.getMyPreferenceInt(getActivity(), "pedal1Code", 21) == keyCode) {
-                        preferences.setMyPreferenceInt(getActivity(), "pedal1Code", -1);
-                    } else if (preferences.getMyPreferenceInt(getActivity(), "pedal2Code", 22) == keyCode) {
-                        preferences.setMyPreferenceInt(getActivity(), "pedal2Code", -1);
-                    } else if (preferences.getMyPreferenceInt(getActivity(), "pedal3Code", 19) == keyCode) {
-                        preferences.setMyPreferenceInt(getActivity(), "pedal3Code", -1);
-                    } else if (preferences.getMyPreferenceInt(getActivity(), "pedal4Code", 20) == keyCode) {
-                        preferences.setMyPreferenceInt(getActivity(), "pedal4Code", -1);
-                    } else if (preferences.getMyPreferenceInt(getActivity(), "pedal5Code", 92) == keyCode) {
-                        preferences.setMyPreferenceInt(getActivity(), "pedal5Code", -1);
-                    } else if (preferences.getMyPreferenceInt(getActivity(), "pedal6Code", 93) == keyCode) {
-                        preferences.setMyPreferenceInt(getActivity(), "pedal6Code", -1);
+                    if (preferences.getMyPreferenceInt(getContext(), "pedal1Code", 21) == keyCode) {
+                        preferences.setMyPreferenceInt(getContext(), "pedal1Code", -1);
+                    } else if (preferences.getMyPreferenceInt(getContext(), "pedal2Code", 22) == keyCode) {
+                        preferences.setMyPreferenceInt(getContext(), "pedal2Code", -1);
+                    } else if (preferences.getMyPreferenceInt(getContext(), "pedal3Code", 19) == keyCode) {
+                        preferences.setMyPreferenceInt(getContext(), "pedal3Code", -1);
+                    } else if (preferences.getMyPreferenceInt(getContext(), "pedal4Code", 20) == keyCode) {
+                        preferences.setMyPreferenceInt(getContext(), "pedal4Code", -1);
+                    } else if (preferences.getMyPreferenceInt(getContext(), "pedal5Code", 92) == keyCode) {
+                        preferences.setMyPreferenceInt(getContext(), "pedal5Code", -1);
+                    } else if (preferences.getMyPreferenceInt(getContext(), "pedal6Code", 93) == keyCode) {
+                        preferences.setMyPreferenceInt(getContext(), "pedal6Code", -1);
                     }
 
                     if (keyCode == KeyEvent.KEYCODE_BACK && assignWhich > -1) {
                         //User has pressed the back key - not allowed!!!!
-                        StaticVariables.myToastMessage = getResources().getString(R.string.no);
-                        ShowToast.showToast(getActivity());
+                        StaticVariables.myToastMessage = getString(R.string.no);
+                        ShowToast.showToast(getContext());
                     } else if (keyCode == KeyEvent.KEYCODE_BACK && assignWhich == -1) {
                         dismiss();
                         return false;
                     } else if (assignWhich == 1) {
-                        preferences.setMyPreferenceInt(getActivity(), "pedal1Code", keyCode);
+                        preferences.setMyPreferenceInt(getContext(), "pedal1Code", keyCode);
                     } else if (assignWhich == 2) {
-                        preferences.setMyPreferenceInt(getActivity(), "pedal2Code", keyCode);
+                        preferences.setMyPreferenceInt(getContext(), "pedal2Code", keyCode);
                     } else if (assignWhich == 3) {
-                        preferences.setMyPreferenceInt(getActivity(), "pedal3Code", keyCode);
+                        preferences.setMyPreferenceInt(getContext(), "pedal3Code", keyCode);
                     } else if (assignWhich == 4) {
-                        preferences.setMyPreferenceInt(getActivity(), "pedal4Code", keyCode);
+                        preferences.setMyPreferenceInt(getContext(), "pedal4Code", keyCode);
                     } else if (assignWhich == 5) {
-                        preferences.setMyPreferenceInt(getActivity(), "pedal5Code", keyCode);
+                        preferences.setMyPreferenceInt(getContext(), "pedal5Code", keyCode);
                     } else if (assignWhich == 6) {
-                        preferences.setMyPreferenceInt(getActivity(), "pedal6Code", keyCode);
+                        preferences.setMyPreferenceInt(getContext(), "pedal6Code", keyCode);
                     }
                     assignWhich = -1;
                     resetButtons();

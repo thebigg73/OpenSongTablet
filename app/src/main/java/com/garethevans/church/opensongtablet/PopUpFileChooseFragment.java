@@ -20,7 +20,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Objects;
 
 public class PopUpFileChooseFragment extends DialogFragment {
 
@@ -93,35 +92,35 @@ public class PopUpFileChooseFragment extends DialogFragment {
         }
         switch (myswitch) {
             case "logo":
-                myTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.logo);
+                myTitle = getString(R.string.logo);
                 filechecks = imagefiletypes;
                 location.setText("OpenSong/Backgrounds/");
                 listvidsandimages();
                 break;
 
             case "image1":
-                myTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.choose_image1);
+                myTitle = getString(R.string.choose_image1);
                 filechecks = imagefiletypes;
                 location.setText("OpenSong/Backgrounds/");
                 listvidsandimages();
                 break;
 
             case "image2":
-                myTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.choose_image2);
+                myTitle = getString(R.string.choose_image2);
                 filechecks = imagefiletypes;
                 location.setText("OpenSong/Backgrounds/");
                 listvidsandimages();
                 break;
 
             case "video1":
-                myTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.choose_video1);
+                myTitle = getString(R.string.choose_video1);
                 filechecks = videofiletypes;
                 location.setText("\"OpenSong/Backgrounds/\"");
                 listvidsandimages();
                 break;
 
             case "video2":
-                myTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.choose_video2);
+                myTitle = getString(R.string.choose_video2);
                 filechecks = videofiletypes;
                 location.setText("OpenSong/Backgrounds/");
                 listvidsandimages();
@@ -160,7 +159,7 @@ public class PopUpFileChooseFragment extends DialogFragment {
         title.setText(myTitle);
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe,getActivity());
+            CustomAnimations.animateFAB(closeMe,getContext());
             closeMe.setEnabled(false);
             if (FullscreenActivity.whattodo.equals("customnote") ||
                     FullscreenActivity.whattodo.equals("customslide") ||
@@ -168,7 +167,7 @@ public class PopUpFileChooseFragment extends DialogFragment {
                     FullscreenActivity.whattodo.equals("customscripture")) {
                 dismiss();
                 DialogFragment newFragment = PopUpCustomSlideFragment.newInstance();
-                newFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "dialog");
+                newFragment.show(requireActivity().getSupportFragmentManager(), "dialog");
             } else {
                 dismiss();
             }
@@ -177,49 +176,49 @@ public class PopUpFileChooseFragment extends DialogFragment {
         saveMe.hide();
 
         // Populate the file list view
-        fileListView.setAdapter(new ArrayAdapter<>(Objects.requireNonNull(getActivity()), android.R.layout.simple_list_item_single_choice, foundFiles));
+        fileListView.setAdapter(new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_single_choice, foundFiles));
 
         // Listen for clicks inside
         fileListView.setOnItemClickListener((parent, view, position, id) -> {
             // Get the appropriate file
             switch (myswitch) {
                 case "logo":
-                    preferences.setMyPreferenceString(getActivity(),"customLogo",foundFiles[position]);
+                    preferences.setMyPreferenceString(getContext(),"customLogo",foundFiles[position]);
                     break;
 
                 case "image1":
-                    preferences.setMyPreferenceString(getActivity(),"backgroundImage1",foundFiles[position]);
+                    preferences.setMyPreferenceString(getContext(),"backgroundImage1",foundFiles[position]);
                     break;
 
                 case "image2":
-                    preferences.setMyPreferenceString(getActivity(),"backgroundImage2",foundFiles[position]);
+                    preferences.setMyPreferenceString(getContext(),"backgroundImage2",foundFiles[position]);
                     break;
 
                 case "video1":
-                    preferences.setMyPreferenceString(getActivity(),"backgroundVideo1",foundFiles[position]);
+                    preferences.setMyPreferenceString(getContext(),"backgroundVideo1",foundFiles[position]);
                     break;
 
                 case "video2":
-                    preferences.setMyPreferenceString(getActivity(),"backgroundVideo2",foundFiles[position]);
+                    preferences.setMyPreferenceString(getContext(),"backgroundVideo2",foundFiles[position]);
                     break;
 
                 case "customnote":
-                    FullscreenActivity.customreusabletoload = Objects.requireNonNull(getActivity()).getResources().getString(R.string.note)  + "/" + foundFiles[position];
+                    FullscreenActivity.customreusabletoload = getString(R.string.note)  + "/" + foundFiles[position];
                     mListener.loadCustomReusable();
                     break;
 
                 case "customslide":
-                    FullscreenActivity.customreusabletoload = Objects.requireNonNull(getActivity()).getResources().getString(R.string.slide)  + "/" + foundFiles[position];
+                    FullscreenActivity.customreusabletoload = getString(R.string.slide)  + "/" + foundFiles[position];
                     mListener.loadCustomReusable();
                     break;
 
                 case "customimage":
-                    FullscreenActivity.customreusabletoload = Objects.requireNonNull(getActivity()).getResources().getString(R.string.image)  + "/" + foundFiles[position];
+                    FullscreenActivity.customreusabletoload = getString(R.string.image)  + "/" + foundFiles[position];
                     mListener.loadCustomReusable();
                     break;
 
                 case "customscripture":
-                    FullscreenActivity.customreusabletoload = Objects.requireNonNull(getActivity()).getResources().getString(R.string.scripture)  + "/" + foundFiles[position];
+                    FullscreenActivity.customreusabletoload = getString(R.string.scripture)  + "/" + foundFiles[position];
                     mListener.loadCustomReusable();
                     break;
 
@@ -233,27 +232,27 @@ public class PopUpFileChooseFragment extends DialogFragment {
     }
 
     private void listimageslides() {
-        filesfound = storageAccess.listFilesInFolder(getActivity(), preferences, "Images", "");
+        filesfound = storageAccess.listFilesInFolder(getContext(), preferences, "Images", "");
         processfilelist();
     }
 
     private void listslides() {
-        filesfound = storageAccess.listFilesInFolder(getActivity(), preferences, "Slides", "");
+        filesfound = storageAccess.listFilesInFolder(getContext(), preferences, "Slides", "");
         processfilelist();
     }
 
     private void listscriptures() {
-        filesfound = storageAccess.listFilesInFolder(getActivity(), preferences, "Scripture", "");
+        filesfound = storageAccess.listFilesInFolder(getContext(), preferences, "Scripture", "");
         processfilelist();
     }
 
     private void listnotes() {
-        filesfound = storageAccess.listFilesInFolder(getActivity(), preferences, "Notes", "");
+        filesfound = storageAccess.listFilesInFolder(getContext(), preferences, "Notes", "");
         processfilelist();
     }
 
     private void listvidsandimages() {
-        filesfound = storageAccess.listFilesInFolder(getActivity(), preferences, "Backgrounds", "");
+        filesfound = storageAccess.listFilesInFolder(getContext(), preferences, "Backgrounds", "");
         processfilelist();
     }
 

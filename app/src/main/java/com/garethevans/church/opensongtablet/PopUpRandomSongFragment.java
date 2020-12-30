@@ -20,7 +20,6 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 
 public class PopUpRandomSongFragment extends DialogFragment {
@@ -77,7 +76,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
         title.setText(getString(R.string.random_song));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(view -> {
-            CustomAnimations.animateFAB(closeMe, getActivity());
+            CustomAnimations.animateFAB(closeMe, getContext());
             closeMe.setEnabled(false);
             dismiss();
         });
@@ -96,7 +95,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
 
         // Update the song folders
         //FullscreenActivity.songfilelist = new SongFileList();
-        foldernames = songFolders.prepareSongFolders(getActivity(),preferences);
+        foldernames = songFolders.prepareSongFolders(getContext(),preferences);
 
         // Try to generate the file folders available to choose from and highlight the ones already specified
         generateFolderList();
@@ -132,7 +131,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
 
         // Due to a previous bug where $$__ wasn't added to some folders in the preference, meaning it can't be removed
         // Tidy up the preferences
-        String prefs = preferences.getMyPreferenceString(getActivity(),"randomSongFolderChoice","");
+        String prefs = preferences.getMyPreferenceString(getContext(),"randomSongFolderChoice","");
         prefs = prefs.replace("$$__","%%");
         prefs = prefs.replace("__$$","%%");
         String[] bits = prefs.split("%%");
@@ -142,11 +141,11 @@ public class PopUpRandomSongFragment extends DialogFragment {
                 sb.append("$$__").append(bit).append("__$$");
             }
         }
-        preferences.setMyPreferenceString(getActivity(),"randomSongFolderChoice",sb.toString());
+        preferences.setMyPreferenceString(getContext(),"randomSongFolderChoice",sb.toString());
 
         StringBuilder newRandomFoldersChosen = new StringBuilder();
         if (foldernames!=null) {
-            ArrayAdapter<String> songfolders = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
+            ArrayAdapter<String> songfolders = new ArrayAdapter<>(requireContext(),
                     android.R.layout.simple_list_item_checked, foldernames);
             chooseFolders_ListView.setAdapter(songfolders);
 
@@ -162,19 +161,19 @@ public class PopUpRandomSongFragment extends DialogFragment {
 
             chooseFolders_ListView.setOnItemClickListener((adapterView, view, i, l) -> {
                 if (chooseFolders_ListView.isItemChecked(i)) {
-                    if (!preferences.getMyPreferenceString(getActivity(),"randomSongFolderChoice","").contains("$$__"+foldernames.get(i)+"__$$")) {
+                    if (!preferences.getMyPreferenceString(getContext(),"randomSongFolderChoice","").contains("$$__"+foldernames.get(i)+"__$$")) {
                         // Not there, so add it
-                        String rf = preferences.getMyPreferenceString(getActivity(),"randomSongFolderChoice","") +
+                        String rf = preferences.getMyPreferenceString(getContext(),"randomSongFolderChoice","") +
                                 "$$__" + foldernames.get(i)+"__$$";
-                        preferences.setMyPreferenceString(getActivity(),"randomSongFolderChoice",rf);
+                        preferences.setMyPreferenceString(getContext(),"randomSongFolderChoice",rf);
                     }
                 } else {
                     // Trying to remove it
-                    if (preferences.getMyPreferenceString(getActivity(),"randomSongFolderChoice","").contains("$$__"+foldernames.get(i)+"__$$")) {
+                    if (preferences.getMyPreferenceString(getContext(),"randomSongFolderChoice","").contains("$$__"+foldernames.get(i)+"__$$")) {
                         // There, so remove it
-                        String rf = preferences.getMyPreferenceString(getActivity(),"randomSongFolderChoice","");
+                        String rf = preferences.getMyPreferenceString(getContext(),"randomSongFolderChoice","");
                         rf = rf.replace("$$__"+foldernames.get(i)+"__$$","");
-                        preferences.setMyPreferenceString(getActivity(),"randomSongFolderChoice",rf);
+                        preferences.setMyPreferenceString(getContext(),"randomSongFolderChoice",rf);
                     }
                 }
             });
@@ -221,11 +220,11 @@ public class PopUpRandomSongFragment extends DialogFragment {
         try {
             // This feature randomly picks a song from the user's database
             ArrayList<String> songstochoosefrom = new ArrayList<>();
-            SQLiteHelper sqLiteHelper = new SQLiteHelper(getActivity());
-            ArrayList<SQLite> allsongs = sqLiteHelper.getAllSongs(getActivity());
+            SQLiteHelper sqLiteHelper = new SQLiteHelper(getContext());
+            ArrayList<SQLite> allsongs = sqLiteHelper.getAllSongs(getContext());
 
             for (SQLite check : allsongs) {
-                if (preferences.getMyPreferenceString(getActivity(), "randomSongFolderChoice", "").
+                if (preferences.getMyPreferenceString(getContext(), "randomSongFolderChoice", "").
                         contains(check.getFolder()) && check.getFilename()!=null && !check.getFilename().isEmpty()) {
                     songstochoosefrom.add(check.getFolder() + "_%%_" + check.getFilename());
                 }
