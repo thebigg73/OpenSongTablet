@@ -587,12 +587,14 @@ class StorageAccess {
         try {
             for (int x = 0; x < foldersToIndex.size(); x++) {
                 File[] fs = foldersToIndex.get(x).listFiles();
-                for (File ff : fs) {
-                    Log.d("d", "ff=" + ff);
-                    if (ff.isDirectory()) {
-                        foldersToIndex.add(ff);
-                    } else {
-                        count++;
+                if (fs!=null) {
+                    for (File ff : fs) {
+                        Log.d("d", "ff=" + ff);
+                        if (ff.isDirectory()) {
+                            foldersToIndex.add(ff);
+                        } else {
+                            count++;
+                        }
                     }
                 }
             }
