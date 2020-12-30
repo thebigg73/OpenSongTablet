@@ -539,4 +539,8 @@
     <string name="first_run">Buď aplikaci spouštíte poprvé, nebo se něco změnilo. Z důvodu oprávnění systému Android potřebujeme, abyste aplikaci nastavili požadované umístění úložiště, do kterého se budou ukládat její soubory.</string>
     <string name="folder">Složka</string>
     <string name="folder_move_contents">Přesuňte obsah složky</string>
+    <string name="font_choose_description">Změňte písma zobrazení písní</string>
+    <string name="font_choose_list">Vyberte písmo ze seznamu níže</string>
+    <string name="font_choose_preview">Vyberte si pomocí webového náhledu</string>
+    <string name="forum">Fórum</string>
 </resources>

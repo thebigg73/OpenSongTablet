@@ -43,26 +43,6 @@
         app:maxZoom="4.0"
         android:padding="0dp">
 
-    <!--<HorizontalScrollView
-            android:id="@+id/horizontalscrollview"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:scrollbarStyle="insideOverlay"
-            android:padding="0dp">
-
-            <ScrollView
-                android:id="@+id/songscrollview"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:scrollbarStyle="outsideOverlay"
-                android:padding="0dp">-->
-
                 <RelativeLayout
                     android:id="@+id/pageHolder"
                     android:layout_width="wrap_content"
@@ -119,9 +99,6 @@
                         android:clipToPadding="false" />
 
                 </RelativeLayout>
-
-            <!--</ScrollView>
-        </HorizontalScrollView>-->
 
     </com.otaliastudios.zoom.ZoomLayout>
     </RelativeLayout>

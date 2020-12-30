@@ -64,6 +64,9 @@ public class NearbyConnectionsFragment extends Fragment {
         updateConnectionsLog();
     }
 
+
+
+
     public void updateConnectionsLog() {
         if (nearbyConnections.connectionLog ==null) {
             nearbyConnections.connectionLog = "";

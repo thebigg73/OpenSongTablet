@@ -105,8 +105,8 @@
     <string name="filter_by_this_value">Further filter by this value.  This filter searches titles, filenames, user fields and hymn numbers</string>
     <string name="filter_by_folder">This button is used to include a folder filter for your song list.  Turn it off to remove the filter.</string>
     <string name="filter_by_artist">This button is used to include an artist filter for your song list</string>
-    <string name="filter_by_key">This button is used to include an key filter for your song list</string>
-    <string name="filter_by_tag">This button is used to include an tag/theme filter for your song list</string>
+    <string name="filter_by_key">This button is used to include a key filter for your song list</string>
+    <string name="filter_by_tag">This button is used to include a tag/theme filter for your song list</string>
     <string name="filter_by_edit">Refine your search by entering some text here </string>
     <string name="filter_by_dropdown">Refine your search by choosing an option from the drop down list here</string>
     <string name="find_existing">Find previous installation locations for OpenSong files</string>
@@ -128,7 +128,6 @@
     <string name="get_songs">Get songs</string>
     <string name="github" translatable="false">GitHub</string>
     <string name="github_description">Contribute to app development</string>
-    <string name="got_it">Got it</string>
     <string name="green">Green</string>
     <string name="help">Help (Online)</string>
     <string name="hide">Hide</string>
@@ -238,6 +237,7 @@
     <string name="new_something">New</string>
     <string name="next">Next</string>
     <string name="no_previous_found">No previous installations found.</string>
+    <string name="not_available">Not available</string>
     <string name="not_saved">Not saved</string>
     <string name="not_set">Not set</string>
     <string name="note">Note</string>

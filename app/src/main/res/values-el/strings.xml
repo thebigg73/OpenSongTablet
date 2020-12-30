@@ -520,4 +520,9 @@
     <string name="ccli_description">Ρυθμίσεις CCLI</string>
     <string name="ccli_export">Εξαγάγετε το αρχείο καταγραφής CCLI ως αρχείο XML</string>
     <string name="action_button_info">Κάντε κλικ για εμφάνιση ή απόκρυψη των κουμπιών της σελίδας σας.\n\nΚάθε μπορεί να αντιστοιχιστεί σε ενέργειες τραγουδιού, όπως μετρονόμοι, μετατόπιση, μαξιλάρια κ.λπ.\nΜε παρατεταμένη πίεση στο κύριο κουμπί μπορείτε να αλλάξετε τις ρυθμίσεις κάθε κουμπιού. ορισμένα κουμπιά σελίδας εκτελούν γρήγορες ενέργειες όπως έναρξη / διακοπή / επεξεργασία</string>
+    <string name="connections_device_found">Βρέθηκε συσκευή</string>
+    <string name="connections_device_name">Ονομα της συσκευής</string>
+    <string name="connections_enable">Ενεργοποίηση κοντινών συνδέσεων</string>
+    <string name="connections_keephostsongs">Κρατήστε τα τραγούδια φιλοξενίας</string>
+    <string name="controls">Ελεγχος</string>
 </resources>

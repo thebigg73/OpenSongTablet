@@ -84,5 +84,27 @@
             app:sub="@string/about_description" />
         <TableRow style="@style/DividerLine" />
 
+        <LinearLayout
+            android:id="@+id/needPlayServices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/play_services_error"/>
+
+            <Button
+                android:id="@+id/play_services_how"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/play_services_how"
+                android:layout_margin="12dp"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

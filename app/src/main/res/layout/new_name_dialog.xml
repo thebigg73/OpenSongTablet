@@ -19,8 +19,7 @@
         android:layout_margin="8dp"
         android:padding="16dp"
         android:hint="@string/title"
-        style="@style/editTextLayoutOutline"
-        android:background="@color/colorSecondary">
+        style="@style/editTextLayoutOutline">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/title"

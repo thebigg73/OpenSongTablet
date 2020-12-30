@@ -65,6 +65,8 @@ public interface MainActivityInterface {
     boolean requestCoarseLocationPermissions();
     boolean requestFineLocationPermissions();
     void registerMidiAction(boolean actionDown, boolean actionUp, boolean actionLong, String note);
+    void installPlayServices();
+    void fixOptionsMenu();
 
     // Get the helpers initialised in the main activity
     NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface);

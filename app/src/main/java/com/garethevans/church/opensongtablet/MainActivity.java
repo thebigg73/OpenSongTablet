@@ -25,13 +25,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.mediarouter.app.MediaRouteActionProvider;
-import androidx.mediarouter.app.MediaRouteButton;
-import androidx.mediarouter.media.MediaControlIntent;
 import androidx.mediarouter.media.MediaRouteSelector;
 import androidx.mediarouter.media.MediaRouter;
 import androidx.navigation.NavController;
@@ -83,6 +79,8 @@ import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
 import com.garethevans.church.opensongtablet.secondarydisplay.MediaRouterCallback;
+import com.garethevans.church.opensongtablet.secondarydisplay.MySessionManagerListener;
+import com.garethevans.church.opensongtablet.secondarydisplay.ShowCastOverlayIntro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertTextSong;
@@ -95,11 +93,17 @@ import com.garethevans.church.opensongtablet.songsandsets.ViewPagerAdapter;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
-import com.google.android.gms.cast.CastMediaControlIntent;
+import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
+import com.google.android.gms.cast.framework.CastSession;
+import com.google.android.gms.cast.framework.CastState;
+import com.google.android.gms.cast.framework.CastStateListener;
+import com.google.android.gms.cast.framework.SessionManagerListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -115,6 +119,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         ShowCaseInterface, MainActivityInterface, MidiAdapterInterface, EditSongFragmentInterface,
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback, DialogReturnInterface,
         NearbyInterface {
+
+    ActivityMainBinding activityMainBinding;
+    AppBarMainBinding appBarMainBinding;
 
     private AppBarConfiguration mAppBarConfiguration;
     private StorageAccess storageAccess;
@@ -142,9 +149,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private ExportFiles exportFiles;
     private PageButtonFAB pageButtonFAB;
     private boolean pageButtonActive = true;
-    private MediaRouter mediaRouter;
-    private MediaRouteSelector mediaRouteSelector;
-    private MediaRouterCallback mediaRouterCallback;
     private PedalActions pedalActions;
 
     private ArrayList<View> targets;
@@ -174,12 +178,24 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     // Network discovery / connections
     NearbyConnections nearbyConnections;
 
+    // Casting
+    private CastContext castContext;
+    private SessionManagerListener<CastSession> sessionManagerListener;
+    private CastSession castSession;
+    private MenuItem mediaRouteMenuItem;
+    private CastStateListener castStateListener;
+    private ShowCastOverlayIntro showCastOverlayIntro;
+    private MediaRouter mediaRouter;
+    private MediaRouteSelector mediaRouteSelector;
+    private MediaRouterCallback mediaRouterCallback;
+    private CastDevice castDevice;
+    //private PresentationServiceHDMI hdmi;
+
     ViewPagerAdapter adapter;
     ViewPager2 viewPager;
     boolean showSetMenu;
 
-    ActivityMainBinding activityMainBinding;
-    AppBarMainBinding appBarMainBinding;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,7 +246,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Initialise the start variables we need
         initialiseStartVariables();
 
-
         // Battery monitor
         IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         this.registerReceiver(batteryStatus, filter);
@@ -272,21 +287,28 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Set up page buttons
         setListeners();
 
-        // Setup the CastContext
-        MediaRouteButton mediaRouteButton = findViewById(R.id.media_route_menu_item);
-        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), mediaRouteButton);
+        // Initialise the CastContext
+        setUpCast();
+
+    }
+
+    private void setUpCast() {
         try {
-            CastContext.getSharedInstance(this);
+            castContext = CastContext.getSharedInstance(this);
+            castStateListener = newState -> {
+                if (newState != CastState.NO_DEVICES_AVAILABLE) {
+                    showCastOverlayIntro.showIntroductoryOverlay(this,mediaRouteMenuItem);
+                }
+            };
+            sessionManagerListener = new MySessionManagerListener(this);
+            castContext.addCastStateListener(castStateListener);
+            castSession = castContext.getSessionManager().getCurrentCastSession();
+
         } catch (Exception e) {
-            Log.d("StageMode", "No Google Services");
+            // No Google Service available
+            // Do nothing as the user will see a warning in the settings menu
+            Log.d("MainActivity","No Google Services");
         }
-
-        mediaRouter = MediaRouter.getInstance(getApplicationContext());
-        mediaRouteSelector = new MediaRouteSelector.Builder()
-                .addControlCategory(CastMediaControlIntent.categoryForCast("4E2B0891"))
-                .addControlCategory(MediaControlIntent.CATEGORY_LIVE_VIDEO)
-                .build();
-
     }
     private void initialiseHelpers() {
         storageAccess = new StorageAccess();
@@ -309,8 +331,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         exportFiles = new ExportFiles();
         showCase = new ShowCase();
         showToast = new ShowToast();
-        //MediaRoute mediaRoute = new MediaRoute();
-        mediaRouterCallback = new MediaRouterCallback();
         pageButtonFAB = new PageButtonFAB(activityMainBinding.pageButtonsRight.actionFAB, activityMainBinding.pageButtonsRight.custom1Button,
                 activityMainBinding.pageButtonsRight.custom2Button,activityMainBinding.pageButtonsRight.custom3Button,
                 activityMainBinding.pageButtonsRight.custom4Button,activityMainBinding.pageButtonsRight.custom5Button,
@@ -320,6 +340,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         midi = new Midi(this,preferences);
         pedalActions = new PedalActions(this,preferences);
         song = new Song();
+        mediaRouterCallback = new MediaRouterCallback();
+        showCastOverlayIntro = new ShowCastOverlayIntro();
     }
     private void initialiseStartVariables() {
         StaticVariables.mDisplayTheme = preferences.getMyPreferenceString(this, "appTheme", "dark");
@@ -438,12 +460,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Fix the page flags
         setWindowFlags();
     }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Fix the page flags
-        setWindowFlags();
-    }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -503,6 +520,44 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             closeDrawer(true);
             doSongLoad();
         }
+    }
+
+    @Override
+    protected void onPause() {
+        castContext.removeCastStateListener(castStateListener);
+        castContext.getSessionManager().removeSessionManagerListener(
+                sessionManagerListener, CastSession.class);
+        super.onPause();
+    }
+    @Override
+    protected void onResume() {
+        if (castContext==null) {
+            try {
+                castContext = CastContext.getSharedInstance(this);
+            } catch (Exception e) {
+                Log.d("MainActivity", "No Play Services");
+            }
+        }
+        if (castStateListener==null) {
+            castStateListener = newState -> {
+                if (newState != CastState.NO_DEVICES_AVAILABLE) {
+                    showCastOverlayIntro.showIntroductoryOverlay(this,mediaRouteMenuItem);
+                }
+            };
+        }
+        if (castContext!=null && castStateListener!=null) {
+            castContext.addCastStateListener(castStateListener);
+            if (castSession == null) {
+                try {
+                    castSession = CastContext.getSharedInstance(this).getSessionManager().getCurrentCastSession();
+                } catch (Exception e) {
+                    Log.d("MainActivity", "No Play Services");
+                }
+            }
+        }
+        // Fix the page flags
+        setWindowFlags();
+        super.onResume();
     }
 
     @Override
@@ -569,26 +624,25 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         StaticVariables.whattodo = "";
         //getSupportFragmentManager().popBackStack();
     }
-
+    @Override
+    public boolean dispatchKeyEvent(@NonNull KeyEvent event) {
+        return castContext.onDispatchVolumeKeyEventBeforeJellyBean(event)
+                || super.dispatchKeyEvent(event);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.mainactivitymenu, menu);
 
         // Setup the menu item for connecting to cast devices
-        MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
-        View mr = menu.findItem(R.id.media_route_menu_item).getActionView();
-        if (mr!=null) {
-            mr.setFocusable(false);
-            mr.setFocusableInTouchMode(false);
-        }
-        MediaRouteActionProvider mediaRouteActionProvider =
-                (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
-        if (mediaRouteSelector != null) {
-            mediaRouteActionProvider.setRouteSelector(mediaRouteSelector);
-        }
 
-
+        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
+            Log.d("MainActivity","Google Play Services Available");
+            mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
+            showCastOverlayIntro.showIntroductoryOverlay(this,mediaRouteMenuItem);
+        } else {
+            Log.d("MainActivity","Google Play Services Available");
+        }
 
         // Set up battery monitor
         batteryStatus = new BatteryStatus();
@@ -1041,7 +1095,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public void playPad() {
         Log.d("MainActivity","playPad()");
     }
-
+    @Override
+    public void fixOptionsMenu() {invalidateOptionsMenu();}
 
 
     // Get references to the objects set in MainActivity
@@ -1149,9 +1204,11 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Only do this if the user has Google APIs installed, otherwise, there is no point
         if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
             return requestCoarseLocationPermissions() && requestFineLocationPermissions();
+        } else {
+            installPlayServices();
+            // Not allowed on this device
+            return false;
         }
-        // Not allowed on this device
-        return false;
     }
     @Override
     public boolean requestCoarseLocationPermissions() {
@@ -1191,6 +1248,15 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 404);
             return false;
         }
+    }
+    @Override
+    public void installPlayServices() {
+        Snackbar.make(findViewById(R.id.coordinator_layout), R.string.play_services_error,
+                BaseTransientBottomBar.LENGTH_LONG).setAction(R.string.play_services_how, v -> {
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.play_services_help)));
+            startActivity(i);
+        })
+                .show();
     }
     @Override
     public void updateConnectionsLog() {

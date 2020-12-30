@@ -522,4 +522,7 @@
     <string name="connections_description">Conecte-se a outros dispositivos executando OpenSongApp</string>
     <string name="connections_device_found">Dispositivo encontrado</string>
     <string name="connections_device_name">Nome do dispositivo</string>
+    <string name="controls">Controlar</string>
+    <string name="connections_keephostsongs">Manter músicas do apresentador</string>
+    <string name="connections_enable">Ativar conexões próximas</string>
 </resources>

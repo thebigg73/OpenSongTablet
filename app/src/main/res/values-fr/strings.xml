@@ -520,4 +520,9 @@
     <string name="connections_description">Connectez-vous à d\'autres appareils exécutant OpenSongApp</string>
     <string name="ccli_description">Paramètres CCLI</string>
     <string name="ccli_export">Exportez votre journal CCLI sous forme de fichier XML</string>
+    <string name="connections_device_found">Appareil trouvé</string>
+    <string name="connections_device_name">Nom de l\'appareil</string>
+    <string name="connections_enable">Activer les connexions à proximité</string>
+    <string name="connections_keephostsongs">Conserver les chansons des hôtes</string>
+    <string name="controls">Contrôle</string>
 </resources>

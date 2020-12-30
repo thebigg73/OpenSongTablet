@@ -1,12 +1,15 @@
 package com.garethevans.church.opensongtablet.preferences;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,16 +59,32 @@ public class SettingsCategories extends Fragment {
 
     private void hideUnavailable() {
         // If the user doesn't have Google API availability, they can't use the connect feature
-        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext()) != ConnectionResult.SUCCESS) {
-            myView.connectButton.setVisibility(View.GONE);
-            myView.connectLine.setVisibility(View.GONE);
-        }
+        setPlayEnabled(GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext()) == ConnectionResult.SUCCESS);
         // If they don't have midi functionality, remove this
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || !requireContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI)) {
-            myView.midiButton.setVisibility(View.GONE);
-        }
-
+        setMidiEnabled(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && requireContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI));
     }
+
+    private void setPlayEnabled(boolean enabled) {
+        myView.connectButton.setEnabled(enabled);
+        myView.connectLine.setEnabled(enabled);
+        if (enabled) {
+            myView.needPlayServices.setVisibility(View.GONE);
+        } else {
+            myView.needPlayServices.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setMidiEnabled(boolean enabled) {
+        String message;
+        if (enabled) {
+            message = getString(R.string.midi_description);
+        } else {
+            message = getString(R.string.not_available);
+        }
+        myView.midiButton.setEnabled(enabled);
+        ((TextView)myView.midiButton.findViewById(R.id.subText)).setText(message);
+    }
+
     private void setListeners() {
         myView.ccliButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.nav_preference_ccli));
         myView.storageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.nav_storageManagement));
@@ -79,5 +98,9 @@ public class SettingsCategories extends Fragment {
         myView.midiButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.midiFragment));
         myView.aboutButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.aboutAppFragment));
         myView.gesturesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.controlMenuFragment));
+        myView.playServicesHow.setOnClickListener(v -> {
+            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.play_services_help)));
+            startActivity(i);
+        });
     }
 }

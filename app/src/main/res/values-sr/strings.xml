@@ -525,4 +525,24 @@
     <string name="connections_enable">Omogućite veze u blizini</string>
     <string name="connections_keephostsongs">Držite domaće pesme</string>
     <string name="controls">Kontrole</string>
+    <string name="controls_description">Nožne pedale i pokreti ekrana</string>
+    <string name="delete_folder_warning">Ako izbrišete ovaj poddirektorijum, izbrisaće se i sve pesme ili fascikle koje sadrži. Ne možete da opozovete ovu promenu!</string>
+    <string name="display_settings">Promenite podešavanja prikaza (ono što vidite na ekranu)</string>
+    <string name="filename">Naziv dokumenta</string>
+    <string name="filter_by_this_value">Dalje filtrirajte prema ovoj vrednosti. Ovaj filter pretražuje naslove, imena datoteka, korisnička polja i brojeve himni</string>
+    <string name="filter_by_folder">Ovo dugme se koristi za uključivanje filtera direktorijuma za vašu listu pesama. Isključite ga da biste uklonili filter.</string>
+    <string name="filter_by_artist">Ovo dugme se koristi za uključivanje filtera izvođača za vašu listu pesama</string>
+    <string name="filter_by_key">Ovo dugme služi za uključivanje ključnog filtera za vašu listu pesama</string>
+    <string name="filter_by_tag">Ovo dugme se koristi za uključivanje filtera oznaka / tema za vašu listu pesama</string>
+    <string name="filter_by_edit">Precizirajte pretragu tako što ćete ovde uneti neki tekst</string>
+    <string name="filter_by_dropdown">Precizirajte pretragu izborom opcije sa padajuće liste ovde</string>
+    <string name="first_run">Ili prvi put pokrećete aplikaciju ili se nešto promenilo. Zbog Android dozvola, treba da podesite željeno mesto skladištenja za aplikaciju da čuva svoje datoteke.</string>
+    <string name="folder">Mapa</string>
+    <string name="folder_move_contents">Premestite sadržaj fascikle</string>
+    <string name="font_choose_description">Promenite fontove prikaza pesama</string>
+    <string name="font_choose_list">Izaberite font sa donje liste</string>
+    <string name="font_choose_preview">Izaberite pomoću veb pregleda</string>
+    <string name="forum">Forum</string>
+    <string name="forum_description">Prijavite greške, potražite pomoć i zatražite funkcije</string>
+    <string name="github_description">Doprineti razvoju aplikacija</string>
 </resources>

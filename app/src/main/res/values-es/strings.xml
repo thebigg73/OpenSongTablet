@@ -525,4 +525,24 @@
     <string name="connections_enable">Habilitar conexiones cercanas</string>
     <string name="connections_keephostsongs">Mantenga las canciones del anfitrión</string>
     <string name="controls">Controlar</string>
+    <string name="controls_description">Pedales y gestos de pantalla</string>
+    <string name="delete_folder_warning">Si elimina este subdirectorio, esto también eliminará las canciones o carpetas que contiene. ¡No puede deshacer este cambio!</string>
+    <string name="display_settings">Cambiar la configuración de la pantalla (lo que ves en la pantalla)</string>
+    <string name="filename">Nombre del archivo</string>
+    <string name="filter_by_this_value">Filtre más por este valor. Este filtro busca títulos, nombres de archivos, campos de usuario y números de himnos</string>
+    <string name="filter_by_folder">Este botón se utiliza para incluir un filtro de carpeta para su lista de canciones. Apáguelo para quitar el filtro.</string>
+    <string name="filter_by_artist">Este botón se usa para incluir un filtro de artista para su lista de canciones</string>
+    <string name="filter_by_key">Este botón se utiliza para incluir un filtro clave para su lista de canciones.</string>
+    <string name="filter_by_tag">Este botón se utiliza para incluir un filtro de etiqueta / tema para su lista de canciones</string>
+    <string name="filter_by_edit">Refina tu búsqueda ingresando un texto aquí</string>
+    <string name="filter_by_dropdown">Refina tu búsqueda eligiendo una opción de la lista desplegable aquí</string>
+    <string name="first_run">O esta es la primera vez que ejecuta la aplicación o algo ha cambiado. Debido a los permisos de Android, necesitamos que configure la ubicación de almacenamiento deseada para que la aplicación almacene sus archivos.</string>
+    <string name="folder">Carpeta</string>
+    <string name="folder_move_contents">Mover el contenido de la carpeta</string>
+    <string name="font_choose_description">Cambiar las fuentes de visualización de canciones</string>
+    <string name="font_choose_list">Elija una fuente de la lista a continuación</string>
+    <string name="font_choose_preview">Elija con vista previa web</string>
+    <string name="forum">Foro</string>
+    <string name="forum_description">Informar errores, obtener ayuda y solicitar funciones</string>
+    <string name="github_description">Contribuir al desarrollo de aplicaciones</string>
 </resources>

@@ -23,7 +23,7 @@ public class ShowCase {
                                                               String information,
                                                               boolean rect, String id) {
         if (dismisstext_ornull==null) {
-            dismisstext_ornull = c.getResources().getString(R.string.got_it);
+            dismisstext_ornull = c.getResources().getString(android.R.string.ok);
         }
 
         Log.d("d","Trying to showcase");
@@ -54,7 +54,7 @@ public class ShowCase {
 
         for (int i=0; i<targets.size(); i++) {
             if (dismisstexts_ornulls.get(i)==null) {
-                dismisstexts_ornulls.set(i,c.getResources().getString(R.string.got_it));
+                dismisstexts_ornulls.set(i,c.getResources().getString(android.R.string.ok));
             }
             if (targets.get(i)!=null) {
                 sequence.addSequenceItem(singleShowCaseBuilder(c, targets.get(i), dismisstexts_ornulls.get(i),

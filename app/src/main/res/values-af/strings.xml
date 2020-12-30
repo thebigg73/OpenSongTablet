@@ -539,4 +539,8 @@
     <string name="first_run">Dit is u eerste keer dat u die program gebruik, of dat iets verander het. As gevolg van Android-toestemmings, moet u die gewenste stoorplek vir die program instel om die lêers daarvan te stoor.</string>
     <string name="folder">Omslag</string>
     <string name="folder_move_contents">Skuif die inhoud van die vouer</string>
+    <string name="font_choose_description">Verander liedjie-lettertipes</string>
+    <string name="font_choose_list">Kies \'n lettertipe uit die onderstaande lys</string>
+    <string name="font_choose_preview">Kies met internetvoorskou</string>
+    <string name="forum">Forum</string>
 </resources>

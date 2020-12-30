@@ -539,4 +539,8 @@
     <string name="first_run">这是您第一次运行该应用程序，还是发生了某些变化。 由于Android的权限，我们需要您为应用设置所需的存储位置以存储其文件。</string>
     <string name="folder">夹</string>
     <string name="folder_move_contents">移动文件夹内容</string>
+    <string name="font_choose_description">更改歌曲显示字体</string>
+    <string name="font_choose_list">从下面的列表中选择一种字体</string>
+    <string name="font_choose_preview">通过网络预览选择</string>
+    <string name="forum">论坛</string>
 </resources>
