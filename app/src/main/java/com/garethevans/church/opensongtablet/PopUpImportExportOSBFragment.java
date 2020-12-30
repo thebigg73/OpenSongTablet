@@ -31,7 +31,6 @@ import java.io.OutputStream;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -97,9 +96,9 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         // Decide if we are importing or exporting
         String mTitle;
         if (FullscreenActivity.whattodo.equals("processimportosb")) {
-            mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.backup_import);
+            mTitle = requireContext().getString(R.string.backup_import);
         } else {
-            mTitle = Objects.requireNonNull(getActivity()).getResources().getString(R.string.backup_export);
+            mTitle = requireContext().getResources().getString(R.string.backup_export);
         }
         if (getDialog()!=null) {
             getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -111,7 +110,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         songFolders = new SongFolders();
         storageAccess = new StorageAccess();
         preferences = new Preferences();
-        error = getActivity().getResources().getString(R.string.backup_error);
+        error = requireContext().getString(R.string.backup_error);
 
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(mTitle);
@@ -148,7 +147,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         // Listener for choose osb file
         chooseosbfile.setOnClickListener(view -> {
             if (mListener != null) {
-                mListener.selectAFileUri(Objects.requireNonNull(getActivity()).getString(R.string.backup_import));
+                mListener.selectAFileUri(requireContext().getString(R.string.backup_import));
                 mListener.openFragment();
             }
             PopUpImportExportOSBFragment.this.dismiss();
@@ -171,10 +170,9 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
             // We must be importing and have selected an appropriate .osb file
             importfilechooser.setVisibility(View.VISIBLE);
             // IV - Adjusted to handle files at root of drive
-            String nameoffile = "";
-            if (FullscreenActivity.file_uri!=null && FullscreenActivity.file_uri.getLastPathSegment()!=null) {
-                nameoffile = FullscreenActivity.file_uri.getLastPathSegment().replace(":", "/");
-            }
+            // GE - Added fix for content uris that encrypt the file name
+            String nameoffile = storageAccess.getActualFilename(getContext(),FullscreenActivity.file_uri.toString());
+            nameoffile = nameoffile.replace(":", "/");
             if (nameoffile.contains("/")) {
                 nameoffile = nameoffile.substring(nameoffile.lastIndexOf("/") + 1);
             }
@@ -209,7 +207,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
     private void prepareFolderListExport() {
 
         ArrayList<String> songfolders = songFolders.prepareSongFolders(getActivity(),preferences);
-        adapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), android.R.layout.simple_list_item_multiple_choice, songfolders);
+        adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_multiple_choice, songfolders);
         folderlist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         folderlist.setAdapter(adapter);
     }
@@ -220,7 +218,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         exportPreparer = new ExportPreparer();
         new Thread(() -> {
             exportPreparer.createSelectedOSB(getActivity(), preferences, selectednote, storageAccess);
-            Objects.requireNonNull(getActivity()).runOnUiThread(() -> progressBar.setVisibility(View.GONE));
+            requireActivity().runOnUiThread(() -> progressBar.setVisibility(View.GONE));
             try {
                 dismiss();
             } catch (Exception e) {
@@ -258,14 +256,14 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                message = Objects.requireNonNull(getActivity()).getResources().getString(R.string.backup_error);
+                message = requireContext().getString(R.string.backup_error);
             } finally {
                 if (zis!=null) {
                     try {
                         zis.close();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        message = Objects.requireNonNull(getActivity()).getString(R.string.backup_error);
+                        message = requireContext().getString(R.string.backup_error);
                     }
                 }
             }
@@ -315,7 +313,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
     }
     private void doTheImporting() {
         // Send an alert to the screen
-        StaticVariables.myToastMessage = Objects.requireNonNull(getActivity()).getString(R.string.wait);
+        StaticVariables.myToastMessage = requireContext().getString(R.string.wait);
         ShowToast.showToast(getActivity());
         // Check the selected folders
         selectednote = "";

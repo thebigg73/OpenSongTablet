@@ -2060,9 +2060,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     // This is the built in file picker
                     filelocation = data.getDataString();
                 }
-                Log.d("d","filelocation="+filelocation);
+
+                String filename = storageAccess.getActualFilename(PresenterMode.this,filelocation);
+
                 if (filelocation != null) {
-                    boolean validfiletype = (FullscreenActivity.whattodo.equals("processimportosb") && filelocation.endsWith(".osb")) ||
+                    boolean validfiletype = (FullscreenActivity.whattodo.equals("processimportosb") && filename.endsWith(".osb")) ||
                             (FullscreenActivity.whattodo.equals("importos") && filelocation.endsWith(".backup")) ||
                             FullscreenActivity.whattodo.equals("doimport") ||
                             FullscreenActivity.whattodo.equals("doimportset");

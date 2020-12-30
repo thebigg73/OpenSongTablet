@@ -17,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.DocumentsContract;
+import android.provider.OpenableColumns;
 import android.util.Base64;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
@@ -738,6 +739,32 @@ class StorageAccess {
         return returnvals;
     }
 
+    String getActualFilename(Context c, String string) {
+        Uri uri = Uri.parse(string);
+        if (lollipopOrLater()) {
+            try {
+
+                Cursor cursor = c.getContentResolver().query(uri,null,null,null,null);
+                if (cursor!=null) {
+                    int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    cursor.moveToFirst();
+                    String name = cursor.getString(nameIndex);
+                    cursor.close();
+                    return name;
+                } else {
+                    return uri.getPath();
+                }
+            } catch (Exception e) {
+                return uri.getPath();
+            }
+        } else {
+            if (uri==null) {
+                return string;
+            } else {
+                return uri.getLastPathSegment();
+            }
+        }
+    }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     boolean createFile(Context c, Preferences preferences, String mimeType, String folder, String subfolder, String filename) {
         String[] fixedfolders = fixFoldersAndFiles(c, folder, subfolder, filename);
