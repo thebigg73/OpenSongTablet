@@ -4730,8 +4730,10 @@ public class StageMode extends AppCompatActivity implements
     }
 
     private void doPedalAction(String action) {
-        drawerOrFragmentActive = mDrawerLayout.isDrawerOpen(songmenu) || mDrawerLayout.isDrawerOpen(optionmenu);
+        drawerOrFragmentActive = (mDrawerLayout.isDrawerOpen(songmenu) || mDrawerLayout.isDrawerOpen(optionmenu)) &&
+                !action.equals("songmenu") && !action.equals("optionmenu");
         // IV - If in a drawer or fragment restrict to move actions only
+        // GE - Excluded open and CLOSE drawer
         if (drawerOrFragmentActive) {
             switch (action) {
                 case "prev":
@@ -4872,11 +4874,7 @@ public class StageMode extends AppCompatActivity implements
                     break;
 
                 case "songmenu":
-                    if (mDrawerLayout.isDrawerOpen(songmenu)) {
-                        closeMyDrawers("song");
-                    } else {
-                        openMyDrawers("song");
-                    }
+                    gesture1();
                     break;
 
                 case "optionmenu":
@@ -5374,7 +5372,6 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void callIntent(String what, Intent i) {
-        Log.d("StageMode","what="+what);
         switch (what) {
             case "web":
                 startActivity(i);
@@ -5401,7 +5398,6 @@ public class StageMode extends AppCompatActivity implements
 
             case "activity":
                 if (i != null && i.toString().contains("StageMode")) {
-                    Log.d("StageMode","Recreating");
                     StageMode.this.recreate();
                 } else {
                     finish();
@@ -8038,7 +8034,6 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            Log.d("d","Double tap");
             // Decide what the double tap action is
             // 1 = both menus
             // 2 = edit song
