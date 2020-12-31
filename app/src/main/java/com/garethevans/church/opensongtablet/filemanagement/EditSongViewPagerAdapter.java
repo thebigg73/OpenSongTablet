@@ -10,9 +10,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView.MeasurableAdapter;
 
-public class EditSongViewPagerAdapter extends FragmentStateAdapter implements MeasurableAdapter {
-
-    EditContent editContent;
+public class EditSongViewPagerAdapter extends FragmentStateAdapter implements MeasurableAdapter<RecyclerView.ViewHolder> {
 
     public final Fragment[] menuFragments = {new EditSongFragmentMain(), new EditSongFragmentFeatures(), new EditSongFragmentTags()};
 
@@ -33,6 +31,10 @@ public class EditSongViewPagerAdapter extends FragmentStateAdapter implements Me
 
     @Override
     public int getViewTypeHeight(RecyclerView recyclerView, @Nullable RecyclerView.ViewHolder viewHolder, int viewType) {
-        return viewHolder.itemView.getMeasuredHeight();
+        if (viewHolder!=null) {
+            return viewHolder.itemView.getMeasuredHeight();
+        } else {
+            return 0;
+        }
     }
 }

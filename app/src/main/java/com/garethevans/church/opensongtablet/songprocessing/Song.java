@@ -314,7 +314,7 @@ public class Song {
                     padloop.equals(song.padloop) && midi.equals(song.midi) && midiindex.equals(song.midiindex) &&
                     capo.equals(song.capo) && capoprint.equals(song.capoprint) && customchords.equals(song.customchords) &&
                     notes.equals(song.notes) && abc.equals(song.abc) && linkyoutube.equals(song.linkyoutube) &&
-                    linkweb.equals(song.linkweb) && linkaudio.equals(song.linkaudio) && linkweb.equals(song.linkweb) &&
+                    linkweb.equals(song.linkweb) && linkaudio.equals(song.linkaudio) &&
                     linkother.equals(song.linkother) && presentationorder.equals(song.presentationorder) &&
                     filetype.equals(song.filetype);
         }

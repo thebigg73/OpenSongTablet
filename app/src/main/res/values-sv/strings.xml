@@ -34,7 +34,7 @@
     <string name="backup_import">"Importera OpenSongApp-säkerhetskopiering"</string>
     <string name="backup_info">"OpenSongApp Backup-fil"</string>
     <string name="backup_success">"OpenSongApp backup skapad"</string>
-    <string name="backupnow">"Skapa en säkerhetskopia nu"</string>
+    <string name="backup_now">"Skapa en säkerhetskopia nu"</string>
     <string name="bad_time">"Bildtid har inte ställts in korrekt"</string>
     <string name="banjo4">"Banjo (4)"</string>
     <string name="banjo5">"Banjo (5)"</string>
@@ -226,7 +226,7 @@
     <string name="onsong_import">"Importera OnSong backup-fil"</string>
     <string name="import_onsong_error">"Ingen OnSong backup fil finns i / dokument / OpenSong /"</string>
     <string name="importnewset">"Importera en uppsättning"</string>
-    <string name="importnewsong">"Importera en låt"</string>
+    <string name="import_song">"Importera en låt"</string>
     <string name="inc_autoscroll_speed">"Öka Autoscroll Speed"</string>
     <string name="initialisesongs_start">"Initialisering av \"Songs\" -mappen -"</string>
     <string name="instrument">"Instrument"</string>

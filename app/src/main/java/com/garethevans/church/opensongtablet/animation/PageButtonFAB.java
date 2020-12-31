@@ -12,7 +12,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class PageButtonFAB {
 
-    private FloatingActionButton actionButton, custom1, custom2, custom3, custom4, custom5, custom6;
+    private final FloatingActionButton actionButton;
+    private final FloatingActionButton custom1;
+    private final FloatingActionButton custom2;
+    private final FloatingActionButton custom3;
+    private final FloatingActionButton custom4;
+    private final FloatingActionButton custom5;
+    private final FloatingActionButton custom6;
     public PageButtonFAB(FloatingActionButton actionButton, FloatingActionButton custom1,
                          FloatingActionButton custom2, FloatingActionButton custom3,
                          FloatingActionButton custom4, FloatingActionButton custom5,
@@ -26,7 +32,7 @@ public class PageButtonFAB {
         this.custom6 = custom6;
     }
 
-    private OvershootInterpolator interpolator = new OvershootInterpolator();
+    private final OvershootInterpolator interpolator = new OvershootInterpolator();
 
     public void animatePageButton(Context c, boolean open) {
         if (open) {

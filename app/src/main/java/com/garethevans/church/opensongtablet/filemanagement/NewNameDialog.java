@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,7 +63,10 @@ public class NewNameDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Window w = requireDialog().getWindow();
+        if (w!=null) {
+            w.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
 
         myView = NewNameDialogBinding.inflate(inflater,container,false);
 
@@ -70,7 +74,9 @@ public class NewNameDialog extends DialogFragment {
         setViews();
 
         // Get the current songXML to pass back as an argument if we need it (good for duplicating!)
-        songContent = song.getXML(song,processSong);
+        if (song!=null) {
+            songContent = song.getXML(song, processSong);
+        }
 
         // Set listeners
         okButton.setOnClickListener(v -> doSave());
@@ -111,28 +117,28 @@ public class NewNameDialog extends DialogFragment {
         // Check if the file/folder already exists
         boolean exists;
         String newName;
-        String message = getActivity().getResources().getString(R.string.error);
-        String success = getActivity().getResources().getString(R.string.success);
+        String message = getString(R.string.error);
+        String success = getString(R.string.success);
 
-        if (title!=null && title.getText()!=null && title.getText()!=null && title.getText().toString()!=null && !title.getText().toString().isEmpty()) {
+        if (title!=null && title.getText()!=null && !title.getText().toString().isEmpty()) {
             newName = title.getText().toString();
             newName = storageAccess.safeFilename(newName);
             title.setText(newName);
-            Uri uri = storageAccess.getUriForItem(getActivity(), preferences, currentDir, currentSubDir, newName);
-            exists = storageAccess.uriExists(getActivity(),uri);
+            Uri uri = storageAccess.getUriForItem(getContext(), preferences, currentDir, currentSubDir, newName);
+            exists = storageAccess.uriExists(getContext(),uri);
             if (isfile && !exists) {
-                if (storageAccess.createFile(getActivity(),preferences,null, currentDir, currentSubDir, newName)) {
+                if (storageAccess.createFile(getContext(),preferences,null, currentDir, currentSubDir, newName)) {
                     message = success;
                 }
             } else if (!isfile && !exists) {
-                if (storageAccess.createFolder(getActivity(),preferences,currentDir,currentSubDir,newName)) {
+                if (storageAccess.createFolder(getContext(),preferences,currentDir,currentSubDir,newName)) {
                     message = success;
                 }
-            } else if (exists) {
-                message = getActivity().getResources().getString(R.string.file_exists);
+            } else {
+                message = getString(R.string.file_exists);
             }
         }
-        ShowToast.showToast(getActivity(),message);
+        ShowToast.showToast(getContext(),message);
         if (message.equals(success)) {
             ArrayList<String> result = new ArrayList<>();
             result.add("success");

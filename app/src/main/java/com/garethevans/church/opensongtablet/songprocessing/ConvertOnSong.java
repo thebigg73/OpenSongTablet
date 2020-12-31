@@ -324,7 +324,7 @@ public class ConvertOnSong {
         return parsedLines.toString();
     }
 
-    private Song setCorrectXMLValues(Song song) {
+    private void setCorrectXMLValues(Song song) {
         if (title == null || title.isEmpty()) {
             song.setTitle(newSongFileName);
         } else {
@@ -346,7 +346,6 @@ public class ConvertOnSong {
         song.setHymnnum(number.trim());
         song.setTheme(theme.trim());
 
-        return song;
     }
 
 }

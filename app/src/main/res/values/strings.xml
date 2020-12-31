@@ -25,13 +25,17 @@
     <string name="autoscroll">Autoscroll</string>
     <string name="autoscroll_pause">Autoscroll Pause</string>
     <string name="background">Background</string>
+    <string name="backup">Backup</string>
     <string name="backup_and_restore">Backup and restore</string>
+    <string name="backup_now">Create a backup now</string>
+    <string name="backup_osb">Create a backup of OpenSongApp songs (*.osb)</string>
     <string name="bible_search">Phrase or verse to search</string>
     <string name="black_screen">Black screen</string>
     <string name="blue">Blue</string>
     <string name="bridge">Bridge</string>
     <string name="button">Button</string>
     <string name="camera">Camera</string>
+    <string name="camera_info">Take a photograph of a songsheet</string>
     <string name="capo_chords">Capo chords</string>
     <string name="capo_fret">Capo fret</string>
     <string name="ccli">CCLI</string>
@@ -134,7 +138,10 @@
     <string name="highlight">Highlighter</string>
     <string name="image">Image</string>
     <string name="image_slide">Image slideshow</string>
-    <string name="import_file">Import</string>
+    <string name="import_file">File</string>
+    <string name="import_osb">Restore songs from OpenSongApp backup file (*.osb)</string>
+    <string name="import_other" translatable="false">OpenSong, OnSong, PDF, txt, ChoPro</string>
+    <string name="import_song">Import a song</string>
     <string name="inc_autoscroll_speed">Increase Autoscroll Speed</string>
     <string name="info_text">Info text</string>
     <string name="instrumental">Instrumental</string>
@@ -244,9 +251,10 @@
     <string name="nothighenoughapi">You need a newer version of Android for this!</string>
     <string name="off">Off</string>
     <string name="on">On</string>
+    <string name="online">Online</string>
+    <string name="online_services" translatable="false">UG, SongSelect, Chordie, etc.</string>
+    <string name="onsong" translatable="false">iOS/OnSong</string>
     <string name="onsong_import">"Import OnSong backup file"</string>
-    <string name="osb_backup">Create a backup of OpenSongApp songs (*.osb)</string>
-    <string name="osb_restore">Restore songs from OpenSongApp backup file (*.osb)</string>
     <string name="other">Other</string>
     <string name="pad">Pad</string>
     <string name="page_buttons">Page buttons</string>
@@ -282,6 +290,7 @@
     <string name="removed_from_set">has been removed from your set.</string>
     <string name="rename">Rename</string>
     <string name="reprise">Reprise</string>
+    <string name="respect_copyright">Respect copyright - always use legally</string>
     <string name="root">ROOT</string>
     <string name="save">Save</string>
     <string name="save_changes">Save changes</string>
@@ -492,7 +501,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="backup_import">Import OpenSongApp backup</string>
     <string name="backup_info">OpenSongApp Backup file</string>
     <string name="backup_success">OpenSongApp backup created</string>
-    <string name="backupnow">Create a backup now</string>
     <string name="bad_time">Slide time has not been set correctly</string>
     <string name="banjo4">Banjo (4)</string>
     <string name="banjo5">Banjo (5)</string>
@@ -645,7 +653,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="holychords" translatable="false">HolyChords.com</string>
     <string name="import_onsong_error">"No OnSong backup file found in /documents/OpenSong/"</string>
     <string name="importnewset">Import a set</string>
-    <string name="importnewsong">Import a song</string>
     <string name="initialisesongs_start">Initialising \'Songs\' folder -</string>
     <string name="instrument">Instrument</string>
     <string name="intro_app">OpenSongApp uses songs created in OpenSong and displays them on your tablet screen.</string>
@@ -826,7 +833,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="bold_text">Display lyrics in bold</string>
     <string name="location_rationale">This feature is required to locate other network devices</string>
     <string name="time_zero" translatable="false">0:00</string>
-    <string name="respectcopyright">Respect copyright - always use legally</string>
     <string name="wordsandmusicby">Words and music by</string>
     <string name="usedbypermision">Used by permission.</string>
     <string name="play_services_error">To use Google Cast, Fonts and Nearby Connections, you will need to install Google Play Services.</string>

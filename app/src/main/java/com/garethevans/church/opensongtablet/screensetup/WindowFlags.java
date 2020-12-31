@@ -6,7 +6,7 @@ import android.view.WindowManager;
 
 public class WindowFlags {
 
-    private Window w;
+    private final Window w;
     public WindowFlags(Window w) {
         this.w = w;
     }

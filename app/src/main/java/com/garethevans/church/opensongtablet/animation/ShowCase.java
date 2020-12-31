@@ -61,8 +61,10 @@ public class ShowCase {
                         information.get(i), rects.get(i),null).build());
             }
         }
-        if (sequence!=null) {
+        try {
             sequence.start();
+        } catch (Exception e) {
+            Log.d("ShowCase","Error:"+e);
         }
     }
 }

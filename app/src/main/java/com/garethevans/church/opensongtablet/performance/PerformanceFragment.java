@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -293,7 +292,7 @@ public class PerformanceFragment extends Fragment {
 
 
     // The scale and gesture bits of the code
-    private ScaleGestureDetector scaleDetector;
+    //private ScaleGestureDetector scaleDetector;
     static float scaleFactor = 1.0f;
     private GestureDetector detector;
     @SuppressLint("ClickableViewAccessibility")
@@ -315,7 +314,7 @@ public class PerformanceFragment extends Fragment {
         public boolean onTouch(View v, MotionEvent event) {
             v.performClick();
             detector.onTouchEvent(event);
-            scaleDetector.onTouchEvent(event);
+            //scaleDetector.onTouchEvent(event);
             if (loadNextSong || loadPrevSong) {
                 prepareSongLoad();
             }
@@ -342,7 +341,7 @@ public class PerformanceFragment extends Fragment {
                 StaticVariables.songfilename = StaticVariables.songsInList.get(currentPosition+1);
                 doSongLoad();
             } else {
-                showToast.doIt(getActivity(), requireActivity().getString(R.string.lastsong));
+                showToast.doIt(getActivity(), getString(R.string.lastsong));
             }
         } else if (loadPrevSong) {
             loadPrevSong = false;
@@ -350,7 +349,7 @@ public class PerformanceFragment extends Fragment {
                 StaticVariables.songfilename = StaticVariables.songsInList.get(currentPosition-1);
                 doSongLoad();
             } else {
-                showToast.doIt(getActivity(), requireActivity().getString(R.string.firstsong));
+                showToast.doIt(getActivity(), getString(R.string.firstsong));
             }
         }
     }

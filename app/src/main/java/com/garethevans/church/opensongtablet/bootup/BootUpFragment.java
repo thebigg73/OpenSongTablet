@@ -18,7 +18,6 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.databinding.BootupLogoBinding;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
@@ -37,7 +36,6 @@ public class BootUpFragment extends Fragment {
     private SQLiteHelper sqLiteHelper;
     private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
     private CommonSQL commonSQL;
-    private SetTypeFace setTypeFace;
     private String initialising, message;
     private String uT;
     private Uri uriTree;
@@ -96,22 +94,20 @@ public class BootUpFragment extends Fragment {
         sqLiteHelper = new SQLiteHelper(requireContext());
         nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(requireContext());
         commonSQL = new CommonSQL();
-        setTypeFace = new SetTypeFace();
-        StaticVariables.activity = getActivity();
     }
 
     private void setFolderAndSong() {
-        StaticVariables.whichSongFolder = preferences.getMyPreferenceString(getActivity(), "whichSongFolder",
+        StaticVariables.whichSongFolder = preferences.getMyPreferenceString(getContext(), "whichSongFolder",
                 getString(R.string.mainfoldername));
-        StaticVariables.songfilename = preferences.getMyPreferenceString(getActivity(), "songfilename",
+        StaticVariables.songfilename = preferences.getMyPreferenceString(getContext(), "songfilename",
                 getString(R.string.welcome));
 
         // Check if we have used the app already, but the last song didn't load
-        if (!preferences.getMyPreferenceBoolean(getActivity(),"songLoadSuccess",false)) {
+        if (!preferences.getMyPreferenceBoolean(getContext(),"songLoadSuccess",false)) {
             StaticVariables.whichSongFolder = getString(R.string.mainfoldername);
-            preferences.setMyPreferenceString(getActivity(),"whichSongFolder",StaticVariables.whichSongFolder);
+            preferences.setMyPreferenceString(getContext(),"whichSongFolder",StaticVariables.whichSongFolder);
             StaticVariables.songfilename = "Welcome to OpenSongApp";
-            preferences.setMyPreferenceString(getActivity(),"songfilename",StaticVariables.songfilename);
+            preferences.setMyPreferenceString(getContext(),"songfilename",StaticVariables.songfilename);
         }
     }
 
@@ -124,11 +120,11 @@ public class BootUpFragment extends Fragment {
         }
     }
     private boolean storagePermissionGranted() {
-        return (getActivity()!=null && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        return (getContext()!=null && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED);
     }
     private boolean storageLocationSet() {
-        uT = preferences.getMyPreferenceString(getActivity(),"uriTree","");
+        uT = preferences.getMyPreferenceString(getContext(),"uriTree","");
         return !uT.isEmpty();
     }
     private boolean storageLocationValid() {
@@ -152,11 +148,11 @@ public class BootUpFragment extends Fragment {
 
     private void startBootProcess() {
         // Start the boot process
-        if (getActivity() != null) {
+        if (getContext() != null) {
             new Thread(() -> {
                 // Set up the Typefaces
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(() -> {
+                if (getContext() != null) {
+                    requireActivity().runOnUiThread(() -> {
                         message = initialising + getString(R.string.font_choose);
                         myView.currentAction.setText(message);
                     });
@@ -164,7 +160,7 @@ public class BootUpFragment extends Fragment {
 
                 message = initialising + getString(R.string.storage);
 
-                getActivity().runOnUiThread(() -> {
+                requireActivity().runOnUiThread(() -> {
                     // Tell the user we're initialising the storage
                     myView.currentAction.setText(message);
                 });
@@ -172,7 +168,7 @@ public class BootUpFragment extends Fragment {
                 setFolderAndSong();
 
                 // Check for saved storage locations
-                final String progress = storageAccess.createOrCheckRootFolders(getActivity(), uriTree, preferences);
+                final String progress = storageAccess.createOrCheckRootFolders(getContext(), uriTree, preferences);
                 boolean foldersok = !progress.contains("Error");
 
                 if (foldersok) {
@@ -181,7 +177,7 @@ public class BootUpFragment extends Fragment {
                     // These are stored to a temporary file in the app storage folder
                     ArrayList<String> songIds = new ArrayList<>();
                     try {
-                        songIds = storageAccess.listSongs(getActivity(), preferences);
+                        songIds = storageAccess.listSongs(getContext(), preferences);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -189,36 +185,36 @@ public class BootUpFragment extends Fragment {
                     message = numSongs + " " + getString(R.string.processing) + "\n" + getString(R.string.wait);
                     Log.d("BootUpFragment", message);
 
-                    getActivity().runOnUiThread(() -> myView.currentAction.setText(message));
+                    requireActivity().runOnUiThread(() -> myView.currentAction.setText(message));
 
                     // Write a crude text file (line separated) with the song Ids (folder/file)
-                    storageAccess.writeSongIDFile(getActivity(), preferences, songIds);
+                    storageAccess.writeSongIDFile(getContext(), preferences, songIds);
 
                     // Try to create the basic databases
                     // Non persistent, created from storage at boot (to keep updated) used to references ALL files
-                    sqLiteHelper.resetDatabase(getActivity());
+                    sqLiteHelper.resetDatabase(getContext());
                     // Persistent containing details of PDF/Image files only.  Pull in to main database at boot
                     // Updated each time a file is created, deleted, moved.
                     // Also updated when feature data (pad, autoscroll, metronome, etc.) is updated for these files
-                    nonOpenSongSQLiteHelper.initialise(getActivity(), commonSQL, storageAccess, preferences);
+                    nonOpenSongSQLiteHelper.initialise(getContext(), commonSQL, storageAccess, preferences);
 
                     // Add entries to the database that have songid, folder and filename fields
                     // This is the minimum that we need for the song menu.
                     // It can be upgraded asynchronously in StageMode/PresenterMode to include author/key
                     // Also will later include all the stuff for the search index as well
-                    sqLiteHelper.insertFast(getActivity(), commonSQL, storageAccess);
+                    sqLiteHelper.insertFast(getContext(), commonSQL, storageAccess);
 
                     // Finished indexing
                     message = getString(R.string.success);
-                    getActivity().runOnUiThread(() -> myView.currentAction.setText(message));
+                    requireActivity().runOnUiThread(() -> myView.currentAction.setText(message));
 
-                    StaticVariables.whichMode = preferences.getMyPreferenceString(getActivity(), "whichMode", "Performance");
+                    StaticVariables.whichMode = preferences.getMyPreferenceString(getContext(), "whichMode", "Performance");
 
-                    getActivity().runOnUiThread(() -> mainActivityInterface.initialiseActivity());
+                    requireActivity().runOnUiThread(() -> mainActivityInterface.initialiseActivity());
                 } else {
                     // There was a problem with the folders, so restart the app!
                     Log.d("BootUpFragment", "problem with folders");
-                    getActivity().recreate();
+                    requireActivity().recreate();
                 }
             }).start();
         }

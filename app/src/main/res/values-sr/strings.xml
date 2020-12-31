@@ -198,7 +198,7 @@
     <string name="pedal_scroll_before_move">"Uklj/Isklj skrolovanje pre sledeće/prethodne pesme"</string>
     <string name="exportcurrentsong">"Podeliti trenutnu pesmu"</string>
     <string name="exportsavedset">"Podeliti snimljenu set listu"</string>
-    <string name="importnewsong">"Učitati pesmu"</string>
+    <string name="import_song">"Učitati pesmu"</string>
     <string name="importnewset">"Učitati set listu"</string>
     <string name="add_song_to_set">"Dodati trenutnu pesmu na set listu"</string>
     <string name="edit_song_title">"Ime pesme"</string>
@@ -479,7 +479,7 @@
     <string name="extracting">"Izvlačenje"</string>
     <string name="converting">"Pretvaranje"</string>
     <string name="promptbackup">"Niste napravili sigurnosnu kopiju svoje biblioteke pjesama u zadnjih 10 puta koje ste koristili ovu aplikaciju. To je vrlo preporučljivo jer možete oporaviti svoje pjesme ako nešto pođe po zlu. U idealnom slučaju trebate čuvati kopiju datoteke sigurnosne kopije na oblaku (npr. Google pogon) ili je poslati e-poštom."</string>
-    <string name="backupnow">"Odmah izradite sigurnosnu kopiju"</string>
+    <string name="backup_now">"Odmah izradite sigurnosnu kopiju"</string>
     <string name="remindme">"Podsjeti me kasnije"</string>
     <string name="network_error">"Pogreška mreže"</string>
     <string name="download_new">"Kliknite ovdje da biste preuzeli novu Bibliju"</string>

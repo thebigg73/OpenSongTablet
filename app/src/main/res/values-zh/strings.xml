@@ -33,7 +33,7 @@
     <string name="backup_import">"进口OpenSongApp备份备份"</string>
     <string name="backup_info">"OpenSongApp备份文件"</string>
     <string name="backup_success">"OpenSongApp创建备份"</string>
-    <string name="backupnow">"立即创建备份"</string>
+    <string name="backup_now">"立即创建备份"</string>
     <string name="bad_time">"幻灯片的时间尚未确定正确"</string>
     <string name="banjo4">"班卓琴 (4)"</string>
     <string name="banjo5">"班卓琴 (5)"</string>
@@ -225,7 +225,7 @@
     <string name="onsong_import">"稳城导入备份文件"</string>
     <string name="import_onsong_error">"稳城没有备份文件中发现 /documents/OpenSong/"</string>
     <string name="importnewset">"导入一组"</string>
-    <string name="importnewsong">"导入一首歌曲"</string>
+    <string name="import_song">"导入一首歌曲"</string>
     <string name="inc_autoscroll_speed">"增加自动滚动速度"</string>
     <string name="initialisesongs_start">"初始化“诗经”的文件夹 -"</string>
     <string name="instrument">仪器</string>

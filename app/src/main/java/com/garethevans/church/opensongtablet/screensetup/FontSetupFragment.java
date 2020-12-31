@@ -133,7 +133,7 @@ public class FontSetupFragment extends Fragment {
         myView.chordPreview.setTextSize(24.0f*preferences.getMyPreferenceFloat(getContext(),"scaleChords",0.8f));
 
         // Set the presentation preview
-        myView.presoPreview.setBackground(ResourcesCompat.getDrawable(getContext().getResources(),R.drawable.preso_default_bg,null));
+        myView.presoPreview.setBackground(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.preso_default_bg,null));
         myView.presoLorem.setTextColor(themeColors.getPresoFontColor());
         myView.presoInfoLorem.setTextColor(themeColors.getPresoInfoFontColor());
         myView.presoInfoLorem.setTextColor(themeColors.getPresoInfoFontColor());

@@ -34,7 +34,7 @@
     <string name="backup_import">"Импорт резервной копии OpenSongApp"</string>
     <string name="backup_info">"Файл резервного копирования OpenSongApp"</string>
     <string name="backup_success">"Резервная копия OpenSongApp создана"</string>
-    <string name="backupnow">"Создайте резервную копию сейчас"</string>
+    <string name="backup_now">"Создайте резервную копию сейчас"</string>
     <string name="bad_time">"Время показа установлено неправильно"</string>
     <string name="banjo4">"Банджо (4)"</string>
     <string name="banjo5">"Банджо (5)"</string>
@@ -226,7 +226,7 @@
     <string name="onsong_import">"Импорт файлов OnSong"</string>
     <string name="import_onsong_error">"Ошибка - файл OnSong не найден в /documents/OpenSong/"</string>
     <string name="importnewset">"Импорт списка"</string>
-    <string name="importnewsong">"Импорт песни"</string>
+    <string name="import_song">"Импорт песни"</string>
     <string name="inc_autoscroll_speed">"Увеличить скорость автопрокрутки"</string>
     <string name="initialisesongs_start">"Подготовка папки Songs -"</string>
     <string name="instrument">инструмент</string>

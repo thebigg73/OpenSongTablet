@@ -51,7 +51,7 @@ public class FontSetupPreviewFragment extends DialogFragment {
 
         setHelpers();
 
-        sampleText = requireContext().getString(R.string.lorem);
+        sampleText = getString(R.string.lorem);
 
         // Run the webview setup
         myView.webView.getSettings().setJavaScriptEnabled(true);
@@ -73,10 +73,10 @@ public class FontSetupPreviewFragment extends DialogFragment {
             if (fontNames==null || fontNames.isEmpty()) {
                 fontNames = setTypeFace.getFontsFromGoogle();
                 getAlphaList();
-                getActivity().runOnUiThread(this::prepareAlphaList);
+                requireActivity().runOnUiThread(this::prepareAlphaList);
             }
             String content = preparePageContent(ab);
-            getActivity().runOnUiThread(() -> prepareWebView(content));
+            requireActivity().runOnUiThread(() -> prepareWebView(content));
         }).start();
     }
 
@@ -148,6 +148,6 @@ public class FontSetupPreviewFragment extends DialogFragment {
     private void doSave(String fontName) {
         fontName = fontName.replace("+"," ");
         setTypeFace.changeFont(getContext(),preferences,StaticVariables.whattodo,fontName,handler);
-        new Thread(() -> getActivity().runOnUiThread(() -> getActivity().getSupportFragmentManager().popBackStackImmediate())).start();
+        new Thread(() -> requireActivity().runOnUiThread(() -> requireActivity().getSupportFragmentManager().popBackStackImmediate())).start();
     }
 }

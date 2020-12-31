@@ -39,7 +39,7 @@ public class SettingsCategories extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         myView = SettingsCategoriesBinding.inflate(inflater,container,false);
-        mainActivityInterface.updateToolbar(null,requireContext().getResources().getString(R.string.settings));
+        mainActivityInterface.updateToolbar(null,getString(R.string.settings));
 
         // Prepare helpers
         prepareHelpers();

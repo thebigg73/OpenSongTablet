@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -49,7 +51,7 @@ public class SetStorageLocationFragment extends Fragment {
     private Uri uriTree, uriTreeHome;
     private Bundle bundle;
     private Button setStorage, findStorage, startApp;
-    private TextView progressText, progressTextInfo, previousStorageTextView,
+    private TextView progressText, previousStorageTextView,
             previousStorageHeading, previousStorageLocationsTextView;
     private ArrayList<String> locations;
     private File folder;
@@ -77,6 +79,9 @@ public class SetStorageLocationFragment extends Fragment {
 
         // Set up the views
         initialiseViews();
+
+        // Pop the backstack
+        popTheBackStack();
 
         // Check preferences for storage (if they exist)
         checkPreferencesForStorage();
@@ -117,6 +122,29 @@ public class SetStorageLocationFragment extends Fragment {
         mainActivityInterface.hideActionButton(true);
     }
 
+    private void popTheBackStack() {
+        //requireActivity().getSupportFragmentManager().popBackStack();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ActionBar supportActionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.hide();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ActionBar supportActionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.show();
+        }
+    }
+
     private void checkPreferencesForStorage() {
         String uT  = preferences.getMyPreferenceString(requireActivity(),"uriTree","");
         String uTH = preferences.getMyPreferenceString(requireActivity(),"uriTreeHome","");
@@ -145,7 +173,7 @@ public class SetStorageLocationFragment extends Fragment {
     }
 
     private boolean isStorageValid() {
-        return (isStorageSet() && storageAccess.uriTreeValid(getActivity(),uriTree));
+        return (isStorageSet() && storageAccess.uriTreeValid(getContext(),uriTree));
     }
 
     private void setStorageLocation() {
@@ -378,7 +406,7 @@ public class SetStorageLocationFragment extends Fragment {
                         if (where.endsWith("/OpenSong/Songs") && !where.contains(".estrongs") && !where.contains("com.ttxapps")) {
                             // Found one and it isn't in eStrongs recycle folder or the dropsync temp files!
                             //where = where.substring(0, where.length() - 15);
-                            String[] locs = storageAccess.niceUriTree_File(getContext(),preferences,Uri.fromFile(f),new String[]{"",""});
+                            String[] locs = storageAccess.niceUriTree_File(getContext(), Uri.fromFile(f),new String[]{"",""});
                             where = locs[1].substring(0, locs[1].length() - 15) + "  "+locs[0];
                             locations.add(where);
                         }

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
@@ -82,7 +83,10 @@ public class TransposeDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = TransposeDialogBinding.inflate(inflater,container,false);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Window w = requireDialog().getWindow();
+        if (w!=null) {
+            w.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
 
         // Initialise helpers
         initialiseHelpers();

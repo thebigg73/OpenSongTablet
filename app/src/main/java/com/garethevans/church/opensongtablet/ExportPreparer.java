@@ -304,16 +304,7 @@ class ExportPreparer {
         return emailIntent;
     }
 
-    private Intent exportBackup(Context c, Uri uri) {
-        Intent emailIntent = setEmailIntent(c.getString(R.string.backup_info),c.getString(R.string.backup_info),
-                c.getString(R.string.backup_info));
-        FullscreenActivity.emailtext = "";
-        ArrayList<Uri> uris = new ArrayList<>();
-        uris.add(uri);
-        emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-        emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        return emailIntent;
-    }
+
 
     Intent exportActivityLog(Context c, _Preferences preferences, StorageAccess storageAccess) {
         String title = c.getString(R.string.app_name) + ": " + c.getString(R.string.edit_song_ccli);
@@ -683,125 +674,6 @@ class ExportPreparer {
     }*//*
 
 
-    void createSelectedOSB(Context c, _Preferences preferences, String selected, StorageAccess storageAccess) {
-        folderstoexport = selected;
-        if (backup_create_selected!=null) {
-            backup_create_selected.cancel(true);
-        }
-        backup_create_selected = new Backup_Create_Selected(c, preferences, storageAccess);
-        backup_create_selected.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }
-
-    private String makeBackupZipSelected(Context c, _Preferences preferences, StorageAccess storageAccess) {
-        // Get the date for the file
-        Calendar cal = Calendar.getInstance();
-        System.out.println("Current time => " + cal.getTime());
-
-        SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd", StaticVariables.locale);
-        String formattedDate = df.format(cal.getTime());
-        String backup = "OpenSongBackup_" + formattedDate + ".osb";
-        zipDirSelected(c, preferences, backup, storageAccess);
-        return backup;
-    }
-
-    private void zipDirSelected(Context c, _Preferences preferences, String zipFileName, StorageAccess storageAccess) {
-        File tempbackup = new File(c.getExternalFilesDir("Backup"),zipFileName);
-        //Uri uri = storageAccess.getUriForItem(c, preferences, "", "", zipFileName);
-        //Uri uri = Uri.fromFile(tempbackup);
-        // Check the uri exists for the outputstream to be valid
-        //storageAccess.lollipopCreateFileForOutputStream(c, preferences, uri, null, "", "", zipFileName);
-
-        try {
-            FileOutputStream outputStream = new FileOutputStream(tempbackup);
-            outSelected = new ZipOutputStream(outputStream);
-
-            // Go through each of the selected folders and add them to the zip file
-            String[] whichfolders = folderstoexport.split("__%%__");
-            for (int i = 0; i < whichfolders.length; i++) {
-                if (!whichfolders[i].equals("")) {
-                    whichfolders[i] = whichfolders[i].replace("%__", "");
-                    whichfolders[i] = whichfolders[i].replace("__%", "");
-                    addDirSelected(c, preferences, whichfolders[i], storageAccess);
-                }
-            }
-            outSelected.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    //TODO not sure if subfolders (e.g. Band/Temp/Inner are added to the zipfile
-    private void addDirSelected(Context c, _Preferences preferences, String subfolder, StorageAccess storageAccess) {
-        ArrayList<String> files = storageAccess.listFilesInFolder(c, preferences, "Songs", subfolder);
-        byte[] tmpBuf = new byte[1024];
-        for (String s:files) {
-            Uri uri = storageAccess.getUriForItem(c, preferences, "Songs", subfolder, s);
-            if (storageAccess.uriIsFile(c,uri)) {
-                try {
-                    InputStream inputStream = storageAccess.getInputStream(c, uri);
-                    ZipEntry ze;
-                    if (subfolder.equals(c.getString(R.string.mainfoldername)) || subfolder.equals("MAIN")) {
-                        ze = new ZipEntry(s);
-                    } else {
-                        ze = new ZipEntry(subfolder + "/" + s);
-                    }
-                    outSelected.putNextEntry(ze);
-                    int len;
-                    while ((len = inputStream.read(tmpBuf)) > 0) {
-                        outSelected.write(tmpBuf, 0, len);
-                    }
-                    outSelected.closeEntry();
-                    inputStream.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private class Backup_Create_Selected extends AsyncTask<String, Void, String> {
-        final Context c;
-        Intent emailIntent;
-        final StorageAccess storageAccess;
-        final _Preferences preferences;
-
-        Backup_Create_Selected(Context context, _Preferences p, StorageAccess sA) {
-            c = context;
-            storageAccess = sA;
-            preferences = p;
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            return makeBackupZipSelected(c, preferences, storageAccess);
-        }
-
-        boolean cancelled = false;
-
-        @Override
-        protected void onCancelled() {
-            cancelled = true;
-        }
-
-        @Override
-        public void onPostExecute(String s) {
-            if (!cancelled) {
-                try {
-                    //Uri uri = storageAccess.getUriForItem(c, preferences, "", "", s);
-                    File tempbackup = new File(c.getExternalFilesDir("Backup"),s);
-                    Uri uri = FileProvider.getUriForFile(c,"OpenSongAppFiles",tempbackup);
-
-                    StaticVariables.myToastMessage = c.getString(R.string.backup_success);
-                    _ShowToast.showToast(c);
-                    emailIntent = exportBackup(c, uri);
-                    ((Activity) c).startActivityForResult(Intent.createChooser(emailIntent, c.getString(R.string.backup_info)), 12345);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 
     private String prepareChordProFile(Context c, ProcessSong processSong) {
         // This converts an OpenSong file into a ChordPro file

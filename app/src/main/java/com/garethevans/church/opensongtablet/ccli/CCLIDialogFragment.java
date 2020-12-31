@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.WebView;
 
 import androidx.annotation.NonNull;
@@ -51,12 +52,13 @@ public class CCLIDialogFragment extends DialogFragment {
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             ccliDialogBinding = CcliDialogBinding.inflate(inflater, container, false);
-            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            Window w = requireDialog().getWindow();
+            if (w!=null) {
+                w.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            }
 
             // Initialise helpers
             initialiseHelpers();
-
-
 
             ccliDialogBinding.close.setOnClickListener(v -> dismiss());
 

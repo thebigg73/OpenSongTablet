@@ -33,7 +33,7 @@
     <string name="backup_import">"sauvegarde Importation OpenSongApp"</string>
     <string name="backup_info">"fichier OpenSongApp de sauvegarde"</string>
     <string name="backup_success">"sauvegarde OpenSongApp créé"</string>
-    <string name="backupnow">"Créer une sauvegarde maintenant"</string>
+    <string name="backup_now">"Créer une sauvegarde maintenant"</string>
     <string name="bad_time">"Le temps de defilement de diapositives n\'a pas été réglé correctement"</string>
     <string name="banjo4">"Banjo (4)"</string>
     <string name="banjo5">"Banjo (5)"</string>
@@ -225,7 +225,7 @@
     <string name="onsong_import">"Importer depuis un fichier Onsong"</string>
     <string name="import_onsong_error">"Aucun fichier de sauvegarde Onsong trouvé dans /documents/OpenSong/"</string>
     <string name="importnewset">"Importer une liste"</string>
-    <string name="importnewsong">"Importer une chanson"</string>
+    <string name="import_song">"Importer une chanson"</string>
     <string name="inc_autoscroll_speed">"Augmenter la vitesse de défilement automatique"</string>
     <string name="initialisesongs_start">"Initialisation du dossier \'Songs\'"</string>
     <string name="instrument">Instrument</string>

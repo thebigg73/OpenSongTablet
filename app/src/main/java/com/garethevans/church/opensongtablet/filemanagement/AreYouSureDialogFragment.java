@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -61,7 +62,10 @@ public class AreYouSureDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         AreyousureDialogBinding areYouSureBinding = AreyousureDialogBinding.inflate(inflater, container, false);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Window w = requireDialog().getWindow();
+        if (w!=null) {
+            w.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
 
         areYouSureBinding.action.setText(action);
         areYouSureBinding.cancelButton.setOnClickListener(v -> {

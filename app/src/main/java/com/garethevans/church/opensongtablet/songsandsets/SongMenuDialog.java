@@ -46,7 +46,8 @@ public class SongMenuDialog extends DialogFragment {
     NewNameDialog dialog;
     Song thisSong;
 
-    private String folder, song;
+    private final String folder;
+    private final String song;
 
     SongMenuDialog (String folder, String song) {
         this.folder = folder;
@@ -79,7 +80,7 @@ public class SongMenuDialog extends DialogFragment {
         setHelpers();
         setListeners();
 
-        thisSong = sqLiteHelper.getSpecificSong(getActivity(),commonSQL,folder,song);
+        thisSong = sqLiteHelper.getSpecificSong(getContext(),commonSQL,folder,song);
 
         return myView.getRoot();
     }
@@ -92,7 +93,7 @@ public class SongMenuDialog extends DialogFragment {
         ocr = new OCR();
         storageAccess = new StorageAccess();
         processSong = new ProcessSong();
-        sqLiteHelper = new SQLiteHelper(getActivity());
+        sqLiteHelper = new SQLiteHelper(getContext());
         commonSQL = new CommonSQL();
     }
 
@@ -138,13 +139,13 @@ public class SongMenuDialog extends DialogFragment {
                     break;
 
                 case "addToSet":
-                    songForSet.addToSet(requireContext(),preferences,setActions,StaticVariables.whichSongFolder,StaticVariables.songfilename);
+                    songForSet.addToSet(getContext(),preferences,setActions,StaticVariables.whichSongFolder,StaticVariables.songfilename);
                     mainActivityInterface.refreshSetList();
                     break;
 
                 case "exportSong":
                     // TODO For now, test the pdf creation
-                    Uri uri = makePDF.createPDF(getActivity(),preferences,storageAccess,processSong,thisSong);
+                    Uri uri = makePDF.createPDF(getContext(),preferences,storageAccess,processSong,thisSong);
                     Log.d("d","created uri:"+uri);
                     break;
 
@@ -158,7 +159,11 @@ public class SongMenuDialog extends DialogFragment {
                     // This will give the option of importing/downloading my songs, finding a file or downloading from an online service.
                     // mainActivityInterface.navigateToFragment(R.id.importSongs);
                     // TODO for now try reading in a pdf
-                    ocr.getTextFromPDF(getActivity(),preferences,storageAccess,processSong,mainActivityInterface,"test","MAIN_Give thanks.pdf");
+                    Log.d("SongMwnuDialog","Getting here");
+                    mainActivityInterface.navigateToFragment(R.id.importOptionsFragment);
+                    /*NavHostFragment.findNavController(callingFragment)
+                            .navigate(R.id.ac,null,null);*/
+                    //ocr.getTextFromPDF(getContext(),preferences,storageAccess,processSong,mainActivityInterface,"test","MAIN_Give thanks.pdf");
                     break;
 
             }

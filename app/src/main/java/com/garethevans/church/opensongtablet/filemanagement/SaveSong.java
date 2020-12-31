@@ -39,8 +39,8 @@ public class SaveSong {
 
         // Decide if we need to remove the original after writing the new song
         // This happens if the user has changed the filename or folder
-        boolean removeOriginal = (!oldfolder.equals(folder) || !oldfilename.equals(filename)) &&
-                (oldfolder!=null && !oldfolder.isEmpty() && oldfilename!=null && !oldfilename.isEmpty());
+        boolean removeOriginal = (oldfolder!=null && !oldfolder.isEmpty() && oldfilename!=null && !oldfilename.isEmpty()) &&
+                (!oldfolder.equals(folder) || !oldfilename.equals(filename));
 
         Uri oldUri = storageAccess.getUriForItem(c,preferences,where,oldfolder,oldfilename);
         Uri newUri = storageAccess.getUriForItem(c, preferences, where, folder, filename);
@@ -92,7 +92,7 @@ public class SaveSong {
 
         // If we are autologging CCLI information
         if (preferences.getMyPreferenceBoolean(c,"ccliAutomaticLogging",false)) {
-            ccliLog.addEntry(c,preferences,storageAccess,"3"); // 3=edited
+            ccliLog.addEntry(c,preferences,storageAccess,song,"3"); // 3=edited
         }
         return saveOK;
     }

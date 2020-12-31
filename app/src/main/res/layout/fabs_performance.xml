@@ -30,49 +30,56 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_help_outline_white_36dp"
-        app:useCompatPadding="true" />
+        app:useCompatPadding="true"
+        android:contentDescription="@string/quicklaunch_button1" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/custom2Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_help_outline_white_36dp"
-        app:useCompatPadding="true" />
+        app:useCompatPadding="true"
+        android:contentDescription="@string/quicklaunch_button2" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/custom3Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_help_outline_white_36dp"
-        app:useCompatPadding="true" />
+        app:useCompatPadding="true"
+        android:contentDescription="@string/quicklaunch_button3" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/custom4Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:useCompatPadding="true"
-        android:src="@drawable/ic_help_outline_white_36dp" />
+        android:src="@drawable/ic_help_outline_white_36dp"
+        android:contentDescription="@string/quicklaunch_button4" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/custom5Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:useCompatPadding="true"
-        android:src="@drawable/ic_help_outline_white_36dp" />
+        android:src="@drawable/ic_help_outline_white_36dp"
+        android:contentDescription="@string/quicklaunch_button5" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/custom6Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:useCompatPadding="true"
-        android:src="@drawable/ic_help_outline_white_36dp" />
+        android:src="@drawable/ic_help_outline_white_36dp"
+        android:contentDescription="@string/quicklaunch_button6" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/actionFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:useCompatPadding="true"
-        android:src="@drawable/ic_plus_white_36dp" />
+        android:src="@drawable/ic_plus_white_36dp"
+        android:contentDescription="@string/action" />
 
 </LinearLayout>
 </ScrollView>

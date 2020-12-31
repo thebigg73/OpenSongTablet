@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/BottomSheetButton"
-                android:text="@string/osb_backup"
+                android:text="@string/backup_osb"
                 app:icon="@drawable/ic_database_export_white_36dp" />
 
             <com.google.android.material.button.MaterialButton

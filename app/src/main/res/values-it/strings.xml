@@ -34,7 +34,7 @@
     <string name="backup_import">"di backup Importa OpenSongApp"</string>
     <string name="backup_info">"file di backup OpenSongApp"</string>
     <string name="backup_success">"di backup OpenSongApp creato"</string>
-    <string name="backupnow">"Crea un backup ora"</string>
+    <string name="backup_now">"Crea un backup ora"</string>
     <string name="bad_time">"Tempo Slide non è stato impostato correttamente"</string>
     <string name="banjo4">"Banjio (4)"</string>
     <string name="banjo5">"Banjio (5)</string>
@@ -226,7 +226,7 @@
     <string name="onsong_import">"File di backup Import OnSong"</string>
     <string name="import_onsong_error">"Nessun file di backup OnSong trova in /documents/OpenSong/"</string>
     <string name="importnewset">"Importare un set"</string>
-    <string name="importnewsong">"Importare un brano"</string>
+    <string name="import_song">"Importare un brano"</string>
     <string name="inc_autoscroll_speed">"Aumenta la velocità di scorrimento automatico"</string>
     <string name="initialisesongs_start">"Inizializzazione cartella 'Songs' -"</string>
     <string name="instrument">Strumento</string>

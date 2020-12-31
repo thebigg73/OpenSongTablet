@@ -25,6 +25,10 @@ public class StaticVariables {
     public static String whichMode = "";
     public static Locale locale;
 
+    // Request codes for callbacks
+    public static final int REQUEST_FILE_CHOOSER = 5500;
+    public static final int REQUEST_OSB_FILE = 5501;
+    public static final int REQUEST_IOS_FILE = 5502;
 
 
 
@@ -254,7 +258,6 @@ public class StaticVariables {
     public static final int REQUEST_BACKGROUND_VIDEO1 = 1556;
     public static final int REQUEST_BACKGROUND_VIDEO2 = 1557;
     public static final int REQUEST_CUSTOM_LOGO = 1558;
-    static final int REQUEST_FILE_CHOOSER = 7789;
     static final int REQUEST_PROFILE_LOAD = 4567;
     static final int REQUEST_PROFILE_SAVE = 5678;
 

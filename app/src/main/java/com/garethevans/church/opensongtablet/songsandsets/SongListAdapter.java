@@ -159,11 +159,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongItemViewHolder> im
 
     void bindCheckBox(CheckBox checkBox, int position) {
         // use the sparse boolean array to check
-        if (!checkedArray.get(position, false)) {
-            checkBox.setChecked(false);
-        } else {
-            checkBox.setChecked(true);
-        }
+        checkBox.setChecked(checkedArray.get(position, false));
     }
 
     @NonNull

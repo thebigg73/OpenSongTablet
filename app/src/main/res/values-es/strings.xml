@@ -34,7 +34,7 @@
     <string name="backup_import">"Importación de copia de seguridad OpenSongApp"</string>
     <string name="backup_info">"El archivo de copia OpenSongApp"</string>
     <string name="backup_success">"de copia de seguridad creado OpenSongApp"</string>
-    <string name="backupnow">"Crear una copia de seguridad ahora"</string>
+    <string name="backup_now">"Crear una copia de seguridad ahora"</string>
     <string name="bad_time">"Tiempo de diapositivas no se ha ajustado correctamente"</string>
     <string name="banjo4">"Banjo (4)"</string>
     <string name="banjo5">"Banjo (5)"</string>
@@ -226,7 +226,7 @@
     <string name="onsong_import">"Archivo de copia de seguridad de importación Onsong"</string>
     <string name="import_onsong_error">"No hay ningún archivo de copia de seguridad Onsong encuentra en /documents/OpenSong/"</string>
     <string name="importnewset">"Importar un conjunto"</string>
-    <string name="importnewsong">"Importar una canción"</string>
+    <string name="import_song">"Importar una canción"</string>
     <string name="inc_autoscroll_speed">"Aumenta la velocidad de Autoscroll"</string>
     <string name="initialisesongs_start">"Iniciando carpeta 'Songs' -"</string>
     <string name="instrument">Instrumento</string>

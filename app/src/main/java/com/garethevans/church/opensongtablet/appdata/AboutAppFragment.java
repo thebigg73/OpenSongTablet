@@ -62,7 +62,7 @@ public class AboutAppFragment extends Fragment {
     }
 
     private void updateMenuText() {
-        versionNumber.updateMenuVersionNumber(getContext(),myView.latestVersion.findViewById(R.id.subText));
+        versionNumber.updateMenuVersionNumber(requireContext(),myView.latestVersion.findViewById(R.id.subText));
         ((TextView)myView.languageButton.findViewById(R.id.subText)).setText(StaticVariables.locale.getDisplayLanguage());
     }
 
@@ -71,7 +71,7 @@ public class AboutAppFragment extends Fragment {
         myView.latestVersion.setOnClickListener(v -> webLink(latest));
         myView.manualButton.setOnClickListener(v -> webLink(userguide));
         myView.forumButton.setOnClickListener(v -> webLink(groups));
-        myView.rateButton.setOnClickListener(v -> webLink(rate+getActivity().getPackageName()));
+        myView.rateButton.setOnClickListener(v -> webLink(rate+requireActivity().getPackageName()));
         myView.paypalButton.setOnClickListener(v -> webLink(paypal));
         myView.gitbubButton.setOnClickListener(v -> webLink(github));
         myView.languageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.languageFragment));

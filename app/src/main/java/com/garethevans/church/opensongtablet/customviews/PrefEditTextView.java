@@ -31,8 +31,5 @@ public class PrefEditTextView extends LinearLayout {
     public TextInputEditText getEditText() {
         return editText;
     }
-    public void setEditText(TextInputEditText editText) {
-        this.editText = editText;
-    }
 
 }

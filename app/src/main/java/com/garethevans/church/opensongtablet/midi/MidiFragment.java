@@ -411,7 +411,7 @@ public class MidiFragment extends Fragment {
         if (bluetoothLeScanner != null) {
             bluetoothLeScanner.startScan(scanFilters, scanSettings, scanCallback);
         } else {
-            ShowToast.showToast(getContext(), requireContext().getString(R.string.nothighenoughapi));
+            ShowToast.showToast(getContext(), getString(R.string.nothighenoughapi));
             myView.enableBluetooth.setEnabled(true);
         }
 
@@ -649,18 +649,17 @@ public class MidiFragment extends Fragment {
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void addMidiToList() {
-        if (getActivity()!=null) {
-            try {
-                String s = myView.midiCode.getText().toString();
-                String hr = midi.getReadableStringFromHex(s, getActivity());
-                String message = hr + "\n" + "(" + s + ")";
-                songMidiMessagesToSave.add(s);
-                songMidiMessages.add(message);
-                updateCurrentMessages();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            String s = myView.midiCode.getText().toString();
+            String hr = midi.getReadableStringFromHex(s, requireContext());
+            String message = hr + "\n" + "(" + s + ")";
+            songMidiMessagesToSave.add(s);
+            songMidiMessages.add(message);
+            updateCurrentMessages();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         saveSongMessages();
     }
     // Called back from MainActivity

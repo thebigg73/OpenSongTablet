@@ -125,7 +125,7 @@
                 android:drawableStart="@drawable/ic_arrow_right_white_36dp"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
-                android:text="@string/importnewsong"
+                android:text="@string/import_song"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 

@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet.secondarydisplay;
 
+import androidx.annotation.NonNull;
 import androidx.mediarouter.media.MediaRouter;
 
 import com.garethevans.church.opensongtablet.interfaces.DisplayInterface;
@@ -19,23 +20,17 @@ public class MediaRouterCallback extends MediaRouter.Callback {
         this.device = device;
         this.displayInterface = displayInterface;
     }
+
     @Override
-    public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo info) {
-        device = CastDevice.getFromBundle(info.getExtras());
-        try {
-            displayInterface.updateDisplays();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void onRouteSelected(@NonNull MediaRouter router, @NonNull MediaRouter.RouteInfo route, int reason) {
+        super.onRouteSelected(router, route, reason);
     }
 
     @Override
-    public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
-        teardown();
-        device = null;
-        //FullscreenActivity.isPresenting = false;
-        //FullscreenActivity.isHDMIConnected = false;
+    public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo route, int reason) {
+        super.onRouteUnselected(router, route, reason);
     }
+
 
     void teardown() {
         try {

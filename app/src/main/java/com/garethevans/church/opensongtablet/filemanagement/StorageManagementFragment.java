@@ -66,8 +66,8 @@ public class StorageManagementFragment extends DialogFragment {
         storageAccess = new StorageAccess();
         showCase = new ShowCase();
 
-        redColor = getActivity().getResources().getColor(R.color.lightred);
-        greenColor = getActivity().getResources().getColor(R.color.lightgreen);
+        redColor = requireContext().getResources().getColor(R.color.lightred);
+        greenColor = requireContext().getResources().getColor(R.color.lightgreen);
 
         graph = new Graph();
 
@@ -120,9 +120,9 @@ public class StorageManagementFragment extends DialogFragment {
 
         // Set up top level folders
         //  This will return a list like MAIN, Band, Musicals, Musicals/HSM, Alex, etc.
-        Node root = new Node("OpenSongApp\n("+getActivity().getResources().getString(R.string.root)+")");
+        Node root = new Node("OpenSongApp\n(" + getString(R.string.root) + ")");
         actualLocation.add("root");
-        songs = new Node("Songs\n(" + getActivity().getResources().getString(R.string.mainfoldername) + ")");
+        songs = new Node("Songs\n(" + getString(R.string.mainfoldername) + ")");
         actualLocation.add("Songs");
         graph.addEdge(root, songs);
 
@@ -188,8 +188,8 @@ public class StorageManagementFragment extends DialogFragment {
             }
 
             class SimpleViewHolder extends GraphView.ViewHolder {
-                TextView nodeButton;
-                TextView nodeActual;
+                final TextView nodeButton;
+                final TextView nodeActual;
 
                 SimpleViewHolder(View itemView) {
                     super(itemView);
@@ -215,10 +215,10 @@ public class StorageManagementFragment extends DialogFragment {
         infos = new ArrayList<>();
         dismisses = new ArrayList<>();
         rects = new ArrayList<>();
-        infos.add(getActivity().getResources().getString(R.string.storage_reset));
+        infos.add(getString(R.string.storage_reset));
         dismisses.add(null);
         rects.add(true);
-        infos.add(getActivity().getResources().getString(R.string.storage_main));
+        infos.add(getString(R.string.storage_main));
         dismisses.add(null);
         rects.add(true);
     }
@@ -241,7 +241,7 @@ public class StorageManagementFragment extends DialogFragment {
     }
 
     private ArrayList<String> getFoldersFromFile() {
-        songIDs = storageAccess.getSongIDsFromFile(getActivity());
+        songIDs = storageAccess.getSongIDsFromFile(requireContext());
         // Each subdir ends with /
         availableFolders = new ArrayList<>();
         for (String entry:songIDs) {

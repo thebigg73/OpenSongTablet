@@ -9,7 +9,6 @@ public class ThemeColors {
 
     // This object holds the user theme colours
 
-
     // Set the colours from preferences
     private int lyricsTextColor;
     private int lyricsBackgroundColor;

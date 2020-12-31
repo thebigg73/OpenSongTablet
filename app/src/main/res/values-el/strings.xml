@@ -34,7 +34,7 @@
     <string name="backup_import">"Εισαγωγής OpenSongApp αντιγράφων ασφαλείας"</string>
     <string name="backup_info">"αρχείο αντιγράφων ασφαλείας OpenSongApp"</string>
     <string name="backup_success">"OpenSongApp αντίγραφο ασφαλείας που δημιουργήθηκε"</string>
-    <string name="backupnow">"Δημιουργήστε ένα αντίγραφο ασφαλείας τώρα"</string>
+    <string name="backup_now">"Δημιουργήστε ένα αντίγραφο ασφαλείας τώρα"</string>
     <string name="bad_time">"Slide time has not been set correctly"</string>
     <string name="banjo4">"Μπάντζο (4)"</string>
     <string name="banjo5">"Μπάντζο (5)"</string>
@@ -226,7 +226,7 @@
     <string name="onsong_import">"Import OnSong backup file"</string>
     <string name="import_onsong_error">"No OnSong backup file found in /documents/OpenSong/"</string>
     <string name="importnewset">"Import a set"</string>
-    <string name="importnewsong">"Import a song"</string>
+    <string name="import_song">"Import a song"</string>
     <string name="inc_autoscroll_speed">"Αυξήστε την ταχύτητα αυτόματης κύλισης"</string>
     <string name="initialisesongs_start">"Αρχικοποίηση φακέλου \'Songs\' -"</string>
     <string name="instrument">"Όργανο"</string>

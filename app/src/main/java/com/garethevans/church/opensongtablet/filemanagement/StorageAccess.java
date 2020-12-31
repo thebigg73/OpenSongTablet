@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -124,12 +125,8 @@ public class StorageAccess {
                     return false;
                 }
             } else {
-                if (uri!=null) {
-                    File f = new File(uri.getPath());
-                    return f.canWrite();
-                } else {
-                    return false;
-                }
+                File f = new File(uri.getPath());
+                return f.canWrite();
             }
         }
     }
@@ -312,13 +309,22 @@ public class StorageAccess {
         if (lollipopOrLater()) {
             return niceUriTree_SAF(c, preferences, uri, new String[] {"",""});
         } else {
-            return niceUriTree_File(c, preferences, uri, new String[] {"",""});
+            return niceUriTree_File(c, uri, new String[] {"",""});
         }
     }
     private String[] niceUriTree_SAF(Context c, Preferences preferences, Uri uri, String[] storageDetails) {
         // storageDetails is currently empty, but will be [0]=extra info  [1]=nice location
+        if (storageDetails==null) {
+            storageDetails = new String[2];
+        }
+        storageDetails[0]="";
+        storageDetails[1]="";
         try {
             storageDetails[1] = uri.getPath();
+
+            if (storageDetails[1]==null) {
+                storageDetails[1]="";
+            }
 
             // When not an internal path (more patterns may be needed) indicate as external
             if (!storageDetails[1].contains("/tree/primary")) {
@@ -374,7 +380,7 @@ public class StorageAccess {
 
         return storageDetails;
     }
-    public String[] niceUriTree_File(Context c, Preferences preferences, Uri uri, String[] storageDetails) {
+    public String[] niceUriTree_File(Context c, Uri uri, String[] storageDetails) {
         storageDetails[1] = uri.getPath();
         storageDetails[1] = "¬" + storageDetails[1];
         storageDetails[1] = storageDetails[1].
@@ -397,17 +403,21 @@ public class StorageAccess {
 
         // Prepare an arraylist for any song folders so we can count the items
         ArrayList<File> foldersToIndex = new ArrayList<>();
-        foldersToIndex.add(new File(uri.getPath()));
+        if (uri.getPath() != null) {
+            foldersToIndex.add(new File(uri.getPath()));
+        }
         int count = 0;
         try {
             for (int x = 0; x < foldersToIndex.size(); x++) {
                 File[] fs = foldersToIndex.get(x).listFiles();
-                for (File ff : fs) {
-                    Log.d("d", "ff=" + ff);
-                    if (ff.isDirectory()) {
-                        foldersToIndex.add(ff);
-                    } else {
-                        count++;
+                if (fs!=null) {
+                    for (File ff : fs) {
+                        Log.d("d", "ff=" + ff);
+                        if (ff.isDirectory()) {
+                            foldersToIndex.add(ff);
+                        } else {
+                            count++;
+                        }
                     }
                 }
             }
@@ -1296,7 +1306,7 @@ public class StorageAccess {
             if (uri != null && uri.getPath() != null) {
                 File f = new File(uri.getPath());
                 // If this is a directory, empty it first
-                if (f!=null && f.isDirectory() && f.listFiles() != null) {
+                if (f.isDirectory() && f.listFiles() != null) {
                     wipeFolder_File(f);
                 }
                 return f.delete();
@@ -1362,6 +1372,14 @@ public class StorageAccess {
             }
         }
         return b;
+    }
+    public Intent selectFileIntent(String[] mimeTypes) {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.setType("*/*");
+        if (mimeTypes!=null && mimeTypes.length > 0) {
+            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        }
+        return intent;
     }
 
 
@@ -1431,8 +1449,11 @@ public class StorageAccess {
         }
     }
     public void wipeFolder_File(File f) {
-        for (File child : f.listFiles()) {
-            Log.d("StorageAccess", "Deleting " + child + " = " + child.delete());
+        File[] fs = f.listFiles();
+        if (fs!=null) {
+            for (File child : fs) {
+                Log.d("StorageAccess", "Deleting " + child + " = " + child.delete());
+            }
         }
     }
     public void wipeFolder_SAF(DocumentFile df) {

@@ -33,7 +33,7 @@
     <string name="backup_import">"zálohování import OpenSongApp"</string>
     <string name="backup_info">"Soubor OpenSongApp Backup"</string>
     <string name="backup_success">"zálohování OpenSongApp vytvořil"</string>
-    <string name="backupnow">"Vytvořte nyní zálohu"</string>
+    <string name="backup_now">"Vytvořte nyní zálohu"</string>
     <string name="bad_time">"Slide čas nebyl správně nastaven"</string>
     <string name="banjo4">"Bendžo (4)"</string>
     <string name="banjo5">"Bendžo (5)"</string>
@@ -225,7 +225,7 @@
     <string name="onsong_import">"Umožňuje importovat OnSong zálohování souborů"</string>
     <string name="import_onsong_error">"No OnSong zálohování souborů najdete v /documents/OpenSong/"</string>
     <string name="importnewset">"Importovat soubor"</string>
-    <string name="importnewsong">"Import píseň"</string>
+    <string name="import_song">"Import píseň"</string>
     <string name="inc_autoscroll_speed">"Zvyšte rychlost Autoscroll Speed"</string>
     <string name="initialisesongs_start">"Inicializace složku \"Songs\" -"</string>
     <string name="instrument">Nástroj</string>

@@ -375,7 +375,7 @@ public class CommonSQL {
         cursor.close();
         return count > 0;
     }
-    ArrayList<String> getFolders (SQLiteDatabase db) {
+    public ArrayList<String> getFolders (SQLiteDatabase db) {
         ArrayList<String> folders = new ArrayList<>();
         String q = "SELECT DISTINCT " + SQLite.COLUMN_FOLDER + " FROM " + SQLite.TABLE_NAME + " ORDER BY " +
                 SQLite.COLUMN_FOLDER + " ASC";

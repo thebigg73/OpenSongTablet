@@ -34,7 +34,7 @@
     <string name="backup_import">"Import OpenSongApp mentés"</string>
     <string name="backup_info">"OpenSongApp biztonsági másolata"</string>
     <string name="backup_success">"OpenSongApp létrehozott biztonsági másolat"</string>
-    <string name="backupnow">"Készítsen biztonsági másolatot most"</string>
+    <string name="backup_now">"Készítsen biztonsági másolatot most"</string>
     <string name="bad_time">"Dia idő nincs beállítva rendesen"</string>
     <string name="banjo4">"Bendzsó (4)"</string>
     <string name="banjo5">"Bendzsó (5)"</string>
@@ -226,7 +226,7 @@
     <string name="onsong_import">"Import OnSong biztonsági mentés"</string>
     <string name="import_onsong_error">"Nem OnSong biztonsági mentés található /documents/OpenSong/"</string>
     <string name="importnewset">"Importálása egy sor"</string>
-    <string name="importnewsong">"Importálása dal"</string>
+    <string name="import_song">"Importálása dal"</string>
     <string name="inc_autoscroll_speed">"Növelje az Autoscroll sebességet"</string>
     <string name="initialisesongs_start">"Inicializálása \"Songs\" mappába -"</string>
     <string name="instrument">Eszköz</string>

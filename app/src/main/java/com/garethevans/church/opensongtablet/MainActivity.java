@@ -51,6 +51,7 @@ import com.garethevans.church.opensongtablet.controls.PedalActions;
 import com.garethevans.church.opensongtablet.controls.PedalsFragment;
 import com.garethevans.church.opensongtablet.databinding.ActivityMainBinding;
 import com.garethevans.church.opensongtablet.databinding.AppBarMainBinding;
+import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureDialogFragment;
 import com.garethevans.church.opensongtablet.filemanagement.EditSongFragment;
 import com.garethevans.church.opensongtablet.filemanagement.EditSongFragmentMain;
@@ -80,7 +81,6 @@ import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
 import com.garethevans.church.opensongtablet.secondarydisplay.MediaRouterCallback;
 import com.garethevans.church.opensongtablet.secondarydisplay.MySessionManagerListener;
-import com.garethevans.church.opensongtablet.secondarydisplay.ShowCastOverlayIntro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertTextSong;
@@ -97,9 +97,8 @@ import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.cast.framework.CastContext;
 import com.google.android.gms.cast.framework.CastSession;
-import com.google.android.gms.cast.framework.CastState;
 import com.google.android.gms.cast.framework.CastStateListener;
-import com.google.android.gms.cast.framework.SessionManagerListener;
+import com.google.android.gms.cast.framework.SessionManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -150,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private PageButtonFAB pageButtonFAB;
     private boolean pageButtonActive = true;
     private PedalActions pedalActions;
+    private ExportActions exportActions;
 
     private ArrayList<View> targets;
     private ArrayList<String> infos, dismisses;
@@ -180,15 +180,15 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     // Casting
     private CastContext castContext;
-    private SessionManagerListener<CastSession> sessionManagerListener;
+    private MySessionManagerListener sessionManagerListener;
     private CastSession castSession;
     private MenuItem mediaRouteMenuItem;
     private CastStateListener castStateListener;
-    private ShowCastOverlayIntro showCastOverlayIntro;
     private MediaRouter mediaRouter;
     private MediaRouteSelector mediaRouteSelector;
     private MediaRouterCallback mediaRouterCallback;
     private CastDevice castDevice;
+    private SessionManager sessionManager;
     //private PresentationServiceHDMI hdmi;
 
     ViewPagerAdapter adapter;
@@ -295,20 +295,23 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private void setUpCast() {
         try {
             castContext = CastContext.getSharedInstance(this);
-            castStateListener = newState -> {
-                if (newState != CastState.NO_DEVICES_AVAILABLE) {
-                    showCastOverlayIntro.showIntroductoryOverlay(this,mediaRouteMenuItem);
-                }
-            };
-            sessionManagerListener = new MySessionManagerListener(this);
-            castContext.addCastStateListener(castStateListener);
+            sessionManager = castContext.getSessionManager();
             castSession = castContext.getSessionManager().getCurrentCastSession();
+            sessionManagerListener = new MySessionManagerListener(this);
 
         } catch (Exception e) {
             // No Google Service available
             // Do nothing as the user will see a warning in the settings menu
             Log.d("MainActivity","No Google Services");
         }
+    }
+    private void recoverCastState() {
+        castSession = sessionManager.getCurrentCastSession();
+        sessionManager.addSessionManagerListener(new MySessionManagerListener(this));
+    }
+    private void endCastState() {
+        sessionManager.removeSessionManagerListener(sessionManagerListener);
+        castSession = null;
     }
     private void initialiseHelpers() {
         storageAccess = new StorageAccess();
@@ -339,9 +342,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong,sqLiteHelper,commonSQL,song);
         midi = new Midi(this,preferences);
         pedalActions = new PedalActions(this,preferences);
+        exportActions = new ExportActions();
         song = new Song();
         mediaRouterCallback = new MediaRouterCallback();
-        showCastOverlayIntro = new ShowCastOverlayIntro();
     }
     private void initialiseStartVariables() {
         StaticVariables.mDisplayTheme = preferences.getMyPreferenceString(this, "appTheme", "dark");
@@ -524,37 +527,13 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     @Override
     protected void onPause() {
-        castContext.removeCastStateListener(castStateListener);
-        castContext.getSessionManager().removeSessionManagerListener(
-                sessionManagerListener, CastSession.class);
+        endCastState();
         super.onPause();
     }
     @Override
     protected void onResume() {
-        if (castContext==null) {
-            try {
-                castContext = CastContext.getSharedInstance(this);
-            } catch (Exception e) {
-                Log.d("MainActivity", "No Play Services");
-            }
-        }
-        if (castStateListener==null) {
-            castStateListener = newState -> {
-                if (newState != CastState.NO_DEVICES_AVAILABLE) {
-                    showCastOverlayIntro.showIntroductoryOverlay(this,mediaRouteMenuItem);
-                }
-            };
-        }
-        if (castContext!=null && castStateListener!=null) {
-            castContext.addCastStateListener(castStateListener);
-            if (castSession == null) {
-                try {
-                    castSession = CastContext.getSharedInstance(this).getSessionManager().getCurrentCastSession();
-                } catch (Exception e) {
-                    Log.d("MainActivity", "No Play Services");
-                }
-            }
-        }
+        setUpCast();
+
         // Fix the page flags
         setWindowFlags();
         super.onResume();
@@ -639,7 +618,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
             Log.d("MainActivity","Google Play Services Available");
             mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
-            showCastOverlayIntro.showIntroductoryOverlay(this,mediaRouteMenuItem);
         } else {
             Log.d("MainActivity","Google Play Services Available");
         }
@@ -1098,6 +1076,17 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void fixOptionsMenu() {invalidateOptionsMenu();}
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, final Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        if (intent!=null) {
+            if (requestCode == StaticVariables.REQUEST_FILE_CHOOSER) {
+                Log.d("MainActivity","File chosen: "+intent.getData());
+            }
+        }
+
+    }
 
     // Get references to the objects set in MainActivity
     @Override
@@ -1122,6 +1111,13 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         return storageAccess;
     }
     @Override
+    public Preferences getPreferences() {
+        return preferences;
+    }
+    @Override
+    public ExportActions getExportActions() {
+        return exportActions;
+    }
     public ConvertChoPro getConvertChoPro() {
         return convertChoPro;
     }

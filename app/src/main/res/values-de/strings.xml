@@ -34,7 +34,7 @@
     <string name="backup_import">"OpenSongApp Sicherung importieren"</string>
     <string name="backup_info">"OpenSongApp Sicherungsdatei"</string>
     <string name="backup_success">"OpenSongApp Sicherung erstellt"</string>
-    <string name="backupnow">"Erstellen Sie jetzt ein Backup"</string>
+    <string name="backup_now">"Erstellen Sie jetzt ein Backup"</string>
     <string name="bad_time">"Folienzeit wurde nicht korrekt eingestellt"</string>
     <string name="banjo4">"Banjo (4)"</string>
     <string name="banjo5">"Banjo (5)"</string>
@@ -226,7 +226,7 @@
     <string name="onsong_import">"OnSong Backupdatei importieren"</string>
     <string name="import_onsong_error">"Keine OnSong Backupdateien in /documents/OpenSong/ gefunden"</string>
     <string name="importnewset">"Set importieren"</string>
-    <string name="importnewsong">"Lied importieren"</string>
+    <string name="import_song">"Lied importieren"</string>
     <string name="inc_autoscroll_speed">"Autoscroll-Geschwindigkeit erhöhen"</string>
     <string name="initialisesongs_start">"Einrichten des \'Songs\' Ordners "</string>
     <string name="instrument">Instrument</string>

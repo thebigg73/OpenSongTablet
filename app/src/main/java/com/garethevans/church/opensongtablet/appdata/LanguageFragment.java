@@ -55,7 +55,7 @@ public class LanguageFragment extends Fragment {
 
     private void buildRadioGroup() {
         languageCode = preferences.getMyPreferenceString(getContext(),"language","en");
-        String[] languages = getContext().getResources().getStringArray(R.array.languagelist);
+        String[] languages = requireContext().getResources().getStringArray(R.array.languagelist);
         int id = -1;
         for (int x=0; x<languages.length; x++) {
             RadioButton radioButton = new RadioButton(getContext());
@@ -72,7 +72,7 @@ public class LanguageFragment extends Fragment {
                 RadioButton button = myView.languageGroup.findViewById(checkedId);
                 String tag = button.getTag().toString();
                 preferences.setMyPreferenceString(getContext(),"language",tag);
-                Snackbar.make(getActivity().findViewById(R.id.coordinator),"You will need to restart the app to see the changes",Snackbar.LENGTH_LONG).show();
+                Snackbar.make(requireActivity().findViewById(R.id.coordinator),"You will need to restart the app to see the changes",Snackbar.LENGTH_LONG).show();
             });
             myView.languageGroup.addView(radioButton);
         }

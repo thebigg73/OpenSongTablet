@@ -40,7 +40,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="8dp"
                 android:background="@drawable/green_button"
-                android:text="@string/backupnow" />
+                android:text="@string/backup_now" />
 
             <Button
                 android:id="@+id/backupLater_Button"

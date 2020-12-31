@@ -2,12 +2,11 @@ package com.garethevans.church.opensongtablet.secondarydisplay;
 
 import android.app.Activity;
 
-import com.google.android.gms.cast.framework.CastSession;
+import com.google.android.gms.cast.framework.Session;
 import com.google.android.gms.cast.framework.SessionManagerListener;
 
-public class MySessionManagerListener implements SessionManagerListener<CastSession> {
+public class MySessionManagerListener implements SessionManagerListener<Session>{
 
-    CastSession castSession;
     Activity activity;
 
     public MySessionManagerListener(Activity activity) {
@@ -15,46 +14,47 @@ public class MySessionManagerListener implements SessionManagerListener<CastSess
     }
 
     @Override
-    public void onSessionEnded(CastSession session, int error) {
-        if (session == castSession) {
-            castSession = null;
-        }
+    public void onSessionStarting(Session session) {
+
+    }
+
+    @Override
+    public void onSessionStarted(Session session, String sessionId) {
         activity.invalidateOptionsMenu();
     }
 
     @Override
-    public void onSessionResumed(CastSession session, boolean wasSuspended) {
-        castSession = session;
+    public void onSessionStartFailed(Session session, int i) {
+
+    }
+
+    @Override
+    public void onSessionEnding(Session session) {
+
+    }
+
+    @Override
+    public void onSessionEnded(Session session, int i) {
+
+    }
+
+    @Override
+    public void onSessionResuming(Session session, String s) {
+
+    }
+
+    @Override
+    public void onSessionResumed(Session session, boolean wasSuspended) {
         activity.invalidateOptionsMenu();
     }
 
     @Override
-    public void onSessionStarted(CastSession session, String sessionId) {
-        castSession = session;
-        activity.invalidateOptionsMenu();
+    public void onSessionResumeFailed(Session session, int i) {
+
     }
 
     @Override
-    public void onSessionStarting(CastSession session) {
-    }
+    public void onSessionSuspended(Session session, int i) {
 
-    @Override
-    public void onSessionStartFailed(CastSession session, int error) {
-    }
-
-    @Override
-    public void onSessionEnding(CastSession session) {
-    }
-
-    @Override
-    public void onSessionResuming(CastSession session, String sessionId) {
-    }
-
-    @Override
-    public void onSessionResumeFailed(CastSession session, int error) {
-    }
-
-    @Override
-    public void onSessionSuspended(CastSession session, int reason) {
     }
 }

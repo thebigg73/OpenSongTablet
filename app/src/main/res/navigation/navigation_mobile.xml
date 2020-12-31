@@ -36,6 +36,9 @@
         <action
             android:id="@+id/action_nav_performance_to_nearbyConnectionsFragment"
             app:destination="@id/nearbyConnectionsFragment" />
+        <action
+            android:id="@+id/action_nav_performance_to_importOptionsFragment"
+            app:destination="@id/importOptionsFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_storage"
@@ -91,7 +94,16 @@
         android:id="@+id/nav_storageManagement"
         android:name="com.garethevans.church.opensongtablet.filemanagement.StorageManagementFragment"
         android:label="storage_folder_display"
-        tools:layout="@layout/storage_folder_display"/>
+        tools:layout="@layout/storage_folder_display">
+        <action
+            android:id="@+id/action_nav_storageManagement_to_nav_storage"
+            app:destination="@id/nav_storage"
+            app:popUpTo="@+id/nav_storage"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_nav_storageManagement_to_backupFragment"
+            app:destination="@id/backupFragment" />
+    </fragment>
     <fragment
         android:id="@+id/nav_presentation"
         android:name="com.garethevans.church.opensongtablet.presentation.PresentationFragment"
@@ -106,6 +118,9 @@
         <action
             android:id="@+id/action_nav_presentation_to_nearbyConnectionsFragment"
             app:destination="@id/nearbyConnectionsFragment" />
+        <action
+            android:id="@+id/action_nav_presentation_to_importOptionsFragment"
+            app:destination="@id/importOptionsFragment" />
     </fragment>
     <fragment
         android:id="@+id/displayMenuFragment"
@@ -185,5 +200,15 @@
             android:id="@+id/action_controlMenuFragment_to_pedalsFragment"
             app:destination="@id/pedalsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/backupFragment"
+        android:name="com.garethevans.church.opensongtablet.backupandrestore.BackupOSBFragment"
+        android:label="fragment_osbbackup"
+        tools:layout="@layout/fragment_osbbackup"/>
+    <fragment
+        android:id="@+id/importOptionsFragment"
+        android:name="com.garethevans.church.opensongtablet.importsongs.ImportOptionsFragment"
+        android:label="ImportOptionsFragment"
+        tools:layout="@layout/settings_import"/>
 
 </navigation>

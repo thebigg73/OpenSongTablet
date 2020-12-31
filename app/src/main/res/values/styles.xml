@@ -3,7 +3,7 @@
 
 
     <!-- Set the main app theme-->
-    <style name="AppBaseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar"/>
+    <style name="AppBaseTheme" parent="Theme.MaterialComponents.NoActionBar"/>
     <style name="AppTheme" parent="AppBaseTheme">
         <!--Material color attributes (dark theme) -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -20,6 +20,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/lightgrey</item>
+        <item name="colorControlActivated">@color/colorSecondary</item>
         <item name="colorButtonNormal">@color/red</item>
         <item name="android:textSize">18sp</item>
         <item name="hintTextColor">@color/lightSecondary</item>

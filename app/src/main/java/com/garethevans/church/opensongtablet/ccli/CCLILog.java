@@ -36,12 +36,6 @@ import javax.xml.transform.stream.StreamResult;
 
 public class CCLILog {
 
-    Song song;
-
-    CCLILog(Song song) {
-        this.song = song;
-    }
-
     public CCLILog() {}
 
     /*
@@ -71,7 +65,7 @@ public class CCLILog {
 
     private ArrayList<String> songfile, title, author, copyright, ccli, date, time, action;
 
-    public void addEntry(Context c, Preferences preferences, StorageAccess storageAccess, String usageType) {
+    public void addEntry(Context c, Preferences preferences, StorageAccess storageAccess, Song song, String usageType) {
 
         // Check if the log exists or if we need to create it
         Uri uri = storageAccess.getUriForItem(c, preferences, "Settings", "", "ActivityLog.xml");
@@ -84,7 +78,7 @@ public class CCLILog {
         // Set the date and time
         setTheDateAndTime();
 
-        doTheSaving(c, storageAccess, uri, usageType);
+        doTheSaving(c, storageAccess, song, uri, usageType);
     }
 
     public boolean createBlankXML(Context c, Preferences preferences, StorageAccess storageAccess, Uri uri) {
@@ -108,7 +102,7 @@ public class CCLILog {
         thisdate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     }
 
-    private void doTheSaving(Context c, StorageAccess storageAccess, Uri uri, String usageType) {
+    private void doTheSaving(Context c, StorageAccess storageAccess, Song song, Uri uri, String usageType) {
         try {
             InputStream inputStream = storageAccess.getInputStream(c, uri);
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();

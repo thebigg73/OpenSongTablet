@@ -34,7 +34,7 @@
     <string name="backup_import">"インポートOpenSongAppバックアップ"</string>
     <string name="backup_info">"OpenSongAppバックアップファイル"</string>
     <string name="backup_success">"OpenSongAppのバックアップが作成さ"</string>
-    <string name="backupnow">"今すぐバックアップを作成する"</string>
+    <string name="backup_now">"今すぐバックアップを作成する"</string>
     <string name="bad_time">"スライド時間が正しく設定されていません"</string>
     <string name="banjo4">"バンジョー (4)"</string>
     <string name="banjo5">"バンジョー (5)"</string>
@@ -226,7 +226,7 @@
     <string name="onsong_import">"インポートOnSongバックアップファイル"</string>
     <string name="import_onsong_error">"いいえOnSongバックアップファイルが見られなかっ /documents/OpenSong/"</string>
     <string name="importnewset">"セットをインポート"</string>
-    <string name="importnewsong">"曲をインポートする"</string>
+    <string name="import_song">"曲をインポートする"</string>
     <string name="inc_autoscroll_speed">"オートスクロールスピードを上げる"</string>
     <string name="initialisesongs_start">"'歌'フォルダを初期化 -"</string>
     <string name="instrument">楽器</string>

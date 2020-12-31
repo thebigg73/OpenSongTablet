@@ -34,7 +34,7 @@
     <string name="backup_import">"backup import OpenSongApp"</string>
     <string name="backup_info">"OpenSongApp pliku kopii zapasowej"</string>
     <string name="backup_success">"backup OpenSongApp utworzona"</string>
-    <string name="backupnow">"Utwórz teraz kopię zapasową"</string>
+    <string name="backup_now">"Utwórz teraz kopię zapasową"</string>
     <string name="bad_time">"Czas slajdów nie został prawidłowo ustawiony"</string>
     <string name="banjo4">"Banjo (4)"</string>
     <string name="banjo5">"Banjo (5)"</string>
@@ -226,7 +226,7 @@
     <string name="onsong_import">"Importować OnSong plik kopii zapasowej"</string>
     <string name="import_onsong_error">"Nie OnSong plik kopii zapasowej znajduje się w .. /documents/OpenSong/"</string>
     <string name="importnewset">"Zaimportować zestaw"</string>
-    <string name="importnewsong">"Zaimportować piosenkę"</string>
+    <string name="import_song">"Zaimportować piosenkę"</string>
     <string name="inc_autoscroll_speed">"Zwiększ prędkość autoskalowania"</string>
     <string name="initialisesongs_start">"Inicjowanie folderu \"Songs\" -"</string>
     <string name="instrument">Instrument</string>

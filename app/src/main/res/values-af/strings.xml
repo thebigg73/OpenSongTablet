@@ -33,7 +33,7 @@
     <string name="backup_import">"Invoer OpenSongApp Friends"</string>
     <string name="backup_info">"OpenSongApp rugsteunlêer"</string>
     <string name="backup_success">"OpenSongApp Friends geskep"</string>
-    <string name="backupnow">"Skep nou 'n rugsteun"</string>
+    <string name="backup_now">"Skep nou 'n rugsteun"</string>
     <string name="bad_time">"Skyfie tyd nie korrek gestel"</string>
     <string name="banjo4">"Banjo (4)"</string>
     <string name="banjo5">"Banjo (5)"</string>
@@ -225,7 +225,7 @@
     <string name="onsong_import">"Invoer OnSong rugsteunlêer"</string>
     <string name="import_onsong_error">"Geen OnSong rugsteunlêer gevind in /documents/OpenSong/"</string>
     <string name="importnewset">"Voer 'n stel"</string>
-    <string name="importnewsong">"Voer 'n lied"</string>
+    <string name="import_song">"Voer 'n lied"</string>
     <string name="inc_autoscroll_speed">"Verhoog Autoscroll Spoed"</string>
     <string name="initialisesongs_start">"Inisialiseer 'Songs 'n gids -"</string>
     <string name="instrument">Instrument</string>
