@@ -366,7 +366,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, weblink);
 
         // If we are in songselect, trigger the download to keep the stats live
-        if (FullscreenActivity.whattodo.equals("songselect")) {
+        if (FullscreenActivity.whattodo.equals("songselect") && !(FullscreenActivity.phrasetosearchfor.startsWith("?"))) {
             try {
                 // Trigger the download of the pdf
                 webresults_WebView.loadUrl("javascript:document.getElementById('chordSheetDownloadButton').click()");
@@ -1152,7 +1152,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             Log.d("FindNewSong", l);
         }
         int start = s.indexOf("<code class=\"cproSongKey\"");
-        int end = s.indexOf("</code></span>",start);
+        int end = s.indexOf("</code>",start);
         if (start>-1 && end>-1 && end>start) {
             // Fine tine the start
             int newstart = s.indexOf(">",start);
@@ -1174,7 +1174,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             } else {
                 a = Html.fromHtml(a).toString();
             }
-            return "{artist:" + a + "}\n";
+            // IV - Replace use of | as separator with comma
+            return "{artist:" + a.replaceAll("\\Q |\\E",",") + "}\n";
         } else {
             return "";
         }
@@ -1193,7 +1194,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         start = s.indexOf("<li>",start);
         int end = s.indexOf("</li>",start);
         if (start>-1 && end>-1 && end>start) {
-            return "{copyright:" + s.substring(start+4,end).trim() + "}\n";
+            // IV - Remove copyright and replace use of | as separator with ,
+            return "{copyright:" + s.substring(start+4,end).replace("©","").replaceAll("\\Q |\\E",",").trim() + "}\n";
         } else {
             return "";
         }
@@ -1227,6 +1229,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             if (bits.length>1) {
                 String t = bits[1].replace("Time","");
                 t = t.replace("-","");
+                t = t.replace("&nbsp;"," ");
                 t = t.trim();
                 return "{time:" + t + "}\n";
             } else {
@@ -1236,43 +1239,49 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         return "";
     }
     private String getLyricsSongSelectChordPro(String s) {
-        int start = s.indexOf("<pre class=\"cproSongBody\">");
-        int end = s.indexOf("</pre>",start);
-        if (start>-1 && end>-1 && end>start) {
-            String lyrics = s.substring(start+26,end);
+        // IV - Added handling of lyrics with with nore than one cproSongBody as split over pages
+        String lyrics = "";
+        while (s.contains("<pre class=\"cproSongBody\">")) {
+            int start = s.indexOf("<pre class=\"cproSongBody\">");
+            int end = s.indexOf("</pre>",start);
+            // IV - Overwrite so that next loop finds any further SongBody
+            s = s.replaceFirst("<pre class=\"cproSongBody\">", "<xxxxxxxxxxxxxxxxxxxxxxxx>");
+            s = s.replaceFirst("</pre>","<xxxx>");
 
-            // Fix the song section headers
-            while (lyrics.contains("<span class=\"cproSongSection\"><span class=\"cproComment\">")) {
-                start = lyrics.indexOf("<span class=\"cproSongSection\"><span class=\"cproComment\">");
-                end = lyrics.indexOf("</span>",start);
-                String sectiontext;
-                if (start>-1 && end>-1 && end>start) {
-                    sectiontext = lyrics.substring(start+56,end);
-                    lyrics = lyrics.replace("<span class=\"cproSongSection\"><span class=\"cproComment\">"+sectiontext+"</span>",sectiontext.trim()+":");
+            if (start>-1 && end>-1 && end>start) {
+                lyrics = lyrics + s.substring(start+26,end);
+
+                // Fix the song section headers
+                while (lyrics.contains("<span class=\"cproSongSection\"><span class=\"cproComment\">")) {
+                    start = lyrics.indexOf("<span class=\"cproSongSection\"><span class=\"cproComment\">");
+                    end = lyrics.indexOf("</span>",start);
+                    String sectiontext;
+                    if (start>-1 && end>-1 && end>start) {
+                        sectiontext = lyrics.substring(start+56,end);
+                        lyrics = lyrics.replace("<span class=\"cproSongSection\"><span class=\"cproComment\">" + sectiontext + "</span>", "#[" + sectiontext.trim() + "]");
+                    }
+                }
+
+                // Fix the chords
+                // Chords are found in a bit like this:
+                // <span class="chordWrapper"><code class="chord" data-chordname="D<sup>2</sup>">D<sup>2</sup></code>
+                // We want the last D<sup>2</sup> bit (<sup> removed later).
+
+                while (lyrics.contains("<span class=\"chordWrapper\"><code ")) {
+                    start = lyrics.indexOf("<span class=\"chordWrapper\"><code ");
+                    int newstart = lyrics.indexOf(">",start); // Move to bit before <
+                    newstart = lyrics.indexOf("\">",newstart)+2; // Go to bit after chordname="....">
+                    end = lyrics.indexOf("</code>",newstart);
+                    if (start>-1 && newstart>-1 && end>-1 && end>newstart) {
+                        String chordfound = lyrics.substring(newstart,end);
+                        String bittoremove = lyrics.substring(start,end+7);
+                        lyrics = lyrics.replace(bittoremove,"["+chordfound+"]");
+                    }
                 }
             }
-
-            // Fix the chords
-            // Chords are found in a bit like this:
-            // <span class="chordWrapper"><code class="chord" data-chordname="D<sup>2</sup>">D<sup>2</sup></code>
-            // We wand the last D<sup>2</sup> bit (<sup> removed later).
-
-            while (lyrics.contains("<span class=\"chordWrapper\"><code ")) {
-                start = lyrics.indexOf("<span class=\"chordWrapper\"><code ");
-                int newstart = lyrics.indexOf(">",start); // Move to bit before <
-                newstart = lyrics.indexOf("\">",newstart)+2; // Go to bit after chordname="....">
-                end = lyrics.indexOf("</code>",newstart);
-                if (start>-1 && newstart>-1 && end>-1 && end>newstart) {
-                    String chordfound = lyrics.substring(newstart,end);
-                    String bittoremove = lyrics.substring(start,end+7);
-                    lyrics = lyrics.replace(bittoremove,"["+chordfound+"]");
-                }
-            }
-
-            // Get rid of code that we don't need
-            return getRidOfRogueCode(lyrics);
         }
-        return "";
+        // Get rid of code that we don't need
+        return getRidOfRogueCode(lyrics);
     }
 
     private String extractSongSelectUsr(String s, String temptitle) {
@@ -1342,31 +1351,14 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     }
 
     private String getRidOfRogueCode(String lyrics) {
-        // Get rid of lyric indications
-        lyrics = lyrics.replace("<span class=\"chordLyrics\">","");
-
-        // Get rid of the new line indications
-        lyrics = lyrics.replace("<span class=\"cproSongLine\">","");
-
-        // Get rid of the chord line only indications
-        lyrics = lyrics.replace("<span class=\"cproSongLine chordsOnly\">","");
-
-        // Get rid of directions indicators
-        lyrics = lyrics.replace("<span class=\"cproDirectionWrapper\">","");
-        lyrics = lyrics.replace("<span class=\"cproDirection\">","");
-
-        // Get rid of any remaining close spans
-        lyrics = lyrics.replace("</span>","");
-
-        // Get rid of any superscripts or subscripts
-        lyrics = lyrics.replace("<sup>","");
-        lyrics = lyrics.replace("</sup>","");
+        // Get rid of lyric indications (IV - etc. Remove any remaining <...>)
+        lyrics = lyrics.replaceAll("\\<.*?\\>","");
 
         // Fix accented characters into UTF
         lyrics = chordProConvert.parseHTML(lyrics);
 
-        // Finally, trim the lyrics
-        return lyrics.trim();
+        // Finally, end trim the lyrics
+        return (lyrics.replaceAll("\\s+$", ""));
     }
 
     private void setFileNameAndFolder() {
@@ -1685,18 +1677,19 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         @Override
         protected void onPostExecute(String s) {
             if (getContext()!=null) {
+                grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
                 if (filecontents != null && !filecontents.equals("")) {
-                    //TODO
-                    // setFileNameAndFolder();
+                    // IV - Just in case we have not...
+                    if (newfileinfo_LinearLayout.getVisibility()!=View.VISIBLE) {
+                        setFileNameAndFolder();
+                    }
                 } else {
                     if (downloadcomplete) {
                         StaticVariables.myToastMessage = getContext().getString(R.string.pdfonly);
                     } else {
                         StaticVariables.myToastMessage = getContext().getResources().getText(R.string.chordpro_false).toString();
                     }
-
                     ShowToast.showToast(getContext());
-                    grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
                 }
             }
         }
