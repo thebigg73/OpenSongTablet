@@ -770,13 +770,15 @@ class ExportPreparer {
     }
 
     private String[] getHeadersAndFooters(String type) {
-        String[] starttag = new String[] {"", "", "Key:", "Tempo:", "Time:", "Copyright:", "CCLI: "};
+        // IV - With trailing space as onsong examples have this for human readability (it is probably not mandatory)
+        String[] starttag = new String[] {"", "", "Key: ", "Tempo: ", "Time: ", "Copyright: ", "CCLI: "};
         String endtag = "\n";
         StringBuilder header = new StringBuilder();
         StringBuilder footer = new StringBuilder();
 
         if (type.equals("choPro")) {
-            starttag = new String[] {"{title: ", "{artist: ", "{key: ", "{tempo: ", "{time: ", "{copyright: ", "{ccli:"};
+            // IV - No trailing space, this is optional in chorpro and we choose not to include
+            starttag = new String[] {"{title:", "{artist:", "{key:", "{tempo:", "{time:", "{copyright:", "{ccli:"};
             endtag = "}\n";
         }
 

@@ -39,9 +39,6 @@ class UsrConvert {
         // Get rid of multilple line breaks (max of 3 together)
         lyrics = chordProConvert.getRidOfExtraLines(lyrics);
 
-        // Add spaces to beginnings of lines that aren't comments, chords or tags
-        lyrics = chordProConvert.addSpacesToLines(lyrics);
-
         // Initialise the song tags
         songXML.initialiseSongTags();
 
