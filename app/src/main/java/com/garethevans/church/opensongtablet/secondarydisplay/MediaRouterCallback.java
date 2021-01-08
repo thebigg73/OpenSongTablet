@@ -9,8 +9,8 @@ import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 
 public class MediaRouterCallback extends MediaRouter.Callback {
 
-    CastDevice device;
-    DisplayInterface displayInterface;
+    private CastDevice device;
+    private DisplayInterface displayInterface;
 
     public MediaRouterCallback() {
         // Empty initialiser

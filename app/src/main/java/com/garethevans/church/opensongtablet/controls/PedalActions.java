@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 import java.util.ArrayList;
@@ -13,10 +12,7 @@ import java.util.TimerTask;
 
 public class PedalActions {
 
-    ArrayList<String> actions, actionCodes;
-    Context c;
-    Preferences preferences;
-    MainActivityInterface mainActivityInterface;
+    private ArrayList<String> actions, actionCodes;
     private final int[] pedalCode = new int[9]; // 8 buttons, but ignore item 0
     private final String[] pedalMidi = new String[9];
     private final String[] pedalShortPressAction = new String[9];
@@ -35,16 +31,9 @@ public class PedalActions {
             airTurnPaused = false;
         }
     };
-    public PedalActions(Context c, Preferences preferences) {
-        this.c = c;
-        this.preferences = preferences;
-        setActions();
-        setPrefs();
-    }
-    public void setInterface(MainActivityInterface mainActivityInterface) {
-        if (mainActivityInterface!=null) {
-            this.mainActivityInterface = mainActivityInterface;
-        }
+    public void setUpPedalActions(Context c, Preferences preferences) {
+        setActions(c);
+        setPrefs(c,preferences);
     }
 
     public ArrayList<String> getActions() {
@@ -54,7 +43,7 @@ public class PedalActions {
         return actionCodes;
     }
 
-    private void setActions() {
+    private void setActions(Context c) {
         actions = new ArrayList<>();
         actionCodes = new ArrayList<>();
         String startstop = " (" + c.getString(R.string.start) + " / " + c.getString(R.string.stop) + ")";
@@ -95,7 +84,7 @@ public class PedalActions {
         actionCodes.add(id);
         actions.add(val);
     }
-    private void setPrefs() {
+    private void setPrefs(Context c, Preferences preferences) {
         for (int w=1; w<=8; w++) {
             pedalCode[w] = preferences.getMyPreferenceInt(c, "pedal"+w+"Code", defPedalCodes[w]);
             pedalMidi[w] = preferences.getMyPreferenceString(c,"pedal"+w+"Midi",defPedalMidis[w]);

@@ -133,7 +133,7 @@ public class MidiFragment extends Fragment {
         nonOpenSongSQLiteHelper = mainActivityInterface.getNonOpenSongSQLiteHelper();
         commonSQL = mainActivityInterface.getCommonSQL();
         ccliLog = mainActivityInterface.getCCLILog();
-        saveSong = new SaveSong();
+        saveSong = mainActivityInterface.getSaveSong();
     }
 
     // Set the values in the field
@@ -732,6 +732,6 @@ public class MidiFragment extends Fragment {
         super.onDestroy();
         // Save the song
         saveSong.doSave(getContext(),preferences,storageAccess,convertChoPro,
-                processSong,song,sqLiteHelper,nonOpenSongSQLiteHelper,commonSQL,ccliLog,false);
+                processSong,song,song,sqLiteHelper,nonOpenSongSQLiteHelper,commonSQL,ccliLog,false);
     }
 }

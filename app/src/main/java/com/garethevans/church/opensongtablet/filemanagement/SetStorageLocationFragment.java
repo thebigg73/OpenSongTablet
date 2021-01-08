@@ -14,12 +14,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -42,6 +39,18 @@ import lib.folderpicker.FolderPicker;
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
 import static com.google.android.material.snackbar.Snackbar.make;
 
+/*
+This fragment is used to set the storage location for the app.  It deals with the permissions for
+using the external storage and allows the user to use the built in picker to choose the location
+For Lollipop+, this is a URI TREE, for KitKat, it is just a location.
+The app stores this (and permissions granted for later use of any files/folders attached to this location.
+
+It is called under the following conditions:
+* the first boot if the storage has never been set
+* normal booting if there is an issue with the currently set storage
+* the user has specified that they want to change the storage location
+*/
+
 public class SetStorageLocationFragment extends Fragment {
 
     private MainActivityInterface mainActivityInterface;
@@ -49,10 +58,7 @@ public class SetStorageLocationFragment extends Fragment {
     private StorageAccess storageAccess;
     private ShowToast showToast;
     private Uri uriTree, uriTreeHome;
-    private Bundle bundle;
-    private Button setStorage, findStorage, startApp;
-    private TextView progressText, previousStorageTextView,
-            previousStorageHeading, previousStorageLocationsTextView;
+
     private ArrayList<String> locations;
     private File folder;
 
@@ -67,11 +73,15 @@ public class SetStorageLocationFragment extends Fragment {
             e.printStackTrace();
         }
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivityInterface.hideActionBar(true);
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        bundle = savedInstanceState;
         myView = FragmentSetstoragelocationBinding.inflate(inflater, container, false);
 
         // Initialise the helper classes
@@ -80,163 +90,84 @@ public class SetStorageLocationFragment extends Fragment {
         // Set up the views
         initialiseViews();
 
-        // Pop the backstack
-        popTheBackStack();
+        // Pop the backstack to the bootUpFragment
+        NavHostFragment.findNavController(this).popBackStack(R.id.bootUpFragment,false);
 
         // Check preferences for storage (if they exist)
-        checkPreferencesForStorage();
+        getUriTreeFromPreferences();
 
         // Check we have the required storage permission
         checkStoragePermission();
         
         // Set the storage location
-        setStorageLocation();
+        showStorageLocation();
         
         return myView.getRoot();
     }
 
+    // Set up what we need for the fragment
     private void initialiseHelpers() {
-        storageAccess = new StorageAccess();
-        preferences = new Preferences();
-        showToast = new ShowToast();
+        storageAccess = mainActivityInterface.getStorageAccess();
+        preferences = mainActivityInterface.getPreferences();
+        showToast = mainActivityInterface.getShowToast();
     }
-
     private void initialiseViews() {
-        setStorage = myView.setStorage;
-        setStorage.setOnClickListener(v -> {
+        // Lock the menu and hide the actionbar and action button
+        mainActivityInterface.lockDrawer(true);
+        mainActivityInterface.hideActionButton(true);
+        mainActivityInterface.hideActionButton(true);
+
+        // Set the listeners for the buttons
+        myView.setStorage.setOnClickListener(v -> {
             if (isStorageGranted()) {
                 chooseStorageLocation();
             } else {
                 requestStoragePermission();
             }
         });
-        findStorage = myView.findStorage;
-        findStorage.setOnClickListener(v -> startSearch());
-        startApp = myView.startApp;
-        startApp.setOnClickListener(v -> goToSongs());
-        progressText = myView.progressText;
-        previousStorageTextView = myView.previousStorageTextView;
-        previousStorageHeading = myView.previousStorageHeading;
-        previousStorageLocationsTextView = myView.previousStorageLocationsTextView;
-        mainActivityInterface.lockDrawer(true);
-        mainActivityInterface.hideActionButton(true);
+        myView.findStorage.setOnClickListener(v -> startSearch());
+        myView.startApp.setOnClickListener(v -> goToSongs());
     }
 
-    private void popTheBackStack() {
-        //requireActivity().getSupportFragmentManager().popBackStack();
 
-    }
+    // Deal with the storage location set/chosen
+    private void getUriTreeFromPreferences() {
+        /*
+        The user could have specified the actual OpenSong folder (if it already existed),
+        or the location to create the OpenSong folder in on first run.  uriTree is the one we have
+        permission for and could be either.  If it is the parent folder, uriTreeHome becomes the
+        actual child OpenSong folder.  If it is the OpenSong folder, uriTree = uriTreeHome
+        */
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        ActionBar supportActionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.hide();
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        ActionBar supportActionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.show();
-        }
-    }
-
-    private void checkPreferencesForStorage() {
-        String uT  = preferences.getMyPreferenceString(requireActivity(),"uriTree","");
-        String uTH = preferences.getMyPreferenceString(requireActivity(),"uriTreeHome","");
-        if (!uT.equals("")) {
-            uriTree = Uri.parse(uT);
+        String uriTreeString = preferences.getMyPreferenceString(requireActivity(), "uriTree", "");
+        if (!uriTreeString.equals("")) {
+            uriTree = Uri.parse(uriTreeString);
         } else {
             uriTree = null;
-        }
-        if (!uTH.equals("")) {
-            uriTreeHome = Uri.parse(uTH);
-        } else {
             uriTreeHome = null;
         }
         if (uriTree!=null && uriTreeHome==null) {
             uriTreeHome = storageAccess.homeFolder(requireActivity(),uriTree,preferences);
         }
     }
-
-    private void pulseButton(View v) {
-        CustomAnimation ca = new CustomAnimation();
-        ca.pulse(requireActivity(), v);
-    }
-
-    private boolean isStorageSet() {
-        return (uriTreeHome!=null && uriTree!=null && !uriTreeHome.toString().isEmpty() && !uriTree.toString().isEmpty());
-    }
-
-    private boolean isStorageValid() {
-        return (isStorageSet() && storageAccess.uriTreeValid(getContext(),uriTree));
-    }
-
-    private void setStorageLocation() {
+    private void showStorageLocation() {
         String[] niceLocation = storageAccess.niceUriTree(getContext(),preferences,uriTreeHome);
         String outputText = niceLocation[1] + " " + niceLocation[0];
-        progressText.setText(outputText);
+        myView.progressText.setText(outputText);
         warningCheck();
         checkStatus();
     }
-
-    private void chooseStorageLocation() {
-        if (isStorageGranted()) {
-            Intent intent;
-            if (storageAccess.lollipopOrLater()) {
-                intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
-                intent.putExtra("android.content.extra.FANCY", true);
-                intent.putExtra("android.content.extra.SHOW_FILESIZE", true);
-                intent.putExtra("android.content.extra.INITIAL_URI", uriTree);
-                startActivityForResult(intent, 42);
-            } else {
-                openFragment();
-            }
-        } else {
-            requestStoragePermission();
+    private void warningCheck() {
+        // If the user tries to set the app storage to OpenSong/Songs/ warn them!
+        if (myView.progressText.getText() != null && myView.progressText.getText().toString().contains("OpenSong/Songs/")) {
+            Snackbar snackbar = make(requireActivity().findViewById(R.id.drawer_layout), R.string.storage_warning,
+                    LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> {
+            });
+            View snackbarView = snackbar.getView();
+            TextView snackTextView = snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
+            snackTextView.setMaxLines(4);
+            snackbar.show();
         }
-    }
-    private void openFragment() {
-        Intent intent = new Intent(requireActivity(), FolderPicker.class);
-        intent.putExtra("title", getString(R.string.storage_change));
-        intent.putExtra("pickFiles", false);
-        if (uriTree!=null) {
-            intent.putExtra("location", uriTree.getPath());
-        }
-        startActivityForResult(intent, 7789);
-    }
-
-    private void startSearch() {
-        // Deactivate the stuff we shouldn't click on while it is being prepared
-        setEnabledOrDisabled(false);
-
-        // Initialise the available storage locations
-        locations = new ArrayList<>();
-
-        FindLocations findlocations = new FindLocations();
-        findlocations.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }
-
-    private void setEnabledOrDisabled(boolean what) {
-        startApp.setEnabled(what);
-        setStorage.setEnabled(what);
-        findStorage.setEnabled(what);
-        if (!what) {
-            previousStorageTextView.setVisibility(View.VISIBLE);
-        } else {
-            previousStorageTextView.setVisibility(View.GONE);
-        }
-    }
-
-    private void notWriteable() {
-        uriTree = null;
-        uriTreeHome = null;
-        showToast.doIt(requireActivity(), getString(R.string.storage_notwritable));
     }
     private void saveUriLocation() {
         if (uriTree!=null) {
@@ -248,42 +179,21 @@ public class SetStorageLocationFragment extends Fragment {
             preferences.setMyPreferenceString(requireActivity(), "uriTreeHome", "");
         }
     }
-    private void checkStoragePermission() {
-        if (!isStorageGranted()) {
-            // Storage permission has not been granted.
-            requestStoragePermission();
-        }
-        // Set the storage location
-        setStorageLocation();
-    }
-    private void requestStoragePermission() {
-        if (getActivity()!=null && ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            try {
-                make(getActivity().findViewById(R.id.drawer_layout), R.string.storage_rationale,
-                        LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> {
-                    if (getActivity()!=null) {
-                        ActivityCompat.requestPermissions(getActivity(),
-                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-                    }
-                }).show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (getActivity()!=null) {
-            try {
-                // Storage permission has not been granted yet. Request it directly.
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
+
+    // Checks for the storage being ok to proceed
+    private boolean isStorageSet() {
+        return (uriTreeHome!=null && uriTree!=null && !uriTreeHome.toString().isEmpty() && !uriTree.toString().isEmpty());
+    }
+    private boolean isStorageValid() {
+        return (isStorageSet() && storageAccess.uriTreeValid(getContext(),uriTree));
+    }
     private boolean isStorageGranted() {
         return ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
+
+    // Deal with permissions
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 101) {
@@ -292,7 +202,7 @@ public class SetStorageLocationFragment extends Fragment {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
         // Set the storage location
-        setStorageLocation();
+        showStorageLocation();
     }
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         super.onActivityResult(requestCode, resultCode, resultData);
@@ -306,7 +216,7 @@ public class SetStorageLocationFragment extends Fragment {
             // Save the location uriTree and uriTreeHome
             saveUriLocation();
             // Update the storage text
-            setStorageLocation();
+            showStorageLocation();
 
             // See if we can show the start button yet
             checkStatus();
@@ -356,46 +266,78 @@ public class SetStorageLocationFragment extends Fragment {
         }
         checkStatus();
     }
-
-
-    private void checkStatus() {
-        Log.d("d","checkStatus()");
-        Log.d("d","isStorageValid()="+isStorageValid());
-        Log.d("d","isStorageGranted()="+isStorageGranted());
-        if (isStorageGranted() && isStorageSet() && isStorageValid()) {
-            startApp.setVisibility(View.VISIBLE);
-            pulseButton(startApp);
-            setStorage.clearAnimation();
-            myView.scrollView.scrollTo(0,(int)startApp.getY());
+    private void checkStoragePermission() {
+        if (!isStorageGranted()) {
+            // Storage permission has not been granted.
+            requestStoragePermission();
+        }
+        // Set the storage location
+        showStorageLocation();
+    }
+    private void notWriteable() {
+        uriTree = null;
+        uriTreeHome = null;
+        showToast.doIt(requireActivity(), getString(R.string.storage_notwritable));
+    }
+    private void chooseStorageLocation() {
+        if (isStorageGranted()) {
+            Intent intent;
+            if (storageAccess.lollipopOrLater()) {
+                intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
+                intent.putExtra("android.content.extra.FANCY", true);
+                intent.putExtra("android.content.extra.SHOW_FILESIZE", true);
+                intent.putExtra("android.content.extra.INITIAL_URI", uriTree);
+                startActivityForResult(intent, 42);
+            } else {
+                intent = new Intent(requireActivity(), FolderPicker.class);
+                intent.putExtra("title", getString(R.string.storage_change));
+                intent.putExtra("pickFiles", false);
+                if (uriTree!=null) {
+                    intent.putExtra("location", uriTree.getPath());
+                }
+                startActivityForResult(intent, 7789);
+            }
         } else {
-            startApp.setVisibility(View.GONE);
-            setStorage.setVisibility(View.VISIBLE);
-            pulseButton(setStorage);
-            myView.scrollView.scrollTo(0,(int)setStorage.getY());
-            startApp.clearAnimation();
+            requestStoragePermission();
+        }
+    }
+    private void requestStoragePermission() {
+        if (getActivity()!=null && ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            try {
+                make(getActivity().findViewById(R.id.drawer_layout), R.string.storage_rationale,
+                        LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> {
+                    if (getActivity()!=null) {
+                        ActivityCompat.requestPermissions(getActivity(),
+                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
+                    }
+                }).show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (getActivity()!=null) {
+            try {
+                // Storage permission has not been granted yet. Request it directly.
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private void warningCheck() {
-        // If the user tries to set the app storage to OpenSong/Songs/ warn them!
-        if (progressText!=null && progressText.getText()!=null && progressText.getText().toString().contains("OpenSong/Songs/")) {
-            Snackbar snackbar = make(requireActivity().findViewById(R.id.drawer_layout), R.string.storage_warning,
-                    LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> {
-            });
-            View snackbarView = snackbar.getView();
-            TextView snackTextView = snackbarView.findViewById(com.google.android.material.R.id.snackbar_text);
-            snackTextView.setMaxLines(4);
-            snackbar.show();
-        }
-    }
 
-    private void goToSongs() {
-        NavOptions navOptions = new NavOptions.Builder()
-                .build();
-        NavHostFragment.findNavController(SetStorageLocationFragment.this)
-                .navigate(R.id.nav_boot,bundle,navOptions);
-    }
+    // Stuff to search for previous installation locations
+    private void startSearch() {
+        // Deactivate the stuff we shouldn't click on while it is being prepared
+        setEnabledOrDisabled(false);
 
+        // Initialise the available storage locations
+        locations = new ArrayList<>();
+
+        FindLocations findlocations = new FindLocations();
+        findlocations.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
     private void walkFiles(File root) {
         if (root!=null && root.exists() && root.isDirectory()) {
             File[] list = root.listFiles();
@@ -418,10 +360,9 @@ public class SetStorageLocationFragment extends Fragment {
             }
         }
     }
-
     private void displayWhere(String msg) {
         final String str = msg;
-        requireActivity().runOnUiThread(() -> previousStorageTextView.setText(str));
+        requireActivity().runOnUiThread(() -> myView.previousStorageTextView.setText(str));
     }
     @SuppressLint("StaticFieldLeak")
     private class FindLocations extends AsyncTask<Object, String, String> {
@@ -446,11 +387,11 @@ public class SetStorageLocationFragment extends Fragment {
 
                 if (locations.size()<1) {
                     // No previous installations found
-                    previousStorageTextView.setText(getString(R.string.no_previous_found));
-                    previousStorageTextView.setVisibility(View.VISIBLE);
-                    previousStorageHeading.setVisibility(View.GONE);
+                    myView.previousStorageTextView.setText(getString(R.string.no_previous_found));
+                    myView.previousStorageTextView.setVisibility(View.VISIBLE);
+                    myView.previousStorageHeading.setVisibility(View.GONE);
                 } else {
-                    previousStorageHeading.setVisibility(View.VISIBLE);
+                    myView.previousStorageHeading.setVisibility(View.VISIBLE);
                     // Add the locations to the textview
                     StringBuilder sb = new StringBuilder();
                     for (String str:locations) {
@@ -458,12 +399,53 @@ public class SetStorageLocationFragment extends Fragment {
                             sb.append(str).append(" \n");
                         }
                     }
-                    previousStorageTextView.setVisibility(View.GONE);
-                    previousStorageLocationsTextView.setVisibility(View.VISIBLE);
-                    previousStorageLocationsTextView.setText(sb.toString().trim());
+                    myView.previousStorageTextView.setVisibility(View.GONE);
+                    myView.previousStorageLocationsTextView.setVisibility(View.VISIBLE);
+                    myView.previousStorageLocationsTextView.setText(sb.toString().trim());
                     locations.add(0,"");
                 }
             }
         }
     }
+
+
+    // Deal with allowing or hiding the start button
+    private void checkStatus() {
+        Log.d("d","checkStatus()");
+        Log.d("d","isStorageValid()="+isStorageValid());
+        Log.d("d","isStorageGranted()="+isStorageGranted());
+        if (isStorageGranted() && isStorageSet() && isStorageValid()) {
+            myView.startApp.setVisibility(View.VISIBLE);
+            pulseButton(myView.startApp);
+            myView.setStorage.clearAnimation();
+            myView.scrollView.scrollTo(0,(int)myView.startApp.getY());
+        } else {
+            myView.startApp.setVisibility(View.GONE);
+            myView.setStorage.setVisibility(View.VISIBLE);
+            pulseButton(myView.setStorage);
+            myView.scrollView.scrollTo(0,(int)myView.setStorage.getY());
+            myView.startApp.clearAnimation();
+        }
+    }
+    private void setEnabledOrDisabled(boolean what) {
+        myView.startApp.setEnabled(what);
+        myView.setStorage.setEnabled(what);
+        myView.findStorage.setEnabled(what);
+        if (!what) {
+            myView.previousStorageTextView.setVisibility(View.VISIBLE);
+        } else {
+            myView.previousStorageTextView.setVisibility(View.GONE);
+        }
+    }
+    private void pulseButton(View v) {
+        CustomAnimation ca = new CustomAnimation();
+        ca.pulse(requireActivity(), v);
+    }
+    private void goToSongs() {
+        NavOptions navOptions = new NavOptions.Builder()
+                .setPopUpTo(R.id.setStorageLocationFragment,false)
+                .build();
+        NavHostFragment.findNavController(this).navigate(R.id.bootUpFragment,null,navOptions);
+    }
+
 }

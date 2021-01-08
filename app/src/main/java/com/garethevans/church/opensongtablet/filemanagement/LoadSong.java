@@ -8,12 +8,12 @@ import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.garethevans.church.opensongtablet.songsandsetsmenu.SongListBuildIndex;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
@@ -33,18 +33,19 @@ public class LoadSong {
     private Uri uri;
 
     public Song doLoadSong(Context c, StorageAccess storageAccess, Preferences preferences,
-                           ProcessSong processSong, ShowToast showToast,
-                           SQLiteHelper sqLiteHelper, CommonSQL commonSQL, Song song,
-                           ConvertOnSong convertOnSong, ConvertChoPro convertChoPro, boolean indexing) {
+                           ProcessSong processSong, ShowToast showToast, Locale locale,
+                           SongListBuildIndex songListBuildIndex, SQLiteHelper sqLiteHelper,
+                           CommonSQL commonSQL, Song song, ConvertOnSong convertOnSong,
+                           ConvertChoPro convertChoPro, boolean indexing) {
 
         // If we have finished song indexing, we get the song from the SQL database.
         // If not, we load up from the xml file
         // We also load from the file if it is a custom file (pdf and images are dealt with separately)
 
-        if (!StaticVariables.indexComplete || song.getFolder().contains("../")) {
+        if (!songListBuildIndex.getIndexComplete() || song.getFolder().contains("../")) {
             // This is set to true once the index is completed
             Log.d("LoadSong","Loading from the xml file");
-            return doLoadSongFile(c,storageAccess,preferences,processSong,showToast,
+            return doLoadSongFile(c,storageAccess,preferences,processSong,showToast,locale,
                     sqLiteHelper,commonSQL,song,convertOnSong,convertChoPro,indexing);
         } else {
             Log.d("LoadSong","Loading from the database");
@@ -54,7 +55,7 @@ public class LoadSong {
 
     }
     public Song doLoadSongFile(Context c, StorageAccess storageAccess, Preferences preferences,
-                             ProcessSong processSong, ShowToast showToast,
+                             ProcessSong processSong, ShowToast showToast, Locale locale,
                              SQLiteHelper sqLiteHelper, CommonSQL commonSQL, Song song,
                              ConvertOnSong convertOnSong, ConvertChoPro convertChoPro, boolean indexing) {
 
@@ -140,29 +141,24 @@ public class LoadSong {
         }
 
         // Fix all the rogue code
-        song.setLyrics(processSong.parseLyrics(song.getLyrics(), c));
+        song.setLyrics(processSong.parseLyrics(c,locale,song));
 
 
         // Finally if we aren't indexing, set the static variables to match the SQLite object
         // Also build the XML file back incase we've updated content
         if (!indexing) {
-            // Empty the XML
-            StaticVariables.myNewXML = "";
-
             // Check if the song has been loaded (will now have a lyrics value)
             if (!song.getFilename().equals("Welcome to OpenSongApp") && song.getLyrics()!=null && !song.getLyrics().isEmpty()) {
                 // Song was loaded correctly and was xml format
                 preferences.setMyPreferenceBoolean(c, "songLoadSuccess", true);
-                StaticVariables.songfilename = song.getFilename();
-                StaticVariables.whichSongFolder = song.getFolder();
 
             } else {
-                StaticVariables.whichSongFolder = c.getResources().getString(R.string.mainfoldername);
-                StaticVariables.songfilename = "Welcome to OpenSongApp";
+                song.setFolder(c.getResources().getString(R.string.mainfoldername));
+                song.setFilename("Welcome to OpenSongApp");
             }
 
-            preferences.setMyPreferenceString(c,"songfilename",StaticVariables.songfilename);
-            preferences.setMyPreferenceString(c,"whichSongFolder",StaticVariables.whichSongFolder);
+            preferences.setMyPreferenceString(c,"songfilename",song.getFilename());
+            preferences.setMyPreferenceString(c,"whichSongFolder",song.getFolder());
         }
     return song;
     }
@@ -214,12 +210,12 @@ public class LoadSong {
     private String getUTF(Context c, StorageAccess storageAccess, Preferences preferences, String folder, String filename, String filetype) {
         // Determine the file encoding
         String where = "Songs";
-        if (StaticVariables.whichSongFolder.startsWith("../")) {
+        if (folder.startsWith("../")) {
             folder = folder.replace("../", "");
         }
         uri = storageAccess.getUriForItem(c, preferences, where, folder, filename);
         if (storageAccess.uriExists(c,uri)) {
-            if (filetype.equals("XML") && !StaticVariables.songfilename.equals("Welcome to OpenSongApp")) {
+            if (filetype.equals("XML") && !filename.equals("Welcome to OpenSongApp")) {
                 return storageAccess.getUTFEncoding(c, uri);
             } else {
                 return null;
@@ -371,7 +367,7 @@ public class LoadSong {
                     eventType = xpp.next();
                     song.setFiletype("XML");
                 } catch (Exception e) {
-                    Log.d("LoadSong", "Not xml so exiting");
+                    Log.d("LoadSong", uri + ":  Not xml so exiting");
                     eventType = XmlPullParser.END_DOCUMENT;
                     song.setFiletype("?");
                 }
@@ -384,7 +380,7 @@ public class LoadSong {
             // If we really have to load extra stuff, lets do it as an asynctask
             if (needtoloadextra && !indexing) {
                 inputStream = storageAccess.getInputStream(c, uri);
-                SideTask loadextra = new SideTask(c, inputStream, uri, song.getFilename());
+                SideTask loadextra = new SideTask(c,storageAccess,inputStream,song,uri);
                 loadextra.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         }
@@ -402,18 +398,19 @@ public class LoadSong {
         String filename;
         final Uri uri;
         final Context c;
+        Song song;
 
-        SideTask(Context ctx, InputStream is, Uri u, String filename) {
-            inputStream = is;
-            c = ctx;
-            uri = u;
-            this.filename = filename;
+        SideTask(Context c, StorageAccess storageAccess, InputStream inputStream, Song song, Uri uri) {
+            this.inputStream = inputStream;
+            this.c = c;
+            this.storageAccess = storageAccess;
+            this.uri = uri;
+            this.song = song;
         }
 
         @Override
         protected String doInBackground(String... params) {
             String full_text;
-            storageAccess = new StorageAccess();
             try {
                 if (validReadableFile(c, storageAccess, uri, filename)) {
                     full_text = storageAccess.readTextFileToString(inputStream);
@@ -434,7 +431,7 @@ public class LoadSong {
                 int style_start = result.indexOf("<style");
                 int style_end = result.indexOf("</style>");
                 if (style_end > style_start && style_start > -1) {
-                    StaticVariables.mExtraStuff1 = result.substring(style_start, style_end + 8);
+                    song.setExtraStuff1(result.substring(style_start, style_end + 8));
                 }
                 int backgrounds_start = result.indexOf("<backgrounds");
                 int backgrounds_end = result.indexOf("</backgrounds>");
@@ -444,7 +441,7 @@ public class LoadSong {
                     backgrounds_end += 14;
                 }
                 if (backgrounds_end > backgrounds_start && backgrounds_start > -1) {
-                    StaticVariables.mExtraStuff2 = result.substring(backgrounds_start, backgrounds_end);
+                    song.setExtraStuff2(result.substring(backgrounds_start, backgrounds_end));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -537,9 +534,8 @@ public class LoadSong {
 
     private Song setNotFound(Context c) {
         Song song = new Song();
-        StaticVariables.songfilename = "Welcome to OpenSongApp";
         song.setFilename("Welcome to OpenSongApp");
-        song.setTitle("Welcome to OpenSongApp");
+        song.setTitle(c.getString(R.string.welcome));
         song.setLyrics(c.getString(R.string.user_guide_lyrics));
         song.setAuthor("Gareth Evans");
         song.setKey("G");
@@ -579,19 +575,19 @@ public class LoadSong {
         return where;
     }
 
-    public String grabNextSongInSetKey(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong, String nextsong) {
+    public String grabNextSongInSetKey(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong, String folder, String filename) {
         String nextkey = "";
 
         // Get the android version
         boolean nextisxml = true;
-        if (nextsong.toLowerCase(Locale.ROOT).endsWith(".pdf") ||
-                nextsong.toLowerCase(Locale.ROOT).endsWith(".doc") ||
-                nextsong.toLowerCase(Locale.ROOT).endsWith(".docx") ||
-                nextsong.toLowerCase(Locale.ROOT).endsWith(".jpg") ||
-                nextsong.toLowerCase(Locale.ROOT).endsWith(".jpeg") ||
-                nextsong.toLowerCase(Locale.ROOT).endsWith(".png") ||
-                nextsong.toLowerCase(Locale.ROOT).endsWith(".gif") ||
-                nextsong.toLowerCase(Locale.ROOT).endsWith(".bmp")) {
+        if (filename.toLowerCase(Locale.ROOT).endsWith(".pdf") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".doc") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".docx") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".jpg") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".jpeg") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".png") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".gif") ||
+                filename.toLowerCase(Locale.ROOT).endsWith(".bmp")) {
             nextisxml = false;
         }
 
@@ -600,11 +596,10 @@ public class LoadSong {
         Uri uri = null;
         String subfolder = "";
         if (nextisxml) {
-            if (nextsong.contains("**") || nextsong.contains("../")) {
-                subfolder = nextsong;
-                nextsong = "";
+            if (folder.contains("**") || folder.contains("../")) {
+                subfolder = folder;
             }
-            uri = storageAccess.getUriForItem(c, preferences, "Songs", subfolder, nextsong);
+            uri = storageAccess.getUriForItem(c, preferences, "Songs", subfolder, filename);
             nextutf = storageAccess.getUTFEncoding(c, uri);
         }
 

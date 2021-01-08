@@ -18,6 +18,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.DocumentsContract;
+import android.provider.OpenableColumns;
 import android.util.Base64;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
@@ -28,7 +29,7 @@ import androidx.documentfile.provider.DocumentFile;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -125,8 +126,12 @@ public class StorageAccess {
                     return false;
                 }
             } else {
-                File f = new File(uri.getPath());
-                return f.canWrite();
+                if (uri.getPath() != null) {
+                    File f = new File(uri.getPath());
+                    return f.canWrite();
+                } else {
+                    return false;
+                }
             }
         }
     }
@@ -759,10 +764,10 @@ public class StorageAccess {
                 if (eventType == XmlPullParser.START_TAG) {
                     if (xpp.getName().equals("lyrics")) {
                         found = true; // It's a song
-                        StaticVariables.myToastMessage = "foundsong";
+                        // TODO maybe add a return message "foundsong"
                     } else if (xpp.getName().equals("set")) {
                         found = true; // It's a set
-                        StaticVariables.myToastMessage = "foundset";
+                        // TODO maybe add a return message "foundset"
                     }
                 }
                 // If it isn't an xml file, an error is about to be thrown
@@ -780,7 +785,7 @@ public class StorageAccess {
     public boolean isTextFile(Uri uri) {
         boolean istext = false;
         if (uri!=null && uri.getLastPathSegment()!=null) {
-            String name = uri.getLastPathSegment().toLowerCase(StaticVariables.locale);
+            String name = uri.getLastPathSegment().toLowerCase(Locale.ROOT);
             if ((!name.contains(".pdf") && !name.contains(".doc") &&
                     !name.contains(".docx") && !name.contains(".png") &&
                     !name.contains(".jpg") && !name.contains(".gif") &&
@@ -824,7 +829,7 @@ public class StorageAccess {
     }
     boolean determineFileTypeByExtension(Song song) {
         // Determines if we can load song as text, image or pdf
-        String file_ext = StaticVariables.songfilename;
+        String file_ext = song.getFilename();
         boolean isImgOrPDF = false;
 
         if (file_ext!=null) {
@@ -1381,20 +1386,46 @@ public class StorageAccess {
         }
         return intent;
     }
+    public String getActualFilename(Context c, String string) {
+        Uri uri = Uri.parse(string);
+        if (lollipopOrLater()) {
+            try {
 
+                Cursor cursor = c.getContentResolver().query(uri,null,null,null,null);
+                if (cursor!=null) {
+                    int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    cursor.moveToFirst();
+                    String name = cursor.getString(nameIndex);
+                    cursor.close();
+                    return name;
+                } else {
+                    return uri.getPath();
+                }
+            } catch (Exception e) {
+                return uri.getPath();
+            }
+        } else {
+            if (uri==null) {
+                return string;
+            } else {
+                return uri.getLastPathSegment();
+            }
+        }
+    }
 
 
 
 
     // Actions for folders (create, delete, rename, clear)
-    boolean renameFolder(Context c, Preferences preferences, String oldsubfolder, String newsubfolder) {
+    boolean renameFolder(Context c, Preferences preferences, ShowToast showToast, Song song, String oldsubfolder, String newsubfolder) {
         if (lollipopOrLater()) {
-            return renameFolder_SAF(c, preferences, oldsubfolder, newsubfolder);
+            return renameFolder_SAF(c, preferences, showToast, song, oldsubfolder, newsubfolder);
         } else {
-            return renameFolder_File(c, preferences, oldsubfolder, newsubfolder);
+            return renameFolder_File(c, preferences, showToast, song, oldsubfolder, newsubfolder);
         }
     }
-    private boolean renameFolder_File(Context c, Preferences preferences, String oldsubfolder, String newsubfolder) {
+    private boolean renameFolder_File(Context c, Preferences preferences, ShowToast showToast,
+                                      Song song, String oldsubfolder, String newsubfolder) {
         // Now the long bit.  Go through the original folder and copy the files to the new location
         Uri oldUri = getUriForItem(c, preferences, "Songs", oldsubfolder, "");
         Uri newUri = getUriForItem(c, preferences, "Songs", newsubfolder, "");
@@ -1404,47 +1435,48 @@ public class StorageAccess {
                 File oldfile = new File(oldUri.getPath());
                 File newfile = new File(newUri.getPath());
                 if (oldfile.renameTo(newfile)) {
-                    StaticVariables.myToastMessage = c.getString(R.string.rename) + " - " +
-                            c.getString(android.R.string.ok);
-                    StaticVariables.whichSongFolder = newsubfolder;
+                    showToast.setMessage(c.getString(R.string.rename) + " - " +
+                            c.getString(android.R.string.ok));
+                    song.setFolder(newsubfolder);
                     return true;
                 } else {
-                    StaticVariables.myToastMessage = c.getString(R.string.rename) + " - " +
-                            c.getString(R.string.create_folder_error);
+                    showToast.setMessage(c.getString(R.string.rename) + " - " +
+                            c.getString(R.string.create_folder_error));
                     return false;
                 }
             } else {
-                StaticVariables.myToastMessage = c.getString(R.string.rename) + " - " +
-                        c.getString(R.string.create_folder_error);
+                showToast.setMessage(c.getString(R.string.rename) + " - " +
+                        c.getString(R.string.create_folder_error));
                 return false;
             }
         } else {
-            StaticVariables.myToastMessage = c.getString(R.string.rename) +
-                    " - " + c.getString(R.string.folder_exists);
+            showToast.setMessage(c.getString(R.string.rename) +
+                    " - " + c.getString(R.string.folder_exists));
             return false;
         }
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private boolean renameFolder_SAF(Context c, Preferences preferences, String oldsubfolder, String newsubfolder) {
+    private boolean renameFolder_SAF(Context c, Preferences preferences, ShowToast showToast,
+                                     Song song, String oldsubfolder, String newsubfolder) {
         // SAF can only rename final name (can't move within directory structure) - No / allowed!
         Uri oldUri = getUriForItem(c, preferences, "Songs", oldsubfolder, "");
         if (!newsubfolder.contains("/")) {
             try {
                 DocumentsContract.renameDocument(c.getContentResolver(), oldUri, newsubfolder);
-                StaticVariables.myToastMessage = c.getString(R.string.rename) + " - " +
-                        c.getString(android.R.string.ok);
-                StaticVariables.whichSongFolder = newsubfolder;
+                showToast.setMessage(c.getString(R.string.rename) + " - " +
+                        c.getString(android.R.string.ok));
+                song.setFolder(newsubfolder);
                 return true;
             } catch (Exception e) {
-                StaticVariables.myToastMessage = c.getString(R.string.rename) + " - " +
-                        c.getString(R.string.create_folder_error);
+                showToast.setMessage(c.getString(R.string.rename) + " - " +
+                        c.getString(R.string.create_folder_error));
                 return false;
             }
         } else {
             // TODO write a script that iterates through the directory and subdirectories it contains
             // And copy them to the new location one at a time, then delete the old folder
-            StaticVariables.myToastMessage = c.getString(R.string.rename) + " - " +
-                    c.getString(R.string.create_folder_error);
+            showToast.setMessage(c.getString(R.string.rename) + " - " +
+                    c.getString(R.string.create_folder_error));
             return false;
         }
     }

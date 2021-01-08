@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 public class ExportActions {
 
-    String emailText = "";
-
     public Intent setEmailIntent(String subject, String title, String content) {
         Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
         emailIntent.setType("text/plain");

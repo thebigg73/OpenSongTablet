@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.songsandsets;
+package com.garethevans.church.opensongtablet.songsandsetsmenu;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,19 +19,20 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.MenuSetsDialogBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
+import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 
 public class SetMenuDialog extends DialogFragment {
 
-    MenuSetsDialogBinding menuSetsDialogBinding;
+    MenuSetsDialogBinding myView;
     MainActivityInterface mainActivityInterface;
+    CurrentSet currentSet;
+    Preferences preferences;
+    SetActions setActions;
 
     String fragName;
     Fragment callingFragment;
 
-    SetMenuDialog (String fragName, Fragment callingFragment) {
-        this.fragName = fragName;
-        this.callingFragment = callingFragment;
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -48,19 +50,27 @@ public class SetMenuDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        menuSetsDialogBinding = MenuSetsDialogBinding.inflate(inflater, container, false);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        myView = MenuSetsDialogBinding.inflate(inflater, container, false);
+        Window w = getDialog().getWindow();
+        if (w!=null) {
+            w.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
 
-        SongForSet songForSet = new SongForSet();
-        Preferences preferences = new Preferences();
-        SetActions setActions = new SetActions();
+        // Get the helpers set up
+        getHelpers();
 
-        menuSetsDialogBinding.createSet.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("newSet",getActivity().getResources().getString(R.string.set_new),null,fragName,callingFragment,null));
+        myView.createSet.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("newSet",getString(R.string.set_new),null,fragName,callingFragment,null));
         //menuSetsDialogBinding.saveSet.setOnClickListener(v -> setActions.saveTheSet());
         //menuSetsDialogBinding.manageSets.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.nav_manageSets));
         //menuSetsDialogBinding.addCustomSlide.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.customSlide));
 
-        return menuSetsDialogBinding.getRoot();
+        return myView.getRoot();
+    }
+
+    private void getHelpers() {
+        currentSet = mainActivityInterface.getCurrentSet();
+        preferences = mainActivityInterface.getPreferences();
+        setActions = mainActivityInterface.getSetActions();
     }
 
 

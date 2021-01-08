@@ -25,15 +25,15 @@ import java.util.ArrayList;
 
 public class PageButtonFragment extends Fragment {
 
-    Preferences preferences;
-    MainActivityInterface mainActivityInterface;
-    PageButtons pageButtons;
-    ArrayList<String> buttonActions;
-    ArrayList<String> buttonText;
-    ArrayList<String> shortActionText;
-    ArrayList<String> longActionText;
-    SettingsPagebuttonsBinding myView;
-    int opt1, opt2, opt3, opt4, opt5, opt6;
+    private Preferences preferences;
+    private MainActivityInterface mainActivityInterface;
+    private PageButtons pageButtons;
+    private ArrayList<String> buttonActions;
+    private ArrayList<String> buttonText;
+    private ArrayList<String> shortActionText;
+    private ArrayList<String> longActionText;
+    private SettingsPagebuttonsBinding myView;
+    private int opt1, opt2, opt3, opt4, opt5, opt6;
 
     @Override
     public void onAttach(@NonNull Context context) {

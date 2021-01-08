@@ -4,13 +4,18 @@ import android.content.Context;
 import android.content.res.Configuration;
 
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 import java.util.Locale;
 
 public class FixLocale {
 
-    public void fixLocale(Context c, Preferences preferences) {
+    private Locale userLocale;
+
+    public Locale getLocale() {
+        return userLocale;
+    }
+
+    public void setLocale(Context c, Preferences preferences) {
         // Locale
         try {
             // Get the user's preference
@@ -18,7 +23,7 @@ public class FixLocale {
 
             // If this is already set, that' what we will use
             if (val!=null) {
-                StaticVariables.locale = new Locale(val);
+                userLocale = new Locale(val);
 
             } else {
                 // No locale is set, so let's see if the user's language is supported
@@ -31,7 +36,7 @@ public class FixLocale {
                     deviceval = "en";
                 }
 
-                StaticVariables.locale = new Locale(deviceval);
+                userLocale = new Locale(deviceval);
 
                 // Save our preference
                 preferences.setMyPreferenceString(c,"language",deviceval);
@@ -39,13 +44,13 @@ public class FixLocale {
 
             // Load the appropriate translations
             Configuration configuration = new Configuration();
-            Locale.setDefault(StaticVariables.locale);
-            configuration.setLocale(StaticVariables.locale);
+            Locale.setDefault(userLocale);
+            configuration.setLocale(userLocale);
             c.getResources().updateConfiguration(configuration, c.getResources().getDisplayMetrics());
 
         } catch (Exception e) {
             e.printStackTrace();
-            StaticVariables.locale = new Locale("en");
+            userLocale = new Locale("en");
         }
     }
 }

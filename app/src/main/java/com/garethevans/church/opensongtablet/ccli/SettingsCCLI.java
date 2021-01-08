@@ -9,25 +9,19 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.customviews.PrefTextLinkView;
 import com.garethevans.church.opensongtablet.databinding.SettingsCcliBinding;
-import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.TextInputDialogFragment;
 
 public class SettingsCCLI extends Fragment {
 
-    SettingsCcliBinding myView;
-    MainActivityInterface mainActivityInterface;
-    Preferences preferences;
-    SwitchCompat ccliAuto;
-    PrefTextLinkView ccliChurch, ccliLicence, ccliView, ccliExport, ccliDelete;
-    StorageAccess storageAccess;
+    private SettingsCcliBinding myView;
+    private MainActivityInterface mainActivityInterface;
+    private Preferences preferences;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -57,38 +51,31 @@ public class SettingsCCLI extends Fragment {
     }
 
     private void prepareHelpers() {
-        preferences = new Preferences();
-        storageAccess = new StorageAccess();
+        preferences = mainActivityInterface.getPreferences();
     }
 
     private void setCurrentValues() {
-        ccliAuto = myView.ccliAutomatic;
-        ccliChurch = myView.ccliChurch;
-        ccliLicence = myView.ccliLicence;
-        ccliView = myView.ccliView;
-        ccliExport = myView.ccliExport;
-        ccliDelete = myView.ccliDelete;
-        ccliAuto.setChecked(preferences.getMyPreferenceBoolean(requireContext(), "ccliAutomaticLogging", false));
-        ((TextView)ccliChurch.findViewById(R.id.subText))
-                .setText(preferences.getMyPreferenceString(requireContext(), "ccliChurchName", ""));
-        ((TextView)ccliLicence.findViewById(R.id.subText))
-                .setText(preferences.getMyPreferenceString(requireContext(), "ccliLicence", ""));
+        myView.ccliAutomatic.setChecked(preferences.getMyPreferenceBoolean(requireContext(), "myView.ccliAutomaticmaticLogging", false));
+        ((TextView)myView.ccliChurch.findViewById(R.id.subText))
+                .setText(preferences.getMyPreferenceString(requireContext(), "myView.ccliChurchName", ""));
+        ((TextView)myView.ccliLicence.findViewById(R.id.subText))
+                .setText(preferences.getMyPreferenceString(requireContext(), "myView.ccliLicence", ""));
     }
 
     private void setListeners() {
-        ccliChurch.setOnClickListener(v -> showDialog(new TextInputDialogFragment(preferences, this,
+        myView.ccliChurch.setOnClickListener(v -> showDialog(new TextInputDialogFragment(preferences, this,
                 "SettingsCCLI", getString(R.string.ccli_church), getString(R.string.ccli_church),
-                "ccliChurchName", preferences.getMyPreferenceString(requireContext(),
-                "ccliChurchName", ""))));
-        ccliLicence.setOnClickListener(v -> showDialog(new TextInputDialogFragment(preferences, this,
+                "myView.ccliChurchName", preferences.getMyPreferenceString(requireContext(),
+                "myView.ccliChurchName", ""))));
+        myView.ccliLicence.setOnClickListener(v -> showDialog(new TextInputDialogFragment(preferences, this,
                 "SettingsCCLI", getString(R.string.ccli_licence), getString(R.string.ccli_licence),
-                "ccliLicence", preferences.getMyPreferenceString(requireContext(),
-                "ccliLicence", ""))));
-        ccliAuto.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(requireContext(),
-                "ccliAutomaticLogging", isChecked));
-        ccliView.setOnClickListener(v -> showDialog());
-        ccliExport.setOnClickListener(view -> mainActivityInterface.doExport("ccliLog"));
-        ccliDelete.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("ccliDelete",
+                "myView.ccliLicence", preferences.getMyPreferenceString(requireContext(),
+                "myView.ccliLicence", ""))));
+        myView.ccliAutomatic.setOnCheckedChangeListener((buttonView, isChecked) -> preferences.setMyPreferenceBoolean(requireContext(),
+                "myView.ccliAutomaticmaticLogging", isChecked));
+        myView.ccliView.setOnClickListener(v -> showDialog());
+        myView.ccliExport.setOnClickListener(view -> mainActivityInterface.doExport("ccliLog"));
+        myView.ccliDelete.setOnClickListener(v -> mainActivityInterface.displayAreYouSure("myView.ccliDelete",
                 getString(R.string.ccli_reset),null,"SettingsCCLI", this, null));
     }
 
@@ -103,9 +90,9 @@ public class SettingsCCLI extends Fragment {
 
     // Called from MainActivity after TextInputDialogFragment save
     public void updateValue(String which, String value) {
-        if (which.equals("ccliChurchName")) {
+        if (which.equals("myView.ccliChurchName")) {
             ((TextView)myView.ccliChurch.findViewById(R.id.subText)).setText(value);
-        } else if (which.equals("ccliLicence")){
+        } else if (which.equals("myView.ccliLicence")){
             ((TextView)myView.ccliLicence.findViewById(R.id.subText)).setText(value);
         }
     }

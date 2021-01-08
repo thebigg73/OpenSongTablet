@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.filemanagement;
+package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,19 +10,19 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.garethevans.church.opensongtablet.databinding.FragmentEditSong3Binding;
+import com.garethevans.church.opensongtablet.databinding.FragmentEditSong2Binding;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.songsandsets.SongListAdapter;
+import com.garethevans.church.opensongtablet.songsandsetsmenu.SongListAdapter;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
-public class EditSongFragmentTags extends Fragment {
+public class EditSongFragmentFeatures extends Fragment {
 
     // The helper classes used
     private Preferences preferences;
     private SQLiteHelper sqLiteHelper;
     private SongListAdapter songListAdapter;
 
-    FragmentEditSong3Binding myView;
+    FragmentEditSong2Binding myView;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -38,7 +38,7 @@ public class EditSongFragmentTags extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        myView = FragmentEditSong3Binding.inflate(inflater, container, false);
+        myView = FragmentEditSong2Binding.inflate(inflater, container, false);
 
         return myView.getRoot();
     }

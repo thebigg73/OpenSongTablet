@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.songsandsets;
+package com.garethevans.church.opensongtablet.songsandsetsmenu;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,7 +24,8 @@ import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.getnewsongs.OCR;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
+import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
+import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
@@ -32,19 +33,19 @@ import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 public class SongMenuDialog extends DialogFragment {
 
-    MenuSongsDialogBinding myView;
-    MainActivityInterface mainActivityInterface;
-    SongForSet songForSet;
-    Preferences preferences;
-    SetActions setActions;
-    StorageAccess storageAccess;
-    ProcessSong processSong;
-    SQLiteHelper sqLiteHelper;
-    CommonSQL commonSQL;
-    MakePDF makePDF;
-    OCR ocr;
-    NewNameDialog dialog;
-    Song thisSong;
+    private MenuSongsDialogBinding myView;
+    private MainActivityInterface mainActivityInterface;
+    private SetActions setActions;
+    private CurrentSet currentSet;
+    private Preferences preferences;
+    private StorageAccess storageAccess;
+    private ProcessSong processSong;
+    private SQLiteHelper sqLiteHelper;
+    private CommonSQL commonSQL;
+    private MakePDF makePDF;
+    private OCR ocr;
+    private NewNameDialog dialog;
+    private Song thisSong;
 
     private final String folder;
     private final String song;
@@ -86,20 +87,20 @@ public class SongMenuDialog extends DialogFragment {
     }
 
     private void setHelpers() {
-        songForSet = new SongForSet();
-        preferences = new Preferences();
-        setActions = new SetActions();
-        makePDF = new MakePDF();
-        ocr = new OCR();
-        storageAccess = new StorageAccess();
-        processSong = new ProcessSong();
-        sqLiteHelper = new SQLiteHelper(getContext());
-        commonSQL = new CommonSQL();
+        setActions = mainActivityInterface.getSetActions();
+        currentSet = mainActivityInterface.getCurrentSet();
+        preferences = mainActivityInterface.getPreferences();
+        makePDF = mainActivityInterface.getMakePDF();
+        ocr = mainActivityInterface.getOCR();
+        storageAccess = mainActivityInterface.getStorageAccess();
+        processSong = mainActivityInterface.getProcessSong();
+        sqLiteHelper = mainActivityInterface.getSQLiteHelper();
+        commonSQL = mainActivityInterface.getCommonSQL();
     }
 
     private void setListeners() {
         // Listeners for the currently loaded song
-        myView.editButton.setOnClickListener(new ActionClickListener(R.id.nav_editSong,"editSong"));
+        myView.editButton.setOnClickListener(new ActionClickListener(R.id.editSongFragment,"editSong"));
         myView.duplicateButton.setOnClickListener(new ActionClickListener(0, "duplicateSong"));
         myView.deleteButton.setOnClickListener(new ActionClickListener(0, "deleteSong"));
         myView.setButton.setOnClickListener(v -> new ActionClickListener(0,"addToSet"));
@@ -122,24 +123,26 @@ public class SongMenuDialog extends DialogFragment {
         public void onClick(View v) {
             switch (str) {
                 case "editSong":
-                    StaticVariables.whichSongFolder = folder;
-                    StaticVariables.songfilename = song;
                     mainActivityInterface.navigateToFragment(id);
                     break;
 
                 case "duplicateSong":
-                    dialog = new NewNameDialog(null,"duplicateSong",true,"Songs",StaticVariables.whichSongFolder,thisSong);
+                    dialog = new NewNameDialog(null,"duplicateSong",true,"Songs",mainActivityInterface.getSong().getFolder(),thisSong);
                     dialog.show(getActivity().getSupportFragmentManager(),"NewNameDialog");
                     break;
 
                 case "deleteSong":
-                    String str = getString(R.string.delete) + ": " +
-                            StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename;
+                    String str = getString(R.string.delete) + ": " + commonSQL.getAnySongId(mainActivityInterface.getSong().getFolder(),
+                            mainActivityInterface.getSong().getFilename());
                     mainActivityInterface.displayAreYouSure("deleteSong", str,null, "SongMenuFragment",null,thisSong);
                     break;
 
                 case "addToSet":
-                    songForSet.addToSet(getContext(),preferences,setActions,StaticVariables.whichSongFolder,StaticVariables.songfilename);
+                    Song tsong = new Song();
+                    tsong.setFilename(song);
+                    tsong.setFolder(folder);
+                    tsong.setSongid(commonSQL.getAnySongId(folder,song));
+                    setActions.addToSet(getContext(),preferences,currentSet,tsong);
                     mainActivityInterface.refreshSetList();
                     break;
 
@@ -151,7 +154,7 @@ public class SongMenuDialog extends DialogFragment {
 
                 case "createSong":
                     // The user is first asked for a new song name.  It is then created and then the user is sent to the edit page.
-                    dialog = new NewNameDialog(null,"createNewSong",true,"Songs",StaticVariables.whichSongFolder,thisSong);
+                    dialog = new NewNameDialog(null,"createNewSong",true,"Songs",mainActivityInterface.getSong().getFolder(),thisSong);
                     dialog.show(getActivity().getSupportFragmentManager(),"NewNameDialog");
                     break;
 

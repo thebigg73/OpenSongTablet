@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class PrepareFormats {
 
-    Song thisSongSQL;
+    private Song thisSongSQL;
 
     // TODO IV Request to export Variations properly as it isn't in SQL database
 

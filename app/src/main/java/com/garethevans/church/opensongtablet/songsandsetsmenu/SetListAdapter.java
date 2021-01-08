@@ -1,36 +1,37 @@
-package com.garethevans.church.opensongtablet.songsandsets;
+package com.garethevans.church.opensongtablet.songsandsetsmenu;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
+import com.garethevans.church.opensongtablet.setprocessing.SetActions;
+import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
+import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.Collections;
 import java.util.List;
 
-class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHolder> {
+public class SetListAdapter extends RecyclerView.Adapter<SetItemViewHolder> implements FastScrollRecyclerView.SectionedAdapter  {
 
+    // All the helpers we need to access are in the MainActivity
+    private final MainActivityInterface mainActivityInterface;
     private final List<SetItemInfo> setList;
-    private final Context c;
-    private final Preferences preferences;
-    private final ShowToast showToast;
 
-    SetListAdapter(List<SetItemInfo> setList, Context context, Preferences p, ShowToast t) {
+    SetListAdapter(MainActivityInterface mainActivityInterface, List<SetItemInfo> setList) {
+        this.mainActivityInterface = mainActivityInterface;
         this.setList = setList;
-        c = context;
-        preferences = p;
-        showToast = t;
     }
 
     @Override
@@ -40,6 +41,7 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
 
     @Override
     public void onBindViewHolder(@NonNull SetItemViewHolder setitemViewHolder, int i) {
+        Context c = mainActivityInterface.getActivity();
         SetItemInfo si = setList.get(i);
         String key = si.songkey;
         String titlesongname = si.songtitle;
@@ -89,51 +91,30 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
 
         final String songname = si.songtitle;
         final String songfolder = folderrelocate;
-        int getitemnum;
-        try {
-            getitemnum = Integer.parseInt(si.songitem.replace(".", ""));
-        } catch (Exception e) {
-            getitemnum = 0;
-        }
-        getitemnum--;
-        final int item = getitemnum;
+
         setitemViewHolder.vCard.setOnClickListener(v -> {
-            StaticVariables.songfilename = songname;
-            if (songfolder.equals(c.getString(R.string.mainfoldername)) || songfolder.equals("MAIN") || songfolder.equals("")) {
-                StaticVariables.whatsongforsetwork = "$**_" + songname + "_**$";
-            } else {
-                StaticVariables.whatsongforsetwork = "$**_" + songfolder + "/" + songname + "_**$";
-            }
-            StaticVariables.whichSongFolder = songfolder;
-            StaticVariables.indexSongInSet = item;
-            StaticVariables.nextSongInSet = "";
-            StaticVariables.previousSongInSet = "";
-            // Get set position
-            boolean issue = false;
-            if (item > 0 && StaticVariables.mSet.length >= item - 1) {
-                StaticVariables.previousSongInSet = StaticVariables.mSet[item - 1];
-            } else {
-                issue = true;
-            }
-            if (item != StaticVariables.setSize - 1 && StaticVariables.mSet.length>(item+1)) {
-                StaticVariables.nextSongInSet = StaticVariables.mSet[item + 1];
-            } else {
-                issue = true;
-            }
+            Song song = mainActivityInterface.getSong();
+            song.setFolder(songfolder);
+            song.setFilename(songname);
+            SetActions setActions = mainActivityInterface.getSetActions();
+            CurrentSet currentSet = mainActivityInterface.getCurrentSet();
+            Preferences preferences = mainActivityInterface.getPreferences();
+            StorageAccess storageAccess = mainActivityInterface.getStorageAccess();
+            ShowToast showToast = mainActivityInterface.getShowToast();
+            LoadSong loadSong = mainActivityInterface.getLoadSong();
+            ProcessSong processSong = mainActivityInterface.getProcessSong();
+            setActions.setSongForSetWork(c,songfolder,songname);
+            setActions.indexSongInSet(currentSet,song);
 
-            if (issue) {
-                SetActions setActions = new SetActions();
-                setActions.indexSongInSet();
-            }
-
-            if (StaticVariables.whattodo.equals("setitemvariation")) {
-                SetMenuFragment.makeVariation(c, preferences, showToast);
+            if (mainActivityInterface.getWhattodo().equals("setitemvariation")) {
+                setActions.makeVariation(c, storageAccess, preferences, currentSet, processSong, showToast, song, loadSong);
 
             } else {
-                SetMenuFragment.loadSong(c,preferences);
+                // TODO
+                // Run on main activity and send to either presentation or performance fragment
             }
         });
-        if (StaticVariables.whattodo.equals("setitemvariation") && !issong) {
+        if (mainActivityInterface.getWhattodo().equals("setitemvariation") && !issong) {
             // Only songs should be able to have variations
             setitemViewHolder.vCard.setOnClickListener(null);
         }
@@ -141,7 +122,7 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
 
     @NonNull
     @Override
-    public SetItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public SetItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
                 inflate(R.layout._setitem_cardview, viewGroup, false);
@@ -149,48 +130,37 @@ class SetListAdapter extends RecyclerView.Adapter<SetListAdapter.SetItemViewHold
         return new SetItemViewHolder(itemView);
     }
 
-    static class SetItemViewHolder extends RecyclerView.ViewHolder {
 
-        final TextView vItem;
-        final TextView vSongTitle;
-        final TextView vSongFolder;
-        final FloatingActionButton vIcon;
-        final RelativeLayout vCard;
 
-        SetItemViewHolder(View v) {
-            super(v);
-            vCard = v.findViewById(R.id.cardview_layout);
-            vItem = v.findViewById(R.id.cardview_item);
-            vSongTitle = v.findViewById(R.id.cardview_songtitle);
-            vSongFolder = v.findViewById(R.id.cardview_folder);
-            vIcon = v.findViewById(R.id.cardview_icon);
-        }
-    }
-
-    void swap(int firstPosition, int secondPosition){
+    public void swap(CurrentSet currentSet, int firstPosition, int secondPosition){
         try {
             Collections.swap(setList, firstPosition, secondPosition);
             notifyItemMoved(firstPosition, secondPosition);
-            Collections.swap(StaticVariables.mTempSetList, firstPosition, secondPosition);
-            Collections.swap(SetMenuFragment.mSongName, firstPosition, secondPosition);
-            Collections.swap(SetMenuFragment.mFolderName, firstPosition, secondPosition);
-            StaticVariables.setchanged = true;
+            Collections.swap(currentSet.getCurrentSet(), firstPosition, secondPosition);
+            Collections.swap(currentSet.getCurrentSet_Folder(), firstPosition, secondPosition);
+            Collections.swap(currentSet.getCurrentSet_Filename(), firstPosition, secondPosition);
+            Collections.swap(currentSet.getCurrentSet_Key(), firstPosition, secondPosition);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void remove(int position) {
+    public void remove(CurrentSet currentSet, int position) {
         try {
             setList.remove(position);
             notifyItemRemoved(position);
-            StaticVariables.mTempSetList.remove(position);
-            SetMenuFragment.mSongName.remove(position);
-            SetMenuFragment.mFolderName.remove(position);
-            StaticVariables.setchanged = true;
+            currentSet.getCurrentSet().remove(position);
+            currentSet.getCurrentSet_Folder().remove(position);
+            currentSet.getCurrentSet_Filename().remove(position);
+            currentSet.getCurrentSet_Key().remove(position);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    @NonNull
+    @Override
+    public String getSectionName(int position) {
+        return null;
+    }
 }

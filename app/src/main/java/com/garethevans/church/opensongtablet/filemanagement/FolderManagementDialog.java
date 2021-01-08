@@ -27,13 +27,11 @@ import java.util.ArrayList;
 
 public class FolderManagementDialog extends DialogFragment {
 
-    StorageFolderDialogBinding myView;
-    MainActivityInterface mainActivityInterface;
-    boolean root, songs;
-    String subdir;
-    Fragment callingFragment;
-    StorageAccess storageAccess;
-    Preferences preferences;
+    private MainActivityInterface mainActivityInterface;
+    private final boolean root;
+    private final boolean songs;
+    private final String subdir;
+    private final Fragment callingFragment;
 
     FolderManagementDialog(Fragment callingFragment, boolean root, boolean songs, String subdir) {
         this.callingFragment = callingFragment;
@@ -62,30 +60,30 @@ public class FolderManagementDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        myView = StorageFolderDialogBinding.inflate(inflater,container,false);
+        com.garethevans.church.opensongtablet.databinding.StorageFolderDialogBinding myView = StorageFolderDialogBinding.inflate(inflater, container, false);
         Window w = requireDialog().getWindow();
         if (w!=null) {
             w.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
 
-        storageAccess = new StorageAccess();
-        preferences = new Preferences();
+        StorageAccess storageAccess = mainActivityInterface.getStorageAccess();
+        Preferences preferences = mainActivityInterface.getPreferences();
 
         if (root) {
-            myView.currentLocation.setText(storageAccess.niceUriTree(getContext(),preferences,storageAccess.homeFolder(getContext(),null,preferences))[1]);
+            myView.currentLocation.setText(storageAccess.niceUriTree(getContext(), preferences, storageAccess.homeFolder(getContext(),null, preferences))[1]);
             myView.backupFolder.setVisibility(View.GONE);
             myView.createSubdirectory.setVisibility(View.GONE);
             myView.moveContents.setVisibility(View.GONE);
             myView.renameFolder.setVisibility(View.GONE);
             myView.deleteSubdirectory.setVisibility(View.GONE);
-            myView.changeLocation.setOnClickListener(new ActionClickListener("resetStorage", R.id.nav_storage));
+            myView.changeLocation.setOnClickListener(new ActionClickListener("resetStorage", R.id.setStorageLocationFragment));
         } else if (songs) {
             String s = "OpenSong/Songs";
             myView.currentLocation.setText(s);
             myView.changeLocation.setVisibility(View.GONE);
             myView.renameFolder.setVisibility(View.GONE);
             myView.moveContents.setVisibility(View.GONE);
-            myView.deleteSubdirectory.setVisibility(View.GONE);
+            myView.deleteSubdirectory.setOnClickListener(new ActionClickListener("deleteItem", 0));
             myView.createSubdirectory.setOnClickListener(new ActionClickListener("createItem", 0));
             myView.backupFolder.setOnClickListener(new ActionClickListener("backupOSB", 0));
         } else {
@@ -118,19 +116,19 @@ public class FolderManagementDialog extends DialogFragment {
             switch (what) {
                 case "resetStorage":
                     NavOptions navOptions = new NavOptions.Builder()
-                            .setPopUpTo(R.id.nav_storage, true)
+                            .setPopUpTo(R.id.setStorageLocationFragment, true)
                             .build();
                     NavHostFragment.findNavController(callingFragment)
-                            .navigate(R.id.action_nav_storageManagement_to_nav_storage,null,navOptions);
+                            .navigate(R.id.setStorageLocationFragment,null,navOptions);
                     break;
 
                 case "backupOSB":
                     NavHostFragment.findNavController(callingFragment)
-                            .navigate(R.id.action_nav_storageManagement_to_backupFragment,null,null);
+                            .navigate(R.id.backupOSBFragment,null,null);
                     break;
 
                 case "deleteItem":
-                    action = getString(R.string.delete) + ": " + "OpenSong/Songs/"+ subdir + "\n" + getString(R.string.delete_folder_warning);
+                    action = getString(R.string.delete) + ": " + "OpenSong/Songs/" + subdir + "\n" + getString(R.string.delete_folder_warning);
                     arguments = new ArrayList<>();
                     arguments.add("Songs");
                     arguments.add(subdir);

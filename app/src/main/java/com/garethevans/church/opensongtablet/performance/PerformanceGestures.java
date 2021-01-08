@@ -10,36 +10,37 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.autoscroll.AutoscrollActions;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.pads.PadFunctions;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
+import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.songsandsets.SetActions;
 
 import java.util.ArrayList;
 
 public class PerformanceGestures {
 
-    Context c;
-    PerformanceFragment performanceFragment;
-    Preferences preferences;
-    SetActions setActions;
-    StorageAccess storageAccess;
-    PadFunctions padFunctions;
-    Metronome metronome;
-    ShowToast showToast;
-    DoVibrate doVibrate;
-    MainActivityInterface mainActivityInterface;
-    DrawerLayout drawerLayout;
-    Handler delayactionBarHide;
-    Runnable hideActionBarRunnable;
-    MediaPlayer mPlayer1,mPlayer2;
-    int defmetronomecolor;
+    private Context c;
+    private PerformanceFragment performanceFragment;
+    private final Preferences preferences;
+    private final SetActions setActions;
+    private final StorageAccess storageAccess;
+    private final PadFunctions padFunctions;
+    private final Metronome metronome;
+    private final ShowToast showToast;
+    private final DoVibrate doVibrate;
+    private final MainActivityInterface mainActivityInterface;
+    private final DrawerLayout drawerLayout;
+    private final Handler delayactionBarHide;
+    private final Runnable hideActionBarRunnable;
+    private final MediaPlayer mPlayer1;
+    private final MediaPlayer mPlayer2;
+    private int defmetronomecolor;
 
     PerformanceGestures(Context c, Preferences preferences, StorageAccess storageAccess, SetActions setActions, PadFunctions padFunctions, Metronome metronome,
                         PerformanceFragment performanceFragment, MainActivityInterface mainActivityInterface,
@@ -69,7 +70,7 @@ public class PerformanceGestures {
         } else {
             mainActivityInterface.closeDrawer(false);
         }
-        StaticVariables.wasscrolling = false;
+        mainActivityInterface.getAutoscrollActions().setWasScrolling(false);
         try {
             delayactionBarHide.removeCallbacks(hideActionBarRunnable);
         } catch (Exception e) {
@@ -79,25 +80,26 @@ public class PerformanceGestures {
 
     // Edit song
     private void gesture2() {
-        mainActivityInterface.navigateToFragment(R.id.nav_editSong);
+        mainActivityInterface.navigateToFragment(R.id.editSongFragment);
     }
 
     // Add to set
-    private void gesture3() {
-        String itemForSet = setActions.whatToLookFor(c,StaticVariables.whichSongFolder,StaticVariables.songfilename);
+    private void gesture3(Song song) {
+        String itemForSet = setActions.whatToLookFor(c,song.getFolder(),song.getFilename());
 
         // Allow the song to be added, even if it is already there
         String val = preferences.getMyPreferenceString(c,"setCurrent","") + itemForSet;
         preferences.setMyPreferenceString(c,"setCurrent",val);
 
         // Tell the user that the song has been added.
-        showToast.doIt(c,"\"" + StaticVariables.songfilename + "\" " +
-                c.getResources().getString(R.string.addedtoset));
+        showToast.doIt(c,"\"" + song.getFilename() + "\" " +
+                c.getString(R.string.addedtoset));
 
         // Vibrate to let the user know something happened
         doVibrate.vibrate(c, 50);
 
-        setActions.prepareSetList(c,preferences);
+        //TODO Add the song to the set and prepare the new set list
+        //setActions.prepareSetList(c,preferences);
         mainActivityInterface.updateSetList();
     }
 
@@ -107,18 +109,18 @@ public class PerformanceGestures {
     }
 
     // Stop or start autoscroll
-    public boolean gesture5(boolean isAutoscrolling) {
+    public boolean gesture5(AutoscrollActions autoscrollActions) {
         doVibrate.vibrate(c, 50);
-        if (isAutoscrolling) {
+        if (autoscrollActions.getIsAutoscrolling()) {
             mainActivityInterface.stopAutoscroll();
             return false;  // value for clickedOnAutoScrollStart
         } else {
-            if (StaticVariables.autoscrollok || preferences.getMyPreferenceBoolean(c, "autoscrollUseDefaultTime", true)) {
+            if (autoscrollActions.getAutoscrollOK() || preferences.getMyPreferenceBoolean(c, "autoscrollUseDefaultTime", true)) {
                 mainActivityInterface.startAutoscroll();
                 return true;  // value for clickedOnAutoScrollStart
             } else {
-                showToast.doIt(c,c.getResources().getString(R.string.autoscroll) + " - " +
-                        c.getResources().getString(R.string.not_set));
+                showToast.doIt(c,c.getString(R.string.autoscroll) + " - " +
+                        c.getString(R.string.not_set));
                 return false;  // value for clickedOnAutoScrollStart
             }
         }
@@ -130,7 +132,6 @@ public class PerformanceGestures {
         boolean pad1Playing = padFunctions.getPadStatus(mPlayer1);
         boolean pad2Playing = padFunctions.getPadStatus(mPlayer2);
         // IV - If playing pads then fade to stop
-        // IV - StaticVariables.clickedOnPadStart handled elsewhere
         if ((pad1Playing && !pad1Fading)  || (pad2Playing && !pad2Fading)) {
             doVibrate.vibrate(c, 50);
             mainActivityInterface.fadeoutPad();
@@ -141,8 +142,8 @@ public class PerformanceGestures {
             } else {
                 // We inform the user - 'Not set' which can be valid
                 // IV - gesture6 is now used in page_pad - a page_pad call may result in a loop!
-                showToast.doIt(c,c.getResources().getString(R.string.pad) + " - " +
-                        c.getResources().getString(R.string.not_set));
+                showToast.doIt(c,c.getString(R.string.pad) + " - " +
+                        c.getString(R.string.not_set));
             }
         }
     }
@@ -159,8 +160,8 @@ public class PerformanceGestures {
                     preferences.getMyPreferenceFloat(c, "metronomeVol", 0.5f),
                     preferences.getMyPreferenceInt(c, "metronomeLength", 0));
         } else {
-            showToast.doIt(c,c.getResources().getString(R.string.metronome) + " - " +
-                    c.getResources().getString(R.string.not_set));
+            showToast.doIt(c,c.getString(R.string.metronome) + " - " +
+                    c.getString(R.string.not_set));
         }
     }
 

@@ -17,8 +17,8 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 
 public class ControlMenuFragment extends Fragment {
 
-    SettingsControlBinding myView;
-    MainActivityInterface mainActivityInterface;
+    private SettingsControlBinding myView;
+    private MainActivityInterface mainActivityInterface;
 
     @Override
     public void onAttach(@NonNull Context context) {

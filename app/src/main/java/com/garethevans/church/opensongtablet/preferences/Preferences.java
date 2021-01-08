@@ -76,6 +76,26 @@ public class Preferences extends Activity {
         }
     }
 
+    // The ints used in the app
+    public int getFinalInt(String which) {
+        int value = -1;
+        switch (which) {
+            case "REQUEST_FILE_CHOOSER":
+                value = 5500;
+                break;
+            case "REQUEST_OSB_FILE":
+                value = 5501;
+                break;
+            case "REQUEST_IOS_FILE":
+                value = 5502;
+                break;
+        }
+        return value;
+    }
+
+
+
+
 
     // Below is an alphabetical list of all the user preferences stored in the app!
     //TODO

@@ -20,7 +20,6 @@ import com.garethevans.church.opensongtablet.export.ExportActions;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
@@ -38,17 +37,21 @@ public class BackupOSBFragment extends Fragment {
     // Show the user which folders are detected and can be backed up.
     // By default it will be all of them
 
-    FragmentOsbbackupBinding myView;
-    MainActivityInterface mainActivityInterface;
-    StorageAccess storageAccess;
-    Preferences preferences;
-    CommonSQL commonSQL;
-    SQLiteHelper sqLiteHelper;
-    ExportActions exportActions;
+    private FragmentOsbbackupBinding myView;
+    private MainActivityInterface mainActivityInterface;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
+    private CommonSQL commonSQL;
+    private SQLiteHelper sqLiteHelper;
+    private ExportActions exportActions;
 
-    String backupFilename;
-    ArrayList<String> checkedFolders;
-    boolean error = false;
+    private String backupFilename;
+    private ArrayList<String> checkedFolders;
+    private boolean error = false;
+    private boolean alive = true;
+
+    private Thread thread;
+    private Runnable runnable;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -110,35 +113,36 @@ public class BackupOSBFragment extends Fragment {
         Calendar cal = Calendar.getInstance();
         System.out.println("Current time => " + cal.getTime());
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd", StaticVariables.locale);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd", mainActivityInterface.getLocale());
         String formattedDate = df.format(cal.getTime());
         return "OpenSongBackup_" + formattedDate + ".osb";
     }
 
-    private ArrayList<String> getCheckedFolders() {
-        ArrayList<String> checkedFolders = new ArrayList<>();
+    private void getCheckedFolders() {
+        checkedFolders = new ArrayList<>();
         for (int x=0; x<myView.foundFoldersListView.getChildCount();x++) {
             CheckBox checkBox = (CheckBox) myView.foundFoldersListView.getChildAt(x);
             if (checkBox!=null && checkBox.isChecked() && checkBox.getTag()!=null) {
                 checkedFolders.add(checkBox.getTag().toString());
             }
         }
-        return checkedFolders;
     }
 
     private void doSave() {
-        Runnable runnable = () -> {
+        // Get the checked folders
+        getCheckedFolders();
+        runnable = () -> {
 
             // Get the backup file name and checked folders
             requireActivity().runOnUiThread(() -> {
-                // Check the backup file name
-                backupFilename = myView.backupName.getEditText().getText().toString();
-                // Get the checked folders
-                checkedFolders = getCheckedFolders();
-                // Make the progressText Visible
-                myView.progressText.setVisibility(View.VISIBLE);
-                myView.progressBar.setVisibility(View.VISIBLE);
-
+                if (alive) {
+                    // Check the backup file name
+                    backupFilename = myView.backupName.getEditText().getText().toString();
+                    // Make the progressText Visible
+                    myView.progressText.setVisibility(View.VISIBLE);
+                    myView.progressBar.setVisibility(View.VISIBLE);
+                    myView.createBackupFAB.setEnabled(false);
+                }
             });
 
             // Check the file list is up to date
@@ -174,7 +178,7 @@ public class BackupOSBFragment extends Fragment {
                         }
                         // Now check if we want it added
                         for (String folder : checkedFolders) {
-                            if (folder.equals(thisFolder)) {
+                            if (alive && folder.equals(thisFolder)) {
                                 // Get the uri for this item
                                 fileUriToCopy = storageAccess.getUriForItem(getContext(), preferences, "Songs", thisFolder, thisFile);
                                 inputStream = storageAccess.getInputStream(getContext(), fileUriToCopy);
@@ -220,20 +224,24 @@ public class BackupOSBFragment extends Fragment {
 
             // Update the view
             requireActivity().runOnUiThread(() -> {
-                myView.progressBar.setVisibility(View.GONE);
-                if (error) {
-                    String message = getString(R.string.processing) + ": " + getString(R.string.error);
-                    myView.progressText.setText(message);
+                if (alive) {
+                    myView.progressBar.setVisibility(View.GONE);
+                    if (error) {
+                        String message = getString(R.string.processing) + ": " + getString(R.string.error);
+                        myView.progressText.setText(message);
 
-                } else {
-                    myView.progressText.setText("");
-                    myView.progressText.setVisibility(View.GONE);
-                    exportBackup();
+                    } else {
+                        myView.progressText.setText("");
+                        myView.progressText.setVisibility(View.GONE);
+                        exportBackup();
+                    }
+                    myView.createBackupFAB.setEnabled(true);
                 }
             });
         };
 
-        new Thread(runnable).start();
+        thread = new Thread(runnable);
+        thread.start();
     }
 
     private void exportBackup() {
@@ -241,5 +249,26 @@ public class BackupOSBFragment extends Fragment {
         Uri uri = FileProvider.getUriForFile(getContext(),"OpenSongAppFiles",backupFile);
         Intent intent = exportActions.exportBackup(getContext(),uri,backupFilename);
         requireActivity().startActivityForResult(Intent.createChooser(intent, getString(R.string.backup_info)), 12345);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        killThread();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        killThread();
+    }
+
+    private void killThread() {
+        alive = false;
+        if (thread!=null) {
+            thread.interrupt();
+            runnable = null;
+            thread = null;
+        }
     }
 }

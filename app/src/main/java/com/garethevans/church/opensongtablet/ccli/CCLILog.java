@@ -60,8 +60,8 @@ public class CCLILog {
      <HasChords>false</HasChords></Entry1>
     */
 
-    String thisdate;
-    String thistime;
+    private String thisdate;
+    private String thistime;
 
     private ArrayList<String> songfile, title, author, copyright, ccli, date, time, action;
 
@@ -233,7 +233,7 @@ public class CCLILog {
         action = new ArrayList<>();
     }
 
-    void getCurrentEntries(Context c, StorageAccess storageAccess, Uri uri) {
+    public void getCurrentEntries(Context c, StorageAccess storageAccess, Uri uri) {
 
         try {
             XmlPullParserFactory factory;
@@ -325,7 +325,7 @@ public class CCLILog {
         }
     }
 
-    String buildMyTable(Context c, Preferences preferences, String sizeoffile) {
+    public String buildMyTable(Context c, Preferences preferences, String sizeoffile) {
         if (title == null || title.size() == 0) {
             return "<!DOCTYPE html><html><body><h2>" + c.getResources().getString(R.string.ccli) + "</h2>\n" +
                     "<h3>" + c.getResources().getString(R.string.ccli_church) + ": " +

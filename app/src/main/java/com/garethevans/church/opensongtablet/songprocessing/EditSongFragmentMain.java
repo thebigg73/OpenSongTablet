@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.filemanagement;
+package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -18,12 +18,10 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter;
 import com.garethevans.church.opensongtablet.chords.TransposeDialogFragment;
 import com.garethevans.church.opensongtablet.databinding.FragmentEditSong1Binding;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.EditSongMainFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
-import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
-import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.google.android.material.button.MaterialButton;
@@ -112,12 +110,12 @@ public class EditSongFragmentMain extends Fragment implements EditSongMainFragme
 
     // Getting the preferences and helpers ready
     private void initialiseHelpers() {
-        preferences = new Preferences();
-        storageAccess = new StorageAccess();
-        sqLiteHelper = new SQLiteHelper(getActivity());
-        commonSQL = new CommonSQL();
-        convertChoPro = new ConvertChoPro();
-        processSong = new ProcessSong();
+        preferences = mainActivityInterface.getPreferences();
+        storageAccess = mainActivityInterface.getStorageAccess();
+        sqLiteHelper = mainActivityInterface.getSQLiteHelper();
+        commonSQL = mainActivityInterface.getCommonSQL();
+        convertChoPro = mainActivityInterface.getConvertChoPro();
+        processSong = mainActivityInterface.getProcessSong();
     }
 
     // Initialise the views

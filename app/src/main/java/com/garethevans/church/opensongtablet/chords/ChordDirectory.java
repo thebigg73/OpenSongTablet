@@ -3,9 +3,8 @@ package com.garethevans.church.opensongtablet.chords;
 import android.content.Context;
 
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
-class ChordDirectory {
+public class ChordDirectory {
 
     private String simplifyChords(Context c, Preferences preferences, String tempchord) {
         String chordtoworkon = tempchord;

@@ -5,7 +5,6 @@ import android.net.Uri;
 
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
@@ -20,17 +19,19 @@ public class SaveSong {
 
     public boolean doSave(Context c, Preferences preferences, StorageAccess storageAccess,
                           ConvertChoPro convertChoPro, ProcessSong processSong,
-                          Song song, SQLiteHelper sqLiteHelper,
+                          Song song, Song originalSong, SQLiteHelper sqLiteHelper,
                           NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper, CommonSQL commonSQL,
                           CCLILog ccliLog, boolean imgOrPDF) {
 
         boolean saveOK = false;
 
-        String where = storageAccess.safeFilename(song.getLocation(song.getFolder()));  // Either songs or a custom
-        String folder = storageAccess.safeFilename(song.getLocation(song.getFolder())); // Removes the ../ from customs
+        String where = storageAccess.safeFilename(processSong.getLocation(song.getFolder()));
+        String folder = storageAccess.safeFilename(song.getFolder()).replace(".."+where+"/","");
         String filename = storageAccess.safeFilename(song.getFilename());
-        String oldfolder = StaticVariables.whichSongFolder;
-        String oldfilename = StaticVariables.songfilename;
+
+        String oldwhere = storageAccess.safeFilename(processSong.getLocation(song.getFolder()));
+        String oldfolder = storageAccess.safeFilename(song.getFolder()).replace(".."+where+"/","");
+        String oldfilename = storageAccess.safeFilename(originalSong.getFilename());
 
         // If we are editing as chordpro, convert the lyrics back to back to OpenSong first
         if (preferences.getMyPreferenceBoolean(c, "editAsChordPro", false)) {
@@ -39,10 +40,10 @@ public class SaveSong {
 
         // Decide if we need to remove the original after writing the new song
         // This happens if the user has changed the filename or folder
-        boolean removeOriginal = (oldfolder!=null && !oldfolder.isEmpty() && oldfilename!=null && !oldfilename.isEmpty()) &&
-                (!oldfolder.equals(folder) || !oldfilename.equals(filename));
+        boolean removeOriginal = !oldfolder.isEmpty() && oldfilename != null && !oldfilename.isEmpty() &&
+                (!oldwhere.equals(where) || !oldfolder.equals(folder) || !oldfilename.equals(filename));
 
-        Uri oldUri = storageAccess.getUriForItem(c,preferences,where,oldfolder,oldfilename);
+        Uri oldUri = storageAccess.getUriForItem(c, preferences, oldwhere, oldfolder, oldfilename);
         Uri newUri = storageAccess.getUriForItem(c, preferences, where, folder, filename);
 
         if (!imgOrPDF || removeOriginal) {
@@ -59,7 +60,7 @@ public class SaveSong {
                 saveOK = storageAccess.copyFile(inputStream,outputStream);
             } else {
                 // Prepare a new XML version of the song from the statics (OpenSong song only)
-                String newXML = song.getXML(song,processSong);
+                String newXML = processSong.getXML(song);
                 saveOK = storageAccess.writeFileFromString(newXML, outputStream);
             }
         }
@@ -85,10 +86,6 @@ public class SaveSong {
         if (saveOK && removeOriginal) {
             storageAccess.deleteFile(c,oldUri);
         }
-
-        // Update the folder and filename
-        StaticVariables.whichSongFolder = folder;
-        StaticVariables.songfilename = filename;
 
         // If we are autologging CCLI information
         if (preferences.getMyPreferenceBoolean(c,"ccliAutomaticLogging",false)) {

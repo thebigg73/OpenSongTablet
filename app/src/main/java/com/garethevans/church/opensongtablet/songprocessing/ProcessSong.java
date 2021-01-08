@@ -28,13 +28,82 @@ import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
+import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
+// TODO Line and section breaks | and ||
 
 public class ProcessSong {
+
+    public Song initialiseSong(CommonSQL commonSQL, String newFolder, String newFilename, Song song) {
+        song = new Song();
+        song.setFilename(newFilename);
+        song.setFolder(newFolder);
+        song.setSongid(commonSQL.getAnySongId(newFolder,newFilename));
+        return song;
+    }
+
+    // This deals with the song XML file
+    public String getXML(Song song) {
+        if (song.getEncoding()==null || song.getEncoding().equals("")) {
+            song.setEncoding("UTF-8");
+        }
+        String myNEWXML = "<?xml version=\"1.0\" encoding=\""+ song.getEncoding()+"\"?>\n";
+        myNEWXML += "<song>\n";
+        myNEWXML += "  <title>" + parseToHTMLEntities(song.getTitle()) + "</title>\n";
+        myNEWXML += "  <author>" + parseToHTMLEntities(song.getAuthor()) + "</author>\n";
+        myNEWXML += "  <copyright>" + parseToHTMLEntities(song.getCopyright()) + "</copyright>\n";
+        myNEWXML += "  <presentation>" + parseToHTMLEntities(song.getPresentationorder()) + "</presentation>\n";
+        myNEWXML += "  <hymn_number>" + parseToHTMLEntities(song.getHymnnum()) + "</hymn_number>\n";
+        myNEWXML += "  <capo print=\"" + parseToHTMLEntities(song.getCapoprint()) + "\">" +
+                parseToHTMLEntities(song.getCapo()) + "</capo>\n";
+        myNEWXML += "  <tempo>" + parseToHTMLEntities(song.getMetronomebpm()) + "</tempo>\n";
+        myNEWXML += "  <time_sig>" + parseToHTMLEntities(song.getTimesig()) + "</time_sig>\n";
+        myNEWXML += "  <duration>" + parseToHTMLEntities(song.getAutoscrolllength()) + "</duration>\n";
+        myNEWXML += "  <predelay>" + parseToHTMLEntities(song.getAutoscrolldelay()) + "</predelay>\n";
+        myNEWXML += "  <ccli>" + parseToHTMLEntities(song.getCcli()) + "</ccli>\n";
+        myNEWXML += "  <theme>" + parseToHTMLEntities(song.getTheme()) + "</theme>\n";
+        myNEWXML += "  <alttheme>" + parseToHTMLEntities(song.getAlttheme()) + "</alttheme>\n";
+        myNEWXML += "  <user1>" + parseToHTMLEntities(song.getUser1()) + "</user1>\n";
+        myNEWXML += "  <user2>" + parseToHTMLEntities(song.getUser2()) + "</user2>\n";
+        myNEWXML += "  <user3>" + parseToHTMLEntities(song.getUser3()) + "</user3>\n";
+        myNEWXML += "  <key>" + parseToHTMLEntities(song.getKey()) + "</key>\n";
+        myNEWXML += "  <aka>" + parseToHTMLEntities(song.getAka()) + "</aka>\n";
+        myNEWXML += "  <midi>" + parseToHTMLEntities(song.getMidi()) + "</midi>\n";
+        myNEWXML += "  <midi_index>" + parseToHTMLEntities(song.getMidiindex()) + "</midi_index>\n";
+        myNEWXML += "  <notes>" + parseToHTMLEntities(song.getNotes()) + "</notes>\n";
+        myNEWXML += "  <lyrics>" + parseToHTMLEntities(song.getLyrics()) + "</lyrics>\n";
+        myNEWXML += "  <pad_file>" + parseToHTMLEntities(song.getPadfile()) + "</pad_file>\n";
+        myNEWXML += "  <custom_chords>" + parseToHTMLEntities(song.getCustomchords()) + "</custom_chords>\n";
+        myNEWXML += "  <link_youtube>" + parseToHTMLEntities(song.getLinkyoutube()) + "</link_youtube>\n";
+        myNEWXML += "  <link_web>" + parseToHTMLEntities(song.getLinkweb()) + "</link_web>\n";
+        myNEWXML += "  <link_audio>" + parseToHTMLEntities(song.getLinkaudio()) + "</link_audio>\n";
+        myNEWXML += "  <loop_audio>" + parseToHTMLEntities(song.getPadloop()) + "</loop_audio>\n";
+        myNEWXML += "  <link_other>" + parseToHTMLEntities(song.getLinkother()) + "</link_other>\n";
+        myNEWXML += "  <abcnotation>" + parseToHTMLEntities(song.getAbc()) + "</abcnotation>\n";
+
+        if (!song.getExtraStuff1().isEmpty()) {
+            myNEWXML += "  " + song.getExtraStuff1() + "\n";
+        }
+        if (!song.getExtraStuff2().isEmpty()) {
+            myNEWXML += "  " + song.getExtraStuff2() + "\n";
+        }
+        myNEWXML += "</song>";
+
+        return myNEWXML;
+    }
+
+    // These are to deal with custom files (scriptures, etc.)
+    public String getLocation (String string) {
+        if (string.startsWith("../")) {
+            return string.replace("../", "");
+        } else {
+            return "Songs";
+        }
+    }
 
     // These is used when loading and converting songs (ChordPro, badly formatted XML, etc).
     public String parseHTML(String s) {
@@ -423,7 +492,8 @@ public class ProcessSong {
         return sections;
     }
 
-    public String parseLyrics(String myLyrics, Context c) {
+    public String parseLyrics(Context c, Locale locale, Song song) {
+        String myLyrics = song.getLyrics();
         myLyrics = myLyrics.replace("]\n\n", "]\n");
         myLyrics = myLyrics.replaceAll("\r\n", "\n");
         myLyrics = myLyrics.replaceAll("\r", "\n");
@@ -456,10 +526,10 @@ public class ProcessSong {
         // If UG has been bad, replace these bits:
         myLyrics = myLyrics.replace("pre class=\"\"", "");
 
-        if (!StaticVariables.whichSongFolder.contains(c.getResources().getString(R.string.slide)) &&
-                !StaticVariables.whichSongFolder.contains(c.getResources().getString(R.string.image)) &&
-                !StaticVariables.whichSongFolder.contains(c.getResources().getString(R.string.note)) &&
-                !StaticVariables.whichSongFolder.contains(c.getResources().getString(R.string.scripture))) {
+        if (!song.getFolder().contains(c.getResources().getString(R.string.slide)) &&
+                !song.getFolder().contains(c.getResources().getString(R.string.image)) &&
+                !song.getFolder().contains(c.getResources().getString(R.string.note)) &&
+                !song.getFolder().contains(c.getResources().getString(R.string.scripture))) {
             myLyrics = myLyrics.replace("Slide 1", "[V1]");
             myLyrics = myLyrics.replace("Slide 2", "[V2]");
             myLyrics = myLyrics.replace("Slide 3", "[V3]");
@@ -480,8 +550,8 @@ public class ProcessSong {
 
         // Replace [Verse] with [V] and [Verse 1] with [V1]
         String languageverse = c.getResources().getString(R.string.verse);
-        String languageverse_lowercase = languageverse.toLowerCase(StaticVariables.locale);
-        String languageverse_uppercase = languageverse.toUpperCase(StaticVariables.locale);
+        String languageverse_lowercase = languageverse.toLowerCase(locale);
+        String languageverse_uppercase = languageverse.toUpperCase(locale);
         myLyrics = myLyrics.replace("[" + languageverse_lowercase, "[" + languageverse);
         myLyrics = myLyrics.replace("[" + languageverse_uppercase, "[" + languageverse);
         myLyrics = myLyrics.replace("[" + languageverse + "]", "[V]");
@@ -497,8 +567,8 @@ public class ProcessSong {
 
         // Replace [Chorus] with [C] and [Chorus 1] with [C1]
         String languagechorus = c.getResources().getString(R.string.chorus);
-        String languagechorus_lowercase = languagechorus.toLowerCase(StaticVariables.locale);
-        String languagechorus_uppercase = languagechorus.toUpperCase(StaticVariables.locale);
+        String languagechorus_lowercase = languagechorus.toLowerCase(locale);
+        String languagechorus_uppercase = languagechorus.toUpperCase(locale);
         myLyrics = myLyrics.replace("[" + languagechorus_lowercase, "[" + languagechorus);
         myLyrics = myLyrics.replace("[" + languagechorus_uppercase, "[" + languagechorus);
         myLyrics = myLyrics.replace("[" + languagechorus + "]", "[C]");
@@ -525,7 +595,7 @@ public class ProcessSong {
         myLyrics = myLyrics.replace("\\xEF", "");
         myLyrics = myLyrics.replace("\\xBB", "");
         myLyrics = myLyrics.replace("\\xFF", "");
-
+        song.setLyrics(myLyrics);
         return myLyrics;
     }
 
@@ -681,6 +751,9 @@ public class ProcessSong {
 
     // Splitting the song up in to manageable chunks
     private String makeGroups(String string) {
+        if (string==null) {
+            string = "";
+        }
         String[] lines = string.split("\n");
         StringBuilder sb = new StringBuilder();
 
@@ -840,7 +913,7 @@ public class ProcessSong {
         return tableLayout;
     }
 
-    private boolean isMultiLineFormatSong(String string) {
+    private boolean isMultiLineFormatSong(Locale locale, String string) {
         // Best way to determine if the song is in multiline format is
         // Look for [v] or [c] case insensitive
         // And it needs to be followed by a line starting with 1 and 2
@@ -852,15 +925,15 @@ public class ProcessSong {
             boolean has_multiline_2tag = false;
 
             for (String l : sl) {
-                if (l.toLowerCase(StaticVariables.locale).startsWith("[v]")) {
+                if (l.toLowerCase(locale).startsWith("[v]")) {
                     has_multiline_vtag = true;
-                } else if (l.toLowerCase(StaticVariables.locale).startsWith("[c]")) {
+                } else if (l.toLowerCase(locale).startsWith("[c]")) {
                     has_multiline_ctag = true;
-                } else if (l.toLowerCase(StaticVariables.locale).startsWith("1") ||
-                        l.toLowerCase(StaticVariables.locale).startsWith(" 1")) {
+                } else if (l.toLowerCase(locale).startsWith("1") ||
+                        l.toLowerCase(locale).startsWith(" 1")) {
                     has_multiline_1tag = true;
-                } else if (l.toLowerCase(StaticVariables.locale).startsWith("2") ||
-                        l.toLowerCase(StaticVariables.locale).startsWith(" 2")) {
+                } else if (l.toLowerCase(locale).startsWith("2") ||
+                        l.toLowerCase(locale).startsWith(" 2")) {
                     has_multiline_2tag = true;
                 }
             }
@@ -875,9 +948,9 @@ public class ProcessSong {
     private boolean lineIsChordForMultiline(String[] lines) {
         return (lines[0].length()>1 && lines.length>1 && lines[1].matches("^[0-9].*$"));
     }
-    String fixMultiLineFormat(Context c, Preferences preferences, String string) {
+    String fixMultiLineFormat(Context c, Preferences preferences, Locale locale, String string) {
 
-        if (!preferences.getMyPreferenceBoolean(c,"multiLineVerseKeepCompact",false) && isMultiLineFormatSong(string)) {
+        if (!preferences.getMyPreferenceBoolean(c,"multiLineVerseKeepCompact",false) && isMultiLineFormatSong(locale,string)) {
             // Reset the available song sections
             // Ok the song is in the multiline format
             // [V]
@@ -910,8 +983,8 @@ public class ProcessSong {
                     l_2 = lines[z + 2];
                 }
 
-                boolean mlv = isMultiLine(l, l_1, l_2, "v");
-                boolean mlc = isMultiLine(l, l_1, l_2, "c");
+                boolean mlv = isMultiLine(locale,l, l_1, l_2, "v");
+                boolean mlc = isMultiLine(locale,l, l_1, l_2, "c");
 
                 if (mlv) {
                     lines[z] = "__VERSEMULTILINE__";
@@ -976,9 +1049,9 @@ public class ProcessSong {
             return string;
         }
     }
-    private boolean isMultiLine(String l, String l_1, String l_2, String type) {
+    private boolean isMultiLine(Locale locale, String l, String l_1, String l_2, String type) {
         boolean isit = false;
-        l = l.toLowerCase(StaticVariables.locale);
+        l = l.toLowerCase(locale);
 
         if (l.startsWith("["+type+"]") &&
                 (l_1.startsWith("1") || l_1.startsWith(" 1") || l_2.startsWith("1") || l_2.startsWith(" 1"))) {
@@ -1054,7 +1127,7 @@ public class ProcessSong {
             c3.setVisibility(View.GONE);
         }
     }
-    public ArrayList<View> setSongInLayout(Context c, Preferences preferences, boolean trimSections,
+    public ArrayList<View> setSongInLayout(Context c, Preferences preferences, Locale locale, boolean trimSections,
                                            boolean addSectionSpace, boolean trimLines, float lineSpacing,
                                            ThemeColors themeColors, SetTypeFace setTypeFace, float headingScale,
                                            float chordScale, float commentScale, String string,
@@ -1064,7 +1137,7 @@ public class ProcessSong {
         // This goes through processing the song
 
         // First check for multiverse/multiline formatting
-        string = fixMultiLineFormat(c,preferences,string);
+        string = fixMultiLineFormat(c,preferences,locale,string);
 
         // First up we go through the lyrics and group lines that should be in a table for alignment purposes
         string = makeGroups(string);
@@ -1737,7 +1810,7 @@ public class ProcessSong {
     // This uses Android built in PdfRenderer, so will only work on Lollipop+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public Bitmap getBitmapFromPDF(Context c, Preferences preferences, StorageAccess storageAccess,
-                                   String folder, String filename, int page, int allowedWidth,
+                                   PDFSong pdfSong, String folder, String filename, int page, int allowedWidth,
                                    int allowedHeight, String scale) {
         Bitmap bmp = null;
 
@@ -1750,12 +1823,12 @@ public class ProcessSong {
         PdfRenderer pdfRenderer = getPDFRenderer(parcelFileDescriptor);
 
         // Get the page count
-        StaticVariables.pdfPageCount = getPDFPageCount(pdfRenderer);
+        pdfSong.setPdfPageCount(getPDFPageCount(pdfRenderer));
 
         // Set the current page number
-        page = getCurrentPage(page);
+        page = getCurrentPage(pdfSong,page);
 
-        if (parcelFileDescriptor!=null && pdfRenderer!=null && StaticVariables.pdfPageCount>0) {
+        if (parcelFileDescriptor!=null && pdfRenderer!=null && pdfSong.getPdfPageCount()>0) {
             // Good to continue!
 
             // Get the currentPDF page
@@ -1806,17 +1879,17 @@ public class ProcessSong {
             return 0;
         }
     }
-    public int getCurrentPage(int page) {
-        if (!StaticVariables.showstartofpdf) {
+    public int getCurrentPage(PDFSong pdfSong, int page) {
+        if (!pdfSong.getShowstartofpdf()) {
             // This is to deal with swiping backwards through songs, show the last page first!
-            page = StaticVariables.pdfPageCount - 1;
-            StaticVariables.showstartofpdf = true;
+            page = pdfSong.getPdfPageCount() - 1;
+            pdfSong.setShowstartofpdf(true);
         }
-        if (page >= StaticVariables.pdfPageCount) {
-            StaticVariables.pdfPageCurrent = 0;
+        if (page >= pdfSong.getPdfPageCount()) {
+            pdfSong.setPdfPageCurrent(0);
             page = 0;
         } else {
-            StaticVariables.pdfPageCurrent = page;
+            pdfSong.setPdfPageCurrent(page);
         }
         return page;
     }

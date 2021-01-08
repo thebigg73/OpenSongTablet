@@ -13,7 +13,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class PrefEditTextView extends LinearLayout {
 
-    TextInputEditText editText;
+    private final TextInputEditText editText;
 
     public PrefEditTextView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);

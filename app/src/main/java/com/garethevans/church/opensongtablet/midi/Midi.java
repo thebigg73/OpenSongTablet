@@ -12,7 +12,6 @@ import androidx.annotation.RequiresApi;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
-import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 
 import java.io.IOException;
@@ -22,15 +21,13 @@ import java.util.Locale;
 
 public class Midi {
 
-    Context c;
-    Preferences preferences;
-    MainActivityInterface mainActivityInterface;
-    PedalMidiReceiver pedalMidiReceiver;
+    private final Context c;
+    private MainActivityInterface mainActivityInterface;
+    private PedalMidiReceiver pedalMidiReceiver;
 
     // Initialise
-    public Midi(Context c, Preferences preferences) {
+    public Midi(Context c) {
         this.c = c;
-        this.preferences = preferences;
     }
 
     private MidiDevice midiDevice;

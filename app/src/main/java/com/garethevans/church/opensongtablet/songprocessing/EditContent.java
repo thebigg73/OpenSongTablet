@@ -1,8 +1,6 @@
-package com.garethevans.church.opensongtablet.filemanagement;
+package com.garethevans.church.opensongtablet.songprocessing;
 
-import com.garethevans.church.opensongtablet.songprocessing.Song;
-
-class EditContent {
+public class EditContent {
 
     Song song, originalSong;
 

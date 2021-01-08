@@ -23,22 +23,20 @@ import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.databinding.SettingsFontsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 import java.util.ArrayList;
 
 public class FontSetupFragment extends Fragment {
 
-    SettingsFontsBinding myView;
-    Preferences preferences;
-    SetTypeFace setTypeFace;
-    ThemeColors themeColors;
+    private SettingsFontsBinding myView;
+    private Preferences preferences;
+    private SetTypeFace setTypeFace;
+    private ThemeColors themeColors;
 
-    ArrayList<String> fontNames;
-    ExposedDropDownArrayAdapter arrayAdapter;
-    String fontLyric, fontChord, fontPreso, fontPresoInfo, fontSticky;
+    private ArrayList<String> fontNames;
+    private String fontLyric, fontChord, fontPreso, fontPresoInfo, fontSticky;
 
-    MainActivityInterface mainActivityInterface;
+    private MainActivityInterface mainActivityInterface;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -80,7 +78,7 @@ public class FontSetupFragment extends Fragment {
     }
 
     private void setHelpers() {
-        preferences = new Preferences();
+        preferences = mainActivityInterface.getPreferences();
         setTypeFace = mainActivityInterface.getMyFonts();
         themeColors = mainActivityInterface.getMyThemeColors();
     }
@@ -96,7 +94,7 @@ public class FontSetupFragment extends Fragment {
     }
 
     private void setupDropDowns() {
-        arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown,fontNames);
+        ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(requireContext(), R.layout.exposed_dropdown, fontNames);
         myView.lyricFont.setAdapter(arrayAdapter);
         myView.chordFont.setAdapter(arrayAdapter);
         myView.presoFont.setAdapter(arrayAdapter);
@@ -164,7 +162,7 @@ public class FontSetupFragment extends Fragment {
     private void openWebPreview(String which) {
         // Only allow if an internet connection is detected
         new CheckInternet(internet -> {
-            StaticVariables.whattodo = which;
+            mainActivityInterface.setWhattodo(which);
             mainActivityInterface.navigateToFragment(R.id.fontSetupPreviewFragment);
         });
     }

@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.filemanagement;
+package com.garethevans.church.opensongtablet.songprocessing;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

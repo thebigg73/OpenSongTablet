@@ -24,25 +24,23 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
 public class NewNameDialog extends DialogFragment {
 
-    MainActivityInterface mainActivityInterface;
-    Preferences preferences;
-    StorageAccess storageAccess;
-    ProcessSong processSong;
-    NewNameDialogBinding myView;
-    TextInputEditText title;
-    MaterialButton okButton, cancelButton;
-    boolean isfile;
-    String currentDir, currentSubDir, fragName;
-    Fragment callingFragment;
-    String songContent;
-    Song song;
+    private MainActivityInterface mainActivityInterface;
+    private Preferences preferences;
+    private StorageAccess storageAccess;
+    private ProcessSong processSong;
+    private NewNameDialogBinding myView;
+    private final boolean isfile;
+    private final String currentDir;
+    private final String currentSubDir;
+    private final String fragName;
+    private final Fragment callingFragment;
+    private String songContent;
+    private final Song song;
 
     public NewNameDialog(Fragment callingFragment, String fragName, boolean isfile, String currentDir, String currentSubDir, Song song) {
         this.isfile = isfile;  // True to create a file, false to create a folder
@@ -71,17 +69,16 @@ public class NewNameDialog extends DialogFragment {
         myView = NewNameDialogBinding.inflate(inflater,container,false);
 
         setHelpers();
-        setViews();
 
         // Get the current songXML to pass back as an argument if we need it (good for duplicating!)
         if (song!=null) {
-            songContent = song.getXML(song, processSong);
+            songContent = processSong.getXML(song);
         }
 
         // Set listeners
-        okButton.setOnClickListener(v -> doSave());
-        cancelButton.setOnClickListener(v -> dismiss());
-        title.addTextChangedListener(new TextWatcher() {
+        myView.okButton.setOnClickListener(v -> doSave());
+        myView.cancelButton.setOnClickListener(v -> dismiss());
+        myView.title.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
@@ -90,7 +87,7 @@ public class NewNameDialog extends DialogFragment {
                 if (s != null) {
                     String string = storageAccess.safeFilename(s.toString());
                     if (!s.toString().equals(string)) {
-                        title.setText(string);
+                        myView.title.setText(string);
                     }
                 }
             }
@@ -101,16 +98,10 @@ public class NewNameDialog extends DialogFragment {
         return myView.getRoot();
     }
 
-    private void setViews() {
-        okButton = myView.okButton;
-        cancelButton = myView.cancelButton;
-        title = myView.title;
-    }
-
     private void setHelpers() {
-        storageAccess = new StorageAccess();
-        preferences = new Preferences();
-        processSong = new ProcessSong();
+        storageAccess = mainActivityInterface.getStorageAccess();
+        preferences = mainActivityInterface.getPreferences();
+        processSong = mainActivityInterface.getProcessSong();
     }
 
     private void doSave() {
@@ -120,10 +111,10 @@ public class NewNameDialog extends DialogFragment {
         String message = getString(R.string.error);
         String success = getString(R.string.success);
 
-        if (title!=null && title.getText()!=null && !title.getText().toString().isEmpty()) {
-            newName = title.getText().toString();
+        if (myView.title!=null && myView.title.getText()!=null && !myView.title.getText().toString().isEmpty()) {
+            newName = myView.title.getText().toString();
             newName = storageAccess.safeFilename(newName);
-            title.setText(newName);
+            myView.title.setText(newName);
             Uri uri = storageAccess.getUriForItem(getContext(), preferences, currentDir, currentSubDir, newName);
             exists = storageAccess.uriExists(getContext(),uri);
             if (isfile && !exists) {

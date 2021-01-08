@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.songsandsets;
+package com.garethevans.church.opensongtablet.songsandsetsmenu;
 
 import android.content.Context;
 import android.content.res.ColorStateList;

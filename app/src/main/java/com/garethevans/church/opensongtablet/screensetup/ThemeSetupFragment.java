@@ -19,14 +19,13 @@ import com.garethevans.church.opensongtablet.appdata.ExposedDropDownArrayAdapter
 import com.garethevans.church.opensongtablet.databinding.SettingsThemeBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 import java.util.ArrayList;
 
 public class ThemeSetupFragment extends Fragment {
 
-    MainActivityInterface mainActivityInterface;
-    SettingsThemeBinding myView;
+    private MainActivityInterface mainActivityInterface;
+    private SettingsThemeBinding myView;
 
     private Preferences preferences;
     private ThemeColors themeColors;
@@ -59,8 +58,8 @@ public class ThemeSetupFragment extends Fragment {
     }
 
     private void setUpHelpers() {
-        preferences = new Preferences();
-        themeColors = new ThemeColors();
+        preferences = mainActivityInterface.getPreferences();
+        themeColors = mainActivityInterface.getMyThemeColors();
     }
 
     private void setUpTheme() {
@@ -171,7 +170,7 @@ public class ThemeSetupFragment extends Fragment {
 
     private void chooseColor(String which) {
         // This moves to the color chooser fragment
-        StaticVariables.whattodo = which;
+        mainActivityInterface.setWhattodo(which);
         mainActivityInterface.navigateToFragment(R.id.chooseColorFragment);
     }
 

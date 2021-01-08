@@ -13,7 +13,6 @@ import com.garethevans.church.opensongtablet.databinding.FragmentPresentationBin
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
@@ -39,8 +38,6 @@ public class PresentationFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-        StaticVariables.homeFragment = true;  // Set to true for Performance/Stage/Presentation only
 
         myView = FragmentPresentationBinding.inflate(inflater, container, false);
         View root = myView.getRoot();

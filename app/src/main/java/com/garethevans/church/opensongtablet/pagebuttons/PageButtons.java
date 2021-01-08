@@ -15,15 +15,15 @@ import java.util.ArrayList;
 
 public class PageButtons {
 
-    Context c;
-    Preferences preferences;
-    MainActivityInterface mainActivityInterface;
-    float pageButtonAlpha;
-    int pageButtonSize;
-    String pageButtonCustom1Action, pageButtonCustom2Action, pageButtonCustom3Action,
+    private final Context c;
+    private final Preferences preferences;
+    private final MainActivityInterface mainActivityInterface;
+    private float pageButtonAlpha;
+    private int pageButtonSize;
+    private String pageButtonCustom1Action, pageButtonCustom2Action, pageButtonCustom3Action,
             pageButtonCustom4Action, pageButtonCustom5Action, pageButtonCustom6Action;
 
-    PageButtons(Context c, Preferences preferences, MainActivityInterface mainActivityInterface) {
+    public PageButtons(Context c, Preferences preferences, MainActivityInterface mainActivityInterface) {
         this.c = c;
         this.preferences = preferences;
         this.mainActivityInterface = mainActivityInterface;
@@ -192,7 +192,7 @@ public class PageButtons {
             case "":
             default:
                 drawable = c.getResources().getDrawable(R.drawable.ic_help_outline_white_36dp);
-                fab.setOnClickListener(new NavigateListener(R.id.nav_performance));
+                fab.setOnClickListener(new NavigateListener(R.id.performanceFragment));
                 break;
 
             case "set":

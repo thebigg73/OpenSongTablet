@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.filemanagement;
+package com.garethevans.church.opensongtablet.songprocessing;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
@@ -16,15 +17,14 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
 import com.garethevans.church.opensongtablet.databinding.FragmentEditSongBinding;
+import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
+import com.garethevans.church.opensongtablet.filemanagement.SaveSong;
+import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
-import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
-import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
-import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
-import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.garethevans.church.opensongtablet.songsandsetsmenu.SongListBuildIndex;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
@@ -37,30 +37,26 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 public class EditSongFragment extends Fragment implements EditSongFragmentInterface {
 
-    EditSongViewPagerAdapter adapter;
-    ViewPager2 viewPager;
-    EditSongFragmentMain editSongFragmentMain;
-    EditSongFragmentFeatures editSongFragmentFeatures;
-    EditSongFragmentTags editSongFragmentTags;
-    FragmentEditSongBinding myView;
-    MainActivityInterface mainActivityInterface;
-    EditContent editContent;
-    CustomAnimation customAnimation;
-    StorageAccess storageAccess;
-    Preferences preferences;
-    ConvertChoPro convertChoPro;
-    ConvertOnSong convertOnSong;
-    ProcessSong processSong;
-    LoadSong loadSong;
-    SaveSong saveSong;
-    ShowToast showToast;
-    NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
-    CommonSQL commonSQL;
-    SQLiteHelper sqLiteHelper;
-    CCLILog ccliLog;
-    boolean imgOrPDF;
-    Bundle savedInstanceState;
-    Fragment fragment;
+    private FragmentEditSongBinding myView;
+    private MainActivityInterface mainActivityInterface;
+    private EditContent editContent;
+    private CustomAnimation customAnimation;
+    private StorageAccess storageAccess;
+    private Preferences preferences;
+    private ConvertChoPro convertChoPro;
+    private ConvertOnSong convertOnSong;
+    private ProcessSong processSong;
+    private LoadSong loadSong;
+    private SaveSong saveSong;
+    private ShowToast showToast;
+    private NonOpenSongSQLiteHelper nonOpenSongSQLiteHelper;
+    private CommonSQL commonSQL;
+    private SQLiteHelper sqLiteHelper;
+    private CCLILog ccliLog;
+    private boolean imgOrPDF;
+    private Bundle savedInstanceState;
+    private Fragment fragment;
+    private SongListBuildIndex songListBuildIndex;
 
     Song song,originalSong;
 
@@ -82,7 +78,10 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        Window w = getActivity().getWindow();
+        if (w!=null) {
+            w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        }
     }
 
     @Override
@@ -102,13 +101,12 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         mainActivityInterface.hideActionButton(true);
         mainActivityInterface.lockDrawer(true);
 
-        song = new Song();
-        song = song.initialiseSong(commonSQL); // Uses whichSongFolder and songfilename
-        song.setSongid(commonSQL.getAnySongId(StaticVariables.whichSongFolder,StaticVariables.songfilename));
+        song = processSong.initialiseSong(commonSQL,song.getFolder(),song.getFilename(),song);
 
         // The folder and filename were passed in the starting song object.  Now update with the file contents
-        song = loadSong.doLoadSong(getActivity(),storageAccess,preferences,processSong,
-                showToast,sqLiteHelper,commonSQL,song,convertOnSong,convertChoPro,false);
+        song = loadSong.doLoadSong(getActivity(),storageAccess,preferences,processSong, showToast,
+                mainActivityInterface.getLocale(),songListBuildIndex,sqLiteHelper,commonSQL,song,
+                convertOnSong,convertChoPro,false);
 
         // Can't just do song=originalSong as they become clones.  Changing one changes the other.
         originalSong = new Song(song);
@@ -124,27 +122,28 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
     }
 
     private void initialiseHelpers() {
-        customAnimation = new CustomAnimation();
-        storageAccess = new StorageAccess();
-        preferences = new Preferences();
-        convertChoPro = new ConvertChoPro();
-        processSong = new ProcessSong();
-        saveSong = new SaveSong();
-        loadSong = new LoadSong();
-        showToast = new ShowToast();
-        ccliLog = new CCLILog();
-        sqLiteHelper = new SQLiteHelper(requireContext());
-        nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(requireContext());
-        commonSQL = new CommonSQL();
+        customAnimation = mainActivityInterface.getCustomAnimation();
+        storageAccess = mainActivityInterface.getStorageAccess();
+        preferences = mainActivityInterface.getPreferences();
+        convertChoPro = mainActivityInterface.getConvertChoPro();
+        processSong = mainActivityInterface.getProcessSong();
+        saveSong = mainActivityInterface.getSaveSong();
+        loadSong = mainActivityInterface.getLoadSong();
+        showToast = mainActivityInterface.getShowToast();
+        ccliLog = mainActivityInterface.getCCLILog();
+        sqLiteHelper = mainActivityInterface.getSQLiteHelper();
+        nonOpenSongSQLiteHelper = mainActivityInterface.getNonOpenSongSQLiteHelper();
+        commonSQL = mainActivityInterface.getCommonSQL();
+        songListBuildIndex = mainActivityInterface.getSongListBuildIndex();
     }
 
     private void setUpTabs() {
-        adapter = new EditSongViewPagerAdapter(getActivity().getSupportFragmentManager(), requireActivity().getLifecycle());
+        EditSongViewPagerAdapter adapter = new EditSongViewPagerAdapter(requireActivity().getSupportFragmentManager(), requireActivity().getLifecycle());
         adapter.createFragment(0);
-        editSongFragmentMain = (EditSongFragmentMain)adapter.menuFragments[0];
-        editSongFragmentFeatures = (EditSongFragmentFeatures) adapter.createFragment(1);
-        editSongFragmentTags = (EditSongFragmentTags) adapter.createFragment(2);
-        viewPager = myView.viewpager;
+        EditSongFragmentMain editSongFragmentMain = (EditSongFragmentMain) adapter.menuFragments[0];
+        EditSongFragmentFeatures editSongFragmentFeatures = (EditSongFragmentFeatures) adapter.createFragment(1);
+        EditSongFragmentTags editSongFragmentTags = (EditSongFragmentTags) adapter.createFragment(2);
+        ViewPager2 viewPager = myView.viewpager;
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(1);
         TabLayout tabLayout = myView.tabButtons;
@@ -178,7 +177,7 @@ public class EditSongFragment extends Fragment implements EditSongFragmentInterf
         // Send this off for processing in a new Thread
         new Thread(() -> {
             saveOK = saveSong.doSave(requireContext(),preferences,storageAccess,convertChoPro,
-                    processSong,editContent.getCurrentSong(),sqLiteHelper,nonOpenSongSQLiteHelper,commonSQL,ccliLog,imgOrPDF);
+                    processSong,song,editContent.getCurrentSong(),sqLiteHelper,nonOpenSongSQLiteHelper,commonSQL,ccliLog,imgOrPDF);
 
             if (saveOK) {
                 // If successful, go back to the home page.  Otherwise stay here and await user decision from toast

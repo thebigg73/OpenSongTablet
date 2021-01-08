@@ -23,9 +23,8 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 public class SettingsCategories extends Fragment {
 
-    SettingsCategoriesBinding myView;
-    MainActivityInterface mainActivityInterface;
-    Preferences preferences;
+    private SettingsCategoriesBinding myView;
+    private MainActivityInterface mainActivityInterface;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -41,9 +40,6 @@ public class SettingsCategories extends Fragment {
         myView = SettingsCategoriesBinding.inflate(inflater,container,false);
         mainActivityInterface.updateToolbar(null,getString(R.string.settings));
 
-        // Prepare helpers
-        prepareHelpers();
-
         // Hide the features not available to this device
         hideUnavailable();
 
@@ -53,9 +49,7 @@ public class SettingsCategories extends Fragment {
         return myView.getRoot();
     }
 
-    private void prepareHelpers() {
-        preferences = new Preferences();
-    }
+
 
     private void hideUnavailable() {
         // If the user doesn't have Google API availability, they can't use the connect feature
@@ -86,8 +80,8 @@ public class SettingsCategories extends Fragment {
     }
 
     private void setListeners() {
-        myView.ccliButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.nav_preference_ccli));
-        myView.storageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.nav_storageManagement));
+        myView.ccliButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.settingsCCLI));
+        myView.storageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.storageManagementFragment));
         myView.displayButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.displayMenuFragment));
         myView.connectButton.setOnClickListener(v -> {
             // Check we have the required permissions

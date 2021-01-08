@@ -13,14 +13,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.collection.SimpleArrayMap;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.autoscroll.AutoscrollActions;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyReturnActionsInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
-import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 import com.google.android.gms.nearby.Nearby;
@@ -45,14 +44,13 @@ import java.util.Objects;
 
 public class NearbyConnections implements NearbyInterface {
 
-    Context context;
-    Preferences preferences;
-    StorageAccess storageAccess;
-    ProcessSong processSong;
-    SQLiteHelper sqLiteHelper;
-    CommonSQL commonSQL;
-    Song song;
-    MainActivityInterface mainActivityInterface;
+    private final Context context;
+    private final Preferences preferences;
+    private final StorageAccess storageAccess;
+    private final ProcessSong processSong;
+    private final SQLiteHelper sqLiteHelper;
+    private final CommonSQL commonSQL;
+    private MainActivityInterface mainActivityInterface;
 
     NearbyReturnActionsInterface nearbyReturnActionsInterface;
 
@@ -62,14 +60,13 @@ public class NearbyConnections implements NearbyInterface {
     public boolean isConnected, isHost, receiveHostFiles, keepHostFiles, usingNearby;
 
     public NearbyConnections(Context context, Preferences preferences, StorageAccess storageAccess,
-                             ProcessSong processSong, SQLiteHelper sqLiteHelper, CommonSQL commonSQL, Song song) {
+                             ProcessSong processSong, SQLiteHelper sqLiteHelper, CommonSQL commonSQL) {
         this.context = context;
         this.preferences = preferences;
         this.storageAccess = storageAccess;
         this.processSong = processSong;
         this.sqLiteHelper = sqLiteHelper;
         this.commonSQL = commonSQL;
-        this.song = song;
         connectedEndPoints = new ArrayList<>();
         connectedEndPointsNames = new ArrayList<>();
     }
@@ -93,14 +90,14 @@ public class NearbyConnections implements NearbyInterface {
     }
 
     @Override
-    public void startAdvertising() {
+    public void startAdvertising(AutoscrollActions autoscrollActions) {
         try {
             if (!isConnected) {
                 AdvertisingOptions advertisingOptions =
                         new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
                 Nearby.getConnectionsClient(context)
                         .startAdvertising(
-                                getUserNickname(), serviceId, connectionLifecycleCallback(), advertisingOptions)
+                                getUserNickname(), serviceId, connectionLifecycleCallback(autoscrollActions), advertisingOptions)
                         .addOnSuccessListener(
                                 (Void unused) -> {
                                     // We're advertising!
@@ -120,12 +117,12 @@ public class NearbyConnections implements NearbyInterface {
     }
 
     @Override
-    public void startDiscovery() {
+    public void startDiscovery(AutoscrollActions autoscrollActions) {
         try {
             if (!isConnected) {
                 DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
                 Nearby.getConnectionsClient(context)
-                        .startDiscovery(serviceId, endpointDiscoveryCallback(), discoveryOptions)
+                        .startDiscovery(serviceId, endpointDiscoveryCallback(autoscrollActions), discoveryOptions)
                         .addOnSuccessListener(
                                 (Void unused) -> {
                                     // We're discovering!
@@ -184,7 +181,7 @@ public class NearbyConnections implements NearbyInterface {
         return deviceName = preferences.getMyPreferenceString(context,"deviceName", model);
     }
 
-    private ConnectionLifecycleCallback connectionLifecycleCallback() {
+    private ConnectionLifecycleCallback connectionLifecycleCallback(AutoscrollActions autoscrollActions) {
         return new ConnectionLifecycleCallback() {
             @Override
             public void onConnectionInitiated(@NonNull String endpointId, @NonNull ConnectionInfo connectionInfo) {
@@ -202,7 +199,7 @@ public class NearbyConnections implements NearbyInterface {
                                         connectedEndPointsNames.add(endpointId + "__" + connectionInfo.getEndpointName());
                                         // The user confirmed, so we can accept the connection.
                                         Nearby.getConnectionsClient(context)
-                                                .acceptConnection(endpointId, payloadCallback());
+                                                .acceptConnection(endpointId, payloadCallback(autoscrollActions));
                                     },200);
                                 })
                         .setNegativeButton(
@@ -250,7 +247,7 @@ public class NearbyConnections implements NearbyInterface {
                 // Try to connect again after 2 seconds
                 if (!isHost) {
                     Handler h = new Handler();
-                    h.postDelayed(() -> startDiscovery(), 2000);
+                    h.postDelayed(() -> startDiscovery(autoscrollActions), 2000);
                 }
                 // Check if we have valid connections
                 isConnected = stillValidConnections();
@@ -271,12 +268,12 @@ public class NearbyConnections implements NearbyInterface {
         }
         return false;
     }
-    private EndpointDiscoveryCallback endpointDiscoveryCallback() {
+    private EndpointDiscoveryCallback endpointDiscoveryCallback(AutoscrollActions autoscrollActions) {
         return new EndpointDiscoveryCallback() {
             @Override
             public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo discoveredEndpointInfo) {
                 Nearby.getConnectionsClient(context)
-                        .requestConnection(getUserNickname(), endpointId, connectionLifecycleCallback())
+                        .requestConnection(getUserNickname(), endpointId, connectionLifecycleCallback(autoscrollActions))
                         .addOnSuccessListener(
                                 (Void unused) -> {
                                     // We successfully requested a connection. Now both sides
@@ -301,15 +298,15 @@ public class NearbyConnections implements NearbyInterface {
     public void sendSongPayload() {
         String infoPayload;
         Payload payloadFile = null;
-        String infoFilePayload = song.getFolder() + "_xx____xx_" + song.getFilename() +
-                "_xx____xx_" + song.getNextDirection();
-        if (song.getIsSong()) {
+        String infoFilePayload = mainActivityInterface.getSong().getFolder() + "_xx____xx_" + mainActivityInterface.getSong().getFilename() +
+                "_xx____xx_" + mainActivityInterface.getSong().getNextDirection();
+        if (mainActivityInterface.getSong().getIsSong()) {
             // By default, this should be smaller than 32kb, so probably going to send as bytes
             // We'll measure the actual size later to check though
-            infoPayload = song.getFolder() + "_xx____xx_" +
-                    song.getFilename() + "_xx____xx_" +
-                    song.getNextDirection() + "_xx____xx_" +
-                    song.getXML(song, processSong);
+            infoPayload = mainActivityInterface.getSong().getFolder() + "_xx____xx_" +
+                    mainActivityInterface.getSong().getFilename() + "_xx____xx_" +
+                    mainActivityInterface.getSong().getNextDirection() + "_xx____xx_" +
+                    processSong.getXML(mainActivityInterface.getSong());
         } else {
             // We will send as a file instead
             infoPayload=null;
@@ -326,7 +323,7 @@ public class NearbyConnections implements NearbyInterface {
         if (infoPayload==null) {
             // We will send as a file
             try {
-                Uri uri = storageAccess.getUriForItem(context, preferences, "Songs", song.getFolder(), song.getFilename());
+                Uri uri = storageAccess.getUriForItem(context, preferences, "Songs", mainActivityInterface.getSong().getFolder(), mainActivityInterface.getSong().getFilename());
                 ParcelFileDescriptor parcelFileDescriptor = context.getContentResolver().openFileDescriptor(uri, "r");
                 if (parcelFileDescriptor!=null) {
                     payloadFile = Payload.fromFile(parcelFileDescriptor);
@@ -355,22 +352,22 @@ public class NearbyConnections implements NearbyInterface {
             Nearby.getConnectionsClient(context).sendPayload(endpointId,Payload.fromBytes(infoPayload.getBytes()));
         }
     }
-    private void payloadAutoscroll(String incoming) {
+    private void payloadAutoscroll(AutoscrollActions autoScrollActions, String incoming) {
         // It sends autoscroll startstops as autoscroll_start or autoscroll_stop
-        if (StaticVariables.whichMode.equals("Performance")) {
+        if (mainActivityInterface.getMode().equals("Performance")) {
             // Adjust only when not already in the correct state
-            if (nearbyReturnActionsInterface != null && !(StaticVariables.isautoscrolling == incoming.equals("autoscroll_start"))) {
+            if (nearbyReturnActionsInterface != null && !(autoScrollActions.getIsAutoscrolling()==incoming.equals("autoscroll_start"))) {
                 nearbyReturnActionsInterface.gesture5();
             }
         }
     }
     private void payloadSection(String incoming) {
-        if (!StaticVariables.whichMode.equals("Performance")) {
+        if (!mainActivityInterface.getMode().equals("Performance")) {
             int mysection = processSong.getNearbySection(incoming);
             if (mysection >= 0) {
                 if (nearbyReturnActionsInterface != null) {
                     // Look for a section being sent
-                    song.setCurrentSection(mysection);
+                    mainActivityInterface.getSong().setCurrentSection(mysection);
                     nearbyReturnActionsInterface.selectSection(mysection);
                 }
             }
@@ -395,7 +392,7 @@ public class NearbyConnections implements NearbyInterface {
 
         if (!isHost && isConnected && songReceived && receiveHostFiles) {
             // We want to receive host files (we aren't the host either!) and an OpenSong song has been sent/received
-            song.setNextDirection(receivedBits.get(2));
+            mainActivityInterface.getSong().setNextDirection(receivedBits.get(2));
 
             // If the user wants to keep the host file, we will save it to our storage.
             // If we already have it, it will overwrite it, if not, we add it
@@ -406,17 +403,17 @@ public class NearbyConnections implements NearbyInterface {
                 // Create the file if it doesn't exist
                 storageAccess.lollipopCreateFileForOutputStream(context, preferences, properUri, null, "Songs", receivedBits.get(0), receivedBits.get(1));
                 outputStream = storageAccess.getOutputStream(context, properUri);
-                song.setFolder(receivedBits.get(0));
-                song.setFilename(receivedBits.get(1));
+                mainActivityInterface.getSong().setFolder(receivedBits.get(0));
+                mainActivityInterface.getSong().setFilename(receivedBits.get(1));
                 // Add to the sqldatabase
-                sqLiteHelper.createSong(context,storageAccess,commonSQL,song.getFolder(),song.getFilename());
+                sqLiteHelper.createSong(context,storageAccess,commonSQL,mainActivityInterface.getSong().getFolder(),mainActivityInterface.getSong().getFilename());
 
             } else {
                 // Prepare the output stream in the Received folder - just keep a temporary version
                 storageAccess.lollipopCreateFileForOutputStream(context, preferences, tempUri, null, "Received", "", "ReceivedSong");
                 outputStream = storageAccess.getOutputStream(context, tempUri);
-                song.setFolder("../Received");
-                song.setFilename("ReceivedSong");
+                mainActivityInterface.getSong().setFolder("../Received");
+                mainActivityInterface.getSong().setFilename("ReceivedSong");
             }
 
             // Write the file to the desired output stream
@@ -429,10 +426,10 @@ public class NearbyConnections implements NearbyInterface {
         } else if (!isHost && isConnected && songReceived) {
             // We just want to trigger loading the song on our device (if we have it).
             // If not, we get notified it doesn't exits
-            song.setFolder(receivedBits.get(0));
-            song.setFilename(receivedBits.get(1));
-            Log.d("d","received: "+song.getFolder()+"/"+song.getFilename());
-            song.setNextDirection(receivedBits.get(2));
+            mainActivityInterface.getSong().setFolder(receivedBits.get(0));
+            mainActivityInterface.getSong().setFilename(receivedBits.get(1));
+            Log.d("d","received: "+mainActivityInterface.getSong().getFolder()+"/"+mainActivityInterface.getSong().getFilename());
+            mainActivityInterface.getSong().setNextDirection(receivedBits.get(2));
         }
 
         // Now load the song (from wherever it has ended up!)
@@ -446,14 +443,14 @@ public class NearbyConnections implements NearbyInterface {
         String[] bits = foldernamepair.split("_xx____xx_");
         String folder = bits[0];
         String filename = bits[1];
-        song.setNextDirection(bits[2]);
+        mainActivityInterface.getSong().setNextDirection(bits[2]);
         boolean movepage = false;
-        if ((folder.equals(song.getFolder())||song.getFolder().equals("../Received"))
-                && filename.equals(song.getFilename()) && filename.toLowerCase(StaticVariables.locale).endsWith(".pdf")) {
+        if ((folder.equals(mainActivityInterface.getSong().getFolder())||mainActivityInterface.getSong().getFolder().equals("../Received"))
+                && filename.equals(mainActivityInterface.getSong().getFilename()) && filename.toLowerCase(mainActivityInterface.getLocale()).endsWith(".pdf")) {
             // We are likely trying to move page to an already received file
             movepage = true;
         } else {
-            song.setPdfPageCurrent(0);
+            mainActivityInterface.getSong().setPdfPageCurrent(0);
         }
         Uri newLocation = null;
         if (!isHost && isConnected && receiveHostFiles && keepHostFiles) {
@@ -466,11 +463,11 @@ public class NearbyConnections implements NearbyInterface {
             newLocation = storageAccess.getUriForItem(context, preferences, "Received", "", filename);
             storageAccess.lollipopCreateFileForOutputStream(context, preferences, newLocation, null, "Received", "", filename);
         }
-        song.setFolder(folder);
-        song.setFilename(filename);
+        mainActivityInterface.getSong().setFolder(folder);
+        mainActivityInterface.getSong().setFilename(filename);
         Log.d("d","newLocation="+newLocation);
         if (movepage) {
-            if (song.getNextDirection().equals("L2R")) {
+            if (mainActivityInterface.getSong().getNextDirection().equals("L2R")) {
                 // Go back
                 if (nearbyReturnActionsInterface!=null) {
                     nearbyReturnActionsInterface.goToPreviousItem();
@@ -500,7 +497,7 @@ public class NearbyConnections implements NearbyInterface {
     }
     private final SimpleArrayMap<Long, Payload> incomingFilePayloads = new SimpleArrayMap<>();
     private final SimpleArrayMap<Long, String> fileNewLocation = new SimpleArrayMap<>();
-    private PayloadCallback payloadCallback() {
+    private PayloadCallback payloadCallback(AutoscrollActions autoscrollActions) {
         return new PayloadCallback() {
             @Override
             public void onPayloadReceived(@NonNull String s, @NonNull Payload payload) {
@@ -529,7 +526,7 @@ public class NearbyConnections implements NearbyInterface {
                             fileNewLocation.put(Long.parseLong(id), foldernamepair);
 
                         } else if (incoming != null && incoming.contains("autoscroll_")) {
-                            payloadAutoscroll(incoming);
+                            payloadAutoscroll(autoscrollActions, incoming);
                         } else if (incoming != null && incoming.contains("___section___")) {
                             payloadSection(incoming);
                         } else if (incoming != null) {

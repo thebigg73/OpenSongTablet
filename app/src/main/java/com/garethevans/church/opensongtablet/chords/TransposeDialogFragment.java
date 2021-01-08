@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ import com.garethevans.church.opensongtablet.databinding.TransposeDialogBinding;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
@@ -36,10 +34,8 @@ import java.io.OutputStream;
 
 public class TransposeDialogFragment extends DialogFragment {
 
-    boolean editSong = false;  // This is set to true when coming here from EditSongFragment
-    String lyrics;  //  These get updated from the caller
-    String key;
-    Song song;
+    private boolean editSong = false;  // This is set to true when coming here from EditSongFragment
+    private Song song;
 
     private TransposeDialogBinding myView;
     private SeekBar transposeSeekBar;
@@ -64,8 +60,6 @@ public class TransposeDialogFragment extends DialogFragment {
 
     public TransposeDialogFragment(boolean editSong, Song song) {
         // This is called from the EditSongFragment.  Receive temp lyrics and key
-        Log.d("TransposeFrag","Caller: key="+key);
-
         this.editSong = editSong;
         this.song = song;
     }
@@ -107,20 +101,18 @@ public class TransposeDialogFragment extends DialogFragment {
         // Decide if we are using preferred chord format
         usePreferredChordFormat(preferences.getMyPreferenceBoolean(getActivity(),"chordFormatUsePreferred",false));
 
-        Log.d("TransposeFrag","End of initiliasation: key="+key);
-
         return myView.getRoot();
     }
 
     // Initialise the helpers
     private void initialiseHelpers() {
-        preferences = new Preferences();
-        storageAccess = new StorageAccess();
-        transpose = new Transpose();
-        processSong = new ProcessSong();
-        sqLiteHelper = new SQLiteHelper(requireContext());
-        nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(requireContext());
-        commonSQL = new CommonSQL();
+        preferences = mainActivityInterface.getPreferences();
+        storageAccess = mainActivityInterface.getStorageAccess();
+        transpose = mainActivityInterface.getTranspose();
+        processSong = mainActivityInterface.getProcessSong();
+        sqLiteHelper = mainActivityInterface.getSQLiteHelper();
+        nonOpenSongSQLiteHelper = mainActivityInterface.getNonOpenSongSQLiteHelper();
+        commonSQL = mainActivityInterface.getCommonSQL();
     }
 
     // Initialise the views
@@ -145,9 +137,9 @@ public class TransposeDialogFragment extends DialogFragment {
         transposeValTextView.setText("0");
 
         // If the song has a key specified, we will add in the text for current and new key
-        if (key!=null && !key.equals("")) {
-            String keychange = getString(R.string.key) + ": " + key + "\n" +
-                    getString(R.string.transpose) + ": " + key;
+        if (song.getKey()!=null && !song.getKey().equals("")) {
+            String keychange = getString(R.string.key) + ": " + song.getKey() + "\n" +
+                    getString(R.string.transpose) + ": " + song.getKey();
             keyChange_TextView.setText(keychange);
         } else {
             keyChange_TextView.setText("");
@@ -155,7 +147,7 @@ public class TransposeDialogFragment extends DialogFragment {
         }
 
         // Set the detected chordformat
-        switch (StaticVariables.detectedChordFormat) {
+        switch (song.getDetectedChordFormat()) {
             case 1:
                 chordFormat1Radio.setChecked(true);
                 break;
@@ -201,13 +193,13 @@ public class TransposeDialogFragment extends DialogFragment {
                 }
 
                 // If the song has a key specified, we will add in the text for current and new key
-                if (key!=null && !key.equals("")) {
+                if (song.getKey()!=null && !song.getKey().equals("")) {
                     // Get the new key value
-                    String keynum = transpose.keyToNumber(key);
+                    String keynum = transpose.keyToNumber(song.getKey());
                     String transpkeynum = transpose.transposeKey(keynum, transposeDirection, transposeTimes);
                     String newkey = transpose.numberToKey(getActivity(), preferences, transpkeynum);
 
-                    String keychange = getString(R.string.key) + ": " + key + "\n" +
+                    String keychange = getString(R.string.key) + ": " + song.getKey() + "\n" +
                             getString(R.string.transpose) + ": " + newkey;
                     keyChange_TextView.setText(keychange);
                 } else {
@@ -236,7 +228,7 @@ public class TransposeDialogFragment extends DialogFragment {
         if (trueorfalse) {
             formattouse = preferences.getMyPreferenceInt(getActivity(),"chordFormat",1);
         } else {
-            formattouse = StaticVariables.detectedChordFormat;
+            formattouse = song.getDetectedChordFormat();
         }
 
         switch (formattouse) {
@@ -270,22 +262,22 @@ public class TransposeDialogFragment extends DialogFragment {
     private void getValues() {
         // Extract the transpose value and the chord format
         if (chordFormat1Radio.isChecked()) {
-            StaticVariables.detectedChordFormat = 1;
+            song.setDetectedChordFormat(1);
         }
         if (chordFormat2Radio.isChecked()) {
-            StaticVariables.detectedChordFormat = 2;
+            song.setDetectedChordFormat(2);
         }
         if (chordFormat3Radio.isChecked()) {
-            StaticVariables.detectedChordFormat = 3;
+            song.setDetectedChordFormat(3);
         }
         if (chordFormat4Radio.isChecked()) {
-            StaticVariables.detectedChordFormat = 4;
+            song.setDetectedChordFormat(4);
         }
         if (chordFormat5Radio.isChecked()) {
-            StaticVariables.detectedChordFormat = 5;
+            song.setDetectedChordFormat(5);
         }
         if (chordFormat6Radio.isChecked()) {
-            StaticVariables.detectedChordFormat = 6;
+            song.setDetectedChordFormat(6);
         }
     }
 
@@ -309,7 +301,7 @@ public class TransposeDialogFragment extends DialogFragment {
 
             } else {
                 // Write the new improved XML file
-                String newXML = song.getXML(song,processSong);
+                String newXML = processSong.getXML(song);
 
                 if (song.getFiletype().equals("PDF")||song.getFiletype().equals("XML")) {
                     nonOpenSongSQLiteHelper.updateSong(requireContext(),commonSQL,storageAccess,preferences,song);
@@ -319,7 +311,7 @@ public class TransposeDialogFragment extends DialogFragment {
                     sqLiteHelper.updateSong(requireContext(),commonSQL,song);
                     // Now write the file
                     Uri uri = storageAccess.getUriForItem(requireContext(),preferences,"Songs",
-                            StaticVariables.whichSongFolder, StaticVariables.songfilename);
+                            song.getFolder(), song.getFilename());
                     OutputStream outputStream = storageAccess.getOutputStream(requireContext(),uri);
                     storageAccess.writeFileFromString(newXML,outputStream);
                 }

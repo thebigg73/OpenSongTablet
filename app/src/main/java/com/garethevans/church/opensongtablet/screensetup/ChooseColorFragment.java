@@ -18,14 +18,13 @@ import androidx.fragment.app.Fragment;
 import com.garethevans.church.opensongtablet.databinding.DisplayColorSettingsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 public class ChooseColorFragment extends Fragment {
 
-    MainActivityInterface mainActivityInterface;
-    DisplayColorSettingsBinding myView;
-    Preferences preferences;
-    ThemeColors themeColors;
+    private MainActivityInterface mainActivityInterface;
+    private DisplayColorSettingsBinding myView;
+    private Preferences preferences;
+    private ThemeColors themeColors;
 
     private String newColorHex;
     private String alphaHex;
@@ -49,7 +48,7 @@ public class ChooseColorFragment extends Fragment {
         setUpHelpers();
 
         // Set up colour
-        setupOriginalColor();
+        setupOriginalColor(themeColors.getWhich());
 
         // Set the sliders to the correct positions
         setSliderValues();
@@ -61,8 +60,8 @@ public class ChooseColorFragment extends Fragment {
     }
 
     private void setUpHelpers() {
-        preferences = new Preferences();
-        themeColors = new ThemeColors();
+        preferences = mainActivityInterface.getPreferences();
+        themeColors = mainActivityInterface.getMyThemeColors();
     }
 
     private void setSliderValues() {
@@ -114,17 +113,17 @@ public class ChooseColorFragment extends Fragment {
                 typing = false;
             }
         });
-        myView.saveColor.setOnClickListener(v -> doSave());
+        myView.saveColor.setOnClickListener(v -> doSave(themeColors.getWhich()));
     }
 
-    private void setupOriginalColor() {
+    private void setupOriginalColor(String which) {
         themePrefix = preferences.getMyPreferenceString(getContext(), "appTheme", "dark");
 
         // Load the chosen colours up
         themeColors.getDefaultColors(getContext(),preferences);
         int oldColorInt;
         try {
-            oldColorInt = themeColors.getValue(StaticVariables.whattodo);
+            oldColorInt = themeColors.getValue(which);
         } catch (Exception e) {
             oldColorInt = -1;
         }
@@ -237,9 +236,9 @@ public class ChooseColorFragment extends Fragment {
         }
     }
 
-    private void doSave() {
+    private void doSave(String which) {
         // Set the preference
-        preferences.setMyPreferenceInt(getContext(),themePrefix+"_"+StaticVariables.whattodo,newColorInt);
+        preferences.setMyPreferenceInt(getContext(),themePrefix+"_"+which,newColorInt);
         // Navigate back
         requireActivity().getSupportFragmentManager().popBackStackImmediate();
     }

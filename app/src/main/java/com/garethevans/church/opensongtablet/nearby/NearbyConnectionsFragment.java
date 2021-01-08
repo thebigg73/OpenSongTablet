@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
+import com.garethevans.church.opensongtablet.autoscroll.AutoscrollActions;
 import com.garethevans.church.opensongtablet.databinding.SettingsNearbyconnectionsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
@@ -19,10 +20,11 @@ import com.garethevans.church.opensongtablet.preferences.TextInputDialogFragment
 
 public class NearbyConnectionsFragment extends Fragment {
 
-    SettingsNearbyconnectionsBinding myView;
-    MainActivityInterface mainActivityInterface;
-    NearbyConnections nearbyConnections;
-    Preferences preferences;
+    private SettingsNearbyconnectionsBinding myView;
+    private MainActivityInterface mainActivityInterface;
+    private NearbyConnections nearbyConnections;
+    private AutoscrollActions autoscrollActions;
+    private Preferences preferences;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -51,8 +53,10 @@ public class NearbyConnectionsFragment extends Fragment {
     }
 
     private void setHelpers() {
-        preferences = new Preferences();
+        preferences = mainActivityInterface.getPreferences();
+        autoscrollActions = mainActivityInterface.getAutoscrollActions();
         mainActivityInterface.registerFragment(this,"NearbyConnectionsFragment");
+        mainActivityInterface.setNearbyOpen(true);
     }
 
     public void updateViews() {
@@ -64,8 +68,11 @@ public class NearbyConnectionsFragment extends Fragment {
         updateConnectionsLog();
     }
 
-
-
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mainActivityInterface.setNearbyOpen(false);
+    }
 
     public void updateConnectionsLog() {
         if (nearbyConnections.connectionLog ==null) {
@@ -80,9 +87,9 @@ public class NearbyConnectionsFragment extends Fragment {
             nearbyConnections.usingNearby = isChecked;
             if (isChecked) {
                 if (nearbyConnections.isHost) {
-                    nearbyConnections.startAdvertising();
+                    nearbyConnections.startAdvertising(autoscrollActions);
                 } else {
-                    nearbyConnections.startDiscovery();
+                    nearbyConnections.startDiscovery(autoscrollActions);
                 }
             } else {
                 // Beacause the host button can be switched on/off as well, when turning off, run both

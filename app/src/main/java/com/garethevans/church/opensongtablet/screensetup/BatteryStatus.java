@@ -20,10 +20,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class BatteryStatus extends BroadcastReceiver {
 
@@ -34,15 +34,16 @@ public class BatteryStatus extends BroadcastReceiver {
     }
 
     public void setUpBatteryMonitor(Context c, Preferences preferences, TextView digitalclock,
-                                    TextView batterycharge, ImageView batteryimage, ActionBar ab) {
+                                    TextView batterycharge, ImageView batteryimage, ActionBar ab,
+                                    Locale locale) {
         // Get clock
         try {
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat df;
             if (preferences.getMyPreferenceBoolean(c,"clock24hFormat",true)) {
-                df = new SimpleDateFormat("HH:mm", StaticVariables.locale);
+                df = new SimpleDateFormat("HH:mm", locale);
             } else {
-                df = new SimpleDateFormat("h:mm", StaticVariables.locale);
+                df = new SimpleDateFormat("h:mm", locale);
             }
             String formattedTime = df.format(cal.getTime());
             if (preferences.getMyPreferenceBoolean(c,"clockOn",true)) {
@@ -64,7 +65,6 @@ public class BatteryStatus extends BroadcastReceiver {
             batterycharge.setTextSize(preferences.getMyPreferenceFloat(c, "batteryTextSize",9.0f));
             batterycharge.setText(charge);
             int abh = ab.getHeight();
-            StaticVariables.ab_height = abh;
             if (preferences.getMyPreferenceBoolean(c,"batteryDialOn",true)) {
                 batteryimage.setVisibility(View.VISIBLE);
             } else {
@@ -77,7 +77,7 @@ public class BatteryStatus extends BroadcastReceiver {
 
             // Ask the app to check again in 60s
             Handler batterycheck = new Handler();
-            batterycheck.postDelayed(() -> setUpBatteryMonitor(c,preferences,digitalclock,batterycharge,batteryimage,ab), 60000);
+            batterycheck.postDelayed(() -> setUpBatteryMonitor(c,preferences,digitalclock,batterycharge,batteryimage,ab,locale), 60000);
         } catch (Exception e) {
             // Ooops
         }

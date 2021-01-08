@@ -17,7 +17,7 @@
             android:orientation="vertical">
 
             <TextView
-                style="@style/MyWhiteHeadingText"
+                android:id="@+id/importTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="8dp"
@@ -43,6 +43,18 @@
                 android:layout_marginBottom="32dp"
                 android:visibility="gone"/>
 
+            <CheckBox
+                android:id="@+id/overWrite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/overwrite"
+                android:paddingTop="24dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="24dp"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,6 +76,7 @@
                 android:paddingBottom="96dp"/>
 
         </LinearLayout>
+
 
     </androidx.core.widget.NestedScrollView>
     <com.google.android.material.floatingactionbutton.FloatingActionButton

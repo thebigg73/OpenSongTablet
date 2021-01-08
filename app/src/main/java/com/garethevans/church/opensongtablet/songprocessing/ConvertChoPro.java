@@ -7,7 +7,6 @@ import android.util.Log;
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
@@ -69,7 +68,7 @@ public class ConvertChoPro {
         setCorrectXMLValues(song);
 
         // Now prepare the new songXML file
-        String newXML = song.getXML(song, processSong);
+        String newXML = processSong.getXML(song);
 
         // Get a unique uri for the new song
         Uri newUri = getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);
@@ -77,9 +76,6 @@ public class ConvertChoPro {
         // Now write the modified song
         writeTheImprovedSong(c, storageAccess, preferences, sqLiteHelper, commonSQL, song, oldSongFileName, newSongFileName,
                 songSubFolder, newUri, uri, newXML);
-
-        // Indicate after loading song (which renames it), we need to build the database and song index
-        StaticVariables.needtorefreshsongmenu = true;
 
         song.setFilename(newSongFileName);
         song.setTitle(title);
@@ -542,7 +538,7 @@ public class ConvertChoPro {
             }
 
             // Update the song filename
-            StaticVariables.songfilename = newSongFileName;
+            song.setFilename(newSongFileName);
             preferences.setMyPreferenceString(c,"songfilename",newSongFileName);
 
             // Now change the database references

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class AreYouSureDialogFragment extends DialogFragment {
 
-    MainActivityInterface mainActivityInterface;
+    private MainActivityInterface mainActivityInterface;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,12 +43,12 @@ public class AreYouSureDialogFragment extends DialogFragment {
         mainActivityInterface.songMenuActionButtonShow(true);
     }
 
-    String action;
-    String what;
-    ArrayList<String> arguments;
-    String fragName;
-    Fragment callingFragment;  // can be null if not needed for MainActivity to refresh the fragment
-    Song song;
+    private final String action;
+    private final String what;
+    private final ArrayList<String> arguments;
+    private final String fragName;
+    private final Fragment callingFragment;  // can be null if not needed for MainActivity to refresh the fragment
+    private final Song song;
 
     public AreYouSureDialogFragment(String what, String action, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song) {
         this.what = what;

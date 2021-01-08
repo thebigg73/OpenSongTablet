@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.ArrayList;
@@ -219,8 +218,6 @@ public class CommonSQL {
                                         boolean searchByFilter, String folderVal, String artistVal,
                                         String keyVal, String tagVal, String filterVal) {
         ArrayList<Song> songs = new ArrayList<>();
-        StaticVariables.songsInList = new ArrayList<>();
-        StaticVariables.songsInList.clear();
 
         String sqlMatch = "";
         if (searchByFolder && folderVal != null && folderVal.length() > 0) {
@@ -290,7 +287,6 @@ public class CommonSQL {
 
                 // Is this in the set?  This will add a tick for the songlist checkbox
                 String setString = getSetString(c, fo, fi);
-                StaticVariables.songsInList.add(setString);
             }
             while (cursor.moveToNext());
         }

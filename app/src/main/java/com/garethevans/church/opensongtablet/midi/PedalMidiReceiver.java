@@ -13,9 +13,9 @@ import java.util.Arrays;
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class PedalMidiReceiver extends MidiReceiver {
 
-    Midi midi;
-    MainActivityInterface mainActivityInterface;
-    long downTime, upTime;
+    private final Midi midi;
+    private final MainActivityInterface mainActivityInterface;
+    private long downTime, upTime;
 
     PedalMidiReceiver (Midi midi, MainActivityInterface mainActivityInterface) {
         this.midi = midi;

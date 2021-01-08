@@ -1,4 +1,4 @@
-package com.garethevans.church.opensongtablet.songsandsets;
+package com.garethevans.church.opensongtablet.songsandsetsmenu;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

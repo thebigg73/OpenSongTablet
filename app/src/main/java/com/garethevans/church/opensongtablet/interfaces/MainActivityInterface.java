@@ -1,6 +1,8 @@
 package com.garethevans.church.opensongtablet.interfaces;
 
+import android.app.Activity;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
@@ -8,23 +10,43 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import com.garethevans.church.opensongtablet.animation.CustomAnimation;
+import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
+import com.garethevans.church.opensongtablet.appdata.VersionNumber;
+import com.garethevans.church.opensongtablet.autoscroll.AutoscrollActions;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
+import com.garethevans.church.opensongtablet.chords.Transpose;
 import com.garethevans.church.opensongtablet.controls.PedalActions;
 import com.garethevans.church.opensongtablet.export.ExportActions;
+import com.garethevans.church.opensongtablet.export.MakePDF;
+import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
+import com.garethevans.church.opensongtablet.filemanagement.SaveSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
+import com.garethevans.church.opensongtablet.getnewsongs.OCR;
+import com.garethevans.church.opensongtablet.importsongs.WebDownload;
+import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
+import com.garethevans.church.opensongtablet.pads.PadFunctions;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
+import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
+import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
+import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
+import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
+import com.garethevans.church.opensongtablet.songprocessing.PDFSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
+import com.garethevans.church.opensongtablet.songsandsetsmenu.SongListBuildIndex;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public interface MainActivityInterface {
     void hideActionButton(boolean hide);
@@ -69,6 +91,9 @@ public interface MainActivityInterface {
     void registerMidiAction(boolean actionDown, boolean actionUp, boolean actionLong, String note);
     void installPlayServices();
     void fixOptionsMenu();
+    void fullIndex();
+    void quickSongMenuBuild();
+    void setFullIndexRequired(boolean fullIndexRequired);
 
     // Get the helpers initialised in the main activity
     NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface);
@@ -82,11 +107,41 @@ public interface MainActivityInterface {
     Preferences getPreferences();
     ExportActions getExportActions();
     ConvertChoPro getConvertChoPro();
+    ConvertOnSong getConvertOnSong();
     ProcessSong getProcessSong();
     Song getSong();
     SQLiteHelper getSQLiteHelper();
     NonOpenSongSQLiteHelper getNonOpenSongSQLiteHelper();
     CommonSQL getCommonSQL();
     CCLILog getCCLILog();
-    PedalActions getPedalActions(MainActivityInterface mainActivityInterface);
+    PedalActions getPedalActions();
+    DoVibrate getDoVibrate();
+    String getImportFilename();
+    Uri getImportUri();
+    void setImportFilename(String importFilename);
+    void setImportUri(Uri importUri);
+    WebDownload getWebDownload();
+    ShowToast getShowToast();
+    String getMode();
+    void setMode(String whichMode);
+    void setNearbyOpen(boolean nearbyOpen);
+    Locale getLocale();
+    CurrentSet getCurrentSet();
+    SetActions getSetActions();
+    LoadSong getLoadSong();
+    SaveSong getSaveSong();
+    Activity getActivity();
+    String getWhattodo();
+    void setWhattodo(String whattodo);
+    AutoscrollActions getAutoscrollActions();
+    PadFunctions getPadFunctions();
+    Metronome getMetronome();
+    SongListBuildIndex getSongListBuildIndex();
+    CustomAnimation getCustomAnimation();
+    PDFSong getPDFSong();
+    ShowCase getShowCase();
+    OCR getOCR();
+    MakePDF getMakePDF();
+    VersionNumber getVersionNumber();
+    Transpose getTranspose();
 }

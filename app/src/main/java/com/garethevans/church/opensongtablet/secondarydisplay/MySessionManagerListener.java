@@ -7,7 +7,7 @@ import com.google.android.gms.cast.framework.SessionManagerListener;
 
 public class MySessionManagerListener implements SessionManagerListener<Session>{
 
-    Activity activity;
+    private final Activity activity;
 
     public MySessionManagerListener(Activity activity) {
         this.activity = activity;

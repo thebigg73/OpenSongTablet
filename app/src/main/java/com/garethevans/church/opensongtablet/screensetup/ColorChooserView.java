@@ -13,10 +13,10 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class ColorChooserView extends View {
-        Paint paint;
-        Shader luar;
-        ComposeShader shader;
-        final float[] color = { 1.f, 1.f, 1.f };
+        private Paint paint;
+        private Shader luar;
+        private ComposeShader shader;
+        private final float[] color = { 1.f, 1.f, 1.f };
 
         public ColorChooserView(Context context){
                 super(context);

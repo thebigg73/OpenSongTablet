@@ -5,13 +5,21 @@ import android.util.Log;
 
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 import java.util.ArrayList;
 
 public class Transpose {
+
+    private String transposeDirection;
+    private int transposeTimes;
+    public void setTransposeDirection(String transposeDirection) {
+        this.transposeDirection = transposeDirection;
+    }
+    public void setTransposeTimes(int transposeTimes) {
+        this.transposeTimes = transposeTimes;
+    }
 
     //  A  A#/Bb  B/Cb  C/B#  C#/Db    D    D#/Eb   E/Fb   E#/F   F#/Gb   G     G#/Ab
     //  A    B     H     C
@@ -94,7 +102,7 @@ public class Transpose {
             if (preferences.getMyPreferenceBoolean(c,"chordFormatUsePreferred",true)) {
                 oldchordformat = preferences.getMyPreferenceInt(c,"chordFormat",1);
             } else {
-                oldchordformat = StaticVariables.detectedChordFormat;
+                oldchordformat = song.getDetectedChordFormat();
             }
             
             // Transpose the key
@@ -184,7 +192,7 @@ public class Transpose {
         return key;
     }
     
-    String transposeThisString(Context c, Preferences preferences, String transposeDirection, String texttotranspose) {
+    String transposeThisString(Context c, Preferences preferences, Song song, String transposeDirection, String texttotranspose) {
         try {
             // Go through each line and change each chord to $..$
             // This marks the bit to be changed
@@ -193,7 +201,7 @@ public class Transpose {
 
             int transposeTimes = 1;
 
-            oldchordformat = StaticVariables.detectedChordFormat;
+            oldchordformat = song.getDetectedChordFormat();
 
             // Now we change the chords into numbers
             for (int x = 0; x < splitLyrics.length; x++) {
@@ -413,10 +421,10 @@ public class Transpose {
 
     Song convertChords(Context c, Song song, StorageAccess storageAccess, Preferences preferences, String transposeDirection, int transposeTimes) {
         int convertTo = preferences.getMyPreferenceInt(c,"chordFormat",1);
-        checkChordFormat(c,song.getLyrics(),preferences);
+        checkChordFormat(c,song,preferences);
 
-        Log.d("Transpose","convertTo="+convertTo+"\ndetetctedChordFormat="+StaticVariables.detectedChordFormat);
-        if (StaticVariables.detectedChordFormat >= 5) {
+        Log.d("Transpose","convertTo="+convertTo+"\ndetetctedChordFormat="+song.getDetectedChordFormat());
+        if (song.getDetectedChordFormat() >= 5) {
             song.setLyrics(convertFromNumerals(c, song, storageAccess, preferences));
         }// Convert to a normal format to start with
         if (convertTo>=5) {
@@ -425,7 +433,7 @@ public class Transpose {
             song.setLyrics(convertToNumerals(c, song.getLyrics(), preferences));
         } else {
             transposeDirection = "0";
-            checkChordFormat(c, song.getLyrics(), preferences);
+            checkChordFormat(c, song, preferences);
             try {
                 song = doTranspose(c, song, preferences, transposeDirection, transposeTimes,false, false);
             } catch (Exception e) {
@@ -462,11 +470,11 @@ public class Transpose {
     private String convertFromNumerals(Context c, Song song, StorageAccess storageAccess, Preferences preferences) {
         // This goes through the song and converts from Nashville numbering or numerals to standard chord format first
         String lyrics = song.getLyrics();
-        if (StaticVariables.detectedChordFormat==5 || StaticVariables.detectedChordFormat==6) {
+        if (song.getDetectedChordFormat()==5 || song.getDetectedChordFormat()==6) {
             // We currently have either a nashville system (numbers or numerals)
             String[] splitLyrics = song.getLyrics().split("\n");
 
-            boolean numeral = StaticVariables.detectedChordFormat==6;
+            boolean numeral = song.getDetectedChordFormat()==6;
             StringBuilder sb = new StringBuilder();
             Log.d("Transpose","Converting from numerals first");
             // Convert these into standard chord format to start with
@@ -964,12 +972,12 @@ public class Transpose {
 
             // Only do transposing if it is a chord line (starting with .)
             if (splitLyrics[x].startsWith(".")) {
-                if (StaticVariables.transposeDirection.equals("+1")) {
+                if (transposeDirection.equals("+1")) {
                     // Put the numbers up by one.
                     // Last step then fixes 12 to be 0
 
                     // Repeat this as often as required.
-                    for (int repeatTranspose = 0; repeatTranspose < StaticVariables.transposeTimes; repeatTranspose++) {
+                    for (int repeatTranspose = 0; repeatTranspose < transposeTimes; repeatTranspose++) {
                         splitLyrics[x] = splitLyrics[x].replace("$.12.$", "$.13.$");
                         splitLyrics[x] = splitLyrics[x].replace("$.11.$", "$.12.$");
                         splitLyrics[x] = splitLyrics[x].replace("$.10.$", "$.11.$");
@@ -1014,14 +1022,14 @@ public class Transpose {
                     }
                 }
 
-                if (StaticVariables.transposeDirection.equals("-1")) {
+                if (transposeDirection.equals("-1")) {
                     // Put the numbers down by one.
                     // Move num 0 down to -1 (if it goes to 11 it will be moved
                     // later)
                     // Last step then fixes -1 to be 11
 
                     // Repeat this as often as required.
-                    for (int repeatTranspose = 0; repeatTranspose < StaticVariables.transposeTimes; repeatTranspose++) {
+                    for (int repeatTranspose = 0; repeatTranspose < transposeTimes; repeatTranspose++) {
                         splitLyrics[x] = splitLyrics[x].replace("$.1.$", "$.0.$");
                         splitLyrics[x] = splitLyrics[x].replace("$.2.$", "$.1.$");
                         splitLyrics[x] = splitLyrics[x].replace("$.3.$", "$.2.$");
@@ -1366,7 +1374,7 @@ public class Transpose {
         }
 
         // Now we change the chords into numbers
-        switch (StaticVariables.detectedChordFormat) {
+        switch (song.getDetectedChordFormat()) {
             default:
                 transposedChords = chordToNumber1(transposedChords);
                 break;
@@ -1391,7 +1399,7 @@ public class Transpose {
         }
 
         // Now convert the numbers back to the appropriate chords
-        switch (StaticVariables.detectedChordFormat) {
+        switch (song.getDetectedChordFormat()) {
             default:
                 transposedChords = numberToChord1(transposedChords,false,false,capousesflats);
                 break;
@@ -1442,9 +1450,9 @@ public class Transpose {
         return al;
     }
 
-    void checkChordFormat(Context c, String lyrics, Preferences preferences) {
-        String[] splitLyrics = lyrics.split("\n");
-        StaticVariables.detectedChordFormat = preferences.getMyPreferenceInt(c, "chordFormat", 1);
+    void checkChordFormat(Context c, Song song, Preferences preferences) {
+        String[] splitLyrics = song.getLyrics().split("\n");
+        song.setDetectedChordFormat(preferences.getMyPreferenceInt(c, "chordFormat", 1));
 
         // The user wants the app to guess the chord formatting, so we will detect formatting
         boolean contains_es_is = false;
@@ -1493,17 +1501,17 @@ public class Transpose {
         //int detected = 0;
         // Set the chord style detected
         if (contains_do && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
-            StaticVariables.detectedChordFormat = 4;
+            song.setDetectedChordFormat(4);
         } else if (contains_H && !contains_es_is && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
-            StaticVariables.detectedChordFormat = 2;
+            song.setDetectedChordFormat(2);
         } else if ((contains_H || contains_es_is) && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
-            StaticVariables.detectedChordFormat = 3;
+            song.setDetectedChordFormat(3);
         } else if (contains_nash && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
-            StaticVariables.detectedChordFormat = 5;
+            song.setDetectedChordFormat(5);
         } else if (contains_nashnumeral && !preferences.getMyPreferenceBoolean(c, "chordFormatUsePreferred", false)) {
-            StaticVariables.detectedChordFormat = 6;
+            song.setDetectedChordFormat(6);
         } else {
-            StaticVariables.detectedChordFormat = 1;
+            song.setDetectedChordFormat(1);
         }
 
         // Ok so the user chord format may not quite match the song - it might though!

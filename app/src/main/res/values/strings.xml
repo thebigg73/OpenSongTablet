@@ -93,7 +93,7 @@
     <string name="date">Date</string>
     <string name="dec_autoscroll_speed">Decrease Autoscroll Speed</string>
     <string name="delete">Delete</string>
-    <string name="delete_folder_warning">If you delete this subdirectory, this will also delete any songs or folders that it contains.  You cannot undo this change!</string>
+    <string name="delete_folder_warning">If you delete this subdirectory, this will also delete any songs or folders that it contains.  You cannot undo this change!\n\nPlease make sure you have made and saved backups of ALL your files before proceeding!!!</string>
     <string name="display">Display</string>
     <string name="display_settings">Change display settings (what you see on screen)</string>
     <string name="duplicate">Duplicate</string>
@@ -138,10 +138,10 @@
     <string name="highlight">Highlighter</string>
     <string name="image">Image</string>
     <string name="image_slide">Image slideshow</string>
+    <string name="import_main">Import songs/backups</string>
     <string name="import_file">File</string>
     <string name="import_osb">Restore songs from OpenSongApp backup file (*.osb)</string>
     <string name="import_other" translatable="false">OpenSong, OnSong, PDF, txt, ChoPro</string>
-    <string name="import_song">Import a song</string>
     <string name="inc_autoscroll_speed">Increase Autoscroll Speed</string>
     <string name="info_text">Info text</string>
     <string name="instrumental">Instrumental</string>
@@ -838,6 +838,7 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="play_services_error">To use Google Cast, Fonts and Nearby Connections, you will need to install Google Play Services.</string>
     <string name="play_services_how">Show me how</string>
     <string name="play_services_help" translatable="false">https://www.opensongapp.com/user-guide/devices-without-google-play</string>
+    <string name="import_song">Import a song</string>
 
 
 </resources>

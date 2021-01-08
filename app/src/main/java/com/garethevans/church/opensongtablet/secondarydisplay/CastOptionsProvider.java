@@ -10,6 +10,7 @@ import com.google.android.gms.cast.framework.SessionProvider;
 import java.util.List;
 
 public class CastOptionsProvider implements OptionsProvider {
+
     @Override
     public CastOptions getCastOptions(Context context) {
         return new CastOptions.Builder()

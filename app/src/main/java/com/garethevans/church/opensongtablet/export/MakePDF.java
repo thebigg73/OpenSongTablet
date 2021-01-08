@@ -22,18 +22,18 @@ import java.io.OutputStream;
 
 public class MakePDF {
 
-    int margin;
-    int paintSize;
-    int headerHeight;
-    int footerHeight;
-    int docWidth  = 595;  // Based on 1/72 of an inch  595/72 * 2.54 = 21.0cm
-    int docHeight = 842;  // Based on 1/72 of an inch  842/72 * 2.54 = 29.7cm
-    int lyricheight;
-    int lyricwidth;
-    int chordColor;
-    int lyricColor;
-    int dpi;
-    Paint paint;
+    private int margin;
+    private int paintSize;
+    private int headerHeight;
+    private int footerHeight;
+    private final int docWidth  = 595;  // Based on 1/72 of an inch  595/72 * 2.54 = 21.0cm
+    private final int docHeight = 842;  // Based on 1/72 of an inch  842/72 * 2.54 = 29.7cm
+    private int lyricheight;
+    private int lyricwidth;
+    private int chordColor;
+    private int lyricColor;
+    private int dpi;
+    private Paint paint;
 
     public Uri createPDF(Context c, Preferences preferences, StorageAccess storageAccess, ProcessSong processSong, Song thisSong) {
         String newFilename = thisSong.getFolder().replace("/","_");

@@ -5,7 +5,6 @@ import android.net.Uri;
 
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
 
@@ -75,15 +74,11 @@ public class ConvertOnSong {
         // Prepare the new song filename
         newSongFileName = convertChoPro.getNewSongFileName(storageAccess, uri, title, processSong);
 
-        // By default, set the title to the new filename
-        StaticVariables.songfilename = newSongFileName;
-
-
         // Set the correct values
         setCorrectXMLValues(song);
 
         // Now prepare the new songXML file
-        String myNewXML = song.getXML(song,processSong);
+        String myNewXML = processSong.getXML(song);
 
         // Get a unique uri for the new song
         Uri newUri = convertChoPro.getNewSongUri(c, storageAccess, preferences, songSubFolder, newSongFileName);

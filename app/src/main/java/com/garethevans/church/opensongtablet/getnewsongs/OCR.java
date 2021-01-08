@@ -21,9 +21,9 @@ import java.util.ArrayList;
 
 public class OCR {
 
-    ArrayList<String> pdfPages;
-    int pageCount;
-    MainActivityInterface mainActivityInterface;
+    private ArrayList<String> pdfPages;
+    private int pageCount;
+    private MainActivityInterface mainActivityInterface;
 
     public void getTextFromPDF(Context c, Preferences preferences, StorageAccess storageAccess,
                                  ProcessSong processSong, MainActivityInterface mainActivityInterface,

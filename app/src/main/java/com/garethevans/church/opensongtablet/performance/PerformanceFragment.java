@@ -16,7 +16,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
@@ -28,15 +27,15 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.pads.PadFunctions;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
+import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.songsandsets.SetActions;
+import com.garethevans.church.opensongtablet.songsandsetsmenu.SongListBuildIndex;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
@@ -63,6 +62,7 @@ public class PerformanceFragment extends Fragment {
     private Metronome metronome;
     private DoVibrate doVibrate;
     private SetTypeFace setTypeFace;
+    private SongListBuildIndex songListBuildIndex;
 
     //private ShowCase showCase;
 
@@ -97,24 +97,18 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface = (MainActivityInterface) context;
         mainActivityInterface.registerFragment(this,"Performance");
     }
-
     @Override
     public void onDetach() {
         super.onDetach();
         mainActivityInterface.registerFragment(null,"Performance");
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         myView = null;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //((AppCompatActivity) getActivity()).getSupportActionBar().show();
-    }
+
 
     // The logic to start this fragment
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -126,18 +120,14 @@ public class PerformanceFragment extends Fragment {
         // Initialise the helper classes that do the heavy lifting
         initialiseHelpers();
         mainActivityInterface.lockDrawer(false);
+        mainActivityInterface.hideActionBar(false);
         mainActivityInterface.hideActionButton(false);
 
         // Load in preferences
         loadPreferences();
 
         // Prepare the song menu (will be called again after indexing from the main activity index songs)
-
-        // Build the song index if we are here for the first time
-        if (StaticVariables.indexRequired) {
-            StaticVariables.indexRequired = false;
-            mainActivityInterface.indexSongs();
-        }
+        mainActivityInterface.fullIndex();
 
         doSongLoad();
 
@@ -154,22 +144,23 @@ public class PerformanceFragment extends Fragment {
 
     // Getting the preferences and helpers ready
     private void initialiseHelpers() {
-        storageAccess = new StorageAccess();
-        preferences = new Preferences();
-        loadSong = new LoadSong();
-        processSong = new ProcessSong();
-        sqLiteHelper = new SQLiteHelper(getActivity());
-        convertOnSong = new ConvertOnSong();
-        convertChoPro = new ConvertChoPro();
+        storageAccess = mainActivityInterface.getStorageAccess();
+        preferences = mainActivityInterface.getPreferences();
+        loadSong = mainActivityInterface.getLoadSong();
+        processSong = mainActivityInterface.getProcessSong();
+        sqLiteHelper = mainActivityInterface.getSQLiteHelper();
+        convertOnSong = mainActivityInterface.getConvertOnSong();
+        convertChoPro = mainActivityInterface.getConvertChoPro();
         themeColors = mainActivityInterface.getMyThemeColors();
-        showToast = new ShowToast();
-        nonOpenSongSQLiteHelper = new NonOpenSongSQLiteHelper(getActivity());
-        commonSQL = new CommonSQL();
-        setActions = new SetActions();
-        doVibrate = new DoVibrate();
-        padFunctions = new PadFunctions();
-        metronome = new Metronome(getContext(),mainActivityInterface.getAb());
+        showToast = mainActivityInterface.getShowToast();
+        nonOpenSongSQLiteHelper = mainActivityInterface.getNonOpenSongSQLiteHelper();
+        commonSQL = mainActivityInterface.getCommonSQL();
+        setActions = mainActivityInterface.getSetActions();
+        doVibrate = mainActivityInterface.getDoVibrate();
+        padFunctions = mainActivityInterface.getPadFunctions();
+        metronome = mainActivityInterface.getMetronome();
         setTypeFace = mainActivityInterface.getMyFonts();
+        songListBuildIndex = mainActivityInterface.getSongListBuildIndex();
 
         //showCase = new ShowCase();
 
@@ -206,6 +197,7 @@ public class PerformanceFragment extends Fragment {
 
     // Displaying the song
     public void doSongLoad() {
+        // Loading the song is dealt with in this fragment as specific actions are required
         new Thread(() -> {
             // Quick fade the current page
             requireActivity().runOnUiThread(() -> {
@@ -222,24 +214,22 @@ public class PerformanceFragment extends Fragment {
             if (sectionViews!=null) {
                 sectionViews.clear();
             }
-            song = new Song();
-            song = song.initialiseSong(commonSQL);
-            song = loadSong.doLoadSong(getActivity(),storageAccess,preferences,processSong,
-                    showToast, sqLiteHelper, commonSQL, song, convertOnSong, convertChoPro, false);
+            song = mainActivityInterface.getSong();
+            song = processSong.initialiseSong(commonSQL,song.getFolder(), song.getFilename(), song);
+            song = loadSong.doLoadSong(getContext(),storageAccess,preferences,processSong,
+                    showToast, mainActivityInterface.getLocale(), songListBuildIndex, sqLiteHelper, commonSQL, song, convertOnSong, convertChoPro, false);
 
             requireActivity().runOnUiThread(this::prepareSongViews);
             mainActivityInterface.moveToSongInSongMenu();
         }).start();
     }
-
-
     private void prepareSongViews() {
         // This is called on UI thread above;
         myView.pageHolder.setBackgroundColor(themeColors.getLyricsBackgroundColor());
         // Get the song in the layout
-        sectionViews = processSong.setSongInLayout(getActivity(),preferences, trimSections, addSectionSpace,
-                trimLines, lineSpacing, themeColors, setTypeFace, scaleHeadings, scaleChords, scaleComments,
-                song.getLyrics(), boldChordHeading);
+        sectionViews = processSong.setSongInLayout(getActivity(),preferences, mainActivityInterface.getLocale(),
+                trimSections, addSectionSpace, trimLines, lineSpacing, themeColors, setTypeFace,
+                scaleHeadings, scaleChords, scaleComments, song.getLyrics(), boldChordHeading);
 
         // We now have the 1 column layout ready, so we can set the view observer to measure once drawn
         setUpVTO();
@@ -323,16 +313,11 @@ public class PerformanceFragment extends Fragment {
     }
 
     private void prepareSongLoad() {
-        if (StaticVariables.songsInList==null || StaticVariables.songsInList.size()==0) {
-            // Initialise the songs in the list for swiping
-            StaticVariables.songsInList = new ArrayList<>();
-            StaticVariables.songsInList.clear();
-            //TODO do logic to determine if this should be built from the set list or not
-            // If not in a set
-            sqLiteHelper.getSongsByFilters(getActivity(), commonSQL,
-                    false,false,false,false,false,
-                    null,null,null,null,null);
-        }
+        // TODO
+        /*ArrayList<Song> songsList = sqLiteHelper.getSongsByFilters(getActivity(), commonSQL,
+                false,false,false,false,false,
+                null,null,null,null,null);
+
         // Get current index
         int currentPosition = StaticVariables.songsInList.indexOf(StaticVariables.songfilename);
         if (loadNextSong) {
@@ -351,7 +336,7 @@ public class PerformanceFragment extends Fragment {
             } else {
                 showToast.doIt(getActivity(), getString(R.string.firstsong));
             }
-        }
+        }*/
     }
     public void onBackPressed() {
         Log.d("PerformanceFragment","On back press!!!");

@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.animation.ShowCase;
@@ -29,24 +29,24 @@ import de.blox.graphview.Node;
 import de.blox.graphview.tree.BuchheimWalkerAlgorithm;
 import de.blox.graphview.tree.BuchheimWalkerConfiguration;
 
-public class StorageManagementFragment extends DialogFragment {
+public class StorageManagementFragment extends Fragment {
 
-    StorageFolderDisplayBinding myView;
-    SQLiteHelper sqLiteHelper;
-    StorageAccess storageAccess;
-    ShowCase showCase;
+    private StorageFolderDisplayBinding myView;
+    private SQLiteHelper sqLiteHelper;
+    private StorageAccess storageAccess;
+    private ShowCase showCase;
 
     protected GraphView graphView;
-    Graph graph;
-    Node songs, parentNode;
-    String fulladdress, folder, parent;
+    private Graph graph;
+    private Node songs, parentNode;
+    private String fulladdress, folder, parent;
 
-    GraphAdapter<GraphView.ViewHolder> adapter;
-    MainActivityInterface mainActivityInterface;
-    ArrayList<String> actualLocation, infos, dismisses, songIDs, availableFolders;
-    ArrayList<View> views = new ArrayList<>();
-    ArrayList<Boolean> rects = new ArrayList<>();
-    int redColor, greenColor;
+    private GraphAdapter<GraphView.ViewHolder> adapter;
+    private MainActivityInterface mainActivityInterface;
+    private ArrayList<String> actualLocation, infos, dismisses, songIDs, availableFolders;
+    private ArrayList<View> views = new ArrayList<>();
+    private ArrayList<Boolean> rects = new ArrayList<>();
+    private int redColor, greenColor;
 
     @Override
     public void onAttach(@NonNull Context context) {

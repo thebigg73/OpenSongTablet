@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -40,25 +41,30 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.animation.PageButtonFAB;
 import com.garethevans.church.opensongtablet.animation.ShowCase;
 import com.garethevans.church.opensongtablet.appdata.FixLocale;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
+import com.garethevans.church.opensongtablet.autoscroll.AutoscrollActions;
 import com.garethevans.church.opensongtablet.ccli.CCLILog;
 import com.garethevans.church.opensongtablet.ccli.SettingsCCLI;
+import com.garethevans.church.opensongtablet.chords.Transpose;
 import com.garethevans.church.opensongtablet.controls.PedalActions;
 import com.garethevans.church.opensongtablet.controls.PedalsFragment;
 import com.garethevans.church.opensongtablet.databinding.ActivityMainBinding;
 import com.garethevans.church.opensongtablet.databinding.AppBarMainBinding;
 import com.garethevans.church.opensongtablet.export.ExportActions;
+import com.garethevans.church.opensongtablet.export.MakePDF;
 import com.garethevans.church.opensongtablet.filemanagement.AreYouSureDialogFragment;
-import com.garethevans.church.opensongtablet.filemanagement.EditSongFragment;
-import com.garethevans.church.opensongtablet.filemanagement.EditSongFragmentMain;
 import com.garethevans.church.opensongtablet.filemanagement.ExportFiles;
 import com.garethevans.church.opensongtablet.filemanagement.LoadSong;
+import com.garethevans.church.opensongtablet.filemanagement.SaveSong;
 import com.garethevans.church.opensongtablet.filemanagement.StorageAccess;
 import com.garethevans.church.opensongtablet.filemanagement.StorageManagementFragment;
+import com.garethevans.church.opensongtablet.getnewsongs.OCR;
+import com.garethevans.church.opensongtablet.importsongs.WebDownload;
 import com.garethevans.church.opensongtablet.interfaces.DialogReturnInterface;
 import com.garethevans.church.opensongtablet.interfaces.EditSongFragmentInterface;
 import com.garethevans.church.opensongtablet.interfaces.LoadSongInterface;
@@ -66,30 +72,38 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.interfaces.MidiAdapterInterface;
 import com.garethevans.church.opensongtablet.interfaces.NearbyInterface;
 import com.garethevans.church.opensongtablet.interfaces.ShowCaseInterface;
+import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.midi.MidiFragment;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnectionsFragment;
+import com.garethevans.church.opensongtablet.pads.PadFunctions;
 import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.presentation.PresentationFragment;
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
+import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
 import com.garethevans.church.opensongtablet.screensetup.WindowFlags;
 import com.garethevans.church.opensongtablet.secondarydisplay.MediaRouterCallback;
 import com.garethevans.church.opensongtablet.secondarydisplay.MySessionManagerListener;
+import com.garethevans.church.opensongtablet.setprocessing.CurrentSet;
+import com.garethevans.church.opensongtablet.setprocessing.SetActions;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertChoPro;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertOnSong;
 import com.garethevans.church.opensongtablet.songprocessing.ConvertTextSong;
+import com.garethevans.church.opensongtablet.songprocessing.EditSongFragment;
+import com.garethevans.church.opensongtablet.songprocessing.EditSongFragmentMain;
+import com.garethevans.church.opensongtablet.songprocessing.PDFSong;
 import com.garethevans.church.opensongtablet.songprocessing.ProcessSong;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
-import com.garethevans.church.opensongtablet.songsandsets.SetMenuFragment;
-import com.garethevans.church.opensongtablet.songsandsets.SongListBuildIndex;
-import com.garethevans.church.opensongtablet.songsandsets.SongMenuFragment;
-import com.garethevans.church.opensongtablet.songsandsets.ViewPagerAdapter;
+import com.garethevans.church.opensongtablet.songsandsetsmenu.SetMenuFragment;
+import com.garethevans.church.opensongtablet.songsandsetsmenu.SongListBuildIndex;
+import com.garethevans.church.opensongtablet.songsandsetsmenu.SongMenuFragment;
+import com.garethevans.church.opensongtablet.songsandsetsmenu.ViewPagerAdapter;
 import com.garethevans.church.opensongtablet.sqlite.CommonSQL;
 import com.garethevans.church.opensongtablet.sqlite.NonOpenSongSQLiteHelper;
 import com.garethevans.church.opensongtablet.sqlite.SQLiteHelper;
@@ -107,10 +121,20 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 
 import static com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE;
 import static com.google.android.material.snackbar.Snackbar.make;
+
+/*
+This file is the Activity - the hub of the app.  Since V6, there is only one activity, which is
+better for memory, lifecycle and passing values between fragments (how the app now works).
+
+Some fragments will contain their own unique tasks, etc. but many of these fragments will call
+common functions in this MainActivity class that all the fragments can get information on using
+getters and setters.  This also avoids having loads of StaticVariables.
+*/
 
 //TODO Fix unused and local
 
@@ -136,6 +160,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private ProcessSong processSong;
     private LoadSong loadSong;
     private Song song;
+    private CurrentSet currentSet;
+    private SetActions setActions;
+    private SongListBuildIndex songListBuildIndex;
     private ShowCase showCase;
     private ShowToast showToast;
     private WindowFlags windowFlags;
@@ -150,6 +177,17 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private boolean pageButtonActive = true;
     private PedalActions pedalActions;
     private ExportActions exportActions;
+    private WebDownload webDownload;
+    private AutoscrollActions autoscrollActions;
+    private DoVibrate doVibrate;
+    private SaveSong saveSong;
+    private PadFunctions padFunctions;
+    private Metronome metronome;
+    private CustomAnimation customAnimation;
+    private PDFSong pdfSong;
+    private MakePDF makePDF;
+    private OCR ocr;
+    private Transpose transpose;
 
     private ArrayList<View> targets;
     private ArrayList<String> infos, dismisses;
@@ -167,16 +205,21 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     NearbyConnectionsFragment nearbyConnectionsFragment;
     Fragment registeredFragment;
     int fragmentOpen;
+    boolean fullIndexRequired = true;
+    String whattodo = "";
 
+    NavHostFragment navHostFragment;
     NavController navController;
 
     ActionBar ab;
     DrawerLayout drawerLayout;
 
     MenuItem settingsButton;
+    private boolean settingsOpen;
 
     // Network discovery / connections
     NearbyConnections nearbyConnections;
+    private boolean nearbyOpen;
 
     // Casting
     private CastContext castContext;
@@ -195,13 +238,25 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     ViewPager2 viewPager;
     boolean showSetMenu;
 
+    Locale locale;
+
+    // Importing/exporting
+    private String importFilename;
+    private Uri importUri;
+
+    private String whichMode;
+
+    // Pads
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Initialise the views for the activity
         activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         appBarMainBinding = activityMainBinding.appBarMain;
+        drawerLayout = activityMainBinding.drawerLayout;
 
         View view = activityMainBinding.getRoot();
         view.setOnSystemUiVisibilityChangeListener(
@@ -210,35 +265,19 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                         setWindowFlags();
                     }
                 });
-
         setContentView(view);
-        setSupportActionBar(activityMainBinding.appBarMain.myToolBarNew.myToolBarNew);
-        ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setDisplayHomeAsUpEnabled(true);
-        }
-
-        drawerLayout = activityMainBinding.drawerLayout;
-
-        // Fragment work
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_boot, R.id.nav_performance, R.id.nav_presentation)
-                .setOpenableLayout(activityMainBinding.drawerLayout)
-                .build();
-
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(activityMainBinding.navView, navController);
-
 
         // Initialise the helpers used for heavy lifting
         initialiseHelpers();
 
         // Set the fullscreen window flags
         setWindowFlags();
+
+        // Prepare the actionbar
+        setupActionbar();
+
+        // Fragment work
+        setupNav();
 
         // Get the version
         versionNumber = new VersionNumber();
@@ -252,67 +291,13 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
         // Set up the Nearby connection service
         nearbyConnections.getUserNickname();
-    }
-
-    // Initialise the MainActivity components
-    // Some of the set up only happens once the user has passed the BootUpFragment checks
-    @Override
-    public void initialiseActivity() {
-
-        lockDrawer(false);
-        hideActionButton(false);
-        hideActionBar(false);
-
-        // We don't want the back button to bring us back to the splash screen, so pop it from the backstack
-        navController.popBackStack(R.id.nav_boot,true);
-
-        switch (StaticVariables.whichMode) {
-            case "Performance":
-            case "Stage":
-            default:
-                navigateToFragment(R.id.nav_performance);
-                break;
-
-            case "Presentation":
-                navigateToFragment(R.id.nav_presentation);
-                break;
-        }
-
-        // Set up song / set menu tabs
-        setUpSongMenuTabs();
-
-        // Set the version in the menu
-        versionNumber.updateMenuVersionNumber(this, activityMainBinding.menuTop.versionCode);
-
-        // Set up page buttons
-        setListeners();
 
         // Initialise the CastContext
         setUpCast();
-
     }
 
-    private void setUpCast() {
-        try {
-            castContext = CastContext.getSharedInstance(this);
-            sessionManager = castContext.getSessionManager();
-            castSession = castContext.getSessionManager().getCurrentCastSession();
-            sessionManagerListener = new MySessionManagerListener(this);
 
-        } catch (Exception e) {
-            // No Google Service available
-            // Do nothing as the user will see a warning in the settings menu
-            Log.d("MainActivity","No Google Services");
-        }
-    }
-    private void recoverCastState() {
-        castSession = sessionManager.getCurrentCastSession();
-        sessionManager.addSessionManagerListener(new MySessionManagerListener(this));
-    }
-    private void endCastState() {
-        sessionManager.removeSessionManagerListener(sessionManagerListener);
-        castSession = null;
-    }
+    // Set up the helpers
     private void initialiseHelpers() {
         storageAccess = new StorageAccess();
         preferences = new Preferences();
@@ -339,28 +324,110 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 activityMainBinding.pageButtonsRight.custom4Button,activityMainBinding.pageButtonsRight.custom5Button,
                 activityMainBinding.pageButtonsRight.custom6Button);
         pageButtonFAB.animatePageButton(this,false);
-        nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong,sqLiteHelper,commonSQL,song);
-        midi = new Midi(this,preferences);
-        pedalActions = new PedalActions(this,preferences);
+        nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong,sqLiteHelper,commonSQL);
+        midi = new Midi(this);
+        pedalActions = new PedalActions();
         exportActions = new ExportActions();
         song = new Song();
         mediaRouterCallback = new MediaRouterCallback();
+        webDownload = new WebDownload();
+        currentSet = new CurrentSet();
+        setActions = new SetActions();
+        songListBuildIndex = new SongListBuildIndex();
+        padFunctions = new PadFunctions();
+        autoscrollActions = new AutoscrollActions();
+        doVibrate = new DoVibrate();
+        saveSong = new SaveSong();
+        padFunctions = new PadFunctions();
+        metronome = new Metronome(this,ab);
+        customAnimation = new CustomAnimation();
+        pdfSong = new PDFSong();
+        ocr = new OCR();
+        makePDF = new MakePDF();
+        transpose = new Transpose();
+    }
+
+    // The actionbar
+    private void setupActionbar() {
+        setSupportActionBar(activityMainBinding.appBarMain.myToolBarNew.myToolBarNew);
+        ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    // The navigation actions
+    public void setupNav() {
+        navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        if (navHostFragment!=null) {
+            navController = navHostFragment.getNavController();
+        }
+
+        /*navController = Navigation.findNavController(this, R.id.nav_host_fragment);*/
+
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.bootUpFragment,
+                R.id.performanceFragment, R.id.presentationFragment)
+                .setOpenableLayout(activityMainBinding.drawerLayout)
+                .build();
+
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+        NavigationUI.setupWithNavController(activityMainBinding.navView, navController);
+    }
+
+    // Initialise the MainActivity components
+    // Some of the set up only happens once the user has passed the BootUpFragment checks
+    @Override
+    public void initialiseActivity() {
+        // Set up song / set menu tabs
+        setUpSongMenuTabs();
+
+        // Set the version in the menu
+        versionNumber.updateMenuVersionNumber(this, activityMainBinding.menuTop.versionCode);
+
+        // Set up page buttons
+        setListeners();
+    }
+
+    private void setUpCast() {
+        try {
+            castContext = CastContext.getSharedInstance(this);
+            sessionManager = castContext.getSessionManager();
+            castSession = castContext.getSessionManager().getCurrentCastSession();
+            sessionManagerListener = new MySessionManagerListener(this);
+
+        } catch (Exception e) {
+            // No Google Service available
+            // Do nothing as the user will see a warning in the settings menu
+            Log.d("MainActivity","No Google Services");
+        }
+    }
+    private void recoverCastState() {
+        castSession = sessionManager.getCurrentCastSession();
+        sessionManager.addSessionManagerListener(new MySessionManagerListener(this));
+    }
+    private void endCastState() {
+        sessionManager.removeSessionManagerListener(sessionManagerListener);
+        castSession = null;
     }
     private void initialiseStartVariables() {
-        StaticVariables.mDisplayTheme = preferences.getMyPreferenceString(this, "appTheme", "dark");
-        StaticVariables.whichMode = preferences.getMyPreferenceString(this, "whichMode", "Performance");
+        themeColors.setThemeName(preferences.getMyPreferenceString(this, "appTheme", "dark"));
+        whichMode = preferences.getMyPreferenceString(this, "whichMode", "Performance");
 
         // Song location
-        StaticVariables.songfilename = preferences.getMyPreferenceString(this,"songfilename","Welcome to OpenSongApp");
-        StaticVariables.whichSongFolder = preferences.getMyPreferenceString(this, "whichSongFolder", getString(R.string.mainfoldername));
+        song.setFilename(preferences.getMyPreferenceString(this,"songfilename","Welcome to OpenSongApp"));
+        song.setFolder(preferences.getMyPreferenceString(this, "whichSongFolder", getString(R.string.mainfoldername)));
 
         // Set
-        StaticVariables.currentSet = preferences.getMyPreferenceString(this,"setCurrent","");
+        currentSet.setCurrentSetString(preferences.getMyPreferenceString(this,"setCurrent",""));
         // TODO
-        StaticVariables.currentSet = "$**_Abba Father_**$$**_Above all_**$";
+        currentSet.setCurrentSetString("$**_Abba Father_**$$**_Above all_**$");
+        setActions.setStringToSet(this,currentSet);
 
         // Set the locale
-        fixLocale.fixLocale(this,preferences);
+        fixLocale.setLocale(this,preferences);
+        locale = fixLocale.getLocale();
 
         // MediaPlayer
         mediaPlayer1 = new MediaPlayer();
@@ -422,6 +489,48 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             windowFlags = new WindowFlags(this.getWindow());
         }
         windowFlags.setWindowFlags();
+    }
+
+
+    // Deal with the song menu
+    @Override
+    public void quickSongMenuBuild() {
+        fullIndexRequired = true;
+        ArrayList<String> songIds = new ArrayList<>();
+        try {
+            songIds = storageAccess.listSongs(this, preferences);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // Write a crude text file (line separated) with the song Ids (folder/file)
+        storageAccess.writeSongIDFile(this, preferences, songIds);
+
+        // Try to create the basic databases
+        // Non persistent, created from storage at boot (to keep updated) used to references ALL files
+        sqLiteHelper.resetDatabase(this);
+        // Persistent containing details of PDF/Image files only.  Pull in to main database at boot
+        // Updated each time a file is created, deleted, moved.
+        // Also updated when feature data (pad, autoscroll, metronome, etc.) is updated for these files
+        nonOpenSongSQLiteHelper.initialise(this, commonSQL, storageAccess, preferences);
+
+        // Add entries to the database that have songid, folder and filename fields
+        // This is the minimum that we need for the song menu.
+        // It can be upgraded asynchronously in StageMode/PresenterMode to include author/key
+        // Also will later include all the stuff for the search index as well
+        sqLiteHelper.insertFast(this, commonSQL, storageAccess);
+    }
+
+    @Override
+    public void fullIndex() {
+        if (fullIndexRequired) {
+            fullIndexRequired = false;
+            // TODO - Code to run full index and update the song menu
+            Log.d("MainActivity","About to run a full index - TODO");
+        }
+    }
+    @Override
+    public void setFullIndexRequired(boolean fullIndexRequired) {
+        this.fullIndexRequired = fullIndexRequired;
     }
 
     private boolean setSongMenuFragment() {
@@ -494,32 +603,21 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             }
         }
     }
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            closeDrawer(true);
-        } else if (StaticVariables.homeFragment) {
-            Log.d("d","In the home fragment, so deal with back pressed");
-        } else {
-            Log.d("d","Let Android deal with back press based on backstack");
-            super.onBackPressed();
-        }
-    }
+
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
         // Get the language
-        fixLocale.fixLocale(this,preferences);
+        fixLocale.setLocale(this,preferences);
 
         // Save a static variable that we have rotated the screen.
         // The media player will look for this.  If found, it won't restart when the song loads
-        StaticVariables.orientationChanged = StaticVariables.currentScreenOrientation!=newConfig.orientation;
-
+        padFunctions.setOrientationChanged(padFunctions.getCurrentOrientation()!=newConfig.orientation);
         // If orientation has changed, we need to reload the song to get it resized.
-        if (StaticVariables.orientationChanged) {
+        if (padFunctions.getOrientationChanged()) {
             // Set the current orientation
-            StaticVariables.currentScreenOrientation = newConfig.orientation; // Set the current orientation
+            padFunctions.setCurrentOrientation(newConfig.orientation);
             closeDrawer(true);
             doSongLoad();
         }
@@ -571,20 +669,19 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         Log.d("d","item="+item);
         switch (item.toString()) {
             case "Settings":
-                if (fragmentOpen != R.id.nav_preference) {
-                    //hideActionButton(true);
-                    navigateToFragment(R.id.nav_preference);
-                    //showingsettings = true;
-                } else {
+                if (settingsOpen) {
                     navHome();
+                } else {
+                    lockDrawer(true);
+                    navController.navigate(Uri.parse("opensongapp://preferences"));
                 }
                 break;
 
             case "Nearby":
-                if (requestNearbyPermissions() && fragmentOpen!=R.id.nearbyConnectionsFragment) {
-                    navigateToFragment(R.id.nearbyConnectionsFragment);
-                } else if (fragmentOpen==R.id.nearbyConnectionsFragment){
+                if (settingsOpen && nearbyOpen) {
                     navHome();
+                } else if (requestNearbyPermissions() && fragmentOpen!=R.id.nearbyConnectionsFragment) {
+                    navController.navigate(Uri.parse("opensongapp://settings/nearby"));
                 }
                 break;
         }
@@ -592,16 +689,12 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
 
     private void navHome() {
-        if (StaticVariables.whichMode.equals("Presentation")) {
-            navigateToFragment(R.id.nav_presentation);
-            //hideActionButton(true);
+        lockDrawer(false);
+        if (whichMode.equals("Presentation")) {
+            navController.navigate(Uri.parse("opensongapp://presentation"));
         } else {
-            navigateToFragment(R.id.nav_performance);
-            //hideActionButton(false);
+            navController.navigate(Uri.parse("opensongapp://performance"));
         }
-        //showingsettings = false;
-        StaticVariables.whattodo = "";
-        //getSupportFragmentManager().popBackStack();
     }
     @Override
     public boolean dispatchKeyEvent(@NonNull KeyEvent event) {
@@ -626,7 +719,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         batteryStatus = new BatteryStatus();
         batteryStatus.setUpBatteryMonitor(this,preferences,activityMainBinding.appBarMain.myToolBarNew.digitalclock,
                 activityMainBinding.appBarMain.myToolBarNew.batterycharge,
-                activityMainBinding.appBarMain.myToolBarNew.batteryimage,ab);
+                activityMainBinding.appBarMain.myToolBarNew.batteryimage,ab,locale);
 
         return true;
     }
@@ -675,7 +768,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void moveToSongInSongMenu() {
         if (setSongMenuFragment()) {
-            songMenuFragment.moveToSongInMenu();
+            songMenuFragment.moveToSongInMenu(song);
         } else {
             Log.d("MainActivity", "songMenuFragment not available");
         }
@@ -684,15 +777,15 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public void indexSongs() {
         new Thread(() -> {
             runOnUiThread(() -> showToast.doIt(this,getString(R.string.search_index_start)));
-            SongListBuildIndex songListBuildIndex = new SongListBuildIndex();
+            songListBuildIndex.setIndexComplete(false);
             songListBuildIndex.fullIndex(MainActivity.this,preferences,storageAccess,sqLiteHelper,
                     nonOpenSongSQLiteHelper,commonSQL,processSong,convertChoPro,convertOnSong,convertTextSong,showToast,loadSong);
             runOnUiThread(() -> {
-                StaticVariables.indexRequired = false;
-                StaticVariables.indexComplete = true;
+                songListBuildIndex.setIndexRequired(false);
+                songListBuildIndex.setIndexComplete(true);
                 showToast.doIt(this,getString(R.string.search_index_end));
                 if (setSongMenuFragment()) {
-                    songMenuFragment.updateSongMenu();
+                    songMenuFragment.updateSongMenu(song);
                 } else {
                     Log.d("MainActivity", "songMenuFragment not available");
                 }
@@ -735,7 +828,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     @Override
     public void closeDrawer(boolean close) {
-
         if (close) {
             activityMainBinding.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
@@ -764,17 +856,19 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     public void doSongLoad() {
         Log.d("MainActivity","doSongLoad() called");
 
-        if (StaticVariables.whichMode.equals("Presentation")) {
+        if (whichMode.equals("Presentation")) {
             if (presentationFragment!=null && presentationFragment.isAdded()) {
                 presentationFragment.doSongLoad();
             } else {
                 Log.d("MainActivity", "presentationFragment not available");
+                navigateToFragment(R.id.performanceFragment);
             }
         } else {
             if (performanceFragment!=null && performanceFragment.isAdded()) {
                 performanceFragment.doSongLoad();
             } else {
                 Log.d("MainActivity", "performanceFragment not available");
+                navigateToFragment(R.id.presentationFragment);
             }
         }
         closeDrawer(true);
@@ -876,9 +970,13 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     // Run actions from MainActivity (called from fragments)
     @Override
     public void lockDrawer(boolean lock) {
+        // This is done whenever we have a settings window open
         if (lock) {
+            settingsOpen = true;
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         } else {
+            settingsOpen = false;
+            nearbyOpen = false;
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
     }
@@ -909,7 +1007,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         closeDrawer(true);  // Only the Performance and Presentation fragments allow this.  Switched on in these fragments
         lockDrawer(true);
         hideActionButton(true);
-
         try {
             navController.navigate(id);
             Fragment f = getSupportFragmentManager().findFragmentById(id);
@@ -937,10 +1034,11 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     if (arguments!=null && arguments.size()>0 && arguments.get(0).equals("success")) {
                         // Write a blank xml file with the song name in it
                         Song song = new Song();
-                        song = song.initialiseSong(commonSQL);
-                        String newSongText = song.getXML(song,processSong);
-                        if (storageAccess.doStringWriteToFile(this,preferences,"Songs",StaticVariables.whichSongFolder, StaticVariables.songfilename,newSongText)) {
-                            navigateToFragment(R.id.nav_editSong);
+                        // TODO
+                        song = processSong.initialiseSong(commonSQL,song.getFolder(),"NEWSONGFILENAME",song);
+                        String newSongText = processSong.getXML(song);
+                        if (storageAccess.doStringWriteToFile(this,preferences,"Songs",song.getFolder(), song.getFilename(),newSongText)) {
+                            navigateToFragment(R.id.editSongFragment);
                         } else {
                             ShowToast.showToast(this,getString(R.string.error));
                         }
@@ -952,7 +1050,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                     // Check this was successful (saved as arguments)
                     if (arguments!=null && arguments.size()>1 && arguments.get(0).equals("success")) {
                         // We now need to copy the original file.  It's contents are saved in arguments.get(1)
-                        if (storageAccess.doStringWriteToFile(this,preferences,"Songs",StaticVariables.whichSongFolder,StaticVariables.songfilename,arguments.get(1))) {
+                        if (storageAccess.doStringWriteToFile(this,preferences,"Songs",song.getFolder(),song.getFilename(),arguments.get(1))) {
                             doSongLoad();
                         } else {
                             ShowToast.showToast(this,getString(R.string.error));
@@ -963,19 +1061,23 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     @Override
     public void returnToHome(Fragment fragment, Bundle bundle) {
-        NavOptions navOptions = new NavOptions.Builder()
-                .setPopUpTo(fragment.getId(), true)
-                .build();
-        if (StaticVariables.whichMode.equals("Presentation")) {
-            fragmentOpen = R.id.nav_presentation;
-            NavHostFragment.findNavController(fragment)
-                    .navigate(R.id.nav_presentation,bundle,navOptions);
+        NavOptions navOptions;
+        if (whichMode.equals("Presentation")) {
+            fragmentOpen = R.id.presentationFragment;
         } else {
-            fragmentOpen = R.id.nav_performance;
-            NavHostFragment.findNavController(fragment)
-                    .navigate(R.id.nav_performance,bundle,navOptions);
+            fragmentOpen = R.id.performanceFragment;
         }
-
+        try {
+            if (fragment!=null) {
+                navOptions = new NavOptions.Builder()
+                        .setPopUpTo(fragmentOpen, true)
+                        .build();
+                NavHostFragment.findNavController(fragment)
+                        .navigate(R.id.performanceFragment, bundle, navOptions);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public void displayAreYouSure(String what, String action, ArrayList<String> arguments, String fragName, Fragment callingFragment, Song song) {
@@ -990,7 +1092,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             switch(what) {
                 case "deleteSong":
                     result = storageAccess.doDeleteFile(this,preferences,"Songs",
-                            StaticVariables.whichSongFolder, StaticVariables.songfilename);
+                            song.getFolder(), song.getFilename());
                     // Now remove from the SQL database
                     if (song.getFiletype().equals("PDF") || song.getFiletype().equals("IMG")) {
                         nonOpenSongSQLiteHelper.deleteSong(this,commonSQL,storageAccess,preferences,song.getFolder(),song.getFilename());
@@ -1009,6 +1111,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 case "deleteItem":
                     // Folder and subfolder are passed in the arguments.  Blank arguments.get(2) /filenames mean folders
                     result = storageAccess.doDeleteFile(this,preferences,arguments.get(0),arguments.get(1),arguments.get(2));
+                    if (arguments.get(2).isEmpty() && arguments.get(0).equals("Songs") && (arguments.get(1).isEmpty()||arguments.get(1)==null)) {
+                        // Emptying the entire songs foler, so need to recreate it on finish
+                        storageAccess.createFolder(this,preferences,"Songs","","");
+                    }
                     //Rebuild the song index
                     updateSongMenu(fragName, callingFragment, arguments); // Passing the fragment allows an update to be sent to the calling fragment
                     break;
@@ -1024,7 +1130,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void updateSongMenu(String fragName, Fragment callingFragment, ArrayList<String> arguments) {
         // If sent called from another fragment the fragName and callingFragment are used to run an update listener
-        StaticVariables.indexComplete = false;
+        songListBuildIndex.setIndexComplete(false);
         // Get all of the files as an array list
         ArrayList<String> songIds = storageAccess.listSongs(this, preferences);
         // Write this to text file
@@ -1042,7 +1148,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             updateFragment(fragName,callingFragment,arguments);
         }
         // Now build it properly
-        indexSongs();
+        //indexSongs();
     }
     @Override
     public void doExport(String what) {
@@ -1081,14 +1187,38 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         super.onActivityResult(requestCode, resultCode, intent);
 
         if (intent!=null) {
-            if (requestCode == StaticVariables.REQUEST_FILE_CHOOSER) {
+            importUri = intent.getData();
+            boolean filetypeerror = false;
+            if (intent.getDataString()!=null) {
+                importFilename = storageAccess.getActualFilename(this,intent.getDataString());
+            }
+            Log.d("d","importFilename="+importFilename+"  importUri="+importUri);
+            if (requestCode == preferences.getFinalInt("REQUEST_FILE_CHOOSER")) {
                 Log.d("MainActivity","File chosen: "+intent.getData());
+            } else if (requestCode == preferences.getFinalInt("REQUEST_OSB_FILE")) {
+                if (importFilename!=null && importUri!=null &&
+                        importFilename.toLowerCase(fixLocale.getLocale()).endsWith(".osb")) {
+                    // OSB file detected
+                    navigateToFragment(R.id.importOSBFragment);
+
+                } else {
+                    filetypeerror = true;
+                }
+            }
+
+            if (filetypeerror) {
+                showToast.doIt(this,getString(R.string.file_type) + " - " + getString(R.string.unknown));
             }
         }
+
 
     }
 
     // Get references to the objects set in MainActivity
+    @Override
+    public Activity getActivity() {
+        return this;
+    }
     @Override
     public MediaPlayer getMediaPlayer(int i) {
         // Keeping mediaPlayers in the MainActivity so they persist across fragments
@@ -1149,13 +1279,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         return midi;
     }
     @Override
-    public PedalActions getPedalActions(MainActivityInterface mainActivityInterface) {
-        if (mainActivityInterface!=null) {
-            pedalActions.setInterface(mainActivityInterface);
-        }
-        return pedalActions;
-    }
-    @Override
     public void updateValue(Fragment fragment, String fragname, String which, String value) {
         if (fragment!=null) {
             switch (fragname) {
@@ -1168,16 +1291,135 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             }
         }
     }
-
+    @Override
+    public String getImportFilename() {
+        return importFilename;
+    }
+    @Override
+    public Uri getImportUri() {
+        return importUri;
+    }
+    @Override
+    public void setImportFilename(String importFilename) {
+        this.importFilename = importFilename;
+    }
+    @Override
+    public void setImportUri(Uri importUri) {
+        this.importUri = importUri;
+    }
+    @Override
+    public ShowToast getShowToast() {
+        return showToast;
+    }
+    @Override
+    public Locale getLocale() {
+        return locale;
+    }
+    @Override
+    public String getWhattodo() {
+        return whattodo;
+    }
+    @Override
+    public void setWhattodo(String whattodo) {
+        this.whattodo = whattodo;
+    }
+    @Override
+    public String getMode() {
+        return whichMode;
+    }
+    @Override
+    public void setMode(String whichMode) {
+        this.whichMode = whichMode;
+    }
+    @Override
+    public SetActions getSetActions() {
+        return setActions;
+    }
+    @Override
+    public CurrentSet getCurrentSet() {
+        return currentSet;
+    }
+    @Override
+    public LoadSong getLoadSong() {
+        return loadSong;
+    }
+    @Override
+    public void setNearbyOpen(boolean nearbyOpen) {
+        this.nearbyOpen = nearbyOpen;
+    }
+    @Override
+    public AutoscrollActions getAutoscrollActions() {
+        return autoscrollActions;
+    }
+    @Override
+    public WebDownload getWebDownload() {
+        return webDownload;
+    }
+    @Override
+    public ConvertOnSong getConvertOnSong() {
+        return convertOnSong;
+    }
+    @Override
+    public PedalActions getPedalActions() {
+        return pedalActions;
+    }
+    @Override
+    public DoVibrate getDoVibrate() {
+        return doVibrate;
+    }
+    @Override
+    public SaveSong getSaveSong() {
+        return saveSong;
+    }
+    @Override
+    public PadFunctions getPadFunctions() {
+        return padFunctions;
+    }
+    @Override
+    public Metronome getMetronome() {
+        return metronome;
+    }
+    @Override
+    public SongListBuildIndex getSongListBuildIndex() {
+        return songListBuildIndex;
+    }
+    @Override
+    public CustomAnimation getCustomAnimation() {
+        return customAnimation;
+    }
+    @Override
+    public PDFSong getPDFSong() {
+        return pdfSong;
+    }
+    @Override
+    public OCR getOCR() {
+        return ocr;
+    }
+    @Override
+    public ShowCase getShowCase() {
+        return showCase;
+    }
+    @Override
+    public MakePDF getMakePDF() {
+        return makePDF;
+    }
+    @Override
+    public VersionNumber getVersionNumber() {
+        return versionNumber;
+    }
+    @Override
+    public Transpose getTranspose() {
+        return transpose;
+    }
 
     // Nearby
     @Override
-    public void startDiscovery() {
-        nearbyConnections.startDiscovery();
+    public void startDiscovery(AutoscrollActions autoscrollActions) {
+        nearbyConnections.startDiscovery(autoscrollActions);
     }
     @Override
-    public void startAdvertising() {
-        nearbyConnections.startAdvertising();
+    public void startAdvertising(AutoscrollActions autoscrollActions) {
+        nearbyConnections.startAdvertising(autoscrollActions);
     }
     @Override
     public void stopDiscovery() {
@@ -1212,7 +1454,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             return true;
         } else if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
             try {
-
                 make(findViewById(R.id.navView), R.string.location_rationale,
                         LENGTH_INDEFINITE).setAction(android.R.string.ok, view -> ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 403)).show();

@@ -19,9 +19,9 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 public class DisplayMenuFragment extends Fragment {
 
-    MainActivityInterface mainActivityInterface;
-    SettingsDisplayBinding myView;
-    Preferences preferences;
+    private MainActivityInterface mainActivityInterface;
+    private SettingsDisplayBinding myView;
+    private Preferences preferences;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -48,7 +48,7 @@ public class DisplayMenuFragment extends Fragment {
     }
 
     private void setHelpers() {
-        preferences = new Preferences();
+        preferences = mainActivityInterface.getPreferences();
     }
 
     private void setDefaults() {

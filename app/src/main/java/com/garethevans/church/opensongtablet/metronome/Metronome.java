@@ -8,7 +8,6 @@ import android.util.Log;
 import androidx.appcompat.app.ActionBar;
 
 import com.garethevans.church.opensongtablet.R;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
 public class Metronome {
@@ -364,7 +363,7 @@ public class Metronome {
                         ab.setBackgroundDrawable(new ColorDrawable(0xff232333));
                     }
                 } else {
-                    StaticVariables.whichbeat = "a";
+                    whichbeat = "a";
                     if (ab != null) {
                         ab.setBackgroundDrawable(new ColorDrawable(metronomeColor));
                     }

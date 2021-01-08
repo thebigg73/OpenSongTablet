@@ -15,16 +15,15 @@ import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.SettingsLanguageBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.google.android.material.snackbar.Snackbar;
 
 public class LanguageFragment extends Fragment {
 
-    SettingsLanguageBinding myView;
-    Preferences preferences;
-    MainActivityInterface mainActivityInterface;
-    String languageCode;
-    String[] languageCodes = new String[] {"af","cs","de","el","en","es","fr","hu","it","ja","pl","pt","ru","sr","sv","zh"};
+    private SettingsLanguageBinding myView;
+    private Preferences preferences;
+    private MainActivityInterface mainActivityInterface;
+    private String languageCode;
+    private String[] languageCodes = new String[] {"af","cs","de","el","en","es","fr","hu","it","ja","pl","pt","ru","sr","sv","zh"};
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -50,7 +49,7 @@ public class LanguageFragment extends Fragment {
     }
 
     private void setHelpers() {
-        preferences = new Preferences();
+        preferences = mainActivityInterface.getPreferences();
     }
 
     private void buildRadioGroup() {
@@ -60,7 +59,6 @@ public class LanguageFragment extends Fragment {
         for (int x=0; x<languages.length; x++) {
             RadioButton radioButton = new RadioButton(getContext());
             radioButton.setText(languages[x].toUpperCase());
-            radioButton.setTextColor(StaticVariables.white);
             radioButton.setId(View.generateViewId());
             radioButton.setTag(languageCodes[x]);
 

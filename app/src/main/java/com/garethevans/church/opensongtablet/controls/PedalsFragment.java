@@ -29,11 +29,11 @@ import java.util.ArrayList;
 
 public class PedalsFragment extends Fragment {
 
-    SettingsPedalBinding myView;
-    Preferences preferences;
-    PedalActions pedalActions;
-    Midi midi;
-    MainActivityInterface mainActivityInterface;
+    private SettingsPedalBinding myView;
+    private Preferences preferences;
+    private PedalActions pedalActions;
+    private Midi midi;
+    private MainActivityInterface mainActivityInterface;
 
     private ArrayList<String> actionCodes;
     private ArrayList<String> actions;
@@ -51,8 +51,8 @@ public class PedalsFragment extends Fragment {
     private RelativeLayout[] buttonHeaders;
     private AutoCompleteTextView[] shortTexts, longTexts;
 
-    Handler pageButtonWaiting;
-    Runnable stopListening;
+    private Handler pageButtonWaiting;
+    private Runnable stopListening;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -75,8 +75,6 @@ public class PedalsFragment extends Fragment {
         grabViews();
 
         // Initialise the array items
-        pedalActions = mainActivityInterface.getPedalActions(mainActivityInterface);
-        midi = mainActivityInterface.getMidi(mainActivityInterface);
         actionCodes = pedalActions.getActionCodes();
         actions = pedalActions.getActions();
         defKeyCodes = pedalActions.defPedalCodes;
@@ -100,7 +98,9 @@ public class PedalsFragment extends Fragment {
     }
 
     private void setupHelpers() {
-        preferences = new Preferences();
+        preferences = mainActivityInterface.getPreferences();
+        pedalActions = mainActivityInterface.getPedalActions(mainActivityInterface);
+        midi = mainActivityInterface.getMidi(mainActivityInterface);
     }
 
     private void midiPedalAllowed() {

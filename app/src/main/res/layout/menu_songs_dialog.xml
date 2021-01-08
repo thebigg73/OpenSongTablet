@@ -93,7 +93,7 @@
             style="@style/BottomSheetButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/import_file"
+            android:text="@string/import_main"
             app:icon="@drawable/ic_download_white_36dp" />
 
     </LinearLayout>

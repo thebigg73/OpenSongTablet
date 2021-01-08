@@ -22,10 +22,10 @@ import static android.provider.DocumentsContract.EXTRA_INITIAL_URI;
 
 public class ProfileFragment extends Fragment {
 
-    SettingsProfilesBinding myView;
-    MainActivityInterface mainActivityInterface;
-    Preferences preferences;
-    StorageAccess storageAccess;
+    private SettingsProfilesBinding myView;
+    private MainActivityInterface mainActivityInterface;
+    private Preferences preferences;
+    private StorageAccess storageAccess;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -48,8 +48,8 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setupHelpers() {
-        preferences = new Preferences();
-        storageAccess = new StorageAccess();
+        preferences = mainActivityInterface.getPreferences();
+        storageAccess = mainActivityInterface.getStorageAccess();
         mainActivityInterface.registerFragment(this,"ProfileFragment");
     }
 

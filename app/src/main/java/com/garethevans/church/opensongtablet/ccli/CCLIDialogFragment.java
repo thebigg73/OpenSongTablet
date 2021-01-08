@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.webkit.WebView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,67 +23,65 @@ import com.garethevans.church.opensongtablet.preferences.Preferences;
 
 public class CCLIDialogFragment extends DialogFragment {
 
-        CcliDialogBinding ccliDialogBinding;
-        MainActivityInterface mainActivityInterface;
-        Preferences preferences;
-        StorageAccess storageAccess;
-        CCLILog ccliLog;
+    private MainActivityInterface mainActivityInterface;
+    private Preferences preferences;
+    private StorageAccess storageAccess;
+    private CCLILog ccliLog;
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mainActivityInterface = (MainActivityInterface) context;
+    }
+
+    @Override
+    public void onCancel(@NonNull DialogInterface dialog) {
+        super.onCancel(dialog);
+        dismiss();
+        mainActivityInterface.songMenuActionButtonShow(true);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        com.garethevans.church.opensongtablet.databinding.CcliDialogBinding myView = CcliDialogBinding.inflate(inflater, container, false);
+        Window w = requireDialog().getWindow();
+        if (w != null) {
+            w.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
 
-        @Override
-        public void onAttach(@NonNull Context context) {
-            super.onAttach(context);
-            mainActivityInterface = (MainActivityInterface) context;
-        }
+        // Initialise helpers
+        initialiseHelpers();
 
-        @Override
-        public void onCancel(@NonNull DialogInterface dialog) {
-            super.onCancel(dialog);
-            dismiss();
-            mainActivityInterface.songMenuActionButtonShow(true);
-        }
+        myView.close.setOnClickListener(v -> dismiss());
 
-        @Nullable
-        @Override
-        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            ccliDialogBinding = CcliDialogBinding.inflate(inflater, container, false);
-            Window w = requireDialog().getWindow();
-            if (w!=null) {
-                w.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            }
+        // Set up the default values
+        Uri uri = storageAccess.getUriForItem(requireContext(), preferences, "Settings", "", "ActivityLog.xml");
+        String logsize = ccliLog.getLogFileSize(requireContext(), storageAccess, uri);
+        ccliLog.getCurrentEntries(requireContext(), storageAccess, uri);
+        String table = ccliLog.buildMyTable(requireContext(), preferences, logsize);
 
-            // Initialise helpers
-            initialiseHelpers();
+        new Thread(() -> requireActivity().runOnUiThread(() -> {
+            myView.ccliWebView.getSettings().setBuiltInZoomControls(true);
+            myView.ccliWebView.getSettings().setDisplayZoomControls(false);
+            myView.ccliWebView.clearCache(true);
+            myView.ccliWebView.setInitialScale(100);
+            myView.ccliWebView.loadDataWithBaseURL(null, table, "text/html; charset=utf-8", "UTF-8", null);
+        })).start();
 
-            ccliDialogBinding.close.setOnClickListener(v -> dismiss());
+        Log.d("d", "logsize=" + logsize);
+        Log.d("d", "table=" + table);
+        return myView.getRoot();
+    }
 
-            // Set up the default values
-            Uri uri = storageAccess.getUriForItem(requireContext(),preferences,"Settings","","ActivityLog.xml");
-            String logsize = ccliLog.getLogFileSize(requireContext(),storageAccess,uri);
-            ccliLog.getCurrentEntries(requireContext(),storageAccess,uri);
-            String table = ccliLog.buildMyTable(requireContext(),preferences,logsize);
-
-            new Thread(() -> requireActivity().runOnUiThread(() -> {
-                WebView logWebView = ccliDialogBinding.ccliWebView;
-                logWebView.getSettings().setBuiltInZoomControls(true);
-                logWebView.getSettings().setDisplayZoomControls(false);
-                logWebView.clearCache(true);
-                logWebView.setInitialScale(100);
-                logWebView.loadDataWithBaseURL(null,table, "text/html; charset=utf-8", "UTF-8",null);
-            })).start();
-
-            Log.d("d","logsize="+logsize);
-            Log.d("d","table="+table);
-            return ccliDialogBinding.getRoot();
-        }
-
-        private void initialiseHelpers() {
-            preferences = new Preferences();
-            storageAccess = new StorageAccess();
-            ccliLog = new CCLILog();
-        }
+    private void initialiseHelpers() {
+        preferences = mainActivityInterface.getPreferences();
+        storageAccess = mainActivityInterface.getStorageAccess();
+        ccliLog = mainActivityInterface.getCCLILog();
+    }
 }

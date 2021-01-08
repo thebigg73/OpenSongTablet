@@ -26,14 +26,14 @@ import java.util.ArrayList;
 
 public class FontSetupPreviewFragment extends DialogFragment {
 
-    SettingsFontsPreviewBinding myView;
-    SetTypeFace setTypeFace;
-    Preferences preferences;
-    MainActivityInterface mainActivityInterface;
+    private SettingsFontsPreviewBinding myView;
+    private SetTypeFace setTypeFace;
+    private Preferences preferences;
+    private MainActivityInterface mainActivityInterface;
 
-    String sampleText;
-    ArrayList<String> fontNames, alphaList;
-    Handler handler = new Handler();
+    private String sampleText;
+    private ArrayList<String> fontNames, alphaList;
+    private final Handler handler = new Handler();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -65,7 +65,7 @@ public class FontSetupPreviewFragment extends DialogFragment {
 
     private void setHelpers() {
         setTypeFace = mainActivityInterface.getMyFonts();
-        preferences = new Preferences();
+        preferences = mainActivityInterface.getPreferences();
     }
 
     private void setupWebView(String ab) {
@@ -109,8 +109,8 @@ public class FontSetupPreviewFragment extends DialogFragment {
         alphaList = new ArrayList<>();
         for (String fontName:fontNames) {
             if (fontName!=null && fontName.length()>0 &&
-                    !alphaList.contains(fontName.substring(0,1).toUpperCase(StaticVariables.locale))) {
-                alphaList.add(fontName.substring(0,1).toUpperCase(StaticVariables.locale));
+                    !alphaList.contains(fontName.substring(0,1).toUpperCase(mainActivityInterface.getLocale()))) {
+                alphaList.add(fontName.substring(0,1).toUpperCase(mainActivityInterface.getLocale()));
             }
         }
     }
@@ -123,7 +123,7 @@ public class FontSetupPreviewFragment extends DialogFragment {
 
 
         for (String fontName:fontNames) {
-            if (fontName.toLowerCase(StaticVariables.locale).startsWith(ab.toLowerCase(StaticVariables.locale))) {
+            if (fontName.toLowerCase(mainActivityInterface.getLocale()).startsWith(ab.toLowerCase(mainActivityInterface.getLocale()))) {
                 links.append("<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=")
                         .append(fontName.replaceAll("\\s", "+")).append("\">\n");
                 rows.append("<tr onclick=\"getMyFont('").append(fontName.replaceAll("\\s", "+"))

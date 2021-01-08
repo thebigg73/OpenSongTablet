@@ -13,6 +13,27 @@ import java.util.ArrayList;
 
 public class PadFunctions {
 
+    private boolean orientationChanged;
+    private int currentOrientation;
+
+    public void setOrientationChanged(boolean orientationChanged) {
+        this.orientationChanged = orientationChanged;
+    }
+    public boolean getOrientationChanged() {
+        return orientationChanged;
+    }
+
+    public void setCurrentOrientation(int currentOrientation) {
+        this.currentOrientation = currentOrientation;
+    }
+
+    public int getCurrentOrientation() {
+        return currentOrientation;
+    }
+
+
+
+    // TODO STill to work through these
     float getVol(String pan, float padvol, int w) {
         float vol = 0.0f;
         switch (w) {

@@ -11,7 +11,6 @@ import androidx.core.provider.FontsContractCompat;
 
 import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -95,17 +94,17 @@ public class SetTypeFace {
             getGoogleFont(c,preferences,fontChord,"fontChord",null,chordFontHandler);
         }
         if (fontSticky.equals("Lato")) {
-            StaticVariables.typefaceSticky = Typeface.createFromAsset(c.getAssets(), "font/lato.ttf");
+            stickyFont = Typeface.createFromAsset(c.getAssets(), "font/lato.ttf");
         } else {
             getGoogleFont(c,preferences,fontSticky,"fontSticky",null,stickyFontHandler);
         }
         if (fontPreso.equals("Lato")) {
-            StaticVariables.typefacePreso = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
+            presoFont = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
             getGoogleFont(c,preferences,fontPreso,"fontPreso",null,presoFontHandler);
         }
         if (fontPresoInfo.equals("Lato")) {
-            StaticVariables.typefacePresoInfo = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
+            presoInfoFont = Typeface.createFromAsset(c.getAssets(),"font/lato.ttf");
         } else {
             getGoogleFont(c,preferences,fontPresoInfo,"fontPresoInfo",null,presoInfoFontHandler);
         }

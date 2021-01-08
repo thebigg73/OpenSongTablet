@@ -23,18 +23,18 @@ import java.util.ArrayList;
 
 public class TextInputDialogFragment extends DialogFragment {
 
-    Fragment fragment;
-    String fragname;
-    Preferences preferences;
-    String title;
-    String hint;
-    String prefName;
-    String prefVal;
-    ArrayList<String> prefChoices;
-    boolean simpleEditText;
+    private final Fragment fragment;
+    private final String fragname;
+    private final Preferences preferences;
+    private final String title;
+    private final String hint;
+    private final String prefName;
+    private String prefVal;
+    private ArrayList<String> prefChoices;
+    private final boolean simpleEditText;
 
-    TextInputDialogBinding myView;
-    DialogReturnInterface dialogReturnInterface;
+    private TextInputDialogBinding myView;
+    private DialogReturnInterface dialogReturnInterface;
 
     public TextInputDialogFragment(Preferences preferences, Fragment fragment, String fragname,
                                    String title, String hint, String prefName, String prefVal) {

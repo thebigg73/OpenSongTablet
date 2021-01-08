@@ -15,20 +15,11 @@ import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.presentation.PresentationFragment;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class StaticVariables {
 
-    // KEEP THESE
 
-    // The important starting up ones
-    public static String whichMode = "";
-    public static Locale locale;
 
-    // Request codes for callbacks
-    public static final int REQUEST_FILE_CHOOSER = 5500;
-    public static final int REQUEST_OSB_FILE = 5501;
-    public static final int REQUEST_IOS_FILE = 5502;
 
 
 
@@ -132,38 +123,7 @@ public class StaticVariables {
     public static String mDisplayTheme = "dark";
 
 
-    // Default colours
-    public static final int darkblue = 0xff0000dd;
-    public static final int vdarkblue = 0xff000022;
-    public static final int purplyblue = 0xff452277;
-    public static final int vlightcyan = 0xffeeffff;
-    public static final int vlightblue = 0xffeeeeff;
-    public static final int blue = 0xff0000ff;
-    public static final int black = 0xff000000;
-    public static final int white = 0xffffffff;
-    public static final int grey = 0xff666666;
-    public static final int lightgrey = 0xff222222;
-    public static final int lightyellow = 0xffddaa00;
-    public static final int yellow = 0xffffff00;
-    public static final int vdarkyellow = 0xff111100;
-    public static final int red = 0xffff0000;
-    public static final int vdarkred = 0xff220000;
-    public static final int darkishred = 0xffaa1212;
-    public static final int transparent = 0x00000000;
-    public static final int vdarkgreen = 0xff002200;
-    public static final int darkishgreen = 0xff112211;
-    public static final int lightgreen = 0xffeeddee;
-    public static final int vlightgreen = 0xffeeffee;
-    public static final int green = 0xff00ff00;
-    public static final int darkpurple = 0xff220022;
-    public static final int vlightpurple = 0xffffeeff;
-    public static final int lightishcyan = 0xffddeeff;
-    public static final int highlighterblack = 0x66000000;
-    public static final int highlighterwhite = 0x66ffffff;
-    public static final int highlighterblue = 0x660000ff;
-    public static final int highlighterred = 0x66ff0000;
-    public static final int highlightergreen = 0x6600ff00;
-    public static final int highighteryellow = 0x66ffff00;
+
 
     // Option menu defines which menu we are in
     static String whichOptionMenu = "MAIN";

@@ -12,11 +12,11 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
     private ScrollView songScrollView;
     private HorizontalScrollView horizontalScrollView;
-    private ZoomLayout zoomLayout;
-    private int swipeMinimumDistance, swipeMaxDistanceYError, swipeMinimumVelocity;
-    private boolean oktoregistergesture;
-    private PerformanceGestures performanceGestures;
-    private int doubleTapAction;
+    private final ZoomLayout zoomLayout;
+    private final int swipeMinimumDistance, swipeMaxDistanceYError, swipeMinimumVelocity;
+    private final boolean oktoregistergesture;
+    private final PerformanceGestures performanceGestures;
+    private final int doubleTapAction;
 
 
     /*GestureListener(ScrollView songScrollView, HorizontalScrollView horizontalScrollView,
