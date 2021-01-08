@@ -52,9 +52,6 @@ class ChordProConvert {
         // Get rid of multilple line breaks (max of 3 together)
         lyrics = getRidOfExtraLines(lyrics);
 
-        // Add spaces to beginnings of lines that aren't comments, chords or tags
-        lyrics = addSpacesToLines(lyrics);
-
         // Get the filename and subfolder (if any) that the original song was in by parsing the uri
         oldSongFileName = getOldSongFileName(uri);
         songSubFolder = getSongFolderLocation(storageAccess, uri, oldSongFileName);
@@ -106,6 +103,7 @@ class ChordProConvert {
         if (s == null) {
             return "";
         }
+        s = s.replace("&amp;rsquo;", "'");
         s = s.replace("&amp;apos;", "'");
         s = s.replace("&amp;quote;", "\"");
         s = s.replace("&amp;quot;", "\"");
@@ -385,51 +383,103 @@ class ChordProConvert {
     }
 
     String extractChordLines(String s) {
+        // IV - ChordPro, by design, requires processing to improve layout when presented in chords over lyrics format
+        // IV - OpenSongApp adopts a SongSelect-ish approach to layout below
+        // IV - As a result, a SongSelect extract will have an OpenSong layout close to that of a SongSelect chord sheet (Yeah!)
+        // IV - All ChordPro files will get this layout - our layout may or may not be liked!
+
         StringBuilder tempchordline = new StringBuilder();
-        if (!s.startsWith("#") && !s.startsWith(";")) {
-            // IV - Add a leading space - the effect is to fix a chord mis-alignment
-            s = " " + s;
+        StringBuilder templyricline = new StringBuilder();
+        if (!s.startsWith("#") && !s.startsWith(";") && !s.startsWith("{")) {
+            int spos;
+            // IV - We need one [ for  processing of lines with no chords
+            s = s + "[";
+
+            // IV - Append  lyrics before [
+            spos = s.indexOf("[");
+            templyricline = templyricline.append(s.substring(0,spos));
+
+            s = s.substring(spos);
+
             // Look for [ and ] signifying a chord
             while (s.contains("[") && s.contains("]")) {
-                // Find chord start and end pos
-                int chordstart = s.indexOf("[");
-                int chordend = s.indexOf("]");
-                String chord;
-                if (chordend > chordstart) {
-                    chord = s.substring(chordstart, chordend + 1);
-                    String substart = s.substring(0, chordstart);
-                    String subsend = s.substring(chordend + 1);
-                    s = substart + subsend;
-                } else {
-                    chord = "";
-                    s = s.replace("[", "");
-                    s = s.replace("]", "");
+                // IV - Make lines the same length
+                for (int z = tempchordline.length(); z < (templyricline.length()); z++) tempchordline.append(" ");
+                for (int z = templyricline.length(); z < (tempchordline.length()); z++) templyricline.append(" ");
+
+                boolean chordStartsOverSpace = s.substring(s.indexOf("]")).startsWith("] ");
+
+                // IV - Ensure spacing between sections
+                if (tempchordline.length() > 0) {
+                    // IV - If we are at a space in the lyrics, make sure there is a double space or equivalent before the following chord
+                    while ((templyricline.toString().endsWith(" ") || chordStartsOverSpace) &&
+                            (!(tempchordline.toString().endsWith("  ") || tempchordline.toString().endsWith("| ") || tempchordline.toString().endsWith(": ")))) {
+                        tempchordline = tempchordline.append(" ");
+                        templyricline = templyricline.append(" ");
+                    }
+
+                    // IV - Make sure there is a space before a chord over a space
+                    if (chordStartsOverSpace && !templyricline.toString().endsWith(" ")) {
+                        tempchordline = tempchordline.append(" ");
+                        templyricline = templyricline.append(" ");
+                    }
                 }
-                chord = chord.replace("[", "");
-                chord = chord.replace("]", "");
 
                 // Add the chord to the tempchordline
-                if (tempchordline.length() > chordstart) {
-                    // We need to put the chord at the end stuff already there
-                    // Don't overwrite - This is because the length of the
-                    // previous chord is bigger than the lyrics following it
-                    chordstart = tempchordline.length();
+                spos = s.indexOf("]");
+                tempchordline = tempchordline.append(s.substring(1,spos));
+
+                boolean chordSeparator = (s.substring(1,2).matches("[|:]"));
+
+                // IV - Consider lyric spacing
+                // IV - chord starting over a space -> over all spaces with 1 following space
+                // IV - chord starting over a lyric part and also over a space' -> over starting lyric part and spaces with 2 following spaces
+                // IV - Spaces are inserted when needed
+
+                s = s.substring(spos + 1);
+
+                while (s.contains(" ") && s.indexOf(" ") < s.indexOf("[") && s.indexOf(" ") < (spos - 1)) {
+                    // IV - Add a space after the last space found - is this space is under the chord it is considered on the next loop
+                    // IV - This intentionally ensures 1 lyric space following the chord
+                    s = s.replaceFirst(" ", "¦");
+                    if (s.indexOf("¦ ") == -1) {
+                        s = s.replace("¦", "¬ ");
+                    } else {
+                        s = s.replace("¦", "¬");
+                    }
                 }
-                for (int z = tempchordline.length(); z < (chordstart-1); z++) {
-                    tempchordline.append(" ");
+
+                // IV - Ensure there are 2 lyric spaces following a chord starting over a space
+                if (chordStartsOverSpace && !chordSeparator && !(s.contains("¬  "))) {
+                    s = s.replaceFirst("¬", "¬¬");
                 }
-                // Now add the chord
-                tempchordline.append(chord);
+
+                s = s.replaceAll("¬", " ");
+
+                // IV - Append lyrics before [
+                spos = s.indexOf("[");
+                templyricline = templyricline.append(s.substring(0, spos));
+
+                s = s.substring(spos);
             }
+
             // All chords should be gone now, so remove any remaining [ and ]
             s = s.replace("[", "");
             s = s.replace("]", "");
-            // IV - fix for missing space removed as now handled before loop
-            if (tempchordline.length() > 0) {
-                s = "." + tempchordline + "\n" + s;
+
+            // IV - Return lines end trimmed which keeps any intended leading spaces
+            if (tempchordline.toString().trim().equals("")) {
+                return (" " + templyricline.toString()).replaceAll("\\s+$", "");
+            } else {
+                if (templyricline.toString().trim().equals("")) {
+                    return ("." + tempchordline.toString()).replaceAll("\\s+$", "");
+                } else {
+                    return ("." + tempchordline.toString()).replaceAll("\\s+$", "") + "\n" + (" " + templyricline.toString()).replaceAll("\\s+$", "");
+                }
             }
         }
-        return s;
+        // IV - Return line end trimmed which keeps any intended leading spaces
+        return s.replaceAll("\\s+$", "");
     }
 
     String removeOtherTags(String l) {
@@ -487,29 +537,10 @@ class ChordProConvert {
             s = s.replace("[]\n\n[", "\n[");
         }
 
-        // IV - Trim and remove any trailing [] empty section
-        s = s.trim().replaceAll("\n\\Q[]\\E$","");
+        // IV - Remove any trailing [] empty section
+        s = s.replaceAll("\n\\Q[]\\E$","");
 
         return s;
-    }
-
-    String addSpacesToLines(String s) {
-        lines = s.split("\n");
-
-        // Reset the parsed lines
-        parsedLines = new StringBuilder();
-
-        for (String line : lines) {
-            line = line.trim();
-            if (!line.startsWith("[") && !line.startsWith(".") && !line.startsWith(";") && !s.equals("")) {
-                // Must be a lyric line, so add a space
-                line = " " + line;
-            }
-            line = line + "\n";
-            parsedLines.append(line);
-        }
-
-        return parsedLines.toString();
     }
 
     Uri getNewSongUri(Context c, StorageAccess storageAccess, Preferences preferences, String songSubFolder, String nsf) {
@@ -718,6 +749,7 @@ class ChordProConvert {
                 s = guessTagsReplaces(s, "Verse", "V");
                 s = guessTagsReplaces(s, "Prechorus", "P");
                 s = guessTagsReplaces(s, "Pre-chorus", "P");
+                s = guessTagsReplaces(s, "Pre-Chorus", "P");
                 s = guessTagsReplaces(s, "Chorus", "C");
                 s = guessTagsReplaces(s, "Bridge", "B");
                 s = guessTagsReplaces(s, "Tag", "T");
@@ -741,10 +773,14 @@ class ChordProConvert {
             replace(wm + " 2:", "[¬ 2¹").
             replace(wm + " 3:", "[¬ 3¹").
             replace(wm + " 4:", "[¬ 4¹").
+            replace(wm + " 5:", "[¬ 5¹").
+            replace(wm + " 6:", "[¬ 6¹").
             replace(wm + " 1", "[¬ 1¹").
             replace(wm + " 2", "[¬ 2¹").
             replace(wm + " 3", "[¬ 3¹").
             replace(wm + " 4", "[¬ 4¹").
+            replace(wm + " 5", "[¬ 5¹").
+            replace(wm + " 6", "[¬ 6¹").
             replace(wm, "[¬¹");
         // IV - And when uppercase
         wm = wm.toUpperCase();
@@ -753,14 +789,24 @@ class ChordProConvert {
             replace(wm + " 2:", "[¬ 2¹").
             replace(wm + " 3:", "[¬ 3¹").
             replace(wm + " 4:", "[¬ 4¹").
+            replace(wm + " 5:", "[¬ 5¹").
+            replace(wm + " 6:", "[¬ 6¹").
             replace(wm + " 1", "[¬ 1¹").
             replace(wm + " 2", "[¬ 2¹").
             replace(wm + " 3", "[¬ 3¹").
             replace(wm + " 4", "[¬ 4¹").
+            replace(wm + " 5", "[¬ 5¹").
+            replace(wm + " 6", "[¬ 6¹").
             replace(wm, "[¬¹");
 
-        // IV - A complete replace has '¹' at the end.
-        if (s.endsWith("¹")) {
+        s = s.replace(";[","[").
+            replace("#[","[").
+            replace("; [", "[").
+            replace(" [","[").
+            replace(";- [", "[");
+
+        // IV - For a complete replace...
+        if (s.startsWith("[¬") && s.endsWith("¹")) {
             // IV - Single character 'start of returned heading' (V etc.) have no following space
             if (r.length() == 1) {
                 s = s.replace("¬ ", "¬");
@@ -781,14 +827,13 @@ class ChordProConvert {
         s = s.replace(";- [", "[");
         s = s.replace("-[", "[");
         s = s.replace("- [", "[");
-        s = s.trim();
         if (s.startsWith("[") && s.contains("]") && !s.endsWith("]")) {
             s = s.replace("]", "]\n");
         }
         if (s.contains("[") && s.contains("]") && !s.startsWith("[")) {
             s = s.replace("[", "\n[");
         }
-        return s.trim();
+        return s;
     }
 
     private String removeStartOfEndOfTags(String s) {
@@ -815,7 +860,7 @@ class ChordProConvert {
             // Replace end tags with blank tag - to keep sections separate (verses not always specified)
             s = "[]";
         }
-        return s.trim();
+        return s;
     }
 
     private String removeInline(String l) {
@@ -991,7 +1036,6 @@ class ChordProConvert {
                 newlyrics.append("\n");
 
         // Tidy up
-        // IV - Removed some replaces as the code changes (probably) make them redundant
         newlyrics = new StringBuilder(newlyrics.toString().replace("\n\n", "\n"));
         // Remove one space from the start of chord/lyric lines
         newlyrics = new StringBuilder(newlyrics.toString().replace("¬ ", "¬"));
