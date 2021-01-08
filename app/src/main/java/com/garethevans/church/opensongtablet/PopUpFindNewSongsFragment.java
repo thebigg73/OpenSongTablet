@@ -1322,25 +1322,58 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 // Now look for the stuff we want
                 // Break it into lines
                 String[] bottomlines = bottombit.split("\n");
+                String lineType = "";
                 for (String line:bottomlines) {
                     // Is this the CCLI line?
                     if (line.contains("CCLI Song #")) {
-                        line = line.replace("CCLI Song #","");
-                        line = line.trim();
-                        ccli = "{ccli:" + line + "}\n";
-
-                    // Is this the copyright line?
+                        lineType = "ccli";
+                    // Is this the start of copyright lines?
                     } else if (line.contains("opyright") || line.contains("&#169;") || line.contains("©")) {
-                        copyright = "{copyright:" + line.trim() + "}\n";
+                        lineType = "copyright";
+                    // Is this line to be ignored?
+                    } else if (line.contains("For use solely") || line.contains("Note:") || line.contains("Licence No")) {
+                        lineType = "";
+                    }
 
-                    // Is this the author line?
-                    } else if (!line.contains("For use solely") && !line.contains("Note:") && !line.contains("Licence No")) {
-                        author = "{artist:" + line.trim() + "}\n";
+                    if (lineType.equals("ccli")) {
+                        ccli = "{ccli:" + line.replace("CCLI Song #","").trim() + "}\n";
+                        // IV - Artist info will usually follow ccli
+                        if (bottombit.contains("opyright") || bottombit.contains("&#169;") || bottombit.contains("©")) {
+                            lineType = "author";
+                        }
+                    } else if (lineType.equals("copyright")) {
+                        if (copyright.equals("")) {
+                            copyright = "{copyright:" + line.trim();
+                        } else {
+                            copyright = copyright + ", " + line.trim();
+                        }
+                        // IV - Stop if we do not have an end for this line type
+                        if (!(bottombit.contains("\nFor use solely"))) {
+                            lineType = "";
+                        }
+                    } else if (lineType.equals("author")) {
+                        if (author.equals("")) {
+                            author = "{artist:" + line;
+                        } else {
+                            author = author + ", " + line.trim();
+                        }
+                        // IV - Stop if we do not have an end for this line type
+                        if (!(bottombit.contains("opyright") || bottombit.contains("&#169;") || bottombit.contains("©"))) {
+                            lineType = "";
+                        }
                     }
                 }
-
+                // IV - Tidy lines
+                if (!(copyright.equals(""))) {
+                    copyright = copyright.replace(" |",",").
+                            replace("Copyright ","").
+                            replace("copyright ","").
+                            replace("&#169; ","").
+                            replace("©","").
+                            replaceAll(" \\(Admin\\..*?\\)","") + "}\n";
+                }
+                if (!(author.equals(""))) author = author.replace(" |",",") + "}\n";
             }
-
             lyrics = text;
         }
         if (lyrics.equals("")) {

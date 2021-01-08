@@ -772,10 +772,14 @@ class ChordProConvert {
             replace(wm + " 2:", "[¬ 2¹").
             replace(wm + " 3:", "[¬ 3¹").
             replace(wm + " 4:", "[¬ 4¹").
+            replace(wm + " 5:", "[¬ 5¹").
+            replace(wm + " 6:", "[¬ 6¹").
             replace(wm + " 1", "[¬ 1¹").
             replace(wm + " 2", "[¬ 2¹").
             replace(wm + " 3", "[¬ 3¹").
             replace(wm + " 4", "[¬ 4¹").
+            replace(wm + " 5", "[¬ 5¹").
+            replace(wm + " 6", "[¬ 6¹").
             replace(wm, "[¬¹");
         // IV - And when uppercase
         wm = wm.toUpperCase();
@@ -784,15 +788,20 @@ class ChordProConvert {
             replace(wm + " 2:", "[¬ 2¹").
             replace(wm + " 3:", "[¬ 3¹").
             replace(wm + " 4:", "[¬ 4¹").
+            replace(wm + " 5:", "[¬ 5¹").
+            replace(wm + " 6:", "[¬ 6¹").
             replace(wm + " 1", "[¬ 1¹").
             replace(wm + " 2", "[¬ 2¹").
             replace(wm + " 3", "[¬ 3¹").
             replace(wm + " 4", "[¬ 4¹").
+            replace(wm + " 5", "[¬ 5¹").
+            replace(wm + " 6", "[¬ 6¹").
             replace(wm, "[¬¹");
 
         s = s.replace(";[","[").
             replace("#[","[").
             replace("; [", "[").
+            replace(" [","[").
             replace(";- [", "[");
 
         // IV - For a complete replace...
