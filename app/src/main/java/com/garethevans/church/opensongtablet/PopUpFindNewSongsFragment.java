@@ -1130,10 +1130,19 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     }
     private String getTitleSongSelectChordPro(String s, String temptitle) {
         // Extract the title
+        // IV - Try chordpro style
         int start = s.indexOf("<span class=\"cproTitle\">");
         int end = s.indexOf("</span>",start);
+
+        // IV - Try song viewer style
+        if (start == -1) {
+            start = s.indexOf("<h2 class=\"song-viewer-title\">");
+            end = s.indexOf("</h2>",start);
+        }
+
         if (start>-1 && end>-1 && end>start) {
-            String t = s.substring(start+24,end);
+            start = s.indexOf(">",start) + 1;
+            String t = s.substring(start,end);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 t = Html.fromHtml(t, 0).toString();
             } else {
@@ -1146,11 +1155,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
     }
     private String getKeySongSelectChordPro(String s) {
-
         String[] lines = s.split("\n");
-        for (String l:lines) {
-            Log.d("FindNewSong", l);
-        }
         int start = s.indexOf("<code class=\"cproSongKey\"");
         int end = s.indexOf("</code>",start);
         if (start>-1 && end>-1 && end>start) {
@@ -1165,10 +1170,20 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
     }
     private String getAuthorSongSelectChordPro(String s) {
+        // Extract the author
+        // IV - Try chordpro style
         int start = s.indexOf("<span class=\"cproAuthors\">");
         int end = s.indexOf("</span>",start);
+
+        // IV - Try song viewer style
+        if (start == -1) {
+            start = s.indexOf("<p class=\"contributor\">");
+            end = s.indexOf("</p>",start);
+        }
+
         if (start>-1 && end>-1 && end>start) {
-            String a = s.substring(start+26,end);
+            start = s.indexOf(">",start) + 1;
+            String a = s.substring(start,end);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 a = Html.fromHtml(a, 0).toString();
             } else {
@@ -1181,10 +1196,19 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
     }
     private String getCCLISongSelectChordPro(String s) {
-        int start = s.indexOf("CCLI Song #");
+        // Extract CCLI number
+        // IV - Same class for chordpro and song viewer styles
+        int start = s.indexOf("<p class=\"songnumber\">");
         int end = s.indexOf("</p>",start);
         if (start>-1 && end>-1 && end>start) {
-            return "{ccli:" + s.substring(start+11,end).trim() + "}\n";
+            // IV - Step over leading words
+            String ccli = "";
+            ccli = s.substring(start,end).trim();
+            while (ccli.contains(" ")) {
+                start = ccli.indexOf(" ");
+                ccli = ccli.substring(start + 1);
+            }
+            return "{ccli:" + ccli + "}\n";
         } else {
             return "";
         }
@@ -1192,10 +1216,17 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     private String getCopyrightSongSelectChordPro(String s) {
         int start = s.indexOf("<ul class=\"copyright\">");
         start = s.indexOf("<li>",start);
-        int end = s.indexOf("</li>",start);
+        int end = s.indexOf("</ul>",start);
         if (start>-1 && end>-1 && end>start) {
-            // IV - Remove copyright and replace use of | as separator with ,
-            return "{copyright:" + s.substring(start+4,end).replace("©","").replaceAll("\\Q |\\E",",").trim() + "}\n";
+            // IV - Remove copyright and replace use of | as separator with , and remove '(Admin. by)' content
+            // IV - Also handles multi line copyright information
+            return "{copyright:" + s.substring(start+4,end).
+                    replace("</li><li>",", ").
+                    replace ("</li>","").
+                    replace("©","").
+                    replaceAll("\\Q |\\E",",").
+                    replaceAll(" \\(Admin\\..*?\\)","").
+                    trim() + "}\n";
         } else {
             return "";
         }
@@ -1294,7 +1325,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         int start;
         int end;
 
-        start = s.indexOf("<div id=\"LyricsText\" style=\"display: none;\">");
+        start = s.indexOf("<div class=\"song-viewer lyrics\" id=\"song-viewer\">");
         end = s.indexOf("</div>", start);
         if (start > -1 && end > -1 && end > start) {
             int newstart = s.indexOf(">", start);
@@ -1302,6 +1333,21 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 newstart = start;
             }
             String text = s.substring(newstart + 1, end).trim();
+            // IV - Drop the bottom copyright info
+            end = text.indexOf("<div class=\"copyright-info\">");
+            if (end >-1) {
+                text = text.substring(0, end);
+            }
+            // IV - Mark a song viewer part as a tag
+            text = text.replaceAll("<h3 class=\"song-viewer-part\">","<h3 class=\"song-viewer-part\">#[").
+                replaceAll("</h3>","]</h3>");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                text = Html.fromHtml(text, 0).toString();
+            } else {
+                text = Html.fromHtml(text).toString();
+            }
+            // IV - Remove extra line after tag
+            text = text.replaceAll("]\n\n","]\n");
 
             // The first line is the title normally
             end = text.indexOf("\n");
@@ -1311,69 +1357,11 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 text = text.substring(end).trim();
             }
 
-            // Get the bottom bit
-            String bottombit;
-            start = text.indexOf("CCLI Song");
-            if (start>-1) {
-                bottombit = text.substring(start);
-                // Remove this from the text (leaving the lyrics)
-                text = text.replace(bottombit,"");
+            // IV - Use the get routines which are also song viewer style aware
+            copyright = getCopyrightSongSelectChordPro(s);
+            ccli = getCCLISongSelectChordPro(s);
+            author = getAuthorSongSelectChordPro(s);
 
-                // Now look for the stuff we want
-                // Break it into lines
-                String[] bottomlines = bottombit.split("\n");
-                String lineType = "";
-                for (String line:bottomlines) {
-                    // Is this the CCLI line?
-                    if (line.contains("CCLI Song #")) {
-                        lineType = "ccli";
-                    // Is this the start of copyright lines?
-                    } else if (line.contains("opyright") || line.contains("&#169;") || line.contains("©")) {
-                        lineType = "copyright";
-                    // Is this line to be ignored?
-                    } else if (line.contains("For use solely") || line.contains("Note:") || line.contains("Licence No")) {
-                        lineType = "";
-                    }
-
-                    if (lineType.equals("ccli")) {
-                        ccli = "{ccli:" + line.replace("CCLI Song #","").trim() + "}\n";
-                        // IV - Artist info will usually follow ccli
-                        if (bottombit.contains("opyright") || bottombit.contains("&#169;") || bottombit.contains("©")) {
-                            lineType = "author";
-                        }
-                    } else if (lineType.equals("copyright")) {
-                        if (copyright.equals("")) {
-                            copyright = "{copyright:" + line.trim();
-                        } else {
-                            copyright = copyright + ", " + line.trim();
-                        }
-                        // IV - Stop if we do not have an end for this line type
-                        if (!(bottombit.contains("\nFor use solely"))) {
-                            lineType = "";
-                        }
-                    } else if (lineType.equals("author")) {
-                        if (author.equals("")) {
-                            author = "{artist:" + line;
-                        } else {
-                            author = author + ", " + line.trim();
-                        }
-                        // IV - Stop if we do not have an end for this line type
-                        if (!(bottombit.contains("opyright") || bottombit.contains("&#169;") || bottombit.contains("©"))) {
-                            lineType = "";
-                        }
-                    }
-                }
-                // IV - Tidy lines
-                if (!(copyright.equals(""))) {
-                    copyright = copyright.replace(" |",",").
-                            replace("Copyright ","").
-                            replace("copyright ","").
-                            replace("&#169; ","").
-                            replace("©","").
-                            replaceAll(" \\(Admin\\..*?\\)","") + "}\n";
-                }
-                if (!(author.equals(""))) author = author.replace(" |",",") + "}\n";
-            }
             lyrics = text;
         }
         if (lyrics.equals("")) {
