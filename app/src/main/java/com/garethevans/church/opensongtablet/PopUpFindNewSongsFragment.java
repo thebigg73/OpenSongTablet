@@ -1183,7 +1183,12 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         if (start>-1 && end>-1 && end>start) {
             start = s.indexOf(">",start) + 1;
-            String a = s.substring(start,end);
+            // IV - Handles multi-line author information
+            String a = s.substring(start,end).
+                    replaceAll("<br>",", ").
+                    replace("</li><li>",", ").
+                    replace("<li>","").
+                    replace ("</li>","");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 a = Html.fromHtml(a, 0).toString();
             } else {
@@ -1214,14 +1219,17 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
     }
     private String getCopyrightSongSelectChordPro(String s) {
+        // Extract copyright information
+        // IV - Same class for chordpro and song viewer styles
         int start = s.indexOf("<ul class=\"copyright\">");
         start = s.indexOf("<li>",start);
         int end = s.indexOf("</ul>",start);
         if (start>-1 && end>-1 && end>start) {
             // IV - Remove copyright and replace use of | as separator with , and remove '(Admin. by)' content
             // IV - Also handles multi line copyright information
-            return "{copyright:" + s.substring(start+4,end).
+            return "{copyright:" + s.substring(start,end).
                     replace("</li><li>",", ").
+                    replace("<li>","").
                     replace ("</li>","").
                     replace("©","").
                     replaceAll("\\Q |\\E",",").
