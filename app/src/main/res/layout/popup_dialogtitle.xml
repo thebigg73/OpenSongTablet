@@ -21,39 +21,39 @@
         android:layout_gravity="center_vertical"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/closeMe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:useCompatPadding="true"
-        android:padding="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        app:elevation="0dp"
-        app:fabSize="mini"
-        app:backgroundTint="@color/red"
-        app:borderWidth="0dp"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_close_white_36dp"
-        android:contentDescription="@string/drawer_close" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/saveMe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:fabSize="mini"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="0dp"
+        android:contentDescription="@string/save"
+        android:padding="0dp"
+        android:src="@drawable/ic_check_white_36dp"
         app:backgroundTint="@color/green"
         app:borderWidth="0dp"
-        app:useCompatPadding="true"
-        android:padding="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         app:elevation="0dp"
+        app:fabSize="mini"
+        app:useCompatPadding="true" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/closeMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_check_white_36dp"
-        android:contentDescription="@string/save" />
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="0dp"
+        android:contentDescription="@string/drawer_close"
+        android:padding="0dp"
+        android:src="@drawable/ic_arrow_right_white_36dp"
+        app:backgroundTint="@color/toolbar"
+        app:borderWidth="0dp"
+        app:elevation="0dp"
+        app:fabSize="mini"
+        app:useCompatPadding="true" />
 
 </LinearLayout>

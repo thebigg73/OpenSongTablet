@@ -323,11 +323,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         public void onReceive(Context ctxt, Intent intent) {
             downloadcomplete = true;
             saveSong_Button.setEnabled(true);
-            // If the song save section isn't visible, make it so
-            // This is because there was no chordpro, but pdf is here
-            if (newfileinfo_LinearLayout.getVisibility()!=View.VISIBLE) {
-                setFileNameAndFolder();
-            }
             try {
                 requireActivity().unregisterReceiver(onComplete);
             } catch (Exception e) {
@@ -1099,7 +1094,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
     // Song Select Code
     private String extractSongSelectChordPro(String s, String temptitle) {
-        // Get the title
+        // Get the title which also sets filename
         String title = getTitleSongSelectChordPro(s, temptitle);
 
         // Extract the key
@@ -1128,8 +1123,10 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             return title + author + copyright + ccli + key + tempo + timesig + "\n" + lyrics;
         }
     }
+
     private String getTitleSongSelectChordPro(String s, String temptitle) {
         // Extract the title
+
         // IV - Try chordpro style
         int start = s.indexOf("<span class=\"cproTitle\">");
         int end = s.indexOf("</span>",start);
@@ -1138,6 +1135,15 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         if (start == -1) {
             start = s.indexOf("<h2 class=\"song-viewer-title\">");
             end = s.indexOf("</h2>",start);
+        }
+
+        // IV - Try page style
+        if (start == -1) {
+            start = s.indexOf("<div class=\"content-title\">");
+            if (start > -1) {
+                start = s.indexOf("<h1>", start);
+                end = s.indexOf("</h1>", start);
+            }
         }
 
         if (start>-1 && end>-1 && end>start) {
@@ -1151,15 +1157,16 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             filename = t;
             return "{title:" + t + "}\n";
         } else {
-            return temptitle;
+            filename = temptitle;
+            return "{title:" + temptitle + "}\n";
         }
     }
+
     private String getKeySongSelectChordPro(String s) {
-        String[] lines = s.split("\n");
         int start = s.indexOf("<code class=\"cproSongKey\"");
         int end = s.indexOf("</code>",start);
         if (start>-1 && end>-1 && end>start) {
-            // Fine tine the start
+            // Fine tune the start
             int newstart = s.indexOf(">",start);
             if (newstart<0) {
                 newstart = start;
@@ -1222,9 +1229,12 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         // Extract copyright information
         // IV - Same class for chordpro and song viewer styles
         int start = s.indexOf("<ul class=\"copyright\">");
-        start = s.indexOf("<li>",start);
+        if (start>-1) {
+            start = s.indexOf("<li>",start);
+        }
         int end = s.indexOf("</ul>",start);
         if (start>-1 && end>-1 && end>start) {
+            start = s.indexOf(">",start) + 1;
             // IV - Remove copyright and replace use of | as separator with , and remove '(Admin. by)' content
             // IV - Also handles multi line copyright information
             return "{copyright:" + s.substring(start,end).
@@ -1243,7 +1253,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         int start = s.indexOf("<span class=\"cproTempoTimeWrapper\">");
         int end = s.indexOf("</span>",start);
         if (start>-1 && end>-1 && end>start) {
-            String both = s.substring(start+35,end);
+            start = s.indexOf(">",start) + 1;
+            String both = s.substring(start,end);
             String[] bits = both.split("\\|");
             if (bits.length>0) {
                 String t = bits[0].replace("Tempo", "");
@@ -1263,7 +1274,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         int start = s.indexOf("<span class=\"cproTempoTimeWrapper\">");
         int end = s.indexOf("</span>",start);
         if (start>-1 && end>-1 && end>start) {
-            String both = s.substring(start+35,end);
+            start = s.indexOf(">",start) + 1;
+            String both = s.substring(start,end);
             String[] bits = both.split("\\|");
             if (bits.length>1) {
                 String t = bits[1].replace("Time","");
@@ -1283,9 +1295,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         while (s.contains("<pre class=\"cproSongBody\">")) {
             int start = s.indexOf("<pre class=\"cproSongBody\">");
             int end = s.indexOf("</pre>",start);
+
             // IV - Overwrite so that next loop finds any further SongBody
             s = s.replaceFirst("<pre class=\"cproSongBody\">", "<xxxxxxxxxxxxxxxxxxxxxxxx>");
-            s = s.replaceFirst("</pre>","<xxxx>");
 
             if (start>-1 && end>-1 && end>start) {
                 lyrics = lyrics + s.substring(start+26,end);
@@ -1293,29 +1305,23 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 // Fix the song section headers
                 while (lyrics.contains("<span class=\"cproSongSection\"><span class=\"cproComment\">")) {
                     start = lyrics.indexOf("<span class=\"cproSongSection\"><span class=\"cproComment\">");
-                    end = lyrics.indexOf("</span>",start);
-                    String sectiontext;
-                    if (start>-1 && end>-1 && end>start) {
-                        sectiontext = lyrics.substring(start+56,end);
-                        lyrics = lyrics.replace("<span class=\"cproSongSection\"><span class=\"cproComment\">" + sectiontext + "</span>", "#[" + sectiontext.trim() + "]");
-                    }
+                    lyrics = lyrics.substring(0,start) +
+                            (lyrics.substring(start).
+                            replaceFirst("<span class=\"cproSongSection\"><span class=\"cproComment\">","#[").
+                            replaceFirst("</span>", "]"));
                 }
 
                 // Fix the chords
-                // Chords are found in a bit like this:
-                // <span class="chordWrapper"><code class="chord" data-chordname="D<sup>2</sup>">D<sup>2</sup></code>
-                // We want the last D<sup>2</sup> bit (<sup> removed later).
+                // Chords are found in a bit like this: <span class="chordWrapper"><code class="chord" data-chordname="D<sup>2</sup>">D<sup>2</sup></code>
+                // We replace start with [< and end with ] to give: [<"D<sup>2</sup>">D<sup>2</sup>]
+                // The following clean up removes all "<...>" to give [D2]
 
-                while (lyrics.contains("<span class=\"chordWrapper\"><code ")) {
-                    start = lyrics.indexOf("<span class=\"chordWrapper\"><code ");
-                    int newstart = lyrics.indexOf(">",start); // Move to bit before <
-                    newstart = lyrics.indexOf("\">",newstart)+2; // Go to bit after chordname="....">
-                    end = lyrics.indexOf("</code>",newstart);
-                    if (start>-1 && newstart>-1 && end>-1 && end>newstart) {
-                        String chordfound = lyrics.substring(newstart,end);
-                        String bittoremove = lyrics.substring(start,end+7);
-                        lyrics = lyrics.replace(bittoremove,"["+chordfound+"]");
-                    }
+                while (lyrics.contains("<span class=\"chordWrapper\"><code class=\"chord\" data-chordname=\"")) {
+                    start = lyrics.indexOf("<span class=\"chordWrapper\"><code class=\"chord\" data-chordname=\"");
+                    lyrics = lyrics.substring(0,start) +
+                            (lyrics.substring(start).
+                            replaceFirst("<span class=\"chordWrapper\"><code class=\"chord\" data-chordname=\"","[<").
+                            replaceFirst("</code>","]"));
                 }
             }
         }
@@ -1336,11 +1342,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         start = s.indexOf("<div class=\"song-viewer lyrics\" id=\"song-viewer\">");
         end = s.indexOf("</div>", start);
         if (start > -1 && end > -1 && end > start) {
-            int newstart = s.indexOf(">", start);
-            if (newstart < 0) {
-                newstart = start;
-            }
-            String text = s.substring(newstart + 1, end).trim();
+            start = s.indexOf(">", start) + 1;
+            String text = s.substring(start, end).trim();
             // IV - Drop the bottom copyright info
             end = text.indexOf("<div class=\"copyright-info\">");
             if (end >-1) {
@@ -1413,10 +1416,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             if (filename != null && !filename.equals("")) {
                 songfilename_EditText.setText(filename);
             } else {
-                songfilename_EditText.setText(FullscreenActivity.phrasetosearchfor);
-            }
-
-            if (filecontents == null && (newtext==null || newtext.equals(""))) {
                 songfilename_EditText.setText(FullscreenActivity.phrasetosearchfor);
             }
         }
@@ -1495,8 +1494,12 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         // Get the database ready
         SQLiteHelper sqLiteHelper = new SQLiteHelper(getContext());
 
+        if (filecontents.equals("") || filecontents.equals("\n")) {
+            filecontents = null;
+        }
+
         try {
-            if (filecontents!=null && !filecontents.equals("")) {
+            if (filecontents!=null) {
                 storageAccess.writeFileFromString(filecontents,outputStream);
                 // Add song to the database
                 sqLiteHelper.createSong(getContext(),whatfolderselected,nameoffile);
@@ -1707,18 +1710,17 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         protected void onPostExecute(String s) {
             if (getContext()!=null) {
                 grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
-                if (filecontents != null && !filecontents.equals("")) {
-                    // IV - Just in case we have not...
-                    if (newfileinfo_LinearLayout.getVisibility()!=View.VISIBLE) {
-                        setFileNameAndFolder();
-                    }
-                } else {
+                if (filecontents == null || filecontents.equals("")) {
                     if (downloadcomplete) {
                         StaticVariables.myToastMessage = getContext().getString(R.string.pdfonly);
                     } else {
                         StaticVariables.myToastMessage = getContext().getResources().getText(R.string.chordpro_false).toString();
                     }
                     ShowToast.showToast(getContext());
+                }
+                // IV - Make sure of save
+                if (newfileinfo_LinearLayout.getVisibility()!=View.VISIBLE) {
+                    setFileNameAndFolder();
                 }
             }
         }
