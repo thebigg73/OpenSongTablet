@@ -1190,19 +1190,20 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         if (start>-1 && end>-1 && end>start) {
             start = s.indexOf(">",start) + 1;
-            // IV - Handles multi-line author information
+            // IV - Remove line breaks, replace non breaking spaces, replace use of | as separator with comma
             String a = s.substring(start,end).
                     replaceAll("<br>",", ").
                     replace("</li><li>",", ").
                     replace("<li>","").
-                    replace ("</li>","");
+                    replace ("</li>","").
+                    replaceAll("\u00A0"," ").
+                    replaceAll("\\Q |\\E",",");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 a = Html.fromHtml(a, 0).toString();
             } else {
                 a = Html.fromHtml(a).toString();
             }
-            // IV - Replace use of | as separator with comma
-            return "{artist:" + a.replaceAll("\\Q |\\E",",") + "}\n";
+            return "{artist:" + a + "}\n";
         } else {
             return "";
         }
@@ -1235,13 +1236,13 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         int end = s.indexOf("</ul>",start);
         if (start>-1 && end>-1 && end>start) {
             start = s.indexOf(">",start) + 1;
-            // IV - Remove copyright and replace use of | as separator with , and remove '(Admin. by)' content
-            // IV - Also handles multi line copyright information
+            // IV - Remove line breaks, copyright, replace non breaking spaces, replace use of | as separator with comma and remove '(Admin. by)' content
             return "{copyright:" + s.substring(start,end).
                     replace("</li><li>",", ").
                     replace("<li>","").
                     replace ("</li>","").
                     replace("©","").
+                    replaceAll("\u00A0"," ").
                     replaceAll("\\Q |\\E",",").
                     replaceAll(" \\(Admin\\..*?\\)","").
                     trim() + "}\n";
