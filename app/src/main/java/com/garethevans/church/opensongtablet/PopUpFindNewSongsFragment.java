@@ -1196,6 +1196,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     replace("</li><li>",", ").
                     replace("<li>","").
                     replace ("</li>","").
+                    replaceAll("&nbsp;"," ").
                     replaceAll("\u00A0"," ").
                     replaceAll("\\Q |\\E",",");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -1242,6 +1243,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     replace("<li>","").
                     replace ("</li>","").
                     replace("©","").
+                    replaceAll("&nbsp;"," ").
                     replaceAll("\u00A0"," ").
                     replaceAll("\\Q |\\E",",").
                     replaceAll(" \\(Admin\\..*?\\)","").
