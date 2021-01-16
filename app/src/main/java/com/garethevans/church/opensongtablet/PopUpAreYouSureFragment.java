@@ -10,7 +10,6 @@ import android.view.Window;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -112,7 +111,6 @@ public class PopUpAreYouSureFragment extends DialogFragment {
             noAction();
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setImageDrawable(ResourcesCompat.getDrawable(requireContext().getResources(),R.drawable.ic_check_white_36dp,null));
         saveMe.setOnClickListener(view -> {
             CustomAnimations.animateFAB(saveMe,getActivity());
             saveMe.setEnabled(false);
