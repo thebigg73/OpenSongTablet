@@ -1752,7 +1752,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         TextView menuUp = v.findViewById(R.id.connectionsMenuTitle);
 
         // We keep a static reference to these in the FullscreenActivity
-        EditText deviceName = v.findViewById(R.id.deviceName);
+        Button deviceName = v.findViewById(R.id.deviceName);
         SwitchCompat actAsHost = v.findViewById(R.id.actAsHost);
         actAsHost.requestFocus();
         SwitchCompat enableNearby = v.findViewById(R.id.enableNearby);
@@ -1760,13 +1760,14 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         SwitchCompat keepHostFiles = v.findViewById(R.id.keepHostFiles);
         connectionLog = v.findViewById(R.id.options_connections_log);
 
+        StaticVariables.deviceName = preferences.getMyPreferenceString(c, "deviceName", "");
         deviceName.setText(StaticVariables.deviceName);
         if (StaticVariables.connectionLog==null || StaticVariables.connectionLog.isEmpty()) {
             StaticVariables.connectionLog = c.getResources().getString(R.string.connections_log) + "\n\n";
         }
 
         setTextTextView(connectionLog,StaticVariables.connectionLog);
-        setEditText(deviceName,StaticVariables.deviceName);
+        setTextTextView(deviceName,StaticVariables.deviceName);
         setTextSwitch(actAsHost,c.getResources().getString(R.string.connections_actashost));
         setTextSwitch(enableNearby,c.getResources().getString(R.string.connections_enable));
         setTextSwitch(receiveHostFiles,c.getResources().getString(R.string.connections_receive_host));
@@ -1826,19 +1827,12 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             keepHostFiles.setEnabled(isChecked);
         });
         keepHostFiles.setOnCheckedChangeListener((view,isChecked) -> StaticVariables.keepHostFiles = isChecked);
-        deviceName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s!=null && s.length()>0) {
-                    StaticVariables.deviceName = s.toString();
-                    setTextTextView(deviceName,StaticVariables.deviceName);
-                    preferences.setMyPreferenceString(c, "deviceName", StaticVariables.deviceName);
-                }
+
+        deviceName.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "connect_name";
+            if (mListener!=null) {
+                mListener.openFragment();
             }
-            @Override
-            public void afterTextChanged(Editable s) {}
         });
         connectionLog.setOnClickListener(view -> {
             StaticVariables.connectionLog = c.getResources().getString(R.string.connections_log) + "\n\n";

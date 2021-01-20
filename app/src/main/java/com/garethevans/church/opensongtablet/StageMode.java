@@ -138,6 +138,7 @@ public class StageMode extends AppCompatActivity implements
         PopUpLayoutFragment.MyInterface, DownloadTask.MyInterface,
         PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
         PopUpCreateDrawingFragment.MyInterface,
+        PopUpConnectFragment.MyInterface,
         PopUpCCLIFragment.MyInterface, NearbyReturnActionsInterface, NearbyInterface,
         PopUpBibleXMLFragment.MyInterface, PopUpShowMidiMessageFragment.MyInterface {
 

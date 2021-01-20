@@ -121,6 +121,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
         PopUpCreateDrawingFragment.MyInterface,
         PopUpRandomSongFragment.MyInterface,
+        PopUpConnectFragment.MyInterface,
         PopUpCCLIFragment.MyInterface, NearbyReturnActionsInterface, NearbyInterface,
         PopUpBibleXMLFragment.MyInterface, PopUpShowMidiMessageFragment.MyInterface {
 

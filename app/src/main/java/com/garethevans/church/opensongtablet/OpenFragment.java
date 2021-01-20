@@ -131,6 +131,10 @@ class OpenFragment {
                 newFragment = PopUpCCLIFragment.newInstance();
                 break;
 
+            case "connect_name":
+                newFragment = PopUpConnectFragment.newInstance();
+                break;
+
             case "renamesong":
             case "duplicate":
                 newFragment = PopUpSongRenameFragment.newInstance();
