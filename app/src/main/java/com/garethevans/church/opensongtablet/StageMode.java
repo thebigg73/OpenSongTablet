@@ -138,6 +138,7 @@ public class StageMode extends AppCompatActivity implements
         PopUpLayoutFragment.MyInterface, DownloadTask.MyInterface,
         PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
         PopUpCreateDrawingFragment.MyInterface,
+        PopUpConnectFragment.MyInterface,
         PopUpCCLIFragment.MyInterface, NearbyReturnActionsInterface, NearbyInterface,
         PopUpBibleXMLFragment.MyInterface, PopUpShowMidiMessageFragment.MyInterface {
 
@@ -1453,6 +1454,7 @@ public class StageMode extends AppCompatActivity implements
 
         prepareOptionMenu();
         prepareSongMenu();
+        setupPageButtons();
 
         // IV - Update second screen theme
         if (FullscreenActivity.isPresenting && !FullscreenActivity.isHDMIConnected) {
@@ -5423,11 +5425,13 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void profileWork(String s) {
+        closeMyDrawers("option");
         switch (s) {
             case "load":
                 try {
                     Intent i = profileActions.openProfile(StageMode.this,preferences,storageAccess);
                     this.startActivityForResult(i, StaticVariables.REQUEST_PROFILE_LOAD);
+                    refreshAll();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

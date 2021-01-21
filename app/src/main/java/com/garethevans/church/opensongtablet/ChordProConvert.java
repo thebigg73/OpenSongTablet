@@ -802,7 +802,6 @@ class ChordProConvert {
         s = s.replace(";[","[").
             replace("#[","[").
             replace("; [", "[").
-            replace(" [","[").
             replace(";- [", "[");
 
         // IV - For a complete replace...

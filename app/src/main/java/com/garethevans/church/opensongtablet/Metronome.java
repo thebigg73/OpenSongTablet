@@ -11,7 +11,7 @@ class Metronome {
 
 	private double bpm;
 	private short beat, noteValue;
-	private int silence;
+	private int duration;
 	private float metrovol;
 
 	private double beatSound, sound;
@@ -60,16 +60,6 @@ class Metronome {
         }
 
         int tick1 = 600;
-        try {
-            // IV - Double interval less the tick
-            silence = (int) (((60/bpm)*(8000)) * 2)- tick1;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        soundTickArray = new double[tick1];
-		soundTockArray = new double[tick1];
-        silenceSoundArray = new double[this.silence];
         double[] tick;
         double[] tock;
 		if (StaticVariables.mTimeSig.equals("1/4")) {
@@ -79,6 +69,10 @@ class Metronome {
             tick = audioGenerator.getSineWave(tick1, 8000, beatSound);
             tock = audioGenerator.getSineWave(tick1, 8000, sound);
         }
+        // IV - Build double interval sound arrays of silence - overwrite start with tick/tock
+        duration = (int) (((60/bpm)*(8000)) * 2);
+        soundTickArray = new double[duration];
+        soundTockArray = new double[duration];
 		for(int i = 0; i< tick1; i++) {
 			soundTickArray[i] = tick[i];
 			soundTockArray[i] = tock[i];
@@ -93,7 +87,6 @@ class Metronome {
 			} else {
 				audioGenerator.writeSound(pan,vol,soundTickArray);
 			}
-			audioGenerator.writeSound(pan,vol,silenceSoundArray);
 
 			currentBeat++;
 			runningBeatCount++;

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,15 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class PopUpMetronomeFragment extends DialogFragment {
+
+    private final Handler restartMetronome = new Handler();
+    private final Runnable restartMetronomeRunnable = () -> {
+        if (StaticVariables.metronomeonoff.equals("off") && StaticVariables.metronomeok) {
+            startstopwithoutexit = true;
+            this.popupmetronome_startstopbutton.callOnClick();
+        }
+        restartRequested = false;
+    };
 
     static PopUpMetronomeFragment newInstance() {
         PopUpMetronomeFragment frag;
@@ -61,6 +71,9 @@ public class PopUpMetronomeFragment extends DialogFragment {
     private int total_calc_bpm;
     private int total_counts = 0;
     private int metronomecolor;
+
+    private boolean restartRequested = false;
+    private boolean startstopwithoutexit = false;
 
     private Preferences preferences;
     private StorageAccess storageAccess;
@@ -146,12 +159,14 @@ public class PopUpMetronomeFragment extends DialogFragment {
 
         // Set the listeners for changes
         taptempo_Button.setOnClickListener(view -> {
+            considerRestart();
             tapTempo();
             StaticVariables.metronomeok = Metronome.isMetronomeValid();
         });
         popupmetronome_volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                considerRestart();
                 String text = i + "%";
                 popupmetronome_volume_text.setText(text);
             }
@@ -169,6 +184,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         popupmetronome_pan.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                considerRestart();
                 switch (i) {
                     case 0:
                         preferences.setMyPreferenceString(getContext(),"metronomePan","L");
@@ -196,6 +212,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
             }
         });
         visualmetronome.setOnCheckedChangeListener((compoundButton, b) -> {
+            considerRestart();
             preferences.setMyPreferenceBoolean(getContext(),"metronomeShowVisual",b);
             StaticVariables.metronomeok = Metronome.isMetronomeValid();
         });
@@ -229,12 +246,30 @@ public class PopUpMetronomeFragment extends DialogFragment {
                 StaticVariables.myToastMessage = getString(R.string.metronome) + " - " + getString(R.string.notset);
                 ShowToast.showToast(getContext());
             }
-            PopUpMetronomeFragment.this.dismiss();
+            if (!(startstopwithoutexit)) {
+                PopUpMetronomeFragment.this.dismiss();
+            } else {
+                startstopwithoutexit = false;
+            }
         });
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog(), preferences);
 
         return V;
+    }
+
+    private void considerRestart() {
+        // IV - Restart a running metronome after a delay
+        if (StaticVariables.metronomeonoff.equals("on")) {
+            restartRequested = true;
+            startstopwithoutexit = true;
+            this.popupmetronome_startstopbutton.callOnClick();
+        }
+        // IV - Restart requests can arrive quickly - renew callback each time
+        if (restartRequested) {
+            restartMetronome.removeCallbacks(restartMetronomeRunnable);
+            restartMetronome.postDelayed(restartMetronomeRunnable, 1500);
+        }
     }
 
     private void doSave() {
@@ -260,6 +295,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
     private void tapTempo() {
         // This function checks the previous tap_tempo time and calculates the bpm
         // Variables for tap tempo
+        considerRestart();
         long new_time = System.currentTimeMillis();
         long time_passed = new_time - old_time;
         int calc_bpm = Math.round((1 / ((float) time_passed / 1000)) * 60);
@@ -320,6 +356,8 @@ public class PopUpMetronomeFragment extends DialogFragment {
     public void onDismiss(@NonNull final DialogInterface dialog) {
         // IV - doSave in dismiss to ensure save
         doSave();
+        // IV - Remove any restart callbacks
+        restartMetronome.removeCallbacks(restartMetronomeRunnable);
         if (mListener!=null) {
             mListener.pageButtonAlpha("");
         }
@@ -364,6 +402,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         int pos = getLengthPosition(val);
         bar_numberPicker.setValue(pos);
         bar_numberPicker.setOnValueChangedListener((numberPicker, i, i1) -> {
+            considerRestart();
             i1 = getBarValues(i1);
             preferences.setMyPreferenceInt(getContext(),"metronomeLength",i1);
         });
@@ -465,6 +504,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         bpm_numberPicker.setDisplayedValues(bpmValues);
         bpm_numberPicker.setValue(tempo-40);
         bpm_numberPicker.setOnValueChangedListener((numberPicker, i, i1) -> {
+            considerRestart();
             if (i1==260) {
                 // This is the not set value
                 tempo = 261;
@@ -501,6 +541,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         timesig_numberPicker.setValue(defpos);
 
         timesig_numberPicker.setOnValueChangedListener((numberPicker, i, i1) -> {
+            considerRestart();
             if (i1 == 0) {
                 // First value, which is not set
                 StaticVariables.mTimeSig = "";
