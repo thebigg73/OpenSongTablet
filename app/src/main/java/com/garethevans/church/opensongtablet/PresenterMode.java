@@ -2294,11 +2294,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     @Override
     public void profileWork(String s) {
+        closeMyDrawers("option");
         switch (s) {
             case "load":
                 try {
                     Intent i = profileActions.openProfile(PresenterMode.this,preferences,storageAccess);
                     this.startActivityForResult(i, StaticVariables.REQUEST_PROFILE_LOAD);
+                    refreshAll();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -2849,6 +2851,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         prepareOptionMenu();
         prepareSongMenu();
+        setupPageButtons();
 
         // IV - Update second screen theme
         if (FullscreenActivity.isPresenting && !FullscreenActivity.isHDMIConnected) {

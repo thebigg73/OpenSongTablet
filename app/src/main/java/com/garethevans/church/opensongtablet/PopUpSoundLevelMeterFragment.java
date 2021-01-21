@@ -245,6 +245,8 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
     @Override
     public void onDismiss(@NonNull final DialogInterface dialog) {
         super.onDismiss(dialog);
+        // IV - Remove any pending callback
+        mHandlerStart.removeCallbacks(r);
         try {
             audio.stop();
             audio.release();
