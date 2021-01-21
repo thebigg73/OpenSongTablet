@@ -7,6 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -42,13 +45,20 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         super.onDetach();
     }
 
-    private SwitchCompat nextSongOnOff_Switch, nextSongTopBottom_Switch,stickyNotesOnOff_Switch,
-            stickyNotesFloat_Switch,stickyNotesTopBottom_Switch, highlightNotesOnOff_Switch,
-            stickyBlockInfo;
+    private SwitchCompat nextSongOnOff_Switch;
+    private SwitchCompat nextSongTopBottom_Switch;
+    private SwitchCompat stickyNotesOnOff_Switch;
+    private SwitchCompat stickyNotesFloat_Switch;
+    private SwitchCompat stickyNotesTopBottom_Switch;
+    private SwitchCompat highlightNotesOnOff_Switch;
+    private SwitchCompat stickyBlockInfo;
     private SeekBar stickyNotesTime_SeekBar, highlightTime_SeekBar;
     private TextView stickyNotesTime_TextView, stickNotesTimeInfo_TextView, highlightTime_TextView,
             highlightTimeInfo_TextView;
+    private LinearLayout filteringView;
+    private EditText filteringEditText;
     private Preferences preferences;
+    private String delimiter = "X__X";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,6 +113,8 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         showNextButtons();
         showStickyButtons();
         showHighlightButtons();
+
+        setUpCommentFilters(V);
 
         // Set the listeners
         nextSongOnOff_Switch.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -315,6 +327,46 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         highlightTime_TextView.setText(s);
     }
 
+    private void setUpCommentFilters(View v) {
+        SwitchCompat filteringSwitch = v.findViewById(R.id.filteringSwitch);
+        filteringView = v.findViewById(R.id.filteringView);
+        Button filteringSave = v.findViewById(R.id.filteringSave);
+        filteringEditText = v.findViewById(R.id.filteringEditText);
+
+        if (preferences.getMyPreferenceBoolean(getContext(),"commentFiltering",false)) {
+            filteringSwitch.setChecked(true);
+            filteringView.setVisibility(View.VISIBLE);
+        } else {
+            filteringSwitch.setChecked(false);
+            filteringView.setVisibility(View.GONE);
+        }
+        filteringSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            preferences.setMyPreferenceBoolean(getContext(),"commentFiltering",isChecked);
+            if (isChecked) {
+                filteringView.setVisibility(View.VISIBLE);
+            } else {
+                filteringView.setVisibility(View.GONE);
+            }
+        });
+        String commentFilters = preferences.getMyPreferenceString(getContext(),"commentFilters",delimiter+delimiter);
+        commentFilters = commentFilters.replace(delimiter,"\n");
+        commentFilters = commentFilters.trim();
+        filteringEditText.setText(commentFilters);
+        filteringSave.setOnClickListener(view -> {
+            String val;
+            if (filteringEditText.getText()==null) {
+                val = "";
+             } else {
+                val = filteringEditText.getText().toString();
+                val = val.replace(delimiter,"");
+            }
+            val = val.trim();
+            val = delimiter + val + delimiter;
+            val = val.replace(":\n",delimiter);
+            val = val.replace("\n",delimiter);
+            preferences.setMyPreferenceString(getContext(),"commentFilters",val);
+        });
+    }
     @Override
     public void onCancel(@NonNull DialogInterface dialog) {
         this.dismiss();

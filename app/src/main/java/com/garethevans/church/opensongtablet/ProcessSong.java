@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -244,6 +245,13 @@ public class ProcessSong extends Activity {
         string = string.replace("[", "");
         string = string.replace("]", "");
         String section;
+
+        // Fix for filtered section labels
+        if (string.contains(":V") || string.contains(":C") ||
+        string.contains(":B") || string.contains(":T") ||
+        string.contains(":P")) {
+            string = string.substring(string.indexOf(":")+1);
+        }
 
         if (!FullscreenActivity.foundSongSections_heading.contains(string)) {
             FullscreenActivity.foundSongSections_heading.add(string);
@@ -2405,6 +2413,22 @@ public class ProcessSong extends Activity {
                     ll.addView(emptyline);
                 }
             }
+        }
+        Log.d("ProcessSong","StaticVariables.songSectionsLabels["+x+"]="+StaticVariables.songSectionsLabels[x]);
+        Log.d("ProcessSong","commentFiltering="+preferences.getMyPreferenceBoolean(c,"commentFiltering",false));
+        Log.d("ProcessSong","commentFilters="+preferences.getMyPreferenceString(c,"commentFilters","X__XX__X"));
+
+        if (StaticVariables.songSectionsLabels[x].contains(":") &&
+                preferences.getMyPreferenceBoolean(c,"commentFiltering",false)) {
+            // Check if it should be filtered out
+            String myFilter = preferences.getMyPreferenceString(c,"commentFilters","X__XX__X");
+            if (!myFilter.equals("X__XX__X")) {
+                String checkFilter = StaticVariables.songSectionsLabels[x].substring(0,StaticVariables.songSectionsLabels[x].indexOf(":"));
+                if (checkFilter!=null && !checkFilter.isEmpty() && myFilter.contains("X__X"+checkFilter+"X__X")) {
+                    ll.setVisibility(View.GONE);
+                }
+            }
+
         }
         return ll;
     }

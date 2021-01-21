@@ -947,32 +947,22 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     @Override
     public void openMyDrawers(String which) {
-        new Thread(new Runnable() {
+        new Thread(() -> runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DrawerTweaks.openMyDrawers(mDrawerLayout, songmenu, optionmenu, which);
-                    }
-                });
+                DrawerTweaks.openMyDrawers(mDrawerLayout, songmenu, optionmenu, which);
             }
-        }).start();
+        })).start();
     }
 
     @Override
     public void closeMyDrawers(String which) {
-        new Thread(new Runnable() {
+        new Thread(() -> runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DrawerTweaks.closeMyDrawers(mDrawerLayout, songmenu, optionmenu, which);
-                    }
-                });
+                DrawerTweaks.closeMyDrawers(mDrawerLayout, songmenu, optionmenu, which);
             }
-        }).start();
+        })).start();
     }
 
     // The overflow menu and actionbar

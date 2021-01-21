@@ -338,6 +338,15 @@ class ProfileActions {
                             preferences.setMyPreferenceFloat(c,"clockTextSize",getFloatValue(xppValue,9.0f));
                             break;
 
+                        case "commentFiltering":
+                            //commentFiltering                boolean     Should comment filtering be enabled (def: false) (hide certain sections labelled with a prefix)
+                            preferences.setMyPreferenceBoolean(c,"commentFiltering",getBooleanValue(xppValue,false));
+                            break;
+
+                        case "commentFilters":
+                            //commentFilters                  String      Which comments should be filtered out looking for (e.g. [guitar:C]). delimited by X__X (def:X__XX__X)
+                            preferences.setMyPreferenceString(c,"commentFiltering",getTextValue(xppValue,"X__XX__X"));
+
                         case "custom1_lyricsBackgroundColor":        // New preference only
                             //custom1_lyricsBackgroundColor   int         The color for the lyrics background in the custom1 theme
                             preferences.setMyPreferenceInt(c,"custom1_lyricsBackgroundColor",getIntegerValue(xppValue,StaticVariables.black));
@@ -2185,11 +2194,11 @@ class ProfileActions {
     }
 
     private String getTextValue(String s, String def) {
-        String text = def;
         if (s!=null && !s.equals("")) {
-            text = s;
+            return s;
+        } else {
+            return def;
         }
-        return text;
     }
 
 }

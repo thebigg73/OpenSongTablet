@@ -117,6 +117,8 @@ public class Preferences extends Activity {
     clock24hFormat                  boolean     Should the clock be shown in 24hr format (def:true)
     clockOn                         boolean     Should the clock be shown in the action bar (def:true)
     clockTextSize                   float       The size of the clock font (def:9.0f)
+    commentFiltering                boolean     Should comment filtering be enabled (def: false) (hide certain sections labelled with a prefix)
+    commentFilters                  String      Which comments should be filtered out looking for (e.g. [guitar:C]). delimited by X__X (def:X__XX__X)
     custom1_lyricsBackgroundColor   int         The color for the lyrics background in the custom1 theme
     custom1_lyricsBridgeColor       int         The color for the background for the bridge in the custom1 theme
     custom1_lyricsCapoColor         int         The color for the capo text in the custom1 theme
