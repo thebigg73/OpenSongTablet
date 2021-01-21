@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -413,10 +414,10 @@ public class BootUpCheck extends AppCompatActivity {
             if (storageAccess.lollipopOrLater()) {
                 try {
                     intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                    intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
-                    intent.putExtra("android.content.extra.FANCY", true);
-                    intent.putExtra("android.content.extra.SHOW_FILESIZE", true);
-                    intent.putExtra("android.content.extra.INITIAL_URI", uriTree);
+                    //intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
+                    //intent.putExtra("android.content.extra.FANCY", true);
+                    //intent.putExtra("android.content.extra.SHOW_FILESIZE", true);
+                    intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,uriTree);
                     startActivityForResult(intent, 42);
                 } catch (Exception e) {
                     e.printStackTrace();

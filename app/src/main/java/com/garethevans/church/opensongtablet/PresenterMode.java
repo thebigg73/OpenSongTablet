@@ -178,8 +178,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private AsyncTask<Object, Void, String> shareset_async;
     private AsyncTask<Object, Void, String> load_customreusable;
     private AsyncTask<Object, Void, String> add_slidetoset;
-    private AsyncTask<Object, Void, String> open_drawers;
-    private AsyncTask<Object, Void, String> close_drawers;
     private AsyncTask<Object, Void, String> resize_drawers;
     private AsyncTask<Object, Void, String> do_moveinset;
     private AsyncTask<Object, Void, String> shareactivitylog_async;
@@ -593,8 +591,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         doCancelAsyncTask(shareset_async);
         doCancelAsyncTask(shareactivitylog_async);
         doCancelAsyncTask(load_customreusable);
-        doCancelAsyncTask(open_drawers);
-        doCancelAsyncTask(close_drawers);
         doCancelAsyncTask(resize_drawers);
         doCancelAsyncTask(do_moveinset);
         doCancelAsyncTask(add_slidetoset);
@@ -951,86 +947,32 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     @Override
     public void openMyDrawers(String which) {
-        doCancelAsyncTask(open_drawers);
-        open_drawers = new OpenMyDrawers(which);
-        try {
-            open_drawers.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    @SuppressLint("StaticFieldLeak")
-    private class OpenMyDrawers extends AsyncTask<Object, Void, String> {
-
-        final String which;
-
-        OpenMyDrawers(String w) {
-            which = w;
-        }
-
-        @Override
-        protected String doInBackground(Object... obj) {
-            return null;
-        }
-
-        boolean cancelled = false;
-
-        @Override
-        protected void onCancelled() {
-            cancelled = true;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            try {
-                if (!cancelled) {
-                    DrawerTweaks.openMyDrawers(mDrawerLayout, songmenu, optionmenu, which);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DrawerTweaks.openMyDrawers(mDrawerLayout, songmenu, optionmenu, which);
+                    }
+                });
             }
-        }
+        }).start();
     }
+
+    @Override
     public void closeMyDrawers(String which) {
-        doCancelAsyncTask(close_drawers);
-        close_drawers = new CloseMyDrawers(which);
-        try {
-            close_drawers.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    @SuppressLint("StaticFieldLeak")
-    private class CloseMyDrawers extends AsyncTask<Object, Void, String> {
-
-        final String which;
-
-        CloseMyDrawers(String w) {
-            which = w;
-        }
-
-        @Override
-        protected String doInBackground(Object... obj) {
-            return null;
-        }
-
-        boolean cancelled = false;
-
-        @Override
-        protected void onCancelled() {
-            cancelled = true;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            try {
-                if (!cancelled) {
-                    DrawerTweaks.closeMyDrawers(mDrawerLayout, songmenu, optionmenu, which);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DrawerTweaks.closeMyDrawers(mDrawerLayout, songmenu, optionmenu, which);
+                    }
+                });
             }
-        }
+        }).start();
     }
 
     // The overflow menu and actionbar

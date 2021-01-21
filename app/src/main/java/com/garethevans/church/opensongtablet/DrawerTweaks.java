@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -27,6 +28,7 @@ class DrawerTweaks {
                               LinearLayout song,
                               LinearLayout option,
                               String which) {
+        Log.d("DrawerTweaks","which="+which);
         switch (which) {
             case "both":
                 drawer.openDrawer(song);
