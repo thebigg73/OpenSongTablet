@@ -356,6 +356,8 @@ public class PopUpMetronomeFragment extends DialogFragment {
     public void onDismiss(@NonNull final DialogInterface dialog) {
         // IV - doSave in dismiss to ensure save
         doSave();
+        // IV - Remove any restart callbacks
+        restartMetronome.removeCallbacks(restartMetronomeRunnable);
         if (mListener!=null) {
             mListener.pageButtonAlpha("");
         }
