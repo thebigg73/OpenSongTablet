@@ -2414,10 +2414,13 @@ public class ProcessSong extends Activity {
                 }
             }
         }
-        Log.d("ProcessSong","StaticVariables.songSectionsLabels["+x+"]="+StaticVariables.songSectionsLabels[x]);
-        Log.d("ProcessSong","commentFiltering="+preferences.getMyPreferenceBoolean(c,"commentFiltering",false));
-        Log.d("ProcessSong","commentFilters="+preferences.getMyPreferenceString(c,"commentFilters","X__XX__X"));
 
+        checkForFilter(c, preferences, ll, x);
+
+        return ll;
+    }
+
+    private void checkForFilter(Context c, Preferences preferences, LinearLayout ll, int x) {
         if (StaticVariables.songSectionsLabels[x].contains(":") &&
                 preferences.getMyPreferenceBoolean(c,"commentFiltering",false)) {
             // Check if it should be filtered out
@@ -2428,9 +2431,7 @@ public class ProcessSong extends Activity {
                     ll.setVisibility(View.GONE);
                 }
             }
-
         }
-        return ll;
     }
 
     LinearLayout projectedSectionView(Context c, int x, float fontsize, StorageAccess storageAccess,
