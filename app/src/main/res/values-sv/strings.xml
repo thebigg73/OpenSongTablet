@@ -515,4 +515,11 @@
     <string name="usedbypermision">Används med tillstånd.</string>
     <string name="play_services_error">För att kunna använda Google Cast, teckensnitt och anslutningar i närheten måste du installera Google Play-tjänster.</string>
     <string name="play_services_how">Visa mig hur</string>
+    <string name="filter_info">Du kan filtrera sektioner med hjälp av prefix.\\nOm du väljer \\\"göm\\\" och lägg till filtret \\\"gitarr\\\" och sektioner som använder detta prefix skulle döljas. t.ex. [*gitarr: instrumental]</string>
+    <string name="filter_label">Dölj eller visa filtrerade sektioner</string>
+    <string name="hide">Dölj</string>
+    <string name="show">Visa</string>
+    <string name="filter_section">Sektionsfiltrering</string>
+    <string name="filter_entry">Lägg till varje filter på en ny rad nedan.</string>
+    <string name="filter_structure">[*filter:V] = filtrerad versavsnitt</string>
 </resources>

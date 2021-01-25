@@ -515,4 +515,11 @@
     <string name="wordsandmusicby">Palavras e música de</string>
     <string name="play_services_how">Mostre-me como</string>
     <string name="play_services_error">Para usar o Google Cast, fontes e conexões próximas, você precisará instalar o Google Play Services.</string>
+    <string name="filter_info">Você pode filtrar as seções usando prefixos.\\nSe você selecionar \\\'ocultar\\\' e adicionar o filtro \\\'guitarra\\\', as seções usando este prefixo serão ocultadas. por exemplo. [*guitarra: instrumental]</string>
+    <string name="filter_label">Ocultar ou mostrar seções filtradas</string>
+    <string name="filter_entry">Adicione cada filtro em uma nova linha abaixo.</string>
+    <string name="filter_section">Filtragem de seção</string>
+    <string name="show">Exposição</string>
+    <string name="hide">Ocultar</string>
+    <string name="filter_structure">[*filtro:V] = seção verso filtrada</string>
 </resources>

@@ -515,4 +515,11 @@
     <string name="wordsandmusicby">文字和音乐</string>
     <string name="play_services_error">要使用Google Cast，字体和附近的连接，您需要安装Google Play服务。</string>
     <string name="play_services_how">告诉我如何</string>
+    <string name="filter_info">您可以使用前缀来过滤部分。\\n如果选择“隐藏”并添加过滤器“吉他”，则使用此前缀的部分将被隐藏。 例如 [*吉他：乐器]</string>
+    <string name="filter_label">隐藏或显示过滤的部分</string>
+    <string name="hide">隐藏</string>
+    <string name="show">节目</string>
+    <string name="filter_section">段过滤</string>
+    <string name="filter_entry">在下面的新行中添加每个过滤器。</string>
+    <string name="filter_structure">[*filter:V] =过滤后的经节</string>
 </resources>

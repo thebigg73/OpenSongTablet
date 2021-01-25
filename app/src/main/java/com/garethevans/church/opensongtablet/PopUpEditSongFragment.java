@@ -553,6 +553,9 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
 
         // Initialise the basic views
         availabletags = V.findViewById(R.id.availabletags);
+        String newtags = getString(R.string.edit_song_availabletags) + "\n" + getString(R.string.filter_structure);
+        availabletags.setText(newtags);
+
         hideIfPDF(availabletags);
         edit_song_title = V.findViewById(R.id.edit_song_title);
         edit_song_author = V.findViewById(R.id.edit_song_author);

@@ -343,6 +343,11 @@ class ProfileActions {
                             preferences.setMyPreferenceBoolean(c,"commentFiltering",getBooleanValue(xppValue,false));
                             break;
 
+                        case "commentFilterOnlyShow":
+                            //commentFilterOnlyShow           boolean     Should the filter mode be used to only show chosen filters (def:false)
+                            preferences.setMyPreferenceBoolean(c,"commentFilterOnlyShow",getBooleanValue(xppValue,false));
+                            break;
+
                         case "commentFilters":
                             //commentFilters                  String      Which comments should be filtered out looking for (e.g. [guitar:C]). delimited by X__X (def:X__XX__X)
                             preferences.setMyPreferenceString(c,"commentFiltering",getTextValue(xppValue,"X__XX__X"));

@@ -515,4 +515,11 @@
     <string name="wordsandmusicby">Woorde en musiek deur</string>
     <string name="play_services_error">Om Google Cast, lettertipes en verbindings in die buurt te gebruik, moet u Google Play Services installeer.</string>
     <string name="play_services_how">Wys my hoe</string>
+    <string name="filter_info">U kan afdelings filter met behulp van voorvoegsels.\\nAs u \\\'verberg\\\' kies en die filter \\\'kitaar\\\' byvoeg, sal afdelings wat hierdie voorvoegsel gebruik, verborge wees. bv. [*kitaar: instrumentaal]</string>
+    <string name="filter_label">Versteek of wys gefilterde gedeeltes</string>
+    <string name="hide">Steek weg</string>
+    <string name="show">Wys</string>
+    <string name="filter_section">Seksie filter</string>
+    <string name="filter_entry">Voeg elke filter op \'n nuwe reël hieronder by.</string>
+    <string name="filter_structure">[*filter:V] = gefilterde versafdeling</string>
 </resources>

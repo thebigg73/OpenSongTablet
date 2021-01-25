@@ -515,4 +515,11 @@
     <string name="usedbypermision">許可を得て使用。</string>
     <string name="play_services_error">Google Cast、Fonts、Nearby Connectionsを使用するには、GooglePlayサービスをインストールする必要があります。</string>
     <string name="play_services_how">どうするか教えて</string>
+    <string name="filter_info">プレフィックスを使用してセクションをフィルタリングできます。\\n「非表示」を選択してフィルタ「ギター」を追加すると、このプレフィックスを使用するセクションは非表示になります。 例えば [*ギター：インストゥルメンタル]</string>
+    <string name="filter_label">フィルタリングされたセクションを非表示または表示</string>
+    <string name="hide">隠す</string>
+    <string name="show">公演</string>
+    <string name="filter_section">セクションフィルタリング</string>
+    <string name="filter_entry">以下の新しい行に各フィルターを追加します。</string>
+    <string name="filter_structure">[*filter:V] =フィルターされた詩のセクション</string>
 </resources>

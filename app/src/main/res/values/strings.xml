@@ -726,4 +726,11 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="play_services_error">To use Google Cast, Fonts and Nearby Connections, you will need to install Google Play Services.</string>
     <string name="play_services_how">Show me how</string>
     <string name="play_services_help" translatable="false">https://www.opensongapp.com/user-guide/devices-without-google-play</string>
+    <string name="filter_info">You can filter sections by using prefixes.  If you selecting \'hide\' and add the filter \'guitar\' and sections using this prefix would be hidden. e.g. [*guitar:Instrumental]</string>
+    <string name="filter_label">Hide or show filtered sections</string>
+    <string name="hide">Hide</string>
+    <string name="show">Show</string>
+    <string name="filter_section">Section filtering</string>
+    <string name="filter_entry">Add each filter on a new line below.</string>
+    <string name="filter_structure">[*filter:V] = filtered verse section</string>
 </resources>

@@ -515,4 +515,11 @@
     <string name="wordsandmusicby">Слова и музыка</string>
     <string name="play_services_how">Показать мне, как</string>
     <string name="play_services_error">Чтобы использовать Google Cast, Fonts и Nearby Connections, вам необходимо установить Google Play Services.</string>
+    <string name="filter_info">Вы можете фильтровать разделы с помощью префиксов.\\nЕсли вы выберете «скрыть» и добавите фильтр, «гитара» и разделы, использующие этот префикс, будут скрыты. например [*гитара: Инструментальная]</string>
+    <string name="filter_label">Скрыть или показать отфильтрованные разделы</string>
+    <string name="filter_entry">Добавьте каждый фильтр в новую строку ниже.</string>
+    <string name="filter_section">Фильтрация разделов</string>
+    <string name="show">Показать</string>
+    <string name="hide">Спрятать</string>
+    <string name="filter_structure">[*filter:V] = отфильтрованный раздел стихов</string>
 </resources>

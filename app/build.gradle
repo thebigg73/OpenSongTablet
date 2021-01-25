@@ -44,7 +44,7 @@ android {
             jcenter()
         }
         dependencies {
-            classpath 'com.android.tools.build:gradle:4.1.1'
+            classpath 'com.android.tools.build:gradle:4.1.2'
             classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
             classpath 'me.tatarka:gradle-retrolambda:3.7.0'
         }
@@ -64,7 +64,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-cast-framework:19.0.0'
     implementation 'com.google.android.gms:play-services-nearby:17.0.0'
 
-    implementation 'androidx.mediarouter:mediarouter:1.2.0'
+    implementation 'androidx.mediarouter:mediarouter:1.2.1'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'

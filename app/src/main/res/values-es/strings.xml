@@ -515,4 +515,11 @@
     <string name="usedbypermision">Usado con permiso.</string>
     <string name="play_services_error">Para utilizar Google Cast, fuentes y conexiones cercanas, deberá instalar Google Play Services.</string>
     <string name="play_services_how">Muéstrame cómo</string>
+    <string name="filter_info">Puede filtrar secciones usando prefijos.\\nSi selecciona \'ocultar\' y agrega el filtro \'guitarra\', las secciones que usan este prefijo quedarían ocultas. p.ej. [*guitarra: instrumental]</string>
+    <string name="filter_label">Ocultar o mostrar secciones filtradas</string>
+    <string name="hide">Esconder</string>
+    <string name="show">Mostrar</string>
+    <string name="filter_section">Filtrado de secciones</string>
+    <string name="filter_entry">Agregue cada filtro en una nueva línea a continuación.</string>
+    <string name="filter_structure">[*filtro:V] = sección de verso filtrado</string>
 </resources>

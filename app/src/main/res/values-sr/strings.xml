@@ -515,4 +515,11 @@
     <string name="usedbypermision">Koristi se uz dozvolu.</string>
     <string name="play_services_error">Da biste koristili Google Cast, fontove i veze u blizini, moraćete da instalirate Google Plai usluge.</string>
     <string name="play_services_how">Pokaži mi kako</string>
+    <string name="filter_info">Odeljke možete filtrirati pomoću prefiksa.\\nAko odaberete „sakrij“ i dodate filter „gitara“, a odeljci koji koriste ovaj prefiks biće sakriveni. na primer. [*gitara: Instrumental]</string>
+    <string name="filter_label">Sakrij ili prikaži filtrirane odeljke</string>
+    <string name="hide">Sakriti</string>
+    <string name="show">Prikaži</string>
+    <string name="filter_section">Filtriranje sekcija</string>
+    <string name="filter_entry">Dodajte svaki filter u novi red ispod.</string>
+    <string name="filter_structure">[*filter:V] = filtrirani odeljak stiha</string>
 </resources>

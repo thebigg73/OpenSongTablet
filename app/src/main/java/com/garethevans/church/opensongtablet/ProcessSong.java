@@ -2240,152 +2240,154 @@ public class ProcessSong extends Activity {
         ll.setClipToPadding(false);
 
         String[] returnvals = beautifyHeadings(StaticVariables.songSectionsLabels[x], c);
-
-        // IV - If first title is empty then do not do add to view and mark section as comment.  This helps the song details block.
-        if (x == 0 & returnvals[0].equals("")) {
-            returnvals[1] = "comment";
-        } else {
-            ll.addView(titletoTextView(c, preferences, lyricsTextColor, returnvals[0], fontsize));
-        }
-
         // Identify the section type
         if (x < StaticVariables.songSectionsTypes.length) {
             StaticVariables.songSectionsTypes[x] = returnvals[1];
         }
-        int linenums = StaticVariables.sectionContents[x].length;
 
-        String mCapo = StaticVariables.mCapo;
-        if (mCapo == null || mCapo.isEmpty()) {
-            mCapo = "0";
-        }
-        int mcapo = Integer.parseInt(mCapo);
-        boolean showchords;
-        if (projected) {
-            showchords = preferences.getMyPreferenceBoolean(c, "presoShowChords", false);
-        } else {
-            showchords = preferences.getMyPreferenceBoolean(c, "displayChords", true);
-        }
-        boolean showcapochords = preferences.getMyPreferenceBoolean(c, "displayCapoChords", true);
-        boolean shownativeandcapochords = preferences.getMyPreferenceBoolean(c, "displayCapoAndNativeChords", false);
-        boolean transposablechordformat = StaticVariables.detectedChordFormat != 4 && StaticVariables.detectedChordFormat != 5;
-
-        // Decide if capo chords are valid and should be shown
-        boolean docapochords = showchords && showcapochords && mcapo > 0 && mcapo < 12 && transposablechordformat;
-
-        // Decide if normal chords should be shown
-        // They can't be shown if showchords is true but shownativeandcapochords is false;
-        boolean justcapo = docapochords && !shownativeandcapochords;
-        boolean donativechords = showchords && !justcapo;
-
-        for (int y = 0; y < linenums; y++) {
-            // Go through the section a line at a time
-            String nextlinetype = "";
-            String previouslinetype = "";
-            if (y < linenums - 1) {
-                nextlinetype = StaticVariables.sectionLineTypes[x][y + 1];
-            }
-            if (y > 0) {
-                previouslinetype = StaticVariables.sectionLineTypes[x][y - 1];
+        if (checkForFilter(c,preferences,ll,x)) {
+            // IV - If first title is empty then do not do add to view and mark section as comment.  This helps the song details block.
+            if (x == 0 & returnvals[0].equals("")) {
+                returnvals[1] = "comment";
+            } else {
+                ll.addView(titletoTextView(c, preferences, lyricsTextColor, returnvals[0], fontsize));
             }
 
-            String[] positions_returned;
-            String[] chords_returned;
-            String[] lyrics_returned;
-            TableLayout tl = createTableLayout(c);
 
-            // IV - Using variables to contain end trimmed lines
-            String thisLine;
-            String nextLine;
-            // IV - 2 spaces added to reduce occurance of right edge overrun
-            thisLine = StaticVariables.sectionContents[x][y].replaceAll("\\s+$", "") + "  ";
+            int linenums = StaticVariables.sectionContents[x].length;
 
-            switch (howToProcessLines(y, linenums, StaticVariables.sectionLineTypes[x][y], nextlinetype, previouslinetype)) {
-                // If this is a chord line followed by a lyric line.
-                case "chord_then_lyric":
-                    // IV - We have a next line - now make lines the same length.
-                    nextLine = StaticVariables.sectionContents[x][y + 1].replaceAll("\\s+$", "") + "  ";
-                    if (thisLine.length() < nextLine.length()) {
-                        thisLine = fixLineLength(thisLine, nextLine.length());
-                    } else {
-                        nextLine = fixLineLength(nextLine, thisLine.length());
-                    }
-                    // IV - Chord positioning now uses the lyric line
-                    positions_returned = getChordPositions(thisLine, nextLine);
-                    chords_returned = getChordSections(thisLine, positions_returned);
-                    if (docapochords) {
-                        tl.addView(capolinetoTableRow(c, preferences, lyricsCapoColor, chords_returned, fontsize));
-                    }
-                    if (!justcapo && donativechords) {
-                        tl.addView(chordlinetoTableRow(c, preferences, lyricsChordsColor, chords_returned, fontsize));
-                    }
-                    if (preferences.getMyPreferenceBoolean(c, "displayLyrics", true)) {
-                        // IV - Lyric processing moved here to be done only when required
-                        lyrics_returned = getLyricSections(nextLine, positions_returned);
-                        tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor,
-                                lyrics_returned, fontsize, storageAccess, preferences, false));
-                    }
-                    break;
+            String mCapo = StaticVariables.mCapo;
+            if (mCapo == null || mCapo.isEmpty()) {
+                mCapo = "0";
+            }
+            int mcapo = Integer.parseInt(mCapo);
+            boolean showchords;
+            if (projected) {
+                showchords = preferences.getMyPreferenceBoolean(c, "presoShowChords", false);
+            } else {
+                showchords = preferences.getMyPreferenceBoolean(c, "displayChords", true);
+            }
+            boolean showcapochords = preferences.getMyPreferenceBoolean(c, "displayCapoChords", true);
+            boolean shownativeandcapochords = preferences.getMyPreferenceBoolean(c, "displayCapoAndNativeChords", false);
+            boolean transposablechordformat = StaticVariables.detectedChordFormat != 4 && StaticVariables.detectedChordFormat != 5;
 
-                case "chord_only":
-                    chords_returned = new String[1];
-                    chords_returned[0] = thisLine;
-                    if (docapochords) {
-                        tl.addView(capolinetoTableRow(c, preferences, lyricsCapoColor, chords_returned, fontsize));
-                    }
-                    if (!justcapo && donativechords) {
-                        tl.addView(chordlinetoTableRow(c, preferences, lyricsChordsColor, chords_returned, fontsize));
-                    }
-                    break;
+            // Decide if capo chords are valid and should be shown
+            boolean docapochords = showchords && showcapochords && mcapo > 0 && mcapo < 12 && transposablechordformat;
 
-                case "lyric_no_chord":
-                    lyrics_returned = new String[1];
+            // Decide if normal chords should be shown
+            // They can't be shown if showchords is true but shownativeandcapochords is false;
+            boolean justcapo = docapochords && !shownativeandcapochords;
+            boolean donativechords = showchords && !justcapo;
 
-                    lyrics_returned[0] = thisLine;
-                    if (preferences.getMyPreferenceBoolean(c, "displayLyrics", true)) {
-                        tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor,
-                                lyrics_returned, fontsize, storageAccess, preferences, false));
-                    }
-                    break;
+            for (int y = 0; y < linenums; y++) {
+                // Go through the section a line at a time
+                String nextlinetype = "";
+                String previouslinetype = "";
+                if (y < linenums - 1) {
+                    nextlinetype = StaticVariables.sectionLineTypes[x][y + 1];
+                }
+                if (y > 0) {
+                    previouslinetype = StaticVariables.sectionLineTypes[x][y - 1];
+                }
 
-                case "comment_no_chord":
-                    lyrics_returned = new String[1];
-                    lyrics_returned[0] = thisLine;
-                    tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, false));
-                    tl.setBackgroundColor(lyricsCommentColor);
-                    break;
+                String[] positions_returned;
+                String[] chords_returned;
+                String[] lyrics_returned;
+                TableLayout tl = createTableLayout(c);
 
-                case "extra_info":
-                    lyrics_returned = new String[1];
-                    lyrics_returned[0] = thisLine;
-                    TableRow tr = commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, false);
-                    tr.setGravity(Gravity.END);
-                    tl.addView(tr);
-                    tl.setGravity(Gravity.END);
-                    tl.setBackgroundColor(lyricsCustomColor);
-                    break;
+                // IV - Using variables to contain end trimmed lines
+                String thisLine;
+                String nextLine;
+                // IV - 2 spaces added to reduce occurance of right edge overrun
+                thisLine = StaticVariables.sectionContents[x][y].replaceAll("\\s+$", "") + "  ";
 
-                case "capo_info":
-                    lyrics_returned = new String[1];
-                    lyrics_returned[0] = thisLine;
-                    TableRow trc = commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, false);
-                    if (trc.getChildAt(0) != null) {
-                        TextView tvcapo = (TextView) trc.getChildAt(0);
-                        tvcapo.setTextColor(lyricsCapoColor);
-                    }
-                    trc.setGravity(Gravity.START);
-                    tl.addView(trc);
-                    tl.setGravity(Gravity.START);
-                    tl.setBackgroundColor(lyricsBackgroundColor);
-                    break;
+                switch (howToProcessLines(y, linenums, StaticVariables.sectionLineTypes[x][y], nextlinetype, previouslinetype)) {
+                    // If this is a chord line followed by a lyric line.
+                    case "chord_then_lyric":
+                        // IV - We have a next line - now make lines the same length.
+                        nextLine = StaticVariables.sectionContents[x][y + 1].replaceAll("\\s+$", "") + "  ";
+                        if (thisLine.length() < nextLine.length()) {
+                            thisLine = fixLineLength(thisLine, nextLine.length());
+                        } else {
+                            nextLine = fixLineLength(nextLine, thisLine.length());
+                        }
+                        // IV - Chord positioning now uses the lyric line
+                        positions_returned = getChordPositions(thisLine, nextLine);
+                        chords_returned = getChordSections(thisLine, positions_returned);
+                        if (docapochords) {
+                            tl.addView(capolinetoTableRow(c, preferences, lyricsCapoColor, chords_returned, fontsize));
+                        }
+                        if (!justcapo && donativechords) {
+                            tl.addView(chordlinetoTableRow(c, preferences, lyricsChordsColor, chords_returned, fontsize));
+                        }
+                        if (preferences.getMyPreferenceBoolean(c, "displayLyrics", true)) {
+                            // IV - Lyric processing moved here to be done only when required
+                            lyrics_returned = getLyricSections(nextLine, positions_returned);
+                            tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor,
+                                    lyrics_returned, fontsize, storageAccess, preferences, false));
+                        }
+                        break;
 
-                case "guitar_tab":
-                case "tab":
-                    lyrics_returned = new String[1];
-                    lyrics_returned[0] = thisLine;
-                    tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor,
-                            lyrics_returned, fontsize, true));
-                    tl.setBackgroundColor(lyricsCommentColor);
-                    break;
+                    case "chord_only":
+                        chords_returned = new String[1];
+                        chords_returned[0] = thisLine;
+                        if (docapochords) {
+                            tl.addView(capolinetoTableRow(c, preferences, lyricsCapoColor, chords_returned, fontsize));
+                        }
+                        if (!justcapo && donativechords) {
+                            tl.addView(chordlinetoTableRow(c, preferences, lyricsChordsColor, chords_returned, fontsize));
+                        }
+                        break;
+
+                    case "lyric_no_chord":
+                        lyrics_returned = new String[1];
+
+                        lyrics_returned[0] = thisLine;
+                        if (preferences.getMyPreferenceBoolean(c, "displayLyrics", true)) {
+                            tl.addView(lyriclinetoTableRow(c, lyricsTextColor, presoFontColor,
+                                    lyrics_returned, fontsize, storageAccess, preferences, false));
+                        }
+                        break;
+
+                    case "comment_no_chord":
+                        lyrics_returned = new String[1];
+                        lyrics_returned[0] = thisLine;
+                        tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, false));
+                        tl.setBackgroundColor(lyricsCommentColor);
+                        break;
+
+                    case "extra_info":
+                        lyrics_returned = new String[1];
+                        lyrics_returned[0] = thisLine;
+                        TableRow tr = commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, false);
+                        tr.setGravity(Gravity.END);
+                        tl.addView(tr);
+                        tl.setGravity(Gravity.END);
+                        tl.setBackgroundColor(lyricsCustomColor);
+                        break;
+
+                    case "capo_info":
+                        lyrics_returned = new String[1];
+                        lyrics_returned[0] = thisLine;
+                        TableRow trc = commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor, lyrics_returned, fontsize, false);
+                        if (trc.getChildAt(0) != null) {
+                            TextView tvcapo = (TextView) trc.getChildAt(0);
+                            tvcapo.setTextColor(lyricsCapoColor);
+                        }
+                        trc.setGravity(Gravity.START);
+                        tl.addView(trc);
+                        tl.setGravity(Gravity.START);
+                        tl.setBackgroundColor(lyricsBackgroundColor);
+                        break;
+
+                    case "guitar_tab":
+                    case "tab":
+                        lyrics_returned = new String[1];
+                        lyrics_returned[0] = thisLine;
+                        tl.addView(commentlinetoTableRow(c, preferences, presoFontColor, lyricsTextColor,
+                                lyrics_returned, fontsize, true));
+                        tl.setBackgroundColor(lyricsCommentColor);
+                        break;
 
                 /*case "abc_notation":
                     WebView wv = ProcessSong.abcnotationtoWebView(c, FullscreenActivity.mNotation);
@@ -2393,45 +2395,56 @@ public class ProcessSong extends Activity {
                         tl.addView(wv);
                     }
                     break;*/
-            }
-            try {
-                ll.addView(tl);
-            } catch (Exception | OutOfMemoryError e) {
-                e.printStackTrace();
-            }
+                }
+                try {
+                    ll.addView(tl);
+                } catch (Exception | OutOfMemoryError e) {
+                    e.printStackTrace();
+                }
 
-            // IV - 'Section space' moved within loop to support change of colour for empty line when after an extra info lines
-            if ( y == linenums -1) {
-                if (preferences.getMyPreferenceBoolean(c, "addSectionSpace", true)) {
-                    TextView emptyline = new TextView(c);
-                    emptyline.setLayoutParams(linearlayout_params());
-                    emptyline.setText(" ");
-                    emptyline.setTextSize(fontsize * 0.5f);
-                    if (thisLine.startsWith("__")) {
-                        emptyline.setBackgroundColor(lyricsCustomColor);
+                // IV - 'Section space' moved within loop to support change of colour for empty line when after an extra info lines
+                if (y == linenums - 1) {
+                    if (preferences.getMyPreferenceBoolean(c, "addSectionSpace", true)) {
+                        TextView emptyline = new TextView(c);
+                        emptyline.setLayoutParams(linearlayout_params());
+                        emptyline.setText(" ");
+                        emptyline.setTextSize(fontsize * 0.5f);
+                        if (thisLine.startsWith("__")) {
+                            emptyline.setBackgroundColor(lyricsCustomColor);
+                        }
+                        ll.addView(emptyline);
                     }
-                    ll.addView(emptyline);
                 }
             }
+
         }
-
-        checkForFilter(c, preferences, ll, x);
-
         return ll;
     }
 
-    private void checkForFilter(Context c, Preferences preferences, LinearLayout ll, int x) {
-        if (StaticVariables.songSectionsLabels[x].contains(":") &&
+    private boolean checkForFilter(Context c, Preferences preferences, LinearLayout ll, int x) {
+        boolean show = true;
+        if (StaticVariables.songSectionsLabels[x].startsWith("*") &&
+                StaticVariables.songSectionsLabels[x].contains(":") &&
                 preferences.getMyPreferenceBoolean(c,"commentFiltering",false)) {
             // Check if it should be filtered out
+            boolean showOnlyFilter = preferences.getMyPreferenceBoolean(c,"commentFilterOnlyShow",false);
             String myFilter = preferences.getMyPreferenceString(c,"commentFilters","X__XX__X");
             if (!myFilter.equals("X__XX__X")) {
-                String checkFilter = StaticVariables.songSectionsLabels[x].substring(0,StaticVariables.songSectionsLabels[x].indexOf(":"));
-                if (checkFilter!=null && !checkFilter.isEmpty() && myFilter.contains("X__X"+checkFilter+"X__X")) {
-                    ll.setVisibility(View.GONE);
+                String checkFilter = StaticVariables.songSectionsLabels[x].substring(1,StaticVariables.songSectionsLabels[x].indexOf(":"));
+                // Sanity check
+                if (checkFilter!=null && !checkFilter.isEmpty()) {
+                    // Only show if not in filter
+                    if ((showOnlyFilter && !myFilter.contains("X__X"+checkFilter+"X__X")) ||
+                            (!showOnlyFilter && myFilter.contains("X__X"+checkFilter+"X__X"))) {
+                        // User either wants to show matching filters, so hide others or
+                        // Hide matching filters, so hide this
+                        ll.setVisibility(View.GONE);
+                        show = false;
+                    }
                 }
             }
         }
+        return show;
     }
 
     LinearLayout projectedSectionView(Context c, int x, float fontsize, StorageAccess storageAccess,

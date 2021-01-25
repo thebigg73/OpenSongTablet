@@ -58,7 +58,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
     private LinearLayout filteringView;
     private EditText filteringEditText;
     private Preferences preferences;
-    private String delimiter = "X__X";
+    private final String delimiter = "X__X";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -332,23 +332,29 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         filteringView = v.findViewById(R.id.filteringView);
         Button filteringSave = v.findViewById(R.id.filteringSave);
         filteringEditText = v.findViewById(R.id.filteringEditText);
+        SwitchCompat filterOnlyShow = v.findViewById(R.id.filterOnlyShow);
 
-        if (preferences.getMyPreferenceBoolean(getContext(),"commentFiltering",false)) {
+        if (preferences.getMyPreferenceBoolean(requireContext(),"commentFiltering",false)) {
             filteringSwitch.setChecked(true);
             filteringView.setVisibility(View.VISIBLE);
         } else {
             filteringSwitch.setChecked(false);
             filteringView.setVisibility(View.GONE);
         }
+        filterOnlyShow.setChecked(preferences.getMyPreferenceBoolean(requireContext(),"commentFilterOnlyShow",false));
+        filterOnlyShow.setOnCheckedChangeListener((buttonView, isChecked) ->
+           preferences.setMyPreferenceBoolean(requireContext(),"commentFilterOnlyShow",isChecked)
+        );
+
         filteringSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            preferences.setMyPreferenceBoolean(getContext(),"commentFiltering",isChecked);
+            preferences.setMyPreferenceBoolean(requireContext(),"commentFiltering",isChecked);
             if (isChecked) {
                 filteringView.setVisibility(View.VISIBLE);
             } else {
                 filteringView.setVisibility(View.GONE);
             }
         });
-        String commentFilters = preferences.getMyPreferenceString(getContext(),"commentFilters",delimiter+delimiter);
+        String commentFilters = preferences.getMyPreferenceString(requireContext(),"commentFilters",delimiter+delimiter);
         commentFilters = commentFilters.replace(delimiter,"\n");
         commentFilters = commentFilters.trim();
         filteringEditText.setText(commentFilters);
@@ -364,7 +370,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
             val = delimiter + val + delimiter;
             val = val.replace(":\n",delimiter);
             val = val.replace("\n",delimiter);
-            preferences.setMyPreferenceString(getContext(),"commentFilters",val);
+            preferences.setMyPreferenceString(requireContext(),"commentFilters",val);
         });
     }
     @Override

@@ -515,4 +515,11 @@
     <string name="usedbypermision">Mit Genehmigung verwendet.</string>
     <string name="play_services_how">Zeig mir wie</string>
     <string name="play_services_error">Um Google Cast, Schriftarten und Verbindungen in der Nähe verwenden zu können, müssen Sie Google Play Services installieren.</string>
+    <string name="filter_info">Sie können Abschnitte mithilfe von Präfixen filtern.\\nWenn Sie \\\'Ausblenden\\\' auswählen und den Filter \\\'Gitarre\\\' hinzufügen, werden Abschnitte mit diesem Präfix ausgeblendet. z.B. [*Gitarre: Instrumental]</string>
+    <string name="hide">Ausblenden</string>
+    <string name="filter_label">Gefilterte Abschnitte ausblenden oder anzeigen</string>
+    <string name="filter_entry">Fügen Sie jeden Filter in einer neuen Zeile hinzu.</string>
+    <string name="filter_section">Abschnittsfilterung</string>
+    <string name="show">Show</string>
+    <string name="filter_structure">[*filter:V] = gefilterter Versabschnitt</string>
 </resources>

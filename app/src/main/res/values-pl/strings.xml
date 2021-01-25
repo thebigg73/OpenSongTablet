@@ -515,4 +515,11 @@
     <string name="wordsandmusicby">Słowa i muzyka wg</string>
     <string name="play_services_how">Pokaż mi jak</string>
     <string name="play_services_error">Aby korzystać z Google Cast, czcionek i pobliskich połączeń, musisz zainstalować usługi Google Play.</string>
+    <string name="filter_info">Możesz filtrować sekcje za pomocą prefiksów.\\nJeśli wybierzesz „ukryj” i dodasz filtr „gitara”, a sekcje używające tego przedrostka zostaną ukryte. na przykład [*gitara: instrumentalna]</string>
+    <string name="filter_label">Ukryj lub pokaż przefiltrowane sekcje</string>
+    <string name="filter_entry">Dodaj każdy filtr w nowej linii poniżej.</string>
+    <string name="filter_section">Filtrowanie sekcji</string>
+    <string name="show">Pokazać</string>
+    <string name="hide">Ukryć</string>
+    <string name="filter_structure">[*filter:V] = przefiltrowana sekcja wersetów</string>
 </resources>

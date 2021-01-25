@@ -207,7 +207,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="8dp"
                 android:checked="false"
-                android:text="Section filtering"
+                android:text="@string/filter_section"
                 android:textColor="#ff0"
                 android:textOff="@string/off"
                 android:textOn="@string/on"
@@ -224,14 +224,44 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/filter_info" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/filterOnlyShow"
+                    style="@style/MyTextSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:checked="false"
+                    android:text="@string/filter_label"
+                    android:textColor="#ff0"
+                    android:textOff="@string/hide"
+                    android:textOn="@string/show"
+                    app:showText="true"
+                    app:switchTextAppearance="@style/MyInfoText"
+                    app:thumbTextPadding="4dp"
+                    app:thumbTint="#444488" />
+
+                <TextView
+                    android:layout_margin="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:labelFor="@+id/filteringEditText"
-                    android:text="Filter these prefixes (e.g. filtering out 'guitar' would hide sections labelled like [guitar:Verse 1]\nAdd each filter on a new line below." />
+                    android:text="@string/filter_entry"
+                    style="@style/MyHeadingText"/>
+
                 <EditText
                     android:id="@+id/filteringEditText"
+                    android:layout_margin="8dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:autofillHints="@string/filter_entry" />
                 <Button
                     android:id="@+id/filteringSave"
+                    android:layout_margin="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/save"/>

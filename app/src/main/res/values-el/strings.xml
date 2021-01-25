@@ -515,4 +515,11 @@
     <string name="usedbypermision">Χρησιμοποιείται με άδεια.</string>
     <string name="play_services_how">Δείξε μου πώς</string>
     <string name="play_services_error">Για να χρησιμοποιήσετε το Google Cast, τις γραμματοσειρές και τις κοντινές συνδέσεις, θα πρέπει να εγκαταστήσετε τις Υπηρεσίες Google Play.</string>
+    <string name="filter_info">Μπορείτε να φιλτράρετε ενότητες χρησιμοποιώντας προθέματα.\\nΕάν επιλέξετε \\\"απόκρυψη\\\" και προσθέσετε το φίλτρο \\\"κιθάρα\\\" και οι ενότητες που χρησιμοποιούν αυτό το πρόθεμα θα αποκρυφθούν. π.χ. [*κιθάρα: Instrumental]</string>
+    <string name="filter_label">Απόκρυψη ή εμφάνιση φιλτραρισμένων ενοτήτων</string>
+    <string name="filter_entry">Προσθέστε κάθε φίλτρο σε μια νέα γραμμή παρακάτω.</string>
+    <string name="filter_section">Φιλτράρισμα ενότητας</string>
+    <string name="show">προβολή</string>
+    <string name="hide">Κρύβω</string>
+    <string name="filter_structure">[*filter:V] = φιλτραρισμένη ενότητα στίχων</string>
 </resources>
