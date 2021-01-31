@@ -38,21 +38,11 @@ public class BatteryStatus extends BroadcastReceiver {
                                     Locale locale) {
         // Get clock
         try {
-            Calendar cal = Calendar.getInstance();
-            SimpleDateFormat df;
-            if (preferences.getMyPreferenceBoolean(c,"clock24hFormat",true)) {
-                df = new SimpleDateFormat("HH:mm", locale);
-            } else {
-                df = new SimpleDateFormat("h:mm", locale);
-            }
-            String formattedTime = df.format(cal.getTime());
-            if (preferences.getMyPreferenceBoolean(c,"clockOn",true)) {
-                digitalclock.setVisibility(View.VISIBLE);
-            } else {
-                digitalclock.setVisibility(View.GONE);
-            }
-            digitalclock.setTextSize(preferences.getMyPreferenceFloat(c,"clockTextSize",9.0f));
-            digitalclock.setText(formattedTime);
+            // Get clock
+            updateClock(locale,digitalclock,
+                    preferences.getMyPreferenceFloat(c,"clockTextSize",9.0f),
+                    preferences.getMyPreferenceBoolean(c,"clock24hFormat",true),
+                    preferences.getMyPreferenceBoolean(c,"clockOn",true));
 
             // Get battery
             int i = (int) (getBatteryStatus(c) * 100.0f);
@@ -71,8 +61,7 @@ public class BatteryStatus extends BroadcastReceiver {
                 batteryimage.setVisibility(View.INVISIBLE);
             }
             if (abh > 0) {
-                BitmapDrawable bmp = batteryImage(c, preferences,i, abh);
-                batteryimage.setImageDrawable(bmp);
+                setBatteryImage(c,batteryimage,abh,i,preferences.getMyPreferenceInt(c,"batteryDialThickness",4));
             }
 
             // Ask the app to check again in 60s
@@ -100,7 +89,6 @@ public class BatteryStatus extends BroadcastReceiver {
         }
     }
 
-
     public float getBatteryStatus (Context context) {
 
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
@@ -124,10 +112,14 @@ public class BatteryStatus extends BroadcastReceiver {
         }
     }
 
-    public BitmapDrawable batteryImage(Context c, Preferences preferences, int charge, int abheight) {
+    public void setBatteryImage(Context c, ImageView batteryImage, int abheight, int charge, int thickness) {
+        BitmapDrawable bmp = batteryImage(c, abheight, charge,thickness);
+        batteryImage.setImageDrawable(bmp);
+    }
+
+    public BitmapDrawable batteryImage(Context c, int abheight, int charge, int thickness) {
 
         int size = (int)(abheight*0.75f);
-        int thickness = preferences.getMyPreferenceInt(c,"batteryDialThickness",4);
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
         Bitmap bmp = Bitmap.createBitmap(size,size, conf);
 
@@ -179,5 +171,23 @@ public class BatteryStatus extends BroadcastReceiver {
         canvas.drawPath(circle, mPaint);
 
         return drawable;
+    }
+
+    public void updateClock(Locale locale, TextView digitalclock, float textsize, boolean clockon, boolean is24h) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat df;
+        if (is24h) {
+            df = new SimpleDateFormat("HH:mm", locale);
+        } else {
+            df = new SimpleDateFormat("h:mm", locale);
+        }
+        String formattedTime = df.format(cal.getTime());
+        if (clockon) {
+            digitalclock.setVisibility(View.VISIBLE);
+        } else {
+            digitalclock.setVisibility(View.GONE);
+        }
+        digitalclock.setTextSize(textsize);
+        digitalclock.setText(formattedTime);
     }
 }

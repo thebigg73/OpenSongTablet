@@ -167,7 +167,7 @@
     <string name="edit_song_tempo">"Темп"</string>
     <string name="theme">"Тема"</string>
     <string name="edit_song_timesig">"Размер"</string>
-    <string name="edit_song_title">"Название"</string>
+    <string name="song_title">"Название"</string>
     <string name="edit_song_user1">"Пользователь 1"</string>
     <string name="edit_song_user2">"Пользователь 2"</string>
     <string name="edit_song_user3">"Пользователь 3"</string>
@@ -459,7 +459,7 @@
     <string name="time">"время"</string>
     <string name="time_slide_pages">"Время для каждого слайда"</string>
     <string name="time_slide_pages_help">"Оставьте пустым для показа слайдов вручную"</string>
-    <string name="timeformat">"24 часа"</string>
+    <string name="time_format">"24 часа"</string>
     <string name="timer_learn">"Обучение времени автопрокрутки"</string>
     <string name="timer_size">"Размер таймера"</string>
     <string name="title">"название"</string>

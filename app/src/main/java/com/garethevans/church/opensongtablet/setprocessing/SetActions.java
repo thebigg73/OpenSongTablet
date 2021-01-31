@@ -158,6 +158,9 @@ public class SetActions {
 
         if (currentSet.getCurrentSet()!=null && currentSet.getCurrentSet().size()>0) {
             for (String item : currentSet.getCurrentSet()) {
+                if (!item.contains("/")) {
+                    item = "/"+item;
+                }
                 String folder = item.substring(0, item.lastIndexOf("/"));
                 String filename = item.substring(item.lastIndexOf("/"));
                 if (folder.startsWith("/")) {

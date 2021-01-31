@@ -32,7 +32,7 @@
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_song_title" />
+                android:text="@string/song_title" />
 
             <TextView
                 android:id="@+id/v_mTitle"

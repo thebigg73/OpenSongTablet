@@ -166,7 +166,7 @@
     <string name="edit_song_tempo">"Tempo"</string>
     <string name="theme">"Tema"</string>
     <string name="edit_song_timesig">"Tydmaatteken"</string>
-    <string name="edit_song_title">"Song title"</string>
+    <string name="song_title">"Song title"</string>
     <string name="edit_song_user1">"Gebruikers 1"</string>
     <string name="edit_song_user2">"Gebruiker 2"</string>
     <string name="edit_song_user3">"Gebruiker 3"</string>
@@ -458,7 +458,7 @@
     <string name="time">"tyd"</string>
     <string name="time_slide_pages">"Tyd vir elke skyfie (s)"</string>
     <string name="time_slide_pages_help">"Laat leeg vir die handleiding skyfievertoning"</string>
-    <string name="timeformat">"24 uur"</string>
+    <string name="time_format">"24 uur"</string>
     <string name="timer_learn">"Leer outoscroll tyd"</string>
     <string name="timer_size">"Timer grootte"</string>
     <string name="title">"titel"</string>

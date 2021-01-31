@@ -53,7 +53,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         }
         return true;
     }
-/*
+
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
@@ -63,6 +63,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         return super.onSingleTapUp(e);
     }
 
+    /*
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
         if (!PerformanceFragment.wasScaling) {
@@ -165,4 +166,6 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         }
         return true;
     }
+
+
 }

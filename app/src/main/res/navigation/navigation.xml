@@ -160,7 +160,7 @@
         <!-- Display graph -->
         <navigation
             android:id="@+id/display_graph"
-            app:startDestination="@id/displayMenuFragment">
+            app:startDestination="@+id/displayMenuFragment">
 
             <!-- Display fragment -->
             <fragment
@@ -174,6 +174,9 @@
                 <action
                     android:id="@+id/action_displayMenuFragment_to_fontSetupFragment"
                     app:destination="@id/fontSetupFragment" />
+                <action
+                    android:id="@+id/action_displayMenuFragment_to_actionBarSettingsFragment"
+                    app:destination="@id/actionBarSettingsFragment" />
             </fragment>
 
             <!-- Theme fragment -->
@@ -211,6 +214,11 @@
                 android:name="com.garethevans.church.opensongtablet.screensetup.FontSetupPreviewFragment"
                 android:label="settings_fonts_preview"
                 tools:layout="@layout/settings_fonts_preview" />
+            <fragment
+                android:id="@+id/actionBarSettingsFragment"
+                android:name="com.garethevans.church.opensongtablet.screensetup.ActionBarSettingsFragment"
+                android:label="settings_actionbar"
+                tools:layout="@layout/settings_actionbar"/>
 
         </navigation>
 

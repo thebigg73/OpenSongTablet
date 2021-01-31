@@ -5,9 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -84,10 +82,6 @@ public class PerformanceFragment extends Fragment {
     private String autoScale;
     private FragmentPerformanceBinding myView;
 
-    // Handlers and runnables
-    Handler delayactionBarHide;
-    Runnable hideActionBarRunnable;
-
     private Song song;
 
     // Attaching and destroying
@@ -108,8 +102,6 @@ public class PerformanceFragment extends Fragment {
         myView = null;
     }
 
-
-
     // The logic to start this fragment
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -123,6 +115,7 @@ public class PerformanceFragment extends Fragment {
         mainActivityInterface.hideActionBar(false);
         mainActivityInterface.hideActionButton(false);
 
+        mainActivityInterface.changeActionBarVisible(false,false);
         // Load in preferences
         loadPreferences();
 
@@ -132,7 +125,7 @@ public class PerformanceFragment extends Fragment {
         doSongLoad();
 
         // Set listeners for the scroll/scale/gestures
-        setGestureListeners();
+        //setGestureListeners();
 
         // Set tutorials
         Handler h = new Handler();
@@ -163,11 +156,11 @@ public class PerformanceFragment extends Fragment {
         songListBuildIndex = mainActivityInterface.getSongListBuildIndex();
 
         //showCase = new ShowCase();
-
+/*
         performanceGestures = new PerformanceGestures(getContext(),preferences,storageAccess,setActions,
                 padFunctions,metronome,this,mainActivityInterface,showToast,doVibrate,
                 mainActivityInterface.getDrawer(),mainActivityInterface.getMediaPlayer(1),
-                mainActivityInterface.getMediaPlayer(2),delayactionBarHide,hideActionBarRunnable,0xffff0000);
+                mainActivityInterface.getMediaPlayer(2),mainActivityInterface.getAppActionBar(), 0xffff0000);*/
     }
     private void loadPreferences() {
         themeColors.getDefaultColors(getContext(),preferences);
@@ -195,6 +188,15 @@ public class PerformanceFragment extends Fragment {
         myView.mypage.setBackgroundColor(themeColors.getLyricsBackgroundColor());
     }
 
+
+
+
+    private void resetTitleSizes() {
+        mainActivityInterface.updateActionBarSettings("songTitleSize",-1,
+                preferences.getMyPreferenceFloat(requireContext(),"songTitleSize",13.0f),true);
+        mainActivityInterface.updateActionBarSettings("songAuthorSize",-1,
+                preferences.getMyPreferenceFloat(requireContext(),"songAuthorSize",11.0f),true);
+    }
     // Displaying the song
     public void doSongLoad() {
         // Loading the song is dealt with in this fragment as specific actions are required
@@ -284,7 +286,7 @@ public class PerformanceFragment extends Fragment {
     // The scale and gesture bits of the code
     //private ScaleGestureDetector scaleDetector;
     static float scaleFactor = 1.0f;
-    private GestureDetector detector;
+    //private GestureDetector detector;
     @SuppressLint("ClickableViewAccessibility")
     private void setGestureListeners(){
         /*detector = new GestureDetector(getActivity(), new GestureListener(myView.songscrollview,
@@ -295,21 +297,9 @@ public class PerformanceFragment extends Fragment {
         myView.songscrollview.setOnTouchListener(new MyTouchListener());
         myView.horizontalscrollview.setOnTouchListener(new MyTouchListener());
         scaleDetector = new ScaleGestureDetector(getActivity(), new PinchToZoomGestureListener(myView.pageHolder));*/
-        detector = new GestureDetector(getActivity(), new GestureListener(myView.zoomLayout,swipeMinimumDistance,swipeMaxDistanceYError,swipeMinimumVelocity,
+        /*detector = new GestureDetector(getActivity(), new GestureListener(myView.zoomLayout,swipeMinimumDistance,swipeMaxDistanceYError,swipeMinimumVelocity,
                 oktoRegisterGesture(),preferences.getMyPreferenceInt(getContext(),"doubleTapGesture",2),
-                performanceGestures));
-    }
-    private class MyTouchListener implements View.OnTouchListener {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            v.performClick();
-            detector.onTouchEvent(event);
-            //scaleDetector.onTouchEvent(event);
-            if (loadNextSong || loadPrevSong) {
-                prepareSongLoad();
-            }
-            return true;
-        }
+                performanceGestures));*/
     }
 
     private void prepareSongLoad() {

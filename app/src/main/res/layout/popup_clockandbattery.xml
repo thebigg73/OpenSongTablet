@@ -60,7 +60,7 @@
                     android:id="@+id/titleTextSizeLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/edit_song_title"
+                    android:text="@string/song_title"
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginRight="4dp"
@@ -217,7 +217,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:gravity="center_vertical"
-                    android:text="@string/timeformat"
+                    android:text="@string/time_format"
                     style="@style/MyWhiteHeadingText"/>
 
                 <TextView

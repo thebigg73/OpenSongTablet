@@ -167,7 +167,7 @@
     <string name="edit_song_tempo">"Tempo"</string>
     <string name="theme">"Tema"</string>
     <string name="edit_song_timesig">"Tempo di firma"</string>
-    <string name="edit_song_title">"Titolo del brano"</string>
+    <string name="song_title">"Titolo del brano"</string>
     <string name="edit_song_user1">"Utente 1"</string>
     <string name="edit_song_user2">"Utente 2"</string>
     <string name="edit_song_user3">"Utente 3"</string>
@@ -459,7 +459,7 @@
     <string name="time">"tempo"</string>
     <string name="time_slide_pages">"Tempo per ogni diapositiva (s)"</string>
     <string name="time_slide_pages_help">"Lascia in bianco per presentazione manuale"</string>
-    <string name="timeformat">"24"</string>
+    <string name="time_format">"24"</string>
     <string name="timer_learn">"Impara il tempo di autoscatto"</string>
     <string name="timer_size">"Dimensione timer"</string>
     <string name="title">"titolo"</string>

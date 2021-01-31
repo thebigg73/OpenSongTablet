@@ -167,7 +167,7 @@
     <string name="edit_song_tempo">"Tempo"</string>
     <string name="theme">"Thema"</string>
     <string name="edit_song_timesig">"Takt"</string>
-    <string name="edit_song_title">"Songtitel"</string>
+    <string name="song_title">"Songtitel"</string>
     <string name="edit_song_user1">"User 1"</string>
     <string name="edit_song_user2">"User 2"</string>
     <string name="edit_song_user3">"User 3"</string>
@@ -459,7 +459,7 @@
     <string name="time">"Zeit"</string>
     <string name="time_slide_pages">"Zeit für die Folie(n)"</string>
     <string name="time_slide_pages_help">"Leer lassen bei manueller Präsentation"</string>
-    <string name="timeformat">"24hr"</string>
+    <string name="time_format">"24hr"</string>
     <string name="timer_learn">"AutoScroll-Zeit lernen"</string>
     <string name="timer_size">"Timergröße"</string>
     <string name="title">"Titel"</string>

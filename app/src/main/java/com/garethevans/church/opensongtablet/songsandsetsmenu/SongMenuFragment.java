@@ -438,8 +438,12 @@ public class SongMenuFragment extends Fragment implements SongListAdapter.Adapte
     }
 
     private int indexOfSongInMenu(Song song) {
-        setActions.indexSongInSet(currentSet,song);
-        return currentSet.getIndexSongInSet();
+        if (setActions!=null && currentSet!=null && song!=null) {
+            setActions.indexSongInSet(currentSet, song);
+            return currentSet.getIndexSongInSet();
+        } else {
+            return -1;
+        }
     }
 
     private class MyTextWatcher implements TextWatcher {

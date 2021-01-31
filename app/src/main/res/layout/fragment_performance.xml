@@ -41,7 +41,8 @@
         app:overScrollVertical="false"
         app:minZoom="0.2"
         app:maxZoom="4.0"
-        android:padding="0dp">
+        android:padding="0dp"
+        app:hasClickableChildren="true">
 
                 <RelativeLayout
                     android:id="@+id/pageHolder"

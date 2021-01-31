@@ -536,7 +536,7 @@
                         android:layout_marginTop="12dp"
                         android:layout_marginRight="12dp"
                         android:layout_marginBottom="0dp"
-                        android:text="@string/edit_song_title" />
+                        android:text="@string/song_title" />
 
                     <SeekBar
                         android:id="@+id/presoTitleSizeSeekBar"

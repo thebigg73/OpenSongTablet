@@ -167,7 +167,7 @@
     <string name="edit_song_tempo">"Tempo"</string>
     <string name="theme">"テーマ"</string>
     <string name="edit_song_timesig">"拍子記号"</string>
-    <string name="edit_song_title">"曲のタイトル"</string>
+    <string name="song_title">"曲のタイトル"</string>
     <string name="edit_song_user1">"ユーザー1"</string>
     <string name="edit_song_user2">"ユーザー2"</string>
     <string name="edit_song_user3">"ユーザー3"</string>
@@ -459,7 +459,7 @@
     <string name="time">"タイム"</string>
     <string name="time_slide_pages">"各スライドの時間（s）"</string>
     <string name="time_slide_pages_help">"手動スライドショーの空白のまま"</string>
-    <string name="timeformat">"24時間"</string>
+    <string name="time_format">"24時間"</string>
     <string name="timer_learn">"自動スクロールの時間を学ぶ"</string>
     <string name="timer_size">"タイマーサイズ"</string>
     <string name="title">"タイトル"</string>

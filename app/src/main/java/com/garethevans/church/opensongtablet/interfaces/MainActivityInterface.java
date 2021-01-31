@@ -30,6 +30,7 @@ import com.garethevans.church.opensongtablet.midi.Midi;
 import com.garethevans.church.opensongtablet.nearby.NearbyConnections;
 import com.garethevans.church.opensongtablet.pads.PadFunctions;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
@@ -52,6 +53,7 @@ public interface MainActivityInterface {
     void hideActionButton(boolean hide);
     void hideActionBar(boolean hide);
     void updateToolbar(Song song, String what);
+    void updateActionBarSettings(String prefName, int intval, float floatval, boolean isvisible);
     void showTutorial(String what);
     void indexSongs();
     void initialiseActivity();
@@ -94,6 +96,7 @@ public interface MainActivityInterface {
     void fullIndex();
     void quickSongMenuBuild();
     void setFullIndexRequired(boolean fullIndexRequired);
+    void changeActionBarVisible(boolean wasScrolling, boolean scrollButton);
 
     // Get the helpers initialised in the main activity
     NearbyConnections getNearbyConnections(MainActivityInterface mainActivityInterface);
@@ -144,4 +147,5 @@ public interface MainActivityInterface {
     MakePDF getMakePDF();
     VersionNumber getVersionNumber();
     Transpose getTranspose();
+    AppActionBar getAppActionBar();
 }

@@ -77,5 +77,6 @@ public class DisplayMenuFragment extends Fragment {
     private void setListeners() {
         myView.themeButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.themeSetupFragment));
         myView.fontButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.fontSetupFragment));
+        myView.actionBarSettings.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.actionBarSettingsFragment));
     }
 }

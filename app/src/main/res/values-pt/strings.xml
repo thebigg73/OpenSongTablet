@@ -167,7 +167,7 @@
     <string name="edit_song_tempo">"Tempo"</string>
     <string name="theme">"Fundos de ecrã"</string>
     <string name="edit_song_timesig">"Fórmula de compasso"</string>
-    <string name="edit_song_title">"Título da música"</string>
+    <string name="song_title">"Título da música"</string>
     <string name="edit_song_user1">"Usuário 1"</string>
     <string name="edit_song_user2">"Usuário 2"</string>
     <string name="edit_song_user3">"Usuário 3"</string>
@@ -459,7 +459,7 @@
     <string name="time">"Tempo"</string>
     <string name="time_slide_pages">"Tempo para cada slide (s)"</string>
     <string name="time_slide_pages_help">"Deixe em branco para slideshow Manual"</string>
-    <string name="timeformat">"24 horas"</string>
+    <string name="time_format">"24 horas"</string>
     <string name="timer_learn">"Aprenda o tempo de corte automático"</string>
     <string name="timer_size">"Tamanho do temporizador"</string>
     <string name="title">"título"</string>

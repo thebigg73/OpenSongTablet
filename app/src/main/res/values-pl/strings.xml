@@ -167,7 +167,7 @@
     <string name="edit_song_tempo">"Tempo"</string>
     <string name="theme">"Motyw"</string>
     <string name="edit_song_timesig">"Metrum"</string>
-    <string name="edit_song_title">"Tytuł piosenki"</string>
+    <string name="song_title">"Tytuł piosenki"</string>
     <string name="edit_song_user1">"Użytkownik 1"</string>
     <string name="edit_song_user2">"Użytkownik 2"</string>
     <string name="edit_song_user3">"Użytkownik 3"</string>
@@ -459,7 +459,7 @@
     <string name="time">"czas"</string>
     <string name="time_slide_pages">"Czas dla każdego slajdu (s)"</string>
     <string name="time_slide_pages_help">"Pozostaw puste do ręcznego pokazu slajdów"</string>
-    <string name="timeformat">"24 godziny"</string>
+    <string name="time_format">"24 godziny"</string>
     <string name="timer_learn">"Dowiedz się czas automatycznego przewijania"</string>
     <string name="timer_size">"Rozmiar licznika"</string>
     <string name="title">"tytuł"</string>

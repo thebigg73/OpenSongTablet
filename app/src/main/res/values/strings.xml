@@ -9,6 +9,9 @@
         to song actions such as metronomes, transpose, pads, etc.\nLong pressing on the main button
         lets you change the settings of each button.\nLong pressing on some page buttons performs
         quick actions such as start/stop/edit</string>
+    <string name="actionbar_display">Actionbar</string>
+    <string name="actionbar_info">Change the appearance of the information in the actionbar</string>
+    <string name="actionbar_autohide">Automatically hide action bar</string>
     <string name="add_custom_slide">Add custom slide to set</string>
     <string name="add_song_to_set">Add current song to set</string>
     <string name="alert">Alert</string>
@@ -314,6 +317,7 @@
     <string name="show_chords">Show chords</string>
     <string name="show_logo">Show logo</string>
     <string name="show_lyrics">Show lyrics</string>
+    <string name="size">Size</string>
     <string name="slide">Slide</string>
     <string name="song">Song</string>
     <string name="song_actions">Song actions</string>
@@ -321,6 +325,7 @@
     <string name="song_features">Song features</string>
     <string name="song_notes">Song sticky notes</string>
     <string name="song_sections">Song sections</string>
+    <string name="song_title">Song title</string>
     <string name="songs">Songs</string>
     <string name="songsheet">Songsheet</string>
     <string name="start">Start</string>
@@ -346,6 +351,7 @@
     <string name="theme_dark">Dark theme</string>
     <string name="theme_light">Light theme</string>
     <string name="time">Time</string>
+    <string name="time_format">24hr</string>
     <string-array name="time_signatures" translatable="false">
         <item />
         <item>2/2</item>
@@ -612,7 +618,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="edit_song_restrictions">Restrictions</string>
     <string name="edit_song_tempo">Tempo</string>
     <string name="edit_song_timesig">Time signature</string>
-    <string name="edit_song_title">Song title</string>
     <string name="edit_song_user1">User 1</string>
     <string name="edit_song_user2">User 2</string>
     <string name="edit_song_user3">User 3</string>
@@ -768,7 +773,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="show_general_advanced">Toggle general/advanced fields</string>
     <string name="shownextinset">Show next song in set</string>
     <string name="simple_note">Simple note / placeholder</string>
-    <string name="size">Size</string>
     <string name="size_mini">Mini</string>
     <string name="size_normal">Normal</string>
     <string name="slide_add_page">Insert new page to custom slide</string>
@@ -800,7 +804,6 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="tap_tempo">Tap to set tempo</string>
     <string name="time_slide_pages">Time for each slide (s)</string>
     <string name="time_slide_pages_help">Leave blank for manual slideshow</string>
-    <string name="timeformat">24hr</string>
     <string name="timer_learn">Learn autoscroll time</string>
     <string name="timer_size">Timer size</string>
     <string name="toggle_autoshow_stickynotes">Autoshow sticky notes</string>
@@ -839,6 +842,7 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="play_services_how">Show me how</string>
     <string name="play_services_help" translatable="false">https://www.opensongapp.com/user-guide/devices-without-google-play</string>
     <string name="import_song">Import a song</string>
+
 
 
 </resources>

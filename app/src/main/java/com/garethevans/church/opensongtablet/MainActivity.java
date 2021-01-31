@@ -13,9 +13,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -82,6 +84,7 @@ import com.garethevans.church.opensongtablet.performance.PerformanceFragment;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 import com.garethevans.church.opensongtablet.presentation.PresentationFragment;
+import com.garethevans.church.opensongtablet.screensetup.ActivityGestureDetector;
 import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.BatteryStatus;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
@@ -188,6 +191,8 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     private MakePDF makePDF;
     private OCR ocr;
     private Transpose transpose;
+    private GestureDetector gestureDetector;
+    private ActivityGestureDetector activityGestureDetector;
 
     private ArrayList<View> targets;
     private ArrayList<String> infos, dismisses;
@@ -211,7 +216,9 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     NavHostFragment navHostFragment;
     NavController navController;
 
+    // Actionbar
     ActionBar ab;
+
     DrawerLayout drawerLayout;
 
     MenuItem settingsButton;
@@ -261,20 +268,24 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         View view = activityMainBinding.getRoot();
         view.setOnSystemUiVisibilityChangeListener(
                 visibility -> {
+                    Log.d("MainActivity","UiVisibility changed");
                     if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                        appActionBar.showActionBar(settingsOpen);
                         setWindowFlags();
                     }
                 });
+
+        // get the gesture detector
         setContentView(view);
+
+        // Prepare the actionbar
+        setupActionbar();
 
         // Initialise the helpers used for heavy lifting
         initialiseHelpers();
 
         // Set the fullscreen window flags
         setWindowFlags();
-
-        // Prepare the actionbar
-        setupActionbar();
 
         // Fragment work
         setupNav();
@@ -296,7 +307,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         setUpCast();
     }
 
-
     // Set up the helpers
     private void initialiseHelpers() {
         storageAccess = new StorageAccess();
@@ -312,7 +322,11 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         processSong = new ProcessSong();
         loadSong = new LoadSong();
         windowFlags = new WindowFlags(this.getWindow());
-        appActionBar = new AppActionBar();
+        appActionBar = new AppActionBar(ab,batteryStatus,activityMainBinding.appBarMain.myToolBarNew.songtitleAb,
+                activityMainBinding.appBarMain.myToolBarNew.songauthorAb, activityMainBinding.appBarMain.myToolBarNew.songkeyAb,
+                activityMainBinding.appBarMain.myToolBarNew.songcapoAb,activityMainBinding.appBarMain.myToolBarNew.batteryimage,
+                activityMainBinding.appBarMain.myToolBarNew.batterycharge,activityMainBinding.appBarMain.myToolBarNew.digitalclock,
+                preferences.getMyPreferenceBoolean(this,"hideActionBar",false));
         versionNumber = new VersionNumber();
         fixLocale = new FixLocale();
         ccliLog = new CCLILog();
@@ -345,6 +359,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         ocr = new OCR();
         makePDF = new MakePDF();
         transpose = new Transpose();
+        gestureDetector = new GestureDetector(this,new ActivityGestureDetector());
     }
 
     // The actionbar
@@ -355,6 +370,27 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             ab.setDisplayHomeAsUpEnabled(true);
         }
     }
+
+
+    @Override
+    public void changeActionBarVisible(boolean wasScrolling, boolean scrollButton) {
+        Log.d("MainActivity","ChangeActionBarVisisble");
+        if (!whichMode.equals("Presentation") && preferences.getMyPreferenceBoolean(this, "hideActionBar", false)) {
+            // If we are are in performance or stage mode and want to hide the actionbar, then move the views up to the top
+            activityMainBinding.appBarMain.contentMain.getRoot().setTop(0);
+        } else {
+            // Otherwise move the content below it
+            activityMainBinding.appBarMain.contentMain.getRoot().setTop(ab.getHeight());
+        }
+        appActionBar.toggleActionBar(wasScrolling,scrollButton,drawerLayout.isOpen());
+    }
+
+
+
+
+
+
+
 
     // The navigation actions
     public void setupNav() {
@@ -576,11 +612,21 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
+        Log.d("MainActivity","hasFocus="+hasFocus);
         // Set the fullscreen window flags]
         if (hasFocus) {
             setWindowFlags();
+            appActionBar.showActionBar(settingsOpen);
         }
     }
+    @Override
+    public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
+        gestureDetector.onTouchEvent(ev); // Dealt with in ActivityGestureDetector
+        return false;
+
+    }
+
+
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
@@ -649,9 +695,17 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Null titles are for the default song, author, etc.  A song is sent instead
         // Otherwise a new title is passed as a string and a null song is sent
         windowFlags.setWindowFlags();
-        appActionBar.setActionBar(activityMainBinding.appBarMain.myToolBarNew.songtitleAb,
-                activityMainBinding.appBarMain.myToolBarNew.songauthorAb,
-                activityMainBinding.appBarMain.myToolBarNew.songkeyAb,song,title);
+        if (song==null || !preferences.getMyPreferenceBoolean(this,"hideActionBar",false)) {
+            // Make sure the content shows below the action bar
+            activityMainBinding.appBarMain.contentMain.getRoot().setTop(ab.getHeight());
+        }
+        appActionBar.setActionBar(this,preferences,song,title);
+    }
+    @Override
+    public void updateActionBarSettings(String prefName, int intval, float floatval, boolean isvisible) {
+        // If the user changes settings from the ActionBarSettingsFragment, they get sent here to deal with
+        // So let's pass them on to the AppActionBar helper
+        appActionBar.updateActionBarSettings(this,locale,preferences,prefName,intval,floatval,isvisible);
     }
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -1410,6 +1464,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     @Override
     public Transpose getTranspose() {
         return transpose;
+    }
+    @Override
+    public AppActionBar getAppActionBar() {
+        return appActionBar;
     }
 
     // Nearby

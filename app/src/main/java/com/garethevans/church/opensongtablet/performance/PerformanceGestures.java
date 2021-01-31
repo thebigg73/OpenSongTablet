@@ -4,7 +4,6 @@ package com.garethevans.church.opensongtablet.performance;
 
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.os.Handler;
 
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -16,6 +15,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.pads.PadFunctions;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.setprocessing.SetActions;
@@ -36,16 +36,16 @@ public class PerformanceGestures {
     private final DoVibrate doVibrate;
     private final MainActivityInterface mainActivityInterface;
     private final DrawerLayout drawerLayout;
-    private final Handler delayactionBarHide;
-    private final Runnable hideActionBarRunnable;
     private final MediaPlayer mPlayer1;
     private final MediaPlayer mPlayer2;
+    private final AppActionBar appActionBar;
     private int defmetronomecolor;
 
-    PerformanceGestures(Context c, Preferences preferences, StorageAccess storageAccess, SetActions setActions, PadFunctions padFunctions, Metronome metronome,
+    PerformanceGestures(Context c, Preferences preferences, StorageAccess storageAccess,
+                        SetActions setActions, PadFunctions padFunctions, Metronome metronome,
                         PerformanceFragment performanceFragment, MainActivityInterface mainActivityInterface,
                         ShowToast showToast, DoVibrate doVibrate, DrawerLayout drawerLayout, MediaPlayer mPlayer1,
-                        MediaPlayer mPlayer2, Handler delayactionBarHide, Runnable hideActionBarRunnable, int defmetronomecolor) {
+                        MediaPlayer mPlayer2, AppActionBar appActionBar, int defmetronomecolor) {
         this.c = c;
         this.preferences = preferences;
         this.storageAccess = storageAccess;
@@ -57,10 +57,9 @@ public class PerformanceGestures {
         this.showToast = showToast;
         this.doVibrate = doVibrate;
         this.drawerLayout = drawerLayout;
-        this.delayactionBarHide = delayactionBarHide;
-        this.hideActionBarRunnable = hideActionBarRunnable;
         this.mPlayer1 = mPlayer1;
         this.mPlayer2 = mPlayer2;
+        this.appActionBar = appActionBar;
     }
 
     // Open/close the drawers
@@ -72,7 +71,8 @@ public class PerformanceGestures {
         }
         mainActivityInterface.getAutoscrollActions().setWasScrolling(false);
         try {
-            delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+            appActionBar.removeCallBacks();
+            appActionBar.showActionBar(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -164,5 +164,9 @@ public class PerformanceGestures {
                     c.getString(R.string.not_set));
         }
     }
+
+
+
+
 
 }

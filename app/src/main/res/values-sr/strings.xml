@@ -201,7 +201,7 @@
     <string name="import_song">"Učitati pesmu"</string>
     <string name="importnewset">"Učitati set listu"</string>
     <string name="add_song_to_set">"Dodati trenutnu pesmu na set listu"</string>
-    <string name="edit_song_title">"Ime pesme"</string>
+    <string name="song_title">"Ime pesme"</string>
     <string name="author">"Autor"</string>
     <string name="lyrics">"Tekst"</string>
     <string name="copyright">"Copyright info"</string>
@@ -404,7 +404,7 @@
     <string name="swipe_distance">"Prijeđite prstom udaljenost"</string>
     <string name="actionbar">"Traka izbornika info"</string>
     <string name="battery">"Baterija"</string>
-    <string name="timeformat">"24-satna"</string>
+    <string name="time_format">"24-satna"</string>
     <string name="text">"Tekst"</string>
     <string name="autoshow_highlight">"Napomene za automatsko izoštravanje"</string>
     <string name="highlight">"Alat za isticanje"</string>

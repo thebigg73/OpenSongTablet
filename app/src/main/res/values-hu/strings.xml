@@ -167,7 +167,7 @@
     <string name="edit_song_tempo">"Tempó"</string>
     <string name="theme">"Témák"</string>
     <string name="edit_song_timesig">"Ütemjelzés"</string>
-    <string name="edit_song_title">"Dal címe"</string>
+    <string name="song_title">"Dal címe"</string>
     <string name="edit_song_user1">"Felhasználó 1"</string>
     <string name="edit_song_user2">"Felhasználó 2"</string>
     <string name="edit_song_user3">"Felhasználó 3"</string>
@@ -459,7 +459,7 @@
     <string name="time">"Idő"</string>
     <string name="time_slide_pages">"Idő az egyes diák (ok)"</string>
     <string name="time_slide_pages_help">"Hagyja üresen a kézi diavetítés"</string>
-    <string name="timeformat">"24 órás"</string>
+    <string name="time_format">"24 órás"</string>
     <string name="timer_learn">"Ismerje meg az autoscroll idejét"</string>
     <string name="timer_size">"Timer mérete"</string>
     <string name="title">"cím"</string>

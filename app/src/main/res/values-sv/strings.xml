@@ -167,7 +167,7 @@
     <string name="edit_song_tempo">"Tempo"</string>
     <string name="theme">"Tema"</string>
     <string name="edit_song_timesig">"Tidssignatur"</string>
-    <string name="edit_song_title">"Sång titel"</string>
+    <string name="song_title">"Sång titel"</string>
     <string name="edit_song_user1">"Användare 1"</string>
     <string name="edit_song_user2">"Användare 2"</string>
     <string name="edit_song_user3">"Användare 3"</string>
@@ -459,7 +459,7 @@
     <string name="time">"Tid"</string>
     <string name="time_slide_pages">"Tid för varje bild (er)"</string>
     <string name="time_slide_pages_help">"Lämna tomt för manuellt bildspel"</string>
-    <string name="timeformat">"24h"</string>
+    <string name="time_format">"24h"</string>
     <string name="timer_learn">"Lär dig autoscroll tid"</string>
     <string name="timer_size">"Timerns storlek"</string>
     <string name="title">"Titel"</string>

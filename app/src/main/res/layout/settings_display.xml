@@ -38,6 +38,14 @@
         <TableRow style="@style/DividerLine" />
 
         <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
+            android:id="@+id/actionBarSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:main="@string/actionbar_display"
+            app:sub="@string/actionbar_info" />
+        <TableRow style="@style/DividerLine" />
+
+        <com.garethevans.church.opensongtablet.customviews.PrefTextLinkView
             android:id="@+id/menuSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

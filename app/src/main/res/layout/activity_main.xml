@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<!--<com.garethevans.church.opensongtablet.customviews.CoordLayout-->
+<RelativeLayout
     android:id="@+id/coordinator"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -55,4 +56,4 @@
 
 
 </androidx.drawerlayout.widget.DrawerLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

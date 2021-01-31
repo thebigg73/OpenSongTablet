@@ -167,7 +167,7 @@
     <string name="edit_song_tempo">"Tempo"</string>
     <string name="theme">"Theme"</string>
     <string name="edit_song_timesig">"Time signature"</string>
-    <string name="edit_song_title">"Song title"</string>
+    <string name="song_title">"Song title"</string>
     <string name="edit_song_user1">"User 1"</string>
     <string name="edit_song_user2">"User 2"</string>
     <string name="edit_song_user3">"User 3"</string>
@@ -459,7 +459,7 @@
     <string name="time">"Χρόνος"</string>
     <string name="time_slide_pages">"Time for each slide (s)"</string>
     <string name="time_slide_pages_help">"Leave blank for manual slideshow"</string>
-    <string name="timeformat">"24 ώρες"</string>
+    <string name="time_format">"24 ώρες"</string>
     <string name="timer_learn">"Μάθετε το χρόνο αυτόματης επιλογής"</string>
     <string name="timer_size">"Χρονικό μέγεθος"</string>
     <string name="title">"Τίτλος"</string>

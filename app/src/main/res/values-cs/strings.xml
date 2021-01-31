@@ -166,7 +166,7 @@
     <string name="edit_song_tempo">"Tempo"</string>
     <string name="theme">"Téma"</string>
     <string name="edit_song_timesig">"Čas podpis"</string>
-    <string name="edit_song_title">"Název skladby"</string>
+    <string name="song_title">"Název skladby"</string>
     <string name="edit_song_user1">"Uživatel 1"</string>
     <string name="edit_song_user2">"Uživatel 2."</string>
     <string name="edit_song_user3">"Uživatel 3."</string>
@@ -458,7 +458,7 @@
     <string name="time">"doba"</string>
     <string name="time_slide_pages">"Čas pro každý snímek (y)"</string>
     <string name="time_slide_pages_help">"Nechte prázdné pro ruční prezentaci"</string>
-    <string name="timeformat">"24 hodin"</string>
+    <string name="time_format">"24 hodin"</string>
     <string name="timer_learn">"Zjistěte čas autoskládání"</string>
     <string name="timer_size">"Velikost časovače"</string>
     <string name="title">"nadpis"</string>

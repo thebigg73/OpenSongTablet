@@ -81,8 +81,8 @@ public class SettingsCategories extends Fragment {
 
     private void setListeners() {
         myView.ccliButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.settingsCCLI));
-        myView.storageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.storageManagementFragment));
-        myView.displayButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.displayMenuFragment));
+        myView.storageButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.storage_graph));
+        myView.displayButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.display_graph));
         myView.connectButton.setOnClickListener(v -> {
             // Check we have the required permissions
             if (mainActivityInterface.requestNearbyPermissions()) {

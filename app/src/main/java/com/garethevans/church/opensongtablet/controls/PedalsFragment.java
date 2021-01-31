@@ -99,7 +99,7 @@ public class PedalsFragment extends Fragment {
 
     private void setupHelpers() {
         preferences = mainActivityInterface.getPreferences();
-        pedalActions = mainActivityInterface.getPedalActions(mainActivityInterface);
+        pedalActions = mainActivityInterface.getPedalActions();
         midi = mainActivityInterface.getMidi(mainActivityInterface);
     }
 
