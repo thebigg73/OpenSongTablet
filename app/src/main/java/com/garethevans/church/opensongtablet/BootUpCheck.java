@@ -527,7 +527,7 @@ public class BootUpCheck extends AppCompatActivity {
             if (uriTree != null) {
                 DocumentFile df = storageAccess.documentFileFromRootUri(BootUpCheck.this, uriTree, uriTree.getPath());
                 if (df==null || !df.canWrite()) {
-                    progressText.setText(getString(R.string.currentstorage) + ": " + getString(R.string.notset));
+                    progressText.setText(getString(R.string.currentstorage) + ": " + getString(R.string.pleaseselect));
                 }
                 return df != null && df.canWrite();
             }
@@ -880,7 +880,7 @@ public class BootUpCheck extends AppCompatActivity {
                                 replace("¬/storage/emulated/legacy/" ,"/").
                                 replace("¬/storage/self/primary/"    ,"/");
                             if (where.startsWith("¬")) {
-                                // IV - Handle others paths as 'External'
+                                // IV - Handle other paths as 'External'
                                 where = where.substring(10);
                                 extra = extra + ", " + this.getResources().getString(R.string.storage_ext) + " " + where.substring(0, where.indexOf("/"));
                                 where = where.substring(where.indexOf("/"));
