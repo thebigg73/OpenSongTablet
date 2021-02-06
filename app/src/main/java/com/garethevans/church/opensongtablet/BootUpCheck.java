@@ -333,8 +333,8 @@ public class BootUpCheck extends AppCompatActivity {
 
     private void showCurrentStorage(Uri u) {
         // This tries to make the uri more user readable!
-        // Declare variables
-        String text;
+        // IV - A text value of null can be set to force a valid selection
+        String text = null;
         // IV - Provides extra information on the folder
         String extra = "";
 
@@ -342,35 +342,37 @@ public class BootUpCheck extends AppCompatActivity {
         try {
             text = u.getPath();
             assert text != null;
-            // IV - When not an internal path (more patterns may be needed) indicate as external
-            if (!text.contains("/tree/primary")) { extra = this.getResources().getString(R.string.storage_ext); }
             // The  storage location getPath is likely something like /tree/primary:/document/primary:/OpenSong
             // This is due to the content using a document contract
-            text = "/" + text.substring(text.lastIndexOf(":") + 1);
-            text = text.replace("//", "/");
-            if (!text.endsWith("/" + storageAccess.appFolder)) {
-                text += "/" + storageAccess.appFolder;
+            // IV: Exclude raw storage
+            if (!text.startsWith("/tree/raw:") & text.contains(":")) {
+                // IV - When not an internal path (more patterns may be needed) indicate as external
+                if (!text.contains("/tree/primary")) { extra = this.getResources().getString(R.string.storage_ext); }
+                text = "/" + text.substring(text.lastIndexOf(":") + 1);
+                text = text.replace("//", "/");
+                if (!text.endsWith("/" + storageAccess.appFolder)) {
+                    text += "/" + storageAccess.appFolder;
+                }
+                // Decide if the user needs blocking as they have selected a subfolder of an OpenSong folder
+                if ((warningText!=null) && (text.contains("/OpenSong/"))) {
+                    uriTree = null;
+                    warningText.setVisibility(View.VISIBLE);
+                } else {
+                    warningText.setVisibility(View.GONE);
+                }
+            } else {
+                uriTree = null;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            if (uriTreeHome == null) {
-                text = getString(R.string.notset);
-            } else {
-                text = "" + uriTreeHome;
-            }
+            uriTree = null;
         }
 
-        // Decide if the user needs blocking as  they have selected a subfolder of an OpenSong folder
-        if (warningText!=null) {
-            if (text.contains("/OpenSong/")) {
-                // IV - Force 'Not set'
-                uriTree = null;
-                text = getString(R.string.notset);
-                saveUriLocation();
-                warningText.setVisibility(View.VISIBLE);
-            } else {
-                warningText.setVisibility(View.GONE);
-            }
+        // IV - If we do not have a valid uri force 'Please select'
+        if (uriTree == null) {
+            uriTreeHome = null;
+            text = getString(R.string.pleaseselect);
+            saveUriLocation();
         }
 
         if (progressText!=null) {
@@ -414,7 +416,8 @@ public class BootUpCheck extends AppCompatActivity {
             if (storageAccess.lollipopOrLater()) {
                 try {
                     intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                    //intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
+                    // IV - 'Commented in' this extra to try to always show internal and sd card storage
+                    intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
                     //intent.putExtra("android.content.extra.FANCY", true);
                     //intent.putExtra("android.content.extra.SHOW_FILESIZE", true);
                     intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,uriTree);
@@ -521,7 +524,7 @@ public class BootUpCheck extends AppCompatActivity {
             if (uriTree != null) {
                 DocumentFile df = storageAccess.documentFileFromRootUri(BootUpCheck.this, uriTree, uriTree.getPath());
                 if (df==null || !df.canWrite()) {
-                    progressText.setText(R.string.notset);
+                    progressText.setText(getString(R.string.currentstorage) + ": " + getString(R.string.notset));
                 }
                 return df != null && df.canWrite();
             }
