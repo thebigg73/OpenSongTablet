@@ -403,7 +403,7 @@
     <string name="next">Next</string>
     <string name="no">No</string>
     <string name="nodisplays">No external displays connected.  Please connect to a secondary display using an HDMI output or MiraCast compatible wireless display.</string>
-    <string name="nofound">No previous installations found.</string>
+    <string name="nofound">No previous folder found.  Use the red button to choose a location.</string>
     <string name="not_allowed">This function is not allowed for this item</string>
     <string name="note">Note</string>
     <string name="nothighenoughapi">You need a newer version of Android for this!</string>
@@ -545,7 +545,7 @@
     <string name="storage_check">Checking storage</string>
     <string name="storage_choose">Manage storage</string>
     <string name="storage_ext">External storage</string>
-    <string name="storage_help">Please choose the location for your \'OpenSong\' folder.  This is the default storage location for OpenSong files.  We recommend using internal storage.  You can change this at any time from the Options menu.\n\nFor an update or re-install:\nIf the current location is not set, use the yellow button below to find your \'OpenSong\' folder.</string>
+    <string name="storage_help">Please choose the location for your \'OpenSong\' folder.  This is the default storage location for OpenSong files.  You can change this at any time from the Options menu.\n\nFor an update or re-install:\nYou can use the yellow button below to find any previous \'OpenSong\' folder.\n\nWhen selecting a location:\nList storage using the menu (you may need to change settings to show all storage).\nSELECT ONLY INTERNAL OR SD CARD storage, these have details below their name.\nInternal storage is recommended.  This may list as device storage or with your devices\'s name.</string>
     <string name="storage_notwritable">Unable to use</string>
     <string name="storage_rationale">Access to your storage is required to read and write songs and sets.</string>
     <string name="subscription">(Subscription required)</string>
