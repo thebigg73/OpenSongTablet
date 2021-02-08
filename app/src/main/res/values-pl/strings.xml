@@ -298,7 +298,6 @@
     <string name="next">Następny</string>
     <string name="no">"Nie"</string>
     <string name="nodisplays">"Brak wyświetlacze zewnętrzne podłączone. Proszę podłączyć do drugiego wyświetlacza za pomocą wyjścia HDMI lub kompatybilnego Miracast wyświetlacza bezprzewodowego "</string>
-    <string name="nofound">"Nie znaleziono żadnych poprzednich instalacji."</string>
     <string name="not_allowed">"Ta funkcja nie jest dozwolone dla tej pozycji"</string>
     <string name="note">"Notatka"</string>
     <string name="nothighenoughapi">"Wymagana jest nowsza wersja Androida dla tego !"</string>
@@ -433,7 +432,7 @@
     <string name="storage_check">"Sprawdzanie pamięci"</string>
     <string name="storage_choose">"Zarządzaj schowek"</string>
     <string name="storage_ext">"Pamięć zewnętrzna"</string>
-    <string name="storage_help">"Proszę wybrać domyślną lokalizację zapisu dla plików OpenSong. Można to zmienić w każdej chwili w menu Opcje."</string>
+    <string name="storage_help">"Wybierz lokalizację folderu „OpenSong”. To jest domyślna lokalizacja przechowywania plików OpenSong. Możesz to zmienić w dowolnym momencie w menu Opcje.\n\nAby zaktualizować lub ponownie zainstalować:\nMożesz użyć żółtego przycisku poniżej, aby znaleźć poprzedni folder „OpenSong”.\n\nPodczas wybierania lokalizacji:\nLista pamięci za pomocą menu (może być konieczna zmiana ustawień, aby wyświetlić całą pamięć).\nWYBIERZ TYLKO PAMIĘĆ WEWNĘTRZNĄ LUB KARTĘ SD, te mają szczegóły poniżej ich nazwy.\nPamięć wewnętrzna jest zalecana. Może to być wymienione jako pamięć urządzenia lub z nazwą urządzenia\n\nW systemie Android 10+ nie należy wybierać folderu Pobrane ani katalogu głównego. W razie wątpliwości wybierz folder „dokumenty”."</string>
     <string name="storage_notwritable">"Nie można używać"</string>
     <string name="storage_rationale">"Dostęp do pamięci jest wymagane, aby czytać i pisać piosenki i zestawy."</string>
     <string name="subscription">"(Wymagana subskrypcja)"</string>
@@ -522,4 +521,5 @@
     <string name="show">Pokazać</string>
     <string name="hide">Ukryć</string>
     <string name="filter_structure">[*filter:V] = przefiltrowana sekcja wersetów</string>
+    <string name="nofound">Nie znaleziono poprzedniego folderu. Użyj czerwonego przycisku, aby wybrać lokalizację.</string>
 </resources>

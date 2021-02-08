@@ -298,7 +298,6 @@
     <string name="next">Seguinte</string>
     <string name="no">"Não"</string>
     <string name="nodisplays">"Não há monitores externos conectados. Por favor, se conectar a um monitor secundário usando uma saída HDMI ou Miracast exibição sem fio compatível."</string>
-    <string name="nofound">"Não foram encontradas instalações anteriores."</string>
     <string name="not_allowed">"Esta função não é permitido para este item"</string>
     <string name="note">"Nota"</string>
     <string name="nothighenoughapi">"Você precisa de uma versão mais recente do Android para isso!"</string>
@@ -433,7 +432,7 @@
     <string name="storage_check">"Verificação de armazenamento"</string>
     <string name="storage_choose">"Gerenciar o espaço de armazenamento"</string>
     <string name="storage_ext">"Armazenamento externo"</string>
-    <string name="storage_help">"Por favor, escolha o local de armazenamento padrão para seus arquivos OpenSong. Você pode mudar isso a qualquer momento a partir do menu Opções."</string>
+    <string name="storage_help">"Escolha o local da sua pasta \'OpenSong\'. Este é o local de armazenamento padrão para arquivos OpenSong. Você pode alterar isso a qualquer momento no menu Opções.\n\nPara uma atualização ou reinstalação:\nVocê pode usar o botão amarelo abaixo para localizar qualquer pasta \'OpenSong\' anterior.\n\nAo selecionar um local:\nListe o armazenamento usando o menu (pode ser necessário alterar as configurações para mostrar todo o armazenamento).\nSELECIONE APENAS armazenamento INTERNO OU CARTÃO SD; estes têm detalhes abaixo do nome.\nO armazenamento interno é recomendado. Isso pode ser listado como armazenamento do dispositivo ou com o nome do seu dispositivo\n\nNo Android 10+, você não deve selecionar a pasta Downloads ou Root. Em caso de dúvida, escolha a pasta \'documentos\'."</string>
     <string name="storage_notwritable">"Não é possível usar"</string>
     <string name="storage_rationale">"Acesso para o seu armazenamento é necessário para ler e escrever músicas e sets."</string>
     <string name="subscription">"(Subscrição obrigatória)"</string>
@@ -522,4 +521,5 @@
     <string name="show">Exposição</string>
     <string name="hide">Ocultar</string>
     <string name="filter_structure">[*filtro:V] = seção verso filtrada</string>
+    <string name="nofound">Nenhuma pasta anterior encontrada. Use o botão vermelho para escolher um local.</string>
 </resources>

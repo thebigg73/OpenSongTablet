@@ -298,7 +298,6 @@
     <string name="next">次</string>
     <string name="no">"ノー (No)"</string>
     <string name="nodisplays">"外付けのディスプレイが接続されていない。 HDMI出力やMiraCast互換性のあるワイヤレスディスプレイを使用して、セカンダリディスプレイに接続してください。"</string>
-    <string name="nofound">"以前のインストールは見つかりませんでした。"</string>
     <string name="not_allowed">"この関数は、この項目のため許可されていません"</string>
     <string name="note">"注意"</string>
     <string name="nothighenoughapi">"あなたはこのためのAndroidの新しいバージョンが必要です！"</string>
@@ -433,7 +432,7 @@
     <string name="storage_check">"ストレージの確認"</string>
     <string name="storage_choose">"収納スペースを管理する"</string>
     <string name="storage_ext">"外部記憶装置"</string>
-    <string name="storage_help">"あなたのOpenSongファイルのデフォルトの保存場所を選択してください。 [オプション]メニューからいつでも変更することができます。"</string>
+    <string name="storage_help">"「OpenSong」フォルダの場所を選択してください。 これは、OpenSongファイルのデフォルトの保存場所です。 これは、[オプション]メニューからいつでも変更できます。\n\n更新または再インストールの場合：\n下の黄色のボタンを使用して、以前の「OpenSong」フォルダーを見つけることができます。\n\n場所を選択する場合：\nメニューを使用してストレージを一覧表示します（すべてのストレージを表示するには、設定を変更する必要がある場合があります）。\n内部またはSDカードストレージのみを選択します。これらのストレージの詳細は名前の下にあります。\n内部ストレージをお勧めします。 これは、デバイスストレージとして、またはデバイスの名前で表示される場合があります\n\n Android 10以降では、ダウンロードまたはルートフォルダーを選択しないでください。 疑わしい場合は、「documents」フォルダを選択してください。"</string>
     <string name="storage_notwritable">"使用できません"</string>
     <string name="storage_rationale">"ストレージへのアクセスは読み取りおよび曲やセットを書き込むために必要とされます。"</string>
     <string name="subscription">"（サブスクリプションが必要）"</string>
@@ -522,4 +521,5 @@
     <string name="filter_section">セクションフィルタリング</string>
     <string name="filter_entry">以下の新しい行に各フィルターを追加します。</string>
     <string name="filter_structure">[*filter:V] =フィルターされた詩のセクション</string>
+    <string name="nofound">以前のフォルダが見つかりません。 赤いボタンを使用して場所を選択します。</string>
 </resources>

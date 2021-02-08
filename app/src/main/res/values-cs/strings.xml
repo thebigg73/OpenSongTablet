@@ -298,7 +298,6 @@
     <string name="next">Další</string>
     <string name="no">"Nenašli jsme "</string>
     <string name="nodisplays">"Žádné externí zobrazovací zařízení připojeno. Připojte se prosím k sekundární displej pomocí HDMI výstupu nebo MiraCast kompatibilní bezdrátovou displej."</string>
-    <string name="nofound">"Nebyly nalezeny žádné předchozí instalace."</string>
     <string name="not_allowed">"Tato funkce není povolena pro tuto položku"</string>
     <string name="note">"Poznámka"</string>
     <string name="nothighenoughapi">"Potřebujete novější verzi Androidu pro to !"</string>
@@ -433,7 +432,7 @@
     <string name="storage_check">"Kontrola ukládání"</string>
     <string name="storage_choose">"Správa úložiště"</string>
     <string name="storage_ext">"Externí paměť"</string>
-    <string name="storage_help">"Prosím, vyberte výchozí umístění úložiště pro vaše soubory OpenSong. Můžete změnit kdykoliv z nabídky Volby."</string>
+    <string name="storage_help">"Vyberte umístění složky \'OpenSong\'. Toto je výchozí umístění úložiště pro soubory OpenSong. Toto můžete kdykoli změnit v nabídce Možnosti.\n\nPro aktualizaci nebo opětovnou instalaci:\nMůžete použít žluté tlačítko níže a vyhledat libovolnou předchozí složku \'OpenSong\'.\n\nPři výběru umístění:\nSeznam úložiště pomocí nabídky (pro zobrazení celého úložiště bude možná nutné změnit nastavení).\nVYBERTE POUZE VNITŘNÍ NEBO SD KARTU úložiště, tyto mají pod svým jménem podrobnosti.\nDoporučuje se interní úložiště. Může se zobrazit jako úložiště zařízení nebo s názvem vašeho zařízení\n\nV systému Android 10+ byste neměli vybírat složku Stahování nebo Kořen. V případě pochybností vyberte složku \'dokumenty\'."</string>
     <string name="storage_notwritable">"Nelze použít"</string>
     <string name="storage_rationale">"Přístup k vašim úložiště je nutné číst a psát písně a soubory."</string>
     <string name="subscription">"(Požadováno předplatné)"</string>
@@ -522,4 +521,5 @@
     <string name="filter_section">Filtrování sekcí</string>
     <string name="filter_entry">Přidejte každý filtr na nový řádek níže.</string>
     <string name="filter_structure">[*filtr:V] = filtrovaná část verše</string>
+    <string name="nofound">Nebyla nalezena žádná předchozí složka. Pomocí červeného tlačítka vyberte místo.</string>
 </resources>

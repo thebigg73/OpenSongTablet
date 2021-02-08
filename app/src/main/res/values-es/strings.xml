@@ -298,7 +298,6 @@
     <string name="next">Siguiente</string>
     <string name="no">"No"</string>
     <string name="nodisplays">"No hay pantallas externas conectadas . Por favor, conectarse a una pantalla secundaria utilizando una salida HDMI o Miracast pantalla inalámbrica compatible."</string>
-    <string name="nofound">"No se encontraron instalaciones previas."</string>
     <string name="not_allowed">"Esta función no está permitido para este artículo"</string>
     <string name="note">"Nota"</string>
     <string name="nothighenoughapi">"Se necesita una versión más reciente de Android para esto!"</string>
@@ -433,7 +432,7 @@
     <string name="storage_check">"Control de almacenamiento"</string>
     <string name="storage_choose">"Administrar almacenamiento"</string>
     <string name="storage_ext">"Almacenamiento externo"</string>
-    <string name="storage_help">"Por favor, elija la ubicación de almacenamiento predeterminada para los archivos de OpenSong. Usted puede cambiar esto en cualquier momento desde el menú Opciones."</string>
+    <string name="storage_help">"Elija la ubicación de su carpeta \'OpenSong\'. Esta es la ubicación de almacenamiento predeterminada para los archivos de OpenSong. Puede cambiar esto en cualquier momento desde el menú Opciones.\n\nPara una actualización o reinstalación:\nPuede usar el botón amarillo a continuación para buscar cualquier carpeta \'OpenSong\' anterior.\n\nAl seleccionar una ubicación:\nEnumere el almacenamiento mediante el menú (es posible que deba cambiar la configuración para mostrar todo el almacenamiento).\nSELECCIONE SOLO ALMACENAMIENTO INTERNO O TARJETA SD, estos tienen detalles debajo de su nombre.\nSe recomienda almacenamiento interno. Esto puede aparecer como almacenamiento del dispositivo o con el nombre de su dispositivo\n\nEn Android 10+, no debe seleccionar la carpeta Descargas o Root. En caso de duda, elija la carpeta \'documentos\'."</string>
     <string name="storage_notwritable">"No se puede usar"</string>
     <string name="storage_rationale">"Se requiere acceso a su almacenamiento a leer y escribir canciones y juegos."</string>
     <string name="subscription">"(Se requiere suscripción)"</string>
@@ -522,4 +521,5 @@
     <string name="filter_section">Filtrado de secciones</string>
     <string name="filter_entry">Agregue cada filtro en una nueva línea a continuación.</string>
     <string name="filter_structure">[*filtro:V] = sección de verso filtrado</string>
+    <string name="nofound">No se encontró ninguna carpeta anterior. Utilice el botón rojo para elegir una ubicación.</string>
 </resources>

@@ -298,7 +298,6 @@
     <string name="next">nächster Song</string>
     <string name="no">"Nein"</string>
     <string name="nodisplays">"Kein externer Bildschirm angeschlossen. Bitte stellen Sie eine Verbindung zu einer sekundären Anzeige über HDMI oder die drahtlose MiraCast-Schnittstelle her."</string>
-    <string name="nofound">"Keine vorherigen Installationen gefunden."</string>
     <string name="not_allowed">"Diese Funktion ist für diesen Titel nicht erlaubt"</string>
     <string name="note">"Notiz"</string>
     <string name="nothighenoughapi">"Sie benötigen eine neuere Android-Version für diese Aktion"</string>
@@ -433,7 +432,7 @@
     <string name="storage_check">"Speicher prüfen"</string>
     <string name="storage_choose">"Speicher verwalten"</string>
     <string name="storage_ext">"Externer Speicher"</string>
-    <string name="storage_help">"Bitte wählen Sie den Standard-Speicherort für Ihre Opensong-Dateien. Sie können dies jederzeit im Menü Optionen ändern."</string>
+    <string name="storage_help">"Bitte wählen Sie den Speicherort für Ihren \'OpenSong\'-Ordner. Dies ist der Standardspeicherort für OpenSong-Dateien. Sie können dies jederzeit über das Menü Optionen ändern.\n\nFür ein Update oder eine Neuinstallation:\nSie können die gelbe Schaltfläche unten verwenden, um nach einem früheren \'OpenSong\'-Ordner zu suchen.\n\nBei Auswahl eines Speicherorts:\nListen Sie den Speicher über das Menü auf (möglicherweise müssen Sie die Einstellungen ändern, um den gesamten Speicher anzuzeigen).\nWÄHLEN SIE NUR INTERNEN ODER SD-KARTENSpeicher aus. Diese enthalten Details unter ihrem Namen.\nInterner Speicher wird empfohlen. Dies kann als Gerätespeicher oder mit dem Namen Ihres Geräts aufgeführt sein.\n\nUnter Android 10+ sollten Sie nicht den Ordner Downloads oder Root auswählen. Wählen Sie im Zweifelsfall den Ordner \'Dokumente\'."</string>
     <string name="storage_notwritable">"Kann nicht verwendet werden"</string>
     <string name="storage_rationale">"Um Songs und Sets zu lesen und zu schreiben ist der Zugriff auf den Speicher erforderlich."</string>
     <string name="subscription">"(Abonnement erforderlich)"</string>
@@ -522,4 +521,5 @@
     <string name="filter_section">Abschnittsfilterung</string>
     <string name="show">Show</string>
     <string name="filter_structure">[*filter:V] = gefilterter Versabschnitt</string>
+    <string name="nofound">Kein vorheriger Ordner gefunden. Verwenden Sie die rote Taste, um einen Ort auszuwählen.</string>
 </resources>

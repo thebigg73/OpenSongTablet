@@ -298,7 +298,6 @@
     <string name="next">下一个</string>
     <string name="no">"没有"</string>
     <string name="nodisplays">"没有外部显示器连接。请连接到使用HDMI输出或MiraCast兼容的无线显示器辅助显示器。"</string>
-    <string name="nofound">"没有找到以前的安装。"</string>
     <string name="not_allowed">"此功能是不允许此项目"</string>
     <string name="note">"注意"</string>
     <string name="nothighenoughapi">"你需要的Android这个较新版本！"</string>
@@ -433,7 +432,7 @@
     <string name="storage_check">"检查存储"</string>
     <string name="storage_choose">"管理存储空间"</string>
     <string name="storage_ext">"外部存储"</string>
-    <string name="storage_help">"请选择默认存储位置为您OpenSong文件。您可以从选项菜单中的任何时候改变这一点。"</string>
+    <string name="storage_help">"请选择“ OpenSong”文件夹的位置。 这是OpenSong文件的默认存储位置。 您可以随时从“选项”菜单更改此设置。\n\n要进行更新或重新安装：\n您可以使用下面的黄色按钮找到以前的“ OpenSong”文件夹。\n\n选择位置时：\n使用菜单列出存储（您可能需要更改设置以显示所有存储）。 \n仅选择内部或SD卡存储，这些存储在其名称下方有详细信息。 \n建议使用内部存储。 这可能会列为设备存储或设备名称\n\n列出。在Android 10+上，您不应选择“下载”或“根”文件夹。 如有疑问，请选择“文档”文件夹。"</string>
     <string name="storage_notwritable">"无法使用"</string>
     <string name="storage_rationale">"访问您的存储需要读取和写入歌曲集。"</string>
     <string name="subscription">"（需订阅）"</string>
@@ -522,4 +521,5 @@
     <string name="filter_section">段过滤</string>
     <string name="filter_entry">在下面的新行中添加每个过滤器。</string>
     <string name="filter_structure">[*filter:V] =过滤后的经节</string>
+    <string name="nofound">找不到先前的资料夹。 使用红色按钮选择位置。</string>
 </resources>

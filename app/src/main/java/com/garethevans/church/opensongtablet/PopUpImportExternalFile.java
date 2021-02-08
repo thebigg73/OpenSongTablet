@@ -149,9 +149,11 @@ public class PopUpImportExternalFile extends DialogFragment {
             filetype = getString(R.string.song);
         }
         if (FullscreenActivity.file_uri!=null && FullscreenActivity.file_uri.getPath()!=null) {
-            ext = FullscreenActivity.file_uri.getPath();
+            ext = storageAccess.getActualFilename(requireContext(),FullscreenActivity.file_uri.toString());
             if (ext != null) {
                 ext = ext.toLowerCase(Locale.ROOT);
+                Log.d("PopUpImport","ext="+ext);
+
                 if (ext.endsWith(".backup")) {
                     s = getString(R.string.import_onsong_choose);
                     what = "onsongbackup";
@@ -906,7 +908,7 @@ public class PopUpImportExternalFile extends DialogFragment {
     private String improveFileName(Uri fileUri) {
         String betterFilename = "";
         if (fileUri!=null && fileUri.getLastPathSegment()!=null) {
-            betterFilename = fileUri.getLastPathSegment();
+            betterFilename = storageAccess.getActualFilename(requireContext(),fileUri.toString());
         }
         // IV - Adjusted to handle files at root of drive
         betterFilename = betterFilename.replace(":","/");

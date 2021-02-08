@@ -1998,7 +1998,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                 if (filelocation != null) {
                     boolean validfiletype = (FullscreenActivity.whattodo.equals("processimportosb") && filename.endsWith(".osb")) ||
-                            (FullscreenActivity.whattodo.equals("importos") && filelocation.endsWith(".backup")) ||
+                            (FullscreenActivity.whattodo.equals("importos") && filename.endsWith(".backup")) ||
                             FullscreenActivity.whattodo.equals("doimport") ||
                             FullscreenActivity.whattodo.equals("doimportset");
 

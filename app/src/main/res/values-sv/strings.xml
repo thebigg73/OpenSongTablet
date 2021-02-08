@@ -298,7 +298,6 @@
     <string name="next">"Nästa"</string>
     <string name="no">"Nej"</string>
     <string name="nodisplays">"Inga externa bildskärmar anslutna. Anslut till en sekundär bildskärm med hjälp av en HDMI-utgång eller en MiraCast-kompatibel trådlös skärm."</string>
-    <string name="nofound">"Inga tidigare installationer hittades."</string>
     <string name="not_allowed">"Den här funktionen är inte tillåten för det här objektet"</string>
     <string name="note">"Notera"</string>
     <string name="nothighenoughapi">"Du behöver en nyare version av Android för detta!"</string>
@@ -433,7 +432,7 @@
     <string name="storage_check">"Kontrollerar lagring"</string>
     <string name="storage_choose">"Hantera lagring"</string>
     <string name="storage_ext">"Extern lagring"</string>
-    <string name="storage_help">"Välj standard lagringsplats för dina OpenSong-filer. Du kan ändra detta när som helst från menyn Alternativ."</string>
+    <string name="storage_help">"Välj plats för din \'OpenSong\' -mapp. Detta är standardlagringsplatsen för OpenSong-filer. Du kan ändra detta när som helst från alternativmenyn.\n\nFör en uppdatering eller ominstallering:\nDu kan använda den gula knappen nedan för att hitta någon tidigare \'OpenSong\' -mapp.\n\nNär du väljer en plats:\nLista lagring med hjälp av menyn (du kan behöva ändra inställningar för att visa all lagring).\nVÄLJ ENDAST INTERNT ELLER SD-KORT-lagring, dessa har information under deras namn.\nIntern lagring rekommenderas. Detta kan listas som enhetslagring eller med enhetens namn\n\nPå Android 10+ bör du inte välja mappen Nedladdningar eller Root. Om du är osäker, välj mappen \'dokument\'."</string>
     <string name="storage_notwritable">"Kan inte användas"</string>
     <string name="storage_rationale">"Tillgång till din lagring krävs för att läsa och skriva sånger och uppsättningar."</string>
     <string name="subscription">"(Prenumeration krävs)"</string>
@@ -522,4 +521,5 @@
     <string name="filter_section">Sektionsfiltrering</string>
     <string name="filter_entry">Lägg till varje filter på en ny rad nedan.</string>
     <string name="filter_structure">[*filter:V] = filtrerad versavsnitt</string>
+    <string name="nofound">Ingen tidigare mapp hittades. Använd den röda knappen för att välja en plats.</string>
 </resources>

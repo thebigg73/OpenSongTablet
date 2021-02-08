@@ -97,7 +97,7 @@
     <string name="song_functionnotavailable">"Ova funkcija nije moguća za pesme"</string>
     <string name="latest_updates">"Poslednje izmene"</string>
     <string name="storage_choose">"Rad sa memorijom"</string>
-    <string name="storage_help">"Molimo odaberite podrazumevanu lokaciju memorije za Vaše OpenSong datoteke. Možete ovo promeniti u svakom trenutku iz menija Opcije."</string>
+    <string name="storage_help">"Izaberite mesto za direktorijum \'OpenSong\'. Ovo je podrazumevano mesto za skladištenje datoteka OpenSong. To možete promeniti u bilo kom trenutku iz menija Opcije.\n\nZa ažuriranje ili ponovnu instalaciju:\nMožete da koristite žuto dugme dole da biste pronašli bilo koji prethodni direktorijum „OpenSong“.\n\nKada birate lokaciju:\nNavedite memoriju pomoću menija (možda ćete morati da promenite postavke da biste prikazali svu memoriju).\nODABERITE SAMO UNUTRAŠNJU ILI SD KARTICU, one sadrže detalje ispod svog imena.\nPreporučuje se interna memorija. Ovo može biti navedeno kao skladište uređaja ili sa imenom vašeg uređaja\n\nNa Androidu 10+ ne biste trebali da izaberete fasciklu „Preuzimanja“ ili „Root“. Ako sumnjate, izaberite fasciklu „dokumenti“."</string>
     <string name="storage_ext">"Spoljna memorija"</string>
     <string name="link">"Veza"</string>
     <string name="link_choose">"Odabrati datoteku za vezu sa ovom pesmom"</string>
@@ -442,7 +442,6 @@
     <string name="existing">"Pronaći lokacije prethodnih OpenSong datoteka"</string>
     <string name="found">Već ste iskoristili sledeće lokacije za instalaciju.  Ovo ćete ipak morati da locirate i podesite ručno koristeći gornji crveni taster.</string>
     <string name="longpress">"Dugi pritisak/Držanje"</string>
-    <string name="nofound">"Nije pronađena prethodna instalacija"</string>
     <string name="pedal">"Pedala"</string>
     <string name="songsheet">"Notni zapis"</string>
     <string name="tap">"Kratak pritisak/Tap"</string>
@@ -522,4 +521,5 @@
     <string name="filter_section">Filtriranje sekcija</string>
     <string name="filter_entry">Dodajte svaki filter u novi red ispod.</string>
     <string name="filter_structure">[*filter:V] = filtrirani odeljak stiha</string>
+    <string name="nofound">Nije pronađena nijedna prethodna fascikla. Pomoću crvenog dugmeta odaberite lokaciju.</string>
 </resources>

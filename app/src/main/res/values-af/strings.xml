@@ -298,7 +298,6 @@
     <string name="next">Volgende</string>
     <string name="no">"Nee"</string>
     <string name="nodisplays">"Geen eksterne uitstallings verbind . Koppel aan 'n sekondêre vertoning met behulp van 'n HDMI-uitset of MiraCast versoenbaar draadloos vertoon ."</string>
-    <string name="nofound">"Geen vorige installasies gevind nie."</string>
     <string name="not_allowed">"Hierdie funksie is nie toegelaat om hierdie item"</string>
     <string name="note">"Nota"</string>
     <string name="nothighenoughapi">"Jy moet 'n nuwer weergawe van Android vir hierdie !"</string>
@@ -433,7 +432,7 @@
     <string name="storage_check">"Kontroleer stoorplek"</string>
     <string name="storage_choose">"Bestuur stoor"</string>
     <string name="storage_ext">"Eksterne stoor"</string>
-    <string name="storage_help">"Kies die standaard stoor plek vir jou OpenSong lêers. Jy kan dit enige tyd vanaf die Options menu verander."</string>
+    <string name="storage_help">"Kies die plek vir u \'OpenSong\'-lêergids. Dit is die standaardopbergplek vir OpenSong-lêers. U kan dit te eniger tyd in die Opsies-menu verander.\n\nVir \'n opdatering of herinstelling:\nU kan die geel knoppie hieronder gebruik om enige vorige \'OpenSong\'-lêergids te vind.\n\nWanneer u \'n plek kies:\nMaak \'n lys van berging met behulp van die menu (u moet dalk die instellings verander om alle berging te wys).\nKIES SLEGS INTERNE OF SD-KAART-berging, dit bevat besonderhede onder hul naam.\nInterne berging word aanbeveel. Dit kan gelys word as toestelberging of met die naam van u toestel\n\nOp Android 10+ moet u nie die aflaai- of rootmap kies nie. As u twyfel, kies die gids \'dokumente\'."</string>
     <string name="storage_notwritable">"Kan nie gebruik nie"</string>
     <string name="storage_rationale">"Toegang tot jou stoor is nodig om te lees en skryf liedjies en stelle."</string>
     <string name="subscription">"(Subskripsie benodig)"</string>
@@ -522,4 +521,5 @@
     <string name="filter_section">Seksie filter</string>
     <string name="filter_entry">Voeg elke filter op \'n nuwe reël hieronder by.</string>
     <string name="filter_structure">[*filter:V] = gefilterde versafdeling</string>
+    <string name="nofound">Geen vorige vouer gevind nie. Gebruik die rooi knoppie om \'n plek te kies.</string>
 </resources>

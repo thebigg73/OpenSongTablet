@@ -298,7 +298,6 @@
     <string name="next">Prossimo</string>
     <string name="no">"No"</string>
     <string name="nodisplays">"Non ci sono schermi esterni collegati . Si prega di collegarsi a un display secondario utilizzando una uscita HDMI o display wireless compatibile MiraCast ."</string>
-    <string name="nofound">"Nessuna installazione precedente trovata."</string>
     <string name="not_allowed">"Questa funzione non è consentita per questo articolo"</string>
     <string name="note">"Nota"</string>
     <string name="nothighenoughapi">"Hai bisogno di una versione più recente di Android per questo !"</string>
@@ -433,7 +432,7 @@
     <string name="storage_check">"Controllo dello spazio di archiviazione"</string>
     <string name="storage_choose">"Gestire lo spazio di archiviazione"</string>
     <string name="storage_ext">"Storage esterno"</string>
-    <string name="storage_help">"Scegliere il percorso di archiviazione predefinito per i file OpenSong. È possibile modificare in qualsiasi momento dal menu Opzioni."</string>
+    <string name="storage_help">"Scegli la posizione della cartella \'OpenSong\'. Questa è la posizione di archiviazione predefinita per i file OpenSong. Puoi modificare questa impostazione in qualsiasi momento dal menu Opzioni.\n\nPer un aggiornamento o una reinstallazione:\nÈ possibile utilizzare il pulsante giallo in basso per trovare qualsiasi cartella \'OpenSong\' precedente.\n\nQuando si seleziona una posizione:\nElenca la memoria utilizzando il menu (potrebbe essere necessario modificare le impostazioni per mostrare tutta la memoria).\nSELEZIONA SOLO memorie INTERNE O SCHEDE SD, queste hanno i dettagli sotto il loro nome.\nSi consiglia l'archiviazione interna. Potrebbe essere elencato come memoria del dispositivo o con il nome del tuo dispositivo\n\nSu Android 10+ non dovresti selezionare la cartella Download o Root. In caso di dubbio, scegli la cartella \'documenti\'."</string>
     <string name="storage_notwritable">"Impossibile utilizzare"</string>
     <string name="storage_rationale">"L\'accesso allo storage è necessario per leggere e scrivere canzoni e set."</string>
     <string name="subscription">"(Abbonamento richiesto)"</string>
@@ -522,4 +521,5 @@
     <string name="filter_section">Filtraggio di sezioni</string>
     <string name="filter_entry">Aggiungi ogni filtro su una nuova riga di seguito.</string>
     <string name="filter_structure">[*filter:V] = sezione di versi filtrata</string>
+    <string name="nofound">Nessuna cartella precedente trovata. Usa il pulsante rosso per scegliere una posizione.</string>
 </resources>
