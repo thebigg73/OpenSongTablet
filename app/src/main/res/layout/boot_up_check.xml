@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/popup_bg"
     android:id="@+id/page">
 
@@ -94,6 +95,15 @@
                     android:layout_height="wrap_content"
                     style="@style/MyInfoText"
                     android:text="@string/storage_help"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/moreinfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:backgroundTint="@color/colorPrimary"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_help_outline_white_36dp"
+                    android:contentDescription="@string/help" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

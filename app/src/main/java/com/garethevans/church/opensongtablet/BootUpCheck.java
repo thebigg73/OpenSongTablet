@@ -34,6 +34,7 @@ import androidx.documentfile.provider.DocumentFile;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -62,6 +63,7 @@ public class BootUpCheck extends AppCompatActivity {
     private Button userGuideButton;
     private Button previousStorageButton;
     private Button resetCacheButton;
+    private FloatingActionButton moreinfo;
     private LinearLayout storageLinearLayout;
     private LinearLayout readUpdate;
     private LinearLayout userGuideLinearLayout;
@@ -162,6 +164,7 @@ public class BootUpCheck extends AppCompatActivity {
         readUpdate = findViewById(R.id.readUpdate);
         version = findViewById(R.id.version);
         version.setText(versionCode);
+        moreinfo = findViewById(R.id.moreinfo);
         userGuideLinearLayout = findViewById(R.id.userGuideLinearLayout);
         userGuideButton = findViewById(R.id.userGuideButton);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -225,6 +228,16 @@ public class BootUpCheck extends AppCompatActivity {
         chooseStorageButton.setOnClickListener(v -> chooseStorageLocation());
         readUpdate.setOnClickListener(v -> {
             String url = "http://www.opensongapp.com/latest-updates";
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            try {
+                startActivity(i);
+            } catch (Exception e) {
+                Log.d("BootUpCheck", "Error showing activity");
+            }
+        });
+        moreinfo.setOnClickListener(v -> {
+            String url = "https://www.opensongapp.com/user-guide/setting-up-and-using-opensongapp/setting-up-opensong-tablet";
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             try {
@@ -357,7 +370,7 @@ public class BootUpCheck extends AppCompatActivity {
                 if ((warningText!=null) && (text.contains("/OpenSong/"))) {
                     uriTree = null;
                     warningText.setVisibility(View.VISIBLE);
-                } else {
+                } else if (warningText!=null){
                     warningText.setVisibility(View.GONE);
                 }
             } else {
@@ -527,7 +540,8 @@ public class BootUpCheck extends AppCompatActivity {
             if (uriTree != null) {
                 DocumentFile df = storageAccess.documentFileFromRootUri(BootUpCheck.this, uriTree, uriTree.getPath());
                 if (df==null || !df.canWrite()) {
-                    progressText.setText(getString(R.string.currentstorage) + ": " + getString(R.string.pleaseselect));
+                    String s = getString(R.string.currentstorage) + ": " + getString(R.string.pleaseselect);
+                    progressText.setText(s);
                 }
                 return df != null && df.canWrite();
             }
