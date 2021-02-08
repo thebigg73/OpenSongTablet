@@ -23,7 +23,7 @@
 
             <include
                 android:id="@+id/mytoolbar"
-                layout="@layout/_toolbar"
+                layout="@layout/newtoolbarinclude"
                 android:clipChildren="false"
                 android:clipToPadding="false" />
 

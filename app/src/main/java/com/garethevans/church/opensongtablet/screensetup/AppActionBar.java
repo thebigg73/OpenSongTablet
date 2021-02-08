@@ -29,6 +29,7 @@ public class AppActionBar {
     private final Runnable hideActionBarRunnable;
 
     private boolean hideActionBar;
+    private boolean performanceMode;
 
     public AppActionBar(ActionBar actionBar, BatteryStatus batteryStatus, TextView title, TextView author, TextView key, TextView capo, ImageView batteryDial,
                         TextView batteryText, TextView clock, boolean hideActionBar) {
@@ -61,7 +62,7 @@ public class AppActionBar {
     public void setActionBar(Context c, Preferences preferences, Song song, String newtitle) {
         if (song != null) {
             // We are in the Performance/Stage mode
-            showActionBar(false);
+            //showActionBar(false);
             float mainsize = preferences.getMyPreferenceFloat(c,"songTitleSize",13.0f);
 
             if (title != null && song.getTitle() != null) {
@@ -170,11 +171,18 @@ public class AppActionBar {
         }
     }
 
+
+    // Set when entering/exiting performance mode
+    public void setPerformanceMode(boolean inPerformanceMode) {
+        performanceMode = inPerformanceMode;
+    }
+
     // Show/hide the actionbar
-
-
-    public void showActionBar(boolean settingsView) {
-        // Show the ActionBar
+    public void showActionBar() {
+        // Show the ActionBar based on the user preferences
+        // If we are in performance mode (boolean set when opening/closing PerformanceFragment)
+        // The we can autohide if the user preferences state that's what is wanted
+        // If we are not in performance mode, we don't set a runnable to authide them
         try {
             delayactionBarHide.removeCallbacks(hideActionBarRunnable);
         } catch (Exception e) {
@@ -186,10 +194,10 @@ public class AppActionBar {
             actionBar.show();
         }
 
-        if (hideActionBar && !settingsView) {
+        if (hideActionBar && performanceMode) {
             try {
                 Log.d("AppActionBar","set delayed hide");
-                delayactionBarHide.postDelayed(hideActionBarRunnable, 1000);
+                delayactionBarHide.postDelayed(hideActionBarRunnable, 3000);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -198,5 +206,11 @@ public class AppActionBar {
 
     public void removeCallBacks() {
         delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+    }
+
+    public void overlayMode() {
+        if (hideActionBar && performanceMode) {
+            // Change the top padding of the view underneath
+        }
     }
 }

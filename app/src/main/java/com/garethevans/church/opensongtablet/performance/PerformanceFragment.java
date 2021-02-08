@@ -25,6 +25,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.metronome.Metronome;
 import com.garethevans.church.opensongtablet.pads.PadFunctions;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
+import com.garethevans.church.opensongtablet.screensetup.AppActionBar;
 import com.garethevans.church.opensongtablet.screensetup.DoVibrate;
 import com.garethevans.church.opensongtablet.screensetup.ShowToast;
 import com.garethevans.church.opensongtablet.screensetup.ThemeColors;
@@ -61,6 +62,7 @@ public class PerformanceFragment extends Fragment {
     private DoVibrate doVibrate;
     private SetTypeFace setTypeFace;
     private SongListBuildIndex songListBuildIndex;
+    private AppActionBar appActionBar;
 
     //private ShowCase showCase;
 
@@ -94,6 +96,9 @@ public class PerformanceFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        if (appActionBar!=null) {
+            appActionBar.setPerformanceMode(false);
+        }
         mainActivityInterface.registerFragment(null,"Performance");
     }
     @Override
@@ -112,10 +117,10 @@ public class PerformanceFragment extends Fragment {
         // Initialise the helper classes that do the heavy lifting
         initialiseHelpers();
         mainActivityInterface.lockDrawer(false);
-        mainActivityInterface.hideActionBar(false);
+        //mainActivityInterface.hideActionBar(false);
         mainActivityInterface.hideActionButton(false);
 
-        mainActivityInterface.changeActionBarVisible(false,false);
+        //mainActivityInterface.changeActionBarVisible(false,false);
         // Load in preferences
         loadPreferences();
 
@@ -126,6 +131,13 @@ public class PerformanceFragment extends Fragment {
 
         // Set listeners for the scroll/scale/gestures
         //setGestureListeners();
+
+        // Show the actionBar and hide it after a time if that's the user's preference
+        preferences.setMyPreferenceBoolean(requireContext(),"hideActionBar",false);
+
+        appActionBar.setHideActionBar(preferences.getMyPreferenceBoolean(requireContext(),"hideActionBar",false));
+        appActionBar.setPerformanceMode(true);
+        appActionBar.showActionBar();
 
         // Set tutorials
         Handler h = new Handler();
@@ -154,6 +166,7 @@ public class PerformanceFragment extends Fragment {
         metronome = mainActivityInterface.getMetronome();
         setTypeFace = mainActivityInterface.getMyFonts();
         songListBuildIndex = mainActivityInterface.getSongListBuildIndex();
+        appActionBar = mainActivityInterface.getAppActionBar();
 
         //showCase = new ShowCase();
 /*

@@ -71,8 +71,8 @@ public class PerformanceGestures {
         }
         mainActivityInterface.getAutoscrollActions().setWasScrolling(false);
         try {
-            appActionBar.removeCallBacks();
-            appActionBar.showActionBar(true);
+            //appActionBar.removeCallBacks();
+            //appActionBar.showActionBar(true);
         } catch (Exception e) {
             e.printStackTrace();
         }

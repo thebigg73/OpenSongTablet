@@ -17,7 +17,6 @@ import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -266,14 +265,14 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         drawerLayout = activityMainBinding.drawerLayout;
 
         View view = activityMainBinding.getRoot();
-        view.setOnSystemUiVisibilityChangeListener(
+        /*view.setOnSystemUiVisibilityChangeListener(
                 visibility -> {
                     Log.d("MainActivity","UiVisibility changed");
                     if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
                         appActionBar.showActionBar(settingsOpen);
                         setWindowFlags();
                     }
-                });
+                });*/
 
         // get the gesture detector
         setContentView(view);
@@ -616,15 +615,15 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Set the fullscreen window flags]
         if (hasFocus) {
             setWindowFlags();
-            appActionBar.showActionBar(settingsOpen);
+            //appActionBar.showActionBar(settingsOpen);
         }
     }
-    @Override
+    /*@Override
     public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
         gestureDetector.onTouchEvent(ev); // Dealt with in ActivityGestureDetector
         return false;
 
-    }
+    }*/
 
 
 
@@ -886,6 +885,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             activityMainBinding.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             activityMainBinding.drawerLayout.openDrawer(GravityCompat.START);
+
         }
     }
     @Override
