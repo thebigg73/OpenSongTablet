@@ -3567,9 +3567,6 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
-        Log.d("StageMode","requestCode: "+requestCode);
-        Log.d("StageMode","resultCode: "+resultCode);
-        Log.d("StageMode","data: "+data);
         super.onActivityResult(requestCode,resultCode,data);
         if (requestCode == StaticVariables.LINK_AUDIO || requestCode == StaticVariables.LINK_OTHER) {
             // This has been called from the popuplinks fragment
@@ -3620,16 +3617,12 @@ public class StageMode extends AppCompatActivity implements
                 }
 
                 String filename = storageAccess.getActualFilename(StageMode.this,filelocation);
-                Log.d("StageMode","filename="+filename);
-                Log.d("StageMode","whattodo="+FullscreenActivity.whattodo);
 
                 if (filelocation != null) {
                     boolean validfiletype = (FullscreenActivity.whattodo.equals("processimportosb") && filename.endsWith(".osb")) ||
                             (FullscreenActivity.whattodo.equals("importos") && filename.endsWith(".backup")) ||
                             FullscreenActivity.whattodo.equals("doimport") ||
                             FullscreenActivity.whattodo.equals("doimportset");
-
-                    Log.d("StageMode","validfiletype="+validfiletype);
 
                     if (validfiletype) {
                         if (filelocation.startsWith("content")) {

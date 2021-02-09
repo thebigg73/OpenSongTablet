@@ -11,6 +11,7 @@ import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -493,12 +494,16 @@ class StorageAccess {
     @SuppressLint("NewApi")
     ArrayList<String> listSongs(Context c, Preferences preferences) {
         ArrayList<String> noSongs = new ArrayList<>();
+        // We need to make sure the locale version of MAIN is correct (change language during run)
+        Configuration configuration = new Configuration(c.getResources().getConfiguration());
+        configuration.setLocale(StaticVariables.locale);
+        String mainfolder = c.createConfigurationContext(configuration).getResources().getString(R.string.mainfoldername);
         try {
             // Decide if we are using storage access framework or not
             if (lollipopOrLater()) {
-                return listSongs_SAF(c, preferences);
+                return listSongs_SAF(c, preferences,mainfolder);
             } else {
-                return listSongs_File(c, preferences);
+                return listSongs_File(c, preferences,mainfolder);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -506,7 +511,7 @@ class StorageAccess {
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private ArrayList<String> listSongs_SAF(Context c, Preferences preferences) {
+    private ArrayList<String> listSongs_SAF(Context c, Preferences preferences,String mainfolder) {
         // This gets all songs (including any subfolders)
         ArrayList<String> songIds = new ArrayList<>();
         Uri uri = getUriForItem(c,preferences,"Songs","","");
@@ -533,14 +538,15 @@ class StorageAccess {
                     while (cursor.moveToNext()) {
                         final String docId = cursor.getString(0);
                         final String mime = cursor.getString(2);
+                        Log.d("StorageAccess","docId="+docId);
                         if (DocumentsContract.Document.MIME_TYPE_DIR.equals(mime) && docId.contains("OpenSong")) {
                             final Uri newNode = getChildren(children, docId);
                             dirNodes.add(newNode);
                             if (docId.contains("OpenSong/Songs/")) {
-                                songIds.add(songFolderAndFileOnly(c,docId+"/")); // In case the folder is empty add it as a songId
+                                songIds.add(songFolderAndFileOnly(docId+"/",mainfolder)); // In case the folder is empty add it as a songId
                             }
                         } else if (docId.contains("OpenSong/Songs/")) {
-                            songIds.add(songFolderAndFileOnly(c,docId));
+                            songIds.add(songFolderAndFileOnly(docId,mainfolder));
                         }
                     }
                     cursor.close();
@@ -551,7 +557,7 @@ class StorageAccess {
         }
         return songIds;
     }
-    private ArrayList<String> listSongs_File(Context c, Preferences preferences) {
+    private ArrayList<String> listSongs_File(Context c, Preferences preferences, String mainfolder) {
         // We must be using an older version of Android, so stick with File access
         ArrayList<String> songIds = new ArrayList<>();  // These will be the file locations
 
@@ -570,10 +576,10 @@ class StorageAccess {
             for (File item : Objects.requireNonNull(contents)) {
                 if (item.isDirectory()) {
                     foldersToIndex.add(item.getPath());
-                    songIds.add(songFolderAndFileOnly(c,item.getPath())+"/");
+                    songIds.add(songFolderAndFileOnly(item.getPath(),mainfolder)+"/");
                     num = foldersToIndex.size();
                 } else if (item.isFile()) {
-                    songIds.add(songFolderAndFileOnly(c,item.getPath()));
+                    songIds.add(songFolderAndFileOnly(item.getPath(),mainfolder));
                 }
             }
         }
@@ -1523,14 +1529,14 @@ class StorageAccess {
         return b;
     }
 
-    private String songFolderAndFileOnly(Context c, String uriString) {
+    private String songFolderAndFileOnly(String uriString, String mainfolder) {
         // Get rid of all the uri info up to the end of /OpenSong/Songs
         // Also adds mainfoldername if the song isn't in a subfolder
         if (uriString.contains("OpenSong/Songs/")) {
             uriString = uriString.substring(uriString.indexOf("OpenSong/Songs/")+15);
         }
         if (!uriString.contains("/")) {
-            uriString = c.getString(R.string.mainfoldername) + "/" + uriString;
+            uriString = mainfolder + "/" + uriString;
         }
         uriString = uriString.replace("//","/");
         return uriString;
@@ -1541,7 +1547,7 @@ class StorageAccess {
         StringBuilder stringBuilder = new StringBuilder();
 
         // Sort the array
-        Locale locale = new Locale(preferences.getMyPreferenceString(c,"locale","en"));
+        Locale locale = new Locale(preferences.getMyPreferenceString(c,"language","en"));
         Collator collator = Collator.getInstance(locale);
         collator.setStrength(Collator.SECONDARY);
         Collections.sort(songIds,collator);

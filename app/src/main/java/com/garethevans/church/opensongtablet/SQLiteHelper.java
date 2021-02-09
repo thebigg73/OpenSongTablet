@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -200,7 +201,6 @@ class SQLiteHelper extends SQLiteOpenHelper {
             values.put(SQLite.COLUMN_AKA, escapedSQL(sqLite.getAka()));
 
             long l = db.update(SQLite.TABLE_NAME, values, SQLite.COLUMN_ID + "=?", new String[]{String.valueOf(sqLite.getId())});
-            Log.d("updateSong", "l=" + l);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -528,6 +528,11 @@ class SQLiteHelper extends SQLiteOpenHelper {
             SQLiteStatement stmt = db.compileStatement(sql);
             ArrayList<String> songIds = getListOfSongs(c, storageAccess);
 
+            // Lookout for language changes messing with the mainfoldername
+            Configuration configuration = new Configuration(c.getResources().getConfiguration());
+            configuration.setLocale(StaticVariables.locale);
+            String newmain = c.createConfigurationContext(configuration).getResources().getString(R.string.mainfoldername);
+
             for (String s : songIds) {
 
                 String filename;
@@ -542,7 +547,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
                     foldername = s.replace(filename, "");
                 } else {
                     filename = s;
-                    foldername = c.getString(R.string.mainfoldername);
+                    foldername = newmain;
                 }
 
                 filename = filename.replace("/", "");

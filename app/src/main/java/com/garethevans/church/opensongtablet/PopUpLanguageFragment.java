@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +16,15 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.Locale;
+
 public class PopUpLanguageFragment extends DialogFragment {
 
     private String tempLanguage;
     private Preferences preferences;
+    private SQLiteHelper sqLiteHelper;
+    private StorageAccess storageAccess;
 
     static PopUpLanguageFragment newInstance() {
         PopUpLanguageFragment frag;
@@ -62,6 +68,8 @@ public class PopUpLanguageFragment extends DialogFragment {
         });
 
         preferences = new Preferences();
+        sqLiteHelper = new SQLiteHelper(requireContext());
+        storageAccess = new StorageAccess();
 
         // Initialise the views
         ListView languagescroll = V.findViewById(R.id.languagescroll);
@@ -69,7 +77,8 @@ public class PopUpLanguageFragment extends DialogFragment {
         // Go through the language array and create radio buttons for each
         int positionselected;
 
-        switch (preferences.getMyPreferenceString(getContext(),"language","en")) {
+        String currentLanguage = preferences.getMyPreferenceString(getContext(), "language", "en");
+        switch (currentLanguage) {
             case "af":
                 positionselected = 0;
                 break;
@@ -188,7 +197,27 @@ public class PopUpLanguageFragment extends DialogFragment {
     }
 
     private void doSave() {
+        boolean fixmain = false;
+        String oldmain = getString(R.string.mainfoldername);
+        if (StaticVariables.whichSongFolder.equals(oldmain)) {
+            fixmain = true;
+        }
         preferences.setMyPreferenceString(getContext(),"language",tempLanguage);
+        Configuration configuration = new Configuration(requireContext().getResources().getConfiguration());
+        Locale locale = new Locale(tempLanguage);
+        configuration.setLocale(locale);
+        StaticVariables.locale = locale;
+        String newmain = requireContext().createConfigurationContext(configuration).getResources().getString(R.string.mainfoldername);
+        if (fixmain) {
+            StaticVariables.whichSongFolder = newmain;
+            preferences.setMyPreferenceString(requireContext(),"whichSongFolder",newmain);
+        }
+
+        // Reset the songs lists
+        ArrayList<String> songIds = storageAccess.listSongs(requireContext(),preferences);
+        storageAccess.writeSongIDFile(requireContext(),preferences,songIds);
+        sqLiteHelper.resetDatabase(requireContext());
+        sqLiteHelper.insertFast(requireContext(),storageAccess);
         // Unfortunately this means the MAIN folder name isn't right!
         dismiss();
         requireActivity().recreate();
