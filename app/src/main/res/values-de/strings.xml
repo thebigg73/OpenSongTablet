@@ -432,7 +432,6 @@
     <string name="storage_check">"Speicher prüfen"</string>
     <string name="storage_choose">"Speicher verwalten"</string>
     <string name="storage_ext">"Externer Speicher"</string>
-    <string name="storage_help">"Bitte wählen Sie den Speicherort für Ihren \'OpenSong\'-Ordner. Dies ist der Standardspeicherort für OpenSong-Dateien. Sie können dies jederzeit über das Menü Optionen ändern.\n\nFür ein Update oder eine Neuinstallation:\nSie können die gelbe Schaltfläche unten verwenden, um nach einem früheren \'OpenSong\'-Ordner zu suchen.\n\nBei Auswahl eines Speicherorts:\nListen Sie den Speicher über das Menü auf (möglicherweise müssen Sie die Einstellungen ändern, um den gesamten Speicher anzuzeigen).\nWÄHLEN SIE NUR INTERNEN ODER SD-KARTENSpeicher aus. Diese enthalten Details unter ihrem Namen.\nInterner Speicher wird empfohlen. Dies kann als Gerätespeicher oder mit dem Namen Ihres Geräts aufgeführt sein.\n\nUnter Android 10+ sollten Sie nicht den Ordner Downloads oder Root auswählen. Wählen Sie im Zweifelsfall den Ordner \'Dokumente\'."</string>
     <string name="storage_notwritable">"Kann nicht verwendet werden"</string>
     <string name="storage_rationale">"Um Songs und Sets zu lesen und zu schreiben ist der Zugriff auf den Speicher erforderlich."</string>
     <string name="subscription">"(Abonnement erforderlich)"</string>
@@ -522,4 +521,7 @@
     <string name="show">Show</string>
     <string name="filter_structure">[*filter:V] = gefilterter Versabschnitt</string>
     <string name="nofound">Kein vorheriger Ordner gefunden. Verwenden Sie die rote Taste, um einen Ort auszuwählen.</string>
+    <string name="storage_quicktip">" Bei Auswahl eines Speicherorts:\n Listen Sie den Speicher über das Menü auf (möglicherweise müssen Sie die Einstellungen ändern, um den gesamten Speicher anzuzeigen).\n Wählen Sie nur den internen oder SD-Kartenspeicher.\n Interner Speicher wird empfohlen. Dies kann als Gerätespeicher oder mit dem Namen Ihres Geräts aufgeführt werden.\n Unter Android 10+ sollten Sie nicht den Ordner Downloads oder Root auswählen. Wählen Sie im Zweifelsfall den Ordner \"Dokumente\"."</string>
+    <string name="storage_help">Bitte wählen Sie den Speicherort für Ihren \'OpenSong\'-Ordner. Dies ist der Standardspeicherort für OpenSong-Dateien. Sie können dies jederzeit über das Menü Optionen ändern. Interner Speicher wird empfohlen.\n\nFür ein Update oder eine Neuinstallation:\nSie können die gelbe Schaltfläche unten verwenden, um einen früheren \'OpenSong\'-Ordner zu finden.</string>
+    <string name="information">Information</string>
 </resources>

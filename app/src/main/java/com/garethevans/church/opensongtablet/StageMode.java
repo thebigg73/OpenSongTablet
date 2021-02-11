@@ -3053,7 +3053,7 @@ public class StageMode extends AppCompatActivity implements
                 if (preferences.getMyPreferenceBoolean(StageMode.this,"ccliAutomaticLogging",false)) {
                     PopUpCCLIFragment.addUsageEntryToLog(StageMode.this, preferences, StaticVariables.whichSongFolder + "/" + StaticVariables.songfilename,
                             StaticVariables.mTitle, StaticVariables.mAuthor,
-                            StaticVariables.mCopyright, StaticVariables.mCCLI,"2"); // Deleted
+                            StaticVariables.mCopyright, StaticVariables.mCCLI, "2"); // Deleted
                 }
                 // Remove the item from the SQL database
                 if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
@@ -3063,7 +3063,10 @@ public class StageMode extends AppCompatActivity implements
                     sqLiteHelper.deleteSong(StageMode.this, sqLite.getSongid());
                 }
                 prepareSongMenu();
-
+                // IV - Load previous song to keep place in list
+                goToPreviousItem();
+                // IV - A backstop loadsong() to display song as deleted if there is no previous song (if previous is running loadsong() this second call is abandoned)
+                loadSong();
                 break;
 
             case "deleteset":
@@ -3887,9 +3890,8 @@ public class StageMode extends AppCompatActivity implements
                 FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent - 1;
                 dealtwithaspdf = true;
 
-            // GE Added this to stop the pad reloading between PDF pages
-            StaticVariables.reloadOfSong = false;
-
+                // GE Added this to stop the pad reloading between PDF pages
+                StaticVariables.reloadOfSong = false;
 
                 loadSong();
             } else {

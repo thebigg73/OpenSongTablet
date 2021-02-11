@@ -1715,16 +1715,15 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 }
 
                 // Remove the item from the SQL database
-                // Get the SQLite stuff
-                try {
-                    if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
-                        nonOpenSongSQLiteHelper.deleteSong(PresenterMode.this, storageAccess, preferences, nonOpenSongSQLite.getSongid());
-                    }
-                    sqLiteHelper.deleteSong(PresenterMode.this, sqLite.getSongid());
-                    prepareSongMenu();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                    nonOpenSongSQLiteHelper.deleteSong(PresenterMode.this, storageAccess, preferences, nonOpenSongSQLite.getSongid());
                 }
+                if (sqLite!=null && sqLite.getSongid()!=null) {
+                    sqLiteHelper.deleteSong(PresenterMode.this, sqLite.getSongid());
+                }
+                prepareSongMenu();
+                // IV - Load song to display as deleted
+                loadSong();
                 break;
 
             case "deleteset":

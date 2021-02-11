@@ -97,7 +97,6 @@
     <string name="song_functionnotavailable">"Ova funkcija nije moguća za pesme"</string>
     <string name="latest_updates">"Poslednje izmene"</string>
     <string name="storage_choose">"Rad sa memorijom"</string>
-    <string name="storage_help">"Izaberite mesto za direktorijum \'OpenSong\'. Ovo je podrazumevano mesto za skladištenje datoteka OpenSong. To možete promeniti u bilo kom trenutku iz menija Opcije.\n\nZa ažuriranje ili ponovnu instalaciju:\nMožete da koristite žuto dugme dole da biste pronašli bilo koji prethodni direktorijum „OpenSong“.\n\nKada birate lokaciju:\nNavedite memoriju pomoću menija (možda ćete morati da promenite postavke da biste prikazali svu memoriju).\nODABERITE SAMO UNUTRAŠNJU ILI SD KARTICU, one sadrže detalje ispod svog imena.\nPreporučuje se interna memorija. Ovo može biti navedeno kao skladište uređaja ili sa imenom vašeg uređaja\n\nNa Androidu 10+ ne biste trebali da izaberete fasciklu „Preuzimanja“ ili „Root“. Ako sumnjate, izaberite fasciklu „dokumenti“."</string>
     <string name="storage_ext">"Spoljna memorija"</string>
     <string name="link">"Veza"</string>
     <string name="link_choose">"Odabrati datoteku za vezu sa ovom pesmom"</string>
@@ -522,4 +521,7 @@
     <string name="filter_entry">Dodajte svaki filter u novi red ispod.</string>
     <string name="filter_structure">[*filter:V] = filtrirani odeljak stiha</string>
     <string name="nofound">Nije pronađena nijedna prethodna fascikla. Pomoću crvenog dugmeta odaberite lokaciju.</string>
+    <string name="storage_quicktip">Када бирате локацију:\nНаведите меморијски простор помоћу менија (можда ћете морати да промените поставке да бисте приказали сву меморију).\nОДАБЕРИТЕ САМО УНУТРАШЊУ ИЛИ СД КАРТИЦУ.\nПрепоручује се интерно складиштење. Ово може бити наведено као складиште уређаја или са именом вашег уређаја.\nНа Андроиду 10+ не би требало да изаберете директоријум Преузимања или Роот. Ако сумњате, изаберите фасциклу „Документи“.</string>
+    <string name="storage_help">Изаберите место за директоријум \'OpenSong\'. Ово је подразумевано место за складиштење датотека ОпенСонг. То можете променити у било ком тренутку из менија Опције. Препоручује се интерно складиштење.\n\nЗа ажурирање или поновну инсталацију:\nПомоћу жутог дугмета у наставку можете пронаћи било коју претходну фасциклу „OpenSong“.</string>
+    <string name="information">Информације</string>
 </resources>
