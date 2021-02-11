@@ -58,11 +58,13 @@ public class BootUpCheck extends AppCompatActivity {
     private TextView previousStorageHeading;
     private TextView currentAction;
     private TextView warningText;
+    private TextView MyQuicktip;
     private Button chooseStorageButton;
     private Button goToSongsButton;
     private Button userGuideButton;
     private Button previousStorageButton;
     private Button resetCacheButton;
+    private FloatingActionButton quicktip;
     private FloatingActionButton moreinfo;
     private LinearLayout storageLinearLayout;
     private LinearLayout readUpdate;
@@ -157,6 +159,7 @@ public class BootUpCheck extends AppCompatActivity {
     private void identifyViews() {
         warningText = findViewById(R.id.warningText);
         progressText = findViewById(R.id.progressText);
+        MyQuicktip = findViewById(R.id.MyQuicktip);
         goToSongsButton = findViewById(R.id.goToSongsButton);
         chooseStorageButton = findViewById(R.id.chooseStorageButton);
         storageLinearLayout = findViewById(R.id.storageLinearLayout);
@@ -164,6 +167,7 @@ public class BootUpCheck extends AppCompatActivity {
         readUpdate = findViewById(R.id.readUpdate);
         version = findViewById(R.id.version);
         version.setText(versionCode);
+        quicktip = findViewById(R.id.quicktip);
         moreinfo = findViewById(R.id.moreinfo);
         userGuideLinearLayout = findViewById(R.id.userGuideLinearLayout);
         userGuideButton = findViewById(R.id.userGuideButton);
@@ -234,6 +238,14 @@ public class BootUpCheck extends AppCompatActivity {
                 startActivity(i);
             } catch (Exception e) {
                 Log.d("BootUpCheck", "Error showing activity");
+            }
+        });
+        quicktip.setOnClickListener(v -> {
+            // IV - Toggle quicktip display
+            if (MyQuicktip.getVisibility() == View.GONE)  {
+                MyQuicktip.setVisibility(View.VISIBLE);
+            } else {
+                MyQuicktip.setVisibility(View.GONE);
             }
         });
         moreinfo.setOnClickListener(v -> {
@@ -358,7 +370,7 @@ public class BootUpCheck extends AppCompatActivity {
             // The  storage location getPath is likely something like /tree/primary:/document/primary:/OpenSong
             // This is due to the content using a document contract
             // IV: Exclude raw storage
-            if (!text.startsWith("/tree/raw:") & text.contains(":")) {
+            if (!text.startsWith("/tree/raw:") & !text.startsWith("/tree/msd:") & text.contains(":")) {
                 // IV - When not an internal path (more patterns may be needed) indicate as external
                 if (!text.contains("/tree/primary")) { extra = this.getResources().getString(R.string.storage_ext); }
                 text = "/" + text.substring(text.lastIndexOf(":") + 1);

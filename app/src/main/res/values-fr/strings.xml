@@ -432,7 +432,6 @@
     <string name="storage_check">"Vérification du stockage"</string>
     <string name="storage_choose">"Gérer le stockage"</string>
     <string name="storage_ext">"Stockage externe"</string>
-    <string name="storage_help">"Veuillez choisir l\'emplacement de votre dossier «OpenSong». Il s\'agit de l\'emplacement de stockage par défaut des fichiers OpenSong. Vous pouvez modifier cela à tout moment dans le menu Options.\n\nPour une mise à jour ou une réinstallation:\nVous pouvez utiliser le bouton jaune ci-dessous pour trouver n\'importe quel dossier \'OpenSong\' précédent.\n\nLors de la sélection d\'un emplacement:\nLister le stockage à l\'aide du menu (vous devrez peut-être modifier les paramètres pour afficher tout le stockage).\nSELECTIONNEZ UNIQUEMENT le stockage INTERNE OU CARTE SD, ceux-ci ont des détails sous leur nom.\nLe stockage interne est recommandé. Cela peut être répertorié comme stockage de l\'appareil ou avec le nom de votre appareil\n\nSur Android 10+, vous ne devez pas sélectionner le dossier Téléchargements ou racine. En cas de doute, choisissez le dossier «documents»."</string>
     <string name="storage_notwritable">"Impossible d'utiliser"</string>
     <string name="storage_rationale">"Un accès à votre espace de stockage est nécessaire pour lire et écrire des chansons et des listes."</string>
     <string name="subscription">"(Souscription requise)"</string>
@@ -522,4 +521,7 @@
     <string name="hide">Cacher</string>
     <string name="filter_structure">[*filter:V] = section de vers filtrée</string>
     <string name="nofound">Aucun dossier précédent trouvé. Utilisez le bouton rouge pour choisir un emplacement.</string>
+    <string name="storage_quicktip">Lors de la sélection d\'un emplacement:\nRépertoriez le stockage à l\'aide du menu (vous devrez peut-être modifier les paramètres pour afficher tout le stockage).\nSÉLECTIONNEZ UNIQUEMENT le stockage INTERNE OU CARTE SD.\nLe stockage interne est recommandé. Cela peut être répertorié comme stockage de l\'appareil ou avec le nom de votre appareil.\nSur Android 10+, vous ne devez pas sélectionner le dossier Téléchargements ou racine. En cas de doute, choisissez le dossier «Documents».</string>
+    <string name="storage_help">Veuillez choisir l\'emplacement de votre dossier «OpenSong». Il s\'agit de l\'emplacement de stockage par défaut des fichiers OpenSong. Vous pouvez modifier cela à tout moment dans le menu Options. Le stockage interne est recommandé.\n\nPour une mise à jour ou une réinstallation:\nvous pouvez utiliser le bouton jaune ci-dessous pour trouver n\'importe quel dossier \'OpenSong\' précédent.</string>
+    <string name="information">Information</string>
 </resources>

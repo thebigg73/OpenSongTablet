@@ -228,7 +228,7 @@
     <string name="importnewset">"Importar un conjunto"</string>
     <string name="importnewsong">"Importar una canción"</string>
     <string name="inc_autoscroll_speed">"Aumenta la velocidad de Autoscroll"</string>
-    <string name="initialisesongs_start">"Iniciando carpeta 'Songs' -"</string>
+    <string name="initialisesongs_start">Información</string>
     <string name="instrument">Instrumento</string>
     <string name="intro">"OpenSongApp utiliza canciones creadas en OpenSong y los muestra en la pantalla del tablet."</string>
     <string name="item">"Artículo"</string>
@@ -432,7 +432,6 @@
     <string name="storage_check">"Control de almacenamiento"</string>
     <string name="storage_choose">"Administrar almacenamiento"</string>
     <string name="storage_ext">"Almacenamiento externo"</string>
-    <string name="storage_help">"Elija la ubicación de su carpeta \'OpenSong\'. Esta es la ubicación de almacenamiento predeterminada para los archivos de OpenSong. Puede cambiar esto en cualquier momento desde el menú Opciones.\n\nPara una actualización o reinstalación:\nPuede usar el botón amarillo a continuación para buscar cualquier carpeta \'OpenSong\' anterior.\n\nAl seleccionar una ubicación:\nEnumere el almacenamiento mediante el menú (es posible que deba cambiar la configuración para mostrar todo el almacenamiento).\nSELECCIONE SOLO ALMACENAMIENTO INTERNO O TARJETA SD, estos tienen detalles debajo de su nombre.\nSe recomienda almacenamiento interno. Esto puede aparecer como almacenamiento del dispositivo o con el nombre de su dispositivo\n\nEn Android 10+, no debe seleccionar la carpeta Descargas o Root. En caso de duda, elija la carpeta \'documentos\'."</string>
     <string name="storage_notwritable">"No se puede usar"</string>
     <string name="storage_rationale">"Se requiere acceso a su almacenamiento a leer y escribir canciones y juegos."</string>
     <string name="subscription">"(Se requiere suscripción)"</string>
@@ -522,4 +521,7 @@
     <string name="filter_entry">Agregue cada filtro en una nueva línea a continuación.</string>
     <string name="filter_structure">[*filtro:V] = sección de verso filtrado</string>
     <string name="nofound">No se encontró ninguna carpeta anterior. Utilice el botón rojo para elegir una ubicación.</string>
+    <string name="storage_quicktip">Al seleccionar una ubicación:\nEnumere el almacenamiento mediante el menú (es posible que deba cambiar la configuración para mostrar todo el almacenamiento).\nSELECCIONE SOLO ALMACENAMIENTO INTERNO O EN TARJETA SD.\nSe recomienda almacenamiento interno. Esto puede aparecer como almacenamiento del dispositivo o con el nombre de su dispositivo.\nEn Android 10+, no debe seleccionar la carpeta Descargas o raíz. En caso de duda, elija la carpeta \'Documentos\'.</string>
+    <string name="storage_help">Elija la ubicación de su carpeta \'OpenSong\'. Esta es la ubicación de almacenamiento predeterminada para los archivos de OpenSong. Puede cambiar esto en cualquier momento desde el menú Opciones. Se recomienda almacenamiento interno.\n\nPara una actualización o reinstalación:\nPuede usar el botón amarillo a continuación para buscar cualquier carpeta \'OpenSong\' anterior.</string>
+    <string name="information">" Información"</string>
 </resources>
