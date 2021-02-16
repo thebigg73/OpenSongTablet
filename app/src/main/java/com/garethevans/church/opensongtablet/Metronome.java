@@ -83,7 +83,7 @@ class Metronome {
 	private void play(String pan, float vol) {
 		calcSilence();
         // IV - We align sounds to beat using the clock
-		duration = (int) ((60/bpm)*(1000));
+        final long time_in_millisecs = (long) (((60.0f / (float) PopUpMetronomeFragment.bpm) * 500)) * 2;
 		// IV - We have a short first beat to compensate for loop start delay
         long nexttime = System.currentTimeMillis() - 200;
 		do {
@@ -110,7 +110,7 @@ class Metronome {
 			if(currentBeat > beat) {
                 currentBeat = 1;
             }
-            nexttime = nexttime + duration;
+            nexttime = nexttime + time_in_millisecs;
 		} while(play);
 	}
 	
