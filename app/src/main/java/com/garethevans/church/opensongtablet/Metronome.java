@@ -18,7 +18,7 @@ class Metronome {
     private boolean play = true;
 
 	private final AudioGenerator audioGenerator = new AudioGenerator(8000);
-    private double[] soundTickArray, soundTockArray, silenceSoundArray;
+    private double[] soundTickArray, soundTockArray, soundSilenceArray;
 	private int currentBeat = 1;
 	private int runningBeatCount;
 	static private int maxBeatCount;
@@ -70,7 +70,8 @@ class Metronome {
             tock = audioGenerator.getSineWave(tick1, 8000, sound);
         }
         // IV - Build double interval sound arrays of silence - overwrite start with tick/tock
-        duration = (int) (((60/bpm)*(8000)) * 2);
+        // IV - Make intentionally slightly short
+        duration = (int) ((((60/bpm)*(8000)) * 2) - 100);
         soundTickArray = new double[duration];
         soundTockArray = new double[duration];
 		for(int i = 0; i< tick1; i++) {
@@ -81,7 +82,17 @@ class Metronome {
 
 	private void play(String pan, float vol) {
 		calcSilence();
+        // IV - We align sounds to beat using the clock
+		duration = (int) ((60/bpm)*(1000));
+		// IV - We have a short first beat to compensate for loop start delay
+        long nexttime = System.currentTimeMillis() - 200;
 		do {
+		    // IV - Sound jitter means sound periods are not exact
+            // IV - An adjustment is made to align the next sound start with the beat
+            if ((nexttime - System.currentTimeMillis()) > 0) {
+                soundSilenceArray = new double[(int) ((nexttime - System.currentTimeMillis()) * 8)];
+                audioGenerator.writeSound(pan, vol, soundSilenceArray);
+            }
 			if(currentBeat == 1) {
 				audioGenerator.writeSound(pan,vol,soundTockArray);
 			} else {
@@ -96,8 +107,10 @@ class Metronome {
                 // IV - This variable is a state indicator set in this function only
                 StaticVariables.clickedOnMetronomeStart = false;
             }
-			if(currentBeat > beat)
-				currentBeat = 1;
+			if(currentBeat > beat) {
+                currentBeat = 1;
+            }
+            nexttime = nexttime + duration;
 		} while(play);
 	}
 	

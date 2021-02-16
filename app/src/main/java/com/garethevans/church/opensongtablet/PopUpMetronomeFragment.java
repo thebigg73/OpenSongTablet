@@ -33,6 +33,9 @@ public class PopUpMetronomeFragment extends DialogFragment {
         restartRequested = false;
     };
 
+    private final Handler doStartStopCheck = new Handler();
+    private final Runnable onEverySecond = this::prepareStartStopProgress;
+
     static PopUpMetronomeFragment newInstance() {
         PopUpMetronomeFragment frag;
         frag = new PopUpMetronomeFragment();
@@ -145,6 +148,8 @@ public class PopUpMetronomeFragment extends DialogFragment {
 
         if (StaticVariables.metronomeonoff.equals("on")) {
             popupmetronome_startstopbutton.setText(getString(R.string.stop));
+            doStartStopCheck.removeCallbacks(onEverySecond);
+            doStartStopCheck.postDelayed(onEverySecond, 1000);
         } else {
             popupmetronome_startstopbutton.setText(getString(R.string.start));
         }
@@ -222,6 +227,8 @@ public class PopUpMetronomeFragment extends DialogFragment {
                 popupmetronome_startstopbutton.setText(getString(R.string.stop));
                 StaticVariables.metronomeonoff = "on";
                 StaticVariables.clickedOnMetronomeStart = true;
+                doStartStopCheck.removeCallbacks(onEverySecond);
+                doStartStopCheck.postDelayed(onEverySecond, 1000);
                 StaticVariables.whichbeat = "b";
                 Metronome.metroTask = new Metronome.MetronomeAsyncTask(preferences.getMyPreferenceString(getContext(),"metronomePan","C"),
                         preferences.getMyPreferenceFloat(getContext(),"metronomeVol",0.5f),
@@ -358,6 +365,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         doSave();
         // IV - Remove any restart callbacks
         restartMetronome.removeCallbacks(restartMetronomeRunnable);
+        doStartStopCheck.removeCallbacks(onEverySecond);
         if (mListener!=null) {
             mListener.pageButtonAlpha("");
         }
@@ -555,5 +563,15 @@ public class PopUpMetronomeFragment extends DialogFragment {
             StaticVariables.metronomeok = Metronome.isMetronomeValid();
         });
     }
+
+    private void prepareStartStopProgress() {
+        if (StaticVariables.metronomeonoff.equals("on")) {
+            doStartStopCheck.removeCallbacks(onEverySecond);
+            doStartStopCheck.postDelayed(onEverySecond, 1000);
+        } else {
+            popupmetronome_startstopbutton.setText(getString(R.string.start));
+        }
+    }
+
 
 }
