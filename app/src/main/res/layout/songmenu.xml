@@ -98,7 +98,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
-            android:paddingEnd="8dp"
+            android:paddingEnd="4dp"
             android:paddingStart="4dp"
             android:scrollbarStyle="outsideOverlay"
             android:layout_weight="1"
