@@ -353,17 +353,18 @@ public class PopUpPadFragment extends DialogFragment {
         public void onItemSelected(AdapterView<?> parent, View view,
                                    int position, long id) {
             if (position == 1) {
+                // On change to Audio link, try opening the link file popup to get the user to view/set/delete link audio
+                if ((mListener != null) && (!(StaticVariables.mPadFile.equals(getString(R.string.link_audio))))) {
+                    FullscreenActivity.whattodo = "page_links";
+                    mListener.openFragment();
+                    //dismiss();
+                }
+
                 if (StaticVariables.mLinkAudio != null && StaticVariables.mLinkAudio.isEmpty()) {
                     StaticVariables.mPadFile = getString(R.string.link_audio);
                     //popupPad_file.setSelection(0);
                     StaticVariables.myToastMessage = getString(R.string.notset);
                     ShowToast.showToast(getContext());
-                    // Try opening the link file popup to get the user to set one
-                    if (mListener != null) {
-                        FullscreenActivity.whattodo = "page_links";
-                        mListener.openFragment();
-                        //dismiss();
-                    }
                 } else {
                     StaticVariables.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
                 }
