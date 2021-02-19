@@ -14,7 +14,7 @@ class Transpose {
     //  1    2     3     4      5      6      7      8      9      10     11     12
     
     // Sharp chords first
-    private final String[] chordsharpsnumsa   = {"$.2.$",   "$.4.$",   "$.5.$",   "$.7.$",   "$.9.$",   "$.10.$",  "$.12.$"};
+    private final String[] chordsharpsnumsa   = {"$.02.$",   "$.04.$",   "$.05.$",   "$.07.$",   "$.09.$",   "$.10.$",  "$.12.$"};
     private final String[] chordsharpsnumsb   = {"$.32.$",  "$.34.$",  "$.35.$",  "$.37.$",  "$.39.$",  "$.40.$",  "$.42.$"};
     private final String[] chordsharpsnumsc   = {"$.52.$",  "$.54.$",  "$.55.$",  "$.57.$",  "$.59.$",  "$.60.$",  "$.62.$"};
     private final String[] sharpchords1a      = {"A#",      "B#",      "C#",      "D#",      "E#",      "F#",      "G#"};
@@ -25,7 +25,7 @@ class Transpose {
     private final String[] sharpchords3c      = {".ais",    ".his",    ".cis",    ".dis",    ".eis",    ".fis",    ".gis"};
     private final String[] sharpchords4       = {"La#",     "Si#",     "Do#",     "Ré#",     "Mi#",     "Fa#",     "Sol#"};
 
-    private final String[] properchordsharpsnumsa   = {"$.2.$",   "$.5.$",   "$.7.$",   "$.10.$",  "$.12.$"};  // For number to chord
+    private final String[] properchordsharpsnumsa   = {"$.02.$",   "$.05.$",   "$.07.$",   "$.10.$",  "$.12.$"};  // For number to chord
     private final String[] properchordsharpsnumsb   = {"$.32.$",  "$.35.$",  "$.37.$",  "$.40.$",  "$.42.$"};  // For number to chord
     private final String[] properchordsharpsnumsc   = {"$.52.$",  "$.55.$",  "$.57.$",  "$.60.$",  "$.62.$"};  // For number to chord
     private final String[] propersharpchords1a      = {"A#",      "C#",      "D#",      "F#",      "G#"};      // For number to chord
@@ -37,7 +37,7 @@ class Transpose {
     private final String[] propersharpchords4       = {"La#",     "Do#",     "Ré#",     "Fa#",     "Sol#"};    // For number to chord
 
     // Flat chords next
-    private final String[] chordflatsnumsa    = {"$.12.$",  "$.2.$",   "$.3.$",   "$.5.$",   "$.7.$",   "$.8.$",   "$.10.$"};
+    private final String[] chordflatsnumsa    = {"$.12.$",  "$.02.$",   "$.03.$",   "$.05.$",   "$.07.$",   "$.08.$",   "$.10.$"};
     private final String[] chordflatsnumsb    = {"$.42.$",  "$.32.$",  "$.33.$",  "$.35.$",  "$.37.$",  "$.38.$",  "$.40.$"};
     private final String[] chordflatsnumsc    = {"$.62.$",  "$.52.$",  "$.53.$",  "$.55.$",  "$.57.$",  "$.58.$",  "$.60.$"};
     private final String[] flatchords1a       = {"Ab",      "Bb",      "Cb",      "Db",      "Eb",      "Fb",      "Gb"};
@@ -48,7 +48,7 @@ class Transpose {
     private final String[] flatchords3c       = {".as",     ".b",      ".ces",    ".des",    ".es",     ".fes",    ".ges"};
     private final String[] flatchords4        = {"Lab",     "Sib",     "Dob",     "Réb",     "Mib",     "Fab",     "Solb"};
 
-    private final String[] properchordflatsnumsa    = {"$.12.$",  "$.2.$",   "$.5.$",   "$.7.$",   "$.10.$"};// For number to chord
+    private final String[] properchordflatsnumsa    = {"$.12.$",  "$.02.$",   "$.05.$",   "$.07.$",   "$.10.$"};// For number to chord
     private final String[] properchordflatsnumsb    = {"$.42.$",  "$.32.$",  "$.35.$",  "$.37.$",  "$.40.$"};// For number to chord
     private final String[] properchordflatsnumsc    = {"$.62.$",  "$.52.$",  "$.55.$",  "$.57.$",  "$.60.$"};// For number to chord
     private final String[] properflatchords1a       = {"Ab",      "Bb",      "Db",      "Eb",      "Gb"};    // For number to chord
@@ -59,7 +59,7 @@ class Transpose {
     private final String[] properflatchords4        = {"Lab",     "Sib",     "Réb",     "Mib",     "Solb"};  // For number to chord
 
     // Finally the natural chords
-    private final String[] chordnaturalnumsa  = {"$.1.$",   "$.3.$",   "$.4.$",   "$.6.$",   "$.8.$",   "$.9.$",   "$.11.$"};
+    private final String[] chordnaturalnumsa  = {"$.01.$",   "$.03.$",   "$.04.$",   "$.06.$",   "$.08.$",   "$.09.$",   "$.11.$"};
     private final String[] chordnaturalnumsb  = {"$.31.$",  "$.33.$",  "$.34.$",  "$.36.$",  "$.38.$",  "$.39.$",  "$.41.$"};
     private final String[] chordnaturalnumsc  = {"$.51.$",  "$.53.$",  "$.54.$",  "$.56.$",  "$.58.$",  "$.59.$",  "$.61.$"};
     private final String[] naturalchords1a    = {"A",       "B",       "C",       "D",       "E",       "F",       "G"};
@@ -971,16 +971,16 @@ class Transpose {
                 getkeynum = getkeynum.replace("$.12.$", "$.13.$");
                 getkeynum = getkeynum.replace("$.11.$", "$.12.$");
                 getkeynum = getkeynum.replace("$.10.$", "$.11.$");
-                getkeynum = getkeynum.replace("$.9.$", "$.10.$");
-                getkeynum = getkeynum.replace("$.8.$", "$.9.$");
-                getkeynum = getkeynum.replace("$.7.$", "$.8.$");
-                getkeynum = getkeynum.replace("$.6.$", "$.7.$");
-                getkeynum = getkeynum.replace("$.5.$", "$.6.$");
-                getkeynum = getkeynum.replace("$.4.$", "$.5.$");
-                getkeynum = getkeynum.replace("$.3.$", "$.4.$");
-                getkeynum = getkeynum.replace("$.2.$", "$.3.$");
-                getkeynum = getkeynum.replace("$.1.$", "$.2.$");
-                getkeynum = getkeynum.replace("$.13.$", "$.1.$");
+                getkeynum = getkeynum.replace("$.09.$", "$.10.$");
+                getkeynum = getkeynum.replace("$.08.$", "$.09.$");
+                getkeynum = getkeynum.replace("$.07.$", "$.08.$");
+                getkeynum = getkeynum.replace("$.06.$", "$.07.$");
+                getkeynum = getkeynum.replace("$.05.$", "$.06.$");
+                getkeynum = getkeynum.replace("$.04.$", "$.05.$");
+                getkeynum = getkeynum.replace("$.03.$", "$.04.$");
+                getkeynum = getkeynum.replace("$.02.$", "$.03.$");
+                getkeynum = getkeynum.replace("$.01.$", "$.02.$");
+                getkeynum = getkeynum.replace("$.13.$", "$.01.$");
 
                 getkeynum = getkeynum.replace("$.42.$", "$.43.$");
                 getkeynum = getkeynum.replace("$.41.$", "$.42.$");
@@ -1018,19 +1018,19 @@ class Transpose {
 
             // Repeat this as often as required.
             for (int repeatTranspose = 0; repeatTranspose < transposetimes; repeatTranspose++) {
-                getkeynum = getkeynum.replace("$.1.$", "$.0.$");
-                getkeynum = getkeynum.replace("$.2.$", "$.1.$");
-                getkeynum = getkeynum.replace("$.3.$", "$.2.$");
-                getkeynum = getkeynum.replace("$.4.$", "$.3.$");
-                getkeynum = getkeynum.replace("$.5.$", "$.4.$");
-                getkeynum = getkeynum.replace("$.6.$", "$.5.$");
-                getkeynum = getkeynum.replace("$.7.$", "$.6.$");
-                getkeynum = getkeynum.replace("$.8.$", "$.7.$");
-                getkeynum = getkeynum.replace("$.9.$", "$.8.$");
-                getkeynum = getkeynum.replace("$.10.$", "$.9.$");
+                getkeynum = getkeynum.replace("$.01.$", "$.00.$");
+                getkeynum = getkeynum.replace("$.02.$", "$.01.$");
+                getkeynum = getkeynum.replace("$.03.$", "$.02.$");
+                getkeynum = getkeynum.replace("$.04.$", "$.03.$");
+                getkeynum = getkeynum.replace("$.05.$", "$.04.$");
+                getkeynum = getkeynum.replace("$.06.$", "$.05.$");
+                getkeynum = getkeynum.replace("$.07.$", "$.06.$");
+                getkeynum = getkeynum.replace("$.08.$", "$.07.$");
+                getkeynum = getkeynum.replace("$.09.$", "$.08.$");
+                getkeynum = getkeynum.replace("$.10.$", "$.09.$");
                 getkeynum = getkeynum.replace("$.11.$", "$.10.$");
                 getkeynum = getkeynum.replace("$.12.$", "$.11.$");
-                getkeynum = getkeynum.replace("$.0.$", "$.12.$");
+                getkeynum = getkeynum.replace("$.00.$", "$.12.$");
 
                 getkeynum = getkeynum.replace("$.31.$", "$.30.$");
                 getkeynum = getkeynum.replace("$.32.$", "$.31.$");
@@ -1079,16 +1079,16 @@ class Transpose {
                         FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.12.$", "$.13.$");
                         FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.11.$", "$.12.$");
                         FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.10.$", "$.11.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.9.$", "$.10.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.8.$", "$.9.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.7.$", "$.8.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.6.$", "$.7.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.5.$", "$.6.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.4.$", "$.5.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.3.$", "$.4.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.2.$", "$.3.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.1.$", "$.2.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.13.$", "$.1.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.09.$", "$.10.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.08.$", "$.09.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.07.$", "$.08.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.06.$", "$.07.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.05.$", "$.06.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.04.$", "$.05.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.03.$", "$.04.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.02.$", "$.03.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.01.$", "$.02.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.13.$", "$.01.$");
 
                         FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.42.$", "$.43.$");
                         FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.41.$", "$.42.$");
@@ -1128,19 +1128,19 @@ class Transpose {
 
                     // Repeat this as often as required.
                     for (int repeatTranspose = 0; repeatTranspose < StaticVariables.transposeTimes; repeatTranspose++) {
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.1.$", "$.0.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.2.$", "$.1.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.3.$", "$.2.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.4.$", "$.3.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.5.$", "$.4.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.6.$", "$.5.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.7.$", "$.6.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.8.$", "$.7.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.9.$", "$.8.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.10.$", "$.9.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.01.$", "$.00.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.02.$", "$.01.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.03.$", "$.02.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.04.$", "$.03.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.05.$", "$.04.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.06.$", "$.05.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.07.$", "$.06.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.08.$", "$.07.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.09.$", "$.08.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.10.$", "$.09.$");
                         FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.11.$", "$.10.$");
                         FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.12.$", "$.11.$");
-                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.0.$", "$.12.$");
+                        FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.00.$", "$.12.$");
 
                         FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.31.$", "$.30.$");
                         FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.32.$", "$.31.$");
@@ -1445,19 +1445,19 @@ class Transpose {
         // Try to do a sensible capo change.
         // Do a for loop for each capo chord changing it by one each time until the desired fret change
         for (int s = 0; s < numtimes; s++) {
-            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.1.$", "$.0.$");
-            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.2.$", "$.1.$");
-            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.3.$", "$.2.$");
-            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.4.$", "$.3.$");
-            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.5.$", "$.4.$");
-            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.6.$", "$.5.$");
-            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.7.$", "$.6.$");
-            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.8.$", "$.7.$");
-            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.9.$", "$.8.$");
-            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.10.$", "$.9.$");
+            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.01.$", "$.00.$");
+            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.02.$", "$.01.$");
+            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.03.$", "$.02.$");
+            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.04.$", "$.03.$");
+            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.05.$", "$.04.$");
+            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.06.$", "$.05.$");
+            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.07.$", "$.06.$");
+            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.08.$", "$.07.$");
+            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.09.$", "$.08.$");
+            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.10.$", "$.09.$");
             StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.11.$", "$.10.$");
             StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.12.$", "$.11.$");
-            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.0.$", "$.12.$");
+            StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.00.$", "$.12.$");
 
             StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.31.$", "$.30.$");
             StaticVariables.temptranspChords = StaticVariables.temptranspChords.replace("$.32.$", "$.31.$");
