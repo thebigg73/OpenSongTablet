@@ -14,7 +14,7 @@ class Transpose {
     //  1    2     3     4      5      6      7      8      9      10     11     12
     
     // Sharp chords first
-    private final String[] chordsharpsnumsa   = {"$.02.$",   "$.04.$",   "$.05.$",   "$.07.$",   "$.09.$",   "$.10.$",  "$.12.$"};
+    private final String[] chordsharpsnumsa   = {"$.02.$",  "$.04.$",  "$.05.$",  "$.07.$",  "$.09.$",  "$.10.$",  "$.12.$"};
     private final String[] chordsharpsnumsb   = {"$.32.$",  "$.34.$",  "$.35.$",  "$.37.$",  "$.39.$",  "$.40.$",  "$.42.$"};
     private final String[] chordsharpsnumsc   = {"$.52.$",  "$.54.$",  "$.55.$",  "$.57.$",  "$.59.$",  "$.60.$",  "$.62.$"};
     private final String[] sharpchords1a      = {"A#",      "B#",      "C#",      "D#",      "E#",      "F#",      "G#"};
@@ -25,7 +25,7 @@ class Transpose {
     private final String[] sharpchords3c      = {".ais",    ".his",    ".cis",    ".dis",    ".eis",    ".fis",    ".gis"};
     private final String[] sharpchords4       = {"La#",     "Si#",     "Do#",     "Ré#",     "Mi#",     "Fa#",     "Sol#"};
 
-    private final String[] properchordsharpsnumsa   = {"$.02.$",   "$.05.$",   "$.07.$",   "$.10.$",  "$.12.$"};  // For number to chord
+    private final String[] properchordsharpsnumsa   = {"$.02.$",   "$.05.$",  "$.07.$",  "$.10.$", "$.12.$"};  // For number to chord
     private final String[] properchordsharpsnumsb   = {"$.32.$",  "$.35.$",  "$.37.$",  "$.40.$",  "$.42.$"};  // For number to chord
     private final String[] properchordsharpsnumsc   = {"$.52.$",  "$.55.$",  "$.57.$",  "$.60.$",  "$.62.$"};  // For number to chord
     private final String[] propersharpchords1a      = {"A#",      "C#",      "D#",      "F#",      "G#"};      // For number to chord
@@ -37,7 +37,7 @@ class Transpose {
     private final String[] propersharpchords4       = {"La#",     "Do#",     "Ré#",     "Fa#",     "Sol#"};    // For number to chord
 
     // Flat chords next
-    private final String[] chordflatsnumsa    = {"$.12.$",  "$.02.$",   "$.03.$",   "$.05.$",   "$.07.$",   "$.08.$",   "$.10.$"};
+    private final String[] chordflatsnumsa    = {"$.12.$",  "$.02.$",  "$.03.$",  "$.05.$",  "$.07.$",  "$.08.$",  "$.10.$"};
     private final String[] chordflatsnumsb    = {"$.42.$",  "$.32.$",  "$.33.$",  "$.35.$",  "$.37.$",  "$.38.$",  "$.40.$"};
     private final String[] chordflatsnumsc    = {"$.62.$",  "$.52.$",  "$.53.$",  "$.55.$",  "$.57.$",  "$.58.$",  "$.60.$"};
     private final String[] flatchords1a       = {"Ab",      "Bb",      "Cb",      "Db",      "Eb",      "Fb",      "Gb"};
@@ -48,7 +48,7 @@ class Transpose {
     private final String[] flatchords3c       = {".as",     ".b",      ".ces",    ".des",    ".es",     ".fes",    ".ges"};
     private final String[] flatchords4        = {"Lab",     "Sib",     "Dob",     "Réb",     "Mib",     "Fab",     "Solb"};
 
-    private final String[] properchordflatsnumsa    = {"$.12.$",  "$.02.$",   "$.05.$",   "$.07.$",   "$.10.$"};// For number to chord
+    private final String[] properchordflatsnumsa    = {"$.12.$",  "$.02.$",  "$.05.$",  "$.07.$",  "$.10.$"};// For number to chord
     private final String[] properchordflatsnumsb    = {"$.42.$",  "$.32.$",  "$.35.$",  "$.37.$",  "$.40.$"};// For number to chord
     private final String[] properchordflatsnumsc    = {"$.62.$",  "$.52.$",  "$.55.$",  "$.57.$",  "$.60.$"};// For number to chord
     private final String[] properflatchords1a       = {"Ab",      "Bb",      "Db",      "Eb",      "Gb"};    // For number to chord
@@ -59,7 +59,7 @@ class Transpose {
     private final String[] properflatchords4        = {"Lab",     "Sib",     "Réb",     "Mib",     "Solb"};  // For number to chord
 
     // Finally the natural chords
-    private final String[] chordnaturalnumsa  = {"$.01.$",   "$.03.$",   "$.04.$",   "$.06.$",   "$.08.$",   "$.09.$",   "$.11.$"};
+    private final String[] chordnaturalnumsa  = {"$.01.$",  "$.03.$",  "$.04.$",  "$.06.$",  "$.08.$",  "$.09.$",  "$.11.$"};
     private final String[] chordnaturalnumsb  = {"$.31.$",  "$.33.$",  "$.34.$",  "$.36.$",  "$.38.$",  "$.39.$",  "$.41.$"};
     private final String[] chordnaturalnumsc  = {"$.51.$",  "$.53.$",  "$.54.$",  "$.56.$",  "$.58.$",  "$.59.$",  "$.61.$"};
     private final String[] naturalchords1a    = {"A",       "B",       "C",       "D",       "E",       "F",       "G"};
@@ -749,7 +749,7 @@ class Transpose {
             line = replaceChord(line,nash7b_flat, "b7");
         }
 
-        return line;
+        return adjustChordSpace(line);
     }
 
     private String replaceBits(String line, String what, String with, String condition) {
@@ -757,9 +757,11 @@ class Transpose {
             Log.d("Transpose", "replace '"+what+"' with '"+with+"'");
             return replaceChord(line,what,with);
         } else if (condition.equals("flat") && what.contains("b")) {
-            Log.d("Transpose", "Fixing "+condition+": replace '"+what+"' with '"+with+"'");return replaceChord(line,what,with);
+            Log.d("Transpose", "Fixing "+condition+": replace '"+what+"' with '"+with+"'");
+            return replaceChord(line,what,with);
         } else if (condition.equals("natural") && !what.contains("#") && !what.contains("b")) {
-            Log.d("Transpose", "Fixing "+condition+": replace '"+what+"' with '"+with+"'");return replaceChord(line,what,with);
+            Log.d("Transpose", "Fixing "+condition+": replace '"+what+"' with '"+with+"'");
+            return replaceChord(line,what,with);
         } else {
             Log.d("Transpose", "Fixing "+condition+": not replacing '"+what+"' with '"+with+"'");
             return line;
@@ -958,7 +960,7 @@ class Transpose {
         if (!line.startsWith(".")) {
             line = "."+line;
         }
-        return line;
+        return adjustChordSpace(line);
     }
 
     String transposeKey(String getkeynum, String direction, int transposetimes) {
