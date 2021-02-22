@@ -435,6 +435,15 @@ public class PopUpFontsFragment extends DialogFragment {
 
         @Override
         protected String doInBackground(Object... objects) {
+            // IV - Give the spinners an empty line to avoid them starting at reduced height
+            ArrayList<String> fontnames = new ArrayList<>();
+            fontnames.add("");
+            choose_fonts = new ArrayAdapter<>(requireContext(), R.layout.my_spinner, fontnames);
+            lyricsFontSpinner.setAdapter(choose_fonts);
+            chordsFontSpinner.setAdapter(choose_fonts);
+            stickyFontSpinner.setAdapter(choose_fonts);
+            presoFontSpinner.setAdapter(choose_fonts);
+            presoInfoFontSpinner.setAdapter(choose_fonts);
             try {
                 URL url = new URL("https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBKvCB1NnWwXGyGA7RTar0VQFCM3rdOE8k&sort=alpha");
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
