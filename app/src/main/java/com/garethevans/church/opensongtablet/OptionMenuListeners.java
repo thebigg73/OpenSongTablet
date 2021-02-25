@@ -1759,8 +1759,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         SwitchCompat receiveHostFiles = v.findViewById(R.id.receiveHostFiles);
         SwitchCompat keepHostFiles = v.findViewById(R.id.keepHostFiles);
         connectionLog = v.findViewById(R.id.options_connections_log);
-        // IV - Changed to DeviceID which is the pref used by getUserNickname()
-        StaticVariables.deviceName = preferences.getMyPreferenceString(c, "deviceID", "");
         deviceName.setText(StaticVariables.deviceName);
         if (StaticVariables.connectionLog==null || StaticVariables.connectionLog.isEmpty()) {
             StaticVariables.connectionLog = c.getResources().getString(R.string.connections_log) + "\n\n";

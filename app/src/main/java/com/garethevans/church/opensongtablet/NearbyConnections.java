@@ -143,10 +143,10 @@ public class NearbyConnections implements NearbyInterface {
                 FullscreenActivity.mBluetoothName = UUID.randomUUID().toString().substring(0,8);
                 FullscreenActivity.mBluetoothName = FullscreenActivity.mBluetoothName.toUpperCase(StaticVariables.locale);
             }
-            StaticVariables.deviceName = preferences.getMyPreferenceString(context,"deviceId", FullscreenActivity.mBluetoothName);
-            if (StaticVariables.deviceName.equals(StaticVariables.randomId)) {
-                // Set this value - user can change at any time
-                preferences.setMyPreferenceString(context,"deviceId",StaticVariables.randomId);
+            StaticVariables.deviceName = preferences.getMyPreferenceString(context,"deviceId", "");
+            // IV - If the user has not set an override name use the Bluetooth name
+            if (StaticVariables.deviceName.length() == 0) {
+                StaticVariables.deviceName = FullscreenActivity.mBluetoothName;
             }
         }
         return StaticVariables.deviceName;
