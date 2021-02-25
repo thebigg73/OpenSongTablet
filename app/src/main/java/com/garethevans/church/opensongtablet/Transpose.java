@@ -1613,7 +1613,7 @@ class Transpose {
     }
 
     String replaceChord(String line, String inChord, String outChord) {
-        // IV - Add markers indicating the need to add or remove spaces to adjust for adifference of size of the original and replacemnet chord
+        // IV - Add markers indicating the need to add or remove spaces to adjust for a difference of size of the original and replacemnet chord
         if (outChord.length() < inChord.length()) {
             outChord = outChord + "»»»»»»»»".substring(0,inChord.length() - outChord.length());
         }
