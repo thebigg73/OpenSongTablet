@@ -1264,12 +1264,18 @@ public class ProcessSong extends Activity {
                     for (int i = 1; i < lyrics.length; i++) {
                         sb.append(lyrics[i]);
                     }
+                    bit = sb.toString();
+                    if (StaticVariables.whichMode.equals("Presentation")) {
+                        // IV - Remove (....) comments when presetning lyrics only
+                        bit = bit.replaceAll("\\(.*?\\)","");
+                    }
                     // IV -   Remove any bold marker, typical word splits, white space and then trim - beautify!
-                    bit = sb.toString().replace("B_","").replaceAll("_", "").replaceAll("\\s+-\\s+", "").replaceAll("\\s{2,}", " ").trim();
+                    bit = bit.replace("B_","").replaceAll("_", "").replaceAll("\\s+-\\s+", "").replaceAll("\\s{2,}", " ").trim();
                     // IV - 2 spaces added to reduce occurance of right edge overrun
                     if (StaticVariables.whichMode.equals("Presentation")) {
                         // And before as well for presentation mode, so that block text shadow has spaces on both sides
                         bit = "  " + bit + "  ";
+
                     } else {
                         bit = bit + "  ";
                     }
