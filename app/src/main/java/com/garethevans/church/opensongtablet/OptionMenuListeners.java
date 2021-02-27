@@ -1759,8 +1759,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         SwitchCompat receiveHostFiles = v.findViewById(R.id.receiveHostFiles);
         SwitchCompat keepHostFiles = v.findViewById(R.id.keepHostFiles);
         connectionLog = v.findViewById(R.id.options_connections_log);
-
-        StaticVariables.deviceName = preferences.getMyPreferenceString(c, "deviceName", "");
         deviceName.setText(StaticVariables.deviceName);
         if (StaticVariables.connectionLog==null || StaticVariables.connectionLog.isEmpty()) {
             StaticVariables.connectionLog = c.getResources().getString(R.string.connections_log) + "\n\n";
@@ -1821,6 +1819,25 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             StaticVariables.isHost = isChecked;
             receiveHostFiles.setEnabled(!isChecked);
             keepHostFiles.setEnabled(!isChecked);
+            // IV - Restart
+            try {
+                nearbyInterface.stopAdvertising();
+            } catch (Exception e) {
+                Log.d("OptionMenuListener","Can't stop advertising, probably wasn't a host!");
+            }
+            try {
+                nearbyInterface.stopDiscovery();
+            } catch (Exception e) {
+                Log.d("OptionMenuListener","Can't stop discovery, probably wasn't discovering");
+            }
+            if (StaticVariables.usingNearby) {
+                if (StaticVariables.isHost) {
+                    nearbyInterface.startAdvertising();
+                } else {
+                    nearbyInterface.startDiscovery();
+                }
+            }
+
         });
         receiveHostFiles.setOnCheckedChangeListener((view,isChecked) -> {
             StaticVariables.receiveHostFiles = isChecked;

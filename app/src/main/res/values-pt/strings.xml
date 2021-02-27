@@ -432,7 +432,6 @@
     <string name="storage_check">"Verificação de armazenamento"</string>
     <string name="storage_choose">"Gerenciar o espaço de armazenamento"</string>
     <string name="storage_ext">"Armazenamento externo"</string>
-    <string name="storage_help">"Escolha o local da sua pasta \'OpenSong\'. Este é o local de armazenamento padrão para arquivos OpenSong. Você pode alterar isso a qualquer momento no menu Opções.\n\nPara uma atualização ou reinstalação:\nVocê pode usar o botão amarelo abaixo para localizar qualquer pasta \'OpenSong\' anterior.\n\nAo selecionar um local:\nListe o armazenamento usando o menu (pode ser necessário alterar as configurações para mostrar todo o armazenamento).\nSELECIONE APENAS armazenamento INTERNO OU CARTÃO SD; estes têm detalhes abaixo do nome.\nO armazenamento interno é recomendado. Isso pode ser listado como armazenamento do dispositivo ou com o nome do seu dispositivo\n\nNo Android 10+, você não deve selecionar a pasta Downloads ou Root. Em caso de dúvida, escolha a pasta \'documentos\'."</string>
     <string name="storage_notwritable">"Não é possível usar"</string>
     <string name="storage_rationale">"Acesso para o seu armazenamento é necessário para ler e escrever músicas e sets."</string>
     <string name="subscription">"(Subscrição obrigatória)"</string>
@@ -522,4 +521,7 @@
     <string name="hide">Ocultar</string>
     <string name="filter_structure">[*filtro:V] = seção verso filtrada</string>
     <string name="nofound">Nenhuma pasta anterior encontrada. Use o botão vermelho para escolher um local.</string>
+    <string name="storage_quicktip">Ao selecionar um local:\nListe o armazenamento usando o menu (pode ser necessário alterar as configurações para mostrar todo o armazenamento).\nSELECIONE APENAS armazenamento INTERNO OU SD CARD.\nO armazenamento interno é recomendado. Isso pode ser listado como armazenamento do dispositivo ou com o nome do seu dispositivo.\nNo Android 10+, você não deve selecionar a pasta Downloads ou Root. Em caso de dúvida, escolha a pasta \'Documentos\'.</string>
+    <string name="storage_help">Escolha o local para sua pasta \'OpenSong\'. Este é o local de armazenamento padrão para arquivos OpenSong. Você pode alterar isso a qualquer momento no menu Opções. O armazenamento interno é recomendado.\n\nPara uma atualização ou reinstalação:\nVocê pode usar o botão amarelo abaixo para localizar qualquer pasta \'OpenSong\' anterior.</string>
+    <string name="information">" Em formação"</string>
 </resources>

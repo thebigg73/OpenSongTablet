@@ -101,13 +101,14 @@ public class PopUpConnectFragment extends DialogFragment {
         // Initialise the views
         deviceNameEditText = V.findViewById(R.id.deviceNameEditText);
         deviceNameTextView = V.findViewById(R.id.deviceNameTextView);
-        deviceNameEditText.setText(preferences.getMyPreferenceString(getContext(), "deviceName", ""));
+        // IV - Changed to DeviceId which is the pref used by getUserNickname()
+        deviceNameEditText.setText(preferences.getMyPreferenceString(getContext(), "deviceId", ""));
 
         // Set up save/tick listener
         saveMe.setOnClickListener(view -> {
-            String s = deviceNameEditText.getText().toString();
+            String s = deviceNameEditText.getText().toString().trim();
             if (s!=null && s.length()>0) {
-                preferences.setMyPreferenceString(getContext(), "deviceName", s);
+                preferences.setMyPreferenceString(getContext(), "deviceId", s);
                 StaticVariables.deviceName = s;
             }
             doSave();

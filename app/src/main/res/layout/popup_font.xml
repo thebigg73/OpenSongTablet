@@ -70,11 +70,12 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView19"
                     style="@style/MyHeadingText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/chooselyricfont" />
 
                 <Spinner
@@ -82,13 +83,17 @@
                     style="@style/MySpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp" />
+                    android:padding="2dp"
+                    android:layout_margin="8dp"/>
 
                 <TextView
                     android:id="@+id/lyricPreviewTextView"
                     style="@style/MyInfoText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/lorem" />
             </LinearLayout>
 
@@ -102,11 +107,12 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView20"
                     style="@style/MyHeadingText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/choosechordfont" />
 
                 <Spinner
@@ -114,13 +120,17 @@
                     style="@style/MySpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="2dp"
                     android:layout_margin="8dp" />
 
                 <TextView
                     android:id="@+id/chordPreviewTextView"
                     style="@style/MyInfoText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/lorem" />
 
             </LinearLayout>
@@ -137,7 +147,9 @@
                     style="@style/MyHeadingText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/choosestickyfont" />
 
                 <Spinner
@@ -145,13 +157,17 @@
                     style="@style/MySpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="2dp"
                     android:layout_margin="8dp" />
 
                 <TextView
                     android:id="@+id/stickyPreviewTextView"
                     style="@style/MyInfoText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/lorem" />
 
             </LinearLayout>
@@ -168,7 +184,9 @@
                     style="@style/MyHeadingText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/presoFont" />
 
                 <Spinner
@@ -176,13 +194,17 @@
                     style="@style/MySpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="2dp"
                     android:layout_margin="8dp" />
 
                 <TextView
                     android:id="@+id/presoPreviewTextView"
                     style="@style/MyInfoText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/lorem" />
 
             </LinearLayout>
@@ -199,7 +221,9 @@
                     style="@style/MyHeadingText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/presoInfoFont" />
 
                 <Spinner
@@ -207,13 +231,17 @@
                     style="@style/MySpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="2dp"
                     android:layout_margin="8dp" />
 
                 <TextView
                     android:id="@+id/presoinfoPreviewTextView"
                     style="@style/MyInfoText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:text="@string/lorem" />
 
             </LinearLayout>

@@ -432,7 +432,6 @@
     <string name="storage_check">"A tárolás ellenőrzése"</string>
     <string name="storage_choose">"Kezelése tárhely"</string>
     <string name="storage_ext">"Külső tároló"</string>
-    <string name="storage_help">"Kérjük, válassza ki az \'OpenSong\' mappa helyét. Ez az OpenSong fájlok alapértelmezett tárolási helye. Ezt bármikor megváltoztathatja az Opciók menüből.\n\nFrissítéshez vagy újratelepítéshez:\nAz alábbi sárga gombbal megtalálhatja a korábbi OpenSong mappákat.\n\nHely kiválasztásakor:\nSorolja fel a tárhelyet a menü segítségével (előfordulhat, hogy módosítania kell a beállításokat az összes tároló megjelenítéséhez).\nKIZÁRÓLAG BELSŐ VAGY SD KÁRTYA tárhelyet válasszon, ezeknek a nevük alatt vannak részletei.\nBelső tárhely ajánlott. Ez felsorolható az eszköz tárhelyeként vagy az eszköz nevével.\n\nAndroid 10 és újabb verziók esetén nem válassza a Letöltések vagy a Gyökér mappát. Ha kétségei vannak, válassza a \'dokumentumok\' mappát."</string>
     <string name="storage_notwritable">"Nem lehet használni"</string>
     <string name="storage_rationale">"Hozzáférés a tárolás szükséges írni és olvasni dalok és készletek."</string>
     <string name="subscription">"(Előfizetés szükséges)"</string>
@@ -522,4 +521,7 @@
     <string name="filter_entry">Adja hozzá az egyes szűrőket egy új sorhoz.</string>
     <string name="filter_structure">[*filter:V] = szűrt versszak</string>
     <string name="nofound">Nem található előző mappa. A piros gombbal válassza ki a helyet.</string>
+    <string name="storage_quicktip">Hely kiválasztásakor:\nSorolja fel a tárhelyet a menü segítségével (lehet, hogy módosítania kell a beállításokat az összes tároló megjelenítéséhez).\nKIZÁRÓLAG BELSŐ VAGY SD KÁRTYA tárhelyet válasszon.\nBelső tárolás ajánlott. Ez felsorolható eszközmegőrzőként vagy az eszköz nevével együtt.\nAndroid 10+ rendszeren nem válassza a Letöltések vagy a Gyökér mappát. Ha kétségei vannak, válassza a \'Dokumentumok\' mappát.</string>
+    <string name="storage_help">Kérjük, válassza ki az „OpenSong” mappa helyét. Ez az OpenSong fájlok alapértelmezett tárolási helye. Ezt bármikor megváltoztathatja az Opciók menüből. Belső tárolás ajánlott.\n\nFrissítéshez vagy újratelepítéshez:\nAz alábbi sárga gombbal megtalálhatja bármelyik korábbi „OpenSong” mappát.</string>
+    <string name="information">" Információ"</string>
 </resources>
