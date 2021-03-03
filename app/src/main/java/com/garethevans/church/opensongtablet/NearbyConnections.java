@@ -123,11 +123,13 @@ public class NearbyConnections implements NearbyInterface {
     @Override
     public void stopAdvertising() {
         Nearby.getConnectionsClient(context).stopAdvertising();
+        updateConnectionLog(context.getResources().getString(R.string.connections_service_stop));
         Log.d("d","stopAdvertising()");
     }
     @Override
     public void stopDiscovery() {
         Nearby.getConnectionsClient(context).stopDiscovery();
+        updateConnectionLog(context.getResources().getString(R.string.connections_discover_stop));
         Log.d("d","stopDiscovery()");
     }
     private String getDeviceNameFromId(String endpointId) {
