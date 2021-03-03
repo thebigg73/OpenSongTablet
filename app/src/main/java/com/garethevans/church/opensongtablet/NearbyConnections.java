@@ -233,9 +233,12 @@ public class NearbyConnections implements NearbyInterface {
 
             @Override
             public void onDisconnected(@NonNull String endpointId) {
+                StaticVariables.isConnected = false;
                 Log.d("NearbyConnections","On disconnect");
                 connectedEndPoints.remove(endpointId);
-                updateConnectionLog(context.getResources().getString(R.string.connections_disconnect) + " " + getDeviceNameFromId(endpointId));
+                String deviceName = getDeviceNameFromId(endpointId);
+                connectedEndPointsNames.remove(endpointId+"__"+deviceName);
+                updateConnectionLog(context.getResources().getString(R.string.connections_disconnect) + " " + deviceName);
                 // Try to connect again after 2 seconds
                 if (!StaticVariables.isHost) {
                     Handler h = new Handler();
