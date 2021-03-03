@@ -1266,7 +1266,7 @@ public class ProcessSong extends Activity {
                     }
                     bit = sb.toString();
                     if (StaticVariables.whichMode.equals("Presentation")) {
-                        // IV - Remove (....) comments when presetning lyrics only
+                        // IV - Remove (....) comments when presenting lyrics only
                         bit = bit.replaceAll("\\(.*?\\)","");
                     }
                     // IV -   Remove any bold marker, typical word splits, white space and then trim - beautify!

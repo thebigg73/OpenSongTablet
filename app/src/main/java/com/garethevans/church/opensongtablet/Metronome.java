@@ -81,9 +81,16 @@ class Metronome {
 	}
 
 	private void play(String pan, float vol) {
-		calcSilence();
-        // IV - We align sounds to beat using the clock
-        final long time_in_millisecs = (long) (((60.0f / (float) PopUpMetronomeFragment.bpm) * 500)) * 2;
+	    calcSilence();
+        // IV - We align sounds to beat using the clock.  Calculate based on a 6th of a beat and scale up.
+        long time_in_millisecs = (long) (((60.0f / (float) PopUpMetronomeFragment.bpm) * 1000)) / 6;
+        // IV  - Override for 6/8 compound time signature to give 3 sounds (triplet) per beat otherwise one sound per beat
+        if (FullscreenActivity.beats == 6 && FullscreenActivity.noteValue == 8) {
+            time_in_millisecs = time_in_millisecs * 2;
+        } else {
+            time_in_millisecs = time_in_millisecs * 6;
+        }
+
 		// IV - We have a short first beat to compensate for loop start delay
         long nexttime = System.currentTimeMillis() - 200;
 		do {
@@ -271,8 +278,11 @@ class Metronome {
 	        this.showvisual = showvis;
         }
 
-        // IV - Visual is an on & off for each each beat so use half the time
-        final long time_in_millisecs = (long) (((60.0f / (float) PopUpMetronomeFragment.bpm) * 500));
+        // IV - Visual is an on & off for each each beat so use half a beat
+        // IV - We align sounds to beat using the clock.  Calculate based on a 6th of a beat and scale up.
+        long sixth_time_in_millisecs = (long) (((60.0f / (float) PopUpMetronomeFragment.bpm) * 1000)) / 6 ;
+        long time_in_millisecs = sixth_time_in_millisecs * 3;
+
         long oldtime = System.currentTimeMillis();
         long nexttime = oldtime + time_in_millisecs;
         final boolean showvisual;
