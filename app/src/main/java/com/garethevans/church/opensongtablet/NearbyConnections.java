@@ -46,6 +46,7 @@ public class NearbyConnections implements NearbyInterface {
 
     private final ArrayList<String> connectedEndPoints;
     private final ArrayList<String> connectedEndPointsNames;
+    private final ArrayList<String> connectedDeviceIds;
 
     NearbyConnections(Context context, Preferences preferences, StorageAccess storageAccess,
                       ProcessSong processSong, OptionMenuListeners optionMenuListeners,
@@ -58,6 +59,7 @@ public class NearbyConnections implements NearbyInterface {
         this.sqLiteHelper = sqLiteHelper;
         connectedEndPoints = new ArrayList<>();
         connectedEndPointsNames = new ArrayList<>();
+        connectedDeviceIds = new ArrayList<>();
         nearbyReturnActionsInterface = (NearbyReturnActionsInterface) context;
     }
 
@@ -151,33 +153,54 @@ public class NearbyConnections implements NearbyInterface {
         }
         return StaticVariables.deviceName;
     }
+    private String userConnectionInfo(String endpointId, ConnectionInfo connectionInfo) {
+        return endpointId + "__" + connectionInfo.getEndpointName();
+    }
+    private void delayAcceptConnection(String endpointId, ConnectionInfo connectionInfo) {
+        // For stability add a small delay
+        Handler waitAccept = new Handler();
+        waitAccept.postDelayed(() -> {
+            // Add a note of the nice name matching the endpointId
+            String id = userConnectionInfo(endpointId,connectionInfo);
+            Log.d("NearbyConnections","looking for "+id);
+            if (!connectedEndPointsNames.contains(id)) {
+                connectedEndPointsNames.add(id);
+                Log.d("NearbyConnections", id+" not found, adding");
+            }
+            if (!connectedDeviceIds.contains(connectionInfo.getEndpointName())) {
+                connectedDeviceIds.add(connectionInfo.getEndpointName());
+                Log.d("NearbyConnections", connectionInfo.getEndpointName()+" not found, adding");
+            }
+
+            // The user confirmed, so we can accept the connection.
+            Nearby.getConnectionsClient(context)
+                    .acceptConnection(endpointId, payloadCallback());
+        },200);
+    }
+
     private ConnectionLifecycleCallback connectionLifecycleCallback() {
         return new ConnectionLifecycleCallback() {
             @Override
             public void onConnectionInitiated(@NonNull String endpointId, @NonNull ConnectionInfo connectionInfo) {
-                new AlertDialog.Builder(context)
-                        .setTitle(context.getResources().getString(R.string.accept_connection) + " " + connectionInfo.getEndpointName())
-                        .setMessage(context.getResources().getString(R.string.accept_code) + " " + connectionInfo.getAuthenticationToken())
-                        .setPositiveButton(
-                                context.getResources().getString(R.string.ok),
-                                (DialogInterface dialog, int which) -> {
-                                    // For stability add a small delay
-                                    Handler waitAccept = new Handler();
-                                    waitAccept.postDelayed(() -> {
-                                        // Add a note of the nice name matching the endpointId
-                                        connectedEndPointsNames.add(endpointId + "__" + connectionInfo.getEndpointName());
-                                        // The user confirmed, so we can accept the connection.
-                                        Nearby.getConnectionsClient(context)
-                                                .acceptConnection(endpointId, payloadCallback());
-                                    },200);
-                                })
-                        .setNegativeButton(
-                                context.getResources().getString(R.string.cancel),
-                                (DialogInterface dialog, int which) ->
-                                        // The user canceled, so we should reject the connection.
-                                        Nearby.getConnectionsClient(context).rejectConnection(endpointId))
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
+
+                // If the device was previously connected, try to reconnect silently
+                if (connectedDeviceIds.contains(connectionInfo.getEndpointName())) {
+                    delayAcceptConnection(endpointId,connectionInfo);
+                } else {
+                    new AlertDialog.Builder(context)
+                            .setTitle(context.getResources().getString(R.string.accept_connection) + " " + connectionInfo.getEndpointName())
+                            .setMessage(context.getResources().getString(R.string.accept_code) + " " + connectionInfo.getAuthenticationToken())
+                            .setPositiveButton(
+                                    context.getResources().getString(R.string.ok),
+                                    (DialogInterface dialog, int which) -> delayAcceptConnection(endpointId, connectionInfo))
+                            .setNegativeButton(
+                                    context.getResources().getString(R.string.cancel),
+                                    (DialogInterface dialog, int which) ->
+                                            // The user canceled, so we should reject the connection.
+                                            Nearby.getConnectionsClient(context).rejectConnection(endpointId))
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
             }
 
             @Override
@@ -224,7 +247,7 @@ public class NearbyConnections implements NearbyInterface {
         };
     }
     private boolean stillValidConnections() {
-        if (connectedEndPoints != null && connectedEndPoints.size() >= 1) {
+        if (connectedEndPoints.size() >= 1) {
             for (String s : connectedEndPoints) {
                 if (s != null && !s.isEmpty()) {
                     return true;
