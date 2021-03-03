@@ -7,13 +7,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -398,7 +395,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 break;
 
             case "CONNECT":
-                connectOptionListener(v,c,preferences);
+                connectOptionListener(v,c);
                 break;
 
             case "MIDI":
@@ -439,10 +436,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         t.setTextSize(textSize);
         t.setText(text.toUpperCase(StaticVariables.locale));
     }
-    private static void setEditText(EditText t, String text) {
-        t.setTextSize(textSize);
-        t.setText(text.toUpperCase(StaticVariables.locale));
-    }
+
     private static void setTextSwitch(SwitchCompat t, String text) {
         t.setTextSize(textSize);
         t.setText(text.toUpperCase(StaticVariables.locale));
@@ -1744,7 +1738,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         });
     }
 
-    private static void connectOptionListener(View v, final Context c, final Preferences preferences) {
+    private static void connectOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
         nearbyInterface = (NearbyInterface) c;
 
@@ -1819,6 +1813,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             StaticVariables.isHost = isChecked;
             receiveHostFiles.setEnabled(!isChecked);
             keepHostFiles.setEnabled(!isChecked);
+
             // IV - Restart
             try {
                 nearbyInterface.stopAdvertising();

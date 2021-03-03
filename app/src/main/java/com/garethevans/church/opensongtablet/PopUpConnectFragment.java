@@ -1,18 +1,14 @@
 package com.garethevans.church.opensongtablet;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -20,30 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
-
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringReader;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 public class PopUpConnectFragment extends DialogFragment {
 
@@ -107,7 +79,7 @@ public class PopUpConnectFragment extends DialogFragment {
         // Set up save/tick listener
         saveMe.setOnClickListener(view -> {
             String s = deviceNameEditText.getText().toString().trim();
-            if (s!=null && s.length()>0) {
+            if (s.length() > 0) {
                 preferences.setMyPreferenceString(getContext(), "deviceId", s);
                 StaticVariables.deviceName = s;
             }
