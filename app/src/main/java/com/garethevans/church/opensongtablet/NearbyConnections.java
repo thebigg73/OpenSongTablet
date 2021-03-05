@@ -248,13 +248,13 @@ public class NearbyConnections implements NearbyInterface {
                 String deviceName = getDeviceNameFromId(endpointId);
                 connectedEndPointsNames.remove(endpointId+"__"+deviceName);
                 updateConnectionLog(context.getResources().getString(R.string.connections_disconnect) + " " + deviceName);
+                // Check if we have valid connections
+                StaticVariables.isConnected = stillValidConnections();
                 // Try to connect again after 2 seconds
                 if (!StaticVariables.isHost) {
                     Handler h = new Handler();
                     h.postDelayed(() -> startDiscovery(), 2000);
                 }
-                // Check if we have valid connections
-                StaticVariables.isConnected = stillValidConnections();
             }
         };
     }
@@ -292,6 +292,8 @@ public class NearbyConnections implements NearbyInterface {
             public void onEndpointLost(@NonNull String endpointId) {
                 Log.d("NearbyConnections","onEndPointlost");
                 updateConnectionLog(context.getResources().getString(R.string.connections_disconnect) + " " + getDeviceNameFromId(endpointId));
+                // Check if we have valid connections
+                StaticVariables.isConnected = stillValidConnections();
                 // Try to connect again after 2 seconds
                 if (!StaticVariables.isHost) {
                     Handler h = new Handler();
