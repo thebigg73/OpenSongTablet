@@ -189,19 +189,24 @@ public class NearbyConnections implements NearbyInterface {
                 if (connectedDeviceIds.contains(connectionInfo.getEndpointName())) {
                     delayAcceptConnection(endpointId,connectionInfo);
                 } else {
-                    new AlertDialog.Builder(context)
-                            .setTitle(context.getResources().getString(R.string.accept_connection) + " " + connectionInfo.getEndpointName())
-                            .setMessage(context.getResources().getString(R.string.accept_code) + " " + connectionInfo.getAuthenticationToken())
-                            .setPositiveButton(
-                                    context.getResources().getString(R.string.ok),
-                                    (DialogInterface dialog, int which) -> delayAcceptConnection(endpointId, connectionInfo))
-                            .setNegativeButton(
-                                    context.getResources().getString(R.string.cancel),
-                                    (DialogInterface dialog, int which) ->
-                                            // The user canceled, so we should reject the connection.
-                                            Nearby.getConnectionsClient(context).rejectConnection(endpointId))
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
+                    if (StaticVariables.whichOptionMenu.equals("CONNECT")) {
+                        new AlertDialog.Builder(context)
+                                .setTitle(context.getResources().getString(R.string.accept_connection) + " " + connectionInfo.getEndpointName())
+                                .setMessage(context.getResources().getString(R.string.accept_code) + " " + connectionInfo.getAuthenticationToken())
+                                .setPositiveButton(
+                                        context.getResources().getString(R.string.ok),
+                                        (DialogInterface dialog, int which) -> delayAcceptConnection(endpointId, connectionInfo))
+                                .setNegativeButton(
+                                        context.getResources().getString(R.string.cancel),
+                                        (DialogInterface dialog, int which) ->
+                                                // The user canceled, so we should reject the connection.
+                                                Nearby.getConnectionsClient(context).rejectConnection(endpointId))
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    } else {
+                        // The user is not accepting new connections, so we should reject the connection.
+                        Nearby.getConnectionsClient(context).rejectConnection(endpointId);
+                    }
                 }
             }
 
@@ -285,6 +290,11 @@ public class NearbyConnections implements NearbyInterface {
             public void onEndpointLost(@NonNull String endpointId) {
                 Log.d("NearbyConnections","onEndPointlost");
                 updateConnectionLog(context.getResources().getString(R.string.connections_disconnect) + " " + getDeviceNameFromId(endpointId));
+                // Try to connect again after 2 seconds
+                if (!StaticVariables.isHost) {
+                    Handler h = new Handler();
+                    h.postDelayed(() -> startDiscovery(), 2000);
+                }
             }
         };
     }
