@@ -108,6 +108,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
@@ -125,12 +126,10 @@
 
                     <TextView
                         android:id="@+id/progressText"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="10dp"
+                        style="@style/MyHeadingText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        style="@style/MyHeadingText"/>
+                        android:layout_gravity="center_vertical" />
                 </LinearLayout>
 
 
@@ -153,7 +152,7 @@
 
                     <Button
                         android:id="@+id/chooseStorageButton"
-                        android:layout_width="250dp"
+                        android:layout_width="170dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:background="@drawable/red_button"
@@ -179,7 +178,7 @@
                     android:id="@+id/previousStorageButton"
                     android:textSize="14sp"
                     android:background="@drawable/yellow_button"
-                    android:layout_width="250dp"
+                    android:layout_width="170dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="8dp"

@@ -3308,15 +3308,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                     // Now that we have generated the song to send to a guest device, decide if we should remove chords, comments, etc.
                     for (int i = 0; i < StaticVariables.songSections.length; i++) {
-                        StaticVariables.songSections[i] = processSong.removeUnderScores(PresenterMode.this,
-                                preferences, StaticVariables.songSections[i]);
                         if (!preferences.getMyPreferenceBoolean(PresenterMode.this,"presoShowChords",false)) {
                             StaticVariables.songSections[i] = processSong.removeChordLines(StaticVariables.songSections[i]);
                         }
                         if (!StaticVariables.isHost || !StaticVariables.isConnected || !StaticVariables.usingNearby) {
                             StaticVariables.songSections[i] = processSong.removeCommentLines(StaticVariables.songSections[i]);
                         }
-
                         StaticVariables.songSections[i] = processSong.removeUnderScores(PresenterMode.this,
                                 preferences, StaticVariables.songSections[i]);
                     }
