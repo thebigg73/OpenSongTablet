@@ -191,7 +191,8 @@ public class NearbyConnections implements NearbyInterface {
                 if (connectedDeviceIds.contains(connectionInfo.getEndpointName())) {
                     delayAcceptConnection(endpointId,connectionInfo);
                 } else {
-                    if (StaticVariables.whichOptionMenu.equals("CONNECT")) {
+                    // Allow clients to connect to the host when the Connect menu is open, or the user switches off the requirement for the Connect menu to be open
+                    if (StaticVariables.whichOptionMenu.equals("CONNECT") || (StaticVariables.isHost && !preferences.getMyPreferenceBoolean(context,"nearbyHostMenuOnly",false))) {
                         new AlertDialog.Builder(context)
                                 .setTitle(context.getResources().getString(R.string.accept_connection) + " " + connectionInfo.getEndpointName())
                                 .setMessage(context.getResources().getString(R.string.accept_code) + " " + connectionInfo.getAuthenticationToken())

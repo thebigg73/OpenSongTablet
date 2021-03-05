@@ -1201,6 +1201,10 @@ class ProfileActions {
                             preferences.setMyPreferenceBoolean(c,"multiLineVerseKeepCompact",getBooleanValue(xppValue,false));
                             break;
 
+                        case "nearbyHostMenuOnly":
+                            preferences.setMyPreferenceBoolean(c,"nearbyHostMenuOnly",getBooleanValue(xppValue,false));
+                            break;
+
                         case "padAutoStart":        // New preference
                         case "autostartpad":        // Old preference
                             //padAutoStart                    boolean     Should the pad autostart with song (after manually starting first time)

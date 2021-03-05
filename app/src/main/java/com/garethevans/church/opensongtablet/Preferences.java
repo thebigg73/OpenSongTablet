@@ -280,6 +280,7 @@ public class Preferences extends Activity {
     metronomeShowVisual             boolean     Should the metronome be visual (flash action bar) (def:false)
     midiSendAuto                    boolean     Should the midi info in the song be sent on song load automatically (def:false)
     multiLineVerseKeepCompact       boolean     Should multiline verses be kept compact (def:false)
+    nearbyHostMenuOnly              boolean     Should the host device only accept new client connections when the Connect menu is open (def:true)
     padAutoStart                    boolean     Should the pad autostart with song (after manually starting first time) (def:false)
     padCrossFadeTime                int         The time in ms used to fade out a pad.  Set in the PopUpCrossFade fragment (def::8000)
     padLargeFontInfoBar             boolean     The text size of the floating pad info bar (def:true is 20.0f false is 14.0f)

@@ -82,6 +82,19 @@
             android:textColor="#fff"
             android:textSize="12sp" />
 
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/nearbyHostMenuOnly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/menu_button"
+            android:drawableStart="@drawable/ic_menu_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="@string/nearby_host_menu_only"
+            android:textColor="#fff"
+            android:textSize="12sp" />
+
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/enableNearby"

@@ -735,4 +735,5 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="storage_help">Please choose the location for your \'OpenSong\' folder.  This is the default storage location for OpenSong files.  You can change this at any time from the Options menu.  Internal storage is recommended.\n\nFor an update or re-install:\nYou can use the yellow button below to find any previous \'OpenSong\' folder.</string>
     <string name="storage_quicktip">When selecting a location:\nList storage using the menu (you may need to change settings to show all storage).\nSELECT ONLY INTERNAL OR SD CARD storage.\nInternal storage is recommended.  This may list as device storage or with your device\'s name.\nOn Android 10+ you should not select the Downloads or Root folder.  If in doubt, choose the \'Documents\' folder.</string>
     <string name="information">Information</string>
+    <string name="nearby_host_menu_only">Only listen for new clients when this page is visible</string>
 </resources>
