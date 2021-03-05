@@ -63,6 +63,8 @@ public class NearbyConnections implements NearbyInterface {
         nearbyReturnActionsInterface = (NearbyReturnActionsInterface) context;
     }
 
+    String incomingPrevious = "";
+
     // The stuff used for Google Nearby for connecting devices
     String serviceId = "com.garethevans.church.opensongtablet";
     private void updateConnectionLog(String newMessage) {
@@ -381,63 +383,68 @@ public class NearbyConnections implements NearbyInterface {
         //  FOLDER_xx____xx_FILENAME_xx____xx_R2L/L2R_xx____xx_<?xml>
 
         ArrayList<String> receivedBits = processSong.getNearbyIncoming(incoming);
-        Log.d("NearbyConnections","payloadOpenSong");
-        Uri properUri = storageAccess.getUriForItem(context, preferences, "Songs", receivedBits.get(0), receivedBits.get(1));
-        Uri tempUri = storageAccess.getUriForItem(context, preferences, "Received", "", "ReceivedSong");
-        OutputStream outputStream;
+        boolean incomingChange = (!incoming.equals(incomingPrevious));
 
-        // Only songs sent via bytes payload trigger this.
-        // Receiving an OpenSong file via bytes.  PDFs etc are sent separately
-        boolean songReceived = (receivedBits.size()>=4);
+        if (incomingChange) {
+            incomingPrevious = incoming;
+            Log.d("NearbyConnections","payloadOpenSong");
+            Uri properUri = storageAccess.getUriForItem(context, preferences, "Songs", receivedBits.get(0), receivedBits.get(1));
+            Uri tempUri = storageAccess.getUriForItem(context, preferences, "Received", "", "ReceivedSong");
+            OutputStream outputStream;
 
-        Log.d("NearbyConnections","isHost="+StaticVariables.isHost+"   isConnected="+StaticVariables.isConnected+"  usingNearby="+StaticVariables.usingNearby);
-        Log.d("NearbyConnections","receiveHostFiles="+StaticVariables.receiveHostFiles+"   keepHostFiles="+StaticVariables.keepHostFiles+"  songReceived="+songReceived);
+            // Only songs sent via bytes payload trigger this.
+            // Receiving an OpenSong file via bytes.  PDFs etc are sent separately
+            boolean songReceived = (receivedBits.size()>=4);
 
-        if (!StaticVariables.isHost && StaticVariables.isConnected && songReceived && StaticVariables.receiveHostFiles) {
-            // We want to receive host files (we aren't the host either!) and an OpenSong song has been sent/received
-            FullscreenActivity.whichDirection = receivedBits.get(2);
+            Log.d("NearbyConnections","isHost="+StaticVariables.isHost+"   isConnected="+StaticVariables.isConnected+"  usingNearby="+StaticVariables.usingNearby);
+            Log.d("NearbyConnections","receiveHostFiles="+StaticVariables.receiveHostFiles+"   keepHostFiles="+StaticVariables.keepHostFiles+"  songReceived="+songReceived);
 
-            // If the user wants to keep the host file, we will save it to our storage.
-            // If we already have it, it will overwrite it, if not, we add it
-            if (StaticVariables.keepHostFiles) {
-                // Prepare the output stream in the client Songs folder
-                // Check the folder exists, if not, create it
-                storageAccess.createFile(context,preferences, DocumentsContract.Document.MIME_TYPE_DIR,"Songs",receivedBits.get(0),"");
-                // Create the file if it doesn't exist
-                storageAccess.lollipopCreateFileForOutputStream(context, preferences, properUri, null, "Songs", receivedBits.get(0), receivedBits.get(1));
-                outputStream = storageAccess.getOutputStream(context, properUri);
+            if (!StaticVariables.isHost && StaticVariables.isConnected && songReceived && StaticVariables.receiveHostFiles) {
+                // We want to receive host files (we aren't the host either!) and an OpenSong song has been sent/received
+                FullscreenActivity.whichDirection = receivedBits.get(2);
+
+                // If the user wants to keep the host file, we will save it to our storage.
+                // If we already have it, it will overwrite it, if not, we add it
+                if (StaticVariables.keepHostFiles) {
+                    // Prepare the output stream in the client Songs folder
+                    // Check the folder exists, if not, create it
+                    storageAccess.createFile(context, preferences, DocumentsContract.Document.MIME_TYPE_DIR, "Songs", receivedBits.get(0), "");
+                    // Create the file if it doesn't exist
+                    storageAccess.lollipopCreateFileForOutputStream(context, preferences, properUri, null, "Songs", receivedBits.get(0), receivedBits.get(1));
+                    outputStream = storageAccess.getOutputStream(context, properUri);
+                    StaticVariables.whichSongFolder = receivedBits.get(0);
+                    StaticVariables.songfilename = receivedBits.get(1);
+                    // Add to the sqldatabase
+                    sqLiteHelper.createSong(context, StaticVariables.whichSongFolder, StaticVariables.songfilename);
+
+                } else {
+                    // Prepare the output stream in the Received folder - just keep a temporary version
+                    storageAccess.lollipopCreateFileForOutputStream(context, preferences, tempUri, null, "Received", "", "ReceivedSong");
+                    outputStream = storageAccess.getOutputStream(context, tempUri);
+                    StaticVariables.whichSongFolder = "../Received";
+                    StaticVariables.songfilename = "ReceivedSong";
+                }
+
+                // Write the file to the desired output stream
+                if (nearbyReturnActionsInterface != null) {
+                    storageAccess.writeFileFromString(receivedBits.get(3), outputStream);
+                    nearbyReturnActionsInterface.prepareSongMenu();
+                }
+
+
+            } else if (!StaticVariables.isHost && StaticVariables.isConnected && songReceived) {
+                // We just want to trigger loading the song on our device (if we have it).
+                // If not, we get notified it doesn't exits
                 StaticVariables.whichSongFolder = receivedBits.get(0);
                 StaticVariables.songfilename = receivedBits.get(1);
-                // Add to the sqldatabase
-                sqLiteHelper.createSong(context, StaticVariables.whichSongFolder, StaticVariables.songfilename);
-
-            } else {
-                // Prepare the output stream in the Received folder - just keep a temporary version
-                storageAccess.lollipopCreateFileForOutputStream(context, preferences, tempUri, null, "Received", "", "ReceivedSong");
-                outputStream = storageAccess.getOutputStream(context, tempUri);
-                StaticVariables.whichSongFolder = "../Received";
-                StaticVariables.songfilename = "ReceivedSong";
+                Log.d("d","received: "+StaticVariables.whichSongFolder+"/"+StaticVariables.songfilename);
+                FullscreenActivity.whichDirection = receivedBits.get(2);
             }
 
-            // Write the file to the desired output stream
+            // Now load the song (from wherever it has ended up!)
             if (nearbyReturnActionsInterface != null) {
-                storageAccess.writeFileFromString(receivedBits.get(3), outputStream);
-                nearbyReturnActionsInterface.prepareSongMenu();
+                nearbyReturnActionsInterface.loadSong();
             }
-
-
-        } else if (!StaticVariables.isHost && StaticVariables.isConnected && songReceived) {
-            // We just want to trigger loading the song on our device (if we have it).
-            // If not, we get notified it doesn't exits
-            StaticVariables.whichSongFolder = receivedBits.get(0);
-            StaticVariables.songfilename = receivedBits.get(1);
-            Log.d("d","received: "+StaticVariables.whichSongFolder+"/"+StaticVariables.songfilename);
-            FullscreenActivity.whichDirection = receivedBits.get(2);
-        }
-
-        // Now load the song (from wherever it has ended up!)
-        if (nearbyReturnActionsInterface != null) {
-            nearbyReturnActionsInterface.loadSong();
         }
     }
     private void payloadFile(Payload payload, String foldernamepair) {
