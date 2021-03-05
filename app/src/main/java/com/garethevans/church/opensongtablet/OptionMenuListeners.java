@@ -1859,9 +1859,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             }
 
         });
-        nearbyHostMenuOnly.setOnCheckedChangeListener((View,isChecked) -> {
-            preferences.setMyPreferenceBoolean(c,"nearbyHostMenuOnly",isChecked);
-        });
+        nearbyHostMenuOnly.setOnCheckedChangeListener((View,isChecked) -> preferences.setMyPreferenceBoolean(c,"nearbyHostMenuOnly",isChecked));
         receiveHostFiles.setOnCheckedChangeListener((view,isChecked) -> {
             StaticVariables.receiveHostFiles = isChecked;
             keepHostFiles.setEnabled(isChecked);

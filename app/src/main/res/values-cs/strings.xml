@@ -524,4 +524,5 @@
     <string name="storage_quicktip">Při výběru umístění:\nSeznam úložiště pomocí nabídky (pro zobrazení celého úložiště bude pravděpodobně nutné změnit nastavení).\nVYBERTE POUZE VNITŘNÍ NEBO SD KARTU.\nDoporučuje se interní úložiště. Může se zobrazit jako úložiště zařízení nebo s názvem vašeho zařízení.\nV systému Android 10+ byste neměli vybírat složku Stahování nebo Kořen. V případě pochybností vyberte složku „Dokumenty“.</string>
     <string name="storage_help">Vyberte umístění složky „OpenSong“. Toto je výchozí umístění úložiště pro soubory OpenSong. Toto můžete kdykoli změnit v nabídce Možnosti. Doporučuje se interní úložiště.\n\nPro aktualizaci nebo opětovnou instalaci:\nPomocí žlutého tlačítka níže můžete vyhledat předchozí složku „OpenSong“.</string>
     <string name="information">" Informace"</string>
+    <string name="nearby_host_menu_only">Poslouchat nové klienty, pouze když je tato stránka viditelná</string>
 </resources>

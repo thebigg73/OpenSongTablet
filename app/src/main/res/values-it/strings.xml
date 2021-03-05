@@ -524,4 +524,5 @@
     <string name="storage_quicktip">Quando si seleziona una posizione:\nElenca la memoria utilizzando il menu (potrebbe essere necessario modificare le impostazioni per mostrare tutta la memoria).\nSELEZIONA SOLO MEMORIA INTERNA O SCHEDA SD.\nSi consiglia l\'archiviazione interna. Può essere elencato come memoria del dispositivo o con il nome del dispositivo.\nSu Android 10+ non dovresti selezionare la cartella Download o Root. In caso di dubbio, scegli la cartella \"Documenti\".</string>
     <string name="storage_help">Scegli la posizione della cartella \"OpenSong\". Questa è la posizione di archiviazione predefinita per i file OpenSong. Puoi modificare questa impostazione in qualsiasi momento dal menu Opzioni. Si consiglia l\'archiviazione interna.\n\nPer un aggiornamento o una reinstallazione:\npuoi utilizzare il pulsante giallo in basso per trovare qualsiasi cartella \"OpenSong\" precedente.</string>
     <string name="information">" Informazione"</string>
+    <string name="nearby_host_menu_only">Ascolta i nuovi clienti solo quando questa pagina è visibile</string>
 </resources>

@@ -524,4 +524,5 @@
     <string name="storage_quicktip">As u \'n plek kies:\nMaak \'n lys van stoorplek met behulp van die menu (u moet dalk die instellings verander om alle stoorplekke te wys).\nKIES SLEGS INTERNE OF SD-KAART-berging.\nInterne berging word aanbeveel. Dit kan gelys word as toestelberging of met die naam van u toestel.\nOp Android 10+ moet u nie die gids Downloads of Root kies nie. As u twyfel, kies die gids \'Dokumente\'.</string>
     <string name="storage_help">Kies die plek vir u \'OpenSong\'-lêergids. Dit is die standaardopbergplek vir OpenSong-lêers. U kan dit te eniger tyd in die Opsies-menu verander. Interne berging word aanbeveel.\n\nVir \'n opdatering of herinstelling:\nu kan die onderstaande geel knoppie gebruik om enige vorige \'OpenSong\'-lêergids te vind.</string>
     <string name="information">" Inligting"</string>
+    <string name="nearby_host_menu_only">Luister net na nuwe kliënte wanneer hierdie bladsy sigbaar is</string>
 </resources>

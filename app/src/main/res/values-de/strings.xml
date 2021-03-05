@@ -524,4 +524,5 @@
     <string name="storage_quicktip">" Bei Auswahl eines Speicherorts:\n Listen Sie den Speicher über das Menü auf (möglicherweise müssen Sie die Einstellungen ändern, um den gesamten Speicher anzuzeigen).\n Wählen Sie nur den internen oder SD-Kartenspeicher.\n Interner Speicher wird empfohlen. Dies kann als Gerätespeicher oder mit dem Namen Ihres Geräts aufgeführt werden.\n Unter Android 10+ sollten Sie nicht den Ordner Downloads oder Root auswählen. Wählen Sie im Zweifelsfall den Ordner \"Dokumente\"."</string>
     <string name="storage_help">Bitte wählen Sie den Speicherort für Ihren \'OpenSong\'-Ordner. Dies ist der Standardspeicherort für OpenSong-Dateien. Sie können dies jederzeit über das Menü Optionen ändern. Interner Speicher wird empfohlen.\n\nFür ein Update oder eine Neuinstallation:\nSie können die gelbe Schaltfläche unten verwenden, um einen früheren \'OpenSong\'-Ordner zu finden.</string>
     <string name="information">Information</string>
+    <string name="nearby_host_menu_only">Warten Sie nur auf neue Clients, wenn diese Seite sichtbar ist</string>
 </resources>

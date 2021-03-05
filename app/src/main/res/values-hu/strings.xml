@@ -524,4 +524,5 @@
     <string name="storage_quicktip">Hely kiválasztásakor:\nSorolja fel a tárhelyet a menü segítségével (lehet, hogy módosítania kell a beállításokat az összes tároló megjelenítéséhez).\nKIZÁRÓLAG BELSŐ VAGY SD KÁRTYA tárhelyet válasszon.\nBelső tárolás ajánlott. Ez felsorolható eszközmegőrzőként vagy az eszköz nevével együtt.\nAndroid 10+ rendszeren nem válassza a Letöltések vagy a Gyökér mappát. Ha kétségei vannak, válassza a \'Dokumentumok\' mappát.</string>
     <string name="storage_help">Kérjük, válassza ki az „OpenSong” mappa helyét. Ez az OpenSong fájlok alapértelmezett tárolási helye. Ezt bármikor megváltoztathatja az Opciók menüből. Belső tárolás ajánlott.\n\nFrissítéshez vagy újratelepítéshez:\nAz alábbi sárga gombbal megtalálhatja bármelyik korábbi „OpenSong” mappát.</string>
     <string name="information">" Információ"</string>
+    <string name="nearby_host_menu_only">Csak akkor hallgasson új ügyfelekre, ha ez az oldal látható</string>
 </resources>

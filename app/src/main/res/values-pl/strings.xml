@@ -524,4 +524,5 @@
     <string name="storage_quicktip">W przypadku wyboru lokalizacji:\nLista pamięci za pomocą menu (może być konieczna zmiana ustawień, aby wyświetlić całą pamięć).\nWYBIERZ TYLKO pamięć WEWNĘTRZNĄ LUB KARTĘ SD.\nZalecana jest pamięć wewnętrzna. Może to być wymienione jako pamięć urządzenia lub z nazwą twojego urządzenia.\nW systemie Android 10+ nie należy wybierać folderu Pobrane ani Root. W razie wątpliwości wybierz folder „Dokumenty”.</string>
     <string name="storage_help">Wybierz lokalizację folderu „OpenSong”. To jest domyślna lokalizacja przechowywania plików OpenSong. Możesz to zmienić w dowolnym momencie w menu Opcje. Zalecana jest pamięć wewnętrzna.\n\nAby zaktualizować lub ponownie zainstalować:\nmożesz użyć żółtego przycisku poniżej, aby znaleźć poprzedni folder „OpenSong”.</string>
     <string name="information">" Informacja"</string>
+    <string name="nearby_host_menu_only">Nasłuchuj nowych klientów tylko wtedy, gdy ta strona jest widoczna</string>
 </resources>
