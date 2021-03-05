@@ -1814,23 +1814,10 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             receiveHostFiles.setEnabled(!isChecked);
             keepHostFiles.setEnabled(!isChecked);
 
-            // IV - Restart
-            try {
-                nearbyInterface.stopAdvertising();
-            } catch (Exception e) {
-                Log.d("OptionMenuListener","Can't stop advertising, probably wasn't a host!");
-            }
-            try {
-                nearbyInterface.stopDiscovery();
-            } catch (Exception e) {
-                Log.d("OptionMenuListener","Can't stop discovery, probably wasn't discovering");
-            }
             if (StaticVariables.usingNearby) {
-                if (StaticVariables.isHost) {
-                    nearbyInterface.startAdvertising();
-                } else {
-                    nearbyInterface.startDiscovery();
-                }
+                // IV - Do the action of a disable and eneable of nearby to get things in the right state
+                enableNearby.performClick();
+                enableNearby.performClick();
             }
 
         });
