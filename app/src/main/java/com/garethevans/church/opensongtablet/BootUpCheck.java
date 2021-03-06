@@ -58,14 +58,14 @@ public class BootUpCheck extends AppCompatActivity {
     private TextView previousStorageHeading;
     private TextView currentAction;
     private TextView warningText;
-    private TextView MyQuicktip;
+    private LinearLayout MyQuicktip;
     private Button chooseStorageButton;
     private Button goToSongsButton;
     private Button userGuideButton;
     private Button previousStorageButton;
     private Button resetCacheButton;
+    private Button moreinfo;
     private FloatingActionButton quicktip;
-    private FloatingActionButton moreinfo;
     private LinearLayout storageLinearLayout;
     private LinearLayout readUpdate;
     private LinearLayout userGuideLinearLayout;
@@ -160,6 +160,7 @@ public class BootUpCheck extends AppCompatActivity {
         warningText = findViewById(R.id.warningText);
         progressText = findViewById(R.id.progressText);
         MyQuicktip = findViewById(R.id.MyQuicktip);
+        moreinfo = findViewById(R.id.moreinfo);
         goToSongsButton = findViewById(R.id.goToSongsButton);
         chooseStorageButton = findViewById(R.id.chooseStorageButton);
         storageLinearLayout = findViewById(R.id.storageLinearLayout);
@@ -168,7 +169,6 @@ public class BootUpCheck extends AppCompatActivity {
         version = findViewById(R.id.version);
         version.setText(versionCode);
         quicktip = findViewById(R.id.quicktip);
-        moreinfo = findViewById(R.id.moreinfo);
         userGuideLinearLayout = findViewById(R.id.userGuideLinearLayout);
         userGuideButton = findViewById(R.id.userGuideButton);
         Toolbar toolbar = findViewById(R.id.toolbar);

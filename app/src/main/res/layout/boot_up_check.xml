@@ -96,14 +96,32 @@
                     style="@style/MyInfoText"
                     android:text="@string/storage_help"/>
 
-                <TextView
+                <LinearLayout
                     android:id="@+id/MyQuicktip"
-                    style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#110022">
+
+                <TextView
+                    style="@style/MyInfoText"
+                    android:textColor="@color/yellow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="@string/storage_quicktip"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
+
+                    <Button
+                        android:id="@+id/moreinfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/help"
+                        android:layout_gravity="center_horizontal"/>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -120,8 +138,8 @@
                         android:src="@drawable/ic_information_outline_white_36dp"
                         app:backgroundTint="@color/grey"
                         app:borderWidth="0dp"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="8dp"
                         app:fabSize="mini" />
 
                     <TextView
@@ -133,16 +151,18 @@
                 </LinearLayout>
 
 
-                <TextView
-                    android:id="@+id/warningText"
-                    style="@style/MyWhiteHeadingText"
-                    android:layout_marginTop="8dp"
+
+                    <TextView
+                        android:id="@+id/warningText"
+                        style="@style/MyWhiteHeadingText"
+                        android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/storage_warning"
                     android:textColor="#f88"
-                    android:visibility="gone"/>
+                        android:visibility="gone"/>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -158,19 +178,7 @@
                         android:background="@drawable/red_button"
                         android:text="@string/changestorage"
                         android:textColor="#fff"
-                        android:layout_marginLeft="50dp"
                         android:textSize="14sp" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/moreinfo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/help"
-                        android:src="@drawable/ic_help_outline_white_36dp"
-                        app:backgroundTint="@color/grey"
-                        app:borderWidth="0dp"
-                        app:fabSize="mini"
-                        android:layout_marginLeft="10dp"/>
 
                 </LinearLayout>
 
