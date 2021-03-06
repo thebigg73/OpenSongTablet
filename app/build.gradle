@@ -26,7 +26,7 @@ android {
         //multiDexEnabled false
         minSdkVersion 19
         // Happy to update most stuff, but not targetSdk as this might break storage
-        // Until I can test on physical device first, leavge at 29
+        // Until I can test on physical device first, leave at 29
         targetSdkVersion 29
         multiDexEnabled true
     }
