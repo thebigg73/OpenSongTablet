@@ -1814,9 +1814,9 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                     } catch (Exception e) {
                         Log.d("OptionMenuListener", "Can't stop discovery, probably wasn't discovering");
                     }
-                    nearbyInterface.turnOffNearby();
                 }
-
+                // IV - We have been asked to turn off  nearby
+                nearbyInterface.turnOffNearby();
             }
         });
         actAsHost.setOnCheckedChangeListener((view,isChecked) -> {

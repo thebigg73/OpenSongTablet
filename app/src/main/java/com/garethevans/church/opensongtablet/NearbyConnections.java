@@ -64,6 +64,8 @@ public class NearbyConnections implements NearbyInterface {
     }
 
     String incomingPrevious = "";
+    String connectionId;
+    String connectionEndPointName;
 
     // The stuff used for Google Nearby for connecting devices
     String serviceId = "com.garethevans.church.opensongtablet";
@@ -167,15 +169,9 @@ public class NearbyConnections implements NearbyInterface {
             // Add a note of the nice name matching the endpointId
             String id = userConnectionInfo(endpointId,connectionInfo);
             Log.d("NearbyConnections","looking for "+id);
-            if (!connectedEndPointsNames.contains(id)) {
-                connectedEndPointsNames.add(id);
-                Log.d("NearbyConnections", id+" not found, adding");
-            }
-            if (!connectedDeviceIds.contains(connectionInfo.getEndpointName())) {
-                connectedDeviceIds.add(connectionInfo.getEndpointName());
-                Log.d("NearbyConnections", connectionInfo.getEndpointName()+" not found, adding");
-            }
-
+            // Take a note of the nice name matching the endpointId to use on connection STATUS_OK
+            connectionId = userConnectionInfo(endpointId,connectionInfo);
+            connectionEndPointName = connectionInfo.getEndpointName();
             // The user confirmed, so we can accept the connection.
             Nearby.getConnectionsClient(context)
                     .acceptConnection(endpointId, payloadCallback());
@@ -220,7 +216,15 @@ public class NearbyConnections implements NearbyInterface {
                         // We're connected! Can now start sending and receiving data.
                         connectedEndPoints.add(endpointId);
                         StaticVariables.isConnected = true;
-                        updateConnectionLog(context.getResources().getString(R.string.connections_connected) + " " + getDeviceNameFromId(endpointId));
+                        updateConnectionLog(context.getResources().getString(R.string.connections_connected) + " " + connectionEndPointName);
+                        if (!connectedEndPointsNames.contains(connectionId)) {
+                            connectedEndPointsNames.add(connectionId);
+                            Log.d("NearbyConnections", connectionId + " not found, adding");
+                        }
+                        if (!connectedDeviceIds.contains(connectionEndPointName)) {
+                            connectedDeviceIds.add(connectionEndPointName);
+                            Log.d("NearbyConnections", connectionEndPointName + " not found, adding");
+                        }
                         // try to send the current song payload
                         sendSongPayload();
                         if (!StaticVariables.isHost) {
@@ -249,12 +253,16 @@ public class NearbyConnections implements NearbyInterface {
                 String deviceName = getDeviceNameFromId(endpointId);
                 connectedEndPointsNames.remove(endpointId+"__"+deviceName);
                 updateConnectionLog(context.getResources().getString(R.string.connections_disconnect) + " " + deviceName);
-                // Check if we have valid connections
-                StaticVariables.isConnected = stillValidConnections();
-                // Try to connect again after 2 seconds
-                if (!StaticVariables.isHost) {
-                    Handler h = new Handler();
-                    h.postDelayed(() -> startDiscovery(), 2000);
+                if (StaticVariables.isHost) {
+                    // Check if we have valid connections
+                    StaticVariables.isConnected = stillValidConnections();
+                } else {
+                    // Try to connect again after 2 seconds
+                    if (!StaticVariables.isHost) {
+                        StaticVariables.isConnected = false;
+                        Handler h = new Handler();
+                        h.postDelayed(() -> startDiscovery(), 2000);
+                    }
                 }
             }
         };
