@@ -92,6 +92,7 @@ public class NearbyConnections implements NearbyInterface {
         if (!isAdvertising) {
             Log.d("NearbyConnections", "Nearby.getConnectionsClient(context)=" + Nearby.getConnectionsClient(context));
             Log.d("d", "startAdvertising()");
+        Log.d("d","startAdvertising()");
             Nearby.getConnectionsClient(context)
                     .startAdvertising(getUserNickname(), serviceId, connectionLifecycleCallback(), advertisingOptions)
                     .addOnSuccessListener(
@@ -265,7 +266,7 @@ public class NearbyConnections implements NearbyInterface {
                             Log.d("NearbyConnections", connectionEndPointName + " not found, adding");
                         }
 
-                        if (StaticVariables.isHost) {
+                        if (!StaticVariables.isHost) {
                             // try to send the current song payload
                             sendSongPayload();
                         }

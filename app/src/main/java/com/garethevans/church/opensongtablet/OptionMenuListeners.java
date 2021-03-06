@@ -1783,7 +1783,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         setTextSwitch(keepHostFiles,c.getResources().getString(R.string.connections_keephostsongs));
         setTextTextView(menuUp,c.getResources().getString(R.string.connections_connect));
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
-        
+
         // Set the default values
         if (StaticVariables.isHost) {
             connectionsHost.setChecked(true);
@@ -1806,7 +1806,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             hostOptions.setVisibility(View.GONE);
             clientOptions.setVisibility(View.GONE);
         }
-        
+
         // Set the listeners
         menuUp.setOnClickListener(view -> {
             StaticVariables.whichOptionMenu = "MAIN";
@@ -1871,7 +1871,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 }
             },10000);
         });
-        
+
         nearbyHostMenuOnly.setOnCheckedChangeListener((View,isChecked) -> preferences.setMyPreferenceBoolean(c,"nearbyHostMenuOnly",isChecked));
         receiveHostFiles.setOnCheckedChangeListener((view,isChecked) -> {
             StaticVariables.receiveHostFiles = isChecked;
@@ -1889,7 +1889,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             StaticVariables.connectionLog = c.getResources().getString(R.string.connections_log) + "\n\n";
             setTextTextView(connectionLog,StaticVariables.connectionLog);
         });
-        
+
         if (!mListener.requestNearbyPermissions()) {
             StaticVariables.whichOptionMenu = "MAIN";
             mListener.closeMyDrawers("option");
