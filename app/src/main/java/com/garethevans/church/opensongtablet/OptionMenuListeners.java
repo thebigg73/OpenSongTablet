@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +29,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
 
     @SuppressLint("StaticFieldLeak")
     static TextView connectionLog;
+    @SuppressLint("StaticFieldLeak")
     static Button connectionSearch;
 
     Context context;
@@ -1756,7 +1756,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
 
         // We keep a static reference to these in the FullscreenActivity
         Button deviceName = v.findViewById(R.id.deviceName);
-        RadioGroup connectionsMethod = v.findViewById(R.id.connectionsMethod);
         RadioButton connectionsOff = v.findViewById(R.id.connectionsOff);
         RadioButton connectionsHost = v.findViewById(R.id.connectionsHost);
         RadioButton connectionsClient = v.findViewById(R.id.connectionsClient);
@@ -1768,10 +1767,6 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
 
         LinearLayout hostOptions = v.findViewById(R.id.hostOptions);
         LinearLayout clientOptions = v.findViewById(R.id.clientOptions);
-
-        //SwitchCompat actAsHost = v.findViewById(R.id.actAsHost);
-        //actAsHost.requestFocus();
-        //SwitchCompat enableNearby = v.findViewById(R.id.enableNearby);
 
         deviceName.setText(StaticVariables.deviceName);
         if (StaticVariables.connectionLog==null || StaticVariables.connectionLog.isEmpty()) {
@@ -1788,10 +1783,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         setTextSwitch(keepHostFiles,c.getResources().getString(R.string.connections_keephostsongs));
         setTextTextView(menuUp,c.getResources().getString(R.string.connections_connect));
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
-
-        //setTextSwitch(actAsHost,c.getResources().getString(R.string.connections_actashost));
-        //setTextSwitch(enableNearby,c.getResources().getString(R.string.connections_enable));
-
+        
         // Set the default values
         if (StaticVariables.isHost) {
             connectionsHost.setChecked(true);
@@ -1814,13 +1806,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             hostOptions.setVisibility(View.GONE);
             clientOptions.setVisibility(View.GONE);
         }
-
-        //enableNearby.setChecked(StaticVariables.usingNearby);
-        //actAsHost.setChecked(StaticVariables.isHost);
-        //nearbyHostMenuOnly.setEnabled(StaticVariables.isHost);
-        //receiveHostFiles.setEnabled(!StaticVariables.isHost);
-        //keepHostFiles.setEnabled(!StaticVariables.isHost);
-
+        
         // Set the listeners
         menuUp.setOnClickListener(view -> {
             StaticVariables.whichOptionMenu = "MAIN";
@@ -1874,93 +1860,18 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             connectionSearch.setText(c.getString(R.string.connections_searching));
             nearbyInterface.startDiscovery();
             Handler h = new Handler();
-            h.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (connectionSearch!=null) {
-                        try {
-                            setTextButtons(connectionSearch,c.getString(R.string.connections_discover));
-                            connectionSearch.setEnabled(true);
-                        } catch (Exception e) {
-                            Log.d("OptionMenu","Lost reference to discovery button");
-                        }
+            h.postDelayed(() -> {
+                if (connectionSearch!=null) {
+                    try {
+                        setTextButtons(connectionSearch,c.getString(R.string.connections_discover));
+                        connectionSearch.setEnabled(true);
+                    } catch (Exception e) {
+                        Log.d("OptionMenu","Lost reference to discovery button");
                     }
                 }
             },10000);
         });
-
-        /*enableNearby.setOnCheckedChangeListener((view,isChecked) -> {
-            // This switches on/off the Nearby connection
-            StaticVariables.usingNearby = isChecked;
-            StaticVariables.isHost = actAsHost.isChecked();
-            if (isChecked) {
-                if (StaticVariables.isHost) {
-                    nearbyInterface.startAdvertising();
-                } else {
-                    nearbyInterface.startDiscovery();
-                }
-            } else {
-                if (StaticVariables.isHost) {
-                    // We should stop advertising/stop discovery and then turn off Nearby
-                    try {
-                        nearbyInterface.stopAdvertising();
-                    } catch (Exception e) {
-                        Log.d("OptionMenuListener", "Can't stop advertising, probably wasn't a host!");
-                    }
-                } else {
-                    try {
-                        nearbyInterface.stopDiscovery();
-                    } catch (Exception e) {
-                        Log.d("OptionMenuListener", "Can't stop discovery, probably wasn't discovering");
-                    }
-                }
-                // IV - We have been asked to turn off  nearby
-                nearbyInterface.turnOffNearby();
-            }
-        });*/
-        /*actAsHost.setOnCheckedChangeListener((view,isChecked) -> {
-            StaticVariables.isHost = isChecked;
-
-            // Enable or disable host switches bases on what we've done
-            receiveHostFiles.setEnabled(!isChecked);   // Client only
-            keepHostFiles.setEnabled(!isChecked);      // Client only
-            nearbyHostMenuOnly.setEnabled(isChecked);  // Host only
-
-            // If we are already connected, that's fine, we stay connected
-            // However, we need to switch between advertising/discovery.  This is just a reset.
-            // First we stop advertising/discovery
-            if (isChecked) {
-                // We are now host, so may have been discovering beforehand
-                try {
-                    nearbyInterface.stopDiscovery();
-                } catch (Exception e) {
-                    Log.d("OptionMenuListener", "Can't stop discovery, probably wasn't discovering");
-                }
-            } else {
-                // We are now choosing to be a client, so we may have been advertising
-                try {
-                    nearbyInterface.stopAdvertising();
-                } catch (Exception e) {
-                    Log.d("OptionMenuListener", "Can't stop advertising, probably wasn't a host!");
-                }
-            }
-
-            // If we have chosen to be the host, we will automatically turn on the enable nearby switch
-            // This starts advertising as part of that switch's logic
-
-            if (isChecked && !enableNearby.isChecked()) {
-                Log.d("OptionMenuListener","turn on nearby as we want to be the host");
-                enableNearby.setChecked(true);
-            } else if (isChecked) {
-                // If the nearby switch is already on, just start advertising
-                Log.d("OptionMenuListener","the nearby switch is already on, just start advertising");
-                nearbyInterface.startAdvertising();
-            } else if (!isChecked && enableNearby.isChecked()) {
-                // If we have stopped being the host but was already using nearby, start discovery
-                Log.d("OptionMenuListener","we have stopped being the host but was already using nearby, start discovery");
-                nearbyInterface.startDiscovery();
-            }
-        });*/
+        
         nearbyHostMenuOnly.setOnCheckedChangeListener((View,isChecked) -> preferences.setMyPreferenceBoolean(c,"nearbyHostMenuOnly",isChecked));
         receiveHostFiles.setOnCheckedChangeListener((view,isChecked) -> {
             StaticVariables.receiveHostFiles = isChecked;
@@ -1978,9 +1889,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             StaticVariables.connectionLog = c.getResources().getString(R.string.connections_log) + "\n\n";
             setTextTextView(connectionLog,StaticVariables.connectionLog);
         });
-
-
-
+        
         if (!mListener.requestNearbyPermissions()) {
             StaticVariables.whichOptionMenu = "MAIN";
             mListener.closeMyDrawers("option");

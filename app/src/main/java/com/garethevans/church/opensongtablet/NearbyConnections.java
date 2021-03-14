@@ -44,7 +44,6 @@ public class NearbyConnections implements NearbyInterface {
     SQLiteHelper sqLiteHelper;
 
     private boolean isDiscovering = false, isAdvertising = false;
-    private String hostId;
 
     AdvertisingOptions advertisingOptions = new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
     DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
@@ -126,12 +125,7 @@ public class NearbyConnections implements NearbyInterface {
                                 isDiscovering = true;
                                 Log.d("NearbyConnections", "startDiscovery() - success");
                                 Handler h = new Handler();
-                                h.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        stopDiscovery();
-                                    }
-                                },10000);
+                                h.postDelayed(this::stopDiscovery,10000);
                             })
                     .addOnFailureListener(
                             (Exception e) -> {
@@ -333,7 +327,6 @@ public class NearbyConnections implements NearbyInterface {
                             .addOnSuccessListener(
                                     (Void unused) -> {
                                         Log.d("NearbyConnection", "Trying to connect to host: " + endpointId);
-                                        hostId = endpointId;
                                         // We successfully requested a connection. Now both sides
                                         // must accept before the connection is established.
                                         updateConnectionLog(context.getResources().getString(R.string.connections_searching));
@@ -343,7 +336,6 @@ public class NearbyConnections implements NearbyInterface {
                                         // Nearby Connections failed to request the connection.
                                         updateConnectionLog(context.getResources().getString(R.string.connections_failure) + " " + getDeviceNameFromId(endpointId));
                                         Log.d("NearbyConnections", "Connections failure: " + e);
-                                        hostId = null;
                                     });
                 }
             }
@@ -356,7 +348,6 @@ public class NearbyConnections implements NearbyInterface {
                 StaticVariables.isConnected = stillValidConnections();
                 // Try to connect again after 2 seconds
                 if (!StaticVariables.isHost) {
-                    hostId = null;
                     Handler h = new Handler();
                     h.postDelayed(() -> startDiscovery(), 2000);
                 }
@@ -366,8 +357,14 @@ public class NearbyConnections implements NearbyInterface {
 
     private boolean findEndpoints(String endpointId, DiscoveredEndpointInfo discoveredEndpointInfo) {
         Log.d("fixEndPoints","endpointId="+endpointId);
-        Log.d("fixEndPoints","endpointId="+discoveredEndpointInfo.getEndpointName());
-        return connectedEndPoints.contains(endpointId);
+        Log.d("fixEndPoints","discoveredEnpointInfo.getEndpointName()="+discoveredEndpointInfo.getEndpointName());
+        for (String s:connectedEndPoints) {
+            Log.d("fixEnpoints","ArrayList connectedEndPoints:"+s);
+        }
+        for (String s:connectedEndPointsNames) {
+            Log.d("fixEnpoints","ArrayList connectedEndPointsNames:"+s);
+        }
+        return connectedEndPointsNames.contains(discoveredEndpointInfo.getEndpointName());
     }
     public void sendSongPayload() {
         String infoPayload;
@@ -578,22 +575,6 @@ public class NearbyConnections implements NearbyInterface {
             }
         }
     }
-    private void sendConnectedEndpoints() {
-        // Whenever a new connection is made to the host devices, the clients should store a list of them
-        // This means if a device switches from host to client, it has a record of connected devices
-        // This is because when sending payloads, we iterate through the endpointIds
-        if (StaticVariables.isHost) {
-            StringBuilder ids = new StringBuilder();
-            boolean goodtogo = false;
-            for (String s:connectedEndPoints) {
-                ids.append(s).append("_ep__ep_");
-                goodtogo = true;
-            }
-            if (goodtogo) {
-                doSendPayloadBytes(ids.toString());
-            }
-        }
-    }
     private void payloadEndpoints(String incomingEndpoints) {
         if (!StaticVariables.isHost) {
             Log.d("d", "I am a client, but the host has sent me this info about connected endpoints: " + incomingEndpoints);
@@ -679,5 +660,6 @@ public class NearbyConnections implements NearbyInterface {
         StaticVariables.isConnected = false;
         StaticVariables.usingNearby = false;
     }
+
 
 }
