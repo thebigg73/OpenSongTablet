@@ -7,11 +7,14 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +30,8 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
 
     @SuppressLint("StaticFieldLeak")
     static TextView connectionLog;
+    static Button connectionSearch;
+
     Context context;
 
     public OptionMenuListeners() {}
@@ -435,6 +440,10 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
     private static void setTextTextView(TextView t, String text) {
         t.setTextSize(textSize);
         t.setText(text.toUpperCase(StaticVariables.locale));
+    }
+    private static void setRadioButton(RadioButton b, String text) {
+        b.setTextSize(textSize);
+        b.setText(text.toUpperCase(StaticVariables.locale));
     }
 
     private static void setTextSwitch(SwitchCompat t, String text) {
@@ -1747,13 +1756,23 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
 
         // We keep a static reference to these in the FullscreenActivity
         Button deviceName = v.findViewById(R.id.deviceName);
-        SwitchCompat actAsHost = v.findViewById(R.id.actAsHost);
-        actAsHost.requestFocus();
+        RadioGroup connectionsMethod = v.findViewById(R.id.connectionsMethod);
+        RadioButton connectionsOff = v.findViewById(R.id.connectionsOff);
+        RadioButton connectionsHost = v.findViewById(R.id.connectionsHost);
+        RadioButton connectionsClient = v.findViewById(R.id.connectionsClient);
         SwitchCompat nearbyHostMenuOnly = v.findViewById(R.id.nearbyHostMenuOnly);
-        SwitchCompat enableNearby = v.findViewById(R.id.enableNearby);
         SwitchCompat receiveHostFiles = v.findViewById(R.id.receiveHostFiles);
         SwitchCompat keepHostFiles = v.findViewById(R.id.keepHostFiles);
         connectionLog = v.findViewById(R.id.options_connections_log);
+        connectionSearch = v.findViewById(R.id.searchForHosts);
+
+        LinearLayout hostOptions = v.findViewById(R.id.hostOptions);
+        LinearLayout clientOptions = v.findViewById(R.id.clientOptions);
+
+        //SwitchCompat actAsHost = v.findViewById(R.id.actAsHost);
+        //actAsHost.requestFocus();
+        //SwitchCompat enableNearby = v.findViewById(R.id.enableNearby);
+
         deviceName.setText(StaticVariables.deviceName);
         if (StaticVariables.connectionLog==null || StaticVariables.connectionLog.isEmpty()) {
             StaticVariables.connectionLog = c.getResources().getString(R.string.connections_log) + "\n\n";
@@ -1761,23 +1780,46 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
 
         setTextTextView(connectionLog,StaticVariables.connectionLog);
         setTextTextView(deviceName,StaticVariables.deviceName);
-        setTextSwitch(actAsHost,c.getResources().getString(R.string.connections_actashost));
+        setRadioButton(connectionsOff,c.getString(R.string.off));
+        setRadioButton(connectionsClient,c.getString(R.string.client));
+        setRadioButton(connectionsHost,c.getString(R.string.host));
         setTextSwitch(nearbyHostMenuOnly,c.getResources().getString(R.string.nearby_host_menu_only));
-        setTextSwitch(enableNearby,c.getResources().getString(R.string.connections_enable));
         setTextSwitch(receiveHostFiles,c.getResources().getString(R.string.connections_receive_host));
         setTextSwitch(keepHostFiles,c.getResources().getString(R.string.connections_keephostsongs));
         setTextTextView(menuUp,c.getResources().getString(R.string.connections_connect));
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
+        //setTextSwitch(actAsHost,c.getResources().getString(R.string.connections_actashost));
+        //setTextSwitch(enableNearby,c.getResources().getString(R.string.connections_enable));
+
         // Set the default values
-        enableNearby.setChecked(StaticVariables.usingNearby);
-        actAsHost.setChecked(StaticVariables.isHost);
+        if (StaticVariables.isHost) {
+            connectionsHost.setChecked(true);
+        } else if (StaticVariables.usingNearby) {
+            connectionsClient.setChecked(true);
+        } else {
+            connectionsOff.setChecked(true);
+        }
         nearbyHostMenuOnly.setChecked(preferences.getMyPreferenceBoolean(c,"nearbyHostMenuOnly",false));
-        nearbyHostMenuOnly.setEnabled(StaticVariables.isHost);
         receiveHostFiles.setChecked(StaticVariables.receiveHostFiles);
-        receiveHostFiles.setEnabled(!StaticVariables.isHost);
         keepHostFiles.setChecked(StaticVariables.keepHostFiles);
-        keepHostFiles.setEnabled(!StaticVariables.isHost);
+
+        if (StaticVariables.isHost) {
+            hostOptions.setVisibility(View.VISIBLE);
+            clientOptions.setVisibility(View.GONE);
+        } else if (StaticVariables.usingNearby){
+            hostOptions.setVisibility(View.GONE);
+            clientOptions.setVisibility(View.VISIBLE);
+        } else {
+            hostOptions.setVisibility(View.GONE);
+            clientOptions.setVisibility(View.GONE);
+        }
+
+        //enableNearby.setChecked(StaticVariables.usingNearby);
+        //actAsHost.setChecked(StaticVariables.isHost);
+        //nearbyHostMenuOnly.setEnabled(StaticVariables.isHost);
+        //receiveHostFiles.setEnabled(!StaticVariables.isHost);
+        //keepHostFiles.setEnabled(!StaticVariables.isHost);
 
         // Set the listeners
         menuUp.setOnClickListener(view -> {
@@ -1792,7 +1834,63 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
             }
         });
 
-        enableNearby.setOnCheckedChangeListener((view,isChecked) -> {
+        connectionsOff.setOnCheckedChangeListener((radioButton, isChecked) -> {
+            if (isChecked) {
+                StaticVariables.isHost = false;
+                StaticVariables.usingNearby = false;
+                hostOptions.setVisibility(View.GONE);
+                clientOptions.setVisibility(View.GONE);
+                nearbyInterface.stopDiscovery();
+                nearbyInterface.stopAdvertising();
+                nearbyInterface.turnOffNearby();
+            }
+        });
+
+        connectionsHost.setOnCheckedChangeListener((radioButton, isChecked) -> {
+            if (isChecked) {
+                StaticVariables.isHost = true;
+                StaticVariables.usingNearby = true;
+                hostOptions.setVisibility(View.VISIBLE);
+                clientOptions.setVisibility(View.GONE);
+                nearbyInterface.stopDiscovery();
+                nearbyInterface.startAdvertising();
+            }
+        });
+
+        connectionsClient.setOnCheckedChangeListener((radioButton, isChecked) -> {
+            if (isChecked) {
+                StaticVariables.isHost = false;
+                StaticVariables.usingNearby = true;
+                hostOptions.setVisibility(View.GONE);
+                clientOptions.setVisibility(View.VISIBLE);
+                nearbyInterface.stopAdvertising();
+                connectionSearch.performClick();
+            }
+        });
+
+        connectionSearch.setOnClickListener(b -> {
+            // Start discovery and turn it off again after 10 seconds
+            connectionSearch.setEnabled(false);
+            connectionSearch.setText(c.getString(R.string.connections_searching));
+            nearbyInterface.startDiscovery();
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (connectionSearch!=null) {
+                        try {
+                            setTextButtons(connectionSearch,c.getString(R.string.connections_discover));
+                            connectionSearch.setEnabled(true);
+                        } catch (Exception e) {
+                            Log.d("OptionMenu","Lost reference to discovery button");
+                        }
+                    }
+                }
+            },10000);
+        });
+
+        /*enableNearby.setOnCheckedChangeListener((view,isChecked) -> {
+            // This switches on/off the Nearby connection
             StaticVariables.usingNearby = isChecked;
             StaticVariables.isHost = actAsHost.isChecked();
             if (isChecked) {
@@ -1803,6 +1901,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 }
             } else {
                 if (StaticVariables.isHost) {
+                    // We should stop advertising/stop discovery and then turn off Nearby
                     try {
                         nearbyInterface.stopAdvertising();
                     } catch (Exception e) {
@@ -1814,51 +1913,54 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                     } catch (Exception e) {
                         Log.d("OptionMenuListener", "Can't stop discovery, probably wasn't discovering");
                     }
-                    nearbyInterface.turnOffNearby();
                 }
-
+                // IV - We have been asked to turn off  nearby
+                nearbyInterface.turnOffNearby();
             }
-        });
-        actAsHost.setOnCheckedChangeListener((view,isChecked) -> {
+        });*/
+        /*actAsHost.setOnCheckedChangeListener((view,isChecked) -> {
             StaticVariables.isHost = isChecked;
-            receiveHostFiles.setEnabled(!isChecked);
-            keepHostFiles.setEnabled(!isChecked);
 
-            // Hosts can choose to listen for new clients only when the menu is open
-            nearbyHostMenuOnly.setEnabled(isChecked);
-
-            // Disable the switches that are for clients only
-            receiveHostFiles.setEnabled(!isChecked);
-            keepHostFiles.setEnabled(!isChecked);
+            // Enable or disable host switches bases on what we've done
+            receiveHostFiles.setEnabled(!isChecked);   // Client only
+            keepHostFiles.setEnabled(!isChecked);      // Client only
+            nearbyHostMenuOnly.setEnabled(isChecked);  // Host only
 
             // If we are already connected, that's fine, we stay connected
             // However, we need to switch between advertising/discovery.  This is just a reset.
             // First we stop advertising/discovery
-            try {
-                nearbyInterface.stopAdvertising();
-            } catch (Exception e) {
-                Log.d("OptionMenuListener","Can't stop advertising, probably wasn't a host!");
-            }
-            try {
-                nearbyInterface.stopDiscovery();
-            } catch (Exception e) {
-                Log.d("OptionMenuListener","Can't stop discovery, probably wasn't discovering");
+            if (isChecked) {
+                // We are now host, so may have been discovering beforehand
+                try {
+                    nearbyInterface.stopDiscovery();
+                } catch (Exception e) {
+                    Log.d("OptionMenuListener", "Can't stop discovery, probably wasn't discovering");
+                }
+            } else {
+                // We are now choosing to be a client, so we may have been advertising
+                try {
+                    nearbyInterface.stopAdvertising();
+                } catch (Exception e) {
+                    Log.d("OptionMenuListener", "Can't stop advertising, probably wasn't a host!");
+                }
             }
 
             // If we have chosen to be the host, we will automatically turn on the enable nearby switch
             // This starts advertising as part of that switch's logic
 
             if (isChecked && !enableNearby.isChecked()) {
+                Log.d("OptionMenuListener","turn on nearby as we want to be the host");
                 enableNearby.setChecked(true);
             } else if (isChecked) {
                 // If the nearby switch is already on, just start advertising
+                Log.d("OptionMenuListener","the nearby switch is already on, just start advertising");
                 nearbyInterface.startAdvertising();
             } else if (!isChecked && enableNearby.isChecked()) {
                 // If we have stopped being the host but was already using nearby, start discovery
+                Log.d("OptionMenuListener","we have stopped being the host but was already using nearby, start discovery");
                 nearbyInterface.startDiscovery();
             }
-
-        });
+        });*/
         nearbyHostMenuOnly.setOnCheckedChangeListener((View,isChecked) -> preferences.setMyPreferenceBoolean(c,"nearbyHostMenuOnly",isChecked));
         receiveHostFiles.setOnCheckedChangeListener((view,isChecked) -> {
             StaticVariables.receiveHostFiles = isChecked;

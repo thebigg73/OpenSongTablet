@@ -30,6 +30,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -41,6 +42,12 @@ public class NearbyConnections implements NearbyInterface {
     StorageAccess storageAccess;
     ProcessSong processSong;
     SQLiteHelper sqLiteHelper;
+
+    private boolean isDiscovering = false, isAdvertising = false;
+    private String hostId;
+
+    AdvertisingOptions advertisingOptions = new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
+    DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
 
     NearbyReturnActionsInterface nearbyReturnActionsInterface;
 
@@ -64,6 +71,8 @@ public class NearbyConnections implements NearbyInterface {
     }
 
     String incomingPrevious = "";
+    String connectionId;
+    String connectionEndPointName;
 
     // The stuff used for Google Nearby for connecting devices
     String serviceId = "com.garethevans.church.opensongtablet";
@@ -73,67 +82,101 @@ public class NearbyConnections implements NearbyInterface {
             try {
                 optionMenuListeners.updateConnectionsLog();
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d("NearbyConnections","Error updating connection log: "+e);
             }
         }
     }
+
+    // Start or stop the required service
     @Override
     public void startAdvertising() {
-        Log.d("NearbyConnections","Nearby.getConnectionsClient(context)="+Nearby.getConnectionsClient(context));
-        Log.d("d","startAdvertising()");
-        if (!StaticVariables.isConnected) {
-            AdvertisingOptions advertisingOptions =
-                    new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
+        if (!isAdvertising) {
+            Log.d("NearbyConnections", "Nearby.getConnectionsClient(context)=" + Nearby.getConnectionsClient(context));
+            Log.d("d", "startAdvertising()");
             Nearby.getConnectionsClient(context)
-                    .startAdvertising(
-                            getUserNickname(), serviceId, connectionLifecycleCallback(), advertisingOptions)
+                    .startAdvertising(getUserNickname(), serviceId, connectionLifecycleCallback(), advertisingOptions)
                     .addOnSuccessListener(
                             (Void unused) -> {
                                 // We're advertising!
                                 updateConnectionLog(context.getResources().getString(R.string.connections_broadcast) + " " + getUserNickname());
-
+                                Log.d("NearbyConnections", "startAdvertising() - success");
+                                isAdvertising = true;
                             })
                     .addOnFailureListener(
                             (Exception e) -> {
                                 // We were unable to start advertising.
                                 updateConnectionLog(context.getResources().getString(R.string.connections_failure) + " " + getUserNickname());
-                                e.printStackTrace();
+                                Log.d("NearbyConnections", "startAdvertising() - failure: " + e);
+                                isAdvertising = false;
                             });
+        } else {
+            Log.d("NearbyConnections", "startAdvertising() - already advertising");
         }
     }
     @Override
     public void startDiscovery() {
-        Log.d("d","startDiscovery()");
-        if (!StaticVariables.isConnected) {
-            DiscoveryOptions discoveryOptions = new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_CLUSTER).build();
+        Log.d("d", "startDiscovery()");
+        if (!isDiscovering) {
             Nearby.getConnectionsClient(context)
                     .startDiscovery(serviceId, endpointDiscoveryCallback(), discoveryOptions)
                     .addOnSuccessListener(
                             (Void unused) -> {
                                 // We're discovering!
                                 updateConnectionLog(context.getResources().getString(R.string.connections_discover));
+                                isDiscovering = true;
+                                Log.d("NearbyConnections", "startDiscovery() - success");
+                                Handler h = new Handler();
+                                h.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        stopDiscovery();
+                                    }
+                                },10000);
                             })
                     .addOnFailureListener(
                             (Exception e) -> {
                                 // We're unable to start discovering.
                                 updateConnectionLog(context.getResources().getString(R.string.connections_discover_stop));
                                 stopDiscovery();
-                                e.printStackTrace();
+                                Log.d("NearbyConnections", "startDiscovery() - failure: "+e);
                             });
+        } else {
+            Log.d("NearbyConnections", "startDiscovery() - already discovering");
         }
     }
     @Override
     public void stopAdvertising() {
-        Nearby.getConnectionsClient(context).stopAdvertising();
-        updateConnectionLog(context.getResources().getString(R.string.connections_service_stop));
-        Log.d("d","stopAdvertising()");
+        Log.d("NearbyConnections", "stopAdvertising()");
+        if (isAdvertising) {
+            try {
+                Nearby.getConnectionsClient(context).stopAdvertising();
+                updateConnectionLog(context.getResources().getString(R.string.connections_service_stop));
+                Log.d("NearbyConnections", "stopAdvertising() - success");
+            } catch (Exception e) {
+                Log.d("NearbyConnections","stopAdvertising() - failure: "+e);
+            }
+
+        } else {
+            Log.d("NearbyConnections", "stopAdvertising() - wasn't advertising");
+        }
+        isAdvertising = false;
     }
     @Override
     public void stopDiscovery() {
-        Nearby.getConnectionsClient(context).stopDiscovery();
-        updateConnectionLog(context.getResources().getString(R.string.connections_discover_stop));
-        Log.d("d","stopDiscovery()");
+        Log.d("NearbyConnections", "stopDiscovery()");
+        if (isDiscovering) {
+            try {
+                Nearby.getConnectionsClient(context).stopDiscovery();
+                updateConnectionLog(context.getResources().getString(R.string.connections_discover_stop));
+            } catch (Exception e) {
+                Log.d("NearbyConnections","stopDiscovery() - failure: "+e);
+            }
+        } else {
+            Log.d("NearbyConnections", "stopDiscovery() -  wasn't discovering");
+        }
+        isDiscovering = false;
     }
+
     private String getDeviceNameFromId(String endpointId) {
         // When requesting connections, the proper device name is stored in an arraylist like endpointId__deviceName
         for (String s:connectedEndPointsNames) {
@@ -143,6 +186,7 @@ public class NearbyConnections implements NearbyInterface {
         }
         return endpointId;
     }
+
     public String getUserNickname() {
         if (StaticVariables.deviceName==null || StaticVariables.deviceName.isEmpty()) {
             if (FullscreenActivity.mBluetoothName.equals("Unknown")) {
@@ -158,6 +202,7 @@ public class NearbyConnections implements NearbyInterface {
         return StaticVariables.deviceName;
     }
     private String userConnectionInfo(String endpointId, ConnectionInfo connectionInfo) {
+        Log.d("NearbyConnection","endpointId="+endpointId+"  name="+connectionInfo.getEndpointName()+"  getAuthenticationToken="+connectionInfo.getAuthenticationToken());
         return endpointId + "__" + connectionInfo.getEndpointName();
     }
     private void delayAcceptConnection(String endpointId, ConnectionInfo connectionInfo) {
@@ -167,14 +212,10 @@ public class NearbyConnections implements NearbyInterface {
             // Add a note of the nice name matching the endpointId
             String id = userConnectionInfo(endpointId,connectionInfo);
             Log.d("NearbyConnections","looking for "+id);
-            if (!connectedEndPointsNames.contains(id)) {
-                connectedEndPointsNames.add(id);
-                Log.d("NearbyConnections", id+" not found, adding");
-            }
-            if (!connectedDeviceIds.contains(connectionInfo.getEndpointName())) {
-                connectedDeviceIds.add(connectionInfo.getEndpointName());
-                Log.d("NearbyConnections", connectionInfo.getEndpointName()+" not found, adding");
-            }
+
+            // Take a note of the nice name matching the endpointId to use on connection STATUS_OK
+            connectionId = userConnectionInfo(endpointId,connectionInfo);
+            connectionEndPointName = connectionInfo.getEndpointName();
 
             // The user confirmed, so we can accept the connection.
             Nearby.getConnectionsClient(context)
@@ -220,12 +261,19 @@ public class NearbyConnections implements NearbyInterface {
                         // We're connected! Can now start sending and receiving data.
                         connectedEndPoints.add(endpointId);
                         StaticVariables.isConnected = true;
-                        updateConnectionLog(context.getResources().getString(R.string.connections_connected) + " " + getDeviceNameFromId(endpointId));
-                        // try to send the current song payload
-                        sendSongPayload();
-                        if (!StaticVariables.isHost) {
-                            // We can stop discovery now
-                            stopDiscovery();
+                        updateConnectionLog(context.getResources().getString(R.string.connections_connected) + " " + connectionEndPointName);
+                        if (!connectedEndPointsNames.contains(connectionId)) {
+                            connectedEndPointsNames.add(connectionId);
+                            Log.d("NearbyConnections", connectionId + " not found, adding");
+                        }
+                        if (!connectedDeviceIds.contains(connectionEndPointName)) {
+                            connectedDeviceIds.add(connectionEndPointName);
+                            Log.d("NearbyConnections", connectionEndPointName + " not found, adding");
+                        }
+
+                        if (StaticVariables.isHost) {
+                            // try to send the current song payload
+                            sendSongPayload();
                         }
                         break;
                     case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
@@ -249,10 +297,13 @@ public class NearbyConnections implements NearbyInterface {
                 String deviceName = getDeviceNameFromId(endpointId);
                 connectedEndPointsNames.remove(endpointId+"__"+deviceName);
                 updateConnectionLog(context.getResources().getString(R.string.connections_disconnect) + " " + deviceName);
-                // Check if we have valid connections
-                StaticVariables.isConnected = stillValidConnections();
-                // Try to connect again after 2 seconds
-                if (!StaticVariables.isHost) {
+
+                if (StaticVariables.isHost) {
+                    // Check if we have valid connections
+                    StaticVariables.isConnected = stillValidConnections();
+                } else {
+                    // Clients should try to connect again after 2 seconds
+                    StaticVariables.isConnected = false;
                     Handler h = new Handler();
                     h.postDelayed(() -> startDiscovery(), 2000);
                 }
@@ -269,24 +320,32 @@ public class NearbyConnections implements NearbyInterface {
         }
         return false;
     }
+
+    // Called by clients
     private EndpointDiscoveryCallback endpointDiscoveryCallback() {
         return new EndpointDiscoveryCallback() {
             @Override
             public void onEndpointFound(@NonNull String endpointId, @NonNull DiscoveredEndpointInfo discoveredEndpointInfo) {
-                Nearby.getConnectionsClient(context)
-                        .requestConnection(getUserNickname(), endpointId, connectionLifecycleCallback())
-                        .addOnSuccessListener(
-                                (Void unused) -> {
-                                    // We successfully requested a connection. Now both sides
-                                    // must accept before the connection is established.
-                                    updateConnectionLog(context.getResources().getString(R.string.connections_searching));
-                                })
-                        .addOnFailureListener(
-                                (Exception e) -> {
-                                    // Nearby Connections failed to request the connection.
-                                    updateConnectionLog(context.getResources().getString(R.string.connections_failure) + " " + getDeviceNameFromId(endpointId));
-                                    e.printStackTrace();
-                                });
+                if (!findEndpoints(endpointId,discoveredEndpointInfo)) {
+                    // Only attempt a connection if we aren't already connected
+                    Nearby.getConnectionsClient(context)
+                            .requestConnection(getUserNickname(), endpointId, connectionLifecycleCallback())
+                            .addOnSuccessListener(
+                                    (Void unused) -> {
+                                        Log.d("NearbyConnection", "Trying to connect to host: " + endpointId);
+                                        hostId = endpointId;
+                                        // We successfully requested a connection. Now both sides
+                                        // must accept before the connection is established.
+                                        updateConnectionLog(context.getResources().getString(R.string.connections_searching));
+                                    })
+                            .addOnFailureListener(
+                                    (Exception e) -> {
+                                        // Nearby Connections failed to request the connection.
+                                        updateConnectionLog(context.getResources().getString(R.string.connections_failure) + " " + getDeviceNameFromId(endpointId));
+                                        Log.d("NearbyConnections", "Connections failure: " + e);
+                                        hostId = null;
+                                    });
+                }
             }
 
             @Override
@@ -297,11 +356,18 @@ public class NearbyConnections implements NearbyInterface {
                 StaticVariables.isConnected = stillValidConnections();
                 // Try to connect again after 2 seconds
                 if (!StaticVariables.isHost) {
+                    hostId = null;
                     Handler h = new Handler();
                     h.postDelayed(() -> startDiscovery(), 2000);
                 }
             }
         };
+    }
+
+    private boolean findEndpoints(String endpointId, DiscoveredEndpointInfo discoveredEndpointInfo) {
+        Log.d("fixEndPoints","endpointId="+endpointId);
+        Log.d("fixEndPoints","endpointId="+discoveredEndpointInfo.getEndpointName());
+        return connectedEndPoints.contains(endpointId);
     }
     public void sendSongPayload() {
         String infoPayload;
@@ -338,26 +404,30 @@ public class NearbyConnections implements NearbyInterface {
                     infoFilePayload = "FILE:"+payloadFile.getId()+":"+infoFilePayload;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d("NearbyConnections","Error trying to send file: "+e);
                 payloadFile = null;
             }
         }
 
-        for (String endpointId:connectedEndPoints) {
-            if (payloadFile!=null) {
-                // Send the file descriptor as bytes, then the file
-                Nearby.getConnectionsClient(context).sendPayload(endpointId,Payload.fromBytes(infoFilePayload.getBytes()));
-                Nearby.getConnectionsClient(context).sendPayload(endpointId,payloadFile);
-            } else if (infoPayload!=null){
-                // Just send the bytes
-                Nearby.getConnectionsClient(context).sendPayload(endpointId,Payload.fromBytes(infoPayload.getBytes()));
+        if (StaticVariables.isHost) {
+            for (String endpointId : connectedEndPoints) {
+                if (payloadFile != null) {
+                    // Send the file descriptor as bytes, then the file
+                    Nearby.getConnectionsClient(context).sendPayload(endpointId, Payload.fromBytes(infoFilePayload.getBytes()));
+                    Nearby.getConnectionsClient(context).sendPayload(endpointId, payloadFile);
+                } else if (infoPayload != null) {
+                    // Just send the bytes
+                    Nearby.getConnectionsClient(context).sendPayload(endpointId, Payload.fromBytes(infoPayload.getBytes()));
+                }
             }
         }
     }
     @Override
     public void doSendPayloadBytes(String infoPayload) {
-        for (String endpointId:connectedEndPoints) {
-            Nearby.getConnectionsClient(context).sendPayload(endpointId,Payload.fromBytes(infoPayload.getBytes()));
+        if (StaticVariables.isHost) {
+            for (String endpointId : connectedEndPoints) {
+                Nearby.getConnectionsClient(context).sendPayload(endpointId, Payload.fromBytes(infoPayload.getBytes()));
+            }
         }
     }
     private void payloadAutoscroll(String incoming) {
@@ -508,6 +578,31 @@ public class NearbyConnections implements NearbyInterface {
             }
         }
     }
+    private void sendConnectedEndpoints() {
+        // Whenever a new connection is made to the host devices, the clients should store a list of them
+        // This means if a device switches from host to client, it has a record of connected devices
+        // This is because when sending payloads, we iterate through the endpointIds
+        if (StaticVariables.isHost) {
+            StringBuilder ids = new StringBuilder();
+            boolean goodtogo = false;
+            for (String s:connectedEndPoints) {
+                ids.append(s).append("_ep__ep_");
+                goodtogo = true;
+            }
+            if (goodtogo) {
+                doSendPayloadBytes(ids.toString());
+            }
+        }
+    }
+    private void payloadEndpoints(String incomingEndpoints) {
+        if (!StaticVariables.isHost) {
+            Log.d("d", "I am a client, but the host has sent me this info about connected endpoints: " + incomingEndpoints);
+            // The host has sent a note of the connected endpoints in case we become the host
+            connectedEndPoints.clear();
+            String[] incomingEPs = incomingEndpoints.split("_ep__ep_");
+            Collections.addAll(connectedEndPoints, incomingEPs);
+        }
+    }
     private final SimpleArrayMap<Long, Payload> incomingFilePayloads = new SimpleArrayMap<>();
     private final SimpleArrayMap<Long, String> fileNewLocation = new SimpleArrayMap<>();
     private PayloadCallback payloadCallback() {
@@ -525,7 +620,7 @@ public class NearbyConnections implements NearbyInterface {
                         String incoming = null;
                         if (payload.asBytes() != null) {
                             byte[] bytes = payload.asBytes();
-                            if (bytes!=null) {
+                            if (bytes != null) {
                                 incoming = new String(bytes);
                             }
                         }
@@ -542,7 +637,9 @@ public class NearbyConnections implements NearbyInterface {
                             payloadAutoscroll(incoming);
                         } else if (incoming != null && incoming.contains("___section___")) {
                             payloadSection(incoming);
-                        } else if (incoming != null) {
+                        } else if (incoming != null && incoming.contains("_ep__ep_")) {
+                            payloadEndpoints(incoming);
+                        } else if (incoming != null && incoming.contains("_xx____xx_")) {
                             payloadOpenSong(incoming);
                         }
                     }
@@ -576,7 +673,11 @@ public class NearbyConnections implements NearbyInterface {
     public void turnOffNearby() {
         Log.d("d","turnOffNearby()");
         Nearby.getConnectionsClient(context).stopAllEndpoints();
+        isAdvertising = false;
+        isDiscovering = false;
+        StaticVariables.isHost = false;
         StaticVariables.isConnected = false;
         StaticVariables.usingNearby = false;
     }
+
 }
