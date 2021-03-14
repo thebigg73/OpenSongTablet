@@ -525,4 +525,6 @@
     <string name="storage_help">Kérjük, válassza ki az „OpenSong” mappa helyét. Ez az OpenSong fájlok alapértelmezett tárolási helye. Ezt bármikor megváltoztathatja az Opciók menüből. Belső tárolás ajánlott.\n\nFrissítéshez vagy újratelepítéshez:\nAz alábbi sárga gombbal megtalálhatja bármelyik korábbi „OpenSong” mappát.</string>
     <string name="information">" Információ"</string>
     <string name="nearby_host_menu_only">Csak akkor hallgasson új ügyfelekre, ha ez az oldal látható</string>
+    <string name="host">Házigazda</string>
+    <string name="client">Ügyfél</string>
 </resources>

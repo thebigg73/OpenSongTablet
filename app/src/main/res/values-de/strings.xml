@@ -525,4 +525,6 @@
     <string name="storage_help">Bitte wählen Sie den Speicherort für Ihren \'OpenSong\'-Ordner. Dies ist der Standardspeicherort für OpenSong-Dateien. Sie können dies jederzeit über das Menü Optionen ändern. Interner Speicher wird empfohlen.\n\nFür ein Update oder eine Neuinstallation:\nSie können die gelbe Schaltfläche unten verwenden, um einen früheren \'OpenSong\'-Ordner zu finden.</string>
     <string name="information">Information</string>
     <string name="nearby_host_menu_only">Warten Sie nur auf neue Clients, wenn diese Seite sichtbar ist</string>
+    <string name="client">Klient</string>
+    <string name="host">Gastgeber</string>
 </resources>

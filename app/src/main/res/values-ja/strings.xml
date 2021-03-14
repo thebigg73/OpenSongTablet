@@ -525,4 +525,6 @@
     <string name="storage_help">" 'OpenSong'フォルダの場所を選択してください。これは、OpenSongファイルのデフォルトの保存場所です。これは、[オプション]メニューからいつでも変更できます。内部ストレージをお勧めします。\n \n 更新または再インストールの場合：\n 下の黄色のボタンを使用して、以前の「OpenSong」フォルダーを見つけることができます。"</string>
     <string name="information">" 情報"</string>
     <string name="nearby_host_menu_only">このページが表示されている場合にのみ、新しいクライアントをリッスンします</string>
+    <string name="host">ホスト</string>
+    <string name="client">クライアント</string>
 </resources>

@@ -525,4 +525,6 @@
     <string name="storage_help">Välj plats för din \'OpenSong\' -mapp. Detta är standardlagringsplatsen för OpenSong-filer. Du kan ändra detta när som helst från alternativmenyn. Intern lagring rekommenderas.\n\nFör en uppdatering eller ominstallering:\nDu kan använda den gula knappen nedan för att hitta någon tidigare \"OpenSong\" -mapp.</string>
     <string name="information">Information</string>
     <string name="nearby_host_menu_only">Lyssna bara på nya klienter när den här sidan är synlig</string>
+    <string name="host">Värd</string>
+    <string name="client">Klient</string>
 </resources>

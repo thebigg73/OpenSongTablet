@@ -525,4 +525,6 @@
     <string name="storage_help">Veuillez choisir l\'emplacement de votre dossier «OpenSong». Il s\'agit de l\'emplacement de stockage par défaut des fichiers OpenSong. Vous pouvez modifier cela à tout moment dans le menu Options. Le stockage interne est recommandé.\n\nPour une mise à jour ou une réinstallation:\nvous pouvez utiliser le bouton jaune ci-dessous pour trouver n\'importe quel dossier \'OpenSong\' précédent.</string>
     <string name="information">Information</string>
     <string name="nearby_host_menu_only">N\'écoutez les nouveaux clients que lorsque cette page est visible</string>
+    <string name="client">Client</string>
+    <string name="host">Hôte</string>
 </resources>

@@ -525,4 +525,6 @@
     <string name="storage_help">" 请选择“ OpenSong”文件夹的位置。这是OpenSong文件的默认存储位置。您可以随时从“选项”菜单更改此设置。建议使用内部存储。\n \n 要进行更新或重新安装：\n 您可以使用下面的黄色按钮找到以前的“ OpenSong”文件夹。"</string>
     <string name="information">信息</string>
     <string name="nearby_host_menu_only">仅在此页面可见时侦听新客户端</string>
+    <string name="host">主持人</string>
+    <string name="client">客户</string>
 </resources>

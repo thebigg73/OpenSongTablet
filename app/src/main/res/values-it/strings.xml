@@ -525,4 +525,6 @@
     <string name="storage_help">Scegli la posizione della cartella \"OpenSong\". Questa è la posizione di archiviazione predefinita per i file OpenSong. Puoi modificare questa impostazione in qualsiasi momento dal menu Opzioni. Si consiglia l\'archiviazione interna.\n\nPer un aggiornamento o una reinstallazione:\npuoi utilizzare il pulsante giallo in basso per trovare qualsiasi cartella \"OpenSong\" precedente.</string>
     <string name="information">" Informazione"</string>
     <string name="nearby_host_menu_only">Ascolta i nuovi clienti solo quando questa pagina è visibile</string>
+    <string name="host">Ospite</string>
+    <string name="client">Cliente</string>
 </resources>

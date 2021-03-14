@@ -525,4 +525,6 @@
     <string name="storage_help">Elija la ubicación de su carpeta \'OpenSong\'. Esta es la ubicación de almacenamiento predeterminada para los archivos de OpenSong. Puede cambiar esto en cualquier momento desde el menú Opciones. Se recomienda almacenamiento interno.\n\nPara una actualización o reinstalación:\nPuede usar el botón amarillo a continuación para buscar cualquier carpeta \'OpenSong\' anterior.</string>
     <string name="information">" Información"</string>
     <string name="nearby_host_menu_only">Solo escuche a los nuevos clientes cuando esta página esté visible</string>
+    <string name="host">Anfitrión</string>
+    <string name="client">Cliente</string>
 </resources>

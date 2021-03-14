@@ -525,4 +525,6 @@
     <string name="storage_help">Изаберите место за директоријум \'OpenSong\'. Ово је подразумевано место за складиштење датотека ОпенСонг. То можете променити у било ком тренутку из менија Опције. Препоручује се интерно складиштење.\n\nЗа ажурирање или поновну инсталацију:\nПомоћу жутог дугмета у наставку можете пронаћи било коју претходну фасциклу „OpenSong“.</string>
     <string name="information">Информације</string>
     <string name="nearby_host_menu_only">Slušajte nove klijente samo kada je ova stranica vidljiva</string>
+    <string name="host">Domaćin</string>
+    <string name="client">Klijent</string>
 </resources>

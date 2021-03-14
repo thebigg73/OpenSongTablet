@@ -525,4 +525,6 @@
     <string name="storage_help">Wybierz lokalizację folderu „OpenSong”. To jest domyślna lokalizacja przechowywania plików OpenSong. Możesz to zmienić w dowolnym momencie w menu Opcje. Zalecana jest pamięć wewnętrzna.\n\nAby zaktualizować lub ponownie zainstalować:\nmożesz użyć żółtego przycisku poniżej, aby znaleźć poprzedni folder „OpenSong”.</string>
     <string name="information">" Informacja"</string>
     <string name="nearby_host_menu_only">Nasłuchuj nowych klientów tylko wtedy, gdy ta strona jest widoczna</string>
+    <string name="client">Klient</string>
+    <string name="host">Gospodarz</string>
 </resources>

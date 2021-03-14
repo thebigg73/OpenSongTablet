@@ -525,4 +525,6 @@
     <string name="storage_help">Vyberte umístění složky „OpenSong“. Toto je výchozí umístění úložiště pro soubory OpenSong. Toto můžete kdykoli změnit v nabídce Možnosti. Doporučuje se interní úložiště.\n\nPro aktualizaci nebo opětovnou instalaci:\nPomocí žlutého tlačítka níže můžete vyhledat předchozí složku „OpenSong“.</string>
     <string name="information">" Informace"</string>
     <string name="nearby_host_menu_only">Poslouchat nové klienty, pouze když je tato stránka viditelná</string>
+    <string name="host">Hostitel</string>
+    <string name="client">Klient</string>
 </resources>
