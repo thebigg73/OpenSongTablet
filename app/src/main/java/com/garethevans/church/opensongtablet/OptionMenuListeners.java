@@ -1852,9 +1852,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 nearbyInterface.stopAdvertising();
                 // IV - Short delay to help stability
                 Handler h = new Handler();
-                h.postDelayed(() -> {
-                    connectionSearch.performClick();
-                },2000);
+                h.postDelayed(() -> connectionSearch.performClick(),2000);
             }
         });
 

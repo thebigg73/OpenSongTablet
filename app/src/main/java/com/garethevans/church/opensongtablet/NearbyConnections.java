@@ -271,6 +271,9 @@ public class NearbyConnections implements NearbyInterface {
                         if (StaticVariables.isHost) {
                             // try to send the current song payload
                             sendSongPayload();
+                        } else {
+                            // We can stop discovery now
+                            stopDiscovery();
                         }
                         break;
                     case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
