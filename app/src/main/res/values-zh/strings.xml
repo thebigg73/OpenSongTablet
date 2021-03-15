@@ -527,4 +527,5 @@
     <string name="nearby_host_menu_only">仅在此页面可见时侦听新客户端</string>
     <string name="host">主持人</string>
     <string name="client">客户</string>
+    <string name="connections_actasclient">担任客户</string>
 </resources>

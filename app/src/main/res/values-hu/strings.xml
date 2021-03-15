@@ -527,4 +527,5 @@
     <string name="nearby_host_menu_only">Csak akkor hallgasson új ügyfelekre, ha ez az oldal látható</string>
     <string name="host">Házigazda</string>
     <string name="client">Ügyfél</string>
+    <string name="connections_actasclient">Ügyfélként jár el</string>
 </resources>

@@ -12,6 +12,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.collection.SimpleArrayMap;
 
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.AdvertisingOptions;
 import com.google.android.gms.nearby.connection.ConnectionInfo;
@@ -92,7 +93,6 @@ public class NearbyConnections implements NearbyInterface {
         if (!isAdvertising) {
             Log.d("NearbyConnections", "Nearby.getConnectionsClient(context)=" + Nearby.getConnectionsClient(context));
             Log.d("d", "startAdvertising()");
-        Log.d("d","startAdvertising()");
             Nearby.getConnectionsClient(context)
                     .startAdvertising(getUserNickname(), serviceId, connectionLifecycleCallback(), advertisingOptions)
                     .addOnSuccessListener(
@@ -253,6 +253,8 @@ public class NearbyConnections implements NearbyInterface {
             public void onConnectionResult(@NonNull String endpointId, @NonNull ConnectionResolution connectionResolution) {
                 switch (connectionResolution.getStatus().getStatusCode()) {
                     case ConnectionsStatusCodes.STATUS_OK:
+                    case ConnectionsStatusCodes.STATUS_ALREADY_CONNECTED_TO_ENDPOINT:
+                        // IV - Added handling of when already connected
                         // We're connected! Can now start sending and receiving data.
                         connectedEndPoints.add(endpointId);
                         StaticVariables.isConnected = true;
@@ -266,7 +268,7 @@ public class NearbyConnections implements NearbyInterface {
                             Log.d("NearbyConnections", connectionEndPointName + " not found, adding");
                         }
 
-                        if (!StaticVariables.isHost) {
+                        if (StaticVariables.isHost) {
                             // try to send the current song payload
                             sendSongPayload();
                         }
@@ -334,8 +336,14 @@ public class NearbyConnections implements NearbyInterface {
                                     })
                             .addOnFailureListener(
                                     (Exception e) -> {
-                                        // Nearby Connections failed to request the connection.
-                                        updateConnectionLog(context.getResources().getString(R.string.connections_failure) + " " + getDeviceNameFromId(endpointId));
+                                        // IV - Added handling of when already connected
+                                        if (((ApiException) e).getStatusCode() == ConnectionsStatusCodes.STATUS_ALREADY_CONNECTED_TO_ENDPOINT) {
+                                            StaticVariables.isConnected = true;
+                                            updateConnectionLog(context.getResources().getString(R.string.connections_connected) + " " + getDeviceNameFromId(endpointId));
+                                        } else {
+                                            // Nearby Connections failed to request the connection.
+                                            updateConnectionLog(context.getResources().getString(R.string.connections_failure) + " " + getDeviceNameFromId(endpointId));
+                                        }
                                         Log.d("NearbyConnections", "Connections failure: " + e);
                                     });
                 }

@@ -527,4 +527,5 @@
     <string name="nearby_host_menu_only">Luister net na nuwe kliënte wanneer hierdie bladsy sigbaar is</string>
     <string name="host">Gasheer</string>
     <string name="client">Kliënt</string>
+    <string name="connections_actasclient">Tree op as kliënt</string>
 </resources>

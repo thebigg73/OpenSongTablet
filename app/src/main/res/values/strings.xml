@@ -738,4 +738,5 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="nearby_host_menu_only">Only listen for new clients when this page is visible</string>
     <string name="host">Host</string>
     <string name="client">Client</string>
+    <string name="connections_actasclient">Act as client</string>
 </resources>

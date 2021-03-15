@@ -1776,8 +1776,8 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         setTextTextView(connectionLog,StaticVariables.connectionLog);
         setTextTextView(deviceName,StaticVariables.deviceName);
         setRadioButton(connectionsOff,c.getString(R.string.off));
-        setRadioButton(connectionsClient,c.getString(R.string.client));
-        setRadioButton(connectionsHost,c.getString(R.string.host));
+        setRadioButton(connectionsClient,c.getString(R.string.connections_actasclient));
+        setRadioButton(connectionsHost,c.getString(R.string.connections_actashost));
         setTextSwitch(nearbyHostMenuOnly,c.getResources().getString(R.string.nearby_host_menu_only));
         setTextSwitch(receiveHostFiles,c.getResources().getString(R.string.connections_receive_host));
         setTextSwitch(keepHostFiles,c.getResources().getString(R.string.connections_keephostsongs));
@@ -1850,26 +1850,33 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
                 hostOptions.setVisibility(View.GONE);
                 clientOptions.setVisibility(View.VISIBLE);
                 nearbyInterface.stopAdvertising();
-                connectionSearch.performClick();
+                // IV - Short delay to help stability
+                Handler h = new Handler();
+                h.postDelayed(() -> {
+                    connectionSearch.performClick();
+                },2000);
             }
         });
 
         connectionSearch.setOnClickListener(b -> {
-            // Start discovery and turn it off again after 10 seconds
-            connectionSearch.setEnabled(false);
-            connectionSearch.setText(c.getString(R.string.connections_searching));
-            nearbyInterface.startDiscovery();
-            Handler h = new Handler();
-            h.postDelayed(() -> {
-                if (connectionSearch!=null) {
-                    try {
-                        setTextButtons(connectionSearch,c.getString(R.string.connections_discover));
-                        connectionSearch.setEnabled(true);
-                    } catch (Exception e) {
-                        Log.d("OptionMenu","Lost reference to discovery button");
+            // IV - User can cause problems by clicking quickly between modes!  Mkes sure we are still in client mode.
+            if (!StaticVariables.isHost) {
+                // Start discovery and turn it off again after 10 seconds
+                connectionSearch.setEnabled(false);
+                connectionSearch.setText(c.getString(R.string.connections_searching));
+                nearbyInterface.startDiscovery();
+                Handler h = new Handler();
+                h.postDelayed(() -> {
+                    if (connectionSearch!=null) {
+                        try {
+                            setTextButtons(connectionSearch,c.getString(R.string.connections_discover));
+                            connectionSearch.setEnabled(true);
+                        } catch (Exception e) {
+                            Log.d("OptionMenu","Lost reference to discovery button");
+                        }
                     }
-                }
-            },10000);
+                },10000);
+            }
         });
 
         nearbyHostMenuOnly.setOnCheckedChangeListener((View,isChecked) -> preferences.setMyPreferenceBoolean(c,"nearbyHostMenuOnly",isChecked));

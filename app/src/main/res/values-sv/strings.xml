@@ -527,4 +527,5 @@
     <string name="nearby_host_menu_only">Lyssna bara på nya klienter när den här sidan är synlig</string>
     <string name="host">Värd</string>
     <string name="client">Klient</string>
+    <string name="connections_actasclient">Fungera som klient</string>
 </resources>
