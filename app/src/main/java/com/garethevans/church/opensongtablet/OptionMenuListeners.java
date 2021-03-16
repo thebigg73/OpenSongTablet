@@ -1857,7 +1857,7 @@ public class OptionMenuListeners extends AppCompatActivity implements MenuInterf
         });
 
         connectionSearch.setOnClickListener(b -> {
-            // IV - User can cause problems by clicking quickly between modes!  Mkes sure we are still in client mode.
+            // IV - User can cause problems by clicking quickly between modes!  Make sure we are still in client mode.
             if (!StaticVariables.isHost) {
                 // Start discovery and turn it off again after 10 seconds
                 connectionSearch.setEnabled(false);
