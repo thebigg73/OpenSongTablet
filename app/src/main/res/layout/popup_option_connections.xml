@@ -77,13 +77,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
             android:background="@drawable/menu_button"
-            android:drawableStart="@drawable/ic_access_point_white_36dp"
+            app:drawableStartCompat="@drawable/ic_access_point_white_36dp"
             android:drawablePadding="4dp"
             android:gravity="center_vertical"
             android:textColor="#fff"
             android:textSize="12sp"
             android:text="@string/connections_connect"
-            android:layout_marginTop="4dp"/>
+            android:layout_marginTop="4dp" />
 
             <RadioGroup
                 android:id="@+id/connectionsMethod"
@@ -216,9 +216,6 @@
             android:textSize="12sp"
             android:visibility="gone"/>
 
-
-
-
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/enableNearby"
             android:layout_width="match_parent"
@@ -244,5 +241,4 @@
 
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>
