@@ -671,6 +671,7 @@ public class NearbyConnections implements NearbyInterface {
         StaticVariables.isHost = false;
         StaticVariables.isConnected = false;
         StaticVariables.usingNearby = false;
+        incomingPrevious = "";
     }
 
 
