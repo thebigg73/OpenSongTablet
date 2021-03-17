@@ -3992,6 +3992,11 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void selectSection(int whichone) {
+        // IV - A connected host may request an invalid section, if it does show section 0
+        if (whichone >= FullscreenActivity.sectionviews.length) {
+            whichone = 0;
+        }
+
         if (whichone < 0) {
             whichone = 0;
         }
