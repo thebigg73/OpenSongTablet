@@ -67,43 +67,70 @@
             android:drawableStart="@drawable/ic_account_white_36dp"
             android:drawablePadding="4dp"
             android:gravity="center_vertical"
-            android:text="@string/app_name"
             android:textColor="#fff"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:text="@string/app_name" />
 
-        <RadioGroup
-            android:id="@+id/connectionsMethod"
+        <TextView
+            android:id="@+id/option_separator_textview0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checkedButton="@+id/connectionsOff"
-            android:padding="8dp">
+            android:background="@drawable/menu_button"
+            app:drawableStartCompat="@drawable/ic_access_point_white_36dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:textColor="#fff"
+            android:textSize="16sp"
+            android:text="@string/connections_connect"
+            android:textAllCaps="true"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="2dp" />
 
-            <androidx.appcompat.widget.AppCompatRadioButton
-                android:id="@+id/connectionsOff"
+            <RadioGroup
+                android:id="@+id/connectionsMethod"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/off"
-                android:padding="8dp"/>
+                android:checkedButton="@+id/connectionsOff">
 
-            <androidx.appcompat.widget.AppCompatRadioButton
-                android:id="@+id/connectionsHost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/host"
-                android:padding="8dp"/>
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/connectionsOff"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="38dp"
+                    android:textSize="12sp"
+                    android:text="@string/off" />
 
-            <androidx.appcompat.widget.AppCompatRadioButton
-                android:id="@+id/connectionsClient"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/client"
-                android:padding="8dp"/>
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/connectionsHost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="38dp"
+                    android:textSize="12sp"
+                    android:text="@string/connections_actashost" />
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/connectionsClient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="38dp"
+                    android:textSize="12sp"
+                    android:text="@string/connections_actasclient" />
+
+            </RadioGroup>
 
             <LinearLayout
                 android:id="@+id/hostOptions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/option_separator_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/host" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/nearbyHostMenuOnly"
@@ -125,6 +152,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/option_separator2_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/client" />
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/receiveHostFiles"
@@ -159,9 +194,8 @@
                     android:padding="8dp"
                     android:text="@string/connections_discover" />
 
-            </LinearLayout>
+        </LinearLayout>
 
-        </RadioGroup>
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/actAsHost"
             android:layout_width="match_parent"
@@ -175,9 +209,6 @@
             android:textColor="#fff"
             android:textSize="12sp"
             android:visibility="gone"/>
-
-
-
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/enableNearby"
@@ -193,8 +224,6 @@
             android:textSize="12sp"
             android:visibility="gone"/>
 
-
-
         <TextView
             android:id="@+id/options_connections_log"
             style="@style/MyInfoText"
@@ -206,5 +235,4 @@
 
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

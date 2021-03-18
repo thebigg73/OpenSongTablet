@@ -149,7 +149,7 @@
                 android:id="@+id/option_separator2_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:text="@string/actions" />
 
@@ -196,7 +196,7 @@
                 android:id="@+id/option_separator3_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:text="@string/extra" />
 
@@ -270,7 +270,7 @@
                 android:id="@+id/option_separator4_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:text="@string/search" />
 
@@ -304,7 +304,7 @@
                 android:id="@+id/option_separator0_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:text="@string/load_preferences" />
 

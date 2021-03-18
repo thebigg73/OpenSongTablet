@@ -527,4 +527,5 @@
     <string name="nearby_host_menu_only">Solo escuche a los nuevos clientes cuando esta página esté visible</string>
     <string name="host">Anfitrión</string>
     <string name="client">Cliente</string>
+    <string name="connections_actasclient">Actuar como cliente</string>
 </resources>
