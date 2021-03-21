@@ -432,7 +432,6 @@
     <string name="storage_check">"ストレージの確認"</string>
     <string name="storage_choose">"収納スペースを管理する"</string>
     <string name="storage_ext">"外部記憶装置"</string>
-    <string name="storage_help">"あなたのOpenSongファイルのデフォルトの保存場所を選択してください。 [オプション]メニューからいつでも変更することができます。"</string>
     <string name="storage_notwritable">"使用できません"</string>
     <string name="storage_rationale">"ストレージへのアクセスは読み取りおよび曲やセットを書き込むために必要とされます。"</string>
     <string name="subscription">"（サブスクリプションが必要）"</string>
@@ -516,13 +515,41 @@
     <string name="connected_display_description">Chromecast / HDMI出力に固有の設定</string>
     <string name="connections_accept">と接続する</string>
     <string name="connections_accept_code">両方のデバイスでコードが一致することを確認します。</string>
-    <string name="connections_actashost">ホストとして機能する</string>
     <string name="connections_advertise_stop">デバイスはアドバタイズされなくなりました</string>
     <string name="connections_description">OpenSongAppを実行している他のデバイスに接続します</string>
     <string name="connections_device_found">デバイスが見つかりました</string>
     <string name="connections_device_name">装置名</string>
-    <string name="connections_enable">近くの接続を有効にする</string>
-    <string name="connections_keephostsongs">ホスト曲を保持する</string>
     <string name="controls">コントロール</string>
     <string name="action_button_info">クリックしてページボタンを表示または非表示にします。\n\nメトロノーム、トランスポーズ、パッドなどの曲のアクションに各ボタンを割り当てることができます。\nメインボタンを長押しすると、各ボタンの設定を変更できます。\n長押し 一部のページボタンは、開始/停止/編集などのクイックアクションを実行します</string>
+
+
+    <string name="accept_connection">とつながる</string>
+    <string name="accept_code">両方のデバイスでコードが一致することを確認します。</string>
+    <string name="location_rationale">この機能は、他のネットワークデバイスを見つけるために必要です</string>
+    <string name="connections_keephostsongs">ホストの曲を保持する</string>
+    <string name="connections_actashost">ホストとして機能</string>
+    <string name="connections_enable">近くの接続を有効にする</string>
+    <string name="bold_chords_headings">コードと見出しを太字で表示する</string>
+    <string name="warn_before_changing_song">次の曲に移動する前に警告を表示します（誤って押すのを防ぐのに役立ちます）</string>
+    <string name="bold_text">歌詞を太字で表示する</string>
+    <string name="respectcopyright">著作権を尊重する-常に合法的に使用する</string>
+    <string name="wordsandmusicby">言葉と音楽</string>
+    <string name="usedbypermision">許可を得て使用。</string>
+    <string name="play_services_error">Google Cast、Fonts、Nearby Connectionsを使用するには、GooglePlayサービスをインストールする必要があります。</string>
+    <string name="play_services_how">どうするか教えて</string>
+    <string name="filter_info">プレフィックスを使用してセクションをフィルタリングできます。\\n「非表示」を選択してフィルタ「ギター」を追加すると、このプレフィックスを使用するセクションは非表示になります。 例えば [*ギター：インストゥルメンタル]</string>
+    <string name="filter_label">フィルタリングされたセクションを非表示または表示</string>
+    <string name="hide">隠す</string>
+    <string name="show">公演</string>
+    <string name="filter_section">セクションフィルタリング</string>
+    <string name="filter_entry">以下の新しい行に各フィルターを追加します。</string>
+    <string name="filter_structure">[*filter:V] =フィルターされた詩のセクション</string>
+    <string name="nofound">以前のフォルダが見つかりません。 赤いボタンを使用して場所を選択します。</string>
+    <string name="storage_quicktip">場所を選択する場合：\nメニューを使用してストレージを一覧表示します（すべてのストレージを表示するには、設定を変更する必要がある場合があります）。\n内部またはSDカードストレージのみを選択してください。\n内部ストレージをお勧めします。これは、デバイスストレージとして、またはデバイスの名前とともに表示される場合があります。\nAndroid 10以降では、ダウンロードまたはルートフォルダーを選択しないでください。疑わしい場合は、「ドキュメント」フォルダを選択してください。</string>
+    <string name="storage_help">" 'OpenSong'フォルダの場所を選択してください。これは、OpenSongファイルのデフォルトの保存場所です。これは、[オプション]メニューからいつでも変更できます。内部ストレージをお勧めします。\n \n 更新または再インストールの場合：\n 下の黄色のボタンを使用して、以前の「OpenSong」フォルダーを見つけることができます。"</string>
+    <string name="information">" 情報"</string>
+    <string name="nearby_host_menu_only">このページが表示されている場合にのみ、新しいクライアントをリッスンします</string>
+    <string name="host">ホスト</string>
+    <string name="client">クライアント</string>
+    <string name="connections_actasclient">クライアントとして行動する</string>
 </resources>

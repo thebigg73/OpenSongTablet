@@ -61,6 +61,7 @@
     <string name="chordformat_detected">Detected current chord format</string>
     <string name="chords">Chords</string>
     <string name="chorus">Chorus</string>
+    <string name="client">Client</string>
     <string name="close">Close</string>
     <string name="color_choose">Colour Chooser</string>
     <string name="comment">Comment</string>
@@ -68,6 +69,7 @@
     <string name="connected_display_description">Settings specific to Chromecast/HDMI output</string>
     <string name="connections_accept">Connect with</string>
     <string name="connections_accept_code">Confirm the code matches on both devices:</string>
+    <string name="connections_actasclient">Act as client</string>
     <string name="connections_actashost">Act as host</string>
     <string name="connections_advertise">Device being advertised: </string>
     <string name="connections_advertise_stop">Device no longer being advertised</string>
@@ -139,6 +141,7 @@
     <string name="help">Help (Online)</string>
     <string name="hide">Hide</string>
     <string name="highlight">Highlighter</string>
+    <string name="host">Host</string>
     <string name="image">Image</string>
     <string name="image_slide">Image slideshow</string>
     <string name="import_main">Import songs/backups</string>
@@ -242,6 +245,7 @@
     <string name="midi_value">Value</string>
     <string name="midi_velocity">Velocity</string>
     <string name="music_score">Music score</string>
+    <string name="nearby_host_menu_only">Only listen for new clients when this page is visible</string>
     <string name="new_folder">Create new song folder</string>
     <string name="new_folder_name">Enter a new folder name</string>
     <string name="new_something">New</string>
@@ -334,9 +338,10 @@
     <string name="storage_change">Change storage location</string>
     <string name="storage_ext">External storage</string>
     <string name="storage_graph_overview_info">Your current OpenSong/Songs folder directory structure is shown below (you can zoom and pan). \nClick on the root (OpenSong) folder to change your storage location.\nClick on the \'Songs\' folder to create a backup or a sub directory. If you already have sub directories, clicking on them will give further options.</string>
-    <string name="storage_help">Please choose the default storage location for your OpenSong files.  You can change this at any time from the Options menu.</string>
+    <string name="storage_help">Please choose the location for your \'OpenSong\' folder.  This is the default storage location for OpenSong files.  You can change this at any time from the Options menu.  Internal storage is recommended.\n\nFor an update or re-install:\nYou can use the yellow button below to find any previous \'OpenSong\' folder.</string>
     <string name="storage_main">This is where your songs are normally stored (often called the MAIN folder).  You can optionally set up subdirectories to better manage your song library.</string>
     <string name="storage_notwritable">Unable to use</string>
+    <string name="storage_quicktip">When selecting a location:\nList storage using the menu (you may need to change settings to show all storage).\nSELECT ONLY INTERNAL OR SD CARD storage.\nInternal storage is recommended.  This may list as device storage or with your device\'s name.\nOn Android 10+ you should not select the Downloads or Root folder.  If in doubt, choose the \'Documents\' folder.</string>
     <string name="storage_reset">Click here to change your storage location (where the root OpenSong folder is located).</string>
     <string name="storage_settings">Manage your storage location and song folders</string>
     <string name="storage_warning">Please do not select the \'Songs\' folder as your storage location.  You should select the parent \'OpenSong\' folder location instead.</string>
@@ -639,6 +644,11 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="extradisplay">Secondary display detected.  Songs will be displayed on the secondary display.</string>
     <string name="file_chooser">File chooser</string>
     <string name="file_type">File type</string>
+    <string name="filter_info">You can filter sections by using prefixes.  If you selecting \'hide\' and add the filter \'guitar\' and sections using this prefix would be hidden. e.g. [*guitar:Instrumental]</string>
+    <string name="filter_label">Hide or show filtered sections</string>
+    <string name="filter_section">Section filtering</string>
+    <string name="filter_entry">Add each filter on a new line below.</string>
+    <string name="filter_structure">[*filter:V] = filtered verse section</string>
     <string name="findnewsongs">Find new songs</string>
     <string name="firstsong">Displaying first item</string>
     <string name="floating_window">Floating window</string>
@@ -842,7 +852,5 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="play_services_how">Show me how</string>
     <string name="play_services_help" translatable="false">https://www.opensongapp.com/user-guide/devices-without-google-play</string>
     <string name="import_song">Import a song</string>
-
-
-
+    <string name="information">Information</string>
 </resources>

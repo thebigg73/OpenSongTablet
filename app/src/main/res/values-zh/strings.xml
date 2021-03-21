@@ -431,7 +431,6 @@
     <string name="storage_check">"检查存储"</string>
     <string name="storage_choose">"管理存储空间"</string>
     <string name="storage_ext">"外部存储"</string>
-    <string name="storage_help">"请选择默认存储位置为您OpenSong文件。您可以从选项菜单中的任何时候改变这一点。"</string>
     <string name="storage_notwritable">"无法使用"</string>
     <string name="storage_rationale">"访问您的存储需要读取和写入歌曲集。"</string>
     <string name="subscription">"（需订阅）"</string>
@@ -517,13 +516,10 @@
     <string name="connected_display_description">特定于Chromecast / HDMI输出的设置</string>
     <string name="connections_accept">与连接</string>
     <string name="connections_accept_code">确认两个设备上的代码匹配：</string>
-    <string name="connections_actashost">担任主持人</string>
     <string name="connections_advertise_stop">设备不再发布</string>
     <string name="connections_description">连接到其他运行OpenSongApp的设备</string>
     <string name="connections_device_found">找到设备</string>
     <string name="connections_device_name">设备名称</string>
-    <string name="connections_enable">启用附近的连接</string>
-    <string name="connections_keephostsongs">保留主持人的歌曲</string>
     <string name="controls">控制</string>
     <string name="controls_description">脚踏板和屏幕手势</string>
     <string name="filename">文档名称</string>
@@ -543,4 +539,34 @@
     <string name="font_choose_list">从下面的列表中选择一种字体</string>
     <string name="font_choose_preview">通过网络预览选择</string>
     <string name="forum">论坛</string>
+
+    <string name="accept_connection">与连接</string>
+    <string name="accept_code">确认两个设备上的代码匹配：</string>
+    <string name="connections_enable">启用附近的连接</string>
+    <string name="bold_chords_headings">以粗体显示和弦和标题</string>
+    <string name="warn_before_changing_song">在移至下一首歌曲之前显示警告（有助于避免意外按下）</string>
+    <string name="connections_actashost">担任主持人</string>
+    <string name="connections_keephostsongs">保留主持人的歌曲</string>
+    <string name="location_rationale">查找其他网络设备需要此功能</string>
+    <string name="bold_text">以粗体显示歌词</string>
+    <string name="respectcopyright">尊重版权-始终合法使用</string>
+    <string name="usedbypermision">经许可使用。</string>
+    <string name="wordsandmusicby">文字和音乐</string>
+    <string name="play_services_error">要使用Google Cast，字体和附近的连接，您需要安装Google Play服务。</string>
+    <string name="play_services_how">告诉我如何</string>
+    <string name="filter_info">您可以使用前缀来过滤部分。\\n如果选择“隐藏”并添加过滤器“吉他”，则使用此前缀的部分将被隐藏。 例如 [*吉他：乐器]</string>
+    <string name="filter_label">隐藏或显示过滤的部分</string>
+    <string name="hide">隐藏</string>
+    <string name="show">节目</string>
+    <string name="filter_section">段过滤</string>
+    <string name="filter_entry">在下面的新行中添加每个过滤器。</string>
+    <string name="filter_structure">[*filter:V] =过滤后的经节</string>
+    <string name="nofound">找不到先前的资料夹。 使用红色按钮选择位置。</string>
+    <string name="storage_quicktip">" 选择位置时：\n 使用菜单列出存储（您可能需要更改设置以显示所有存储）。\n 仅选择内部或SD卡存储。\n 建议使用内部存储。 这可能会列为设备存储或您设备的名称。\n 在Android 10+上，您不应选择“下载”或“根”文件夹。如有疑问，请选择“文档”文件夹。"</string>
+    <string name="storage_help">" 请选择“ OpenSong”文件夹的位置。这是OpenSong文件的默认存储位置。您可以随时从“选项”菜单更改此设置。建议使用内部存储。\n \n 要进行更新或重新安装：\n 您可以使用下面的黄色按钮找到以前的“ OpenSong”文件夹。"</string>
+    <string name="information">信息</string>
+    <string name="nearby_host_menu_only">仅在此页面可见时侦听新客户端</string>
+    <string name="host">主持人</string>
+    <string name="client">客户</string>
+    <string name="connections_actasclient">担任客户</string>
 </resources>

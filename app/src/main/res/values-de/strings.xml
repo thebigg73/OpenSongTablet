@@ -432,7 +432,6 @@
     <string name="storage_check">"Speicher prüfen"</string>
     <string name="storage_choose">"Speicher verwalten"</string>
     <string name="storage_ext">"Externer Speicher"</string>
-    <string name="storage_help">"Bitte wählen Sie den Standard-Speicherort für Ihre Opensong-Dateien. Sie können dies jederzeit im Menü Optionen ändern."</string>
     <string name="storage_notwritable">"Kann nicht verwendet werden"</string>
     <string name="storage_rationale">"Um Songs und Sets zu lesen und zu schreiben ist der Zugriff auf den Speicher erforderlich."</string>
     <string name="subscription">"(Abonnement erforderlich)"</string>
@@ -514,7 +513,6 @@
     <string name="connected_display_description">Spezifische Einstellungen für den Chromecast / HDMI-Ausgang</string>
     <string name="connections_accept">Verbinden mit</string>
     <string name="connections_accept_code">Bestätigen Sie, dass der Code auf beiden Geräten übereinstimmt:</string>
-    <string name="connections_actashost">Als Gastgeber fungieren</string>
     <string name="connections_advertise_stop">Gerät wird nicht mehr beworben</string>
     <string name="connections_description">Stellen Sie eine Verbindung zu anderen Geräten her, auf denen OpenSongApp ausgeführt wird</string>
     <string name="ccli_description">CCLI-Einstellungen</string>
@@ -522,7 +520,35 @@
     <string name="action_button_info">Klicken Sie hier, um Ihre Seitentasten ein- oder auszublenden.\n\nJede kann Songaktionen wie Metronomen, Transponieren, Pads usw. zugewiesen werden.\nDurch langes Drücken der Haupttaste können Sie die Einstellungen der einzelnen Tasten ändern.\nLange Drücken auf Einige Seitenschaltflächen führen schnelle Aktionen wie Starten / Stoppen / Bearbeiten aus</string>
     <string name="connections_device_found">Gerät gefunden</string>
     <string name="connections_device_name">Gerätename</string>
-    <string name="connections_enable">Aktivieren Sie Verbindungen in der Nähe</string>
-    <string name="connections_keephostsongs">Behalten Sie Host-Songs</string>
     <string name="controls">Steuerung</string>
+
+    <string name="accept_connection">Verbinden mit</string>
+    <string name="accept_code">Bestätigen Sie, dass der Code auf beiden Geräten übereinstimmt:</string>
+    <string name="warn_before_changing_song">Zeigen Sie eine Warnung an, bevor Sie zum nächsten Titel wechseln (nützlich, um versehentliches Drücken zu vermeiden).</string>
+    <string name="bold_chords_headings">Zeigen Sie Akkorde und Überschriften fett an</string>
+    <string name="connections_enable">Aktivieren Sie Verbindungen in der Nähe</string>
+    <string name="connections_actashost">Als Gastgeber fungieren</string>
+    <string name="connections_keephostsongs">Behalten Sie Host-Songs</string>
+    <string name="location_rationale">Diese Funktion ist erforderlich, um andere Netzwerkgeräte zu finden</string>
+    <string name="bold_text">Zeigen Sie die Texte in Fettdruck an</string>
+    <string name="respectcopyright">Respektieren Sie das Urheberrecht - verwenden Sie es immer legal</string>
+    <string name="wordsandmusicby">Worte und Musik von</string>
+    <string name="usedbypermision">Mit Genehmigung verwendet.</string>
+    <string name="play_services_how">Zeig mir wie</string>
+    <string name="play_services_error">Um Google Cast, Schriftarten und Verbindungen in der Nähe verwenden zu können, müssen Sie Google Play Services installieren.</string>
+    <string name="filter_info">Sie können Abschnitte mithilfe von Präfixen filtern.\\nWenn Sie \\\'Ausblenden\\\' auswählen und den Filter \\\'Gitarre\\\' hinzufügen, werden Abschnitte mit diesem Präfix ausgeblendet. z.B. [*Gitarre: Instrumental]</string>
+    <string name="hide">Ausblenden</string>
+    <string name="filter_label">Gefilterte Abschnitte ausblenden oder anzeigen</string>
+    <string name="filter_entry">Fügen Sie jeden Filter in einer neuen Zeile hinzu.</string>
+    <string name="filter_section">Abschnittsfilterung</string>
+    <string name="show">Show</string>
+    <string name="filter_structure">[*filter:V] = gefilterter Versabschnitt</string>
+    <string name="nofound">Kein vorheriger Ordner gefunden. Verwenden Sie die rote Taste, um einen Ort auszuwählen.</string>
+    <string name="storage_quicktip">" Bei Auswahl eines Speicherorts:\n Listen Sie den Speicher über das Menü auf (möglicherweise müssen Sie die Einstellungen ändern, um den gesamten Speicher anzuzeigen).\n Wählen Sie nur den internen oder SD-Kartenspeicher.\n Interner Speicher wird empfohlen. Dies kann als Gerätespeicher oder mit dem Namen Ihres Geräts aufgeführt werden.\n Unter Android 10+ sollten Sie nicht den Ordner Downloads oder Root auswählen. Wählen Sie im Zweifelsfall den Ordner \"Dokumente\"."</string>
+    <string name="storage_help">Bitte wählen Sie den Speicherort für Ihren \'OpenSong\'-Ordner. Dies ist der Standardspeicherort für OpenSong-Dateien. Sie können dies jederzeit über das Menü Optionen ändern. Interner Speicher wird empfohlen.\n\nFür ein Update oder eine Neuinstallation:\nSie können die gelbe Schaltfläche unten verwenden, um einen früheren \'OpenSong\'-Ordner zu finden.</string>
+    <string name="information">Information</string>
+    <string name="nearby_host_menu_only">Warten Sie nur auf neue Clients, wenn diese Seite sichtbar ist</string>
+    <string name="client">Klient</string>
+    <string name="host">Gastgeber</string>
+    <string name="connections_actasclient">Als Kunde auftreten</string>
 </resources>

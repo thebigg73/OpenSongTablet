@@ -432,7 +432,6 @@
     <string name="storage_check">"A tárolás ellenőrzése"</string>
     <string name="storage_choose">"Kezelése tárhely"</string>
     <string name="storage_ext">"Külső tároló"</string>
-    <string name="storage_help">"Kérjük, válasszon az alapértelmezett tárolási helyet a OpenSong fájlokat. Meg lehet változtatni ezt bármikor a Beállítások menüben."</string>
     <string name="storage_notwritable">"Nem lehet használni"</string>
     <string name="storage_rationale">"Hozzáférés a tárolás szükséges írni és olvasni dalok és készletek."</string>
     <string name="subscription">"(Előfizetés szükséges)"</string>
@@ -516,13 +515,41 @@
     <string name="connected_display_description">A Chromecast / HDMI kimenetre vonatkozó beállítások</string>
     <string name="connections_accept">Kapcsolódik valamivel</string>
     <string name="connections_accept_code">Ellenőrizze, hogy a kód megfelel-e mindkét eszközön:</string>
-    <string name="connections_actashost">Működjön házigazdaként</string>
     <string name="connections_advertise_stop">Az eszközt már nem hirdetik</string>
     <string name="connections_description">Csatlakozzon más, az OpenSongApp alkalmazást futtató eszközökhöz</string>
     <string name="connections_device_found">Eszköz megtalálva</string>
     <string name="connections_device_name">Eszköz neve</string>
-    <string name="connections_enable">Engedélyezze a közeli kapcsolatokat</string>
-    <string name="connections_keephostsongs">Tartsa a fogadó dalokat</string>
     <string name="controls">Vezérlők</string>
     <string name="action_button_info">Kattintson az oldalgombok megjelenítéséhez vagy elrejtéséhez.\n\nMindegyiket hozzárendelhetünk olyan dalműveletekhez, mint metronomok, átültetés, betétek stb.\nHosszan lenyomva a fő gombot, megváltoztathatja az egyes gombok beállításait.\nHosszan nyomja meg egyes oldalgombok gyors műveleteket hajtanak végre, például indítás / leállítás / szerkesztés</string>
+
+    <string name="accept_connection">Csatlakoztasd</string>
+    <string name="accept_code">Erősítse meg a kód egyezését mindkét eszközön:</string>
+    <string name="location_rationale">Ez a szolgáltatás szükséges más hálózati eszközök megkereséséhez</string>
+    <string name="connections_keephostsongs">Tartsa be a fogadó dalokat</string>
+    <string name="connections_actashost">Viselkedj házigazdaként</string>
+    <string name="connections_enable">A közeli kapcsolatok engedélyezése</string>
+    <string name="bold_chords_headings">Az akkordok és a fejlécek vastag betűvel jelennek meg</string>
+    <string name="warn_before_changing_song">Mutasson figyelmeztetést, mielőtt a következő dalra lépne (hasznos a véletlen megnyomás elkerülése érdekében)</string>
+    <string name="bold_text">A dalszövegeket vastag betűvel jelenítheti meg</string>
+    <string name="respectcopyright">Tisztelet a szerzői jogoknak - mindig legálisan használja</string>
+    <string name="wordsandmusicby">Szavak és zene</string>
+    <string name="usedbypermision">Engedély alapján használják.</string>
+    <string name="play_services_error">A Google Cast, a Betűtípusok és a Közeli kapcsolatok használatához telepítenie kell a Google Play szolgáltatásokat.</string>
+    <string name="play_services_how">Mutassa meg, hogyan</string>
+    <string name="filter_info">Szűrheti a szakaszokat az előtagok használatával.\\nHa a \\\'rejtés\\\' lehetőséget választja, és hozzáadja a \\\'gitár\\\' szűrőt, akkor az ezt az előtagot használó szakaszok rejtettek lesznek. például. [*gitár: hangszer]</string>
+    <string name="filter_label">Szűrt szakaszok elrejtése vagy megjelenítése</string>
+    <string name="hide">Elrejt</string>
+    <string name="show">Előadás</string>
+    <string name="filter_section">Szakaszszűrés</string>
+    <string name="filter_entry">Adja hozzá az egyes szűrőket egy új sorhoz.</string>
+    <string name="filter_structure">[*filter:V] = szűrt versszak</string>
+    <string name="nofound">Nem található előző mappa. A piros gombbal válassza ki a helyet.</string>
+    <string name="storage_quicktip">Hely kiválasztásakor:\nSorolja fel a tárhelyet a menü segítségével (lehet, hogy módosítania kell a beállításokat az összes tároló megjelenítéséhez).\nKIZÁRÓLAG BELSŐ VAGY SD KÁRTYA tárhelyet válasszon.\nBelső tárolás ajánlott. Ez felsorolható eszközmegőrzőként vagy az eszköz nevével együtt.\nAndroid 10+ rendszeren nem válassza a Letöltések vagy a Gyökér mappát. Ha kétségei vannak, válassza a \'Dokumentumok\' mappát.</string>
+    <string name="storage_help">Kérjük, válassza ki az „OpenSong” mappa helyét. Ez az OpenSong fájlok alapértelmezett tárolási helye. Ezt bármikor megváltoztathatja az Opciók menüből. Belső tárolás ajánlott.\n\nFrissítéshez vagy újratelepítéshez:\nAz alábbi sárga gombbal megtalálhatja bármelyik korábbi „OpenSong” mappát.</string>
+    <string name="information">" Információ"</string>
+    <string name="nearby_host_menu_only">Csak akkor hallgasson új ügyfelekre, ha ez az oldal látható</string>
+    <string name="host">Házigazda</string>
+    <string name="client">Ügyfél</string>
+    <string name="connections_actasclient">Ügyfélként jár el</string>
+
 </resources>

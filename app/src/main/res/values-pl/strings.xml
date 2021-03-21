@@ -432,7 +432,6 @@
     <string name="storage_check">"Sprawdzanie pamięci"</string>
     <string name="storage_choose">"Zarządzaj schowek"</string>
     <string name="storage_ext">"Pamięć zewnętrzna"</string>
-    <string name="storage_help">"Proszę wybrać domyślną lokalizację zapisu dla plików OpenSong. Można to zmienić w każdej chwili w menu Opcje."</string>
     <string name="storage_notwritable">"Nie można używać"</string>
     <string name="storage_rationale">"Dostęp do pamięci jest wymagane, aby czytać i pisać piosenki i zestawy."</string>
     <string name="subscription">"(Wymagana subskrypcja)"</string>
@@ -517,12 +516,40 @@
     <string name="connected_display_description">Ustawienia specyficzne dla wyjścia Chromecast / HDMI</string>
     <string name="connections_accept">Połączyć się z</string>
     <string name="connections_accept_code">Sprawdź, czy kod pasuje na obu urządzeniach:</string>
-    <string name="connections_actashost">Działaj jako gospodarz</string>
     <string name="connections_advertise_stop">Urządzenie nie jest już reklamowane</string>
     <string name="connections_description">Połącz się z innymi urządzeniami z OpenSongApp</string>
     <string name="connections_device_found">Znaleziono urządzenie</string>
     <string name="connections_device_name">Nazwa urządzenia</string>
     <string name="controls">Kontrola</string>
-    <string name="connections_keephostsongs">Zachowaj piosenki gospodarza</string>
+
+
+    <string name="accept_connection">Połączyć się z</string>
+    <string name="accept_code">Sprawdź, czy kod pasuje na obu urządzeniach:</string>
+    <string name="warn_before_changing_song">Pokaż ostrzeżenie przed przejściem do następnego utworu (przydatne, aby uniknąć przypadkowych naciśnięć)</string>
+    <string name="bold_chords_headings">Wyświetlaj akordy i nagłówki pogrubioną czcionką</string>
     <string name="connections_enable">Włącz połączenia w pobliżu</string>
+    <string name="connections_actashost">Działaj jako gospodarz</string>
+    <string name="connections_keephostsongs">Zachowaj piosenki gospodarza</string>
+    <string name="location_rationale">Ta funkcja jest wymagana do lokalizowania innych urządzeń sieciowych</string>
+    <string name="bold_text">Wyświetlaj teksty pogrubioną czcionką</string>
+    <string name="respectcopyright">Szanuj prawa autorskie - zawsze korzystaj z nich legalnie</string>
+    <string name="usedbypermision">Wykorzystane za zgodą.</string>
+    <string name="wordsandmusicby">Słowa i muzyka wg</string>
+    <string name="play_services_how">Pokaż mi jak</string>
+    <string name="play_services_error">Aby korzystać z Google Cast, czcionek i pobliskich połączeń, musisz zainstalować usługi Google Play.</string>
+    <string name="filter_info">Możesz filtrować sekcje za pomocą prefiksów.\\nJeśli wybierzesz „ukryj” i dodasz filtr „gitara”, a sekcje używające tego przedrostka zostaną ukryte. na przykład [*gitara: instrumentalna]</string>
+    <string name="filter_label">Ukryj lub pokaż przefiltrowane sekcje</string>
+    <string name="filter_entry">Dodaj każdy filtr w nowej linii poniżej.</string>
+    <string name="filter_section">Filtrowanie sekcji</string>
+    <string name="show">Pokazać</string>
+    <string name="hide">Ukryć</string>
+    <string name="filter_structure">[*filter:V] = przefiltrowana sekcja wersetów</string>
+    <string name="nofound">Nie znaleziono poprzedniego folderu. Użyj czerwonego przycisku, aby wybrać lokalizację.</string>
+    <string name="storage_quicktip">W przypadku wyboru lokalizacji:\nLista pamięci za pomocą menu (może być konieczna zmiana ustawień, aby wyświetlić całą pamięć).\nWYBIERZ TYLKO pamięć WEWNĘTRZNĄ LUB KARTĘ SD.\nZalecana jest pamięć wewnętrzna. Może to być wymienione jako pamięć urządzenia lub z nazwą twojego urządzenia.\nW systemie Android 10+ nie należy wybierać folderu Pobrane ani Root. W razie wątpliwości wybierz folder „Dokumenty”.</string>
+    <string name="storage_help">Wybierz lokalizację folderu „OpenSong”. To jest domyślna lokalizacja przechowywania plików OpenSong. Możesz to zmienić w dowolnym momencie w menu Opcje. Zalecana jest pamięć wewnętrzna.\n\nAby zaktualizować lub ponownie zainstalować:\nmożesz użyć żółtego przycisku poniżej, aby znaleźć poprzedni folder „OpenSong”.</string>
+    <string name="information">" Informacja"</string>
+    <string name="nearby_host_menu_only">Nasłuchuj nowych klientów tylko wtedy, gdy ta strona jest widoczna</string>
+    <string name="client">Klient</string>
+    <string name="host">Gospodarz</string>
+    <string name="connections_actasclient">Działaj jako klient</string>
 </resources>

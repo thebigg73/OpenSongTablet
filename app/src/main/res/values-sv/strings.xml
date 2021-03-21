@@ -432,7 +432,6 @@
     <string name="storage_check">"Kontrollerar lagring"</string>
     <string name="storage_choose">"Hantera lagring"</string>
     <string name="storage_ext">"Extern lagring"</string>
-    <string name="storage_help">"Välj standard lagringsplats för dina OpenSong-filer. Du kan ändra detta när som helst från menyn Alternativ."</string>
     <string name="storage_notwritable">"Kan inte användas"</string>
     <string name="storage_rationale">"Tillgång till din lagring krävs för att läsa och skriva sånger och uppsättningar."</string>
     <string name="subscription">"(Prenumeration krävs)"</string>
@@ -517,13 +516,10 @@
     <string name="connected_display_description">Inställningar specifika för Chromecast / HDMI-utgång</string>
     <string name="connections_accept">Ansluta till</string>
     <string name="connections_accept_code">Bekräfta kodmatchningarna på båda enheterna:</string>
-    <string name="connections_actashost">Fungera som värd</string>
     <string name="connections_advertise_stop">Enheten annonseras inte längre</string>
     <string name="connections_description">Anslut till andra enheter som kör OpenSongApp</string>
     <string name="connections_device_found">Enheten hittades</string>
     <string name="connections_device_name">Enhetsnamn</string>
-    <string name="connections_enable">Aktivera anslutningar i närheten</string>
-    <string name="connections_keephostsongs">Behåll värdlåtar</string>
     <string name="controls">Kontrollera</string>
     <string name="controls_description">Fotpedaler och skärmgester</string>
     <string name="delete_folder_warning">Om du tar bort den här underkatalogen raderas också alla låtar eller mappar som den innehåller. Du kan inte ångra den här ändringen!</string>
@@ -545,4 +541,34 @@
     <string name="forum">Forum</string>
     <string name="forum_description">Rapportera fel, få hjälp och begär funktioner</string>
     <string name="github_description">Bidra till apputveckling</string>
+
+    <string name="accept_connection">Ansluta till</string>
+    <string name="accept_code">Bekräfta kodmatchningarna på båda enheterna:</string>
+    <string name="location_rationale">Den här funktionen krävs för att hitta andra nätverksenheter</string>
+    <string name="connections_keephostsongs">Håll värdlåtar</string>
+    <string name="connections_actashost">Agera som värd</string>
+    <string name="connections_enable">Aktivera anslutningar i närheten</string>
+    <string name="bold_chords_headings">Visa ackord och rubriker med fet stil</string>
+    <string name="warn_before_changing_song">Visa en varning innan du går till nästa låt (användbart för att undvika oavsiktliga tryck)</string>
+    <string name="bold_text">Visa texter med fet stil</string>
+    <string name="respectcopyright">Respektera upphovsrätten - använd alltid lagligt</string>
+    <string name="wordsandmusicby">Ord och musik av</string>
+    <string name="usedbypermision">Används med tillstånd.</string>
+    <string name="play_services_error">För att kunna använda Google Cast, teckensnitt och anslutningar i närheten måste du installera Google Play-tjänster.</string>
+    <string name="play_services_how">Visa mig hur</string>
+    <string name="filter_info">Du kan filtrera sektioner med hjälp av prefix.\\nOm du väljer \\\"göm\\\" och lägg till filtret \\\"gitarr\\\" och sektioner som använder detta prefix skulle döljas. t.ex. [*gitarr: instrumental]</string>
+    <string name="filter_label">Dölj eller visa filtrerade sektioner</string>
+    <string name="hide">Dölj</string>
+    <string name="show">Visa</string>
+    <string name="filter_section">Sektionsfiltrering</string>
+    <string name="filter_entry">Lägg till varje filter på en ny rad nedan.</string>
+    <string name="filter_structure">[*filter:V] = filtrerad versavsnitt</string>
+    <string name="nofound">Ingen tidigare mapp hittades. Använd den röda knappen för att välja en plats.</string>
+    <string name="storage_quicktip">När du väljer en plats:\nLista lagring med hjälp av menyn (du kan behöva ändra inställningar för att visa all lagring).\nVÄLJ ENDAST INTERNT ELLER SD-KORT-lagring.\nIntern lagring rekommenderas. Detta kan listas som enhetslagring eller med enhetens namn.\nPå Android 10+ ska du inte välja mappen Nedladdningar eller Rot. Om du är osäker, välj mappen \"Dokument\".</string>
+    <string name="storage_help">Välj plats för din \'OpenSong\' -mapp. Detta är standardlagringsplatsen för OpenSong-filer. Du kan ändra detta när som helst från alternativmenyn. Intern lagring rekommenderas.\n\nFör en uppdatering eller ominstallering:\nDu kan använda den gula knappen nedan för att hitta någon tidigare \"OpenSong\" -mapp.</string>
+    <string name="information">Information</string>
+    <string name="nearby_host_menu_only">Lyssna bara på nya klienter när den här sidan är synlig</string>
+    <string name="host">Värd</string>
+    <string name="client">Klient</string>
+    <string name="connections_actasclient">Fungera som klient</string>
 </resources>

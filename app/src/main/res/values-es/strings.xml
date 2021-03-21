@@ -432,7 +432,6 @@
     <string name="storage_check">"Control de almacenamiento"</string>
     <string name="storage_choose">"Administrar almacenamiento"</string>
     <string name="storage_ext">"Almacenamiento externo"</string>
-    <string name="storage_help">"Por favor, elija la ubicación de almacenamiento predeterminada para los archivos de OpenSong. Usted puede cambiar esto en cualquier momento desde el menú Opciones."</string>
     <string name="storage_notwritable">"No se puede usar"</string>
     <string name="storage_rationale">"Se requiere acceso a su almacenamiento a leer y escribir canciones y juegos."</string>
     <string name="subscription">"(Se requiere suscripción)"</string>
@@ -517,13 +516,10 @@
     <string name="connected_display_description">Configuración específica para la salida Chromecast / HDMI</string>
     <string name="connections_accept">Conectar con</string>
     <string name="connections_accept_code">Confirme que el código coincida en ambos dispositivos:</string>
-    <string name="connections_actashost">Actuar como anfitrión</string>
     <string name="connections_advertise_stop">El dispositivo ya no se anuncia</string>
     <string name="connections_description">Conéctese a otros dispositivos que ejecutan OpenSongApp</string>
     <string name="connections_device_found">Dispositivo encontrado</string>
     <string name="connections_device_name">Nombre del dispositivo</string>
-    <string name="connections_enable">Habilitar conexiones cercanas</string>
-    <string name="connections_keephostsongs">Mantenga las canciones del anfitrión</string>
     <string name="controls">Controlar</string>
     <string name="controls_description">Pedales y gestos de pantalla</string>
     <string name="delete_folder_warning">Si elimina este subdirectorio, esto también eliminará las canciones o carpetas que contiene. ¡No puede deshacer este cambio!</string>
@@ -545,4 +541,34 @@
     <string name="forum">Foro</string>
     <string name="forum_description">Informar errores, obtener ayuda y solicitar funciones</string>
     <string name="github_description">Contribuir al desarrollo de aplicaciones</string>
+
+    <string name="accept_connection">Conectar con</string>
+    <string name="accept_code">Confirme que el código coincida en ambos dispositivos:</string>
+    <string name="location_rationale">Esta función es necesaria para localizar otros dispositivos de red.</string>
+    <string name="connections_keephostsongs">Mantener canciones de host</string>
+    <string name="connections_actashost">Actuar como anfitrión</string>
+    <string name="connections_enable">Habilitar conexiones cercanas</string>
+    <string name="bold_chords_headings">Mostrar acordes y encabezados en negrita</string>
+    <string name="warn_before_changing_song">Mostrar una advertencia antes de pasar a la siguiente canción (útil para evitar prensas accidentales)</string>
+    <string name="bold_text">Mostrar letras en negrita</string>
+    <string name="respectcopyright">Respete los derechos de autor: utilice siempre legalmente</string>
+    <string name="wordsandmusicby">Palabras y música de</string>
+    <string name="usedbypermision">Usado con permiso.</string>
+    <string name="play_services_error">Para utilizar Google Cast, fuentes y conexiones cercanas, deberá instalar Google Play Services.</string>
+    <string name="play_services_how">Muéstrame cómo</string>
+    <string name="filter_info">Puede filtrar secciones usando prefijos.\\nSi selecciona \'ocultar\' y agrega el filtro \'guitarra\', las secciones que usan este prefijo quedarían ocultas. p.ej. [*guitarra: instrumental]</string>
+    <string name="filter_label">Ocultar o mostrar secciones filtradas</string>
+    <string name="hide">Esconder</string>
+    <string name="show">Mostrar</string>
+    <string name="filter_section">Filtrado de secciones</string>
+    <string name="filter_entry">Agregue cada filtro en una nueva línea a continuación.</string>
+    <string name="filter_structure">[*filtro:V] = sección de verso filtrado</string>
+    <string name="nofound">No se encontró ninguna carpeta anterior. Utilice el botón rojo para elegir una ubicación.</string>
+    <string name="storage_quicktip">Al seleccionar una ubicación:\nEnumere el almacenamiento mediante el menú (es posible que deba cambiar la configuración para mostrar todo el almacenamiento).\nSELECCIONE SOLO ALMACENAMIENTO INTERNO O EN TARJETA SD.\nSe recomienda almacenamiento interno. Esto puede aparecer como almacenamiento del dispositivo o con el nombre de su dispositivo.\nEn Android 10+, no debe seleccionar la carpeta Descargas o raíz. En caso de duda, elija la carpeta \'Documentos\'.</string>
+    <string name="storage_help">Elija la ubicación de su carpeta \'OpenSong\'. Esta es la ubicación de almacenamiento predeterminada para los archivos de OpenSong. Puede cambiar esto en cualquier momento desde el menú Opciones. Se recomienda almacenamiento interno.\n\nPara una actualización o reinstalación:\nPuede usar el botón amarillo a continuación para buscar cualquier carpeta \'OpenSong\' anterior.</string>
+    <string name="information">" Información"</string>
+    <string name="nearby_host_menu_only">Solo escuche a los nuevos clientes cuando esta página esté visible</string>
+    <string name="host">Anfitrión</string>
+    <string name="client">Cliente</string>
+    <string name="connections_actasclient">Actuar como cliente</string>
 </resources>

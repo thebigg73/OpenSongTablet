@@ -431,7 +431,6 @@
     <string name="storage_check">"Kontroleer stoorplek"</string>
     <string name="storage_choose">"Bestuur stoor"</string>
     <string name="storage_ext">"Eksterne stoor"</string>
-    <string name="storage_help">"Kies die standaard stoor plek vir jou OpenSong lêers. Jy kan dit enige tyd vanaf die Options menu verander."</string>
     <string name="storage_notwritable">"Kan nie gebruik nie"</string>
     <string name="storage_rationale">"Toegang tot jou stoor is nodig om te lees en skryf liedjies en stelle."</string>
     <string name="subscription">"(Subskripsie benodig)"</string>
@@ -522,8 +521,6 @@
     <string name="connections_description">Verbind met ander toestelle wat OpenSongApp gebruik</string>
     <string name="connections_device_found">Toestel gevind</string>
     <string name="connections_device_name">Toestel naam</string>
-    <string name="connections_enable">Aktiveer verbindings in die omgewing</string>
-    <string name="connections_keephostsongs">Hou gasheer liedjies</string>
     <string name="controls">Beheer</string>
     <string name="controls_description">Voetpedale en skermbewegings</string>
     <string name="filename">Lêernaam</string>
@@ -543,4 +540,32 @@
     <string name="font_choose_list">Kies \'n lettertipe uit die onderstaande lys</string>
     <string name="font_choose_preview">Kies met internetvoorskou</string>
     <string name="forum">Forum</string>
+    <string name="accept_connection">Konnekteer met</string>
+    <string name="accept_code">Bevestig die kodewys op albei toestelle:</string>
+    <string name="connections_enable">Aktiveer nabygeleë verbindings</string>
+    <string name="bold_chords_headings">Vertoon akkoorde en opskrifte in vetdruk</string>
+    <string name="warn_before_changing_song">Wys \'n waarskuwing voordat u na die volgende liedjie gaan (nuttig om toevallige perse te vermy)</string>
+    <string name="connections_keephostsongs">Hou gasheerliedjies</string>
+    <string name="location_rationale">Hierdie funksie is nodig om ander netwerktoestelle op te spoor</string>
+    <string name="bold_text">Vertoon lirieke vetdruk</string>
+    <string name="respectcopyright">Respekteer kopiereg - gebruik dit altyd wettig</string>
+    <string name="usedbypermision">Gebruik met toestemming.</string>
+    <string name="wordsandmusicby">Woorde en musiek deur</string>
+    <string name="play_services_error">Om Google Cast, lettertipes en verbindings in die buurt te gebruik, moet u Google Play Services installeer.</string>
+    <string name="play_services_how">Wys my hoe</string>
+    <string name="filter_info">U kan afdelings filter met behulp van voorvoegsels.\\nAs u \\\'verberg\\\' kies en die filter \\\'kitaar\\\' byvoeg, sal afdelings wat hierdie voorvoegsel gebruik, verborge wees. bv. [*kitaar: instrumentaal]</string>
+    <string name="filter_label">Versteek of wys gefilterde gedeeltes</string>
+    <string name="hide">Steek weg</string>
+    <string name="show">Wys</string>
+    <string name="filter_section">Seksie filter</string>
+    <string name="filter_entry">Voeg elke filter op \'n nuwe reël hieronder by.</string>
+    <string name="filter_structure">[*filter:V] = gefilterde versafdeling</string>
+    <string name="nofound">Geen vorige vouer gevind nie. Gebruik die rooi knoppie om \'n plek te kies.</string>
+    <string name="storage_quicktip">As u \'n plek kies:\nMaak \'n lys van stoorplek met behulp van die menu (u moet dalk die instellings verander om alle stoorplekke te wys).\nKIES SLEGS INTERNE OF SD-KAART-berging.\nInterne berging word aanbeveel. Dit kan gelys word as toestelberging of met die naam van u toestel.\nOp Android 10+ moet u nie die gids Downloads of Root kies nie. As u twyfel, kies die gids \'Dokumente\'.</string>
+    <string name="storage_help">Kies die plek vir u \'OpenSong\'-lêergids. Dit is die standaardopbergplek vir OpenSong-lêers. U kan dit te eniger tyd in die Opsies-menu verander. Interne berging word aanbeveel.\n\nVir \'n opdatering of herinstelling:\nu kan die onderstaande geel knoppie gebruik om enige vorige \'OpenSong\'-lêergids te vind.</string>
+    <string name="information">" Inligting"</string>
+    <string name="nearby_host_menu_only">Luister net na nuwe kliënte wanneer hierdie bladsy sigbaar is</string>
+    <string name="host">Gasheer</string>
+    <string name="client">Kliënt</string>
+    <string name="connections_actasclient">Tree op as kliënt</string>
 </resources>
