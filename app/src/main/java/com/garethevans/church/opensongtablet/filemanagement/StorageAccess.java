@@ -319,70 +319,69 @@ public class StorageAccess {
     }
     private String[] niceUriTree_SAF(Context c, Preferences preferences, Uri uri, String[] storageDetails) {
         // storageDetails is currently empty, but will be [0]=extra info  [1]=nice location
-        if (storageDetails==null) {
+        if (storageDetails == null) {
             storageDetails = new String[2];
         }
-        storageDetails[0]="";
-        storageDetails[1]="";
-        try {
-            storageDetails[1] = uri.getPath();
+        storageDetails[0] = "";
+        storageDetails[1] = "";
 
-            if (storageDetails[1]==null) {
-                storageDetails[1]="";
-            }
+        if (uri != null) {
+            try {
+                storageDetails[1] = uri.getPath();
 
-            // When not an internal path (more patterns may be needed) indicate as external
-            if (!storageDetails[1].contains("/tree/primary")) {
-                storageDetails[0] = c.getString(R.string.storage_ext);
-            }
+                if (storageDetails[1] == null) {
+                    storageDetails[1] = "";
+                }
 
-            // The  storage location getPath is likely something like /tree/primary:/document/primary:/OpenSong
-            // This is due to the content using a document contract
-            if (storageDetails[1].contains("primary:")) {
-                storageDetails[1] = storageDetails[1].substring(storageDetails[1].lastIndexOf("primary"));
-            }
+                // When not an internal path (more patterns may be needed) indicate as external
+                if (!storageDetails[1].contains("/tree/primary")) {
+                    storageDetails[0] = c.getString(R.string.storage_ext);
+                }
 
-            if (storageDetails[1].contains(":") && !storageDetails[1].endsWith(":")) {
-                storageDetails[1] = "/" + storageDetails[1].substring(storageDetails[1].lastIndexOf(":") + 1);
-            } else {
-                storageDetails[1] = "/" + storageDetails[1];
-            }
-            storageDetails[1] = storageDetails[1].replace("//", "/");
+                // The  storage location getPath is likely something like /tree/primary:/document/primary:/OpenSong
+                // This is due to the content using a document contract
+                if (storageDetails[1].contains("primary:")) {
+                    storageDetails[1] = storageDetails[1].substring(storageDetails[1].lastIndexOf("primary"));
+                }
 
-            // Add the 'OpenSong' bit to the end if it isn't there already
-            if (!storageDetails[1].endsWith("/" + appFolder)) {
-                storageDetails[1] += "/" + appFolder;
-            }
+                if (storageDetails[1].contains(":") && !storageDetails[1].endsWith(":")) {
+                    storageDetails[1] = "/" + storageDetails[1].substring(storageDetails[1].lastIndexOf(":") + 1);
+                } else {
+                    storageDetails[1] = "/" + storageDetails[1];
+                }
+                storageDetails[1] = storageDetails[1].replace("//", "/");
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (uri == null) {
-                storageDetails[1] = c.getString(R.string.not_set);
-            } else {
+                // Add the 'OpenSong' bit to the end if it isn't there already
+                if (!storageDetails[1].endsWith("/" + appFolder)) {
+                    storageDetails[1] += "/" + appFolder;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
                 storageDetails[1] = "" + uri;
             }
-        }
 
 
-        // If we have a path try to give extra info of a 'songs' count
-        try {
-            ArrayList<String> songIds = listSongs(c, preferences);
-            // Only items that don't end with / are songs!
-            int count = 0;
-            for (String s : songIds) {
-                if (!s.endsWith("/")) {
-                    count++;
+            // If we have a path try to give extra info of a 'songs' count
+            try {
+                ArrayList<String> songIds = listSongs(c, preferences);
+                // Only items that don't end with / are songs!
+                int count = 0;
+                for (String s : songIds) {
+                    if (!s.endsWith("/")) {
+                        count++;
+                    }
                 }
+
+                if (storageDetails[0].length() > 0) {
+                    storageDetails[0] = storageDetails[0] + ", ";
+                }
+                storageDetails[0] = "(" + storageDetails[0] + count + " " + c.getString(R.string.songs) + ")";
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-            if (storageDetails[0].length() > 0) {
-                storageDetails[0] = storageDetails[0] + ", ";
-            }
-            storageDetails[0] = "(" + storageDetails[0] + count + " " + c.getString(R.string.songs) + ")";
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
         return storageDetails;
     }
     public String[] niceUriTree_File(Context c, Uri uri, String[] storageDetails) {
@@ -1727,7 +1726,7 @@ public class StorageAccess {
             f = new File (f,subfolder);
         }
         File[] fs = f.listFiles();
-        if (fs!=null && fs.length>0) {
+        if (fs != null && fs.length > 0) {
             for (File fi : fs) {
                 if (fi.isFile()) {
                     al.add(fi.getName());
@@ -1737,9 +1736,30 @@ public class StorageAccess {
         return al;
     }
 
-
-
-
+    int songCountAtLocation(File f) {
+        // Prepare an arraylist for any song folders
+        ArrayList<File> foldersToIndex = new ArrayList<>();
+        foldersToIndex.add(f);
+        int count = 0;
+        try {
+            for (int x = 0; x < foldersToIndex.size(); x++) {
+                File[] fs = foldersToIndex.get(x).listFiles();
+                if (fs != null) {
+                    for (File ff : fs) {
+                        Log.d("d", "ff=" + ff);
+                        if (ff.isDirectory()) {
+                            foldersToIndex.add(ff);
+                        } else {
+                            count++;
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 
 
     // TODO MOVE TO A BIBLE FILE

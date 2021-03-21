@@ -291,6 +291,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
         // Get the version
         versionNumber = new VersionNumber();
+        Log.d("MainActivity", "versionNumber=" + versionNumber);
 
         // Initialise the start variables we need
         initialiseStartVariables();
@@ -370,7 +371,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         }
     }
 
-
     @Override
     public void changeActionBarVisible(boolean wasScrolling, boolean scrollButton) {
         Log.d("MainActivity","ChangeActionBarVisisble");
@@ -424,6 +424,31 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         // Set up page buttons
         setListeners();
     }
+
+
+    // TODO - probably want a popup dialogfragment alerting the user that the app has been updated
+    /*private boolean versionCheck() {
+        // Do this as a separate thread.  0 is for fresh installs.  1 is for user choice to return to menu
+        int lastUsedVersion = preferences.getMyPreferenceInt(BootUpCheck.this, "lastUsedVersion", 0);
+        PackageInfo pInfo;
+        try {
+            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            if (android.os.Build.VERSION.SDK_INT >= 28) {
+                thisVersion = (int) pInfo.getLongVersionCode();
+            } else {
+                //noinspection
+                thisVersion = pInfo.versionCode;
+            }
+            versionCode = "V."+pInfo.versionName;
+        } catch (Exception e) {
+            thisVersion = 0;
+            versionCode = "";
+        }
+
+        // If this is a fresh install (or updating from before V4.8.5) clear the cache in case
+
+        return lastUsedVersion >= thisVersion;
+    }*/
 
     private void setUpCast() {
         try {
@@ -733,13 +758,18 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             case "Nearby":
                 if (settingsOpen && nearbyOpen) {
                     navHome();
-                } else if (requestNearbyPermissions() && fragmentOpen!=R.id.nearbyConnectionsFragment) {
+                } else if (requestNearbyPermissions() && fragmentOpen != R.id.nearbyConnectionsFragment) {
                     navController.navigate(Uri.parse("opensongapp://settings/nearby"));
                 }
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    // TODO
+    // Add a feature for an alert button in the toolbar that tells the user something important via
+    // a popup dialogfragment.  This can be the new version notification, backupwarning, Google Play Services warning, etc.
+
 
     private void navHome() {
         lockDrawer(false);
@@ -749,6 +779,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             navController.navigate(Uri.parse("opensongapp://performance"));
         }
     }
+
     @Override
     public boolean dispatchKeyEvent(@NonNull KeyEvent event) {
         return castContext.onDispatchVolumeKeyEventBeforeJellyBean(event)
@@ -765,7 +796,10 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
             Log.d("MainActivity","Google Play Services Available");
             mediaRouteMenuItem = CastButtonFactory.setUpMediaRouteButton(getApplicationContext(), menu, R.id.media_route_menu_item);
         } else {
-            Log.d("MainActivity","Google Play Services Available");
+            Log.d("MainActivity", "Google Play Services Not Available");
+            // TODO
+            // Alert the user about the Google Play issues and give them an option to fix it
+            // Add it to the menu alerts
         }
 
         // Set up battery monitor
@@ -1061,6 +1095,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         closeDrawer(true);  // Only the Performance and Presentation fragments allow this.  Switched on in these fragments
         lockDrawer(true);
         hideActionButton(true);
+        Log.d("MainActivity", "navigateToFragment:" + id);
         try {
             navController.navigate(id);
             Fragment f = getSupportFragmentManager().findFragmentById(id);

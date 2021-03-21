@@ -24,7 +24,7 @@ import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
 import com.garethevans.church.opensongtablet.songprocessing.Song;
 
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+//import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 /*
 This fragment is the first one that the main activity loads up.
@@ -74,7 +74,7 @@ public class BootUpFragment extends Fragment {
 
         // TODO
         // REMOVE BEFORE RELEASE!!!!!
-        MaterialShowcaseView.resetAll(requireActivity());
+        // MaterialShowcaseView.resetAll(requireActivity());
 
         // Initialise the helper classes
         initialiseHelpers();
@@ -110,8 +110,10 @@ public class BootUpFragment extends Fragment {
     // Checks made before starting the app
     private void startOrSetUp() {
         if (storageIsCorrectlySet()) {
+            Log.d("BootUpFragment", "startBootProcess");
             startBootProcess();
         } else {
+            Log.d("BootUpFragment", "requireStorageCheck");
             requireStorageCheck();
         }
     }
@@ -131,12 +133,10 @@ public class BootUpFragment extends Fragment {
         // Check that storage permission is granted and that it has been set and that it exists
         return (storagePermissionGranted() && storageLocationSet() && storageLocationValid());
     }
-
     private void requireStorageCheck() {
         // Either permission hasn't been granted, or it isn't set properly
         // Switch to the set storage fragment
-        NavHostFragment.findNavController(BootUpFragment.this)
-                .navigate(Uri.parse("opensongapp://settings/storage/setstorage"));
+        NavHostFragment.findNavController(BootUpFragment.this).navigate(Uri.parse("opensongapp://settings/storage/setstorage"));
     }
 
     private void startBootProcess() {
