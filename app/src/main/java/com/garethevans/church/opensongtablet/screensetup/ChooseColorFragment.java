@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.garethevans.church.opensongtablet.R;
 import com.garethevans.church.opensongtablet.databinding.DisplayColorSettingsBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
@@ -48,7 +48,7 @@ public class ChooseColorFragment extends Fragment {
         setUpHelpers();
 
         // Set up colour
-        setupOriginalColor(themeColors.getWhich());
+        setupOriginalColor(mainActivityInterface.getWhattodo());
 
         // Set the sliders to the correct positions
         setSliderValues();
@@ -113,7 +113,7 @@ public class ChooseColorFragment extends Fragment {
                 typing = false;
             }
         });
-        myView.saveColor.setOnClickListener(v -> doSave(themeColors.getWhich()));
+        myView.saveColor.setOnClickListener(v -> doSave(mainActivityInterface.getWhattodo()));
     }
 
     private void setupOriginalColor(String which) {
@@ -132,7 +132,6 @@ public class ChooseColorFragment extends Fragment {
         newColorHex = String.format("%08X",(oldColorInt));
         newColorInt = oldColorInt;
 
-        Log.d("d","newColorHex="+newColorHex);
         setNewColors(getColorFromHex(newColorHex));
 
         myView.oldColor.setBackgroundColor(oldColorInt);
@@ -192,7 +191,6 @@ public class ChooseColorFragment extends Fragment {
         hex = "#" + hex;
 
         try {
-            Log.d("d","hex="+hex);
             return Color.parseColor(hex);
         } catch (Exception e) {
             e.printStackTrace();
@@ -240,6 +238,7 @@ public class ChooseColorFragment extends Fragment {
         // Set the preference
         preferences.setMyPreferenceInt(getContext(),themePrefix+"_"+which,newColorInt);
         // Navigate back
-        requireActivity().getSupportFragmentManager().popBackStackImmediate();
+        mainActivityInterface.popTheBackStack(R.id.themeSetupFragment,true);
+        mainActivityInterface.navigateToFragment(R.id.themeSetupFragment);
     }
 }

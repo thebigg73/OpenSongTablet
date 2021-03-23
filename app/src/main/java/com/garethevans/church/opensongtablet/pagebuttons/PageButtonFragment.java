@@ -92,7 +92,7 @@ public class PageButtonFragment extends Fragment {
             opt5 = buttonActions.indexOf(preferences.getMyPreferenceString(getContext(),"pageButtonCustom5Action",""));
             opt6 = buttonActions.indexOf(preferences.getMyPreferenceString(getContext(),"pageButtonCustom6Action",""));
 
-            ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(getActivity(), R.layout._my_spinner, buttonActions);
+            ExposedDropDownArrayAdapter arrayAdapter = new ExposedDropDownArrayAdapter(getActivity(), R.layout.exposed_dropdown, buttonActions);
 
             getActivity().runOnUiThread(() -> {
 

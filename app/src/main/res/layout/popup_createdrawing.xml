@@ -64,7 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/currentTool"
-        android:background="@color/popupcolor"
+        android:background="@color/colorAltPrimary"
         android:visibility="gone">
 
         <LinearLayout
@@ -183,7 +183,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/myTools"
-        android:background="@color/popupcolor"
+        android:background="@color/colorAltPrimary"
         android:visibility="gone">
 
         <LinearLayout
@@ -296,7 +296,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/myColors"
-        android:background="@color/popupcolor"
+        android:background="@color/colorAltPrimary"
         android:orientation="horizontal"
         android:visibility="gone">
 

@@ -45,6 +45,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.garethevans.church.opensongtablet.animation.CustomAnimation;
 import com.garethevans.church.opensongtablet.animation.PageButtonFAB;
 import com.garethevans.church.opensongtablet.animation.ShowCase;
+import com.garethevans.church.opensongtablet.appdata.AlertChecks;
+import com.garethevans.church.opensongtablet.appdata.AlertInfoDialogFragment;
 import com.garethevans.church.opensongtablet.appdata.FixLocale;
 import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.appdata.VersionNumber;
@@ -217,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
 
     // Actionbar
     ActionBar ab;
-
+    AlertChecks alertChecks;
     DrawerLayout drawerLayout;
 
     MenuItem settingsButton;
@@ -360,6 +362,7 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         makePDF = new MakePDF();
         transpose = new Transpose();
         gestureDetector = new GestureDetector(this,new ActivityGestureDetector());
+        alertChecks = new AlertChecks();
     }
 
     // The actionbar
@@ -733,8 +736,18 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
     }
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        settingsButton = (MenuItem) menu.findItem(R.id.settings_menu_item).getActionView();
-        MenuItem nearbyConnectButton = (MenuItem) menu.findItem(R.id.nearby_menu_item).getActionView();
+        settingsButton = menu.findItem(R.id.settings_menu_item);
+        MenuItem alertButton = menu.findItem(R.id.alert_info_item);
+        MenuItem nearbyConnectButton = menu.findItem(R.id.nearby_menu_item);
+
+        // Decide if an alert should be shown
+        if (alertChecks.showBackup(this,preferences) ||
+                alertChecks.showPlayServicesAlert(this) ||
+                alertChecks.updateInfo(this,preferences)!=null) {
+            alertButton.setVisible(true);
+        } else if (alertButton!=null){
+            alertButton.setVisible(true);
+        }
 
         // Decide if we should hide the Google Nearby button
         if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) != ConnectionResult.SUCCESS) {
@@ -761,6 +774,11 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
                 } else if (requestNearbyPermissions() && fragmentOpen != R.id.nearbyConnectionsFragment) {
                     navController.navigate(Uri.parse("opensongapp://settings/nearby"));
                 }
+                break;
+
+            case "Alerts":
+                DialogFragment df = new AlertInfoDialogFragment(preferences,alertChecks);
+                openDialog(df,"Alerts");
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -1095,7 +1113,6 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         closeDrawer(true);  // Only the Performance and Presentation fragments allow this.  Switched on in these fragments
         lockDrawer(true);
         hideActionButton(true);
-        Log.d("MainActivity", "navigateToFragment:" + id);
         try {
             navController.navigate(id);
             Fragment f = getSupportFragmentManager().findFragmentById(id);
@@ -1104,6 +1121,14 @@ public class MainActivity extends AppCompatActivity implements LoadSongInterface
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    @Override
+    public void deepLink(String link) {
+        navController.navigate(Uri.parse(link));
+    }
+    @Override
+    public void popTheBackStack(int id, boolean inclusive) {
+        navController.popBackStack(id,inclusive);
     }
     @Override
     public void openDialog(DialogFragment frag, String tag) {

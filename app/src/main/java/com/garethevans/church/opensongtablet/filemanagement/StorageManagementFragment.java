@@ -58,7 +58,7 @@ public class StorageManagementFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = StorageFolderDisplayBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.storage));
+        mainActivityInterface.updateToolbar(null,getString(R.string.storage));
 
         graphView = myView.graph;
 
@@ -90,7 +90,6 @@ public class StorageManagementFragment extends Fragment {
 
             setListeners();
 
-            showLocations();
             // Prepare the showcase
             initialiseShowcaseArrays();
             requireActivity().runOnUiThread(() -> {
@@ -106,7 +105,6 @@ public class StorageManagementFragment extends Fragment {
             try {
                 TextView tv = view.findViewById(R.id.actualButton);
                 String actLoc = tv.getText().toString();
-                Log.d("d","actLoc="+actLoc);
                 showActionDialog(root,songs,actLoc);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -235,7 +233,6 @@ public class StorageManagementFragment extends Fragment {
 
     public void updateFragment() {
         // Called from MainActivity when change has been made from Dialog
-        Log.d("d","Update fragment called");
         graph = new Graph();
         setUpThread();
     }
@@ -248,16 +245,9 @@ public class StorageManagementFragment extends Fragment {
             if (entry.endsWith("/")) {
                 String newtext = entry.substring(0,entry.lastIndexOf("/"));
                 availableFolders.add(newtext);
-                Log.d("d",newtext);
             }
         }
         return availableFolders;
-    }
-
-    private void showLocations() {
-        for (String entry:actualLocation) {
-            Log.d("d","actualLocation="+entry);
-        }
     }
 
     private void makeNodes() {

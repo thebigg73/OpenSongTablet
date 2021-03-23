@@ -10,7 +10,7 @@
     card_view:cardCornerRadius="4dp"
     android:layout_margin="4dp"
     android:padding="12dp"
-    card_view:cardBackgroundColor="@color/colorPrimary"
+    card_view:cardBackgroundColor="@color/colorAltPrimary"
     app:elevation="4dp">
 
     <RelativeLayout

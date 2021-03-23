@@ -43,7 +43,7 @@ public class ThemeSetupFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsThemeBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.display) + " / " + getString(R.string.theme));
+        mainActivityInterface.updateToolbar(null,getString(R.string.theme));
 
         // Set up the helper classes
         setUpHelpers();

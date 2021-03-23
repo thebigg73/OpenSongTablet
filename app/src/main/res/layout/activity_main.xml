@@ -5,7 +5,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<androidx.drawerlayout.widget.DrawerLayout android:id="@+id/drawer_layout"
+
+<androidx.drawerlayout.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -28,6 +30,7 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navView"
+        android:background="@color/colorAltPrimary"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start">
@@ -45,7 +48,8 @@
             android:layout_gravity="bottom"
             layout="@layout/menu_top"/>
 
-            <androidx.viewpager2.widget.ViewPager2 android:id="@+id/viewpager"
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

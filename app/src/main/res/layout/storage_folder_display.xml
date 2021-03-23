@@ -26,6 +26,7 @@
             android:layout_height="match_parent"
             app:lineColor="@color/colorSecondary"
             app:lineThickness="2dp"
+            android:padding="12dp"
             app:useMaxSize="true" />
 
     </com.garethevans.church.opensongtablet.screensetup.MyZoomLayout>

@@ -125,9 +125,9 @@
 
         </LinearLayout>
 
-        <include layout="@layout/_songmenu" />
+        <!--<include layout="@layout/_songmenu" />-->
 
-        <include layout="@layout/_optionmenu" />
+        <!--<include layout="@layout/_optionmenu" />-->
 
     </androidx.drawerlayout.widget.DrawerLayout>
 

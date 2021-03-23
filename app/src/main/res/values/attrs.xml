@@ -10,4 +10,7 @@
         <attr name="hintTextVal" format="string"/>
     </declare-styleable>
 
+    <declare-styleable name="DialogTitle">
+        <attr name="title" format="string"/>
+    </declare-styleable>
 </resources>

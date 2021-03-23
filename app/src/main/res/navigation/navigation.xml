@@ -41,6 +41,9 @@
         <deepLink
             android:id="@+id/deepLink3"
             app:uri="opensongapp://performance" />
+        <action
+            android:id="@+id/action_performanceFragment_to_alertInfoDialogFragment"
+            app:destination="@id/alertInfoDialogFragment" />
     </fragment>
 
     <!-- The presentation fragment -->
@@ -61,6 +64,9 @@
         <deepLink
             android:id="@+id/deepLink4"
             app:uri="opensongapp://presentation" />
+        <action
+            android:id="@+id/action_presentationFragment_to_alertInfoDialogFragment"
+            app:destination="@id/alertInfoDialogFragment" />
     </fragment>
 
     <!-- The preferences graph -->
@@ -206,6 +212,9 @@
                 <action
                     android:id="@+id/action_fontSetupFragment_to_fontSetupPreviewFragment"
                     app:destination="@id/fontSetupPreviewFragment" />
+                <deepLink
+                    android:id="@+id/deepLink7"
+                    app:uri="opensongapp://settings/display/fonts" />
             </fragment>
 
             <!-- Font preview -->
@@ -358,5 +367,13 @@
             tools:layout="@layout/fragment_osbbackup"/>
 
     </navigation>
+    <dialog
+        android:id="@+id/alertInfoDialogFragment"
+        android:name="com.garethevans.church.opensongtablet.appdata.AlertInfoDialogFragment"
+        android:label="@string/information">
+        <deepLink
+            android:id="@+id/deepLink6"
+            app:uri="opensongapp://information" />
+    </dialog>
 
 </navigation>

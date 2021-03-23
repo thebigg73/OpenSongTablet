@@ -60,6 +60,8 @@ public interface MainActivityInterface {
     void moveToSongInSongMenu();
     void hideKeyboard();
     void navigateToFragment(int id);
+    void deepLink(String link);
+    void popTheBackStack(int id, boolean inclusive);
     void returnToHome(Fragment fragment, Bundle bundle);
     void songMenuActionButtonShow(boolean show);
     void lockDrawer(boolean lock);

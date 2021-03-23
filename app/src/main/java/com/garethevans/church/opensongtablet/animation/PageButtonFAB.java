@@ -42,7 +42,7 @@ public class PageButtonFAB {
         } else {
             ViewCompat.animate(actionButton).rotation(0f).withLayer().setDuration(500).
                     setInterpolator(interpolator).start();
-            actionButton.setBackgroundTintList(ColorStateList.valueOf(c.getResources().getColor(R.color.secondary)));
+            actionButton.setBackgroundTintList(ColorStateList.valueOf(c.getResources().getColor(R.color.colorSecondary)));
         }
         animateView(custom1,open);
         animateView(custom2,open);

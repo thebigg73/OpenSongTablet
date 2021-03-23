@@ -34,7 +34,7 @@ public class DisplayMenuFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsDisplayBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.display));
+        mainActivityInterface.updateToolbar(null,getString(R.string.display));
 
         // Set helpers
         setHelpers();

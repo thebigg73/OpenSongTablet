@@ -393,7 +393,7 @@
  To find out all of the app features and how to use them,
  please check out the online help pages.
  Use the link in the options menu under the \'About\' category -
- http://www.opensongapp.com
+ https://www.opensongapp.com
  You can also click on the link icon page button.\n
 [Adding songs]
  You can manually enter/create any song you like
@@ -471,7 +471,7 @@ Sharing my Saviour\'s love, showing my Father\'s heart."</string>
     <string name="wait">Wait....</string>
     <string name="welcome">Welcome to OpenSongApp</string>
     <string name="website">Website</string>
-    <string name="website_address" translatable="false">http://www.opensongapp.com</string>
+    <string name="website_address" translatable="false">https://www.opensongapp.com</string>
 
 
 

@@ -1,146 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scrollView"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
-<LinearLayout android:id="@+id/page"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/headerText"
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/page"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/welcome"
-        android:textSize="22sp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:drawableStartCompat="@mipmap/ic_round_launcher" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/first_run"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"/>
+        <TextView
+            android:id="@+id/headerText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="@string/welcome"
+            android:textSize="22sp"
+            app:drawableStartCompat="@mipmap/ic_round_launcher" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/storage_help"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/first_run" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/storage_help" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_marginTop="8dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <TextView
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/infoButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="@string/current_location"/>
+                android:src="@drawable/ic_information_outline_white_36dp"
+                app:useCompatPadding="true"
+                android:contentDescription="@string/information" />
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/current_location" />
 
                 <TextView
                     android:id="@+id/progressText"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/section_box"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/section_box" />
+
+            </LinearLayout>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/storageInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/storage_quicktip"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/warningText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@color/red"
             android:text="@string/storage_warning"
-            style="@style/MyHeadingText"
-            android:textColor="@color/red"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/setStorage"
-            app:backgroundTint="@color/red"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
             android:padding="12dp"
             android:text="@string/storage_change"
-            android:textColor="#fff" />
+            android:textColor="#fff"
+            app:backgroundTint="@color/red" />
 
         <Button
             android:id="@+id/findStorage"
-            app:backgroundTint="@color/darkyellow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
             android:padding="12dp"
             android:text="@string/find_existing"
-            android:textColor="#fff" />
-
+            android:textColor="#fff"
+            app:backgroundTint="@color/darkyellow" />
 
         <TextView
             android:id="@+id/previousStorageTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:visibility="gone"/>
+            android:text="@string/no_previous_found"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/previousStorageHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/existing_found"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/previousStorageLocationsTextView"
+        <LinearLayout
+            android:id="@+id/previousStorageLocations"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/section_box"
+            android:orientation="vertical"
+            android:padding="12dp"
             android:visibility="gone"/>
 
         <Button
             android:id="@+id/startApp"
-            app:backgroundTint="@color/green"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="32dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="12dp"
             android:padding="12dp"
             android:text="@string/start"
+            android:textColor="#fff"
             android:textSize="24sp"
-            android:layout_gravity="center_horizontal"
-            android:textColor="#fff" />
+            app:backgroundTint="@color/green" />
 
-        <Spinner
-            android:id="@+id/appMode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            style="@style/MySpinner"
-            android:layout_gravity="center_horizontal" />
-
-        <TextView
-            android:id="@+id/currentAction"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            style="@style/MyInfoText"
-            android:visibility="gone"/>
-
-</LinearLayout>
+    </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

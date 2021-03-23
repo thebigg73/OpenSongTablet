@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +48,7 @@ public class FontSetupFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsFontsBinding.inflate(inflater, container, false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.display) + " / " + getString(R.string.font_choose));
+        mainActivityInterface.updateToolbar(null, getString(R.string.font_choose));
 
         setHelpers();
         getPreferences();
@@ -84,7 +83,6 @@ public class FontSetupFragment extends Fragment {
     }
 
     private void getPreferences() {
-        Log.d("FontSetup","Loading preferences");
         fontLyric = preferences.getMyPreferenceString(getContext(),"fontLyric","Lato");
         fontChord = preferences.getMyPreferenceString(getContext(),"fontChord","Lato");
         fontPreso = preferences.getMyPreferenceString(getContext(),"fontPreso","Lato");

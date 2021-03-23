@@ -1,7 +1,0 @@
-<TextView android:id="@+id/spinnerText" 
-    android:layout_width="match_parent"
-    android:minEms="4"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    style="@style/MySpinner"
-    xmlns:android="http://schemas.android.com/apk/res/android"/>

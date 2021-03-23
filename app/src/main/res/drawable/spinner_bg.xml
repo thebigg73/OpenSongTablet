@@ -7,8 +7,8 @@
         <inset android:insetLeft="-1dp" android:insetRight="-1dp">
             <shape android:shape="rectangle">
                 <stroke android:width="1dp"
-                    android:color="@color/mainSecondary" />
-                <solid android:color="@color/altPrimary" />
+                    android:color="@color/colorSecondary" />
+                <solid android:color="@color/colorPrimary" />
             </shape>
         </inset>
     </item>

@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +40,6 @@ public class FolderManagementDialog extends DialogFragment {
             subdir = "";  // Songs is passed as the main folder location, so don't need this as well
         }
         this.subdir = subdir;
-        Log.d("d","root="+root+"   songs="+songs+"   subdir="+subdir);
     }
 
     @Override
@@ -83,7 +81,7 @@ public class FolderManagementDialog extends DialogFragment {
             myView.changeLocation.setVisibility(View.GONE);
             myView.renameFolder.setVisibility(View.GONE);
             myView.moveContents.setVisibility(View.GONE);
-            myView.deleteSubdirectory.setOnClickListener(new ActionClickListener("deleteItem", 0));
+            myView.deleteSubdirectory.setVisibility(View.GONE);
             myView.createSubdirectory.setOnClickListener(new ActionClickListener("createItem", 0));
             myView.backupFolder.setOnClickListener(new ActionClickListener("backupOSB", 0));
         } else {

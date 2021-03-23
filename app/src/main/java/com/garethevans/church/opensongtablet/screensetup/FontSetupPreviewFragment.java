@@ -20,7 +20,6 @@ import com.garethevans.church.opensongtablet.appdata.SetTypeFace;
 import com.garethevans.church.opensongtablet.databinding.SettingsFontsPreviewBinding;
 import com.garethevans.church.opensongtablet.interfaces.MainActivityInterface;
 import com.garethevans.church.opensongtablet.preferences.Preferences;
-import com.garethevans.church.opensongtablet.preferences.StaticVariables;
 
 import java.util.ArrayList;
 
@@ -47,7 +46,7 @@ public class FontSetupPreviewFragment extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = SettingsFontsPreviewBinding.inflate(inflater,container,false);
 
-        mainActivityInterface.updateToolbar(null,getString(R.string.settings) + " / " + getString(R.string.display) + " / " + getString(R.string.font_choose) + " / " + getString(R.string.font_browse));
+        mainActivityInterface.updateToolbar(null,getString(R.string.font_browse));
 
         setHelpers();
 
@@ -147,7 +146,11 @@ public class FontSetupPreviewFragment extends DialogFragment {
 
     private void doSave(String fontName) {
         fontName = fontName.replace("+"," ");
-        setTypeFace.changeFont(getContext(),preferences,StaticVariables.whattodo,fontName,handler);
-        new Thread(() -> requireActivity().runOnUiThread(() -> requireActivity().getSupportFragmentManager().popBackStackImmediate())).start();
+        setTypeFace.changeFont(getContext(),preferences,mainActivityInterface.getWhattodo(),fontName,handler);
+        new Thread(() -> requireActivity().runOnUiThread(() -> {
+            mainActivityInterface.popTheBackStack(R.id.fontSetupFragment,true);
+            mainActivityInterface.deepLink("opensongapp://settings/display/fonts");
+            dismiss();
+        })).start();
     }
 }

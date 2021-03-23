@@ -90,7 +90,7 @@ public class SettingsCategories extends Fragment {
             }
         });
         myView.midiButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.midiFragment));
-        myView.aboutButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.aboutAppFragment));
+        myView.aboutButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.about_graph));
         myView.gesturesButton.setOnClickListener(v -> mainActivityInterface.navigateToFragment(R.id.controlMenuFragment));
         myView.playServicesHow.setOnClickListener(v -> {
             Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.play_services_help)));

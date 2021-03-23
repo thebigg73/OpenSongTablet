@@ -13,7 +13,7 @@
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorSurface">@color/colorPrimary</item>
         <item name="colorOnSurface">@color/white</item>
-        <item name="android:colorBackground">@color/darkBackground</item>
+        <item name="android:colorBackground">@color/colorPrimary</item>
         <item name="colorOnBackground">@color/white</item>
         <item name="colorError">#FF6666</item>
         <item name="colorOnError">@color/black</item>
@@ -23,12 +23,12 @@
         <item name="colorControlActivated">@color/colorSecondary</item>
         <item name="colorButtonNormal">@color/red</item>
         <item name="android:textSize">18sp</item>
-        <item name="hintTextColor">@color/lightSecondary</item>
+        <item name="hintTextColor">@color/lightgrey</item>
     </style>
 
     <style name="AppTheme.ActionBar" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:background">@color/colorAltPrimary</item>
         <item name="windowActionBarOverlay">true</item>
         <item name="android:fontFamily">@font/lato</item>
     </style>
@@ -36,7 +36,7 @@
     <style name="popupStyle">
         <item name="android:textSize">16sp</item>
         <item name="android:padding">8dp</item>
-        <item name="backgroundColor">@color/colorSecondary</item>
+        <item name="backgroundColor">@color/colorAltPrimary</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
@@ -69,8 +69,8 @@
     </style>
 
     <style name="DividerLine">
-        <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/grey</item>
+        <item name="android:layout_height">2dp</item>
+        <item name="android:background">@color/colorSecondary</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_marginStart">8dp</item>
         <item name="android:layout_marginEnd">8dp</item>
@@ -82,7 +82,7 @@
     <style name="setItem" parent="@style/Widget.MaterialComponents.CardView">
         <item name="contentPadding">2dp</item>
         <item name="cardCornerRadius">8dp</item>
-        <item name="cardBackgroundColor">@color/primaryDark</item>
+        <item name="cardBackgroundColor">@color/transparent</item>
         <item name="android:layout_margin">2dp</item>
     </style>
 
@@ -129,7 +129,7 @@
     </style>
 
     <style name="BottomSheetDialogTheme" parent="Widget.Design.BottomSheet.Modal">
-        <item name="backgroundTint">@color/secondary</item>
+        <item name="backgroundTint">@color/colorSecondary</item>
         <item name="android:windowIsFloating">false</item>
         <item name="shapeAppearanceOverlay">@style/RoundedBox</item>
     </style>
@@ -144,7 +144,7 @@
         <item name="iconPadding">0dp</item>
         <item name="iconGravity">textStart</item>
         <item name="iconTint">@color/white</item>
-        <item name="strokeColor">@color/lightgrey</item>
+        <item name="strokeColor">@color/colorSecondary</item>
         <item name="android:padding">8dp</item>
     </style>
 
@@ -165,7 +165,7 @@
     </style>
 
     <style name="TextOnlyButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="strokeColor">@color/lightgrey</item>
+        <item name="strokeColor">@color/colorSecondary</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:padding">8dp</item>
         <item name="android:layout_gravity">center</item>
@@ -181,14 +181,14 @@
         <item name="iconPadding">0dp</item>
         <item name="iconGravity">textStart</item>
         <item name="iconTint">@color/white</item>
-        <item name="strokeColor">@color/lightgrey</item>
+        <item name="strokeColor">@color/colorSecondary</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:padding">0dp</item>
     </style>
 
     <style name="editTextLayoutOutline" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textColor">@color/white</item>
-        <item name="hintTextColor">@color/lightgrey</item>
+        <item name="hintTextColor">@color/colorSecondary</item>
         <item name="backgroundTint">@color/colorPrimary</item>
         <item name="boxStrokeColor">@color/lightgrey</item>
         <item name="colorAccent">@color/lightgrey</item>
@@ -196,7 +196,7 @@
 
     <style name="editTextFieldOutline" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:textColor">@color/white</item>
-        <item name="hintTextColor">@color/lightgrey</item>
+        <item name="hintTextColor">@color/colorSecondary</item>
         <item name="backgroundTint">@color/colorPrimary</item>
         <item name="boxStrokeColor">@color/lightgrey</item>
         <item name="colorAccent">@color/lightgrey</item>
@@ -332,14 +332,14 @@
         <item name="android:textSize">16sp</item>
         <item name="android:elevation" tools:targetApi="lollipop">16dp</item>
         <item name="android:layout_margin">6dp</item>
-        <item name="backgroundTint">@color/secPrimary</item>
+        <item name="backgroundTint">@color/colorAccent</item>
         <item name="android:background">@drawable/count_icon</item>
 
     </style>
 
     <!--DEFAULT VIEWS-->
     <style name="pageButton">
-        <item name="backgroundTint">@color/mainSecondary</item>
+        <item name="backgroundTint">@color/colorSecondary</item>
         <item name="drawableTint">@color/white</item>
         <item name="useCompatPadding">true</item>
         <item name="borderWidth">0dp</item>
@@ -359,12 +359,8 @@
     </style>
 
     <style name="largeText">
-        <item name="android:background">@color/white</item>
-        <item name="android:textColor">@color/black</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:padding">8dp</item>
-        <item name="android:layout_margin">8dp</item>
     </style>
 
     <style name="checkBox">
@@ -384,7 +380,7 @@
 
     <!--NEW DRAWER-->
     <style name="DrawerLayout">
-        <item name="android:listDivider">@color/secondary</item>
+        <item name="android:listDivider">@color/colorSecondary</item>
         <item name="itemBackground">@color/white</item>
         <item name="itemTextColor">@color/black</item>
         <item name="itemIconTint">@color/black</item>
@@ -402,7 +398,7 @@
     </style>
     <style name="CustomDialog" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowNoTitle">false</item>
-        <item name="android:colorBackground">@color/toolbar</item>
+        <item name="android:colorBackground">@color/colorAltPrimary</item>
         <item name="android:layout_height">42dp</item>
         <item name="android:textColor">#fff</item>
     </style>
@@ -462,7 +458,7 @@
 
 
     <style name="CustomMediaRouterTheme" parent="Theme.MediaRouter">
-        <item name="android:background">@color/popupcolor</item>
+        <item name="android:background">@color/colorAltPrimary</item>
     </style>
 
     <style name="MyTextSwitch">

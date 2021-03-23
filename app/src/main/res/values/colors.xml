@@ -1,22 +1,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <color name="transparent">#00000000</color>
+
+    <!--Main display background colour for fragments-->
     <color name="colorPrimary">#141B22</color>
-    <!--<color name="showcaseColor">#ee0e0a13</color>-->
+
+    <!--The colour used for accent elements (FABS, etc)-->
+    <color name="colorSecondary">#294959</color>
+
+    <!--The background colour of popup dialogs and the toolbar-->
+    <color name="colorAltPrimary">#232333</color>
+
+    <!--Showcase overlay colour-->
     <color name="showcaseColor">#ee141B22</color>
-    <color name="primaryDark">#010D18</color>
-    <color name="darkBackground">#121212</color>
-    <color name="altPrimary">#0F1130</color>
-    <color name="secPrimary">#D2C5D2</color>
-    <color name="mainSecondary">#E87700</color>
-    <color name="colorSecondary">#596979</color>
-    <color name="lightSecondary">#9DADBD</color>
-    <color name="darkSecondary">#35404E</color>
-    <color name="primarylight">#E8E3FF</color>
-    <color name="secondary">#606060</color>
-    <color name="colorAccent">#d4bff9</color>
-    <color name="toolbar">#232333</color>
-    <color name="accent">#485868</color>
-    <color name="text">#FFFFFF</color>
+
+
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">@color/lightgrey</color>
+
+
+    <!--Obviously named colours used as needed-->
+    <color name="transparent">#00000000</color>
     <color name="black">#000000</color>
     <color name="purple">#452277</color>
     <color name="blue">#0000aa</color>
@@ -34,8 +35,9 @@
     <color name="white">#FFFFFF</color>
     <color name="yellow">#FFFF00</color>
     <color name="darkyellow">#BBBB00</color>
-    <color name="popupcolor">#343444</color>
-    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">@color/lightgrey</color>
+
+
+
 
 
 

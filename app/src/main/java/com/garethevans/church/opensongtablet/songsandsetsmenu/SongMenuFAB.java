@@ -45,7 +45,7 @@ public class SongMenuFAB {
         } else {
             ViewCompat.animate(actionButton).rotation(0f).withLayer().setDuration(500).
                     setInterpolator(interpolator).start();
-            actionButton.setBackgroundTintList(ColorStateList.valueOf(c.getResources().getColor(R.color.secondary)));
+            actionButton.setBackgroundTintList(ColorStateList.valueOf(c.getResources().getColor(R.color.colorSecondary)));
         }
         animateView(dialogActions,open);
         animateView(editSong,open);

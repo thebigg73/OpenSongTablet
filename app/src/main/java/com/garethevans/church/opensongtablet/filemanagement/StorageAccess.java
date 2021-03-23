@@ -384,6 +384,19 @@ public class StorageAccess {
         }
         return storageDetails;
     }
+
+    public Uri fixBadStorage(Uri uri) {
+        if (uri!=null) {
+            String text = uri.getPath();
+            // IV: Exclude raw storage
+            if (text.startsWith("/tree/raw:") || text.startsWith("/tree/msd:")) {
+                uri = null;
+                uriTree = null;
+                uriTreeHome = null;
+            }
+        }
+        return uri;
+    }
     public String[] niceUriTree_File(Context c, Uri uri, String[] storageDetails) {
         storageDetails[1] = uri.getPath();
         storageDetails[1] = "¬" + storageDetails[1];
@@ -974,7 +987,7 @@ public class StorageAccess {
             return null;
         }
     }
-    private DocumentFile documentFileFromUri(Context c, Uri uri, String path) {
+    public DocumentFile documentFileFromUri(Context c, Uri uri, String path) {
         if (uri != null && lollipopOrLater()) {
             return DocumentFile.fromSingleUri(c, uri);
         } else if (path != null) {

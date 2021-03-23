@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,9 +91,6 @@ public class SetStorageLocationFragment extends Fragment {
         // Set up the views
         initialiseViews();
 
-        // Pop the backstack to the bootUpFragment
-        //NavHostFragment.findNavController(this).popBackStack(R.id.bootUpFragment,false);
-
         // Check preferences for storage (if they exist)
         getUriTreeFromPreferences();
 
@@ -102,7 +98,6 @@ public class SetStorageLocationFragment extends Fragment {
         // If we have it, this will update the text, if not it will ask for permission
         checkStoragePermission();
 
-        Log.d("SetStorage", "SetStorageLocationFragment");
         return myView.getRoot();
     }
 
@@ -119,6 +114,13 @@ public class SetStorageLocationFragment extends Fragment {
         mainActivityInterface.hideActionButton(true);
 
         // Set the listeners for the buttons
+        myView.infoButton.setOnClickListener(v -> {
+            if (myView.storageInfo.getVisibility()==View.VISIBLE) {
+                myView.storageInfo.setVisibility(View.GONE);
+            } else {
+                myView.storageInfo.setVisibility(View.VISIBLE);
+            }
+        });
         myView.setStorage.setOnClickListener(v -> {
             if (isStorageGranted()) {
                 chooseStorageLocation();
@@ -141,8 +143,7 @@ public class SetStorageLocationFragment extends Fragment {
         Also it could be null!
         */
 
-        String uriTreeString = preferences.getMyPreferenceString(requireActivity(), "uriTree", "");
-        Log.d("getUriTree", "uriTreeString=" + uriTreeString);
+        String uriTreeString = preferences.getMyPreferenceString(requireContext(), "uriTree", "");
         if (!uriTreeString.equals("")) {
             uriTree = Uri.parse(uriTreeString);
         } else {
@@ -195,11 +196,7 @@ public class SetStorageLocationFragment extends Fragment {
         uriTree = null;
         uriTreeHome = null;
         showToast.doIt(requireActivity(), getString(R.string.storage_notwritable));
-        // TODO - need to implement this bit
-        /*if (locations != null && locations.size() > 0) {
-            // Revert back to the blank selection as the one chosen can't be used
-            previousStorageSpinner.setSelection(0);
-        }*/
+        showStorageLocation();
     }
 
 
@@ -261,10 +258,6 @@ public class SetStorageLocationFragment extends Fragment {
 
     // Deal with allowing or hiding the start button
     private void checkStatus() {
-        Log.d("d", "checkStatus()");
-        Log.d("d", "isStorageValid()=" + isStorageValid());
-        Log.d("d", "isStorageGranted()=" + isStorageGranted());
-        Log.d("d", "isStorageSet()=" + isStorageSet());
         if (isStorageGranted() && isStorageSet() && isStorageValid()) {
             myView.startApp.setVisibility(View.VISIBLE);
             pulseButton(myView.startApp);
@@ -283,11 +276,7 @@ public class SetStorageLocationFragment extends Fragment {
         myView.startApp.setEnabled(what);
         myView.setStorage.setEnabled(what);
         myView.findStorage.setEnabled(what);
-        //TODO
-        //readUpdate.setEnabled(what);
-        //userGuideLinearLayout.setEnabled(what);
-        //previousStorageButton.setEnabled(what);
-        //previousStorageSpinner.setEnabled(what);
+
         if (!what) {
             myView.previousStorageTextView.setVisibility(View.VISIBLE);
         } else {
@@ -296,7 +285,6 @@ public class SetStorageLocationFragment extends Fragment {
     }
 
     private void goToSongs() {
-        Log.d("SetStorage", "goToSong()");
         NavOptions navOptions = new NavOptions.Builder()
                 .setPopUpTo(R.id.setStorageLocationFragment, false)
                 .build();
@@ -313,11 +301,9 @@ public class SetStorageLocationFragment extends Fragment {
     private void checkStoragePermission() {
         if (!isStorageGranted()) {
             // Storage permission has not been granted.
-            Log.d("checkStoragePermission", "Permission hasn't been granted");
             requestStoragePermission();
         } else {
             // Set the storage location
-            Log.d("checkStoragePermission", "run showStorageLocation()");
             showStorageLocation();
         }
     }
@@ -357,13 +343,11 @@ public class SetStorageLocationFragment extends Fragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 101) {
-            Log.d("SetStorage", "onPermissionRequest");
             checkStatus();
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
         // Set the storage location
-        Log.d("onRequestPermission", "run showStorageLocation()");
         showStorageLocation();
     }
 
@@ -410,17 +394,10 @@ public class SetStorageLocationFragment extends Fragment {
             // Save the location uriTree and uriTreeHome
             saveUriLocation();
             // Update the storage text
-            Log.d("onActivityResult", "run showStorageLocation()");
             showStorageLocation();
 
             // See if we can show the start button yet
-            Log.d("SetStorage", "onActivityResult()");
             checkStatus();
-
-            // Always update the storage text
-            //TODO - Uses a different code logic, but should still update.  Different function though
-            // Might be done in checkStatus above;
-            //showCurrentStorage(uriTreeHome);
         }
     }
 
@@ -449,7 +426,6 @@ public class SetStorageLocationFragment extends Fragment {
             notWriteable();
         }
         if (uriTree != null) {
-            Log.d("kitKatDealWithUri()", "uriTree!=null so run checkStatus()()");
             checkStatus();
         }
     }
@@ -471,22 +447,25 @@ public class SetStorageLocationFragment extends Fragment {
             notWriteable();
         }
         if (uriTree != null) {
-            Log.d("lollipopDealWithUri", "uriTree!=null so run checkStatus()");
             checkStatus();
         }
     }
 
     // Here we deal with displaying (and processing) the chosen storage location
     private void showStorageLocation() {
+        uriTreeHome = storageAccess.fixBadStorage(uriTreeHome);
+        if (uriTreeHome==null) {
+            uriTree = null;
+            saveUriLocation();
+        }
+
         if (uriTreeHome != null) {
             String[] niceLocation = storageAccess.niceUriTree(getContext(), preferences, uriTreeHome);
-            String outputText = niceLocation[1] + " " + niceLocation[0];
+            String outputText = niceLocation[1] + "\n" + niceLocation[0];
             myView.progressText.setText(outputText);
             warningCheck();
-            Log.d("showStorageLocation", "niceLocation[0]=" + niceLocation[0]);
-            Log.d("showStorageLocation", "niceLocation[1]=" + niceLocation[1]);
-            checkStatus();
         }
+        checkStatus();
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -512,137 +491,29 @@ public class SetStorageLocationFragment extends Fragment {
 
                 if (locations.size() < 1) {
                     // No previous installations found
-                    myView.previousStorageTextView.setText(getString(R.string.no_previous_found));
-                    myView.previousStorageTextView.setVisibility(View.VISIBLE);
-                    myView.previousStorageHeading.setVisibility(View.GONE);
-                } else {
                     myView.previousStorageHeading.setVisibility(View.VISIBLE);
+                    myView.previousStorageTextView.setVisibility(View.GONE);
+                    myView.previousStorageLocations.setVisibility(View.GONE);
+                    myView.previousStorageLocations.removeAllViews();
+                } else {
+                    myView.previousStorageHeading.setVisibility(View.GONE);
+                    myView.previousStorageTextView.setText(getString(R.string.existing_found));
+                    myView.previousStorageTextView.setVisibility(View.VISIBLE);
+                    myView.previousStorageLocations.setVisibility(View.VISIBLE);
+                    myView.previousStorageLocations.removeAllViews();
+                    StringBuilder check = new StringBuilder();
                     // Add the locations to the textview
-                    StringBuilder sb = new StringBuilder();
-                    for (String str : locations) {
-                        if (!sb.toString().contains("¬" + str + "¬")) {
-                            sb.append("¬").append(str).append("¬").append(" \n");
+                    for (int x=0;x<locations.size();x++) {
+                        if (!check.toString().contains("¬" + locations.get(x) + "¬")) {
+                            check.append("¬").append(locations.get(x)).append("¬");
+                            TextView tv = new TextView(requireContext());
+                            tv.setText(locations.get(x));
+                            myView.previousStorageLocations.addView(tv);
                         }
                     }
-                    myView.previousStorageTextView.setVisibility(View.GONE);
-                    myView.previousStorageLocationsTextView.setVisibility(View.VISIBLE);
-                    myView.previousStorageLocationsTextView.setText(sb.toString().replace("¬", "").trim());
-                    locations.add(0, "");
-
-                    // TODO Am I going to give the option of choosing from a spinner/autocompletetext?
-                    /*myView.previousStorageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            if (changed) {
-                                if (position>0) {
-                                    File f = new File(locations.get(position));
-                                    uriTree = Uri.fromFile(f);
-                                    chooseStorageButton.performClick();
-                                }
-                            } else {
-                                changed=true;
-                            }
-
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) { }
-                    });
-                    ArrayAdapter<String> listAdapter = new ArrayAdapter<>(BootUpCheck.this, R.layout.my_spinner, locations);
-                    previousStorageSpinner.setAdapter(listAdapter);
-                    previousStorageSpinner.setVisibility(View.GONE);*/
                 }
             }
         }
     }
 
-    // TODO Need to implement this - figure out where it goes!!!!
-    /*private void showCurrentStorage(Uri u) {
-        // This tries to make the uri more user readable!
-        // IV - A text value of null can be set to force a valid selection
-        String text = null;
-        // IV - Provides extra information on the folder
-        String extra = "";
-
-        // IV - Try to get the path with leading / and trailing /OpenSong
-        try {
-            text = u.getPath();
-            assert text != null;
-            // The  storage location getPath is likely something like /tree/primary:/document/primary:/OpenSong
-            // This is due to the content using a document contract
-            // IV: Exclude raw storage
-            if (!text.startsWith("/tree/raw:") & !text.startsWith("/tree/msd:") & text.contains(":")) {
-                // IV - When not an internal path (more patterns may be needed) indicate as external
-                if (!text.contains("/tree/primary")) { extra = this.getResources().getString(R.string.storage_ext); }
-                text = "/" + text.substring(text.lastIndexOf(":") + 1);
-                text = text.replace("//", "/");
-                if (!text.endsWith("/" + storageAccess.appFolder)) {
-                    text += "/" + storageAccess.appFolder;
-                }
-                // Decide if the user needs blocking as they have selected a subfolder of an OpenSong folder
-                if ((warningText!=null) && (text.contains("/OpenSong/"))) {
-                    uriTree = null;
-                    warningText.setVisibility(View.VISIBLE);
-                } else if (warningText!=null){
-                    warningText.setVisibility(View.GONE);
-                }
-            } else {
-                uriTree = null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            uriTree = null;
-        }
-
-        // IV - If we do not have a valid uri force 'Please select'
-        if (uriTree == null) {
-            uriTreeHome = null;
-            text = getString(R.string.pleaseselect);
-            saveUriLocation();
-        }
-
-        if (progressText!=null) {
-            // IV - If we have a path try to give extra info of a 'songs' count
-            if (text.startsWith("/")) {
-                ArrayList<String> songIds;
-                try {
-                    songIds = storageAccess.listSongs(BootUpCheck.this, preferences);
-                    // Only items that don't end with / are songs!
-                    int count = 0;
-                    for (String s:songIds) {
-                        if (!s.endsWith("/")) {
-                            count++;
-                        }
-                    }
-                    if (extra.length() > 0) { extra = ", " + extra; }
-                    extra = count + " Songs" + extra;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (extra.equals("")) {
-                text = getString(R.string.currentstorage) + ": " + text;
-            } else {
-                text = getString(R.string.currentstorage) + " (" + extra + "): " + text;
-            }
-
-            // IV - Readiness may have changed
-            checkReadiness();
-
-            // We aren't just passing through, so we can set the text
-            progressText.setText(text);
-        }
-    }*/
-
-    //TODO
-    /*private void installPlayServices() {
-        // We've identified that the user doesn't have the Google Play Store installed
-        // Warn them that some features won't work, but give them the option to fix it!
-        findViewById(R.id.play_services_error).setVisibility(View.VISIBLE);
-        findViewById(R.id.play_services_how).setOnClickListener(v -> {
-            Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.play_services_help)));
-            startActivity(i);
-        });
-    }*/
 }
