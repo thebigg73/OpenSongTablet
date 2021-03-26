@@ -92,6 +92,10 @@ public class FullscreenActivity extends AppCompatActivity {
     public static int whichPad = 0;
 
     public static boolean alreadyloading = false;
+    // IV - Some mode oncreate actions are only needed once
+    public static boolean doonetimeactions = true;
+    // IV - Persist knowledge of a current hdmi session
+    public static PresentationServiceHDMI hdmi;
 
     // Flag to indicate that Android Beam is available
     public static final boolean mAndroidBeamAvailable  = false;

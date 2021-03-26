@@ -343,6 +343,14 @@ public class NearbyConnections implements NearbyInterface {
                                         if (((ApiException) e).getStatusCode() == ConnectionsStatusCodes.STATUS_ALREADY_CONNECTED_TO_ENDPOINT) {
                                             StaticVariables.isConnected = true;
                                             updateConnectionLog(context.getResources().getString(R.string.connections_connected) + " " + getDeviceNameFromId(endpointId));
+                                            // IV - Already connected so replay last incoming song
+                                            if (incomingPrevious != null) {
+                                                String incoming = incomingPrevious;
+                                                incomingPrevious = null;
+                                                payloadOpenSong(incoming);
+                                            }
+                                            // We can stop discovery now
+                                            stopDiscovery();
                                         } else {
                                             // Nearby Connections failed to request the connection.
                                             updateConnectionLog(context.getResources().getString(R.string.connections_failure) + " " + getDeviceNameFromId(endpointId));

@@ -719,8 +719,8 @@ class PresentationCommon {
         if (!StaticVariables.mAuthor.equals("")) {
             new_title = new_title + "\n" + StaticVariables.mAuthor;
         }
-        // IV - If we have something then cross fade in
-        if (!old_title.equals(new_title)) {
+        // IV - If we have something or are not yet displaying, cross fade in
+        if (!old_title.equals(new_title) ||  songinfo_TextView.getAlpha() == 0.0f) {
             CustomAnimations.faderAnimation(bottom_infobar,preferences.getMyPreferenceInt(c,"presoTransitionTime",800),false);
             // IV - Now run the next bit post delayed (to wait for the animate out)
             if (!(FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) && (!new_title.isEmpty())) {

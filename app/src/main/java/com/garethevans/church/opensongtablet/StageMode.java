@@ -258,7 +258,6 @@ public class StageMode extends AppCompatActivity implements
     private MediaRouteSelector mMediaRouteSelector;
     private final MyMediaRouterCallback mMediaRouterCallback = new MyMediaRouterCallback();
     private CastDevice mSelectedDevice;
-    private PresentationServiceHDMI hdmi;
     private boolean newsongloaded = false;
 
     // Dialogue fragments and stuff
@@ -436,21 +435,23 @@ public class StageMode extends AppCompatActivity implements
         OptionMenuListeners optionMenuListeners = new OptionMenuListeners(this);
         nearbyConnections = new NearbyConnections(this,preferences,storageAccess,processSong, optionMenuListeners, sqLiteHelper);
 
-        new Thread(() -> {
-            runOnUiThread(() -> {
-                StaticVariables.myToastMessage = getString(R.string.search_index_start);
-                ShowToast.showToast(StageMode.this);
-            });
-            indexSongs.fullIndex(StageMode.this,preferences,storageAccess,sqLiteHelper,songXML,
-                    chordProConvert,onSongConvert,textSongConvert,usrConvert);
-            runOnUiThread(() -> {
-                StaticVariables.myToastMessage = getString(R.string.search_index_end);
-                ShowToast.showToast(StageMode.this);
-                // Now instruct the song menu to be built again.
-                prepareSongMenu();
-            });
-
-        }).start();
+        // IV - Index at start of session
+        if (FullscreenActivity.doonetimeactions) {
+            new Thread(() -> {
+                runOnUiThread(() -> {
+                    StaticVariables.myToastMessage = getString(R.string.search_index_start);
+                    ShowToast.showToast(StageMode.this);
+                });
+                indexSongs.fullIndex(StageMode.this,preferences,storageAccess,sqLiteHelper,songXML,
+                        chordProConvert,onSongConvert,textSongConvert,usrConvert);
+                runOnUiThread(() -> {
+                    StaticVariables.myToastMessage = getString(R.string.search_index_end);
+                    ShowToast.showToast(StageMode.this);
+                    // Now instruct the song menu to be built again.
+                    prepareSongMenu();
+                });
+            }).start();
+        }
 
         // Get the language
         FixLocale.fixLocale(StageMode.this,preferences);
@@ -472,12 +473,9 @@ public class StageMode extends AppCompatActivity implements
         // In order to quickly start, load the minimum variables we need
         loadStartUpVariables();
 
-
-
         // Set up the fonts
         setTypeFace.setUpAppFonts(StageMode.this, preferences, lyrichandler, chordhandler, stickyhandler,
                 presohandler, presoinfohandler, customhandler);
-
 
         // Setup the CastContext
         MediaRouteButton mediaRouteButton = findViewById(R.id.media_route_menu_item);
@@ -528,7 +526,8 @@ public class StageMode extends AppCompatActivity implements
                 // Prepare the song menu
                 prepareSongMenu();
 
-                // Prepare the option menu
+                // Prepare the MAIN option menu
+                StaticVariables.whichOptionMenu="MAIN";
                 prepareOptionMenu();
 
                 // Set up the page buttons
@@ -562,8 +561,14 @@ public class StageMode extends AppCompatActivity implements
 
         }).start();
 
-        // Check if we need to remind the user to backup their songs
-        checkBackupState();
+        // IV - Check backups at start of session
+        if (FullscreenActivity.doonetimeactions) {
+            // Check if we need to remind the user to backup their songs
+            checkBackupState();
+        }
+
+        // IV -  One time actions will have been completed
+        FullscreenActivity.doonetimeactions = false;
     }
 
 
@@ -1312,8 +1317,9 @@ public class StageMode extends AppCompatActivity implements
         }
 
         try {
-            if (hdmi!=null) {
-                hdmi.dismiss();
+            if (FullscreenActivity.hdmi!=null) {
+                FullscreenActivity.hdmi.dismiss();
+                FullscreenActivity.hdmi = null;
             }
         } catch (Exception e) {
             // Ooops
@@ -2740,32 +2746,12 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void openMyDrawers(String which) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DrawerTweaks.openMyDrawers(mDrawerLayout, songmenu, optionmenu, which);
-                    }
-                });
-            }
-        }).start();
+        new Thread(() -> runOnUiThread(() -> DrawerTweaks.openMyDrawers(mDrawerLayout, songmenu, optionmenu, which))).start();
     }
 
     @Override
     public void closeMyDrawers(String which) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DrawerTweaks.closeMyDrawers(mDrawerLayout, songmenu, optionmenu, which);
-                    }
-                });
-            }
-        }).start();
+        new Thread(() -> runOnUiThread(() -> DrawerTweaks.closeMyDrawers(mDrawerLayout, songmenu, optionmenu, which))).start();
     }
 
     private void findSongInFolders() {
@@ -4651,13 +4637,13 @@ public class StageMode extends AppCompatActivity implements
                     // If a Chromebook HDMI, need to do this
                     Display[] displays = dm.getDisplays();
                     for (Display mDisplay : displays) {
-                        if (mDisplay.getDisplayId()==1) {
+                        if (mDisplay.getDisplayId() > 0) {
                             Point size = new Point();
-                            mDisplay. getRealSize(size);
+                            mDisplay.getRealSize(size);
                             //int width = size. x;
                             //int height = size. y;
-                            hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong);
-                            hdmi.show();
+                            if (FullscreenActivity.hdmi == null) FullscreenActivity.hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong);
+                            FullscreenActivity.hdmi.show();
                             FullscreenActivity.isHDMIConnected = true;
                         }
                     }
@@ -4666,8 +4652,8 @@ public class StageMode extends AppCompatActivity implements
                         // For non-Chromebooks
                         displays = dm.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION);
                         for (Display mDisplay : displays) {
-                            hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong);
-                            hdmi.show();
+                            if (FullscreenActivity.hdmi == null) FullscreenActivity.hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay, processSong);
+                            FullscreenActivity.hdmi.show();
                             FullscreenActivity.isHDMIConnected = true;
                         }
                     }
@@ -4681,8 +4667,8 @@ public class StageMode extends AppCompatActivity implements
     private void doPedalAction(String action) {
         drawerOrFragmentActive = (mDrawerLayout.isDrawerOpen(songmenu) || mDrawerLayout.isDrawerOpen(optionmenu)) &&
                 !action.equals("songmenu") && !action.equals("optionmenu");
-        // IV - If in a drawer or fragment restrict to move actions only
-        // GE - Excluded open and CLOSE drawer
+        // IV - If in a drawer or fragment restrict to move actions
+        // GE - and open and CLOSE drawer
         if (drawerOrFragmentActive) {
             switch (action) {
                 case "prev":
@@ -7275,10 +7261,7 @@ public class StageMode extends AppCompatActivity implements
 
             // Eat the long press event so the keyboard doesn't come up.
             if (keyCode == KeyEvent.KEYCODE_MENU) {
-                if (event.isLongPress()) {
-                    // Open up the song search intent instead of bringing up the keyboard
-                    // return true;
-                } else {
+                if (!event.isLongPress()) {
                     // User wants the menu opened/closed
                     if (mDrawerLayout.isDrawerOpen(optionmenu)) {
                         mDrawerLayout.closeDrawer(optionmenu);
@@ -8263,8 +8246,9 @@ public class StageMode extends AppCompatActivity implements
             }
 
             try {
-                if (hdmi != null) {
-                    hdmi.dismiss();
+                if (FullscreenActivity.hdmi != null) {
+                    FullscreenActivity.hdmi.dismiss();
+                    FullscreenActivity.hdmi = null;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
